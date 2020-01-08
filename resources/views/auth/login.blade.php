@@ -72,6 +72,10 @@
         color: white;
         font-family: 'Roboto', sans-serif;
     }
+    .row {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
 
     #logo {
         padding: 50px 0 0 50px;
