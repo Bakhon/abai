@@ -16,7 +16,8 @@
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^1.1",
-        "level23/druid-client": "^1.0"
+        "level23/druid-client": "^1.0",
+        "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
