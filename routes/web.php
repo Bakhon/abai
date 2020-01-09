@@ -10,15 +10,40 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/'. App\Http\Middleware\LocaleMiddleware::$mainLanguage);
 });
-Route::get('/druid', 'DruidController@index');
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
-Auth::routes([
-   'reset' => false,
-   'verify' => false,
-   'register' => false,
-]);
+
+Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
+    Route::get('/', function () {
+        return view('welcome');
+    });
+    Route::get('/druid', 'DruidController@index');
+    Auth::routes();
+    Route::get('/home', 'HomeController@index')->name('home');
+    Auth::routes([
+        'reset' => false,
+        'verify' => false,
+        'register' => false,
+    ]);
+});
+
+Route::get('setlocale/{lang}', function ($lang) {
+    $referer = Redirect::back()->getTargetUrl();
+    $parse_url = parse_url($referer, PHP_URL_PATH);
+    $segments = explode('/', $parse_url);
+
+    if (in_array($segments[1], App\Http\Middleware\LocaleMiddleware::$languages)) {
+        unset($segments[1]);
+    }
+
+    array_splice($segments, 1, 0, $lang);
+    $url = Request::root().implode("/", $segments);
+
+    if(parse_url($referer, PHP_URL_QUERY)){
+        $url = $url.'?'. parse_url($referer, PHP_URL_QUERY);
+    }
+
+    return redirect($url);
+})->name('setlocale');
+

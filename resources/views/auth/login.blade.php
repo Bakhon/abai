@@ -21,18 +21,19 @@
 </head>
     <body>
         <div class="row">
+            <div id="app"></div>
             <div class="col-md-6">
-                <img src="img/bank1.png" alt="" id="logo">
+                <img src="{{ asset('img/bank1.png') }}" alt="" id="logo">
             </div>
             <div class="col-md-6">
                 <div class="text-center">
-                    <img src="img/logoKMGI.png" alt="" id="logokmgi">
-                    <h2>Вход <br> в панель управления</h2>
+                    <img src="{{ asset('img/logoKMGI.png') }}" alt="" id="logokmgi">
+                    <h2>{{ __('app.Login') }} <br> в панель управления</h2>
                     <form method="POST" action="{{ route('login') }}" id="form">
                         @csrf
 
                         <div>
-                            <input id="username" type="text"  name="username" class="loginInput" value="{{ old('username') }}" placeholder="{{ __('Login') }}">
+                            <input id="username" type="text"  name="username" class="loginInput" value="{{ old('username') }}" placeholder="{{ __('app.Login') }}">
                         </div>
 
                         <div>
@@ -68,7 +69,7 @@
 </html>
 <style>
     body {
-        background: url("img/loginBackground.png") no-repeat fixed;
+        background: url('{{ asset('img/loginBackground.png') }}') no-repeat;
         color: white;
         font-family: 'Roboto', sans-serif;
     }
