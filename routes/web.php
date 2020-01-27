@@ -26,6 +26,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         'verify' => false,
         'register' => false,
     ]);
+    Route::resource('oildaily','OilDailyController');
 });
 
 Route::get('setlocale/{lang}', function ($lang) {
