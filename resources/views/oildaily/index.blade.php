@@ -11,6 +11,7 @@
                     <div class="card-body">
                         @if ($message = Session::get('success'))
                             <div class="alert alert-success">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
                                 <p>{{ $message }}</p>
                             </div>
                         @endif
@@ -30,6 +31,8 @@
                                         <form action="{{ route('oildaily.destroy',$item->id) }}" method="POST">
                                             <a class="btn btn-primary" href="{{ route('oildaily.edit',$item->id) }}">Edit</a>
                                             @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">Delete</button>
                                         </form>
                                     </td>
                                 </tr>

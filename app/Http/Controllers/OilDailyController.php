@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\OilDaily;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class OilDailyController extends Controller
 {
@@ -36,8 +35,9 @@ class OilDailyController extends Controller
     }
 
 
-    public function edit(OilDaily $oilDaily)
+    public function edit($id)
     {
+        $oilDaily = OilDaily::find($id);
         return view('oildaily.edit',compact('oilDaily'));
     }
 
@@ -51,12 +51,13 @@ class OilDailyController extends Controller
 
         $oilDaily->update($request->all());
 
-        return redirect()->route('products.index')->with('success','OilDaily updated successfully');
+        return redirect()->route('oildaily.index')->with('success','OilDaily updated successfully');
     }
 
 
-    public function destroy(OilDaily $oilDaily)
+    public function destroy($id)
     {
+        $oilDaily = OilDaily::find($id);
         $oilDaily->delete();
 
         return redirect()->route('oildaily.index')->with('success','OilDaily deleted successfully');
