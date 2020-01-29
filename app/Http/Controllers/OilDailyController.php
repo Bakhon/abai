@@ -31,7 +31,8 @@ class OilDailyController extends Controller
 
         OilDaily::create($request->all());
 
-        return redirect()->route('oildaily.index')->with('success','OilDaily created successfully.');
+        return redirect()->route('oildaily.index')->with('success',__('app.created'));
+        //return redirect()->route('oildaily.index')->with('success','OilDaily created successfully.');
     }
 
 
@@ -51,7 +52,7 @@ class OilDailyController extends Controller
 
         $oilDaily->update($request->all());
 
-        return redirect()->route('oildaily.index')->with('success','OilDaily updated successfully');
+        return redirect()->route('oildaily.index')->with('success',__('app.updated'));
     }
 
 
@@ -60,6 +61,6 @@ class OilDailyController extends Controller
         $oilDaily = OilDaily::find($id);
         $oilDaily->delete();
 
-        return redirect()->route('oildaily.index')->with('success','OilDaily deleted successfully');
+        return redirect()->route('oildaily.index')->with('success',__('app.deleted'));
     }
 }

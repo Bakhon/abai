@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <a class="btn btn-primary" href="{{ route('oildaily.index') }}"> Back</a>
+                        <a class="btn btn-primary" href="{{ route('oildaily.index') }}">{{__('app.back')}}</a>
                     </div>
                     <div class="card-body">
                         <form action="{{ route('oildaily.store') }}" method="POST">
@@ -14,8 +14,8 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Liquid:</strong>
-                                        <input type="number" name="liquid" class="form-control" placeholder="liquid">
+                                        <strong>{{__('app.liguid')}}:</strong>
+                                        <input type="number" name="liquid" class="form-control" placeholder="{{__('app.liguid')}}">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
@@ -24,7 +24,7 @@
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">{{__('app.submit')}}</button>
                                 </div>
                             </div>
                         </form>

@@ -17,10 +17,10 @@
                         @endif
                         <table class="table table-bordered">
                             <tr>
-                                <th>No</th>
-                                <th>Date</th>
-                                <th>Liquid</th>
-                                <th width="220px">Action</th>
+                                <th>#</th>
+                                <th>{{__('app.date')}}</th>
+                                <th>{{__('app.liquid')}}</th>
+                                <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($oildaily as $item)
                                 <tr>
@@ -29,10 +29,10 @@
                                     <td>{{ $item->liquid }}</td>
                                     <td>
                                         <form action="{{ route('oildaily.destroy',$item->id) }}" method="POST">
-                                            <a class="btn btn-primary" href="{{ route('oildaily.edit',$item->id) }}">Edit</a>
+                                            <a class="btn btn-primary" href="{{ route('oildaily.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                            <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
                                         </form>
                                     </td>
                                 </tr>

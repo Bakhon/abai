@@ -29,15 +29,29 @@
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item">
+                            <a href="{{route('oildaily.index')}}">OilDaily|</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/translations">Translation</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav dropdown-toggle" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{\App\Http\Middleware\LocaleMiddleware::getLocale()}}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown09">
+                                <a href="<?= route('setlocale', ['lang' => 'kz']) ?>" class="dropdown-item">Qazaq</a>
+                                <a href="<?= route('setlocale', ['lang' => 'en']) ?>" class="dropdown-item">English</a>
+                                <a href="<?= route('setlocale', ['lang' => 'ru']) ?>" class="dropdown-item">Russian</a>
+                            </div>
+                        </div>
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
