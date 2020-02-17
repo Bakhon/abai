@@ -21,4 +21,11 @@ class DruidController extends Controller
       //$user = Adldap::search()->users()->find('васильев');
       return view('druid',['data'=>$response]);
     }
+
+
+    public function Chartjs(){
+      $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May');
+      $data  = array(8, 2, 3, 4, 5);
+      return response()->json(['month' => $month, 'data' => $data]);
+  }
 }

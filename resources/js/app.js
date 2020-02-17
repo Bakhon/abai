@@ -4,9 +4,17 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import VueAxios from 'vue-axios';
+import axios from 'axios';
+
 require('./bootstrap');
 
 window.Vue = require('vue');
+window.Jquery = require('jquery');
+
+Vue.use(VueAxios, axios);
+import {Bar} from 'vue-chartjs';
+
 
 /**
  * The following block of code may be used to automatically register your

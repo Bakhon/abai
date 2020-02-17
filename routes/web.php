@@ -15,6 +15,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
+    Route::get("/chartjs", "DruidController@Chartjs");
     Route::get('/', function () {
         return view('welcome');
     });
@@ -47,4 +48,5 @@ Route::get('setlocale/{lang}', function ($lang) {
 
     return redirect($url);
 })->name('setlocale');
+
 
