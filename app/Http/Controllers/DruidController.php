@@ -13,8 +13,8 @@ class DruidController extends Controller
     public function index(){
 
       $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-      $response = $client->query('well_daily_2018', Granularity::ALL)
-                          ->interval('2012-12-24 20:00:00', '2019-12-24 22:00:00')
+      $response = $client->query('well_daily_oil2_v4', Granularity::ALL)
+                          ->interval('2012-12-24 20:00:00', '2020-12-24 22:00:00')
                           ->count('totalNrRecords')
                           ->execute();
 
@@ -23,7 +23,7 @@ class DruidController extends Controller
     }
 
 
-    public function Chartjs(){
+    public function chartJs(){
       $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May');
       $data  = array(8, 2, 3, 4, 5);
       return response()->json(['month' => $month, 'data' => $data]);

@@ -1,4 +1,7 @@
 <!-- <img src="lavel1.jpg" width=100%> -->
-<?php
-print_r($data);
-?>
+
+<div class="x_panel">
+    @php
+    print_r($data);
+    @endphp
+</div>

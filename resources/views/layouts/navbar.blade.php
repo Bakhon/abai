@@ -7,7 +7,7 @@
         <span class="menu-collapsed brand-name">Панель управления</span>
     </a>
     <a href="#top" data-toggle="sidebar-colapse">
-        <i class="fas fa-bars fa-2x"></i>
+        <i class="fas fa-bars fa-lg"></i>
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
