@@ -28,23 +28,31 @@
                 <a href=""><span class="workTypeText">Обустройство</span></a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
+        <div class="form-inline my-2 my-lg-0">
             <li class="nav-item">
                 <i class="fas fa-bell fa-lg"></i>
             </li>
-            <li class="nav-item">
-                <img src="{{ asset('img/level1/icon_user.svg') }}" width="30" height="30" alt="">
-            </li>
+            @if (Auth::guest())
+                <li class="nav-item">
+                    <a href="{{ route('login') }}"><img src="{{ asset('img/level1/icon_user.svg') }}" width="30" height="30" alt=""></a>
+                </li>
+            @else
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: one;">
+                    {{ csrf_field() }}
+                    <button type="submit">Logout</button>
+                </form>
+            @endif
             <li class="nav-item">
                 <i class="fas fa-ellipsis-v"></i>
             </li>
-        </form>
+        </div>
     </div>
 </nav>
 
+
 <script>
     // Hide submenus
-    // $('#body-row .collapse').collapse('hide'); 
+    // $('#body-row .collapse').collapse('hide');
 
     // Collapse click
     $('[data-toggle=sidebar-colapse]').click(function() {
@@ -56,7 +64,7 @@
         $('.sidebar-submenu').toggleClass('d-none');
         $('.submenu-icon').toggleClass('d-none');
         $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
-        
+
         // Treating d-flex/d-none on separators with title
         var SeparatorTitle = $('.sidebar-separator-title');
         //var SeparatorTitle = document.getElementsByClassName('sidebar-separator-title');
@@ -81,7 +89,7 @@
         margin-right:0;
     }
     #sidebar-container {
-        min-height: 100vh;   
+        min-height: 100vh;
         background-color: #20274e;
         padding: 0;
     }
@@ -119,7 +127,7 @@
         height: 25px;
     }
     .logo-separator {
-        background-color: #20274e;    
+        background-color: #20274e;
         height: 60px;
     }
 

@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         'Barryvdh\TranslationManager\ManagerServiceProvider',
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        Spatie\Permission\PermissionServiceProvider::class,
     ],
 
     /*
