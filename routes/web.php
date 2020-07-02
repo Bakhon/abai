@@ -20,6 +20,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         return view('welcome');
     });
     Route::get('/druid', 'DruidController@index');
+    Route::get('/oilprice', 'DruidController@getOilPrice');
     Auth::routes();
     Route::get('/home', 'HomeController@index')->name('home');
     Auth::routes([

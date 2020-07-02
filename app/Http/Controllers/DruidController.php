@@ -28,4 +28,30 @@ class DruidController extends Controller
       $data  = array(8, 2, 3, 4, 5);
       return response()->json(['month' => $month, 'data' => $data]);
   }
+
+
+
+    public function getOilPrice(Request $request){
+        if ($request->has('start_date') && $request->has('end_date')) {
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://www.quandl.com/api/v3/datasets/OPEC/ORB?start_date=".$request->start_date."&end_date=".$request->end_date."&api_key=1GucjdFKWYXnEejZ-xEC",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            ));
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+
+            return($response);
+        }else{
+            return "Error. Invalid url";
+        }
+    }
 }
