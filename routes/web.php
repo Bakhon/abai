@@ -15,12 +15,13 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
-    Route::get("/chartjs", "DruidController@chartJs");
+    Route::get("/geteconimicdata", "DruidController@getEconomicData");
     Route::get('/', function () {
         return view('welcome');
     });
     Route::get('/druid', 'DruidController@index');
     Route::get('/oilprice', 'DruidController@getOilPrice');
+    Route::get('/economic', 'DruidController@economic')->name('economic');
     Auth::routes();
     Route::get('/home', 'HomeController@index')->name('home');
     Auth::routes([

@@ -24,6 +24,10 @@
                 <a href=""><span class="workTypeText">Добыча</span></a>
             </li>
             <li class="nav-item active">
+                <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+            </li>
+            <li class="nav-item active">
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Обустройство</span></a>
             </li>

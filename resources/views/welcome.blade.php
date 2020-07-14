@@ -76,7 +76,7 @@
                     <div class="indicator-value">414,3</div>
                     <div class="indicator-okei">млрд.м3</div>
                 </div>
-                
+
                 <div class="col-md-12 col-lg-12">
                     <img src="{{ asset('img/level1/map_kz.svg') }}" class="map" alt="">
                 </div>
@@ -90,11 +90,6 @@
                 </div>
                 <div class="info-panel">
                     <div class="d-flex flex-row">
-                        <div class="col-md-6"><doughnut-component></doughnut-component></div>
-                        <div class="col-md-6"><doughnut-component></doughnut-component></div>
-                    </div>
-                    <div class="d-flex flex-row">
-                        <div class="col-md-6"><doughnut-component></doughnut-component></div>
                         <div class="col-md-6"><doughnut-component></doughnut-component></div>
                     </div>
                 </div>
@@ -308,23 +303,23 @@
         height: 26px;
         font-size: 11px;
         text-align: center;
-        margin-left: 11px; 
-        margin-top: 3px; 
+        margin-left: 11px;
+        margin-top: 3px;
     }
     .indicator-value{
         width: 51px;
         height: 23px;
         font-size: 20px;
         text-align: center;
-        margin-left: 28px; 
-        margin-top: 6px; 
+        margin-left: 28px;
+        margin-top: 6px;
     }
     .indicator-okei{
         width: 47px;
         height: 17px;
         font-size: 11px;
-        text-align: center;  
+        text-align: center;
         margin-left: 28px;
-        margin-top: 4px; 
+        margin-top: 4px;
     }
 </style>

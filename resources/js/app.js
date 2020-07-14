@@ -29,6 +29,7 @@ import {Bar} from 'vue-chartjs';
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('doughnut-component', require('./components/DoughnutLevelOneComponent.vue').default);
+Vue.component('mix-chart', require('./components/MixChartComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
