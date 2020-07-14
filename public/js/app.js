@@ -2196,7 +2196,7 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     updateChart: function updateChart(org) {
       var _this = this;
 
-      var uri = 'http://kmg.localhost/ru/geteconimicdata?org=' + org + '';
+      var uri = 'http://172.20.103.32/ru/geteconimicdata?org=' + org + '';
       this.axios.get(uri).then(function (response) {
         var data = response.data;
         console.log(data);
