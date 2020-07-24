@@ -11,7 +11,7 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+        <link href="{{ asset('css/css.css') }}" rel="stylesheet">
         <script src="{{ asset('js/jquery.js') }}"></script>
     </head>
     <body>
