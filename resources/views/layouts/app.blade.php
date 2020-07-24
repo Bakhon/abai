@@ -20,7 +20,7 @@
             @include('layouts.sidebar')
             {{-- <div class="col p-4"> --}}
                 @yield('content')
-            {{-- </div> --}}
+            {{-- </div>  --}}
         </div>
     </body>
 </html>
