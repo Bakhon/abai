@@ -27,10 +27,12 @@ import {Bar} from 'vue-chartjs';
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('doughnut-component', require('./components/DoughnutLevelOneComponent.vue').default);
+//Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+//Vue.component('doughnut-component', require('./components/DoughnutLevelOneComponent.vue').default);
 Vue.component('mix-chart', require('./components/MixChartComponent.vue').default);
-
+Vue.component('pie', require('./components/PieChart.vue').default);
+Vue.component('chartbar', require('./components/ChartBar.vue').default);
+Vue.component('charttide', require('./components/ChartTide.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

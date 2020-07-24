@@ -1,12 +1,10 @@
 @extends('layouts.app')
 @section('content')
-    {{-- content --}}
-    <div class="col p-4" id="app">
+	 <div class="col p-4" id="app">
         <div class="level1-content row">
             <div class=" col-md-12 col-lg-12 row">
                 <div class="level1-tab active"  tabindex="-1">Общие данные</div>
-                <div class="level1-tab"  tabindex="-1">Аналитика</div>
-            </div>
+                <div class="level1-tab"  tabindex="-1">Аналитика</div>				        
             <div class="main col-md-7 col-lg-7 row">
                 <div class="col-sm-12 col-md-4 col-lg-4">
                     <div class="digitOil row">
@@ -76,10 +74,75 @@
                     <div class="indicator-value">414,3</div>
                     <div class="indicator-okei">млрд.м3</div>
                 </div>
+			
 
                 <div class="col-md-12 col-lg-12">
-                    <img src="{{ asset('img/level1/map_kz.svg') }}" class="map" alt="">
-                </div>
+				<div class="map">
+					<div class="nur-sultan">Нур-Султан
+				<div class="square"> </div></div>
+                   <!-- <img src="{{ asset('img/level1/map_kz.svg') }}" class="map" alt="">-->
+				   
+				   <div class="org-name1 rectangle"> ТОО «Казахтуркмунай»
+				   <div class="icon1 icon"></div>
+					<div class="square-small">&#10003;</div>
+				   </div>
+				   
+				   <div class="org-name2 rectangle">ТОО «Казахойл Актобе»
+				   <div class="icon2 icon"></div>
+				   <div class="square-small">&#10003;</div>
+				   
+				   </div>
+				   
+				   <div class="org-name3 rectangle">АО «ЭмбаМунайГаз»
+				   <div class="icon3 icon"></div>
+				   <div class="square-small">&#10003;</div>
+				   
+				   </div>
+				   
+				   <div class="org-name4 rectangle">АО «Каражанбасмунай»
+				   <div class="icon4 icon"></div>
+				   <div class="square-small">&#10003;</div>
+				  
+				   </div>
+				   
+				   <div class="org-name5 rectangle"> АО «Мангистаумунайгаз»
+				   <div class="icon5 icon"></div>
+				  <div class="square-small">&#10003;</div>
+			   </div>
+				   
+				   <div class="org-name6 rectangle">  АО «ОзенМунайГаз»
+				   <div class="icon6 icon"></div>
+				   <div class="square-small">&#10003;</div>
+				
+				   </div>
+				   
+				   <div class="org-name7 rectangle">  ТОО «КазГерМунай»
+				   <div class="icon7 icon"></div>
+				   <div class="square-small">&#10003;</div>
+				   
+					</div>
+				
+				</div></div>
+				
+				
+				
+				
+				
+				
+				<div class = "footer-chart">
+				<div class="point"></div>
+						Добыча нефти и конденсата (тыс. тонн)
+				<div id="container">
+		<canvas id="canvas2"></canvas> </div></div>
+				
+				
+				<div class = "footer-chart">
+				<div class="point"></div>
+				Добыча природного и попутного газа (млн. м3) 
+				<div id="container">
+		<canvas id="canvas3"></canvas> </div></div>
+				
+				
             </div>
             <div class="right-bar col-md-5 col-lg-5">
                 <div>
@@ -89,14 +152,59 @@
                     <div class="right-tab col-md-3 col-lg-3"  tabindex="-1">Год</div>
                 </div>
                 <div class="info-panel">
-                    <div class="d-flex flex-row">
-                        <div class="col-md-6"><doughnut-component></doughnut-component></div>
-                    </div>
+                <!--    <div class="d-flex flex-row">
+                        <div class="col-md-6">-->
+						<div class="right-side">
+						<div class="circle1 circle" >
+						<div class="point"></div>
+						Добыча нефти и конденсата
+						<!--<div class="drop icon"> </div>-->
+						<canvas id="chart-area1" ></canvas>
+						<div class="org-name11 rectangle2"> «КазГерМунай»: 10,9 тыс. тонн</div>
+						</div>
+						<div class="circle2 circle">
+						<div class="point"></div>
+						Добыча природного газа										
+						<canvas id="chart-area2"  ></canvas>
+						<div class="org-name22 rectangle2">ЭмбаМунайГаз: 0,02 млрд. м3 </div>	
+						</div>
+						</div>
+						
+										
+									
+				
+			<div class="right-side">
+					<charttide></charttide>
+					
+				
+	</div>
+								<div class="right-side">
+						<div class="circle3 circle">
+						<div class="point"></div>							
+						Нефтяной фонд скважин
+						<canvas id="chart-area3"></canvas>
+						<div class="org-name33 rectangle2"> «Казахойл Актобе»: 1 601 ед.</div>
+						</div>
+						<div class="circle4 circle"> 
+						<div class="point"></div>
+						Нагнетальный фонд скважин
+						<canvas id="chart-area4"></canvas>
+						<div class="org-name44 rectangle2"> «Мангистаумунайгаз»: 1 183 ед.</div>
+						</div>
+						</div>
+						<!--<doughnut-component></doughnut-component>-->
+						
+
+	
                 </div>
-            </div>
-        </div>
-    </div>
+				
+					
+            <!--</div>
+        </div>-->
+		
+
 @endsection
+
 <style>
     .p-4{
         background-color: #0F1430;
@@ -323,3 +431,4 @@
         margin-top: 4px;
     }
 </style>
+		
