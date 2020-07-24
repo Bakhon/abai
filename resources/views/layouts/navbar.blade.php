@@ -4,7 +4,7 @@
     </button>
     <a class="navbar-brand" href="#">
         <img src="{{ asset('img/level1/logo_kmg.svg') }}" width="46" height="46" class="d-inline-block" alt="">
-        <span class="menu-collapsed brand-name">Панель управления</span>
+       <a href="<?$_SERVER['HTTP_HOST']?>/public/"> <span class="menu-collapsed brand-name">Панель управления</span></a>
     </a>
     <a href="#top" data-toggle="sidebar-colapse">
         <i class="fas fa-bars fa-lg"></i>
@@ -27,6 +27,16 @@
                 <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
             </li>
+			
+			<!--<div id='submenu' class="collapse sidebar-submenu">
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Settings</span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <span class="menu-collapsed">Password</span>
+            </a>
+        </div>-->
+			
             <li class="nav-item active">
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Обустройство</span></a>
@@ -188,4 +198,10 @@
         font-size: 16px;
         margin-left:13px;
     }
+	
+	
+	.logo a:link, a:hover, a:visited {
+     color: white;
+}
+	
 </style>
