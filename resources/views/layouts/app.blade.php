@@ -1,7 +1,7 @@
 </html>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
+    <head >
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ config('app.name', 'Laravel') }}</title>
@@ -11,6 +11,7 @@
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/css.css') }}" rel="stylesheet">
 
         <script src="{{ asset('js/jquery.js') }}"></script>
     </head>
@@ -21,6 +22,6 @@
             {{-- <div class="col p-4"> --}}
                 @yield('content')
             {{-- </div> --}}
-        </div>
+        </div >
     </body>
 </html>
