@@ -5,7 +5,7 @@
         <h2 class="subtitle">МРП</h2>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-                <iframe src="{{ url('http://localhost:8088/superset/dashboard/9/?standalone=true') }}" width="1000" height="1000" frameborder="0" allowfullscreen></iframe>
+                <iframe src="{{ url('http://localhost:8088/superset/dashboard/9/?standalone=true') }}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
