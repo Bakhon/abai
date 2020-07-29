@@ -11,31 +11,51 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+		
+		    <li class="nav-item active">
+               <!-- <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">-->
+                <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Визуализационный центр</span></a>
+            </li>
+		
             <li class="nav-item active">
                 <img src="{{ asset('img/level1/icon_geology.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Геология</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Разработка</span></a>
-            </li>
+            <!--подменю-->
+ <ul class="dropdown-child">
+ <li class="nav-item child"><a href="http://1"><span class="workTypeText">Подраздел 11</a></span></li>
+ <li class="nav-item child"><a href="http://2"><span class="workTypeText">Подраздел 12</a></span></li>
+ <li class="nav-item child"><a href="http://3"><span class="workTypeText">Подраздел 3</a></span></li>
+ <li class="nav-item child"><a href="http://4"><span class="workTypeText">Подраздел 4</a></span></li>
+ <li class="nav-item child"><a href="http://5"><span class="workTypeText">Подраздел 5</a></span></li>
+ </ul>	 
+   </li>
+<!--подменю-->
             <li class="nav-item active">
                 <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Добыча</span></a>
             </li>
-            <li class="nav-item active">
-                <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
-            </li>
 			
-			<!--<div id='submenu' class="collapse sidebar-submenu">
-            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                <span class="menu-collapsed">Settings</span>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-                <span class="menu-collapsed">Password</span>
-            </a>
-        </div>-->
+			
+		
+ <li class="nav-item active dropdown ">
+<img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+<a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+
+<!--подменю-->
+ <ul class="dropdown-child">
+ <li class="nav-item child"><a href="http://1"><span class="workTypeText">Подраздел 1</a></span></li>
+ <li class="nav-item child"><a href="http://2"><span class="workTypeText">Подраздел 2</a></span></li>
+ <li class="nav-item child"><a href="http://3"><span class="workTypeText">Подраздел 3</a></span></li>
+ <li class="nav-item child"><a href="http://4"><span class="workTypeText">Подраздел 4</a></span></li>
+ <li class="nav-item child"><a href="http://5"><span class="workTypeText">Подраздел 5</a></span></li>
+ </ul>	 
+   </li>
+<!--подменю-->
+					
 			
             <li class="nav-item active">
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
@@ -90,11 +110,13 @@
     }
 </script>
 <style>
-    .bg-dark {
+
+   .bg-dark {
         background-color: #20274e !important;
         height: 80px;
+     	z-index: 99999;
     }
-
+ 
     .fas {
         color: white;
     }
@@ -204,4 +226,4 @@
      color: white;
 }
 	
-</style>
+</style >
