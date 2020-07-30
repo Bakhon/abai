@@ -4,15 +4,15 @@
 						Добыча нефти и конденсата (тыс. тонн)
 				<div id="container">
 		<canvas id="canvas2"></canvas> </div>
-				
-				
+
+
 				<div class = "footer-chart">
 				<div class="point"></div>
-				Добыча природного и попутного газа (млн. м3) 
+				Добыча природного и попутного газа (млн. м3)
 				<div id="container">
 		<canvas id="canvas3"></canvas> </div>
-				
-				
+
+
             </div></div>
 </template>
 
@@ -147,54 +147,54 @@ window.chartColors = {
 
 	Samples.utils.srand(Date.now());
 	}(this));
-  
+
 var MONTHS = ['2018', '2019', '2020'];
 		var color = Chart.helpers.color;
 		var barChartData = {
 			labels: ['2018', '2019', '2020'],
 			datasets: [
-			
+
 			{
 				label: 'Dataset 1',
 				backgroundColor: "#115ED9"/*.alpha(0.5).rgbString()*/,
 				borderColor: window.chartColors.red,
 				// borderWidth: 1,
 				data: [
-						
-						
+
+
 					'1',
 					'2',
 					'4',
 					'3',
-				
+
 				]
-			}, 
-			
-			
-			
+			},
+
+
+
 			{
 				label: 'Dataset 2',
 				backgroundColor:"#47D660"/*.alpha(0.5).rgbString()*/,
 				borderColor: window.chartColors.blue,
 				// borderWidth: 1,
 				data: [
-					
-					
+
+
 					'5',
 					'6',
 					'7',
 				]
 			},
-			
-						
-			
+
+
+
 			]
-			
+
 		};
 
-	
-				
-			var configBar1 = {	
+
+
+			var configBar1 = {
 					type: 'bar',
 				data: barChartData,
 				options: {
@@ -209,21 +209,21 @@ aspectRatio:false ,
 						text: 'Chart.js Bar Chart'
 					},
 					 tooltips: {
-						display: false, 
-						 
+						display: false,
+
 					 }
-					 
-					 
-					 
-					 
+
+
+
+
 
 				}
 			};
-			
-			
-			
-			
-				var configBar2 = {	
+
+
+
+
+				var configBar2 = {
 				type: 'bar',
 				data: barChartData,
 				options: {
@@ -238,27 +238,27 @@ aspectRatio:false ,
 						text: 'Chart.js Bar Chart'
 					},
 					 tooltips: {
-						display: false, 
-						 
+						display: false,
+
 					 }
-					 
-					 
-					 
-					 
+
+
+
+
 
 				}
 			};
 
-window.addEventListener('load', function() { 
+// window.addEventListener('load', function() {
 
 
-			
-			var ctx5 = document.getElementById('canvas2').getContext('2d');
-			window.myBar = new Chart(ctx5, configBar1);
-			
-			var ctx6 = document.getElementById('canvas3').getContext('2d');	
-		window.myBar = new Chart(ctx6, configBar2);	
-		});
-		
+
+// 			var ctx5 = document.getElementById('canvas2').getContext('2d');
+// 			window.myBar = new Chart(ctx5, configBar1);
+
+// 			var ctx6 = document.getElementById('canvas3').getContext('2d');
+// 		window.myBar = new Chart(ctx6, configBar2);
+// 		});
+
 
 </script>

@@ -6,12 +6,12 @@
 						<canvas id="chart-area1" ></canvas>
 						<div class="org-name11 rectangle2"> «КазГерМунай»: 10,9 тыс. тонн</div>
 						</div>
-						
+
 	<div class="circle2 circle">
 						<div class="point"></div>
-						Добыча природного газа										
+						Добыча природного газа
 						<canvas id="chart-area2"  ></canvas>
-						<div class="org-name22 rectangle2">ЭмбаМунайГаз: 0,02 млрд. м3 </div>	
+						<div class="org-name22 rectangle2">ЭмбаМунайГаз: 0,02 млрд. м3 </div>
 						</div>
 						</div>
 </template>
@@ -20,7 +20,7 @@
 <script>
 
 
-  		
+
 		var config = {
 			type: 'doughnut',
 			data: {
@@ -71,10 +71,10 @@
     }
 }
 		};
-		
-		
-						
-		
+
+
+
+
 		var config2 = {
 			type: 'doughnut',
 			data: {
@@ -124,20 +124,20 @@
     }
 }
 		};
-		
-		
-		window.onload = function() {
-			var ctx = document.getElementById('chart-area1').getContext('2d');
-			window.myPie = new Chart(ctx, config);
-			
-			var ctx = document.getElementById('chart-area2').getContext('2d');
-			window.myPie = new Chart(ctx, config);
-			
-			var ctx = document.getElementById('chart-area3').getContext('2d');
-			window.myPie = new Chart(ctx, config2);
-			
-			var ctx = document.getElementById('chart-area4').getContext('2d');
-			window.myPie = new Chart(ctx, config2);
-						}
-	
+
+
+		// window.onload = function() {
+		// 	var ctx = document.getElementById('chart-area1').getContext('2d');
+		// 	window.myPie = new Chart(ctx, config);
+
+		// 	var ctx = document.getElementById('chart-area2').getContext('2d');
+		// 	window.myPie = new Chart(ctx, config);
+
+		// 	var ctx = document.getElementById('chart-area3').getContext('2d');
+		// 	window.myPie = new Chart(ctx, config2);
+
+		// 	var ctx = document.getElementById('chart-area4').getContext('2d');
+		// 	window.myPie = new Chart(ctx, config2);
+						// }
+
 </script>
