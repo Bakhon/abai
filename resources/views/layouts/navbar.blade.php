@@ -20,6 +20,10 @@
                 <a href=""><span class="workTypeText">Разработка</span></a>
             </li>
             <li class="nav-item active dropdown">
+                <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href=""><span class="workTypeText">Бурение</span></a>
+            </li>
+            <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Добыча</span></a>
                 <ul class="dropdown-child">
@@ -29,10 +33,6 @@
                         </a>
                     </li>
                 </ul>
-            </li>
-            <li class="nav-item active">
-                <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
             </li>
             <li class="nav-item active  dropdown">
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
@@ -60,6 +60,11 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item active">
+                <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+            </li>
+            <button type="button" class="btn btn-primary bigdatabtn">BigDATA</button>
         </ul>
         <div class="form-inline my-2 my-lg-0">
             <li class="nav-item">
@@ -223,6 +228,14 @@
 
 	.logo a:link, a:hover, a:visited {
      color: white;
-}
 
+
+}
+.bigdatabtn {
+    color: white;
+    background-color: purple;
+    border: none;
+    border-radius: 20px;
+    margin-left: 40px;
+}
 </style >
