@@ -23,16 +23,42 @@
                 <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Добыча</span></a>
                 <ul class="dropdown-child">
-                    <li class="nav-item child"><a href="{{url('/')}}/ru/production"><span class="workTypeText">МРП</a></span></li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/production">
+                            <span class="workTypeText">МРП</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item active">
                 <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item active  dropdown">
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Обустройство</span></a>
+                <ul class="dropdown-child">
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/oil">
+                            <span class="workTypeText">Добыча нефти</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/liquid">
+                            <span class="workTypeText">Обводненность по трубопроводам</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/hydraulics">
+                            <span class="workTypeText">Гидравлика</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/complications">
+                            <span class="workTypeText">Осложнения в системе сбора</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">

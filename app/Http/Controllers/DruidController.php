@@ -134,4 +134,20 @@ class DruidController extends Controller
     public function production(){
         return view('production.main');
     }
+
+    public function oil(){
+        return view('facilities.oil');
+    }
+
+    public function liquid(){
+        return view('facilities.liquid');
+    }
+
+    public function hydraulics(){
+        return view('facilities.hydraulics');
+    }
+
+    public function complications(){
+        return view('facilities.complications');
+    }
 }
