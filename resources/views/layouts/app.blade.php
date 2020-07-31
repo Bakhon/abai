@@ -21,7 +21,7 @@
 @else
  @include('layouts.navbar')
 @endif
-	        <div class="row" id="body-row">
+	        <div class="row" id="app" >
 @if (($_SERVER['REQUEST_URI']) === "/public/ru/visualcenter")
 @include('layouts.visual-center-sidebar')  
 @else
