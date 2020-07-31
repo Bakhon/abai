@@ -32,6 +32,11 @@
                             <span class="workTypeText">МРП</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/mfond">
+                            <span class="workTypeText">Мехфонд</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item active  dropdown">
@@ -58,8 +63,8 @@
                             <span class="workTypeText">Осложнения в системе сбора</span>
                         </a>
                     </li>
-                 
-			
+
+
                 </ul>
             </li>
             <li class="nav-item active">

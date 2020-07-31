@@ -130,14 +130,18 @@ class DruidController extends Controller
         $chartOptions['labels'] = ['01/01/2019', '02/01/2019', '03/01/2019', '04/01/2019', '05/01/2019', '06/01/2019', '07/01/2019', '08/01/2019', '09/01/2019', '10/01/2019', '11/01/2019'];
         return view('economic.main',['chartOptions' => $chartOptions]);
     }
-	
-	
-		 public function visualcenter()
+
+	public function visualcenter()
     {
 	   return view('visualcenter.visualcenter');
     }
+
     public function production(){
         return view('production.main');
+    }
+
+    public function mfond(){
+        return view('production.mfond');
     }
 
     public function oil(){
@@ -154,5 +158,26 @@ class DruidController extends Controller
 
     public function complications(){
         return view('facilities.complications');
+    }
+
+    public function getNkKmg(){
+      $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+      $response = $client->query('nk_kmg', Granularity::ALL)
+                          ->interval('1901-01-01T00:00:00+00:00/2020-07-31T18:02:55+00:00')
+                          ->execute();
+
+      return response()->json($response->data());
+    }
+
+    public function getNkKmgYear(){
+        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+
+        $response = $client->query('nk_kmg_year', Granularity::ALL)
+                            ->interval('1901-01-01T00:00:00+00:00/2020-07-31T18:02:55+00:00')
+                            ->execute();
+
+
+        return response()->json($response->data());
+
     }
 }
