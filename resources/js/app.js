@@ -33,6 +33,19 @@ Vue.component('mix-chart', require('./components/MixChartComponent.vue').default
 // Vue.component('pie', require('./components/PieChart.vue').default);
 Vue.component('chartbar', require('./components/ChartBar.vue').default);
 Vue.component('charttide', require('./components/ChartTide.vue').default);
+Vue.component('visual-center-chart-area-oil', require('./components/VisualCenterChartAreaOil.vue').default);
+Vue.component('visual-center-chart-area-usd', require('./components/VisualCenterChartAreaUSD.vue').default);
+Vue.component('visual-center-chart-area-center', require('./components/VisualCenterChartAreaCenter.vue').default);
+Vue.component('visual-center-chart-bar-bottom', require('./components/VisualCenterChartBarBottom.vue').default);
+Vue.component('visual-center-chart-donut-right1', require('./components/VisualCenterChartDonutRight1.vue').default);
+Vue.component('visual-center-chart-donut-right2', require('./components/VisualCenterChartDonutRight2.vue').default);
+Vue.component('welcome-chart-donut-right1', require('./components/WelcomeChartDonutRight1.vue').default);
+Vue.component('welcome-chart-donut-right2', require('./components/WelcomeChartDonutRight2.vue').default);
+Vue.component('welcome-chart-donut-right3', require('./components/WelcomeChartDonutRight3.vue').default);
+Vue.component('welcome-chart-donut-right4', require('./components/WelcomeChartDonutRight4.vue').default);
+Vue.component('welcome-chart-bar-bottom1', require('./components/WelcomeChartBarBottom1.vue').default);
+Vue.component('welcome-chart-bar-bottom2', require('./components/WelcomeChartBarBottom2.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

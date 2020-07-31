@@ -16,9 +16,17 @@
         <script src="{{ asset('js/jquery.js') }}"></script>
     </head>
     <body>
-        @include('layouts.navbar')
-        <div class="row" id="body-row">
-            @include('layouts.sidebar')
+@if (($_SERVER['REQUEST_URI']) === "/public/ru/visualcenter")
+@include('layouts.visual-center-navbar')  
+@else
+ @include('layouts.navbar')
+@endif
+	        <div class="row" id="body-row">
+@if (($_SERVER['REQUEST_URI']) === "/public/ru/visualcenter")
+@include('layouts.visual-center-sidebar')  
+@else
+@include('layouts.sidebar')
+@endif
             {{-- <div class="col p-4"> --}}
                 @yield('content')
             {{-- </div> --}}

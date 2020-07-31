@@ -22,6 +22,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
     Route::get('/druid', 'DruidController@index');
     Route::get('/oilprice', 'DruidController@getOilPrice');
     Route::get('/economic', 'DruidController@economic')->name('economic');
+	Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
     Route::get('/production', 'DruidController@production')->name('production');
     Route::get('/oil', 'DruidController@oil')->name('oil');
     Route::get('/liquid', 'DruidController@liquid')->name('liquid');
