@@ -36,7 +36,7 @@
 <!--подменю-->
             <li class="nav-item active">
                 <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href=""><span class="workTypeText">Добыча</span></a>
+                  <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Добыча</span></a>
             </li>
 			
 			
