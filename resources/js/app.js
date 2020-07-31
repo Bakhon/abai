@@ -30,6 +30,8 @@ import {Bar} from 'vue-chartjs';
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 //Vue.component('doughnut-component', require('./components/DoughnutLevelOneComponent.vue').default);
 Vue.component('mix-chart', require('./components/MixChartComponent.vue').default);
+// Vue.component('pie', require('./components/PieChart.vue').default);
+Vue.component('chartbar', require('./components/ChartBar.vue').default);
 Vue.component('charttide', require('./components/ChartTide.vue').default);
 Vue.component('visual-center-chart-area-oil', require('./components/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd', require('./components/VisualCenterChartAreaUSD.vue').default);

@@ -1927,6 +1927,205 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ChartBar.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ChartBar.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+window.chartColors = {
+  red: 'rgb(255, 99, 132)',
+  orange: 'rgb(255, 159, 64)',
+  yellow: 'rgb(255, 205, 86)',
+  green: 'rgb(75, 192, 192)',
+  blue: 'rgb(54, 162, 235)',
+  purple: 'rgb(153, 102, 255)',
+  grey: 'rgb(201, 203, 207)'
+};
+
+(function (global) {
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var Samples = global.Samples || (global.Samples = {});
+  var Color = Chart.helpers.color;
+
+  function applyDefaultNumbers(config) {
+    var cfg = config || {};
+    cfg.min = cfg.min || 0;
+    cfg.max = cfg.max || 1;
+    cfg.from = cfg.from || [];
+    cfg.count = cfg.count || 8;
+    cfg.decimals = cfg.decimals || 8;
+    cfg.continuity = cfg.continuity || 1;
+    return cfg;
+  }
+
+  Samples.utils = {
+    // Adapted from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
+    srand: function srand(seed) {
+      this._seed = seed;
+    },
+    rand: function rand(min, max) {
+      var seed = this._seed;
+      min = min === undefined ? 0 : min;
+      max = max === undefined ? 1 : max;
+      this._seed = (seed * 9301 + 49297) % 233280;
+      return min + this._seed / 233280 * (max - min);
+    },
+    numbers: function numbers(config) {
+      var cfg = applyDefaultNumbers(config);
+      var dfactor = Math.pow(10, cfg.decimals) || 0;
+      var data = [];
+      var i, value;
+
+      for (i = 0; i < cfg.count; ++i) {
+        value = (cfg.from[i] || 0) + this.rand(cfg.min, cfg.max);
+
+        if (this.rand() <= cfg.continuity) {
+          data.push(Math.round(dfactor * value) / dfactor);
+        } else {
+          data.push(null);
+        }
+      }
+
+      return data;
+    },
+    labels: function labels(config) {
+      var cfg = config || {};
+      var min = cfg.min || 0;
+      var max = cfg.max || 100;
+      var count = cfg.count || 8;
+      var step = (max - min) / count;
+      var decimals = cfg.decimals || 8;
+      var dfactor = Math.pow(10, decimals) || 0;
+      var prefix = cfg.prefix || '';
+      var values = [];
+      var i;
+
+      for (i = min; i < max; i += step) {
+        values.push(prefix + Math.round(dfactor * i) / dfactor);
+      }
+
+      return values;
+    },
+    months: function months(config) {
+      var cfg = config || {};
+      var count = cfg.count || 12;
+      var section = cfg.section;
+      var values = [];
+      var i, value;
+
+      for (i = 0; i < count; ++i) {
+        value = MONTHS[Math.ceil(i) % 12];
+        values.push(value.substring(0, section));
+      }
+
+      return values;
+    },
+    color: function color(index) {
+      return COLORS[index % COLORS.length];
+    },
+    transparentize: function transparentize(color, opacity) {
+      var alpha = opacity === undefined ? 0.5 : 1 - opacity;
+      return Color(color).alpha(alpha).rgbString();
+    }
+  }; // DEPRECATED
+
+  window.randomScalingFactor = function () {
+    return Math.round(Samples.utils.rand(-100, 100));
+  }; // INITIALIZATION
+
+
+  Samples.utils.srand(Date.now());
+})(this);
+
+var MONTHS = ['2018', '2019', '2020'];
+var color = Chart.helpers.color;
+var barChartData = {
+  labels: ['2018', '2019', '2020'],
+  datasets: [{
+    label: 'Dataset 1',
+    backgroundColor: "#115ED9"
+    /*.alpha(0.5).rgbString()*/
+    ,
+    borderColor: window.chartColors.red,
+    // borderWidth: 1,
+    data: ['1', '2', '4', '3']
+  }, {
+    label: 'Dataset 2',
+    backgroundColor: "#47D660"
+    /*.alpha(0.5).rgbString()*/
+    ,
+    borderColor: window.chartColors.blue,
+    // borderWidth: 1,
+    data: ['5', '6', '7']
+  }]
+};
+var configBar1 = {
+  type: 'bar',
+  data: barChartData,
+  options: {
+    aspectRatio: false,
+    responsive: true,
+    legend: {
+      position: 'top',
+      display: false
+    },
+    title: {
+      display: false,
+      text: 'Chart.js Bar Chart'
+    },
+    tooltips: {
+      display: false
+    }
+  }
+};
+var configBar2 = {
+  type: 'bar',
+  data: barChartData,
+  options: {
+    aspectRatio: false,
+    responsive: true,
+    legend: {
+      position: 'top',
+      display: false
+    },
+    title: {
+      display: false,
+      text: 'Chart.js Bar Chart'
+    },
+    tooltips: {
+      display: false
+    }
+  }
+}; // window.addEventListener('load', function() {
+// 			var ctx5 = document.getElementById('canvas2').getContext('2d');
+// 			window.myBar = new Chart(ctx5, configBar1);
+// 			var ctx6 = document.getElementById('canvas3').getContext('2d');
+// 		window.myBar = new Chart(ctx6, configBar2);
+// 		});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ChartTide.vue?vue&type=script&lang=js&":
 /*!********************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ChartTide.vue?vue&type=script&lang=js& ***!
@@ -2093,6 +2292,11 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
           type: 'datetime'
         },
         yaxis: {
+          labels: {
+            formatter: function formatter(value) {
+              return Math.round(value);
+            }
+          },
           title: {
             text: 'Количество'
           },
@@ -2139,7 +2343,7 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     updateChart: function updateChart(org) {
       var _this = this;
 
-      var uri = 'http://172.20.103.32/ru/geteconimicdata?org=' + org + '';
+      var uri = '/ru/geteconimicdata?org=' + org + '';
       this.axios.get(uri).then(function (response) {
         var data = response.data;
         console.log(data);
@@ -72921,6 +73125,53 @@ var reactiveProp = {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ChartBar.vue?vue&type=template&id=ef1fcb80&":
+/*!***********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ChartBar.vue?vue&type=template&id=ef1fcb80& ***!
+  \***********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm._m(0)
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "footer-chart" }, [
+      _c("div", { staticClass: "point" }),
+      _vm._v("\n\t\t\t\t\t\tДобыча нефти и конденсата (тыс. тонн)\n\t\t\t\t"),
+      _c("div", { attrs: { id: "container" } }, [
+        _c("canvas", { attrs: { id: "canvas2" } })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "footer-chart" }, [
+        _c("div", { staticClass: "point" }),
+        _vm._v(
+          "\n\t\t\t\tДобыча природного и попутного газа (млн. м3)\n\t\t\t\t"
+        ),
+        _c("div", { attrs: { id: "container" } }, [
+          _c("canvas", { attrs: { id: "canvas3" } })
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ChartTide.vue?vue&type=template&id=659caed9&":
 /*!************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/ChartTide.vue?vue&type=template&id=659caed9& ***!
@@ -85739,7 +85990,9 @@ Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_0___default.a, axios__WEBPACK_IMPORTE
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 //Vue.component('doughnut-component', require('./components/DoughnutLevelOneComponent.vue').default);
 
-Vue.component('mix-chart', __webpack_require__(/*! ./components/MixChartComponent.vue */ "./resources/js/components/MixChartComponent.vue")["default"]);
+Vue.component('mix-chart', __webpack_require__(/*! ./components/MixChartComponent.vue */ "./resources/js/components/MixChartComponent.vue")["default"]); // Vue.component('pie', require('./components/PieChart.vue').default);
+
+Vue.component('chartbar', __webpack_require__(/*! ./components/ChartBar.vue */ "./resources/js/components/ChartBar.vue")["default"]);
 Vue.component('charttide', __webpack_require__(/*! ./components/ChartTide.vue */ "./resources/js/components/ChartTide.vue")["default"]);
 Vue.component('visual-center-chart-area-oil', __webpack_require__(/*! ./components/VisualCenterChartAreaOil.vue */ "./resources/js/components/VisualCenterChartAreaOil.vue")["default"]);
 Vue.component('visual-center-chart-area-usd', __webpack_require__(/*! ./components/VisualCenterChartAreaUSD.vue */ "./resources/js/components/VisualCenterChartAreaUSD.vue")["default"]);
@@ -85807,6 +86060,78 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/ChartBar.vue":
+/*!**********************************************!*\
+  !*** ./resources/js/components/ChartBar.vue ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ChartBar_vue_vue_type_template_id_ef1fcb80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ChartBar.vue?vue&type=template&id=ef1fcb80& */ "./resources/js/components/ChartBar.vue?vue&type=template&id=ef1fcb80&");
+/* harmony import */ var _ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ChartBar.vue?vue&type=script&lang=js& */ "./resources/js/components/ChartBar.vue?vue&type=script&lang=js&");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ChartBar_vue_vue_type_template_id_ef1fcb80___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ChartBar_vue_vue_type_template_id_ef1fcb80___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/ChartBar.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/ChartBar.vue?vue&type=script&lang=js&":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/ChartBar.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ChartBar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ChartBar.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/ChartBar.vue?vue&type=template&id=ef1fcb80&":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/ChartBar.vue?vue&type=template&id=ef1fcb80& ***!
+  \*****************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_template_id_ef1fcb80___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./ChartBar.vue?vue&type=template&id=ef1fcb80& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ChartBar.vue?vue&type=template&id=ef1fcb80&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_template_id_ef1fcb80___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartBar_vue_vue_type_template_id_ef1fcb80___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 

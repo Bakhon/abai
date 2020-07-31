@@ -50,6 +50,11 @@ export default {
           type: 'datetime'
         },
         yaxis: {
+          labels: {
+            formatter: function (value) {
+                return Math.round(value);
+            }
+          },
           title: {
             text: 'Количество',
           },
@@ -93,7 +98,7 @@ export default {
   },
     methods: {
       updateChart(org) {
-         let uri = 'http://172.20.103.32/ru/geteconimicdata?org=' + org + '';
+         let uri = '/ru/geteconimicdata?org=' + org + '';
          this.axios.get(uri).then((response) => {
             let data = response.data;
             console.log(data);

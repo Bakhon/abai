@@ -4,16 +4,13 @@
     </button>
     <a class="navbar-brand" href="#">
         <img src="{{ asset('img/level1/logo_kmg.svg') }}" width="46" height="46" class="d-inline-block" alt="">
-       <a href="<?$_SERVER['HTTP_HOST']?>/public/"> <span class="menu-collapsed brand-name">Панель управления</span></a>
+    <a href="{{url('/')}}"> <span class="menu-collapsed brand-name">Панель управления</span></a>
     </a>
     <a href="#top" data-toggle="sidebar-colapse">
         <i class="fas fa-bars fa-lg"></i>
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-		
-		  
-		
             <li class="nav-item active">
                 <img src="{{ asset('img/level1/icon_geology.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Геология</span></a>
@@ -21,49 +18,55 @@
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Разработка</span></a>
-            <!--подменю-->
- <ul class="dropdown-child">
- <li class="nav-item child"><a href="http://1"><span class="workTypeText">Подраздел 11</a></span></li>
- <li class="nav-item child"><a href="http://2"><span class="workTypeText">Подраздел 12</a></span></li>
- <li class="nav-item child"><a href="http://3"><span class="workTypeText">Подраздел 3</a></span></li>
- <li class="nav-item child"><a href="http://4"><span class="workTypeText">Подраздел 4</a></span></li>
- <li class="nav-item child"><a href="http://5"><span class="workTypeText">Подраздел 5</a></span></li>
- </ul>	 
-   </li>
-<!--подменю-->
-            <li class="nav-item active">
-                <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href=""><span class="workTypeText">Добыча</span></a>
             </li>
-			
-			
-		
- <li class="nav-item active dropdown ">
-<img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
-<a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
-
-<!--подменю-->
- <ul class="dropdown-child">
- <li class="nav-item child"><a href="http://1"><span class="workTypeText">Подраздел 1</a></span></li>
- <li class="nav-item child"><a href="http://2"><span class="workTypeText">Подраздел 2</a></span></li>
- <li class="nav-item child"><a href="http://3"><span class="workTypeText">Подраздел 3</a></span></li>
- <li class="nav-item child"><a href="http://4"><span class="workTypeText">Подраздел 4</a></span></li>
- <li class="nav-item child"><a href="http://5"><span class="workTypeText">Подраздел 5</a></span></li>
- </ul>	 
-   </li>
-<!--подменю-->
-					
-			
-            <li class="nav-item active">
+            <li class="nav-item active dropdown">
+                <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href=""><span class="workTypeText">Бурение</span></a>
+            </li>
+            <li class="nav-item active dropdown">
+                <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href="http://localhost/public/ru/visualcenter"><span class="workTypeText">Добыча</span></a>
+                <ul class="dropdown-child">
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/production">
+                            <span class="workTypeText">МРП</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item active  dropdown">
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Обустройство</span></a>
-            </li>
+                <ul class="dropdown-child">
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/oil">
+                            <span class="workTypeText">Добыча нефти</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/liquid">
+                            <span class="workTypeText">Обводненность по трубопроводам</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/hydraulics">
+                            <span class="workTypeText">Гидравлика</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/complications">
+                            <span class="workTypeText">Осложнения в системе сбора</span>
+                        </a>
+                    </li>
+                 
 			
-			  <li class="nav-item active">
-              <img src="{{-- asset('img/level1/economic.svg') --}}" width="15" height="15" class="workTypeLogo">
-                <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Визуализационный центр</span></a>
+                </ul>
             </li>
-			
+            <li class="nav-item active">
+                <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+            </li>
+            <button type="button" class="btn btn-primary bigdatabtn">BigDATA</button>
         </ul>
         <div class="form-inline my-2 my-lg-0">
             <li class="nav-item">
@@ -119,7 +122,7 @@
         height: 80px;
      	z-index: 99999;
     }
- 
+
     .fas {
         color: white;
     }
@@ -223,10 +226,18 @@
         font-size: 16px;
         margin-left:13px;
     }
-	
-	
+
+
 	.logo a:link, a:hover, a:visited {
      color: white;
+
+
 }
-	
+.bigdatabtn {
+    color: white;
+    background-color: purple;
+    border: none;
+    border-radius: 20px;
+    margin-left: 40px;
+}
 </style >
