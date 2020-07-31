@@ -130,4 +130,10 @@ class DruidController extends Controller
         $chartOptions['labels'] = ['01/01/2019', '02/01/2019', '03/01/2019', '04/01/2019', '05/01/2019', '06/01/2019', '07/01/2019', '08/01/2019', '09/01/2019', '10/01/2019', '11/01/2019'];
         return view('economic.main',['chartOptions' => $chartOptions]);
     }
+	
+	
+		 public function visualcenter()
+    {
+	   return view('visualcenter.visualcenter');
+    }
 }

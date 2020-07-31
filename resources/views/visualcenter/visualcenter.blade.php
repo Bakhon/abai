@@ -1,26 +1,15 @@
 @extends('layouts.app')
 @section('content')
+
 	 <div class="col p-4" id="app">
         <div class="level1-content row">
             <div class=" col-md-12 col-lg-12 row">
-                <div class="level1-tab active"  tabindex="-1">Общие данные</div>
-                <div class="level1-tab"  tabindex="-1">Аналитика</div>				        
-            <div class="main col-md-7 col-lg-7 row">
+                <div class="level1-tab active"  tabindex="-1">День</div>
+                <div class="level1-tab"  tabindex="-1">Месяц</div>
+<div class="level1-tab"  tabindex="-1">Год</div>				
+            <div class="main col-lg-7-2 row">
                 <div class="col-sm-12 col-md-4 col-lg-4">
-                    <div class="digitOil row">
-                        <div class="okei okei-left">тыс.тонн</div>
-                        <div class="digit-oil-icon"><img src="{{ asset('img/level1/digit-oil-icon.svg') }}" alt=""></div>
-                        <img src="{{ asset('img/level1/oil.svg') }}" alt="" class="digit-oil-icon-middle">
-                        <div class="digit-oil-description">
-                            <div class="digit-oil-name">Нефть</div>
-                            <div class="digit-oil-value">136</div>
-                        </div>
-                        <div class="digit-oil-additional">
-                            <div class="digit-oil-additional-icon"><img src="{{ asset('img/level1/arrow_up.svg') }}" alt=""></div>
-                            <div class="digit-oil-additional-value">+0,3%</div>
-                        </div>
-                    </div>
-                </div>
+                               </div>
                 <div class="col-sm-12 col-md-4 col-lg-4">
                     <div class="col-md-12 col-lg-12 row">
                         <div class="col-md-2 col-lg-2">
@@ -32,121 +21,132 @@
                         </div>
                         <div class="col-md-2 col-lg-2">
                             <img src="{{ asset('img/level1/date_right_arrow.svg') }}" alt="">
-                        </div>
-                    </div>
-                    <div class="col-md-12 col-lg-12 row">
+							                        </div>
+						                   </div>
+                    <!--<div class="col-md-12 col-lg-12 row">
                         <div class="title">Казахстан</div>
-                    </div>
+                    </div>-->	
                 </div>
-                <div class="col-sm-12 col-md-4 col-lg-4">
-                    <div class="digitGaz  row">
-                        <div class="okei okei-right">млрд.м3</div>
-                        <div class="digit-gaz-additional">
-                            <div class="digit-gaz-additional-icon"><img src="{{ asset('img/level1/arrow_down.svg') }}" alt=""></div>
-                            <div class="digit-gaz-additional-value">-0,1%</div>
-                        </div>
-                        <div class="digit-gaz-description">
-                            <div class="digit-gaz-name">Газ</div>
-                            <div class="digit-gaz-value">0.64</div>
-                        </div>
-                        <div class="digit-gaz-icon"><img src="{{ asset('img/level1/digit-gaz-icon.svg') }}" alt=""></div>
-                        <img src="{{ asset('img/level1/gaz.svg') }}" alt="" class="digit-gaz-icon-middle">
-                    </div>
-                </div>
+				
+				
+				
+				
+             
+<div class="visual-center-center"> 
+<a href=""><li class="circle-2" tabindex="-2"><div class="circle-2-string">Добыча нефти</div>
+</li></a>
 
-                <div class="col-md-2 col-lg-2 indicator">
-                    <div class="indicator-icon">
-                        <img src="{{ asset('img/level1/oil.svg') }}" alt="">
-                    </div>
-                    <div class="indicator-name">Запасы нефти и конденсата</div>
-                    <div class="indicator-value">668,2</div>
-                    <div class="indicator-okei">тыс.тонн</div>
-                </div>
-                <div class="col-md-2 col-lg-2" style="height: 135px;"></div>
-                <div class="col-md-2 col-lg-2" style="height: 135px;"></div>
-                <div class="col-md-2 col-lg-2" style="height: 135px;"></div>
-                <div class="col-md-2 col-lg-2" style="height: 135px;"></div>
-                <div class="col-md-2 col-lg-2 indicator">
-                    <div class="indicator-icon">
-                        <img src="{{ asset('img/level1/gaz.svg') }}" alt="">
-                    </div>
-                    <div class="indicator-name">Запасы природного газа</div>
-                    <div class="indicator-value">414,3</div>
-                    <div class="indicator-okei">млрд.м3</div>
-                </div>
+<a href=""><li class="circle-2" tabindex="-2"><div class="circle-2-string">Сдача нефти</div>
+</li></a>
+
+<a href=""><li class="circle-2" tabindex="-2"><div class="circle-2-string">Добыча газа</div>
+</li></a>
+
+<a href=""><li class="circle-2" tabindex="-2"><div class="circle-2-string">Добыча жидкости</div>
+</li></a>
+<a href=""><li class="circle-2" tabindex="-2"><div class="circle-2-string">Добыча конденсата</div>
+</li></a>
+
+<a href=""><li class="circle-2" tabindex="-2"><div class="circle-2-string">Объём закачки</div>
+</li></a>
+
+</div>
+
+
+<div class="visual-center-center"> 
+<visual-center-chart-area-center></visual-center-chart-area-center>
+</div>
+				
+           
+<div class="visual-center-bottom ">
+<div class="visual-center-string1 ">Отключение РП:</div>
+<div class="visual-center-string2 "></div>
+
+
+<div class="visual-center-string1 ">Отключение скважин:</div>
+<div class="visual-center-string2 "></div>
+
+
+<div class="visual-center-string1 ">Выбросы и разливы:</div>
+<div class="visual-center-string2 "></div>
+
+<div class="visual-center-string1 ">Прочие:</div>
+<div class="visual-center-string2 "></div>
+</div>
+
+
+
+
+<div class="visual-center-bottom ">
+
+
+
+
+<div class="accidents-first accidents">
+<div class="number-of-accidents ">
+2
+</div>Несчастные<br> случаи
+</div>
+
+
+
+<div class="accidents-second accidents">
+<div class="number-of-accidents">
+0
+</div>Смертельные<br> случаи
+</div>
+
+
+<div class="accidents-third accidents">
+<div class="number-of-accidents">
+14
+</div>COVID<br>19
+</div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+<div class="visual-center-bottom "><div class="difference-of-24">Отклонение за сутки</div>
+
+<visual-center-chart-bar-bottom></visual-center-chart-bar-bottom>
+
+</div>
+  </div>
+  
+  
 			
+<div class="visual-center-right-column">
 
-                <div class="col-md-12 col-lg-12">
-				<div class="map">
-					<div class="nur-sultan">Нур-Султан
-				<div class="square"> </div></div>
-                   <!-- <img src="{{ asset('img/level1/map_kz.svg') }}" class="map" alt="">-->
-				   
-				   <div class="org-name1 rectangle"> ТОО «Казахтуркмунай»
-				   <div class="icon1 icon"></div>
-					<div class="square-small">&#10003;</div>
-				   </div>
-				   
-				   <div class="org-name2 rectangle">ТОО «Казахойл Актобе»
-				   <div class="icon2 icon"></div>
-				   <div class="square-small">&#10003;</div>
-				   
-				   </div>
-				   
-				   <div class="org-name3 rectangle">АО «ЭмбаМунайГаз»
-				   <div class="icon3 icon"></div>
-				   <div class="square-small">&#10003;</div>
-				   
-				   </div>
-				   
-				   <div class="org-name4 rectangle">АО «Каражанбасмунай»
-				   <div class="icon4 icon"></div>
-				   <div class="square-small">&#10003;</div>
-				  
-				   </div>
-				   
-				   <div class="org-name5 rectangle"> АО «Мангистаумунайгаз»
-				   <div class="icon5 icon"></div>
-				  <div class="square-small">&#10003;</div>
-			   </div>
-				   
-				   <div class="org-name6 rectangle">  АО «ОзенМунайГаз»
-				   <div class="icon6 icon"></div>
-				   <div class="square-small">&#10003;</div>
-				
-				   </div>
-				   
-				   <div class="org-name7 rectangle">  ТОО «КазГерМунай»
-				   <div class="icon7 icon"></div>
-				   <div class="square-small">&#10003;</div>
-				   
-					</div>
-				
-				</div></div>
-				
-				
-				
-				
-				
-				
-				<div class = "footer-chart">
-				<div class="point"></div>
-						Добыча нефти и конденсата (тыс. тонн)
-				<div id="container">
-		<welcome-chart-bar-bottom1></welcome-chart-bar-bottom1>
-		</div></div>
-				
-				
-				<div class = "footer-chart">
-				<div class="point"></div>
-				Добыча природного и попутного газа (млн. м3) 
-				<div id="container">
-		<welcome-chart-bar-bottom2></welcome-chart-bar-bottom2>
-		</div></div>
-				
-				
-            </div>
-            <div class="right-bar col-md-5 col-lg-5">
+
+
+<div class="donut">Фонд<br>добывающих<br>скважин<br>
+<visual-center-chart-donut-right1></visual-center-chart-doughut-right1>
+<div class="donut-inner1 inner1">В работе<br>1 005</div>
+<div class="donut-inner1 inner2">В простое<br>1 011</div>
+</div>
+
+
+
+<div class="donut donut2">Фонд<br>нагнетательных<br>скважин<br>
+<visual-center-chart-donut-right2></visual-center-chart-doughut-right2>
+<div class="donut-inner1 inner1">В работе<br>1 005</div>
+<div class="donut-inner1 inner2">В простое<br>1 011</div>
+</div>
+
+
+</div>	
+			
+			
+          <!--  <div class="right-bar col-md-5 col-lg-5">
                 <div>
                     <div class="right-tab col-md-3 col-lg-3"  tabindex="-1">День</div>
                     <div class="right-tab col-md-3 col-lg-3"  tabindex="-1">Месяц</div>
@@ -154,20 +154,17 @@
                     <div class="right-tab col-md-3 col-lg-3"  tabindex="-1">Год</div>
                 </div>
                 <div class="info-panel">
-                <!--    <div class="d-flex flex-row">
-                        <div class="col-md-6">-->
-						<div class="right-side">
+              		<div class="right-side">
 						<div class="circle1 circle" >
 						<div class="point"></div>
 						Добыча нефти и конденсата
-						<!--<div class="drop icon"> </div>-->
-						<welcome-chart-donut-right1></welcome-chart-donut-right1>
+						<canvas id="chart-area1" ></canvas>
 						<div class="org-name11 rectangle2"> «КазГерМунай»: 10,9 тыс. тонн</div>
 						</div>
 						<div class="circle2 circle">
 						<div class="point"></div>
 						Добыча природного газа										
-						<welcome-chart-donut-right2></welcome-chart-donut-right2>
+						<canvas id="chart-area2"  ></canvas>
 						<div class="org-name22 rectangle2">ЭмбаМунайГаз: 0,02 млрд. м3 </div>	
 						</div>
 						</div>
@@ -184,25 +181,25 @@
 						<div class="circle3 circle">
 						<div class="point"></div>							
 						Нефтяной фонд скважин
-						<welcome-chart-donut-right3></welcome-chart-donut-right3>
+						<canvas id="chart-area3"></canvas>
 						<div class="org-name33 rectangle2"> «Казахойл Актобе»: 1 601 ед.</div>
 						</div>
 						<div class="circle4 circle"> 
 						<div class="point"></div>
 						Нагнетальный фонд скважин
-						<welcome-chart-donut-right4></welcome-chart-donut-right4>
+						<canvas id="chart-area4"></canvas>
 						<div class="org-name44 rectangle2"> «Мангистаумунайгаз»: 1 183 ед.</div>
 						</div>
 						</div>
-						<!--<doughnut-component></doughnut-component>-->
+						
 						
 
 	
-                </div>
-				
+                </div>-->
+
 					
-            <!--</div>
-        </div>-->
+            </div>
+        </div>
 		
 
 @endsection

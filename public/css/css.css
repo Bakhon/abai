@@ -1,3 +1,7 @@
+.companyName {
+    font-size: 12px!important;
+}
+
 .nur-sultan {
     color: white;
     margin-left: 465px;
@@ -277,12 +281,14 @@ border-left-color: #E06765;
 .footer-chart {
     background-color: #20274e;
     width: 400px;
-    height: 170px;
+    height: 205px;
     float: left;
     margin-left: 25px;
-	color: white;
+    color: white;
     padding: 0px 0px 0px 28px;
-	margin-top: -95px;
+    margin-top: -40px;
+    padding: 10px 0px 0px 25px;
+    overflow: hidden;
 }
 
 
@@ -358,28 +364,175 @@ canvas#canvas3 {
       height: 1150px!important; 
 }*/
 
-.assets{
-background: #0d092a;
-    width: 328px;
+
+/*страница visualcenter*/
+.assets {
     border: none;
-    height: 40px;
-    font-size: 16px;
-   /* background-repeat: no-repeat;
-    background-size: 25px 25px;
-    background-position: 22px 10px;*/
-    padding: 10px;
+    /* height: 40px; */
+    font-size: 12px;
+    padding: 10px 60px;
     color: white;
-    text-align: center;
+    background: url(http://localhost/public/img/level1/button-off.png) no-repeat;
+	background-size: 9% auto;
+    background-position: 75% 50%;
+	 background-color: #0d092a;
+}
+
+
+.assets:focus:not(:active)   {
+	border: none;
+    background: url(http://localhost/public/img/level1/button-on.png) no-repeat;
+background-size: 9% auto;
+    background-position: 75% 50%;
+	 border: none;
+    /* height: 40px; */
+
+}
+
+
+.assets:active   {
+    background: url(http://localhost/public/img/level1/button-on.png) no-repeat;
+background-size: 9% auto;
+    background-position: 75% 50%;
+  border: none;
+    /* height: 40px; */
+
 }
 
 
 
 
 
+
+.assets2 {
+
+    border: none;
+    /* height: 40px; */
+    font-size: 12px;
+    padding: 10px 60px;
+    color: white;
+    background: url(http://localhost/public/img/level1/button-off.png) no-repeat;
+background-size: 9% auto;
+ background-position: 75% 50%;
+ background-color: #0d092a;
+	
+	
+}
+
+
+.assets2:focus:not(:active)   {
+    background: url(http://localhost/public/img/level1/button-on.png) no-repeat;
+background-size: 9% auto;
+    background-position: 75% 50%;
+	 border: none;
+    height: 40px;
+  pointer-events: none;
+}
+
+
+.assets2:active   {
+    background: url(http://localhost/public/img/level1/button-on.png) no-repeat;
+background-size: 9% auto;
+    background-position: 75% 50%;
+  border: none;
+    height: 40px;
+
+}
+
+
+.assets3 {
+	margin-top:10px;
+    border: none;
+    /* height: 40px; */
+    font-size: 12px;
+    padding: 10px 60px;
+    color: white;
+ 	background-size: 9% auto;
+    background-position: 75% 50%;
+	background-color: #0d092a;
+}
+
+
+
+
+
+
+
+.circle-menu {
+    background: #0d092a;
+    border: none;
+    height: 40px;
+    /* font-size: 12px; */
+    /* padding: 10px 60px; */
+    color: white;
+    background: url(http://localhost/public/img/visualcenter/circle-menu-blue.png) no-repeat;
+background-size: 9% auto;
+    background-position: 75% 50%;
+	
+}
+
+
+.circle-menu:focus:not(:active)   {
+    background: url(http://localhost/public/img/visualcenter/circle-menu-white.png) no-repeat;
+background-size: 9% auto;
+    background-position: 75% 50%;
+	 border: none;
+    height: 40px;
+  pointer-events: none;
+}
+
+
+
+/*
+.assets:active   {
+    background: url(http://localhost/public/img/level1/button-on.svg) no-repeat;
+    height: 13px;
+    width: 25px;
+	   background-size: 20% auto;
+    background-position: 92% 14%;
+ }*/
+
+
+/*
+.button-menu {
+    background: url(http://localhost/public/img/level1/button-off.svg) no-repeat;
+    height: 13px;
+    width: 25px;
+    position: absolute;  
+
+}
+
+
+.button-menu:focus:not(:active)   {
+    background: url(http://localhost/public/img/level1/button-on.svg) no-repeat;
+    height: 13px;
+    width: 25px;
+    position: absolute;
+  pointer-events: none;
+  transform: rotate(180deg);  
+}
+
+
+.button-menu:active   {
+    background: url(http://localhost/public/img/level1/button-on.svg) no-repeat;
+    height: 13px;
+    width: 25px;
+    position: absolute;  
+}
+
+
+
+
+.button-menu-position {
+    margin-left: 155px;
+    margin-top: -16px;
+}
+*/
+
 .left-price-oil {
-border-top-style: solid;
+/*border-top-style: solid;
 border-top-color: #0d092a;
-border-top-width: 15px;
+border-top-width: 15px;*/
 width: 328px;
 /* height: 40px; */
 font-size: 16px;
@@ -394,19 +547,25 @@ margin-top: 25px;
 /* border-bottom-width: 15px; */
 }
 
+.left-price-oil2 {
+    margin-left: 26px;
+    margin-top: 12px;
+    margin-bottom: 30px;
+}
+
 .price-border {
     position: absolute;
-    border-color: #0d5c3f;
+    /*border-color: #0d5c3f;
     border-style: solid;
     border-radius: 50px;
-    border-width: 1.7px;
+    border-width: 1.7px;*/
     width: 80px;
     height: 35px;
     font-size: 20px;
     text-align: center;
     left: 228px;
-    margin-top: -35px;
-    background: #1c244a;
+    margin-top: -28px;
+    /* background: #1c244a; */
     font-weight: bold;
 }
 
@@ -449,13 +608,12 @@ color:green;
     margin-bottom: 2px;
 }
 
-#sidebar-container .list-group a{
-	height:45px!important;
-}
+
 
 li.oil-string.one2 {
-    font-size: 11px;
+    font-size: 12px;
 }
+
 
 li.oil-string.one2-2 {
     font-size: 16px;
@@ -468,9 +626,9 @@ li.oil-string.two2 {
     border-style: solid;
     /* border-radius: 50px; */
     border-width: 1.7px;
-    width: 65px;
+    width: 45px;
     /* height: 30px; */
-    font-size: 15px;
+    font-size: 12px;
     text-align: center;
     /* left: 243px; */
     /* margin-top: -35px; */
@@ -483,8 +641,14 @@ li.oil-string.three2 {
     border-style: solid;
     /* border-radius: 50px; */
     border-width: 1.7px;
+	font-size: 12px;
+	width:60px;
 }
 
+
+.width-price {
+    width: 173px;
+}
 
 
 .visual-center-center {
@@ -504,6 +668,13 @@ li.oil-string.three2 {
 	
 	 }
 
+li.circle-2:hover {
+     	  border:none;
+	  background: url(http://localhost/public/img/visualcenter/button-hover.png) no-repeat;
+    background-size: 100% auto;	   
+	 background-color:#1c6fb6;
+	
+	 }
 
 
 
@@ -522,6 +693,7 @@ li.oil-string.three2 {
     background-size: 100% auto;
     /* background-position: 50% 25%; */
     line-height: 18px;
+	border-radius: 50px;
 }
 
 
@@ -638,6 +810,13 @@ margin-left:10px;
     text-align: center;
 }
 
+.difference-of-24{
+	    font-size: 15px;
+    padding: 10px 15px;
+	
+}
+
+
 .visual-center-right-column {
     /* background-color: #20274e !important; */
     width: 222px;
@@ -720,6 +899,11 @@ position:relative;
 .dropdown:hover .child {
     display: block;
  }
+
+
+#sidebar-container .list-group a {
+    height: 47px!important;
+}
 
 
 

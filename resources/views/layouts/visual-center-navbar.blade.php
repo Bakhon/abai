@@ -12,7 +12,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 		
-		  
+		     <!--<li class="nav-item active">
+               <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Визуализационный центр</span></a>
+            </li>-->
 		
             <li class="nav-item active">
                 <img src="{{ asset('img/level1/icon_geology.svg') }}" width="15" height="15" class="workTypeLogo">
@@ -58,12 +61,6 @@
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Обустройство</span></a>
             </li>
-			
-			  <li class="nav-item active">
-              <img src="{{-- asset('img/level1/economic.svg') --}}" width="15" height="15" class="workTypeLogo">
-                <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Визуализационный центр</span></a>
-            </li>
-			
         </ul>
         <div class="form-inline my-2 my-lg-0">
             <li class="nav-item">
