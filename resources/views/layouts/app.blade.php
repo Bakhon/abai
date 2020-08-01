@@ -16,13 +16,13 @@
         <script src="{{ asset('js/jquery.js') }}"></script>
     </head>
     <body>
-@if (($_SERVER['REQUEST_URI']) === "/public/ru/visualcenter")
+@if ( basename(Request::url())  === "visualcenter")
 @include('layouts.visual-center-navbar')  
 @else
  @include('layouts.navbar')
 @endif
 	        <div class="row" id="app" >
-@if (($_SERVER['REQUEST_URI']) === "/public/ru/visualcenter")
+@if (basename(Request::url()) === "visualcenter")
 @include('layouts.visual-center-sidebar')  
 @else
 @include('layouts.sidebar')
