@@ -11,7 +11,7 @@
 
 
 .map {
-    background: url(http://localhost/public/img/level1/map_kz.svg) no-repeat;
+    background: url(../img/level1/map_kz.svg) no-repeat;
     width: 850px;
     height: 526px;
 	margin-top: -105px;
@@ -37,32 +37,32 @@
     top: -29px;
 }
 .icon1 {
-  	background: url(http://localhost/public/img/level1/vishka1.svg) no-repeat;
+  	background: url(../img/level1/vishka1.svg) no-repeat;
 }
 
 
 .icon2 {
-   	background: url(http://localhost/public/img/level1/vishka2.svg) no-repeat;
+   	background: url(../img/level1/vishka2.svg) no-repeat;
 }
 
 .icon3 {
-   	background: url(http://localhost/public/img/level1/vishka3.svg) no-repeat;
+   	background: url(../img/level1/vishka3.svg) no-repeat;
 }
 
 .icon4 {
-  	background: url(http://localhost/public/img/level1/vishka4.svg) no-repeat;
+  	background: url(../img/level1/vishka4.svg) no-repeat;
 }
 
 .icon5 {
-  	background: url(http://localhost/public/img/level1/vishka5.svg) no-repeat;
+  	background: url(../img/level1/vishka5.svg) no-repeat;
 }
 
 .icon6 {
-  	background: url(http://localhost/public/img/level1/vishka6.svg) no-repeat;
+  	background: url(../img/level1/vishka6.svg) no-repeat;
 }
 
 .icon7 {
-  	background: url(http://localhost/public/img/level1/vishka7.svg) no-repeat;
+  	background: url(../img/level1/vishka7.svg) no-repeat;
 }
 
 
@@ -372,7 +372,7 @@ canvas#canvas3 {
     font-size: 12px;
     padding: 10px 60px;
     color: white;
-    background: url(http://localhost/public/img/level1/button-off.png) no-repeat;
+    background: url(../img/level1/button-off.png) no-repeat;
 	background-size: 9% auto;
     background-position: 75% 50%;
 	 background-color: #0d092a;
@@ -381,7 +381,7 @@ canvas#canvas3 {
 
 .assets:focus:not(:active)   {
 	border: none;
-    background: url(http://localhost/public/img/level1/button-on.png) no-repeat;
+    background: url(../img/level1/button-on.png) no-repeat;
 background-size: 9% auto;
     background-position: 75% 50%;
 	 border: none;
@@ -391,7 +391,7 @@ background-size: 9% auto;
 
 
 .assets:active   {
-    background: url(http://localhost/public/img/level1/button-on.png) no-repeat;
+    background: url(../img/level1/button-on.png) no-repeat;
 background-size: 9% auto;
     background-position: 75% 50%;
   border: none;
@@ -411,7 +411,7 @@ background-size: 9% auto;
     font-size: 12px;
     padding: 10px 60px;
     color: white;
-    background: url(http://localhost/public/img/level1/button-off.png) no-repeat;
+    background: url(../img/level1/button-off.png) no-repeat;
 background-size: 9% auto;
  background-position: 75% 50%;
  background-color: #0d092a;
@@ -421,7 +421,7 @@ background-size: 9% auto;
 
 
 .assets2:focus:not(:active)   {
-    background: url(http://localhost/public/img/level1/button-on.png) no-repeat;
+    background: url(../img/level1/button-on.png) no-repeat;
 background-size: 9% auto;
     background-position: 75% 50%;
 	 border: none;
@@ -431,7 +431,7 @@ background-size: 9% auto;
 
 
 .assets2:active   {
-    background: url(http://localhost/public/img/level1/button-on.png) no-repeat;
+    background: url(../img/level1/button-on.png) no-repeat;
 background-size: 9% auto;
     background-position: 75% 50%;
   border: none;
@@ -465,7 +465,7 @@ background-size: 9% auto;
     /* font-size: 12px; */
     /* padding: 10px 60px; */
     color: white;
-    background: url(http://localhost/public/img/visualcenter/circle-menu-blue.png) no-repeat;
+    background: url(../img/visualcenter/circle-menu-blue.png) no-repeat;
 background-size: 9% auto;
     background-position: 75% 50%;
 	
@@ -473,7 +473,7 @@ background-size: 9% auto;
 
 
 .circle-menu:focus:not(:active)   {
-    background: url(http://localhost/public/img/visualcenter/circle-menu-white.png) no-repeat;
+    background: url(../img/visualcenter/circle-menu-white.png) no-repeat;
 background-size: 9% auto;
     background-position: 75% 50%;
 	 border: none;
@@ -485,7 +485,7 @@ background-size: 9% auto;
 
 /*
 .assets:active   {
-    background: url(http://localhost/public/img/level1/button-on.svg) no-repeat;
+    background: url(../img/level1/button-on.svg) no-repeat;
     height: 13px;
     width: 25px;
 	   background-size: 20% auto;
@@ -495,7 +495,7 @@ background-size: 9% auto;
 
 /*
 .button-menu {
-    background: url(http://localhost/public/img/level1/button-off.svg) no-repeat;
+    background: url(../img/level1/button-off.svg) no-repeat;
     height: 13px;
     width: 25px;
     position: absolute;  
@@ -504,7 +504,7 @@ background-size: 9% auto;
 
 
 .button-menu:focus:not(:active)   {
-    background: url(http://localhost/public/img/level1/button-on.svg) no-repeat;
+    background: url(../img/level1/button-on.svg) no-repeat;
     height: 13px;
     width: 25px;
     position: absolute;
@@ -514,7 +514,7 @@ background-size: 9% auto;
 
 
 .button-menu:active   {
-    background: url(http://localhost/public/img/level1/button-on.svg) no-repeat;
+    background: url(../img/level1/button-on.svg) no-repeat;
     height: 13px;
     width: 25px;
     position: absolute;  
@@ -652,7 +652,7 @@ li.oil-string.three2 {
 
 
 .visual-center-center {
-    /* background: url(http://localhost/public/img/level1/map_kz.svg) no-repeat; */
+    /* background: url(../img/level1/map_kz.svg) no-repeat; */
     /* width: 850px; */
     /* height: 454px; */
     position: relative;
@@ -662,7 +662,7 @@ li.oil-string.three2 {
 .circle-2:focus {
      
 	  border:none;
-	  background: url(http://localhost/public/img/visualcenter/button-hover.png) no-repeat;
+	  background: url(../img/visualcenter/button-hover.png) no-repeat;
     background-size: 100% auto;	   
 	 background-color:#1c6fb6;
 	
@@ -670,7 +670,7 @@ li.oil-string.three2 {
 
 li.circle-2:hover {
      	  border:none;
-	  background: url(http://localhost/public/img/visualcenter/button-hover.png) no-repeat;
+	  background: url(../img/visualcenter/button-hover.png) no-repeat;
     background-size: 100% auto;	   
 	 background-color:#1c6fb6;
 	
@@ -686,7 +686,7 @@ li.circle-2:hover {
     width: 155px;
     height: 65px;
     color: white;
-    background: url(http://localhost/public/img/visualcenter/button.png) no-repeat;
+    background: url(../img/visualcenter/button.png) no-repeat;
     /* text-align: center; */
     padding: 14px 17px;
     /* font-weight: bold; */
@@ -755,7 +755,7 @@ margin-left:10px;
 }
 
 .accidents-first{
-    background: url(http://localhost/public/img/visualcenter/accidents-first.png) no-repeat;
+    background: url(../img/visualcenter/accidents-first.png) no-repeat;
     background-size: 30% auto;
      background-position: 50% 15%;
 	 border-right-style: solid;
@@ -765,14 +765,14 @@ margin-left:10px;
 
 
 .accidents-second{
-    background: url(http://localhost/public/img/visualcenter/accidents-second.png) no-repeat;
+    background: url(../img/visualcenter/accidents-second.png) no-repeat;
   background-size: 30% auto;
       background-position: 50% 15%;
 	}
 
 
 .accidents-third{
-    background: url(http://localhost/public/img/visualcenter/accidents-third.png) no-repeat;
+    background: url(../img/visualcenter/accidents-third.png) no-repeat;
      background-size: 30% auto;
     background-position: 50% 15%;
 	   margin-left: 10px;
