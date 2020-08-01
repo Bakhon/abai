@@ -2,10 +2,13 @@
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">
+    <a href="{{url('/')}}"><div class="logo"> </div>
+   <!-- <a class="navbar-brand" href="#">
+	
+	
         <img src="{{ asset('img/level1/logo_kmg.svg') }}" width="46" height="46" class="d-inline-block" alt="">
     <a href="{{url('/')}}"> <span class="menu-collapsed brand-name">Панель управления</span></a>
-    </a>
+    </a>-->
     <a href="#top" data-toggle="sidebar-colapse">
         <i class="fas fa-bars fa-lg"></i>
     </a>
@@ -187,10 +190,10 @@
         background-color: #20274e;
         height: 25px;
     }
-    .logo-separator {
+    /*.logo-separator {
         background-color: #20274e;
         height: 60px;
-    }
+    }*/
 
     /* Closed submenu icon */
     #sidebar-container .list-group .list-group-item[aria-expanded="false"] .submenu-icon::after {
@@ -247,8 +250,8 @@
     }
 
 
-	.logo a:link, a:hover, a:visited {
-     color: white;
+	/*.logo a:link, a:hover, a:visited {
+     color: white;*/
 
 
 }

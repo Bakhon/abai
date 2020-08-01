@@ -16,11 +16,7 @@
         <script src="{{ asset('js/jquery.js') }}"></script>
     </head>
     <body>
-@if ( basename(Request::url())  === "visualcenter")
-@include('layouts.visual-center-navbar')  
-@else
- @include('layouts.navbar')
-@endif
+@include('layouts.navbar')
 	        <div class="row" id="app" >
 @if (basename(Request::url()) === "visualcenter")
 @include('layouts.visual-center-sidebar')  

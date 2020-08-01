@@ -912,3 +912,13 @@ position:relative;
 .col-lg-5 {
     flex: 0 0 40.666667%;
     max-width: 40.666667%;}
+
+    .logo {
+        position: relative;
+        float: left;
+        width: 155px;
+        height: 48px;
+        left: 6px;
+        /* top: 14px; */
+        margin-right: 82px;
+        background: url(../img/level1/logo.svg);}
