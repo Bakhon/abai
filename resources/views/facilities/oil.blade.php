@@ -5,7 +5,7 @@
         <h2 class="subtitle">Добыча нефти</h2>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-            <iframe src="{{ url('http://localhost:8088/superset/dashboard/21') }}" width="100%" height="1588x" frameborder="0" allowfullscreen></iframe>
+            <iframe src="{{ url('http://localhost:8088/superset/dashboard/21') }}" width="100%" height="740px" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>

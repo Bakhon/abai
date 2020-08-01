@@ -25,7 +25,7 @@
             </li>
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href="http://localhost/public/ru/visualcenter"><span class="workTypeText">Добыча</span></a>
+                <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Добыча</span></a>
                 <ul class="dropdown-child">
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/production">
