@@ -18,15 +18,28 @@
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Разработка</span></a>
+                <ul class="dropdown-child">
+                    <li class="nav-item child dropdown">
+                        <a href="">
+                            <span class="workTypeText">Показатели</span>
+                        </a>
+                        <ul>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/tabs">
+                                    <span class="workTypeText">Вкладки (Основные и Дополнительные)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item active dropdown">
-                <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
+                <img src="{{ asset('img/level1/icon_buren.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Бурение</span></a>
             </li>
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
-                   <a href="{{url('/')}}/ru/visualcenter">
-				<span class="workTypeText">Добыча</span></a>
+                <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Добыча</span></a>
                 <ul class="dropdown-child">
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/production">
@@ -38,20 +51,20 @@
                             <span class="workTypeText">Мехфонд</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/gtmscor">
+                            <span class="workTypeText">ГТМ скорпион</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item active  dropdown">
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href=""><span class="workTypeText">Обустройство</span></a>
+                <a href="{{url('/')}}/ru/facilities"><span class="workTypeText">Обустройство</span></a>
                 <ul class="dropdown-child">
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/oil">
                             <span class="workTypeText">Добыча нефти</span>
-                        </a>
-                    </li>
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/liquid">
-                            <span class="workTypeText">Обводненность по трубопроводам</span>
                         </a>
                     </li>
                     <li class="nav-item child">

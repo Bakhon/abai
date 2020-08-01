@@ -26,11 +26,14 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
     Route::get('/economic', 'DruidController@economic')->name('economic');
 	Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
     Route::get('/production', 'DruidController@production')->name('production');
+    Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
     Route::get('/mfond', 'DruidController@mfond')->name('mfond');
     Route::get('/oil', 'DruidController@oil')->name('oil');
+    Route::get('/facilities', 'DruidController@facilities')->name('facilities');
     Route::get('/liquid', 'DruidController@liquid')->name('liquid');
     Route::get('/hydraulics', 'DruidController@hydraulics')->name('hydraulics');
     Route::get('/complications', 'DruidController@complications')->name('complications');
+    Route::get('/tabs', 'DruidController@tabs')->name('tabs');
     Auth::routes();
     Route::get('/home', 'HomeController@index')->name('home');
     Auth::routes([

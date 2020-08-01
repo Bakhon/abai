@@ -140,12 +140,21 @@ class DruidController extends Controller
         return view('production.main');
     }
 
+
+    public function gtmscor(){
+        return view('production.gtmscor');
+    }
+
     public function mfond(){
         return view('production.mfond');
     }
 
     public function oil(){
         return view('facilities.oil');
+    }
+
+    public function facilities(){
+        return view('facilities.main');
     }
 
     public function liquid(){
@@ -158,6 +167,10 @@ class DruidController extends Controller
 
     public function complications(){
         return view('facilities.complications');
+    }
+
+    public function tabs(){
+        return view('dev.tabs');
     }
 
     public function getNkKmg(){
