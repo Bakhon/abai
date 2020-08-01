@@ -33,6 +33,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
     Route::get('/liquid', 'DruidController@liquid')->name('liquid');
     Route::get('/hydraulics', 'DruidController@hydraulics')->name('hydraulics');
     Route::get('/complications', 'DruidController@complications')->name('complications');
+    Route::get('/tabs', 'DruidController@tabs')->name('tabs');
     Auth::routes();
     Route::get('/home', 'HomeController@index')->name('home');
     Auth::routes([

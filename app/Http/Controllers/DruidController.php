@@ -169,6 +169,10 @@ class DruidController extends Controller
         return view('facilities.complications');
     }
 
+    public function tabs(){
+        return view('dev.tabs');
+    }
+
     public function getNkKmg(){
       $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
       $response = $client->query('nk_kmg', Granularity::ALL)

@@ -18,6 +18,20 @@
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Разработка</span></a>
+                <ul class="dropdown-child">
+                    <li class="nav-item child dropdown">
+                        <a href="">
+                            <span class="workTypeText">Показатели</span>
+                        </a>
+                        <ul>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/tabs">
+                                    <span class="workTypeText">Вкладки (Основные и Дополнительные)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_buren.svg') }}" width="15" height="15" class="workTypeLogo">
