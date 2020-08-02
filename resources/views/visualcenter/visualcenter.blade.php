@@ -56,6 +56,114 @@
 <div class="visual-center-center"> 
 <visual-center-chart-area-center></visual-center-chart-area-center>
 </div>
+<div class="tables" id="colour" >
+
+
+
+<div class="tables-name">Добыча нефти и конденсата</div>
+
+
+
+
+<!--<div class="cell-colour">col</div>
+<div class="cell-number">№</div>
+<div class="cell-name">Предприятия</div>
+<div class=" cell-top4"></div>-->
+
+<div class="tables-string">
+<div class="cell-colour-top table-border">col</div>
+<div class="cell-number-top table-border">№</div>
+<div class="cell-name-top table-border">Предприятия </div>
+<div class="cell-last-top table-border cell-last">ДОБЫЧА, тонн</div>
+
+
+
+<div class="cell2 table-border">План на 2020 год</div>
+<div class="cell2 table-border">План на июль месяц</div>
+<div class="cell3 table-border">СУТОЧНАЯ</div>
+<div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
+<div class="cell3 table-border cell-last">С НАЧАЛА ГОДА</div>
+<div class="cell4 table-border">ПЛАН</div>
+<div class="cell4 table-border">ФАКТ</div>
+<div class="cell4 table-border">(+,-)</div>
+<div class="cell4 table-border">ПЛАН</div>
+<div class="cell4 table-border">ФАКТ</div>
+<div class="cell4 table-border">(+,-)</div>
+<div class="cell4 table-border">ПЛАН</div>
+<div class="cell4 table-border">ФАКТ</div>
+<div class="cell4 table-border cell-last">(+,-)</div>
+</div>
+<div style="clear:both;"></div>
+
+
+
+<div>
+<div class="cell-colour table-border">col</div>
+<div class="cell-number table-border">1</div>
+<div class="cell-name table-border">Всего добыча нефти и конденсата с учётом доли участия АО НК "КазМунайГаз"</div>
+<div class="cell table-border">23042914</div>
+<div class="cell table-border">1911273</div>
+<div class="cell table-border">61654</div>
+<div class="cell table-border">55327</div>
+<div class="cell table-border colour">-6327</div>
+<div class="cell table-border">616540</div>
+<div class="cell table-border">544104</div>
+<div class="cell table-border colour" >-72436</div>
+<div class="cell table-border" >12179573</div>
+<div class="cell table-border">11888616</div>
+<div class="cell table-border cell-last colour">-290957</div>
+</div>
+
+
+
+<div style="clear:both;"></div>
+<div>
+<div class="cell-colour table-border">col</div>
+<div class="cell-number table-border">1</div>
+<div class="cell-name table-border">Всего добыча нефти и конденсата с учётом доли участия АО НК "КазМунайГаз"</div>
+<div class="cell table-border">23042914</div>
+<div class="cell table-border">1911273</div>
+<div class="cell table-border">61654</div>
+<div class="cell table-border">55327</div>
+<div class="cell table-border colour">-6327</div>
+<div class="cell table-border">616540</div>
+<div class="cell table-border">544104</div>
+<div class="cell table-border colour" >72436</div>
+<div class="cell table-border">12179573</div>
+<div class="cell table-border">11888616</div>
+<div class="cell table-border cell-last colour">-290957</div>
+</div>
+<div style="clear:both;"></div>
+<div class="tables-bottom-line"></div>
+
+
+
+<script>
+arr= document.getElementById("colour").getElementsByClassName('colour');
+for (var i=0; i!= arr.length; ++i) {
+if (arr[i].innerHTML<="0"){
+color="#b40300";
+arr[i].style.background=color; 
+}
+else{
+	color="#008a17";
+	arr[i].style.background=color; 
+} }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
 				
            
 <div class="visual-center-bottom ">
