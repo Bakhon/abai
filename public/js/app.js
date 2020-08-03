@@ -2528,7 +2528,7 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
           animations: {
             speed: 200
           },
-          height: 150,
+          height: 180,
           type: 'bar'
         },
         plotOptions: {
@@ -73207,8 +73207,8 @@ var render = function() {
       _c("apexchart", {
         attrs: {
           type: "bar",
-          height: "150",
-          width: "320",
+          height: "180",
+          width: "400",
           options: _vm.chartOptions,
           series: _vm.series
         }
