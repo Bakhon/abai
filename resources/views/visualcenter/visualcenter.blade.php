@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-
 <div class="col p-4" id="app">
     <div class="level1-content row">
         <div class=" col-md-12 col-lg-12 row">
@@ -13,8 +12,8 @@
                             <div class="left-arrow">
                             </div>
                             <div class="timer">
-                                <div class="time">{{date("h:i")}}</div>
-                                <div class="date">{{date("d F Y")}}</div>
+                            <div class="time">{{date("h:i")}}</div>
+                            <div class="date">{{date("d F Y")}}</div>
                             </div>
                             <div class="right-arrow">
                             </div>
@@ -227,7 +226,7 @@
         .main {
             height: 897px;
             background-color: #0F1430;
-            background-image: url("{{ asset('img/level1/grid.svg')}}";
+            background-image: url("{{ asset('img/level1/grid.svg')}}");
                 border: 1px solid #0D2B4D;
                 margin-left: 0px !important;
                 padding-top: 20px;
