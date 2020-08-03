@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="col-sm-12 col-md-4 col-lg-4">
-                    <div class="col-md-12 col-lg-12 row">
+                   <!-- <div class="col-md-12 col-lg-12 row">
                         <div class="col-md-2 col-lg-2">
                             <img src="{{ asset('img/level1/date_left_arrow.svg') }}" alt="">
                         </div>
@@ -33,7 +33,23 @@
                         <div class="col-md-2 col-lg-2">
                             <img src="{{ asset('img/level1/date_right_arrow.svg') }}" alt="">
                         </div>
-                    </div>
+                    </div>-->
+					
+					<div class="col-md-12 col-lg-12 row">                   
+                        <div class="timer-welcome">
+						     <div class="left-arrow">
+                            <!--<img src="{{ asset('img/level1/date_left_arrow.svg') }}" alt="">-->
+                        </div>
+						<div class="timer">
+                            <div class="time">{{date("h:i")}}</div>
+                            <div class="date">{{date("d F Y")}}</div>
+							</div>
+							      <div class="right-arrow">
+                            <!--<img src="{{ asset('img/level1/date_right_arrow.svg') }}" alt="">-->
+							                        </div>
+                        </div>
+                  
+						                   </div>
                     <div class="col-md-12 col-lg-12 row">
                         <div class="title">Казахстан</div>
                     </div>
@@ -176,7 +192,7 @@
 									
 				
 			<div class="right-side">
-					<charttide></charttide>
+					<div class="indent-top"><charttide></charttide></div>
 					
 				
 	</div>

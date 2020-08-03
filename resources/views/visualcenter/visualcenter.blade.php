@@ -3,35 +3,42 @@
 
 	 <div class="col p-4" id="app">
         <div class="level1-content row">
-            <div class=" col-md-12 col-lg-12 row">
-                <div class="level1-tab active"  tabindex="-1">День</div>
-                <div class="level1-tab"  tabindex="-1">Месяц</div>
-<div class="level1-tab"  tabindex="-1">Год</div>				
+            <div class=" col-md-12 col-lg-12 row">		
             <div class="main col-lg-7-2 row">
                 <div class="col-sm-12 col-md-4 col-lg-4">
                                </div>
                 <div class="col-sm-12 col-md-4 col-lg-4">
-                    <div class="col-md-12 col-lg-12 row">
-                        <div class="col-md-2 col-lg-2">
-                            <img src="{{ asset('img/level1/date_left_arrow.svg') }}" alt="">
+                    <div class="col-md-12 col-lg-12 row">                   
+                        <div class="timer-visual-center">
+						     <div class="left-arrow">
+                            <!--<img src="{{ asset('img/level1/date_left_arrow.svg') }}" alt="">-->
                         </div>
-                        <div class="col-md-8 col-lg-8">
+						<div class="timer">
                             <div class="time">{{date("h:i")}}</div>
                             <div class="date">{{date("d F Y")}}</div>
-                        </div>
-                        <div class="col-md-2 col-lg-2">
-                            <img src="{{ asset('img/level1/date_right_arrow.svg') }}" alt="">
+							</div>
+							      <div class="right-arrow">
+                            <!--<img src="{{ asset('img/level1/date_right_arrow.svg') }}" alt="">-->
 							                        </div>
+                        </div>
+                  
 						                   </div>
                     <!--<div class="col-md-12 col-lg-12 row">
                         <div class="title">Казахстан</div>
                     </div>-->	
-                </div>
+			 </div>
+<div class="visual-center-center"> 					 
+<div class="level2-tab active"  tabindex="-3">День</div>
+<div class="level2-tab"  tabindex="-3">Месяц</div>
+<div class="level2-tab"  tabindex="-3">Год</div>	
+</div> 	
+<div class="month-day"></div>
 				
 				
 				
-				
-             
+<div class="visual-center-center"> 				
+<div class="tables-name">График добычи за 16 июня 2020</div>				
+ </div>            
 <div class="visual-center-center"> 
 <a href=""><li class="circle-2" tabindex="-2"><div class="circle-2-string">Добыча нефти</div>
 </li></a>
@@ -224,9 +231,9 @@ else{
 
 
 <div class="visual-center-bottom "><div class="difference-of-24">Отклонение за сутки</div>
-
+<div class="visual-center-chart-bar-bottom">
 <visual-center-chart-bar-bottom></visual-center-chart-bar-bottom>
-
+</div>
 </div>
   </div>
   
@@ -234,18 +241,31 @@ else{
 			
 <div class="visual-center-right-column">
 
+<div class="right-button-panel">
+<div class="right-chart-button right-button" tabindex="-5">
+График
+</div>
+<div class="right-table-button right-button" tabindex="-5">
+Таблица
+</div>
 
 
-<div class="donut">Фонд<br>добывающих<br>скважин<br>
-<visual-center-chart-donut-right1></visual-center-chart-doughut-right1>
+</div>
+
+
+
+<div class="donut">
+<div class="indent">
+Фонд добывающих скважин за 16 июня 2020</div>
+<div><visual-center-chart-donut-right1></visual-center-chart-doughut-right1></div>
 <div class="donut-inner1 inner1">В работе<br>1 005</div>
 <div class="donut-inner1 inner2">В простое<br>1 011</div>
 </div>
 
 
 
-<div class="donut donut2">Фонд<br>нагнетательных<br>скважин<br>
-<visual-center-chart-donut-right2></visual-center-chart-doughut-right2>
+<div class="donut donut2"><div class="indent">Фонд нагнетательных скважин за 16 июня 2020</div>
+<div><visual-center-chart-donut-right2></visual-center-chart-doughut-right2></div>
 <div class="donut-inner1 inner1">В работе<br>1 005</div>
 <div class="donut-inner1 inner2">В простое<br>1 011</div>
 </div>

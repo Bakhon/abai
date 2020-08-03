@@ -1,6 +1,6 @@
 <template>
 <div>
-  <apexchart type="bar" height="150" width="320" :options="chartOptions" :series="series"></apexchart>
+  <apexchart type="bar" height="180" width="400" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
@@ -36,7 +36,7 @@ export default {
 			animations: {
             speed: 200
           },
-			  height: 150,
+			  height: 180,
               type: 'bar'
         },
    
