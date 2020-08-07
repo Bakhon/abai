@@ -79,10 +79,6 @@
         margin-left: 0px;
         margin-right: 0px;
     }
-
-   
-    
-
     #logo {
     display: inline-block;
     background: url(../img/logokmg.png) no-repeat;
@@ -92,8 +88,7 @@
     margin-left: 150px;
     margin-top: 94px;
     margin-bottom: -120px;
-}
-
+    }
 
 #logo2 {
     display: inline-block;
@@ -105,7 +100,7 @@
     margin-top: 85px;
     /* margin-bottom: -120px; */
     position: absolute;
-}
+    }
 
 #logokmgi {
     background: url(../img/abai.png) no-repeat;
@@ -115,11 +110,8 @@
     margin-left: 290px;
     margin-top: 107px;
     margin-bottom: -120px;
-}
-
-
-
-
+    }
+    
     h2  {
         padding-bottom: 40px;
     }
