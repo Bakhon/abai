@@ -13,7 +13,7 @@ window.Vue = require('vue');
 window.Jquery = require('jquery');
 
 Vue.use(VueAxios, axios);
-import {Bar} from 'vue-chartjs';
+import { Bar } from 'vue-chartjs';
 
 
 /**
@@ -39,13 +39,13 @@ Vue.component('visual-center-chart-area-center', require('./components/VisualCen
 Vue.component('visual-center-chart-bar-bottom', require('./components/VisualCenterChartBarBottom.vue').default);
 Vue.component('visual-center-chart-donut-right1', require('./components/VisualCenterChartDonutRight1.vue').default);
 Vue.component('visual-center-chart-donut-right2', require('./components/VisualCenterChartDonutRight2.vue').default);
+Vue.component('visual-center-table', require('./components/VisualCenterTable.vue').default);
 Vue.component('welcome-chart-donut-right1', require('./components/WelcomeChartDonutRight1.vue').default);
 Vue.component('welcome-chart-donut-right2', require('./components/WelcomeChartDonutRight2.vue').default);
 Vue.component('welcome-chart-donut-right3', require('./components/WelcomeChartDonutRight3.vue').default);
 Vue.component('welcome-chart-donut-right4', require('./components/WelcomeChartDonutRight4.vue').default);
 Vue.component('welcome-chart-bar-bottom1', require('./components/WelcomeChartBarBottom1.vue').default);
 Vue.component('welcome-chart-bar-bottom2', require('./components/WelcomeChartBarBottom2.vue').default);
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
