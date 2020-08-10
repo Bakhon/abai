@@ -18,16 +18,18 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
 </head>
     <body>
         <div class="row">
             <div id="app"></div>
             <div class="col-md-6">
-                <img src="{{ asset('img/bank1.png') }}" alt="" id="logo">
+               <div id="logo"></div>
+               <div id="logo2"></div>
             </div>
             <div class="col-md-6">
                 <div class="text-center">
-                    <img src="{{ asset('img/logoKMGI.png') }}" alt="" id="logokmgi">
+                    <div id="logokmgi"></div>
                     <h2>{{ __('app.Login') }} <br> в панель управления</h2>
                     <form method="POST" action="{{ route('login') }}" id="form">
                         @csrf
@@ -77,16 +79,39 @@
         margin-left: 0px;
         margin-right: 0px;
     }
-
     #logo {
-        padding: 50px 0 0 50px;
-        width: 286px;
+    display: inline-block;
+    background: url(../img/logokmg.png) no-repeat;
+    height: 350px;
+    width: 370px;
+    background-size: contain;
+    margin-left: 150px;
+    margin-top: 94px;
+    margin-bottom: -120px;
     }
 
-    #logokmgi {
-        padding: 50px 0 150px 0px;
+#logo2 {
+    display: inline-block;
+    background: url(../img/kmgi.png) no-repeat;
+    height: 131px;
+    width: 200px;
+    background-size: contain;
+    margin-left: 285px;
+    margin-top: 85px;
+    /* margin-bottom: -120px; */
+    position: absolute;
     }
 
+#logokmgi {
+    background: url(../img/abai.png) no-repeat;
+    height: 344px;
+    width: 294px;
+    background-size: contain;
+    margin-left: 290px;
+    margin-top: 107px;
+    margin-bottom: -120px;
+    }
+    
     h2  {
         padding-bottom: 40px;
     }
@@ -135,4 +160,6 @@
         margin-top: 40px;
         font-size: 20px;
     }
+
+
 </style>
