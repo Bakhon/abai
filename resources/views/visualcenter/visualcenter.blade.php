@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div>
-    <? $company = Request::input('company');?>
+    <?  if (null !==(Request::input('company'))) {$company = Request::input('company');} else {$company='КГМ';}?>
 </div>
 <div class="col p-4" id="app">
     <div class="level1-content row">
