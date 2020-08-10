@@ -1,9 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div>
-    <?  if (null !==(Request::input('company'))) {$company = Request::input('company');} else {$company='КГМ';}?>
-</div>
-<div class="col p-4" id="app">
+<div class="col p-4">
     <div class="level1-content row">
         <div class=" col-md-12 col-lg-12 row">
             <div class="main col-lg-7-2 row">
@@ -63,7 +60,7 @@
                 </div>
                 <div class="visual-center-center">
                     <div class="tables">
-                        <visual-center-table post-title="<?= $company ?>"></visual-center-table>
+                        <visual-center-table post-title="<script>company</script>"></visual-center-table>
                     </div>
                     <div class="visual-center-center">
                         <div class="tables-name">График добычи за 16 июня 2020</div>

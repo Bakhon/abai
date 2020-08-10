@@ -40,6 +40,7 @@ Vue.component('visual-center-chart-bar-bottom', require('./components/VisualCent
 Vue.component('visual-center-chart-donut-right1', require('./components/VisualCenterChartDonutRight1.vue').default);
 Vue.component('visual-center-chart-donut-right2', require('./components/VisualCenterChartDonutRight2.vue').default);
 Vue.component('visual-center-table', require('./components/VisualCenterTable.vue').default);
+Vue.component('visual-center-menu', require('./components/VisualCenterMenu.vue').default);
 Vue.component('welcome-chart-donut-right1', require('./components/WelcomeChartDonutRight1.vue').default);
 Vue.component('welcome-chart-donut-right2', require('./components/WelcomeChartDonutRight2.vue').default);
 Vue.component('welcome-chart-donut-right3', require('./components/WelcomeChartDonutRight3.vue').default);
