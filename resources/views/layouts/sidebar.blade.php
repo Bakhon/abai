@@ -12,7 +12,7 @@
         </li>
         <!-- /END Separator -->
         <!-- Menu with submenu -->
-        <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+        <a href="#" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
             <div class="d-flex w-100 justify-content-start align-items-center">
                 <img src="{{ asset('img/level1/logo_ozen.svg') }}" width="25" height="25" class="companyLogo">
                 <span class="menu-collapsed companyName">АО "ОзенМунайГаз"</span>
@@ -102,9 +102,5 @@
             </div>
         </a>
 		</div>
-		
- 
-		
-		
     </ul><!-- List Group END-->
 </div><!-- sidebar-container END -->
