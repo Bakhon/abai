@@ -1,7 +1,8 @@
 <template>
   <div class="tables">
+    
     <div class="tables-name">Добыча нефти и конденсата</div>
-    <div class="btn btn-info2" @click="getTable()">Вывести таблицу</div>
+    <div   class="btn btn-info2" @click="getTable()">Вывести таблицу</div>
     <div class="tables-string">
       <div class="cell-colour-top table-border"></div>
       <div class="cell-number-top table-border">№</div>
@@ -33,10 +34,7 @@
           <div class="cell table-border"></div>
           <div class="cell table-border">{{ item.liq_plan }}</div>
           <div class="cell table-border">{{ item.liq_fact }}</div>
-          <div
-            class="cell table-border colour"
-            :style="`background: ${getColor(item.liq_fact - item.liq_plan)}`"
-          >
+          <div class="cell table-border colour":style="`background: ${getColor(item.liq_fact - item.liq_plan)}`"   >
             {{ item.liq_fact - item.liq_plan }}
           </div>
           <div class="cell table-border"></div>
@@ -55,32 +53,34 @@
 
 <script>
 export default {
-  props: ["postTitle"],
   data: function () {
     return {
-      series: "",
+      series: ''
     };
   },
   methods: {
     getColor(status) {
+   
       if (status < "0") return "#b40300";
       return "#008a17";
+
+   
     },
 
-    getTable() {
-      let company = localStorage.getItem("company");
-      let uri = "/ru/getnkkmg";
+  getTable(){      
+let company = localStorage.getItem("company");
+         let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
           var arrdata = new Array();
-          arrdata = _.filter(data, _.iteratee({ dzo: company }));
+          arrdata = _.filter(data, _.iteratee({ dzo: company }));   
           this.series = arrdata;
         } else {
           console.log("No data");
         }
-      });
-    },
+      });}
+
   },
 };
 </script>

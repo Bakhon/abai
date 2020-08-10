@@ -60,7 +60,7 @@
                 </div>
                 <div class="visual-center-center">
                     <div class="tables">
-                        <visual-center-table post-title="<script>company</script>"></visual-center-table>
+                        <visual-center-table></visual-center-table>
                     </div>
                     <div class="visual-center-center">
                         <div class="tables-name">График добычи за 16 июня 2020</div>
