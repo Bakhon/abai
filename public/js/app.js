@@ -2729,6 +2729,226 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterMenu.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/VisualCenterMenu.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      company: ""
+    };
+  },
+  methods: {
+    saveCompany: function saveCompany(com) {
+      localStorage.setItem("company", com);
+      this.company = localStorage.getItem("company");
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js& ***!
@@ -2789,33 +3009,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["postTitle"],
   data: function data() {
     return {
-      series: [0]
+      series: ""
     };
   },
   methods: {
     getColor: function getColor(status) {
+      if (status < "0") return "#b40300";
+      return "#008a17";
+    },
+    getTable: function getTable() {
       var _this = this;
 
-      var uri = "/ru/getnkkmg";
+      var company = localStorage.getItem("company");
+      var uri = "/js/json/getnkkmg.json"; //let uri = "/ru/getnkkmg";
+
       this.axios.get(uri).then(function (response) {
         var data = response.data;
 
         if (data) {
           var arrdata = new Array();
           arrdata = _.filter(data, _.iteratee({
-            dzo: _this.postTitle
+            dzo: company
           }));
           _this.series = arrdata;
         } else {
           console.log("No data");
         }
       });
-      if (status < "0") return "#b40300";
-      return "#008a17";
     }
   }
 });
@@ -73383,6 +73615,526 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterMenu.vue?vue&type=template&id=30948f1f&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/VisualCenterMenu.vue?vue&type=template&id=30948f1f& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "list-group" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "collapse sidebar-submenu submenu1",
+        attrs: { id: "submenu1" }
+      },
+      [
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu flex-column align-items-start circle-menu",
+            attrs: {
+              href: "#",
+              "data-toggle": "collapse",
+              "aria-expanded": "false"
+            },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("ОМГ")
+              }
+            }
+          },
+          [_vm._m(1)]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            attrs: { href: "#" }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex w-100 justify-content-start align-items-center",
+                on: {
+                  click: function($event) {
+                    return _vm.saveCompany("КБМ")
+                  }
+                }
+              },
+              [
+                _c("img", {
+                  staticClass: "companyLogo",
+                  attrs: {
+                    src: "/img/level1/logo_karazhanbas.svg",
+                    width: "25",
+                    height: "25"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "menu-collapsed companyName" }, [
+                  _vm._v('АО "Каражанбасмунай"')
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("КГМ")
+              }
+            }
+          },
+          [_vm._m(2)]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("ЭМГ")
+              }
+            }
+          },
+          [_vm._m(3)]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("ММГ")
+              }
+            }
+          },
+          [_vm._m(4)]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("КТМ")
+              }
+            }
+          },
+          [_vm._m(5)]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("КОА")
+              }
+            }
+          },
+          [_vm._m(6)]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("ПКИ")
+              }
+            }
+          },
+          [_vm._m(7)]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("АГГ")
+              }
+            }
+          },
+          [_vm._m(8)]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm._m(9),
+    _vm._v(" "),
+    _vm._m(10)
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        attrs: {
+          href: "#submenu1",
+          "data-toggle": "collapse",
+          "aria-expanded": "false"
+        }
+      },
+      [
+        _c("div", { staticClass: "assets2", attrs: { tabindex: "0" } }, [
+          _vm._v("Операционные активы")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: { src: "/img/level1/logo_ozen.svg", width: "25", height: "25" }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v('АО "ОзенМунайГаз"')
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_kazger.svg",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v('ТОО "КазГерМунай"')
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: { src: "/img/level1/logo_ozen.svg", width: "25", height: "25" }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v('АО "ЭмбаМунайГаз"')
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_mangistau.png",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v('АО "Мангистаумунайгаз"')
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_kazakhturkmunai.png",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v('ТОО "Казахтуркмунай"')
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: { src: "/img/level1/logo_koa.svg", width: "25", height: "25" }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v('ТОО "Казахойл Актобе"')
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_petrokaz.svg",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v("ПетроКазахстан Инк.")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_amangeldy.png",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v("Амангельды Газ")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        attrs: {
+          href: "#submenu2",
+          "data-toggle": "collapse",
+          "aria-expanded": "false"
+        }
+      },
+      [
+        _c("div", { staticClass: "assets", attrs: { tabindex: "-0" } }, [
+          _vm._v("\n      Неоперационные активы\n      "),
+          _c("div", {
+            staticClass: "button-menu button-menu-position",
+            attrs: { tabindex: "-0" }
+          })
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "collapse sidebar-submenu", attrs: { id: "submenu2" } },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "bg-dark list-group-item list-group-item-action",
+            attrs: { href: "#" }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex w-100 justify-content-start align-items-center"
+              },
+              [
+                _c("img", {
+                  staticClass: "companyLogo",
+                  attrs: {
+                    src: "/img/level1/logo_tengiz.svg",
+                    width: "25",
+                    height: "25"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "menu-collapsed companyName" }, [
+                  _vm._v("ТОО «Тенгизшевройл»")
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "bg-dark list-group-item list-group-item-action",
+            attrs: { href: "#" }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex w-100 justify-content-start align-items-center"
+              },
+              [
+                _c("img", {
+                  staticClass: "companyLogo",
+                  attrs: {
+                    src: "/img/level1/logo_karachaganak.svg",
+                    width: "25",
+                    height: "25"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "menu-collapsed companyName" }, [
+                  _vm._v("«Карачаганак Петролеум Оперейтинг б.в.»")
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "bg-dark list-group-item list-group-item-action",
+            attrs: { href: "#" }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex w-100 justify-content-start align-items-center"
+              },
+              [
+                _c("img", {
+                  staticClass: "companyLogo",
+                  attrs: {
+                    src: "/img/level1/logo_ncoc.svg",
+                    width: "25",
+                    height: "25"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "menu-collapsed companyName" }, [
+                  _vm._v("«Норт Каспиан Оперейтинг Компани н.в.»")
+                ])
+              ]
+            )
+          ]
+        )
+      ]
+    )
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterTable.vue?vue&type=template&id=6dd0c484&":
 /*!********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/VisualCenterTable.vue?vue&type=template&id=6dd0c484& ***!
@@ -73406,6 +74158,19 @@ var render = function() {
         _vm._v("Добыча нефти и конденсата")
       ]),
       _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "btn btn-info2",
+          on: {
+            click: function($event) {
+              return _vm.getTable()
+            }
+          }
+        },
+        [_vm._v("Вывести таблицу")]
+      ),
+      _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
       _c("div", { staticStyle: { clear: "both" } }),
@@ -73414,7 +74179,13 @@ var render = function() {
         return _c("div", [
           _c("div", [
             _c("div", [
-              _c("div", { staticClass: "cell-colour table-border" }),
+              _c("div", { staticClass: "cell-colour table-border" }, [
+                _c("div", {
+                  staticClass: "circle-table",
+                  style:
+                    "background: " + _vm.getColor(item.liq_fact - item.liq_plan)
+                })
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "cell-number table-border" }),
               _vm._v(" "),
@@ -86002,6 +86773,7 @@ Vue.component('visual-center-chart-bar-bottom', __webpack_require__(/*! ./compon
 Vue.component('visual-center-chart-donut-right1', __webpack_require__(/*! ./components/VisualCenterChartDonutRight1.vue */ "./resources/js/components/VisualCenterChartDonutRight1.vue")["default"]);
 Vue.component('visual-center-chart-donut-right2', __webpack_require__(/*! ./components/VisualCenterChartDonutRight2.vue */ "./resources/js/components/VisualCenterChartDonutRight2.vue")["default"]);
 Vue.component('visual-center-table', __webpack_require__(/*! ./components/VisualCenterTable.vue */ "./resources/js/components/VisualCenterTable.vue")["default"]);
+Vue.component('visual-center-menu', __webpack_require__(/*! ./components/VisualCenterMenu.vue */ "./resources/js/components/VisualCenterMenu.vue")["default"]);
 Vue.component('welcome-chart-donut-right1', __webpack_require__(/*! ./components/WelcomeChartDonutRight1.vue */ "./resources/js/components/WelcomeChartDonutRight1.vue")["default"]);
 Vue.component('welcome-chart-donut-right2', __webpack_require__(/*! ./components/WelcomeChartDonutRight2.vue */ "./resources/js/components/WelcomeChartDonutRight2.vue")["default"]);
 Vue.component('welcome-chart-donut-right3', __webpack_require__(/*! ./components/WelcomeChartDonutRight3.vue */ "./resources/js/components/WelcomeChartDonutRight3.vue")["default"]);
@@ -86612,6 +87384,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight2_vue_vue_type_template_id_6bc2464c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight2_vue_vue_type_template_id_6bc2464c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/VisualCenterMenu.vue":
+/*!******************************************************!*\
+  !*** ./resources/js/components/VisualCenterMenu.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _VisualCenterMenu_vue_vue_type_template_id_30948f1f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VisualCenterMenu.vue?vue&type=template&id=30948f1f& */ "./resources/js/components/VisualCenterMenu.vue?vue&type=template&id=30948f1f&");
+/* harmony import */ var _VisualCenterMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VisualCenterMenu.vue?vue&type=script&lang=js& */ "./resources/js/components/VisualCenterMenu.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _VisualCenterMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _VisualCenterMenu_vue_vue_type_template_id_30948f1f___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _VisualCenterMenu_vue_vue_type_template_id_30948f1f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/VisualCenterMenu.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/VisualCenterMenu.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/VisualCenterMenu.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterMenu.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterMenu.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/VisualCenterMenu.vue?vue&type=template&id=30948f1f&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/VisualCenterMenu.vue?vue&type=template&id=30948f1f& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterMenu_vue_vue_type_template_id_30948f1f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterMenu.vue?vue&type=template&id=30948f1f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterMenu.vue?vue&type=template&id=30948f1f&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterMenu_vue_vue_type_template_id_30948f1f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterMenu_vue_vue_type_template_id_30948f1f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
