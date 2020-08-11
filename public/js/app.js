@@ -2842,6 +2842,97 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2922,8 +3013,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["postTitle"],
   data: function data() {
     return {
       series: ""
@@ -2938,7 +3033,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       var company = localStorage.getItem("company");
-      var uri = "/ru/getnkkmg";
+      var uri = "/js/json/getnkkmg.json"; //let uri = "/ru/getnkkmg";
+
       this.axios.get(uri).then(function (response) {
         var data = response.data;
 
@@ -73583,6 +73679,15 @@ var render = function() {
                 }
               },
               [
+                _c("img", {
+                  staticClass: "companyLogo",
+                  attrs: {
+                    src: "/img/level1/logo_karazhanbas.svg",
+                    width: "25",
+                    height: "25"
+                  }
+                }),
+                _vm._v(" "),
                 _c("span", { staticClass: "menu-collapsed companyName" }, [
                   _vm._v('АО "Каражанбасмунай"')
                 ])
@@ -73696,7 +73801,11 @@ var render = function() {
           [_vm._m(8)]
         )
       ]
-    )
+    ),
+    _vm._v(" "),
+    _vm._m(9),
+    _vm._v(" "),
+    _vm._m(10)
   ])
 }
 var staticRenderFns = [
@@ -73728,6 +73837,11 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: { src: "/img/level1/logo_ozen.svg", width: "25", height: "25" }
+        }),
+        _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v('АО "ОзенМунайГаз"')
         ])
@@ -73742,6 +73856,15 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_kazger.svg",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v('ТОО "КазГерМунай"')
         ])
@@ -73756,6 +73879,11 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: { src: "/img/level1/logo_ozen.svg", width: "25", height: "25" }
+        }),
+        _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v('АО "ЭмбаМунайГаз"')
         ])
@@ -73770,6 +73898,15 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_mangistau.png",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v('АО "Мангистаумунайгаз"')
         ])
@@ -73784,6 +73921,15 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_kazakhturkmunai.png",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v('ТОО "Казахтуркмунай"')
         ])
@@ -73798,6 +73944,11 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: { src: "/img/level1/logo_koa.svg", width: "25", height: "25" }
+        }),
+        _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v('ТОО "Казахойл Актобе"')
         ])
@@ -73812,6 +73963,15 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_petrokaz.svg",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v("ПетроКазахстан Инк.")
         ])
@@ -73826,9 +73986,145 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_amangeldy.png",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v("Амангельды Газ")
         ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "a",
+      {
+        attrs: {
+          href: "#submenu2",
+          "data-toggle": "collapse",
+          "aria-expanded": "false"
+        }
+      },
+      [
+        _c("div", { staticClass: "assets", attrs: { tabindex: "-0" } }, [
+          _vm._v("\n      Неоперационные активы\n      "),
+          _c("div", {
+            staticClass: "button-menu button-menu-position",
+            attrs: { tabindex: "-0" }
+          })
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "collapse sidebar-submenu", attrs: { id: "submenu2" } },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "bg-dark list-group-item list-group-item-action",
+            attrs: { href: "#" }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex w-100 justify-content-start align-items-center"
+              },
+              [
+                _c("img", {
+                  staticClass: "companyLogo",
+                  attrs: {
+                    src: "/img/level1/logo_tengiz.svg",
+                    width: "25",
+                    height: "25"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "menu-collapsed companyName" }, [
+                  _vm._v("ТОО «Тенгизшевройл»")
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "bg-dark list-group-item list-group-item-action",
+            attrs: { href: "#" }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex w-100 justify-content-start align-items-center"
+              },
+              [
+                _c("img", {
+                  staticClass: "companyLogo",
+                  attrs: {
+                    src: "/img/level1/logo_karachaganak.svg",
+                    width: "25",
+                    height: "25"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "menu-collapsed companyName" }, [
+                  _vm._v("«Карачаганак Петролеум Оперейтинг б.в.»")
+                ])
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass: "bg-dark list-group-item list-group-item-action",
+            attrs: { href: "#" }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex w-100 justify-content-start align-items-center"
+              },
+              [
+                _c("img", {
+                  staticClass: "companyLogo",
+                  attrs: {
+                    src: "/img/level1/logo_ncoc.svg",
+                    width: "25",
+                    height: "25"
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "menu-collapsed companyName" }, [
+                  _vm._v("«Норт Каспиан Оперейтинг Компани н.в.»")
+                ])
+              ]
+            )
+          ]
+        )
       ]
     )
   }
@@ -73883,7 +74179,13 @@ var render = function() {
         return _c("div", [
           _c("div", [
             _c("div", [
-              _c("div", { staticClass: "cell-colour table-border" }),
+              _c("div", { staticClass: "cell-colour table-border" }, [
+                _c("div", {
+                  staticClass: "circle-table",
+                  style:
+                    "background: " + _vm.getColor(item.liq_fact - item.liq_plan)
+                })
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "cell-number table-border" }),
               _vm._v(" "),

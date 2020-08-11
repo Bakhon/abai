@@ -804,6 +804,14 @@ li.circle-2:hover {
     outline: none;
 }
 
+.circle-table {
+    background: #0d092a;
+    border: none;
+    height: 15px;
+    border-radius: 50px;
+    margin-top: 17px;
+}
+
 .right-button {
     width: 118px;
     display: inline-block;
@@ -996,6 +1004,7 @@ ul.dropdown-child {
     float: left;
     background: #122f70;
     padding: 5px 5px;
+    line-height: 48px;
 }
 
 .cell-name-top {
@@ -1013,6 +1022,7 @@ ul.dropdown-child {
     text-align: center;
     background: #0F1430;
     padding: 5px 10px;
+    line-height: 48px;
 }
 
 .cell-last-top {
