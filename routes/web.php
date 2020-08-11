@@ -40,6 +40,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Auth::routes();
         Route::get('/home', 'HomeController@index')->name('home');
         Route::resource('oildaily','OilDailyController');
+        Route::get('/maps', 'DruidController@maps')->name('maps');
     });
     Auth::routes([
         'reset' => false,
