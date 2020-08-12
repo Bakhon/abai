@@ -1,20 +1,26 @@
 <template>
   <div>
     <div class="visual-center-center">
-      <li class="circle-2" tabindex="-2">
-        <div
-          class="circle-2-string"
+      <a href="#">
+        <li
+          class="circle-2"
+          tabindex="-2"
+          :style="`${buttonHover1}`"
           @click="getProduction('oil_plan', 'oil_fact')"
         >
-          Добыча нефти
-        </div>
-      </li>
+          <div class="circle-2-string">
+            Добыча нефти
+          </div>
+        </li>
+      </a>
       <a href="#">
-        <li class="circle-2" tabindex="-2">
-          <div
-            class="circle-2-string"
-            @click="getProduction('oil_dlv_plan', 'oil_dlv_fact')"
-          >
+        <li
+          class="circle-2"
+          tabindex="-2"
+          :style="`${buttonHover2}`"
+          @click="getProduction('oil_dlv_plan', 'oil_dlv_fact')"
+        >
+          <div class="circle-2-string">
             Сдача нефти
           </div>
         </li>
@@ -23,6 +29,7 @@
         <li
           class="circle-2"
           tabindex="-2"
+          :style="`${buttonHover3}`"
           @click="getProduction('gas_plan', 'gas_fact')"
         >
           <div class="circle-2-string">Добыча газа</div>
@@ -32,6 +39,7 @@
         <li
           class="circle-2"
           tabindex="-2"
+          :style="`${buttonHover4}`"
           @click="getProduction('liq_plan', 'liq_fact')"
         >
           <div class="circle-2-string">Добыча жидкости</div>
@@ -41,6 +49,7 @@
         <li
           class="circle-2"
           tabindex="-2"
+          :style="`${buttonHover5}`"
           @click="getProduction('gk_plan', 'gk_fact')"
         >
           <div class="circle-2-string">Добыча конденсата</div>
@@ -50,6 +59,7 @@
         <li
           class="circle-2"
           tabindex="-2"
+          :style="`${buttonHover6}`"
           @click="getProduction('inj_plan', 'inj_fact')"
         >
           <div class="circle-2-string">Объём закачки</div>
@@ -58,7 +68,7 @@
     </div>
     <div class="tables">
       <div class="tables-name">Добыча нефти и конденсата</div>
-      <div class="btn btn-info2" @click="getTable()">Вывести таблицу</div>
+      <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
       <div class="tables-string">
         <div class="cell-colour-top table-border"></div>
         <div class="cell-number-top table-border">№</div>
@@ -123,9 +133,11 @@ export default {
   data: function () {
     return {
       series: "",
-      production: "",
+      buttonHover1: "",
+      buttonHover2: "",
     };
   },
+
   methods: {
     getColor(status) {
       if (status < "0") return "#b40300";
@@ -135,10 +147,17 @@ export default {
     getProduction(item, item2) {
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
-      //this.production = localStorage.getItem("production-fact");
-    },
-    getTable() {
+
+      var productionPlan = localStorage.getItem("production-plan");
+      var productionFact = localStorage.getItem("production-fact");
+
+      /* getColorButton() {
+      if (localStorage.getItem("production-plan") == "oil_plan") return "#b40300";
+      return "#008a17";
+    },*/
+
       let company = localStorage.getItem("company");
+      //let uri = "/js/json/getnkkmgyear.json";
       let uri = "/js/json/getnkkmg.json";
       //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
@@ -146,13 +165,6 @@ export default {
         if (data) {
           var arrdata = new Array();
           arrdata = _.filter(data, _.iteratee({ dzo: company }));
-          /* this.series= arrdata;*/
-
-          //console.log(_.uniqBy(data, "dzo"));
-
-          var productionPlan = localStorage.getItem("production-plan");
-          var productionFact = localStorage.getItem("production-fact");
-
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
@@ -198,6 +210,47 @@ export default {
           );
 
           this.series = result;
+
+          var buttonHover =
+            "border: none;" +
+            " background: url(../img/visualcenter/button-hover.png) no-repeat;" +
+            "    background-size: 100% auto;" +
+            " background-color: #1c6fb6;";
+
+          if (productionPlan == "oil_plan") {
+            this.buttonHover1 = buttonHover;
+          } else {
+            this.buttonHover1 = "";
+          }
+          if (productionPlan == "oil_dlv_plan") {
+            this.buttonHover2 = buttonHover;
+          } else {
+            this.buttonHover2 = "";
+          }
+
+           if (productionPlan == "gas_plan") {
+            this.buttonHover3 = buttonHover;
+          } else {
+            this.buttonHover3 = "";
+          }
+
+                      if (productionPlan == "liq_plan") {
+            this.buttonHover4 = buttonHover;
+          } else {
+            this.buttonHover4 = "";
+          }
+
+                      if (productionPlan == "inj_plan") {
+            this.buttonHover5 = buttonHover;
+          } else {
+            this.buttonHover5 = "";
+          }
+
+                      if (productionPlan == "gk_plan") {
+            this.buttonHover6 = buttonHover;
+          } else {
+            this.buttonHover6 = "";  }
+
         } else {
           console.log("No data");
         }

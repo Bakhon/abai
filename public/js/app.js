@@ -3078,11 +3078,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       series: "",
-      production: ""
+      buttonHover1: "",
+      buttonHover2: ""
     };
   },
   methods: {
@@ -3091,13 +3102,19 @@ __webpack_require__.r(__webpack_exports__);
       return "#008a17";
     },
     getProduction: function getProduction(item, item2) {
-      localStorage.setItem("production-plan", item);
-      localStorage.setItem("production-fact", item2); //this.production = localStorage.getItem("production-fact");
-    },
-    getTable: function getTable() {
       var _this = this;
 
-      var company = localStorage.getItem("company");
+      localStorage.setItem("production-plan", item);
+      localStorage.setItem("production-fact", item2);
+      var productionPlan = localStorage.getItem("production-plan");
+      var productionFact = localStorage.getItem("production-fact");
+      /* getColorButton() {
+      if (localStorage.getItem("production-plan") == "oil_plan") return "#b40300";
+      return "#008a17";
+      },*/
+
+      var company = localStorage.getItem("company"); //let uri = "/js/json/getnkkmgyear.json";
+
       var uri = "/js/json/getnkkmg.json"; //let uri = "/ru/getnkkmg";
 
       this.axios.get(uri).then(function (response) {
@@ -3108,11 +3125,6 @@ __webpack_require__.r(__webpack_exports__);
           arrdata = _.filter(data, _.iteratee({
             dzo: company
           }));
-          /* this.series= arrdata;*/
-          //console.log(_.uniqBy(data, "dzo"));
-
-          var productionPlan = localStorage.getItem("production-plan");
-          var productionFact = localStorage.getItem("production-fact");
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
@@ -3174,6 +3186,43 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           _this.series = result;
+          var buttonHover = "border: none;" + " background: url(../img/visualcenter/button-hover.png) no-repeat;" + "    background-size: 100% auto;" + " background-color: #1c6fb6;";
+
+          if (productionPlan == "oil_plan") {
+            _this.buttonHover1 = buttonHover;
+          } else {
+            _this.buttonHover1 = "";
+          }
+
+          if (productionPlan == "oil_dlv_plan") {
+            _this.buttonHover2 = buttonHover;
+          } else {
+            _this.buttonHover2 = "";
+          }
+
+          if (productionPlan == "gas_plan") {
+            _this.buttonHover3 = buttonHover;
+          } else {
+            _this.buttonHover3 = "";
+          }
+
+          if (productionPlan == "liq_plan") {
+            _this.buttonHover4 = buttonHover;
+          } else {
+            _this.buttonHover4 = "";
+          }
+
+          if (productionPlan == "inj_plan") {
+            _this.buttonHover5 = buttonHover;
+          } else {
+            _this.buttonHover5 = "";
+          }
+
+          if (productionPlan == "gk_plan") {
+            _this.buttonHover6 = buttonHover;
+          } else {
+            _this.buttonHover6 = "";
+          }
         } else {
           console.log("No data");
         }
@@ -74282,36 +74331,25 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "visual-center-center" }, [
-      _c("li", { staticClass: "circle-2", attrs: { tabindex: "-2" } }, [
+      _c("a", { attrs: { href: "#" } }, [
         _c(
-          "div",
+          "li",
           {
-            staticClass: "circle-2-string",
+            staticClass: "circle-2",
+            style: "" + _vm.buttonHover1,
+            attrs: { tabindex: "-2" },
             on: {
               click: function($event) {
                 return _vm.getProduction("oil_plan", "oil_fact")
               }
             }
           },
-          [_vm._v("\n        Добыча нефти\n      ")]
+          [
+            _c("div", { staticClass: "circle-2-string" }, [
+              _vm._v("\n          Добыча нефти\n        ")
+            ])
+          ]
         )
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c("li", { staticClass: "circle-2", attrs: { tabindex: "-2" } }, [
-          _c(
-            "div",
-            {
-              staticClass: "circle-2-string",
-              on: {
-                click: function($event) {
-                  return _vm.getProduction("oil_dlv_plan", "oil_dlv_fact")
-                }
-              }
-            },
-            [_vm._v("\n          Сдача нефти\n        ")]
-          )
-        ])
       ]),
       _vm._v(" "),
       _c("a", { attrs: { href: "#" } }, [
@@ -74319,6 +74357,28 @@ var render = function() {
           "li",
           {
             staticClass: "circle-2",
+            style: "" + _vm.buttonHover2,
+            attrs: { tabindex: "-2" },
+            on: {
+              click: function($event) {
+                return _vm.getProduction("oil_dlv_plan", "oil_dlv_fact")
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "circle-2-string" }, [
+              _vm._v("\n          Сдача нефти\n        ")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("a", { attrs: { href: "#" } }, [
+        _c(
+          "li",
+          {
+            staticClass: "circle-2",
+            style: "" + _vm.buttonHover3,
             attrs: { tabindex: "-2" },
             on: {
               click: function($event) {
@@ -74339,6 +74399,7 @@ var render = function() {
           "li",
           {
             staticClass: "circle-2",
+            style: "" + _vm.buttonHover4,
             attrs: { tabindex: "-2" },
             on: {
               click: function($event) {
@@ -74359,6 +74420,7 @@ var render = function() {
           "li",
           {
             staticClass: "circle-2",
+            style: "" + _vm.buttonHover5,
             attrs: { tabindex: "-2" },
             on: {
               click: function($event) {
@@ -74379,6 +74441,7 @@ var render = function() {
           "li",
           {
             staticClass: "circle-2",
+            style: "" + _vm.buttonHover6,
             attrs: { tabindex: "-2" },
             on: {
               click: function($event) {
@@ -74402,19 +74465,6 @@ var render = function() {
         _c("div", { staticClass: "tables-name" }, [
           _vm._v("Добыча нефти и конденсата")
         ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "btn btn-info2",
-            on: {
-              click: function($event) {
-                return _vm.getTable()
-              }
-            }
-          },
-          [_vm._v("Вывести таблицу")]
-        ),
         _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
