@@ -193,6 +193,29 @@ class DruidController extends Controller
         return response()->json($response->data());
 
     }
+
+    public function getWellDailyOil(){
+        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+
+        $builder = $client->query('well_daily_oil2_v10', Granularity::DAY);
+
+        $builder
+            ->interval('2020-01-01T00:00:00+00:00/2020-01-02T00:00:00+00:00')
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy-MM-dd');
+            })
+            ->select('surfx')
+            ->select('surfy')
+            ->select('well_uwi')
+            ->select('org');
+
+
+        $result = $builder->groupBy();
+
+        return response()->json($result->data());
+
+    }
+
     public function maps()
     {
 	   return view('maps.maps');
