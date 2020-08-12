@@ -3018,10 +3018,82 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      series: ""
+      series: "",
+      buttonHover1: "",
+      buttonHover2: ""
     };
   },
   methods: {
@@ -3029,10 +3101,20 @@ __webpack_require__.r(__webpack_exports__);
       if (status < "0") return "#b40300";
       return "#008a17";
     },
-    getTable: function getTable() {
+    getProduction: function getProduction(item, item2) {
       var _this = this;
 
-      var company = localStorage.getItem("company");
+      localStorage.setItem("production-plan", item);
+      localStorage.setItem("production-fact", item2);
+      var productionPlan = localStorage.getItem("production-plan");
+      var productionFact = localStorage.getItem("production-fact");
+      /* getColorButton() {
+      if (localStorage.getItem("production-plan") == "oil_plan") return "#b40300";
+      return "#008a17";
+      },*/
+
+      var company = localStorage.getItem("company"); //let uri = "/js/json/getnkkmgyear.json";
+
       var uri = "/js/json/getnkkmg.json"; //let uri = "/ru/getnkkmg";
 
       this.axios.get(uri).then(function (response) {
@@ -3043,7 +3125,104 @@ __webpack_require__.r(__webpack_exports__);
           arrdata = _.filter(data, _.iteratee({
             dzo: company
           }));
-          _this.series = arrdata;
+          var dzo = new Array();
+          var liq_fact = new Array();
+          var liq_plan = new Array();
+          var time = new Array();
+
+          _.forEach(arrdata, function (item) {
+            dzo.push(item.dzo);
+            liq_fact.push(item[productionFact]);
+            liq_plan.push(item[productionPlan]);
+            time.push(item.__time);
+          }); //Собираем массив по отдельности
+
+
+          var dzo2 = new Array();
+
+          _.each(dzo, function (dzo) {
+            dzo2.push({
+              dzo: dzo
+            });
+          });
+
+          var liq_fact2 = new Array();
+
+          _.each(liq_fact, function (fact) {
+            liq_fact2.push({
+              fact: fact
+            });
+          });
+
+          var liq_plan2 = new Array();
+
+          _.each(liq_plan, function (plan) {
+            liq_plan2.push({
+              plan: plan
+            });
+          });
+
+          var __time2 = new Array();
+
+          _.each(time, function (time) {
+            time = new Date(time).toLocaleDateString().split("/");
+
+            __time2.push({
+              time: time
+            });
+          }); //----------------------------
+
+
+          var result = _.zipWith(_.sortBy(dzo2, function (dzo) {
+            return dzo.dzo;
+          }), _.sortBy(liq_fact2, function (liq_fact) {
+            return liq_fact.liq_fact;
+          }), _.sortBy(liq_plan2, function (liq_plan) {
+            return liq_plan.liq_plan;
+          }), _.sortBy(__time2, function (time) {
+            return time.time;
+          }), function (dzo, liq_fact, liq_plan, time) {
+            return _.defaults(dzo, liq_fact, liq_plan, time);
+          });
+
+          _this.series = result;
+          var buttonHover = "border: none;" + " background: url(../img/visualcenter/button-hover.png) no-repeat;" + "    background-size: 100% auto;" + " background-color: #1c6fb6;";
+
+          if (productionPlan == "oil_plan") {
+            _this.buttonHover1 = buttonHover;
+          } else {
+            _this.buttonHover1 = "";
+          }
+
+          if (productionPlan == "oil_dlv_plan") {
+            _this.buttonHover2 = buttonHover;
+          } else {
+            _this.buttonHover2 = "";
+          }
+
+          if (productionPlan == "gas_plan") {
+            _this.buttonHover3 = buttonHover;
+          } else {
+            _this.buttonHover3 = "";
+          }
+
+          if (productionPlan == "liq_plan") {
+            _this.buttonHover4 = buttonHover;
+          } else {
+            _this.buttonHover4 = "";
+          }
+
+          if (productionPlan == "inj_plan") {
+            _this.buttonHover5 = buttonHover;
+          } else {
+            _this.buttonHover5 = "";
+          }
+
+          if (productionPlan == "gk_plan") {
+            _this.buttonHover6 = buttonHover;
+          } else {
+            _this.buttonHover6 = "";
+          }
         } else {
           console.log("No data");
         }
@@ -74150,99 +74329,220 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "tables" },
-    [
-      _c("div", { staticClass: "tables-name" }, [
-        _vm._v("Добыча нефти и конденсата")
+  return _c("div", [
+    _c("div", { staticClass: "visual-center-center" }, [
+      _c("a", { attrs: { href: "#" } }, [
+        _c(
+          "li",
+          {
+            staticClass: "circle-2",
+            style: "" + _vm.buttonHover1,
+            attrs: { tabindex: "-2" },
+            on: {
+              click: function($event) {
+                return _vm.getProduction("oil_plan", "oil_fact")
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "circle-2-string" }, [
+              _vm._v("\n          Добыча нефти\n        ")
+            ])
+          ]
+        )
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "btn btn-info2",
-          on: {
-            click: function($event) {
-              return _vm.getTable()
+      _c("a", { attrs: { href: "#" } }, [
+        _c(
+          "li",
+          {
+            staticClass: "circle-2",
+            style: "" + _vm.buttonHover2,
+            attrs: { tabindex: "-2" },
+            on: {
+              click: function($event) {
+                return _vm.getProduction("oil_dlv_plan", "oil_dlv_fact")
+              }
             }
-          }
-        },
-        [_vm._v("Вывести таблицу")]
-      ),
+          },
+          [
+            _c("div", { staticClass: "circle-2-string" }, [
+              _vm._v("\n          Сдача нефти\n        ")
+            ])
+          ]
+        )
+      ]),
       _vm._v(" "),
-      _vm._m(0),
+      _c("a", { attrs: { href: "#" } }, [
+        _c(
+          "li",
+          {
+            staticClass: "circle-2",
+            style: "" + _vm.buttonHover3,
+            attrs: { tabindex: "-2" },
+            on: {
+              click: function($event) {
+                return _vm.getProduction("gas_plan", "gas_fact")
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "circle-2-string" }, [
+              _vm._v("Добыча газа")
+            ])
+          ]
+        )
+      ]),
       _vm._v(" "),
-      _c("div", { staticStyle: { clear: "both" } }),
+      _c("a", { attrs: { href: "#" } }, [
+        _c(
+          "li",
+          {
+            staticClass: "circle-2",
+            style: "" + _vm.buttonHover4,
+            attrs: { tabindex: "-2" },
+            on: {
+              click: function($event) {
+                return _vm.getProduction("liq_plan", "liq_fact")
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "circle-2-string" }, [
+              _vm._v("Добыча жидкости")
+            ])
+          ]
+        )
+      ]),
       _vm._v(" "),
-      _vm._l(_vm.series, function(item) {
-        return _c("div", [
-          _c("div", [
+      _c("a", { attrs: { href: "#" } }, [
+        _c(
+          "li",
+          {
+            staticClass: "circle-2",
+            style: "" + _vm.buttonHover5,
+            attrs: { tabindex: "-2" },
+            on: {
+              click: function($event) {
+                return _vm.getProduction("gk_plan", "gk_fact")
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "circle-2-string" }, [
+              _vm._v("Добыча конденсата")
+            ])
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("a", { attrs: { href: "#" } }, [
+        _c(
+          "li",
+          {
+            staticClass: "circle-2",
+            style: "" + _vm.buttonHover6,
+            attrs: { tabindex: "-2" },
+            on: {
+              click: function($event) {
+                return _vm.getProduction("inj_plan", "inj_fact")
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "circle-2-string" }, [
+              _vm._v("Объём закачки")
+            ])
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "tables" },
+      [
+        _c("div", { staticClass: "tables-name" }, [
+          _vm._v("Добыча нефти и конденсата")
+        ]),
+        _vm._v(" "),
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticStyle: { clear: "both" } }),
+        _vm._v(" "),
+        _vm._l(_vm.series, function(item) {
+          return _c("div", [
             _c("div", [
-              _c("div", { staticClass: "cell-colour table-border" }, [
-                _c("div", {
-                  staticClass: "circle-table",
-                  style:
-                    "background: " + _vm.getColor(item.liq_fact - item.liq_plan)
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell-number table-border" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell-name table-border" }, [
-                _vm._v(_vm._s(item.dzo))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border" }, [
-                _vm._v(_vm._s(item.liq_plan))
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border" }, [
-                _vm._v(_vm._s(item.liq_fact))
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                {
-                  staticClass: "cell table-border colour",
-                  style:
-                    "background: " + _vm.getColor(item.liq_fact - item.liq_plan)
-                },
-                [
+              _c("div", [
+                _c("div", { staticClass: "cell-colour table-border" }, [
+                  _c("div", {
+                    staticClass: "circle-table",
+                    style: "background: " + _vm.getColor(item.fact - item.plan)
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell-number table-border" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell-name table-border" }, [
                   _vm._v(
-                    "\n          " +
-                      _vm._s(item.liq_fact - item.liq_plan) +
-                      "\n        "
+                    "\n            " +
+                      _vm._s(item.dzo) +
+                      " " +
+                      _vm._s(item.time) +
+                      "\n          "
                   )
-                ]
-              ),
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border" }, [
+                  _vm._v(_vm._s(item.plan))
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border" }, [
+                  _vm._v(_vm._s(item.fact))
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "cell table-border colour",
+                    style: "background: " + _vm.getColor(item.fact - item.plan)
+                  },
+                  [
+                    _vm._v(
+                      "\n            " +
+                        _vm._s(item.fact - item.plan) +
+                        "\n          "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border colour" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "cell table-border cell-last colour" })
+              ]),
               _vm._v(" "),
-              _c("div", { staticClass: "cell table-border" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border colour" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "cell table-border cell-last colour" })
+              _c("div", { staticStyle: { clear: "both" } })
             ]),
             _vm._v(" "),
-            _c("div", { staticStyle: { clear: "both" } })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "tables-bottom-line" })
-        ])
-      })
-    ],
-    2
-  )
+            _c("div", { staticClass: "tables-bottom-line" })
+          ])
+        })
+      ],
+      2
+    )
+  ])
 }
 var staticRenderFns = [
   function() {

@@ -1146,3 +1146,14 @@ li.circle-2 {
     margin-top: -50px;
     position: absolute;
 }
+
+.btn-primary {
+    background: url(../img/big-data-button.png) no-repeat;
+    background-size: contain;
+    width: 120px;
+    height: 38px;
+    margin-top: -7px;
+    margin-left: 40px;
+    border-radius: 50px;
+    position: absolute;
+}

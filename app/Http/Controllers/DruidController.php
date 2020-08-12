@@ -193,4 +193,8 @@ class DruidController extends Controller
         return response()->json($response->data());
 
     }
+    public function maps()
+    {
+	   return view('maps.maps');
+    }
 }
