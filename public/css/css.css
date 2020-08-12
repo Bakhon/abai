@@ -1133,10 +1133,19 @@ ul.dropdown-child {
     width: 1285px;
     background: #122f70;
     height: 40px;
+    color: #fff;
+}
+
+.day {
+    float: left;
+    padding: 0px 5px;
+    margin-top: 10px;
+    list-style-type: none;
 }
 
 li.circle-2 {
     margin-top: 35px;
+    outline: none;
 }
 
 .btn-info2 {

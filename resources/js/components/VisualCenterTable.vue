@@ -1,5 +1,14 @@
 <template>
   <div>
+  <div class="month-day">
+
+  <li class="day">1</li>
+    <li class="day">2</li>
+      <li class="day">3</li>
+  
+  </div>
+                         <div class="visual-center-center">
+                    <div class="tables">
     <div class="visual-center-center">
       <a href="#">
         <li
@@ -126,6 +135,8 @@
       </div>
     </div>
   </div>
+  </div>
+  </div>
 </template>
 
 <script>
@@ -135,6 +146,10 @@ export default {
       series: "",
       buttonHover1: "",
       buttonHover2: "",
+      buttonHover3: "",
+      buttonHover4: "",
+      buttonHover5: "",
+      buttonHover6: "",
     };
   },
 
@@ -151,12 +166,12 @@ export default {
       var productionPlan = localStorage.getItem("production-plan");
       var productionFact = localStorage.getItem("production-fact");
 
-      /* getColorButton() {
-      if (localStorage.getItem("production-plan") == "oil_plan") return "#b40300";
-      return "#008a17";
-    },*/
-
       let company = localStorage.getItem("company");
+      if (company === null) {
+        alert("Сначала выберите название компании");
+      }
+   
+
       //let uri = "/js/json/getnkkmgyear.json";
       let uri = "/js/json/getnkkmg.json";
       //let uri = "/ru/getnkkmg";
@@ -176,6 +191,9 @@ export default {
             time.push(item.__time);
           });
 
+
+        
+
           //Собираем массив по отдельности
           var dzo2 = new Array();
           _.each(dzo, function (dzo) {
@@ -194,12 +212,12 @@ export default {
 
           var __time2 = new Array();
           _.each(time, function (time) {
-            time = new Date(time).toLocaleDateString().split("/");
+            time = new Date(time).toLocaleDateString();
+           //time = new Date(time);
             __time2.push({ time });
           });
 
           //----------------------------
-
           var result = _.zipWith(
             _.sortBy(dzo2, (dzo) => dzo.dzo),
             _.sortBy(liq_fact2, (liq_fact) => liq_fact.liq_fact),
@@ -210,6 +228,7 @@ export default {
           );
 
           this.series = result;
+          //_.sortBy(result, ["time"]);
 
           var buttonHover =
             "border: none;" +
@@ -228,28 +247,50 @@ export default {
             this.buttonHover2 = "";
           }
 
-           if (productionPlan == "gas_plan") {
+          if (productionPlan == "gas_plan") {
             this.buttonHover3 = buttonHover;
           } else {
             this.buttonHover3 = "";
           }
 
-                      if (productionPlan == "liq_plan") {
+          if (productionPlan == "liq_plan") {
             this.buttonHover4 = buttonHover;
           } else {
             this.buttonHover4 = "";
           }
 
-                      if (productionPlan == "inj_plan") {
+          if (productionPlan == "gk_plan") {
             this.buttonHover5 = buttonHover;
           } else {
             this.buttonHover5 = "";
           }
 
-                      if (productionPlan == "gk_plan") {
+          if (productionPlan == "inj_plan") {
             this.buttonHover6 = buttonHover;
           } else {
-            this.buttonHover6 = "";  }
+            this.buttonHover6 = "";
+          }
+
+
+//console.log(__time2);
+
+//var nowDate=new Date().toLocaleDateString().split(".")
+//console.log(nowDate[1]);
+
+var SelectDate=new Date('2020.02.08').toLocaleDateString().split(".")
+//console.log(SelectDate);
+
+
+  var calendarMonth = new Array();
+          _.each(time, function (time) {
+       var calendarDate=new Date(time).toLocaleDateString().split(".")
+       if (SelectDate[1]==calendarDate[1]){
+      // console.log(SelectDate[1]==calendarDate[1]);
+             calendarMonth.push({ time });}
+          });
+console.log(calendarMonth);
+
+
 
         } else {
           console.log("No data");

@@ -25,9 +25,7 @@
                     <div class="level2-tab" tabindex="-3">Месяц</div>
                     <div class="level2-tab" tabindex="-3">Год</div>
                 </div>
-                <div class="month-day"></div>
-                <div class="visual-center-center">
-                    <div class="tables">
+              <div>
                         <visual-center-table></visual-center-table>
                     </div>
                     <div class="visual-center-center">
