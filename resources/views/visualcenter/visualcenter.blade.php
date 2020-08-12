@@ -27,38 +27,6 @@
                 </div>
                 <div class="month-day"></div>
                 <div class="visual-center-center">
-                    <a href="">
-                        <li class="circle-2" tabindex="-2">
-                            <div class="circle-2-string">Добыча нефти</div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="circle-2" tabindex="-2">
-                            <div class="circle-2-string">Сдача нефти</div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="circle-2" tabindex="-2">
-                            <div class="circle-2-string">Добыча газа</div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="circle-2" tabindex="-2">
-                            <div class="circle-2-string">Добыча жидкости</div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="circle-2" tabindex="-2">
-                            <div class="circle-2-string">Добыча конденсата</div>
-                        </li>
-                    </a>
-                    <a href="">
-                        <li class="circle-2" tabindex="-2">
-                            <div class="circle-2-string">Объём закачки</div>
-                        </li>
-                    </a>
-                </div>
-                <div class="visual-center-center">
                     <div class="tables">
                         <visual-center-table></visual-center-table>
                     </div>
