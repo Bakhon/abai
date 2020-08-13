@@ -1,35 +1,29 @@
 <template>
   <div>
     <div class="month-day">
-      <div class="navigation">
-        <div v-on:click="decrease"><</div>
+      <div class="navigation-table">
+        <div class="navigation">
+          <div v-on:click="decrease"><</div>
+        </div>
+        <div class="navigation-month" colspan="5">
+          {{ monthes[month] }} {{ year }}
+        </div>
+        <div class="navigation">
+          <div v-on:click="increase">></div>
+        </div>
       </div>
-      <div class="navigation" colspan="5">{{ monthes[month] }} {{ year }}</div>
-      <div class="navigation">
-        <div v-on:click="increase">></div>
-      </div>
-      <!--	<div class="day" v-for="d in day">{{d}}</div>-->
+      <!--<div class="day" v-for="d in day">{{d}}</div>-->
 
       <div v-for="week in calendar()">
         <div
+          @click="selectedDay = day.index"
+          v-on:click="getSelectedDay()"
           class="week"
           v-for="(day, index) in week"
           :style="{ color: day.weekend, 'background-color': day.current }"
         >
-          {{ day.index }}
+          <div>{{ day.index }}</div>
         </div>
-
-        <!--<div class="format-week">
-	<h4>Format week</h4>
-	<div>
-		<input type="radio" value="1" v-model="dFirstMonth" id="customRadio1" name="customRadio" class="custom-control-input">
-		<label for="customRadio1">Monday</label>
-	</div>
-	<div>
-		<input type="radio" value="0" v-model="dFirstMonth" id="customRadio2" name="customRadio" class="custom-control-input">
-		<label for="customRadio2">Sunday</label>
-	</div>
-</div>-->
       </div>
     </div>
     <div class="visual-center-center">
@@ -194,6 +188,7 @@ export default {
         "ДЕКАБРЬ",
       ],
       date: new Date(),
+      selectedDay: undefined,
     };
   },
 
@@ -222,7 +217,53 @@ export default {
         let data = response.data;
         if (data) {
           var arrdata = new Array();
-          arrdata = _.filter(data, _.iteratee({ dzo: company }));
+
+
+
+               //select date filter
+          var SelectDate = new Date(
+            this.year + "/" + (this.month + 1) + "/" + this.selectedDay
+          ).toLocaleDateString(); 
+        //   this.month+1.'.'.this.selectedDay)
+          var calendarFilter = new Array();
+          _.each(__time2, function (time) {
+            /*  console.log(time.time);
+             console.log(SelectDate);*/
+
+            if (SelectDate == time.time) {
+              calendarFilter.push({ time });
+            }
+          });
+          //console.log(calendarFilter);
+          //select date filter
+
+
+
+
+
+
+           // time = new Date(time).toLocaleDateString();
+
+         //  new Date().valueOf()
+
+           //var myDate = "26-02-2012";
+//myDate = myDate.split("-");
+
+
+
+
+var newDate = this.year+"/"+(this.month + 1) +"/"+this.selectedDay;
+var timestamp=new Date(newDate).getTime();
+//console.log(new Date(newDate).getTime());
+
+     //     arrdata = _.filter(data, _.iteratee({ __time:  ((timestamp+86400)>timestamp<(timestamp-86400))} )); //1577836800000   SelectDate
+        
+        console.log(timestamp);
+       //  arrdata = _.filter(data, _.iteratee({ __time:  ((timestamp+86400)>timestamp)} ));
+         
+           // console.log(new Date(SelectDate).valueOf());  
+             
+             arrdata = _.filter(data, _.iteratee({ dzo: company }));
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
@@ -252,11 +293,12 @@ export default {
 
           var __time2 = new Array();
           _.each(time, function (time) {
-            time = new Date(time).toLocaleDateString();
+           // time = new Date(time).toLocaleDateString();
             //time = new Date(time);
             __time2.push({ time });
           });
 
+ 
           //----------------------------
           var result = _.zipWith(
             _.sortBy(dzo2, (dzo) => dzo.dzo),
@@ -310,24 +352,17 @@ export default {
           } else {
             this.buttonHover6 = "";
           }
-
-          var SelectDate = new Date("2020.02.08")
-            .toLocaleDateString()
-            .split(".");
-
-          var calendarMonth = new Array();
-          _.each(time, function (time) {
-            var calendarDate = new Date(time).toLocaleDateString().split(".");
-            if (SelectDate[1] == calendarDate[1]) {
-              // console.log(SelectDate[1]==calendarDate[1]);
-              calendarMonth.push({ time });
-            }
-          });
-          console.log(calendarMonth);
         } else {
           console.log("No data");
         }
       });
+    },
+
+    getSelectedDay() {
+      localStorage.setItem("selected-day", this.selectedDay);
+      var selectedDay = localStorage.getItem("selected-day");
+      this.selectedDay = selectedDay;
+      this.selectedColour = "background:red!important;";
     },
 
     calendar: function () {
@@ -339,20 +374,26 @@ export default {
         if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
           var a = { index: i };
           days[week].push(a);
-          if (
+
+          if (this.selectedDay == i) {
+            a.current = "black";
+          } else if (
             i == new Date().getDate() &&
             this.year == new Date().getFullYear() &&
             this.month == new Date().getMonth()
           ) {
-            a.current = "#747ae6";
+            a.current = "#009846";
           }
+
           if (
             new Date(this.year, this.month, i).getDay() == 6 ||
             new Date(this.year, this.month, i).getDay() == 0
           ) {
             a.weekend = "#ff0000";
           }
-        } else {
+        }
+
+        /* else {
           week++;
 
           days[week] = [];
@@ -371,7 +412,7 @@ export default {
           ) {
             a.weekend = "#ff0000";
           }
-        }
+        }*/
       }
 
       if (days[0].length > 0) {
