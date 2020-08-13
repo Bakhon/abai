@@ -1138,7 +1138,7 @@ ul.dropdown-child {
 
 .day {
     float: left;
-    padding: 0px 5px;
+    padding: 0px 10px;
     margin-top: 10px;
     list-style-type: none;
 }
@@ -1165,4 +1165,35 @@ li.circle-2 {
     margin-left: 40px;
     border-radius: 50px;
     position: absolute;
+}
+
+
+/*calendar*/
+
+.table {
+    border-collapse: collapse;
+    float: left;
+    width: 180px;
+    table-layout: fixed;
+}
+
+.format-week {
+    float: right;
+}
+
+.table td {
+    text-align: center;
+}
+
+.table thead tr:last-child {
+    background-color: #dedada;
+}
+
+.navigation {
+    float: left;
+}
+
+.week {
+    float: left;
+    padding: 9px;
 }

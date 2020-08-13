@@ -21,10 +21,11 @@
                     </div>
                 </div>
                 <div class="visual-center-center">
+               
                     <div class="level2-tab active" tabindex="-3">День</div>
                     <div class="level2-tab" tabindex="-3">Месяц</div>
                     <div class="level2-tab" tabindex="-3">Год</div>
-                </div>
+            
               <div>
                         <visual-center-table></visual-center-table>
                     </div>
