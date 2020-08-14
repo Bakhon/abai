@@ -2521,15 +2521,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'mix-chart',
+  name: "mix-chart",
+  props: ["starts"],
   data: function data() {
     return {
       chartOptions: {
         tooltip: {
-          theme: 'dark',
+          theme: "dark",
           x: {
             show: false
           },
@@ -2537,32 +2542,32 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
             title: {
               show: false,
               formatter: function formatter() {
-                return '';
+                return "";
               }
             }
           }
         },
-        colors: ['#e8e522'],
+        colors: ["#e8e522"],
         chart: {
           animations: {
             speed: 200
           },
           height: 180,
-          type: 'bar'
+          type: "bar"
         },
         plotOptions: {
           bar: {
             dataLabels: {
-              position: 'top' // top, center, bottom
+              position: "top" // top, center, bottom
 
             },
-            columnWidth: '50%'
+            columnWidth: "50%"
           }
         },
         dataLabels: {
-          enabled: false,
-
+          enabled: false
           /*вывод значений из раздела data*/
+          ,
           formatter: function formatter(val) {
             return val
             /*+"%"*/
@@ -2570,11 +2575,11 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
           },
           offsetY: -20,
           style: {
-            fontSize: '12px',
+            fontSize: "12px",
             colors: ["#c5c5c5"]
           }
         },
-        labels: ['1', '2', '3'],
+        labels: ["1", "2", "3"],
         yaxis: {
           axisBorder: {
             show: false
@@ -2593,7 +2598,7 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         },
         xaxis: {
           /* categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], вывод сверху списка месяцев*/
-          position: 'top',
+          position: "top",
           axisBorder: {
             show: false
           },
@@ -2603,14 +2608,24 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         }
       },
       series: [{
+        /*
         name: 'Факт',
         type: 'bar',
         stroke: {
-          show: false
-        },
-        data: [11, 32, 45]
+        show:false
+             },*/
+        data: [1, 2, 3]
       }]
     };
+  },
+  created: function created() {
+    var a = this.starts.starts_prs;
+    var b = this.starts.starts_krs;
+    var c = this.starts.starts_drl;
+    var starts2 = new Array({
+      data: [a, b, c]
+    });
+    this.series = starts2;
   }
 });
 
@@ -2633,32 +2648,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'mix-chart',
+  name: "mix-chart",
+  props: ["wells"],
   data: function data() {
     return {
-      series: [1011, 1006],
+      series: [0, 0],
       chartOptions: {
-        labels: ['В простое', 'В работе'],
+        labels: ["В работе", "В простое"],
         chart: {
-          type: 'donut'
+          type: "donut"
         },
         dataLabels: {
           enabled: false
-        },
-
+        }
         /*убирается подсветка процентов на круге*/
+        ,
 
         /*tooltip: {
         enabled: false},*/
         legend: {
           show: false
-        },
-
+        }
         /*убирается навигация рядом с кругом*/
-        colors: ['#47d660', '#ec5464'],
+        ,
+        colors: ["#47d660", "#ec5464"],
         plotOptions: {
           pie: {
             expandOnClick: true
@@ -2671,12 +2700,19 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
               width: 200
             },
             legend: {
-              position: 'bottom'
+              position: "bottom"
             }
           }
         }]
       }
     };
+  },
+  created: function created() {
+    console.log(this.wells);
+    var a = this.wells.inj_wells_work;
+    var b = this.wells.inj_wells_idle;
+    var wells = new Array(a, b);
+    this.series = wells;
   }
 });
 
@@ -3254,10 +3290,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3277,7 +3309,10 @@ __webpack_require__.r(__webpack_exports__);
       NameDzoFull: ["Всего добыча нефти и конденсата с учётом доли участия АО НК КазМунайГаз", "в т.ч.:газовый конденсат", "АО Озенмунайгаз (нефть) (100%)", "(конденсат)(100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "Aug", "Sep", "Oct", "Nov", "Dec"],
       date: new Date(),
       selectedDay: undefined,
-      series: ['0', '0'],
+      wells: [''],
+      starts: [''],
+      test: [''],
+      series: ['', ''],
       //      series2: ['2','3'],
       chartOptions: {
         labels: ["В работе", "В простое"],
@@ -3347,7 +3382,7 @@ __webpack_require__.r(__webpack_exports__);
           var timestamp = new Date(_this.monthes2[_this.month] + _this.selectedDay + " " + _this.year + " 06:00:00 GMT+0600").getTime();
           arrdata = _.filter(data, _.iteratee({
             __time: timestamp
-          })); //console.log(arrdata);
+          }));
 
           if (arrdata.length == 0) {
             alert("К сожалению на текущую дату нет данных, выберите другую дату");
@@ -3364,6 +3399,15 @@ __webpack_require__.r(__webpack_exports__);
           var time = new Array();
           var prod_wells_work = new Array();
           var prod_wells_idle = new Array();
+          var starts_krs = new Array();
+          var starts_prs = new Array();
+          var starts_drl = new Array();
+          var inj_wells_active = new Array();
+          var inj_wells_idle = new Array();
+          var inj_wells_work = new Array();
+          var prod_wells_active = new Array();
+          var prod_wells_idle = new Array();
+          var prod_wells_work = new Array();
 
           _.forEach(arrdata, function (item) {
             dzo.push(item.dzo);
@@ -3372,6 +3416,11 @@ __webpack_require__.r(__webpack_exports__);
             time.push(item.__time);
             prod_wells_work.push(item.prod_wells_work);
             prod_wells_idle.push(item.prod_wells_idle);
+            starts_krs.push(item.starts_krs);
+            starts_prs.push(item.starts_prs);
+            starts_drl.push(item.starts_drl);
+            inj_wells_work.push(item.inj_wells_work);
+            inj_wells_idle.push(item.inj_wells_idle);
           }); //Create massive with a part
 
 
@@ -3405,8 +3454,8 @@ __webpack_require__.r(__webpack_exports__);
           var __time2 = new Array();
 
           _.each(time, function (time) {
-            time = new Date(time).toLocaleDateString(); //   time = new Date(time);
-
+            //time = new Date(time).toLocaleDateString();
+            //   time = new Date(time);
             __time2.push({
               time: time
             });
@@ -3426,6 +3475,46 @@ __webpack_require__.r(__webpack_exports__);
             prod_wells_idle2.push({
               prod_wells_idle: prod_wells_idle
             });
+          });
+
+          var starts_krs2 = new Array();
+
+          _.each(starts_krs, function (starts_krs) {
+            starts_krs2.push({
+              starts_krs: starts_krs
+            });
+          });
+
+          var starts_prs2 = new Array();
+
+          _.each(starts_prs, function (starts_prs) {
+            starts_prs2.push({
+              starts_prs: starts_prs
+            });
+          });
+
+          var starts_drl2 = new Array();
+
+          _.each(starts_drl, function (starts_drl) {
+            starts_drl2.push({
+              starts_drl: starts_drl
+            });
+          });
+
+          var inj_wells_idle2 = new Array();
+
+          _.each(inj_wells_idle, function (inj_wells_idle) {
+            inj_wells_idle2.push({
+              inj_wells_idle: inj_wells_idle
+            });
+          });
+
+          var inj_wells_work2 = new Array();
+
+          _.each(inj_wells_work, function (inj_wells_work) {
+            inj_wells_work2.push({
+              inj_wells_work: inj_wells_work
+            });
           }); //----------------------------
 
 
@@ -3444,10 +3533,29 @@ __webpack_require__.r(__webpack_exports__);
           _this.tables = result;
           var prod_wells_work_one = prod_wells_work2[0].prod_wells_work;
           var prod_wells_idle_one = prod_wells_idle2[0].prod_wells_idle;
-          _this.series = [prod_wells_work_one, prod_wells_idle_one]; // ['1','2']
-          //console.log(prod_wells_work_one);
-          //_.sortBy(result, ["time"]);
+          _this.series = [prod_wells_work_one, prod_wells_idle_one];
 
+          var starts = _.zipWith(_.sortBy(starts_krs2, function (starts_krs) {
+            return starts_krs.starts_krs;
+          }), _.sortBy(starts_prs2, function (starts_prs) {
+            return starts_prs.starts_prs;
+          }), _.sortBy(starts_drl2, function (starts_drl) {
+            return starts_drl.starts_drl;
+          }), function (starts_krs, starts_prs, starts_drl) {
+            return _.defaults(starts_krs, starts_prs, starts_drl);
+          });
+
+          _this.starts = starts;
+
+          var wells = _.zipWith(_.sortBy(inj_wells_idle2, function (inj_wells_idle) {
+            return inj_wells_idle.inj_wells_idle;
+          }), _.sortBy(inj_wells_work2, function (inj_wells_work) {
+            return inj_wells_work.inj_wells_work;
+          }), function (inj_wells_idle, inj_wells_work) {
+            return _.defaults(inj_wells_idle, inj_wells_work);
+          });
+
+          _this.wells = wells;
           var buttonHover = "border: none;" + " background: url(../img/visualcenter/button-hover.png) no-repeat;" + "    background-size: 100% auto;" + " background-color: #1c6fb6;";
 
           if (productionPlan == "oil_plan") {
@@ -74077,7 +74185,19 @@ var render = function() {
     [
       _c("apexchart", {
         attrs: { type: "donut", options: _vm.chartOptions, series: _vm.series }
-      })
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "donut-inner1 inner1" }, [
+        _vm._v("\n  В работе\n    "),
+        _c("br"),
+        _vm._v("\n    " + _vm._s(_vm.wells.inj_wells_work) + "\n  ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "donut-inner1 inner2" }, [
+        _vm._v("\n    В простое"),
+        _c("br"),
+        _vm._v("\n    " + _vm._s(_vm.wells.inj_wells_idle) + "\n  ")
+      ])
     ],
     1
   )
@@ -74939,23 +75059,12 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "visual-center-center" },
-              [
-                _c("div", { staticClass: "tables-name" }, [
-                  _vm._v("График добычи за 16 июня 2020")
-                ]),
-                _vm._v(" "),
-                _c("visual-center-chart-area-center")
-              ],
-              1
-            ),
+            _vm._m(3),
             _vm._v(" "),
             _c("div", { staticClass: "visual-center-center" }, [
-              _vm._m(3),
-              _vm._v(" "),
               _vm._m(4),
+              _vm._v(" "),
+              _vm._m(5),
               _vm._v(" "),
               _c("div", { staticClass: "visual-center-bottom " }, [
                 _c("div", { staticClass: "difference-of-24" }, [
@@ -74965,7 +75074,12 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "visual-center-chart-bar-bottom" },
-                  [_c("visual-center-chart-bar-bottom")],
+                  _vm._l(_vm.starts, function(start, index) {
+                    return _c("visual-center-chart-bar-bottom", {
+                      key: start,
+                      attrs: { starts: start }
+                    })
+                  }),
                   1
                 )
               ])
@@ -74973,13 +75087,11 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "visual-center-right-column" }, [
-            _vm._m(5),
+            _vm._m(6),
             _vm._v(" "),
             _c("div", { staticClass: "donut" }, [
               _c("div", { staticClass: "indent" }, [
-                _vm._v(
-                  "\n                        Фонд добывающих скважин за 16 июня 2020"
-                )
+                _vm._v("\n                        Фонд добывающих скважин")
               ]),
               _vm._v(" "),
               _c("div", [
@@ -75012,7 +75124,22 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(6)
+            _c("div", { staticClass: "donut donut2" }, [
+              _c("div", { staticClass: "indent" }, [
+                _vm._v("Фонд нагнетательных скважин")
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                _vm._l(_vm.wells, function(well, index) {
+                  return _c("visual-center-chart-donut-right2", {
+                    key: well,
+                    attrs: { wells: well }
+                  })
+                }),
+                1
+              )
+            ])
           ])
         ])
       ])
@@ -75114,6 +75241,14 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "visual-center-center" }, [
+      _c("div", { staticClass: "tables-name" }, [_vm._v("График добычи")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "visual-center-bottom" }, [
       _c("div", { staticClass: "visual-center-string1 " }, [
         _vm._v("Отключение РП:")
@@ -75199,30 +75334,6 @@ var staticRenderFns = [
         },
         [_vm._v("\n                        Таблица\n                    ")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "donut donut2" }, [
-      _c("div", { staticClass: "indent" }, [
-        _vm._v("Фонд нагнетательных скважин за 16 июня 2020")
-      ]),
-      _vm._v(" "),
-      _c("div"),
-      _vm._v(" "),
-      _c("div", { staticClass: "donut-inner1 inner1" }, [
-        _vm._v("В работе"),
-        _c("br"),
-        _vm._v("1 005")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "donut-inner1 inner2" }, [
-        _vm._v("В простое"),
-        _c("br"),
-        _vm._v("1 011")
-      ])
     ])
   }
 ]

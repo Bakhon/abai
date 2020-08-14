@@ -1,14 +1,9 @@
 @extends('layouts.app')
 @section('content')
 <div class="col p-4">
-
                 <div>
                     <visual-center-table></visual-center-table>
                 </div>
-
-
-
-
 </div>          
 @endsection
 <style>
