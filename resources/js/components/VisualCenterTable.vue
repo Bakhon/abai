@@ -13,7 +13,6 @@
         </div>
       </div>
       <!--<div class="day" v-for="d in day">{{d}}</div>-->
-
       <div v-for="week in calendar()">
         <div
           @click="selectedDay = day.index"
@@ -98,7 +97,7 @@
           <div class="tables-name">Добыча нефти и конденсата</div>
           <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
           <div class="tables-string">
-            <div class="cell-colour-top table-border"></div>
+            <!--<div class="cell-colour-top table-border"></div>-->
             <div class="cell-number-top table-border">№</div>
             <div class="cell-name-top table-border">Предприятия</div>
             <div class="cell-last-top table-border cell-last">ДОБЫЧА, тонн</div>
@@ -121,12 +120,9 @@
           <div v-for="item in series">
             <div>
               <div>
-                <div class="cell-colour table-border">
-                  <div
-                    class="circle-table"
-                    :style="`background: ${getColor(item.fact - item.plan)}`"
-                  ></div>
-                </div>
+                <!-- <div class="cell-colour table-border">
+                 
+                </div>-->
                 <div class="cell-number table-border"></div>
                 <div class="cell-name table-border">
                   {{ item.dzo }} {{ item.time }}
@@ -135,10 +131,11 @@
                 <div class="cell table-border"></div>
                 <div class="cell table-border">{{ item.plan }}</div>
                 <div class="cell table-border">{{ item.fact }}</div>
-                <div
-                  class="cell table-border colour"
-                  :style="`background: ${getColor(item.fact - item.plan)}`"
-                >
+                <div class="cell table-border colour">
+                  <div
+                    class="circle-table"
+                    :style="`background: ${getColor(item.fact - item.plan)}`"
+                  ></div>
                   {{ item.fact - item.plan }}
                 </div>
                 <div class="cell table-border"></div>
@@ -187,6 +184,20 @@ export default {
         "НОЯБРЬ",
         "ДЕКАБРЬ",
       ],
+      monthes2: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
       date: new Date(),
       selectedDay: undefined,
     };
@@ -218,52 +229,24 @@ export default {
         if (data) {
           var arrdata = new Array();
 
+          var timestamp = new Date(
+            this.monthes2[this.month] +
+              this.selectedDay +
+              " " +
+              this.year +
+              " 06:00:00 GMT+0600"
+          ).getTime();
+          arrdata = _.filter(data, _.iteratee({ __time: timestamp })); //select date filter
 
+          if (arrdata.length == 0) {
+            alert(
+              "К сожалению на текущую дату нет данных, выберите другую дату"
+            );
+          } else {
+            arrdata = _.filter(arrdata, _.iteratee({ dzo: company }));
+          } //select dzo filter
 
-               //select date filter
-          var SelectDate = new Date(
-            this.year + "/" + (this.month + 1) + "/" + this.selectedDay
-          ).toLocaleDateString(); 
-        //   this.month+1.'.'.this.selectedDay)
-          var calendarFilter = new Array();
-          _.each(__time2, function (time) {
-            /*  console.log(time.time);
-             console.log(SelectDate);*/
-
-            if (SelectDate == time.time) {
-              calendarFilter.push({ time });
-            }
-          });
-          //console.log(calendarFilter);
-          //select date filter
-
-
-
-
-
-
-           // time = new Date(time).toLocaleDateString();
-
-         //  new Date().valueOf()
-
-           //var myDate = "26-02-2012";
-//myDate = myDate.split("-");
-
-
-
-
-var newDate = this.year+"/"+(this.month + 1) +"/"+this.selectedDay;
-var timestamp=new Date(newDate).getTime();
-//console.log(new Date(newDate).getTime());
-
-     //     arrdata = _.filter(data, _.iteratee({ __time:  ((timestamp+86400)>timestamp<(timestamp-86400))} )); //1577836800000   SelectDate
-        
-        console.log(timestamp);
-       //  arrdata = _.filter(data, _.iteratee({ __time:  ((timestamp+86400)>timestamp)} ));
-         
-           // console.log(new Date(SelectDate).valueOf());  
-             
-             arrdata = _.filter(data, _.iteratee({ dzo: company }));
+          console.log(arrdata);
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
@@ -293,12 +276,11 @@ var timestamp=new Date(newDate).getTime();
 
           var __time2 = new Array();
           _.each(time, function (time) {
-           // time = new Date(time).toLocaleDateString();
-            //time = new Date(time);
+            time = new Date(time).toLocaleDateString();
+            //   time = new Date(time);
             __time2.push({ time });
           });
 
- 
           //----------------------------
           var result = _.zipWith(
             _.sortBy(dzo2, (dzo) => dzo.dzo),
@@ -392,28 +374,7 @@ var timestamp=new Date(newDate).getTime();
             a.weekend = "#ff0000";
           }
         }
-
-        /* else {
-          week++;
-
-          days[week] = [];
-          a = { index: i };
-          days[week].push(a);
-          if (
-            i == new Date().getDate() &&
-            this.year == new Date().getFullYear() &&
-            this.month == new Date().getMonth()
-          ) {
-            a.current = "#747ae6";
-          }
-          if (
-            new Date(this.year, this.month, i).getDay() == 6 ||
-            new Date(this.year, this.month, i).getDay() == 0
-          ) {
-            a.weekend = "#ff0000";
-          }
-        }*/
-      }
+       }
 
       if (days[0].length > 0) {
         for (let i = days[0].length; i < 7; i++) {
@@ -421,7 +382,6 @@ var timestamp=new Date(newDate).getTime();
         }
       }
       this.dayChange;
-      //console.log(days);
       return days;
     },
     decrease: function () {
@@ -447,10 +407,7 @@ var timestamp=new Date(newDate).getTime();
       if (this.dFirstMonth == 0) {
         //this.day = ["Su", "Mn", "Tu", "We", "Th", "Fr", "Sa"];
         this.day = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
-      } else {
-        // this.day = ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-        this.day = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
-      }
+      } 
     },
   },
 };

@@ -807,9 +807,12 @@ li.circle-2:hover {
 .circle-table {
     background: #0d092a;
     border: none;
-    height: 15px;
+    height: 10px;
     border-radius: 50px;
-    margin-top: 17px;
+    margin-top: 19px;
+    width: 10px;
+    float: left;
+    margin-left: -3px;
 }
 
 .right-button {
@@ -1196,4 +1199,23 @@ li.circle-2 {
 .week {
     float: left;
     padding: 9px;
+}
+
+.navigation-table {
+    margin-top: 8px;
+    /* position: absolute; */
+    margin-left: 15px;
+    float: left;
+    font-size: 15px;
+    /* margin-right: -10; */
+}
+
+.navigation-month {
+    float: left;
+    width: 120px;
+    text-align: center;
+}
+
+.selected2:hover {
+    background: red;
 }
