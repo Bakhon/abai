@@ -1,5 +1,32 @@
 <template>
   <div>
+<div>
+ <div class="level1-content row">
+        <div class=" col-md-12 col-lg-12 row">
+            <div class="main col-lg-7-2 row">
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <div class="col-md-12 col-lg-12 row">
+                        <div class="timer-visual-center">
+                            <div class="left-arrow">
+                            </div>
+                            <div class="timer">
+                               <!-- <div class="time">{{date("h:i")}}</div>
+                                <div class="date">{{date("d F Y")}}</div>-->
+                            </div>
+                            <div class="right-arrow">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<div class="visual-center-center"> 					 
+<div class="level2-tab active"  tabindex="-3">День</div>
+<div class="level2-tab"  tabindex="-3">Месяц</div>
+<div class="level2-tab"  tabindex="-3">Год</div>	
+</div> 	
+
+
     <div class="month-day">
       <div class="navigation-table">
         <div class="navigation">
@@ -93,6 +120,7 @@
             </li>
           </a>
         </div>
+
         <div class="tables">
           <div class="tables-name">Добыча нефти и конденсата</div>
           <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
@@ -117,7 +145,7 @@
             <div class="cell4 table-border cell-last">(+,-)</div>
           </div>
           <div style="clear: both;"></div>
-          <div v-for="item in series">
+          <div v-for="item in tables">
             <div>
               <div>
                 <!-- <div class="cell-colour table-border">
@@ -152,6 +180,92 @@
         </div>
       </div>
     </div>
+     <div class="visual-center-center">
+                        <div class="tables-name">График добычи за 16 июня 2020</div>
+                        <visual-center-chart-area-center>    </visual-center-chart-area-center>
+                    </div>
+                    <div class="visual-center-center">
+            <div class="visual-center-bottom">
+                            <div class="visual-center-string1 ">Отключение РП:</div>
+                            <div class="visual-center-string2 "></div>
+                            <div class="visual-center-string1 ">Отключение скважин:</div>
+                            <div class="visual-center-string2 "></div>
+                            <div class="visual-center-string1 ">Выбросы и разливы:</div>
+                            <div class="visual-center-string2 "></div>
+                            <div class="visual-center-string1 ">Прочие:</div>
+                            <div class="visual-center-string2 "></div>
+                        </div>
+                        <div class="visual-center-bottom ">
+                            <div class="accidents-first accidents">
+                                <div class="number-of-accidents ">
+                                    2
+                                </div>Несчастные<br> случаи
+                            </div>
+                            <div class="accidents-second accidents">
+                                <div class="number-of-accidents">
+                                    0
+                                </div>Смертельные<br> случаи
+                            </div>
+                            <div class="accidents-third accidents">
+                                <div class="number-of-accidents">
+                                    14
+                                </div>COVID<br>19
+                            </div>
+                        </div>
+                        <div class="visual-center-bottom ">
+                            <div class="difference-of-24">Отклонение за сутки</div>
+                            <div class="visual-center-chart-bar-bottom">
+                                <visual-center-chart-bar-bottom></visual-center-chart-bar-bottom>
+                        
+                    </div></div>     
+          </div>
+                      </div> 
+
+             
+
+
+            <div class="visual-center-right-column">
+                <div class="right-button-panel">
+                    <div class="right-chart-button right-button" tabindex="-5">
+                        График
+                    </div>
+                    <div class="right-table-button right-button" tabindex="-5">
+                        Таблица
+                    </div>
+                </div>
+                <div class="donut">
+                    <div class="indent">
+                        Фонд добывающих скважин за 16 июня 2020</div>
+                    <div>
+
+  <div id="chart-donut1">
+    <apexchart
+      type="donut"
+      :options="chartOptions"
+      :series="series"
+    ></apexchart>
+  </div>
+                        <!--<visual-center-chart-donut-right1>
+                            </visual-center-chart-doughut-right1>-->
+                    </div>
+                     <div class="donut-inner1 inner2">В работе <br>{{series[0]}}</div>
+                    <div class="donut-inner1 inner1">В простое<br>{{series[1]}}</div>
+                 </div>
+                <div class="donut donut2">
+                    <div class="indent">Фонд нагнетательных скважин за 16 июня 2020</div>
+                    <div>
+                        <!-- <visual-center-chart-donut-right2>
+                            </visual-center-chart-doughut-right2>-->
+                    </div>
+                    <div class="donut-inner1 inner1">В работе<br>1 005</div>
+                    <div class="donut-inner1 inner2">В простое<br>1 011</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>      
+ 
   </div>
 </template>
 
@@ -159,7 +273,7 @@
 export default {
   data: function () {
     return {
-      series: "",
+      tables: "",
       buttonHover1: "",
       buttonHover2: "",
       buttonHover3: "",
@@ -198,8 +312,64 @@ export default {
         "Nov",
         "Dec",
       ],
+
+        NameDzoFull: [
+        "Всего добыча нефти и конденсата с учётом доли участия АО НК КазМунайГаз",
+        "в т.ч.:газовый конденсат",
+        "АО Озенмунайгаз (нефть) (100%)",
+        "(конденсат)(100%)",
+        "АО Эмбамунайгаз (100%)",
+        "АО Каражанбасмунай (50%)",
+        "ТОО СП Казгермунай",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
       date: new Date(),
       selectedDay: undefined,
+
+ 
+
+
+       series: ['0','0'],
+      //      series2: ['2','3'],
+            
+      chartOptions: {
+        labels: ["В работе","В простое"],
+        chart: {
+          type: "donut",
+        },
+        dataLabels: {
+          enabled: false,
+        } /*убирается подсветка процентов на круге*/,
+        /*tooltip: {
+      enabled: false},*/
+        legend: {
+          show: false,
+        } /*убирается навигация рядом с кругом*/,
+        colors: ["#47d660", "#ec5464"],
+
+        plotOptions: {
+          pie: {
+            expandOnClick: true,
+          },
+        },
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                position: "bottom",
+              },
+            },
+          },
+        ],
+      },
     };
   },
 
@@ -228,7 +398,7 @@ export default {
         let data = response.data;
         if (data) {
           var arrdata = new Array();
-
+         //select date filter
           var timestamp = new Date(
             this.monthes2[this.month] +
               this.selectedDay +
@@ -236,8 +406,8 @@ export default {
               this.year +
               " 06:00:00 GMT+0600"
           ).getTime();
-          arrdata = _.filter(data, _.iteratee({ __time: timestamp })); //select date filter
-
+                    arrdata = _.filter(data, _.iteratee({ __time: timestamp }));
+//console.log(arrdata);
           if (arrdata.length == 0) {
             alert(
               "К сожалению на текущую дату нет данных, выберите другую дату"
@@ -246,19 +416,23 @@ export default {
             arrdata = _.filter(arrdata, _.iteratee({ dzo: company }));
           } //select dzo filter
 
-          console.log(arrdata);
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
           var time = new Array();
+          var prod_wells_work = new Array();
+           var prod_wells_idle  = new Array();
           _.forEach(arrdata, function (item) {
             dzo.push(item.dzo);
             liq_fact.push(item[productionFact]);
             liq_plan.push(item[productionPlan]);
             time.push(item.__time);
-          });
+            prod_wells_work.push(item.prod_wells_work);
+             prod_wells_idle.push(item.prod_wells_idle);
+                      });
 
-          //Собираем массив по отдельности
+
+          //Create massive with a part
           var dzo2 = new Array();
           _.each(dzo, function (dzo) {
             dzo2.push({ dzo });
@@ -266,11 +440,13 @@ export default {
 
           var liq_fact2 = new Array();
           _.each(liq_fact, function (fact) {
+            fact= Math.ceil(fact);
             liq_fact2.push({ fact });
           });
 
           var liq_plan2 = new Array();
           _.each(liq_plan, function (plan) {
+           plan= Math.ceil(plan);//okrugl vverh
             liq_plan2.push({ plan });
           });
 
@@ -280,6 +456,21 @@ export default {
             //   time = new Date(time);
             __time2.push({ time });
           });
+
+
+            var prod_wells_work2 = new Array();
+          _.each(prod_wells_work, function (prod_wells_work) {
+                    prod_wells_work2.push({ prod_wells_work });
+          });
+
+             var prod_wells_idle2 = new Array();
+          _.each(prod_wells_idle, function (prod_wells_idle) {
+               prod_wells_idle2.push({ prod_wells_idle });
+          });
+
+
+
+
 
           //----------------------------
           var result = _.zipWith(
@@ -291,7 +482,17 @@ export default {
               _.defaults(dzo, liq_fact, liq_plan, time)
           );
 
-          this.series = result;
+          this.tables = result;
+
+
+        var prod_wells_work_one=prod_wells_work2[0].prod_wells_work;
+        var prod_wells_idle_one=prod_wells_idle2[0].prod_wells_idle;        
+        this.series = [prod_wells_work_one, prod_wells_idle_one];
+
+       // ['1','2']
+
+
+         //console.log(prod_wells_work_one);
           //_.sortBy(result, ["time"]);
 
           var buttonHover =

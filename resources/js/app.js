@@ -37,7 +37,7 @@ Vue.component('visual-center-chart-area-oil', require('./components/VisualCenter
 Vue.component('visual-center-chart-area-usd', require('./components/VisualCenterChartAreaUSD.vue').default);
 Vue.component('visual-center-chart-area-center', require('./components/VisualCenterChartAreaCenter.vue').default);
 Vue.component('visual-center-chart-bar-bottom', require('./components/VisualCenterChartBarBottom.vue').default);
-Vue.component('visual-center-chart-donut-right1', require('./components/VisualCenterChartDonutRight1.vue').default);
+//Vue.component('visual-center-chart-donut-right1', require('./components/VisualCenterChartDonutRight1.vue').default);
 Vue.component('visual-center-chart-donut-right2', require('./components/VisualCenterChartDonutRight2.vue').default);
 Vue.component('visual-center-table', require('./components/VisualCenterTable.vue').default);
 Vue.component('visual-center-menu', require('./components/VisualCenterMenu.vue').default);

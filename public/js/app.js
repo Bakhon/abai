@@ -2205,6 +2205,7 @@ __webpack_require__.r(__webpack_exports__);
 Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'mix-chart',
+  props: ['postTitle'],
   data: function data() {
     return {
       chartOptions: {
@@ -2284,7 +2285,25 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         data: [11, 32, 45, 32, 34, 52, 41]
       }]
     };
+  },
+
+  /*created: function () {
+    // `this` указывает на экземпляр vm
+   console.log(this.postTitle);
+  }*/
+  mounted: function mounted() {
+    // показывает данные после отрисовки компонента в консоли
+    // console.log(this.postTitle)
+    console.log(localStorage.getItem("production-fact"));
   }
+  /* updated: function () {
+   this.$nextTick(function () {
+     // Код, который будет запущен только после
+     // обновления всех представлений
+     console.log(this.postTitle);
+   })
+  }*/
+
 });
 
 /***/ }),
@@ -2591,72 +2610,6 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         },
         data: [11, 32, 45]
       }]
-    };
-  }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-apexcharts */ "./node_modules/vue-apexcharts/dist/vue-apexcharts.js");
-/* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_apexcharts__WEBPACK_IMPORTED_MODULE_0__);
-//
-//
-//
-//
-//
-//
-
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'mix-chart',
-  data: function data() {
-    return {
-      series: [1011, 1005],
-      chartOptions: {
-        labels: ['В простое', 'В работе'],
-        chart: {
-          type: 'donut'
-        },
-        dataLabels: {
-          enabled: false
-        },
-
-        /*убирается подсветка процентов на круге*/
-
-        /*tooltip: {
-        enabled: false},*/
-        legend: {
-          show: false
-        },
-
-        /*убирается навигация рядом с кругом*/
-        colors: ['#47d660', '#ec5464'],
-        plotOptions: {
-          pie: {
-            expandOnClick: true
-          }
-        },
-        responsive: [{
-          breakpoint: 480,
-          options: {
-            chart: {
-              width: 200
-            },
-            legend: {
-              position: 'bottom'
-            }
-          }
-        }]
-      }
     };
   }
 });
@@ -3191,10 +3144,124 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      series: "",
+      tables: "",
       buttonHover1: "",
       buttonHover2: "",
       buttonHover3: "",
@@ -3207,8 +3274,47 @@ __webpack_require__.r(__webpack_exports__);
       day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
       monthes: ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"],
       monthes2: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      NameDzoFull: ["Всего добыча нефти и конденсата с учётом доли участия АО НК КазМунайГаз", "в т.ч.:газовый конденсат", "АО Озенмунайгаз (нефть) (100%)", "(конденсат)(100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "Aug", "Sep", "Oct", "Nov", "Dec"],
       date: new Date(),
-      selectedDay: undefined
+      selectedDay: undefined,
+      series: ['0', '0'],
+      //      series2: ['2','3'],
+      chartOptions: {
+        labels: ["В работе", "В простое"],
+        chart: {
+          type: "donut"
+        },
+        dataLabels: {
+          enabled: false
+        }
+        /*убирается подсветка процентов на круге*/
+        ,
+
+        /*tooltip: {
+        enabled: false},*/
+        legend: {
+          show: false
+        }
+        /*убирается навигация рядом с кругом*/
+        ,
+        colors: ["#47d660", "#ec5464"],
+        plotOptions: {
+          pie: {
+            expandOnClick: true
+          }
+        },
+        responsive: [{
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }]
+      }
     };
   },
   methods: {
@@ -3236,11 +3342,12 @@ __webpack_require__.r(__webpack_exports__);
         var data = response.data;
 
         if (data) {
-          var arrdata = new Array();
+          var arrdata = new Array(); //select date filter
+
           var timestamp = new Date(_this.monthes2[_this.month] + _this.selectedDay + " " + _this.year + " 06:00:00 GMT+0600").getTime();
           arrdata = _.filter(data, _.iteratee({
             __time: timestamp
-          })); //select date filter
+          })); //console.log(arrdata);
 
           if (arrdata.length == 0) {
             alert("К сожалению на текущую дату нет данных, выберите другую дату");
@@ -3251,18 +3358,21 @@ __webpack_require__.r(__webpack_exports__);
           } //select dzo filter
 
 
-          console.log(arrdata);
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
           var time = new Array();
+          var prod_wells_work = new Array();
+          var prod_wells_idle = new Array();
 
           _.forEach(arrdata, function (item) {
             dzo.push(item.dzo);
             liq_fact.push(item[productionFact]);
             liq_plan.push(item[productionPlan]);
             time.push(item.__time);
-          }); //Собираем массив по отдельности
+            prod_wells_work.push(item.prod_wells_work);
+            prod_wells_idle.push(item.prod_wells_idle);
+          }); //Create massive with a part
 
 
           var dzo2 = new Array();
@@ -3276,6 +3386,7 @@ __webpack_require__.r(__webpack_exports__);
           var liq_fact2 = new Array();
 
           _.each(liq_fact, function (fact) {
+            fact = Math.ceil(fact);
             liq_fact2.push({
               fact: fact
             });
@@ -3284,6 +3395,8 @@ __webpack_require__.r(__webpack_exports__);
           var liq_plan2 = new Array();
 
           _.each(liq_plan, function (plan) {
+            plan = Math.ceil(plan); //okrugl vverh
+
             liq_plan2.push({
               plan: plan
             });
@@ -3296,6 +3409,22 @@ __webpack_require__.r(__webpack_exports__);
 
             __time2.push({
               time: time
+            });
+          });
+
+          var prod_wells_work2 = new Array();
+
+          _.each(prod_wells_work, function (prod_wells_work) {
+            prod_wells_work2.push({
+              prod_wells_work: prod_wells_work
+            });
+          });
+
+          var prod_wells_idle2 = new Array();
+
+          _.each(prod_wells_idle, function (prod_wells_idle) {
+            prod_wells_idle2.push({
+              prod_wells_idle: prod_wells_idle
             });
           }); //----------------------------
 
@@ -3312,7 +3441,12 @@ __webpack_require__.r(__webpack_exports__);
             return _.defaults(dzo, liq_fact, liq_plan, time);
           });
 
-          _this.series = result; //_.sortBy(result, ["time"]);
+          _this.tables = result;
+          var prod_wells_work_one = prod_wells_work2[0].prod_wells_work;
+          var prod_wells_idle_one = prod_wells_idle2[0].prod_wells_idle;
+          _this.series = [prod_wells_work_one, prod_wells_idle_one]; // ['1','2']
+          //console.log(prod_wells_work_one);
+          //_.sortBy(result, ["time"]);
 
           var buttonHover = "border: none;" + " background: url(../img/visualcenter/button-hover.png) no-repeat;" + "    background-size: 100% auto;" + " background-color: #1c6fb6;";
 
@@ -73922,39 +74056,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=template&id=6bde754e&":
-/*!*******************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=template&id=6bde754e& ***!
-  \*******************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { attrs: { id: "chart-donut2" } },
-    [
-      _c("apexchart", {
-        attrs: { type: "donut", options: _vm.chartOptions, series: _vm.series }
-      })
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartDonutRight2.vue?vue&type=template&id=6bc2464c&":
 /*!*******************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/VisualCenterChartDonutRight2.vue?vue&type=template&id=6bc2464c& ***!
@@ -74534,279 +74635,427 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "div",
-      { staticClass: "month-day" },
-      [
-        _c("div", { staticClass: "navigation-table" }, [
-          _c("div", { staticClass: "navigation" }, [
-            _c("div", { on: { click: _vm.decrease } }, [_vm._v("<")])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "navigation-month", attrs: { colspan: "5" } },
-            [
-              _vm._v(
-                "\n        " +
-                  _vm._s(_vm.monthes[_vm.month]) +
-                  " " +
-                  _vm._s(_vm.year) +
-                  "\n      "
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "navigation" }, [
-            _c("div", { on: { click: _vm.increase } }, [_vm._v(">")])
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._l(_vm.calendar(), function(week) {
-          return _c(
-            "div",
-            _vm._l(week, function(day, index) {
-              return _c(
-                "div",
-                {
-                  staticClass: "week",
-                  style: {
-                    color: day.weekend,
-                    "background-color": day.current
-                  },
-                  on: {
-                    click: [
-                      function($event) {
-                        _vm.selectedDay = day.index
-                      },
-                      function($event) {
-                        return _vm.getSelectedDay()
-                      }
-                    ]
-                  }
-                },
-                [_c("div", [_vm._v(_vm._s(day.index))])]
-              )
-            }),
-            0
-          )
-        })
-      ],
-      2
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "visual-center-center" }, [
-      _c("div", { staticClass: "tables" }, [
-        _c("div", { staticClass: "visual-center-center" }, [
-          _c("a", { attrs: { href: "#" } }, [
-            _c(
-              "li",
-              {
-                staticClass: "circle-2",
-                style: "" + _vm.buttonHover1,
-                attrs: { tabindex: "-2" },
-                on: {
-                  click: function($event) {
-                    return _vm.getProduction("oil_plan", "oil_fact")
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "circle-2-string" }, [
-                  _vm._v("\n              Добыча нефти\n            ")
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("a", { attrs: { href: "#" } }, [
-            _c(
-              "li",
-              {
-                staticClass: "circle-2",
-                style: "" + _vm.buttonHover2,
-                attrs: { tabindex: "-2" },
-                on: {
-                  click: function($event) {
-                    return _vm.getProduction("oil_dlv_plan", "oil_dlv_fact")
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "circle-2-string" }, [
-                  _vm._v("\n              Сдача нефти\n            ")
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("a", { attrs: { href: "#" } }, [
-            _c(
-              "li",
-              {
-                staticClass: "circle-2",
-                style: "" + _vm.buttonHover3,
-                attrs: { tabindex: "-2" },
-                on: {
-                  click: function($event) {
-                    return _vm.getProduction("gas_plan", "gas_fact")
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "circle-2-string" }, [
-                  _vm._v("Добыча газа")
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("a", { attrs: { href: "#" } }, [
-            _c(
-              "li",
-              {
-                staticClass: "circle-2",
-                style: "" + _vm.buttonHover4,
-                attrs: { tabindex: "-2" },
-                on: {
-                  click: function($event) {
-                    return _vm.getProduction("liq_plan", "liq_fact")
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "circle-2-string" }, [
-                  _vm._v("Добыча жидкости")
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("a", { attrs: { href: "#" } }, [
-            _c(
-              "li",
-              {
-                staticClass: "circle-2",
-                style: "" + _vm.buttonHover5,
-                attrs: { tabindex: "-2" },
-                on: {
-                  click: function($event) {
-                    return _vm.getProduction("gk_plan", "gk_fact")
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "circle-2-string" }, [
-                  _vm._v("Добыча конденсата")
-                ])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("a", { attrs: { href: "#" } }, [
-            _c(
-              "li",
-              {
-                staticClass: "circle-2",
-                style: "" + _vm.buttonHover6,
-                attrs: { tabindex: "-2" },
-                on: {
-                  click: function($event) {
-                    return _vm.getProduction("inj_plan", "inj_fact")
-                  }
-                }
-              },
-              [
-                _c("div", { staticClass: "circle-2-string" }, [
-                  _vm._v("Объём закачки")
-                ])
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "tables" },
-          [
-            _c("div", { staticClass: "tables-name" }, [
-              _vm._v("Добыча нефти и конденсата")
-            ]),
+    _c("div", [
+      _c("div", { staticClass: "level1-content row" }, [
+        _c("div", { staticClass: " col-md-12 col-lg-12 row" }, [
+          _c("div", { staticClass: "main col-lg-7-2 row" }, [
+            _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }),
             _vm._v(" "),
             _vm._m(0),
             _vm._v(" "),
-            _c("div", { staticStyle: { clear: "both" } }),
+            _vm._m(1),
             _vm._v(" "),
-            _vm._l(_vm.series, function(item) {
-              return _c("div", [
-                _c("div", [
-                  _c("div", [
-                    _c("div", { staticClass: "cell-number table-border" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell-name table-border" }, [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(item.dzo) +
-                          " " +
-                          _vm._s(item.time) +
-                          "\n              "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border" }, [
-                      _vm._v(_vm._s(item.plan))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border" }, [
-                      _vm._v(_vm._s(item.fact))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border colour" }, [
-                      _c("div", {
-                        staticClass: "circle-table",
-                        style:
-                          "background: " + _vm.getColor(item.fact - item.plan)
-                      }),
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(item.fact - item.plan) +
-                          "\n              "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border colour" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "cell table-border" }),
-                    _vm._v(" "),
-                    _c("div", {
-                      staticClass: "cell table-border cell-last colour"
-                    })
+            _c(
+              "div",
+              { staticClass: "month-day" },
+              [
+                _c("div", { staticClass: "navigation-table" }, [
+                  _c("div", { staticClass: "navigation" }, [
+                    _c("div", { on: { click: _vm.decrease } }, [_vm._v("<")])
                   ]),
                   _vm._v(" "),
-                  _c("div", { staticStyle: { clear: "both" } })
+                  _c(
+                    "div",
+                    {
+                      staticClass: "navigation-month",
+                      attrs: { colspan: "5" }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.monthes[_vm.month]) +
+                          " " +
+                          _vm._s(_vm.year) +
+                          "\n        "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "navigation" }, [
+                    _c("div", { on: { click: _vm.increase } }, [_vm._v(">")])
+                  ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "tables-bottom-line" })
+                _vm._l(_vm.calendar(), function(week) {
+                  return _c(
+                    "div",
+                    _vm._l(week, function(day, index) {
+                      return _c(
+                        "div",
+                        {
+                          staticClass: "week",
+                          style: {
+                            color: day.weekend,
+                            "background-color": day.current
+                          },
+                          on: {
+                            click: [
+                              function($event) {
+                                _vm.selectedDay = day.index
+                              },
+                              function($event) {
+                                return _vm.getSelectedDay()
+                              }
+                            ]
+                          }
+                        },
+                        [_c("div", [_vm._v(_vm._s(day.index))])]
+                      )
+                    }),
+                    0
+                  )
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "visual-center-center" }, [
+              _c("div", { staticClass: "tables" }, [
+                _c("div", { staticClass: "visual-center-center" }, [
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover1,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction("oil_plan", "oil_fact")
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v(
+                            "\n                Добыча нефти\n              "
+                          )
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover2,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction(
+                              "oil_dlv_plan",
+                              "oil_dlv_fact"
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v(
+                            "\n                Сдача нефти\n              "
+                          )
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover3,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction("gas_plan", "gas_fact")
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v("Добыча газа")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover4,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction("liq_plan", "liq_fact")
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v("Добыча жидкости")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover5,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction("gk_plan", "gk_fact")
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v("Добыча конденсата")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover6,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction("inj_plan", "inj_fact")
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v("Объём закачки")
+                        ])
+                      ]
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "tables" },
+                  [
+                    _c("div", { staticClass: "tables-name" }, [
+                      _vm._v("Добыча нефти и конденсата")
+                    ]),
+                    _vm._v(" "),
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("div", { staticStyle: { clear: "both" } }),
+                    _vm._v(" "),
+                    _vm._l(_vm.tables, function(item) {
+                      return _c("div", [
+                        _c("div", [
+                          _c("div", [
+                            _c("div", {
+                              staticClass: "cell-number table-border"
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "cell-name table-border" },
+                              [
+                                _vm._v(
+                                  "\n                  " +
+                                    _vm._s(item.dzo) +
+                                    " " +
+                                    _vm._s(item.time) +
+                                    "\n                "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.plan))
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.fact))
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "cell table-border colour" },
+                              [
+                                _c("div", {
+                                  staticClass: "circle-table",
+                                  style:
+                                    "background: " +
+                                    _vm.getColor(item.fact - item.plan)
+                                }),
+                                _vm._v(
+                                  "\n                  " +
+                                    _vm._s(item.fact - item.plan) +
+                                    "\n                "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }),
+                            _vm._v(" "),
+                            _c("div", {
+                              staticClass: "cell table-border colour"
+                            }),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }),
+                            _vm._v(" "),
+                            _c("div", {
+                              staticClass: "cell table-border cell-last colour"
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticStyle: { clear: "both" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "tables-bottom-line" })
+                      ])
+                    })
+                  ],
+                  2
+                )
               ])
-            })
-          ],
-          2
-        )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "visual-center-center" },
+              [
+                _c("div", { staticClass: "tables-name" }, [
+                  _vm._v("График добычи за 16 июня 2020")
+                ]),
+                _vm._v(" "),
+                _c("visual-center-chart-area-center")
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "visual-center-center" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _vm._m(4),
+              _vm._v(" "),
+              _c("div", { staticClass: "visual-center-bottom " }, [
+                _c("div", { staticClass: "difference-of-24" }, [
+                  _vm._v("Отклонение за сутки")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "visual-center-chart-bar-bottom" },
+                  [_c("visual-center-chart-bar-bottom")],
+                  1
+                )
+              ])
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "visual-center-right-column" }, [
+            _vm._m(5),
+            _vm._v(" "),
+            _c("div", { staticClass: "donut" }, [
+              _c("div", { staticClass: "indent" }, [
+                _vm._v(
+                  "\n                        Фонд добывающих скважин за 16 июня 2020"
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", [
+                _c(
+                  "div",
+                  { attrs: { id: "chart-donut1" } },
+                  [
+                    _c("apexchart", {
+                      attrs: {
+                        type: "donut",
+                        options: _vm.chartOptions,
+                        series: _vm.series
+                      }
+                    })
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "donut-inner1 inner2" }, [
+                _vm._v("В работе "),
+                _c("br"),
+                _vm._v(_vm._s(_vm.series[0]))
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "donut-inner1 inner1" }, [
+                _vm._v("В простое"),
+                _c("br"),
+                _vm._v(_vm._s(_vm.series[1]))
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(6)
+          ])
+        ])
       ])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
+      _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
+        _c("div", { staticClass: "timer-visual-center" }, [
+          _c("div", { staticClass: "left-arrow" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "timer" }),
+          _vm._v(" "),
+          _c("div", { staticClass: "right-arrow" })
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "visual-center-center" }, [
+      _c(
+        "div",
+        { staticClass: "level2-tab active", attrs: { tabindex: "-3" } },
+        [_vm._v("День")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "level2-tab", attrs: { tabindex: "-3" } }, [
+        _vm._v("Месяц")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "level2-tab", attrs: { tabindex: "-3" } }, [
+        _vm._v("Год")
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -74858,6 +75107,121 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "cell4 table-border cell-last" }, [
         _vm._v("(+,-)")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "visual-center-bottom" }, [
+      _c("div", { staticClass: "visual-center-string1 " }, [
+        _vm._v("Отключение РП:")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "visual-center-string2 " }),
+      _vm._v(" "),
+      _c("div", { staticClass: "visual-center-string1 " }, [
+        _vm._v("Отключение скважин:")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "visual-center-string2 " }),
+      _vm._v(" "),
+      _c("div", { staticClass: "visual-center-string1 " }, [
+        _vm._v("Выбросы и разливы:")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "visual-center-string2 " }),
+      _vm._v(" "),
+      _c("div", { staticClass: "visual-center-string1 " }, [_vm._v("Прочие:")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "visual-center-string2 " })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "visual-center-bottom " }, [
+      _c("div", { staticClass: "accidents-first accidents" }, [
+        _c("div", { staticClass: "number-of-accidents " }, [
+          _vm._v(
+            "\n                                    2\n                                "
+          )
+        ]),
+        _vm._v("Несчастные"),
+        _c("br"),
+        _vm._v(" случаи\n                            ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "accidents-second accidents" }, [
+        _c("div", { staticClass: "number-of-accidents" }, [
+          _vm._v(
+            "\n                                    0\n                                "
+          )
+        ]),
+        _vm._v("Смертельные"),
+        _c("br"),
+        _vm._v(" случаи\n                            ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "accidents-third accidents" }, [
+        _c("div", { staticClass: "number-of-accidents" }, [
+          _vm._v(
+            "\n                                    14\n                                "
+          )
+        ]),
+        _vm._v("COVID"),
+        _c("br"),
+        _vm._v("19\n                            ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "right-button-panel" }, [
+      _c(
+        "div",
+        {
+          staticClass: "right-chart-button right-button",
+          attrs: { tabindex: "-5" }
+        },
+        [_vm._v("\n                        График\n                    ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "right-table-button right-button",
+          attrs: { tabindex: "-5" }
+        },
+        [_vm._v("\n                        Таблица\n                    ")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "donut donut2" }, [
+      _c("div", { staticClass: "indent" }, [
+        _vm._v("Фонд нагнетательных скважин за 16 июня 2020")
+      ]),
+      _vm._v(" "),
+      _c("div"),
+      _vm._v(" "),
+      _c("div", { staticClass: "donut-inner1 inner1" }, [
+        _vm._v("В работе"),
+        _c("br"),
+        _vm._v("1 005")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "donut-inner1 inner2" }, [
+        _vm._v("В простое"),
+        _c("br"),
+        _vm._v("1 011")
       ])
     ])
   }
@@ -87329,8 +87693,8 @@ Vue.component('charttide', __webpack_require__(/*! ./components/ChartTide.vue */
 Vue.component('visual-center-chart-area-oil', __webpack_require__(/*! ./components/VisualCenterChartAreaOil.vue */ "./resources/js/components/VisualCenterChartAreaOil.vue")["default"]);
 Vue.component('visual-center-chart-area-usd', __webpack_require__(/*! ./components/VisualCenterChartAreaUSD.vue */ "./resources/js/components/VisualCenterChartAreaUSD.vue")["default"]);
 Vue.component('visual-center-chart-area-center', __webpack_require__(/*! ./components/VisualCenterChartAreaCenter.vue */ "./resources/js/components/VisualCenterChartAreaCenter.vue")["default"]);
-Vue.component('visual-center-chart-bar-bottom', __webpack_require__(/*! ./components/VisualCenterChartBarBottom.vue */ "./resources/js/components/VisualCenterChartBarBottom.vue")["default"]);
-Vue.component('visual-center-chart-donut-right1', __webpack_require__(/*! ./components/VisualCenterChartDonutRight1.vue */ "./resources/js/components/VisualCenterChartDonutRight1.vue")["default"]);
+Vue.component('visual-center-chart-bar-bottom', __webpack_require__(/*! ./components/VisualCenterChartBarBottom.vue */ "./resources/js/components/VisualCenterChartBarBottom.vue")["default"]); //Vue.component('visual-center-chart-donut-right1', require('./components/VisualCenterChartDonutRight1.vue').default);
+
 Vue.component('visual-center-chart-donut-right2', __webpack_require__(/*! ./components/VisualCenterChartDonutRight2.vue */ "./resources/js/components/VisualCenterChartDonutRight2.vue")["default"]);
 Vue.component('visual-center-table', __webpack_require__(/*! ./components/VisualCenterTable.vue */ "./resources/js/components/VisualCenterTable.vue")["default"]);
 Vue.component('visual-center-menu', __webpack_require__(/*! ./components/VisualCenterMenu.vue */ "./resources/js/components/VisualCenterMenu.vue")["default"]);
@@ -87806,75 +88170,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartBarBottom_vue_vue_type_template_id_69aac920___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartBarBottom_vue_vue_type_template_id_69aac920___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/components/VisualCenterChartDonutRight1.vue":
-/*!******************************************************************!*\
-  !*** ./resources/js/components/VisualCenterChartDonutRight1.vue ***!
-  \******************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _VisualCenterChartDonutRight1_vue_vue_type_template_id_6bde754e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VisualCenterChartDonutRight1.vue?vue&type=template&id=6bde754e& */ "./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=template&id=6bde754e&");
-/* harmony import */ var _VisualCenterChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VisualCenterChartDonutRight1.vue?vue&type=script&lang=js& */ "./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _VisualCenterChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _VisualCenterChartDonutRight1_vue_vue_type_template_id_6bde754e___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _VisualCenterChartDonutRight1_vue_vue_type_template_id_6bde754e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/components/VisualCenterChartDonutRight1.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************!*\
-  !*** ./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterChartDonutRight1.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=template&id=6bde754e&":
-/*!*************************************************************************************************!*\
-  !*** ./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=template&id=6bde754e& ***!
-  \*************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight1_vue_vue_type_template_id_6bde754e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterChartDonutRight1.vue?vue&type=template&id=6bde754e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=template&id=6bde754e&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight1_vue_vue_type_template_id_6bde754e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight1_vue_vue_type_template_id_6bde754e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
