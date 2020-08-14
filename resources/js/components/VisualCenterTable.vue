@@ -1,128 +1,155 @@
 <template>
   <div>
-    <div class="visual-center-center">
-      <a href="#">
-        <li
-          class="circle-2"
-          tabindex="-2"
-          :style="`${buttonHover1}`"
-          @click="getProduction('oil_plan', 'oil_fact')"
-        >
-          <div class="circle-2-string">
-            Добыча нефти
-          </div>
-        </li>
-      </a>
-      <a href="#">
-        <li
-          class="circle-2"
-          tabindex="-2"
-          :style="`${buttonHover2}`"
-          @click="getProduction('oil_dlv_plan', 'oil_dlv_fact')"
-        >
-          <div class="circle-2-string">
-            Сдача нефти
-          </div>
-        </li>
-      </a>
-      <a href="#">
-        <li
-          class="circle-2"
-          tabindex="-2"
-          :style="`${buttonHover3}`"
-          @click="getProduction('gas_plan', 'gas_fact')"
-        >
-          <div class="circle-2-string">Добыча газа</div>
-        </li>
-      </a>
-      <a href="#">
-        <li
-          class="circle-2"
-          tabindex="-2"
-          :style="`${buttonHover4}`"
-          @click="getProduction('liq_plan', 'liq_fact')"
-        >
-          <div class="circle-2-string">Добыча жидкости</div>
-        </li>
-      </a>
-      <a href="#">
-        <li
-          class="circle-2"
-          tabindex="-2"
-          :style="`${buttonHover5}`"
-          @click="getProduction('gk_plan', 'gk_fact')"
-        >
-          <div class="circle-2-string">Добыча конденсата</div>
-        </li>
-      </a>
-      <a href="#">
-        <li
-          class="circle-2"
-          tabindex="-2"
-          :style="`${buttonHover6}`"
-          @click="getProduction('inj_plan', 'inj_fact')"
-        >
-          <div class="circle-2-string">Объём закачки</div>
-        </li>
-      </a>
-    </div>
-    <div class="tables">
-      <div class="tables-name">Добыча нефти и конденсата</div>
-      <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
-      <div class="tables-string">
-        <div class="cell-colour-top table-border"></div>
-        <div class="cell-number-top table-border">№</div>
-        <div class="cell-name-top table-border">Предприятия</div>
-        <div class="cell-last-top table-border cell-last">ДОБЫЧА, тонн</div>
-        <div class="cell2 table-border">План на 2020 год</div>
-        <div class="cell2 table-border">План на июль месяц</div>
-        <div class="cell3 table-border">СУТОЧНАЯ</div>
-        <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
-        <div class="cell3 table-border cell-last">С НАЧАЛА ГОДА</div>
-        <div class="cell4 table-border">ПЛАН</div>
-        <div class="cell4 table-border">ФАКТ</div>
-        <div class="cell4 table-border">(+,-)</div>
-        <div class="cell4 table-border">ПЛАН</div>
-        <div class="cell4 table-border">ФАКТ</div>
-        <div class="cell4 table-border">(+,-)</div>
-        <div class="cell4 table-border">ПЛАН</div>
-        <div class="cell4 table-border">ФАКТ</div>
-        <div class="cell4 table-border cell-last">(+,-)</div>
+    <div class="month-day">
+      <div class="navigation-table">
+        <div class="navigation">
+          <div v-on:click="decrease"><</div>
+        </div>
+        <div class="navigation-month" colspan="5">
+          {{ monthes[month] }} {{ year }}
+        </div>
+        <div class="navigation">
+          <div v-on:click="increase">></div>
+        </div>
       </div>
-      <div style="clear: both;"></div>
-      <div v-for="item in series">
-        <div>
-          <div>
-            <div class="cell-colour table-border">
-              <div
-                class="circle-table"
-                :style="`background: ${getColor(item.fact - item.plan)}`"
-              ></div>
-            </div>
-            <div class="cell-number table-border"></div>
-            <div class="cell-name table-border">
-              {{ item.dzo }} {{ item.time }}
-            </div>
-            <div class="cell table-border"></div>
-            <div class="cell table-border"></div>
-            <div class="cell table-border">{{ item.plan }}</div>
-            <div class="cell table-border">{{ item.fact }}</div>
-            <div
-              class="cell table-border colour"
-              :style="`background: ${getColor(item.fact - item.plan)}`"
+      <!--<div class="day" v-for="d in day">{{d}}</div>-->
+      <div v-for="week in calendar()">
+        <div
+          @click="selectedDay = day.index"
+          v-on:click="getSelectedDay()"
+          class="week"
+          v-for="(day, index) in week"
+          :style="{ color: day.weekend, 'background-color': day.current }"
+        >
+          <div>{{ day.index }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="visual-center-center">
+      <div class="tables">
+        <div class="visual-center-center">
+          <a href="#">
+            <li
+              class="circle-2"
+              tabindex="-2"
+              :style="`${buttonHover1}`"
+              @click="getProduction('oil_plan', 'oil_fact')"
             >
-              {{ item.fact - item.plan }}
-            </div>
-            <div class="cell table-border"></div>
-            <div class="cell table-border"></div>
-            <div class="cell table-border colour"></div>
-            <div class="cell table-border"></div>
-            <div class="cell table-border"></div>
-            <div class="cell table-border cell-last colour"></div>
+              <div class="circle-2-string">
+                Добыча нефти
+              </div>
+            </li>
+          </a>
+          <a href="#">
+            <li
+              class="circle-2"
+              tabindex="-2"
+              :style="`${buttonHover2}`"
+              @click="getProduction('oil_dlv_plan', 'oil_dlv_fact')"
+            >
+              <div class="circle-2-string">
+                Сдача нефти
+              </div>
+            </li>
+          </a>
+          <a href="#">
+            <li
+              class="circle-2"
+              tabindex="-2"
+              :style="`${buttonHover3}`"
+              @click="getProduction('gas_plan', 'gas_fact')"
+            >
+              <div class="circle-2-string">Добыча газа</div>
+            </li>
+          </a>
+          <a href="#">
+            <li
+              class="circle-2"
+              tabindex="-2"
+              :style="`${buttonHover4}`"
+              @click="getProduction('liq_plan', 'liq_fact')"
+            >
+              <div class="circle-2-string">Добыча жидкости</div>
+            </li>
+          </a>
+          <a href="#">
+            <li
+              class="circle-2"
+              tabindex="-2"
+              :style="`${buttonHover5}`"
+              @click="getProduction('gk_plan', 'gk_fact')"
+            >
+              <div class="circle-2-string">Добыча конденсата</div>
+            </li>
+          </a>
+          <a href="#">
+            <li
+              class="circle-2"
+              tabindex="-2"
+              :style="`${buttonHover6}`"
+              @click="getProduction('inj_plan', 'inj_fact')"
+            >
+              <div class="circle-2-string">Объём закачки</div>
+            </li>
+          </a>
+        </div>
+        <div class="tables">
+          <div class="tables-name">Добыча нефти и конденсата</div>
+          <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
+          <div class="tables-string">
+            <!--<div class="cell-colour-top table-border"></div>-->
+            <div class="cell-number-top table-border">№</div>
+            <div class="cell-name-top table-border">Предприятия</div>
+            <div class="cell-last-top table-border cell-last">ДОБЫЧА, тонн</div>
+            <div class="cell2 table-border">План на 2020 год</div>
+            <div class="cell2 table-border">План на июль месяц</div>
+            <div class="cell3 table-border">СУТОЧНАЯ</div>
+            <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
+            <div class="cell3 table-border cell-last">С НАЧАЛА ГОДА</div>
+            <div class="cell4 table-border">ПЛАН</div>
+            <div class="cell4 table-border">ФАКТ</div>
+            <div class="cell4 table-border">(+,-)</div>
+            <div class="cell4 table-border">ПЛАН</div>
+            <div class="cell4 table-border">ФАКТ</div>
+            <div class="cell4 table-border">(+,-)</div>
+            <div class="cell4 table-border">ПЛАН</div>
+            <div class="cell4 table-border">ФАКТ</div>
+            <div class="cell4 table-border cell-last">(+,-)</div>
           </div>
           <div style="clear: both;"></div>
+          <div v-for="item in series">
+            <div>
+              <div>
+                <!-- <div class="cell-colour table-border">
+                 
+                </div>-->
+                <div class="cell-number table-border"></div>
+                <div class="cell-name table-border">
+                  {{ item.dzo }} {{ item.time }}
+                </div>
+                <div class="cell table-border"></div>
+                <div class="cell table-border"></div>
+                <div class="cell table-border">{{ item.plan }}</div>
+                <div class="cell table-border">{{ item.fact }}</div>
+                <div class="cell table-border colour">
+                  <div
+                    class="circle-table"
+                    :style="`background: ${getColor(item.fact - item.plan)}`"
+                  ></div>
+                  {{ item.fact - item.plan }}
+                </div>
+                <div class="cell table-border"></div>
+                <div class="cell table-border"></div>
+                <div class="cell table-border colour"></div>
+                <div class="cell table-border"></div>
+                <div class="cell table-border"></div>
+                <div class="cell table-border cell-last colour"></div>
+              </div>
+              <div style="clear: both;"></div>
+            </div>
+            <div class="tables-bottom-line"></div>
+          </div>
         </div>
-        <div class="tables-bottom-line"></div>
       </div>
     </div>
   </div>
@@ -135,6 +162,44 @@ export default {
       series: "",
       buttonHover1: "",
       buttonHover2: "",
+      buttonHover3: "",
+      buttonHover4: "",
+      buttonHover5: "",
+      buttonHover6: "",
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      dFirstMonth: "1",
+      day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+      monthes: [
+        "ЯНВАРЬ",
+        "ФЕВРАЛЬ",
+        "МАРТ",
+        "АПРЕЛЬ",
+        "МАЙ",
+        "ИЮНЬ",
+        "ИЮЛЬ",
+        "АВГУСТ",
+        "СЕНТЯБРЬ",
+        "ОКТЯБРЬ",
+        "НОЯБРЬ",
+        "ДЕКАБРЬ",
+      ],
+      monthes2: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
+      date: new Date(),
+      selectedDay: undefined,
     };
   },
 
@@ -151,12 +216,11 @@ export default {
       var productionPlan = localStorage.getItem("production-plan");
       var productionFact = localStorage.getItem("production-fact");
 
-      /* getColorButton() {
-      if (localStorage.getItem("production-plan") == "oil_plan") return "#b40300";
-      return "#008a17";
-    },*/
-
       let company = localStorage.getItem("company");
+      if (company === null) {
+        alert("Сначала выберите название компании");
+      }
+
       //let uri = "/js/json/getnkkmgyear.json";
       let uri = "/js/json/getnkkmg.json";
       //let uri = "/ru/getnkkmg";
@@ -164,7 +228,25 @@ export default {
         let data = response.data;
         if (data) {
           var arrdata = new Array();
-          arrdata = _.filter(data, _.iteratee({ dzo: company }));
+
+          var timestamp = new Date(
+            this.monthes2[this.month] +
+              this.selectedDay +
+              " " +
+              this.year +
+              " 06:00:00 GMT+0600"
+          ).getTime();
+          arrdata = _.filter(data, _.iteratee({ __time: timestamp })); //select date filter
+
+          if (arrdata.length == 0) {
+            alert(
+              "К сожалению на текущую дату нет данных, выберите другую дату"
+            );
+          } else {
+            arrdata = _.filter(arrdata, _.iteratee({ dzo: company }));
+          } //select dzo filter
+
+          console.log(arrdata);
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
@@ -194,12 +276,12 @@ export default {
 
           var __time2 = new Array();
           _.each(time, function (time) {
-            time = new Date(time).toLocaleDateString().split("/");
+            time = new Date(time).toLocaleDateString();
+            //   time = new Date(time);
             __time2.push({ time });
           });
 
           //----------------------------
-
           var result = _.zipWith(
             _.sortBy(dzo2, (dzo) => dzo.dzo),
             _.sortBy(liq_fact2, (liq_fact) => liq_fact.liq_fact),
@@ -210,6 +292,7 @@ export default {
           );
 
           this.series = result;
+          //_.sortBy(result, ["time"]);
 
           var buttonHover =
             "border: none;" +
@@ -228,33 +311,103 @@ export default {
             this.buttonHover2 = "";
           }
 
-           if (productionPlan == "gas_plan") {
+          if (productionPlan == "gas_plan") {
             this.buttonHover3 = buttonHover;
           } else {
             this.buttonHover3 = "";
           }
 
-                      if (productionPlan == "liq_plan") {
+          if (productionPlan == "liq_plan") {
             this.buttonHover4 = buttonHover;
           } else {
             this.buttonHover4 = "";
           }
 
-                      if (productionPlan == "inj_plan") {
+          if (productionPlan == "gk_plan") {
             this.buttonHover5 = buttonHover;
           } else {
             this.buttonHover5 = "";
           }
 
-                      if (productionPlan == "gk_plan") {
+          if (productionPlan == "inj_plan") {
             this.buttonHover6 = buttonHover;
           } else {
-            this.buttonHover6 = "";  }
-
+            this.buttonHover6 = "";
+          }
         } else {
           console.log("No data");
         }
       });
+    },
+
+    getSelectedDay() {
+      localStorage.setItem("selected-day", this.selectedDay);
+      var selectedDay = localStorage.getItem("selected-day");
+      this.selectedDay = selectedDay;
+      this.selectedColour = "background:red!important;";
+    },
+
+    calendar: function () {
+      var days = [];
+      var week = 0;
+      days[week] = [];
+      var dlast = new Date(this.year, this.month + 1, 0).getDate();
+      for (let i = 1; i <= dlast; i++) {
+        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
+          var a = { index: i };
+          days[week].push(a);
+
+          if (this.selectedDay == i) {
+            a.current = "black";
+          } else if (
+            i == new Date().getDate() &&
+            this.year == new Date().getFullYear() &&
+            this.month == new Date().getMonth()
+          ) {
+            a.current = "#009846";
+          }
+
+          if (
+            new Date(this.year, this.month, i).getDay() == 6 ||
+            new Date(this.year, this.month, i).getDay() == 0
+          ) {
+            a.weekend = "#ff0000";
+          }
+        }
+       }
+
+      if (days[0].length > 0) {
+        for (let i = days[0].length; i < 7; i++) {
+          days[0].unshift("");
+        }
+      }
+      this.dayChange;
+      return days;
+    },
+    decrease: function () {
+      this.month--;
+      if (this.month < 0) {
+        this.month = 12;
+        this.month--;
+        this.year--;
+      }
+    },
+    increase: function () {
+      this.month++;
+      if (this.month > 11) {
+        this.month = -1;
+        this.month++;
+        this.year++;
+      }
+    },
+  },
+
+  computed: {
+    dayChange: function () {
+      if (this.dFirstMonth == 0) {
+        //this.day = ["Su", "Mn", "Tu", "We", "Th", "Fr", "Sa"];
+        this.day = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+      } 
     },
   },
 };

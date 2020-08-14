@@ -9,6 +9,7 @@
         data-toggle="collapse"
         aria-expanded="false"
         class="bg-dark list-group-item list-group-item-action circle-menu flex-column align-items-start circle-menu"
+        :style="`${buttonMenuHover1}`"
         @click="saveCompany('ОМГ')"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -24,10 +25,12 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
+            :style="`${buttonMenuHover2}`"
+          @click="saveCompany('КБМ')"
       >
         <div
           class="d-flex w-100 justify-content-start align-items-center"
-          @click="saveCompany('КБМ')"
+      
         >
           <img
             src="/img/level1/logo_karazhanbas.svg"
@@ -41,6 +44,7 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
+        :style="`${buttonMenuHover3}`"
         @click="saveCompany('КГМ')"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -56,6 +60,7 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
+        :style="`${buttonMenuHover4}`"
         @click="saveCompany('ЭМГ')"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -71,6 +76,7 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
+        :style="`${buttonMenuHover5}`"
         @click="saveCompany('ММГ')"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -86,6 +92,7 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
+        :style="`${buttonMenuHover6}`"
         @click="saveCompany('КТМ')"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -101,6 +108,7 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
+        :style="`${buttonMenuHover7}`"
         @click="saveCompany('КОА')"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -116,6 +124,7 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
+        :style="`${buttonMenuHover8}`"
         @click="saveCompany('ПКИ')"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -131,6 +140,7 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
+        :style="`${buttonMenuHover9}`"
         @click="saveCompany('АГГ')"
       >
         <div class="d-flex w-100 justify-content-start align-items-center">
@@ -197,11 +207,87 @@
 export default {
   data: () => ({
     company: "",
+    buttonMenuHover1: "",
+     buttonMenuHover2: "",
+     buttonMenuHover3: "",
+     buttonMenuHover4: "",
+     buttonMenuHover5: "",
+     buttonMenuHover6: "",
+     buttonMenuHover7: "",
+     buttonMenuHover8: "",
+     buttonMenuHover9: "",
+
   }),
   methods: {
     saveCompany(com) {
       localStorage.setItem("company", com);
-      this.company = localStorage.getItem("company");
+      var company = localStorage.getItem("company");
+      this.company=company;
+
+ var buttonMenuHover = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;"+
+    "background-size: 9% auto;"+
+    "background-position: 75% 50%;"+
+    "border: none;"+
+    "height: 40px;"+
+    "pointer-events: none;";
+
+ console.log(company == "КГМ");
+
+          if (company == "ОМГ") {
+            this.buttonMenuHover1 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover1 = "";
+          }
+          if (company == "КБМ") {
+            this.buttonMenuHover2 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover2 = "";
+          }
+
+          if (company == "КГМ") {
+            this.buttonMenuHover3 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover3 = "";
+          }
+
+          if (company == "ЭМГ") {
+            this.buttonMenuHover4 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover4 = "";
+          }
+
+          if (company == "ММГ") {
+            this.buttonMenuHover5 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover5 = "";
+          }
+
+          if (company == "КТМ") {
+            this.buttonMenuHover6 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover6 = "";
+          }
+
+             if (company == "КОА") {
+            this.buttonMenuHover7 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover7 = "";
+          }
+
+               if (company == "ПКИ") {
+            this.buttonMenuHover8 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover8 = "";
+          }
+
+
+               if (company == "АГГ") {
+            this.buttonMenuHover9 = buttonMenuHover;
+          } else {
+            this.buttonMenuHover9 = "";
+          }
+
+
     },
   },
 };

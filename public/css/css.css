@@ -807,9 +807,12 @@ li.circle-2:hover {
 .circle-table {
     background: #0d092a;
     border: none;
-    height: 15px;
+    height: 10px;
     border-radius: 50px;
-    margin-top: 17px;
+    margin-top: 19px;
+    width: 10px;
+    float: left;
+    margin-left: -3px;
 }
 
 .right-button {
@@ -1133,10 +1136,19 @@ ul.dropdown-child {
     width: 1285px;
     background: #122f70;
     height: 40px;
+    color: #fff;
+}
+
+.day {
+    float: left;
+    padding: 0px 10px;
+    margin-top: 10px;
+    list-style-type: none;
 }
 
 li.circle-2 {
     margin-top: 35px;
+    outline: none;
 }
 
 .btn-info2 {
@@ -1156,4 +1168,54 @@ li.circle-2 {
     margin-left: 40px;
     border-radius: 50px;
     position: absolute;
+}
+
+
+/*calendar*/
+
+.table {
+    border-collapse: collapse;
+    float: left;
+    width: 180px;
+    table-layout: fixed;
+}
+
+.format-week {
+    float: right;
+}
+
+.table td {
+    text-align: center;
+}
+
+.table thead tr:last-child {
+    background-color: #dedada;
+}
+
+.navigation {
+    float: left;
+}
+
+.week {
+    float: left;
+    padding: 9px;
+}
+
+.navigation-table {
+    margin-top: 8px;
+    /* position: absolute; */
+    margin-left: 15px;
+    float: left;
+    font-size: 15px;
+    /* margin-right: -10; */
+}
+
+.navigation-month {
+    float: left;
+    width: 120px;
+    text-align: center;
+}
+
+.selected2:hover {
+    background: red;
 }

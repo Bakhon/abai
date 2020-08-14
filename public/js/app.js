@@ -2933,16 +2933,92 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      company: ""
+      company: "",
+      buttonMenuHover1: "",
+      buttonMenuHover2: "",
+      buttonMenuHover3: "",
+      buttonMenuHover4: "",
+      buttonMenuHover5: "",
+      buttonMenuHover6: "",
+      buttonMenuHover7: "",
+      buttonMenuHover8: "",
+      buttonMenuHover9: ""
     };
   },
   methods: {
     saveCompany: function saveCompany(com) {
       localStorage.setItem("company", com);
-      this.company = localStorage.getItem("company");
+      var company = localStorage.getItem("company");
+      this.company = company;
+      var buttonMenuHover = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;";
+      console.log(company == "КГМ");
+
+      if (company == "ОМГ") {
+        this.buttonMenuHover1 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover1 = "";
+      }
+
+      if (company == "КБМ") {
+        this.buttonMenuHover2 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover2 = "";
+      }
+
+      if (company == "КГМ") {
+        this.buttonMenuHover3 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover3 = "";
+      }
+
+      if (company == "ЭМГ") {
+        this.buttonMenuHover4 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover4 = "";
+      }
+
+      if (company == "ММГ") {
+        this.buttonMenuHover5 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover5 = "";
+      }
+
+      if (company == "КТМ") {
+        this.buttonMenuHover6 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover6 = "";
+      }
+
+      if (company == "КОА") {
+        this.buttonMenuHover7 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover7 = "";
+      }
+
+      if (company == "ПКИ") {
+        this.buttonMenuHover8 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover8 = "";
+      }
+
+      if (company == "АГГ") {
+        this.buttonMenuHover9 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover9 = "";
+      }
     }
   }
 });
@@ -3088,12 +3164,51 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       series: "",
       buttonHover1: "",
-      buttonHover2: ""
+      buttonHover2: "",
+      buttonHover3: "",
+      buttonHover4: "",
+      buttonHover5: "",
+      buttonHover6: "",
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      dFirstMonth: "1",
+      day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+      monthes: ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"],
+      monthes2: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      date: new Date(),
+      selectedDay: undefined
     };
   },
   methods: {
@@ -3108,12 +3223,12 @@ __webpack_require__.r(__webpack_exports__);
       localStorage.setItem("production-fact", item2);
       var productionPlan = localStorage.getItem("production-plan");
       var productionFact = localStorage.getItem("production-fact");
-      /* getColorButton() {
-      if (localStorage.getItem("production-plan") == "oil_plan") return "#b40300";
-      return "#008a17";
-      },*/
+      var company = localStorage.getItem("company");
 
-      var company = localStorage.getItem("company"); //let uri = "/js/json/getnkkmgyear.json";
+      if (company === null) {
+        alert("Сначала выберите название компании");
+      } //let uri = "/js/json/getnkkmgyear.json";
+
 
       var uri = "/js/json/getnkkmg.json"; //let uri = "/ru/getnkkmg";
 
@@ -3122,9 +3237,21 @@ __webpack_require__.r(__webpack_exports__);
 
         if (data) {
           var arrdata = new Array();
+          var timestamp = new Date(_this.monthes2[_this.month] + _this.selectedDay + " " + _this.year + " 06:00:00 GMT+0600").getTime();
           arrdata = _.filter(data, _.iteratee({
-            dzo: company
-          }));
+            __time: timestamp
+          })); //select date filter
+
+          if (arrdata.length == 0) {
+            alert("К сожалению на текущую дату нет данных, выберите другую дату");
+          } else {
+            arrdata = _.filter(arrdata, _.iteratee({
+              dzo: company
+            }));
+          } //select dzo filter
+
+
+          console.log(arrdata);
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
@@ -3165,7 +3292,7 @@ __webpack_require__.r(__webpack_exports__);
           var __time2 = new Array();
 
           _.each(time, function (time) {
-            time = new Date(time).toLocaleDateString().split("/");
+            time = new Date(time).toLocaleDateString(); //   time = new Date(time);
 
             __time2.push({
               time: time
@@ -3185,7 +3312,8 @@ __webpack_require__.r(__webpack_exports__);
             return _.defaults(dzo, liq_fact, liq_plan, time);
           });
 
-          _this.series = result;
+          _this.series = result; //_.sortBy(result, ["time"]);
+
           var buttonHover = "border: none;" + " background: url(../img/visualcenter/button-hover.png) no-repeat;" + "    background-size: 100% auto;" + " background-color: #1c6fb6;";
 
           if (productionPlan == "oil_plan") {
@@ -3212,13 +3340,13 @@ __webpack_require__.r(__webpack_exports__);
             _this.buttonHover4 = "";
           }
 
-          if (productionPlan == "inj_plan") {
+          if (productionPlan == "gk_plan") {
             _this.buttonHover5 = buttonHover;
           } else {
             _this.buttonHover5 = "";
           }
 
-          if (productionPlan == "gk_plan") {
+          if (productionPlan == "inj_plan") {
             _this.buttonHover6 = buttonHover;
           } else {
             _this.buttonHover6 = "";
@@ -3227,6 +3355,72 @@ __webpack_require__.r(__webpack_exports__);
           console.log("No data");
         }
       });
+    },
+    getSelectedDay: function getSelectedDay() {
+      localStorage.setItem("selected-day", this.selectedDay);
+      var selectedDay = localStorage.getItem("selected-day");
+      this.selectedDay = selectedDay;
+      this.selectedColour = "background:red!important;";
+    },
+    calendar: function calendar() {
+      var days = [];
+      var week = 0;
+      days[week] = [];
+      var dlast = new Date(this.year, this.month + 1, 0).getDate();
+
+      for (var i = 1; i <= dlast; i++) {
+        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
+          var a = {
+            index: i
+          };
+          days[week].push(a);
+
+          if (this.selectedDay == i) {
+            a.current = "black";
+          } else if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
+            a.current = "#009846";
+          }
+
+          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
+            a.weekend = "#ff0000";
+          }
+        }
+      }
+
+      if (days[0].length > 0) {
+        for (var _i = days[0].length; _i < 7; _i++) {
+          days[0].unshift("");
+        }
+      }
+
+      this.dayChange;
+      return days;
+    },
+    decrease: function decrease() {
+      this.month--;
+
+      if (this.month < 0) {
+        this.month = 12;
+        this.month--;
+        this.year--;
+      }
+    },
+    increase: function increase() {
+      this.month++;
+
+      if (this.month > 11) {
+        this.month = -1;
+        this.month++;
+        this.year++;
+      }
+    }
+  },
+  computed: {
+    dayChange: function dayChange() {
+      if (this.dFirstMonth == 0) {
+        //this.day = ["Su", "Mn", "Tu", "We", "Th", "Fr", "Sa"];
+        this.day = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
+      }
     }
   }
 });
@@ -73824,6 +74018,7 @@ var render = function() {
           {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu flex-column align-items-start circle-menu",
+            style: "" + _vm.buttonMenuHover1,
             attrs: {
               href: "#",
               "data-toggle": "collapse",
@@ -73843,47 +74038,11 @@ var render = function() {
           {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
-            attrs: { href: "#" }
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex w-100 justify-content-start align-items-center",
-                on: {
-                  click: function($event) {
-                    return _vm.saveCompany("КБМ")
-                  }
-                }
-              },
-              [
-                _c("img", {
-                  staticClass: "companyLogo",
-                  attrs: {
-                    src: "/img/level1/logo_karazhanbas.svg",
-                    width: "25",
-                    height: "25"
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "menu-collapsed companyName" }, [
-                  _vm._v('АО "Каражанбасмунай"')
-                ])
-              ]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
+            style: "" + _vm.buttonMenuHover2,
             attrs: { href: "#" },
             on: {
               click: function($event) {
-                return _vm.saveCompany("КГМ")
+                return _vm.saveCompany("КБМ")
               }
             }
           },
@@ -73895,10 +74054,11 @@ var render = function() {
           {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
+            style: "" + _vm.buttonMenuHover3,
             attrs: { href: "#" },
             on: {
               click: function($event) {
-                return _vm.saveCompany("ЭМГ")
+                return _vm.saveCompany("КГМ")
               }
             }
           },
@@ -73910,10 +74070,11 @@ var render = function() {
           {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
+            style: "" + _vm.buttonMenuHover4,
             attrs: { href: "#" },
             on: {
               click: function($event) {
-                return _vm.saveCompany("ММГ")
+                return _vm.saveCompany("ЭМГ")
               }
             }
           },
@@ -73925,10 +74086,11 @@ var render = function() {
           {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
+            style: "" + _vm.buttonMenuHover5,
             attrs: { href: "#" },
             on: {
               click: function($event) {
-                return _vm.saveCompany("КТМ")
+                return _vm.saveCompany("ММГ")
               }
             }
           },
@@ -73940,10 +74102,11 @@ var render = function() {
           {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
+            style: "" + _vm.buttonMenuHover6,
             attrs: { href: "#" },
             on: {
               click: function($event) {
-                return _vm.saveCompany("КОА")
+                return _vm.saveCompany("КТМ")
               }
             }
           },
@@ -73955,10 +74118,11 @@ var render = function() {
           {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
+            style: "" + _vm.buttonMenuHover7,
             attrs: { href: "#" },
             on: {
               click: function($event) {
-                return _vm.saveCompany("ПКИ")
+                return _vm.saveCompany("КОА")
               }
             }
           },
@@ -73970,6 +74134,23 @@ var render = function() {
           {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
+            style: "" + _vm.buttonMenuHover8,
+            attrs: { href: "#" },
+            on: {
+              click: function($event) {
+                return _vm.saveCompany("ПКИ")
+              }
+            }
+          },
+          [_vm._m(8)]
+        ),
+        _vm._v(" "),
+        _c(
+          "a",
+          {
+            staticClass:
+              "bg-dark list-group-item list-group-item-action circle-menu",
+            style: "" + _vm.buttonMenuHover9,
             attrs: { href: "#" },
             on: {
               click: function($event) {
@@ -73977,14 +74158,14 @@ var render = function() {
               }
             }
           },
-          [_vm._m(8)]
+          [_vm._m(9)]
         )
       ]
     ),
     _vm._v(" "),
-    _vm._m(9),
+    _vm._m(10),
     _vm._v(" "),
-    _vm._m(10)
+    _vm._m(11)
   ])
 }
 var staticRenderFns = [
@@ -74023,6 +74204,29 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("span", { staticClass: "menu-collapsed companyName" }, [
           _vm._v('АО "ОзенМунайГаз"')
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/logo_karazhanbas.svg",
+            width: "25",
+            height: "25"
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _vm._v('АО "Каражанбасмунай"')
         ])
       ]
     )
@@ -74330,218 +74534,276 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", { staticClass: "visual-center-center" }, [
-      _c("a", { attrs: { href: "#" } }, [
-        _c(
-          "li",
-          {
-            staticClass: "circle-2",
-            style: "" + _vm.buttonHover1,
-            attrs: { tabindex: "-2" },
-            on: {
-              click: function($event) {
-                return _vm.getProduction("oil_plan", "oil_fact")
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "circle-2-string" }, [
-              _vm._v("\n          Добыча нефти\n        ")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c(
-          "li",
-          {
-            staticClass: "circle-2",
-            style: "" + _vm.buttonHover2,
-            attrs: { tabindex: "-2" },
-            on: {
-              click: function($event) {
-                return _vm.getProduction("oil_dlv_plan", "oil_dlv_fact")
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "circle-2-string" }, [
-              _vm._v("\n          Сдача нефти\n        ")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c(
-          "li",
-          {
-            staticClass: "circle-2",
-            style: "" + _vm.buttonHover3,
-            attrs: { tabindex: "-2" },
-            on: {
-              click: function($event) {
-                return _vm.getProduction("gas_plan", "gas_fact")
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "circle-2-string" }, [
-              _vm._v("Добыча газа")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c(
-          "li",
-          {
-            staticClass: "circle-2",
-            style: "" + _vm.buttonHover4,
-            attrs: { tabindex: "-2" },
-            on: {
-              click: function($event) {
-                return _vm.getProduction("liq_plan", "liq_fact")
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "circle-2-string" }, [
-              _vm._v("Добыча жидкости")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c(
-          "li",
-          {
-            staticClass: "circle-2",
-            style: "" + _vm.buttonHover5,
-            attrs: { tabindex: "-2" },
-            on: {
-              click: function($event) {
-                return _vm.getProduction("gk_plan", "gk_fact")
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "circle-2-string" }, [
-              _vm._v("Добыча конденсата")
-            ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [
-        _c(
-          "li",
-          {
-            staticClass: "circle-2",
-            style: "" + _vm.buttonHover6,
-            attrs: { tabindex: "-2" },
-            on: {
-              click: function($event) {
-                return _vm.getProduction("inj_plan", "inj_fact")
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "circle-2-string" }, [
-              _vm._v("Объём закачки")
-            ])
-          ]
-        )
-      ])
-    ]),
-    _vm._v(" "),
     _c(
       "div",
-      { staticClass: "tables" },
+      { staticClass: "month-day" },
       [
-        _c("div", { staticClass: "tables-name" }, [
-          _vm._v("Добыча нефти и конденсата")
+        _c("div", { staticClass: "navigation-table" }, [
+          _c("div", { staticClass: "navigation" }, [
+            _c("div", { on: { click: _vm.decrease } }, [_vm._v("<")])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "navigation-month", attrs: { colspan: "5" } },
+            [
+              _vm._v(
+                "\n        " +
+                  _vm._s(_vm.monthes[_vm.month]) +
+                  " " +
+                  _vm._s(_vm.year) +
+                  "\n      "
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "navigation" }, [
+            _c("div", { on: { click: _vm.increase } }, [_vm._v(">")])
+          ])
         ]),
         _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticStyle: { clear: "both" } }),
-        _vm._v(" "),
-        _vm._l(_vm.series, function(item) {
-          return _c("div", [
-            _c("div", [
-              _c("div", [
-                _c("div", { staticClass: "cell-colour table-border" }, [
-                  _c("div", {
-                    staticClass: "circle-table",
-                    style: "background: " + _vm.getColor(item.fact - item.plan)
-                  })
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell-number table-border" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell-name table-border" }, [
-                  _vm._v(
-                    "\n            " +
-                      _vm._s(item.dzo) +
-                      " " +
-                      _vm._s(item.time) +
-                      "\n          "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border" }, [
-                  _vm._v(_vm._s(item.plan))
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border" }, [
-                  _vm._v(_vm._s(item.fact))
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "cell table-border colour",
-                    style: "background: " + _vm.getColor(item.fact - item.plan)
+        _vm._l(_vm.calendar(), function(week) {
+          return _c(
+            "div",
+            _vm._l(week, function(day, index) {
+              return _c(
+                "div",
+                {
+                  staticClass: "week",
+                  style: {
+                    color: day.weekend,
+                    "background-color": day.current
                   },
-                  [
-                    _vm._v(
-                      "\n            " +
-                        _vm._s(item.fact - item.plan) +
-                        "\n          "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border colour" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border" }),
-                _vm._v(" "),
-                _c("div", { staticClass: "cell table-border cell-last colour" })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticStyle: { clear: "both" } })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "tables-bottom-line" })
-          ])
+                  on: {
+                    click: [
+                      function($event) {
+                        _vm.selectedDay = day.index
+                      },
+                      function($event) {
+                        return _vm.getSelectedDay()
+                      }
+                    ]
+                  }
+                },
+                [_c("div", [_vm._v(_vm._s(day.index))])]
+              )
+            }),
+            0
+          )
         })
       ],
       2
-    )
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "visual-center-center" }, [
+      _c("div", { staticClass: "tables" }, [
+        _c("div", { staticClass: "visual-center-center" }, [
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "li",
+              {
+                staticClass: "circle-2",
+                style: "" + _vm.buttonHover1,
+                attrs: { tabindex: "-2" },
+                on: {
+                  click: function($event) {
+                    return _vm.getProduction("oil_plan", "oil_fact")
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "circle-2-string" }, [
+                  _vm._v("\n              Добыча нефти\n            ")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "li",
+              {
+                staticClass: "circle-2",
+                style: "" + _vm.buttonHover2,
+                attrs: { tabindex: "-2" },
+                on: {
+                  click: function($event) {
+                    return _vm.getProduction("oil_dlv_plan", "oil_dlv_fact")
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "circle-2-string" }, [
+                  _vm._v("\n              Сдача нефти\n            ")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "li",
+              {
+                staticClass: "circle-2",
+                style: "" + _vm.buttonHover3,
+                attrs: { tabindex: "-2" },
+                on: {
+                  click: function($event) {
+                    return _vm.getProduction("gas_plan", "gas_fact")
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "circle-2-string" }, [
+                  _vm._v("Добыча газа")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "li",
+              {
+                staticClass: "circle-2",
+                style: "" + _vm.buttonHover4,
+                attrs: { tabindex: "-2" },
+                on: {
+                  click: function($event) {
+                    return _vm.getProduction("liq_plan", "liq_fact")
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "circle-2-string" }, [
+                  _vm._v("Добыча жидкости")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "li",
+              {
+                staticClass: "circle-2",
+                style: "" + _vm.buttonHover5,
+                attrs: { tabindex: "-2" },
+                on: {
+                  click: function($event) {
+                    return _vm.getProduction("gk_plan", "gk_fact")
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "circle-2-string" }, [
+                  _vm._v("Добыча конденсата")
+                ])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("a", { attrs: { href: "#" } }, [
+            _c(
+              "li",
+              {
+                staticClass: "circle-2",
+                style: "" + _vm.buttonHover6,
+                attrs: { tabindex: "-2" },
+                on: {
+                  click: function($event) {
+                    return _vm.getProduction("inj_plan", "inj_fact")
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "circle-2-string" }, [
+                  _vm._v("Объём закачки")
+                ])
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "tables" },
+          [
+            _c("div", { staticClass: "tables-name" }, [
+              _vm._v("Добыча нефти и конденсата")
+            ]),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticStyle: { clear: "both" } }),
+            _vm._v(" "),
+            _vm._l(_vm.series, function(item) {
+              return _c("div", [
+                _c("div", [
+                  _c("div", [
+                    _c("div", { staticClass: "cell-number table-border" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell-name table-border" }, [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(item.dzo) +
+                          " " +
+                          _vm._s(item.time) +
+                          "\n              "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border" }, [
+                      _vm._v(_vm._s(item.plan))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border" }, [
+                      _vm._v(_vm._s(item.fact))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border colour" }, [
+                      _c("div", {
+                        staticClass: "circle-table",
+                        style:
+                          "background: " + _vm.getColor(item.fact - item.plan)
+                      }),
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(item.fact - item.plan) +
+                          "\n              "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border colour" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "cell table-border" }),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "cell table-border cell-last colour"
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticStyle: { clear: "both" } })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "tables-bottom-line" })
+              ])
+            })
+          ],
+          2
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -74550,8 +74812,6 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "tables-string" }, [
-      _c("div", { staticClass: "cell-colour-top table-border" }),
-      _vm._v(" "),
       _c("div", { staticClass: "cell-number-top table-border" }, [_vm._v("№")]),
       _vm._v(" "),
       _c("div", { staticClass: "cell-name-top table-border" }, [
