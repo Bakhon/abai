@@ -26,7 +26,7 @@ export default {
   props: ["wells"],
   data: function () {
     return {
-      series: [0, 0],
+      series: [0],
       chartOptions: {
         labels: ["В работе", "В простое"],
         chart: {
@@ -65,11 +65,11 @@ export default {
   },
 
   created: function () {
-    console.log(this.wells);
+    //console.log(this.wells);
     var a = this.wells.inj_wells_work;
     var b = this.wells.inj_wells_idle;
     var wells = new Array(a, b);
-    this.series = wells;
+    if (a==undefined && b==undefined){} else{this.series = wells;}
   },
 };
 </script>

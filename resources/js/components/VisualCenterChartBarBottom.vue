@@ -98,18 +98,18 @@ export default {
         stroke: {
 			show:false
                },*/
-          data: [1, 2, 3],
+          data: [0, 0, 0],
         },
       ],
     };
   },
 
-  created: function () {
+  mounted: function () {
     var a = this.starts.starts_prs;
     var b = this.starts.starts_krs;
     var c = this.starts.starts_drl;
     var starts2 = new Array({ data: [a, b, c] });
-    this.series = starts2;
+if (a==undefined && b==undefined && c==undefined){} else{this.series = starts2;}
   },
 };
 </script>
