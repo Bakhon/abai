@@ -17,32 +17,23 @@
                 </div>
               </div>
             </div>
-            <div class="visual-center-center">
-              <!--<div class="level2-tab active" tabindex="-3">День</div>
-              <div class="level2-tab" tabindex="-3">Месяц</div>
-              <div class="level2-tab" tabindex="-3">Год</div>-->
-          
+            <div class="visual-center-center">        
                  <div   class="level2-tab"            
-                 
-                
-                
+ v-for="(menuDMY, index) in menuDMY()"
+   @click="selectedDMY = menuDMY.id"
+                               
                   :style="{
-                   // color: day.weekend,
-                   //'background-color': menuDMY.current,
+                       'background-color': menuDMY.current,
                   }"
-  
-                >
-                {{menuDMY}} </div>
+                  >
+                {{menuDMY.DMY}} </div>
               
-  </div>
-
-
-            <div class="month-day">
-              <div class="navigation-table">
+            <div class="month-day" >
+              <div class="navigation-table"   v-bind:style="{ display: display }">
                 <div class="navigation">
                   <div v-on:click="decrease"><</div>
                 </div>
-                <div class="navigation-month" colspan="5">
+                <div class="navigation-month navigation" colspan="5">
                   {{ monthes[month] }} {{ year }}
                 </div>
                 <div class="navigation">
@@ -62,40 +53,27 @@
                 >
                   <div>{{ day.index }}</div>
                 </div>
-
-
-</div></div>
-
- 
-
-
-
-
-
- <div class="month-day">
-               
-               
-               
-                   <div                 
+</div>
+                     <div                 
                     class="week"
-                  v-for="month in getMonths()" 
+                  v-for="(month, index) in getMonths()" :key="index.id" 
                   :style="{
                    // color: day.weekend,
                     'background-color': month.current,
                   }"
                 @click="selectedMonth = month.index" >{{month.index}}</div>
-                </div>
+            
 
- <div class="month-day">
+
                  <div                 
                     class="week"
-                  v-for="(year, index) in getYears()" 
+                  v-for="(year, index) in getYears()" :key="year.id" 
                   :style="{
                    // color: day.weekend,
                     'background-color': year.current,
                   }"
                 @click="selectedYear = year.index" >{{year.index}}</div>
-                </div>
+                </div></div>
 
               <div class="visual-center-center">
                 <div class="tables">
@@ -400,6 +378,9 @@ export default {
       starts: [""],
       test: [""],
       series: ["", ""],
+      display: 'none',
+
+
 
     };
   },
@@ -558,7 +539,6 @@ if (this.selectedYear===undefined) {} else {}
           var prod_wells_idle_one = prod_wells_idle2[0].prod_wells_idle;
           this.series = [prod_wells_work_one, prod_wells_idle_one];*/
 
-
   var wells2 = _.zipWith(
             _.sortBy(prod_wells_work2, (prod_wells_work) => prod_wells_work.prod_wells_work),
             _.sortBy(prod_wells_idle2, (prod_wells_idle) => prod_wells_idle.prod_wells_idle),
@@ -653,12 +633,13 @@ if (this.selectedYear===undefined) {} else {}
       this.selectedColour = "background:red!important;";
     },*/
 
-         calendar: function(){
-			var days = [];
+      calendar: function(){
+     	var days = [];
 			var week = 0;
 			days[week] = [];
 			var dlast = new Date(this.year, this.month + 1, 0).getDate();
                 for (let i = 1; i <= dlast; i++) {
+                  
                     if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
 					var	a = {index:i, id: i };
                         days[week].push(a);
@@ -671,6 +652,7 @@ if (this.selectedYear===undefined) {} else {}
           ) {
             a.current = "#009846";
           }
+          
 						if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) { a.weekend = '#ff0000'};
 						}
                      else {
@@ -690,9 +672,11 @@ if (this.selectedYear===undefined) {} else {}
 						
 					}
 				}*/
-				this.dayChange;
-			
+        	this.dayChange;
+         if (this.selectedDMY == '0') {    
+            this.display= 'block';		
 				return days;
+         }
 			},
             decrease: function(){
                     this.month--;
@@ -722,9 +706,7 @@ var month = new Date(this.year, this.month + 1, 0).getMonth();
       if (new Date(this.year, this.month, i).getMonth() ) {
         var a = { index: i,id: i };
         monthAll.push(a);
-        
-
-        if (this.selectedMonth == i) {
+              if (this.selectedMonth == i) {
           a.current = "black";
         } else if (
           i == new Date().getMonth() &&
@@ -737,12 +719,9 @@ var month = new Date(this.year, this.month + 1, 0).getMonth();
       }
      
     }
-          return monthAll;
+        if (this.selectedDMY == '1') { this.display= 'none'; return monthAll;   		}
      
   },
-
-
-
 getYears: function () {
 var yearAll = [];
 var year = this.year;
@@ -762,43 +741,27 @@ var year = this.year;
   
     }
          
-         return yearAll;
+       if (this.selectedDMY == '2') { this.display= 'none';  return yearAll;   	}
   },
 
   menuDMY(){
 
-
-
-    menuDMY[id]=[];
-    var menuDMY = [{DMY:'День',id:'0'},{DMY:'Месяц',id:'1'},{DMY:'Год',id:'2'}];
-
-    for (let i = 0; i <= 2; i++) {
-
+   var DMY = ['День','Месяц','Год'];
       var menuDMY = [];
 			var id = 0;
-			menuDMY[id] = [];
-    
-    
-     menuDMY[i];
+      for (let i =0; i <= 2; i++) {    
+       var a = { index: i,id: i  }
+           a.DMY=DMY[i];
+        menuDMY.push(a);  
+      if (this.selectedDMY == i) {      
+          a.current = "rgb(0, 152, 70)";
+                   }
 
-  if (this.selectedDMY == i) {
-          var z = { index: i };         
-          z.current = "black";
-            menuDMY[id].push(z);
-        }
-
-
-
-         // }
-
+         }
            return menuDMY;
-   console.log(menuDMY); 
-
-  }
-  
-  }
-
-  },
+           console.log(DMY);
+   },
+     },
  
   computed: {
     dayChange: function () {

@@ -2711,7 +2711,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     };
   },
   created: function created() {
-    // console.log(this.wells2);
+    console.log(this.wells2);
     var a = this.wells2.prod_wells_work;
     var b = this.wells2.prod_wells_idle;
     var wells = new Array(a, b);
@@ -3429,28 +3429,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3478,7 +3456,8 @@ __webpack_require__.r(__webpack_exports__);
       wells2: [""],
       starts: [""],
       test: [""],
-      series: ["", ""]
+      series: ["", ""],
+      display: 'none'
     };
   },
   methods: {
@@ -3810,7 +3789,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
       this.dayChange;
-      return days;
+
+      if (this.selectedDMY == '0') {
+        this.display = 'block';
+        return days;
+      }
     },
     decrease: function decrease() {
       this.month--;
@@ -3853,7 +3836,10 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      return monthAll;
+      if (this.selectedDMY == '1') {
+        this.display = 'none';
+        return monthAll;
+      }
     },
     getYears: function getYears() {
       var yearAll = [];
@@ -3878,39 +3864,31 @@ __webpack_require__.r(__webpack_exports__);
           }
       }
 
-      return yearAll;
+      if (this.selectedDMY == '2') {
+        this.display = 'none';
+        return yearAll;
+      }
     },
     menuDMY: function menuDMY() {
-      menuDMY[id] = [];
-      var menuDMY = [{
-        DMY: 'День',
-        id: '0'
-      }, {
-        DMY: 'Месяц',
-        id: '1'
-      }, {
-        DMY: 'Год',
-        id: '2'
-      }];
+      var DMY = ['День', 'Месяц', 'Год'];
+      var menuDMY = [];
+      var id = 0;
 
       for (var i = 0; i <= 2; i++) {
-        var menuDMY = [];
-        var id = 0;
-        menuDMY[id] = [];
-        menuDMY[i];
+        var a = {
+          index: i,
+          id: i
+        };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
 
         if (this.selectedDMY == i) {
-          var z = {
-            index: i
-          };
-          z.current = "black";
-          menuDMY[id].push(z);
-        } // }
-
-
-        return menuDMY;
-        console.log(menuDMY);
+          a.current = "rgb(0, 152, 70)";
+        }
       }
+
+      return menuDMY;
+      console.log(DMY);
     }
   },
   computed: {
@@ -75064,125 +75042,139 @@ var render = function() {
             _vm._v(" "),
             _vm._m(0),
             _vm._v(" "),
-            _c("div", { staticClass: "visual-center-center" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "level2-tab",
-                  style: {
-                    // color: day.weekend,
-                    //'background-color': menuDMY.current,
-                  }
-                },
-                [_vm._v("\n                " + _vm._s(_vm.menuDMY) + " ")]
-              )
-            ]),
-            _vm._v(" "),
             _c(
               "div",
-              { staticClass: "month-day" },
+              { staticClass: "visual-center-center" },
               [
-                _c("div", { staticClass: "navigation-table" }, [
-                  _c("div", { staticClass: "navigation" }, [
-                    _c("div", { on: { click: _vm.decrease } }, [_vm._v("<")])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    {
-                      staticClass: "navigation-month",
-                      attrs: { colspan: "5" }
-                    },
-                    [
-                      _vm._v(
-                        "\n                  " +
-                          _vm._s(_vm.monthes[_vm.month]) +
-                          " " +
-                          _vm._s(_vm.year) +
-                          "\n                "
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "navigation" }, [
-                    _c("div", { on: { click: _vm.increase } }, [_vm._v(">")])
-                  ])
-                ]),
-                _vm._v(" "),
-                _vm._l(_vm.calendar(), function(week) {
+                _vm._l(_vm.menuDMY(), function(menuDMY, index) {
                   return _c(
                     "div",
-                    _vm._l(week, function(day, index) {
+                    {
+                      staticClass: "level2-tab",
+                      style: {
+                        "background-color": menuDMY.current
+                      },
+                      on: {
+                        click: function($event) {
+                          _vm.selectedDMY = menuDMY.id
+                        }
+                      }
+                    },
+                    [_vm._v("\n                " + _vm._s(menuDMY.DMY) + " ")]
+                  )
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "month-day" },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "navigation-table",
+                        style: { display: _vm.display }
+                      },
+                      [
+                        _c("div", { staticClass: "navigation" }, [
+                          _c("div", { on: { click: _vm.decrease } }, [
+                            _vm._v("<")
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "navigation-month navigation",
+                            attrs: { colspan: "5" }
+                          },
+                          [
+                            _vm._v(
+                              "\n                  " +
+                                _vm._s(_vm.monthes[_vm.month]) +
+                                " " +
+                                _vm._s(_vm.year) +
+                                "\n                "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "navigation" }, [
+                          _c("div", { on: { click: _vm.increase } }, [
+                            _vm._v(">")
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.calendar(), function(week) {
+                      return _c(
+                        "div",
+                        _vm._l(week, function(day, index) {
+                          return _c(
+                            "div",
+                            {
+                              staticClass: "week",
+                              style: {
+                                color: day.weekend,
+                                "background-color": day.current
+                              },
+                              on: {
+                                click: function($event) {
+                                  _vm.selectedDay = day.index
+                                }
+                              }
+                            },
+                            [_c("div", [_vm._v(_vm._s(day.index))])]
+                          )
+                        }),
+                        0
+                      )
+                    }),
+                    _vm._v(" "),
+                    _vm._l(_vm.getMonths(), function(month, index) {
                       return _c(
                         "div",
                         {
+                          key: index.id,
                           staticClass: "week",
                           style: {
-                            color: day.weekend,
-                            "background-color": day.current
+                            // color: day.weekend,
+                            "background-color": month.current
                           },
                           on: {
                             click: function($event) {
-                              _vm.selectedDay = day.index
+                              _vm.selectedMonth = month.index
                             }
                           }
                         },
-                        [_c("div", [_vm._v(_vm._s(day.index))])]
+                        [_vm._v(_vm._s(month.index))]
                       )
                     }),
-                    0
-                  )
-                })
+                    _vm._v(" "),
+                    _vm._l(_vm.getYears(), function(year, index) {
+                      return _c(
+                        "div",
+                        {
+                          key: year.id,
+                          staticClass: "week",
+                          style: {
+                            // color: day.weekend,
+                            "background-color": year.current
+                          },
+                          on: {
+                            click: function($event) {
+                              _vm.selectedYear = year.index
+                            }
+                          }
+                        },
+                        [_vm._v(_vm._s(year.index))]
+                      )
+                    })
+                  ],
+                  2
+                )
               ],
               2
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "month-day" },
-              _vm._l(_vm.getMonths(), function(month) {
-                return _c(
-                  "div",
-                  {
-                    staticClass: "week",
-                    style: {
-                      // color: day.weekend,
-                      "background-color": month.current
-                    },
-                    on: {
-                      click: function($event) {
-                        _vm.selectedMonth = month.index
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(month.index))]
-                )
-              }),
-              0
-            ),
-            _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "month-day" },
-              _vm._l(_vm.getYears(), function(year, index) {
-                return _c(
-                  "div",
-                  {
-                    staticClass: "week",
-                    style: {
-                      // color: day.weekend,
-                      "background-color": year.current
-                    },
-                    on: {
-                      click: function($event) {
-                        _vm.selectedYear = year.index
-                      }
-                    }
-                  },
-                  [_vm._v(_vm._s(year.index))]
-                )
-              }),
-              0
             ),
             _vm._v(" "),
             _c("div", { staticClass: "visual-center-center" }, [
