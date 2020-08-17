@@ -630,6 +630,7 @@ li.circle-2:hover {
     margin-left: 10px;
     background-color: #20274e !important;
     float: left;
+    overflow: hidden;
 }
 
 .main {

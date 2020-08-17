@@ -10,6 +10,9 @@ import VueApexCharts from 'vue-apexcharts'
 Vue.component('apexchart', VueApexCharts)
 export default {
   name: 'mix-chart',
+  props: 
+  ['postTitle'],
+
   data: function() {
     return {
       chartOptions: {
@@ -99,6 +102,26 @@ export default {
       }, ],
     }
   },
+
+  /*created: function () {
+    // `this` указывает на экземпляр vm
+   console.log(this.postTitle);
+  }*/
+
+
+  mounted () {
+    // показывает данные после отрисовки компонента в консоли
+   // console.log(this.postTitle)
+    console.log(localStorage.getItem("production-fact"));
+  },
+
+ /* updated: function () {
+  this.$nextTick(function () {
+    // Код, который будет запущен только после
+    // обновления всех представлений
+    console.log(this.postTitle);
+  })
+}*/
     
 }
 </script>
