@@ -154,7 +154,7 @@
                       <div class="cell-last-top table-border cell-last">
                         ДОБЫЧА, тонн
                       </div>
-                      <div class="cell2 table-border">План на 2020 год</div>
+                      <div class="cell2 table-border">План на {{selectedYear}} год</div>
                       <div class="cell2 table-border">План на июль месяц</div>
                       <div class="cell3 table-border">СУТОЧНАЯ</div>
                       <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
@@ -182,7 +182,7 @@
                           <div class="cell-name table-border">
                             {{ item.dzo }} {{ item.time }}
                           </div>
-                          <div class="cell table-border"></div>
+                          <div class="cell table-border">{{item.planYear}}</div>
                           <div class="cell table-border"></div>
                           <div class="cell table-border">{{ item.plan }}</div>
                           <div class="cell table-border">{{ item.fact }}</div>
@@ -386,10 +386,13 @@ export default {
   },
 
   methods: {
+ 
     getColor(status) {
       if (status < "0") return "#b40300";
       return "#008a17";
     },
+
+
 
     getProduction(item, item2,item3) {
 if (this.selectedDay ===undefined) {} else {}
@@ -397,11 +400,7 @@ if (this.selectedMonth ===undefined) {} else {}
 if (this.selectedYear===undefined) {} else {}
 
 
-      localStorage.setItem("production-plan", item);
-      localStorage.setItem("production-fact", item2);
 
-      var productionPlan = localStorage.getItem("production-plan");
-      var productionFact = localStorage.getItem("production-fact");
 
       this.circleMenu=item3;
 
@@ -410,13 +409,22 @@ if (this.selectedYear===undefined) {} else {}
         alert("Сначала выберите название компании");
       }
 
-      //let uri = "/js/json/getnkkmgyear.json";
+
+//data from the year
+var data2;
+      let uri2 = "/js/json/getnkkmgyear.json";
+       this.axios.get(uri2).then((response) => {
+        data2 = response.data;
+               }); 
+
+
+//data from the day
       let uri = "/js/json/getnkkmg.json";
       //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
-          var arrdata = new Array();
+           var arrdata = new Array();
           //select date filter
           var timestamp = new Date(
             this.monthes2[this.month] +
@@ -425,14 +433,22 @@ if (this.selectedYear===undefined) {} else {}
               this.year +
               " 06:00:00 GMT+0600"
           ).getTime();
-          arrdata = _.filter(data, _.iteratee({ __time: timestamp }));
-          if (arrdata.length == 0) {
+          arrdata = _.filter(data, _.iteratee({ __time: timestamp }));      
+          /*if (arrdata.length == 0) {
             alert(
               "К сожалению на текущую дату нет данных, выберите другую дату"
             );
-          } else {
+          } else {*/
             arrdata = _.filter(arrdata, _.iteratee({ dzo: company }));
-          } //select dzo filter
+         // } 
+          
+          //select dzo filter
+
+      localStorage.setItem("production-plan", item);
+      localStorage.setItem("production-fact", item2);
+
+      var productionPlan = localStorage.getItem("production-plan");
+      var productionFact = localStorage.getItem("production-fact");
 
           var dzo = new Array();
           var liq_fact = new Array();
@@ -523,30 +539,110 @@ if (this.selectedYear===undefined) {} else {}
             inj_wells_work2.push({ inj_wells_work });
           });
 
+
+//for year
+var selectedYear=this.selectedYear;
+if (selectedYear===2020){selectedYear='2020 (с начала года)'}
+var arrdataYear = new Array();
+arrdataYear = _.filter(data2, _.iteratee({ period: String(selectedYear)}));
+arrdataYear = _.filter(arrdataYear, _.iteratee({ dzo: company}));
+//console.log(arrdataYear);
+
+  var dzoYear = new Array();
+    var factYear = new Array();
+      var planYear = new Array();
+
+       var prod_wells_work_year = new Array();
+        var prod_wells_idle_year = new Array();
+
+      var  inj_wells_idle_year = new Array();
+       var inj_wells_work_year = new Array();
+
+               _.forEach(arrdataYear, function (item) {
+            dzoYear.push(item.dzo);
+           factYear.push(item[productionFact]);
+            planYear.push(item[productionPlan]);
+                          prod_wells_work_year.push(item.prod_wells_work);
+                      prod_wells_idle_year.push(item.prod_wells_idle);
+inj_wells_idle_year.push(item.inj_wells_idle);
+ inj_wells_work_year.push(item.inj_wells_work);
+                             });
+
+
+      var factYear2 = new Array();
+          _.each(factYear, function (factYear) {
+            factYear2.push({ factYear });
+          });
+
+    var planYear2 = new Array();
+          _.each(planYear, function (planYear) {
+            planYear2.push({ planYear });
+          });
+
+
+     var prod_wells_work_year2 = new Array();
+          _.each(prod_wells_work_year, function (prod_wells_work_year) {
+            prod_wells_work_year2.push({ prod_wells_work_year });
+          });
+
+    var prod_wells_idle_year2 = new Array();
+          _.each(prod_wells_idle_year, function (prod_wells_idle_year) {
+            prod_wells_idle_year2.push({ prod_wells_idle_year });
+          });
+
+
+    var inj_wells_idle_year2 = new Array();
+          _.each(inj_wells_idle_year, function (inj_wells_idle_year) {
+            inj_wells_idle_year2.push({ inj_wells_idle_year });
+          });
+
+    var inj_wells_work_year2 = new Array();
+          _.each(inj_wells_work_year, function (inj_wells_work_year) {
+            inj_wells_work_year2.push({ inj_wells_work_year });
+          });
+
+
+
+          
+
+
+//for year                  
+
           //----------------------------
-          var result = _.zipWith(
+          var tables = _.zipWith(
             _.sortBy(dzo2, (dzo) => dzo.dzo),
             _.sortBy(liq_fact2, (liq_fact) => liq_fact.liq_fact),
-            _.sortBy(liq_plan2, (liq_plan) => liq_plan.liq_plan),
+            _.sortBy(liq_plan2, (liq_plan) => liq_plan.liq_plan),        
             _.sortBy(__time2, (time) => time.time),
-            (dzo, liq_fact, liq_plan, time) =>
-              _.defaults(dzo, liq_fact, liq_plan, time)
+            _.sortBy(factYear2, (factYear) => factYear),
+            _.sortBy(planYear2, (planYear) => planYear),
+            (dzo, liq_fact, liq_plan, time,factYear,planYear) =>
+              _.defaults(dzo, liq_fact, liq_plan, time,factYear,planYear)
           );
 
-          this.tables = result;
+          this.tables = tables;
 
+         // console.log(tables);
+          //console.log(planYear);
           /*var prod_wells_work_one = prod_wells_work2[0].prod_wells_work;
           var prod_wells_idle_one = prod_wells_idle2[0].prod_wells_idle;
           this.series = [prod_wells_work_one, prod_wells_idle_one];*/
 
-  var wells2 = _.zipWith(
-            _.sortBy(prod_wells_work2, (prod_wells_work) => prod_wells_work.prod_wells_work),
-            _.sortBy(prod_wells_idle2, (prod_wells_idle) => prod_wells_idle.prod_wells_idle),
-                (prod_wells_work, prod_wells_idle) =>
-              _.defaults(prod_wells_work, prod_wells_idle)
+
+          //VisualCenterChartDonutRight1.vue
+             var wells2 = _.zipWith(
+          _.sortBy(prod_wells_work2, (prod_wells_work) => prod_wells_work.prod_wells_work),
+          _.sortBy(prod_wells_idle2, (prod_wells_idle) => prod_wells_idle.prod_wells_idle),
+        _.sortBy(prod_wells_work_year2, (prod_wells_work_year) => prod_wells_work_year.prod_wells_work_year),
+          _.sortBy(prod_wells_idle_year2, (prod_wells_idle_year) => prod_wells_idle_year.prod_wells_idle_year),
+                (prod_wells_work, prod_wells_idle,prod_wells_work_year,prod_wells_idle_year) =>
+              _.defaults(prod_wells_work, prod_wells_idle,prod_wells_work_year,prod_wells_idle_year)
           );
 
-    this.wells2 = wells2;
+
+           
+            this.wells2 = wells2;
+            //console.log(prod_wells_work_year);
 
           var starts = _.zipWith(
             _.sortBy(starts_krs2, (starts_krs) => starts_krs.starts_krs),
@@ -558,6 +654,13 @@ if (this.selectedYear===undefined) {} else {}
 
           this.starts = starts;
 
+
+
+  /*
+ inj_wells_idle
+inj_wells_work*/        
+
+          //VisualCenterChartDonutRight2.vue
           var wells = _.zipWith(
             _.sortBy(
               inj_wells_idle2,
@@ -567,8 +670,23 @@ if (this.selectedYear===undefined) {} else {}
               inj_wells_work2,
               (inj_wells_work) => inj_wells_work.inj_wells_work
             ),
-            (inj_wells_idle, inj_wells_work) =>
-              _.defaults(inj_wells_idle, inj_wells_work)
+
+              _.sortBy(
+              inj_wells_idle_year2,
+              (inj_wells_idle_year) => inj_wells_idle_year.inj_wells_idle_year
+            ),
+
+
+            _.sortBy(
+              inj_wells_work_year2,
+              (inj_wells_work_year) => inj_wells_work_year.inj_wells_work_year
+            ),
+
+
+
+
+            (inj_wells_idle, inj_wells_work,inj_wells_idle_year,inj_wells_work_year) =>
+              _.defaults(inj_wells_idle, inj_wells_work,inj_wells_idle_year,inj_wells_work_year)
           );
 
           this.wells = wells;
@@ -616,7 +734,8 @@ if (this.selectedYear===undefined) {} else {}
         } else {
           console.log("No data");
         }
-      });
+      }
+      );
     },
 
     /*getSelectedDay() {
@@ -759,7 +878,7 @@ var year = this.year;
 
          }
            return menuDMY;
-           console.log(DMY);
+           //console.log(DMY);
    },
      },
  

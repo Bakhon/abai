@@ -5,14 +5,14 @@
       :options="chartOptions"
       :series="series"
     ></apexchart>
-    <div class="donut-inner1 inner1">
-    В работе
-      <br />
-      {{ wells.inj_wells_work }}
-    </div>
     <div class="donut-inner1 inner2">
+      В работе
+      <br />
+      {{ wells.inj_wells_work }} {{ wells.inj_wells_work_year }}
+    </div>
+    <div class="donut-inner1 inner1">
       В простое<br />
-      {{ wells.inj_wells_idle }}
+      {{ wells.inj_wells_idle }}{{ wells.inj_wells_idle_year }}
     </div>
   </div>
 </template>
@@ -65,11 +65,22 @@ export default {
   },
 
   created: function () {
-    //console.log(this.wells);
+    console.log(this.wells);
     var a = this.wells.inj_wells_work;
     var b = this.wells.inj_wells_idle;
     var wells = new Array(a, b);
-    if (a==undefined && b==undefined){} else{this.series = wells;}
+    if (a == undefined && b == undefined) {
+    } else {
+      this.series = wells;
+    }
+
+    var c = this.wells.inj_wells_work_year;
+    var d = this.wells.inj_wells_idle_year;
+    var wells = new Array(c, d);
+    if (c == undefined && d == undefined) {
+    } else {
+      this.series = wells;
+    }
   },
 };
 </script>
