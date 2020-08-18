@@ -1,5 +1,6 @@
 .companyName {
     font-size: 12px!important;
+    margin-left: 10px;
 }
 
 .nur-sultan {
@@ -1219,4 +1220,14 @@ li.circle-2 {
 
 .selected2:hover {
     background: red;
+}
+
+.companyLogo-kmg {
+    width: 165px;
+    height: 45px;
+    background: url(/img/level1/kmg_small.png) no-repeat;
+    position: absolute;
+    background-size: contain;
+    margin-top: 18px;
+    margin-left: 10px;
 }

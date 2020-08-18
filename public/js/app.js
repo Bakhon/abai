@@ -3028,6 +3028,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -74504,7 +74514,23 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "list-group" }, [
-    _vm._m(0),
+    _c(
+      "a",
+      {
+        staticClass:
+          "bg-dark list-group-item list-group-item-action circle-menu",
+        style: "" + _vm.buttonMenuHover2,
+        attrs: { href: "#" },
+        on: {
+          click: function($event) {
+            return _vm.saveCompany("all")
+          }
+        }
+      },
+      [_vm._m(0)]
+    ),
+    _vm._v(" "),
+    _vm._m(1),
     _vm._v(" "),
     _c(
       "div",
@@ -74530,7 +74556,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(1)]
+          [_vm._m(2)]
         ),
         _vm._v(" "),
         _c(
@@ -74546,7 +74572,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(2)]
+          [_vm._m(3)]
         ),
         _vm._v(" "),
         _c(
@@ -74562,7 +74588,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(3)]
+          [_vm._m(4)]
         ),
         _vm._v(" "),
         _c(
@@ -74578,7 +74604,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(4)]
+          [_vm._m(5)]
         ),
         _vm._v(" "),
         _c(
@@ -74594,7 +74620,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(5)]
+          [_vm._m(6)]
         ),
         _vm._v(" "),
         _c(
@@ -74610,7 +74636,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(6)]
+          [_vm._m(7)]
         ),
         _vm._v(" "),
         _c(
@@ -74626,7 +74652,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(7)]
+          [_vm._m(8)]
         ),
         _vm._v(" "),
         _c(
@@ -74642,7 +74668,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(8)]
+          [_vm._m(9)]
         ),
         _vm._v(" "),
         _c(
@@ -74658,17 +74684,31 @@ var render = function() {
               }
             }
           },
-          [_vm._m(9)]
+          [_vm._m(10)]
         )
       ]
     ),
     _vm._v(" "),
-    _vm._m(10),
+    _vm._m(11),
     _vm._v(" "),
-    _vm._m(11)
+    _vm._m(12)
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("div", { staticClass: "companyLogo-kmg" }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" })
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

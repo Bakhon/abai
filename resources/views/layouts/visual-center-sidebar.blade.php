@@ -35,8 +35,8 @@
     <div class="left-price-oil">
         <div class="left-price-oil2">
 
-            <? function getRates(){
-$url = "http://www.nationalbank.kz/rss/rates_all.xml";
+            <?php function getRates(){
+$url = "https://www.nationalbank.kz/rss/rates_all.xml";
 $dataObj = simplexml_load_file($url);
     if ($dataObj){
     foreach ($dataObj->channel->item as $item){
@@ -52,7 +52,7 @@ $dataObj = simplexml_load_file($url);
 }
 }
 ?>
-            Курс доллара <div class="price-border "><?= getRates() ?> &#8376;</div>
+            Курс доллара <div class="price-border "><?php echo getRates(); ?> &#8376;</div>
         </div>
         <ul class="oil-string-all">
             <li class="oil-string one2 width-price">1 казахстанский тенге равно</li>
@@ -61,7 +61,7 @@ $dataObj = simplexml_load_file($url);
         </ul>
         <ul class="oil-string-all">
             <li class="oil-string one2-2 width-price">Доллар США</li>
-            <li class="oil-string two2"> <?= round('1' / getRates(), 4); ?>
+            <li class="oil-string two2"> <?php echo round('1' / getRates(), 4); ?>
                 <!--0,0025-->
             </li>
             <li class="oil-string three2">Доллар</li>

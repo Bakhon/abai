@@ -1,5 +1,18 @@
 <template>
   <div class="list-group">
+    <a
+      href="#"
+      class="bg-dark list-group-item list-group-item-action circle-menu"
+      :style="`${buttonMenuHover2}`"
+      @click="saveCompany('all')"
+    >
+      <div class="d-flex w-100 justify-content-start align-items-center">
+        <div       
+          class="companyLogo-kmg"
+        ></div>
+        <span class="menu-collapsed companyName"></span>
+      </div>
+    </a>
     <a href="#submenu1" data-toggle="collapse" aria-expanded="false">
       <div class="assets2" tabindex="0">Операционные активы</div>
     </a>
@@ -25,13 +38,10 @@
       <a
         href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
-            :style="`${buttonMenuHover2}`"
-          @click="saveCompany('КБМ')"
+        :style="`${buttonMenuHover2}`"
+        @click="saveCompany('КБМ')"
       >
-        <div
-          class="d-flex w-100 justify-content-start align-items-center"
-      
-        >
+        <div class="d-flex w-100 justify-content-start align-items-center">
           <img
             src="/img/level1/logo_karazhanbas.svg"
             width="25"
@@ -208,86 +218,83 @@ export default {
   data: () => ({
     company: "",
     buttonMenuHover1: "",
-     buttonMenuHover2: "",
-     buttonMenuHover3: "",
-     buttonMenuHover4: "",
-     buttonMenuHover5: "",
-     buttonMenuHover6: "",
-     buttonMenuHover7: "",
-     buttonMenuHover8: "",
-     buttonMenuHover9: "",
-
+    buttonMenuHover2: "",
+    buttonMenuHover3: "",
+    buttonMenuHover4: "",
+    buttonMenuHover5: "",
+    buttonMenuHover6: "",
+    buttonMenuHover7: "",
+    buttonMenuHover8: "",
+    buttonMenuHover9: "",
   }),
   methods: {
     saveCompany(com) {
       localStorage.setItem("company", com);
       var company = localStorage.getItem("company");
-      this.company=company;
+      this.company = company;
 
- var buttonMenuHover = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;"+
-    "background-size: 9% auto;"+
-    "background-position: 75% 50%;"+
-    "border: none;"+
-    "height: 40px;"+
-    "pointer-events: none;";
+      var buttonMenuHover =
+        "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
+        "background-size: 9% auto;" +
+        "background-position: 75% 50%;" +
+        "border: none;" +
+        "height: 40px;" +
+        "pointer-events: none;";
 
- console.log(company == "КГМ");
+      console.log(company == "КГМ");
 
-          if (company == "ОМГ") {
-            this.buttonMenuHover1 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover1 = "";
-          }
-          if (company == "КБМ") {
-            this.buttonMenuHover2 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover2 = "";
-          }
+      if (company == "ОМГ") {
+        this.buttonMenuHover1 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover1 = "";
+      }
+      if (company == "КБМ") {
+        this.buttonMenuHover2 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover2 = "";
+      }
 
-          if (company == "КГМ") {
-            this.buttonMenuHover3 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover3 = "";
-          }
+      if (company == "КГМ") {
+        this.buttonMenuHover3 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover3 = "";
+      }
 
-          if (company == "ЭМГ") {
-            this.buttonMenuHover4 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover4 = "";
-          }
+      if (company == "ЭМГ") {
+        this.buttonMenuHover4 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover4 = "";
+      }
 
-          if (company == "ММГ") {
-            this.buttonMenuHover5 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover5 = "";
-          }
+      if (company == "ММГ") {
+        this.buttonMenuHover5 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover5 = "";
+      }
 
-          if (company == "КТМ") {
-            this.buttonMenuHover6 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover6 = "";
-          }
+      if (company == "КТМ") {
+        this.buttonMenuHover6 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover6 = "";
+      }
 
-             if (company == "КОА") {
-            this.buttonMenuHover7 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover7 = "";
-          }
+      if (company == "КОА") {
+        this.buttonMenuHover7 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover7 = "";
+      }
 
-               if (company == "ПКИ") {
-            this.buttonMenuHover8 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover8 = "";
-          }
+      if (company == "ПКИ") {
+        this.buttonMenuHover8 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover8 = "";
+      }
 
-
-               if (company == "АГГ") {
-            this.buttonMenuHover9 = buttonMenuHover;
-          } else {
-            this.buttonMenuHover9 = "";
-          }
-
-
+      if (company == "АГГ") {
+        this.buttonMenuHover9 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover9 = "";
+      }
     },
   },
 };
