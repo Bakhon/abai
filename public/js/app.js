@@ -2711,12 +2711,20 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     };
   },
   created: function created() {
-    console.log(this.wells2);
+    //console.log(this.wells2);
     var a = this.wells2.prod_wells_work;
     var b = this.wells2.prod_wells_idle;
     var wells = new Array(a, b);
 
     if (a == undefined && b == undefined) {} else {
+      this.series = wells;
+    }
+
+    var c = this.wells2.prod_wells_work_year;
+    var d = this.wells2.prod_wells_idle_year;
+    var wells = new Array(c, d);
+
+    if (c == undefined && d == undefined) {} else {
       this.series = wells;
     }
   }
@@ -2801,12 +2809,20 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     };
   },
   created: function created() {
-    //console.log(this.wells);
+    console.log(this.wells);
     var a = this.wells.inj_wells_work;
     var b = this.wells.inj_wells_idle;
     var wells = new Array(a, b);
 
     if (a == undefined && b == undefined) {} else {
+      this.series = wells;
+    }
+
+    var c = this.wells.inj_wells_work_year;
+    var d = this.wells.inj_wells_idle_year;
+    var wells = new Array(c, d);
+
+    if (c == undefined && d == undefined) {} else {
       this.series = wells;
     }
   }
@@ -2823,6 +2839,16 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3474,17 +3500,19 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.selectedYear === undefined) {} else {}
 
-      localStorage.setItem("production-plan", item);
-      localStorage.setItem("production-fact", item2);
-      var productionPlan = localStorage.getItem("production-plan");
-      var productionFact = localStorage.getItem("production-fact");
       this.circleMenu = item3;
       var company = localStorage.getItem("company");
 
       if (company === null) {
         alert("Сначала выберите название компании");
-      } //let uri = "/js/json/getnkkmgyear.json";
+      } //data from the year
 
+
+      var data2;
+      var uri2 = "/js/json/getnkkmgyear.json";
+      this.axios.get(uri2).then(function (response) {
+        data2 = response.data;
+      }); //data from the day
 
       var uri = "/js/json/getnkkmg.json"; //let uri = "/ru/getnkkmg";
 
@@ -3498,16 +3526,21 @@ __webpack_require__.r(__webpack_exports__);
           arrdata = _.filter(data, _.iteratee({
             __time: timestamp
           }));
+          /*if (arrdata.length == 0) {
+            alert(
+              "К сожалению на текущую дату нет данных, выберите другую дату"
+            );
+          } else {*/
 
-          if (arrdata.length == 0) {
-            alert("К сожалению на текущую дату нет данных, выберите другую дату");
-          } else {
-            arrdata = _.filter(arrdata, _.iteratee({
-              dzo: company
-            }));
-          } //select dzo filter
+          arrdata = _.filter(arrdata, _.iteratee({
+            dzo: company
+          })); // } 
+          //select dzo filter
 
-
+          localStorage.setItem("production-plan", item);
+          localStorage.setItem("production-fact", item2);
+          var productionPlan = localStorage.getItem("production-plan");
+          var productionFact = localStorage.getItem("production-fact");
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
@@ -3628,10 +3661,92 @@ __webpack_require__.r(__webpack_exports__);
             inj_wells_work2.push({
               inj_wells_work: inj_wells_work
             });
-          }); //----------------------------
+          }); //for year
 
 
-          var result = _.zipWith(_.sortBy(dzo2, function (dzo) {
+          var selectedYear = _this.selectedYear;
+
+          if (selectedYear === 2020) {
+            selectedYear = '2020 (с начала года)';
+          }
+
+          var arrdataYear = new Array();
+          arrdataYear = _.filter(data2, _.iteratee({
+            period: String(selectedYear)
+          }));
+          arrdataYear = _.filter(arrdataYear, _.iteratee({
+            dzo: company
+          })); //console.log(arrdataYear);
+
+          var dzoYear = new Array();
+          var factYear = new Array();
+          var planYear = new Array();
+          var prod_wells_work_year = new Array();
+          var prod_wells_idle_year = new Array();
+          var inj_wells_idle_year = new Array();
+          var inj_wells_work_year = new Array();
+
+          _.forEach(arrdataYear, function (item) {
+            dzoYear.push(item.dzo);
+            factYear.push(item[productionFact]);
+            planYear.push(item[productionPlan]);
+            prod_wells_work_year.push(item.prod_wells_work);
+            prod_wells_idle_year.push(item.prod_wells_idle);
+            inj_wells_idle_year.push(item.inj_wells_idle);
+            inj_wells_work_year.push(item.inj_wells_work);
+          });
+
+          var factYear2 = new Array();
+
+          _.each(factYear, function (factYear) {
+            factYear2.push({
+              factYear: factYear
+            });
+          });
+
+          var planYear2 = new Array();
+
+          _.each(planYear, function (planYear) {
+            planYear2.push({
+              planYear: planYear
+            });
+          });
+
+          var prod_wells_work_year2 = new Array();
+
+          _.each(prod_wells_work_year, function (prod_wells_work_year) {
+            prod_wells_work_year2.push({
+              prod_wells_work_year: prod_wells_work_year
+            });
+          });
+
+          var prod_wells_idle_year2 = new Array();
+
+          _.each(prod_wells_idle_year, function (prod_wells_idle_year) {
+            prod_wells_idle_year2.push({
+              prod_wells_idle_year: prod_wells_idle_year
+            });
+          });
+
+          var inj_wells_idle_year2 = new Array();
+
+          _.each(inj_wells_idle_year, function (inj_wells_idle_year) {
+            inj_wells_idle_year2.push({
+              inj_wells_idle_year: inj_wells_idle_year
+            });
+          });
+
+          var inj_wells_work_year2 = new Array();
+
+          _.each(inj_wells_work_year, function (inj_wells_work_year) {
+            inj_wells_work_year2.push({
+              inj_wells_work_year: inj_wells_work_year
+            });
+          }); //for year                  
+          //----------------------------
+
+
+          var tables = _.zipWith(_.sortBy(dzo2, function (dzo) {
             return dzo.dzo;
           }), _.sortBy(liq_fact2, function (liq_fact) {
             return liq_fact.liq_fact;
@@ -3639,24 +3754,35 @@ __webpack_require__.r(__webpack_exports__);
             return liq_plan.liq_plan;
           }), _.sortBy(__time2, function (time) {
             return time.time;
-          }), function (dzo, liq_fact, liq_plan, time) {
-            return _.defaults(dzo, liq_fact, liq_plan, time);
+          }), _.sortBy(factYear2, function (factYear) {
+            return factYear;
+          }), _.sortBy(planYear2, function (planYear) {
+            return planYear;
+          }), function (dzo, liq_fact, liq_plan, time, factYear, planYear) {
+            return _.defaults(dzo, liq_fact, liq_plan, time, factYear, planYear);
           });
 
-          _this.tables = result;
+          _this.tables = tables; // console.log(tables);
+          //console.log(planYear);
+
           /*var prod_wells_work_one = prod_wells_work2[0].prod_wells_work;
           var prod_wells_idle_one = prod_wells_idle2[0].prod_wells_idle;
           this.series = [prod_wells_work_one, prod_wells_idle_one];*/
+          //VisualCenterChartDonutRight1.vue
 
           var wells2 = _.zipWith(_.sortBy(prod_wells_work2, function (prod_wells_work) {
             return prod_wells_work.prod_wells_work;
           }), _.sortBy(prod_wells_idle2, function (prod_wells_idle) {
             return prod_wells_idle.prod_wells_idle;
-          }), function (prod_wells_work, prod_wells_idle) {
-            return _.defaults(prod_wells_work, prod_wells_idle);
+          }), _.sortBy(prod_wells_work_year2, function (prod_wells_work_year) {
+            return prod_wells_work_year.prod_wells_work_year;
+          }), _.sortBy(prod_wells_idle_year2, function (prod_wells_idle_year) {
+            return prod_wells_idle_year.prod_wells_idle_year;
+          }), function (prod_wells_work, prod_wells_idle, prod_wells_work_year, prod_wells_idle_year) {
+            return _.defaults(prod_wells_work, prod_wells_idle, prod_wells_work_year, prod_wells_idle_year);
           });
 
-          _this.wells2 = wells2;
+          _this.wells2 = wells2; //console.log(prod_wells_work_year);
 
           var starts = _.zipWith(_.sortBy(starts_krs2, function (starts_krs) {
             return starts_krs.starts_krs;
@@ -3669,13 +3795,21 @@ __webpack_require__.r(__webpack_exports__);
           });
 
           _this.starts = starts;
+          /*
+          inj_wells_idle
+          inj_wells_work*/
+          //VisualCenterChartDonutRight2.vue
 
           var wells = _.zipWith(_.sortBy(inj_wells_idle2, function (inj_wells_idle) {
             return inj_wells_idle.inj_wells_idle;
           }), _.sortBy(inj_wells_work2, function (inj_wells_work) {
             return inj_wells_work.inj_wells_work;
-          }), function (inj_wells_idle, inj_wells_work) {
-            return _.defaults(inj_wells_idle, inj_wells_work);
+          }), _.sortBy(inj_wells_idle_year2, function (inj_wells_idle_year) {
+            return inj_wells_idle_year.inj_wells_idle_year;
+          }), _.sortBy(inj_wells_work_year2, function (inj_wells_work_year) {
+            return inj_wells_work_year.inj_wells_work_year;
+          }), function (inj_wells_idle, inj_wells_work, inj_wells_idle_year, inj_wells_work_year) {
+            return _.defaults(inj_wells_idle, inj_wells_work, inj_wells_idle_year, inj_wells_work_year);
           });
 
           _this.wells = wells;
@@ -3887,8 +4021,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      return menuDMY;
-      console.log(DMY);
+      return menuDMY; //console.log(DMY);
     }
   },
   computed: {
@@ -74421,16 +74554,28 @@ var render = function() {
         attrs: { type: "donut", options: _vm.chartOptions, series: _vm.series }
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "donut-inner1 inner1" }, [
+      _c("div", { staticClass: "donut-inner1 inner2" }, [
         _vm._v("\n  В работе\n    "),
         _c("br"),
-        _vm._v("\n    " + _vm._s(_vm.wells2.prod_wells_work) + "\n  ")
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.wells2.prod_wells_work) +
+            "  " +
+            _vm._s(_vm.wells2.prod_wells_work_year) +
+            "\n  "
+        )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "donut-inner1 inner2" }, [
+      _c("div", { staticClass: "donut-inner1 inner1" }, [
         _vm._v("\n    В простое"),
         _c("br"),
-        _vm._v("\n    " + _vm._s(_vm.wells2.prod_wells_idle) + "\n  ")
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.wells2.prod_wells_idle) +
+            "  " +
+            _vm._s(_vm.wells2.prod_wells_idle_year) +
+            "\n  "
+        )
       ])
     ],
     1
@@ -74466,16 +74611,27 @@ var render = function() {
         attrs: { type: "donut", options: _vm.chartOptions, series: _vm.series }
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "donut-inner1 inner1" }, [
-        _vm._v("\n  В работе\n    "),
+      _c("div", { staticClass: "donut-inner1 inner2" }, [
+        _vm._v("\n    В работе\n    "),
         _c("br"),
-        _vm._v("\n    " + _vm._s(_vm.wells.inj_wells_work) + "\n  ")
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.wells.inj_wells_work) +
+            " " +
+            _vm._s(_vm.wells.inj_wells_work_year) +
+            "\n  "
+        )
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "donut-inner1 inner2" }, [
+      _c("div", { staticClass: "donut-inner1 inner1" }, [
         _vm._v("\n    В простое"),
         _c("br"),
-        _vm._v("\n    " + _vm._s(_vm.wells.inj_wells_idle) + "\n  ")
+        _vm._v(
+          "\n    " +
+            _vm._s(_vm.wells.inj_wells_idle) +
+            _vm._s(_vm.wells.inj_wells_idle_year) +
+            "\n  "
+        )
       ])
     ],
     1
@@ -74504,7 +74660,23 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "list-group" }, [
-    _vm._m(0),
+    _c(
+      "a",
+      {
+        staticClass:
+          "bg-dark list-group-item list-group-item-action circle-menu",
+        style: "" + _vm.buttonMenuHover2,
+        attrs: { href: "#" },
+        on: {
+          click: function($event) {
+            return _vm.saveCompany("all")
+          }
+        }
+      },
+      [_vm._m(0)]
+    ),
+    _vm._v(" "),
+    _vm._m(1),
     _vm._v(" "),
     _c(
       "div",
@@ -74530,7 +74702,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(1)]
+          [_vm._m(2)]
         ),
         _vm._v(" "),
         _c(
@@ -74546,7 +74718,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(2)]
+          [_vm._m(3)]
         ),
         _vm._v(" "),
         _c(
@@ -74562,7 +74734,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(3)]
+          [_vm._m(4)]
         ),
         _vm._v(" "),
         _c(
@@ -74578,7 +74750,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(4)]
+          [_vm._m(5)]
         ),
         _vm._v(" "),
         _c(
@@ -74594,7 +74766,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(5)]
+          [_vm._m(6)]
         ),
         _vm._v(" "),
         _c(
@@ -74610,7 +74782,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(6)]
+          [_vm._m(7)]
         ),
         _vm._v(" "),
         _c(
@@ -74626,7 +74798,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(7)]
+          [_vm._m(8)]
         ),
         _vm._v(" "),
         _c(
@@ -74642,7 +74814,7 @@ var render = function() {
               }
             }
           },
-          [_vm._m(8)]
+          [_vm._m(9)]
         ),
         _vm._v(" "),
         _c(
@@ -74658,17 +74830,31 @@ var render = function() {
               }
             }
           },
-          [_vm._m(9)]
+          [_vm._m(10)]
         )
       ]
     ),
     _vm._v(" "),
-    _vm._m(10),
+    _vm._m(11),
     _vm._v(" "),
-    _vm._m(11)
+    _vm._m(12)
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "d-flex w-100 justify-content-start align-items-center" },
+      [
+        _c("div", { staticClass: "companyLogo-kmg" }),
+        _vm._v(" "),
+        _c("span", { staticClass: "menu-collapsed companyName" })
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -75343,7 +75529,91 @@ var render = function() {
                       _vm._v(_vm._s(_vm.circleMenu))
                     ]),
                     _vm._v(" "),
-                    _vm._m(1),
+                    _c("div", { staticClass: "tables-string" }, [
+                      _c(
+                        "div",
+                        { staticClass: "cell-number-top table-border" },
+                        [_vm._v("№")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell-name-top table-border" }, [
+                        _vm._v("Предприятия")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "cell-last-top table-border cell-last" },
+                        [
+                          _vm._v(
+                            "\n                        ДОБЫЧА, тонн\n                      "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell2 table-border" }, [
+                        _vm._v("План на " + _vm._s(_vm.selectedYear) + " год")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell2 table-border" }, [
+                        _vm._v("План на июль месяц")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell3 table-border" }, [
+                        _vm._v("СУТОЧНАЯ")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell3 table-border" }, [
+                        _vm._v("С НАЧАЛА МЕСЯЦА")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "cell3 table-border cell-last" },
+                        [
+                          _vm._v(
+                            "\n                        С НАЧАЛА ГОДА\n                      "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ПЛАН")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ФАКТ")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("(+,-)")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ПЛАН")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ФАКТ")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("(+,-)")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ПЛАН")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ФАКТ")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "cell4 table-border cell-last" },
+                        [_vm._v("(+,-)")]
+                      )
+                    ]),
                     _vm._v(" "),
                     _c("div", { staticStyle: { clear: "both" } }),
                     _vm._v(" "),
@@ -75369,7 +75639,9 @@ var render = function() {
                               ]
                             ),
                             _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.planYear))
+                            ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }),
                             _vm._v(" "),
@@ -75429,9 +75701,9 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "visual-center-center" }, [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
-              _vm._m(3),
+              _vm._m(2),
               _vm._v(" "),
               _c("div", { staticClass: "visual-center-bottom" }, [
                 _c("div", { staticClass: "difference-of-24" }, [
@@ -75454,7 +75726,7 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "visual-center-right-column" }, [
-            _vm._m(4),
+            _vm._m(3),
             _vm._v(" "),
             _c("div", { staticClass: "donut" }, [
               _c("div", { staticClass: "indent" }, [
@@ -75511,62 +75783,6 @@ var staticRenderFns = [
           _vm._v(" "),
           _c("div", { staticClass: "right-arrow" })
         ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "tables-string" }, [
-      _c("div", { staticClass: "cell-number-top table-border" }, [_vm._v("№")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell-name-top table-border" }, [
-        _vm._v("Предприятия")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell-last-top table-border cell-last" }, [
-        _vm._v("\n                        ДОБЫЧА, тонн\n                      ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell2 table-border" }, [
-        _vm._v("План на 2020 год")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell2 table-border" }, [
-        _vm._v("План на июль месяц")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell3 table-border" }, [_vm._v("СУТОЧНАЯ")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell3 table-border" }, [
-        _vm._v("С НАЧАЛА МЕСЯЦА")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell3 table-border cell-last" }, [
-        _vm._v(
-          "\n                        С НАЧАЛА ГОДА\n                      "
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border" }, [_vm._v("ПЛАН")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border" }, [_vm._v("ФАКТ")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border" }, [_vm._v("(+,-)")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border" }, [_vm._v("ПЛАН")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border" }, [_vm._v("ФАКТ")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border" }, [_vm._v("(+,-)")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border" }, [_vm._v("ПЛАН")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border" }, [_vm._v("ФАКТ")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "cell4 table-border cell-last" }, [
-        _vm._v("(+,-)")
       ])
     ])
   },
@@ -88816,14 +89032,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************************!*\
   !*** ./resources/js/components/VisualCenterTable.vue ***!
   \*******************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VisualCenterTable_vue_vue_type_template_id_6dd0c484___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VisualCenterTable.vue?vue&type=template&id=6dd0c484& */ "./resources/js/components/VisualCenterTable.vue?vue&type=template&id=6dd0c484&");
 /* harmony import */ var _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VisualCenterTable.vue?vue&type=script&lang=js& */ "./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -88853,7 +89070,7 @@ component.options.__file = "resources/js/components/VisualCenterTable.vue"
 /*!********************************************************************************!*\
   !*** ./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js& ***!
   \********************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
