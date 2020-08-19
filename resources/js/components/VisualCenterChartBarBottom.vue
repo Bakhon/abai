@@ -35,7 +35,7 @@ export default {
           },
         },
 
-        colors: ["#e8e522"],
+        colors: ["#F7BB2E"],
         chart: {
           animations: {
             speed: 200,
@@ -110,6 +110,15 @@ export default {
     var c = this.starts.starts_drl;
     var starts2 = new Array({ data: [a, b, c] });
 if (a==undefined && b==undefined && c==undefined){} else{this.series = starts2;}
+
+   var d = this.starts.starts_prs_year;
+    var e = this.starts.starts_krs_year;
+    var f = this.starts.starts_drl_year;
+    var starts2 = new Array({ data: [d, e, f] });
+if (d==undefined && e==undefined && f==undefined){} else{this.series = starts2;}
+
+
+
   },
 };
 </script>

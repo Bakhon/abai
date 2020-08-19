@@ -2547,7 +2547,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
             }
           }
         },
-        colors: ["#e8e522"],
+        colors: ["#F7BB2E"],
         chart: {
           animations: {
             speed: 200
@@ -2629,6 +2629,17 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     if (a == undefined && b == undefined && c == undefined) {} else {
       this.series = starts2;
     }
+
+    var d = this.starts.starts_prs_year;
+    var e = this.starts.starts_krs_year;
+    var f = this.starts.starts_drl_year;
+    var starts2 = new Array({
+      data: [d, e, f]
+    });
+
+    if (d == undefined && e == undefined && f == undefined) {} else {
+      this.series = starts2;
+    }
   }
 });
 
@@ -2690,7 +2701,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         }
         /*убирается навигация рядом с кругом*/
         ,
-        colors: ["#47d660", "#ec5464"],
+        colors: ["#13B062", "#DA454E"],
         plotOptions: {
           pie: {
             expandOnClick: true
@@ -2788,7 +2799,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         }
         /*убирается навигация рядом с кругом*/
         ,
-        colors: ["#47d660", "#ec5464"],
+        colors: ["#13B062", "#DA454E"],
         plotOptions: {
           pie: {
             expandOnClick: true
@@ -2809,7 +2820,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     };
   },
   created: function created() {
-    console.log(this.wells);
+    //console.log(this.wells);
     var a = this.wells.inj_wells_work;
     var b = this.wells.inj_wells_idle;
     var wells = new Array(a, b);
@@ -3442,19 +3453,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3468,10 +3466,23 @@ __webpack_require__.r(__webpack_exports__);
       circleMenu: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
+      date2: new Date().toLocaleString("ru", {
+        /*year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long',
+        timezone: 'UTC',*/
+        hour: "numeric",
+        minute: "numeric" //second: 'numeric'
+
+      }),
+      date3: new Date().toLocaleString("ru", {
+        weekday: "long"
+      }),
       dFirstMonth: "0",
       day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
       monthes: ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"],
-      monthes2: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      monthes2: ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       NameDzoFull: ["Всего добыча нефти и конденсата с учётом доли участия АО НК КазМунайГаз", "в т.ч.:газовый конденсат", "АО Озенмунайгаз (нефть) (100%)", "(конденсат)(100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "Aug", "Sep", "Oct", "Nov", "Dec"],
       date: new Date(),
       selectedDay: undefined,
@@ -3483,7 +3494,7 @@ __webpack_require__.r(__webpack_exports__);
       starts: [""],
       test: [""],
       series: ["", ""],
-      display: 'none'
+      display: "none"
     };
   },
   methods: {
@@ -3491,15 +3502,176 @@ __webpack_require__.r(__webpack_exports__);
       if (status < "0") return "#b40300";
       return "#008a17";
     },
+    calendar: function calendar() {
+      var days = [];
+      var week = 0;
+      days[week] = [];
+      var dlast = new Date(this.year, this.month + 1, 0).getDate();
+
+      for (var i = 1; i <= dlast; i++) {
+        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
+          var a = {
+            index: i,
+            id: i
+          };
+          days[week].push(a);
+
+          if (this.selectedDay == i) {
+            a.current = "#232236";
+          } else if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
+            a.current = "#13B062";
+          }
+
+          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
+            a.weekend = "#ff0000";
+          }
+        } else {
+          week++;
+          days[week] = [];
+          a = {
+            index: i
+          };
+          days[week].push(a);
+
+          if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
+            a.current = "#747ae6";
+          }
+
+          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
+            a.weekend = "#ff0000";
+          }
+        }
+      }
+      /*	if (days[0].length > 0) {
+      for (let i = days[0].length; i < 7; i++) {
+      days[0].unshift('');
+      
+      }
+      }*/
+
+
+      this.dayChange;
+
+      if (this.selectedDMY == "0") {
+        this.display = "block";
+        return days;
+      }
+    },
+    decrease: function decrease() {
+      this.month--;
+
+      if (this.month < 0) {
+        this.month = 12;
+        this.month--;
+        this.year--;
+      }
+    },
+    increase: function increase() {
+      this.month++;
+
+      if (this.month > 11) {
+        this.month = -1;
+        this.month++;
+        this.year++;
+      }
+    },
+    getMonths: function getMonths() {
+      var monthAll = [];
+      var month = new Date(this.year, this.month + 1, 0).getMonth();
+
+      for (var i = 1; i <= 12; i++) {
+        if (new Date(this.year, this.month + 1, i)) {
+          var a = {
+            index: i,
+            id: i
+          };
+          monthAll.push(a);
+
+          if (this.selectedMonth == i) {
+            a.current = "#232236";
+          } else if (i == new Date().getMonth() && this.year == new Date().getFullYear()
+          /* &&
+          this.month == new Date().getMonth()*/
+          ) {
+              a.current = "#13B062";
+            }
+        }
+      }
+
+      if (this.selectedDMY == "1") {
+        this.display = "none";
+        return monthAll;
+      }
+    },
+    getDays: function getDays() {
+      var DaysInMonth = [];
+      var dlast = new Date(this.year, this.selectedMonth, 0).getDate();
+
+      for (var i = 1; i <= dlast; i++) {
+        var a = {
+          index: i,
+          id: i
+        };
+        DaysInMonth.push(a);
+      }
+
+      return DaysInMonth;
+    },
+    getYears: function getYears() {
+      var yearAll = [];
+      var year = this.year;
+
+      for (var i = 2018; i <= year; i++) {
+        //if (this.year, this.month, i).getYear() ) {
+        var a = {
+          index: i,
+          id: i
+        };
+        yearAll.push(a);
+
+        if (this.selectedYear == i) {
+          a.current = "#232236";
+        } else if (i == year
+        /*&&
+        this.year == new Date().getFullYear() &&
+        this.month == new Date().getMonth()*/
+        ) {
+            a.current = "#13B062";
+          }
+      }
+
+      if (this.selectedDMY == "2") {
+        this.display = "none";
+        return yearAll;
+      }
+    },
+    menuDMY: function menuDMY() {
+      var DMY = ["День", "Месяц", "Год"];
+      var menuDMY = [];
+      var id = 0;
+
+      for (var i = 0; i <= 2; i++) {
+        var a = {
+          index: i,
+          id: i
+        };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
+
+        if (this.selectedDMY == i) {
+          a.current = "#1D70B7";
+        }
+      }
+
+      return menuDMY;
+    },
     getProduction: function getProduction(item, item2, item3) {
       var _this = this;
 
-      if (this.selectedDay === undefined) {} else {}
-
-      if (this.selectedMonth === undefined) {} else {}
-
-      if (this.selectedYear === undefined) {} else {}
-
+      localStorage.setItem("production-plan", item);
+      localStorage.setItem("production-fact", item2);
+      var productionPlan = localStorage.getItem("production-plan");
+      var productionFact = localStorage.getItem("production-fact");
       this.circleMenu = item3;
       var company = localStorage.getItem("company");
 
@@ -3524,6 +3696,52 @@ __webpack_require__.r(__webpack_exports__);
 
           var timestamp = new Date(_this.monthes2[_this.month] + _this.selectedDay + " " + _this.year + " 06:00:00 GMT+0600").getTime();
           arrdata = _.filter(data, _.iteratee({
+            dzo: company
+          }));
+
+          if (_this.selectedDMY == 1) {
+            //select only for month
+            //get data by Month
+            var SelectYearInMonth; //value
+
+            if (_this.selectedYear == undefined) {
+              SelectYearInMonth = _this.year;
+            } else {
+              SelectYearInMonth = _this.selectedYear;
+            }
+
+            var timestampMonthStart = new Date(_this.monthes2[_this.selectedMonth] + //this.selectedDay +
+            "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
+            console.log(_this.selectedYear);
+
+            var dayInMonth = _this.getDays().length;
+
+            var dataWithMay = new Array();
+            dataWithMay = _.filter(arrdata, function (item) {
+              return _.every([_.inRange(item.__time, // 1588291200000, // from May 2020
+              // 1590883200000+1,
+              timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
+            }); //select data by month
+
+            var dzo = new Array();
+
+            _.forEach(arrdata, function (item) {
+              dzo.push(item.dzo);
+            });
+
+            dzo = _.uniq(dzo); //select summ plan for month
+
+            var productionPlanForMonth = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0); //select summ fact for month
+
+
+            var productionFactForMonth = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+          }
+
+          arrdata = _.filter(arrdata, _.iteratee({
             __time: timestamp
           }));
           /*if (arrdata.length == 0) {
@@ -3531,16 +3749,9 @@ __webpack_require__.r(__webpack_exports__);
               "К сожалению на текущую дату нет данных, выберите другую дату"
             );
           } else {*/
-
-          arrdata = _.filter(arrdata, _.iteratee({
-            dzo: company
-          })); // } 
+          // }
           //select dzo filter
 
-          localStorage.setItem("production-plan", item);
-          localStorage.setItem("production-fact", item2);
-          var productionPlan = localStorage.getItem("production-plan");
-          var productionFact = localStorage.getItem("production-fact");
           var dzo = new Array();
           var liq_fact = new Array();
           var liq_plan = new Array();
@@ -3567,107 +3778,102 @@ __webpack_require__.r(__webpack_exports__);
             starts_drl.push(item.starts_drl);
             inj_wells_work.push(item.inj_wells_work);
             inj_wells_idle.push(item.inj_wells_idle);
-          }); //Create massive with a part
-
-
-          var dzo2 = new Array();
-
-          _.each(dzo, function (dzo) {
-            dzo2.push({
-              dzo: dzo
-            });
           });
 
-          var liq_fact2 = new Array();
+          if (_this.selectedDMY == 0) {
+            //select only for day
+            //Create massive with a part
+            var liq_fact2 = new Array();
 
-          _.each(liq_fact, function (fact) {
-            fact = Math.ceil(fact);
-            liq_fact2.push({
-              fact: fact
+            _.each(liq_fact, function (fact) {
+              fact = Math.ceil(fact);
+              liq_fact2.push({
+                fact: fact
+              });
             });
-          });
 
-          var liq_plan2 = new Array();
+            var liq_plan2 = new Array();
 
-          _.each(liq_plan, function (plan) {
-            plan = Math.ceil(plan); //okrugl vverh
+            _.each(liq_plan, function (plan) {
+              plan = Math.ceil(plan); //okrugl vverh
 
-            liq_plan2.push({
-              plan: plan
+              liq_plan2.push({
+                plan: plan
+              });
             });
-          });
 
-          var __time2 = new Array();
+            var __time2 = new Array();
 
-          _.each(time, function (time) {
-            //time = new Date(time).toLocaleDateString();
-            //   time = new Date(time);
-            __time2.push({
-              time: time
+            _.each(time, function (time) {
+              //time = new Date(time).toLocaleDateString();
+              //   time = new Date(time);
+              __time2.push({
+                time: time
+              });
             });
-          });
 
-          var prod_wells_work2 = new Array();
+            var prod_wells_work2 = new Array();
 
-          _.each(prod_wells_work, function (prod_wells_work) {
-            prod_wells_work2.push({
-              prod_wells_work: prod_wells_work
+            _.each(prod_wells_work, function (prod_wells_work) {
+              prod_wells_work2.push({
+                prod_wells_work: prod_wells_work
+              });
             });
-          });
 
-          var prod_wells_idle2 = new Array();
+            var prod_wells_idle2 = new Array();
 
-          _.each(prod_wells_idle, function (prod_wells_idle) {
-            prod_wells_idle2.push({
-              prod_wells_idle: prod_wells_idle
+            _.each(prod_wells_idle, function (prod_wells_idle) {
+              prod_wells_idle2.push({
+                prod_wells_idle: prod_wells_idle
+              });
             });
-          });
 
-          var starts_krs2 = new Array();
+            var starts_krs2 = new Array();
 
-          _.each(starts_krs, function (starts_krs) {
-            starts_krs2.push({
-              starts_krs: starts_krs
+            _.each(starts_krs, function (starts_krs) {
+              starts_krs2.push({
+                starts_krs: starts_krs
+              });
             });
-          });
 
-          var starts_prs2 = new Array();
+            var starts_prs2 = new Array();
 
-          _.each(starts_prs, function (starts_prs) {
-            starts_prs2.push({
-              starts_prs: starts_prs
+            _.each(starts_prs, function (starts_prs) {
+              starts_prs2.push({
+                starts_prs: starts_prs
+              });
             });
-          });
 
-          var starts_drl2 = new Array();
+            var starts_drl2 = new Array();
 
-          _.each(starts_drl, function (starts_drl) {
-            starts_drl2.push({
-              starts_drl: starts_drl
+            _.each(starts_drl, function (starts_drl) {
+              starts_drl2.push({
+                starts_drl: starts_drl
+              });
             });
-          });
 
-          var inj_wells_idle2 = new Array();
+            var inj_wells_idle2 = new Array();
 
-          _.each(inj_wells_idle, function (inj_wells_idle) {
-            inj_wells_idle2.push({
-              inj_wells_idle: inj_wells_idle
+            _.each(inj_wells_idle, function (inj_wells_idle) {
+              inj_wells_idle2.push({
+                inj_wells_idle: inj_wells_idle
+              });
             });
-          });
 
-          var inj_wells_work2 = new Array();
+            var inj_wells_work2 = new Array();
 
-          _.each(inj_wells_work, function (inj_wells_work) {
-            inj_wells_work2.push({
-              inj_wells_work: inj_wells_work
+            _.each(inj_wells_work, function (inj_wells_work) {
+              inj_wells_work2.push({
+                inj_wells_work: inj_wells_work
+              });
             });
-          }); //for year
+          } //for year
 
 
           var selectedYear = _this.selectedYear;
 
           if (selectedYear === 2020) {
-            selectedYear = '2020 (с начала года)';
+            selectedYear = "2020 (с начала года)";
           }
 
           var arrdataYear = new Array();
@@ -3678,72 +3884,127 @@ __webpack_require__.r(__webpack_exports__);
             dzo: company
           })); //console.log(arrdataYear);
 
-          var dzoYear = new Array();
+          var dzo = new Array();
           var factYear = new Array();
           var planYear = new Array();
           var prod_wells_work_year = new Array();
           var prod_wells_idle_year = new Array();
           var inj_wells_idle_year = new Array();
           var inj_wells_work_year = new Array();
+          var starts_krs_year = new Array();
+          var starts_prs_year = new Array();
+          var starts_drl_year = new Array();
 
           _.forEach(arrdataYear, function (item) {
-            dzoYear.push(item.dzo);
+            dzo.push(item.dzo);
             factYear.push(item[productionFact]);
             planYear.push(item[productionPlan]);
             prod_wells_work_year.push(item.prod_wells_work);
             prod_wells_idle_year.push(item.prod_wells_idle);
             inj_wells_idle_year.push(item.inj_wells_idle);
             inj_wells_work_year.push(item.inj_wells_work);
+            starts_krs_year.push(item.starts_krs);
+            starts_prs_year.push(item.starts_prs);
+            starts_drl_year.push(item.starts_drl);
           });
 
-          var factYear2 = new Array();
+          if (_this.selectedDMY == 2) {
+            //select only for year
+            var factYear2 = new Array();
 
-          _.each(factYear, function (factYear) {
-            factYear2.push({
-              factYear: factYear
+            _.each(factYear, function (factYear) {
+              factYear2.push({
+                factYear: factYear
+              });
             });
-          });
 
-          var planYear2 = new Array();
+            var planYear2 = new Array();
 
-          _.each(planYear, function (planYear) {
-            planYear2.push({
-              planYear: planYear
+            _.each(planYear, function (planYear) {
+              planYear = Math.ceil(planYear);
+              planYear2.push({
+                planYear: planYear
+              });
             });
-          });
 
-          var prod_wells_work_year2 = new Array();
+            var prod_wells_work_year2 = new Array();
 
-          _.each(prod_wells_work_year, function (prod_wells_work_year) {
-            prod_wells_work_year2.push({
-              prod_wells_work_year: prod_wells_work_year
+            _.each(prod_wells_work_year, function (prod_wells_work_year) {
+              prod_wells_work_year2.push({
+                prod_wells_work_year: prod_wells_work_year
+              });
             });
-          });
 
-          var prod_wells_idle_year2 = new Array();
+            var prod_wells_idle_year2 = new Array();
 
-          _.each(prod_wells_idle_year, function (prod_wells_idle_year) {
-            prod_wells_idle_year2.push({
-              prod_wells_idle_year: prod_wells_idle_year
+            _.each(prod_wells_idle_year, function (prod_wells_idle_year) {
+              prod_wells_idle_year2.push({
+                prod_wells_idle_year: prod_wells_idle_year
+              });
             });
-          });
 
-          var inj_wells_idle_year2 = new Array();
+            var inj_wells_idle_year2 = new Array();
 
-          _.each(inj_wells_idle_year, function (inj_wells_idle_year) {
-            inj_wells_idle_year2.push({
-              inj_wells_idle_year: inj_wells_idle_year
+            _.each(inj_wells_idle_year, function (inj_wells_idle_year) {
+              inj_wells_idle_year2.push({
+                inj_wells_idle_year: inj_wells_idle_year
+              });
             });
-          });
 
-          var inj_wells_work_year2 = new Array();
+            var inj_wells_work_year2 = new Array();
 
-          _.each(inj_wells_work_year, function (inj_wells_work_year) {
-            inj_wells_work_year2.push({
-              inj_wells_work_year: inj_wells_work_year
+            _.each(inj_wells_work_year, function (inj_wells_work_year) {
+              inj_wells_work_year2.push({
+                inj_wells_work_year: inj_wells_work_year
+              });
             });
-          }); //for year                  
-          //----------------------------
+            /* var dzoYear2 = new Array();
+            _.each(dzoYear, function (dzoYear) {
+              dzoYear2.push({ dzoYear });
+            });*/
+
+
+            var starts_krs_year2 = new Array();
+
+            _.each(starts_krs_year, function (starts_krs_year) {
+              starts_krs_year2.push({
+                starts_krs_year: starts_krs_year
+              });
+            });
+
+            var starts_prs_year2 = new Array();
+
+            _.each(starts_prs_year, function (starts_prs_year) {
+              starts_prs_year2.push({
+                starts_prs_year: starts_prs_year
+              });
+            });
+
+            var starts_drl_year2 = new Array();
+
+            _.each(starts_drl_year, function (starts_drl_year) {
+              starts_drl_year2.push({
+                starts_drl_year: starts_drl_year
+              });
+            });
+          } //for month
+
+
+          var productionFactForMonth2 = [{
+            productionFactForMonth: Math.ceil(productionFactForMonth)
+          }];
+          var productionPlanForMonth2 = [{
+            productionPlanForMonth: Math.ceil(productionPlanForMonth)
+          }]; //for month
+          //all variables
+
+          var dzo2 = new Array();
+
+          _.each(dzo, function (dzo) {
+            dzo2.push({
+              dzo: dzo
+            });
+          }); //----------------------------
 
 
           var tables = _.zipWith(_.sortBy(dzo2, function (dzo) {
@@ -3758,17 +4019,18 @@ __webpack_require__.r(__webpack_exports__);
             return factYear;
           }), _.sortBy(planYear2, function (planYear) {
             return planYear;
-          }), function (dzo, liq_fact, liq_plan, time, factYear, planYear) {
-            return _.defaults(dzo, liq_fact, liq_plan, time, factYear, planYear);
+          }), _.sortBy(productionFactForMonth2, function (productionFactForMonth) {
+            return productionFactForMonth;
+          }), _.sortBy(productionPlanForMonth2, function (productionPlanForMonth) {
+            return productionPlanForMonth;
+          }), // _.sortBy(dzoYear2, (dzoYear) => dzoYear),
+          function (dzo, liq_fact, liq_plan, time, factYear, planYear, //, dzoYear
+          productionFactForMonth, productionPlanForMonth) {
+            return _.defaults(dzo, liq_fact, liq_plan, time, factYear, planYear, //dzoYear,
+            productionFactForMonth, productionPlanForMonth);
           });
 
-          _this.tables = tables; // console.log(tables);
-          //console.log(planYear);
-
-          /*var prod_wells_work_one = prod_wells_work2[0].prod_wells_work;
-          var prod_wells_idle_one = prod_wells_idle2[0].prod_wells_idle;
-          this.series = [prod_wells_work_one, prod_wells_idle_one];*/
-          //VisualCenterChartDonutRight1.vue
+          _this.tables = tables; //VisualCenterChartDonutRight1.vue
 
           var wells2 = _.zipWith(_.sortBy(prod_wells_work2, function (prod_wells_work) {
             return prod_wells_work.prod_wells_work;
@@ -3782,7 +4044,7 @@ __webpack_require__.r(__webpack_exports__);
             return _.defaults(prod_wells_work, prod_wells_idle, prod_wells_work_year, prod_wells_idle_year);
           });
 
-          _this.wells2 = wells2; //console.log(prod_wells_work_year);
+          _this.wells2 = wells2;
 
           var starts = _.zipWith(_.sortBy(starts_krs2, function (starts_krs) {
             return starts_krs.starts_krs;
@@ -3790,15 +4052,17 @@ __webpack_require__.r(__webpack_exports__);
             return starts_prs.starts_prs;
           }), _.sortBy(starts_drl2, function (starts_drl) {
             return starts_drl.starts_drl;
-          }), function (starts_krs, starts_prs, starts_drl) {
-            return _.defaults(starts_krs, starts_prs, starts_drl);
+          }), _.sortBy(starts_krs_year2, function (starts_krs_year) {
+            return starts_krs_year.starts_krs_year;
+          }), _.sortBy(starts_prs_year2, function (starts_prs_year) {
+            return starts_prs_year.starts_prs_year;
+          }), _.sortBy(starts_drl_year2, function (starts_drl_year) {
+            return starts_drl_year.starts_drl_year;
+          }), function (starts_krs, starts_prs, starts_drl, starts_krs_year, starts_prs_year, starts_drl_year) {
+            return _.defaults(starts_krs, starts_prs, starts_drl, starts_krs_year, starts_prs_year, starts_drl_year);
           });
 
-          _this.starts = starts;
-          /*
-          inj_wells_idle
-          inj_wells_work*/
-          //VisualCenterChartDonutRight2.vue
+          _this.starts = starts; //VisualCenterChartDonutRight2.vue
 
           var wells = _.zipWith(_.sortBy(inj_wells_idle2, function (inj_wells_idle) {
             return inj_wells_idle.inj_wells_idle;
@@ -3854,8 +4118,7 @@ __webpack_require__.r(__webpack_exports__);
           console.log("No data");
         }
       });
-    },
-
+    }
     /*getSelectedDay() {
       localStorage.setItem("selected-day", this.selectedDay);
       var selectedDay = localStorage.getItem("selected-day");
@@ -3868,161 +4131,7 @@ __webpack_require__.r(__webpack_exports__);
       this.selectedDay = selectedDay;
       this.selectedColour = "background:red!important;";
     },*/
-    calendar: function calendar() {
-      var days = [];
-      var week = 0;
-      days[week] = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate();
 
-      for (var i = 1; i <= dlast; i++) {
-        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
-          var a = {
-            index: i,
-            id: i
-          };
-          days[week].push(a);
-
-          if (this.selectedDay == i) {
-            a.current = "black";
-          } else if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
-            a.current = "#009846";
-          }
-
-          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
-            a.weekend = '#ff0000';
-          }
-
-          ;
-        } else {
-          week++;
-          days[week] = [];
-          a = {
-            index: i
-          };
-          days[week].push(a);
-
-          if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
-            a.current = '#747ae6';
-          }
-
-          ;
-
-          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
-            a.weekend = '#ff0000';
-          }
-
-          ;
-        }
-      }
-      /*	if (days[0].length > 0) {
-      		for (let i = days[0].length; i < 7; i++) {
-      			days[0].unshift('');
-      			
-      		}
-      	}*/
-
-
-      this.dayChange;
-
-      if (this.selectedDMY == '0') {
-        this.display = 'block';
-        return days;
-      }
-    },
-    decrease: function decrease() {
-      this.month--;
-
-      if (this.month < 0) {
-        this.month = 12;
-        this.month--;
-        this.year--;
-      }
-    },
-    increase: function increase() {
-      this.month++;
-
-      if (this.month > 11) {
-        this.month = -1;
-        this.month++;
-        this.year++;
-      }
-    },
-    getMonths: function getMonths() {
-      var monthAll = [];
-      var month = new Date(this.year, this.month + 1, 0).getMonth();
-
-      for (var i = 1; i <= 12; i++) {
-        if (new Date(this.year, this.month, i).getMonth()) {
-          var a = {
-            index: i,
-            id: i
-          };
-          monthAll.push(a);
-
-          if (this.selectedMonth == i) {
-            a.current = "black";
-          } else if (i == new Date().getMonth() && this.year == new Date().getFullYear()
-          /* &&
-          this.month == new Date().getMonth()*/
-          ) {
-              a.current = "#009846";
-            }
-        }
-      }
-
-      if (this.selectedDMY == '1') {
-        this.display = 'none';
-        return monthAll;
-      }
-    },
-    getYears: function getYears() {
-      var yearAll = [];
-      var year = this.year;
-
-      for (var i = 2018; i <= year; i++) {
-        //if (this.year, this.month, i).getYear() ) {
-        var a = {
-          index: i,
-          id: i
-        };
-        yearAll.push(a);
-
-        if (this.selectedYear == i) {
-          a.current = "black";
-        } else if (i == year
-        /*&&
-        this.year == new Date().getFullYear() &&
-        this.month == new Date().getMonth()*/
-        ) {
-            a.current = "#009846";
-          }
-      }
-
-      if (this.selectedDMY == '2') {
-        this.display = 'none';
-        return yearAll;
-      }
-    },
-    menuDMY: function menuDMY() {
-      var DMY = ['День', 'Месяц', 'Год'];
-      var menuDMY = [];
-      var id = 0;
-
-      for (var i = 0; i <= 2; i++) {
-        var a = {
-          index: i,
-          id: i
-        };
-        a.DMY = DMY[i];
-        menuDMY.push(a);
-
-        if (this.selectedDMY == i) {
-          a.current = "rgb(0, 152, 70)";
-        }
-      }
-
-      return menuDMY; //console.log(DMY);
-    }
   },
   computed: {
     dayChange: function dayChange() {
@@ -75226,7 +75335,21 @@ var render = function() {
           _c("div", { staticClass: "main col-lg-7-2 row" }, [
             _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }),
             _vm._v(" "),
-            _vm._m(0),
+            _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
+              _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
+                _c("div", { staticClass: "timer-visual-center" }, [
+                  _c("div", { staticClass: "timer" }, [
+                    _c("div", { staticClass: "time" }, [
+                      _vm._v(_vm._s(_vm.date2))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "date" }, [
+                      _vm._v(_vm._s(_vm.date3))
+                    ])
+                  ])
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "div",
@@ -75246,7 +75369,7 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("\n                " + _vm._s(menuDMY.DMY) + " ")]
+                    [_vm._v(_vm._s(menuDMY.DMY))]
                   )
                 }),
                 _vm._v(" "),
@@ -75275,11 +75398,9 @@ var render = function() {
                           },
                           [
                             _vm._v(
-                              "\n                  " +
-                                _vm._s(_vm.monthes[_vm.month]) +
+                              _vm._s(_vm.monthes[_vm.month]) +
                                 " " +
-                                _vm._s(_vm.year) +
-                                "\n                "
+                                _vm._s(_vm.year)
                             )
                           ]
                         ),
@@ -75385,9 +75506,7 @@ var render = function() {
                       },
                       [
                         _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v(
-                            "\n                          Добыча нефти\n                        "
-                          )
+                          _vm._v("Добыча нефти")
                         ])
                       ]
                     )
@@ -75412,9 +75531,7 @@ var render = function() {
                       },
                       [
                         _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v(
-                            "\n                          Сдача нефти\n                        "
-                          )
+                          _vm._v("Сдача нефти")
                         ])
                       ]
                     )
@@ -75543,11 +75660,7 @@ var render = function() {
                       _c(
                         "div",
                         { staticClass: "cell-last-top table-border cell-last" },
-                        [
-                          _vm._v(
-                            "\n                        ДОБЫЧА, тонн\n                      "
-                          )
-                        ]
+                        [_vm._v("ДОБЫЧА, тонн")]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "cell2 table-border" }, [
@@ -75569,11 +75682,7 @@ var render = function() {
                       _c(
                         "div",
                         { staticClass: "cell3 table-border cell-last" },
-                        [
-                          _vm._v(
-                            "\n                        С НАЧАЛА ГОДА\n                      "
-                          )
-                        ]
+                        [_vm._v("С НАЧАЛА ГОДА")]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "cell4 table-border" }, [
@@ -75630,11 +75739,7 @@ var render = function() {
                               { staticClass: "cell-name table-border" },
                               [
                                 _vm._v(
-                                  "\n                            " +
-                                    _vm._s(item.dzo) +
-                                    " " +
-                                    _vm._s(item.time) +
-                                    "\n                          "
+                                  _vm._s(item.dzo) + " " + _vm._s(item.time)
                                 )
                               ]
                             ),
@@ -75657,27 +75762,57 @@ var render = function() {
                               "div",
                               { staticClass: "cell table-border colour" },
                               [
-                                _c("div", {
-                                  staticClass: "circle-table",
-                                  style:
-                                    "background: " +
-                                    _vm.getColor(item.fact - item.plan)
-                                }),
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(item.fact - item.plan) +
-                                    "\n                          "
-                                )
+                                item.fact
+                                  ? _c("div", {
+                                      staticClass: "circle-table",
+                                      style:
+                                        "background: " +
+                                        _vm.getColor(item.fact - item.plan)
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                item.fact
+                                  ? _c("div", [
+                                      _vm._v(_vm._s(item.fact - item.plan))
+                                    ])
+                                  : _vm._e()
                               ]
                             ),
                             _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.productionPlanForMonth))
+                            ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.productionFactForMonth))
+                            ]),
                             _vm._v(" "),
-                            _c("div", {
-                              staticClass: "cell table-border colour"
-                            }),
+                            _c(
+                              "div",
+                              { staticClass: "cell table-border colour" },
+                              [
+                                item.productionPlanForMonth
+                                  ? _c("div", {
+                                      staticClass: "circle-table",
+                                      style:
+                                        "background: " +
+                                        _vm.getColor(
+                                          item.productionPlanForMonth -
+                                            item.productionFactForMonth
+                                        )
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _c("div", [
+                                  _vm._v(
+                                    _vm._s(
+                                      item.productionPlanForMonth -
+                                        item.productionFactForMonth
+                                    )
+                                  )
+                                ])
+                              ]
+                            ),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }),
                             _vm._v(" "),
@@ -75701,9 +75836,9 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "visual-center-center" }, [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "visual-center-bottom" }, [
                 _c("div", { staticClass: "difference-of-24" }, [
@@ -75726,13 +75861,11 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "visual-center-right-column" }, [
-            _vm._m(3),
+            _vm._m(2),
             _vm._v(" "),
             _c("div", { staticClass: "donut" }, [
               _c("div", { staticClass: "indent" }, [
-                _vm._v(
-                  "\n                  Фонд добывающих скважин\n                "
-                )
+                _vm._v("Фонд добывающих скважин")
               ]),
               _vm._v(" "),
               _c(
@@ -75774,22 +75907,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
-      _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
-        _c("div", { staticClass: "timer-visual-center" }, [
-          _c("div", { staticClass: "left-arrow" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "timer" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "right-arrow" })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "visual-center-bottom" }, [
       _c("div", { staticClass: "visual-center-string1" }, [
         _vm._v("Отключение РП:")
@@ -75820,30 +75937,24 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "visual-center-bottom" }, [
       _c("div", { staticClass: "accidents-first accidents" }, [
-        _c("div", { staticClass: "number-of-accidents" }, [
-          _vm._v("\n                      2\n                    ")
-        ]),
-        _vm._v("\n                    Несчастные"),
+        _c("div", { staticClass: "number-of-accidents" }, [_vm._v("2")]),
+        _vm._v("Несчастные\n                "),
         _c("br"),
-        _vm._v("\n                    случаи\n                  ")
+        _vm._v("случаи\n              ")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "accidents-second accidents" }, [
-        _c("div", { staticClass: "number-of-accidents" }, [
-          _vm._v("\n                      0\n                    ")
-        ]),
-        _vm._v("\n                    Смертельные"),
+        _c("div", { staticClass: "number-of-accidents" }, [_vm._v("0")]),
+        _vm._v("Смертельные\n                "),
         _c("br"),
-        _vm._v("\n                    случаи\n                  ")
+        _vm._v("случаи\n              ")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "accidents-third accidents" }, [
-        _c("div", { staticClass: "number-of-accidents" }, [
-          _vm._v("\n                      14\n                    ")
-        ]),
-        _vm._v("\n                    COVID"),
+        _c("div", { staticClass: "number-of-accidents" }, [_vm._v("14")]),
+        _vm._v("COVID\n                "),
         _c("br"),
-        _vm._v("19\n                  ")
+        _vm._v("19\n              ")
       ])
     ])
   },
@@ -75858,7 +75969,7 @@ var staticRenderFns = [
           staticClass: "right-chart-button right-button",
           attrs: { tabindex: "-5" }
         },
-        [_vm._v("\n                  График\n                ")]
+        [_vm._v("График")]
       ),
       _vm._v(" "),
       _c(
@@ -75867,7 +75978,7 @@ var staticRenderFns = [
           staticClass: "right-table-button right-button",
           attrs: { tabindex: "-5" }
         },
-        [_vm._v("\n                  Таблица\n                ")]
+        [_vm._v("Таблица")]
       )
     ])
   }
@@ -89032,15 +89143,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************************!*\
   !*** ./resources/js/components/VisualCenterTable.vue ***!
   \*******************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VisualCenterTable_vue_vue_type_template_id_6dd0c484___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VisualCenterTable.vue?vue&type=template&id=6dd0c484& */ "./resources/js/components/VisualCenterTable.vue?vue&type=template&id=6dd0c484&");
 /* harmony import */ var _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VisualCenterTable.vue?vue&type=script&lang=js& */ "./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -89070,7 +89180,7 @@ component.options.__file = "resources/js/components/VisualCenterTable.vue"
 /*!********************************************************************************!*\
   !*** ./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js& ***!
   \********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";

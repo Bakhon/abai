@@ -1161,7 +1161,7 @@ li.circle-2 {
     position: absolute;
 }
 
-.btn-primary {
+.btn-primary-bigdata {
     background: url(../img/big-data-button.png) no-repeat;
     background-size: contain;
     width: 120px;
@@ -1175,23 +1175,8 @@ li.circle-2 {
 
 /*calendar*/
 
-.table {
-    border-collapse: collapse;
-    float: left;
-    width: 180px;
-    table-layout: fixed;
-}
-
 .format-week {
     float: right;
-}
-
-.table td {
-    text-align: center;
-}
-
-.table thead tr:last-child {
-    background-color: #dedada;
 }
 
 .navigation {
