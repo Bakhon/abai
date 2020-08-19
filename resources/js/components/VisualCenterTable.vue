@@ -10,8 +10,8 @@
                 <div class="timer-visual-center">
                   <!--  <div class="left-arrow"></div>-->
                   <div class="timer">
-                    <div class="time">{{date2}}</div>
-                    <div class="date">{{date3}}</div>
+                    <div class="time">{{ date2 }}</div>
+                    <div class="date">{{ date3 }}</div>
                   </div>
                   <!-- <div class="right-arrow"></div>-->
                 </div>
@@ -23,19 +23,23 @@
                 v-for="(menuDMY, index) in menuDMY()"
                 @click="selectedDMY = menuDMY.id"
                 :style="{
-                       'background-color': menuDMY.current,
-                  }"
-              >{{menuDMY.DMY}}</div>
+                  'background-color': menuDMY.current,
+                }"
+              >
+                {{ menuDMY.DMY }}
+              </div>
 
               <div class="month-day">
-                <div class="navigation-table" v-bind:style="{ display: display }">
+                <div
+                  class="navigation-table"
+                  v-bind:style="{ display: display }"
+                >
                   <div class="navigation">
                     <div v-on:click="decrease"><</div>
                   </div>
-                  <div
-                    class="navigation-month navigation"
-                    colspan="5"
-                  >{{ monthes[month] }} {{ year }}</div>
+                  <div class="navigation-month navigation" colspan="5">
+                    {{ monthes[month] }} {{ year }}
+                  </div>
                   <div class="navigation">
                     <div v-on:click="increase">></div>
                   </div>
@@ -47,9 +51,9 @@
                     class="week"
                     v-for="(day, index) in week"
                     :style="{
-                    color: day.weekend,
-                    'background-color': day.current,
-                  }"
+                      color: day.weekend,
+                      'background-color': day.current,
+                    }"
                   >
                     <div>{{ day.index }}</div>
                   </div>
@@ -59,22 +63,24 @@
                   v-for="(month, index) in getMonths()"
                   :key="index.id"
                   :style="{
-                   // color: day.weekend,
                     'background-color': month.current,
                   }"
                   @click="selectedMonth = month.index"
-                >{{month.index}}</div>
+                >
+                  {{ month.index }}
+                </div>
 
                 <div
                   class="week"
                   v-for="(year, index) in getYears()"
                   :key="year.id"
                   :style="{
-                   // color: day.weekend,
                     'background-color': year.current,
                   }"
                   @click="selectedYear = year.index"
-                >{{year.index}}</div>
+                >
+                  {{ year.index }}
+                </div>
               </div>
             </div>
 
@@ -86,7 +92,9 @@
                       class="circle-2"
                       tabindex="-2"
                       :style="`${buttonHover1}`"
-                      @click="getProduction('oil_plan', 'oil_fact',' Добыча нефти')"
+                      @click="
+                        getProduction('oil_plan', 'oil_fact', ' Добыча нефти')
+                      "
                     >
                       <div class="circle-2-string">Добыча нефти</div>
                     </li>
@@ -96,7 +104,13 @@
                       class="circle-2"
                       tabindex="-2"
                       :style="`${buttonHover2}`"
-                      @click="getProduction('oil_dlv_plan', 'oil_dlv_fact','Сдача нефти')"
+                      @click="
+                        getProduction(
+                          'oil_dlv_plan',
+                          'oil_dlv_fact',
+                          'Сдача нефти'
+                        )
+                      "
                     >
                       <div class="circle-2-string">Сдача нефти</div>
                     </li>
@@ -106,7 +120,9 @@
                       class="circle-2"
                       tabindex="-2"
                       :style="`${buttonHover3}`"
-                      @click="getProduction('gas_plan', 'gas_fact','Добыча газа')"
+                      @click="
+                        getProduction('gas_plan', 'gas_fact', 'Добыча газа')
+                      "
                     >
                       <div class="circle-2-string">Добыча газа</div>
                     </li>
@@ -116,7 +132,9 @@
                       class="circle-2"
                       tabindex="-2"
                       :style="`${buttonHover4}`"
-                      @click="getProduction('liq_plan', 'liq_fact','Добыча жидкости')"
+                      @click="
+                        getProduction('liq_plan', 'liq_fact', 'Добыча жидкости')
+                      "
                     >
                       <div class="circle-2-string">Добыча жидкости</div>
                     </li>
@@ -126,7 +144,9 @@
                       class="circle-2"
                       tabindex="-2"
                       :style="`${buttonHover5}`"
-                      @click="getProduction('gk_plan', 'gk_fact','Добыча конденсата')"
+                      @click="
+                        getProduction('gk_plan', 'gk_fact', 'Добыча конденсата')
+                      "
                     >
                       <div class="circle-2-string">Добыча конденсата</div>
                     </li>
@@ -136,7 +156,9 @@
                       class="circle-2"
                       tabindex="-2"
                       :style="`${buttonHover6}`"
-                      @click="getProduction('inj_plan', 'inj_fact','Объём закачки')"
+                      @click="
+                        getProduction('inj_plan', 'inj_fact', 'Объём закачки')
+                      "
                     >
                       <div class="circle-2-string">Объём закачки</div>
                     </li>
@@ -144,18 +166,24 @@
                 </div>
 
                 <div class="tables">
-                  <div class="tables-name">{{circleMenu}}</div>
+                  <div class="tables-name">{{ circleMenu }}</div>
                   <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
                   <div class="tables-string">
                     <!--<div class="cell-colour-top table-border"></div>-->
                     <div class="cell-number-top table-border">№</div>
                     <div class="cell-name-top table-border">Предприятия</div>
-                    <div class="cell-last-top table-border cell-last">ДОБЫЧА, тонн</div>
-                    <div class="cell2 table-border">План на {{selectedYear}} год</div>
+                    <div class="cell-last-top table-border cell-last">
+                      ДОБЫЧА, тонн
+                    </div>
+                    <div class="cell2 table-border">
+                      План на {{ selectedYear }} год
+                    </div>
                     <div class="cell2 table-border">План на июль месяц</div>
                     <div class="cell3 table-border">СУТОЧНАЯ</div>
                     <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
-                    <div class="cell3 table-border cell-last">С НАЧАЛА ГОДА</div>
+                    <div class="cell3 table-border cell-last">
+                      С НАЧАЛА ГОДА
+                    </div>
                     <div class="cell4 table-border">ПЛАН</div>
                     <div class="cell4 table-border">ФАКТ</div>
                     <div class="cell4 table-border">(+,-)</div>
@@ -174,36 +202,65 @@
                  
                         </div>-->
                         <div class="cell-number table-border"></div>
-                        <div class="cell-name table-border">{{ item.dzo }} {{ item.time }}</div>
-                        <div class="cell table-border">{{item.planYear}}</div>
+                        <div class="cell-name table-border">
+                          {{ item.dzo }}
+                          <!--{{item.time}}-->
+                        </div>
+                        <div class="cell table-border">{{ item.planYear }}</div>
                         <div class="cell table-border"></div>
                         <div class="cell table-border">{{ item.plan }}</div>
                         <div class="cell table-border">{{ item.fact }}</div>
                         <div class="cell table-border colour">
-                          <div
-                            v-if="item.fact"
-                            class="circle-table"
-                            :style="`background: ${getColor(
+                          <div>
+                            <div
+                              v-if="item.fact"
+                              class="circle-table"
+                              :style="`background: ${getColor(
                                 item.fact - item.plan
                               )}`"
-                          ></div>
-                          <div v-if="item.fact">{{ item.fact - item.plan }}</div>
+                            ></div>
+                          </div>
+                          <div v-if="item.fact">
+                            <div>{{ item.fact - item.plan }}</div>
+                          </div>
                         </div>
-                        <div class="cell table-border">{{item.productionPlanForMonth}}</div>
-                        <div class="cell table-border">{{item.productionFactForMonth}}</div>
+                        <div class="cell table-border">
+                          {{ item.productionPlanForMonth }}
+                        </div>
+                        <div class="cell table-border">
+                          {{ item.productionFactForMonth }}
+                        </div>
                         <div class="cell table-border colour">
                           <div
                             v-if="item.productionPlanForMonth"
                             class="circle-table"
                             :style="`background: ${getColor(
-                                item.productionPlanForMonth - item.productionFactForMonth
-                              )}`"
+                              item.productionPlanForMonth -
+                                item.productionFactForMonth
+                            )}`"
                           ></div>
-                          <div>{{item.productionPlanForMonth - item.productionFactForMonth}}</div>
+                          <!--3cell-->
+                          <div v-if="item.productionPlanForMonth">
+                            {{
+                              item.productionPlanForMonth -
+                              item.productionFactForMonth
+                            }}
+                          </div>
                         </div>
-                        <div class="cell table-border"></div>
-                        <div class="cell table-border"></div>
-                        <div class="cell table-border cell-last colour"></div>
+                        <div class="cell table-border">{{ item.planYear }}</div>
+                        <div class="cell table-border">{{ item.factYear }}</div>
+                        <div class="cell table-border cell-last colour">
+                          <div
+                            v-if="item.planYear"
+                            class="circle-table"
+                            :style="`background: ${getColor(
+                              item.planYear - item.factYear
+                            )}`"
+                          ></div>
+                          <div v-if="item.planYear">
+                            {{ item.planYear - item.factYear }}
+                          </div>
+                        </div>
                       </div>
                       <div style="clear: both;"></div>
                     </div>
@@ -212,14 +269,15 @@
                 </div>
               </div>
             </div>
-            <!--    <div class="visual-center-center">
-                    <div class="tables-name">График добычи</div>
-                   <visual-center-chart-area-center v-for='(serial, index) in test'  v-bind:postTitle='serial' :key='serial'>  
-
-     
-                        
-                         </visual-center-chart-area-center> 
-            </div>-->
+            <div class="visual-center-center">
+              <div class="tables-name">График добычи</div>
+              <visual-center-chart-area-center
+                v-for="(serial, index) in productionForChart"
+                v-bind:postTitle="serial"
+                :key="serial"
+              >
+              </visual-center-chart-area-center>
+            </div>
             <div class="visual-center-center">
               <div class="visual-center-bottom">
                 <div class="visual-center-string1">Отключение РП:</div>
@@ -233,20 +291,20 @@
               </div>
               <div class="visual-center-bottom">
                 <div class="accidents-first accidents">
-                  <div class="number-of-accidents">2</div>Несчастные
-                  <br />случаи
+                  <div class="number-of-accidents">2</div>
+                  Несчастные <br />случаи
                 </div>
                 <div class="accidents-second accidents">
-                  <div class="number-of-accidents">0</div>Смертельные
-                  <br />случаи
+                  <div class="number-of-accidents">0</div>
+                  Смертельные <br />случаи
                 </div>
                 <div class="accidents-third accidents">
-                  <div class="number-of-accidents">14</div>COVID
-                  <br />19
+                  <div class="number-of-accidents">14</div>
+                  COVID <br />19
                 </div>
               </div>
               <div class="visual-center-bottom">
-                <div class="difference-of-24">Отклонение за сутки</div>
+                <div class="difference-of-24">Отклонение</div>
                 <div class="visual-center-chart-bar-bottom">
                   <visual-center-chart-bar-bottom
                     v-for="(start, index) in starts"
@@ -259,8 +317,12 @@
           </div>
           <div class="visual-center-right-column">
             <div class="right-button-panel">
-              <div class="right-chart-button right-button" tabindex="-5">График</div>
-              <div class="right-table-button right-button" tabindex="-5">Таблица</div>
+              <div class="right-chart-button right-button" tabindex="-5">
+                График
+              </div>
+              <div class="right-table-button right-button" tabindex="-5">
+                Таблица
+              </div>
             </div>
             <div class="donut">
               <div class="indent">Фонд добывающих скважин</div>
@@ -299,6 +361,7 @@
 export default {
   data: function () {
     return {
+      productionForChart: "",
       tables: "",
       buttonHover1: "",
       buttonHover2: "",
@@ -600,7 +663,6 @@ export default {
                 " 06:00:00 GMT+0600"
             ).getTime();
 
-            console.log(this.selectedYear);
             var dayInMonth = this.getDays().length;
 
             var dataWithMay = new Array();
@@ -615,10 +677,56 @@ export default {
                 ),
               ]);
             });
-            //select data by month
+            //select data by
+
+            //for chart
+            var productionPlanForChart = new Array();
+            _.forEach(dataWithMay, function (item) {
+              productionPlanForChart.push({
+                productionPlanForChart: item[productionPlan],
+              });
+            });
+
+            var productionFactForChart = new Array();
+            _.forEach(dataWithMay, function (item) {
+              productionFactForChart.push({
+                productionFactForChart: item[productionFact],
+              });
+            });
+
+            /*           var productionPlanForChart2 = new Array();
+               _.each(productionPlanForChart, function (item) {
+             productionPlanForChart2.push({productionPlanForChart});
+            });
+
+                 var productionFactForChart2 = new Array();
+                _.each(productionFactForChart, function (item) {
+             productionFactForChart2.push({productionFactForChart});
+            });*/
+            //for chart
+
+            var productionForChart = [{}];
+            productionForChart = _.zipWith(
+              _.sortBy(
+                productionPlanForChart,
+                (productionPlanForChart) =>
+                  productionPlanForChart.productionPlanForChart
+              ),
+              _.sortBy(
+                productionFactForChart,
+                (productionFactForChart) =>
+                  productionFactForChart.productionFactForChart
+              ),
+              (productionPlanForChart, productionFactForChart) =>
+                _.defaults(productionPlanForChart, productionFactForChart)
+            );
+            productionForChart = { data: productionForChart };
+            this.productionForChart = productionForChart;
+
+            // console.log(productionForChart);
 
             var dzo = new Array();
-            _.forEach(arrdata, function (item) {
+            _.forEach(dataWithMay, function (item) {
               dzo.push(item.dzo);
             });
             dzo = _.uniq(dzo);
@@ -632,6 +740,74 @@ export default {
               0
             );
 
+            productionPlanForMonth = Math.ceil(
+              productionPlanForMonth / dayInMonth
+            );
+
+            var prod_wells_work = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item.prod_wells_work;
+              },
+              0
+            );
+            prod_wells_work = Math.ceil(prod_wells_work / dayInMonth);
+
+            var prod_wells_idle = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item.prod_wells_idle;
+              },
+              0
+            );
+            prod_wells_idle = Math.ceil(prod_wells_idle / dayInMonth);
+
+            var starts_krs = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item.starts_krs;
+              },
+              0
+            );
+            // starts_krs = Math.ceil(starts_krs / dayInMonth);
+
+            var starts_prs = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item.starts_prs;
+              },
+              0
+            );
+            //starts_prs = Math.ceil(starts_prs / dayInMonth);
+
+            var starts_drl = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item.starts_drl;
+              },
+              0
+            );
+            //starts_drl = Math.ceil(starts_drl / dayInMonth);
+
+            var inj_wells_idle = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item.inj_wells_idle;
+              },
+              0
+            );
+            inj_wells_idle = Math.ceil(inj_wells_idle / dayInMonth);
+
+            var inj_wells_work = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item.inj_wells_work;
+              },
+              0
+            );
+            inj_wells_work = Math.ceil(inj_wells_work / dayInMonth);
+
+            //for month
             //select summ fact for month
             var productionFactForMonth = _.reduce(
               dataWithMay,
@@ -640,46 +816,65 @@ export default {
               },
               0
             );
+            productionFactForMonth = Math.ceil(
+              productionFactForMonth / dayInMonth
+            );
+
+            //for month
+            var productionFactForMonth2 = [
+              { productionFactForMonth: Math.ceil(productionFactForMonth) },
+            ];
+            var productionPlanForMonth2 = [
+              { productionPlanForMonth: Math.ceil(productionPlanForMonth) },
+            ];
+
+            var prod_wells_work2 = [{ prod_wells_work: prod_wells_work }];
+
+            var prod_wells_idle2 = [{ prod_wells_idle: prod_wells_idle }];
+            var starts_krs2 = [{ starts_krs: starts_krs }];
+            var starts_prs2 = [{ starts_prs: starts_prs }];
+            var starts_drl2 = [{ starts_drl: starts_drl }];
+            var inj_wells_idle2 = [{ inj_wells_idle: inj_wells_idle }];
+            var inj_wells_work2 = [{ inj_wells_work: inj_wells_work }];
           }
 
-          arrdata = _.filter(arrdata, _.iteratee({ __time: timestamp }));
-          /*if (arrdata.length == 0) {
+          if (this.selectedDMY == 0) {
+            arrdata = _.filter(arrdata, _.iteratee({ __time: timestamp }));
+            /*if (arrdata.length == 0) {
             alert(
               "К сожалению на текущую дату нет данных, выберите другую дату"
             );
           } else {*/
-          // }
-          //select dzo filter
+            // }
+            //select dzo filter
+            var dzo = new Array();
+            var liq_fact = new Array();
+            var liq_plan = new Array();
+            var time = new Array();
+            var prod_wells_work = new Array();
+            var prod_wells_idle = new Array();
+            var starts_krs = new Array();
+            var starts_prs = new Array();
+            var starts_drl = new Array();
+            var inj_wells_active = new Array();
+            var inj_wells_idle = new Array();
+            var inj_wells_work = new Array();
+            var prod_wells_active = new Array();
 
-          var dzo = new Array();
-          var liq_fact = new Array();
-          var liq_plan = new Array();
-          var time = new Array();
-          var prod_wells_work = new Array();
-          var prod_wells_idle = new Array();
-          var starts_krs = new Array();
-          var starts_prs = new Array();
-          var starts_drl = new Array();
-          var inj_wells_active = new Array();
-          var inj_wells_idle = new Array();
-          var inj_wells_work = new Array();
-          var prod_wells_active = new Array();
+            _.forEach(arrdata, function (item) {
+              dzo.push(item.dzo);
+              liq_fact.push(item[productionFact]);
+              liq_plan.push(item[productionPlan]);
+              time.push(item.__time);
+              prod_wells_work.push(item.prod_wells_work);
+              prod_wells_idle.push(item.prod_wells_idle);
+              starts_krs.push(item.starts_krs);
+              starts_prs.push(item.starts_prs);
+              starts_drl.push(item.starts_drl);
+              inj_wells_work.push(item.inj_wells_work);
+              inj_wells_idle.push(item.inj_wells_idle);
+            });
 
-          _.forEach(arrdata, function (item) {
-            dzo.push(item.dzo);
-            liq_fact.push(item[productionFact]);
-            liq_plan.push(item[productionPlan]);
-            time.push(item.__time);
-            prod_wells_work.push(item.prod_wells_work);
-            prod_wells_idle.push(item.prod_wells_idle);
-            starts_krs.push(item.starts_krs);
-            starts_prs.push(item.starts_prs);
-            starts_drl.push(item.starts_drl);
-            inj_wells_work.push(item.inj_wells_work);
-            inj_wells_idle.push(item.inj_wells_idle);
-          });
-
-          if (this.selectedDMY == 0) {
             //select only for day
             //Create massive with a part
 
@@ -739,49 +934,49 @@ export default {
           }
 
           //for year
-          var selectedYear = this.selectedYear;
-          if (selectedYear === 2020) {
-            selectedYear = "2020 (с начала года)";
-          }
-          var arrdataYear = new Array();
-          arrdataYear = _.filter(
-            data2,
-            _.iteratee({ period: String(selectedYear) })
-          );
-          arrdataYear = _.filter(arrdataYear, _.iteratee({ dzo: company }));
-          //console.log(arrdataYear);
-
-          var dzo = new Array();
-          var factYear = new Array();
-          var planYear = new Array();
-
-          var prod_wells_work_year = new Array();
-          var prod_wells_idle_year = new Array();
-
-          var inj_wells_idle_year = new Array();
-          var inj_wells_work_year = new Array();
-
-          var starts_krs_year = new Array();
-          var starts_prs_year = new Array();
-          var starts_drl_year = new Array();
-
-          _.forEach(arrdataYear, function (item) {
-            dzo.push(item.dzo);
-            factYear.push(item[productionFact]);
-            planYear.push(item[productionPlan]);
-            prod_wells_work_year.push(item.prod_wells_work);
-            prod_wells_idle_year.push(item.prod_wells_idle);
-            inj_wells_idle_year.push(item.inj_wells_idle);
-            inj_wells_work_year.push(item.inj_wells_work);
-            starts_krs_year.push(item.starts_krs);
-            starts_prs_year.push(item.starts_prs);
-            starts_drl_year.push(item.starts_drl);
-          });
-
           if (this.selectedDMY == 2) {
+            var selectedYear = this.selectedYear;
+            if (selectedYear === 2020) {
+              selectedYear = "2020 (с начала года)";
+            }
+            var arrdataYear = new Array();
+            arrdataYear = _.filter(
+              data2,
+              _.iteratee({ period: String(selectedYear) })
+            );
+            arrdataYear = _.filter(arrdataYear, _.iteratee({ dzo: company }));
+
+            var dzo = new Array();
+            var factYear = new Array();
+            var planYear = new Array();
+
+            var prod_wells_work_year = new Array();
+            var prod_wells_idle_year = new Array();
+
+            var inj_wells_idle_year = new Array();
+            var inj_wells_work_year = new Array();
+
+            var starts_krs_year = new Array();
+            var starts_prs_year = new Array();
+            var starts_drl_year = new Array();
+
+            _.forEach(arrdataYear, function (item) {
+              dzo.push(item.dzo);
+              factYear.push(item[productionFact]);
+              planYear.push(item[productionPlan]);
+              prod_wells_work_year.push(item.prod_wells_work);
+              prod_wells_idle_year.push(item.prod_wells_idle);
+              inj_wells_idle_year.push(item.inj_wells_idle);
+              inj_wells_work_year.push(item.inj_wells_work);
+              starts_krs_year.push(item.starts_krs);
+              starts_prs_year.push(item.starts_prs);
+              starts_drl_year.push(item.starts_drl);
+            });
+
             //select only for year
             var factYear2 = new Array();
             _.each(factYear, function (factYear) {
+              factYear = Math.ceil(factYear);
               factYear2.push({ factYear });
             });
 
@@ -803,11 +998,13 @@ export default {
 
             var inj_wells_idle_year2 = new Array();
             _.each(inj_wells_idle_year, function (inj_wells_idle_year) {
+              inj_wells_idle_year = Math.ceil(inj_wells_idle_year);
               inj_wells_idle_year2.push({ inj_wells_idle_year });
             });
 
             var inj_wells_work_year2 = new Array();
             _.each(inj_wells_work_year, function (inj_wells_work_year) {
+              inj_wells_work_year = Math.ceil(inj_wells_work_year);
               inj_wells_work_year2.push({ inj_wells_work_year });
             });
 
@@ -831,16 +1028,6 @@ export default {
               starts_drl_year2.push({ starts_drl_year });
             });
           }
-
-          //for month
-          var productionFactForMonth2 = [
-            { productionFactForMonth: Math.ceil(productionFactForMonth) },
-          ];
-          var productionPlanForMonth2 = [
-            { productionPlanForMonth: Math.ceil(productionPlanForMonth) },
-          ];
-
-          //for month
 
           //all variables
           var dzo2 = new Array();

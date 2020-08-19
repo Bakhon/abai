@@ -47,6 +47,7 @@ export default {
         plotOptions: {
           bar: {
             dataLabels: {
+              colors: ["#F7BB2E"],
               position: "top", // top, center, bottom
             },
             columnWidth: "50%",
@@ -54,7 +55,7 @@ export default {
         },
 
         dataLabels: {
-          enabled: false /*вывод значений из раздела data*/,
+          enabled: true /*вывод значений из раздела data*/,
           formatter: function (val) {
             return val /*+"%"*/;
           },
@@ -109,16 +110,19 @@ export default {
     var b = this.starts.starts_krs;
     var c = this.starts.starts_drl;
     var starts2 = new Array({ data: [a, b, c] });
-if (a==undefined && b==undefined && c==undefined){} else{this.series = starts2;}
+    if (a == undefined && b == undefined && c == undefined) {
+    } else {
+      this.series = starts2;
+    }
 
-   var d = this.starts.starts_prs_year;
+    var d = this.starts.starts_prs_year;
     var e = this.starts.starts_krs_year;
     var f = this.starts.starts_drl_year;
     var starts2 = new Array({ data: [d, e, f] });
-if (d==undefined && e==undefined && f==undefined){} else{this.series = starts2;}
-
-
-
+    if (d == undefined && e == undefined && f == undefined) {
+    } else {
+      this.series = starts2;
+    }
   },
 };
 </script>
