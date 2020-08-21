@@ -3,13 +3,11 @@
     <a
       href="#"
       class="bg-dark list-group-item list-group-item-action circle-menu"
-      :style="`${buttonMenuHover2}`"
+      :style="`${buttonMenuHoverAll}`"
       @click="saveCompany('all')"
     >
       <div class="d-flex w-100 justify-content-start align-items-center">
-        <div       
-          class="companyLogo-kmg"
-        ></div>
+        <div class="companyLogo-kmg"></div>
         <span class="menu-collapsed companyName"></span>
       </div>
     </a>
@@ -209,24 +207,31 @@
         </div>
       </a>
     </div>
+
+    <button @click="sendMessage()">Emit event to Vue component 2</button>
   </div>
   <!-- sidebar-container END -->
 </template>
 
 <script>
+import { EventBus } from "./event-bus.js";
 export default {
-  data: () => ({
-    company: "",
-    buttonMenuHover1: "",
-    buttonMenuHover2: "",
-    buttonMenuHover3: "",
-    buttonMenuHover4: "",
-    buttonMenuHover5: "",
-    buttonMenuHover6: "",
-    buttonMenuHover7: "",
-    buttonMenuHover8: "",
-    buttonMenuHover9: "",
-  }),
+  data: function () {
+    return {
+      company: "",
+      buttonMenuHover1: "",
+      buttonMenuHover2: "",
+      buttonMenuHover3: "",
+      buttonMenuHover4: "",
+      buttonMenuHover5: "",
+      buttonMenuHover6: "",
+      buttonMenuHover7: "",
+      buttonMenuHover8: "",
+      buttonMenuHover9: "",
+      buttonMenuHoverAll: "",
+    };
+  },
+
   methods: {
     saveCompany(com) {
       localStorage.setItem("company", com);
@@ -241,7 +246,7 @@ export default {
         "height: 40px;" +
         "pointer-events: none;";
 
-      console.log(company == "КГМ");
+      //console.log(company == "КГМ");
 
       if (company == "ОМГ") {
         this.buttonMenuHover1 = buttonMenuHover;
@@ -295,6 +300,14 @@ export default {
       } else {
         this.buttonMenuHover9 = "";
       }
+
+      if (company == "All") {
+        this.buttonMenuHoverALL = buttonMenuHover;
+      } else {
+        this.buttonMenuHoverALL = "";
+      }
+
+      EventBus.$emit("messageSend", this.company);
     },
   },
 };

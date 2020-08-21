@@ -124,6 +124,26 @@ export default {
       productionFactForChart.push(item.productionFactForChart);
     });
 
+    var productionFactForChartMonth = new Array();
+    _.forEach(data, function (item) {
+      productionFactForChartMonth.push(item.productionFactForChartMonth);
+    });
+
+    var productionPlanForChartMonth = new Array();
+    _.forEach(data, function (item) {
+      productionPlanForChartMonth.push(item.productionPlanForChartMonth);
+    });
+
+    var productionFactForChartYear = new Array();
+    _.forEach(data, function (item) {
+      productionFactForChartYear.push(item.productionFactForChartYear);
+    });
+
+    var productionPlanForChartYear = new Array();
+    _.forEach(data, function (item) {
+      productionPlanForChartYear.push(item.productionPlanForChartYear);
+    });
+
     var quantity = data.length;
 
     var quantity2 = [];
@@ -131,47 +151,104 @@ export default {
       var a = [i];
       quantity2.push(a);
     }
-    console.log(quantity2);
 
     this.chartOptions = { labels: quantity2 };
+
     //this.dataLabels= {labels:quantity2};
     /* 
             _.each(quantity, function (quantity) {
               quantity.push({ quantity });
             });*/
+    if (
+      productionPlanForChart[1] == undefined &&
+      productionFactForChart[1] == undefined
+    ) {
+    } else {
+      this.series = [
+        {
+          name: "План",
+          type: "area",
+          stroke: {
+            /* width: 5,*/
+            curve: "smooth",
+          },
+          // data: [31, 40, 28, 51, 42, 109, 100]
 
-    this.series = [
-      {
-        name: "План",
-        type: "area",
-        stroke: {
-          /* width: 5,*/
-          curve: "smooth",
+          data: productionPlanForChart,
         },
-        // data: [31, 40, 28, 51, 42, 109, 100]
-
-        data: productionPlanForChart,
-      },
-      {
-        name: "Факт",
-        type: "area",
-        stroke: {
-          /* width: 5,*/
-          curve: "smooth",
+        {
+          name: "Факт",
+          type: "area",
+          stroke: {
+            /* width: 5,*/
+            curve: "smooth",
+          },
+          data: productionFactForChart,
         },
-        data: productionFactForChart,
-      },
-    ];
+      ];
+    }
 
-    // console.log(localStorage.getItem("production-fact"));
-  },
+    //console.log(productionPlanForChartMonth);
+    if (
+      productionPlanForChartMonth[1] == undefined &&
+      productionFactForChartMonth[1] == undefined
+    ) {
+    } else {
+      this.series = [
+        {
+          name: "План",
+          type: "area",
+          stroke: {
+            /* width: 5,*/
+            curve: "smooth",
+          },
+          // data: [31, 40, 28, 51, 42, 109, 100]
 
-  /* updated: function () {
-  this.$nextTick(function () {
-    // Код, который будет запущен только после
-    // обновления всех представлений
+          data: productionPlanForChartMonth,
+        },
+        {
+          name: "Факт",
+          type: "area",
+          stroke: {
+            /* width: 5,*/
+            curve: "smooth",
+          },
+          data: productionFactForChartMonth,
+        },
+      ];
+    }
+
+    if (
+      productionPlanForChartYear[1] == undefined &&
+      productionPlanForChartYear[1] == undefined
+    ) {
+    } else {
+      this.chartOptions = { labels: ["2018", "2019", "2020"] };
+      this.series = [
+        {
+          name: "План",
+          type: "area",
+          stroke: {
+            /* width: 5,*/
+            curve: "smooth",
+          },
+          // data: [31, 40, 28, 51, 42, 109, 100]
+
+          data: productionPlanForChartYear,
+        },
+        {
+          name: "Факт",
+          type: "area",
+          stroke: {
+            /* width: 5,*/
+            curve: "smooth",
+          },
+          data: productionFactForChartYear,
+        },
+      ];
+    }
+
     console.log(this.postTitle);
-  })
-}*/
+  },
 };
 </script>

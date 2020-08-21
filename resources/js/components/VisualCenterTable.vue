@@ -11,7 +11,10 @@
                   <!--  <div class="left-arrow"></div>-->
                   <div class="timer">
                     <div class="time">{{ date2 }}</div>
-                    <div class="date">{{ date3 }}</div>
+                    <div class="date">
+                      {{ date3 }}
+                      <p>Listener event: {{ statusMessage }}</p>
+                    </div>
                   </div>
                   <!-- <div class="right-arrow"></div>-->
                 </div>
@@ -164,8 +167,120 @@
                     </li>
                   </a>
                 </div>
+                <!--<div class="right-chart-button right-button" tabindex="-5">
+               
+                -->
 
-                <div class="tables">
+                <div
+                  class="right-table-button right-button"
+                  :style="`${showTableOn}`"
+                  @click="showTable(`${showTable2}`)"
+                >
+                  {{ ChartTable }}
+                </div>
+
+                <div class="tables" :style="`${displayHeadTables}`">
+                  <div class="tables-name">{{ circleMenu }}</div>
+                  <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
+                  <div class="tables-string">
+                    <!--<div class="cell-colour-top table-border"></div>-->
+                    <div class="cell-number-top table-border">№</div>
+                    <div class="cell-name-top table-border">Предприятия</div>
+                    <div class="cell-last-top table-border cell-last">
+                      ДОБЫЧА, тонн
+                    </div>
+                    <div class="cell2 table-border">
+                      План на {{ selectedYear }} год
+                    </div>
+                    <div class="cell2 table-border">
+                      План на {{ currentMonth }} месяц
+                    </div>
+                    <div class="cell3 table-border">СУТОЧНАЯ</div>
+                    <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
+                    <div class="cell3 table-border cell-last">
+                      С НАЧАЛА ГОДА
+                    </div>
+                    <div class="cell4 table-border">ПЛАН</div>
+                    <div class="cell4 table-border">ФАКТ</div>
+                    <div class="cell4 table-border">(+,-)</div>
+                    <div class="cell4 table-border">ПЛАН</div>
+                    <div class="cell4 table-border">ФАКТ</div>
+                    <div class="cell4 table-border">(+,-)</div>
+                    <div class="cell4 table-border">ПЛАН</div>
+                    <div class="cell4 table-border">ФАКТ</div>
+                    <div class="cell4 table-border cell-last">(+,-)</div>
+                  </div>
+                  <div style="clear: both;"></div>
+                  <div v-for="item in bigTable">
+                    <div>
+                      <div>
+                        <!-- <div class="cell-colour table-border">
+                 
+                        </div>-->
+                        <div class="cell-number table-border"></div>
+                        <div class="cell-name table-border">
+                          {{ item.dzo }} {{ item.dzo2 }}
+                          <!--{{item.time}}-->
+                        </div>
+                        <div class="cell table-border">{{ item.planYear }}</div>
+                        <div class="cell table-border"></div>
+                        <div class="cell table-border">{{ item.planDay }}</div>
+                        <div class="cell table-border">{{ item.factDay }}</div>
+                        <div class="cell table-border colour">
+                          <div>
+                            <div
+                              v-if="item.factDay"
+                              class="circle-table"
+                              :style="`background: ${getColor(
+                                item.planDay - item.factDay
+                              )}`"
+                            ></div>
+                          </div>
+                          <div v-if="item.factDay">
+                            <div>{{ item.planDay - item.factDay }}</div>
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          {{ item.planMonth }}
+                        </div>
+                        <div class="cell table-border">
+                          {{ item.factMonth }}
+                        </div>
+                        <div class="cell table-border colour">
+                          <div
+                            v-if="item.planMonth"
+                            class="circle-table"
+                            :style="`background: ${getColor(
+                              item.planMonth - item.factMonth
+                            )}`"
+                          ></div>
+                          <!--3cell-->
+                          <div v-if="item.planMonth">
+                            {{ item.planMonth - item.factMonth }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">{{ item.planYear }}</div>
+                        <div class="cell table-border">{{ item.factYear }}</div>
+                        <div class="cell table-border cell-last colour">
+                          <div
+                            v-if="item.planYear"
+                            class="circle-table"
+                            :style="`background: ${getColor(
+                              item.planYear - item.factYear
+                            )}`"
+                          ></div>
+                          <div v-if="item.planYear">
+                            {{ item.planYear - item.factYear }}
+                          </div>
+                        </div>
+                      </div>
+                      <div style="clear: both;"></div>
+                    </div>
+                    <div class="tables-bottom-line"></div>
+                  </div>
+                </div>
+
+                <div class="tables" :style="`${displayTable}`">
                   <div class="tables-name">{{ circleMenu }}</div>
                   <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
                   <div class="tables-string">
@@ -269,8 +384,8 @@
                 </div>
               </div>
             </div>
-            <div class="visual-center-center">
-              <div class="tables-name">График добычи</div>
+            <div class="visual-center-center" :style="`${displayChart}`">
+              <div class="tables-name">График {{ circleMenu }}</div>
               <visual-center-chart-area-center
                 v-for="(serial, index) in productionForChart"
                 v-bind:postTitle="serial"
@@ -316,14 +431,11 @@
             </div>
           </div>
           <div class="visual-center-right-column">
-            <div class="right-button-panel">
-              <div class="right-chart-button right-button" tabindex="-5">
-                График
-              </div>
-              <div class="right-table-button right-button" tabindex="-5">
+            <!-- <div class="right-button-panel">
+              <div>
                 Таблица
               </div>
-            </div>
+            </div>-->
             <div class="donut">
               <div class="indent">Фонд добывающих скважин</div>
               <div>
@@ -333,12 +445,6 @@
                   :key="well"
                 ></visual-center-chart-donut-right1>
               </div>
-              <!--  <div class="donut-inner1 inner2">
-                 В работе <br />{{ well[0] }}
-                </div>
-                <div class="donut-inner1 inner1">
-                  В простое<br />{{ well[1] }}
-              </div>-->
             </div>
             <div class="donut donut2">
               <div class="indent">Фонд нагнетательных скважин</div>
@@ -358,20 +464,31 @@
 </template>
 
 <script>
+//import VisualCenterMenu from'../components/VisualCenterMenu'
+
+import { EventBus } from "./event-bus.js";
 export default {
+  template: "#vue-status-overview-template",
   data: function () {
     return {
       productionForChart: "",
       tables: "",
+      showTable2: "No",
+      displayTable: "display: none;",
+      displayChart: "",
+      showTableOn: "",
       buttonHover1: "",
       buttonHover2: "",
       buttonHover3: "",
       buttonHover4: "",
       buttonHover5: "",
       buttonHover6: "",
+
       circleMenu: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
+      currentMonth: [],
+      ChartTable: "Таблица",
       date2: new Date().toLocaleString("ru", {
         /*year: 'numeric',
 	month: 'long',
@@ -440,14 +557,22 @@ export default {
 
       wells: [""],
       wells2: [""],
+      bigTable: [""],
+      displayHeadTables: "display: none",
       starts: [""],
       test: [""],
       series: ["", ""],
       display: "none",
+      company: "",
+      statusMessage: "Init",
     };
   },
-
   methods: {
+    displayMessage: function (message) {
+      this.statusMessage = message;
+    },
+    getCompany() {},
+
     getColor(status) {
       if (status < "0") return "#b40300";
       return "#008a17";
@@ -503,7 +628,7 @@ export default {
       /*	if (days[0].length > 0) {
 					for (let i = days[0].length; i < 7; i++) {
 						days[0].unshift('');
-						
+
 					}
 				}*/
       this.dayChange;
@@ -558,12 +683,24 @@ export default {
 
     getDays: function () {
       var DaysInMonth = [];
-      var dlast = new Date(this.year, this.selectedMonth, 0).getDate();
+      var dlast = new Date(this.year, this.month + 1, 0).getDate();
       for (let i = 1; i <= dlast; i++) {
         var a = { index: i, id: i };
         DaysInMonth.push(a);
       }
       return DaysInMonth;
+    },
+
+    getDaysInYear: function () {
+      var getDaysInYear = [];
+      for (let q = 1; q <= 12; q++) {
+        var dlast = new Date(this.year, q, 0).getDate();
+        for (let i = 1; i <= dlast; i++) {
+          var a = { month: q, day: i };
+          getDaysInYear.push(a);
+        }
+      }
+      return getDaysInYear;
     },
 
     getYears: function () {
@@ -603,6 +740,12 @@ export default {
           a.current = "#1D70B7";
         }
       }
+      if (this.selectedDMY != undefined) {
+        this.displayHeadTables = "display:none;";
+      }
+
+      localStorage.setItem("selectedDMY", this.selectedDMY);
+
       return menuDMY;
     },
 
@@ -613,7 +756,11 @@ export default {
       var productionPlan = localStorage.getItem("production-plan");
       var productionFact = localStorage.getItem("production-fact");
 
+      var selectedDMY = localStorage.getItem("selectedDMY");
+
       this.circleMenu = item3;
+
+      //console.log(selectedDMY);
 
       let company = localStorage.getItem("company");
       if (company === null) {
@@ -644,18 +791,18 @@ export default {
           ).getTime();
 
           arrdata = _.filter(data, _.iteratee({ dzo: company }));
+          //get data by Month
+          var SelectYearInMonth; //value
+          if (this.selectedYear == undefined) {
+            SelectYearInMonth = this.year;
+          } else {
+            SelectYearInMonth = this.selectedYear;
+          }
 
-          if (this.selectedDMY == 1) {
-            //select only for month
-            //get data by Month
-            var SelectYearInMonth; //value
-            if (this.selectedYear == undefined) {
-              SelectYearInMonth = this.year;
-            } else {
-              SelectYearInMonth = this.selectedYear;
-            }
+          if (this.selectedDMY == 0) {
+            //selectedDay by chart
             var timestampMonthStart = new Date(
-              this.monthes2[this.selectedMonth] +
+              this.monthes2[this.month + 1] +
                 //this.selectedDay +
                 "1" +
                 " " +
@@ -670,14 +817,12 @@ export default {
               return _.every([
                 _.inRange(
                   item.__time,
-                  // 1588291200000, // from May 2020
-                  // 1590883200000+1,
+                  // 1588291200000, // May 2020
                   timestampMonthStart,
                   timestampMonthStart + 86400000 * dayInMonth
                 ),
               ]);
             });
-            //select data by
 
             //for chart
             var productionPlanForChart = new Array();
@@ -693,6 +838,361 @@ export default {
                 productionFactForChart: item[productionFact],
               });
             });
+          }
+
+          if (this.selectedDMY == 1) {
+            //selectedMonth by chart
+            var timestampMonthStart = new Date(
+              this.monthes2["1"] +
+                //this.selectedDay +
+                "1" +
+                " " +
+                SelectYearInMonth +
+                " 06:00:00 GMT+0600"
+            ).getTime();
+
+            var dayInMonth = this.getDays().length;
+
+            var getDaysInYear = [];
+            for (let i = 1; i <= 12; i++) {
+              var allDays = _.filter(
+                this.getDaysInYear(),
+                _.iteratee({ month: i })
+              );
+              getDaysInYear[i] = allDays.length;
+            }
+
+            var months = [];
+            var getMonthsTime = [];
+            for (let i = 1; i <= 12; i++) {
+              months[i] = _.filter(arrdata, function (item) {
+                return _.every([
+                  _.inRange(
+                    item.__time,
+                    timestampMonthStart,
+                    timestampMonthStart + 86400000 * getDaysInYear[i]
+                  ),
+                ]);
+              });
+              getMonthsTime = months;
+            }
+
+            var productionFactForChart = _.reduce(
+              getMonthsTime[1],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart = productionFactForChart / getDaysInYear[1];
+
+            var productionPlanForChart = _.reduce(
+              getMonthsTime[1],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart = productionPlanForChart / getDaysInYear[1];
+
+            //2
+            var productionFactForChart2 = _.reduce(
+              getMonthsTime[2],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart2 =
+              productionFactForChart2 / getDaysInYear[2];
+
+            var productionPlanForChart2 = _.reduce(
+              getMonthsTime[2],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart2 =
+              productionPlanForChart2 / getDaysInYear[2];
+
+            //3
+            var productionFactForChart3 = _.reduce(
+              getMonthsTime[3],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart3 =
+              productionFactForChart3 / getDaysInYear[3];
+
+            var productionPlanForChart3 = _.reduce(
+              getMonthsTime[3],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart3 =
+              productionPlanForChart3 / getDaysInYear[3];
+
+            //4
+            var productionFactForChart4 = _.reduce(
+              getMonthsTime[4],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart4 =
+              productionFactForChart4 / getDaysInYear[4];
+
+            var productionPlanForChart4 = _.reduce(
+              getMonthsTime[4],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart4 =
+              productionPlanForChart4 / getDaysInYear[4];
+
+            //5
+            var productionFactForChart5 = _.reduce(
+              getMonthsTime[5],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart5 =
+              productionFactForChart5 / getDaysInYear[5];
+
+            var productionPlanForChart5 = _.reduce(
+              getMonthsTime[5],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart5 =
+              productionPlanForChart5 / getDaysInYear[5];
+
+            //6
+            var productionFactForChart6 = _.reduce(
+              getMonthsTime[6],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart6 =
+              productionFactForChart6 / getDaysInYear[6];
+
+            var productionPlanForChart6 = _.reduce(
+              getMonthsTime[6],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart6 =
+              productionPlanForChart6 / getDaysInYear[6];
+
+            //7
+            var productionFactForChart7 = _.reduce(
+              getMonthsTime[7],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart7 =
+              productionFactForChart7 / getDaysInYear[7];
+
+            var productionPlanForChart7 = _.reduce(
+              getMonthsTime[7],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart7 =
+              productionPlanForChart7 / getDaysInYear[7];
+
+            //8
+            var productionFactForChart8 = _.reduce(
+              getMonthsTime[8],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart8 =
+              productionFactForChart8 / getDaysInYear[8];
+
+            var productionPlanForChart8 = _.reduce(
+              getMonthsTime[8],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart8 =
+              productionPlanForChart8 / getDaysInYear[8];
+
+            //9
+            var productionFactForChart9 = _.reduce(
+              getMonthsTime[9],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart9 =
+              productionFactForChart9 / getDaysInYear[9];
+
+            var productionPlanForChart9 = _.reduce(
+              getMonthsTime[9],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart9 =
+              productionPlanForChart9 / getDaysInYear[9];
+
+            //10
+            var productionFactForChart10 = _.reduce(
+              getMonthsTime[10],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart10 =
+              productionFactForChart10 / getDaysInYear[10];
+
+            var productionPlanForChart10 = _.reduce(
+              getMonthsTime[10],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart10 =
+              productionPlanForChart10 / getDaysInYear[10];
+
+            //11
+            var productionFactForChart11 = _.reduce(
+              getMonthsTime[11],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart11 =
+              productionFactForChart11 / getDaysInYear[11];
+
+            var productionPlanForChart11 = _.reduce(
+              getMonthsTime[11],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart11 =
+              productionPlanForChart11 / getDaysInYear[11];
+
+            //12
+            var productionFactForChart12 = _.reduce(
+              getMonthsTime[12],
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+
+            productionFactForChart12 =
+              productionFactForChart12 / getDaysInYear[12];
+
+            var productionPlanForChart12 = _.reduce(
+              getMonthsTime[12],
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            productionPlanForChart12 =
+              productionPlanForChart12 / getDaysInYear[12];
+
+            var productionFactForChartMonth = [];
+
+            productionFactForChartMonth = [
+              { productionFactForChart: productionFactForChart },
+              { productionFactForChart: productionFactForChart2 },
+              { productionFactForChart: productionFactForChart3 },
+              { productionFactForChart: productionFactForChart4 },
+              { productionFactForChart: productionFactForChart5 },
+              { productionFactForChart: productionFactForChart6 },
+              { productionFactForChart: productionFactForChart7 },
+              { productionFactForChart: productionFactForChart8 },
+              { productionFactForChart: productionFactForChart9 },
+              { productionFactForChart: productionFactForChart10 },
+              { productionFactForChart: productionFactForChart11 },
+              { productionFactForChart: productionFactForChart12 },
+            ];
+
+            var productionPlanForChartMonth = [];
+            productionPlanForChartMonth = [
+              { productionPlanForChart: productionPlanForChart },
+              { productionPlanForChart: productionPlanForChart2 },
+              { productionPlanForChart: productionPlanForChart3 },
+              { productionPlanForChart: productionPlanForChart4 },
+              { productionPlanForChart: productionPlanForChart5 },
+              { productionPlanForChart: productionPlanForChart6 },
+              { productionPlanForChart: productionPlanForChart7 },
+              { productionPlanForChart: productionPlanForChart8 },
+              { productionPlanForChart: productionPlanForChart9 },
+              { productionPlanForChart: productionPlanForChart10 },
+              { productionPlanForChart: productionPlanForChart11 },
+              { productionPlanForChart: productionPlanForChart12 },
+            ];
+
+            /*
+      var productionPlanForChart = new Array();
+            _.forEach(dataWithMay, function (item) {
+              productionPlanForChart.push({
+                productionPlanForChart: item[productionPlan],
+              });
+            });
+
+
+
+
+            var productionFactForChart = new Array();
+            _.forEach(dataWithMay, function (item) {
+              productionFactForChart.push({
+                productionFactForChart: item[productionFact],
+              });
+            });*/
+          }
+
+          //select data by
+          if (this.selectedDMY == 1) {
+            //select only for month
 
             /*           var productionPlanForChart2 = new Array();
                _.each(productionPlanForChart, function (item) {
@@ -705,26 +1205,18 @@ export default {
             });*/
             //for chart
 
-            var productionForChart = [{}];
-            productionForChart = _.zipWith(
-              _.sortBy(
-                productionPlanForChart,
-                (productionPlanForChart) =>
-                  productionPlanForChart.productionPlanForChart
-              ),
-              _.sortBy(
-                productionFactForChart,
-                (productionFactForChart) =>
-                  productionFactForChart.productionFactForChart
-              ),
-              (productionPlanForChart, productionFactForChart) =>
-                _.defaults(productionPlanForChart, productionFactForChart)
-            );
-            productionForChart = { data: productionForChart };
-            this.productionForChart = productionForChart;
-
-            // console.log(productionForChart);
-
+            var dataWithMay = new Array();
+            dataWithMay = _.filter(arrdata, function (item) {
+              return _.every([
+                _.inRange(
+                  item.__time,
+                  // 1588291200000, // from May 2020
+                  // 1590883200000+1,
+                  timestampMonthStart,
+                  timestampMonthStart + 86400000 * dayInMonth
+                ),
+              ]);
+            });
             var dzo = new Array();
             _.forEach(dataWithMay, function (item) {
               dzo.push(item.dzo);
@@ -732,6 +1224,7 @@ export default {
             dzo = _.uniq(dzo);
 
             //select summ plan for month
+
             var productionPlanForMonth = _.reduce(
               dataWithMay,
               function (memo, item) {
@@ -973,6 +1466,24 @@ export default {
               starts_drl_year.push(item.starts_drl);
             });
 
+            var arrdataYearChart = new Array();
+            var arrdataYearChart = [];
+            arrdataYearChart = _.filter(data2, _.iteratee({ dzo: company }));
+
+            var productionPlanForChartYear = new Array();
+            _.forEach(arrdataYearChart, function (item) {
+              productionPlanForChartYear.push({
+                productionPlanForChartYear: item[productionPlan],
+              });
+            });
+
+            var productionFactForChartYear = new Array();
+            _.forEach(arrdataYearChart, function (item) {
+              productionFactForChartYear.push({
+                productionFactForChartYear: item[productionFact],
+              });
+            });
+
             //select only for year
             var factYear2 = new Array();
             _.each(factYear, function (factYear) {
@@ -1036,6 +1547,65 @@ export default {
           });
 
           //----------------------------
+
+          var productionForChart = [{}];
+          productionForChart = _.zipWith(
+            _.sortBy(
+              productionPlanForChart,
+              (productionPlanForChart) =>
+                productionPlanForChart.productionPlanForChart
+            ),
+            _.sortBy(
+              productionFactForChart,
+              (productionFactForChart) =>
+                productionFactForChart.productionFactForChart
+            ),
+
+            _.sortBy(
+              productionPlanForChartMonth,
+              (productionPlanForChartMonth) =>
+                productionPlanForChartMonth.productionPlanForChartMonth
+            ),
+
+            _.sortBy(
+              productionFactForChartMonth,
+              (productionFactForChartMonth) =>
+                productionFactForChartMonth.productionFactForChartMonth
+            ),
+
+            _.sortBy(
+              productionPlanForChartYear,
+              (productionPlanForChartYear) =>
+                productionPlanForChartYear.productionPlanForChartYear
+            ),
+
+            _.sortBy(
+              productionFactForChartYear,
+              (productionFactForChartYear) =>
+                productionFactForChartYear.productionFactForChartYear
+            ),
+
+            (
+              productionPlanForChart2,
+              productionFactForChart2,
+              productionPlanForChartMonth,
+              productionFactForChartMonth,
+              productionPlanForChartYear,
+              productionFactForChartYear
+            ) =>
+              _.defaults(
+                productionPlanForChart2,
+                productionFactForChart2,
+                productionPlanForChartMonth,
+                productionFactForChartMonth,
+                productionPlanForChartYear,
+                productionFactForChartYear
+              )
+          );
+
+          productionForChart = { data: productionForChart };
+          this.productionForChart = productionForChart;
+
           var tables = _.zipWith(
             _.sortBy(dzo2, (dzo) => dzo.dzo),
             _.sortBy(liq_fact2, (liq_fact) => liq_fact.liq_fact),
@@ -1231,22 +1801,313 @@ export default {
         } else {
           console.log("No data");
         }
+
+        //bigtable
+        //year
+        var dataDay = [];
+        var dataYear = [];
+        dataDay = data;
+        dataYear = data2;
+        var factYear = [];
+        var planYear = [];
+        var period = [];
+        var dzo = [];
+        period = _.filter(
+          data2,
+          _.iteratee({ period: "2020 (с начала года)" })
+        );
+        _.forEach(period, function (item) {
+          var e = [];
+          e = { dzo: item.dzo };
+          dzo.push(e);
+
+          var f = [];
+          f = { factYear: Math.ceil(item[productionFact]) };
+          factYear.push(f);
+          var p = [];
+          p = { planYear: Math.ceil(item[productionPlan]) };
+          planYear.push(p);
+        });
+
+        var currentMonth = 5;
+        this.currentMonth = this.monthes2[currentMonth];
+        var timestampMonthStart = new Date(
+          //this.monthes2[this.month+1] + //change when data upgrade
+          this.monthes2["5"] +
+            //this.selectedDay +
+            "1" +
+            " " +
+            SelectYearInMonth +
+            " 06:00:00 GMT+0600"
+        ).getTime();
+
+        var dayInMonth = this.getDays().length;
+        var dataWithMay = new Array();
+        dataWithMay = _.filter(data, function (item) {
+          return _.every([
+            _.inRange(
+              item.__time,
+              timestampMonthStart,
+              timestampMonthStart + 86400000 * dayInMonth
+            ),
+          ]);
+        });
+
+        // productionForChart=[];
+        var productionForChart = _(dataWithMay)
+          .groupBy("__time")
+          .map((__time, id) => ({
+            productionFactForChart: _.sumBy(__time, productionFact),
+            productionPlanForChart: _.sumBy(__time, productionPlan),
+          }))
+          .value();
+
+        var dzo2 = [];
+        var planMonth = [];
+        var factMonth = [];
+        var oil_fact = [];
+        var oil_plan = [];
+
+        var e = [];
+        var f = [];
+        var p = [];
+        var getMonthBigTable = [];
+        _.forEach(dataWithMay, function (item) {
+          e = { dzo2: item.dzo };
+          f = { factMonth: Math.ceil(item[productionFact]) };
+          p = { planMonth: Math.ceil(item[productionPlan]) };
+          oil_fact = { oil_fact: item.oil_fact };
+          oil_plan = { oil_plan: item.oil_plan };
+          getMonthBigTable.push([e, f, p, oil_fact, oil_plan]);
+        });
+
+        var factMonth2 = _.reduce(
+          factMonth,
+          function (memo, item) {
+            return memo + item.productionFact;
+          },
+          0
+        );
+
+        var planMonth = _.reduce(
+          planMonth,
+          function (memo, item) {
+            return memo + item[productionPlan];
+          },
+          0
+        );
+
+        var today = new Date().getDate();
+
+        //dataFromDay
+        var timestampToday = new Date(
+          //this.monthes2[this.month] +
+          this.monthes2["5"] + today + " " + this.year + " 06:00:00 GMT+0600"
+        ).getTime();
+        var dataDay = [];
+        dataDay = _.filter(data, _.iteratee({ __time: timestampToday }));
+
+        var dzoDay = [];
+        var factDay = [];
+        var planDay = [];
+        var getDayTable = [];
+        var inj_wells_idle = [];
+        var inj_wells_work = [];
+        var prod_wells_work = [];
+        var prod_wells_idle = [];
+        var starts_krs = [];
+        var starts_prs = [];
+        var starts_drl = [];
+        _.forEach(dataDay, function (item) {
+          e = { dzoDay: item.dzo };
+          f = { factDay: Math.ceil(item[productionFact]) };
+          p = { planDay: Math.ceil(item[productionPlan]) };
+          dzoDay.push(e);
+          factDay.push(f);
+          planDay.push(p);
+          inj_wells_idle.push({ inj_wells_idle: item.inj_wells_idle });
+          inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
+          prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
+          prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });
+          starts_krs.push({ starts_krs: item.starts_krs });
+          starts_prs.push({ starts_prs: item.starts_prs });
+          starts_drl.push({ starts_drl: item.starts_drl });
+        });
+
+        var starts_krs = _.reduce(
+          starts_krs,
+          function (memo, item) {
+            return memo + item.starts_krs;
+          },
+          0
+        );
+
+        var starts_prs = _.reduce(
+          starts_prs,
+          function (memo, item) {
+            return memo + item.starts_prs;
+          },
+          0
+        );
+
+        var starts_drl = _.reduce(
+          starts_drl,
+          function (memo, item) {
+            return memo + item.starts_drl;
+          },
+          0
+        );
+
+        var inj_wells_idle = _.reduce(
+          inj_wells_idle,
+          function (memo, item) {
+            return memo + item.inj_wells_idle;
+          },
+          0
+        );
+
+        var inj_wells_work = _.reduce(
+          inj_wells_work,
+          function (memo, item) {
+            return memo + item.inj_wells_work;
+          },
+          0
+        );
+
+        var prod_wells_work = _.reduce(
+          prod_wells_work,
+          function (memo, item) {
+            return memo + item.prod_wells_work;
+          },
+          0
+        );
+
+        var prod_wells_idle = _.reduce(
+          prod_wells_idle,
+          function (memo, item) {
+            return memo + item.prod_wells_idle;
+          },
+          0
+        );
+
+        console.log(selectedDMY);
+
+        if (selectedDMY == "undefined") {
+          var bigTable = _.zipWith(
+            factYear,
+            dzo,
+            dzo2,
+            planYear,
+            planMonth,
+            factMonth,
+            dzoDay,
+            factDay,
+            planDay,
+            (
+              factYear,
+              dzo,
+              dzo2,
+              planYear,
+              planMonth,
+              factMonth,
+              dzoDay,
+              factDay,
+              planDay
+            ) =>
+              _.defaults(
+                factYear,
+                dzo,
+                dzo2,
+                planYear,
+                planMonth,
+                factMonth,
+                dzoDay,
+                factDay,
+                planDay
+              )
+          );
+
+          this.bigTable = bigTable;
+
+          var wells = [];
+          wells = _.zipWith(
+            [{ inj_wells_idle: inj_wells_idle }],
+            [{ inj_wells_work: inj_wells_work }],
+            (inj_wells_idle, inj_wells_work) =>
+              _.defaults(inj_wells_idle, inj_wells_work)
+          );
+          this.wells = wells;
+
+          wells2 = _.zipWith(
+            [{ prod_wells_work: prod_wells_work }],
+            [{ prod_wells_idle: prod_wells_idle }],
+
+            (prod_wells_work, prod_wells_idle) =>
+              _.defaults(prod_wells_work, prod_wells_idle)
+          );
+
+          this.wells2 = wells2;
+
+          var starts = _.zipWith(
+            [{ starts_krs: starts_krs }],
+            [{ starts_prs: starts_prs }],
+            [{ starts_drl: starts_drl }],
+
+            (prod_wells_work, prod_wells_idle) =>
+              _.defaults(prod_wells_work, prod_wells_idle)
+          );
+
+          this.starts = starts;
+
+          productionForChart = { data: productionForChart };
+          this.productionForChart = productionForChart;
+        }
       });
     },
 
-    /*getSelectedDay() {
-      localStorage.setItem("selected-day", this.selectedDay);
-      var selectedDay = localStorage.getItem("selected-day");
-      this.selectedDay = selectedDay;
-      this.selectedColour = "background:red!important;";
-    },
+    showTable(showTableItem) {
+      var showTableOn =
+        " border: none;" +
+        "color: white;" +
+        "background: url(../img/level1/button-on.png) no-repeat;" +
+        "background-size: 16% auto;" +
+        "background-position: 80% 50%;" +
+        "outline: none;";
 
-        getSelectedMonth() {
-      localStorage.setItem("selected-day", this.selectedDay);
-      var selectedDay = localStorage.getItem("selected-month");
-      this.selectedDay = selectedDay;
-      this.selectedColour = "background:red!important;";
-    },*/
+      if (showTableItem == "No") {
+        this.showTable2 = "Yes";
+        this.showTableOn = showTableOn;
+        this.displayTable = "On";
+        if (this.selectedDMY == undefined) {
+          this.displayTable = "display:none;";
+        } else {
+          this.displayTable = "display:block;";
+        }
+
+        this.displayChart = "display:none;";
+        this.displayHeadTables = "display: block";
+        this.ChartTable = "График";
+
+        //alert("rabotaet");
+      } else if (showTableItem == "Yes") {
+        this.showTable2 = "No";
+        this.showTableOn = "";
+        this.displayTable = "display:none;";
+        this.displayChart = "display:block;";
+        this.displayHeadTables = "display: none";
+        this.ChartTable = "Таблица";
+
+        //alert(" ne rabotaet");
+      }
+    },
+    onStorageUpdate(event) {
+      if (event.key === "company") {
+        this.company = event.newValue;
+      }
+    },
+  },
+  created: function () {
+    EventBus.$on("messageSend", this.displayMessage);
   },
 
   computed: {
@@ -1256,6 +2117,16 @@ export default {
         this.day = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
       }
     },
+  },
+  async mounted() {
+    const data = await localStorage.getItem("company");
+    this.company = data;
+    var productionPlan = localStorage.getItem("production-plan");
+    var productionFact = localStorage.getItem("production-fact");
+if (this.company=='All'){this.getProduction("oil_plan", "oil_fact", "Добыча нефти");}
+    this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
+    localStorage.setItem("selectedDMY", "undefined");
+    
   },
 };
 </script>

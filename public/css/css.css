@@ -786,6 +786,8 @@ li.circle-2:hover {
     outline: none;
 }
 
+
+/*
 .right-table-button:focus:not(:active) {
     border: none;
     color: white;
@@ -804,7 +806,7 @@ li.circle-2:hover {
     background-size: 16% auto;
     background-position: 80% 50%;
     outline: none;
-}
+}*/
 
 .circle-table {
     background: #0d092a;
@@ -928,7 +930,7 @@ ul.dropdown-child {
     /* height: 400px;*/
     color: white;
     overflow: hidden;
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
 }
 
 .tables-name {
