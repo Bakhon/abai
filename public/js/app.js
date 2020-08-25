@@ -3201,8 +3201,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3777,6 +3775,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 //import VisualCenterMenu from'../components/VisualCenterMenu'
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3785,9 +3786,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       productionForChart: "",
       tables: "",
-      showTable2: "No",
-      displayTable: "display: none;",
-      displayChart: "",
+      showTable2: "Yes",
+      displayTable: "display: block;",
+      displayChart: "display: none;",
+      showTableItem: "Yes",
       showTableOn: "",
       buttonHover1: "",
       buttonHover2: "",
@@ -3799,7 +3801,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       currentMonth: [],
-      ChartTable: "Таблица",
+      ChartTable: "График",
       date2: new Date().toLocaleString("ru", {
         /*year: 'numeric',
         month: 'long',
@@ -3826,18 +3828,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       wells: [""],
       wells2: [""],
       bigTable: [""],
-      displayHeadTables: "display: none",
+      displayHeadTables: " ",
       starts: [""],
       test: [""],
       series: ["", ""],
       display: "none",
-      company: "",
-      statusMessage: "Init"
+      company: "all" //statusMessage: "Init",
+
     };
   },
   methods: {
     displayMessage: function displayMessage(message) {
-      this.statusMessage = message;
+      this.company = message;
     },
     getCompany: function getCompany() {},
     getColor: function getColor(status) {
@@ -4021,8 +4023,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }
 
-      if (this.selectedDMY != undefined) {
-        this.displayHeadTables = "display:none;";
+      if (this.selectedDMY != undefined) {//  this.displayHeadTables = "display:none;";
       }
 
       localStorage.setItem("selectedDMY", this.selectedDMY);
@@ -4036,9 +4037,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var productionPlan = localStorage.getItem("production-plan");
       var productionFact = localStorage.getItem("production-fact");
       var selectedDMY = localStorage.getItem("selectedDMY");
-      this.circleMenu = item3; //console.log(selectedDMY);
-
-      var company = localStorage.getItem("company");
+      this.circleMenu = item3;
+      var company = this.company;
 
       if (company === null) {
         alert("Сначала выберите название компании");
@@ -4868,22 +4868,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         var dataDay = [];
         var dataYear = [];
+        var dzo = [];
         dataDay = data;
         dataYear = data2;
         var factYear = [];
         var planYear = [];
-        var period = [];
-        var dzo = [];
-        period = _.filter(data2, _.iteratee({
+        var dataMonth = [];
+        var dzoYear = [];
+        dataMonth = _.filter(data2, _.iteratee({
           period: "2020 (с начала года)"
         }));
+        dataMonth = _.orderBy(dataMonth, ["dzo"], ["desc"]);
 
-        _.forEach(period, function (item) {
+        _.forEach(dataMonth, function (item) {
           var e = [];
           e = {
-            dzo: item.dzo
+            dzoYear: item.dzo
           };
-          dzo.push(e);
+          dzoYear.push(e);
           var f = [];
           f = {
             factYear: Math.ceil(item[productionFact])
@@ -4896,6 +4898,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           planYear.push(p);
         });
 
+        console.log(dzoYear);
         var currentMonth = 5;
         _this.currentMonth = _this.monthes2[currentMonth];
         var timestampMonthStart = new Date( //this.monthes2[this.month+1] + //change when data upgrade
@@ -4907,12 +4910,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         var dataWithMay = new Array();
         dataWithMay = _.filter(data, function (item) {
           return _.every([_.inRange(item.__time, timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
-        }); // productionForChart=[];
+        }); //Summ plan and fact from dzo
+
+        var productionPlanAndFactMonth = _(dataWithMay).groupBy("dzo").map(function (dzo, id) {
+          return {
+            dzo: id,
+            //__time,
+            productionFactForChart: _.round(_.sumBy(dzo, productionFact), 0),
+            productionPlanForChart: _.round(_.sumBy(dzo, productionPlan), 0)
+          };
+        }).value();
+
+        productionPlanAndFactMonth = _.orderBy(productionPlanAndFactMonth, ["dzo"], ["desc"]);
+        /* productionPlanAndFactMonth=productionPlanAndFactMonth  
+        .sortBy("productionPlan")         
+        .value();*/
 
         var productionForChart = _(dataWithMay).groupBy("__time").map(function (__time, id) {
           return {
-            productionFactForChart: _.sumBy(__time, productionFact),
-            productionPlanForChart: _.sumBy(__time, productionPlan)
+            productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
+            productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0)
           };
         }).value();
 
@@ -4961,6 +4978,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         dataDay = _.filter(data, _.iteratee({
           __time: timestampToday
         }));
+        dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
         var dzoDay = [];
         var factDay = [];
         var planDay = [];
@@ -5035,13 +5053,32 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         var prod_wells_idle = _.reduce(prod_wells_idle, function (memo, item) {
           return memo + item.prod_wells_idle;
-        }, 0);
+        }, 0); //factMonth = ;
+        //planMonth = ;
 
-        console.log(selectedDMY);
 
-        if (selectedDMY == "undefined") {
-          var bigTable = _.zipWith(factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay, function (factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay) {
-            return _.defaults(factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay);
+        var dzoMonth = [];
+        var factMonth = [];
+        var planMonth = [];
+
+        _.forEach(productionPlanAndFactMonth, function (item) {
+          factMonth.push({
+            factMonth: item.productionFactForChart
+          });
+          planMonth.push({
+            planMonth: item.productionPlanForChart
+          });
+          dzoMonth.push({
+            dzoMonth: item.dzo
+          });
+        }); //console.log(factYear);
+
+
+        console.log(dzoYear);
+
+        if (_this.company == "all") {
+          var bigTable = _.zipWith(dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay, function (dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay) {
+            return _.defaults(dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay);
           });
 
           _this.bigTable = bigTable;
@@ -5078,33 +5115,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             data: productionForChart
           };
           _this.productionForChart = productionForChart;
+        } // if (this.company != "all") { this.displayHeadTables = "display: none";}
+
+
+        if (_this.company == "all") {
+          _this.displayTable = "display:none;";
+          _this.displayHeadTables = "display: block";
+        } else {
+          console.log(_this.showTableItem);
+
+          if (_this.showTableItem == "Yes") {
+            _this.displayTable = "display:block;";
+          } else {
+            _this.displayTable = "display:none;";
+          }
+
+          _this.displayHeadTables = "display: none";
         }
       });
     },
     showTable: function showTable(showTableItem) {
       var showTableOn = " border: none;" + "color: white;" + "background: url(../img/level1/button-on.png) no-repeat;" + "background-size: 16% auto;" + "background-position: 80% 50%;" + "outline: none;";
 
-      if (showTableItem == "No") {
-        this.showTable2 = "Yes";
-        this.showTableOn = showTableOn;
-        this.displayTable = "On";
+      if (showTableItem == "Yes") {
+        this.showTable2 = "No";
 
-        if (this.selectedDMY == undefined) {
+        if (this.company == "all") {
           this.displayTable = "display:none;";
+          this.displayHeadTables = "display: none";
         } else {
-          this.displayTable = "display:block;";
+          this.displayTable = "display:none;";
+          this.displayHeadTables = "display: none";
         }
 
-        this.displayChart = "display:none;";
-        this.displayHeadTables = "display: block";
-        this.ChartTable = "График"; //alert("rabotaet");
-      } else if (showTableItem == "Yes") {
-        this.showTable2 = "No";
-        this.showTableOn = "";
-        this.displayTable = "display:none;";
         this.displayChart = "display:block;";
-        this.displayHeadTables = "display: none";
-        this.ChartTable = "Таблица"; //alert(" ne rabotaet");
+        this.ChartTable = "Таблица"; //alert("rabotaet");
+
+        this.showTableOn = showTableOn; //colour button
+      } else if (showTableItem == "No") {
+        this.showTable2 = "Yes"; // this.displayTable = "On";
+        // this.displayTable = "display:block;";
+
+        this.displayChart = "display:none;";
+
+        if (this.company == "all") {
+          this.displayTable = "display:none;";
+          this.displayHeadTables = "display: block";
+        } else {
+          this.displayTable = "display:block;";
+          this.displayHeadTables = "display: none";
+        }
+
+        this.ChartTable = "График";
+        this.showTableOn = ""; //colour button
+        //alert(" ne rabotaet");
       }
     },
     onStorageUpdate: function onStorageUpdate(event) {
@@ -5130,29 +5194,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return _asyncToGenerator(
     /*#__PURE__*/
     _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var data, productionPlan, productionFact;
+      var productionPlan, productionFact;
       return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _context.next = 2;
-              return localStorage.getItem("company");
-
-            case 2:
-              data = _context.sent;
-              _this2.company = data;
               productionPlan = localStorage.getItem("production-plan");
               productionFact = localStorage.getItem("production-fact");
 
-              if (_this2.company == 'All') {
+              if (_this2.company == "all") {
                 _this2.getProduction("oil_plan", "oil_fact", "Добыча нефти");
-              }
+              } // this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
 
-              _this2.getProduction("oil_plan", "oil_fact", "Добыча нефти");
 
               localStorage.setItem("selectedDMY", "undefined");
 
-            case 9:
+            case 4:
             case "end":
               return _context.stop();
           }
@@ -76702,19 +76759,7 @@ var render = function() {
     _vm._v(" "),
     _vm._m(11),
     _vm._v(" "),
-    _vm._m(12),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        on: {
-          click: function($event) {
-            return _vm.sendMessage()
-          }
-        }
-      },
-      [_vm._v("Emit event to Vue component 2")]
-    )
+    _vm._m(12)
   ])
 }
 var staticRenderFns = [
@@ -77117,9 +77162,7 @@ var render = function() {
                           _vm._s(_vm.date3) +
                           "\n                    "
                       ),
-                      _c("p", [
-                        _vm._v("Listener event: " + _vm._s(_vm.statusMessage))
-                      ])
+                      _c("p", [_vm._v(_vm._s(_vm.company))])
                     ])
                   ])
                 ])
@@ -77569,9 +77612,7 @@ var render = function() {
                               [
                                 _vm._v(
                                   "\n                        " +
-                                    _vm._s(item.dzo) +
-                                    " " +
-                                    _vm._s(item.dzo2) +
+                                    _vm._s(item.dzoDay) +
                                     "\n                        "
                                 )
                               ]
@@ -77581,7 +77622,13 @@ var render = function() {
                               _vm._v(_vm._s(item.planYear))
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(item.planMonth) +
+                                  "\n                      "
+                              )
+                            ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
                               _vm._v(_vm._s(item.planDay))
@@ -77602,7 +77649,7 @@ var render = function() {
                                         style:
                                           "background: " +
                                           _vm.getColor(
-                                            item.planDay - item.factDay
+                                            item.factDay - item.planDay
                                           )
                                       })
                                     : _vm._e()
@@ -77612,7 +77659,7 @@ var render = function() {
                                   ? _c("div", [
                                       _c("div", [
                                         _vm._v(
-                                          _vm._s(item.planDay - item.factDay)
+                                          _vm._s(item.factDay - item.planDay)
                                         )
                                       ])
                                     ])
@@ -77646,7 +77693,7 @@ var render = function() {
                                       style:
                                         "background: " +
                                         _vm.getColor(
-                                          item.planMonth - item.factMonth
+                                          item.factMonth - item.planMonth
                                         )
                                     })
                                   : _vm._e(),
@@ -77656,7 +77703,7 @@ var render = function() {
                                       _vm._v(
                                         "\n                          " +
                                           _vm._s(
-                                            item.planMonth - item.factMonth
+                                            item.factMonth - item.planMonth
                                           ) +
                                           "\n                        "
                                       )
@@ -77686,7 +77733,7 @@ var render = function() {
                                       style:
                                         "background: " +
                                         _vm.getColor(
-                                          item.planYear - item.factYear
+                                          item.factYear - item.planYear
                                         )
                                     })
                                   : _vm._e(),
@@ -77696,7 +77743,7 @@ var render = function() {
                                       _vm._v(
                                         "\n                          " +
                                           _vm._s(
-                                            item.planYear - item.factYear
+                                            item.factYear - item.planYear
                                           ) +
                                           "\n                        "
                                       )
@@ -77901,8 +77948,8 @@ var render = function() {
                                       style:
                                         "background: " +
                                         _vm.getColor(
-                                          item.productionPlanForMonth -
-                                            item.productionFactForMonth
+                                          item.productionFactForMonth -
+                                            item.productionPlanForMonth
                                         )
                                     })
                                   : _vm._e(),
@@ -77912,8 +77959,8 @@ var render = function() {
                                       _vm._v(
                                         "\n                          " +
                                           _vm._s(
-                                            item.productionPlanForMonth -
-                                              item.productionFactForMonth
+                                            item.productionFactForMonth -
+                                              item.productionPlanForMonth
                                           ) +
                                           "\n                        "
                                       )
@@ -77943,7 +77990,7 @@ var render = function() {
                                       style:
                                         "background: " +
                                         _vm.getColor(
-                                          item.planYear - item.factYear
+                                          item.factYear - item.planYear
                                         )
                                     })
                                   : _vm._e(),
@@ -77953,7 +78000,7 @@ var render = function() {
                                       _vm._v(
                                         "\n                          " +
                                           _vm._s(
-                                            item.planYear - item.factYear
+                                            item.factYear - item.planYear
                                           ) +
                                           "\n                        "
                                       )

@@ -632,6 +632,7 @@ li.circle-2:hover {
     background-color: #20274e !important;
     float: left;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 .main {

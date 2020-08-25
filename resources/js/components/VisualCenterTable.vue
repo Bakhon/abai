@@ -13,7 +13,7 @@
                     <div class="time">{{ date2 }}</div>
                     <div class="date">
                       {{ date3 }}
-                      <p>Listener event: {{ statusMessage }}</p>
+                      <p>{{ company }}</p>
                     </div>
                   </div>
                   <!-- <div class="right-arrow"></div>-->
@@ -219,11 +219,14 @@
                         </div>-->
                         <div class="cell-number table-border"></div>
                         <div class="cell-name table-border">
-                          {{ item.dzo }} {{ item.dzo2 }}
+                          {{ item.dzoDay }}
+                          <!--  {{ item.dzo }}{{ item.dzoMonth }}  {{item.dzoYear}}-->
                           <!--{{item.time}}-->
                         </div>
                         <div class="cell table-border">{{ item.planYear }}</div>
-                        <div class="cell table-border"></div>
+                        <div class="cell table-border">
+                          {{ item.planMonth }}
+                        </div>
                         <div class="cell table-border">{{ item.planDay }}</div>
                         <div class="cell table-border">{{ item.factDay }}</div>
                         <div class="cell table-border colour">
@@ -232,12 +235,12 @@
                               v-if="item.factDay"
                               class="circle-table"
                               :style="`background: ${getColor(
-                                item.planDay - item.factDay
+                                item.factDay - item.planDay
                               )}`"
                             ></div>
                           </div>
                           <div v-if="item.factDay">
-                            <div>{{ item.planDay - item.factDay }}</div>
+                            <div>{{ item.factDay - item.planDay }}</div>
                           </div>
                         </div>
                         <div class="cell table-border">
@@ -251,12 +254,12 @@
                             v-if="item.planMonth"
                             class="circle-table"
                             :style="`background: ${getColor(
-                              item.planMonth - item.factMonth
+                              item.factMonth - item.planMonth
                             )}`"
                           ></div>
                           <!--3cell-->
                           <div v-if="item.planMonth">
-                            {{ item.planMonth - item.factMonth }}
+                            {{ item.factMonth - item.planMonth }}
                           </div>
                         </div>
                         <div class="cell table-border">{{ item.planYear }}</div>
@@ -266,11 +269,11 @@
                             v-if="item.planYear"
                             class="circle-table"
                             :style="`background: ${getColor(
-                              item.planYear - item.factYear
+                              item.factYear - item.planYear
                             )}`"
                           ></div>
                           <div v-if="item.planYear">
-                            {{ item.planYear - item.factYear }}
+                            {{ item.factYear - item.planYear }}
                           </div>
                         </div>
                       </div>
@@ -350,15 +353,15 @@
                             v-if="item.productionPlanForMonth"
                             class="circle-table"
                             :style="`background: ${getColor(
-                              item.productionPlanForMonth -
-                                item.productionFactForMonth
+                              item.productionFactForMonth -
+                                item.productionPlanForMonth
                             )}`"
                           ></div>
                           <!--3cell-->
                           <div v-if="item.productionPlanForMonth">
                             {{
-                              item.productionPlanForMonth -
-                              item.productionFactForMonth
+                              item.productionFactForMonth -
+                              item.productionPlanForMonth
                             }}
                           </div>
                         </div>
@@ -369,11 +372,11 @@
                             v-if="item.planYear"
                             class="circle-table"
                             :style="`background: ${getColor(
-                              item.planYear - item.factYear
+                              item.factYear - item.planYear
                             )}`"
                           ></div>
                           <div v-if="item.planYear">
-                            {{ item.planYear - item.factYear }}
+                            {{ item.factYear - item.planYear }}
                           </div>
                         </div>
                       </div>
@@ -473,9 +476,10 @@ export default {
     return {
       productionForChart: "",
       tables: "",
-      showTable2: "No",
-      displayTable: "display: none;",
-      displayChart: "",
+      showTable2: "Yes",
+      displayTable: "display: block;",
+      displayChart: "display: none;",
+      showTableItem: "Yes",
       showTableOn: "",
       buttonHover1: "",
       buttonHover2: "",
@@ -488,7 +492,7 @@ export default {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       currentMonth: [],
-      ChartTable: "Таблица",
+      ChartTable: "График",
       date2: new Date().toLocaleString("ru", {
         /*year: 'numeric',
 	month: 'long',
@@ -558,18 +562,18 @@ export default {
       wells: [""],
       wells2: [""],
       bigTable: [""],
-      displayHeadTables: "display: none",
+      displayHeadTables: " ",
       starts: [""],
       test: [""],
       series: ["", ""],
       display: "none",
-      company: "",
-      statusMessage: "Init",
+      company: "all",
+      //statusMessage: "Init",
     };
   },
   methods: {
     displayMessage: function (message) {
-      this.statusMessage = message;
+      this.company = message;
     },
     getCompany() {},
 
@@ -741,7 +745,7 @@ export default {
         }
       }
       if (this.selectedDMY != undefined) {
-        this.displayHeadTables = "display:none;";
+        //  this.displayHeadTables = "display:none;";
       }
 
       localStorage.setItem("selectedDMY", this.selectedDMY);
@@ -760,9 +764,8 @@ export default {
 
       this.circleMenu = item3;
 
-      //console.log(selectedDMY);
+      var company = this.company;
 
-      let company = localStorage.getItem("company");
       if (company === null) {
         alert("Сначала выберите название компании");
       }
@@ -1806,20 +1809,24 @@ export default {
         //year
         var dataDay = [];
         var dataYear = [];
+        var dzo = [];
         dataDay = data;
         dataYear = data2;
         var factYear = [];
         var planYear = [];
-        var period = [];
-        var dzo = [];
-        period = _.filter(
+        var dataMonth = [];
+        var dzoYear = [];
+        dataMonth = _.filter(
           data2,
           _.iteratee({ period: "2020 (с начала года)" })
         );
-        _.forEach(period, function (item) {
+
+        dataMonth = _.orderBy(dataMonth, ["dzo"], ["desc"]);
+
+        _.forEach(dataMonth, function (item) {
           var e = [];
-          e = { dzo: item.dzo };
-          dzo.push(e);
+          e = { dzoYear: item.dzo };
+          dzoYear.push(e);
 
           var f = [];
           f = { factYear: Math.ceil(item[productionFact]) };
@@ -1828,6 +1835,7 @@ export default {
           p = { planYear: Math.ceil(item[productionPlan]) };
           planYear.push(p);
         });
+        console.log(dzoYear);
 
         var currentMonth = 5;
         this.currentMonth = this.monthes2[currentMonth];
@@ -1853,12 +1861,32 @@ export default {
           ]);
         });
 
-        // productionForChart=[];
+        //Summ plan and fact from dzo
+        var productionPlanAndFactMonth = _(dataWithMay)
+          .groupBy("dzo")
+          .map((dzo, id) => ({
+            dzo: id,
+            //__time,
+            productionFactForChart: _.round(_.sumBy(dzo, productionFact), 0),
+            productionPlanForChart: _.round(_.sumBy(dzo, productionPlan), 0),
+          }))
+          .value();
+
+        productionPlanAndFactMonth = _.orderBy(
+          productionPlanAndFactMonth,
+          ["dzo"],
+          ["desc"]
+        );
+
+        /* productionPlanAndFactMonth=productionPlanAndFactMonth  
+    .sortBy("productionPlan")         
+    .value();*/
+
         var productionForChart = _(dataWithMay)
           .groupBy("__time")
           .map((__time, id) => ({
-            productionFactForChart: _.sumBy(__time, productionFact),
-            productionPlanForChart: _.sumBy(__time, productionPlan),
+            productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
+            productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
           }))
           .value();
 
@@ -1906,6 +1934,7 @@ export default {
         ).getTime();
         var dataDay = [];
         dataDay = _.filter(data, _.iteratee({ __time: timestampToday }));
+        dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
 
         var dzoDay = [];
         var factDay = [];
@@ -1990,10 +2019,25 @@ export default {
           0
         );
 
-        console.log(selectedDMY);
+        //factMonth = ;
+        //planMonth = ;
+        var dzoMonth = [];
+        var factMonth = [];
+        var planMonth = [];
 
-        if (selectedDMY == "undefined") {
+        _.forEach(productionPlanAndFactMonth, function (item) {
+          factMonth.push({ factMonth: item.productionFactForChart });
+          planMonth.push({ planMonth: item.productionPlanForChart });
+          dzoMonth.push({ dzoMonth: item.dzo });
+        });
+
+        //console.log(factYear);
+
+        console.log(dzoYear);
+        if (this.company == "all") {
           var bigTable = _.zipWith(
+            dzoYear,
+            dzoMonth,
             factYear,
             dzo,
             dzo2,
@@ -2004,6 +2048,8 @@ export default {
             factDay,
             planDay,
             (
+              dzoYear,
+              dzoMonth,
               factYear,
               dzo,
               dzo2,
@@ -2015,6 +2061,8 @@ export default {
               planDay
             ) =>
               _.defaults(
+                dzoYear,
+                dzoMonth,
                 factYear,
                 dzo,
                 dzo2,
@@ -2062,6 +2110,22 @@ export default {
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
         }
+
+        // if (this.company != "all") { this.displayHeadTables = "display: none";}
+
+        if (this.company == "all") {
+          this.displayTable = "display:none;";
+          this.displayHeadTables = "display: block";
+        } else {
+          console.log(this.showTableItem);
+          if (this.showTableItem == "Yes") {
+            this.displayTable = "display:block;";
+          } else {
+            this.displayTable = "display:none;";
+          }
+
+          this.displayHeadTables = "display: none";
+        }
       });
     },
 
@@ -2074,28 +2138,40 @@ export default {
         "background-position: 80% 50%;" +
         "outline: none;";
 
-      if (showTableItem == "No") {
-        this.showTable2 = "Yes";
-        this.showTableOn = showTableOn;
-        this.displayTable = "On";
-        if (this.selectedDMY == undefined) {
+      if (showTableItem == "Yes") {
+        this.showTable2 = "No";
+
+        if (this.company == "all") {
           this.displayTable = "display:none;";
+          this.displayHeadTables = "display: none";
         } else {
-          this.displayTable = "display:block;";
+          this.displayTable = "display:none;";
+          this.displayHeadTables = "display: none";
         }
 
-        this.displayChart = "display:none;";
-        this.displayHeadTables = "display: block";
-        this.ChartTable = "График";
+        this.displayChart = "display:block;";
+
+        this.ChartTable = "Таблица";
 
         //alert("rabotaet");
-      } else if (showTableItem == "Yes") {
-        this.showTable2 = "No";
-        this.showTableOn = "";
-        this.displayTable = "display:none;";
-        this.displayChart = "display:block;";
-        this.displayHeadTables = "display: none";
-        this.ChartTable = "Таблица";
+        this.showTableOn = showTableOn; //colour button
+      } else if (showTableItem == "No") {
+        this.showTable2 = "Yes";
+
+        // this.displayTable = "On";
+        // this.displayTable = "display:block;";
+        this.displayChart = "display:none;";
+
+        if (this.company == "all") {
+          this.displayTable = "display:none;";
+          this.displayHeadTables = "display: block";
+        } else {
+          this.displayTable = "display:block;";
+          this.displayHeadTables = "display: none";
+        }
+
+        this.ChartTable = "График";
+        this.showTableOn = ""; //colour button
 
         //alert(" ne rabotaet");
       }
@@ -2119,14 +2195,13 @@ export default {
     },
   },
   async mounted() {
-    const data = await localStorage.getItem("company");
-    this.company = data;
     var productionPlan = localStorage.getItem("production-plan");
     var productionFact = localStorage.getItem("production-fact");
-if (this.company=='All'){this.getProduction("oil_plan", "oil_fact", "Добыча нефти");}
-    this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
+    if (this.company == "all") {
+      this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
+    }
+    // this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
     localStorage.setItem("selectedDMY", "undefined");
-    
   },
 };
 </script>

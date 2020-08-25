@@ -207,8 +207,6 @@
         </div>
       </a>
     </div>
-
-    <button @click="sendMessage()">Emit event to Vue component 2</button>
   </div>
   <!-- sidebar-container END -->
 </template>
