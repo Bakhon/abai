@@ -220,4 +220,9 @@ class DruidController extends Controller
     {
 	   return view('maps.maps');
     }
+    public function map()
+    {
+        return view('production.map');
+    }
+
 }
