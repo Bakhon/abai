@@ -13,7 +13,6 @@ window.Vue = require('vue');
 window.Jquery = require('jquery');
 
 Vue.use(VueAxios, axios);
-import { Bar } from 'vue-chartjs';
 
 
 /**
@@ -47,6 +46,9 @@ Vue.component('welcome-chart-donut-right3', require('./components/WelcomeChartDo
 Vue.component('welcome-chart-donut-right4', require('./components/WelcomeChartDonutRight4.vue').default);
 Vue.component('welcome-chart-bar-bottom1', require('./components/WelcomeChartBarBottom1.vue').default);
 Vue.component('welcome-chart-bar-bottom2', require('./components/WelcomeChartBarBottom2.vue').default);
+Vue.component('economicpivot', require('./components/Economic/Pivot.vue').default);
+Vue.component('economic-component', require('./components/Economic/main.vue').default);
+Vue.component('line-component', require('./components/Economic/line.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

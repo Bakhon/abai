@@ -24,79 +24,125 @@ class DruidController extends Controller
 
 
     public function getEconomicData(Request $request){
+
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
 
-        $builder = $client->query('economic_2020v2', Granularity::DAY);
-        $builder2 = $client->query('economic_2020v2', Granularity::DAY);
-        $builder3 = $client->query('economic_2020v2', Granularity::DAY);
+        $builder = $client->query('economic_2020v4', Granularity::YEAR);
+        $builder2 = $client->query('economic_2020v4', Granularity::MONTH);
+        $builder3 = $client->query('economic_2020v4', Granularity::DAY);
+        $builder4 = $client->query('economic_2020v4', Granularity::DAY);
+        $builder5 = $client->query('economic_2020v4', Granularity::YEAR);
 
-        $builder
-            ->interval('2020-01-01T00:00:00+00:00/2020-05-31T00:33:09+00:00')
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat('yyyy-MM-dd');
-            })
+        if ($request->has('org')) {
+            $builder
+                ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
+                ->select('profitability')
+                ->sum("Operating_profit")
+                ->where('org_id2', '=', $request->org)
+                ->where('profitability', '=', 'profitless_cat_1');
+
+            $builder2
+                ->interval('2020-06-01T00:00:00+00:00/2028-08-31T00:00:00+00:00')
+                ->select('profitability')
+                ->sum("Operating_profit")
+                ->where('org_id2', '=', $request->org)
+                ->where('profitability', '=', 'profitless_cat_1');
+
+            $builder3
+                ->interval('2020-06-01T00:00:00+00:00/2020-07-01T00:00:00+00:00')
+                ->count("*")
+                ->where('org_id2', '=', $request->org)
+                ->where('profitability', '=', 'profitless_cat_1');
+
+            $builder4
+                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+                ->count("*")
+                ->where('org_id2', '=', $request->org)
+                ->where('profitability', '=', 'profitless_cat_1');
+
+            $builder5
+                ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
+                ->longSum("prs1")
+                ->count("*")
+                ->where('profitability', '=', 'profitless_cat_1')
+                ->where('org_id2', '=', $request->org)
+                ->divide('prs', ['prs1', '*']);
+        }else{
+            $builder
+            ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
             ->select('profitability')
-            ->select('price_export_1')
-            ->select('org_id2')
-            ->count('uwi')
-            ->where('org_id2', '=', $request->org)
-            ->where('profitability', '=', 'profitable');
-
-
-        $builder2
-            ->interval('2020-01-01T00:00:00+00:00/2020-05-31T00:33:09+00:00')
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat('yyyy-MM-dd');
-            })
-            ->select('profitability')
-            ->select('price_export_1')
-            ->select('org_id2')
-            ->count('uwi')
-            ->where('org_id2', '=', $request->org)
+            ->sum("Operating_profit")
             ->where('profitability', '=', 'profitless_cat_1');
 
+            $builder2
+                ->interval('2020-06-01T00:00:00+00:00/2028-08-31T00:00:00+00:00')
+                ->select('profitability')
+                ->sum("Operating_profit")
+                ->where('profitability', '=', 'profitless_cat_1');
 
-        $builder3
-            ->interval('2020-01-01T00:00:00+00:00/2020-05-31T00:33:09+00:00')
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat('yyyy-MM-dd');
-            })
-            ->select('profitability')
-            ->select('price_export_1')
-            ->select('org_id2')
-            ->count('uwi')
-            ->where('org_id2', '=', $request->org)
-            ->where('profitability', '=', 'profitless_cat_2');
+            $builder3
+                ->interval('2020-06-01T00:00:00+00:00/2020-07-01T00:00:00+00:00')
+                ->count("*")
+                ->where('profitability', '=', 'profitless_cat_1');
+
+            $builder4
+                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+                ->count("*")
+                ->where('profitability', '=', 'profitless_cat_1');
+
+            $builder5
+                ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
+                ->sum("prs1")
+                ->where('profitability', '=', 'profitless_cat_1');
+        }
+
 
         $result = $builder->groupBy();
         $result2 = $builder2->groupBy();
         $result3 = $builder3->groupBy();
+        $result4 = $builder4->groupBy();
+        $result5 = $builder5->groupBy();
 
         $array = $result->data();
         $array2 = $result2->data();
         $array3 = $result3->data();
+        $array4 = $result4->data();
+        $array5 = $result5->data();
 
-        $data['dt'] = [];
-        $data['profitable'] = [];
-        $data['profitless_cat_1'] = [];
-        $data['profitless_cat_2'] = [];
-        $data['price'] = [];
 
-        foreach($array as $item){
-            array_push($data['dt'], $item['dt']);
-            array_push($data['profitable'], $item['uwi']);
-            array_push($data['price'], $item['price_export_1']);
-        }
-
-        foreach($array2 as $item){
-            array_push($data['profitless_cat_1'], $item['uwi']);
-        }
+        $data['count'] = [];
+        $data['countProfitlessCat1PrevMonth'] = [];
+        $data['countProfitlessCat1Month'] = [];
 
         foreach($array3 as $item){
-            array_push($data['profitless_cat_2'], $item['uwi']);
+            array_push($data['countProfitlessCat1PrevMonth'], $item['*']);
+        }
+        foreach($array4 as $item){
+            array_push($data['countProfitlessCat1Month'], $item['*']);
         }
 
-        return response()->json($data);
+        $averageProfitlessCat1Month = array_sum($data['countProfitlessCat1Month'])/count($data['countProfitlessCat1Month']);
+        $averageProfitlessCat1PrevMonth = array_sum($data['countProfitlessCat1PrevMonth'])/count($data['countProfitlessCat1PrevMonth']);
+
+
+        $yearIndex = count($array)-1;
+        $lastMonthIndex = count($array2)-1;
+        $prevMonthIndex = count($array2)-2;
+
+
+        $year = self::moneyFotmat(-1 * $array[$yearIndex]["Operating_profit"]);
+        $month = self::moneyFotmat(-1 * $array2[$lastMonthIndex]["Operating_profit"]);
+        $persent = ($array2[$prevMonthIndex]["Operating_profit"] - $array2[$lastMonthIndex]["Operating_profit"]) * 100 / $array2[$prevMonthIndex]["Operating_profit"];
+        $persentCount = ($averageProfitlessCat1PrevMonth - $averageProfitlessCat1Month) * 100 / $averageProfitlessCat1PrevMonth;
+
+        $vdata = ['year' => $year,
+                    'month' => $month,
+                    'persent' => round($persent),
+                    'persentCount' => round($persentCount),
+                    'averageProfitlessCat1MonthCount' => round($averageProfitlessCat1Month),
+                    'prs' => round($array5[0]["prs1"])];
+
+        return response()->json($vdata);
   }
 
 
@@ -219,5 +265,18 @@ class DruidController extends Controller
     public function maps()
     {
 	   return view('maps.maps');
+    }
+
+
+    static function moneyFotmat($digit){
+        if ($digit < 1000000) {
+            $format = number_format($digit);
+        } else if ($digit < 1000000000) {
+            $format = number_format($digit / 1000000, 2) . ' млн';
+        } else {
+            $format = number_format($digit / 1000000000, 2) . ' млрд';
+        }
+
+        return $format;
     }
 }

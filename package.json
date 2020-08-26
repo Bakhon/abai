@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.12.1",
+        "@marketconnect/vue-pivot-table": "^1.0.0",
         "apexcharts": "^3.19.3",
         "chart.js": "^2.9.3",
         "d3": "^5.15.0",

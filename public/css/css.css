@@ -1,6 +1,5 @@
 .companyName {
     font-size: 12px!important;
-    margin-left: 10px;
 }
 
 .nur-sultan {
@@ -317,12 +316,12 @@ canvas#canvas3 {
 
 /*
 .info-panel {
-    height: unset!important; 
-   
+    height: unset!important;
+
 }
 
 #body-row {
-      height: 1150px!important; 
+      height: 1150px!important;
 }*/
 
 
@@ -439,7 +438,7 @@ a.collapsed {
     background: url(../img/level1/button-off.svg) no-repeat;
     height: 13px;
     width: 25px;
-    position: absolute;  
+    position: absolute;
 
 }
 
@@ -450,7 +449,7 @@ a.collapsed {
     width: 25px;
     position: absolute;
   pointer-events: none;
-  transform: rotate(180deg);  
+  transform: rotate(180deg);
 }
 
 
@@ -458,7 +457,7 @@ a.collapsed {
     background: url(../img/level1/button-on.svg) no-repeat;
     height: 13px;
     width: 25px;
-    position: absolute;  
+    position: absolute;
 }
 
 
@@ -1153,34 +1152,8 @@ li.circle-2 {
     outline: none;
 }
 
-.btn-info2 {
-    color: #212529;
-    background-color: #6cb2eb;
-    border-color: #6cb2eb;
-    margin-top: -50px;
-    position: absolute;
-}
-
-.btn-primary {
-    background: url(../img/big-data-button.png) no-repeat;
-    background-size: contain;
-    width: 120px;
-    height: 38px;
-    margin-top: -7px;
-    margin-left: 40px;
-    border-radius: 50px;
-    position: absolute;
-}
-
 
 /*calendar*/
-
-.table {
-    border-collapse: collapse;
-    float: left;
-    width: 180px;
-    table-layout: fixed;
-}
 
 .format-week {
     float: right;
