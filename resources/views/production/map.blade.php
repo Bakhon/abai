@@ -6,7 +6,7 @@
         <button onclick="document.location='{{url('/')}}/ru/mfond'">Графики</button> 
             <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-         <iframe src="{{ url('http://172.20.103.32:8080/superset/dashboard/10/') }}" width="100%" height="1050px" frameborder="0" allowfullscreen></iframe>
+         <iframe onload="this.style.opacity=1;" style="opacity:0;border:none;" src="{{ url('http://172.20.103.32:8080/superset/dashboard/10/') }}" width="100%" height="1050px" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
