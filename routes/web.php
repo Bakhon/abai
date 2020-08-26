@@ -19,6 +19,7 @@ Route::get('/', function () {
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
     Route::group(['middleware' => 'auth'], function () {
         Route::get("/geteconimicdata", "DruidController@getEconomicData");
+        Route::get("/getcurrency", "DruidController@getCurrency");
         Route::get('/', function () {
             return view('welcome');
         });
@@ -31,6 +32,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
         Route::get('/mfond', 'DruidController@mfond')->name('mfond');
+        Route::get('/map', 'DruidController@map')->name('map');
         Route::get('/oil', 'DruidController@oil')->name('oil');
         Route::get('/facilities', 'DruidController@facilities')->name('facilities');
         Route::get('/liquid', 'DruidController@liquid')->name('liquid');
