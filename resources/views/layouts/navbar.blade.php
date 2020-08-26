@@ -28,6 +28,11 @@
                                     </a>
                                 </li>
                             </ul>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/gtmscor">
+                                    <span class="workTypeText">ГТМ скорпион</span>
+                                </a>
+                            </li>
                         </li>
                     </ul>
                 </li>
@@ -47,11 +52,6 @@
                         <li class="nav-item child">
                             <a href="{{url('/')}}/ru/mfond">
                                 <span class="workTypeText">Мехфонд</span>
-                            </a>
-                        </li>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/gtmscor">
-                                <span class="workTypeText">ГТМ скорпион</span>
                             </a>
                         </li>
                     </ul>
