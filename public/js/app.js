@@ -86,6 +86,18 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@babel/runtime/regenerator/index.js":
+/*!**********************************************************!*\
+  !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
+  \**********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
+
 /***/ "./node_modules/apexcharts/dist/apexcharts.esm.js":
 /*!********************************************************!*\
   !*** ./node_modules/apexcharts/dist/apexcharts.esm.js ***!
@@ -2201,27 +2213,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'mix-chart',
-  props: ['postTitle'],
+  name: "mix-chart",
+  props: ["postTitle"],
   data: function data() {
     return {
       chartOptions: {
         chart: {
           /*stacked: true,*/
-          foreColor: '#FFFFFF',
+          foreColor: "#FFFFFF",
           height: 250,
-          type: 'area'
+          type: "area"
         },
         stroke: {
           /*width: 4,*/
-          curve: 'smooth'
+          curve: "smooth"
         },
         plotOptions: {
           bar: {
-            columnWidth: '50%'
+            columnWidth: "50%"
           }
         },
 
@@ -2236,10 +2254,15 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
             stops: [0, 100, 100, 100]
           }
         },*/
+        legend: {
+          position: "top"
+          /*horizontalAlign: 'left'*/
+
+        },
         dataLabels: {
           enabled: false
         },
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+        labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
         /*markers: {
           size: 0
         },
@@ -2254,35 +2277,35 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         },*/
 
         /* tooltip: {
-           shared: true,
-           intersect: false,
-           y: {
-             formatter: function(y) {
-               if (typeof y !== "undefined") {
-                 return y.toFixed(0) + "";
-               }
-               return y;
-             }
-           }
-         }*/
+          shared: true,
+          intersect: false,
+          y: {
+            formatter: function(y) {
+              if (typeof y !== "undefined") {
+                return y.toFixed(0) + "";
+              }
+              return y;
+            }
+          }
+        }*/
 
       },
       series: [{
-        name: 'План',
-        type: 'area',
+        name: "План",
+        type: "area",
         stroke: {
           /* width: 5,*/
-          curve: 'smooth'
+          curve: "smooth"
         },
-        data: [31, 40, 28, 51, 42, 109, 100]
+        data: [0]
       }, {
-        name: 'Факт',
-        type: 'area',
+        name: "Факт",
+        type: "area",
         stroke: {
           /* width: 5,*/
-          curve: 'smooth'
+          curve: "smooth"
         },
-        data: [11, 32, 45, 32, 34, 52, 41]
+        data: [0]
       }]
     };
   },
@@ -2293,17 +2316,130 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   }*/
   mounted: function mounted() {
     // показывает данные после отрисовки компонента в консоли
-    // console.log(this.postTitle)
-    console.log(localStorage.getItem("production-fact"));
-  }
-  /* updated: function () {
-   this.$nextTick(function () {
-     // Код, который будет запущен только после
-     // обновления всех представлений
-     console.log(this.postTitle);
-   })
-  }*/
+    var data = [];
+    var data = this.postTitle;
+    var productionPlanForChart = new Array();
 
+    _.forEach(data, function (item) {
+      productionPlanForChart.push(item.productionPlanForChart);
+    });
+
+    var productionFactForChart = new Array();
+
+    _.forEach(data, function (item) {
+      productionFactForChart.push(item.productionFactForChart);
+    });
+
+    var productionFactForChartMonth = new Array();
+
+    _.forEach(data, function (item) {
+      productionFactForChartMonth.push(item.productionFactForChartMonth);
+    });
+
+    var productionPlanForChartMonth = new Array();
+
+    _.forEach(data, function (item) {
+      productionPlanForChartMonth.push(item.productionPlanForChartMonth);
+    });
+
+    var productionFactForChartYear = new Array();
+
+    _.forEach(data, function (item) {
+      productionFactForChartYear.push(item.productionFactForChartYear);
+    });
+
+    var productionPlanForChartYear = new Array();
+
+    _.forEach(data, function (item) {
+      productionPlanForChartYear.push(item.productionPlanForChartYear);
+    });
+
+    var quantity = data.length;
+    var quantity2 = [];
+
+    for (var i = 1; i <= quantity; i++) {
+      var a = [i];
+      quantity2.push(a);
+    }
+
+    this.chartOptions = {
+      labels: quantity2
+    }; //this.dataLabels= {labels:quantity2};
+
+    /* 
+            _.each(quantity, function (quantity) {
+              quantity.push({ quantity });
+            });*/
+
+    if (productionPlanForChart[1] == undefined && productionFactForChart[1] == undefined) {} else {
+      this.series = [{
+        name: "План",
+        type: "area",
+        stroke: {
+          /* width: 5,*/
+          curve: "smooth"
+        },
+        // data: [31, 40, 28, 51, 42, 109, 100]
+        data: productionPlanForChart
+      }, {
+        name: "Факт",
+        type: "area",
+        stroke: {
+          /* width: 5,*/
+          curve: "smooth"
+        },
+        data: productionFactForChart
+      }];
+    } //console.log(productionPlanForChartMonth);
+
+
+    if (productionPlanForChartMonth[1] == undefined && productionFactForChartMonth[1] == undefined) {} else {
+      this.series = [{
+        name: "План",
+        type: "area",
+        stroke: {
+          /* width: 5,*/
+          curve: "smooth"
+        },
+        // data: [31, 40, 28, 51, 42, 109, 100]
+        data: productionPlanForChartMonth
+      }, {
+        name: "Факт",
+        type: "area",
+        stroke: {
+          /* width: 5,*/
+          curve: "smooth"
+        },
+        data: productionFactForChartMonth
+      }];
+    }
+
+    if (productionPlanForChartYear[1] == undefined && productionPlanForChartYear[1] == undefined) {} else {
+      this.chartOptions = {
+        labels: ["2018", "2019", "2020"]
+      };
+      this.series = [{
+        name: "План",
+        type: "area",
+        stroke: {
+          /* width: 5,*/
+          curve: "smooth"
+        },
+        // data: [31, 40, 28, 51, 42, 109, 100]
+        data: productionPlanForChartYear
+      }, {
+        name: "Факт",
+        type: "area",
+        stroke: {
+          /* width: 5,*/
+          curve: "smooth"
+        },
+        data: productionFactForChartYear
+      }];
+    }
+
+    console.log(this.postTitle);
+  }
 });
 
 /***/ }),
@@ -2547,7 +2683,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
             }
           }
         },
-        colors: ["#e8e522"],
+        colors: ["#F7BB2E"],
         chart: {
           animations: {
             speed: 200
@@ -2558,6 +2694,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         plotOptions: {
           bar: {
             dataLabels: {
+              show: true,
               position: "top" // top, center, bottom
 
             },
@@ -2565,7 +2702,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
           }
         },
         dataLabels: {
-          enabled: false
+          enabled: true
           /*вывод значений из раздела data*/
           ,
           formatter: function formatter(val) {
@@ -2598,9 +2735,9 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         },
         xaxis: {
           /* categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], вывод сверху списка месяцев*/
-          position: "top",
+          position: "bottom",
           axisBorder: {
-            show: false
+            show: true
           },
           axisTicks: {
             show: false
@@ -2627,6 +2764,17 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     });
 
     if (a == undefined && b == undefined && c == undefined) {} else {
+      this.series = starts2;
+    }
+
+    var d = this.starts.starts_prs_year;
+    var e = this.starts.starts_krs_year;
+    var f = this.starts.starts_drl_year;
+    var starts2 = new Array({
+      data: [d, e, f]
+    });
+
+    if (d == undefined && e == undefined && f == undefined) {} else {
       this.series = starts2;
     }
   }
@@ -2690,7 +2838,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         }
         /*убирается навигация рядом с кругом*/
         ,
-        colors: ["#47d660", "#ec5464"],
+        colors: ["#13B062", "#DA454E"],
         plotOptions: {
           pie: {
             expandOnClick: true
@@ -2788,7 +2936,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         }
         /*убирается навигация рядом с кругом*/
         ,
-        colors: ["#47d660", "#ec5464"],
+        colors: ["#13B062", "#DA454E"],
         plotOptions: {
           pie: {
             expandOnClick: true
@@ -2809,7 +2957,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     };
   },
   created: function created() {
-    console.log(this.wells);
+    //console.log(this.wells);
     var a = this.wells.inj_wells_work;
     var b = this.wells.inj_wells_idle;
     var wells = new Array(a, b);
@@ -2839,6 +2987,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./event-bus.js */ "./resources/js/components/event-bus.js");
 //
 //
 //
@@ -3052,8 +3201,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3066,7 +3214,8 @@ __webpack_require__.r(__webpack_exports__);
       buttonMenuHover6: "",
       buttonMenuHover7: "",
       buttonMenuHover8: "",
-      buttonMenuHover9: ""
+      buttonMenuHover9: "",
+      buttonMenuHoverAll: ""
     };
   },
   methods: {
@@ -3074,8 +3223,7 @@ __webpack_require__.r(__webpack_exports__);
       localStorage.setItem("company", com);
       var company = localStorage.getItem("company");
       this.company = company;
-      var buttonMenuHover = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;";
-      console.log(company == "КГМ");
+      var buttonMenuHover = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;"; //console.log(company == "КГМ");
 
       if (company == "ОМГ") {
         this.buttonMenuHover1 = buttonMenuHover;
@@ -3130,6 +3278,14 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.buttonMenuHover9 = "";
       }
+
+      if (company == "All") {
+        this.buttonMenuHoverALL = buttonMenuHover;
+      } else {
+        this.buttonMenuHoverALL = "";
+      }
+
+      _event_bus_js__WEBPACK_IMPORTED_MODULE_0__["EventBus"].$emit("messageSend", this.company);
     }
   }
 });
@@ -3145,6 +3301,15 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./event-bus.js */ "./resources/js/components/event-bus.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 //
 //
 //
@@ -3455,10 +3620,177 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//import VisualCenterMenu from'../components/VisualCenterMenu'
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  template: "#vue-status-overview-template",
   data: function data() {
     return {
+      productionForChart: "",
       tables: "",
+      showTable2: "Yes",
+      displayTable: "display: block;",
+      displayChart: "display: none;",
+      showTableItem: "Yes",
+      showTableOn: "",
       buttonHover1: "",
       buttonHover2: "",
       buttonHover3: "",
@@ -3468,10 +3800,25 @@ __webpack_require__.r(__webpack_exports__);
       circleMenu: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
+      currentMonth: [],
+      ChartTable: "График",
+      date2: new Date().toLocaleString("ru", {
+        /*year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long',
+        timezone: 'UTC',*/
+        hour: "numeric",
+        minute: "numeric" //second: 'numeric'
+
+      }),
+      date3: new Date().toLocaleString("ru", {
+        weekday: "long"
+      }),
       dFirstMonth: "0",
       day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
       monthes: ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"],
-      monthes2: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      monthes2: ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       NameDzoFull: ["Всего добыча нефти и конденсата с учётом доли участия АО НК КазМунайГаз", "в т.ч.:газовый конденсат", "АО Озенмунайгаз (нефть) (100%)", "(конденсат)(100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "Aug", "Sep", "Oct", "Nov", "Dec"],
       date: new Date(),
       selectedDay: undefined,
@@ -3480,28 +3827,218 @@ __webpack_require__.r(__webpack_exports__);
       selectedDMY: undefined,
       wells: [""],
       wells2: [""],
+      bigTable: [""],
+      displayHeadTables: " ",
       starts: [""],
       test: [""],
       series: ["", ""],
-      display: 'none'
+      display: "none",
+      company: "all" //statusMessage: "Init",
+
     };
   },
   methods: {
+    displayMessage: function displayMessage(message) {
+      this.company = message;
+    },
+    getCompany: function getCompany() {},
     getColor: function getColor(status) {
       if (status < "0") return "#b40300";
       return "#008a17";
     },
+    calendar: function calendar() {
+      var days = [];
+      var week = 0;
+      days[week] = [];
+      var dlast = new Date(this.year, this.month + 1, 0).getDate();
+
+      for (var i = 1; i <= dlast; i++) {
+        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
+          var a = {
+            index: i,
+            id: i
+          };
+          days[week].push(a);
+
+          if (this.selectedDay == i) {
+            a.current = "#232236";
+          } else if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
+            a.current = "#13B062";
+          }
+
+          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
+            a.weekend = "#ff0000";
+          }
+        } else {
+          week++;
+          days[week] = [];
+          a = {
+            index: i
+          };
+          days[week].push(a);
+
+          if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
+            a.current = "#747ae6";
+          }
+
+          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
+            a.weekend = "#ff0000";
+          }
+        }
+      }
+      /*	if (days[0].length > 0) {
+      for (let i = days[0].length; i < 7; i++) {
+      days[0].unshift('');
+      	}
+      }*/
+
+
+      this.dayChange;
+
+      if (this.selectedDMY == "0") {
+        this.display = "block";
+        return days;
+      }
+    },
+    decrease: function decrease() {
+      this.month--;
+
+      if (this.month < 0) {
+        this.month = 12;
+        this.month--;
+        this.year--;
+      }
+    },
+    increase: function increase() {
+      this.month++;
+
+      if (this.month > 11) {
+        this.month = -1;
+        this.month++;
+        this.year++;
+      }
+    },
+    getMonths: function getMonths() {
+      var monthAll = [];
+      var month = new Date(this.year, this.month + 1, 0).getMonth();
+
+      for (var i = 1; i <= 12; i++) {
+        if (new Date(this.year, this.month + 1, i)) {
+          var a = {
+            index: i,
+            id: i
+          };
+          monthAll.push(a);
+
+          if (this.selectedMonth == i) {
+            a.current = "#232236";
+          } else if (i == new Date().getMonth() && this.year == new Date().getFullYear()
+          /* &&
+          this.month == new Date().getMonth()*/
+          ) {
+              a.current = "#13B062";
+            }
+        }
+      }
+
+      if (this.selectedDMY == "1") {
+        this.display = "none";
+        return monthAll;
+      }
+    },
+    getDays: function getDays() {
+      var DaysInMonth = [];
+      var dlast = new Date(this.year, this.month + 1, 0).getDate();
+
+      for (var i = 1; i <= dlast; i++) {
+        var a = {
+          index: i,
+          id: i
+        };
+        DaysInMonth.push(a);
+      }
+
+      return DaysInMonth;
+    },
+    getDaysInYear: function getDaysInYear() {
+      var getDaysInYear = [];
+
+      for (var q = 1; q <= 12; q++) {
+        var dlast = new Date(this.year, q, 0).getDate();
+
+        for (var i = 1; i <= dlast; i++) {
+          var a = {
+            month: q,
+            day: i
+          };
+          getDaysInYear.push(a);
+        }
+      }
+
+      return getDaysInYear;
+    },
+    getYears: function getYears() {
+      var yearAll = [];
+      var year = this.year;
+
+      for (var i = 2018; i <= year; i++) {
+        //if (this.year, this.month, i).getYear() ) {
+        var a = {
+          index: i,
+          id: i
+        };
+        yearAll.push(a);
+
+        if (this.selectedYear == i) {
+          a.current = "#232236";
+        } else if (i == year
+        /*&&
+        this.year == new Date().getFullYear() &&
+        this.month == new Date().getMonth()*/
+        ) {
+            a.current = "#13B062";
+          }
+      }
+
+      if (this.selectedDMY == "2") {
+        this.display = "none";
+        return yearAll;
+      }
+    },
+    menuDMY: function menuDMY() {
+      var DMY = ["День", "Месяц", "Год"];
+      var menuDMY = [];
+      var id = 0;
+
+      for (var i = 0; i <= 2; i++) {
+        var a = {
+          index: i,
+          id: i
+        };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
+
+        if (this.selectedDMY == i) {
+          a.current = "#1D70B7";
+        }
+      }
+
+      if (this.selectedDMY != undefined) {//  this.displayHeadTables = "display:none;";
+      }
+
+      localStorage.setItem("selectedDMY", this.selectedDMY);
+      return menuDMY;
+    },
     getProduction: function getProduction(item, item2, item3) {
       var _this = this;
 
-      if (this.selectedDay === undefined) {} else {}
-
-      if (this.selectedMonth === undefined) {} else {}
-
-      if (this.selectedYear === undefined) {} else {}
-
+      localStorage.setItem("production-plan", item);
+      localStorage.setItem("production-fact", item2);
+      var productionPlan = localStorage.getItem("production-plan");
+      var productionFact = localStorage.getItem("production-fact");
+      var selectedDMY = localStorage.getItem("selectedDMY");
       this.circleMenu = item3;
-      var company = localStorage.getItem("company");
+      var company = this.company;
 
       if (company === null) {
         alert("Сначала выберите название компании");
@@ -3524,50 +4061,666 @@ __webpack_require__.r(__webpack_exports__);
 
           var timestamp = new Date(_this.monthes2[_this.month] + _this.selectedDay + " " + _this.year + " 06:00:00 GMT+0600").getTime();
           arrdata = _.filter(data, _.iteratee({
-            __time: timestamp
-          }));
-          /*if (arrdata.length == 0) {
+            dzo: company
+          })); //get data by Month
+
+          var SelectYearInMonth; //value
+
+          if (_this.selectedYear == undefined) {
+            SelectYearInMonth = _this.year;
+          } else {
+            SelectYearInMonth = _this.selectedYear;
+          }
+
+          if (_this.selectedDMY == 0) {
+            //selectedDay by chart
+            var timestampMonthStart = new Date(_this.monthes2[_this.month + 1] + //this.selectedDay +
+            "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
+
+            var dayInMonth = _this.getDays().length;
+
+            var dataWithMay = new Array();
+            dataWithMay = _.filter(arrdata, function (item) {
+              return _.every([_.inRange(item.__time, // 1588291200000, // May 2020
+              timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
+            }); //for chart
+
+            var productionPlanForChart = new Array();
+
+            _.forEach(dataWithMay, function (item) {
+              productionPlanForChart.push({
+                productionPlanForChart: item[productionPlan]
+              });
+            });
+
+            var productionFactForChart = new Array();
+
+            _.forEach(dataWithMay, function (item) {
+              productionFactForChart.push({
+                productionFactForChart: item[productionFact]
+              });
+            });
+          }
+
+          if (_this.selectedDMY == 1) {
+            //selectedMonth by chart
+            var timestampMonthStart = new Date(_this.monthes2["1"] + //this.selectedDay +
+            "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
+
+            var dayInMonth = _this.getDays().length;
+
+            var getDaysInYear = [];
+
+            for (var i = 1; i <= 12; i++) {
+              var allDays = _.filter(_this.getDaysInYear(), _.iteratee({
+                month: i
+              }));
+
+              getDaysInYear[i] = allDays.length;
+            }
+
+            var months = [];
+            var getMonthsTime = [];
+
+            var _loop = function _loop(_i) {
+              months[_i] = _.filter(arrdata, function (item) {
+                return _.every([_.inRange(item.__time, timestampMonthStart, timestampMonthStart + 86400000 * getDaysInYear[_i])]);
+              });
+              getMonthsTime = months;
+            };
+
+            for (var _i = 1; _i <= 12; _i++) {
+              _loop(_i);
+            }
+
+            var productionFactForChart = _.reduce(getMonthsTime[1], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart = productionFactForChart / getDaysInYear[1];
+
+            var productionPlanForChart = _.reduce(getMonthsTime[1], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart = productionPlanForChart / getDaysInYear[1]; //2
+
+            var productionFactForChart2 = _.reduce(getMonthsTime[2], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart2 = productionFactForChart2 / getDaysInYear[2];
+
+            var productionPlanForChart2 = _.reduce(getMonthsTime[2], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart2 = productionPlanForChart2 / getDaysInYear[2]; //3
+
+            var productionFactForChart3 = _.reduce(getMonthsTime[3], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart3 = productionFactForChart3 / getDaysInYear[3];
+
+            var productionPlanForChart3 = _.reduce(getMonthsTime[3], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart3 = productionPlanForChart3 / getDaysInYear[3]; //4
+
+            var productionFactForChart4 = _.reduce(getMonthsTime[4], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart4 = productionFactForChart4 / getDaysInYear[4];
+
+            var productionPlanForChart4 = _.reduce(getMonthsTime[4], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart4 = productionPlanForChart4 / getDaysInYear[4]; //5
+
+            var productionFactForChart5 = _.reduce(getMonthsTime[5], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart5 = productionFactForChart5 / getDaysInYear[5];
+
+            var productionPlanForChart5 = _.reduce(getMonthsTime[5], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart5 = productionPlanForChart5 / getDaysInYear[5]; //6
+
+            var productionFactForChart6 = _.reduce(getMonthsTime[6], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart6 = productionFactForChart6 / getDaysInYear[6];
+
+            var productionPlanForChart6 = _.reduce(getMonthsTime[6], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart6 = productionPlanForChart6 / getDaysInYear[6]; //7
+
+            var productionFactForChart7 = _.reduce(getMonthsTime[7], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart7 = productionFactForChart7 / getDaysInYear[7];
+
+            var productionPlanForChart7 = _.reduce(getMonthsTime[7], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart7 = productionPlanForChart7 / getDaysInYear[7]; //8
+
+            var productionFactForChart8 = _.reduce(getMonthsTime[8], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart8 = productionFactForChart8 / getDaysInYear[8];
+
+            var productionPlanForChart8 = _.reduce(getMonthsTime[8], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart8 = productionPlanForChart8 / getDaysInYear[8]; //9
+
+            var productionFactForChart9 = _.reduce(getMonthsTime[9], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart9 = productionFactForChart9 / getDaysInYear[9];
+
+            var productionPlanForChart9 = _.reduce(getMonthsTime[9], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart9 = productionPlanForChart9 / getDaysInYear[9]; //10
+
+            var productionFactForChart10 = _.reduce(getMonthsTime[10], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart10 = productionFactForChart10 / getDaysInYear[10];
+
+            var productionPlanForChart10 = _.reduce(getMonthsTime[10], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart10 = productionPlanForChart10 / getDaysInYear[10]; //11
+
+            var productionFactForChart11 = _.reduce(getMonthsTime[11], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart11 = productionFactForChart11 / getDaysInYear[11];
+
+            var productionPlanForChart11 = _.reduce(getMonthsTime[11], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart11 = productionPlanForChart11 / getDaysInYear[11]; //12
+
+            var productionFactForChart12 = _.reduce(getMonthsTime[12], function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForChart12 = productionFactForChart12 / getDaysInYear[12];
+
+            var productionPlanForChart12 = _.reduce(getMonthsTime[12], function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForChart12 = productionPlanForChart12 / getDaysInYear[12];
+            var productionFactForChartMonth = [];
+            productionFactForChartMonth = [{
+              productionFactForChart: productionFactForChart
+            }, {
+              productionFactForChart: productionFactForChart2
+            }, {
+              productionFactForChart: productionFactForChart3
+            }, {
+              productionFactForChart: productionFactForChart4
+            }, {
+              productionFactForChart: productionFactForChart5
+            }, {
+              productionFactForChart: productionFactForChart6
+            }, {
+              productionFactForChart: productionFactForChart7
+            }, {
+              productionFactForChart: productionFactForChart8
+            }, {
+              productionFactForChart: productionFactForChart9
+            }, {
+              productionFactForChart: productionFactForChart10
+            }, {
+              productionFactForChart: productionFactForChart11
+            }, {
+              productionFactForChart: productionFactForChart12
+            }];
+            var productionPlanForChartMonth = [];
+            productionPlanForChartMonth = [{
+              productionPlanForChart: productionPlanForChart
+            }, {
+              productionPlanForChart: productionPlanForChart2
+            }, {
+              productionPlanForChart: productionPlanForChart3
+            }, {
+              productionPlanForChart: productionPlanForChart4
+            }, {
+              productionPlanForChart: productionPlanForChart5
+            }, {
+              productionPlanForChart: productionPlanForChart6
+            }, {
+              productionPlanForChart: productionPlanForChart7
+            }, {
+              productionPlanForChart: productionPlanForChart8
+            }, {
+              productionPlanForChart: productionPlanForChart9
+            }, {
+              productionPlanForChart: productionPlanForChart10
+            }, {
+              productionPlanForChart: productionPlanForChart11
+            }, {
+              productionPlanForChart: productionPlanForChart12
+            }];
+            /*
+            var productionPlanForChart = new Array();
+            _.forEach(dataWithMay, function (item) {
+              productionPlanForChart.push({
+                productionPlanForChart: item[productionPlan],
+              });
+            });
+                    var productionFactForChart = new Array();
+            _.forEach(dataWithMay, function (item) {
+              productionFactForChart.push({
+                productionFactForChart: item[productionFact],
+              });
+            });*/
+          } //select data by
+
+
+          if (_this.selectedDMY == 1) {
+            //select only for month
+
+            /*           var productionPlanForChart2 = new Array();
+               _.each(productionPlanForChart, function (item) {
+             productionPlanForChart2.push({productionPlanForChart});
+            });
+                   var productionFactForChart2 = new Array();
+                _.each(productionFactForChart, function (item) {
+             productionFactForChart2.push({productionFactForChart});
+            });*/
+            //for chart
+            var dataWithMay = new Array();
+            dataWithMay = _.filter(arrdata, function (item) {
+              return _.every([_.inRange(item.__time, // 1588291200000, // from May 2020
+              // 1590883200000+1,
+              timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
+            });
+            var dzo = new Array();
+
+            _.forEach(dataWithMay, function (item) {
+              dzo.push(item.dzo);
+            });
+
+            dzo = _.uniq(dzo); //select summ plan for month
+
+            var productionPlanForMonth = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item[productionPlan];
+            }, 0);
+
+            productionPlanForMonth = Math.ceil(productionPlanForMonth / dayInMonth);
+
+            var prod_wells_work = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item.prod_wells_work;
+            }, 0);
+
+            prod_wells_work = Math.ceil(prod_wells_work / dayInMonth);
+
+            var prod_wells_idle = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item.prod_wells_idle;
+            }, 0);
+
+            prod_wells_idle = Math.ceil(prod_wells_idle / dayInMonth);
+
+            var starts_krs = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item.starts_krs;
+            }, 0); // starts_krs = Math.ceil(starts_krs / dayInMonth);
+
+
+            var starts_prs = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item.starts_prs;
+            }, 0); //starts_prs = Math.ceil(starts_prs / dayInMonth);
+
+
+            var starts_drl = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item.starts_drl;
+            }, 0); //starts_drl = Math.ceil(starts_drl / dayInMonth);
+
+
+            var inj_wells_idle = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item.inj_wells_idle;
+            }, 0);
+
+            inj_wells_idle = Math.ceil(inj_wells_idle / dayInMonth);
+
+            var inj_wells_work = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item.inj_wells_work;
+            }, 0);
+
+            inj_wells_work = Math.ceil(inj_wells_work / dayInMonth); //for month
+            //select summ fact for month
+
+            var productionFactForMonth = _.reduce(dataWithMay, function (memo, item) {
+              return memo + item[productionFact];
+            }, 0);
+
+            productionFactForMonth = Math.ceil(productionFactForMonth / dayInMonth); //for month
+
+            var productionFactForMonth2 = [{
+              productionFactForMonth: Math.ceil(productionFactForMonth)
+            }];
+            var productionPlanForMonth2 = [{
+              productionPlanForMonth: Math.ceil(productionPlanForMonth)
+            }];
+            var prod_wells_work2 = [{
+              prod_wells_work: prod_wells_work
+            }];
+            var prod_wells_idle2 = [{
+              prod_wells_idle: prod_wells_idle
+            }];
+            var starts_krs2 = [{
+              starts_krs: starts_krs
+            }];
+            var starts_prs2 = [{
+              starts_prs: starts_prs
+            }];
+            var starts_drl2 = [{
+              starts_drl: starts_drl
+            }];
+            var inj_wells_idle2 = [{
+              inj_wells_idle: inj_wells_idle
+            }];
+            var inj_wells_work2 = [{
+              inj_wells_work: inj_wells_work
+            }];
+          }
+
+          if (_this.selectedDMY == 0) {
+            arrdata = _.filter(arrdata, _.iteratee({
+              __time: timestamp
+            }));
+            /*if (arrdata.length == 0) {
             alert(
               "К сожалению на текущую дату нет данных, выберите другую дату"
             );
-          } else {*/
+            } else {*/
+            // }
+            //select dzo filter
 
-          arrdata = _.filter(arrdata, _.iteratee({
-            dzo: company
-          })); // } 
-          //select dzo filter
+            var dzo = new Array();
+            var liq_fact = new Array();
+            var liq_plan = new Array();
+            var time = new Array();
+            var prod_wells_work = new Array();
+            var prod_wells_idle = new Array();
+            var starts_krs = new Array();
+            var starts_prs = new Array();
+            var starts_drl = new Array();
+            var inj_wells_active = new Array();
+            var inj_wells_idle = new Array();
+            var inj_wells_work = new Array();
+            var prod_wells_active = new Array();
 
-          localStorage.setItem("production-plan", item);
-          localStorage.setItem("production-fact", item2);
-          var productionPlan = localStorage.getItem("production-plan");
-          var productionFact = localStorage.getItem("production-fact");
-          var dzo = new Array();
-          var liq_fact = new Array();
-          var liq_plan = new Array();
-          var time = new Array();
-          var prod_wells_work = new Array();
-          var prod_wells_idle = new Array();
-          var starts_krs = new Array();
-          var starts_prs = new Array();
-          var starts_drl = new Array();
-          var inj_wells_active = new Array();
-          var inj_wells_idle = new Array();
-          var inj_wells_work = new Array();
-          var prod_wells_active = new Array();
+            _.forEach(arrdata, function (item) {
+              dzo.push(item.dzo);
+              liq_fact.push(item[productionFact]);
+              liq_plan.push(item[productionPlan]);
+              time.push(item.__time);
+              prod_wells_work.push(item.prod_wells_work);
+              prod_wells_idle.push(item.prod_wells_idle);
+              starts_krs.push(item.starts_krs);
+              starts_prs.push(item.starts_prs);
+              starts_drl.push(item.starts_drl);
+              inj_wells_work.push(item.inj_wells_work);
+              inj_wells_idle.push(item.inj_wells_idle);
+            }); //select only for day
+            //Create massive with a part
 
-          _.forEach(arrdata, function (item) {
-            dzo.push(item.dzo);
-            liq_fact.push(item[productionFact]);
-            liq_plan.push(item[productionPlan]);
-            time.push(item.__time);
-            prod_wells_work.push(item.prod_wells_work);
-            prod_wells_idle.push(item.prod_wells_idle);
-            starts_krs.push(item.starts_krs);
-            starts_prs.push(item.starts_prs);
-            starts_drl.push(item.starts_drl);
-            inj_wells_work.push(item.inj_wells_work);
-            inj_wells_idle.push(item.inj_wells_idle);
-          }); //Create massive with a part
+
+            var liq_fact2 = new Array();
+
+            _.each(liq_fact, function (fact) {
+              fact = Math.ceil(fact);
+              liq_fact2.push({
+                fact: fact
+              });
+            });
+
+            var liq_plan2 = new Array();
+
+            _.each(liq_plan, function (plan) {
+              plan = Math.ceil(plan); //okrugl vverh
+
+              liq_plan2.push({
+                plan: plan
+              });
+            });
+
+            var __time2 = new Array();
+
+            _.each(time, function (time) {
+              //time = new Date(time).toLocaleDateString();
+              //   time = new Date(time);
+              __time2.push({
+                time: time
+              });
+            });
+
+            var prod_wells_work2 = new Array();
+
+            _.each(prod_wells_work, function (prod_wells_work) {
+              prod_wells_work2.push({
+                prod_wells_work: prod_wells_work
+              });
+            });
+
+            var prod_wells_idle2 = new Array();
+
+            _.each(prod_wells_idle, function (prod_wells_idle) {
+              prod_wells_idle2.push({
+                prod_wells_idle: prod_wells_idle
+              });
+            });
+
+            var starts_krs2 = new Array();
+
+            _.each(starts_krs, function (starts_krs) {
+              starts_krs2.push({
+                starts_krs: starts_krs
+              });
+            });
+
+            var starts_prs2 = new Array();
+
+            _.each(starts_prs, function (starts_prs) {
+              starts_prs2.push({
+                starts_prs: starts_prs
+              });
+            });
+
+            var starts_drl2 = new Array();
+
+            _.each(starts_drl, function (starts_drl) {
+              starts_drl2.push({
+                starts_drl: starts_drl
+              });
+            });
+
+            var inj_wells_idle2 = new Array();
+
+            _.each(inj_wells_idle, function (inj_wells_idle) {
+              inj_wells_idle2.push({
+                inj_wells_idle: inj_wells_idle
+              });
+            });
+
+            var inj_wells_work2 = new Array();
+
+            _.each(inj_wells_work, function (inj_wells_work) {
+              inj_wells_work2.push({
+                inj_wells_work: inj_wells_work
+              });
+            });
+          } //for year
+
+
+          if (_this.selectedDMY == 2) {
+            var selectedYear = _this.selectedYear;
+
+            if (selectedYear === 2020) {
+              selectedYear = "2020 (с начала года)";
+            }
+
+            var arrdataYear = new Array();
+            arrdataYear = _.filter(data2, _.iteratee({
+              period: String(selectedYear)
+            }));
+            arrdataYear = _.filter(arrdataYear, _.iteratee({
+              dzo: company
+            }));
+            var dzo = new Array();
+            var factYear = new Array();
+            var planYear = new Array();
+            var prod_wells_work_year = new Array();
+            var prod_wells_idle_year = new Array();
+            var inj_wells_idle_year = new Array();
+            var inj_wells_work_year = new Array();
+            var starts_krs_year = new Array();
+            var starts_prs_year = new Array();
+            var starts_drl_year = new Array();
+
+            _.forEach(arrdataYear, function (item) {
+              dzo.push(item.dzo);
+              factYear.push(item[productionFact]);
+              planYear.push(item[productionPlan]);
+              prod_wells_work_year.push(item.prod_wells_work);
+              prod_wells_idle_year.push(item.prod_wells_idle);
+              inj_wells_idle_year.push(item.inj_wells_idle);
+              inj_wells_work_year.push(item.inj_wells_work);
+              starts_krs_year.push(item.starts_krs);
+              starts_prs_year.push(item.starts_prs);
+              starts_drl_year.push(item.starts_drl);
+            });
+
+            var arrdataYearChart = new Array();
+            var arrdataYearChart = [];
+            arrdataYearChart = _.filter(data2, _.iteratee({
+              dzo: company
+            }));
+            var productionPlanForChartYear = new Array();
+
+            _.forEach(arrdataYearChart, function (item) {
+              productionPlanForChartYear.push({
+                productionPlanForChartYear: item[productionPlan]
+              });
+            });
+
+            var productionFactForChartYear = new Array();
+
+            _.forEach(arrdataYearChart, function (item) {
+              productionFactForChartYear.push({
+                productionFactForChartYear: item[productionFact]
+              });
+            }); //select only for year
+
+
+            var factYear2 = new Array();
+
+            _.each(factYear, function (factYear) {
+              factYear = Math.ceil(factYear);
+              factYear2.push({
+                factYear: factYear
+              });
+            });
+
+            var planYear2 = new Array();
+
+            _.each(planYear, function (planYear) {
+              planYear = Math.ceil(planYear);
+              planYear2.push({
+                planYear: planYear
+              });
+            });
+
+            var prod_wells_work_year2 = new Array();
+
+            _.each(prod_wells_work_year, function (prod_wells_work_year) {
+              prod_wells_work_year2.push({
+                prod_wells_work_year: prod_wells_work_year
+              });
+            });
+
+            var prod_wells_idle_year2 = new Array();
+
+            _.each(prod_wells_idle_year, function (prod_wells_idle_year) {
+              prod_wells_idle_year2.push({
+                prod_wells_idle_year: prod_wells_idle_year
+              });
+            });
+
+            var inj_wells_idle_year2 = new Array();
+
+            _.each(inj_wells_idle_year, function (inj_wells_idle_year) {
+              inj_wells_idle_year = Math.ceil(inj_wells_idle_year);
+              inj_wells_idle_year2.push({
+                inj_wells_idle_year: inj_wells_idle_year
+              });
+            });
+
+            var inj_wells_work_year2 = new Array();
+
+            _.each(inj_wells_work_year, function (inj_wells_work_year) {
+              inj_wells_work_year = Math.ceil(inj_wells_work_year);
+              inj_wells_work_year2.push({
+                inj_wells_work_year: inj_wells_work_year
+              });
+            });
+            /* var dzoYear2 = new Array();
+            _.each(dzoYear, function (dzoYear) {
+              dzoYear2.push({ dzoYear });
+            });*/
+
+
+            var starts_krs_year2 = new Array();
+
+            _.each(starts_krs_year, function (starts_krs_year) {
+              starts_krs_year2.push({
+                starts_krs_year: starts_krs_year
+              });
+            });
+
+            var starts_prs_year2 = new Array();
+
+            _.each(starts_prs_year, function (starts_prs_year) {
+              starts_prs_year2.push({
+                starts_prs_year: starts_prs_year
+              });
+            });
+
+            var starts_drl_year2 = new Array();
+
+            _.each(starts_drl_year, function (starts_drl_year) {
+              starts_drl_year2.push({
+                starts_drl_year: starts_drl_year
+              });
+            });
+          } //all variables
 
 
           var dzo2 = new Array();
@@ -3576,175 +4729,29 @@ __webpack_require__.r(__webpack_exports__);
             dzo2.push({
               dzo: dzo
             });
+          }); //----------------------------
+
+
+          var productionForChart = [{}];
+          productionForChart = _.zipWith(_.sortBy(productionPlanForChart, function (productionPlanForChart) {
+            return productionPlanForChart.productionPlanForChart;
+          }), _.sortBy(productionFactForChart, function (productionFactForChart) {
+            return productionFactForChart.productionFactForChart;
+          }), _.sortBy(productionPlanForChartMonth, function (productionPlanForChartMonth) {
+            return productionPlanForChartMonth.productionPlanForChartMonth;
+          }), _.sortBy(productionFactForChartMonth, function (productionFactForChartMonth) {
+            return productionFactForChartMonth.productionFactForChartMonth;
+          }), _.sortBy(productionPlanForChartYear, function (productionPlanForChartYear) {
+            return productionPlanForChartYear.productionPlanForChartYear;
+          }), _.sortBy(productionFactForChartYear, function (productionFactForChartYear) {
+            return productionFactForChartYear.productionFactForChartYear;
+          }), function (productionPlanForChart2, productionFactForChart2, productionPlanForChartMonth, productionFactForChartMonth, productionPlanForChartYear, productionFactForChartYear) {
+            return _.defaults(productionPlanForChart2, productionFactForChart2, productionPlanForChartMonth, productionFactForChartMonth, productionPlanForChartYear, productionFactForChartYear);
           });
-
-          var liq_fact2 = new Array();
-
-          _.each(liq_fact, function (fact) {
-            fact = Math.ceil(fact);
-            liq_fact2.push({
-              fact: fact
-            });
-          });
-
-          var liq_plan2 = new Array();
-
-          _.each(liq_plan, function (plan) {
-            plan = Math.ceil(plan); //okrugl vverh
-
-            liq_plan2.push({
-              plan: plan
-            });
-          });
-
-          var __time2 = new Array();
-
-          _.each(time, function (time) {
-            //time = new Date(time).toLocaleDateString();
-            //   time = new Date(time);
-            __time2.push({
-              time: time
-            });
-          });
-
-          var prod_wells_work2 = new Array();
-
-          _.each(prod_wells_work, function (prod_wells_work) {
-            prod_wells_work2.push({
-              prod_wells_work: prod_wells_work
-            });
-          });
-
-          var prod_wells_idle2 = new Array();
-
-          _.each(prod_wells_idle, function (prod_wells_idle) {
-            prod_wells_idle2.push({
-              prod_wells_idle: prod_wells_idle
-            });
-          });
-
-          var starts_krs2 = new Array();
-
-          _.each(starts_krs, function (starts_krs) {
-            starts_krs2.push({
-              starts_krs: starts_krs
-            });
-          });
-
-          var starts_prs2 = new Array();
-
-          _.each(starts_prs, function (starts_prs) {
-            starts_prs2.push({
-              starts_prs: starts_prs
-            });
-          });
-
-          var starts_drl2 = new Array();
-
-          _.each(starts_drl, function (starts_drl) {
-            starts_drl2.push({
-              starts_drl: starts_drl
-            });
-          });
-
-          var inj_wells_idle2 = new Array();
-
-          _.each(inj_wells_idle, function (inj_wells_idle) {
-            inj_wells_idle2.push({
-              inj_wells_idle: inj_wells_idle
-            });
-          });
-
-          var inj_wells_work2 = new Array();
-
-          _.each(inj_wells_work, function (inj_wells_work) {
-            inj_wells_work2.push({
-              inj_wells_work: inj_wells_work
-            });
-          }); //for year
-
-
-          var selectedYear = _this.selectedYear;
-
-          if (selectedYear === 2020) {
-            selectedYear = '2020 (с начала года)';
-          }
-
-          var arrdataYear = new Array();
-          arrdataYear = _.filter(data2, _.iteratee({
-            period: String(selectedYear)
-          }));
-          arrdataYear = _.filter(arrdataYear, _.iteratee({
-            dzo: company
-          })); //console.log(arrdataYear);
-
-          var dzoYear = new Array();
-          var factYear = new Array();
-          var planYear = new Array();
-          var prod_wells_work_year = new Array();
-          var prod_wells_idle_year = new Array();
-          var inj_wells_idle_year = new Array();
-          var inj_wells_work_year = new Array();
-
-          _.forEach(arrdataYear, function (item) {
-            dzoYear.push(item.dzo);
-            factYear.push(item[productionFact]);
-            planYear.push(item[productionPlan]);
-            prod_wells_work_year.push(item.prod_wells_work);
-            prod_wells_idle_year.push(item.prod_wells_idle);
-            inj_wells_idle_year.push(item.inj_wells_idle);
-            inj_wells_work_year.push(item.inj_wells_work);
-          });
-
-          var factYear2 = new Array();
-
-          _.each(factYear, function (factYear) {
-            factYear2.push({
-              factYear: factYear
-            });
-          });
-
-          var planYear2 = new Array();
-
-          _.each(planYear, function (planYear) {
-            planYear2.push({
-              planYear: planYear
-            });
-          });
-
-          var prod_wells_work_year2 = new Array();
-
-          _.each(prod_wells_work_year, function (prod_wells_work_year) {
-            prod_wells_work_year2.push({
-              prod_wells_work_year: prod_wells_work_year
-            });
-          });
-
-          var prod_wells_idle_year2 = new Array();
-
-          _.each(prod_wells_idle_year, function (prod_wells_idle_year) {
-            prod_wells_idle_year2.push({
-              prod_wells_idle_year: prod_wells_idle_year
-            });
-          });
-
-          var inj_wells_idle_year2 = new Array();
-
-          _.each(inj_wells_idle_year, function (inj_wells_idle_year) {
-            inj_wells_idle_year2.push({
-              inj_wells_idle_year: inj_wells_idle_year
-            });
-          });
-
-          var inj_wells_work_year2 = new Array();
-
-          _.each(inj_wells_work_year, function (inj_wells_work_year) {
-            inj_wells_work_year2.push({
-              inj_wells_work_year: inj_wells_work_year
-            });
-          }); //for year                  
-          //----------------------------
-
+          productionForChart = {
+            data: productionForChart
+          };
+          _this.productionForChart = productionForChart;
 
           var tables = _.zipWith(_.sortBy(dzo2, function (dzo) {
             return dzo.dzo;
@@ -3758,17 +4765,18 @@ __webpack_require__.r(__webpack_exports__);
             return factYear;
           }), _.sortBy(planYear2, function (planYear) {
             return planYear;
-          }), function (dzo, liq_fact, liq_plan, time, factYear, planYear) {
-            return _.defaults(dzo, liq_fact, liq_plan, time, factYear, planYear);
+          }), _.sortBy(productionFactForMonth2, function (productionFactForMonth) {
+            return productionFactForMonth;
+          }), _.sortBy(productionPlanForMonth2, function (productionPlanForMonth) {
+            return productionPlanForMonth;
+          }), // _.sortBy(dzoYear2, (dzoYear) => dzoYear),
+          function (dzo, liq_fact, liq_plan, time, factYear, planYear, //, dzoYear
+          productionFactForMonth, productionPlanForMonth) {
+            return _.defaults(dzo, liq_fact, liq_plan, time, factYear, planYear, //dzoYear,
+            productionFactForMonth, productionPlanForMonth);
           });
 
-          _this.tables = tables; // console.log(tables);
-          //console.log(planYear);
-
-          /*var prod_wells_work_one = prod_wells_work2[0].prod_wells_work;
-          var prod_wells_idle_one = prod_wells_idle2[0].prod_wells_idle;
-          this.series = [prod_wells_work_one, prod_wells_idle_one];*/
-          //VisualCenterChartDonutRight1.vue
+          _this.tables = tables; //VisualCenterChartDonutRight1.vue
 
           var wells2 = _.zipWith(_.sortBy(prod_wells_work2, function (prod_wells_work) {
             return prod_wells_work.prod_wells_work;
@@ -3782,7 +4790,7 @@ __webpack_require__.r(__webpack_exports__);
             return _.defaults(prod_wells_work, prod_wells_idle, prod_wells_work_year, prod_wells_idle_year);
           });
 
-          _this.wells2 = wells2; //console.log(prod_wells_work_year);
+          _this.wells2 = wells2;
 
           var starts = _.zipWith(_.sortBy(starts_krs2, function (starts_krs) {
             return starts_krs.starts_krs;
@@ -3790,15 +4798,17 @@ __webpack_require__.r(__webpack_exports__);
             return starts_prs.starts_prs;
           }), _.sortBy(starts_drl2, function (starts_drl) {
             return starts_drl.starts_drl;
-          }), function (starts_krs, starts_prs, starts_drl) {
-            return _.defaults(starts_krs, starts_prs, starts_drl);
+          }), _.sortBy(starts_krs_year2, function (starts_krs_year) {
+            return starts_krs_year.starts_krs_year;
+          }), _.sortBy(starts_prs_year2, function (starts_prs_year) {
+            return starts_prs_year.starts_prs_year;
+          }), _.sortBy(starts_drl_year2, function (starts_drl_year) {
+            return starts_drl_year.starts_drl_year;
+          }), function (starts_krs, starts_prs, starts_drl, starts_krs_year, starts_prs_year, starts_drl_year) {
+            return _.defaults(starts_krs, starts_prs, starts_drl, starts_krs_year, starts_prs_year, starts_drl_year);
           });
 
-          _this.starts = starts;
-          /*
-          inj_wells_idle
-          inj_wells_work*/
-          //VisualCenterChartDonutRight2.vue
+          _this.starts = starts; //VisualCenterChartDonutRight2.vue
 
           var wells = _.zipWith(_.sortBy(inj_wells_idle2, function (inj_wells_idle) {
             return inj_wells_idle.inj_wells_idle;
@@ -3852,177 +4862,323 @@ __webpack_require__.r(__webpack_exports__);
           }
         } else {
           console.log("No data");
+        } //bigtable
+        //year
+
+
+        var dataDay = [];
+        var dataYear = [];
+        var dzo = [];
+        dataDay = data;
+        dataYear = data2;
+        var factYear = [];
+        var planYear = [];
+        var dataMonth = [];
+        var dzoYear = [];
+        dataMonth = _.filter(data2, _.iteratee({
+          period: "2020 (с начала года)"
+        }));
+        dataMonth = _.orderBy(dataMonth, ["dzo"], ["desc"]);
+
+        _.forEach(dataMonth, function (item) {
+          var e = [];
+          e = {
+            dzoYear: item.dzo
+          };
+          dzoYear.push(e);
+          var f = [];
+          f = {
+            factYear: Math.ceil(item[productionFact])
+          };
+          factYear.push(f);
+          var p = [];
+          p = {
+            planYear: Math.ceil(item[productionPlan])
+          };
+          planYear.push(p);
+        });
+
+        console.log(dzoYear);
+        var currentMonth = 5;
+        _this.currentMonth = _this.monthes2[currentMonth];
+        var timestampMonthStart = new Date( //this.monthes2[this.month+1] + //change when data upgrade
+        _this.monthes2["5"] + //this.selectedDay +
+        "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
+
+        var dayInMonth = _this.getDays().length;
+
+        var dataWithMay = new Array();
+        dataWithMay = _.filter(data, function (item) {
+          return _.every([_.inRange(item.__time, timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
+        }); //Summ plan and fact from dzo
+
+        var productionPlanAndFactMonth = _(dataWithMay).groupBy("dzo").map(function (dzo, id) {
+          return {
+            dzo: id,
+            //__time,
+            productionFactForChart: _.round(_.sumBy(dzo, productionFact), 0),
+            productionPlanForChart: _.round(_.sumBy(dzo, productionPlan), 0)
+          };
+        }).value();
+
+        productionPlanAndFactMonth = _.orderBy(productionPlanAndFactMonth, ["dzo"], ["desc"]);
+        /* productionPlanAndFactMonth=productionPlanAndFactMonth  
+        .sortBy("productionPlan")         
+        .value();*/
+
+        var productionForChart = _(dataWithMay).groupBy("__time").map(function (__time, id) {
+          return {
+            productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
+            productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0)
+          };
+        }).value();
+
+        var dzo2 = [];
+        var planMonth = [];
+        var factMonth = [];
+        var oil_fact = [];
+        var oil_plan = [];
+        var e = [];
+        var f = [];
+        var p = [];
+        var getMonthBigTable = [];
+
+        _.forEach(dataWithMay, function (item) {
+          e = {
+            dzo2: item.dzo
+          };
+          f = {
+            factMonth: Math.ceil(item[productionFact])
+          };
+          p = {
+            planMonth: Math.ceil(item[productionPlan])
+          };
+          oil_fact = {
+            oil_fact: item.oil_fact
+          };
+          oil_plan = {
+            oil_plan: item.oil_plan
+          };
+          getMonthBigTable.push([e, f, p, oil_fact, oil_plan]);
+        });
+
+        var factMonth2 = _.reduce(factMonth, function (memo, item) {
+          return memo + item.productionFact;
+        }, 0);
+
+        var planMonth = _.reduce(planMonth, function (memo, item) {
+          return memo + item[productionPlan];
+        }, 0);
+
+        var today = new Date().getDate(); //dataFromDay
+
+        var timestampToday = new Date( //this.monthes2[this.month] +
+        _this.monthes2["5"] + today + " " + _this.year + " 06:00:00 GMT+0600").getTime();
+        var dataDay = [];
+        dataDay = _.filter(data, _.iteratee({
+          __time: timestampToday
+        }));
+        dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
+        var dzoDay = [];
+        var factDay = [];
+        var planDay = [];
+        var getDayTable = [];
+        var inj_wells_idle = [];
+        var inj_wells_work = [];
+        var prod_wells_work = [];
+        var prod_wells_idle = [];
+        var starts_krs = [];
+        var starts_prs = [];
+        var starts_drl = [];
+
+        _.forEach(dataDay, function (item) {
+          e = {
+            dzoDay: item.dzo
+          };
+          f = {
+            factDay: Math.ceil(item[productionFact])
+          };
+          p = {
+            planDay: Math.ceil(item[productionPlan])
+          };
+          dzoDay.push(e);
+          factDay.push(f);
+          planDay.push(p);
+          inj_wells_idle.push({
+            inj_wells_idle: item.inj_wells_idle
+          });
+          inj_wells_work.push({
+            inj_wells_work: item.inj_wells_work
+          });
+          prod_wells_work.push({
+            prod_wells_work: item.prod_wells_work
+          });
+          prod_wells_idle.push({
+            prod_wells_idle: item.prod_wells_idle
+          });
+          starts_krs.push({
+            starts_krs: item.starts_krs
+          });
+          starts_prs.push({
+            starts_prs: item.starts_prs
+          });
+          starts_drl.push({
+            starts_drl: item.starts_drl
+          });
+        });
+
+        var starts_krs = _.reduce(starts_krs, function (memo, item) {
+          return memo + item.starts_krs;
+        }, 0);
+
+        var starts_prs = _.reduce(starts_prs, function (memo, item) {
+          return memo + item.starts_prs;
+        }, 0);
+
+        var starts_drl = _.reduce(starts_drl, function (memo, item) {
+          return memo + item.starts_drl;
+        }, 0);
+
+        var inj_wells_idle = _.reduce(inj_wells_idle, function (memo, item) {
+          return memo + item.inj_wells_idle;
+        }, 0);
+
+        var inj_wells_work = _.reduce(inj_wells_work, function (memo, item) {
+          return memo + item.inj_wells_work;
+        }, 0);
+
+        var prod_wells_work = _.reduce(prod_wells_work, function (memo, item) {
+          return memo + item.prod_wells_work;
+        }, 0);
+
+        var prod_wells_idle = _.reduce(prod_wells_idle, function (memo, item) {
+          return memo + item.prod_wells_idle;
+        }, 0); //factMonth = ;
+        //planMonth = ;
+
+
+        var dzoMonth = [];
+        var factMonth = [];
+        var planMonth = [];
+
+        _.forEach(productionPlanAndFactMonth, function (item) {
+          factMonth.push({
+            factMonth: item.productionFactForChart
+          });
+          planMonth.push({
+            planMonth: item.productionPlanForChart
+          });
+          dzoMonth.push({
+            dzoMonth: item.dzo
+          });
+        }); //console.log(factYear);
+
+
+        console.log(dzoYear);
+
+        if (_this.company == "all") {
+          var bigTable = _.zipWith(dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay, function (dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay) {
+            return _.defaults(dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay);
+          });
+
+          _this.bigTable = bigTable;
+          var wells = [];
+          wells = _.zipWith([{
+            inj_wells_idle: inj_wells_idle
+          }], [{
+            inj_wells_work: inj_wells_work
+          }], function (inj_wells_idle, inj_wells_work) {
+            return _.defaults(inj_wells_idle, inj_wells_work);
+          });
+          _this.wells = wells;
+          wells2 = _.zipWith([{
+            prod_wells_work: prod_wells_work
+          }], [{
+            prod_wells_idle: prod_wells_idle
+          }], function (prod_wells_work, prod_wells_idle) {
+            return _.defaults(prod_wells_work, prod_wells_idle);
+          });
+          _this.wells2 = wells2;
+
+          var starts = _.zipWith([{
+            starts_krs: starts_krs
+          }], [{
+            starts_prs: starts_prs
+          }], [{
+            starts_drl: starts_drl
+          }], function (prod_wells_work, prod_wells_idle) {
+            return _.defaults(prod_wells_work, prod_wells_idle);
+          });
+
+          _this.starts = starts;
+          productionForChart = {
+            data: productionForChart
+          };
+          _this.productionForChart = productionForChart;
+        } // if (this.company != "all") { this.displayHeadTables = "display: none";}
+
+
+        if (_this.company == "all") {
+          _this.displayTable = "display:none;";
+          _this.displayHeadTables = "display: block";
+        } else {
+          console.log(_this.showTableItem);
+
+          if (_this.showTableItem == "Yes") {
+            _this.displayTable = "display:block;";
+          } else {
+            _this.displayTable = "display:none;";
+          }
+
+          _this.displayHeadTables = "display: none";
         }
       });
     },
+    showTable: function showTable(showTableItem) {
+      var showTableOn = " border: none;" + "color: white;" + "background: url(../img/level1/button-on.png) no-repeat;" + "background-size: 16% auto;" + "background-position: 80% 50%;" + "outline: none;";
 
-    /*getSelectedDay() {
-      localStorage.setItem("selected-day", this.selectedDay);
-      var selectedDay = localStorage.getItem("selected-day");
-      this.selectedDay = selectedDay;
-      this.selectedColour = "background:red!important;";
-    },
-          getSelectedMonth() {
-      localStorage.setItem("selected-day", this.selectedDay);
-      var selectedDay = localStorage.getItem("selected-month");
-      this.selectedDay = selectedDay;
-      this.selectedColour = "background:red!important;";
-    },*/
-    calendar: function calendar() {
-      var days = [];
-      var week = 0;
-      days[week] = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate();
+      if (showTableItem == "Yes") {
+        this.showTable2 = "No";
 
-      for (var i = 1; i <= dlast; i++) {
-        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
-          var a = {
-            index: i,
-            id: i
-          };
-          days[week].push(a);
-
-          if (this.selectedDay == i) {
-            a.current = "black";
-          } else if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
-            a.current = "#009846";
-          }
-
-          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
-            a.weekend = '#ff0000';
-          }
-
-          ;
+        if (this.company == "all") {
+          this.displayTable = "display:none;";
+          this.displayHeadTables = "display: none";
         } else {
-          week++;
-          days[week] = [];
-          a = {
-            index: i
-          };
-          days[week].push(a);
-
-          if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
-            a.current = '#747ae6';
-          }
-
-          ;
-
-          if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
-            a.weekend = '#ff0000';
-          }
-
-          ;
+          this.displayTable = "display:none;";
+          this.displayHeadTables = "display: none";
         }
-      }
-      /*	if (days[0].length > 0) {
-      		for (let i = days[0].length; i < 7; i++) {
-      			days[0].unshift('');
-      			
-      		}
-      	}*/
 
+        this.displayChart = "display:block;";
+        this.ChartTable = "Таблица"; //alert("rabotaet");
 
-      this.dayChange;
+        this.showTableOn = showTableOn; //colour button
+      } else if (showTableItem == "No") {
+        this.showTable2 = "Yes"; // this.displayTable = "On";
+        // this.displayTable = "display:block;";
 
-      if (this.selectedDMY == '0') {
-        this.display = 'block';
-        return days;
-      }
-    },
-    decrease: function decrease() {
-      this.month--;
+        this.displayChart = "display:none;";
 
-      if (this.month < 0) {
-        this.month = 12;
-        this.month--;
-        this.year--;
-      }
-    },
-    increase: function increase() {
-      this.month++;
-
-      if (this.month > 11) {
-        this.month = -1;
-        this.month++;
-        this.year++;
-      }
-    },
-    getMonths: function getMonths() {
-      var monthAll = [];
-      var month = new Date(this.year, this.month + 1, 0).getMonth();
-
-      for (var i = 1; i <= 12; i++) {
-        if (new Date(this.year, this.month, i).getMonth()) {
-          var a = {
-            index: i,
-            id: i
-          };
-          monthAll.push(a);
-
-          if (this.selectedMonth == i) {
-            a.current = "black";
-          } else if (i == new Date().getMonth() && this.year == new Date().getFullYear()
-          /* &&
-          this.month == new Date().getMonth()*/
-          ) {
-              a.current = "#009846";
-            }
+        if (this.company == "all") {
+          this.displayTable = "display:none;";
+          this.displayHeadTables = "display: block";
+        } else {
+          this.displayTable = "display:block;";
+          this.displayHeadTables = "display: none";
         }
-      }
 
-      if (this.selectedDMY == '1') {
-        this.display = 'none';
-        return monthAll;
-      }
-    },
-    getYears: function getYears() {
-      var yearAll = [];
-      var year = this.year;
-
-      for (var i = 2018; i <= year; i++) {
-        //if (this.year, this.month, i).getYear() ) {
-        var a = {
-          index: i,
-          id: i
-        };
-        yearAll.push(a);
-
-        if (this.selectedYear == i) {
-          a.current = "black";
-        } else if (i == year
-        /*&&
-        this.year == new Date().getFullYear() &&
-        this.month == new Date().getMonth()*/
-        ) {
-            a.current = "#009846";
-          }
-      }
-
-      if (this.selectedDMY == '2') {
-        this.display = 'none';
-        return yearAll;
+        this.ChartTable = "График";
+        this.showTableOn = ""; //colour button
+        //alert(" ne rabotaet");
       }
     },
-    menuDMY: function menuDMY() {
-      var DMY = ['День', 'Месяц', 'Год'];
-      var menuDMY = [];
-      var id = 0;
-
-      for (var i = 0; i <= 2; i++) {
-        var a = {
-          index: i,
-          id: i
-        };
-        a.DMY = DMY[i];
-        menuDMY.push(a);
-
-        if (this.selectedDMY == i) {
-          a.current = "rgb(0, 152, 70)";
-        }
+    onStorageUpdate: function onStorageUpdate(event) {
+      if (event.key === "company") {
+        this.company = event.newValue;
       }
-
-      return menuDMY; //console.log(DMY);
     }
+  },
+  created: function created() {
+    _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on("messageSend", this.displayMessage);
   },
   computed: {
     dayChange: function dayChange() {
@@ -4031,6 +5187,35 @@ __webpack_require__.r(__webpack_exports__);
         this.day = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
       }
     }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    return _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      var productionPlan, productionFact;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              productionPlan = localStorage.getItem("production-plan");
+              productionFact = localStorage.getItem("production-fact");
+
+              if (_this2.company == "all") {
+                _this2.getProduction("oil_plan", "oil_fact", "Добыча нефти");
+              } // this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
+
+
+              localStorage.setItem("selectedDMY", "undefined");
+
+            case 4:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   }
 });
 
@@ -73390,6 +74575,743 @@ process.umask = function() { return 0; };
 
 /***/ }),
 
+/***/ "./node_modules/regenerator-runtime/runtime.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/regenerator-runtime/runtime.js ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return Promise.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return Promise.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new Promise(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList) {
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList)
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   true ? module.exports : undefined
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/setimmediate/setImmediate.js":
 /*!***************************************************!*\
   !*** ./node_modules/setimmediate/setImmediate.js ***!
@@ -74514,7 +76436,7 @@ var render = function() {
       _c("apexchart", {
         attrs: {
           type: "bar",
-          height: "180",
+          height: "170",
           width: "400",
           options: _vm.chartOptions,
           series: _vm.series
@@ -74665,7 +76587,7 @@ var render = function() {
       {
         staticClass:
           "bg-dark list-group-item list-group-item-action circle-menu",
-        style: "" + _vm.buttonMenuHover2,
+        style: "" + _vm.buttonMenuHoverAll,
         attrs: { href: "#" },
         on: {
           click: function($event) {
@@ -75226,7 +77148,26 @@ var render = function() {
           _c("div", { staticClass: "main col-lg-7-2 row" }, [
             _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }),
             _vm._v(" "),
-            _vm._m(0),
+            _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
+              _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
+                _c("div", { staticClass: "timer-visual-center" }, [
+                  _c("div", { staticClass: "timer" }, [
+                    _c("div", { staticClass: "time" }, [
+                      _vm._v(_vm._s(_vm.date2))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "date" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.date3) +
+                          "\n                    "
+                      ),
+                      _c("p", [_vm._v(_vm._s(_vm.company))])
+                    ])
+                  ])
+                ])
+              ])
+            ]),
             _vm._v(" "),
             _c(
               "div",
@@ -75246,7 +77187,13 @@ var render = function() {
                         }
                       }
                     },
-                    [_vm._v("\n                " + _vm._s(menuDMY.DMY) + " ")]
+                    [
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(menuDMY.DMY) +
+                          "\n            "
+                      )
+                    ]
                   )
                 }),
                 _vm._v(" "),
@@ -75324,7 +77271,6 @@ var render = function() {
                           key: index.id,
                           staticClass: "week",
                           style: {
-                            // color: day.weekend,
                             "background-color": month.current
                           },
                           on: {
@@ -75333,7 +77279,13 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v(_vm._s(month.index))]
+                        [
+                          _vm._v(
+                            "\n                " +
+                              _vm._s(month.index) +
+                              "\n              "
+                          )
+                        ]
                       )
                     }),
                     _vm._v(" "),
@@ -75344,7 +77296,6 @@ var render = function() {
                           key: year.id,
                           staticClass: "week",
                           style: {
-                            // color: day.weekend,
                             "background-color": year.current
                           },
                           on: {
@@ -75353,7 +77304,13 @@ var render = function() {
                             }
                           }
                         },
-                        [_vm._v(_vm._s(year.index))]
+                        [
+                          _vm._v(
+                            "\n                " +
+                              _vm._s(year.index) +
+                              "\n              "
+                          )
+                        ]
                       )
                     })
                   ],
@@ -75385,9 +77342,7 @@ var render = function() {
                       },
                       [
                         _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v(
-                            "\n                          Добыча нефти\n                        "
-                          )
+                          _vm._v("Добыча нефти")
                         ])
                       ]
                     )
@@ -75412,9 +77367,7 @@ var render = function() {
                       },
                       [
                         _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v(
-                            "\n                          Сдача нефти\n                        "
-                          )
+                          _vm._v("Сдача нефти")
                         ])
                       ]
                     )
@@ -75523,7 +77476,27 @@ var render = function() {
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "tables" },
+                  {
+                    staticClass: "right-table-button right-button",
+                    style: "" + _vm.showTableOn,
+                    on: {
+                      click: function($event) {
+                        return _vm.showTable("" + _vm.showTable2)
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.ChartTable) +
+                        "\n              "
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "tables", style: "" + _vm.displayHeadTables },
                   [
                     _c("div", { staticClass: "tables-name" }, [
                       _vm._v(_vm._s(_vm.circleMenu))
@@ -75545,13 +77518,286 @@ var render = function() {
                         { staticClass: "cell-last-top table-border cell-last" },
                         [
                           _vm._v(
-                            "\n                        ДОБЫЧА, тонн\n                      "
+                            "\n                    ДОБЫЧА, тонн\n                  "
                           )
                         ]
                       ),
                       _vm._v(" "),
                       _c("div", { staticClass: "cell2 table-border" }, [
-                        _vm._v("План на " + _vm._s(_vm.selectedYear) + " год")
+                        _vm._v(
+                          "\n                    План на " +
+                            _vm._s(_vm.selectedYear) +
+                            " год\n                  "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell2 table-border" }, [
+                        _vm._v(
+                          "\n                    План на " +
+                            _vm._s(_vm.currentMonth) +
+                            " месяц\n                  "
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell3 table-border" }, [
+                        _vm._v("СУТОЧНАЯ")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell3 table-border" }, [
+                        _vm._v("С НАЧАЛА МЕСЯЦА")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "cell3 table-border cell-last" },
+                        [
+                          _vm._v(
+                            "\n                    С НАЧАЛА ГОДА\n                  "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ПЛАН")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ФАКТ")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("(+,-)")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ПЛАН")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ФАКТ")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("(+,-)")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ПЛАН")
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell4 table-border" }, [
+                        _vm._v("ФАКТ")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "cell4 table-border cell-last" },
+                        [_vm._v("(+,-)")]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticStyle: { clear: "both" } }),
+                    _vm._v(" "),
+                    _vm._l(_vm.bigTable, function(item) {
+                      return _c("div", [
+                        _c("div", [
+                          _c("div", [
+                            _c("div", {
+                              staticClass: "cell-number table-border"
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "cell-name table-border" },
+                              [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(item.dzoDay) +
+                                    "\n                        "
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.planYear))
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(item.planMonth) +
+                                  "\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.planDay))
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.factDay))
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "cell table-border colour" },
+                              [
+                                _c("div", [
+                                  item.factDay
+                                    ? _c("div", {
+                                        staticClass: "circle-table",
+                                        style:
+                                          "background: " +
+                                          _vm.getColor(
+                                            item.factDay - item.planDay
+                                          )
+                                      })
+                                    : _vm._e()
+                                ]),
+                                _vm._v(" "),
+                                item.factDay
+                                  ? _c("div", [
+                                      _c("div", [
+                                        _vm._v(
+                                          _vm._s(item.factDay - item.planDay)
+                                        )
+                                      ])
+                                    ])
+                                  : _vm._e()
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(item.planMonth) +
+                                  "\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(item.factMonth) +
+                                  "\n                      "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "cell table-border colour" },
+                              [
+                                item.planMonth
+                                  ? _c("div", {
+                                      staticClass: "circle-table",
+                                      style:
+                                        "background: " +
+                                        _vm.getColor(
+                                          item.factMonth - item.planMonth
+                                        )
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                item.planMonth
+                                  ? _c("div", [
+                                      _vm._v(
+                                        "\n                          " +
+                                          _vm._s(
+                                            item.factMonth - item.planMonth
+                                          ) +
+                                          "\n                        "
+                                      )
+                                    ])
+                                  : _vm._e()
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.planYear))
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.factYear))
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "cell table-border cell-last colour"
+                              },
+                              [
+                                item.planYear
+                                  ? _c("div", {
+                                      staticClass: "circle-table",
+                                      style:
+                                        "background: " +
+                                        _vm.getColor(
+                                          item.factYear - item.planYear
+                                        )
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                item.planYear
+                                  ? _c("div", [
+                                      _vm._v(
+                                        "\n                          " +
+                                          _vm._s(
+                                            item.factYear - item.planYear
+                                          ) +
+                                          "\n                        "
+                                      )
+                                    ])
+                                  : _vm._e()
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticStyle: { clear: "both" } })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "tables-bottom-line" })
+                      ])
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "tables", style: "" + _vm.displayTable },
+                  [
+                    _c("div", { staticClass: "tables-name" }, [
+                      _vm._v(_vm._s(_vm.circleMenu))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "tables-string" }, [
+                      _c(
+                        "div",
+                        { staticClass: "cell-number-top table-border" },
+                        [_vm._v("№")]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell-name-top table-border" }, [
+                        _vm._v("Предприятия")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "cell-last-top table-border cell-last" },
+                        [
+                          _vm._v(
+                            "\n                    ДОБЫЧА, тонн\n                  "
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "cell2 table-border" }, [
+                        _vm._v(
+                          "\n                    План на " +
+                            _vm._s(_vm.selectedYear) +
+                            " год\n                  "
+                        )
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "cell2 table-border" }, [
@@ -75571,7 +77817,7 @@ var render = function() {
                         { staticClass: "cell3 table-border cell-last" },
                         [
                           _vm._v(
-                            "\n                        С НАЧАЛА ГОДА\n                      "
+                            "\n                    С НАЧАЛА ГОДА\n                  "
                           )
                         ]
                       ),
@@ -75630,11 +77876,9 @@ var render = function() {
                               { staticClass: "cell-name table-border" },
                               [
                                 _vm._v(
-                                  "\n                            " +
+                                  "\n                        " +
                                     _vm._s(item.dzo) +
-                                    " " +
-                                    _vm._s(item.time) +
-                                    "\n                          "
+                                    "\n                        "
                                 )
                               ]
                             ),
@@ -75657,35 +77901,113 @@ var render = function() {
                               "div",
                               { staticClass: "cell table-border colour" },
                               [
-                                _c("div", {
-                                  staticClass: "circle-table",
-                                  style:
-                                    "background: " +
-                                    _vm.getColor(item.fact - item.plan)
-                                }),
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(item.fact - item.plan) +
-                                    "\n                          "
-                                )
+                                _c("div", [
+                                  item.fact
+                                    ? _c("div", {
+                                        staticClass: "circle-table",
+                                        style:
+                                          "background: " +
+                                          _vm.getColor(item.fact - item.plan)
+                                      })
+                                    : _vm._e()
+                                ]),
+                                _vm._v(" "),
+                                item.fact
+                                  ? _c("div", [
+                                      _c("div", [
+                                        _vm._v(_vm._s(item.fact - item.plan))
+                                      ])
+                                    ])
+                                  : _vm._e()
                               ]
                             ),
                             _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(item.productionPlanForMonth) +
+                                  "\n                      "
+                              )
+                            ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(item.productionFactForMonth) +
+                                  "\n                      "
+                              )
+                            ]),
                             _vm._v(" "),
-                            _c("div", {
-                              staticClass: "cell table-border colour"
-                            }),
+                            _c(
+                              "div",
+                              { staticClass: "cell table-border colour" },
+                              [
+                                item.productionPlanForMonth
+                                  ? _c("div", {
+                                      staticClass: "circle-table",
+                                      style:
+                                        "background: " +
+                                        _vm.getColor(
+                                          item.productionFactForMonth -
+                                            item.productionPlanForMonth
+                                        )
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                item.productionPlanForMonth
+                                  ? _c("div", [
+                                      _vm._v(
+                                        "\n                          " +
+                                          _vm._s(
+                                            item.productionFactForMonth -
+                                              item.productionPlanForMonth
+                                          ) +
+                                          "\n                        "
+                                      )
+                                    ])
+                                  : _vm._e()
+                              ]
+                            ),
                             _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.planYear))
+                            ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
+                            _c("div", { staticClass: "cell table-border" }, [
+                              _vm._v(_vm._s(item.factYear))
+                            ]),
                             _vm._v(" "),
-                            _c("div", {
-                              staticClass: "cell table-border cell-last colour"
-                            })
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "cell table-border cell-last colour"
+                              },
+                              [
+                                item.planYear
+                                  ? _c("div", {
+                                      staticClass: "circle-table",
+                                      style:
+                                        "background: " +
+                                        _vm.getColor(
+                                          item.factYear - item.planYear
+                                        )
+                                    })
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                item.planYear
+                                  ? _c("div", [
+                                      _vm._v(
+                                        "\n                          " +
+                                          _vm._s(
+                                            item.factYear - item.planYear
+                                          ) +
+                                          "\n                        "
+                                      )
+                                    ])
+                                  : _vm._e()
+                              ]
+                            )
                           ]),
                           _vm._v(" "),
                           _c("div", { staticStyle: { clear: "both" } })
@@ -75700,14 +78022,35 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "visual-center-center",
+                style: "" + _vm.displayChart
+              },
+              [
+                _c("div", { staticClass: "tables-name" }, [
+                  _vm._v("График " + _vm._s(_vm.circleMenu))
+                ]),
+                _vm._v(" "),
+                _vm._l(_vm.productionForChart, function(serial, index) {
+                  return _c("visual-center-chart-area-center", {
+                    key: serial,
+                    attrs: { postTitle: serial }
+                  })
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
             _c("div", { staticClass: "visual-center-center" }, [
-              _vm._m(1),
+              _vm._m(0),
               _vm._v(" "),
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c("div", { staticClass: "visual-center-bottom" }, [
                 _c("div", { staticClass: "difference-of-24" }, [
-                  _vm._v("Отклонение за сутки")
+                  _vm._v("Отклонение")
                 ]),
                 _vm._v(" "),
                 _c(
@@ -75726,13 +78069,9 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "visual-center-right-column" }, [
-            _vm._m(3),
-            _vm._v(" "),
             _c("div", { staticClass: "donut" }, [
               _c("div", { staticClass: "indent" }, [
-                _vm._v(
-                  "\n                  Фонд добывающих скважин\n                "
-                )
+                _vm._v("Фонд добывающих скважин")
               ]),
               _vm._v(" "),
               _c(
@@ -75774,22 +78113,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
-      _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
-        _c("div", { staticClass: "timer-visual-center" }, [
-          _c("div", { staticClass: "left-arrow" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "timer" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "right-arrow" })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "visual-center-bottom" }, [
       _c("div", { staticClass: "visual-center-string1" }, [
         _vm._v("Отключение РП:")
@@ -75820,55 +78143,25 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "visual-center-bottom" }, [
       _c("div", { staticClass: "accidents-first accidents" }, [
-        _c("div", { staticClass: "number-of-accidents" }, [
-          _vm._v("\n                      2\n                    ")
-        ]),
-        _vm._v("\n                    Несчастные"),
+        _c("div", { staticClass: "number-of-accidents" }, [_vm._v("2")]),
+        _vm._v("\n                Несчастные "),
         _c("br"),
-        _vm._v("\n                    случаи\n                  ")
+        _vm._v("случаи\n              ")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "accidents-second accidents" }, [
-        _c("div", { staticClass: "number-of-accidents" }, [
-          _vm._v("\n                      0\n                    ")
-        ]),
-        _vm._v("\n                    Смертельные"),
+        _c("div", { staticClass: "number-of-accidents" }, [_vm._v("0")]),
+        _vm._v("\n                Смертельные "),
         _c("br"),
-        _vm._v("\n                    случаи\n                  ")
+        _vm._v("случаи\n              ")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "accidents-third accidents" }, [
-        _c("div", { staticClass: "number-of-accidents" }, [
-          _vm._v("\n                      14\n                    ")
-        ]),
-        _vm._v("\n                    COVID"),
+        _c("div", { staticClass: "number-of-accidents" }, [_vm._v("14")]),
+        _vm._v("\n                COVID "),
         _c("br"),
-        _vm._v("19\n                  ")
+        _vm._v("19\n              ")
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "right-button-panel" }, [
-      _c(
-        "div",
-        {
-          staticClass: "right-chart-button right-button",
-          attrs: { tabindex: "-5" }
-        },
-        [_vm._v("\n                  График\n                ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        {
-          staticClass: "right-table-button right-button",
-          attrs: { tabindex: "-5" }
-        },
-        [_vm._v("\n                  Таблица\n                ")]
-      )
     ])
   }
 ]
@@ -89032,15 +91325,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!*******************************************************!*\
   !*** ./resources/js/components/VisualCenterTable.vue ***!
   \*******************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _VisualCenterTable_vue_vue_type_template_id_6dd0c484___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./VisualCenterTable.vue?vue&type=template&id=6dd0c484& */ "./resources/js/components/VisualCenterTable.vue?vue&type=template&id=6dd0c484&");
 /* harmony import */ var _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VisualCenterTable.vue?vue&type=script&lang=js& */ "./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -89070,7 +91362,7 @@ component.options.__file = "resources/js/components/VisualCenterTable.vue"
 /*!********************************************************************************!*\
   !*** ./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js& ***!
   \********************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -89509,6 +91801,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight4_vue_vue_type_template_id_13e1c083___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/event-bus.js":
+/*!**********************************************!*\
+  !*** ./resources/js/components/event-bus.js ***!
+  \**********************************************/
+/*! exports provided: EventBus */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventBus", function() { return EventBus; });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 
 /***/ }),
 

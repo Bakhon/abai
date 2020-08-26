@@ -632,6 +632,7 @@ li.circle-2:hover {
     background-color: #20274e !important;
     float: left;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 .main {
@@ -786,6 +787,8 @@ li.circle-2:hover {
     outline: none;
 }
 
+
+/*
 .right-table-button:focus:not(:active) {
     border: none;
     color: white;
@@ -804,7 +807,7 @@ li.circle-2:hover {
     background-size: 16% auto;
     background-position: 80% 50%;
     outline: none;
-}
+}*/
 
 .circle-table {
     background: #0d092a;
@@ -928,7 +931,7 @@ ul.dropdown-child {
     /* height: 400px;*/
     color: white;
     overflow: hidden;
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
 }
 
 .tables-name {
@@ -1071,7 +1074,7 @@ ul.dropdown-child {
 }
 
 .tables-bottom-line {
-    width: 1280px;
+    width: 1244px;
     border-top-color: #1b6bb0;
     border-top-style: solid;
     border-top-width: 1px;
@@ -1118,7 +1121,7 @@ ul.dropdown-child {
 }
 
 .timer-visual-center {
-    margin-left: 45px;
+    margin-left: 100px;
 }
 
 .level1-tab {
@@ -1161,7 +1164,7 @@ li.circle-2 {
     position: absolute;
 }
 
-.btn-primary {
+.btn-primary-bigdata {
     background: url(../img/big-data-button.png) no-repeat;
     background-size: contain;
     width: 120px;
@@ -1175,23 +1178,8 @@ li.circle-2 {
 
 /*calendar*/
 
-.table {
-    border-collapse: collapse;
-    float: left;
-    width: 180px;
-    table-layout: fixed;
-}
-
 .format-week {
     float: right;
-}
-
-.table td {
-    text-align: center;
-}
-
-.table thead tr:last-child {
-    background-color: #dedada;
 }
 
 .navigation {
