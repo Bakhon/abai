@@ -29,7 +29,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'DruidController@economic')->name('economic');
-        Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
+        Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');       
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
         Route::get('/mfond', 'DruidController@mfond')->name('mfond');
@@ -44,6 +44,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/home', 'HomeController@index')->name('home');
         Route::resource('oildaily','OilDailyController');
         Route::get('/maps', 'DruidController@maps')->name('maps');
+        Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
     });
     Auth::routes([
         'reset' => false,

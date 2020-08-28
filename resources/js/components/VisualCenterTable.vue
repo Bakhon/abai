@@ -174,7 +174,7 @@
                 <div
                   class="right-table-button right-button"
                   :style="`${showTableOn}`"
-                  @click="showTable(`${showTable2}`)"
+                  @click="changeButton(`${showTable2}`, 'Yes')"
                 >
                   {{ ChartTable }}
                 </div>
@@ -474,12 +474,12 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      //showTableItem: "No",
       productionForChart: "",
       tables: "",
       showTable2: "Yes",
-      displayTable: "display: block;",
+      displayTable: "display: none;",
       displayChart: "display: none;",
-      showTableItem: "Yes",
       showTableOn: "",
       buttonHover1: "",
       buttonHover2: "",
@@ -562,7 +562,7 @@ export default {
       wells: [""],
       wells2: [""],
       bigTable: [""],
-      displayHeadTables: " ",
+      displayHeadTables: "",
       starts: [""],
       test: [""],
       series: ["", ""],
@@ -754,6 +754,12 @@ export default {
     },
 
     getProduction(item, item2, item3) {
+
+
+console.log(
+this.selectedDay+'.'+
+this.month+'.'+
+this.year);
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
 
@@ -1835,7 +1841,7 @@ export default {
           p = { planYear: Math.ceil(item[productionPlan]) };
           planYear.push(p);
         });
-        console.log(dzoYear);
+        //console.log(dzoYear);
 
         var currentMonth = 5;
         this.currentMonth = this.monthes2[currentMonth];
@@ -2033,7 +2039,6 @@ export default {
 
         //console.log(factYear);
 
-        console.log(dzoYear);
         if (this.company == "all") {
           var bigTable = _.zipWith(
             dzoYear,
@@ -2109,27 +2114,29 @@ export default {
 
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
-        }
-
-        // if (this.company != "all") { this.displayHeadTables = "display: none";}
-
-        if (this.company == "all") {
-          this.displayTable = "display:none;";
-          this.displayHeadTables = "display: block";
-        } else {
-          console.log(this.showTableItem);
-          if (this.showTableItem == "Yes") {
-            this.displayTable = "display:block;";
-          } else {
-            this.displayTable = "display:none;";
-          }
-
-          this.displayHeadTables = "display: none";
-        }
+        }    
       });
+  
+      this.showTable(localStorage.getItem("changeButton"));
     },
 
-    showTable(showTableItem) {
+
+changeButton(showTableItem, changeButton){
+var a;
+if (changeButton == "Yes"){
+ if (showTableItem == "Yes")
+{   a = "No"; 
+ } else 
+{   a = "Yes"; 
+ }
+this.showTable2=a;
+localStorage.setItem("changeButton", a);}
+this.showTable(localStorage.getItem("changeButton"));
+},
+
+
+    showTable(showTableItem, changeButton) {
+      console.log(showTableItem +  "changeButton 123");
       var showTableOn =
         " border: none;" +
         "color: white;" +
@@ -2138,44 +2145,42 @@ export default {
         "background-position: 80% 50%;" +
         "outline: none;";
 
+
+
+
       if (showTableItem == "Yes") {
-        this.showTable2 = "No";
-
-        if (this.company == "all") {
-          this.displayTable = "display:none;";
-          this.displayHeadTables = "display: none";
-        } else {
-          this.displayTable = "display:none;";
-          this.displayHeadTables = "display: none";
-        }
-
-        this.displayChart = "display:block;";
-
-        this.ChartTable = "Таблица";
-
-        //alert("rabotaet");
-        this.showTableOn = showTableOn; //colour button
-      } else if (showTableItem == "No") {
-        this.showTable2 = "Yes";
-
-        // this.displayTable = "On";
-        // this.displayTable = "display:block;";
+        this.ChartTable = "График";
         this.displayChart = "display:none;";
 
         if (this.company == "all") {
-          this.displayTable = "display:none;";
           this.displayHeadTables = "display: block";
+          this.displayTable = "display:none;";
         } else {
           this.displayTable = "display:block;";
           this.displayHeadTables = "display: none";
         }
-
-        this.ChartTable = "График";
         this.showTableOn = ""; //colour button
+      } else if (showTableItem == "No") {
+        this.displayTable = "display:none;";
+        this.displayHeadTables = "display: none";
+        this.displayChart = "display:block;";
+        this.ChartTable = "Таблица";
+        this.displayHeadTables = "display: none";
 
-        //alert(" ne rabotaet");
+        this.showTableOn = showTableOn; //colour button
       }
+      
+
+
+       
+
+      
+
+
     },
+
+
+    
     onStorageUpdate(event) {
       if (event.key === "company") {
         this.company = event.newValue;
@@ -2198,9 +2203,9 @@ export default {
     var productionPlan = localStorage.getItem("production-plan");
     var productionFact = localStorage.getItem("production-fact");
     if (this.company == "all") {
-      this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
+       this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
+          this.changeButton("No");
     }
-    // this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
     localStorage.setItem("selectedDMY", "undefined");
   },
 };

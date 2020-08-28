@@ -3,7 +3,7 @@
     <a
       href="#"
       class="bg-dark list-group-item list-group-item-action circle-menu"
-      :style="`${buttonMenuHoverAll}`"
+      :style="`${buttonMenuHover10}`"
       @click="saveCompany('all')"
     >
       <div class="d-flex w-100 justify-content-start align-items-center">
@@ -207,6 +207,29 @@
         </div>
       </a>
     </div>
+    <button @click="getCurrency('26.08.2020')">Получить курс валют</button>
+    <button @click="getUsd()">Получить текущий курс валют</button>
+
+    <div class="left-price-oil">
+      <div class="left-price-oil2">
+        Курс доллара
+        <div class="price-border">{{ currencyNow.description }}&#8376;</div>
+      </div>
+      <ul class="oil-string-all">
+        <li class="oil-string one2 width-price">1 казахстанский тенге равно</li>
+        <li class="oil-string two2">1</li>
+        <li class="oil-string three2">Тенге</li>
+      </ul>
+      <ul class="oil-string-all">
+        <li class="oil-string one2-2 width-price">Доллар США</li>
+        <li class="oil-string two2">
+          {{ currencyNowUsd }}
+          <!--0,0025-->
+        </li>
+        <li class="oil-string three2">Доллар</li>
+      </ul>
+      <visual-center-chart-area-usd></visual-center-chart-area-usd>
+    </div>
   </div>
   <!-- sidebar-container END -->
 </template>
@@ -226,11 +249,72 @@ export default {
       buttonMenuHover7: "",
       buttonMenuHover8: "",
       buttonMenuHover9: "",
-      buttonMenuHoverAll: "",
+      buttonMenuHover10: "",
+      currencyNow: "",
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+      currencyNow: "",
+      currencyNowUsd: "",
     };
   },
+    created() {
 
+    },
+  mounted() {
+    //now time
+    var date = new Date();
+    var currentDate =
+      date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+    this.getCurrencyNow(currentDate);
+    //now time
+
+    var Months = [];
+    var currency = [];
+    var id = [];
+    for (let i = 1; i <= this.month + 1; i++) {
+      id = i;
+      Months[i] =
+        new Date(this.year, this.month + 1).getDate() + "." + i + ".2020";
+      currency[i] = this.getCurrency(Months[i], id);
+    }
+  },
   methods: {
+
+    getCurrencyNow: function (dates) {
+      var datas;
+      let uri = "/ru/getcurrency?fdate=" + '28.8.2020' + "";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          console.log(data);
+          this.currencyNow = data;
+          this.currencyNowUsd =
+            Math.trunc((1 / data.description) * 10000) / 10000;
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+
+    getCurrency(dates, id) {
+      let uri = "/ru/getcurrency?fdate=" + dates + "";
+      this.axios.get(uri).then((response) => {
+        let data = response.data;
+        if (data) {
+          var arrdata = [];
+          var arrdata2 = [];
+          arrdata = { id: id, dates: dates, data: data.description };
+
+          arrdata = this.currency;
+          //arrdata = _.orderBy(arrdata, "id", "desk");
+          console.log(arrdata);
+          //  console.log(dates+' ' + data.description);
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+
     saveCompany(com) {
       localStorage.setItem("company", com);
       var company = localStorage.getItem("company");
@@ -299,10 +383,10 @@ export default {
         this.buttonMenuHover9 = "";
       }
 
-      if (company == "All") {
-        this.buttonMenuHoverALL = buttonMenuHover;
+      if (company == "all") {
+        this.buttonMenuHover10 = buttonMenuHover;
       } else {
-        this.buttonMenuHoverALL = "";
+        this.buttonMenuHover10 = "";
       }
 
       EventBus.$emit("messageSend", this.company);
