@@ -3975,7 +3975,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*	if (days[0].length > 0) {
       for (let i = days[0].length; i < 7; i++) {
       days[0].unshift('');
-      	}
+      }
       }*/
 
 
@@ -4422,7 +4422,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 productionPlanForChart: item[productionPlan],
               });
             });
-                    var productionFactForChart = new Array();
+                var productionFactForChart = new Array();
             _.forEach(dataWithMay, function (item) {
               productionFactForChart.push({
                 productionFactForChart: item[productionFact],
@@ -4438,7 +4438,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                _.each(productionPlanForChart, function (item) {
              productionPlanForChart2.push({productionPlanForChart});
             });
-                   var productionFactForChart2 = new Array();
+                  var productionFactForChart2 = new Array();
                 _.each(productionFactForChart, function (item) {
              productionFactForChart2.push({productionFactForChart});
             });*/
@@ -91983,8 +91983,8 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
