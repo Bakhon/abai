@@ -248,7 +248,7 @@ export default {
       ];
     }
 
-    console.log(this.postTitle);
+    //console.log(this.postTitle);
   },
 };
 </script>

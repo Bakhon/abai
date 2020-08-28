@@ -777,6 +777,9 @@ li.circle-2:hover {
     outline: none;
 }
 
+
+
+
 .right-table-button {
     border: none;
     padding: 10px 60px;
@@ -787,12 +790,12 @@ li.circle-2:hover {
     outline: none;
 }
 
-
 /*
+
 .right-table-button:focus:not(:active) {
     border: none;
     color: white;
-    background: url(../img/level1/button-on.png) no-repeat;
+    background: url(../img/level1/button-off.png) no-repeat;
     border: none;
     pointer-events: none;
     background-size: 16% auto;

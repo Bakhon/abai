@@ -2436,9 +2436,8 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         },
         data: productionFactForChartYear
       }];
-    }
+    } //console.log(this.postTitle);
 
-    console.log(this.postTitle);
   }
 });
 
@@ -2988,6 +2987,31 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./event-bus.js */ "./resources/js/components/event-bus.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3204,7 +3228,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    return {
+    var _ref;
+
+    return _ref = {
       company: "",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
@@ -3215,10 +3241,70 @@ __webpack_require__.r(__webpack_exports__);
       buttonMenuHover7: "",
       buttonMenuHover8: "",
       buttonMenuHover9: "",
-      buttonMenuHoverAll: ""
-    };
+      buttonMenuHover10: "",
+      currencyNow: "",
+      month: new Date().getMonth(),
+      year: new Date().getFullYear()
+    }, _defineProperty(_ref, "currencyNow", ""), _defineProperty(_ref, "currencyNowUsd", ""), _ref;
+  },
+  created: function created() {},
+  mounted: function mounted() {
+    //now time
+    var date = new Date();
+    var currentDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
+    this.getCurrencyNow(currentDate); //now time
+
+    var Months = [];
+    var currency = [];
+    var id = [];
+
+    for (var i = 1; i <= this.month + 1; i++) {
+      id = i;
+      Months[i] = new Date(this.year, this.month + 1).getDate() + "." + i + ".2020";
+      currency[i] = this.getCurrency(Months[i], id);
+    }
   },
   methods: {
+    getCurrencyNow: function getCurrencyNow(dates) {
+      var _this = this;
+
+      var datas;
+      var uri = "/ru/getcurrency?fdate=" + '28.8.2020' + "";
+      this.axios.get(uri).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          console.log(data);
+          _this.currencyNow = data;
+          _this.currencyNowUsd = Math.trunc(1 / data.description * 10000) / 10000;
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+    getCurrency: function getCurrency(dates, id) {
+      var _this2 = this;
+
+      var uri = "/ru/getcurrency?fdate=" + dates + "";
+      this.axios.get(uri).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          var arrdata = [];
+          var arrdata2 = [];
+          arrdata = {
+            id: id,
+            dates: dates,
+            data: data.description
+          };
+          arrdata = _this2.currency; //arrdata = _.orderBy(arrdata, "id", "desk");
+
+          console.log(arrdata); //  console.log(dates+' ' + data.description);
+        } else {
+          console.log("No data");
+        }
+      });
+    },
     saveCompany: function saveCompany(com) {
       localStorage.setItem("company", com);
       var company = localStorage.getItem("company");
@@ -3279,10 +3365,10 @@ __webpack_require__.r(__webpack_exports__);
         this.buttonMenuHover9 = "";
       }
 
-      if (company == "All") {
-        this.buttonMenuHoverALL = buttonMenuHover;
+      if (company == "all") {
+        this.buttonMenuHover10 = buttonMenuHover;
       } else {
-        this.buttonMenuHoverALL = "";
+        this.buttonMenuHover10 = "";
       }
 
       _event_bus_js__WEBPACK_IMPORTED_MODULE_0__["EventBus"].$emit("messageSend", this.company);
@@ -3784,12 +3870,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   template: "#vue-status-overview-template",
   data: function data() {
     return {
+      //showTableItem: "No",
       productionForChart: "",
       tables: "",
       showTable2: "Yes",
-      displayTable: "display: block;",
+      displayTable: "display: none;",
       displayChart: "display: none;",
-      showTableItem: "Yes",
       showTableOn: "",
       buttonHover1: "",
       buttonHover2: "",
@@ -3828,7 +3914,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       wells: [""],
       wells2: [""],
       bigTable: [""],
-      displayHeadTables: " ",
+      displayHeadTables: "",
       starts: [""],
       test: [""],
       series: ["", ""],
@@ -4032,6 +4118,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getProduction: function getProduction(item, item2, item3) {
       var _this = this;
 
+      console.log(this.selectedDay + '.' + this.month + '.' + this.year);
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
       var productionPlan = localStorage.getItem("production-plan");
@@ -4896,9 +4983,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             planYear: Math.ceil(item[productionPlan])
           };
           planYear.push(p);
-        });
+        }); //console.log(dzoYear);
 
-        console.log(dzoYear);
+
         var currentMonth = 5;
         _this.currentMonth = _this.monthes2[currentMonth];
         var timestampMonthStart = new Date( //this.monthes2[this.month+1] + //change when data upgrade
@@ -5074,8 +5161,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }); //console.log(factYear);
 
 
-        console.log(dzoYear);
-
         if (_this.company == "all") {
           var bigTable = _.zipWith(dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay, function (dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay) {
             return _.defaults(dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay);
@@ -5115,60 +5200,50 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             data: productionForChart
           };
           _this.productionForChart = productionForChart;
-        } // if (this.company != "all") { this.displayHeadTables = "display: none";}
-
-
-        if (_this.company == "all") {
-          _this.displayTable = "display:none;";
-          _this.displayHeadTables = "display: block";
-        } else {
-          console.log(_this.showTableItem);
-
-          if (_this.showTableItem == "Yes") {
-            _this.displayTable = "display:block;";
-          } else {
-            _this.displayTable = "display:none;";
-          }
-
-          _this.displayHeadTables = "display: none";
         }
       });
+      this.showTable(localStorage.getItem("changeButton"));
     },
-    showTable: function showTable(showTableItem) {
+    changeButton: function changeButton(showTableItem, _changeButton) {
+      var a;
+
+      if (_changeButton == "Yes") {
+        if (showTableItem == "Yes") {
+          a = "No";
+        } else {
+          a = "Yes";
+        }
+
+        this.showTable2 = a;
+        localStorage.setItem("changeButton", a);
+      }
+
+      this.showTable(localStorage.getItem("changeButton"));
+    },
+    showTable: function showTable(showTableItem, changeButton) {
+      console.log(showTableItem + "changeButton 123");
       var showTableOn = " border: none;" + "color: white;" + "background: url(../img/level1/button-on.png) no-repeat;" + "background-size: 16% auto;" + "background-position: 80% 50%;" + "outline: none;";
 
       if (showTableItem == "Yes") {
-        this.showTable2 = "No";
-
-        if (this.company == "all") {
-          this.displayTable = "display:none;";
-          this.displayHeadTables = "display: none";
-        } else {
-          this.displayTable = "display:none;";
-          this.displayHeadTables = "display: none";
-        }
-
-        this.displayChart = "display:block;";
-        this.ChartTable = "Таблица"; //alert("rabotaet");
-
-        this.showTableOn = showTableOn; //colour button
-      } else if (showTableItem == "No") {
-        this.showTable2 = "Yes"; // this.displayTable = "On";
-        // this.displayTable = "display:block;";
-
+        this.ChartTable = "График";
         this.displayChart = "display:none;";
 
         if (this.company == "all") {
-          this.displayTable = "display:none;";
           this.displayHeadTables = "display: block";
+          this.displayTable = "display:none;";
         } else {
           this.displayTable = "display:block;";
           this.displayHeadTables = "display: none";
         }
 
-        this.ChartTable = "График";
         this.showTableOn = ""; //colour button
-        //alert(" ne rabotaet");
+      } else if (showTableItem == "No") {
+        this.displayTable = "display:none;";
+        this.displayHeadTables = "display: none";
+        this.displayChart = "display:block;";
+        this.ChartTable = "Таблица";
+        this.displayHeadTables = "display: none";
+        this.showTableOn = showTableOn; //colour button
       }
     },
     onStorageUpdate: function onStorageUpdate(event) {
@@ -5204,8 +5279,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               if (_this2.company == "all") {
                 _this2.getProduction("oil_plan", "oil_fact", "Добыча нефти");
-              } // this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
 
+                _this2.changeButton("No");
+              }
 
               localStorage.setItem("selectedDMY", "undefined");
 
@@ -76587,7 +76663,7 @@ var render = function() {
       {
         staticClass:
           "bg-dark list-group-item list-group-item-action circle-menu",
-        style: "" + _vm.buttonMenuHoverAll,
+        style: "" + _vm.buttonMenuHover10,
         attrs: { href: "#" },
         on: {
           click: function($event) {
@@ -76759,7 +76835,61 @@ var render = function() {
     _vm._v(" "),
     _vm._m(11),
     _vm._v(" "),
-    _vm._m(12)
+    _vm._m(12),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            return _vm.getCurrency("26.08.2020")
+          }
+        }
+      },
+      [_vm._v("Получить курс валют")]
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        on: {
+          click: function($event) {
+            return _vm.getUsd()
+          }
+        }
+      },
+      [_vm._v("Получить текущий курс валют")]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "left-price-oil" },
+      [
+        _c("div", { staticClass: "left-price-oil2" }, [
+          _vm._v("\n      Курс доллара\n      "),
+          _c("div", { staticClass: "price-border" }, [
+            _vm._v(_vm._s(_vm.currencyNow.description) + "₸")
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(13),
+        _vm._v(" "),
+        _c("ul", { staticClass: "oil-string-all" }, [
+          _c("li", { staticClass: "oil-string one2-2 width-price" }, [
+            _vm._v("Доллар США")
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "oil-string two2" }, [
+            _vm._v("\n        " + _vm._s(_vm.currencyNowUsd) + "\n        ")
+          ]),
+          _vm._v(" "),
+          _c("li", { staticClass: "oil-string three2" }, [_vm._v("Доллар")])
+        ]),
+        _vm._v(" "),
+        _c("visual-center-chart-area-usd")
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = [
@@ -77118,6 +77248,20 @@ var staticRenderFns = [
         )
       ]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "oil-string-all" }, [
+      _c("li", { staticClass: "oil-string one2 width-price" }, [
+        _vm._v("1 казахстанский тенге равно")
+      ]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string two2" }, [_vm._v("1")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string three2" }, [_vm._v("Тенге")])
+    ])
   }
 ]
 render._withStripped = true
@@ -77481,7 +77625,7 @@ var render = function() {
                     style: "" + _vm.showTableOn,
                     on: {
                       click: function($event) {
-                        return _vm.showTable("" + _vm.showTable2)
+                        return _vm.changeButton("" + _vm.showTable2, "Yes")
                       }
                     }
                   },
