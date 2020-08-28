@@ -236,5 +236,9 @@ class DruidController extends Controller
             }
         }
     }
+    public function mzdn()
+    {
+        return view('reports.mzdn');
+    }
 
 }
