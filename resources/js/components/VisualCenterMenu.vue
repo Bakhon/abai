@@ -207,7 +207,7 @@
         </div>
       </a>
     </div>
-   <!-- <button @click="getCurrency('26.08.2020')">Получить курс валют</button>
+    <!--<button @click="getCurrency('26.08.2020')">Получить курс валют</button>
     <button @click="getCurrencyNow()">Получить текущий курс валют</button>-->
 
 
@@ -287,11 +287,10 @@ export default {
       currencyNow: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
-      currencyNow: "",
       currencyNowUsd: "",
     };
   },
-    created() {
+    updated() {
 
     },
   mounted() {
@@ -300,7 +299,10 @@ export default {
     var currentDate =
       date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
     this.getCurrencyNow(currentDate);
-    //now time
+    //now time 
+
+
+
 
     var Months = [];
     var currency = [];
@@ -313,13 +315,14 @@ export default {
     }
   },
   methods: {
-        timeSelect: function (select) {
+        timeSelect2: function (select) {
       this.timeSelect = select;
+       this.getCurrencyNow(this.timeSelect);
     },
 
     getCurrencyNow: function (dates) {
       var datas;
-      let uri = "/ru/getcurrency?fdate=" + '28.8.2020' + "";
+      let uri = "/ru/getcurrency?fdate=" + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -331,9 +334,12 @@ export default {
           console.log("No data");
         }
       });
+
     },
 
-    getCurrency(dates, id) {
+    getCurrency(dates, id
+    
+    ) {
       let uri = "/ru/getcurrency?fdate=" + dates + "";
       this.axios.get(uri).then((response) => {
         let data = response.data;
@@ -431,13 +437,30 @@ export default {
   },
 
 created() {
- EventBus.$on("timeSelect", this.timeSelect); 
+ EventBus.$on("timeSelect", this.timeSelect2); 
 this.buttonMenuHover10=  "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
         "background-size: 9% auto;" +
         "background-position: 75% 50%;" +
         "border: none;" +
         "height: 40px;" +
         "pointer-events: none;";
-}
+},
+  computed: {
+ 
+
+
+  },
+  
+
+/*
+watch: {
+    a: function (val, oldVal) {
+      console.log('новое значение: %s, старое значение: %s', val, oldVal)
+    },
+
+
+watch(){
+  this.getCurrencyNow(this.timeSelect);
+}*/
 };
 </script>

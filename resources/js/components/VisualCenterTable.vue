@@ -13,8 +13,7 @@
                     <div class="time">{{ date2 }}</div>
                     <div class="date">
                       {{ date3 }}
-                      <p></p>
-                    </div>
+                                    </div>
                   </div>
                   <!-- <div class="right-arrow"></div>-->
                 </div>
@@ -2178,11 +2177,11 @@ this.showTable(localStorage.getItem("changeButton"));
 
 
     
-    onStorageUpdate(event) {
+    /*onStorageUpdate(event) {
       if (event.key === "company") {
         this.company = event.newValue;
       }
-    },
+    },*/
   },
   created: function () {
     EventBus.$on("messageSend", this.displayMessage);
