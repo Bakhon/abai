@@ -3225,13 +3225,47 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({
+/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
   data: function data() {
     var _ref;
 
     return _ref = {
       company: "",
+      timeSelect: "",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
       buttonMenuHover3: "",
@@ -3241,7 +3275,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       buttonMenuHover7: "",
       buttonMenuHover8: "",
       buttonMenuHover9: "",
-      buttonMenuHover10: "",
+      buttonMenuHover10: "all",
       currencyNow: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear()
@@ -3265,6 +3299,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   methods: {
+    timeSelect: function timeSelect(select) {
+      this.timeSelect = select;
+    },
     getCurrencyNow: function getCurrencyNow(dates) {
       var _this = this;
 
@@ -3374,7 +3411,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       _event_bus_js__WEBPACK_IMPORTED_MODULE_0__["EventBus"].$emit("messageSend", this.company);
     }
   }
-});
+}, "created", function created() {
+  _event_bus_js__WEBPACK_IMPORTED_MODULE_0__["EventBus"].$on("timeSelect", this.timeSelect);
+  this.buttonMenuHover10 = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;";
+}));
 
 /***/ }),
 
@@ -3975,7 +4015,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*	if (days[0].length > 0) {
       for (let i = days[0].length; i < 7; i++) {
       days[0].unshift('');
-      }
+      	}
       }*/
 
 
@@ -4118,7 +4158,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getProduction: function getProduction(item, item2, item3) {
       var _this = this;
 
-      console.log(this.selectedDay + '.' + this.month + '.' + this.year);
+      var timeSelect = this.selectedDay + '.' + this.month + '.' + this.year;
+      _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit("timeSelect", timeSelect);
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
       var productionPlan = localStorage.getItem("production-plan");
@@ -4422,7 +4463,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 productionPlanForChart: item[productionPlan],
               });
             });
-                var productionFactForChart = new Array();
+                    var productionFactForChart = new Array();
             _.forEach(dataWithMay, function (item) {
               productionFactForChart.push({
                 productionFactForChart: item[productionFact],
@@ -4438,7 +4479,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                _.each(productionPlanForChart, function (item) {
              productionPlanForChart2.push({productionPlanForChart});
             });
-                  var productionFactForChart2 = new Array();
+                   var productionFactForChart2 = new Array();
                 _.each(productionFactForChart, function (item) {
              productionFactForChart2.push({productionFactForChart});
             });*/
@@ -76838,28 +76879,33 @@ var render = function() {
     _vm._m(12),
     _vm._v(" "),
     _c(
-      "button",
-      {
-        on: {
-          click: function($event) {
-            return _vm.getCurrency("26.08.2020")
-          }
-        }
-      },
-      [_vm._v("Получить курс валют")]
+      "div",
+      { staticClass: "left-price-oil" },
+      [
+        _vm._m(13),
+        _vm._v(" "),
+        _c("hr", { staticClass: "hr-visualcenter" }),
+        _vm._v(" "),
+        _c("visual-center-chart-area-oil"),
+        _vm._v(" "),
+        _c("hr", { staticClass: "hr-visualcenter" }),
+        _vm._v(" "),
+        _vm._m(14),
+        _vm._v(" "),
+        _c("hr", { staticClass: "hr-visualcenter" }),
+        _vm._v(" "),
+        _vm._m(15),
+        _vm._v(" "),
+        _c("hr", { staticClass: "hr-visualcenter" }),
+        _vm._v(" "),
+        _vm._m(16),
+        _vm._v(" "),
+        _c("hr", { staticClass: "hr-visualcenter" })
+      ],
+      1
     ),
     _vm._v(" "),
-    _c(
-      "button",
-      {
-        on: {
-          click: function($event) {
-            return _vm.getUsd()
-          }
-        }
-      },
-      [_vm._v("Получить текущий курс валют")]
-    ),
+    _c("div", { staticClass: "assets3" }),
     _vm._v(" "),
     _c(
       "div",
@@ -76872,7 +76918,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(13),
+        _vm._m(17),
         _vm._v(" "),
         _c("ul", { staticClass: "oil-string-all" }, [
           _c("li", { staticClass: "oil-string one2-2 width-price" }, [
@@ -77253,6 +77299,57 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "left-price-oil2" }, [
+      _vm._v("Цена за нефть "),
+      _c("div", { staticClass: "price-border " }, [_vm._v("43.1 $")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "oil-string-all" }, [
+      _c("li", { staticClass: "oil-string one" }, [_vm._v("Нефть Brent")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string two" }, [_vm._v("41,65")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string three" }, [_vm._v("+0,60")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string three" }, [_vm._v("+1,46%")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "oil-string-all" }, [
+      _c("li", { staticClass: "oil-string one" }, [_vm._v("Нефть WTI")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string two" }, [_vm._v("41,65")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string three" }, [_vm._v("+0,60")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string three" }, [_vm._v("+1,46%")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("ul", { staticClass: "oil-string-all" }, [
+      _c("li", { staticClass: "oil-string one" }, [_vm._v("Нефть Urals")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string two" }, [_vm._v("41,65")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string three" }, [_vm._v("+0,60")]),
+      _vm._v(" "),
+      _c("li", { staticClass: "oil-string three" }, [_vm._v("+1,46%")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("ul", { staticClass: "oil-string-all" }, [
       _c("li", { staticClass: "oil-string one2 width-price" }, [
         _vm._v("1 казахстанский тенге равно")
@@ -77306,7 +77403,7 @@ var render = function() {
                           _vm._s(_vm.date3) +
                           "\n                    "
                       ),
-                      _c("p", [_vm._v(_vm._s(_vm.company))])
+                      _c("p")
                     ])
                   ])
                 ])
@@ -91983,8 +92080,8 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

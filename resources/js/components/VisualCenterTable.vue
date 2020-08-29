@@ -13,7 +13,7 @@
                     <div class="time">{{ date2 }}</div>
                     <div class="date">
                       {{ date3 }}
-                      <p>{{ company }}</p>
+                      <p></p>
                     </div>
                   </div>
                   <!-- <div class="right-arrow"></div>-->
@@ -754,12 +754,9 @@ export default {
     },
 
     getProduction(item, item2, item3) {
+var timeSelect=this.selectedDay+'.'+this.month+'.'+this.year;
+ EventBus.$emit("timeSelect",timeSelect );
 
-
-console.log(
-this.selectedDay+'.'+
-this.month+'.'+
-this.year);
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
 

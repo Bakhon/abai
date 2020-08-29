@@ -207,8 +207,41 @@
         </div>
       </a>
     </div>
-    <button @click="getCurrency('26.08.2020')">Получить курс валют</button>
-    <button @click="getUsd()">Получить текущий курс валют</button>
+   <!-- <button @click="getCurrency('26.08.2020')">Получить курс валют</button>
+    <button @click="getCurrencyNow()">Получить текущий курс валют</button>-->
+
+
+      <div class="left-price-oil">
+        <div class="left-price-oil2">Цена за нефть <div class="price-border ">43.1 $</div>
+        </div>
+        <hr class="hr-visualcenter">
+        <visual-center-chart-area-oil></visual-center-chart-area-oil>     
+        <hr class="hr-visualcenter">
+        <ul class="oil-string-all">
+            <li class="oil-string one">Нефть Brent</li>
+            <li class="oil-string two">41,65</li>
+            <li class="oil-string three">+0,60</li>
+            <li class="oil-string three">+1,46%</li>
+        </ul>
+        <hr class="hr-visualcenter">
+        <ul class="oil-string-all">
+            <li class="oil-string one">Нефть WTI</li>
+            <li class="oil-string two">41,65</li>
+            <li class="oil-string three">+0,60</li>
+            <li class="oil-string three">+1,46%</li>
+        </ul>
+        <hr class="hr-visualcenter">
+        <ul class="oil-string-all">
+            <li class="oil-string one">Нефть Urals</li>
+            <li class="oil-string two">41,65</li>
+            <li class="oil-string three">+0,60</li>
+            <li class="oil-string three">+1,46%</li>
+        </ul>
+        <hr class="hr-visualcenter">
+    </div>
+    
+
+   <div class="assets3"></div>
 
     <div class="left-price-oil">
       <div class="left-price-oil2">
@@ -240,6 +273,7 @@ export default {
   data: function () {
     return {
       company: "",
+      timeSelect:"",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
       buttonMenuHover3: "",
@@ -249,7 +283,7 @@ export default {
       buttonMenuHover7: "",
       buttonMenuHover8: "",
       buttonMenuHover9: "",
-      buttonMenuHover10: "",
+      buttonMenuHover10: "all",
       currencyNow: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
@@ -279,6 +313,9 @@ export default {
     }
   },
   methods: {
+        timeSelect: function (select) {
+      this.timeSelect = select;
+    },
 
     getCurrencyNow: function (dates) {
       var datas;
@@ -390,7 +427,17 @@ export default {
       }
 
       EventBus.$emit("messageSend", this.company);
-    },
+    }
   },
+
+created() {
+ EventBus.$on("timeSelect", this.timeSelect); 
+this.buttonMenuHover10=  "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
+        "background-size: 9% auto;" +
+        "background-position: 75% 50%;" +
+        "border: none;" +
+        "height: 40px;" +
+        "pointer-events: none;";
+}
 };
 </script>
