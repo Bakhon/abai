@@ -2987,8 +2987,6 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./event-bus.js */ "./resources/js/components/event-bus.js");
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -3259,11 +3257,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = (_defineProperty({
+/* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
-    var _ref;
-
-    return _ref = {
+    return {
       company: "",
       timeSelect: "",
       buttonMenuHover1: "",
@@ -3278,15 +3274,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       buttonMenuHover10: "all",
       currencyNow: "",
       month: new Date().getMonth(),
-      year: new Date().getFullYear()
-    }, _defineProperty(_ref, "currencyNow", ""), _defineProperty(_ref, "currencyNowUsd", ""), _ref;
+      year: new Date().getFullYear(),
+      currencyNowUsd: ""
+    };
   },
-  created: function created() {},
+  updated: function updated() {},
   mounted: function mounted() {
     //now time
     var date = new Date();
     var currentDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    this.getCurrencyNow(currentDate); //now time
+    this.getCurrencyNow(currentDate); //now time 
 
     var Months = [];
     var currency = [];
@@ -3299,14 +3296,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   methods: {
-    timeSelect: function timeSelect(select) {
+    timeSelect2: function timeSelect2(select) {
       this.timeSelect = select;
+      this.getCurrencyNow(this.timeSelect);
     },
     getCurrencyNow: function getCurrencyNow(dates) {
       var _this = this;
 
       var datas;
-      var uri = "/ru/getcurrency?fdate=" + '28.8.2020' + "";
+      var uri = "/ru/getcurrency?fdate=" + dates + "";
       this.axios.get(uri).then(function (response) {
         var data = response.data;
 
@@ -3410,11 +3408,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       _event_bus_js__WEBPACK_IMPORTED_MODULE_0__["EventBus"].$emit("messageSend", this.company);
     }
-  }
-}, "created", function created() {
-  _event_bus_js__WEBPACK_IMPORTED_MODULE_0__["EventBus"].$on("timeSelect", this.timeSelect);
-  this.buttonMenuHover10 = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;";
-}));
+  },
+  created: function created() {
+    _event_bus_js__WEBPACK_IMPORTED_MODULE_0__["EventBus"].$on("timeSelect", this.timeSelect2);
+    this.buttonMenuHover10 = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;";
+  },
+  computed: {}
+  /*
+  watch: {
+      a: function (val, oldVal) {
+        console.log('новое значение: %s, старое значение: %s', val, oldVal)
+      },
+  
+  
+  watch(){
+    this.getCurrencyNow(this.timeSelect);
+  }*/
+
+});
 
 /***/ }),
 
@@ -3436,7 +3447,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
 //
 //
 //
@@ -5286,12 +5296,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.displayHeadTables = "display: none";
         this.showTableOn = showTableOn; //colour button
       }
-    },
-    onStorageUpdate: function onStorageUpdate(event) {
+    }
+    /*onStorageUpdate(event) {
       if (event.key === "company") {
         this.company = event.newValue;
       }
-    }
+    },*/
+
   },
   created: function created() {
     _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on("messageSend", this.displayMessage);
@@ -77401,9 +77412,8 @@ var render = function() {
                       _vm._v(
                         "\n                    " +
                           _vm._s(_vm.date3) +
-                          "\n                    "
-                      ),
-                      _c("p")
+                          "\n                                  "
+                      )
                     ])
                   ])
                 ])
