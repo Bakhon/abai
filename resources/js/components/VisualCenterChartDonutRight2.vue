@@ -40,7 +40,7 @@ export default {
         legend: {
           show: false,
         } /*убирается навигация рядом с кругом*/,
-        colors: ["#47d660", "#ec5464"],
+        colors: ["#13B062", "#DA454E"],
 
         plotOptions: {
           pie: {
@@ -65,7 +65,7 @@ export default {
   },
 
   created: function () {
-    console.log(this.wells);
+    //console.log(this.wells);
     var a = this.wells.inj_wells_work;
     var b = this.wells.inj_wells_idle;
     var wells = new Array(a, b);

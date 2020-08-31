@@ -19,6 +19,7 @@ Route::get('/', function () {
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
     Route::group(['middleware' => 'auth'], function () {
         Route::get("/geteconimicdata", "EconomicController@getEconomicData");
+        Route::get("/getcurrency", "DruidController@getCurrency");
         Route::get('/', function () {
             return view('welcome');
         });
@@ -28,12 +29,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
-        Route::get('/economictest', 'EconomicController@test')->name('economictest');
-        Route::get('/getbignumberdata', 'EconomicController@getBigNumberData')->name('getbignumberdata');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
         Route::get('/mfond', 'DruidController@mfond')->name('mfond');
+        Route::get('/map', 'DruidController@map')->name('map');
         Route::get('/oil', 'DruidController@oil')->name('oil');
         Route::get('/facilities', 'DruidController@facilities')->name('facilities');
         Route::get('/liquid', 'DruidController@liquid')->name('liquid');
@@ -44,6 +44,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/home', 'HomeController@index')->name('home');
         Route::resource('oildaily','OilDailyController');
         Route::get('/maps', 'DruidController@maps')->name('maps');
+        Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
     });
     Auth::routes([
         'reset' => false,

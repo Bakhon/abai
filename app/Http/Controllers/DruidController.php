@@ -135,4 +135,25 @@ class DruidController extends Controller
     {
 	   return view('maps.maps');
     }
+    public function map()
+    {
+        return view('production.map');
+    }
+    public function getCurrency(Request $request)
+    {
+        $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $request->fdate;
+        $dataObj = simplexml_load_file($url);
+        if ($dataObj) {
+            foreach ($dataObj as $item) {
+                if ($item->title == 'USD') {
+                    return response()->json($item);
+                }
+            }
+        }
+    }
+    public function mzdn()
+    {
+        return view('reports.mzdn');
+    }
+
 }
