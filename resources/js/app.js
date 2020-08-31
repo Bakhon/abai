@@ -30,7 +30,6 @@ Vue.use(VueAxios, axios, VueTableDynamic);
 
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 //Vue.component('doughnut-component', require('./components/DoughnutLevelOneComponent.vue').default);
-Vue.component('mix-chart', require('./components/MixChartComponent.vue').default);
 // Vue.component('pie', require('./components/PieChart.vue').default);
 //Vue.component('chartbar', require('./components/ChartBar.vue').default);
 Vue.component('charttide', require('./components/ChartTide.vue').default);
