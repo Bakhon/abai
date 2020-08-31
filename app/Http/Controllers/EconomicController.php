@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 use Level23\Druid\Context\GroupByV2QueryContext;
@@ -12,12 +13,14 @@ use Illuminate\Http\Request;
 
 class EconomicController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         return view('economic.main');
     }
 
-    public function test(Request $request){
 
+    public function getEconomicData(Request $request)
+    {
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
 
         $builder = $client->query('economic_2020v4', Granularity::YEAR);
@@ -106,14 +109,12 @@ class EconomicController extends Controller
                 ->orderBy('prs1', 'desc')
                 ->where('profitability', '=', 'profitless_cat_1');
 
-
             $builder10
                 ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
                     $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
-                ->select('price_export_1')
                 ->select('org_id2')
                 ->count('uwi')
                 ->where('org_id2', '=', $request->org)
@@ -126,12 +127,10 @@ class EconomicController extends Controller
                     $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
-                ->select('price_export_1')
                 ->select('org_id2')
                 ->count('uwi')
                 ->where('org_id2', '=', $request->org)
                 ->where('profitability', '=', 'profitless_cat_1');
-
 
             $builder12
                 ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
@@ -139,12 +138,10 @@ class EconomicController extends Controller
                     $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
-                ->select('price_export_1')
                 ->select('org_id2')
                 ->count('uwi')
                 ->where('org_id2', '=', $request->org)
                 ->where('profitability', '=', 'profitless_cat_2');
-
 
             $builder13
                 ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
@@ -158,18 +155,18 @@ class EconomicController extends Controller
                 ->where('org_id2', '=', $request->org);
 
             $builder14
-                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+                ->interval('2020-07-30T00:00:00+00:00/2020-07-31T00:00:00+00:00')
                 ->select("uwi")
                 ->sum("Operating_profit")
                 ->where('org_id2', '=', $request->org)
                 ->where('Operating_profit', '!=', '0')
                 ->orderBy('Operating_profit', 'desc');
-        }else{
+        } else {
             $builder
-            ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
-            ->select('profitability')
-            ->sum("Operating_profit")
-            ->where('profitability', '=', 'profitless_cat_1');
+                ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
+                ->select('profitability')
+                ->sum("Operating_profit")
+                ->where('profitability', '=', 'profitless_cat_1');
 
             $builder2
                 ->interval('2020-06-01T00:00:00+00:00/2028-08-31T00:00:00+00:00')
@@ -251,7 +248,6 @@ class EconomicController extends Controller
                 ->count('uwi')
                 ->where('profitability', '=', 'profitless_cat_2');
 
-
             $builder13
                 ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
@@ -261,7 +257,7 @@ class EconomicController extends Controller
                 ->sum('oil');
 
             $builder14
-                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+                ->interval('2020-07-30T00:00:00+00:00/2020-07-31T00:00:00+00:00')
                 ->select("uwi")
                 ->sum("Operating_profit")
                 ->where('Operating_profit', '!=', '0')
@@ -303,10 +299,10 @@ class EconomicController extends Controller
         $data['count'] = [];
         $data['countProfitlessCat1PrevMonth'] = [];
         $data['countProfitlessCat1Month'] = [];
-        $data['wellsList'] =  [['Скважина','Добыча нефти','Добыча жидкости','Revenue_total','NetBack_bf_pr_exp','Operating_profit']];
-        $data['OperatingProfitMonth'] =  [['Дата','Добыча нефти','Добыча жидкости','Operating_profit']];
-        $data['OperatingProfitYear'] =  [['Дата','Добыча нефти','Добыча жидкости','Operating_profit']];
-        $data['prs1'] =  [['Скважина','Количесвто ПРС']];
+        $data['wellsList'] =  [['Скважина', 'Добыча нефти', 'Добыча жидкости', 'Revenue_total', 'NetBack_bf_pr_exp', 'Operating_profit']];
+        $data['OperatingProfitMonth'] =  [['Дата', 'Добыча нефти', 'Добыча жидкости', 'Operating_profit']];
+        $data['OperatingProfitYear'] =  [['Дата', 'Добыча нефти', 'Добыча жидкости', 'Operating_profit']];
+        $data['prs1'] =  [['Скважина', 'Количесвто ПРС']];
 
         $dataChart['dt'] = [];
         $dataChart['profitable'] = [];
@@ -324,7 +320,7 @@ class EconomicController extends Controller
         $dataChart4['uwi'] = [];
         $dataChart4['Operating_profit'] = [];
 
-        foreach($array6 as $item){
+        foreach ($array6 as $item) {
             $well = [];
             array_push($well, $item['uwi']);
             array_push($well, $item['oil']);
@@ -335,7 +331,7 @@ class EconomicController extends Controller
             array_push($data['wellsList'], $well);
         }
 
-        foreach($array7 as $item){
+        foreach ($array7 as $item) {
             $well = [];
             array_push($well, date('d-m-Y', strtotime($item['timestamp'])));
             array_push($well, $item['oil']);
@@ -344,7 +340,7 @@ class EconomicController extends Controller
             array_push($data['OperatingProfitMonth'], $well);
         }
 
-        foreach($array8 as $item){
+        foreach ($array8 as $item) {
             $well = [];
             array_push($well, date('m-Y', strtotime($item['timestamp'])));
             array_push($well, $item['oil']);
@@ -353,37 +349,35 @@ class EconomicController extends Controller
             array_push($data['OperatingProfitYear'], $well);
         }
 
-        foreach($array9 as $item){
+        foreach ($array9 as $item) {
             $well = [];
             array_push($well, $item['uwi']);
             array_push($well, $item['prs1']);
             array_push($data['prs1'], $well);
         }
 
-        foreach($array10 as $item){
+        foreach ($array10 as $item) {
             array_push($dataChart['dt'], $item['dt']);
             array_push($dataChart['profitable'], $item['uwi']);
         }
 
-        foreach($array11 as $item){
+        foreach ($array11 as $item) {
             array_push($dataChart['profitless_cat_1'], $item['uwi']);
         }
 
-        foreach($array12 as $item){
+        foreach ($array12 as $item) {
             array_push($dataChart['profitless_cat_2'], $item['uwi']);
         }
 
-        foreach($array13 as $item){
+        foreach ($array13 as $item) {
             if (!in_array($item['dt'], $dataChart2['dt'])) {
                 array_push($dataChart2['dt'], $item['dt']);
             }
-            if($item['profitability'] == 'profitable'){
+            if ($item['profitability'] == 'profitable') {
                 array_push($dataChart2['profitable'], $item['oil']);
-            }
-            elseif($item['profitability'] == 'profitless_cat_2'){
+            } elseif ($item['profitability'] == 'profitless_cat_2') {
                 array_push($dataChart2['profitless_cat_2'], $item['oil']);
-            }
-            elseif($item['profitability'] == 'profitless_cat_1'){
+            } elseif ($item['profitability'] == 'profitless_cat_1') {
                 array_push($dataChart2['profitless_cat_1'], $item['oil']);
             }
         }
@@ -403,9 +397,9 @@ class EconomicController extends Controller
         $averageProfitlessCat1PrevMonth = count($array3);
 
 
-        $yearIndex = count($array)-1;
-        $lastMonthIndex = count($array2)-1;
-        $prevMonthIndex = count($array2)-2;
+        $yearIndex = count($array) - 1;
+        $lastMonthIndex = count($array2) - 1;
+        $prevMonthIndex = count($array2) - 2;
 
 
         $year = self::moneyFotmat($array[$yearIndex]["Operating_profit"]);
@@ -413,24 +407,25 @@ class EconomicController extends Controller
         $persent = ($array2[$prevMonthIndex]["Operating_profit"] - $array2[$lastMonthIndex]["Operating_profit"]) * 100 / $array2[$prevMonthIndex]["Operating_profit"];
         $persentCount = ($averageProfitlessCat1PrevMonth - $averageProfitlessCat1Month) * 100 / $averageProfitlessCat1PrevMonth;
 
-        $vdata = ['year' => $year,
-                    'month' => $month,
-                    'persent' => round($persent),
-                    'persentCount' => round($persentCount),
-                    'averageProfitlessCat1MonthCount' => round($averageProfitlessCat1Month),
-                    'prs' => round($array5[0]["prs1"]),
-                    'wellsList' => $data['wellsList'],
-                    'OperatingProfitMonth' => $data['OperatingProfitMonth'],
-                    'OperatingProfitYear' => $data['OperatingProfitYear'],
-                    'prs1' => $data['prs1'],
-                    'chart1' => $dataChart,
-                    'chart3' => $dataChart3,
-                    'chart4' => $dataChart4,
-                ];
+        $vdata = [
+            'year' => $year,
+            'month' => $month,
+            'persent' => round($persent),
+            'persentCount' => round($persentCount),
+            'averageProfitlessCat1MonthCount' => round($averageProfitlessCat1Month),
+            'prs' => round($array5[0]["prs1"]),
+            'wellsList' => $data['wellsList'],
+            'OperatingProfitMonth' => $data['OperatingProfitMonth'],
+            'OperatingProfitYear' => $data['OperatingProfitYear'],
+            'prs1' => $data['prs1'],
+            'chart1' => $dataChart,
+            'chart2' => $dataChart2,
+            'chart3' => $dataChart3,
+            'chart4' => $dataChart4,
+        ];
 
-        return $dataChart4;
-        // return $array14;
-        return response()->json($vdata['chart1']);
+
+        return response()->json($vdata);
     }
 
     static function moneyFotmat($digit){
@@ -454,13 +449,5 @@ class EconomicController extends Controller
         }
 
         return $format;
-    }
-
-    public function getBigNumberData(Request $request){
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-
-        $builder = $client->query('economic_2020v4', Granularity::MONTH);
-
-
     }
 }

@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
     Route::group(['middleware' => 'auth'], function () {
-        Route::get("/geteconimicdata", "DruidController@getEconomicData");
+        Route::get("/geteconimicdata", "EconomicController@getEconomicData");
         Route::get('/', function () {
             return view('welcome');
         });
