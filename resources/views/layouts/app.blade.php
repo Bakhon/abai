@@ -18,7 +18,7 @@
     <body>
 @include('layouts.navbar')
 	        <div class="row" id="app" >
-@if (basename(Request::url()) === "economictest")
+@if (basename(Request::url()) === "economic")
 @elseif (basename(Request::url()) === "visualcenter")
 @include('layouts.visual-center-sidebar')
 @else

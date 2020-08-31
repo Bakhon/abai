@@ -27,8 +27,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getnkkmg', 'DruidController@getNkKmg');
         Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
-        Route::get('/economic', 'DruidController@economic')->name('economic');
-        Route::get('/economictest', 'EconomicController@index')->name('economictest');
+        Route::get('/economic', 'EconomicController@index')->name('economic');
+        Route::get('/economictest', 'EconomicController@test')->name('economictest');
+        Route::get('/getbignumberdata', 'EconomicController@getBigNumberData')->name('getbignumberdata');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
