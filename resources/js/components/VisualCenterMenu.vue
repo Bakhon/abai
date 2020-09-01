@@ -210,38 +210,38 @@
     <!--<button @click="getCurrency('26.08.2020')">Получить курс валют</button>
     <button @click="getCurrencyNow()">Получить текущий курс валют</button>-->
 
-
-      <div class="left-price-oil">
-        <div class="left-price-oil2">Цена за нефть <div class="price-border ">43.1 $</div>
-        </div>
-        <hr class="hr-visualcenter">
-        <visual-center-chart-area-oil></visual-center-chart-area-oil>     
-        <hr class="hr-visualcenter">
-        <ul class="oil-string-all">
-            <li class="oil-string one">Нефть Brent</li>
-            <li class="oil-string two">41,65</li>
-            <li class="oil-string three">+0,60</li>
-            <li class="oil-string three">+1,46%</li>
-        </ul>
-        <hr class="hr-visualcenter">
-        <ul class="oil-string-all">
-            <li class="oil-string one">Нефть WTI</li>
-            <li class="oil-string two">41,65</li>
-            <li class="oil-string three">+0,60</li>
-            <li class="oil-string three">+1,46%</li>
-        </ul>
-        <hr class="hr-visualcenter">
-        <ul class="oil-string-all">
-            <li class="oil-string one">Нефть Urals</li>
-            <li class="oil-string two">41,65</li>
-            <li class="oil-string three">+0,60</li>
-            <li class="oil-string three">+1,46%</li>
-        </ul>
-        <hr class="hr-visualcenter">
+    <div class="left-price-oil">
+      <div class="left-price-oil2">
+        Цена за нефть
+        <div class="price-border">43.1 $</div>
+      </div>
+      <hr class="hr-visualcenter" />
+      <visual-center-chart-area-oil></visual-center-chart-area-oil>
+      <hr class="hr-visualcenter" />
+      <ul class="oil-string-all">
+        <li class="oil-string one">Нефть Brent</li>
+        <li class="oil-string two">41,65</li>
+        <li class="oil-string three">+0,60</li>
+        <li class="oil-string three">+1,46%</li>
+      </ul>
+      <hr class="hr-visualcenter" />
+      <ul class="oil-string-all">
+        <li class="oil-string one">Нефть WTI</li>
+        <li class="oil-string two">41,65</li>
+        <li class="oil-string three">+0,60</li>
+        <li class="oil-string three">+1,46%</li>
+      </ul>
+      <hr class="hr-visualcenter" />
+      <ul class="oil-string-all">
+        <li class="oil-string one">Нефть Urals</li>
+        <li class="oil-string two">41,65</li>
+        <li class="oil-string three">+0,60</li>
+        <li class="oil-string three">+1,46%</li>
+      </ul>
+      <hr class="hr-visualcenter" />
     </div>
-    
 
-   <div class="assets3"></div>
+    <div class="assets3"></div>
 
     <div class="left-price-oil">
       <div class="left-price-oil2">
@@ -273,7 +273,7 @@ export default {
   data: function () {
     return {
       company: "",
-      timeSelect:"",
+      timeSelect: "",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
       buttonMenuHover3: "",
@@ -290,19 +290,15 @@ export default {
       currencyNowUsd: "",
     };
   },
-    updated() {
-
-    },
+  updated() {},
   mounted() {
+    this.getOilNow();
     //now time
     var date = new Date();
     var currentDate =
       date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
     this.getCurrencyNow(currentDate);
-    //now time 
-
-
-
+    //now time
 
     var Months = [];
     var currency = [];
@@ -315,9 +311,9 @@ export default {
     }
   },
   methods: {
-        timeSelect2: function (select) {
+    timeSelect2: function (select) {
       this.timeSelect = select;
-       this.getCurrencyNow(this.timeSelect);
+      this.getCurrencyNow(this.timeSelect);
     },
 
     getCurrencyNow: function (dates) {
@@ -326,7 +322,7 @@ export default {
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
-          console.log(data);
+          //console.log(data);
           this.currencyNow = data;
           this.currencyNowUsd =
             Math.trunc((1 / data.description) * 10000) / 10000;
@@ -334,12 +330,9 @@ export default {
           console.log("No data");
         }
       });
-
     },
 
-    getCurrency(dates, id
-    
-    ) {
+    getCurrency(dates, id) {
       let uri = "/ru/getcurrency?fdate=" + dates + "";
       this.axios.get(uri).then((response) => {
         let data = response.data;
@@ -350,8 +343,36 @@ export default {
 
           arrdata = this.currency;
           //arrdata = _.orderBy(arrdata, "id", "desk");
-          console.log(arrdata);
+          // console.log(arrdata);
           //  console.log(dates+' ' + data.description);
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+
+    getOilNow: function () {
+      var datas;
+      let uri =
+        "https://cors-anywhere.herokuapp.com/" +
+        "https://yandex.ru/news/quotes/graph_1006.json";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          var oilDate;
+          var oilValue;
+          var splits = [];
+          var oil = [];
+          var oil2;
+          _.forEach(data.prices, function (prices) {
+            splits = prices.toString().split(",");
+            oilDate=splits["0"];
+            //oilDate = oilDate.toISOString();
+            oilValue = splits["1"];
+            oil.push({ date: oilDate, value: oilValue });
+          });
+          console.log(oil[0].date);
+          this.OilNow = data;
         } else {
           console.log("No data");
         }
@@ -433,26 +454,22 @@ export default {
       }
 
       EventBus.$emit("messageSend", this.company);
-    }
+    },
   },
 
-created() {
- EventBus.$on("timeSelect", this.timeSelect2); 
-this.buttonMenuHover10=  "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
-        "background-size: 9% auto;" +
-        "background-position: 75% 50%;" +
-        "border: none;" +
-        "height: 40px;" +
-        "pointer-events: none;";
-},
-  computed: {
- 
-
-
+  created() {
+    EventBus.$on("timeSelect", this.timeSelect2);
+    this.buttonMenuHover10 =
+      "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
+      "background-size: 9% auto;" +
+      "background-position: 75% 50%;" +
+      "border: none;" +
+      "height: 40px;" +
+      "pointer-events: none;";
   },
-  
+  computed: {},
 
-/*
+  /*
 watch: {
     a: function (val, oldVal) {
       console.log('новое значение: %s, старое значение: %s', val, oldVal)

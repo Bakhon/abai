@@ -3947,6 +3947,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 //import VisualCenterMenu from'../components/VisualCenterMenu'
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4201,7 +4206,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getProduction: function getProduction(item, item2, item3) {
       var _this = this;
 
-      var timeSelect = this.selectedDay + '.' + this.month + '.' + this.year;
+      var timeSelect = this.selectedDay + "." + this.month + "." + this.year;
       _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit("timeSelect", timeSelect);
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
@@ -77444,7 +77449,7 @@ var render = function() {
                       _vm._v(
                         "\n                    " +
                           _vm._s(_vm.date3) +
-                          "\n                                  "
+                          "\n                  "
                       )
                     ])
                   ])
@@ -77636,21 +77641,21 @@ var render = function() {
                       "li",
                       {
                         staticClass: "circle-2",
-                        style: "" + _vm.buttonHover2,
+                        style: "" + _vm.buttonHover5,
                         attrs: { tabindex: "-2" },
                         on: {
                           click: function($event) {
                             return _vm.getProduction(
-                              "oil_dlv_plan",
-                              "oil_dlv_fact",
-                              "Сдача нефти"
+                              "gk_plan",
+                              "gk_fact",
+                              "Добыча конденсата"
                             )
                           }
                         }
                       },
                       [
                         _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Сдача нефти")
+                          _vm._v("Добыча конденсата")
                         ])
                       ]
                     )
@@ -77711,31 +77716,6 @@ var render = function() {
                       "li",
                       {
                         staticClass: "circle-2",
-                        style: "" + _vm.buttonHover5,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "gk_plan",
-                              "gk_fact",
-                              "Добыча конденсата"
-                            )
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Добыча конденсата")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", { attrs: { href: "#" } }, [
-                    _c(
-                      "li",
-                      {
-                        staticClass: "circle-2",
                         style: "" + _vm.buttonHover6,
                         attrs: { tabindex: "-2" },
                         on: {
@@ -77751,6 +77731,31 @@ var render = function() {
                       [
                         _c("div", { staticClass: "circle-2-string" }, [
                           _vm._v("Объём закачки")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", { attrs: { href: "#" } }, [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover2,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction(
+                              "oil_dlv_plan",
+                              "oil_dlv_fact",
+                              "Сдача нефти"
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v("Сдача нефти")
                         ])
                       ]
                     )

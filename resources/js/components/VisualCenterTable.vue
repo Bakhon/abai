@@ -13,7 +13,7 @@
                     <div class="time">{{ date2 }}</div>
                     <div class="date">
                       {{ date3 }}
-                                    </div>
+                    </div>
                   </div>
                   <!-- <div class="right-arrow"></div>-->
                 </div>
@@ -101,6 +101,59 @@
                       <div class="circle-2-string">Добыча нефти</div>
                     </li>
                   </a>
+
+                  <a href="#">
+                    <li
+                      class="circle-2"
+                      tabindex="-2"
+                      :style="`${buttonHover5}`"
+                      @click="
+                        getProduction('gk_plan', 'gk_fact', 'Добыча конденсата')
+                      "
+                    >
+                      <div class="circle-2-string">Добыча конденсата</div>
+                    </li>
+                  </a>
+
+                  <a href="#">
+                    <li
+                      class="circle-2"
+                      tabindex="-2"
+                      :style="`${buttonHover3}`"
+                      @click="
+                        getProduction('gas_plan', 'gas_fact', 'Добыча газа')
+                      "
+                    >
+                      <div class="circle-2-string">Добыча газа</div>
+                    </li>
+                  </a>
+
+                  <a href="#">
+                    <li
+                      class="circle-2"
+                      tabindex="-2"
+                      :style="`${buttonHover4}`"
+                      @click="
+                        getProduction('liq_plan', 'liq_fact', 'Добыча жидкости')
+                      "
+                    >
+                      <div class="circle-2-string">Добыча жидкости</div>
+                    </li>
+                  </a>
+
+                  <a href="#">
+                    <li
+                      class="circle-2"
+                      tabindex="-2"
+                      :style="`${buttonHover6}`"
+                      @click="
+                        getProduction('inj_plan', 'inj_fact', 'Объём закачки')
+                      "
+                    >
+                      <div class="circle-2-string">Объём закачки</div>
+                    </li>
+                  </a>
+
                   <a href="#">
                     <li
                       class="circle-2"
@@ -115,54 +168,6 @@
                       "
                     >
                       <div class="circle-2-string">Сдача нефти</div>
-                    </li>
-                  </a>
-                  <a href="#">
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover3}`"
-                      @click="
-                        getProduction('gas_plan', 'gas_fact', 'Добыча газа')
-                      "
-                    >
-                      <div class="circle-2-string">Добыча газа</div>
-                    </li>
-                  </a>
-                  <a href="#">
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover4}`"
-                      @click="
-                        getProduction('liq_plan', 'liq_fact', 'Добыча жидкости')
-                      "
-                    >
-                      <div class="circle-2-string">Добыча жидкости</div>
-                    </li>
-                  </a>
-                  <a href="#">
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover5}`"
-                      @click="
-                        getProduction('gk_plan', 'gk_fact', 'Добыча конденсата')
-                      "
-                    >
-                      <div class="circle-2-string">Добыча конденсата</div>
-                    </li>
-                  </a>
-                  <a href="#">
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover6}`"
-                      @click="
-                        getProduction('inj_plan', 'inj_fact', 'Объём закачки')
-                      "
-                    >
-                      <div class="circle-2-string">Объём закачки</div>
                     </li>
                   </a>
                 </div>
@@ -753,8 +758,8 @@ export default {
     },
 
     getProduction(item, item2, item3) {
-var timeSelect=this.selectedDay+'.'+this.month+'.'+this.year;
- EventBus.$emit("timeSelect",timeSelect );
+      var timeSelect = this.selectedDay + "." + this.month + "." + this.year;
+      EventBus.$emit("timeSelect", timeSelect);
 
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
@@ -2110,29 +2115,27 @@ var timeSelect=this.selectedDay+'.'+this.month+'.'+this.year;
 
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
-        }    
+        }
       });
-  
+
       this.showTable(localStorage.getItem("changeButton"));
     },
 
-
-changeButton(showTableItem, changeButton){
-var a;
-if (changeButton == "Yes"){
- if (showTableItem == "Yes")
-{   a = "No"; 
- } else 
-{   a = "Yes"; 
- }
-this.showTable2=a;
-localStorage.setItem("changeButton", a);}
-this.showTable(localStorage.getItem("changeButton"));
-},
-
+    changeButton(showTableItem, changeButton) {
+      var a;
+      if (changeButton == "Yes") {
+        if (showTableItem == "Yes") {
+          a = "No";
+        } else {
+          a = "Yes";
+        }
+        this.showTable2 = a;
+        localStorage.setItem("changeButton", a);
+      }
+      this.showTable(localStorage.getItem("changeButton"));
+    },
 
     showTable(showTableItem, changeButton) {
-      console.log(showTableItem +  "changeButton 123");
       var showTableOn =
         " border: none;" +
         "color: white;" +
@@ -2140,9 +2143,6 @@ this.showTable(localStorage.getItem("changeButton"));
         "background-size: 16% auto;" +
         "background-position: 80% 50%;" +
         "outline: none;";
-
-
-
 
       if (showTableItem == "Yes") {
         this.ChartTable = "График";
@@ -2165,18 +2165,8 @@ this.showTable(localStorage.getItem("changeButton"));
 
         this.showTableOn = showTableOn; //colour button
       }
-      
-
-
-       
-
-      
-
-
     },
 
-
-    
     /*onStorageUpdate(event) {
       if (event.key === "company") {
         this.company = event.newValue;
@@ -2199,8 +2189,8 @@ this.showTable(localStorage.getItem("changeButton"));
     var productionPlan = localStorage.getItem("production-plan");
     var productionFact = localStorage.getItem("production-fact");
     if (this.company == "all") {
-       this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
-          this.changeButton("No");
+      this.getProduction("oil_plan", "oil_fact", "Добыча нефти");
+      this.changeButton("No");
     }
     localStorage.setItem("selectedDMY", "undefined");
   },
