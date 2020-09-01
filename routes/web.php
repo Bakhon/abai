@@ -18,7 +18,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
     Route::group(['middleware' => 'auth'], function () {
-        Route::get("/geteconimicdata", "DruidController@getEconomicData");
+        Route::get("/geteconimicdata", "EconomicController@getEconomicData");
         Route::get("/getcurrency", "DruidController@getCurrency");
         Route::get('/', function () {
             return view('welcome');
@@ -28,8 +28,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getnkkmg', 'DruidController@getNkKmg');
         Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
-        Route::get('/economic', 'DruidController@economic')->name('economic');
-        Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');       
+        Route::get('/economic', 'EconomicController@index')->name('economic');
+        Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
         Route::get('/mfond', 'DruidController@mfond')->name('mfond');

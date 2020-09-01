@@ -6,14 +6,15 @@
 
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+import VueTableDynamic from 'vue-table-dynamic';
+
 
 require('./bootstrap');
 
 window.Vue = require('vue');
 window.Jquery = require('jquery');
 
-Vue.use(VueAxios, axios);
-import { Bar } from 'vue-chartjs';
+Vue.use(VueAxios, axios, VueTableDynamic);
 
 
 /**
@@ -29,7 +30,6 @@ import { Bar } from 'vue-chartjs';
 
 //Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 //Vue.component('doughnut-component', require('./components/DoughnutLevelOneComponent.vue').default);
-Vue.component('mix-chart', require('./components/MixChartComponent.vue').default);
 // Vue.component('pie', require('./components/PieChart.vue').default);
 //Vue.component('chartbar', require('./components/ChartBar.vue').default);
 Vue.component('charttide', require('./components/ChartTide.vue').default);
@@ -47,6 +47,12 @@ Vue.component('welcome-chart-donut-right3', require('./components/WelcomeChartDo
 Vue.component('welcome-chart-donut-right4', require('./components/WelcomeChartDonutRight4.vue').default);
 Vue.component('welcome-chart-bar-bottom1', require('./components/WelcomeChartBarBottom1.vue').default);
 Vue.component('welcome-chart-bar-bottom2', require('./components/WelcomeChartBarBottom2.vue').default);
+Vue.component('economicpivot', require('./components/Economic/Pivot.vue').default);
+Vue.component('economic-component', require('./components/Economic/main.vue').default);
+Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
+Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);
+Vue.component('chart3-component', require('./components/Economic/chart3.vue').default);
+Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

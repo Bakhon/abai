@@ -22,85 +22,6 @@ class DruidController extends Controller
       return view('druid',['data'=>$response]);
     }
 
-
-    public function getEconomicData(Request $request){
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-
-        $builder = $client->query('economic_2020v2', Granularity::DAY);
-        $builder2 = $client->query('economic_2020v2', Granularity::DAY);
-        $builder3 = $client->query('economic_2020v2', Granularity::DAY);
-
-        $builder
-            ->interval('2020-01-01T00:00:00+00:00/2020-05-31T00:33:09+00:00')
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat('yyyy-MM-dd');
-            })
-            ->select('profitability')
-            ->select('price_export_1')
-            ->select('org_id2')
-            ->count('uwi')
-            ->where('org_id2', '=', $request->org)
-            ->where('profitability', '=', 'profitable');
-
-
-        $builder2
-            ->interval('2020-01-01T00:00:00+00:00/2020-05-31T00:33:09+00:00')
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat('yyyy-MM-dd');
-            })
-            ->select('profitability')
-            ->select('price_export_1')
-            ->select('org_id2')
-            ->count('uwi')
-            ->where('org_id2', '=', $request->org)
-            ->where('profitability', '=', 'profitless_cat_1');
-
-
-        $builder3
-            ->interval('2020-01-01T00:00:00+00:00/2020-05-31T00:33:09+00:00')
-            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                $extractionBuilder->timeFormat('yyyy-MM-dd');
-            })
-            ->select('profitability')
-            ->select('price_export_1')
-            ->select('org_id2')
-            ->count('uwi')
-            ->where('org_id2', '=', $request->org)
-            ->where('profitability', '=', 'profitless_cat_2');
-
-        $result = $builder->groupBy();
-        $result2 = $builder2->groupBy();
-        $result3 = $builder3->groupBy();
-
-        $array = $result->data();
-        $array2 = $result2->data();
-        $array3 = $result3->data();
-
-        $data['dt'] = [];
-        $data['profitable'] = [];
-        $data['profitless_cat_1'] = [];
-        $data['profitless_cat_2'] = [];
-        $data['price'] = [];
-
-        foreach($array as $item){
-            array_push($data['dt'], $item['dt']);
-            array_push($data['profitable'], $item['uwi']);
-            array_push($data['price'], $item['price_export_1']);
-        }
-
-        foreach($array2 as $item){
-            array_push($data['profitless_cat_1'], $item['uwi']);
-        }
-
-        foreach($array3 as $item){
-            array_push($data['profitless_cat_2'], $item['uwi']);
-        }
-
-        return response()->json($data);
-  }
-
-
-
     public function getOilPrice(Request $request){
         if ($request->has('start_date') && $request->has('end_date')) {
             $curl = curl_init();
@@ -123,12 +44,6 @@ class DruidController extends Controller
         }else{
             return "Error. Invalid url";
         }
-    }
-
-    public function economic()
-    {
-        $chartOptions['labels'] = ['01/01/2019', '02/01/2019', '03/01/2019', '04/01/2019', '05/01/2019', '06/01/2019', '07/01/2019', '08/01/2019', '09/01/2019', '10/01/2019', '11/01/2019'];
-        return view('economic.main',['chartOptions' => $chartOptions]);
     }
 
 	public function visualcenter()
