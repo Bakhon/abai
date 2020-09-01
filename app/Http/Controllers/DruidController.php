@@ -241,4 +241,14 @@ class DruidController extends Controller
         return view('reports.mzdn');
     }
 
+    public function bigdata()
+    {
+        return view('reports.bigdata');
+    }
+
+    public function constructor()
+    {
+        return view('reports.constructor');
+    }
+
 }

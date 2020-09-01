@@ -1222,3 +1222,20 @@ li.circle-2 {
     margin-top: 18px;
     margin-left: 10px;
 }
+
+.report-btn {
+    background: #15509d;
+    height: 38px;
+    border-radius: 50px;
+    color: white;
+    margin-left: 10px;
+}
+
+
+.report-btn:hover {
+    background: #15509d;
+    height: 38px;
+    border-radius: 50px;
+    color: white;
+    margin-left: 10px;
+}

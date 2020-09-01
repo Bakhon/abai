@@ -3280,10 +3280,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   updated: function updated() {},
   mounted: function mounted() {
-    //now time
+    this.getOilNow(); //now time
+
     var date = new Date();
     var currentDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    this.getCurrencyNow(currentDate); //now time 
+    this.getCurrencyNow(currentDate); //now time
 
     var Months = [];
     var currency = [];
@@ -3309,7 +3310,7 @@ __webpack_require__.r(__webpack_exports__);
         var data = response.data;
 
         if (data) {
-          console.log(data);
+          //console.log(data);
           _this.currencyNow = data;
           _this.currencyNowUsd = Math.trunc(1 / data.description * 10000) / 10000;
         } else {
@@ -3333,8 +3334,41 @@ __webpack_require__.r(__webpack_exports__);
             data: data.description
           };
           arrdata = _this2.currency; //arrdata = _.orderBy(arrdata, "id", "desk");
+          // console.log(arrdata);
+          //  console.log(dates+' ' + data.description);
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+    getOilNow: function getOilNow() {
+      var _this3 = this;
 
-          console.log(arrdata); //  console.log(dates+' ' + data.description);
+      var datas;
+      var uri = "https://cors-anywhere.herokuapp.com/" + "https://yandex.ru/news/quotes/graph_1006.json";
+      this.axios.get(uri).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          var oilDate;
+          var oilValue;
+          var splits = [];
+          var oil = [];
+          var oil2;
+
+          _.forEach(data.prices, function (prices) {
+            splits = prices.toString().split(",");
+            oilDate = splits["0"]; //oilDate = oilDate.toISOString();
+
+            oilValue = splits["1"];
+            oil.push({
+              date: oilDate,
+              value: oilValue
+            });
+          });
+
+          console.log(oil[0].date);
+          _this3.OilNow = data;
         } else {
           console.log("No data");
         }
@@ -3416,13 +3450,12 @@ __webpack_require__.r(__webpack_exports__);
   computed: {}
   /*
   watch: {
-      a: function (val, oldVal) {
-        console.log('новое значение: %s, старое значение: %s', val, oldVal)
-      },
-  
+    a: function (val, oldVal) {
+      console.log('новое значение: %s, старое значение: %s', val, oldVal)
+    },
   
   watch(){
-    this.getCurrencyNow(this.timeSelect);
+  this.getCurrencyNow(this.timeSelect);
   }*/
 
 });
@@ -5272,7 +5305,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.showTable(localStorage.getItem("changeButton"));
     },
     showTable: function showTable(showTableItem, changeButton) {
-      console.log(showTableItem + "changeButton 123");
       var showTableOn = " border: none;" + "color: white;" + "background: url(../img/level1/button-on.png) no-repeat;" + "background-size: 16% auto;" + "background-position: 80% 50%;" + "outline: none;";
 
       if (showTableItem == "Yes") {
@@ -77311,8 +77343,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "left-price-oil2" }, [
-      _vm._v("Цена за нефть "),
-      _c("div", { staticClass: "price-border " }, [_vm._v("43.1 $")])
+      _vm._v("\n      Цена за нефть\n      "),
+      _c("div", { staticClass: "price-border" }, [_vm._v("43.1 $")])
     ])
   },
   function() {

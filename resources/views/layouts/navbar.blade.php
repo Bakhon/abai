@@ -84,7 +84,7 @@
                     <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
                 </li>
                 <li class="nav-item active">
-                    <button onclick="document.location='{{url('/')}}/ru/mzdn'" type="button" class="btn btn-primary-bigdata"></button>
+                    <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
                 </li>
             </ul>
             <div class="form-inline my-2 my-lg-0">
