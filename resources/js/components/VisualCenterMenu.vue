@@ -1,7 +1,6 @@
 <template>
   <div class="list-group">
     <a
-      href="#"
       class="bg-dark list-group-item list-group-item-action circle-menu"
       :style="`${buttonMenuHover10}`"
       @click="saveCompany('all')"
@@ -16,7 +15,6 @@
     </a>
     <div id="submenu1" class="collapse sidebar-submenu submenu1">
       <a
-        href="#"
         data-toggle="collapse"
         aria-expanded="false"
         class="bg-dark list-group-item list-group-item-action circle-menu flex-column align-items-start circle-menu"
@@ -34,7 +32,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover2}`"
         @click="saveCompany('КБМ')"
@@ -50,7 +47,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover3}`"
         @click="saveCompany('КГМ')"
@@ -66,7 +62,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover4}`"
         @click="saveCompany('ЭМГ')"
@@ -82,7 +77,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover5}`"
         @click="saveCompany('ММГ')"
@@ -98,7 +92,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover6}`"
         @click="saveCompany('КТМ')"
@@ -114,7 +107,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover7}`"
         @click="saveCompany('КОА')"
@@ -130,7 +122,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover8}`"
         @click="saveCompany('ПКИ')"
@@ -146,7 +137,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover9}`"
         @click="saveCompany('АГГ')"
@@ -169,7 +159,7 @@
         <div tabindex="-0" class="button-menu button-menu-position"></div></div
     ></a>
     <div id="submenu2" class="collapse sidebar-submenu">
-      <a href="#" class="bg-dark list-group-item list-group-item-action">
+      <a class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <img
             src="/img/level1/logo_tengiz.svg"
@@ -180,7 +170,7 @@
           <span class="menu-collapsed companyName">ТОО «Тенгизшевройл»</span>
         </div>
       </a>
-      <a href="#" class="bg-dark list-group-item list-group-item-action">
+      <a class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <img
             src="/img/level1/logo_karachaganak.svg"
@@ -193,7 +183,7 @@
           >
         </div>
       </a>
-      <a href="#" class="bg-dark list-group-item list-group-item-action">
+      <a class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <img
             src="/img/level1/logo_ncoc.svg"
@@ -213,7 +203,7 @@
     <div class="left-price-oil">
       <div class="left-price-oil2">
         Цена за нефть
-        <div class="price-border">43.1 $</div>
+        <div class="price-border">{{ oilNow }} $</div>
       </div>
       <hr class="hr-visualcenter" />
       <visual-center-chart-area-oil></visual-center-chart-area-oil>
@@ -274,6 +264,7 @@ export default {
     return {
       company: "",
       timeSelect: "",
+      oilNow: "",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
       buttonMenuHover3: "",
@@ -297,7 +288,9 @@ export default {
     var date = new Date();
     var currentDate =
       date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    this.getCurrencyNow(currentDate);
+    this.getCurrencyNow(this.timeSelect);
+    this.getOilNow(this.timeSelect);
+    //console.log(currentDate);
     //now time
 
     var Months = [];
@@ -314,6 +307,7 @@ export default {
     timeSelect2: function (select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
+      this.getOilNow(this.timeSelect);
     },
 
     getCurrencyNow: function (dates) {
@@ -351,7 +345,7 @@ export default {
       });
     },
 
-    getOilNow: function () {
+    getOilNow: function (dates) {
       var datas;
       let uri =
         "https://cors-anywhere.herokuapp.com/" +
@@ -366,13 +360,27 @@ export default {
           var oil2;
           _.forEach(data.prices, function (prices) {
             splits = prices.toString().split(",");
-            oilDate=splits["0"];
-            //oilDate = oilDate.toISOString();
+            oilDate = Number(splits["0"]);
             oilValue = splits["1"];
-            oil.push({ date: oilDate, value: oilValue });
+            oil.push({
+              date: new Date(oilDate).toLocaleString("ru", {
+                year: "numeric",
+
+                day: "numeric",
+                month: "numeric",
+                /*	weekday: 'long',
+	timezone: 'UTC',
+        hour: "numeric",
+        minute: "numeric",
+        second: 'numeric'*/
+              }),
+              value: oilValue,
+            });
           });
-          console.log(oil[0].date);
-          this.OilNow = data;
+          var oil2 = [];
+          oil2 = _.filter(oil, _.iteratee({ date: dates }));
+
+          this.oilNow = oil2[0].value;        
         } else {
           console.log("No data");
         }

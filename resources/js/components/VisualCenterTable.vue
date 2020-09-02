@@ -4,21 +4,21 @@
       <div class="level1-content row">
         <div class="col-md-12 col-lg-12 row">
           <div class="main col-lg-7-2 row">
-            <div class="col-sm-12 col-md-4 col-lg-4"></div>
-            <div class="col-sm-12 col-md-4 col-lg-4">
+            <!-- <div class="col-sm-12 col-md-4 col-lg-4"></div>-->
+            <!--   <div class="col-sm-12 col-md-4 col-lg-4">
               <div class="col-md-12 col-lg-12 row">
                 <div class="timer-visual-center">
-                  <!--  <div class="left-arrow"></div>-->
+                  <div class="left-arrow"></div>
                   <div class="timer">
                     <div class="time">{{ date2 }}</div>
                     <div class="date">
                       {{ date3 }}
                     </div>
                   </div>
-                  <!-- <div class="right-arrow"></div>-->
+              <div class="right-arrow"></div>
                 </div>
               </div>
-            </div>
+            </div>-->
             <div class="visual-center-center">
               <div
                 class="level2-tab"
@@ -89,7 +89,7 @@
             <div class="visual-center-center">
               <div class="tables">
                 <div class="visual-center-center">
-                  <a href="#">
+                  <a>
                     <li
                       class="circle-2"
                       tabindex="-2"
@@ -102,7 +102,7 @@
                     </li>
                   </a>
 
-                  <a href="#">
+                  <a>
                     <li
                       class="circle-2"
                       tabindex="-2"
@@ -115,7 +115,7 @@
                     </li>
                   </a>
 
-                  <a href="#">
+                  <a>
                     <li
                       class="circle-2"
                       tabindex="-2"
@@ -128,7 +128,7 @@
                     </li>
                   </a>
 
-                  <a href="#">
+                  <a>
                     <li
                       class="circle-2"
                       tabindex="-2"
@@ -141,7 +141,7 @@
                     </li>
                   </a>
 
-                  <a href="#">
+                  <a>
                     <li
                       class="circle-2"
                       tabindex="-2"
@@ -154,7 +154,7 @@
                     </li>
                   </a>
 
-                  <a href="#">
+                  <a>
                     <li
                       class="circle-2"
                       tabindex="-2"
@@ -227,12 +227,26 @@
                           <!--  {{ item.dzo }}{{ item.dzoMonth }}  {{item.dzoYear}}-->
                           <!--{{item.time}}-->
                         </div>
-                        <div class="cell table-border">{{ item.planYear }}</div>
                         <div class="cell table-border">
-                          {{ item.planMonth }}
+                          <div v-if="item.planYear">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.planYear)) }}
+                          </div>
                         </div>
-                        <div class="cell table-border">{{ item.planDay }}</div>
-                        <div class="cell table-border">{{ item.factDay }}</div>
+                        <div class="cell table-border">
+                          <div v-if="item.planMonth">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.planMonth)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div v-if="item.planDay">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.planDay  ))}}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div v-if="item.factDay">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.factDay ))}}
+                          </div>
+                        </div>
                         <div class="cell table-border colour">
                           <div>
                             <div
@@ -244,14 +258,20 @@
                             ></div>
                           </div>
                           <div v-if="item.factDay">
-                            <div>{{ item.factDay - item.planDay }}</div>
+                            <div>
+                              {{(new Intl.NumberFormat('ru-RU').format( item.factDay - item.planDay)) }}
+                            </div>
                           </div>
                         </div>
                         <div class="cell table-border">
-                          {{ item.planMonth }}
+                          <div v-if="item.planMonth">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.planMonth)) }}
+                          </div>
                         </div>
                         <div class="cell table-border">
-                          {{ item.factMonth }}
+                          <div v-if="item.factMonth">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.factMonth)) }}
+                          </div>
                         </div>
                         <div class="cell table-border colour">
                           <div
@@ -263,11 +283,19 @@
                           ></div>
                           <!--3cell-->
                           <div v-if="item.planMonth">
-                            {{ item.factMonth - item.planMonth }}
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.factMonth - item.planMonth)) }}
                           </div>
                         </div>
-                        <div class="cell table-border">{{ item.planYear }}</div>
-                        <div class="cell table-border">{{ item.factYear }}</div>
+                        <div class="cell table-border">
+                          <div v-if="item.planYear">
+                            {{(new Intl.NumberFormat('ru-RU').format( item.planYear)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div v-if="item.factYear">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.factYear)) }}
+                          </div>
+                        </div>
                         <div class="cell table-border cell-last colour">
                           <div
                             v-if="item.planYear"
@@ -277,7 +305,7 @@
                             )}`"
                           ></div>
                           <div v-if="item.planYear">
-                            {{ item.factYear - item.planYear }}
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.factYear - item.planYear)) }}
                           </div>
                         </div>
                       </div>
@@ -300,7 +328,9 @@
                     <div class="cell2 table-border">
                       План на {{ selectedYear }} год
                     </div>
-                    <div class="cell2 table-border">План на июль месяц</div>
+                    <div class="cell2 table-border">
+                      План на {{ currentMonth }} месяц
+                    </div>
                     <div class="cell3 table-border">СУТОЧНАЯ</div>
                     <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
                     <div class="cell3 table-border cell-last">
@@ -328,10 +358,22 @@
                           {{ item.dzo }}
                           <!--{{item.time}}-->
                         </div>
-                        <div class="cell table-border">{{ item.planYear }}</div>
+                        <div class="cell table-border">
+                          <div v-if="item.planYear">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.planYear ))}}
+                          </div>
+                        </div>
                         <div class="cell table-border"></div>
-                        <div class="cell table-border">{{ item.plan }}</div>
-                        <div class="cell table-border">{{ item.fact }}</div>
+                        <div class="cell table-border">
+                          <div v-if="item.plan">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.plan ))}}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div v-if="item.fact">
+                            {{(new Intl.NumberFormat('ru-RU').format( item.fact ))}}
+                          </div>
+                        </div>
                         <div class="cell table-border colour">
                           <div>
                             <div
@@ -343,14 +385,20 @@
                             ></div>
                           </div>
                           <div v-if="item.fact">
-                            <div>{{ item.fact - item.plan }}</div>
+                            <div>
+                              {{(new Intl.NumberFormat('ru-RU').format( item.fact - item.plan)) }}
+                            </div>
                           </div>
                         </div>
                         <div class="cell table-border">
-                          {{ item.productionPlanForMonth }}
+                          <div v-if="item.productionPlanForMonth">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.productionPlanForMonth ))}}
+                          </div>
                         </div>
                         <div class="cell table-border">
-                          {{ item.productionFactForMonth }}
+                          <div v-if="item.productionFactForMonth">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth ))}}
+                          </div>
                         </div>
                         <div class="cell table-border colour">
                           <div
@@ -364,13 +412,21 @@
                           <!--3cell-->
                           <div v-if="item.productionPlanForMonth">
                             {{
-                              item.productionFactForMonth -
-                              item.productionPlanForMonth
+                              (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth -
+                              item.productionPlanForMonth))
                             }}
                           </div>
                         </div>
-                        <div class="cell table-border">{{ item.planYear }}</div>
-                        <div class="cell table-border">{{ item.factYear }}</div>
+                        <div class="cell table-border">
+                          <div v-if="item.planYear">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.planYear)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div v-if="item.factYear">
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.factYear ))}}
+                          </div>
+                        </div>
                         <div class="cell table-border cell-last colour">
                           <div
                             v-if="item.planYear"
@@ -380,7 +436,7 @@
                             )}`"
                           ></div>
                           <div v-if="item.planYear">
-                            {{ item.factYear - item.planYear }}
+                            {{ (new Intl.NumberFormat('ru-RU').format(item.factYear - item.planYear)) }}
                           </div>
                         </div>
                       </div>
@@ -526,6 +582,21 @@ export default {
         "ОКТЯБРЬ",
         "НОЯБРЬ",
         "ДЕКАБРЬ",
+      ],
+      monthes3: [
+        "",
+        "январь",
+        "февраль",
+        "март",
+        "апрель",
+        "май",
+        "июнь",
+        "июль",
+        "август",
+        "сентябрь",
+        "октябрь",
+        "ноябрь",
+        "декабрь",
       ],
       monthes2: [
         "",
@@ -756,9 +827,10 @@ export default {
 
       return menuDMY;
     },
-
+    pad(n){return n<10 ? '0'+n : n},
     getProduction(item, item2, item3) {
-      var timeSelect = this.selectedDay + "." + this.month + "." + this.year;
+  if (this.selectedDay==undefined){var timeSelect = this.pad(new Date().getDate()) + "." + this.pad(this.month+1) + "." + this.year;} else
+    {  var timeSelect = this.pad(this.selectedDay) + "." + this.pad(this.month+1) + "." + this.year;}
       EventBus.$emit("timeSelect", timeSelect);
 
       localStorage.setItem("production-plan", item);
@@ -1347,7 +1419,7 @@ export default {
             alert(
               "К сожалению на текущую дату нет данных, выберите другую дату"
             );
-          } else {*/
+            } else {*/
             // }
             //select dzo filter
             var dzo = new Array();
@@ -1844,8 +1916,14 @@ export default {
         });
         //console.log(dzoYear);
 
-        var currentMonth = 5;
-        this.currentMonth = this.monthes2[currentMonth];
+        /*if (this.company == "all"){
+    var currentMonth = 5; 
+this.currentMonth = this.monthes3[currentMonth];
+} else {  this.currentMonth = this.monthes3[this.month+1];}*/
+        this.currentMonth = this.monthes3[this.month + 1];
+
+        //if (this.company == "all") {var currentMonth = 5; currentMonth2 = this.monthes3[currentMonth];} else { currentMonth2 = this.monthes3[this.month+1];}
+
         var timestampMonthStart = new Date(
           //this.monthes2[this.month+1] + //change when data upgrade
           this.monthes2["5"] +
@@ -2175,6 +2253,9 @@ export default {
   },
   created: function () {
     EventBus.$on("messageSend", this.displayMessage);
+    //this.currentMonth = this.monthes3[this.month+1];
+
+    //   this.selectedDay + "." + this.month + "." + this.year;
   },
 
   computed: {
