@@ -17,7 +17,7 @@
     <script src="{{ asset('js/jquery.js') }}"></script>
 </head>
 
-<body>
+<body style="background-color: #0F1430;">
     @include('layouts.navbar')
     <div class="row" id="app">
         @if (basename(Request::url()) === "economic")
