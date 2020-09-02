@@ -3041,7 +3041,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
       labels: quantity2
     }; //this.dataLabels= {labels:quantity2};
 
-    /*
+    /* 
             _.each(quantity, function (quantity) {
               quantity.push({ quantity });
             });*/
@@ -3921,22 +3921,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       company: "",
       timeSelect: "",
+      oilNow: "",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
       buttonMenuHover3: "",
@@ -3955,10 +3946,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   updated: function updated() {},
   mounted: function mounted() {
-    //now time
+    this.getOilNow(); //now time
+
     var date = new Date();
     var currentDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    this.getCurrencyNow(currentDate); //now time
+    this.getCurrencyNow(this.timeSelect);
+    this.getOilNow(this.timeSelect); //console.log(currentDate);
+    //now time
 
     var Months = [];
     var currency = [];
@@ -3974,6 +3968,7 @@ __webpack_require__.r(__webpack_exports__);
     timeSelect2: function timeSelect2(select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
+      this.getOilNow(this.timeSelect);
     },
     getCurrencyNow: function getCurrencyNow(dates) {
       var _this = this;
@@ -3984,7 +3979,7 @@ __webpack_require__.r(__webpack_exports__);
         var data = response.data;
 
         if (data) {
-          console.log(data);
+          //console.log(data);
           _this.currencyNow = data;
           _this.currencyNowUsd = Math.trunc(1 / data.description * 10000) / 10000;
         } else {
@@ -4008,8 +4003,53 @@ __webpack_require__.r(__webpack_exports__);
             data: data.description
           };
           arrdata = _this2.currency; //arrdata = _.orderBy(arrdata, "id", "desk");
+          // console.log(arrdata);
+          //  console.log(dates+' ' + data.description);
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+    getOilNow: function getOilNow(dates) {
+      var _this3 = this;
 
-          console.log(arrdata); //  console.log(dates+' ' + data.description);
+      var datas;
+      var uri = "https://cors-anywhere.herokuapp.com/" + "https://yandex.ru/news/quotes/graph_1006.json";
+      this.axios.get(uri).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          var oilDate;
+          var oilValue;
+          var splits = [];
+          var oil = [];
+          var oil2;
+
+          _.forEach(data.prices, function (prices) {
+            splits = prices.toString().split(",");
+            oilDate = Number(splits["0"]);
+            oilValue = splits["1"];
+            oil.push({
+              date: new Date(oilDate).toLocaleString("ru", {
+                year: "numeric",
+                day: "numeric",
+                month: "numeric"
+                /*	weekday: 'long',
+                timezone: 'UTC',
+                hour: "numeric",
+                minute: "numeric",
+                second: 'numeric'*/
+
+              }),
+              value: oilValue
+            });
+          });
+
+          var oil2 = [];
+          oil2 = _.filter(oil, _.iteratee({
+            date: dates
+          }));
+          _this3.oilNow = oil2[0].value;
         } else {
           console.log("No data");
         }
@@ -4091,13 +4131,12 @@ __webpack_require__.r(__webpack_exports__);
   computed: {}
   /*
   watch: {
-      a: function (val, oldVal) {
-        console.log('новое значение: %s, старое значение: %s', val, oldVal)
-      },
-
-
+    a: function (val, oldVal) {
+      console.log('новое значение: %s, старое значение: %s', val, oldVal)
+    },
+  
   watch(){
-    this.getCurrencyNow(this.timeSelect);
+  this.getCurrencyNow(this.timeSelect);
   }*/
 
 });
@@ -4122,6 +4161,67 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4629,6 +4729,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       dFirstMonth: "0",
       day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
       monthes: ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"],
+      monthes3: ["", "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
       monthes2: ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       NameDzoFull: ["Всего добыча нефти и конденсата с учётом доли участия АО НК КазМунайГаз", "в т.ч.:газовый конденсат", "АО Озенмунайгаз (нефть) (100%)", "(конденсат)(100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "Aug", "Sep", "Oct", "Nov", "Dec"],
       date: new Date(),
@@ -4700,7 +4801,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*	if (days[0].length > 0) {
       for (let i = days[0].length; i < 7; i++) {
       days[0].unshift('');
-      }
+      	}
       }*/
 
 
@@ -4840,10 +4941,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       localStorage.setItem("selectedDMY", this.selectedDMY);
       return menuDMY;
     },
+    pad: function pad(n) {
+      return n < 10 ? '0' + n : n;
+    },
     getProduction: function getProduction(item, item2, item3) {
       var _this = this;
 
-      var timeSelect = this.selectedDay + '.' + this.month + '.' + this.year;
+      if (this.selectedDay == undefined) {
+        var timeSelect = this.pad(new Date().getDate()) + "." + this.pad(this.month + 1) + "." + this.year;
+      } else {
+        var timeSelect = this.pad(this.selectedDay) + "." + this.pad(this.month + 1) + "." + this.year;
+      }
+
       _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$emit("timeSelect", timeSelect);
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
@@ -5148,7 +5257,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 productionPlanForChart: item[productionPlan],
               });
             });
-                var productionFactForChart = new Array();
+                    var productionFactForChart = new Array();
             _.forEach(dataWithMay, function (item) {
               productionFactForChart.push({
                 productionFactForChart: item[productionFact],
@@ -5164,7 +5273,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                _.each(productionPlanForChart, function (item) {
              productionPlanForChart2.push({productionPlanForChart});
             });
-                  var productionFactForChart2 = new Array();
+                   var productionFactForChart2 = new Array();
                 _.each(productionFactForChart, function (item) {
              productionFactForChart2.push({productionFactForChart});
             });*/
@@ -5711,9 +5820,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           planYear.push(p);
         }); //console.log(dzoYear);
 
+        /*if (this.company == "all"){
+        var currentMonth = 5; 
+        this.currentMonth = this.monthes3[currentMonth];
+        } else {  this.currentMonth = this.monthes3[this.month+1];}*/
 
-        var currentMonth = 5;
-        _this.currentMonth = _this.monthes2[currentMonth];
+
+        _this.currentMonth = _this.monthes3[_this.month + 1]; //if (this.company == "all") {var currentMonth = 5; currentMonth2 = this.monthes3[currentMonth];} else { currentMonth2 = this.monthes3[this.month+1];}
+
         var timestampMonthStart = new Date( //this.monthes2[this.month+1] + //change when data upgrade
         _this.monthes2["5"] + //this.selectedDay +
         "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
@@ -5735,8 +5849,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }).value();
 
         productionPlanAndFactMonth = _.orderBy(productionPlanAndFactMonth, ["dzo"], ["desc"]);
-        /* productionPlanAndFactMonth=productionPlanAndFactMonth
-        .sortBy("productionPlan")
+        /* productionPlanAndFactMonth=productionPlanAndFactMonth  
+        .sortBy("productionPlan")         
         .value();*/
 
         var productionForChart = _(dataWithMay).groupBy("__time").map(function (__time, id) {
@@ -5947,7 +6061,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.showTable(localStorage.getItem("changeButton"));
     },
     showTable: function showTable(showTableItem, changeButton) {
-      console.log(showTableItem + "changeButton 123");
       var showTableOn = " border: none;" + "color: white;" + "background: url(../img/level1/button-on.png) no-repeat;" + "background-size: 16% auto;" + "background-position: 80% 50%;" + "outline: none;";
 
       if (showTableItem == "Yes") {
@@ -5980,7 +6093,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
   },
   created: function created() {
-    _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on("messageSend", this.displayMessage);
+    _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on("messageSend", this.displayMessage); //this.currentMonth = this.monthes3[this.month+1];
+    //   this.selectedDay + "." + this.month + "." + this.year;
   },
   computed: {
     dayChange: function dayChange() {
@@ -11073,7 +11187,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.title[data-v-763e61b8],\n.subtitle[data-v-763e61b8],\n.drag-area-title[data-v-763e61b8] {\n  color: white;\n}\n.table[data-v-763e61b8] {\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\n  background-color: #20274e !important;\n  border-radius: 15px;\n  flex: 0 0 24%;\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\n  color: #fff;\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\n  color: #fff;\n  font-size: 15px;\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\n  /* background-color: #0F1430;\n  border: 1px solid #0D2B4D; */\n}\n", ""]);
+exports.push([module.i, "\n.title[data-v-763e61b8],\r\n.subtitle[data-v-763e61b8],\r\n.drag-area-title[data-v-763e61b8] {\r\n  color: white;\n}\n.table[data-v-763e61b8] {\r\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\r\n  background-color: #20274e !important;\r\n  border-radius: 15px;\r\n  flex: 0 0 24%;\r\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 15px;\r\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\r\n  /* background-color: #0F1430;\r\n  border: 1px solid #0D2B4D; */\n}\r\n", ""]);
 
 // exports
 
@@ -42945,7 +43059,7 @@ function addStyle (obj, options) {
 	// If a transform function was defined, run it on the css
 	if (options.transform && obj.css) {
 	    result = typeof options.transform === 'function'
-		 ? options.transform(obj.css)
+		 ? options.transform(obj.css) 
 		 : options.transform.default(obj.css);
 
 	    if (result) {
@@ -44437,7 +44551,6 @@ var render = function() {
         staticClass:
           "bg-dark list-group-item list-group-item-action circle-menu",
         style: "" + _vm.buttonMenuHover10,
-        attrs: { href: "#" },
         on: {
           click: function($event) {
             return _vm.saveCompany("all")
@@ -44462,11 +44575,7 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu flex-column align-items-start circle-menu",
             style: "" + _vm.buttonMenuHover1,
-            attrs: {
-              href: "#",
-              "data-toggle": "collapse",
-              "aria-expanded": "false"
-            },
+            attrs: { "data-toggle": "collapse", "aria-expanded": "false" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("ОМГ")
@@ -44482,7 +44591,6 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
             style: "" + _vm.buttonMenuHover2,
-            attrs: { href: "#" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("КБМ")
@@ -44498,7 +44606,6 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
             style: "" + _vm.buttonMenuHover3,
-            attrs: { href: "#" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("КГМ")
@@ -44514,7 +44621,6 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
             style: "" + _vm.buttonMenuHover4,
-            attrs: { href: "#" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("ЭМГ")
@@ -44530,7 +44636,6 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
             style: "" + _vm.buttonMenuHover5,
-            attrs: { href: "#" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("ММГ")
@@ -44546,7 +44651,6 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
             style: "" + _vm.buttonMenuHover6,
-            attrs: { href: "#" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("КТМ")
@@ -44562,7 +44666,6 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
             style: "" + _vm.buttonMenuHover7,
-            attrs: { href: "#" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("КОА")
@@ -44578,7 +44681,6 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
             style: "" + _vm.buttonMenuHover8,
-            attrs: { href: "#" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("ПКИ")
@@ -44594,7 +44696,6 @@ var render = function() {
             staticClass:
               "bg-dark list-group-item list-group-item-action circle-menu",
             style: "" + _vm.buttonMenuHover9,
-            attrs: { href: "#" },
             on: {
               click: function($event) {
                 return _vm.saveCompany("АГГ")
@@ -44614,11 +44715,20 @@ var render = function() {
       "div",
       { staticClass: "left-price-oil" },
       [
-        _vm._m(13),
+        _c("div", { staticClass: "left-price-oil2" }, [
+          _vm._v("\n      Цена за нефть\n      "),
+          _c("div", { staticClass: "price-border" }, [
+            _vm._v(_vm._s(_vm.oilNow) + " $")
+          ])
+        ]),
         _vm._v(" "),
         _c("hr", { staticClass: "hr-visualcenter" }),
         _vm._v(" "),
         _c("visual-center-chart-area-oil"),
+        _vm._v(" "),
+        _c("hr", { staticClass: "hr-visualcenter" }),
+        _vm._v(" "),
+        _vm._m(13),
         _vm._v(" "),
         _c("hr", { staticClass: "hr-visualcenter" }),
         _vm._v(" "),
@@ -44627,10 +44737,6 @@ var render = function() {
         _c("hr", { staticClass: "hr-visualcenter" }),
         _vm._v(" "),
         _vm._m(15),
-        _vm._v(" "),
-        _c("hr", { staticClass: "hr-visualcenter" }),
-        _vm._v(" "),
-        _vm._m(16),
         _vm._v(" "),
         _c("hr", { staticClass: "hr-visualcenter" })
       ],
@@ -44650,7 +44756,7 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(17),
+        _vm._m(16),
         _vm._v(" "),
         _c("ul", { staticClass: "oil-string-all" }, [
           _c("li", { staticClass: "oil-string one2-2 width-price" }, [
@@ -44934,10 +45040,7 @@ var staticRenderFns = [
       [
         _c(
           "a",
-          {
-            staticClass: "bg-dark list-group-item list-group-item-action",
-            attrs: { href: "#" }
-          },
+          { staticClass: "bg-dark list-group-item list-group-item-action" },
           [
             _c(
               "div",
@@ -44965,10 +45068,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c(
           "a",
-          {
-            staticClass: "bg-dark list-group-item list-group-item-action",
-            attrs: { href: "#" }
-          },
+          { staticClass: "bg-dark list-group-item list-group-item-action" },
           [
             _c(
               "div",
@@ -44996,10 +45096,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c(
           "a",
-          {
-            staticClass: "bg-dark list-group-item list-group-item-action",
-            attrs: { href: "#" }
-          },
+          { staticClass: "bg-dark list-group-item list-group-item-action" },
           [
             _c(
               "div",
@@ -45026,15 +45123,6 @@ var staticRenderFns = [
         )
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "left-price-oil2" }, [
-      _vm._v("Цена за нефть "),
-      _c("div", { staticClass: "price-border " }, [_vm._v("43.1 $")])
-    ])
   },
   function() {
     var _vm = this
@@ -45119,28 +45207,6 @@ var render = function() {
       _c("div", { staticClass: "level1-content row" }, [
         _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
           _c("div", { staticClass: "main col-lg-7-2 row" }, [
-            _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
-              _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
-                _c("div", { staticClass: "timer-visual-center" }, [
-                  _c("div", { staticClass: "timer" }, [
-                    _c("div", { staticClass: "time" }, [
-                      _vm._v(_vm._s(_vm.date2))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "date" }, [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(_vm.date3) +
-                          "\n                                  "
-                      )
-                    ])
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
             _c(
               "div",
               { staticClass: "visual-center-center" },
@@ -45295,7 +45361,7 @@ var render = function() {
             _c("div", { staticClass: "visual-center-center" }, [
               _c("div", { staticClass: "tables" }, [
                 _c("div", { staticClass: "visual-center-center" }, [
-                  _c("a", { attrs: { href: "#" } }, [
+                  _c("a", [
                     _c(
                       "li",
                       {
@@ -45320,82 +45386,7 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("a", { attrs: { href: "#" } }, [
-                    _c(
-                      "li",
-                      {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover2,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "oil_dlv_plan",
-                              "oil_dlv_fact",
-                              "Сдача нефти"
-                            )
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Сдача нефти")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", { attrs: { href: "#" } }, [
-                    _c(
-                      "li",
-                      {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover3,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "gas_plan",
-                              "gas_fact",
-                              "Добыча газа"
-                            )
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Добыча газа")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", { attrs: { href: "#" } }, [
-                    _c(
-                      "li",
-                      {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover4,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "liq_plan",
-                              "liq_fact",
-                              "Добыча жидкости"
-                            )
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Добыча жидкости")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", { attrs: { href: "#" } }, [
+                  _c("a", [
                     _c(
                       "li",
                       {
@@ -45420,7 +45411,57 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
-                  _c("a", { attrs: { href: "#" } }, [
+                  _c("a", [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover3,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction(
+                              "gas_plan",
+                              "gas_fact",
+                              "Добыча газа"
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v("Добыча газа")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover4,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction(
+                              "liq_plan",
+                              "liq_fact",
+                              "Добыча жидкости"
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v("Добыча жидкости")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", [
                     _c(
                       "li",
                       {
@@ -45440,6 +45481,31 @@ var render = function() {
                       [
                         _c("div", { staticClass: "circle-2-string" }, [
                           _vm._v("Объём закачки")
+                        ])
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("a", [
+                    _c(
+                      "li",
+                      {
+                        staticClass: "circle-2",
+                        style: "" + _vm.buttonHover2,
+                        attrs: { tabindex: "-2" },
+                        on: {
+                          click: function($event) {
+                            return _vm.getProduction(
+                              "oil_dlv_plan",
+                              "oil_dlv_fact",
+                              "Сдача нефти"
+                            )
+                          }
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "circle-2-string" }, [
+                          _vm._v("Сдача нефти")
                         ])
                       ]
                     )
@@ -45591,23 +45657,67 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.planYear))
+                              item.planYear
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.planYear
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(item.planMonth) +
-                                  "\n                      "
-                              )
+                              item.planMonth
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.planMonth
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.planDay))
+                              item.planDay
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.planDay
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.factDay))
+                              item.factDay
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.factDay
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c(
@@ -45631,7 +45741,15 @@ var render = function() {
                                   ? _c("div", [
                                       _c("div", [
                                         _vm._v(
-                                          _vm._s(item.factDay - item.planDay)
+                                          "\n                            " +
+                                            _vm._s(
+                                              new Intl.NumberFormat(
+                                                "ru-RU"
+                                              ).format(
+                                                item.factDay - item.planDay
+                                              )
+                                            ) +
+                                            "\n                          "
                                         )
                                       ])
                                     ])
@@ -45640,19 +45758,35 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(item.planMonth) +
-                                  "\n                      "
-                              )
+                              item.planMonth
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.planMonth
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(item.factMonth) +
-                                  "\n                      "
-                              )
+                              item.factMonth
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.factMonth
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c(
@@ -45675,7 +45809,11 @@ var render = function() {
                                       _vm._v(
                                         "\n                          " +
                                           _vm._s(
-                                            item.factMonth - item.planMonth
+                                            new Intl.NumberFormat(
+                                              "ru-RU"
+                                            ).format(
+                                              item.factMonth - item.planMonth
+                                            )
                                           ) +
                                           "\n                        "
                                       )
@@ -45685,11 +45823,35 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.planYear))
+                              item.planYear
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.planYear
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.factYear))
+                              item.factYear
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.factYear
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c(
@@ -45715,7 +45877,11 @@ var render = function() {
                                       _vm._v(
                                         "\n                          " +
                                           _vm._s(
-                                            item.factYear - item.planYear
+                                            new Intl.NumberFormat(
+                                              "ru-RU"
+                                            ).format(
+                                              item.factYear - item.planYear
+                                            )
                                           ) +
                                           "\n                        "
                                       )
@@ -45773,7 +45939,11 @@ var render = function() {
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "cell2 table-border" }, [
-                        _vm._v("План на июль месяц")
+                        _vm._v(
+                          "\n                    План на " +
+                            _vm._s(_vm.currentMonth) +
+                            " месяц\n                  "
+                        )
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "cell3 table-border" }, [
@@ -45856,17 +46026,53 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.planYear))
+                              item.planYear
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.planYear
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.plan))
+                              item.plan
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.plan
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.fact))
+                              item.fact
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.fact
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c(
@@ -45887,7 +46093,15 @@ var render = function() {
                                 item.fact
                                   ? _c("div", [
                                       _c("div", [
-                                        _vm._v(_vm._s(item.fact - item.plan))
+                                        _vm._v(
+                                          "\n                            " +
+                                            _vm._s(
+                                              new Intl.NumberFormat(
+                                                "ru-RU"
+                                              ).format(item.fact - item.plan)
+                                            ) +
+                                            "\n                          "
+                                        )
                                       ])
                                     ])
                                   : _vm._e()
@@ -45895,19 +46109,35 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(item.productionPlanForMonth) +
-                                  "\n                      "
-                              )
+                              item.productionPlanForMonth
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.productionPlanForMonth
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(item.productionFactForMonth) +
-                                  "\n                      "
-                              )
+                              item.productionFactForMonth
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.productionFactForMonth
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c(
@@ -45931,8 +46161,12 @@ var render = function() {
                                       _vm._v(
                                         "\n                          " +
                                           _vm._s(
-                                            item.productionFactForMonth -
-                                              item.productionPlanForMonth
+                                            new Intl.NumberFormat(
+                                              "ru-RU"
+                                            ).format(
+                                              item.productionFactForMonth -
+                                                item.productionPlanForMonth
+                                            )
                                           ) +
                                           "\n                        "
                                       )
@@ -45942,11 +46176,35 @@ var render = function() {
                             ),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.planYear))
+                              item.planYear
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.planYear
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c("div", { staticClass: "cell table-border" }, [
-                              _vm._v(_vm._s(item.factYear))
+                              item.factYear
+                                ? _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            item.factYear
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                : _vm._e()
                             ]),
                             _vm._v(" "),
                             _c(
@@ -45972,7 +46230,11 @@ var render = function() {
                                       _vm._v(
                                         "\n                          " +
                                           _vm._s(
-                                            item.factYear - item.planYear
+                                            new Intl.NumberFormat(
+                                              "ru-RU"
+                                            ).format(
+                                              item.factYear - item.planYear
+                                            )
                                           ) +
                                           "\n                        "
                                       )
@@ -58716,7 +58978,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -58736,7 +58998,7 @@ component.options.__file = "resources/js/components/ChartTide.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartTide_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./ChartTide.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/ChartTide.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartTide_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChartTide_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -58785,7 +59047,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -58805,7 +59067,7 @@ component.options.__file = "resources/js/components/Economic/Pivot.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pivot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Pivot.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Economic/Pivot.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pivot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Pivot_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -58854,7 +59116,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -58874,7 +59136,7 @@ component.options.__file = "resources/js/components/Economic/chart1.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./chart1.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Economic/chart1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -58923,7 +59185,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -58943,7 +59205,7 @@ component.options.__file = "resources/js/components/Economic/chart2.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./chart2.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Economic/chart2.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -58992,7 +59254,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59012,7 +59274,7 @@ component.options.__file = "resources/js/components/Economic/chart3.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart3_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./chart3.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Economic/chart3.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart3_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart3_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59061,7 +59323,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59081,7 +59343,7 @@ component.options.__file = "resources/js/components/Economic/chart4.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart4_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./chart4.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Economic/chart4.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart4_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_chart4_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59132,7 +59394,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   "763e61b8",
   null
-
+  
 )
 
 /* hot reload */
@@ -59152,7 +59414,7 @@ component.options.__file = "resources/js/components/Economic/main.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./main.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Economic/main.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59168,7 +59430,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_style_index_0_id_763e61b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./main.vue?vue&type=style&index=0&id=763e61b8&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Economic/main.vue?vue&type=style&index=0&id=763e61b8&scoped=true&lang=css&");
 /* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_style_index_0_id_763e61b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_style_index_0_id_763e61b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
 /* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_style_index_0_id_763e61b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_style_index_0_id_763e61b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
- /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_style_index_0_id_763e61b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a);
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_main_vue_vue_type_style_index_0_id_763e61b8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -59217,7 +59479,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59237,7 +59499,7 @@ component.options.__file = "resources/js/components/VisualCenterChartAreaCenter.
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaCenter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterChartAreaCenter.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartAreaCenter.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaCenter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaCenter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59286,7 +59548,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59306,7 +59568,7 @@ component.options.__file = "resources/js/components/VisualCenterChartAreaOil.vue
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaOil_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterChartAreaOil.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartAreaOil.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaOil_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaOil_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59355,7 +59617,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59375,7 +59637,7 @@ component.options.__file = "resources/js/components/VisualCenterChartAreaUSD.vue
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaUSD_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterChartAreaUSD.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartAreaUSD.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaUSD_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartAreaUSD_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59424,7 +59686,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59444,7 +59706,7 @@ component.options.__file = "resources/js/components/VisualCenterChartBarBottom.v
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartBarBottom_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterChartBarBottom.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartBarBottom.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartBarBottom_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartBarBottom_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59493,7 +59755,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59513,7 +59775,7 @@ component.options.__file = "resources/js/components/VisualCenterChartDonutRight1
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterChartDonutRight1.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartDonutRight1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59562,7 +59824,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59582,7 +59844,7 @@ component.options.__file = "resources/js/components/VisualCenterChartDonutRight2
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterChartDonutRight2.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterChartDonutRight2.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterChartDonutRight2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59631,7 +59893,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59651,7 +59913,7 @@ component.options.__file = "resources/js/components/VisualCenterMenu.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterMenu.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterMenu.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterMenu_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59700,7 +59962,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59720,7 +59982,7 @@ component.options.__file = "resources/js/components/VisualCenterTable.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./VisualCenterTable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/VisualCenterTable.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VisualCenterTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59769,7 +60031,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59789,7 +60051,7 @@ component.options.__file = "resources/js/components/WelcomeChartBarBottom1.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartBarBottom1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./WelcomeChartBarBottom1.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WelcomeChartBarBottom1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartBarBottom1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartBarBottom1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59838,7 +60100,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59858,7 +60120,7 @@ component.options.__file = "resources/js/components/WelcomeChartBarBottom2.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartBarBottom2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./WelcomeChartBarBottom2.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WelcomeChartBarBottom2.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartBarBottom2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartBarBottom2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59907,7 +60169,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59927,7 +60189,7 @@ component.options.__file = "resources/js/components/WelcomeChartDonutRight1.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./WelcomeChartDonutRight1.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WelcomeChartDonutRight1.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight1_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -59976,7 +60238,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -59996,7 +60258,7 @@ component.options.__file = "resources/js/components/WelcomeChartDonutRight2.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./WelcomeChartDonutRight2.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WelcomeChartDonutRight2.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight2_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -60045,7 +60307,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -60065,7 +60327,7 @@ component.options.__file = "resources/js/components/WelcomeChartDonutRight3.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight3_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./WelcomeChartDonutRight3.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WelcomeChartDonutRight3.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight3_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight3_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -60114,7 +60376,7 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
   null,
   null,
   null
-
+  
 )
 
 /* hot reload */
@@ -60134,7 +60396,7 @@ component.options.__file = "resources/js/components/WelcomeChartDonutRight4.vue"
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight4_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./WelcomeChartDonutRight4.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/WelcomeChartDonutRight4.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight4_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]);
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_WelcomeChartDonutRight4_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -60191,8 +60453,8 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

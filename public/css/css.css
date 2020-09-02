@@ -819,7 +819,7 @@ li.circle-2:hover {
     margin-top: 19px;
     width: 10px;
     float: left;
-    margin-left: -3px;
+    margin-left: -7px;
 }
 
 .right-button {
@@ -965,6 +965,7 @@ ul.dropdown-child {
     border-right-style: solid;
     border-right-color: #0F1430;
     border-right-width: 5px;
+    margin-top: 10px;
 }
 
 .level2-tab:focus {
@@ -1220,4 +1221,39 @@ li.circle-2 {
     background-size: contain;
     margin-top: 18px;
     margin-left: 10px;
+}
+
+.report-btn {
+    background: #15509d;
+    height: 38px;
+    border-radius: 50px;
+    color: white;
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+
+.report-btn:hover {
+    background: #15509d;
+    height: 38px;
+    border-radius: 50px;
+    color: white;
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+.sidebar-expanded{
+    width: 320px!important;   
+}
+
+h2.subtitle {
+    margin-left: 50px;
+}
+
+.mleft{
+   margin-left:50px; 
+}
+
+.emptyPage {
+    height: 800px;
 }

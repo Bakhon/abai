@@ -1,7 +1,6 @@
 <template>
   <div class="list-group">
     <a
-      href="#"
       class="bg-dark list-group-item list-group-item-action circle-menu"
       :style="`${buttonMenuHover10}`"
       @click="saveCompany('all')"
@@ -16,7 +15,6 @@
     </a>
     <div id="submenu1" class="collapse sidebar-submenu submenu1">
       <a
-        href="#"
         data-toggle="collapse"
         aria-expanded="false"
         class="bg-dark list-group-item list-group-item-action circle-menu flex-column align-items-start circle-menu"
@@ -34,7 +32,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover2}`"
         @click="saveCompany('КБМ')"
@@ -50,7 +47,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover3}`"
         @click="saveCompany('КГМ')"
@@ -66,7 +62,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover4}`"
         @click="saveCompany('ЭМГ')"
@@ -82,7 +77,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover5}`"
         @click="saveCompany('ММГ')"
@@ -98,7 +92,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover6}`"
         @click="saveCompany('КТМ')"
@@ -114,7 +107,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover7}`"
         @click="saveCompany('КОА')"
@@ -130,7 +122,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover8}`"
         @click="saveCompany('ПКИ')"
@@ -146,7 +137,6 @@
         </div>
       </a>
       <a
-        href="#"
         class="bg-dark list-group-item list-group-item-action circle-menu"
         :style="`${buttonMenuHover9}`"
         @click="saveCompany('АГГ')"
@@ -169,7 +159,7 @@
         <div tabindex="-0" class="button-menu button-menu-position"></div></div
     ></a>
     <div id="submenu2" class="collapse sidebar-submenu">
-      <a href="#" class="bg-dark list-group-item list-group-item-action">
+      <a class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <img
             src="/img/level1/logo_tengiz.svg"
@@ -180,7 +170,7 @@
           <span class="menu-collapsed companyName">ТОО «Тенгизшевройл»</span>
         </div>
       </a>
-      <a href="#" class="bg-dark list-group-item list-group-item-action">
+      <a class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <img
             src="/img/level1/logo_karachaganak.svg"
@@ -193,7 +183,7 @@
           >
         </div>
       </a>
-      <a href="#" class="bg-dark list-group-item list-group-item-action">
+      <a class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <img
             src="/img/level1/logo_ncoc.svg"
@@ -210,38 +200,38 @@
     <!--<button @click="getCurrency('26.08.2020')">Получить курс валют</button>
     <button @click="getCurrencyNow()">Получить текущий курс валют</button>-->
 
-
-      <div class="left-price-oil">
-        <div class="left-price-oil2">Цена за нефть <div class="price-border ">43.1 $</div>
-        </div>
-        <hr class="hr-visualcenter">
-        <visual-center-chart-area-oil></visual-center-chart-area-oil>     
-        <hr class="hr-visualcenter">
-        <ul class="oil-string-all">
-            <li class="oil-string one">Нефть Brent</li>
-            <li class="oil-string two">41,65</li>
-            <li class="oil-string three">+0,60</li>
-            <li class="oil-string three">+1,46%</li>
-        </ul>
-        <hr class="hr-visualcenter">
-        <ul class="oil-string-all">
-            <li class="oil-string one">Нефть WTI</li>
-            <li class="oil-string two">41,65</li>
-            <li class="oil-string three">+0,60</li>
-            <li class="oil-string three">+1,46%</li>
-        </ul>
-        <hr class="hr-visualcenter">
-        <ul class="oil-string-all">
-            <li class="oil-string one">Нефть Urals</li>
-            <li class="oil-string two">41,65</li>
-            <li class="oil-string three">+0,60</li>
-            <li class="oil-string three">+1,46%</li>
-        </ul>
-        <hr class="hr-visualcenter">
+    <div class="left-price-oil">
+      <div class="left-price-oil2">
+        Цена за нефть
+        <div class="price-border">{{ oilNow }} $</div>
+      </div>
+      <hr class="hr-visualcenter" />
+      <visual-center-chart-area-oil></visual-center-chart-area-oil>
+      <hr class="hr-visualcenter" />
+      <ul class="oil-string-all">
+        <li class="oil-string one">Нефть Brent</li>
+        <li class="oil-string two">41,65</li>
+        <li class="oil-string three">+0,60</li>
+        <li class="oil-string three">+1,46%</li>
+      </ul>
+      <hr class="hr-visualcenter" />
+      <ul class="oil-string-all">
+        <li class="oil-string one">Нефть WTI</li>
+        <li class="oil-string two">41,65</li>
+        <li class="oil-string three">+0,60</li>
+        <li class="oil-string three">+1,46%</li>
+      </ul>
+      <hr class="hr-visualcenter" />
+      <ul class="oil-string-all">
+        <li class="oil-string one">Нефть Urals</li>
+        <li class="oil-string two">41,65</li>
+        <li class="oil-string three">+0,60</li>
+        <li class="oil-string three">+1,46%</li>
+      </ul>
+      <hr class="hr-visualcenter" />
     </div>
-    
 
-   <div class="assets3"></div>
+    <div class="assets3"></div>
 
     <div class="left-price-oil">
       <div class="left-price-oil2">
@@ -273,7 +263,8 @@ export default {
   data: function () {
     return {
       company: "",
-      timeSelect:"",
+      timeSelect: "",
+      oilNow: "",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
       buttonMenuHover3: "",
@@ -290,19 +281,17 @@ export default {
       currencyNowUsd: "",
     };
   },
-    updated() {
-
-    },
+  updated() {},
   mounted() {
+    this.getOilNow();
     //now time
     var date = new Date();
     var currentDate =
       date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    this.getCurrencyNow(currentDate);
-    //now time 
-
-
-
+    this.getCurrencyNow(this.timeSelect);
+    this.getOilNow(this.timeSelect);
+    //console.log(currentDate);
+    //now time
 
     var Months = [];
     var currency = [];
@@ -315,9 +304,10 @@ export default {
     }
   },
   methods: {
-        timeSelect2: function (select) {
+    timeSelect2: function (select) {
       this.timeSelect = select;
-       this.getCurrencyNow(this.timeSelect);
+      this.getCurrencyNow(this.timeSelect);
+      this.getOilNow(this.timeSelect);
     },
 
     getCurrencyNow: function (dates) {
@@ -326,7 +316,7 @@ export default {
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
-          console.log(data);
+          //console.log(data);
           this.currencyNow = data;
           this.currencyNowUsd =
             Math.trunc((1 / data.description) * 10000) / 10000;
@@ -334,12 +324,9 @@ export default {
           console.log("No data");
         }
       });
-
     },
 
-    getCurrency(dates, id
-    
-    ) {
+    getCurrency(dates, id) {
       let uri = "/ru/getcurrency?fdate=" + dates + "";
       this.axios.get(uri).then((response) => {
         let data = response.data;
@@ -350,8 +337,50 @@ export default {
 
           arrdata = this.currency;
           //arrdata = _.orderBy(arrdata, "id", "desk");
-          console.log(arrdata);
+          // console.log(arrdata);
           //  console.log(dates+' ' + data.description);
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+
+    getOilNow: function (dates) {
+      var datas;
+      let uri =
+        "https://cors-anywhere.herokuapp.com/" +
+        "https://yandex.ru/news/quotes/graph_1006.json";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          var oilDate;
+          var oilValue;
+          var splits = [];
+          var oil = [];
+          var oil2;
+          _.forEach(data.prices, function (prices) {
+            splits = prices.toString().split(",");
+            oilDate = Number(splits["0"]);
+            oilValue = splits["1"];
+            oil.push({
+              date: new Date(oilDate).toLocaleString("ru", {
+                year: "numeric",
+
+                day: "numeric",
+                month: "numeric",
+                /*	weekday: 'long',
+	timezone: 'UTC',
+        hour: "numeric",
+        minute: "numeric",
+        second: 'numeric'*/
+              }),
+              value: oilValue,
+            });
+          });
+          var oil2 = [];
+          oil2 = _.filter(oil, _.iteratee({ date: dates }));
+
+          this.oilNow = oil2[0].value;        
         } else {
           console.log("No data");
         }
@@ -433,26 +462,22 @@ export default {
       }
 
       EventBus.$emit("messageSend", this.company);
-    }
+    },
   },
 
-created() {
- EventBus.$on("timeSelect", this.timeSelect2); 
-this.buttonMenuHover10=  "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
-        "background-size: 9% auto;" +
-        "background-position: 75% 50%;" +
-        "border: none;" +
-        "height: 40px;" +
-        "pointer-events: none;";
-},
-  computed: {
- 
-
-
+  created() {
+    EventBus.$on("timeSelect", this.timeSelect2);
+    this.buttonMenuHover10 =
+      "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
+      "background-size: 9% auto;" +
+      "background-position: 75% 50%;" +
+      "border: none;" +
+      "height: 40px;" +
+      "pointer-events: none;";
   },
-  
+  computed: {},
 
-/*
+  /*
 watch: {
     a: function (val, oldVal) {
       console.log('новое значение: %s, старое значение: %s', val, oldVal)
