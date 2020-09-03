@@ -96,7 +96,7 @@ export default {
       },
       series: [
         {
-          name: "Курс",
+          name: "",
           type: "area",
           stroke: {
             curve: "smooth",
