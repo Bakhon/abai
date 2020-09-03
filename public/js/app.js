@@ -3164,7 +3164,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         }
       },
       series: [{
-        name: "Курс",
+        name: "",
         type: "area",
         stroke: {
           curve: "smooth"
