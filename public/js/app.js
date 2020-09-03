@@ -5292,25 +5292,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
              productionFactForChart2.push({productionFactForChart});
             });*/
             //for chart
+            var timestampMonthStart = new Date(_this.monthes2[_this.selectedMonth] + //this.selectedDay +
+            "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
               return _.every([_.inRange(item.__time, // 1588291200000, // from May 2020
               // 1590883200000+1,
               timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
             });
-            var dzo = new Array();
+            var dzo = [];
+            var productionPlanForMonth = [];
+            var productionFactForMonth = [];
 
             _.forEach(dataWithMay, function (item) {
               dzo.push(item.dzo);
-            });
+              productionPlanForMonth.push({
+                productionPlanForMonth: item[productionPlan]
+              });
+              productionFactForMonth.push({
+                productionFactForMonth: item[productionFact]
+              });
+            }); //console.log(dataWithMay);
+            //dzo = _.uniq(dzo);
+            //k1q select summ plan for month
 
-            dzo = _.uniq(dzo); //select summ plan for month
+            /*  var productionPlanForMonth = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            console.log(productionPlanForMonth);
+              productionPlanForMonth = Math.ceil(
+              productionPlanForMonth / dayInMonth
+            );*/
 
-            var productionPlanForMonth = _.reduce(dataWithMay, function (memo, item) {
-              return memo + item[productionPlan];
-            }, 0);
-
-            productionPlanForMonth = Math.ceil(productionPlanForMonth / dayInMonth);
 
             var prod_wells_work = _.reduce(dataWithMay, function (memo, item) {
               return memo + item.prod_wells_work;
@@ -5352,18 +5369,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             inj_wells_work = Math.ceil(inj_wells_work / dayInMonth); //for month
             //select summ fact for month
 
-            var productionFactForMonth = _.reduce(dataWithMay, function (memo, item) {
-              return memo + item[productionFact];
-            }, 0);
+            /*   var productionFactForMonth = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+            productionFactForMonth = Math.ceil(
+              productionFactForMonth / dayInMonth
+            );
+            var productionFactForMonth2 = [
+              { productionFactForMonth: Math.ceil(productionFactForMonth) },
+            ];
+            var productionPlanForMonth2 = [
+              { productionPlanForMonth: Math.ceil(productionPlanForMonth) },
+            ];*/
 
-            productionFactForMonth = Math.ceil(productionFactForMonth / dayInMonth); //for month
-
-            var productionFactForMonth2 = [{
-              productionFactForMonth: Math.ceil(productionFactForMonth)
-            }];
-            var productionPlanForMonth2 = [{
-              productionPlanForMonth: Math.ceil(productionPlanForMonth)
-            }];
             var prod_wells_work2 = [{
               prod_wells_work: prod_wells_work
             }];
@@ -5687,7 +5709,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           productionForChart = {
             data: productionForChart
           };
-          _this.productionForChart = productionForChart;
+          _this.productionForChart = productionForChart; //console.log(productionPlanForMonth);
 
           var tables = _.zipWith(_.sortBy(dzo2, function (dzo) {
             return dzo.dzo;
@@ -5701,9 +5723,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             return factYear;
           }), _.sortBy(planYear2, function (planYear) {
             return planYear;
-          }), _.sortBy(productionFactForMonth2, function (productionFactForMonth) {
+          }), _.sortBy(productionFactForMonth, function (productionFactForMonth) {
             return productionFactForMonth;
-          }), _.sortBy(productionPlanForMonth2, function (productionPlanForMonth) {
+          }), _.sortBy(productionPlanForMonth, function (productionPlanForMonth) {
             return productionPlanForMonth;
           }), // _.sortBy(dzoYear2, (dzoYear) => dzoYear),
           function (dzo, liq_fact, liq_plan, time, factYear, planYear, //, dzoYear
@@ -5842,9 +5864,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         _this.currentMonth = _this.monthes3[_this.month + 1]; //if (this.company == "all") {var currentMonth = 5; currentMonth2 = this.monthes3[currentMonth];} else { currentMonth2 = this.monthes3[this.month+1];}
 
-        var timestampMonthStart = new Date( //this.monthes2[this.month+1] + //change when data upgrade
+        var timestampMonthStart = new Date( //   this.monthes2[this.selectedMonth] + //change when data upgrade
         _this.monthes2["5"] + //this.selectedDay +
         "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
+        console.log(timestampMonthStart);
 
         var dayInMonth = _this.getDays().length;
 
@@ -46151,11 +46174,7 @@ var render = function() {
                                 ? _c("div", [
                                     _vm._v(
                                       "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.productionPlanForMonth
-                                          )
-                                        ) +
+                                        _vm._s(item.productionPlanForMonth) +
                                         "\n                        "
                                     )
                                   ])

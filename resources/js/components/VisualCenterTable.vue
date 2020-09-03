@@ -392,7 +392,7 @@
                         </div>
                         <div class="cell table-border">
                           <div v-if="item.productionPlanForMonth">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.productionPlanForMonth ))}}
+                            {{ item.productionPlanForMonth }}
                           </div>
                         </div>
                         <div class="cell table-border">
@@ -615,8 +615,8 @@ export default {
       ],
 
       NameDzoFull: [
-        "Всего добыча нефти с учётом доли участия АО НК КазМунайГаз",        
-        "АО Озенмунайгаз (нефть) (100%)",        
+        "Всего добыча нефти с учётом доли участия АО НК КазМунайГаз",
+        "АО Озенмунайгаз (нефть) (100%)",
         "АО Эмбамунайгаз (100%)",
         "АО Каражанбасмунай (50%)",
         "ТОО СП Казгермунай",
@@ -1305,6 +1305,15 @@ export default {
             });*/
             //for chart
 
+            var timestampMonthStart = new Date(
+              this.monthes2[this.selectedMonth] +
+                //this.selectedDay +
+                "1" +
+                " " +
+                SelectYearInMonth +
+                " 06:00:00 GMT+0600"
+            ).getTime();
+
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
               return _.every([
@@ -1317,15 +1326,24 @@ export default {
                 ),
               ]);
             });
-            var dzo = new Array();
+            var dzo = [];
+            var productionPlanForMonth = [];
+            var productionFactForMonth = [];
             _.forEach(dataWithMay, function (item) {
               dzo.push(item.dzo);
+              productionPlanForMonth.push({
+                productionPlanForMonth: item[productionPlan],
+              });
+              productionFactForMonth.push({
+                productionFactForMonth: item[productionFact],
+              });
             });
-            dzo = _.uniq(dzo);
+            //console.log(dataWithMay);
+            //dzo = _.uniq(dzo);
 
-            //select summ plan for month
+            //k1q select summ plan for month
 
-            var productionPlanForMonth = _.reduce(
+            /*  var productionPlanForMonth = _.reduce(
               dataWithMay,
               function (memo, item) {
                 return memo + item[productionPlan];
@@ -1333,9 +1351,12 @@ export default {
               0
             );
 
+
+console.log(productionPlanForMonth);
+
             productionPlanForMonth = Math.ceil(
               productionPlanForMonth / dayInMonth
-            );
+            );*/
 
             var prod_wells_work = _.reduce(
               dataWithMay,
@@ -1402,7 +1423,7 @@ export default {
 
             //for month
             //select summ fact for month
-            var productionFactForMonth = _.reduce(
+            /*   var productionFactForMonth = _.reduce(
               dataWithMay,
               function (memo, item) {
                 return memo + item[productionFact];
@@ -1413,13 +1434,12 @@ export default {
               productionFactForMonth / dayInMonth
             );
 
-            //for month
-            var productionFactForMonth2 = [
+          var productionFactForMonth2 = [
               { productionFactForMonth: Math.ceil(productionFactForMonth) },
             ];
             var productionPlanForMonth2 = [
               { productionPlanForMonth: Math.ceil(productionPlanForMonth) },
-            ];
+            ];*/
 
             var prod_wells_work2 = [{ prod_wells_work: prod_wells_work }];
 
@@ -1705,6 +1725,7 @@ export default {
 
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
+          //console.log(productionPlanForMonth);
 
           var tables = _.zipWith(
             _.sortBy(dzo2, (dzo) => dzo.dzo),
@@ -1714,11 +1735,11 @@ export default {
             _.sortBy(factYear2, (factYear) => factYear),
             _.sortBy(planYear2, (planYear) => planYear),
             _.sortBy(
-              productionFactForMonth2,
+              productionFactForMonth,
               (productionFactForMonth) => productionFactForMonth
             ),
             _.sortBy(
-              productionPlanForMonth2,
+              productionPlanForMonth,
               (productionPlanForMonth) => productionPlanForMonth
             ),
             // _.sortBy(dzoYear2, (dzoYear) => dzoYear),
@@ -1943,7 +1964,7 @@ this.currentMonth = this.monthes3[currentMonth];
         //if (this.company == "all") {var currentMonth = 5; currentMonth2 = this.monthes3[currentMonth];} else { currentMonth2 = this.monthes3[this.month+1];}
 
         var timestampMonthStart = new Date(
-          //this.monthes2[this.month+1] + //change when data upgrade
+          //   this.monthes2[this.selectedMonth] + //change when data upgrade
           this.monthes2["5"] +
             //this.selectedDay +
             "1" +
@@ -1951,6 +1972,7 @@ this.currentMonth = this.monthes3[currentMonth];
             SelectYearInMonth +
             " 06:00:00 GMT+0600"
         ).getTime();
+        console.log(timestampMonthStart);
 
         var dayInMonth = this.getDays().length;
         var dataWithMay = new Array();
