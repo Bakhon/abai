@@ -21,6 +21,7 @@
     @include('layouts.navbar')
     <div class="row" id="app">
         @if (basename(Request::url()) === "economic")
+        @elseif (basename(Request::url()) === "gtmscor")
         @elseif (basename(Request::url()) === "mfond")
         @elseif (basename(Request::url()) === "bigdata")
         @elseif (basename(Request::url()) === "mzdn")

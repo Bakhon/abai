@@ -3510,6 +3510,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3517,6 +3520,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   props: ["wells2"],
   data: function data() {
     return {
+      summ: "",
       series: [0, 0],
       chartOptions: {
         labels: ["В работе", "В простое"],
@@ -3564,6 +3568,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     if (a == undefined && b == undefined) {} else {
       this.series = wells;
+      this.summ = a + b;
     }
 
     var c = this.wells2.prod_wells_work_year;
@@ -3572,6 +3577,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     if (c == undefined && d == undefined) {} else {
       this.series = wells;
+      this.summ = c + d;
     }
   }
 });
@@ -3608,6 +3614,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3615,6 +3624,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   props: ["wells"],
   data: function data() {
     return {
+      summ: "",
       series: [0],
       chartOptions: {
         labels: ["В работе", "В простое"],
@@ -3662,6 +3672,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     if (a == undefined && b == undefined) {} else {
       this.series = wells;
+      this.summ = a + b;
     }
 
     var c = this.wells.inj_wells_work_year;
@@ -3670,6 +3681,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     if (c == undefined && d == undefined) {} else {
       this.series = wells;
+      this.summ = c + d;
     }
   }
 });
@@ -4733,7 +4745,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       monthes: ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"],
       monthes3: ["", "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
       monthes2: ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      NameDzoFull: ["Всего добыча нефти и конденсата с учётом доли участия АО НК КазМунайГаз", "в т.ч.:газовый конденсат", "АО Озенмунайгаз (нефть) (100%)", "(конденсат)(100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      NameDzoFull: ["Всего добыча нефти с учётом доли участия АО НК КазМунайГаз", "АО Озенмунайгаз (нефть) (100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "АО ЭмбаМунайГаз", "АО Мангистаумунайгаз", "ТОО Казахтуркмунай", "ПетроКазахстан Инк.", "Амангельды Газ", "ТОО «Тенгизшевройл»", "«Карачаганак Петролеум Оперейтинг б.в.»", "«Норт Каспиан Оперейтинг Компани н.в.»", "(конденсат)(100%)", "в т.ч.:газовый конденсат"],
       date: new Date(),
       selectedDay: undefined,
       selectedMonth: undefined,
@@ -44437,17 +44449,25 @@ var render = function() {
     "div",
     { attrs: { id: "chart-donut2" } },
     [
+      _c("div", { staticClass: "donut-summ" }, [
+        _vm._v(
+          "\n    " +
+            _vm._s(new Intl.NumberFormat("ru-RU").format(_vm.summ)) +
+            "\n  "
+        )
+      ]),
+      _vm._v(" "),
       _c("apexchart", {
         attrs: { type: "donut", options: _vm.chartOptions, series: _vm.series }
       }),
       _vm._v(" "),
       _c("div", { staticClass: "donut-inner1 inner2" }, [
-        _vm._v("\n  В работе\n    "),
+        _vm._v("\n    В работе\n    "),
         _c("br"),
         _vm._v(
           "\n    " +
             _vm._s(_vm.wells2.prod_wells_work) +
-            "  " +
+            " " +
             _vm._s(_vm.wells2.prod_wells_work_year) +
             "\n  "
         )
@@ -44459,7 +44479,7 @@ var render = function() {
         _vm._v(
           "\n    " +
             _vm._s(_vm.wells2.prod_wells_idle) +
-            "  " +
+            " " +
             _vm._s(_vm.wells2.prod_wells_idle_year) +
             "\n  "
         )
@@ -44494,6 +44514,14 @@ var render = function() {
     "div",
     { attrs: { id: "chart-donut2" } },
     [
+      _c("div", { staticClass: "donut-summ" }, [
+        _vm._v(
+          "\n    " +
+            _vm._s(new Intl.NumberFormat("ru-RU").format(_vm.summ)) +
+            "\n  "
+        )
+      ]),
+      _vm._v(" "),
       _c("apexchart", {
         attrs: { type: "donut", options: _vm.chartOptions, series: _vm.series }
       }),
