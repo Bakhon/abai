@@ -5,9 +5,7 @@
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts'
-
-Vue.component('apexchart', VueApexCharts)
+var ru = require("apexcharts/dist/locales/ru.json");
 export default {
   name: 'mix-chart',
   data: function() {
@@ -15,7 +13,9 @@ export default {
       chartOptions: {
         chart: {
             stacked: true,
-            foreColor: '#FFFFFF'
+            foreColor: '#FFFFFF',
+            locales: [ru],
+            defaultLocale: 'ru'
         },
         colors:['#13B062', '#F7BB2E', '#AB130E'],
         stroke: {
