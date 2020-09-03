@@ -1,5 +1,8 @@
 <template>
   <div id="chart-donut2">
+    <div class="donut-summ">
+      {{ new Intl.NumberFormat("ru-RU").format(summ) }}
+    </div>
     <apexchart
       type="donut"
       :options="chartOptions"
@@ -26,6 +29,7 @@ export default {
   props: ["wells"],
   data: function () {
     return {
+      summ: "",
       series: [0],
       chartOptions: {
         labels: ["В работе", "В простое"],
@@ -72,6 +76,7 @@ export default {
     if (a == undefined && b == undefined) {
     } else {
       this.series = wells;
+      this.summ = a + b;
     }
 
     var c = this.wells.inj_wells_work_year;
@@ -80,6 +85,7 @@ export default {
     if (c == undefined && d == undefined) {
     } else {
       this.series = wells;
+      this.summ = c + d;
     }
   },
 };

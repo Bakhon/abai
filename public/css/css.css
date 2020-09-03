@@ -1257,3 +1257,10 @@ h2.subtitle {
 .emptyPage {
     height: 800px;
 }
+
+.donut-summ {
+    position: absolute;
+    margin-top: 82px;
+    margin-left: 83px;
+    font-size: 30px;
+}

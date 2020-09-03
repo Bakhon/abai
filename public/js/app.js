@@ -3510,6 +3510,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3517,6 +3520,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   props: ["wells2"],
   data: function data() {
     return {
+      summ: "",
       series: [0, 0],
       chartOptions: {
         labels: ["В работе", "В простое"],
@@ -3564,6 +3568,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     if (a == undefined && b == undefined) {} else {
       this.series = wells;
+      this.summ = a + b;
     }
 
     var c = this.wells2.prod_wells_work_year;
@@ -3572,6 +3577,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     if (c == undefined && d == undefined) {} else {
       this.series = wells;
+      this.summ = c + d;
     }
   }
 });
@@ -3608,6 +3614,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3615,6 +3624,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   props: ["wells"],
   data: function data() {
     return {
+      summ: "",
       series: [0],
       chartOptions: {
         labels: ["В работе", "В простое"],
@@ -3662,6 +3672,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     if (a == undefined && b == undefined) {} else {
       this.series = wells;
+      this.summ = a + b;
     }
 
     var c = this.wells.inj_wells_work_year;
@@ -3670,6 +3681,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     if (c == undefined && d == undefined) {} else {
       this.series = wells;
+      this.summ = c + d;
     }
   }
 });
@@ -4733,7 +4745,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       monthes: ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"],
       monthes3: ["", "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
       monthes2: ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      NameDzoFull: ["Всего добыча нефти и конденсата с учётом доли участия АО НК КазМунайГаз", "в т.ч.:газовый конденсат", "АО Озенмунайгаз (нефть) (100%)", "(конденсат)(100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      NameDzoFull: ["Всего добыча нефти с учётом доли участия АО НК КазМунайГаз", "АО Озенмунайгаз (нефть) (100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "АО ЭмбаМунайГаз", "АО Мангистаумунайгаз", "ТОО Казахтуркмунай", "ПетроКазахстан Инк.", "Амангельды Газ", "ТОО «Тенгизшевройл»", "«Карачаганак Петролеум Оперейтинг б.в.»", "«Норт Каспиан Оперейтинг Компани н.в.»", "(конденсат)(100%)", "в т.ч.:газовый конденсат"],
       date: new Date(),
       selectedDay: undefined,
       selectedMonth: undefined,
@@ -5280,25 +5292,42 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
              productionFactForChart2.push({productionFactForChart});
             });*/
             //for chart
+            var timestampMonthStart = new Date(_this.monthes2[_this.selectedMonth] + //this.selectedDay +
+            "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
               return _.every([_.inRange(item.__time, // 1588291200000, // from May 2020
               // 1590883200000+1,
               timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
             });
-            var dzo = new Array();
+            var dzo = [];
+            var productionPlanForMonth = [];
+            var productionFactForMonth = [];
 
             _.forEach(dataWithMay, function (item) {
               dzo.push(item.dzo);
-            });
+              productionPlanForMonth.push({
+                productionPlanForMonth: item[productionPlan]
+              });
+              productionFactForMonth.push({
+                productionFactForMonth: item[productionFact]
+              });
+            }); //console.log(dataWithMay);
+            //dzo = _.uniq(dzo);
+            //k1q select summ plan for month
 
-            dzo = _.uniq(dzo); //select summ plan for month
+            /*  var productionPlanForMonth = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item[productionPlan];
+              },
+              0
+            );
+            console.log(productionPlanForMonth);
+              productionPlanForMonth = Math.ceil(
+              productionPlanForMonth / dayInMonth
+            );*/
 
-            var productionPlanForMonth = _.reduce(dataWithMay, function (memo, item) {
-              return memo + item[productionPlan];
-            }, 0);
-
-            productionPlanForMonth = Math.ceil(productionPlanForMonth / dayInMonth);
 
             var prod_wells_work = _.reduce(dataWithMay, function (memo, item) {
               return memo + item.prod_wells_work;
@@ -5340,18 +5369,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             inj_wells_work = Math.ceil(inj_wells_work / dayInMonth); //for month
             //select summ fact for month
 
-            var productionFactForMonth = _.reduce(dataWithMay, function (memo, item) {
-              return memo + item[productionFact];
-            }, 0);
+            /*   var productionFactForMonth = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item[productionFact];
+              },
+              0
+            );
+            productionFactForMonth = Math.ceil(
+              productionFactForMonth / dayInMonth
+            );
+            var productionFactForMonth2 = [
+              { productionFactForMonth: Math.ceil(productionFactForMonth) },
+            ];
+            var productionPlanForMonth2 = [
+              { productionPlanForMonth: Math.ceil(productionPlanForMonth) },
+            ];*/
 
-            productionFactForMonth = Math.ceil(productionFactForMonth / dayInMonth); //for month
-
-            var productionFactForMonth2 = [{
-              productionFactForMonth: Math.ceil(productionFactForMonth)
-            }];
-            var productionPlanForMonth2 = [{
-              productionPlanForMonth: Math.ceil(productionPlanForMonth)
-            }];
             var prod_wells_work2 = [{
               prod_wells_work: prod_wells_work
             }];
@@ -5675,7 +5709,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           productionForChart = {
             data: productionForChart
           };
-          _this.productionForChart = productionForChart;
+          _this.productionForChart = productionForChart; //console.log(productionPlanForMonth);
 
           var tables = _.zipWith(_.sortBy(dzo2, function (dzo) {
             return dzo.dzo;
@@ -5689,9 +5723,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             return factYear;
           }), _.sortBy(planYear2, function (planYear) {
             return planYear;
-          }), _.sortBy(productionFactForMonth2, function (productionFactForMonth) {
+          }), _.sortBy(productionFactForMonth, function (productionFactForMonth) {
             return productionFactForMonth;
-          }), _.sortBy(productionPlanForMonth2, function (productionPlanForMonth) {
+          }), _.sortBy(productionPlanForMonth, function (productionPlanForMonth) {
             return productionPlanForMonth;
           }), // _.sortBy(dzoYear2, (dzoYear) => dzoYear),
           function (dzo, liq_fact, liq_plan, time, factYear, planYear, //, dzoYear
@@ -5830,9 +5864,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         _this.currentMonth = _this.monthes3[_this.month + 1]; //if (this.company == "all") {var currentMonth = 5; currentMonth2 = this.monthes3[currentMonth];} else { currentMonth2 = this.monthes3[this.month+1];}
 
-        var timestampMonthStart = new Date( //this.monthes2[this.month+1] + //change when data upgrade
+        var timestampMonthStart = new Date( //   this.monthes2[this.selectedMonth] + //change when data upgrade
         _this.monthes2["5"] + //this.selectedDay +
         "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
+        console.log(timestampMonthStart);
 
         var dayInMonth = _this.getDays().length;
 
@@ -44437,17 +44472,25 @@ var render = function() {
     "div",
     { attrs: { id: "chart-donut2" } },
     [
+      _c("div", { staticClass: "donut-summ" }, [
+        _vm._v(
+          "\n    " +
+            _vm._s(new Intl.NumberFormat("ru-RU").format(_vm.summ)) +
+            "\n  "
+        )
+      ]),
+      _vm._v(" "),
       _c("apexchart", {
         attrs: { type: "donut", options: _vm.chartOptions, series: _vm.series }
       }),
       _vm._v(" "),
       _c("div", { staticClass: "donut-inner1 inner2" }, [
-        _vm._v("\n  В работе\n    "),
+        _vm._v("\n    В работе\n    "),
         _c("br"),
         _vm._v(
           "\n    " +
             _vm._s(_vm.wells2.prod_wells_work) +
-            "  " +
+            " " +
             _vm._s(_vm.wells2.prod_wells_work_year) +
             "\n  "
         )
@@ -44459,7 +44502,7 @@ var render = function() {
         _vm._v(
           "\n    " +
             _vm._s(_vm.wells2.prod_wells_idle) +
-            "  " +
+            " " +
             _vm._s(_vm.wells2.prod_wells_idle_year) +
             "\n  "
         )
@@ -44494,6 +44537,14 @@ var render = function() {
     "div",
     { attrs: { id: "chart-donut2" } },
     [
+      _c("div", { staticClass: "donut-summ" }, [
+        _vm._v(
+          "\n    " +
+            _vm._s(new Intl.NumberFormat("ru-RU").format(_vm.summ)) +
+            "\n  "
+        )
+      ]),
+      _vm._v(" "),
       _c("apexchart", {
         attrs: { type: "donut", options: _vm.chartOptions, series: _vm.series }
       }),
@@ -46123,11 +46174,7 @@ var render = function() {
                                 ? _c("div", [
                                     _vm._v(
                                       "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.productionPlanForMonth
-                                          )
-                                        ) +
+                                        _vm._s(item.productionPlanForMonth) +
                                         "\n                        "
                                     )
                                   ])
