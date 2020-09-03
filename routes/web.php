@@ -20,6 +20,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
     Route::group(['middleware' => 'auth'], function () {
         Route::get("/geteconimicdata", "EconomicController@getEconomicData");
         Route::get("/getcurrency", "DruidController@getCurrency");
+        Route::get("/getcurrencyperiod", "DruidController@getCurrencyPeriod");
         Route::get('/', function () {
             return view('welcome');
         });

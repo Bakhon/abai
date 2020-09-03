@@ -20,6 +20,7 @@ export default {
   data: function () {
     return {
       chartOptions: {
+        
         tooltip: {
           theme: "dark",
           x: {
@@ -37,6 +38,13 @@ export default {
 
         colors: ["#F7BB2E"],
         chart: {
+              toolbar: {
+                show: false,
+                autoSelected: 'pan'
+              },
+          zoom: {
+                enabled: false
+              },
           animations: {
             speed: 200,
           },

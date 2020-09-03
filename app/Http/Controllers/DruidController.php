@@ -166,4 +166,29 @@ class DruidController extends Controller
         return view('reports.constructor');
     }
 
+    function getCurrencyPeriod()
+{
+    $current_month = date('m');
+    for ($i = 01; $i <= $current_month; $i++) {
+        $dates = "01.0" . $i . ".2020";
+        $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $dates;
+        $dataObj = simplexml_load_file($url);
+        if ($dataObj) {
+            foreach ($dataObj as $item) {
+                if ($item->title == 'USD') {
+                    // echo $dates;
+                    $description = $item->description;
+                    // $z[$i] = $i;А
+                    $array[$i] =  array(
+                        "dates" => $dates,
+                        "description" => $description,
+                    );
+                }
+            }
+        }
+    }
+
+    return response()->json($array);
+}
+
 }

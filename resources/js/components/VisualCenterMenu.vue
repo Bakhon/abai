@@ -197,16 +197,17 @@
         </div>
       </a>
     </div>
-    <!--<button @click="getCurrency('26.08.2020')">Получить курс валют</button>
-    <button @click="getCurrencyNow()">Получить текущий курс валют</button>-->
-
     <div class="left-price-oil">
       <div class="left-price-oil2">
         Цена за нефть
         <div class="price-border">{{ oilNow }} $</div>
       </div>
-      <hr class="hr-visualcenter" />
-      <visual-center-chart-area-oil></visual-center-chart-area-oil>
+      <!--<hr class="hr-visualcenter" />-->
+      <visual-center-chart-area-oil
+        v-for="(serial, index) in oilChart"
+        v-bind:postTitle="serial"
+        :key="serial"
+      ></visual-center-chart-area-oil>
       <hr class="hr-visualcenter" />
       <ul class="oil-string-all">
         <li class="oil-string one">Нефть Brent</li>
@@ -236,7 +237,7 @@
     <div class="left-price-oil">
       <div class="left-price-oil2">
         Курс доллара
-        <div class="price-border">{{ currencyNow.description }}&#8376;</div>
+        <div class="price-border">{{ currencyNow.description }} &#8376;</div>
       </div>
       <ul class="oil-string-all">
         <li class="oil-string one2 width-price">1 казахстанский тенге равно</li>
@@ -247,11 +248,14 @@
         <li class="oil-string one2-2 width-price">Доллар США</li>
         <li class="oil-string two2">
           {{ currencyNowUsd }}
-          <!--0,0025-->
         </li>
         <li class="oil-string three2">Доллар</li>
       </ul>
-      <visual-center-chart-area-usd></visual-center-chart-area-usd>
+      <visual-center-chart-area-usd
+        v-for="(serial2, index) in currencyChart"
+        v-bind:postTitles="serial2"
+        :key="serial2"
+      ></visual-center-chart-area-usd>
     </div>
   </div>
   <!-- sidebar-container END -->
@@ -265,6 +269,7 @@ export default {
       company: "",
       timeSelect: "",
       oilNow: "",
+      oilChart: "",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
       buttonMenuHover3: "",
@@ -276,38 +281,20 @@ export default {
       buttonMenuHover9: "",
       buttonMenuHover10: "all",
       currencyNow: "",
+      currencyChart: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       currencyNowUsd: "",
     };
   },
   updated() {},
-  mounted() {
-    this.getOilNow();
-    //now time
-    var date = new Date();
-    var currentDate =
-      date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    this.getCurrencyNow(this.timeSelect);
-    this.getOilNow(this.timeSelect);
-    //console.log(currentDate);
-    //now time
-
-    var Months = [];
-    var currency = [];
-    var id = [];
-    for (let i = 1; i <= this.month + 1; i++) {
-      id = i;
-      Months[i] =
-        new Date(this.year, this.month + 1).getDate() + "." + i + ".2020";
-      currency[i] = this.getCurrency(Months[i], id);
-    }
-  },
+  mounted() {},
   methods: {
-    timeSelect2: function (select) {
+    timeSelect2(select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect);
+      this.getCurrency();
     },
 
     getCurrencyNow: function (dates) {
@@ -326,19 +313,18 @@ export default {
       });
     },
 
-    getCurrency(dates, id) {
-      let uri = "/ru/getcurrency?fdate=" + dates + "";
+    getCurrency: function (dates) {
+      var datas;
+      let uri = "/ru/getcurrencyperiod";
       this.axios.get(uri).then((response) => {
-        let data = response.data;
+        var data = response.data;
         if (data) {
-          var arrdata = [];
           var arrdata2 = [];
-          arrdata = { id: id, dates: dates, data: data.description };
-
-          arrdata = this.currency;
-          //arrdata = _.orderBy(arrdata, "id", "desk");
-          // console.log(arrdata);
-          //  console.log(dates+' ' + data.description);
+          _.forEach(data, function (item) {
+            arrdata2.push({ dates: item.dates, value: item.description["0"] });
+          });
+          var currencyChart = Array({ data: arrdata2 });
+          this.currencyChart = currencyChart;
         } else {
           console.log("No data");
         }
@@ -368,11 +354,6 @@ export default {
 
                 day: "numeric",
                 month: "numeric",
-                /*	weekday: 'long',
-	timezone: 'UTC',
-        hour: "numeric",
-        minute: "numeric",
-        second: 'numeric'*/
               }),
               value: oilValue,
             });
@@ -380,7 +361,8 @@ export default {
           var oil2 = [];
           oil2 = _.filter(oil, _.iteratee({ date: dates }));
 
-          this.oilNow = oil2[0].value;        
+          this.oilChart = [oil.slice(-7)];
+          this.oilNow = oil2[0].value;
         } else {
           console.log("No data");
         }
@@ -399,8 +381,6 @@ export default {
         "border: none;" +
         "height: 40px;" +
         "pointer-events: none;";
-
-      //console.log(company == "КГМ");
 
       if (company == "ОМГ") {
         this.buttonMenuHover1 = buttonMenuHover;
@@ -476,16 +456,5 @@ export default {
       "pointer-events: none;";
   },
   computed: {},
-
-  /*
-watch: {
-    a: function (val, oldVal) {
-      console.log('новое значение: %s, старое значение: %s', val, oldVal)
-    },
-
-
-watch(){
-  this.getCurrencyNow(this.timeSelect);
-}*/
 };
 </script>

@@ -1,95 +1,126 @@
 <template>
-<div>
-  <apexchart type="area" height="150" width="320" :options="chartOptions" :series="series"></apexchart>
-</div>
+  <div>
+    <apexchart
+      type="area"
+      height="150"
+      width="320"
+      :options="chartOptions"
+      :series="series"
+    ></apexchart>
+  </div>
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts'
+import VueApexCharts from "vue-apexcharts";
 
-Vue.component('apexchart', VueApexCharts)
+Vue.component("apexchart", VueApexCharts);
 export default {
-  name: 'mix-chart',
-  data: function() {
+  name: "mix-chart",
+  props: ["postTitle"],
+  data: function () {
     return {
       chartOptions: {
         chart: {
-            /*stacked: true,*/
-            foreColor: '#FFFFFF',
-			  height: 150,
-              type: 'area'
+          toolbar: {
+            show: false,
+            autoSelected: "pan",
+          },
+          zoom: {
+            enabled: false,
+          },
+          foreColor: "#FFFFFF",
+          height: 150,
+          type: "area",
         },
         stroke: {
-          /*width: 4,*/
-          curve: 'smooth'
+          curve: "smooth",
         },
         plotOptions: {
           bar: {
-            columnWidth: '50%'
-          }
-        },
-        /*fill: {
-          opacity: [0.85, 0.25, 1],
-          gradient: {
-            inverseColors: false,
-            shade: 'light',
-            type: "area",
-            opacityFrom: 0.85,
-            opacityTo: 0.55,
-            stops: [0, 100, 100, 100]
-          }
-        },*/
-		 dataLabels: {
-          enabled: false
-        },
-        labels: [
-		'1',
-		'2',
-		'3',
-		'4',
-		'5',
-		'6',
-		'7',
-		'8',
-		'9',
-		'10'		
-		],
-        /*markers: {
-          size: 0
-        },
-        xaxis: {
-          type: 'datetime'
-        },
-        yaxis: {
-          title: {
-            text: 'Количество',
+            columnWidth: "50%",
           },
-          min: 0
-        },*/
-       /* tooltip: {
-          shared: true,
-          intersect: false,
-          y: {
-            formatter: function(y) {
-              if (typeof y !== "undefined") {
-                return y.toFixed(0) + "";
-              }
-              return y;
-            }
-          }
-        }*/
-      },
-      series: [{
-        name: 'Факт',
-        type: 'area',
-        stroke: {
-         /* width: 5,*/
-          curve: 'smooth'
         },
-        data: [11, 32, 45, 32, 34, 52, 41]
-      }, ],
-    }
+
+        dataLabels: {
+          enabled: false,
+        },
+        labels: [""],
+        xaxis: {
+          labels: {
+            show: false,
+          },
+        },
+
+        tooltip: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          shared: true,
+          followCursor: false,
+          intersect: false,
+          inverseOrder: false,
+          custom: undefined,
+          fillSeriesColor: false,
+          theme: false,
+          style: {
+            fontSize: "12px",
+            fontFamily: undefined,
+          },
+          x: {
+            show: false,
+            format: "dd MMM",
+            formatter: undefined,
+          },
+          y: {
+            show: false,
+            formatter: undefined,
+            title: {
+              formatter: (seriesName) => seriesName,
+            },
+          },
+          z: {
+            show: false,
+            formatter: undefined,
+            title: "Size: ",
+          },
+
+          marker: {
+            show: false,
+          },
+          fixed: {
+            enabled: false,
+            position: "topRight",
+            offsetX: 0,
+            offsetY: 0,
+          },
+        },
+      },
+      series: [
+        {
+          name: "Курс",
+          type: "area",
+          stroke: {
+            curve: "smooth",
+          },
+          data: [11, 32, 45, 32, 34, 52, 41],
+        },
+      ],
+    };
   },
-    
-}
+
+  mounted() {
+    var data = this.postTitle;
+    var dates = [];
+    var value = [];
+    _.forEach(data, function (item) {
+      dates.push(item.date);
+      value.push(item.value);
+    });
+    this.chartOptions = { labels: dates };
+    this.series = [
+      {
+        data: value,
+      },
+    ];
+  },
+};
 </script>

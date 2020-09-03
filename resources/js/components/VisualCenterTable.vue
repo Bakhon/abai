@@ -827,10 +827,25 @@ export default {
 
       return menuDMY;
     },
-    pad(n){return n<10 ? '0'+n : n},
+    pad(n) {
+      return n < 10 ? "0" + n : n;
+    },
     getProduction(item, item2, item3) {
-  if (this.selectedDay==undefined){var timeSelect = this.pad(new Date().getDate()) + "." + this.pad(this.month+1) + "." + this.year;} else
-    {  var timeSelect = this.pad(this.selectedDay) + "." + this.pad(this.month+1) + "." + this.year;}
+      if (this.selectedDay == undefined) {
+        var timeSelect =
+          this.pad(new Date().getDate()) +
+          "." +
+          this.pad(this.month + 1) +
+          "." +
+          this.year;
+      } else {
+        var timeSelect =
+          this.pad(this.selectedDay) +
+          "." +
+          this.pad(this.month + 1) +
+          "." +
+          this.year;
+      }
       EventBus.$emit("timeSelect", timeSelect);
 
       localStorage.setItem("production-plan", item);
