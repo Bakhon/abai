@@ -2903,13 +2903,18 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     return {
       chartOptions: {
         chart: {
-          /*stacked: true,*/
+          toolbar: {
+            show: false,
+            autoSelected: "pan"
+          },
+          zoom: {
+            enabled: false
+          },
           foreColor: "#FFFFFF",
           height: 250,
           type: "area"
         },
         stroke: {
-          /*width: 4,*/
           curve: "smooth"
         },
         plotOptions: {
@@ -2917,59 +2922,18 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
             columnWidth: "50%"
           }
         },
-
-        /*fill: {
-          opacity: [0.85, 0.25, 1],
-          gradient: {
-            inverseColors: false,
-            shade: 'light',
-            type: "area",
-            opacityFrom: 0.85,
-            opacityTo: 0.55,
-            stops: [0, 100, 100, 100]
-          }
-        },*/
         legend: {
           position: "top"
-          /*horizontalAlign: 'left'*/
-
         },
         dataLabels: {
           enabled: false
         },
         labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-        /*markers: {
-          size: 0
-        },
-        xaxis: {
-          type: 'datetime'
-        },
-        yaxis: {
-          title: {
-            text: 'Количество',
-          },
-          min: 0
-        },*/
-
-        /* tooltip: {
-          shared: true,
-          intersect: false,
-          y: {
-            formatter: function(y) {
-              if (typeof y !== "undefined") {
-                return y.toFixed(0) + "";
-              }
-              return y;
-            }
-          }
-        }*/
-
       },
       series: [{
         name: "План",
         type: "area",
         stroke: {
-          /* width: 5,*/
           curve: "smooth"
         },
         data: [0]
@@ -2977,20 +2941,13 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         name: "Факт",
         type: "area",
         stroke: {
-          /* width: 5,*/
           curve: "smooth"
         },
         data: [0]
       }]
     };
   },
-
-  /*created: function () {
-    // `this` указывает на экземпляр vm
-   console.log(this.postTitle);
-  }*/
   mounted: function mounted() {
-    // показывает данные после отрисовки компонента в консоли
     var data = [];
     var data = this.postTitle;
     var productionPlanForChart = new Array();
@@ -3039,50 +2996,38 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     this.chartOptions = {
       labels: quantity2
-    }; //this.dataLabels= {labels:quantity2};
-
-    /* 
-            _.each(quantity, function (quantity) {
-              quantity.push({ quantity });
-            });*/
+    };
 
     if (productionPlanForChart[1] == undefined && productionFactForChart[1] == undefined) {} else {
       this.series = [{
         name: "План",
         type: "area",
         stroke: {
-          /* width: 5,*/
           curve: "smooth"
         },
-        // data: [31, 40, 28, 51, 42, 109, 100]
         data: productionPlanForChart
       }, {
         name: "Факт",
         type: "area",
         stroke: {
-          /* width: 5,*/
           curve: "smooth"
         },
         data: productionFactForChart
       }];
-    } //console.log(productionPlanForChartMonth);
-
+    }
 
     if (productionPlanForChartMonth[1] == undefined && productionFactForChartMonth[1] == undefined) {} else {
       this.series = [{
         name: "План",
         type: "area",
         stroke: {
-          /* width: 5,*/
           curve: "smooth"
         },
-        // data: [31, 40, 28, 51, 42, 109, 100]
         data: productionPlanForChartMonth
       }, {
         name: "Факт",
         type: "area",
         stroke: {
-          /* width: 5,*/
           curve: "smooth"
         },
         data: productionFactForChartMonth
@@ -3097,22 +3042,18 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         name: "План",
         type: "area",
         stroke: {
-          /* width: 5,*/
           curve: "smooth"
         },
-        // data: [31, 40, 28, 51, 42, 109, 100]
         data: productionPlanForChartYear
       }, {
         name: "Факт",
         type: "area",
         stroke: {
-          /* width: 5,*/
           curve: "smooth"
         },
         data: productionFactForChartYear
       }];
-    } //console.log(this.postTitle);
-
+    }
   }
 });
 
@@ -3135,81 +3076,119 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'mix-chart',
+  name: "mix-chart",
+  props: ["postTitle"],
   data: function data() {
     return {
       chartOptions: {
         chart: {
-          /*stacked: true,*/
-          foreColor: '#FFFFFF',
+          toolbar: {
+            show: false,
+            autoSelected: "pan"
+          },
+          zoom: {
+            enabled: false
+          },
+          foreColor: "#FFFFFF",
           height: 150,
-          type: 'area'
+          type: "area"
         },
         stroke: {
-          /*width: 4,*/
-          curve: 'smooth'
+          curve: "smooth"
         },
         plotOptions: {
           bar: {
-            columnWidth: '50%'
+            columnWidth: "50%"
           }
         },
-
-        /*fill: {
-          opacity: [0.85, 0.25, 1],
-          gradient: {
-            inverseColors: false,
-            shade: 'light',
-            type: "area",
-            opacityFrom: 0.85,
-            opacityTo: 0.55,
-            stops: [0, 100, 100, 100]
-          }
-        },*/
         dataLabels: {
           enabled: false
         },
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-        /*markers: {
-          size: 0
-        },
+        labels: [""],
         xaxis: {
-          type: 'datetime'
+          labels: {
+            show: false
+          }
         },
-        yaxis: {
-          title: {
-            text: 'Количество',
+        tooltip: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          shared: true,
+          followCursor: false,
+          intersect: false,
+          inverseOrder: false,
+          custom: undefined,
+          fillSeriesColor: false,
+          theme: false,
+          style: {
+            fontSize: "12px",
+            fontFamily: undefined
           },
-          min: 0
-        },*/
-
-        /* tooltip: {
-           shared: true,
-           intersect: false,
-           y: {
-             formatter: function(y) {
-               if (typeof y !== "undefined") {
-                 return y.toFixed(0) + "";
-               }
-               return y;
-             }
-           }
-         }*/
-
+          x: {
+            show: false,
+            format: "dd MMM",
+            formatter: undefined
+          },
+          y: {
+            show: false,
+            formatter: undefined,
+            title: {
+              formatter: function formatter(seriesName) {
+                return seriesName;
+              }
+            }
+          },
+          z: {
+            show: false,
+            formatter: undefined,
+            title: "Size: "
+          },
+          marker: {
+            show: false
+          },
+          fixed: {
+            enabled: false,
+            position: "topRight",
+            offsetX: 0,
+            offsetY: 0
+          }
+        }
       },
       series: [{
-        name: 'Факт',
-        type: 'area',
+        name: "Курс",
+        type: "area",
         stroke: {
-          /* width: 5,*/
-          curve: 'smooth'
+          curve: "smooth"
         },
         data: [11, 32, 45, 32, 34, 52, 41]
       }]
     };
+  },
+  mounted: function mounted() {
+    var data = this.postTitle;
+    var dates = [];
+    var value = [];
+
+    _.forEach(data, function (item) {
+      dates.push(item.date);
+      value.push(item.value);
+    });
+
+    this.chartOptions = {
+      labels: dates
+    };
+    this.series = [{
+      data: value
+    }];
   }
 });
 
@@ -3232,81 +3211,119 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'mix-chart',
+  name: "mix-chart",
+  props: ["postTitles"],
   data: function data() {
     return {
       chartOptions: {
         chart: {
-          /*stacked: true,*/
-          foreColor: '#FFFFFF',
+          toolbar: {
+            show: false,
+            autoSelected: "pan"
+          },
+          zoom: {
+            enabled: false
+          },
+          foreColor: "#FFFFFF",
           height: 150,
-          type: 'area'
+          type: "area"
         },
         stroke: {
-          /*width: 4,*/
-          curve: 'smooth'
+          curve: "smooth"
         },
         plotOptions: {
           bar: {
-            columnWidth: '50%'
+            columnWidth: "50%"
           }
         },
-
-        /*fill: {
-          opacity: [0.85, 0.25, 1],
-          gradient: {
-            inverseColors: false,
-            shade: 'light',
-            type: "area",
-            opacityFrom: 0.85,
-            opacityTo: 0.55,
-            stops: [0, 100, 100, 100]
-          }
-        },*/
         dataLabels: {
           enabled: false
         },
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-        /*markers: {
-          size: 0
-        },
+        labels: [""],
         xaxis: {
-          type: 'datetime'
+          labels: {
+            show: false
+          }
         },
-        yaxis: {
-          title: {
-            text: 'Количество',
+        tooltip: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          shared: true,
+          followCursor: false,
+          intersect: false,
+          inverseOrder: false,
+          custom: undefined,
+          fillSeriesColor: false,
+          theme: false,
+          style: {
+            fontSize: "12px",
+            fontFamily: undefined
           },
-          min: 0
-        },*/
-
-        /* tooltip: {
-           shared: true,
-           intersect: false,
-           y: {
-             formatter: function(y) {
-               if (typeof y !== "undefined") {
-                 return y.toFixed(0) + "";
-               }
-               return y;
-             }
-           }
-         }*/
-
+          x: {
+            show: false,
+            format: "dd MMM",
+            formatter: undefined
+          },
+          y: {
+            show: false,
+            formatter: undefined,
+            title: {
+              formatter: function formatter(seriesName) {
+                return seriesName;
+              }
+            }
+          },
+          z: {
+            show: false,
+            formatter: undefined,
+            title: "Size: "
+          },
+          marker: {
+            show: false
+          },
+          fixed: {
+            enabled: false,
+            position: "topRight",
+            offsetX: 0,
+            offsetY: 0
+          }
+        }
       },
       series: [{
-        name: 'Факт',
-        type: 'area',
+        name: "Курс",
+        type: "area",
         stroke: {
-          /* width: 5,*/
-          curve: 'smooth'
+          curve: "smooth"
         },
         data: [11, 32, 45, 32, 34, 52, 41]
       }]
     };
+  },
+  mounted: function mounted() {
+    var data = this.postTitles;
+    var dates = [];
+    var value = [];
+
+    _.forEach(data.data, function (item) {
+      dates.push(item.dates);
+      value.push(new Intl.NumberFormat('ru-RU').format(item.value));
+    });
+
+    this.chartOptions = {
+      labels: dates
+    };
+    this.series = [{
+      data: value
+    }];
   }
 });
 
@@ -3359,6 +3376,13 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
         },
         colors: ["#F7BB2E"],
         chart: {
+          toolbar: {
+            show: false,
+            autoSelected: 'pan'
+          },
+          zoom: {
+            enabled: false
+          },
           animations: {
             speed: 200
           },
@@ -3921,6 +3945,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -3928,6 +3956,7 @@ __webpack_require__.r(__webpack_exports__);
       company: "",
       timeSelect: "",
       oilNow: "",
+      oilChart: "",
       buttonMenuHover1: "",
       buttonMenuHover2: "",
       buttonMenuHover3: "",
@@ -3939,36 +3968,20 @@ __webpack_require__.r(__webpack_exports__);
       buttonMenuHover9: "",
       buttonMenuHover10: "all",
       currencyNow: "",
+      currencyChart: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       currencyNowUsd: ""
     };
   },
   updated: function updated() {},
-  mounted: function mounted() {
-    this.getOilNow(); //now time
-
-    var date = new Date();
-    var currentDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
-    this.getCurrencyNow(this.timeSelect);
-    this.getOilNow(this.timeSelect); //console.log(currentDate);
-    //now time
-
-    var Months = [];
-    var currency = [];
-    var id = [];
-
-    for (var i = 1; i <= this.month + 1; i++) {
-      id = i;
-      Months[i] = new Date(this.year, this.month + 1).getDate() + "." + i + ".2020";
-      currency[i] = this.getCurrency(Months[i], id);
-    }
-  },
+  mounted: function mounted() {},
   methods: {
     timeSelect2: function timeSelect2(select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect);
+      this.getCurrency();
     },
     getCurrencyNow: function getCurrencyNow(dates) {
       var _this = this;
@@ -3987,24 +4000,28 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    getCurrency: function getCurrency(dates, id) {
+    getCurrency: function getCurrency(dates) {
       var _this2 = this;
 
-      var uri = "/ru/getcurrency?fdate=" + dates + "";
+      var datas;
+      var uri = "/ru/getcurrencyperiod";
       this.axios.get(uri).then(function (response) {
         var data = response.data;
 
         if (data) {
-          var arrdata = [];
           var arrdata2 = [];
-          arrdata = {
-            id: id,
-            dates: dates,
-            data: data.description
-          };
-          arrdata = _this2.currency; //arrdata = _.orderBy(arrdata, "id", "desk");
-          // console.log(arrdata);
-          //  console.log(dates+' ' + data.description);
+
+          _.forEach(data, function (item) {
+            arrdata2.push({
+              dates: item.dates,
+              value: item.description["0"]
+            });
+          });
+
+          var currencyChart = Array({
+            data: arrdata2
+          });
+          _this2.currencyChart = currencyChart;
         } else {
           console.log("No data");
         }
@@ -4034,12 +4051,6 @@ __webpack_require__.r(__webpack_exports__);
                 year: "numeric",
                 day: "numeric",
                 month: "numeric"
-                /*	weekday: 'long',
-                timezone: 'UTC',
-                hour: "numeric",
-                minute: "numeric",
-                second: 'numeric'*/
-
               }),
               value: oilValue
             });
@@ -4049,6 +4060,7 @@ __webpack_require__.r(__webpack_exports__);
           oil2 = _.filter(oil, _.iteratee({
             date: dates
           }));
+          _this3.oilChart = [oil.slice(-7)];
           _this3.oilNow = oil2[0].value;
         } else {
           console.log("No data");
@@ -4059,7 +4071,7 @@ __webpack_require__.r(__webpack_exports__);
       localStorage.setItem("company", com);
       var company = localStorage.getItem("company");
       this.company = company;
-      var buttonMenuHover = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;"; //console.log(company == "КГМ");
+      var buttonMenuHover = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;";
 
       if (company == "ОМГ") {
         this.buttonMenuHover1 = buttonMenuHover;
@@ -4129,16 +4141,6 @@ __webpack_require__.r(__webpack_exports__);
     this.buttonMenuHover10 = "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" + "background-size: 9% auto;" + "background-position: 75% 50%;" + "border: none;" + "height: 40px;" + "pointer-events: none;";
   },
   computed: {}
-  /*
-  watch: {
-    a: function (val, oldVal) {
-      console.log('новое значение: %s, старое значение: %s', val, oldVal)
-    },
-  
-  watch(){
-  this.getCurrencyNow(this.timeSelect);
-  }*/
-
 });
 
 /***/ }),
@@ -4942,7 +4944,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return menuDMY;
     },
     pad: function pad(n) {
-      return n < 10 ? '0' + n : n;
+      return n < 10 ? "0" + n : n;
     },
     getProduction: function getProduction(item, item2, item3) {
       var _this = this;
@@ -44722,9 +44724,12 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("hr", { staticClass: "hr-visualcenter" }),
-        _vm._v(" "),
-        _c("visual-center-chart-area-oil"),
+        _vm._l(_vm.oilChart, function(serial, index) {
+          return _c("visual-center-chart-area-oil", {
+            key: serial,
+            attrs: { postTitle: serial }
+          })
+        }),
         _vm._v(" "),
         _c("hr", { staticClass: "hr-visualcenter" }),
         _vm._v(" "),
@@ -44740,7 +44745,7 @@ var render = function() {
         _vm._v(" "),
         _c("hr", { staticClass: "hr-visualcenter" })
       ],
-      1
+      2
     ),
     _vm._v(" "),
     _c("div", { staticClass: "assets3" }),
@@ -44752,7 +44757,7 @@ var render = function() {
         _c("div", { staticClass: "left-price-oil2" }, [
           _vm._v("\n      Курс доллара\n      "),
           _c("div", { staticClass: "price-border" }, [
-            _vm._v(_vm._s(_vm.currencyNow.description) + "₸")
+            _vm._v(_vm._s(_vm.currencyNow.description) + " ₸")
           ])
         ]),
         _vm._v(" "),
@@ -44764,15 +44769,20 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("li", { staticClass: "oil-string two2" }, [
-            _vm._v("\n        " + _vm._s(_vm.currencyNowUsd) + "\n        ")
+            _vm._v("\n        " + _vm._s(_vm.currencyNowUsd) + "\n      ")
           ]),
           _vm._v(" "),
           _c("li", { staticClass: "oil-string three2" }, [_vm._v("Доллар")])
         ]),
         _vm._v(" "),
-        _c("visual-center-chart-area-usd")
+        _vm._l(_vm.currencyChart, function(serial2, index) {
+          return _c("visual-center-chart-area-usd", {
+            key: serial2,
+            attrs: { postTitles: serial2 }
+          })
+        })
       ],
-      1
+      2
     )
   ])
 }
