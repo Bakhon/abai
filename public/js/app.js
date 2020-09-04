@@ -4042,13 +4042,15 @@ __webpack_require__.r(__webpack_exports__);
     getOilNow: function getOilNow(dates) {
       var _this3 = this;
 
-      var datas;
+      var datas; //let uri = "/js/json/graph_1006.json";
+
       var uri = "https://cors-anywhere.herokuapp.com/" + "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then(function (response) {
         var data = response.data;
 
         if (data) {
           var oilDate;
+          var oilDate2;
           var oilValue;
           var splits = [];
           var oil = [];
@@ -4056,23 +4058,27 @@ __webpack_require__.r(__webpack_exports__);
 
           _.forEach(data.prices, function (prices) {
             splits = prices.toString().split(",");
-            oilDate = Number(splits["0"]);
             oilValue = splits["1"];
-            oil.push({
-              date: new Date(oilDate).toLocaleString("ru", {
-                year: "numeric",
-                day: "numeric",
-                month: "numeric"
-              }),
+            oilDate = Number(splits["0"]);
+            oilDate2 = new Date(oilDate).toLocaleString("ru", {
+              year: "numeric",
+              day: "numeric",
+              month: "numeric",
+              timeZone: "Europe/Moscow"
+            }), oil.push({
+              date: oilDate2,
               value: oilValue
             });
           });
 
+          _this3.oilChart = [_.takeRight(oil, 7)];
           var oil2 = [];
           oil2 = _.filter(oil, _.iteratee({
             date: dates
           }));
-          _this3.oilChart = [oil.slice(-7)];
+          console.log(dates); //oil2 = _.last(oil);
+          // oil2 = oil2.value;
+
           _this3.oilNow = oil2[0].value;
         } else {
           console.log("No data");
@@ -4703,6 +4709,96 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //import VisualCenterMenu from'../components/VisualCenterMenu'
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4744,7 +4840,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
       monthes: ["ЯНВАРЬ", "ФЕВРАЛЬ", "МАРТ", "АПРЕЛЬ", "МАЙ", "ИЮНЬ", "ИЮЛЬ", "АВГУСТ", "СЕНТЯБРЬ", "ОКТЯБРЬ", "НОЯБРЬ", "ДЕКАБРЬ"],
       monthes3: ["", "январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"],
-      monthes2: ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      monthes2: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       NameDzoFull: ["Всего добыча нефти с учётом доли участия АО НК КазМунайГаз", "АО Озенмунайгаз (нефть) (100%)", "АО Эмбамунайгаз (100%)", "АО Каражанбасмунай (50%)", "ТОО СП Казгермунай", "АО ЭмбаМунайГаз", "АО Мангистаумунайгаз", "ТОО Казахтуркмунай", "ПетроКазахстан Инк.", "Амангельды Газ", "ТОО «Тенгизшевройл»", "«Карачаганак Петролеум Оперейтинг б.в.»", "«Норт Каспиан Оперейтинг Компани н.в.»", "(конденсат)(100%)", "в т.ч.:газовый конденсат"],
       date: new Date(),
       selectedDay: undefined,
@@ -4759,8 +4855,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       test: [""],
       series: ["", ""],
       display: "none",
-      company: "all" //statusMessage: "Init",
-
+      company: "all",
+      factYearSumm: "",
+      planYearSumm: "",
+      planMonthSumm: "",
+      factMonthSumm: "",
+      factDaySumm: "",
+      planDaySumm: ""
     };
   },
   methods: {
@@ -4788,9 +4889,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           if (this.selectedDay == i) {
             a.current = "#232236";
-          } else if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
-            a.current = "#13B062";
-          }
+          } else if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth() //k1q
+          ) {
+              a.current = "#13B062";
+            }
 
           if (new Date(this.year, this.month, i).getDay() == 6 || new Date(this.year, this.month, i).getDay() == 0) {
             a.weekend = "#ff0000";
@@ -4858,7 +4960,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           if (this.selectedMonth == i) {
             a.current = "#232236";
-          } else if (i == new Date().getMonth() && this.year == new Date().getFullYear()
+          } else if (i == Number(new Date().getMonth() + 1) && //new Date().getMonth() &&
+          this.year == new Date().getFullYear()
           /* &&
           this.month == new Date().getMonth()*/
           ) {
@@ -4874,7 +4977,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     getDays: function getDays() {
       var DaysInMonth = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate();
+      var dlast = new Date(this.year, this.month + 1, 0).getDate(); //k1q
+
+      for (var i = 1; i <= dlast; i++) {
+        var a = {
+          index: i,
+          id: i
+        };
+        DaysInMonth.push(a);
+      }
+
+      return DaysInMonth;
+    },
+    getDaysMonth: function getDaysMonth() {
+      var DaysInMonth = [];
+      var dlast = new Date(this.year, this.selectedMonth, 0).getDate(); //k1q
 
       for (var i = 1; i <= dlast; i++) {
         var a = {
@@ -4961,6 +5078,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getProduction: function getProduction(item, item2, item3) {
       var _this = this;
 
+      console.log(this.month + 1 + "   " + new Date().getMonth() + 1 + "month");
+      console.log(this.getDays());
+
       if (this.selectedDay == undefined) {
         var timeSelect = this.pad(new Date().getDate()) + "." + this.pad(this.month + 1) + "." + this.year;
       } else {
@@ -4993,7 +5113,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         var data = response.data;
 
         if (data) {
-          var arrdata = new Array(); //select date filter
+          var arrdata = new Array(); //select date filter k1q
 
           var timestamp = new Date(_this.monthes2[_this.month] + _this.selectedDay + " " + _this.year + " 06:00:00 GMT+0600").getTime();
           arrdata = _.filter(data, _.iteratee({
@@ -5010,7 +5130,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           if (_this.selectedDMY == 0) {
             //selectedDay by chart
-            var timestampMonthStart = new Date(_this.monthes2[_this.month + 1] + //this.selectedDay +
+            var timestampMonthStart = new Date(_this.monthes2[_this.month] + //this.selectedDay +
             "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
 
             var dayInMonth = _this.getDays().length;
@@ -5040,7 +5160,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           if (_this.selectedDMY == 1) {
             //selectedMonth by chart
-            var timestampMonthStart = new Date(_this.monthes2["1"] + //this.selectedDay +
+            var timestampMonthStart = new Date(_this.monthes2["0"] + //this.selectedDay +
             "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
 
             var dayInMonth = _this.getDays().length;
@@ -5292,28 +5412,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
              productionFactForChart2.push({productionFactForChart});
             });*/
             //for chart
-            var timestampMonthStart = new Date(_this.monthes2[_this.selectedMonth] + //this.selectedDay +
+            var timestampMonthStart = new Date(_this.monthes2[_this.selectedMonth - 1] + //this.selectedDay +
             "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
+            console.log(timestampMonthStart + "timestampMonthStart now");
+
+            var dayInMonth2 = _this.getDaysMonth().length; // k1q04
+
+
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
               return _.every([_.inRange(item.__time, // 1588291200000, // from May 2020
               // 1590883200000+1,
-              timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
+              timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth2)]);
             });
             var dzo = [];
             var productionPlanForMonth = [];
             var productionFactForMonth = [];
+            var __time2 = [];
 
             _.forEach(dataWithMay, function (item) {
               dzo.push(item.dzo);
               productionPlanForMonth.push({
-                productionPlanForMonth: item[productionPlan]
+                productionPlanForMonth: Math.ceil(item[productionPlan])
               });
               productionFactForMonth.push({
-                productionFactForMonth: item[productionFact]
+                productionFactForMonth: Math.ceil(item[productionFact])
               });
-            }); //console.log(dataWithMay);
-            //dzo = _.uniq(dzo);
+
+              __time2.push({
+                timeMonth: new Date(item.__time).toLocaleString("ru", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric"
+                  /*	weekday: 'long',
+                  timezone: 'UTC',
+                  hour: "numeric",
+                  minute: "numeric",*/
+                  //second: 'numeric'
+
+                })
+              });
+            }); //dzo = _.uniq(dzo);
             //k1q select summ plan for month
 
             /*  var productionPlanForMonth = _.reduce(
@@ -5711,6 +5850,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           };
           _this.productionForChart = productionForChart; //console.log(productionPlanForMonth);
 
+          /*__time2 =        new Date(__time2).toLocaleString("ru", {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          });
+          */
+
           var tables = _.zipWith(_.sortBy(dzo2, function (dzo) {
             return dzo.dzo;
           }), _.sortBy(liq_fact2, function (liq_fact) {
@@ -5865,7 +6011,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this.currentMonth = _this.monthes3[_this.month + 1]; //if (this.company == "all") {var currentMonth = 5; currentMonth2 = this.monthes3[currentMonth];} else { currentMonth2 = this.monthes3[this.month+1];}
 
         var timestampMonthStart = new Date( //   this.monthes2[this.selectedMonth] + //change when data upgrade
-        _this.monthes2["5"] + //this.selectedDay +
+        _this.monthes2["4"] + //this.selectedDay +
         "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
         console.log(timestampMonthStart);
 
@@ -6035,8 +6181,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           dzoMonth.push({
             dzoMonth: item.dzo
           });
-        }); //console.log(factYear);
+        }); //summ table value
 
+
+        var factYearSumm = _.reduce(factYear, function (memo, item) {
+          return memo + item.factYear;
+        }, 0);
+
+        var planYearSumm = _.reduce(planYear, function (memo, item) {
+          return memo + item.planYear;
+        }, 0);
+
+        var planMonthSumm = _.reduce(planMonth, function (memo, item) {
+          return memo + item.planMonth;
+        }, 0);
+
+        var factMonthSumm = _.reduce(factMonth, function (memo, item) {
+          return memo + item.factMonth;
+        }, 0);
+
+        var factDaySumm = _.reduce(factDay, function (memo, item) {
+          return memo + item.factDay;
+        }, 0);
+
+        var planDaySumm = _.reduce(planDay, function (memo, item) {
+          return memo + item.planDay;
+        }, 0);
+
+        _this.factYearSumm = factYearSumm;
+        _this.planYearSumm = planYearSumm;
+        _this.planMonthSumm = planMonthSumm;
+        _this.factMonthSumm = factMonthSumm;
+        _this.factDaySumm = factDaySumm;
+        _this.planDaySumm = planDaySumm;
+        console.log(factYearSumm + "factYearSumm"); //console.log(factYear);
 
         if (_this.company == "all") {
           var bigTable = _.zipWith(dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay, function (dzoYear, dzoMonth, factYear, dzo, dzo2, planYear, planMonth, factMonth, dzoDay, factDay, planDay) {
@@ -6122,16 +6300,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.showTableOn = showTableOn; //colour button
       }
     }
-    /*onStorageUpdate(event) {
-      if (event.key === "company") {
-        this.company = event.newValue;
-      }
-    },*/
-
   },
   created: function created() {
-    _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on("messageSend", this.displayMessage); //this.currentMonth = this.monthes3[this.month+1];
-    //   this.selectedDay + "." + this.month + "." + this.year;
+    _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on("messageSend", this.displayMessage);
   },
   computed: {
     dayChange: function dayChange() {
@@ -45697,6 +45868,209 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticStyle: { clear: "both" } }),
                     _vm._v(" "),
+                    _c("div", [
+                      _c("div", [
+                        _c("div", { staticClass: "cell-number table-border" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell-name table-border" }, [
+                          _vm._v(
+                            "\n                      " +
+                              _vm._s(_vm.NameDzoFull[0]) +
+                              "\n                    "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border" }, [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.planYearSumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border" }, [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.planMonthSumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border" }, [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.planDaySumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border" }, [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.factDaySumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border colour" }, [
+                          _c("div", [
+                            _c("div", {
+                              staticClass: "circle-table",
+                              style:
+                                "background: " +
+                                _vm.getColor(_vm.factDaySumm - _vm.planDaySumm)
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("div", [
+                            _c("div", { staticClass: "cell-width" }, [
+                              _vm._v(
+                                "\n                          " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.factDaySumm - _vm.planDaySumm
+                                    )
+                                  ) +
+                                  "\n                        "
+                              )
+                            ])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border" }, [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.planMonthSumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border" }, [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.factMonthSumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border colour" }, [
+                          _c("div", {
+                            staticClass: "circle-table",
+                            style:
+                              "background: " +
+                              _vm.getColor(
+                                _vm.factMonthSumm - _vm.planMonthSumm
+                              )
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell-width" }, [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.factMonthSumm - _vm.planMonthSumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border" }, [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.planYearSumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "cell table-border" }, [
+                          _c("div", [
+                            _vm._v(
+                              "\n                        " +
+                                _vm._s(
+                                  new Intl.NumberFormat("ru-RU").format(
+                                    _vm.factYearSumm
+                                  )
+                                ) +
+                                "\n                      "
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "cell table-border cell-last colour" },
+                          [
+                            _c("div", {
+                              staticClass: "circle-table",
+                              style:
+                                "background: " +
+                                _vm.getColor(
+                                  _vm.factYearSumm - _vm.planYearSumm
+                                )
+                            }),
+                            _vm._v(" "),
+                            _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.factYearSumm - _vm.planYearSumm
+                                    )
+                                  ) +
+                                  "\n                      "
+                              )
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticStyle: { clear: "both" } })
+                    ]),
+                    _vm._v(" "),
                     _vm._l(_vm.bigTable, function(item) {
                       return _c("div", [
                         _c("div", [
@@ -46081,7 +46455,9 @@ var render = function() {
                                 _vm._v(
                                   "\n                        " +
                                     _vm._s(item.dzo) +
-                                    "\n                        "
+                                    "\n                        " +
+                                    _vm._s(item.timeMonth) +
+                                    "\n                      "
                                 )
                               ]
                             ),

@@ -333,35 +333,43 @@ export default {
 
     getOilNow: function (dates) {
       var datas;
-      let uri =
-        "https://cors-anywhere.herokuapp.com/" +
-        "https://yandex.ru/news/quotes/graph_1006.json";
+      //let uri = "/js/json/graph_1006.json";
+      let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
           var oilDate;
+          var oilDate2;
           var oilValue;
           var splits = [];
           var oil = [];
           var oil2;
+
           _.forEach(data.prices, function (prices) {
             splits = prices.toString().split(",");
-            oilDate = Number(splits["0"]);
             oilValue = splits["1"];
-            oil.push({
-              date: new Date(oilDate).toLocaleString("ru", {
-                year: "numeric",
+            oilDate = Number(splits["0"]);
 
-                day: "numeric",
-                month: "numeric",
-              }),
-              value: oilValue,
-            });
+            (oilDate2 = new Date(oilDate).toLocaleString("ru", {
+              year: "numeric",
+              day: "numeric",
+              month: "numeric",
+              timeZone: "Europe/Moscow",
+            })),
+              oil.push({
+                date: oilDate2,
+                value: oilValue,
+              });
           });
-          var oil2 = [];
-          oil2 = _.filter(oil, _.iteratee({ date: dates }));
 
-          this.oilChart = [oil.slice(-7)];
+          this.oilChart = [_.takeRight(oil, 7)];
+
+          var oil2 = [];
+
+          oil2 = _.filter(oil, _.iteratee({ date: dates }));
+          console.log(dates);
+          //oil2 = _.last(oil);
+         // oil2 = oil2.value;
           this.oilNow = oil2[0].value;
         } else {
           console.log("No data");

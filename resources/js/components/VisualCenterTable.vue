@@ -215,6 +215,96 @@
                     <div class="cell4 table-border cell-last">(+,-)</div>
                   </div>
                   <div style="clear: both;"></div>
+                  <div>
+                    <div>
+                      <!-- <div class="cell-colour table-border">
+                 
+                        </div>-->
+                      <div class="cell-number table-border"></div>
+                      <div class="cell-name table-border">
+                        {{ NameDzoFull[0] }}
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(planYearSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(planDaySumm  ))}}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(factDaySumm ))}}
+                        </div>
+                      </div>
+                      <div class="cell table-border colour">
+                        <div>
+                          <div
+                            :style="`background: ${getColor(
+                              factDaySumm - planDaySumm
+                            )}`"
+                            class="circle-table"
+                          ></div>
+                        </div>
+                        <div>
+                          <div class="cell-width">
+                            {{(new Intl.NumberFormat('ru-RU').format(factDaySumm - planDaySumm)) }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border colour">
+                        <div
+                          :style="`background: ${getColor(
+                            factMonthSumm - planMonthSumm
+                          )}`"
+                          class="circle-table"
+                        ></div>
+                        <!--3cell-->
+                        <div class="cell-width">
+                          {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm - planMonthSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{(new Intl.NumberFormat('ru-RU').format( planYearSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border cell-last colour">
+                        <div
+                          :style="`background: ${getColor(
+                            factYearSumm - planYearSumm
+                          )}`"
+                          class="circle-table"
+                        ></div>
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm - planYearSumm)) }}
+                        </div>
+                      </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                  </div>
                   <div v-for="item in bigTable">
                     <div>
                       <div>
@@ -351,12 +441,12 @@
                     <div>
                       <div>
                         <!-- <div class="cell-colour table-border">
-                 
+           
                         </div>-->
                         <div class="cell-number table-border"></div>
                         <div class="cell-name table-border">
                           {{ item.dzo }}
-                          <!--{{item.time}}-->
+                          {{ item.timeMonth }}
                         </div>
                         <div class="cell table-border">
                           <div v-if="item.planYear">
@@ -599,7 +689,6 @@ export default {
         "декабрь",
       ],
       monthes2: [
-        "",
         "Jan",
         "Feb",
         "Mar",
@@ -646,7 +735,12 @@ export default {
       series: ["", ""],
       display: "none",
       company: "all",
-      //statusMessage: "Init",
+      factYearSumm: "",
+      planYearSumm: "",
+      planMonthSumm: "",
+      factMonthSumm: "",
+      factDaySumm: "",
+      planDaySumm: "",
     };
   },
   methods: {
@@ -675,6 +769,8 @@ export default {
             i == new Date().getDate() &&
             this.year == new Date().getFullYear() &&
             this.month == new Date().getMonth()
+
+            //k1q
           ) {
             a.current = "#13B062";
           }
@@ -748,7 +844,7 @@ export default {
           if (this.selectedMonth == i) {
             a.current = "#232236";
           } else if (
-            i == new Date().getMonth() &&
+            i == Number(new Date().getMonth() + 1) && //new Date().getMonth() &&
             this.year ==
               new Date().getFullYear() /* &&
         this.month == new Date().getMonth()*/
@@ -765,7 +861,17 @@ export default {
 
     getDays: function () {
       var DaysInMonth = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate();
+      var dlast = new Date(this.year, this.month + 1, 0).getDate(); //k1q
+      for (let i = 1; i <= dlast; i++) {
+        var a = { index: i, id: i };
+        DaysInMonth.push(a);
+      }
+      return DaysInMonth;
+    },
+
+    getDaysMonth: function () {
+      var DaysInMonth = [];
+      var dlast = new Date(this.year, this.selectedMonth, 0).getDate(); //k1q
       for (let i = 1; i <= dlast; i++) {
         var a = { index: i, id: i };
         DaysInMonth.push(a);
@@ -834,6 +940,9 @@ export default {
       return n < 10 ? "0" + n : n;
     },
     getProduction(item, item2, item3) {
+      console.log(this.month + 1 + "   " + new Date().getMonth() + 1 + "month");
+      console.log(this.getDays());
+
       if (this.selectedDay == undefined) {
         var timeSelect =
           this.pad(new Date().getDate()) +
@@ -881,7 +990,7 @@ export default {
         let data = response.data;
         if (data) {
           var arrdata = new Array();
-          //select date filter
+          //select date filter k1q
           var timestamp = new Date(
             this.monthes2[this.month] +
               this.selectedDay +
@@ -902,7 +1011,7 @@ export default {
           if (this.selectedDMY == 0) {
             //selectedDay by chart
             var timestampMonthStart = new Date(
-              this.monthes2[this.month + 1] +
+              this.monthes2[this.month] +
                 //this.selectedDay +
                 "1" +
                 " " +
@@ -943,7 +1052,7 @@ export default {
           if (this.selectedDMY == 1) {
             //selectedMonth by chart
             var timestampMonthStart = new Date(
-              this.monthes2["1"] +
+              this.monthes2["0"] +
                 //this.selectedDay +
                 "1" +
                 " " +
@@ -1306,13 +1415,17 @@ export default {
             //for chart
 
             var timestampMonthStart = new Date(
-              this.monthes2[this.selectedMonth] +
+              this.monthes2[this.selectedMonth - 1] +
                 //this.selectedDay +
                 "1" +
                 " " +
                 SelectYearInMonth +
                 " 06:00:00 GMT+0600"
             ).getTime();
+
+            console.log(timestampMonthStart + "timestampMonthStart now");
+
+            var dayInMonth2 = this.getDaysMonth().length; // k1q04
 
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
@@ -1322,23 +1435,36 @@ export default {
                   // 1588291200000, // from May 2020
                   // 1590883200000+1,
                   timestampMonthStart,
-                  timestampMonthStart + 86400000 * dayInMonth
+                  timestampMonthStart + 86400000 * dayInMonth2
                 ),
               ]);
             });
             var dzo = [];
             var productionPlanForMonth = [];
             var productionFactForMonth = [];
+            var __time2 = [];
             _.forEach(dataWithMay, function (item) {
               dzo.push(item.dzo);
               productionPlanForMonth.push({
-                productionPlanForMonth: item[productionPlan],
+                productionPlanForMonth: Math.ceil(item[productionPlan]),
               });
               productionFactForMonth.push({
-                productionFactForMonth: item[productionFact],
+                productionFactForMonth: Math.ceil(item[productionFact]),
+              });
+              __time2.push({
+                timeMonth: new Date(item.__time).toLocaleString("ru", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                  /*	weekday: 'long',
+	timezone: 'UTC',
+        hour: "numeric",
+        minute: "numeric",*/
+                  //second: 'numeric'
+                }),
               });
             });
-            //console.log(dataWithMay);
+
             //dzo = _.uniq(dzo);
 
             //k1q select summ plan for month
@@ -1460,6 +1586,7 @@ console.log(productionPlanForMonth);
             } else {*/
             // }
             //select dzo filter
+
             var dzo = new Array();
             var liq_fact = new Array();
             var liq_plan = new Array();
@@ -1727,6 +1854,13 @@ console.log(productionPlanForMonth);
           this.productionForChart = productionForChart;
           //console.log(productionPlanForMonth);
 
+          /*__time2 =        new Date(__time2).toLocaleString("ru", {
+      year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+      });
+        */
+
           var tables = _.zipWith(
             _.sortBy(dzo2, (dzo) => dzo.dzo),
             _.sortBy(liq_fact2, (liq_fact) => liq_fact.liq_fact),
@@ -1965,7 +2099,7 @@ this.currentMonth = this.monthes3[currentMonth];
 
         var timestampMonthStart = new Date(
           //   this.monthes2[this.selectedMonth] + //change when data upgrade
-          this.monthes2["5"] +
+          this.monthes2["4"] +
             //this.selectedDay +
             "1" +
             " " +
@@ -2156,6 +2290,64 @@ this.currentMonth = this.monthes3[currentMonth];
           dzoMonth.push({ dzoMonth: item.dzo });
         });
 
+        //summ table value
+        var factYearSumm = _.reduce(
+          factYear,
+          function (memo, item) {
+            return memo + item.factYear;
+          },
+          0
+        );
+
+        var planYearSumm = _.reduce(
+          planYear,
+          function (memo, item) {
+            return memo + item.planYear;
+          },
+          0
+        );
+
+        var planMonthSumm = _.reduce(
+          planMonth,
+          function (memo, item) {
+            return memo + item.planMonth;
+          },
+          0
+        );
+
+        var factMonthSumm = _.reduce(
+          factMonth,
+          function (memo, item) {
+            return memo + item.factMonth;
+          },
+          0
+        );
+
+        var factDaySumm = _.reduce(
+          factDay,
+          function (memo, item) {
+            return memo + item.factDay;
+          },
+          0
+        );
+
+        var planDaySumm = _.reduce(
+          planDay,
+          function (memo, item) {
+            return memo + item.planDay;
+          },
+          0
+        );
+
+        this.factYearSumm = factYearSumm;
+        this.planYearSumm = planYearSumm;
+        this.planMonthSumm = planMonthSumm;
+        this.factMonthSumm = factMonthSumm;
+        this.factDaySumm = factDaySumm;
+        this.planDaySumm = planDaySumm;
+
+        console.log(factYearSumm + "factYearSumm");
+
         //console.log(factYear);
 
         if (this.company == "all") {
@@ -2284,18 +2476,9 @@ this.currentMonth = this.monthes3[currentMonth];
         this.showTableOn = showTableOn; //colour button
       }
     },
-
-    /*onStorageUpdate(event) {
-      if (event.key === "company") {
-        this.company = event.newValue;
-      }
-    },*/
   },
   created: function () {
     EventBus.$on("messageSend", this.displayMessage);
-    //this.currentMonth = this.monthes3[this.month+1];
-
-    //   this.selectedDay + "." + this.month + "." + this.year;
   },
 
   computed: {

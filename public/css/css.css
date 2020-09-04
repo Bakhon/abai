@@ -1015,7 +1015,7 @@ ul.dropdown-child {
     float: left;
     background: #122f70;
     padding: 5px 5px;
-    line-height: 48px;
+    line-height: 25px;
 }
 
 .cell-name-top {
@@ -1263,4 +1263,8 @@ h2.subtitle {
     margin-top: 82px;
     margin-left: 83px;
     font-size: 30px;
+}
+
+.cell-width {
+    width: 72px;
 }
