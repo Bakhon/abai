@@ -19,12 +19,16 @@
         border: 1px solid #0D2B4D;
         margin-left: 0px !important;
         padding-top: 20px;
+        color: white !important;
     }
     .title, .subtitle {
         color:white;
     }
-    .top{
-        display: none;
+    .table-responsive{
+        color:white !important;
+    }
+    .table{
+        color:white !important;
     }
 </style>
 
