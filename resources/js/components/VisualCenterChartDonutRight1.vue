@@ -1,8 +1,9 @@
 <template>
   <div id="chart-donut2">
+   <div class="donut-summ-area">
     <div class="donut-summ">
       {{ new Intl.NumberFormat("ru-RU").format(summ) }}
-    </div>
+    </div></div>
     <apexchart
       type="donut"
       :options="chartOptions"
