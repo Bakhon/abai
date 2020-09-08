@@ -5692,9 +5692,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               productionFactForChartYear.push({
                 productionFactForChartYear: Math.ceil(item[productionFact])
               });
-            });
+            }); //select only for year
 
-            console.log(productionPlanForChartYear); //select only for year
 
             var factYear2 = new Array();
 
