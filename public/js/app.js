@@ -2329,7 +2329,9 @@ var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modu
           y: {
             formatter: function formatter(y) {
               if (typeof y !== "undefined") {
-                return y.toFixed(0) + "";
+                return new Intl.NumberFormat('en-IN', {
+                  maximumSignificantDigits: 3
+                }).format(y.toFixed(0)) + "";
               }
 
               return y;
@@ -2342,7 +2344,7 @@ var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modu
         type: 'area',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }, {
-        name: 'Нерентабельные скважины 2',
+        name: 'Условно-рентабельные скважины',
         type: 'area',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }, {
@@ -2358,7 +2360,7 @@ var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modu
         name: 'Рентабельные скважины',
         data: value.profitable
       }, {
-        name: 'Нерентабельные скважины 2',
+        name: 'Условно-рентабельные скважины',
         data: value.profitless_cat_2
       }, {
         name: 'Нерентабельные скважины',
@@ -2424,6 +2426,11 @@ var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modu
       }), _defineProperty(_chartOptions, "xaxis", {
         type: 'datetime'
       }), _defineProperty(_chartOptions, "yaxis", {
+        labels: {
+          formatter: function formatter(value) {
+            return Math.round(value);
+          }
+        },
         title: {
           text: 'Добыча нефти'
         },
@@ -2434,7 +2441,9 @@ var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modu
         y: {
           formatter: function formatter(y) {
             if (typeof y !== "undefined") {
-              return y.toFixed(0) + " тонн";
+              return new Intl.NumberFormat('en-IN', {
+                maximumSignificantDigits: 3
+              }).format(y.toFixed(0)) + " тыс. тонн";
             }
 
             return y;
@@ -2446,7 +2455,7 @@ var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modu
         type: 'area',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }, {
-        name: 'Нерентабельные скважины 2',
+        name: 'Условно-рентабельные скважины',
         type: 'area',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }, {
@@ -2463,7 +2472,7 @@ var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modu
         type: 'area',
         data: value.profitable
       }, {
-        name: 'Нерентабельные скважины 2',
+        name: 'Условно-рентабельные скважины',
         type: 'area',
         data: value.profitless_cat_2
       }, {
@@ -2537,7 +2546,9 @@ __webpack_require__.r(__webpack_exports__);
         tooltip: {
           y: {
             formatter: function formatter(val) {
-              return val + " тенге";
+              return new Intl.NumberFormat('en-IN', {
+                maximumSignificantDigits: 3
+              }).format(val) + " тыс. тенге";
             }
           }
         }
@@ -2622,7 +2633,9 @@ __webpack_require__.r(__webpack_exports__);
         tooltip: {
           y: {
             formatter: function formatter(val) {
-              return val + " тенге";
+              return new Intl.NumberFormat('en-IN', {
+                maximumSignificantDigits: 3
+              }).format(val) + " тыс. тенге";
             }
           }
         }
@@ -2666,6 +2679,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_table_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-table-dynamic */ "./node_modules/vue-table-dynamic/dist/index.min.js");
 /* harmony import */ var vue_table_dynamic__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_table_dynamic__WEBPACK_IMPORTED_MODULE_1__);
+//
 //
 //
 //
@@ -11399,7 +11413,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.title[data-v-763e61b8],\n.subtitle[data-v-763e61b8],\n.drag-area-title[data-v-763e61b8] {\n  color: white;\n}\n.table[data-v-763e61b8] {\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\n  background-color: #20274e !important;\n  border-radius: 15px;\n  flex: 0 0 24%;\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\n  color: #fff;\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\n  color: #fff;\n  font-size: 15px;\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\n  /* background-color: #0F1430;\n  border: 1px solid #0D2B4D; */\n}\n", ""]);
+exports.push([module.i, "\n.title[data-v-763e61b8],\n.subtitle[data-v-763e61b8],\n.drag-area-title[data-v-763e61b8] {\n  color: white;\n}\n.table[data-v-763e61b8] {\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\n  background-color: #20274e !important;\n  border-radius: 15px;\n  flex: 0 0 24%;\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\n  color: #fff;\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\n  color: #fff;\n  font-size: 20px;\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\n  /* background-color: #0F1430;\n  border: 1px solid #0D2B4D; */\n}\n", ""]);
 
 // exports
 
@@ -44460,28 +44474,54 @@ var render = function() {
         _c(
           "div",
           { staticClass: "col-xl-6 col-lg-6 col-md-5 col-sm-12" },
-          [_c("chart1-component")],
+          [
+            _c("h5", { staticClass: "subtitle text-wrap" }, [
+              _vm._v("Распределение скважин по типу рентабельности")
+            ]),
+            _vm._v(" "),
+            _c("chart1-component")
+          ],
           1
         ),
         _vm._v(" "),
         _c(
           "div",
           { staticClass: "col-xl-6 ccol-lg-6 col-md-5 col-sm-12" },
-          [_c("chart2-component")],
+          [
+            _c("h5", { staticClass: "subtitle text-wrap" }, [
+              _vm._v(
+                "Распределение добычи нефти по типу рентабельности скважин"
+              )
+            ]),
+            _vm._v(" "),
+            _c("chart2-component")
+          ],
           1
         ),
         _vm._v(" "),
         _c(
           "div",
           { staticClass: "col-xl-6 ccol-lg-6 col-md-5 col-sm-12" },
-          [_c("chart3-component")],
+          [
+            _c("h5", { staticClass: "subtitle text-wrap" }, [
+              _vm._v("Топ 20 рентабельных скважин")
+            ]),
+            _vm._v(" "),
+            _c("chart3-component")
+          ],
           1
         ),
         _vm._v(" "),
         _c(
           "div",
           { staticClass: "col-xl-6 ccol-lg-6 col-md-5 col-sm-12" },
-          [_c("chart4-component")],
+          [
+            _c("h5", { staticClass: "subtitle text-wrap" }, [
+              _vm._v("Топ 20 нерентабельных скважин")
+            ]),
+            _vm._v(" "),
+            _c("chart4-component")
+          ],
           1
         )
       ])

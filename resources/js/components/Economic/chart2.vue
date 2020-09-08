@@ -38,6 +38,11 @@ export default {
           type: 'datetime'
         },
         yaxis: {
+          labels: {
+            formatter: function (value) {
+                return Math.round(value);
+            }
+          },
           title: {
             text: 'Добыча нефти',
           },
@@ -49,7 +54,7 @@ export default {
           y: {
             formatter: function(y) {
               if (typeof y !== "undefined") {
-                return y.toFixed(0) + " тонн";
+                return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + " тыс. тонн";
               }
               return y;
             }
@@ -61,7 +66,7 @@ export default {
         type: 'area',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }, {
-        name: 'Нерентабельные скважины 2',
+        name: 'Условно-рентабельные скважины',
         type: 'area',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }, {
@@ -80,7 +85,7 @@ export default {
                 data: value.profitable
             },
             {
-                name: 'Нерентабельные скважины 2',
+                name: 'Условно-рентабельные скважины',
                 type: 'area',
                 data: value.profitless_cat_2
             },

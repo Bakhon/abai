@@ -46,7 +46,7 @@ export default {
           y: {
             formatter: function(y) {
               if (typeof y !== "undefined") {
-                return y.toFixed(0) + "";
+                return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + "";
               }
               return y;
             }
@@ -58,7 +58,7 @@ export default {
         type: 'area',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }, {
-        name: 'Нерентабельные скважины 2',
+        name: 'Условно-рентабельные скважины',
         type: 'area',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }, {
@@ -75,7 +75,7 @@ export default {
                 name: 'Рентабельные скважины',
                 data: value.profitable
             }, {
-                name: 'Нерентабельные скважины 2',
+                name: 'Условно-рентабельные скважины',
                 data: value.profitless_cat_2
             }, {
             name: 'Нерентабельные скважины',
