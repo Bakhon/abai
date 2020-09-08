@@ -152,6 +152,17 @@ function(){function t(t){t.remember("_draggable",this),this.el=t}t.prototype.ini
 
 /***/ }),
 
+/***/ "./node_modules/apexcharts/dist/locales/ru.json":
+/*!******************************************************!*\
+  !*** ./node_modules/apexcharts/dist/locales/ru.json ***!
+  \******************************************************/
+/*! exports provided: name, options, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"name\":\"ru\",\"options\":{\"months\":[\"Январь\",\"Февраль\",\"Март\",\"Апрель\",\"Май\",\"Июнь\",\"Июль\",\"Август\",\"Сентябрь\",\"Октябрь\",\"Ноябрь\",\"Декабрь\"],\"shortMonths\":[\"Янв\",\"Фев\",\"Мар\",\"Апр\",\"Май\",\"Июн\",\"Июл\",\"Авг\",\"Сен\",\"Окт\",\"Ноя\",\"Дек\"],\"days\":[\"Воскресенье\",\"Понедельник\",\"Вторник\",\"Среда\",\"Четверг\",\"Пятница\",\"Суббота\"],\"shortDays\":[\"Вс\",\"Пн\",\"Вт\",\"Ср\",\"Чт\",\"Пт\",\"Сб\"],\"toolbar\":{\"exportToSVG\":\"Сохранить SVG\",\"exportToPNG\":\"Сохранить PNG\",\"exportToCSV\":\"Сохранить CSV\",\"menu\":\"Меню\",\"selection\":\"Выбор\",\"selectionZoom\":\"Выбор с увеличением\",\"zoomIn\":\"Увеличить\",\"zoomOut\":\"Уменьшить\",\"pan\":\"Перемещение\",\"reset\":\"Сбросить увеличение\"}}}");
+
+/***/ }),
+
 /***/ "./node_modules/axios/index.js":
 /*!*************************************!*\
   !*** ./node_modules/axios/index.js ***!
@@ -2270,16 +2281,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-apexcharts */ "./node_modules/vue-apexcharts/dist/vue-apexcharts.js");
-/* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_apexcharts__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
 //
 //
 //
+var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modules/apexcharts/dist/locales/ru.json");
 
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'mix-chart',
   data: function data() {
@@ -2287,7 +2296,9 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
       chartOptions: {
         chart: {
           stacked: true,
-          foreColor: '#FFFFFF'
+          foreColor: '#FFFFFF',
+          locales: [ru],
+          defaultLocale: 'ru'
         },
         colors: ['#13B062', '#F7BB2E', '#AB130E'],
         stroke: {
@@ -2382,6 +2393,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modules/apexcharts/dist/locales/ru.json");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'MixedExample',
   data: function data() {
@@ -2399,7 +2412,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         colors: ['#13B062', '#F7BB2E', '#AB130E']
       }, _defineProperty(_chartOptions, "chart", {
         stacked: true,
-        foreColor: '#FFFFFF'
+        foreColor: '#FFFFFF',
+        locales: [ru],
+        defaultLocale: 'ru'
       }), _defineProperty(_chartOptions, "plotOptions", {
         bar: {
           columnWidth: '50%'
@@ -4955,7 +4970,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*	if (days[0].length > 0) {
       for (let i = days[0].length; i < 7; i++) {
       days[0].unshift('');
-      	}
+      }
       }*/
 
 
@@ -5408,6 +5423,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             }, {
               productionPlanForChart: Math.ceil(productionPlanForChart12)
             }];
+            /*
+            var productionPlanForChart = new Array();
+            _.forEach(dataWithMay, function (item) {
+              productionPlanForChart.push({
+                productionPlanForChart: item[productionPlan],
+              });
+            });
+                var productionFactForChart = new Array();
+            _.forEach(dataWithMay, function (item) {
+              productionFactForChart.push({
+                productionFactForChart: item[productionFact],
+              });
+            });*/
           } //select data by
 
 
@@ -11365,7 +11393,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.title[data-v-763e61b8],\r\n.subtitle[data-v-763e61b8],\r\n.drag-area-title[data-v-763e61b8] {\r\n  color: white;\n}\n.table[data-v-763e61b8] {\r\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\r\n  background-color: #20274e !important;\r\n  border-radius: 15px;\r\n  flex: 0 0 24%;\r\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 15px;\r\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\r\n  /* background-color: #0F1430;\r\n  border: 1px solid #0D2B4D; */\n}\r\n", ""]);
+exports.push([module.i, "\n.title[data-v-763e61b8],\n.subtitle[data-v-763e61b8],\n.drag-area-title[data-v-763e61b8] {\n  color: white;\n}\n.table[data-v-763e61b8] {\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\n  background-color: #20274e !important;\n  border-radius: 15px;\n  flex: 0 0 24%;\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\n  color: #fff;\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\n  color: #fff;\n  font-size: 15px;\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\n  /* background-color: #0F1430;\n  border: 1px solid #0D2B4D; */\n}\n", ""]);
 
 // exports
 
@@ -60888,8 +60916,8 @@ var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -5,6 +5,7 @@
 </template>
 
 <script>
+var ru = require("apexcharts/dist/locales/ru.json");
 export default {
   name: 'MixedExample',
   data: function() {
@@ -20,7 +21,9 @@ export default {
         colors:['#13B062', '#F7BB2E', '#AB130E'],
         chart: {
             stacked: true,
-            foreColor: '#FFFFFF'
+            foreColor: '#FFFFFF',
+            locales: [ru],
+            defaultLocale: 'ru'
         },
         plotOptions: {
           bar: {

@@ -3,7 +3,8 @@
     <div class="col p-4" id="app">
         <h2 class="subtitle">Конструктор отчётов</h2>
         <div class="level1-content row">
-            <div class="main col-md-12 col-lg-12 row">               
+            <div class="main col-md-12 col-lg-12 row">
+                <economicpivot></economicpivot>
             </div>
         </div>
     </div>
