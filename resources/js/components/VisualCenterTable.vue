@@ -231,91 +231,7 @@
                       <!-- <div class="cell-colour table-border">
                  
                         </div>-->
-                      <div class="cell-number table-border"></div>
-                      <div class="cell-name table-border">
-                        {{ NameDzoFull[0] }}
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(planYearSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(planDaySumm  ))}}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(factDaySumm ))}}
-                        </div>
-                      </div>
-                      <div class="cell table-border colour">
-                        <div>
-                          <div
-                            :style="`background: ${getColor(
-                              factDaySumm - planDaySumm
-                            )}`"
-                            class="circle-table"
-                          ></div>
-                        </div>
-                        <div>
-                          <div class="cell-width">
-                            {{(new Intl.NumberFormat('ru-RU').format(factDaySumm - planDaySumm)) }}
-                          </div>
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border colour">
-                        <div
-                          :style="`background: ${getColor(
-                            factMonthSumm - planMonthSumm
-                          )}`"
-                          class="circle-table"
-                        ></div>
-                        <!--3cell-->
-                        <div class="cell-width">
-                          {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm - planMonthSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{(new Intl.NumberFormat('ru-RU').format( planYearSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border cell-last colour">
-                        <div
-                          :style="`background: ${getColor(
-                            factYearSumm - planYearSumm
-                          )}`"
-                          class="circle-table"
-                        ></div>
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm - planYearSumm)) }}
-                        </div>
-                      </div>
-                    </div>
-                    <div style="clear: both;"></div>
-                  </div>
+                     
                   <div v-for="item in bigTable">
                     <div>
                       <div>
@@ -412,7 +328,94 @@
                       </div>
                       <div style="clear: both;"></div>
                     </div>
-                    <div class="tables-bottom-line"></div>
+            
+                    
+                  </div>
+                   <div class="cell-number table-border"></div>
+                      <div class="cell-name2 table-border">
+                        {{ NameDzoFull[0] }}
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(planYearSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(planDaySumm  ))}}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(factDaySumm ))}}
+                        </div>
+                      </div>
+                      <div class="cell table-border colour">
+                        <div>
+                          <div
+                            :style="`background: ${getColor(
+                              factDaySumm - planDaySumm
+                            )}`"
+                            class="circle-table"
+                          ></div>
+                        </div>
+                        <div>
+                          <div class="cell-width">
+                            {{(new Intl.NumberFormat('ru-RU').format(factDaySumm - planDaySumm)) }}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border colour">
+                        <div
+                          :style="`background: ${getColor(
+                            factMonthSumm - planMonthSumm
+                          )}`"
+                          class="circle-table"
+                        ></div>
+                        <!--3cell-->
+                        <div class="cell-width">
+                          {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm - planMonthSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{(new Intl.NumberFormat('ru-RU').format( planYearSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border">
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm)) }}
+                        </div>
+                      </div>
+                      <div class="cell table-border cell-last colour">
+                        <div
+                          :style="`background: ${getColor(
+                            factYearSumm - planYearSumm
+                          )}`"
+                          class="circle-table"
+                        ></div>
+                        <div>
+                          {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm - planYearSumm)) }}
+                        </div>
+                      </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                            <div class="tables-bottom-line"></div>
                   </div>
                 </div>
 

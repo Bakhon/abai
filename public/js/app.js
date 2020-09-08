@@ -4835,6 +4835,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   template: "#vue-status-overview-template",
@@ -45792,471 +45795,527 @@ var render = function() {
                     _c("div", { staticStyle: { clear: "both" } }),
                     _vm._v(" "),
                     _c("div", [
-                      _c("div", [
-                        _c("div", { staticClass: "cell-number table-border" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell-name table-border" }, [
-                          _vm._v(
-                            "\n                      " +
-                              _vm._s(_vm.NameDzoFull[0]) +
-                              "\n                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border" }, [
-                          _c("div", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.planYearSumm
+                      _c(
+                        "div",
+                        [
+                          _vm._l(_vm.bigTable, function(item) {
+                            return _c("div", [
+                              _c("div", [
+                                _c("div", [
+                                  _c("div", {
+                                    staticClass: "cell-number table-border"
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell-name table-border" },
+                                    [
+                                      _vm._v(
+                                        "\n                        " +
+                                          _vm._s(item.dzoDay) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border" },
+                                    [
+                                      item.planYear
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(item.planYear)
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border" },
+                                    [
+                                      item.planMonth
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(item.planMonth)
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border" },
+                                    [
+                                      item.planDay
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(item.planDay)
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border" },
+                                    [
+                                      item.factDay
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(item.factDay)
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border colour" },
+                                    [
+                                      _c("div", [
+                                        item.factDay
+                                          ? _c("div", {
+                                              staticClass: "circle-table",
+                                              style:
+                                                "background: " +
+                                                _vm.getColor(
+                                                  item.factDay - item.planDay
+                                                )
+                                            })
+                                          : _vm._e()
+                                      ]),
+                                      _vm._v(" "),
+                                      item.factDay
+                                        ? _c("div", [
+                                            _c("div", [
+                                              _vm._v(
+                                                "\n                            " +
+                                                  _vm._s(
+                                                    new Intl.NumberFormat(
+                                                      "ru-RU"
+                                                    ).format(
+                                                      item.factDay -
+                                                        item.planDay
+                                                    )
+                                                  ) +
+                                                  "\n                          "
+                                              )
+                                            ])
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border" },
+                                    [
+                                      item.planMonth
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(item.planMonth)
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border" },
+                                    [
+                                      item.factMonth
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(item.factMonth)
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border colour" },
+                                    [
+                                      item.planMonth
+                                        ? _c("div", {
+                                            staticClass: "circle-table",
+                                            style:
+                                              "background: " +
+                                              _vm.getColor(
+                                                item.factMonth - item.planMonth
+                                              )
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      item.planMonth
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(
+                                                    item.factMonth -
+                                                      item.planMonth
+                                                  )
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border" },
+                                    [
+                                      item.planYear
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(item.planYear)
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "cell table-border" },
+                                    [
+                                      item.factYear
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(item.factYear)
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "cell table-border cell-last colour"
+                                    },
+                                    [
+                                      item.planYear
+                                        ? _c("div", {
+                                            staticClass: "circle-table",
+                                            style:
+                                              "background: " +
+                                              _vm.getColor(
+                                                item.factYear - item.planYear
+                                              )
+                                          })
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      item.planYear
+                                        ? _c("div", [
+                                            _vm._v(
+                                              "\n                          " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(
+                                                    item.factYear -
+                                                      item.planYear
+                                                  )
+                                                ) +
+                                                "\n                        "
+                                            )
+                                          ])
+                                        : _vm._e()
+                                    ]
                                   )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border" }, [
-                          _c("div", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.planMonthSumm
-                                  )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border" }, [
-                          _c("div", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.planDaySumm
-                                  )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border" }, [
-                          _c("div", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.factDaySumm
-                                  )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border colour" }, [
-                          _c("div", [
-                            _c("div", {
-                              staticClass: "circle-table",
-                              style:
-                                "background: " +
-                                _vm.getColor(_vm.factDaySumm - _vm.planDaySumm)
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", [
-                            _c("div", { staticClass: "cell-width" }, [
-                              _vm._v(
-                                "\n                          " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.factDaySumm - _vm.planDaySumm
-                                    )
-                                  ) +
-                                  "\n                        "
-                              )
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticStyle: { clear: "both" } })
+                              ])
                             ])
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border" }, [
-                          _c("div", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.planMonthSumm
-                                  )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border" }, [
-                          _c("div", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.factMonthSumm
-                                  )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border colour" }, [
-                          _c("div", {
-                            staticClass: "circle-table",
-                            style:
-                              "background: " +
-                              _vm.getColor(
-                                _vm.factMonthSumm - _vm.planMonthSumm
-                              )
                           }),
                           _vm._v(" "),
-                          _c("div", { staticClass: "cell-width" }, [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.factMonthSumm - _vm.planMonthSumm
-                                  )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border" }, [
-                          _c("div", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.planYearSumm
-                                  )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "cell table-border" }, [
-                          _c("div", [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(
-                                  new Intl.NumberFormat("ru-RU").format(
-                                    _vm.factYearSumm
-                                  )
-                                ) +
-                                "\n                      "
-                            )
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "cell table-border cell-last colour" },
-                          [
-                            _c("div", {
-                              staticClass: "circle-table",
-                              style:
-                                "background: " +
-                                _vm.getColor(
-                                  _vm.factYearSumm - _vm.planYearSumm
-                                )
-                            }),
-                            _vm._v(" "),
+                          _c("div", {
+                            staticClass: "cell-number table-border"
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell-name2 table-border" },
+                            [
+                              _vm._v(
+                                "\n                      " +
+                                  _vm._s(_vm.NameDzoFull[0]) +
+                                  "\n                    "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell table-border" }, [
                             _c("div", [
                               _vm._v(
                                 "\n                        " +
                                   _vm._s(
                                     new Intl.NumberFormat("ru-RU").format(
-                                      _vm.factYearSumm - _vm.planYearSumm
+                                      _vm.planYearSumm
                                     )
                                   ) +
                                   "\n                      "
                               )
                             ])
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticStyle: { clear: "both" } })
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.bigTable, function(item) {
-                      return _c("div", [
-                        _c("div", [
-                          _c("div", [
-                            _c("div", {
-                              staticClass: "cell-number table-border"
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "cell-name table-border" },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(item.dzoDay) +
-                                    "\n                        "
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.planYear
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.planYear
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.planMonth
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.planMonth
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.planDay
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.planDay
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.factDay
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.factDay
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "cell table-border colour" },
-                              [
-                                _c("div", [
-                                  item.factDay
-                                    ? _c("div", {
-                                        staticClass: "circle-table",
-                                        style:
-                                          "background: " +
-                                          _vm.getColor(
-                                            item.factDay - item.planDay
-                                          )
-                                      })
-                                    : _vm._e()
-                                ]),
-                                _vm._v(" "),
-                                item.factDay
-                                  ? _c("div", [
-                                      _c("div", [
-                                        _vm._v(
-                                          "\n                            " +
-                                            _vm._s(
-                                              new Intl.NumberFormat(
-                                                "ru-RU"
-                                              ).format(
-                                                item.factDay - item.planDay
-                                              )
-                                            ) +
-                                            "\n                          "
-                                        )
-                                      ])
-                                    ])
-                                  : _vm._e()
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.planMonth
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.planMonth
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.factMonth
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.factMonth
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "cell table-border colour" },
-                              [
-                                item.planMonth
-                                  ? _c("div", {
-                                      staticClass: "circle-table",
-                                      style:
-                                        "background: " +
-                                        _vm.getColor(
-                                          item.factMonth - item.planMonth
-                                        )
-                                    })
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                item.planMonth
-                                  ? _c("div", [
-                                      _vm._v(
-                                        "\n                          " +
-                                          _vm._s(
-                                            new Intl.NumberFormat(
-                                              "ru-RU"
-                                            ).format(
-                                              item.factMonth - item.planMonth
-                                            )
-                                          ) +
-                                          "\n                        "
-                                      )
-                                    ])
-                                  : _vm._e()
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.planYear
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.planYear
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.factYear
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.factYear
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "cell table-border cell-last colour"
-                              },
-                              [
-                                item.planYear
-                                  ? _c("div", {
-                                      staticClass: "circle-table",
-                                      style:
-                                        "background: " +
-                                        _vm.getColor(
-                                          item.factYear - item.planYear
-                                        )
-                                    })
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                item.planYear
-                                  ? _c("div", [
-                                      _vm._v(
-                                        "\n                          " +
-                                          _vm._s(
-                                            new Intl.NumberFormat(
-                                              "ru-RU"
-                                            ).format(
-                                              item.factYear - item.planYear
-                                            )
-                                          ) +
-                                          "\n                        "
-                                      )
-                                    ])
-                                  : _vm._e()
-                              ]
-                            )
                           ]),
                           _vm._v(" "),
-                          _c("div", { staticStyle: { clear: "both" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "tables-bottom-line" })
-                      ])
-                    })
-                  ],
-                  2
+                          _c("div", { staticClass: "cell table-border" }, [
+                            _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.planMonthSumm
+                                    )
+                                  ) +
+                                  "\n                      "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell table-border" }, [
+                            _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.planDaySumm
+                                    )
+                                  ) +
+                                  "\n                      "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell table-border" }, [
+                            _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.factDaySumm
+                                    )
+                                  ) +
+                                  "\n                      "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell table-border colour" },
+                            [
+                              _c("div", [
+                                _c("div", {
+                                  staticClass: "circle-table",
+                                  style:
+                                    "background: " +
+                                    _vm.getColor(
+                                      _vm.factDaySumm - _vm.planDaySumm
+                                    )
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("div", [
+                                _c("div", { staticClass: "cell-width" }, [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.factDaySumm - _vm.planDaySumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell table-border" }, [
+                            _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.planMonthSumm
+                                    )
+                                  ) +
+                                  "\n                      "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell table-border" }, [
+                            _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.factMonthSumm
+                                    )
+                                  ) +
+                                  "\n                      "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell table-border colour" },
+                            [
+                              _c("div", {
+                                staticClass: "circle-table",
+                                style:
+                                  "background: " +
+                                  _vm.getColor(
+                                    _vm.factMonthSumm - _vm.planMonthSumm
+                                  )
+                              }),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell-width" }, [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(
+                                      new Intl.NumberFormat("ru-RU").format(
+                                        _vm.factMonthSumm - _vm.planMonthSumm
+                                      )
+                                    ) +
+                                    "\n                      "
+                                )
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell table-border" }, [
+                            _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.planYearSumm
+                                    )
+                                  ) +
+                                  "\n                      "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell table-border" }, [
+                            _c("div", [
+                              _vm._v(
+                                "\n                        " +
+                                  _vm._s(
+                                    new Intl.NumberFormat("ru-RU").format(
+                                      _vm.factYearSumm
+                                    )
+                                  ) +
+                                  "\n                      "
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "cell table-border cell-last colour"
+                            },
+                            [
+                              _c("div", {
+                                staticClass: "circle-table",
+                                style:
+                                  "background: " +
+                                  _vm.getColor(
+                                    _vm.factYearSumm - _vm.planYearSumm
+                                  )
+                              }),
+                              _vm._v(" "),
+                              _c("div", [
+                                _vm._v(
+                                  "\n                        " +
+                                    _vm._s(
+                                      new Intl.NumberFormat("ru-RU").format(
+                                        _vm.factYearSumm - _vm.planYearSumm
+                                      )
+                                    ) +
+                                    "\n                      "
+                                )
+                              ])
+                            ]
+                          )
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _c("div", { staticStyle: { clear: "both" } }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "tables-bottom-line" })
+                    ])
+                  ]
                 ),
                 _vm._v(" "),
                 _c(

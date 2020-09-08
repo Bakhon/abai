@@ -1015,7 +1015,16 @@ ul.dropdown-child {
     float: left;
     background: #122f70;
     padding: 5px 5px;
-    line-height: 25px;
+    line-height: 48px;
+}
+
+.cell-name2{
+    height: 56px;
+    width: 310px;
+    float: left;
+    background: #122f70;
+    padding: 5px 5px;
+    line-height: 25px;  
 }
 
 .cell-name-top {
