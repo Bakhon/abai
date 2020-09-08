@@ -208,7 +208,7 @@
         v-bind:postTitle="serial"
         :key="serial"
       ></visual-center-chart-area-oil>
-      <hr class="hr-visualcenter" />
+      <!--<hr class="hr-visualcenter" />
       <ul class="oil-string-all">
         <li class="oil-string one">Нефть Brent</li>
         <li class="oil-string two">41,65</li>
@@ -229,9 +229,8 @@
         <li class="oil-string three">+0,60</li>
         <li class="oil-string three">+1,46%</li>
       </ul>
-      <hr class="hr-visualcenter" />
+      <hr class="hr-visualcenter" />-->
     </div>
-
     <div class="assets3"></div>
 
     <div class="left-price-oil">
@@ -294,7 +293,7 @@ export default {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect);
-      this.getCurrency();
+      this.getCurrencyPeriod(this.timeSelect);
     },
 
     getCurrencyNow: function (dates) {
@@ -313,9 +312,9 @@ export default {
       });
     },
 
-    getCurrency: function (dates) {
-      var datas;
-      let uri = "/ru/getcurrencyperiod";
+    getCurrencyPeriod: function (dates) {
+      var dates=dates;
+      let uri = "/ru/getcurrencyperiod?dates=" + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -333,36 +332,69 @@ export default {
 
     getOilNow: function (dates) {
       var datas;
-      let uri =
-        "https://cors-anywhere.herokuapp.com/" +
-        "https://yandex.ru/news/quotes/graph_1006.json";
+      //let uri = "/js/json/graph_1006.json";
+      let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
           var oilDate;
+          var oilDate2;
           var oilValue;
           var splits = [];
           var oil = [];
           var oil2;
+
           _.forEach(data.prices, function (prices) {
             splits = prices.toString().split(",");
-            oilDate = Number(splits["0"]);
             oilValue = splits["1"];
-            oil.push({
-              date: new Date(oilDate).toLocaleString("ru", {
-                year: "numeric",
+            oilDate = Number(splits["0"]);
 
-                day: "numeric",
-                month: "numeric",
-              }),
-              value: oilValue,
-            });
+            (oilDate2 = new Date(oilDate).toLocaleString("ru", {
+              year: "numeric",
+              day: "numeric",
+              month: "numeric",
+              timeZone: "Europe/Moscow",
+            })),
+              oil.push({
+                date: oilDate2,
+                value: oilValue,
+              });
           });
+
+
+//getDataString
+  /*var datesString =new Date(dates.getTime());       
+console.log(datesString);  */ 
+
+    /* var dateInOil = [];
+        dateInOil = _.filter(oil, function (item) {
+          return _.every([
+            _.inRange(
+              item.date,
+              timestampMonthStart,
+              timestampMonthStart + 86400000 * dayInMonth
+            ),
+          ]);
+        });*/
+
+
+              
+          this.oilChart = [_.takeRight(oil, 31)];
+
           var oil2 = [];
+
           oil2 = _.filter(oil, _.iteratee({ date: dates }));
 
-          this.oilChart = [oil.slice(-7)];
-          this.oilNow = oil2[0].value;
+
+  
+        
+         if (oil2.length!='0'){
+         this.oilNow = oil2[0].value;
+          } else{
+                 oil=_.last(oil);
+          this.oilNow = oil.value;
+}
+
         } else {
           console.log("No data");
         }
