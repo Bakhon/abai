@@ -208,7 +208,7 @@
         v-bind:postTitle="serial"
         :key="serial"
       ></visual-center-chart-area-oil>
-      <hr class="hr-visualcenter" />
+      <!--<hr class="hr-visualcenter" />
       <ul class="oil-string-all">
         <li class="oil-string one">Нефть Brent</li>
         <li class="oil-string two">41,65</li>
@@ -229,9 +229,8 @@
         <li class="oil-string three">+0,60</li>
         <li class="oil-string three">+1,46%</li>
       </ul>
-      <hr class="hr-visualcenter" />
+      <hr class="hr-visualcenter" />-->
     </div>
-
     <div class="assets3"></div>
 
     <div class="left-price-oil">
@@ -294,7 +293,7 @@ export default {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect);
-      this.getCurrency();
+      this.getCurrencyPeriod(this.timeSelect);
     },
 
     getCurrencyNow: function (dates) {
@@ -313,9 +312,9 @@ export default {
       });
     },
 
-    getCurrency: function (dates) {
-      var datas;
-      let uri = "/ru/getcurrencyperiod";
+    getCurrencyPeriod: function (dates) {
+      var dates=dates;
+      let uri = "/ru/getcurrencyperiod?dates=" + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -362,15 +361,40 @@ export default {
               });
           });
 
-          this.oilChart = [_.takeRight(oil, 7)];
+
+//getDataString
+  /*var datesString =new Date(dates.getTime());       
+console.log(datesString);  */ 
+
+    /* var dateInOil = [];
+        dateInOil = _.filter(oil, function (item) {
+          return _.every([
+            _.inRange(
+              item.date,
+              timestampMonthStart,
+              timestampMonthStart + 86400000 * dayInMonth
+            ),
+          ]);
+        });*/
+
+
+              
+          this.oilChart = [_.takeRight(oil, 31)];
 
           var oil2 = [];
 
           oil2 = _.filter(oil, _.iteratee({ date: dates }));
-          console.log(dates);
-          //oil2 = _.last(oil);
-         // oil2 = oil2.value;
-          this.oilNow = oil2[0].value;
+
+
+  
+        
+         if (oil2.length!='0'){
+         this.oilNow = oil2[0].value;
+          } else{
+                 oil=_.last(oil);
+          this.oilNow = oil.value;
+}
+
         } else {
           console.log("No data");
         }
