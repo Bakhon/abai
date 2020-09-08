@@ -2950,6 +2950,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   mounted: function mounted() {
     var data = [];
     var data = this.postTitle;
+    console.log(this.postTitle);
     var productionPlanForChart = new Array();
 
     _.forEach(data, function (item) {
@@ -2980,12 +2981,14 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
       productionFactForChartYear.push(item.productionFactForChartYear);
     });
 
+    productionFactForChartYear = productionFactForChartYear.reverse();
     var productionPlanForChartYear = new Array();
 
     _.forEach(data, function (item) {
       productionPlanForChartYear.push(item.productionPlanForChartYear);
     });
 
+    productionPlanForChartYear = productionPlanForChartYear.reverse();
     var quantity = data.length;
     var quantity2 = [];
 
@@ -5674,6 +5677,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             arrdataYearChart = _.filter(data2, _.iteratee({
               dzo: company
             }));
+            arrdataYearChart = _.orderBy(arrdataYearChart, ["period"], ["desk"]);
             var productionPlanForChartYear = new Array();
 
             _.forEach(arrdataYearChart, function (item) {
@@ -5688,8 +5692,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               productionFactForChartYear.push({
                 productionFactForChartYear: Math.ceil(item[productionFact])
               });
-            }); //select only for year
+            });
 
+            console.log(productionPlanForChartYear); //select only for year
 
             var factYear2 = new Array();
 

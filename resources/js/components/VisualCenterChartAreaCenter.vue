@@ -72,6 +72,7 @@ export default {
   mounted() {
     var data = [];
     var data = this.postTitle;
+    console.log(this.postTitle);
 
     var productionPlanForChart = new Array();
     _.forEach(data, function (item) {
@@ -97,11 +98,13 @@ export default {
     _.forEach(data, function (item) {
       productionFactForChartYear.push(item.productionFactForChartYear);
     });
+    productionFactForChartYear = productionFactForChartYear.reverse();
 
     var productionPlanForChartYear = new Array();
     _.forEach(data, function (item) {
       productionPlanForChartYear.push(item.productionPlanForChartYear);
     });
+    productionPlanForChartYear = productionPlanForChartYear.reverse();
 
     var quantity = data.length;
 

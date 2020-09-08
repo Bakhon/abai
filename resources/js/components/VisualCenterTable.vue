@@ -1627,6 +1627,9 @@ export default {
             var arrdataYearChart = new Array();
             var arrdataYearChart = [];
             arrdataYearChart = _.filter(data2, _.iteratee({ dzo: company }));
+                    arrdataYearChart = _.orderBy(arrdataYearChart, ["period"], ["desk"]);
+                  
+
 
             var productionPlanForChartYear = new Array();
             _.forEach(arrdataYearChart, function (item) {
@@ -1642,6 +1645,8 @@ export default {
               });
             });
 
+
+           
             //select only for year
             var factYear2 = new Array();
             _.each(factYear, function (factYear) {
@@ -1649,6 +1654,7 @@ export default {
               factYear2.push({ factYear });
             });
 
+         
             var planYear2 = new Array();
             _.each(planYear, function (planYear) {
               planYear = Math.ceil(planYear);
