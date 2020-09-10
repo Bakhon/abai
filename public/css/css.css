@@ -575,9 +575,9 @@ li.oil-string.three2 {
 
 .visual-center-center {
     /* background: url(../img/level1/map_kz.svg) no-repeat; */
-    /* width: 850px; */
     /* height: 454px; */
     position: relative;
+    width: 1275px;
 }
 
 .circle-2:focus {
@@ -623,7 +623,7 @@ li.circle-2:hover {
     background-color: #20274e !important;
     float: left;
     overflow: hidden;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .vcb-left {
@@ -1009,7 +1009,7 @@ ul.dropdown-child {
 
 .cell-name {
     height: 56px;
-    width: 330px;
+    width: 329px;
     float: left;
     background: #122f70;
     padding: 5px 5px;
@@ -1018,7 +1018,7 @@ ul.dropdown-child {
 
 .cell-name2 {
     height: 56px;
-    width: 330px;
+    width: 329px;
     float: left;
     background: #122f70;
     padding: 5px 5px;
@@ -1027,7 +1027,7 @@ ul.dropdown-child {
 
 .cell-name-top {
     height: 113px;
-    width: 330px;
+    width: 329px;
     float: left;
     background: #122f70;
     padding: 45px 10px;
