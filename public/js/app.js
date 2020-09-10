@@ -4851,6 +4851,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   template: "#vue-status-overview-template",
@@ -44832,7 +44853,7 @@ var render = function() {
         attrs: {
           type: "area",
           height: "350",
-          width: "1250",
+          width: "1243",
           options: _vm.chartOptions,
           series: _vm.series
         }
@@ -46036,30 +46057,33 @@ var render = function() {
                     _c(
                       "div",
                       {
-                        staticClass: "right-table-button right-button",
-                        style: "" + _vm.showTableOn,
-                        on: {
-                          click: function($event) {
-                            return _vm.changeButton("" + _vm.showTable2, "Yes")
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                  " +
-                            _vm._s(_vm.ChartTable) +
-                            "\n                "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      {
                         staticClass: "tables",
                         style: "" + _vm.displayHeadTables
                       },
                       [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "right-table-button right-button",
+                            style: "" + _vm.showTableOn,
+                            on: {
+                              click: function($event) {
+                                return _vm.changeButton(
+                                  "" + _vm.showTable2,
+                                  "Yes"
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(_vm.ChartTable) +
+                                "\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
                         _c("div", { staticClass: "tables-name" }, [
                           _vm._v(_vm._s(_vm.circleMenu))
                         ]),
@@ -46712,6 +46736,29 @@ var render = function() {
                       "div",
                       { staticClass: "tables", style: "" + _vm.displayTable },
                       [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "right-table-button right-button",
+                            style: "" + _vm.showTableOn,
+                            on: {
+                              click: function($event) {
+                                return _vm.changeButton(
+                                  "" + _vm.showTable2,
+                                  "Yes"
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                    " +
+                                _vm._s(_vm.ChartTable) +
+                                "\n                  "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
                         _c("div", { staticClass: "tables-name" }, [
                           _vm._v(_vm._s(_vm.circleMenu))
                         ]),
@@ -47111,6 +47158,26 @@ var render = function() {
                     style: "" + _vm.displayChart
                   },
                   [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "right-table-button right-button",
+                        style: "" + _vm.showTableOn,
+                        on: {
+                          click: function($event) {
+                            return _vm.changeButton("" + _vm.showTable2, "Yes")
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.ChartTable) +
+                            "\n              "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
                     _c("div", { staticClass: "tables-name" }, [
                       _vm._v("График " + _vm._s(_vm.circleMenu))
                     ]),
@@ -47138,7 +47205,7 @@ var render = function() {
                   _vm._v(" "),
                   _vm._m(1),
                   _vm._v(" "),
-                  _c("div", { staticClass: "visual-center-bottom" }, [
+                  _c("div", { staticClass: "visual-center-bottom vcb-left" }, [
                     _c("div", { staticClass: "difference-of-24" }, [
                       _vm._v("Отклонение")
                     ]),
@@ -47236,7 +47303,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "visual-center-bottom" }, [
+    return _c("div", { staticClass: "visual-center-bottom vcb-left" }, [
       _c("div", { staticClass: "accidents-first accidents" }, [
         _c("div", { staticClass: "number-of-accidents" }, [_vm._v("2")]),
         _vm._v("\n                  Несчастные "),

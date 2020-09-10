@@ -618,15 +618,16 @@ li.circle-2:hover {
     width: 415px;
     height: 168px;
     font-size: 15px;
-    /* background-repeat: no-repeat; */
-    /* background-size: 25px 25px; */
-    /* background-position: 22px 10px; */
     color: white;
-    margin-left: 10px;
+    /* margin-left: 10px; */
     background-color: #20274e !important;
     float: left;
     overflow: hidden;
     margin-top: 20px;
+}
+
+.vcb-left {
+    margin-left: 10px;
 }
 
 .main {
@@ -818,6 +819,10 @@ li.circle-2:hover {
     display: inline-block;
     color: #fff;
     padding: 10px 15px;
+    position: relative;
+    z-index: 99999;
+    margin-left: 30px;
+    margin-top: 30px;
 }
 
 .donut {
@@ -827,8 +832,10 @@ li.circle-2:hover {
     color: white;
     text-align: center;
     padding: 10px 0px;
-    margin-top: 15px;
+    /* margin-top: 15px; */
 }
+
+.donut-top {}
 
 .right-button-panel {
     height: 100px!important;
@@ -836,7 +843,7 @@ li.circle-2:hover {
 }
 
 .donut2 {
-    /* margin-top: 15px; */
+    margin-top: 10px;
 }
 
 .donut-inner1 {
@@ -933,7 +940,7 @@ ul.dropdown-child {
     color: #fff;
     width: 1300px;
     height: 45px;
-    /*margin-top: 35px;*/
+    margin-top: -34px;
 }
 
 .tables-string {
@@ -956,7 +963,7 @@ ul.dropdown-child {
     border-right-style: solid;
     border-right-color: #0F1430;
     border-right-width: 5px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }
 
 .level2-tab:focus {
@@ -1002,7 +1009,7 @@ ul.dropdown-child {
 
 .cell-name {
     height: 56px;
-    width: 310px;
+    width: 330px;
     float: left;
     background: #122f70;
     padding: 5px 5px;
@@ -1011,7 +1018,7 @@ ul.dropdown-child {
 
 .cell-name2 {
     height: 56px;
-    width: 310px;
+    width: 330px;
     float: left;
     background: #122f70;
     padding: 5px 5px;
@@ -1020,7 +1027,7 @@ ul.dropdown-child {
 
 .cell-name-top {
     height: 113px;
-    width: 310px;
+    width: 330px;
     float: left;
     background: #122f70;
     padding: 45px 10px;
@@ -1077,7 +1084,7 @@ ul.dropdown-child {
 }
 
 .tables-bottom-line {
-    width: 1244px;
+    width: 1263px;
     border-top-color: #1b6bb0;
     border-top-style: solid;
     border-top-width: 1px;
@@ -1141,7 +1148,7 @@ ul.dropdown-child {
 }
 
 .month-day {
-    width: 1245px;
+    width: 1263px;
     background: #122f70;
     height: 40px;
     color: #fff;

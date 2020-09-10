@@ -185,15 +185,22 @@
                
                 -->
 
-                  <div
+                  <!--<div
                     class="right-table-button right-button"
                     :style="`${showTableOn}`"
                     @click="changeButton(`${showTable2}`, 'Yes')"
                   >
                     {{ ChartTable }}
-                  </div>
+                  </div>-->
 
                   <div class="tables" :style="`${displayHeadTables}`">
+                    <div
+                      class="right-table-button right-button"
+                      :style="`${showTableOn}`"
+                      @click="changeButton(`${showTable2}`, 'Yes')"
+                    >
+                      {{ ChartTable }}
+                    </div>
                     <div class="tables-name">{{ circleMenu }}</div>
                     <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
                     <div class="tables-string">
@@ -417,6 +424,13 @@
                   </div>
 
                   <div class="tables" :style="`${displayTable}`">
+                    <div
+                      class="right-table-button right-button"
+                      :style="`${showTableOn}`"
+                      @click="changeButton(`${showTable2}`, 'Yes')"
+                    >
+                      {{ ChartTable }}
+                    </div>
                     <div class="tables-name">{{ circleMenu }}</div>
                     <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
                     <div class="tables-string">
@@ -549,6 +563,13 @@
                 </div>
               </div>
               <div class="visual-center-center" :style="`${displayChart}`">
+                <div
+                  class="right-table-button right-button"
+                  :style="`${showTableOn}`"
+                  @click="changeButton(`${showTable2}`, 'Yes')"
+                >
+                  {{ ChartTable }}
+                </div>
                 <div class="tables-name">График {{ circleMenu }}</div>
                 <div class="unit">{{ unit }}</div>
                 <div class="otstup">
@@ -571,7 +592,7 @@
                   <div class="visual-center-string1">Прочие:</div>
                   <div class="visual-center-string2"></div>
                 </div>
-                <div class="visual-center-bottom">
+                <div class="visual-center-bottom vcb-left">
                   <div class="accidents-first accidents">
                     <div class="number-of-accidents">2</div>
                     Несчастные <br />случаи
@@ -585,7 +606,7 @@
                     COVID <br />19
                   </div>
                 </div>
-                <div class="visual-center-bottom">
+                <div class="visual-center-bottom vcb-left">
                   <div class="difference-of-24">Отклонение</div>
                   <div class="visual-center-chart-bar-bottom">
                     <visual-center-chart-bar-bottom
