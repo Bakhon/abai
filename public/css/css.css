@@ -265,7 +265,6 @@ canvas#chart-area4 {
     width: 75%;
 }
 
-
 /*
 canvas#canvas2 {
     height: 105px;
@@ -313,7 +312,6 @@ canvas#canvas3 {
     margin: 35px auto;
 }
 
-
 /*
 .info-panel {
     height: unset!important;
@@ -323,7 +321,6 @@ canvas#canvas3 {
 #body-row {
       height: 1150px!important;
 }*/
-
 
 /*страница visualcenter*/
 
@@ -422,7 +419,6 @@ a.collapsed {
     pointer-events: none;
 }
 
-
 /*
 .assets:active   {
     background: url(../img/level1/button-on.svg) no-repeat;
@@ -431,7 +427,6 @@ a.collapsed {
 	   background-size: 20% auto;
     background-position: 92% 14%;
  }*/
-
 
 /*
 .button-menu {
@@ -615,9 +610,9 @@ li.circle-2:hover {
     border-radius: 50px;
 }
 
-.col-lg-7-2 {
+/*.col-lg-7-2 {
     max-width: 84%!important;
-}
+}*/
 
 .visual-center-bottom {
     width: 415px;
@@ -708,7 +703,6 @@ li.circle-2:hover {
     overflow: hidden;
 }
 
-
 /*
 .circle-2-2 {
     position: absolute;
@@ -775,9 +769,6 @@ li.circle-2:hover {
     background-position: 75% 50%;
     outline: none;
 }
-
-
-
 
 .right-table-button {
     border: none;
@@ -905,7 +896,7 @@ ul.dropdown-child {
 
 .row {
     /* width:1525px;  */
-    overflow: hidden;
+    /* overflow: hidden; */
     /* width: 100%; */
     margin-right: unset;
     margin-left: unset;
@@ -1018,13 +1009,13 @@ ul.dropdown-child {
     line-height: 48px;
 }
 
-.cell-name2{
+.cell-name2 {
     height: 56px;
     width: 310px;
     float: left;
     background: #122f70;
     padding: 5px 5px;
-    line-height: 25px;  
+    line-height: 25px;
 }
 
 .cell-name-top {
@@ -1150,7 +1141,7 @@ ul.dropdown-child {
 }
 
 .month-day {
-    width: 1285px;
+    width: 1245px;
     background: #122f70;
     height: 40px;
     color: #fff;
@@ -1186,7 +1177,6 @@ li.circle-2 {
     border-radius: 50px;
     position: absolute;
 }
-
 
 /*calendar*/
 
@@ -1241,7 +1231,6 @@ li.circle-2 {
     margin-top: 10px;
 }
 
-
 .report-btn:hover {
     background: #15509d;
     height: 38px;
@@ -1251,16 +1240,16 @@ li.circle-2 {
     margin-top: 10px;
 }
 
-.sidebar-expanded{
-    width: 320px!important;   
+.sidebar-expanded {
+    width: 320px!important;
 }
 
 h2.subtitle {
     margin-left: 50px;
 }
 
-.mleft{
-   margin-left:50px; 
+.mleft {
+    margin-left: 50px;
 }
 
 .emptyPage {
@@ -1268,9 +1257,10 @@ h2.subtitle {
 }
 
 .donut-summ {
-   text-align: center;
+    text-align: center;
 }
-.donut-summ-area{
+
+.donut-summ-area {
     position: absolute;
     margin-top: 82px;
     margin-left: 70px;
@@ -1295,8 +1285,8 @@ h2.subtitle {
     position: absolute;
 }
 
-.otstup{
-    margin-left:30px;
+.otstup {
+    margin-left: 30px;
 }
 
 .starting {

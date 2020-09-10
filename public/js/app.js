@@ -4094,15 +4094,15 @@ __webpack_require__.r(__webpack_exports__);
           console.log(datesString);  */
 
           /* var dateInOil = [];
-              dateInOil = _.filter(oil, function (item) {
-                return _.every([
-                  _.inRange(
-                    item.date,
-                    timestampMonthStart,
-                    timestampMonthStart + 86400000 * dayInMonth
-                  ),
-                ]);
-              });*/
+          dateInOil = _.filter(oil, function (item) {
+          return _.every([
+            _.inRange(
+              item.date,
+              timestampMonthStart,
+              timestampMonthStart + 86400000 * dayInMonth
+            ),
+          ]);
+          });*/
 
 
           _this3.oilChart = [_.takeRight(oil, 31)];
@@ -4111,7 +4111,7 @@ __webpack_require__.r(__webpack_exports__);
             date: dates
           }));
 
-          if (oil2.length != '0') {
+          if (oil2.length != "0") {
             _this3.oilNow = oil2[0].value;
           } else {
             oil = _.last(oil);
@@ -4218,8 +4218,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-//
-//
 //
 //
 //
@@ -5987,17 +5985,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           planYear.push(p);
         });
 
-        _this.currentMonth = _this.monthes3[_this.month + 1];
+        _this.currentMonth = _this.monthes3[_this.month + 1]; //console.log(timestampMonthStart);
+
+        var selectedDay = _this.selectedDay;
+        var monthBigTable;
+        var timestampToday;
+
+        if (selectedDay == undefined) {
+          timestampToday = new Date(_this.monthes2["5"] + "15" + " " + _this.year + " 06:00:00 GMT+0600").getTime();
+          _this.currentMonth = _this.monthes3["6"];
+          monthBigTable = "5";
+        } else {
+          timestampToday = new Date(_this.monthes2[_this.month] + _this.selectedDay + " " + _this.year + " 06:00:00 GMT+0600").getTime();
+          monthBigTable = _this.month;
+        }
+        /*
+          
+           if (this.selectedDMY == 1) {
+            monthBigTable=this.selectedMonth-1;
+           }*/
+
+
         var timestampMonthStart = new Date( //   this.monthes2[this.selectedMonth] + //change when data upgrade
-        _this.monthes2["4"] + //this.selectedDay +
+        _this.monthes2[monthBigTable] + //this.selectedDay +
         "1" + " " + SelectYearInMonth + " 06:00:00 GMT+0600").getTime();
 
         var dayInMonth = _this.getDays().length;
 
         var dataWithMay = new Array();
         dataWithMay = _.filter(data, function (item) {
-          return _.every([_.inRange(item.__time, timestampMonthStart, timestampMonthStart + 86400000 * dayInMonth)]);
-        }); //Summ plan and fact from dzo
+          return _.every([_.inRange(item.__time, timestampMonthStart, timestampToday + 86400000)]);
+        });
+        console.log(timestampMonthStart); //Summ plan and fact from dzo
 
         var productionPlanAndFactMonth = _(dataWithMay).groupBy("dzo").map(function (dzo, id) {
           return {
@@ -6053,10 +6072,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           return memo + item[productionPlan];
         }, 0);
 
-        var today = new Date().getDate(); //dataFromDay
-
-        var timestampToday = new Date( //this.monthes2[this.month] +
-        _this.monthes2["5"] + today + " " + _this.year + " 06:00:00 GMT+0600").getTime();
         var dataDay = [];
         dataDay = _.filter(data, _.iteratee({
           __time: timestampToday
@@ -6308,6 +6323,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _this2.selectedYear = _this2.year;
               productionPlan = localStorage.getItem("production-plan");
               productionFact = localStorage.getItem("production-fact");
 
@@ -6319,7 +6335,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               localStorage.setItem("selectedDMY", "undefined");
 
-            case 4:
+            case 5:
             case "end":
               return _context.stop();
           }
@@ -7052,33 +7068,104 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      company: ""
+      changeColour: "",
+      ShowDzo: "",
+      changeButtons: "No",
+      oil: "",
+      timeNow: new Date().toLocaleString("ru", {
+        hour: "numeric",
+        minute: "numeric"
+      }),
+      dateNow: new Date().toLocaleString("ru", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      })
     };
   },
   methods: {
     /*  timeSelect2(select) {
-        this.timeSelect = select;
-        this.getCurrencyNow(this.timeSelect);      
-      },*/
-    getOilNow: function getOilNow() {
+      this.timeSelect = select;
+      this.getCurrencyNow(this.timeSelect);      
+    },*/
+    getOil: function getOil() {
+      var _this = this;
+
       var datas; //let uri = "/ru/getcurrency?fdate=" + dates + "";
 
       var uri = "/js/json/welcome.json";
       this.axios.get(uri).then(function (response) {
         var data = response.data;
-        console.log(data);
 
-        if (data) {} else {
+        if (data) {
+          _this.oil = data;
+          console.log(data);
+        } else {
           console.log("No data");
         }
       });
+    },
+    changeButton: function changeButton(changeButtons, ShowDzo) {
+      var changeColour = "color: #0F1430;";
+
+      if (changeButtons == "Yes") {
+        /*  if (this.company == "all") {
+          this.displayHeadTables = "display: block";
+          this.displayTable = "display:none;";
+        } else {
+          this.displayTable = "display:block;";
+          this.displayHeadTables = "display: none";
+        }*/
+        this.changeButtons = "No";
+        this.changeColour = ""; //colour button
+      } else if (changeButtons == "No") {
+        /* this.displayTable = "display:none;";
+        this.displayHeadTables = "display: none";
+        this.displayChart = "display:block;";
+        this.ChartTable = "Таблица";
+        this.displayHeadTables = "display: none";*/
+        this.changeButtons = "Yes";
+        this.changeColour = changeColour; //colour button
+      }
     }
   },
   mounted: function mounted() {
-    var _this = this;
+    var _this2 = this;
 
     return _asyncToGenerator(
     /*#__PURE__*/
@@ -7087,9 +7174,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.getOilNow();
+              _this2.getOil();
 
-            case 1:
+              _this2.changeButton("No");
+
+            case 2:
             case "end":
               return _context.stop();
           }
@@ -45782,167 +45871,1235 @@ var render = function() {
                     })
                   ],
                   2
-                )
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "visual-center-center" }, [
-              _c("div", { staticClass: "tables" }, [
+                ),
+                _vm._v(" "),
                 _c("div", { staticClass: "visual-center-center" }, [
-                  _c("a", [
+                  _c("div", { staticClass: "tables" }, [
+                    _c("div", { staticClass: "visual-center-center" }, [
+                      _c("a", [
+                        _c(
+                          "li",
+                          {
+                            staticClass: "circle-2",
+                            style: "" + _vm.buttonHover1,
+                            attrs: { tabindex: "-2" },
+                            on: {
+                              click: function($event) {
+                                return _vm.getProduction(
+                                  "oil_plan",
+                                  "oil_fact",
+                                  " Добыча нефти",
+                                  "тн"
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "circle-2-string" }, [
+                              _vm._v("Добыча нефти")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("a", [
+                        _c(
+                          "li",
+                          {
+                            staticClass: "circle-2",
+                            style: "" + _vm.buttonHover5,
+                            attrs: { tabindex: "-2" },
+                            on: {
+                              click: function($event) {
+                                return _vm.getProduction(
+                                  "gk_plan",
+                                  "gk_fact",
+                                  "Добыча конденсата",
+                                  "тн"
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "circle-2-string" }, [
+                              _vm._v("Добыча конденсата")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("a", [
+                        _c(
+                          "li",
+                          {
+                            staticClass: "circle-2",
+                            style: "" + _vm.buttonHover3,
+                            attrs: { tabindex: "-2" },
+                            on: {
+                              click: function($event) {
+                                return _vm.getProduction(
+                                  "gas_plan",
+                                  "gas_fact",
+                                  "Добыча газа",
+                                  "тыс м3"
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "circle-2-string" }, [
+                              _vm._v("Добыча газа")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("a", [
+                        _c(
+                          "li",
+                          {
+                            staticClass: "circle-2",
+                            style: "" + _vm.buttonHover4,
+                            attrs: { tabindex: "-2" },
+                            on: {
+                              click: function($event) {
+                                return _vm.getProduction(
+                                  "liq_plan",
+                                  "liq_fact",
+                                  "Добыча жидкости",
+                                  "м3"
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "circle-2-string" }, [
+                              _vm._v("Добыча жидкости")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("a", [
+                        _c(
+                          "li",
+                          {
+                            staticClass: "circle-2",
+                            style: "" + _vm.buttonHover6,
+                            attrs: { tabindex: "-2" },
+                            on: {
+                              click: function($event) {
+                                return _vm.getProduction(
+                                  "inj_plan",
+                                  "inj_fact",
+                                  "Объём закачки",
+                                  "м3"
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "circle-2-string" }, [
+                              _vm._v("Объём закачки")
+                            ])
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("a", [
+                        _c(
+                          "li",
+                          {
+                            staticClass: "circle-2",
+                            style: "" + _vm.buttonHover2,
+                            attrs: { tabindex: "-2" },
+                            on: {
+                              click: function($event) {
+                                return _vm.getProduction(
+                                  "oil_dlv_plan",
+                                  "oil_dlv_fact",
+                                  "Сдача нефти",
+                                  "тн"
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("div", { staticClass: "circle-2-string" }, [
+                              _vm._v("Сдача нефти")
+                            ])
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
                     _c(
-                      "li",
+                      "div",
                       {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover1,
-                        attrs: { tabindex: "-2" },
+                        staticClass: "right-table-button right-button",
+                        style: "" + _vm.showTableOn,
                         on: {
                           click: function($event) {
-                            return _vm.getProduction(
-                              "oil_plan",
-                              "oil_fact",
-                              " Добыча нефти",
-                              "тн"
-                            )
+                            return _vm.changeButton("" + _vm.showTable2, "Yes")
                           }
                         }
                       },
                       [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Добыча нефти")
-                        ])
+                        _vm._v(
+                          "\n                  " +
+                            _vm._s(_vm.ChartTable) +
+                            "\n                "
+                        )
                       ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", [
+                    ),
+                    _vm._v(" "),
                     _c(
-                      "li",
+                      "div",
                       {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover5,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "gk_plan",
-                              "gk_fact",
-                              "Добыча конденсата",
-                              "тн"
-                            )
-                          }
-                        }
+                        staticClass: "tables",
+                        style: "" + _vm.displayHeadTables
                       },
                       [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Добыча конденсата")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", [
-                    _c(
-                      "li",
-                      {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover3,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "gas_plan",
-                              "gas_fact",
-                              "Добыча газа",
-                              "тыс м3"
+                        _c("div", { staticClass: "tables-name" }, [
+                          _vm._v(_vm._s(_vm.circleMenu))
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "tables-string" }, [
+                          _c(
+                            "div",
+                            { staticClass: "cell-number-top table-border" },
+                            [_vm._v("№")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell-name-top table-border" },
+                            [_vm._v("Предприятия")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "cell-last-top table-border cell-last"
+                            },
+                            [
+                              _vm._v(
+                                "\n                      ДОБЫЧА, " +
+                                  _vm._s(_vm.unit) +
+                                  "\n                    "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell2 table-border" }, [
+                            _vm._v(
+                              "\n                      План на " +
+                                _vm._s(_vm.selectedYear) +
+                                " год\n                    "
                             )
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Добыча газа")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", [
-                    _c(
-                      "li",
-                      {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover4,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "liq_plan",
-                              "liq_fact",
-                              "Добыча жидкости",
-                              "м3"
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell2 table-border" }, [
+                            _vm._v(
+                              "\n                      План на " +
+                                _vm._s(_vm.currentMonth) +
+                                " месяц\n                    "
                             )
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Добыча жидкости")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell3 table-border" }, [
+                            _vm._v("СУТОЧНАЯ")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell3 table-border" }, [
+                            _vm._v("С НАЧАЛА МЕСЯЦА")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell3 table-border cell-last" },
+                            [
+                              _vm._v(
+                                "\n                      С НАЧАЛА ГОДА\n                    "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ПЛАН")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ФАКТ")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("(+,-)")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ПЛАН")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ФАКТ")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("(+,-)")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ПЛАН")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ФАКТ")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell4 table-border cell-last" },
+                            [_vm._v("(+,-)")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticStyle: { clear: "both" } }),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c(
+                            "div",
+                            [
+                              _vm._l(_vm.bigTable, function(item) {
+                                return _c("div", [
+                                  _c("div", [
+                                    _c("div", [
+                                      _c("div", {
+                                        staticClass: "cell-number table-border"
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass: "cell-name table-border"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                              " +
+                                              _vm._s(item.dzoDay) +
+                                              "\n                              "
+                                          )
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "cell table-border" },
+                                        [
+                                          item.planYear
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(item.planYear)
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "cell table-border" },
+                                        [
+                                          item.planMonth
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(item.planMonth)
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "cell table-border" },
+                                        [
+                                          item.planDay
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(item.planDay)
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "cell table-border" },
+                                        [
+                                          item.factDay
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(item.factDay)
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "cell table-border colour"
+                                        },
+                                        [
+                                          _c("div", [
+                                            item.factDay
+                                              ? _c("div", {
+                                                  staticClass: "circle-table",
+                                                  style:
+                                                    "background: " +
+                                                    _vm.getColor(
+                                                      item.factDay -
+                                                        item.planDay
+                                                    )
+                                                })
+                                              : _vm._e()
+                                          ]),
+                                          _vm._v(" "),
+                                          item.factDay
+                                            ? _c("div", [
+                                                _c("div", [
+                                                  _vm._v(
+                                                    "\n                                  " +
+                                                      _vm._s(
+                                                        new Intl.NumberFormat(
+                                                          "ru-RU"
+                                                        ).format(
+                                                          item.factDay -
+                                                            item.planDay
+                                                        )
+                                                      ) +
+                                                      "\n                                "
+                                                  )
+                                                ])
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "cell table-border" },
+                                        [
+                                          item.planMonth
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(item.planMonth)
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "cell table-border" },
+                                        [
+                                          item.factMonth
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(item.factMonth)
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "cell table-border colour"
+                                        },
+                                        [
+                                          item.planMonth
+                                            ? _c("div", {
+                                                staticClass: "circle-table",
+                                                style:
+                                                  "background: " +
+                                                  _vm.getColor(
+                                                    item.factMonth -
+                                                      item.planMonth
+                                                  )
+                                              })
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          item.planMonth
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(
+                                                        item.factMonth -
+                                                          item.planMonth
+                                                      )
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "cell table-border" },
+                                        [
+                                          item.planYear
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(item.planYear)
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        { staticClass: "cell table-border" },
+                                        [
+                                          item.factYear
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(item.factYear)
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "cell table-border cell-last colour"
+                                        },
+                                        [
+                                          item.planYear
+                                            ? _c("div", {
+                                                staticClass: "circle-table",
+                                                style:
+                                                  "background: " +
+                                                  _vm.getColor(
+                                                    item.factYear -
+                                                      item.planYear
+                                                  )
+                                              })
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          item.planYear
+                                            ? _c("div", [
+                                                _vm._v(
+                                                  "\n                                " +
+                                                    _vm._s(
+                                                      new Intl.NumberFormat(
+                                                        "ru-RU"
+                                                      ).format(
+                                                        item.factYear -
+                                                          item.planYear
+                                                      )
+                                                    ) +
+                                                    "\n                              "
+                                                )
+                                              ])
+                                            : _vm._e()
+                                        ]
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", {
+                                      staticStyle: { clear: "both" }
+                                    })
+                                  ])
+                                ])
+                              }),
+                              _vm._v(" "),
+                              _c("div", {
+                                staticClass: "cell-number table-border"
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "cell-name2 table-border" },
+                                [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(_vm.NameDzoFull[0]) +
+                                      "\n                      "
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell table-border" }, [
+                                _c("div", [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.planYearSumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell table-border" }, [
+                                _c("div", [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.planMonthSumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell table-border" }, [
+                                _c("div", [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.planDaySumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell table-border" }, [
+                                _c("div", [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.factDaySumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "cell table-border colour" },
+                                [
+                                  _c("div", [
+                                    _c("div", {
+                                      staticClass: "circle-table",
+                                      style:
+                                        "background: " +
+                                        _vm.getColor(
+                                          _vm.factDaySumm - _vm.planDaySumm
+                                        )
+                                    })
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("div", [
+                                    _c("div", { staticClass: "cell-width" }, [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(
+                                            new Intl.NumberFormat(
+                                              "ru-RU"
+                                            ).format(
+                                              _vm.factDaySumm - _vm.planDaySumm
+                                            )
+                                          ) +
+                                          "\n                          "
+                                      )
+                                    ])
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell table-border" }, [
+                                _c("div", [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.planMonthSumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell table-border" }, [
+                                _c("div", [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.factMonthSumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "cell table-border colour" },
+                                [
+                                  _c("div", {
+                                    staticClass: "circle-table",
+                                    style:
+                                      "background: " +
+                                      _vm.getColor(
+                                        _vm.factMonthSumm - _vm.planMonthSumm
+                                      )
+                                  }),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "cell-width" }, [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            _vm.factMonthSumm -
+                                              _vm.planMonthSumm
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell table-border" }, [
+                                _c("div", [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.planYearSumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "cell table-border" }, [
+                                _c("div", [
+                                  _vm._v(
+                                    "\n                          " +
+                                      _vm._s(
+                                        new Intl.NumberFormat("ru-RU").format(
+                                          _vm.factYearSumm
+                                        )
+                                      ) +
+                                      "\n                        "
+                                  )
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "cell table-border cell-last colour"
+                                },
+                                [
+                                  _c("div", {
+                                    staticClass: "circle-table",
+                                    style:
+                                      "background: " +
+                                      _vm.getColor(
+                                        _vm.factYearSumm - _vm.planYearSumm
+                                      )
+                                  }),
+                                  _vm._v(" "),
+                                  _c("div", [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(
+                                          new Intl.NumberFormat("ru-RU").format(
+                                            _vm.factYearSumm - _vm.planYearSumm
+                                          )
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ])
+                                ]
+                              )
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticStyle: { clear: "both" } }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "tables-bottom-line" })
                         ])
                       ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", [
+                    ),
+                    _vm._v(" "),
                     _c(
-                      "li",
-                      {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover6,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "inj_plan",
-                              "inj_fact",
-                              "Объём закачки",
-                              "м3"
-                            )
-                          }
-                        }
-                      },
+                      "div",
+                      { staticClass: "tables", style: "" + _vm.displayTable },
                       [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Объём закачки")
-                        ])
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("a", [
-                    _c(
-                      "li",
-                      {
-                        staticClass: "circle-2",
-                        style: "" + _vm.buttonHover2,
-                        attrs: { tabindex: "-2" },
-                        on: {
-                          click: function($event) {
-                            return _vm.getProduction(
-                              "oil_dlv_plan",
-                              "oil_dlv_fact",
-                              "Сдача нефти",
-                              "тн"
+                        _c("div", { staticClass: "tables-name" }, [
+                          _vm._v(_vm._s(_vm.circleMenu))
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "tables-string" }, [
+                          _c(
+                            "div",
+                            { staticClass: "cell-number-top table-border" },
+                            [_vm._v("№")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell-name-top table-border" },
+                            [_vm._v("Предприятия")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "cell-last-top table-border cell-last"
+                            },
+                            [
+                              _vm._v(
+                                "\n                      ДОБЫЧА, " +
+                                  _vm._s(_vm.unit) +
+                                  "\n                    "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell2 table-border" }, [
+                            _vm._v(
+                              "\n                      План на " +
+                                _vm._s(_vm.selectedYear) +
+                                " год\n                    "
                             )
-                          }
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "circle-2-string" }, [
-                          _vm._v("Сдача нефти")
-                        ])
-                      ]
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell2 table-border" }, [
+                            _vm._v(
+                              "\n                      План на " +
+                                _vm._s(_vm.currentMonth) +
+                                " месяц\n                    "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell3 table-border" }, [
+                            _vm._v("СУТОЧНАЯ")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell3 table-border" }, [
+                            _vm._v("С НАЧАЛА МЕСЯЦА")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell3 table-border cell-last" },
+                            [
+                              _vm._v(
+                                "\n                      С НАЧАЛА ГОДА\n                    "
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ПЛАН")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ФАКТ")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("(+,-)")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ПЛАН")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ФАКТ")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("(+,-)")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ПЛАН")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "cell4 table-border" }, [
+                            _vm._v("ФАКТ")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "cell4 table-border cell-last" },
+                            [_vm._v("(+,-)")]
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticStyle: { clear: "both" } }),
+                        _vm._v(" "),
+                        _vm._l(_vm.tables, function(item) {
+                          return _c("div", [
+                            _c("div", [
+                              _c("div", [
+                                _c("div", {
+                                  staticClass: "cell-number table-border"
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell-name table-border" },
+                                  [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(item.dzo) +
+                                        "\n                          " +
+                                        _vm._s(item.timeMonth) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border" },
+                                  [
+                                    item.planYear
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(item.planYear)
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "cell table-border" }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border" },
+                                  [
+                                    item.plan
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(item.plan)
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border" },
+                                  [
+                                    item.fact
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(item.fact)
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border colour" },
+                                  [
+                                    _c("div", [
+                                      item.fact
+                                        ? _c("div", {
+                                            staticClass: "circle-table",
+                                            style:
+                                              "background: " +
+                                              _vm.getColor(
+                                                item.fact - item.plan
+                                              )
+                                          })
+                                        : _vm._e()
+                                    ]),
+                                    _vm._v(" "),
+                                    item.fact
+                                      ? _c("div", [
+                                          _c("div", [
+                                            _vm._v(
+                                              "\n                              " +
+                                                _vm._s(
+                                                  new Intl.NumberFormat(
+                                                    "ru-RU"
+                                                  ).format(
+                                                    item.fact - item.plan
+                                                  )
+                                                ) +
+                                                "\n                            "
+                                            )
+                                          ])
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border" },
+                                  [
+                                    item.productionPlanForMonth
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                item.productionPlanForMonth
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border" },
+                                  [
+                                    item.productionFactForMonth
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(
+                                                  item.productionFactForMonth
+                                                )
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border colour" },
+                                  [
+                                    item.productionPlanForMonth
+                                      ? _c("div", {
+                                          staticClass: "circle-table",
+                                          style:
+                                            "background: " +
+                                            _vm.getColor(
+                                              item.productionFactForMonth -
+                                                item.productionPlanForMonth
+                                            )
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item.productionPlanForMonth
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(
+                                                  item.productionFactForMonth -
+                                                    item.productionPlanForMonth
+                                                )
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border" },
+                                  [
+                                    item.planYear
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(item.planYear)
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell table-border" },
+                                  [
+                                    item.factYear
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(item.factYear)
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "cell table-border cell-last colour"
+                                  },
+                                  [
+                                    item.planYear
+                                      ? _c("div", {
+                                          staticClass: "circle-table",
+                                          style:
+                                            "background: " +
+                                            _vm.getColor(
+                                              item.factYear - item.planYear
+                                            )
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item.planYear
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(
+                                                  item.factYear - item.planYear
+                                                )
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e()
+                                  ]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticStyle: { clear: "both" } })
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "tables-bottom-line" })
+                          ])
+                        })
+                      ],
+                      2
                     )
                   ])
                 ]),
@@ -45950,1093 +47107,95 @@ var render = function() {
                 _c(
                   "div",
                   {
-                    staticClass: "right-table-button right-button",
-                    style: "" + _vm.showTableOn,
-                    on: {
-                      click: function($event) {
-                        return _vm.changeButton("" + _vm.showTable2, "Yes")
-                      }
-                    }
+                    staticClass: "visual-center-center",
+                    style: "" + _vm.displayChart
                   },
                   [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(_vm.ChartTable) +
-                        "\n              "
+                    _c("div", { staticClass: "tables-name" }, [
+                      _vm._v("График " + _vm._s(_vm.circleMenu))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "unit" }, [
+                      _vm._v(_vm._s(_vm.unit))
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "otstup" },
+                      _vm._l(_vm.productionForChart, function(serial, index) {
+                        return _c("visual-center-chart-area-center", {
+                          key: serial,
+                          attrs: { postTitle: serial }
+                        })
+                      }),
+                      1
                     )
                   ]
                 ),
                 _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "tables", style: "" + _vm.displayHeadTables },
-                  [
-                    _c("div", { staticClass: "tables-name" }, [
-                      _vm._v(_vm._s(_vm.circleMenu))
+                _c("div", { staticClass: "visual-center-center" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "visual-center-bottom" }, [
+                    _c("div", { staticClass: "difference-of-24" }, [
+                      _vm._v("Отклонение")
                     ]),
                     _vm._v(" "),
-                    _c("div", { staticClass: "tables-string" }, [
-                      _c(
-                        "div",
-                        { staticClass: "cell-number-top table-border" },
-                        [_vm._v("№")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell-name-top table-border" }, [
-                        _vm._v("Предприятия")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "cell-last-top table-border cell-last" },
-                        [
-                          _vm._v(
-                            "\n                    ДОБЫЧА, " +
-                              _vm._s(_vm.unit) +
-                              "\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell2 table-border" }, [
-                        _vm._v(
-                          "\n                    План на " +
-                            _vm._s(_vm.selectedYear) +
-                            " год\n                  "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell2 table-border" }, [
-                        _vm._v(
-                          "\n                    План на " +
-                            _vm._s(_vm.currentMonth) +
-                            " месяц\n                  "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell3 table-border" }, [
-                        _vm._v("СУТОЧНАЯ")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell3 table-border" }, [
-                        _vm._v("С НАЧАЛА МЕСЯЦА")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "cell3 table-border cell-last" },
-                        [
-                          _vm._v(
-                            "\n                    С НАЧАЛА ГОДА\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ПЛАН")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ФАКТ")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("(+,-)")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ПЛАН")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ФАКТ")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("(+,-)")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ПЛАН")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ФАКТ")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "cell4 table-border cell-last" },
-                        [_vm._v("(+,-)")]
-                      )
-                    ]),
+                    _c(
+                      "div",
+                      { staticClass: "visual-center-chart-bar-bottom" },
+                      _vm._l(_vm.starts, function(start, index) {
+                        return _c("visual-center-chart-bar-bottom", {
+                          key: start,
+                          attrs: { starts: start }
+                        })
+                      }),
+                      1
+                    ),
                     _vm._v(" "),
-                    _c("div", { staticStyle: { clear: "both" } }),
-                    _vm._v(" "),
-                    _c("div", [
-                      _c(
-                        "div",
-                        [
-                          _vm._l(_vm.bigTable, function(item) {
-                            return _c("div", [
-                              _c("div", [
-                                _c("div", [
-                                  _c("div", {
-                                    staticClass: "cell-number table-border"
-                                  }),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell-name table-border" },
-                                    [
-                                      _vm._v(
-                                        "\n                        " +
-                                          _vm._s(item.dzoDay) +
-                                          "\n                        "
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border" },
-                                    [
-                                      item.planYear
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(item.planYear)
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border" },
-                                    [
-                                      item.planMonth
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(item.planMonth)
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border" },
-                                    [
-                                      item.planDay
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(item.planDay)
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border" },
-                                    [
-                                      item.factDay
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(item.factDay)
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border colour" },
-                                    [
-                                      _c("div", [
-                                        item.factDay
-                                          ? _c("div", {
-                                              staticClass: "circle-table",
-                                              style:
-                                                "background: " +
-                                                _vm.getColor(
-                                                  item.factDay - item.planDay
-                                                )
-                                            })
-                                          : _vm._e()
-                                      ]),
-                                      _vm._v(" "),
-                                      item.factDay
-                                        ? _c("div", [
-                                            _c("div", [
-                                              _vm._v(
-                                                "\n                            " +
-                                                  _vm._s(
-                                                    new Intl.NumberFormat(
-                                                      "ru-RU"
-                                                    ).format(
-                                                      item.factDay -
-                                                        item.planDay
-                                                    )
-                                                  ) +
-                                                  "\n                          "
-                                              )
-                                            ])
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border" },
-                                    [
-                                      item.planMonth
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(item.planMonth)
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border" },
-                                    [
-                                      item.factMonth
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(item.factMonth)
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border colour" },
-                                    [
-                                      item.planMonth
-                                        ? _c("div", {
-                                            staticClass: "circle-table",
-                                            style:
-                                              "background: " +
-                                              _vm.getColor(
-                                                item.factMonth - item.planMonth
-                                              )
-                                          })
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      item.planMonth
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(
-                                                    item.factMonth -
-                                                      item.planMonth
-                                                  )
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border" },
-                                    [
-                                      item.planYear
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(item.planYear)
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "cell table-border" },
-                                    [
-                                      item.factYear
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(item.factYear)
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "cell table-border cell-last colour"
-                                    },
-                                    [
-                                      item.planYear
-                                        ? _c("div", {
-                                            staticClass: "circle-table",
-                                            style:
-                                              "background: " +
-                                              _vm.getColor(
-                                                item.factYear - item.planYear
-                                              )
-                                          })
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      item.planYear
-                                        ? _c("div", [
-                                            _vm._v(
-                                              "\n                          " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(
-                                                    item.factYear -
-                                                      item.planYear
-                                                  )
-                                                ) +
-                                                "\n                        "
-                                            )
-                                          ])
-                                        : _vm._e()
-                                    ]
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticStyle: { clear: "both" } })
-                              ])
-                            ])
-                          }),
-                          _vm._v(" "),
-                          _c("div", {
-                            staticClass: "cell-number table-border"
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "cell-name2 table-border" },
-                            [
-                              _vm._v(
-                                "\n                      " +
-                                  _vm._s(_vm.NameDzoFull[0]) +
-                                  "\n                    "
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell table-border" }, [
-                            _c("div", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.planYearSumm
-                                    )
-                                  ) +
-                                  "\n                      "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell table-border" }, [
-                            _c("div", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.planMonthSumm
-                                    )
-                                  ) +
-                                  "\n                      "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell table-border" }, [
-                            _c("div", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.planDaySumm
-                                    )
-                                  ) +
-                                  "\n                      "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell table-border" }, [
-                            _c("div", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.factDaySumm
-                                    )
-                                  ) +
-                                  "\n                      "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "cell table-border colour" },
-                            [
-                              _c("div", [
-                                _c("div", {
-                                  staticClass: "circle-table",
-                                  style:
-                                    "background: " +
-                                    _vm.getColor(
-                                      _vm.factDaySumm - _vm.planDaySumm
-                                    )
-                                })
-                              ]),
-                              _vm._v(" "),
-                              _c("div", [
-                                _c("div", { staticClass: "cell-width" }, [
-                                  _vm._v(
-                                    "\n                          " +
-                                      _vm._s(
-                                        new Intl.NumberFormat("ru-RU").format(
-                                          _vm.factDaySumm - _vm.planDaySumm
-                                        )
-                                      ) +
-                                      "\n                        "
-                                  )
-                                ])
-                              ])
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell table-border" }, [
-                            _c("div", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.planMonthSumm
-                                    )
-                                  ) +
-                                  "\n                      "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell table-border" }, [
-                            _c("div", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.factMonthSumm
-                                    )
-                                  ) +
-                                  "\n                      "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            { staticClass: "cell table-border colour" },
-                            [
-                              _c("div", {
-                                staticClass: "circle-table",
-                                style:
-                                  "background: " +
-                                  _vm.getColor(
-                                    _vm.factMonthSumm - _vm.planMonthSumm
-                                  )
-                              }),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "cell-width" }, [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(
-                                      new Intl.NumberFormat("ru-RU").format(
-                                        _vm.factMonthSumm - _vm.planMonthSumm
-                                      )
-                                    ) +
-                                    "\n                      "
-                                )
-                              ])
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell table-border" }, [
-                            _c("div", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.planYearSumm
-                                    )
-                                  ) +
-                                  "\n                      "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell table-border" }, [
-                            _c("div", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(
-                                    new Intl.NumberFormat("ru-RU").format(
-                                      _vm.factYearSumm
-                                    )
-                                  ) +
-                                  "\n                      "
-                              )
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "div",
-                            {
-                              staticClass: "cell table-border cell-last colour"
-                            },
-                            [
-                              _c("div", {
-                                staticClass: "circle-table",
-                                style:
-                                  "background: " +
-                                  _vm.getColor(
-                                    _vm.factYearSumm - _vm.planYearSumm
-                                  )
-                              }),
-                              _vm._v(" "),
-                              _c("div", [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(
-                                      new Intl.NumberFormat("ru-RU").format(
-                                        _vm.factYearSumm - _vm.planYearSumm
-                                      )
-                                    ) +
-                                    "\n                      "
-                                )
-                              ])
-                            ]
-                          )
-                        ],
-                        2
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticStyle: { clear: "both" } }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "tables-bottom-line" })
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "tables", style: "" + _vm.displayTable },
-                  [
-                    _c("div", { staticClass: "tables-name" }, [
-                      _vm._v(_vm._s(_vm.circleMenu))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "tables-string" }, [
-                      _c(
-                        "div",
-                        { staticClass: "cell-number-top table-border" },
-                        [_vm._v("№")]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell-name-top table-border" }, [
-                        _vm._v("Предприятия")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "cell-last-top table-border cell-last" },
-                        [
-                          _vm._v(
-                            "\n                    ДОБЫЧА, тонн\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell2 table-border" }, [
-                        _vm._v(
-                          "\n                    План на " +
-                            _vm._s(_vm.selectedYear) +
-                            " год\n                  "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell2 table-border" }, [
-                        _vm._v(
-                          "\n                    План на " +
-                            _vm._s(_vm.currentMonth) +
-                            " месяц\n                  "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell3 table-border" }, [
-                        _vm._v("СУТОЧНАЯ")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell3 table-border" }, [
-                        _vm._v("С НАЧАЛА МЕСЯЦА")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "cell3 table-border cell-last" },
-                        [
-                          _vm._v(
-                            "\n                    С НАЧАЛА ГОДА\n                  "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ПЛАН")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ФАКТ")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("(+,-)")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ПЛАН")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ФАКТ")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("(+,-)")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ПЛАН")
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "cell4 table-border" }, [
-                        _vm._v("ФАКТ")
-                      ]),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        { staticClass: "cell4 table-border cell-last" },
-                        [_vm._v("(+,-)")]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticStyle: { clear: "both" } }),
-                    _vm._v(" "),
-                    _vm._l(_vm.tables, function(item) {
-                      return _c("div", [
-                        _c("div", [
-                          _c("div", [
-                            _c("div", {
-                              staticClass: "cell-number table-border"
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "cell-name table-border" },
-                              [
-                                _vm._v(
-                                  "\n                        " +
-                                    _vm._s(item.dzo) +
-                                    "\n                        " +
-                                    _vm._s(item.timeMonth) +
-                                    "\n                      "
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.planYear
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.planYear
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.plan
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.plan
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.fact
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.fact
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "cell table-border colour" },
-                              [
-                                _c("div", [
-                                  item.fact
-                                    ? _c("div", {
-                                        staticClass: "circle-table",
-                                        style:
-                                          "background: " +
-                                          _vm.getColor(item.fact - item.plan)
-                                      })
-                                    : _vm._e()
-                                ]),
-                                _vm._v(" "),
-                                item.fact
-                                  ? _c("div", [
-                                      _c("div", [
-                                        _vm._v(
-                                          "\n                            " +
-                                            _vm._s(
-                                              new Intl.NumberFormat(
-                                                "ru-RU"
-                                              ).format(item.fact - item.plan)
-                                            ) +
-                                            "\n                          "
-                                        )
-                                      ])
-                                    ])
-                                  : _vm._e()
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.productionPlanForMonth
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(item.productionPlanForMonth) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.productionFactForMonth
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.productionFactForMonth
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "cell table-border colour" },
-                              [
-                                item.productionPlanForMonth
-                                  ? _c("div", {
-                                      staticClass: "circle-table",
-                                      style:
-                                        "background: " +
-                                        _vm.getColor(
-                                          item.productionFactForMonth -
-                                            item.productionPlanForMonth
-                                        )
-                                    })
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                item.productionPlanForMonth
-                                  ? _c("div", [
-                                      _vm._v(
-                                        "\n                          " +
-                                          _vm._s(
-                                            new Intl.NumberFormat(
-                                              "ru-RU"
-                                            ).format(
-                                              item.productionFactForMonth -
-                                                item.productionPlanForMonth
-                                            )
-                                          ) +
-                                          "\n                        "
-                                      )
-                                    ])
-                                  : _vm._e()
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.planYear
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.planYear
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "cell table-border" }, [
-                              item.factYear
-                                ? _c("div", [
-                                    _vm._v(
-                                      "\n                          " +
-                                        _vm._s(
-                                          new Intl.NumberFormat("ru-RU").format(
-                                            item.factYear
-                                          )
-                                        ) +
-                                        "\n                        "
-                                    )
-                                  ])
-                                : _vm._e()
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "cell table-border cell-last colour"
-                              },
-                              [
-                                item.planYear
-                                  ? _c("div", {
-                                      staticClass: "circle-table",
-                                      style:
-                                        "background: " +
-                                        _vm.getColor(
-                                          item.factYear - item.planYear
-                                        )
-                                    })
-                                  : _vm._e(),
-                                _vm._v(" "),
-                                item.planYear
-                                  ? _c("div", [
-                                      _vm._v(
-                                        "\n                          " +
-                                          _vm._s(
-                                            new Intl.NumberFormat(
-                                              "ru-RU"
-                                            ).format(
-                                              item.factYear - item.planYear
-                                            )
-                                          ) +
-                                          "\n                        "
-                                      )
-                                    ])
-                                  : _vm._e()
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticStyle: { clear: "both" } })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "tables-bottom-line" })
-                      ])
-                    })
-                  ],
-                  2
-                )
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "div",
-              {
-                staticClass: "visual-center-center",
-                style: "" + _vm.displayChart
-              },
-              [
-                _c("div", { staticClass: "tables-name" }, [
-                  _vm._v("График " + _vm._s(_vm.circleMenu))
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "unit" }, [_vm._v(_vm._s(_vm.unit))]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "otstup" },
-                  _vm._l(_vm.productionForChart, function(serial, index) {
-                    return _c("visual-center-chart-area-center", {
-                      key: serial,
-                      attrs: { postTitle: serial }
-                    })
-                  }),
-                  1
-                )
-              ]
+                    _vm._m(2)
+                  ])
+                ])
+              ],
+              2
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "visual-center-center" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _vm._m(1),
-              _vm._v(" "),
-              _c("div", { staticClass: "visual-center-bottom" }, [
-                _c("div", { staticClass: "difference-of-24" }, [
-                  _vm._v("Отклонение")
+            _c("div", { staticClass: "visual-center-right-column" }, [
+              _c("div", { staticClass: "donut" }, [
+                _c("div", { staticClass: "indent" }, [
+                  _vm._v("Фонд добывающих скважин")
                 ]),
                 _vm._v(" "),
                 _c(
                   "div",
-                  { staticClass: "visual-center-chart-bar-bottom" },
-                  _vm._l(_vm.starts, function(start, index) {
-                    return _c("visual-center-chart-bar-bottom", {
-                      key: start,
-                      attrs: { starts: start }
+                  _vm._l(_vm.wells2, function(well, index) {
+                    return _c("visual-center-chart-donut-right1", {
+                      key: well,
+                      attrs: { wells2: well }
                     })
                   }),
                   1
-                ),
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "donut donut2" }, [
+                _c("div", { staticClass: "indent" }, [
+                  _vm._v("Фонд нагнетательных скважин")
+                ]),
                 _vm._v(" "),
-                _vm._m(2)
+                _c(
+                  "div",
+                  _vm._l(_vm.wells, function(well, index) {
+                    return _c("visual-center-chart-donut-right2", {
+                      key: well,
+                      attrs: { wells: well }
+                    })
+                  }),
+                  1
+                )
               ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "visual-center-right-column" }, [
-            _c("div", { staticClass: "donut" }, [
-              _c("div", { staticClass: "indent" }, [
-                _vm._v("Фонд добывающих скважин")
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                _vm._l(_vm.wells2, function(well, index) {
-                  return _c("visual-center-chart-donut-right1", {
-                    key: well,
-                    attrs: { wells2: well }
-                  })
-                }),
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "donut donut2" }, [
-              _c("div", { staticClass: "indent" }, [
-                _vm._v("Фонд нагнетательных скважин")
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                _vm._l(_vm.wells, function(well, index) {
-                  return _c("visual-center-chart-donut-right2", {
-                    key: well,
-                    attrs: { wells: well }
-                  })
-                }),
-                1
-              )
             ])
           ])
         ])
@@ -47080,23 +47239,23 @@ var staticRenderFns = [
     return _c("div", { staticClass: "visual-center-bottom" }, [
       _c("div", { staticClass: "accidents-first accidents" }, [
         _c("div", { staticClass: "number-of-accidents" }, [_vm._v("2")]),
-        _vm._v("\n                Несчастные "),
+        _vm._v("\n                  Несчастные "),
         _c("br"),
-        _vm._v("случаи\n              ")
+        _vm._v("случаи\n                ")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "accidents-second accidents" }, [
         _c("div", { staticClass: "number-of-accidents" }, [_vm._v("0")]),
-        _vm._v("\n                Смертельные "),
+        _vm._v("\n                  Смертельные "),
         _c("br"),
-        _vm._v("случаи\n              ")
+        _vm._v("случаи\n                ")
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "accidents-third accidents" }, [
         _c("div", { staticClass: "number-of-accidents" }, [_vm._v("14")]),
-        _vm._v("\n                COVID "),
+        _vm._v("\n                  COVID "),
         _c("br"),
-        _vm._v("19\n              ")
+        _vm._v("19\n                ")
       ])
     ])
   },
@@ -47344,7 +47503,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("div", { staticClass: "level1-content row" }, [
-      _c("div", { staticClass: " col-md-12 col-lg-12 row" }, [
+      _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
         _c(
           "div",
           { staticClass: "level1-tab active", attrs: { tabindex: "-1" } },
@@ -47358,16 +47517,71 @@ var render = function() {
         _c("div", { staticClass: "main col-md-7 col-lg-7 row" }, [
           _vm._m(0),
           _vm._v(" "),
-          _vm._m(1),
+          _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
+            _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
+              _c("div", { staticClass: "timer-welcome" }, [
+                _c("div", { staticClass: "left-arrow" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "timer" }, [
+                  _c("div", { staticClass: "time" }, [
+                    _vm._v(_vm._s(_vm.timeNow))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "date" }, [
+                    _vm._v(_vm._s(_vm.dateNow))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "right-arrow" })
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(1)
+          ]),
           _vm._v(" "),
           _vm._m(2),
           _vm._v(" "),
-          _vm._m(3),
+          _c("div", { staticClass: "col-md-12 col-lg-12" }, [
+            _c("div", { staticClass: "map" }, [
+              _vm._m(3),
+              _vm._v(" "),
+              _c("div", { staticClass: "org-name1 rectangle" }, [
+                _vm._v("\n              ТОО «Казахтуркмунай»\n              "),
+                _c("div", { staticClass: "icon1 icon" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "square-small",
+                    style: "" + _vm.changeColour,
+                    on: {
+                      click: function($event) {
+                        return _vm.changeButton("" + _vm.changeButtons, "Yes")
+                      }
+                    }
+                  },
+                  [_vm._v("\n                ✓\n              ")]
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(4),
+              _vm._v(" "),
+              _vm._m(5),
+              _vm._v(" "),
+              _vm._m(6),
+              _vm._v(" "),
+              _vm._m(7),
+              _vm._v(" "),
+              _vm._m(8),
+              _vm._v(" "),
+              _vm._m(9)
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "footer-chart" }, [
             _c("div", { staticClass: "point" }),
             _vm._v(
-              "\r\n                    Добыча нефти и конденсата (тыс. тонн)\r\n                    "
+              "\n          Добыча нефти и конденсата (тыс. тонн)\n          "
             ),
             _c(
               "div",
@@ -47380,7 +47594,7 @@ var render = function() {
           _c("div", { staticClass: "footer-chart" }, [
             _c("div", { staticClass: "point" }),
             _vm._v(
-              "\r\n                    Добыча природного и попутного газа (млн. м3)\r\n                    "
+              "\n          Добыча природного и попутного газа (млн. м3)\n          "
             ),
             _c(
               "div",
@@ -47392,7 +47606,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "right-bar col-md-5 col-lg-5" }, [
-          _vm._m(4),
+          _vm._m(10),
           _vm._v(" "),
           _c("div", { staticClass: "info-panel" }, [
             _c("div", { staticClass: "right-side" }, [
@@ -47402,13 +47616,15 @@ var render = function() {
                 [
                   _c("div", { staticClass: "point" }),
                   _vm._v(
-                    "\r\n                            Добыча нефти и конденсата\r\n                            "
+                    "\n              Добыча нефти и конденсата\n              "
                   ),
                   _vm._v(" "),
                   _c("welcome-chart-donut-right1"),
                   _vm._v(" "),
                   _c("div", { staticClass: "org-name11 rectangle2" }, [
-                    _vm._v(" «КазГерМунай»: 10,9 тыс. тонн")
+                    _vm._v(
+                      "\n                «КазГерМунай»: 10,9 тыс. тонн\n              "
+                    )
                   ])
                 ],
                 1
@@ -47420,12 +47636,14 @@ var render = function() {
                 [
                   _c("div", { staticClass: "point" }),
                   _vm._v(
-                    "\r\n                            Добыча природного газа\r\n                            "
+                    "\n              Добыча природного газа\n              "
                   ),
                   _c("welcome-chart-donut-right2"),
                   _vm._v(" "),
                   _c("div", { staticClass: "org-name22 rectangle2" }, [
-                    _vm._v("ЭмбаМунайГаз: 0,02 млрд. м3 ")
+                    _vm._v(
+                      "\n                ЭмбаМунайГаз: 0,02 млрд. м3\n              "
+                    )
                   ])
                 ],
                 1
@@ -47443,12 +47661,14 @@ var render = function() {
                 [
                   _c("div", { staticClass: "point" }),
                   _vm._v(
-                    "\r\n                            Нефтяной фонд скважин\r\n                            "
+                    "\n              Нефтяной фонд скважин\n              "
                   ),
                   _c("welcome-chart-donut-right3"),
                   _vm._v(" "),
                   _c("div", { staticClass: "org-name33 rectangle2" }, [
-                    _vm._v(" «Казахойл Актобе»: 1 601 ед.")
+                    _vm._v(
+                      "\n                «Казахойл Актобе»: 1 601 ед.\n              "
+                    )
                   ])
                 ],
                 1
@@ -47460,12 +47680,14 @@ var render = function() {
                 [
                   _c("div", { staticClass: "point" }),
                   _vm._v(
-                    "\r\n                            Нагнетальный фонд скважин\r\n                            "
+                    "\n              Нагнетальный фонд скважин\n              "
                   ),
                   _c("welcome-chart-donut-right4"),
                   _vm._v(" "),
                   _c("div", { staticClass: "org-name44 rectangle2" }, [
-                    _vm._v(" «Мангистаумунайгаз»: 1 183 ед.")
+                    _vm._v(
+                      "\n                «Мангистаумунайгаз»: 1 183 ед.\n              "
+                    )
                   ])
                 ],
                 1
@@ -47486,7 +47708,16 @@ var staticRenderFns = [
       _c("div", { staticClass: "digitOil row" }, [
         _c("div", { staticClass: "okei okei-left" }, [_vm._v("тыс.тонн")]),
         _vm._v(" "),
-        _c("div", { staticClass: "digit-oil-icon" }),
+        _c("div", { staticClass: "digit-oil-icon" }, [
+          _c("img", {
+            attrs: { src: "img/level1/digit-oil-icon.svg", alt: "" }
+          })
+        ]),
+        _vm._v(" "),
+        _c("img", {
+          staticClass: "digit-oil-icon-middle",
+          attrs: { src: "img/level1/oil.svg", alt: "" }
+        }),
         _vm._v(" "),
         _c("div", { staticClass: "digit-oil-description" }, [
           _c("div", { staticClass: "digit-oil-name" }, [_vm._v("Нефть")]),
@@ -47495,7 +47726,9 @@ var staticRenderFns = [
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "digit-oil-additional" }, [
-          _c("div", { staticClass: "digit-oil-additional-icon" }),
+          _c("div", { staticClass: "digit-oil-additional-icon" }, [
+            _c("img", { attrs: { src: "img/level1/arrow_up.svg", alt: "" } })
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "digit-oil-additional-value" }, [
             _vm._v("+0,3%")
@@ -47508,20 +47741,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
-      _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
-        _c("div", { staticClass: "timer-welcome" }, [
-          _c("div", { staticClass: "left-arrow" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "timer" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "right-arrow" })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
-        _c("div", { staticClass: "title" }, [_vm._v("Казахстан")])
-      ])
+    return _c("div", { staticClass: "col-md-12 col-lg-12 row" }, [
+      _c("div", { staticClass: "title" }, [_vm._v("Казахстан")])
     ])
   },
   function() {
@@ -47529,7 +47750,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-sm-12 col-md-4 col-lg-4" }, [
-      _c("div", { staticClass: "digitGaz  row" }, [
+      _c("div", { staticClass: "digitGaz row" }, [
         _c("div", { staticClass: "okei okei-right" }, [_vm._v("млрд.м3")]),
         _vm._v(" "),
         _c("div", { staticClass: "digit-gaz-additional" }, [
@@ -47546,7 +47767,11 @@ var staticRenderFns = [
           _c("div", { staticClass: "digit-gaz-value" }, [_vm._v("0.64")])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "digit-gaz-icon" })
+        _c("div", { staticClass: "digit-gaz-icon" }, [
+          _c("img", {
+            attrs: { src: "img/level1/digit-gaz-icon.svg", alt: "" }
+          })
+        ])
       ])
     ])
   },
@@ -47554,62 +47779,75 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-12 col-lg-12" }, [
-      _c("div", { staticClass: "map" }, [
-        _c("div", { staticClass: "nur-sultan" }, [
-          _vm._v("Нур-Султан\r\n                            "),
-          _c("div", { staticClass: "square" })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "org-name1 rectangle" }, [
-          _vm._v(" ТОО «Казахтуркмунай»\r\n                            "),
-          _c("div", { staticClass: "icon1 icon" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "org-name2 rectangle" }, [
-          _vm._v("ТОО «Казахойл Актобе»\r\n                            "),
-          _c("div", { staticClass: "icon2 icon" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "org-name3 rectangle" }, [
-          _vm._v("АО «ЭмбаМунайГаз»\r\n                            "),
-          _c("div", { staticClass: "icon3 icon" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "org-name4 rectangle" }, [
-          _vm._v("АО «Каражанбасмунай»\r\n                            "),
-          _c("div", { staticClass: "icon4 icon" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "org-name5 rectangle" }, [
-          _vm._v(" АО «Мангистаумунайгаз»\r\n                            "),
-          _c("div", { staticClass: "icon5 icon" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "org-name6 rectangle" }, [
-          _vm._v(" АО «ОзенМунайГаз»\r\n                            "),
-          _c("div", { staticClass: "icon6 icon" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "org-name7 rectangle" }, [
-          _vm._v(" ТОО «КазГерМунай»\r\n                            "),
-          _c("div", { staticClass: "icon7 icon" }),
-          _vm._v(" "),
-          _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-        ])
-      ])
+    return _c("div", { staticClass: "nur-sultan" }, [
+      _vm._v("\n              Нур-Султан\n              "),
+      _c("div", { staticClass: "square" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "org-name2 rectangle" }, [
+      _vm._v("\n              ТОО «Казахойл Актобе»\n              "),
+      _c("div", { staticClass: "icon2 icon" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "org-name3 rectangle" }, [
+      _vm._v("\n              АО «ЭмбаМунайГаз»\n              "),
+      _c("div", { staticClass: "icon3 icon" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "org-name4 rectangle" }, [
+      _vm._v("\n              АО «Каражанбасмунай»\n              "),
+      _c("div", { staticClass: "icon4 icon" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "org-name5 rectangle" }, [
+      _vm._v("\n              АО «Мангистаумунайгаз»\n              "),
+      _c("div", { staticClass: "icon5 icon" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "org-name6 rectangle" }, [
+      _vm._v("\n              АО «ОзенМунайГаз»\n              "),
+      _c("div", { staticClass: "icon6 icon" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "org-name7 rectangle" }, [
+      _vm._v("\n              ТОО «КазГерМунай»\n              "),
+      _c("div", { staticClass: "icon7 icon" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
     ])
   },
   function() {
