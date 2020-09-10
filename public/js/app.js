@@ -5003,7 +5003,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*	if (days[0].length > 0) {
       for (let i = days[0].length; i < 7; i++) {
       days[0].unshift('');
-      }
+      	}
       }*/
 
 
@@ -11768,7 +11768,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nbody[data-v-79f63cb3] {\n  color: #ffffff;\n}\n", ""]);
+exports.push([module.i, "\nbody[data-v-79f63cb3] {\r\n  color: #ffffff;\n}\r\n", ""]);
 
 // exports
 
@@ -11787,7 +11787,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.title[data-v-763e61b8],\n.subtitle[data-v-763e61b8],\n.drag-area-title[data-v-763e61b8] {\n  color: white;\n}\n.table[data-v-763e61b8] {\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\n  background-color: #20274e !important;\n  border-radius: 15px;\n  flex: 0 0 24%;\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\n  color: #fff;\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\n  color: #fff;\n  font-size: 20px;\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\n  /* background-color: #0F1430;\n  border: 1px solid #0D2B4D; */\n}\n", ""]);
+exports.push([module.i, "\n.title[data-v-763e61b8],\r\n.subtitle[data-v-763e61b8],\r\n.drag-area-title[data-v-763e61b8] {\r\n  color: white;\n}\n.table[data-v-763e61b8] {\r\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\r\n  background-color: #20274e !important;\r\n  border-radius: 15px;\r\n  flex: 0 0 24%;\r\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 20px;\r\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\r\n  /* background-color: #0F1430;\r\n  border: 1px solid #0D2B4D; */\n}\r\n", ""]);
 
 // exports
 
@@ -61990,8 +61990,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
