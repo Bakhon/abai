@@ -65,7 +65,7 @@
               <div class="okei okei-right">млрд.м3</div>
               <div class="digit-gaz-additional">
                 <div class="digit-gaz-additional-icon">
-                  <!--<img src="{{ asset('img/level1/arrow_down.svg') }}" alt="">-->
+                  <img src="img/level1/arrow_down.svg" alt="">
                 </div>
                 <div class="digit-gaz-additional-value">-0,1%</div>
               </div>
@@ -76,7 +76,7 @@
               <div class="digit-gaz-icon">
                 <img src="img/level1/digit-gaz-icon.svg" alt="" />
               </div>
-              <!--<img src="{{ asset('img/level1/gaz.svg') }}" alt="" class="digit-gaz-icon-middle">-->
+              <img src="img/level1/gaz.svg" alt="" class="digit-gaz-icon-middle">
             </div>
           </div>
 
