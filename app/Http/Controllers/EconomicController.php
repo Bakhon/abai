@@ -374,23 +374,23 @@ class EconomicController extends Controller
                 array_push($dataChart2['dt'], $item['dt']);
             }
             if ($item['profitability'] == 'profitable') {
-                array_push($dataChart2['profitable'], $item['oil']);
+                array_push($dataChart2['profitable'], $item['oil']/1000);
             } elseif ($item['profitability'] == 'profitless_cat_2') {
-                array_push($dataChart2['profitless_cat_2'], $item['oil']);
+                array_push($dataChart2['profitless_cat_2'], $item['oil']/1000);
             } elseif ($item['profitability'] == 'profitless_cat_1') {
-                array_push($dataChart2['profitless_cat_1'], $item['oil']);
+                array_push($dataChart2['profitless_cat_1'], $item['oil']/1000);
             }
         }
 
         for ($i = 0; $i < 20; $i++) {
             array_push($dataChart3['uwi'], $array14[$i]['uwi']);
-            array_push($dataChart3['Operating_profit'], $array14[$i]['Operating_profit']);
+            array_push($dataChart3['Operating_profit'], $array14[$i]['Operating_profit']/1000);
         }
 
         $reversed14 = array_reverse($array14);
         for ($i = 0; $i < 20; $i++) {
             array_push($dataChart4['uwi'], $reversed14[$i]['uwi']);
-            array_push($dataChart4['Operating_profit'], $reversed14[$i]['Operating_profit']);
+            array_push($dataChart4['Operating_profit'], $reversed14[$i]['Operating_profit']/1000);
         }
 
         $averageProfitlessCat1Month = count($array4);

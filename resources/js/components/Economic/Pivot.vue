@@ -73,3 +73,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+body {
+  color: #ffffff;
+}
+</style>

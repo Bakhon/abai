@@ -44,7 +44,7 @@ export default {
         tooltip: {
           y: {
             formatter: function(val) {
-              return val + " тенге"
+              return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(val) + " тыс. тенге"
             }
           }
         }
