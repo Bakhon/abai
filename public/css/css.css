@@ -265,7 +265,6 @@ canvas#chart-area4 {
     width: 75%;
 }
 
-
 /*
 canvas#canvas2 {
     height: 105px;
@@ -313,7 +312,6 @@ canvas#canvas3 {
     margin: 35px auto;
 }
 
-
 /*
 .info-panel {
     height: unset!important;
@@ -323,7 +321,6 @@ canvas#canvas3 {
 #body-row {
       height: 1150px!important;
 }*/
-
 
 /*страница visualcenter*/
 
@@ -422,7 +419,6 @@ a.collapsed {
     pointer-events: none;
 }
 
-
 /*
 .assets:active   {
     background: url(../img/level1/button-on.svg) no-repeat;
@@ -431,7 +427,6 @@ a.collapsed {
 	   background-size: 20% auto;
     background-position: 92% 14%;
  }*/
-
 
 /*
 .button-menu {
@@ -580,9 +575,9 @@ li.oil-string.three2 {
 
 .visual-center-center {
     /* background: url(../img/level1/map_kz.svg) no-repeat; */
-    /* width: 850px; */
     /* height: 454px; */
     position: relative;
+    width: 1275px;
 }
 
 .circle-2:focus {
@@ -615,23 +610,24 @@ li.circle-2:hover {
     border-radius: 50px;
 }
 
-.col-lg-7-2 {
+/*.col-lg-7-2 {
     max-width: 84%!important;
-}
+}*/
 
 .visual-center-bottom {
     width: 415px;
     height: 168px;
     font-size: 15px;
-    /* background-repeat: no-repeat; */
-    /* background-size: 25px 25px; */
-    /* background-position: 22px 10px; */
     color: white;
-    margin-left: 10px;
+    /* margin-left: 10px; */
     background-color: #20274e !important;
     float: left;
     overflow: hidden;
-    margin-top: 20px;
+    margin-top: 15px;
+}
+
+.vcb-left {
+    margin-left: 10px;
 }
 
 .main {
@@ -708,7 +704,6 @@ li.circle-2:hover {
     overflow: hidden;
 }
 
-
 /*
 .circle-2-2 {
     position: absolute;
@@ -776,9 +771,6 @@ li.circle-2:hover {
     outline: none;
 }
 
-
-
-
 .right-table-button {
     border: none;
     padding: 10px 60px;
@@ -827,6 +819,10 @@ li.circle-2:hover {
     display: inline-block;
     color: #fff;
     padding: 10px 15px;
+    position: relative;
+    z-index: 99999;
+    margin-left: 30px;
+    margin-top: 30px;
 }
 
 .donut {
@@ -836,8 +832,10 @@ li.circle-2:hover {
     color: white;
     text-align: center;
     padding: 10px 0px;
-    margin-top: 15px;
+    /* margin-top: 15px; */
 }
+
+.donut-top {}
 
 .right-button-panel {
     height: 100px!important;
@@ -845,7 +843,7 @@ li.circle-2:hover {
 }
 
 .donut2 {
-    /* margin-top: 15px; */
+    margin-top: 10px;
 }
 
 .donut-inner1 {
@@ -905,7 +903,7 @@ ul.dropdown-child {
 
 .row {
     /* width:1525px;  */
-    overflow: hidden;
+    /* overflow: hidden; */
     /* width: 100%; */
     margin-right: unset;
     margin-left: unset;
@@ -942,7 +940,7 @@ ul.dropdown-child {
     color: #fff;
     width: 1300px;
     height: 45px;
-    /*margin-top: 35px;*/
+    margin-top: -34px;
 }
 
 .tables-string {
@@ -965,7 +963,7 @@ ul.dropdown-child {
     border-right-style: solid;
     border-right-color: #0F1430;
     border-right-width: 5px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }
 
 .level2-tab:focus {
@@ -1011,25 +1009,25 @@ ul.dropdown-child {
 
 .cell-name {
     height: 56px;
-    width: 310px;
+    width: 329px;
     float: left;
     background: #122f70;
     padding: 5px 5px;
     line-height: 48px;
 }
 
-.cell-name2{
+.cell-name2 {
     height: 56px;
-    width: 310px;
+    width: 329px;
     float: left;
     background: #122f70;
     padding: 5px 5px;
-    line-height: 25px;  
+    line-height: 25px;
 }
 
 .cell-name-top {
     height: 113px;
-    width: 310px;
+    width: 329px;
     float: left;
     background: #122f70;
     padding: 45px 10px;
@@ -1086,7 +1084,7 @@ ul.dropdown-child {
 }
 
 .tables-bottom-line {
-    width: 1244px;
+    width: 1263px;
     border-top-color: #1b6bb0;
     border-top-style: solid;
     border-top-width: 1px;
@@ -1150,7 +1148,7 @@ ul.dropdown-child {
 }
 
 .month-day {
-    width: 1285px;
+    width: 1263px;
     background: #122f70;
     height: 40px;
     color: #fff;
@@ -1186,7 +1184,6 @@ li.circle-2 {
     border-radius: 50px;
     position: absolute;
 }
-
 
 /*calendar*/
 
@@ -1241,7 +1238,6 @@ li.circle-2 {
     margin-top: 10px;
 }
 
-
 .report-btn:hover {
     background: #15509d;
     height: 38px;
@@ -1251,16 +1247,16 @@ li.circle-2 {
     margin-top: 10px;
 }
 
-.sidebar-expanded{
-    width: 320px!important;   
+.sidebar-expanded {
+    width: 320px!important;
 }
 
 h2.subtitle {
     margin-left: 50px;
 }
 
-.mleft{
-   margin-left:50px; 
+.mleft {
+    margin-left: 50px;
 }
 
 .emptyPage {
@@ -1268,9 +1264,10 @@ h2.subtitle {
 }
 
 .donut-summ {
-   text-align: center;
+    text-align: center;
 }
-.donut-summ-area{
+
+.donut-summ-area {
     position: absolute;
     margin-top: 82px;
     margin-left: 70px;
@@ -1295,8 +1292,8 @@ h2.subtitle {
     position: absolute;
 }
 
-.otstup{
-    margin-left:30px;
+.otstup {
+    margin-left: 30px;
 }
 
 .starting {

@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('content')
 <div class="col p-4">
-                <div>
-                    <visual-center-table></visual-center-table>
-                </div>
-</div>          
+    <div>
+        <visual-center-table></visual-center-table>
+    </div>
+</div>
 @endsection
 <style>
     .p-4 {
@@ -260,5 +260,22 @@
         text-align: center;
         margin-left: 28px;
         margin-top: 4px;
+    }
+
+
+    .row {
+        flex-wrap: nowrap !important;
+    }
+
+    @media (min-width: 1200px) {
+        body {
+            zoom: 70%
+        }
+    }
+
+    @media (min-width: 1350px) {
+        body {
+            zoom: 0%
+        }
     }
 </style>

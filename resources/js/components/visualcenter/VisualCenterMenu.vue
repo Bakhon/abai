@@ -313,7 +313,7 @@ export default {
     },
 
     getCurrencyPeriod: function (dates) {
-      var dates=dates;
+      var dates = dates;
       let uri = "/ru/getcurrencyperiod?dates=" + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
@@ -333,7 +333,9 @@ export default {
     getOilNow: function (dates) {
       var datas;
       //let uri = "/js/json/graph_1006.json";
-      let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
+      let uri =
+        "https://cors-anywhere.herokuapp.com/" +
+        "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -343,7 +345,6 @@ export default {
           var splits = [];
           var oil = [];
           var oil2;
-
           _.forEach(data.prices, function (prices) {
             splits = prices.toString().split(",");
             oilValue = splits["1"];
@@ -361,12 +362,11 @@ export default {
               });
           });
 
+          //getDataString
+          /*var datesString =new Date(dates.getTime());       
+console.log(datesString);  */
 
-//getDataString
-  /*var datesString =new Date(dates.getTime());       
-console.log(datesString);  */ 
-
-    /* var dateInOil = [];
+          /* var dateInOil = [];
         dateInOil = _.filter(oil, function (item) {
           return _.every([
             _.inRange(
@@ -377,24 +377,18 @@ console.log(datesString);  */
           ]);
         });*/
 
-
-              
           this.oilChart = [_.takeRight(oil, 31)];
 
           var oil2 = [];
 
           oil2 = _.filter(oil, _.iteratee({ date: dates }));
 
-
-  
-        
-         if (oil2.length!='0'){
-         this.oilNow = oil2[0].value;
-          } else{
-                 oil=_.last(oil);
-          this.oilNow = oil.value;
-}
-
+          if (oil2.length != "0") {
+            this.oilNow = oil2[0].value;
+          } else {
+            oil = _.last(oil);
+            this.oilNow = oil.value;
+          }
         } else {
           console.log("No data");
         }

@@ -69,123 +69,500 @@
                   {{ year.index }}
                 </div>
               </div>
-            </div>
 
-            <div class="visual-center-center">
-              <div class="tables">
-                <div class="visual-center-center">
-                  <a>
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover1}`"
-                      @click="
-                        getProduction(
-                          'oil_plan',
-                          'oil_fact',
-                          ' Добыча нефти',
-                          'тн'
-                        )
-                      "
-                    >
-                      <div class="circle-2-string">Добыча нефти</div>
-                    </li>
-                  </a>
+              <div class="visual-center-center">
+                <div class="tables">
+                  <div class="visual-center-center">
+                    <a>
+                      <li
+                        class="circle-2"
+                        tabindex="-2"
+                        :style="`${buttonHover1}`"
+                        @click="
+                          getProduction(
+                            'oil_plan',
+                            'oil_fact',
+                            ' Добыча нефти',
+                            'тн'
+                          )
+                        "
+                      >
+                        <div class="circle-2-string">Добыча нефти</div>
+                      </li>
+                    </a>
 
-                  <a>
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover5}`"
-                      @click="
-                        getProduction(
-                          'gk_plan',
-                          'gk_fact',
-                          'Добыча конденсата',
-                          'тн'
-                        )
-                      "
-                    >
-                      <div class="circle-2-string">Добыча конденсата</div>
-                    </li>
-                  </a>
+                    <a>
+                      <li
+                        class="circle-2"
+                        tabindex="-2"
+                        :style="`${buttonHover5}`"
+                        @click="
+                          getProduction(
+                            'gk_plan',
+                            'gk_fact',
+                            'Добыча конденсата',
+                            'тн'
+                          )
+                        "
+                      >
+                        <div class="circle-2-string">Добыча конденсата</div>
+                      </li>
+                    </a>
 
-                  <a>
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover3}`"
-                      @click="
-                        getProduction(
-                          'gas_plan',
-                          'gas_fact',
-                          'Добыча газа',
-                          'тыс м3'
-                        )
-                      "
-                    >
-                      <div class="circle-2-string">Добыча газа</div>
-                    </li>
-                  </a>
+                    <a>
+                      <li
+                        class="circle-2"
+                        tabindex="-2"
+                        :style="`${buttonHover3}`"
+                        @click="
+                          getProduction(
+                            'gas_plan',
+                            'gas_fact',
+                            'Добыча газа',
+                            'тыс м3'
+                          )
+                        "
+                      >
+                        <div class="circle-2-string">Добыча газа</div>
+                      </li>
+                    </a>
 
-                  <a>
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover4}`"
-                      @click="
-                        getProduction(
-                          'liq_plan',
-                          'liq_fact',
-                          'Добыча жидкости',
-                          'м3'
-                        )
-                      "
-                    >
-                      <div class="circle-2-string">Добыча жидкости</div>
-                    </li>
-                  </a>
+                    <a>
+                      <li
+                        class="circle-2"
+                        tabindex="-2"
+                        :style="`${buttonHover4}`"
+                        @click="
+                          getProduction(
+                            'liq_plan',
+                            'liq_fact',
+                            'Добыча жидкости',
+                            'м3'
+                          )
+                        "
+                      >
+                        <div class="circle-2-string">Добыча жидкости</div>
+                      </li>
+                    </a>
 
-                  <a>
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover6}`"
-                      @click="
-                        getProduction(
-                          'inj_plan',
-                          'inj_fact',
-                          'Объём закачки',
-                          'м3'
-                        )
-                      "
-                    >
-                      <div class="circle-2-string">Объём закачки</div>
-                    </li>
-                  </a>
+                    <a>
+                      <li
+                        class="circle-2"
+                        tabindex="-2"
+                        :style="`${buttonHover6}`"
+                        @click="
+                          getProduction(
+                            'inj_plan',
+                            'inj_fact',
+                            'Объём закачки',
+                            'м3'
+                          )
+                        "
+                      >
+                        <div class="circle-2-string">Объём закачки</div>
+                      </li>
+                    </a>
 
-                  <a>
-                    <li
-                      class="circle-2"
-                      tabindex="-2"
-                      :style="`${buttonHover2}`"
-                      @click="
-                        getProduction(
-                          'oil_dlv_plan',
-                          'oil_dlv_fact',
-                          'Сдача нефти',
-                          'тн'
-                        )
-                      "
-                    >
-                      <div class="circle-2-string">Сдача нефти</div>
-                    </li>
-                  </a>
-                </div>
-                <!--<div class="right-chart-button right-button" tabindex="-5">
+                    <a>
+                      <li
+                        class="circle-2"
+                        tabindex="-2"
+                        :style="`${buttonHover2}`"
+                        @click="
+                          getProduction(
+                            'oil_dlv_plan',
+                            'oil_dlv_fact',
+                            'Сдача нефти',
+                            'тн'
+                          )
+                        "
+                      >
+                        <div class="circle-2-string">Сдача нефти</div>
+                      </li>
+                    </a>
+                  </div>
+                  <!--<div class="right-chart-button right-button" tabindex="-5">
                
                 -->
 
+                  <!--<div
+                    class="right-table-button right-button"
+                    :style="`${showTableOn}`"
+                    @click="changeButton(`${showTable2}`, 'Yes')"
+                  >
+                    {{ ChartTable }}
+                  </div>-->
+
+                  <div class="tables" :style="`${displayHeadTables}`">
+                    <div
+                      class="right-table-button right-button"
+                      :style="`${showTableOn}`"
+                      @click="changeButton(`${showTable2}`, 'Yes')"
+                    >
+                      {{ ChartTable }}
+                    </div>
+                    <div class="tables-name">{{ circleMenu }}</div>
+                    <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
+                    <div class="tables-string">
+                      <!--<div class="cell-colour-top table-border"></div>-->
+                      <div class="cell-number-top table-border">№</div>
+                      <div class="cell-name-top table-border">Предприятия</div>
+                      <div class="cell-last-top table-border cell-last">
+                        ДОБЫЧА, {{ unit }}
+                      </div>
+                      <div class="cell2 table-border">
+                        План на {{ selectedYear }} год
+                      </div>
+                      <div class="cell2 table-border">
+                        План на {{ currentMonth }} месяц
+                      </div>
+                      <div class="cell3 table-border">СУТОЧНАЯ</div>
+                      <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
+                      <div class="cell3 table-border cell-last">
+                        С НАЧАЛА ГОДА
+                      </div>
+                      <div class="cell4 table-border">ПЛАН</div>
+                      <div class="cell4 table-border">ФАКТ</div>
+                      <div class="cell4 table-border">(+,-)</div>
+                      <div class="cell4 table-border">ПЛАН</div>
+                      <div class="cell4 table-border">ФАКТ</div>
+                      <div class="cell4 table-border">(+,-)</div>
+                      <div class="cell4 table-border">ПЛАН</div>
+                      <div class="cell4 table-border">ФАКТ</div>
+                      <div class="cell4 table-border cell-last">(+,-)</div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div>
+                      <div>
+                        <!-- <div class="cell-colour table-border">
+                 
+                        </div>-->
+
+                        <div v-for="item in bigTable">
+                          <div>
+                            <div>
+                              <!-- <div class="cell-colour table-border">
+                 
+                        </div>-->
+                              <div class="cell-number table-border"></div>
+                              <div class="cell-name table-border">
+                                {{ item.dzoDay }}
+                                <!--  {{ item.dzo }}{{ item.dzoMonth }}  {{item.dzoYear}}-->
+                                <!--{{item.time}}-->
+                              </div>
+                              <div class="cell table-border">
+                                <div v-if="item.planYear">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.planYear)) }}
+                                </div>
+                              </div>
+                              <div class="cell table-border">
+                                <div v-if="item.planMonth">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.planMonth)) }}
+                                </div>
+                              </div>
+                              <div class="cell table-border">
+                                <div v-if="item.planDay">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.planDay  ))}}
+                                </div>
+                              </div>
+                              <div class="cell table-border">
+                                <div v-if="item.factDay">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.factDay ))}}
+                                </div>
+                              </div>
+                              <div class="cell table-border colour">
+                                <div>
+                                  <div
+                                    v-if="item.factDay"
+                                    class="circle-table"
+                                    :style="`background: ${getColor(
+                                      item.factDay - item.planDay
+                                    )}`"
+                                  ></div>
+                                </div>
+                                <div v-if="item.factDay">
+                                  <div>
+                                    {{(new Intl.NumberFormat('ru-RU').format( item.factDay - item.planDay)) }}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="cell table-border">
+                                <div v-if="item.planMonth">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.planMonth)) }}
+                                </div>
+                              </div>
+                              <div class="cell table-border">
+                                <div v-if="item.factMonth">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.factMonth)) }}
+                                </div>
+                              </div>
+                              <div class="cell table-border colour">
+                                <div
+                                  v-if="item.planMonth"
+                                  class="circle-table"
+                                  :style="`background: ${getColor(
+                                    item.factMonth - item.planMonth
+                                  )}`"
+                                ></div>
+                                <!--3cell-->
+                                <div v-if="item.planMonth">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.factMonth - item.planMonth)) }}
+                                </div>
+                              </div>
+                              <div class="cell table-border">
+                                <div v-if="item.planYear">
+                                  {{(new Intl.NumberFormat('ru-RU').format( item.planYear)) }}
+                                </div>
+                              </div>
+                              <div class="cell table-border">
+                                <div v-if="item.factYear">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.factYear)) }}
+                                </div>
+                              </div>
+                              <div class="cell table-border cell-last colour">
+                                <div
+                                  v-if="item.planYear"
+                                  class="circle-table"
+                                  :style="`background: ${getColor(
+                                    item.factYear - item.planYear
+                                  )}`"
+                                ></div>
+                                <div v-if="item.planYear">
+                                  {{ (new Intl.NumberFormat('ru-RU').format(item.factYear - item.planYear)) }}
+                                </div>
+                              </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                          </div>
+                        </div>
+                        <div class="cell-number table-border"></div>
+                        <div class="cell-name2 table-border">
+                          {{ NameDzoFull[0] }}
+                        </div>
+                        <div class="cell table-border">
+                          <div>
+                            {{ (new Intl.NumberFormat('ru-RU').format(planYearSumm)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div>
+                            {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div>
+                            {{ (new Intl.NumberFormat('ru-RU').format(planDaySumm  ))}}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div>
+                            {{ (new Intl.NumberFormat('ru-RU').format(factDaySumm ))}}
+                          </div>
+                        </div>
+                        <div class="cell table-border colour">
+                          <div>
+                            <div
+                              :style="`background: ${getColor(
+                                factDaySumm - planDaySumm
+                              )}`"
+                              class="circle-table"
+                            ></div>
+                          </div>
+                          <div>
+                            <div class="cell-width">
+                              {{(new Intl.NumberFormat('ru-RU').format(factDaySumm - planDaySumm)) }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div>
+                            {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div>
+                            {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border colour">
+                          <div
+                            :style="`background: ${getColor(
+                              factMonthSumm - planMonthSumm
+                            )}`"
+                            class="circle-table"
+                          ></div>
+                          <!--3cell-->
+                          <div class="cell-width">
+                            {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm - planMonthSumm)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div>
+                            {{(new Intl.NumberFormat('ru-RU').format( planYearSumm)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border">
+                          <div>
+                            {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm)) }}
+                          </div>
+                        </div>
+                        <div class="cell table-border cell-last colour">
+                          <div
+                            :style="`background: ${getColor(
+                              factYearSumm - planYearSumm
+                            )}`"
+                            class="circle-table"
+                          ></div>
+                          <div>
+                            {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm - planYearSumm)) }}
+                          </div>
+                        </div>
+                      </div>
+                      <div style="clear: both;"></div>
+                      <div class="tables-bottom-line"></div>
+                    </div>
+                  </div>
+
+                  <div class="tables" :style="`${displayTable}`">
+                    <div
+                      class="right-table-button right-button"
+                      :style="`${showTableOn}`"
+                      @click="changeButton(`${showTable2}`, 'Yes')"
+                    >
+                      {{ ChartTable }}
+                    </div>
+                    <div class="tables-name">{{ circleMenu }}</div>
+                    <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
+                    <div class="tables-string">
+                      <!--<div class="cell-colour-top table-border"></div>-->
+                      <div class="cell-number-top table-border">№</div>
+                      <div class="cell-name-top table-border">Предприятия</div>
+                      <div class="cell-last-top table-border cell-last">
+                        ДОБЫЧА, {{ unit }}
+                      </div>
+                      <div class="cell2 table-border">
+                        План на {{ selectedYear }} год
+                      </div>
+                      <div class="cell2 table-border">
+                        План на {{ currentMonth }} месяц
+                      </div>
+                      <div class="cell3 table-border">СУТОЧНАЯ</div>
+                      <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
+                      <div class="cell3 table-border cell-last">
+                        С НАЧАЛА ГОДА
+                      </div>
+                      <div class="cell4 table-border">ПЛАН</div>
+                      <div class="cell4 table-border">ФАКТ</div>
+                      <div class="cell4 table-border">(+,-)</div>
+                      <div class="cell4 table-border">ПЛАН</div>
+                      <div class="cell4 table-border">ФАКТ</div>
+                      <div class="cell4 table-border">(+,-)</div>
+                      <div class="cell4 table-border">ПЛАН</div>
+                      <div class="cell4 table-border">ФАКТ</div>
+                      <div class="cell4 table-border cell-last">(+,-)</div>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div v-for="item in tables">
+                      <div>
+                        <div>
+                          <!-- <div class="cell-colour table-border">
+           
+                        </div>-->
+                          <div class="cell-number table-border"></div>
+                          <div class="cell-name table-border">
+                            {{ item.dzo }}
+                            {{ item.timeMonth }}
+                          </div>
+                          <div class="cell table-border">
+                            <div v-if="item.planYear">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.planYear ))}}
+                            </div>
+                          </div>
+                          <div class="cell table-border"></div>
+                          <div class="cell table-border">
+                            <div v-if="item.plan">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.plan ))}}
+                            </div>
+                          </div>
+                          <div class="cell table-border">
+                            <div v-if="item.fact">
+                              {{(new Intl.NumberFormat('ru-RU').format( item.fact ))}}
+                            </div>
+                          </div>
+                          <div class="cell table-border colour">
+                            <div>
+                              <div
+                                v-if="item.fact"
+                                class="circle-table"
+                                :style="`background: ${getColor(
+                                  item.fact - item.plan
+                                )}`"
+                              ></div>
+                            </div>
+                            <div v-if="item.fact">
+                              <div>
+                                {{(new Intl.NumberFormat('ru-RU').format( item.fact - item.plan)) }}
+                              </div>
+                            </div>
+                          </div>
+                          <div class="cell table-border">
+                            <div v-if="item.productionPlanForMonth">
+                              {{ item.productionPlanForMonth }}
+                            </div>
+                          </div>
+                          <div class="cell table-border">
+                            <div v-if="item.productionFactForMonth">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth ))}}
+                            </div>
+                          </div>
+                          <div class="cell table-border colour">
+                            <div
+                              v-if="item.productionPlanForMonth"
+                              class="circle-table"
+                              :style="`background: ${getColor(
+                                item.productionFactForMonth -
+                                  item.productionPlanForMonth
+                              )}`"
+                            ></div>
+                            <!--3cell-->
+                            <div v-if="item.productionPlanForMonth">
+                              {{
+                              (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth -
+                              item.productionPlanForMonth))
+                              }}
+                            </div>
+                          </div>
+                          <div class="cell table-border">
+                            <div v-if="item.planYear">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.planYear)) }}
+                            </div>
+                          </div>
+                          <div class="cell table-border">
+                            <div v-if="item.factYear">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.factYear ))}}
+                            </div>
+                          </div>
+                          <div class="cell table-border cell-last colour">
+                            <div
+                              v-if="item.planYear"
+                              class="circle-table"
+                              :style="`background: ${getColor(
+                                item.factYear - item.planYear
+                              )}`"
+                            ></div>
+                            <div v-if="item.planYear">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.factYear - item.planYear)) }}
+                            </div>
+                          </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                      </div>
+                      <div class="tables-bottom-line"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="visual-center-center" :style="`${displayChart}`">
                 <div
                   class="right-table-button right-button"
                   :style="`${showTableOn}`"
@@ -193,437 +570,79 @@
                 >
                   {{ ChartTable }}
                 </div>
-
-                <div class="tables" :style="`${displayHeadTables}`">
-                  <div class="tables-name">{{ circleMenu }}</div>
-                  <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
-                  <div class="tables-string">
-                    <!--<div class="cell-colour-top table-border"></div>-->
-                    <div class="cell-number-top table-border">№</div>
-                    <div class="cell-name-top table-border">Предприятия</div>
-                    <div class="cell-last-top table-border cell-last">
-                      ДОБЫЧА, {{ unit }}
-                    </div>
-                    <div class="cell2 table-border">
-                      План на {{ selectedYear }} год
-                    </div>
-                    <div class="cell2 table-border">
-                      План на {{ currentMonth }} месяц
-                    </div>
-                    <div class="cell3 table-border">СУТОЧНАЯ</div>
-                    <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
-                    <div class="cell3 table-border cell-last">
-                      С НАЧАЛА ГОДА
-                    </div>
-                    <div class="cell4 table-border">ПЛАН</div>
-                    <div class="cell4 table-border">ФАКТ</div>
-                    <div class="cell4 table-border">(+,-)</div>
-                    <div class="cell4 table-border">ПЛАН</div>
-                    <div class="cell4 table-border">ФАКТ</div>
-                    <div class="cell4 table-border">(+,-)</div>
-                    <div class="cell4 table-border">ПЛАН</div>
-                    <div class="cell4 table-border">ФАКТ</div>
-                    <div class="cell4 table-border cell-last">(+,-)</div>
+                <div class="tables-name">График {{ circleMenu }}</div>
+                <div class="unit">{{ unit }}</div>
+                <div class="otstup">
+                  <visual-center-chart-area-center
+                    v-for="(serial, index) in productionForChart"
+                    v-bind:postTitle="serial"
+                    :key="serial"
+                  >
+                  </visual-center-chart-area-center>
+                </div>
+              </div>
+              <div class="visual-center-center">
+                <div class="visual-center-bottom">
+                  <div class="visual-center-string1">Отключение РП:</div>
+                  <div class="visual-center-string2"></div>
+                  <div class="visual-center-string1">Отключение скважин:</div>
+                  <div class="visual-center-string2"></div>
+                  <div class="visual-center-string1">Выбросы и разливы:</div>
+                  <div class="visual-center-string2"></div>
+                  <div class="visual-center-string1">Прочие:</div>
+                  <div class="visual-center-string2"></div>
+                </div>
+                <div class="visual-center-bottom vcb-left">
+                  <div class="accidents-first accidents">
+                    <div class="number-of-accidents">2</div>
+                    Несчастные <br />случаи
                   </div>
-                  <div style="clear: both;"></div>
-                  <div>
-                    <div>
-                      <!-- <div class="cell-colour table-border">
-                 
-                        </div>-->
-                     
-                  <div v-for="item in bigTable">
-                    <div>
-                      <div>
-                        <!-- <div class="cell-colour table-border">
-                 
-                        </div>-->
-                        <div class="cell-number table-border"></div>
-                        <div class="cell-name table-border">
-                          {{ item.dzoDay }}
-                          <!--  {{ item.dzo }}{{ item.dzoMonth }}  {{item.dzoYear}}-->
-                          <!--{{item.time}}-->
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.planYear">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.planYear)) }}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.planMonth">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.planMonth)) }}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.planDay">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.planDay  ))}}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.factDay">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.factDay ))}}
-                          </div>
-                        </div>
-                        <div class="cell table-border colour">
-                          <div>
-                            <div
-                              v-if="item.factDay"
-                              class="circle-table"
-                              :style="`background: ${getColor(
-                                item.factDay - item.planDay
-                              )}`"
-                            ></div>
-                          </div>
-                          <div v-if="item.factDay">
-                            <div>
-                              {{(new Intl.NumberFormat('ru-RU').format( item.factDay - item.planDay)) }}
-                            </div>
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.planMonth">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.planMonth)) }}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.factMonth">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.factMonth)) }}
-                          </div>
-                        </div>
-                        <div class="cell table-border colour">
-                          <div
-                            v-if="item.planMonth"
-                            class="circle-table"
-                            :style="`background: ${getColor(
-                              item.factMonth - item.planMonth
-                            )}`"
-                          ></div>
-                          <!--3cell-->
-                          <div v-if="item.planMonth">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.factMonth - item.planMonth)) }}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.planYear">
-                            {{(new Intl.NumberFormat('ru-RU').format( item.planYear)) }}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.factYear">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.factYear)) }}
-                          </div>
-                        </div>
-                        <div class="cell table-border cell-last colour">
-                          <div
-                            v-if="item.planYear"
-                            class="circle-table"
-                            :style="`background: ${getColor(
-                              item.factYear - item.planYear
-                            )}`"
-                          ></div>
-                          <div v-if="item.planYear">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.factYear - item.planYear)) }}
-                          </div>
-                        </div>
-                      </div>
-                      <div style="clear: both;"></div>
-                    </div>
-            
-                    
+                  <div class="accidents-second accidents">
+                    <div class="number-of-accidents">0</div>
+                    Смертельные <br />случаи
                   </div>
-                   <div class="cell-number table-border"></div>
-                      <div class="cell-name2 table-border">
-                        {{ NameDzoFull[0] }}
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(planYearSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(planDaySumm  ))}}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(factDaySumm ))}}
-                        </div>
-                      </div>
-                      <div class="cell table-border colour">
-                        <div>
-                          <div
-                            :style="`background: ${getColor(
-                              factDaySumm - planDaySumm
-                            )}`"
-                            class="circle-table"
-                          ></div>
-                        </div>
-                        <div>
-                          <div class="cell-width">
-                            {{(new Intl.NumberFormat('ru-RU').format(factDaySumm - planDaySumm)) }}
-                          </div>
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(planMonthSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border colour">
-                        <div
-                          :style="`background: ${getColor(
-                            factMonthSumm - planMonthSumm
-                          )}`"
-                          class="circle-table"
-                        ></div>
-                        <!--3cell-->
-                        <div class="cell-width">
-                          {{ (new Intl.NumberFormat('ru-RU').format(factMonthSumm - planMonthSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{(new Intl.NumberFormat('ru-RU').format( planYearSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border">
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm)) }}
-                        </div>
-                      </div>
-                      <div class="cell table-border cell-last colour">
-                        <div
-                          :style="`background: ${getColor(
-                            factYearSumm - planYearSumm
-                          )}`"
-                          class="circle-table"
-                        ></div>
-                        <div>
-                          {{ (new Intl.NumberFormat('ru-RU').format(factYearSumm - planYearSumm)) }}
-                        </div>
-                      </div>
-                    </div>
-                    <div style="clear: both;"></div>
-                            <div class="tables-bottom-line"></div>
+                  <div class="accidents-third accidents">
+                    <div class="number-of-accidents">14</div>
+                    COVID <br />19
                   </div>
                 </div>
-
-                <div class="tables" :style="`${displayTable}`">
-                  <div class="tables-name">{{ circleMenu }}</div>
-                  <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
-                  <div class="tables-string">
-                    <!--<div class="cell-colour-top table-border"></div>-->
-                    <div class="cell-number-top table-border">№</div>
-                    <div class="cell-name-top table-border">Предприятия</div>
-                    <div class="cell-last-top table-border cell-last">
-                      ДОБЫЧА, тонн
-                    </div>
-                    <div class="cell2 table-border">
-                      План на {{ selectedYear }} год
-                    </div>
-                    <div class="cell2 table-border">
-                      План на {{ currentMonth }} месяц
-                    </div>
-                    <div class="cell3 table-border">СУТОЧНАЯ</div>
-                    <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
-                    <div class="cell3 table-border cell-last">
-                      С НАЧАЛА ГОДА
-                    </div>
-                    <div class="cell4 table-border">ПЛАН</div>
-                    <div class="cell4 table-border">ФАКТ</div>
-                    <div class="cell4 table-border">(+,-)</div>
-                    <div class="cell4 table-border">ПЛАН</div>
-                    <div class="cell4 table-border">ФАКТ</div>
-                    <div class="cell4 table-border">(+,-)</div>
-                    <div class="cell4 table-border">ПЛАН</div>
-                    <div class="cell4 table-border">ФАКТ</div>
-                    <div class="cell4 table-border cell-last">(+,-)</div>
+                <div class="visual-center-bottom vcb-left">
+                  <div class="difference-of-24">Отклонение</div>
+                  <div class="visual-center-chart-bar-bottom">
+                    <visual-center-chart-bar-bottom
+                      v-for="(start, index) in starts"
+                      v-bind:starts="start"
+                      :key="start"
+                    ></visual-center-chart-bar-bottom>
                   </div>
-                  <div style="clear: both;"></div>
-                  <div v-for="item in tables">
-                    <div>
-                      <div>
-                        <!-- <div class="cell-colour table-border">
-           
-                        </div>-->
-                        <div class="cell-number table-border"></div>
-                        <div class="cell-name table-border">
-                          {{ item.dzo }}
-                          {{ item.timeMonth }}
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.planYear">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.planYear ))}}
-                          </div>
-                        </div>
-                        <div class="cell table-border"></div>
-                        <div class="cell table-border">
-                          <div v-if="item.plan">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.plan ))}}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.fact">
-                            {{(new Intl.NumberFormat('ru-RU').format( item.fact ))}}
-                          </div>
-                        </div>
-                        <div class="cell table-border colour">
-                          <div>
-                            <div
-                              v-if="item.fact"
-                              class="circle-table"
-                              :style="`background: ${getColor(
-                                item.fact - item.plan
-                              )}`"
-                            ></div>
-                          </div>
-                          <div v-if="item.fact">
-                            <div>
-                              {{(new Intl.NumberFormat('ru-RU').format( item.fact - item.plan)) }}
-                            </div>
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.productionPlanForMonth">
-                            {{ item.productionPlanForMonth }}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.productionFactForMonth">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth ))}}
-                          </div>
-                        </div>
-                        <div class="cell table-border colour">
-                          <div
-                            v-if="item.productionPlanForMonth"
-                            class="circle-table"
-                            :style="`background: ${getColor(
-                              item.productionFactForMonth -
-                                item.productionPlanForMonth
-                            )}`"
-                          ></div>
-                          <!--3cell-->
-                          <div v-if="item.productionPlanForMonth">
-                            {{
-                              (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth -
-                              item.productionPlanForMonth))
-                            }}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.planYear">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.planYear)) }}
-                          </div>
-                        </div>
-                        <div class="cell table-border">
-                          <div v-if="item.factYear">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.factYear ))}}
-                          </div>
-                        </div>
-                        <div class="cell table-border cell-last colour">
-                          <div
-                            v-if="item.planYear"
-                            class="circle-table"
-                            :style="`background: ${getColor(
-                              item.factYear - item.planYear
-                            )}`"
-                          ></div>
-                          <div v-if="item.planYear">
-                            {{ (new Intl.NumberFormat('ru-RU').format(item.factYear - item.planYear)) }}
-                          </div>
-                        </div>
-                      </div>
-                      <div style="clear: both;"></div>
-                    </div>
-                    <div class="tables-bottom-line"></div>
+                  <div class="starting">
+                    <div class="start">Пузки из КРС</div>
+                    <div class="start">Пузки из ПРС</div>
+                    <div class="start">Ввод из бурения</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="visual-center-center" :style="`${displayChart}`">
-              <div class="tables-name">График {{ circleMenu }}</div>
-              <div class="unit">{{ unit }}</div>
-              <div class="otstup">
-                <visual-center-chart-area-center
-                  v-for="(serial, index) in productionForChart"
-                  v-bind:postTitle="serial"
-                  :key="serial"
-                >
-                </visual-center-chart-area-center>
-              </div>
-            </div>
-            <div class="visual-center-center">
-              <div class="visual-center-bottom">
-                <div class="visual-center-string1">Отключение РП:</div>
-                <div class="visual-center-string2"></div>
-                <div class="visual-center-string1">Отключение скважин:</div>
-                <div class="visual-center-string2"></div>
-                <div class="visual-center-string1">Выбросы и разливы:</div>
-                <div class="visual-center-string2"></div>
-                <div class="visual-center-string1">Прочие:</div>
-                <div class="visual-center-string2"></div>
-              </div>
-              <div class="visual-center-bottom">
-                <div class="accidents-first accidents">
-                  <div class="number-of-accidents">2</div>
-                  Несчастные <br />случаи
-                </div>
-                <div class="accidents-second accidents">
-                  <div class="number-of-accidents">0</div>
-                  Смертельные <br />случаи
-                </div>
-                <div class="accidents-third accidents">
-                  <div class="number-of-accidents">14</div>
-                  COVID <br />19
+            <div class="visual-center-right-column">
+              <div class="donut">
+                <div class="indent">Фонд добывающих скважин</div>
+                <div>
+                  <visual-center-chart-donut-right1
+                    v-for="(well, index) in wells2"
+                    v-bind:wells2="well"
+                    :key="well"
+                  ></visual-center-chart-donut-right1>
                 </div>
               </div>
-              <div class="visual-center-bottom">
-                <div class="difference-of-24">Отклонение</div>
-                <div class="visual-center-chart-bar-bottom">
-                  <visual-center-chart-bar-bottom
-                    v-for="(start, index) in starts"
-                    v-bind:starts="start"
-                    :key="start"
-                  ></visual-center-chart-bar-bottom>
+              <div class="donut donut2">
+                <div class="indent">Фонд нагнетательных скважин</div>
+                <div>
+                  <visual-center-chart-donut-right2
+                    v-for="(well, index) in wells"
+                    v-bind:wells="well"
+                    :key="well"
+                  ></visual-center-chart-donut-right2>
                 </div>
-                <div class="starting">
-                  <div class="start">Пузки из КРС</div>
-                  <div class="start">Пузки из ПРС</div>
-                  <div class="start">Ввод из бурения</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="visual-center-right-column">
-            <div class="donut">
-              <div class="indent">Фонд добывающих скважин</div>
-              <div>
-                <visual-center-chart-donut-right1
-                  v-for="(well, index) in wells2"
-                  v-bind:wells2="well"
-                  :key="well"
-                ></visual-center-chart-donut-right1>
-              </div>
-            </div>
-            <div class="donut donut2">
-              <div class="indent">Фонд нагнетательных скважин</div>
-              <div>
-                <visual-center-chart-donut-right2
-                  v-for="(well, index) in wells"
-                  v-bind:wells="well"
-                  :key="well"
-                ></visual-center-chart-donut-right2>
               </div>
             </div>
           </div>
@@ -1630,9 +1649,11 @@ export default {
             var arrdataYearChart = new Array();
             var arrdataYearChart = [];
             arrdataYearChart = _.filter(data2, _.iteratee({ dzo: company }));
-                    arrdataYearChart = _.orderBy(arrdataYearChart, ["period"], ["desk"]);
-                  
-
+            arrdataYearChart = _.orderBy(
+              arrdataYearChart,
+              ["period"],
+              ["desk"]
+            );
 
             var productionPlanForChartYear = new Array();
             _.forEach(arrdataYearChart, function (item) {
@@ -1648,8 +1669,6 @@ export default {
               });
             });
 
-
-           
             //select only for year
             var factYear2 = new Array();
             _.each(factYear, function (factYear) {
@@ -1657,7 +1676,6 @@ export default {
               factYear2.push({ factYear });
             });
 
-         
             var planYear2 = new Array();
             _.each(planYear, function (planYear) {
               planYear = Math.ceil(planYear);
@@ -2015,11 +2033,39 @@ export default {
           p = { planYear: Math.ceil(item[productionPlan]) };
           planYear.push(p);
         });
+
         this.currentMonth = this.monthes3[this.month + 1];
+
+        //console.log(timestampMonthStart);
+        var selectedDay = this.selectedDay;
+        var monthBigTable;
+        var timestampToday;
+        if (selectedDay == undefined) {
+          timestampToday = new Date(
+            this.monthes2["5"] + "15" + " " + this.year + " 06:00:00 GMT+0600"
+          ).getTime();
+          this.currentMonth = this.monthes3["6"];
+          monthBigTable = "5";
+        } else {
+          timestampToday = new Date(
+            this.monthes2[this.month] +
+              this.selectedDay +
+              " " +
+              this.year +
+              " 06:00:00 GMT+0600"
+          ).getTime();
+          monthBigTable = this.month;
+        }
+
+        /*
+          
+           if (this.selectedDMY == 1) {
+            monthBigTable=this.selectedMonth-1;
+           }*/
 
         var timestampMonthStart = new Date(
           //   this.monthes2[this.selectedMonth] + //change when data upgrade
-          this.monthes2["4"] +
+          this.monthes2[monthBigTable] +
             //this.selectedDay +
             "1" +
             " " +
@@ -2034,10 +2080,12 @@ export default {
             _.inRange(
               item.__time,
               timestampMonthStart,
-              timestampMonthStart + 86400000 * dayInMonth
+              timestampToday + 86400000
             ),
           ]);
         });
+
+        console.log(timestampMonthStart);
 
         //Summ plan and fact from dzo
         var productionPlanAndFactMonth = _(dataWithMay)
@@ -2099,13 +2147,6 @@ export default {
           0
         );
 
-        var today = new Date().getDate();
-
-        //dataFromDay
-        var timestampToday = new Date(
-          //this.monthes2[this.month] +
-          this.monthes2["5"] + today + " " + this.year + " 06:00:00 GMT+0600"
-        ).getTime();
         var dataDay = [];
         dataDay = _.filter(data, _.iteratee({ __time: timestampToday }));
         dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
@@ -2413,6 +2454,7 @@ export default {
     },
   },
   async mounted() {
+    this.selectedYear = this.year;
     var productionPlan = localStorage.getItem("production-plan");
     var productionFact = localStorage.getItem("production-fact");
     if (this.company == "all") {
