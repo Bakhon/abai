@@ -47821,7 +47821,9 @@ var staticRenderFns = [
         _c("div", { staticClass: "okei okei-right" }, [_vm._v("млрд.м3")]),
         _vm._v(" "),
         _c("div", { staticClass: "digit-gaz-additional" }, [
-          _c("div", { staticClass: "digit-gaz-additional-icon" }),
+          _c("div", { staticClass: "digit-gaz-additional-icon" }, [
+            _c("img", { attrs: { src: "img/level1/arrow_down.svg", alt: "" } })
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "digit-gaz-additional-value" }, [
             _vm._v("-0,1%")
@@ -47838,7 +47840,12 @@ var staticRenderFns = [
           _c("img", {
             attrs: { src: "img/level1/digit-gaz-icon.svg", alt: "" }
           })
-        ])
+        ]),
+        _vm._v(" "),
+        _c("img", {
+          staticClass: "digit-gaz-icon-middle",
+          attrs: { src: "img/level1/gaz.svg", alt: "" }
+        })
       ])
     ])
   },
