@@ -72,7 +72,7 @@ export default {
   mounted() {
     var data = [];
     var data = this.postTitle;
-    console.log(this.postTitle);
+    //console.log(this.postTitle);
 
     var productionPlanForChart = new Array();
     _.forEach(data, function (item) {

@@ -70,7 +70,7 @@ export default {
   },
 
   created: function () {
-    //console.log(this.wells2);
+    console.log(this.wells2);
     var a = this.wells2.prod_wells_work;
     var b = this.wells2.prod_wells_idle;
     var wells = new Array(a, b);

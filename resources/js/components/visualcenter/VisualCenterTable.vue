@@ -2085,7 +2085,7 @@ export default {
           ]);
         });
 
-        console.log(timestampMonthStart);
+        //console.log(timestampMonthStart);
 
         //Summ plan and fact from dzo
         var productionPlanAndFactMonth = _(dataWithMay)

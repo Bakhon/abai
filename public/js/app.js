@@ -2978,8 +2978,8 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   },
   mounted: function mounted() {
     var data = [];
-    var data = this.postTitle;
-    console.log(this.postTitle);
+    var data = this.postTitle; //console.log(this.postTitle);
+
     var productionPlanForChart = new Array();
 
     _.forEach(data, function (item) {
@@ -3594,7 +3594,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     };
   },
   created: function created() {
-    //console.log(this.wells2);
+    console.log(this.wells2);
     var a = this.wells2.prod_wells_work;
     var b = this.wells2.prod_wells_idle;
     var wells = new Array(a, b);
@@ -6050,8 +6050,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         var dataWithMay = new Array();
         dataWithMay = _.filter(data, function (item) {
           return _.every([_.inRange(item.__time, timestampMonthStart, timestampToday + 86400000)]);
-        });
-        console.log(timestampMonthStart); //Summ plan and fact from dzo
+        }); //console.log(timestampMonthStart);
+        //Summ plan and fact from dzo
 
         var productionPlanAndFactMonth = _(dataWithMay).groupBy("dzo").map(function (dzo, id) {
           return {
@@ -6641,35 +6641,33 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'mix-chart',
+  name: "mix-chart",
+  props: ["oil"],
+
+  /*{
+  oil: Array,
+  index: Number,
+    },
+    */
   data: function data() {
     return {
-      series: [1, 2, 3, 7, 5, 6, 4],
+      series: [0],
       chartOptions: {
-        labels: ['ТОО «Казахтуркмунай»', 'ТОО «Казахойл Актобе»', 'АО «ЭмбаМунайГаз»', 'ТОО «КазГерМунай»', 'АО «Мангистаумунайгаз»', 'АО «ОзенМунайГаз»', 'АО «Каражанбасмунай»'],
+        labels: [],
         chart: {
-          type: 'donut'
+          type: "donut"
         },
-        dataLabels: {
-          enabled: false
-        },
-
-        /*убирается подсветка процентов на круге*/
-
-        /*tooltip: {
-        enabled: false},*/
-        legend: {
-          show: false
-        },
-
-        /*убирается навигация рядом с кругом*/
-        colors: ['#FF9769', '#F7BB2E', '#00A0E3', '#A3A0FB', '#E06765', '#3B86FF', '#13B062'],
+        colors: ["#FF9769", "#F7BB2E", "#00A0E3", "#A3A0FB", "#E06765", "#3B86FF", "#13B062"],
         plotOptions: {
           pie: {
-            expandOnClick: true
+            expandOnClick: false
           }
         },
         responsive: [{
@@ -6679,13 +6677,52 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
               width: 200
             },
             legend: {
-              position: 'bottom'
+              position: "bottom"
             }
           }
         }]
       }
     };
+  },
+  created: function created() {
+    var data = this.oil; // var data2 = this.index;
+
+    var oilFull;
+    var gk_fact = [];
+    var dzo = [];
+    var colors = []; //console.log(data);
+
+    _.forEach(data, function (item) {
+      gk_fact.push(Number(item.gk_fact));
+      dzo.push(item.dzo);
+      colors.push(item.colors);
+    });
+
+    console.log(colors);
+    this.series = gk_fact;
+    this.chartOptions = {
+      colors: colors,
+      dataLabels: {
+        enabled: false
+      }
+      /*убирается подсветка процентов на круге*/
+      ,
+      tooltip: {
+        enabled: true
+      },
+      legend: {
+        show: false
+      }
+      /*убирается навигация рядом с кругом*/
+      ,
+      labels: dzo
+    };
   }
+  /*created: function () {
+  this.showChart();
+  },
+        updated(){this.showChart();},*/
+
 });
 
 /***/ }),
@@ -6707,35 +6744,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
-Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'mix-chart',
+  name: "mix-chart",
+  //props: ["oil","index"],
+  props: ["oil"],
+
+  /*{
+  oil: Array,
+  index: Number,
+    },
+    */
   data: function data() {
     return {
-      series: [1, 2, 3, 7, 5, 6, 4],
+      series: [0],
       chartOptions: {
-        labels: ['ТОО «Казахтуркмунай»', 'ТОО «Казахойл Актобе»', 'АО «ЭмбаМунайГаз»', 'ТОО «КазГерМунай»', 'АО «Мангистаумунайгаз»', 'АО «ОзенМунайГаз»', 'АО «Каражанбасмунай»'],
+        labels: [],
         chart: {
-          type: 'donut'
+          type: "donut"
         },
-        dataLabels: {
-          enabled: false
-        },
-
-        /*убирается подсветка процентов на круге*/
-
-        /*tooltip: {
-        enabled: false},*/
-        legend: {
-          show: false
-        },
-
-        /*убирается навигация рядом с кругом*/
-        colors: ['#FF9769', '#F7BB2E', '#00A0E3', '#A3A0FB', '#E06765', '#3B86FF', '#13B062'],
+        colors: ["#FF9769", "#F7BB2E", "#00A0E3", "#A3A0FB", "#E06765", "#3B86FF", "#13B062"],
         plotOptions: {
           pie: {
-            expandOnClick: true
+            expandOnClick: false
           }
         },
         responsive: [{
@@ -6745,11 +6781,47 @@ Vue.component('apexchart', vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
               width: 200
             },
             legend: {
-              position: 'bottom'
+              position: "bottom"
             }
           }
         }]
       }
+    };
+  },
+  created: function created() {
+    var data = this.oil; // var data2 = this.index;
+
+    var oilFull;
+    var gk_fact = [];
+    var dzo = [];
+    var gas_fact = [];
+    var colors = []; //console.log(data);
+
+    _.forEach(data, function (item) {
+      gk_fact.push(Number(item.gk_fact));
+      dzo.push(item.dzo);
+      gas_fact.push(Number(item.gas_fact));
+      colors.push(item.colors);
+    }); //console.log(gas_fact);
+
+
+    this.series = gas_fact;
+    this.chartOptions = {
+      colors: colors,
+      dataLabels: {
+        enabled: false
+      }
+      /*убирается подсветка процентов на круге*/
+      ,
+      tooltip: {
+        enabled: true
+      },
+      legend: {
+        show: false
+      }
+      /*убирается навигация рядом с кругом*/
+      ,
+      labels: dzo
     };
   }
 });
@@ -7135,13 +7207,60 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      changeColour: "",
+      NameDzoFull: ["Всего добыча нефти с учётом доли участия АО НК КазМунайГаз", 'АО "Озенмунайгаз" (100%)', 'АО "Эмбамунайгаз" (100%)', 'АО "Каражанбасмунай" (50%)', 'ТОО "Казгермунай" (50%)', "ТОО «Тенгизшевройл»", 'АО "Мангистаумунайгаз" (50%)', 'ТОО "Казахтуркмунай" (100%)', 'ТОО "Казахойл Актобе" (50%)', '"ПетроКазахстан Инк."', '"Амангельды Газ"', "«Карачаганак Петролеум Оперейтинг б.в.»", "«Норт Каспиан Оперейтинг Компани н.в.»", "(конденсат)(100%)", "в т.ч.:газовый конденсат"],
+      changeColour1: "",
+      changeColour2: "",
+      changeColour3: "",
+      changeColour4: "",
+      changeColour5: "",
       ShowDzo: "",
       changeButtons: "No",
+      changeButtons1: "No",
+      changeButtons2: "No",
+      changeButtons3: "No",
+      changeButtons4: "No",
+      changeButtons5: "No",
       oil: "",
+      data2: "",
       timeNow: new Date().toLocaleString("ru", {
         hour: "numeric",
         minute: "numeric"
@@ -7158,7 +7277,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);      
     },*/
-    getOil: function getOil() {
+    getDataOil: function getDataOil() {
       var _this = this;
 
       var datas; //let uri = "/ru/getcurrency?fdate=" + dates + "";
@@ -7168,34 +7287,197 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         var data = response.data;
 
         if (data) {
-          _this.oil = data;
-          console.log(data);
+          localStorage.setItem("welcomePageDzo", JSON.stringify(data));
+          _this.oil = {
+            data: data
+          };
         } else {
           console.log("No data");
         }
       });
     },
-    changeButton: function changeButton(changeButtons, ShowDzo) {
+    changeButton1: function changeButton1(changeButtons, nameDzo) {
+      var company = nameDzo;
+      var dataRem = [];
       var changeColour = "color: #0F1430;";
+      var dates = [];
+      var findCompany;
+      var data2 = [];
+      var changeColour1 = changeColour;
+      var changeButtons1 = changeButtons;
+      data2 = JSON.parse(localStorage.getItem("welcomePageDzo")); //if (company=='ЭМГ'){
 
-      if (changeButtons == "Yes") {
-        /*  if (this.company == "all") {
-          this.displayHeadTables = "display: block";
-          this.displayTable = "display:none;";
-        } else {
-          this.displayTable = "display:block;";
-          this.displayHeadTables = "display: none";
-        }*/
-        this.changeButtons = "No";
-        this.changeColour = ""; //colour button
-      } else if (changeButtons == "No") {
-        /* this.displayTable = "display:none;";
-        this.displayHeadTables = "display: none";
-        this.displayChart = "display:block;";
-        this.ChartTable = "Таблица";
-        this.displayHeadTables = "display: none";*/
-        this.changeButtons = "Yes";
-        this.changeColour = changeColour; //colour button
+      if (changeButtons1 == "No") {
+        this.changeButtons1 = "Yes"; //this.changeButtons = "Yes";
+
+        findCompany = _.filter(data2, _.iteratee({
+          dzo: company
+        }));
+        /*console.log(findCompany[0].dzo);
+        if (findCompany[0].dzo==company){*/
+
+        dataRem = _.remove(data2, function (item) {
+          return item.dzo === company;
+        });
+        localStorage.setItem("welcomePageDzo", JSON.stringify(data2)); //}
+
+        this.changeColour1 = changeColour; //colour button
+      } else if (changeButtons1 == "Yes") {
+        data2.push({
+          dzo: "КТМ",
+          proportion: "100%",
+          gk_fact: "41640",
+          gas_fact: "6419",
+          colors: "#FF9769"
+        });
+        localStorage.setItem("welcomePageDzo", JSON.stringify(data2));
+        this.changeButtons1 = "No"; //   this.changeButtons = "No";
+
+        this.changeColour1 = ""; //colour button
+      }
+
+      this.oil = {
+        data: data2
+      }; //   }
+    },
+    changeButton4: function changeButton4(changeButtons, nameDzo) {
+      var company = nameDzo;
+      var dataRem = [];
+      var changeColour = "color: #0F1430;";
+      var dates = [];
+      var findCompany;
+      var data2 = [];
+      var changeColour4 = changeColour;
+      var changeButtons4 = changeButtons;
+      data2 = JSON.parse(localStorage.getItem("welcomePageDzo"));
+      console.log(data2); //if (company=='ЭМГ'){
+
+      if (changeButtons4 == "No") {
+        this.changeButtons4 = "Yes"; //this.changeButtons = "Yes";
+
+        findCompany = _.filter(data2, _.iteratee({
+          dzo: company
+        }));
+        /*console.log(findCompany[0].dzo);
+        if (findCompany[0].dzo==company){*/
+
+        dataRem = _.remove(data2, function (item) {
+          return item.dzo === company;
+        });
+        localStorage.setItem("welcomePageDzo", JSON.stringify(data2)); //}
+
+        this.changeColour4 = changeColour; //colour button
+      } else if (changeButtons4 == "Yes") {
+        data2.push({
+          dzo: "ОМГ",
+          proportion: "100%",
+          gk_fact: "1173137",
+          gas_fact: "148698",
+          colors: "#3B86FF"
+        });
+        localStorage.setItem("welcomePageDzo", JSON.stringify(data2));
+        this.changeButtons4 = "No"; //   this.changeButtons = "No";
+
+        this.changeColour4 = ""; //colour button
+      }
+
+      this.oil = {
+        data: data2
+      }; //   }
+    },
+    changeButton5: function changeButton5(changeButtons, nameDzo) {
+      var company = nameDzo;
+      var dataRem = [];
+      var changeColour = "color: #0F1430;";
+      var dates = [];
+      var findCompany;
+      var data2 = [];
+      var changeColour5 = changeColour;
+      var changeButtons5 = changeButtons;
+      data2 = JSON.parse(localStorage.getItem("welcomePageDzo"));
+      console.log(data2); //if (company=='ЭМГ'){
+
+      if (changeButtons5 == "No") {
+        this.changeButtons5 = "Yes"; //this.changeButtons = "Yes";
+
+        findCompany = _.filter(data2, _.iteratee({
+          dzo: company
+        }));
+        /*console.log(findCompany[0].dzo);
+        if (findCompany[0].dzo==company){*/
+
+        dataRem = _.remove(data2, function (item) {
+          return item.dzo === company;
+        });
+        localStorage.setItem("welcomePageDzo", JSON.stringify(data2)); //}
+
+        this.changeColour5 = changeColour; //colour button
+      } else if (changeButtons5 == "Yes") {
+        data2.push({
+          dzo: "КГМ",
+          proportion: "50%",
+          gk_fact: "61910",
+          gas_fact: "10203",
+          colors: "#13B062"
+        });
+        localStorage.setItem("welcomePageDzo", JSON.stringify(data2));
+        this.changeButtons5 = "No"; //   this.changeButtons = "No";
+
+        this.changeColour5 = ""; //colour button
+      }
+
+      this.oil = {
+        data: data2
+      }; //   }
+    },
+    changeButton: function changeButton(changeButtons, nameDzo) {
+      var company = nameDzo;
+      var dataRem = [];
+      var changeColour = "color: #0F1430;"; // var changeButtons=changeButtons;
+
+      var changeColour1 = changeColour;
+      var changeColour2 = changeColour;
+      var changeColour3 = changeColour;
+      var changeButtons1 = changeButtons;
+      var changeButtons2 = changeButtons;
+      var changeButtons3 = changeButtons;
+      var dates = [];
+      var findCompany; //localStorage.setItem("welcomePageDzo", '0');
+
+      var data2 = []; //  data2 = JSON.parse(localStorage.getItem("welcomePageDzo"));
+      //console.log(data2 + 'data2');
+      //if (data2===0){
+
+      if (Object.keys(data2).length == 0) {} //   localStorage.setItem("welcomePageDzo", JSON.stringify(data));
+
+      /* if (company == "ОМГ") {
+        if (changeButtons2 == "No") {
+                this.changeButtons2 = "Yes";
+          dataRem = _.remove(data2, (item) => item.dzo === company);
+          localStorage.setItem("welcomePageDzo", JSON.stringify(data2));
+          this.changeColour2 = changeColour; 
+        } else if (changeButtons2 == "Yes") {
+          this.changeButtons2 = "No";
+          this.changeButtons = "No";
+          this.changeColour2 = "";
+        }
+      }*/
+
+
+      if (company == "ММГ") {
+        if (changeButtons3 == "No") {
+          //  this.changeButtons = "Yes";
+          this.changeButtons3 = "Yes";
+          dataRem = _.remove(data2, function (item) {
+            return item.dzo === company;
+          });
+          localStorage.setItem("welcomePageDzo", JSON.stringify(data2));
+          this.changeColour3 = changeColour; //colour button
+        } else if (changeButtons3 == "Yes") {
+          this.changeButtons3 = "No";
+          this.changeButtons = "No";
+          this.changeColour3 = ""; //colour button
+        }
       }
     }
   },
@@ -7209,11 +7491,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this2.getOil();
+              _this2.getDataOil(); //this.changeButton("Yes");
+              //this.changeButton1("Yes");
+              //this.changeButton4("Yes");
 
-              _this2.changeButton("No");
 
-            case 2:
+            case 1:
             case "end":
               return _context.stop();
           }
@@ -47709,10 +47992,48 @@ var render = function() {
                   "div",
                   {
                     staticClass: "square-small",
-                    style: "" + _vm.changeColour,
+                    style: "" + _vm.changeColour1,
                     on: {
                       click: function($event) {
-                        return _vm.changeButton("" + _vm.changeButtons, "Yes")
+                        return _vm.changeButton1("" + _vm.changeButtons1, "КТМ")
+                      }
+                    }
+                  },
+                  [_vm._v("\n                ✓\n              ")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "org-name2 rectangle" }, [
+                _vm._v("\n              ТОО «Казахойл Актобе»\n              "),
+                _c("div", { staticClass: "icon2 icon" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "square-small",
+                    style: "" + _vm.changeColour2,
+                    on: {
+                      click: function($event) {
+                        return _vm.changeButton("" + _vm.changeButtons, "ОМГ")
+                      }
+                    }
+                  },
+                  [_vm._v("\n                ✓\n              ")]
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "org-name3 rectangle" }, [
+                _vm._v("\n              АО «ЭмбаМунайГаз»\n              "),
+                _c("div", { staticClass: "icon3 icon" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "square-small",
+                    style: "" + _vm.changeColour3,
+                    on: {
+                      click: function($event) {
+                        return _vm.changeButton("" + _vm.changeButtons, "ММГ")
                       }
                     }
                   },
@@ -47724,13 +48045,43 @@ var render = function() {
               _vm._v(" "),
               _vm._m(5),
               _vm._v(" "),
-              _vm._m(6),
+              _c("div", { staticClass: "org-name6 rectangle" }, [
+                _vm._v("\n              АО «ОзенМунайГаз»\n              "),
+                _c("div", { staticClass: "icon6 icon" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "square-small",
+                    style: "" + _vm.changeColour4,
+                    on: {
+                      click: function($event) {
+                        return _vm.changeButton4("" + _vm.changeButtons4, "ОМГ")
+                      }
+                    }
+                  },
+                  [_vm._v("\n                ✓\n              ")]
+                )
+              ]),
               _vm._v(" "),
-              _vm._m(7),
-              _vm._v(" "),
-              _vm._m(8),
-              _vm._v(" "),
-              _vm._m(9)
+              _c("div", { staticClass: "org-name7 rectangle" }, [
+                _vm._v("\n              ТОО «КазГерМунай»\n              "),
+                _c("div", { staticClass: "icon7 icon" }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    staticClass: "square-small",
+                    style: "" + _vm.changeColour5,
+                    on: {
+                      click: function($event) {
+                        return _vm.changeButton5("" + _vm.changeButtons5, "КГМ")
+                      }
+                    }
+                  },
+                  [_vm._v("\n                ✓\n              ")]
+                )
+              ])
             ])
           ]),
           _vm._v(" "),
@@ -47762,7 +48113,7 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "right-bar col-md-5 col-lg-5" }, [
-          _vm._m(10),
+          _vm._m(6),
           _vm._v(" "),
           _c("div", { staticClass: "info-panel" }, [
             _c("div", { staticClass: "right-side" }, [
@@ -47775,7 +48126,12 @@ var render = function() {
                     "\n              Добыча нефти и конденсата\n              "
                   ),
                   _vm._v(" "),
-                  _c("welcome-chart-donut-right1"),
+                  _vm._l(_vm.oil, function(serial, index) {
+                    return _c("welcome-chart-donut-right1", {
+                      key: serial,
+                      attrs: { oil: serial }
+                    })
+                  }),
                   _vm._v(" "),
                   _c("div", { staticClass: "org-name11 rectangle2" }, [
                     _vm._v(
@@ -47783,7 +48139,7 @@ var render = function() {
                     )
                   ])
                 ],
-                1
+                2
               ),
               _vm._v(" "),
               _c(
@@ -47794,7 +48150,12 @@ var render = function() {
                   _vm._v(
                     "\n              Добыча природного газа\n              "
                   ),
-                  _c("welcome-chart-donut-right2"),
+                  _vm._l(_vm.oil, function(serial, index) {
+                    return _c("welcome-chart-donut-right2", {
+                      key: serial,
+                      attrs: { oil: serial }
+                    })
+                  }),
                   _vm._v(" "),
                   _c("div", { staticClass: "org-name22 rectangle2" }, [
                     _vm._v(
@@ -47802,7 +48163,7 @@ var render = function() {
                     )
                   ])
                 ],
-                1
+                2
               )
             ]),
             _vm._v(" "),
@@ -47951,28 +48312,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "org-name2 rectangle" }, [
-      _vm._v("\n              ТОО «Казахойл Актобе»\n              "),
-      _c("div", { staticClass: "icon2 icon" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "org-name3 rectangle" }, [
-      _vm._v("\n              АО «ЭмбаМунайГаз»\n              "),
-      _c("div", { staticClass: "icon3 icon" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "org-name4 rectangle" }, [
       _vm._v("\n              АО «Каражанбасмунай»\n              "),
       _c("div", { staticClass: "icon4 icon" }),
@@ -47987,28 +48326,6 @@ var staticRenderFns = [
     return _c("div", { staticClass: "org-name5 rectangle" }, [
       _vm._v("\n              АО «Мангистаумунайгаз»\n              "),
       _c("div", { staticClass: "icon5 icon" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "org-name6 rectangle" }, [
-      _vm._v("\n              АО «ОзенМунайГаз»\n              "),
-      _c("div", { staticClass: "icon6 icon" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "org-name7 rectangle" }, [
-      _vm._v("\n              ТОО «КазГерМунай»\n              "),
-      _c("div", { staticClass: "icon7 icon" }),
       _vm._v(" "),
       _c("div", { staticClass: "square-small" }, [_vm._v("✓")])
     ])
