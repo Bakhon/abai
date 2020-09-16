@@ -262,6 +262,36 @@
         margin-top: 4px;
     }
 
+    
+#sidebar-container {
+    margin-top: 15px;
+    margin-left: 20px;
+}
+
+.marquee {
+ /* width: 450px; */
+ margin: 0 auto;
+ white-space: nowrap;
+ overflow: hidden;
+ box-sizing: border-box;
+ /* border: 1px dotted #800000; */
+}
+
+.marquee span {
+ display: inline-block;
+ padding-left: 100%;
+ animation: marquee 15s linear infinite;
+}
+
+.marquee span:hover {
+ animation-play-state: paused
+}
+
+@keyframes marquee {
+ 0%   { transform: translate(0, 0); }
+ 100% { transform: translate(-100%, 0); }
+}
+
 
     .row {
         flex-wrap: nowrap !important;
