@@ -37,6 +37,7 @@ class EconomicController extends Controller
         $builder12 = $client->query('economic_2020v4', Granularity::DAY);
         $builder13 = $client->query('economic_2020v4', Granularity::MONTH);
         $builder14 = $client->query('economic_2020v4', Granularity::YEAR);
+        $builder15 = $client->query('economic_2020v4', Granularity::MONTH);
 
         if ($request->has('org')) {
             $builder
@@ -161,6 +162,17 @@ class EconomicController extends Controller
                 ->where('org_id2', '=', $request->org)
                 ->where('Operating_profit', '!=', '0')
                 ->orderBy('Operating_profit', 'desc');
+
+            $builder15
+                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                    $extractionBuilder->timeFormat('yyyy-MM');
+                })
+                ->select('profitability')
+                ->select('price_export_1')
+                ->select('org_id2')
+                ->sum('liquid')
+                ->where('org_id2', '=', $request->org);
         } else {
             $builder
                 ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
@@ -262,6 +274,14 @@ class EconomicController extends Controller
                 ->sum("Operating_profit")
                 ->where('Operating_profit', '!=', '0')
                 ->orderBy('Operating_profit', 'desc');
+
+            $builder15
+                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                    $extractionBuilder->timeFormat('yyyy-MM');
+                })
+                ->select('profitability')
+                ->sum('liquid');
         }
 
 
@@ -279,6 +299,7 @@ class EconomicController extends Controller
         $result12 = $builder12->groupBy();
         $result13 = $builder13->groupBy();
         $result14 = $builder14->groupBy();
+        $result15 = $builder15->groupBy();
 
         $array = $result->data();
         $array2 = $result2->data();
@@ -294,6 +315,7 @@ class EconomicController extends Controller
         $array12 = $result12->data();
         $array13 = $result13->data();
         $array14 = $result14->data();
+        $array15 = $result15->data();
 
 
         $data['count'] = [];
@@ -317,8 +339,10 @@ class EconomicController extends Controller
         $dataChart3['uwi'] = [];
         $dataChart3['Operating_profit'] = [];
 
-        $dataChart4['uwi'] = [];
-        $dataChart4['Operating_profit'] = [];
+        $dataChart4['dt'] = [];
+        $dataChart4['profitable'] = [];
+        $dataChart4['profitless_cat_1'] = [];
+        $dataChart4['profitless_cat_2'] = [];
 
         foreach ($array6 as $item) {
             $well = [];
@@ -382,15 +406,28 @@ class EconomicController extends Controller
             }
         }
 
-        for ($i = 0; $i < 20; $i++) {
+        $reversed14 = array_reverse($array14);
+        for ($i = 0; $i < 10; $i++) {
+            array_push($dataChart3['uwi'], $reversed14[$i]['uwi']);
+            array_push($dataChart3['Operating_profit'], $reversed14[$i]['Operating_profit']/1000);
+        }
+
+        for ($i = 0; $i < 10; $i++) {
             array_push($dataChart3['uwi'], $array14[$i]['uwi']);
             array_push($dataChart3['Operating_profit'], $array14[$i]['Operating_profit']/1000);
         }
 
-        $reversed14 = array_reverse($array14);
-        for ($i = 0; $i < 20; $i++) {
-            array_push($dataChart4['uwi'], $reversed14[$i]['uwi']);
-            array_push($dataChart4['Operating_profit'], $reversed14[$i]['Operating_profit']/1000);
+        foreach ($array15 as $item) {
+            if (!in_array($item['dt'], $dataChart4['dt'])) {
+                array_push($dataChart4['dt'], $item['dt']);
+            }
+            if ($item['profitability'] == 'profitable') {
+                array_push($dataChart4['profitable'], $item['liquid']/1000);
+            } elseif ($item['profitability'] == 'profitless_cat_2') {
+                array_push($dataChart4['profitless_cat_2'], $item['liquid']/1000);
+            } elseif ($item['profitability'] == 'profitless_cat_1') {
+                array_push($dataChart4['profitless_cat_1'], $item['liquid']/1000);
+            }
         }
 
         $averageProfitlessCat1Month = count($array4);

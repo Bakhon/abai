@@ -2520,10 +2520,10 @@ __webpack_require__.r(__webpack_exports__);
           }
         },
         chart: {
-          stacked: true,
+          stacked: false,
           foreColor: '#FFFFFF'
         },
-        colors: ['#13B062'],
+        colors: ['#AB130E', '#13B062'],
         dataLabels: {
           enabled: false
         },
@@ -2537,7 +2537,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         yaxis: {
           title: {
-            text: 'Топ 20 рентабельных скважин'
+            text: 'Скважины'
           }
         },
         fill: {
@@ -2556,18 +2556,24 @@ __webpack_require__.r(__webpack_exports__);
       series: [{
         name: 'Топ 20 рентабельных скважин',
         data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }, {
+        name: 'Топ 20 нерентабельных скважин',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }]
     };
   },
   methods: {
     setValue: function setValue(value) {
       this.series = [{
+        name: 'Топ 20 нерентабельных скважин',
+        data: [value.Operating_profit[0], value.Operating_profit[1], value.Operating_profit[2], value.Operating_profit[3], value.Operating_profit[4], value.Operating_profit[5], value.Operating_profit[6], value.Operating_profit[7], value.Operating_profit[8], value.Operating_profit[9]]
+      }, {
         name: 'Топ 20 рентабельных скважин',
-        data: value.Operating_profit
+        data: [value.Operating_profit[10], value.Operating_profit[11], value.Operating_profit[12], value.Operating_profit[13], value.Operating_profit[14], value.Operating_profit[15], value.Operating_profit[16], value.Operating_profit[17], value.Operating_profit[18], value.Operating_profit[19]]
       }];
       this.chartOptions = {
         xaxis: {
-          categories: value.uwi
+          categories: [value.uwi[0], value.uwi[1], value.uwi[2], value.uwi[3], value.uwi[4], value.uwi[5], value.uwi[6], value.uwi[7], value.uwi[8], value.uwi[9], value.uwi[10], value.uwi[11], value.uwi[12], value.uwi[13], value.uwi[14], value.uwi[15], value.uwi[16], value.uwi[17], value.uwi[18], value.uwi[19]]
         }
       };
     }
@@ -2588,74 +2594,101 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
 //
 //
 //
+var ru = __webpack_require__(/*! apexcharts/dist/locales/ru.json */ "./node_modules/apexcharts/dist/locales/ru.json");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'ColumnExample',
+  name: 'MixedExample',
   data: function data() {
+    var _chartOptions;
+
     return {
-      chartOptions: {
-        plotOptions: {
-          bar: {
-            horizontal: true,
-            endingShape: 'rounded',
-            columnWidth: '55%'
-          }
-        },
+      chartOptions: (_chartOptions = {
         chart: {
-          stacked: true,
-          foreColor: '#FFFFFF'
-        },
-        colors: ['#AB130E'],
-        dataLabels: {
-          enabled: false
+          stacked: false
         },
         stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
+          width: [0, 2, 5],
+          curve: 'smooth'
         },
-        xaxis: {
-          categories: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
-        },
-        yaxis: {
-          title: {
-            text: 'Топ 20 нерентабельных скважин'
+        colors: ['#13B062', '#F7BB2E', '#AB130E']
+      }, _defineProperty(_chartOptions, "chart", {
+        stacked: true,
+        foreColor: '#FFFFFF',
+        locales: [ru],
+        defaultLocale: 'ru'
+      }), _defineProperty(_chartOptions, "plotOptions", {
+        bar: {
+          columnWidth: '50%'
+        }
+      }), _defineProperty(_chartOptions, "labels", ['01/01/2003', '02/01/2003', '03/01/2003', '04/01/2003', '05/01/2003', '06/01/2003', '07/01/2003', '08/01/2003', '09/01/2003', '10/01/2003', '11/01/2003']), _defineProperty(_chartOptions, "markers", {
+        size: 0
+      }), _defineProperty(_chartOptions, "xaxis", {
+        type: 'datetime'
+      }), _defineProperty(_chartOptions, "yaxis", {
+        labels: {
+          formatter: function formatter(value) {
+            return Math.round(value);
           }
         },
-        fill: {
-          opacity: 1
+        title: {
+          text: 'Добыча жидкости'
         },
-        tooltip: {
-          y: {
-            formatter: function formatter(val) {
+        min: 0
+      }), _defineProperty(_chartOptions, "tooltip", {
+        shared: true,
+        intersect: false,
+        y: {
+          formatter: function formatter(y) {
+            if (typeof y !== "undefined") {
               return new Intl.NumberFormat('en-IN', {
                 maximumSignificantDigits: 3
-              }).format(val) + " тыс. тенге";
+              }).format(y.toFixed(0)) + " тыс. тонн";
             }
+
+            return y;
           }
         }
-      },
+      }), _chartOptions),
       series: [{
-        name: 'Топ 20 нерентабельных скважин',
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        name: 'Рентабельные скважины',
+        type: 'area',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }, {
+        name: 'Условно-рентабельные скважины',
+        type: 'area',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }, {
+        name: 'Нерентабельные скважины',
+        type: 'area',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }]
     };
   },
   methods: {
     setValue: function setValue(value) {
       this.series = [{
-        name: 'Топ 20 нерентабельных скважин',
-        data: value.Operating_profit
+        name: 'Рентабельные скважины',
+        type: 'area',
+        data: value.profitable
+      }, {
+        name: 'Условно-рентабельные скважины',
+        type: 'area',
+        data: value.profitless_cat_2
+      }, {
+        name: 'Нерентабельные скважины',
+        type: 'area',
+        data: value.profitless_cat_1
       }];
       this.chartOptions = {
-        xaxis: {
-          categories: value.uwi
-        }
+        labels: value.dt
       };
     }
   },
@@ -2679,7 +2712,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_js_modal__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_js_modal__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_table_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-table-dynamic */ "./node_modules/vue-table-dynamic/dist/index.min.js");
 /* harmony import */ var vue_table_dynamic__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_table_dynamic__WEBPACK_IMPORTED_MODULE_1__);
-//
 //
 //
 //
@@ -5003,7 +5035,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*	if (days[0].length > 0) {
       for (let i = days[0].length; i < 7; i++) {
       days[0].unshift('');
-      	}
+      }
       }*/
 
 
@@ -7452,7 +7484,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       /* if (company == "ОМГ") {
         if (changeButtons2 == "No") {
-                this.changeButtons2 = "Yes";
+               this.changeButtons2 = "Yes";
           dataRem = _.remove(data2, (item) => item.dzo === company);
           localStorage.setItem("welcomePageDzo", JSON.stringify(data2));
           this.changeColour2 = changeColour; 
@@ -12051,7 +12083,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nbody[data-v-79f63cb3] {\r\n  color: #ffffff;\n}\r\n", ""]);
+exports.push([module.i, "\nbody[data-v-79f63cb3] {\n  color: #ffffff;\n}\n", ""]);
 
 // exports
 
@@ -12070,7 +12102,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.title[data-v-763e61b8],\r\n.subtitle[data-v-763e61b8],\r\n.drag-area-title[data-v-763e61b8] {\r\n  color: white;\n}\n.table[data-v-763e61b8] {\r\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\r\n  background-color: #20274e !important;\r\n  border-radius: 15px;\r\n  flex: 0 0 24%;\r\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 20px;\r\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\r\n  /* background-color: #0F1430;\r\n  border: 1px solid #0D2B4D; */\n}\r\n", ""]);
+exports.push([module.i, "\n.title[data-v-763e61b8],\n.subtitle[data-v-763e61b8],\n.drag-area-title[data-v-763e61b8] {\n  color: white;\n}\n.table[data-v-763e61b8] {\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\n  background-color: #20274e !important;\n  border-radius: 15px;\n  flex: 0 0 24%;\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\n  color: #fff;\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\n  color: #fff;\n  font-size: 20px;\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\n  /* background-color: #0F1430;\n  border: 1px solid #0D2B4D; */\n}\n", ""]);
 
 // exports
 
@@ -44805,7 +44837,7 @@ var render = function() {
       _c("apexchart", {
         attrs: {
           height: "350",
-          type: "bar",
+          type: "line",
           options: _vm.chartOptions,
           series: _vm.series
         }
@@ -45133,19 +45165,6 @@ var render = function() {
           { staticClass: "col-xl-6 col-lg-6 col-md-5 col-sm-12" },
           [
             _c("h5", { staticClass: "subtitle text-wrap" }, [
-              _vm._v("Распределение скважин по типу рентабельности")
-            ]),
-            _vm._v(" "),
-            _c("chart1-component")
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "col-xl-6 ccol-lg-6 col-md-5 col-sm-12" },
-          [
-            _c("h5", { staticClass: "subtitle text-wrap" }, [
               _vm._v(
                 "Распределение добычи нефти по типу рентабельности скважин"
               )
@@ -45161,10 +45180,10 @@ var render = function() {
           { staticClass: "col-xl-6 ccol-lg-6 col-md-5 col-sm-12" },
           [
             _c("h5", { staticClass: "subtitle text-wrap" }, [
-              _vm._v("Топ 20 рентабельных скважин")
+              _vm._v("Распределение скважин по типу рентабельности")
             ]),
             _vm._v(" "),
-            _c("chart3-component")
+            _c("chart1-component")
           ],
           1
         ),
@@ -45174,10 +45193,25 @@ var render = function() {
           { staticClass: "col-xl-6 ccol-lg-6 col-md-5 col-sm-12" },
           [
             _c("h5", { staticClass: "subtitle text-wrap" }, [
-              _vm._v("Топ 20 нерентабельных скважин")
+              _vm._v(
+                "Распределение добычи жидкости по типу рентабельности скважин"
+              )
             ]),
             _vm._v(" "),
             _c("chart4-component")
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-xl-6 ccol-lg-6 col-md-5 col-sm-12" },
+          [
+            _c("h5", { staticClass: "subtitle text-wrap" }, [
+              _vm._v("Рейтинг скважин")
+            ]),
+            _vm._v(" "),
+            _c("chart3-component")
           ],
           1
         )
@@ -62307,8 +62341,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

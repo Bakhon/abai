@@ -104,21 +104,20 @@
     <div class="main container-fluid">
       <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-5 col-sm-12">
-          <h5 class="subtitle text-wrap">Распределение скважин по типу рентабельности</h5>
-
-          <chart1-component></chart1-component>
-        </div>
-        <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
           <h5 class="subtitle text-wrap">Распределение добычи нефти по типу рентабельности скважин</h5>
           <chart2-component></chart2-component>
         </div>
         <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-          <h5 class="subtitle text-wrap">Топ 20 рентабельных скважин</h5>
-          <chart3-component></chart3-component>
+          <h5 class="subtitle text-wrap">Распределение скважин по типу рентабельности</h5>
+          <chart1-component></chart1-component>
         </div>
         <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-          <h5 class="subtitle text-wrap">Топ 20 нерентабельных скважин</h5>
+          <h5 class="subtitle text-wrap">Распределение добычи жидкости по типу рентабельности скважин</h5>
           <chart4-component></chart4-component>
+        </div>
+        <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
+          <h5 class="subtitle text-wrap">Рейтинг скважин</h5>
+          <chart3-component></chart3-component>
         </div>
       </div>
     </div>
