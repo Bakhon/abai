@@ -584,9 +584,9 @@
               <div class="visual-center-center">
                 <div class="visual-center-bottom">
                   <div class="visual-center-string1">Отключение РП:</div>
-                  <div class="visual-center-string2"></div>
+                  <div class="visual-center-string2"><div class="marquee"><span>Отключение РП: 12.09.2020 г.</span></div></div>
                   <div class="visual-center-string1">Отключение скважин:</div>
-                  <div class="visual-center-string2"></div>
+                  <div class="visual-center-string2"><div class="marquee"><span>Внимание коллеги! Отключение скважин ожидается 12.09.2020 г.</span></div></div>
                   <div class="visual-center-string1">Выбросы и разливы:</div>
                   <div class="visual-center-string2"></div>
                   <div class="visual-center-string1">Прочие:</div>
@@ -2464,4 +2464,14 @@ export default {
     localStorage.setItem("selectedDMY", "undefined");
   },
 };
+
+function animate(id) {
+  var node = document.getElementById(id).childNodes[0];
+  var text = node.data;
+  setInterval(function () {
+   text = text.substring(1) + text[0];
+   node.data = text;
+  }, 125); //интервал прокрутки, мс
+ }
+ window.addEventListener('load', function (e) { animate('marqueeline'); }, false);
 </script>

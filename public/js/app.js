@@ -6412,6 +6412,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   }
 });
 
+function animate(id) {
+  var node = document.getElementById(id).childNodes[0];
+  var text = node.data;
+  setInterval(function () {
+    text = text.substring(1) + text[0];
+    node.data = text;
+  }, 125); //интервал прокрутки, мс
+}
+
+window.addEventListener('load', function (e) {
+  animate('marqueeline');
+}, false);
+
 /***/ }),
 
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/welcome/WelcomeChartBarBottom1.vue?vue&type=script&lang=js&":
@@ -47686,13 +47699,25 @@ var staticRenderFns = [
         _vm._v("Отключение РП:")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "visual-center-string2" }),
+      _c("div", { staticClass: "visual-center-string2" }, [
+        _c("div", { staticClass: "marquee" }, [
+          _c("span", [_vm._v("Отключение РП: 12.09.2020 г.")])
+        ])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "visual-center-string1" }, [
         _vm._v("Отключение скважин:")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "visual-center-string2" }),
+      _c("div", { staticClass: "visual-center-string2" }, [
+        _c("div", { staticClass: "marquee" }, [
+          _c("span", [
+            _vm._v(
+              "Внимание коллеги! Отключение скважин ожидается 12.09.2020 г."
+            )
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "visual-center-string1" }, [
         _vm._v("Выбросы и разливы:")
