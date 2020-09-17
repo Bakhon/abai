@@ -44,6 +44,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Auth::routes();
         Route::get('/home', 'HomeController@index')->name('home');
         Route::resource('oildaily','OilDailyController');
+        Route::resource('watermeasurement','WaterMeasurementController');
         Route::get('/maps', 'DruidController@maps')->name('maps');
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');

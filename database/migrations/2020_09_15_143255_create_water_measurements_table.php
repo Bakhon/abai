@@ -29,6 +29,7 @@ class CreateWaterMeasurementsTable extends Migration
             $table->float('calcium_ion', 8, 2)->nullable();
             $table->float('magnesium_ion', 8, 2)->nullable();
             $table->float('potassium_ion_sodium_ion', 8, 2)->nullable();
+            $table->float('density', 8, 2)->nullable();
             $table->float('ph', 8, 2)->nullable();
             $table->float('mineralization', 8, 2)->nullable();
             $table->float('total_hardness', 8, 2)->nullable();
