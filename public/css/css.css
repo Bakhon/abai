@@ -393,7 +393,7 @@ a.collapsed {
 .assets3 {
     margin-top: 15px;
     border: none;
-    height: 15px;
+    height: 10px;
     color: white;
     background-color: #0d092a;
 }
@@ -866,6 +866,37 @@ li.circle-2:hover {
     border-left-color: #47d660;
     border-left-width: 10px;
     margin-left: 5px;
+}
+
+span.logout {
+    margin-left: -8px;
+}
+
+ul.dropdown-child2 {
+    position: absolute;
+    margin-left: -34px;
+}
+
+.dropdown2 {
+    position: relative;
+}
+
+.dropdown2:hover .child2 {
+    display: block;
+}
+
+.child2 {
+    background-color: #20274e;
+    display: none;
+    width: 60px;
+    height: 24px;
+}
+
+.child2 a {
+    position: relative;
+    color: white;
+    padding: 5px 8px;
+    display: block;
 }
 
 ul.dropdown-child {

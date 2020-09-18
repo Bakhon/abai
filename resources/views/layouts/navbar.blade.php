@@ -4,7 +4,7 @@
     </button>
     <a href="{{url('/')}}">
         <div class="logo"> </div>
-          <a href="#top" data-toggle="sidebar-colapse">
+        <a href="#top" data-toggle="sidebar-colapse">
             <i class="fas fa-bars fa-lg"></i>
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -28,79 +28,87 @@
                                     </a>
                                 </li>
                             </ul>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/gtmscor">
-                                    <span class="workTypeText">ГТМ скорпион</span>
-                                </a>
-                            </li>
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/gtmscor">
+                                <span class="workTypeText">ГТМ скорпион</span>
+                            </a>
                         </li>
-                    </ul>
                 </li>
-                <li class="nav-item active dropdown">
-                    <img src="{{ asset('img/level1/icon_buren.svg') }}" width="15" height="15" class="workTypeLogo">
-                    <a href=""><span class="workTypeText">Бурение</span></a>
-                </li>
-                <li class="nav-item active dropdown">
-                    <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
-                    <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Добыча</span></a>
-                    <ul class="dropdown-child">
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/production">
-                                <span class="workTypeText">МРП</span>
-                            </a>
-                        </li>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/mfond">
-                                <span class="workTypeText">Мехфонд</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item active  dropdown">
-                    <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
-                    <a href="{{url('/')}}/ru/facilities"><span class="workTypeText">Обустройство</span></a>
-                    <ul class="dropdown-child">
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/oil">
-                                <span class="workTypeText">Добыча нефти</span>
-                            </a>
-                        </li>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/hydraulics">
-                                <span class="workTypeText">Гидравлика</span>
-                            </a>
-                        </li>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/complications">
-                                <span class="workTypeText">Осложнения в системе сбора</span>
-                            </a>
-                        </li>
+            </ul>
+            </li>
+            <li class="nav-item active dropdown">
+                <img src="{{ asset('img/level1/icon_buren.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href=""><span class="workTypeText">Бурение</span></a>
+            </li>
+            <li class="nav-item active dropdown">
+                <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Добыча</span></a>
+                <ul class="dropdown-child">
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/production">
+                            <span class="workTypeText">МРП</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/mfond">
+                            <span class="workTypeText">Мехфонд</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item active  dropdown">
+                <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href="{{url('/')}}/ru/facilities"><span class="workTypeText">Обустройство</span></a>
+                <ul class="dropdown-child">
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/oil">
+                            <span class="workTypeText">Добыча нефти</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/hydraulics">
+                            <span class="workTypeText">Гидравлика</span>
+                        </a>
+                    </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/complications">
+                            <span class="workTypeText">Осложнения в системе сбора</span>
+                        </a>
+                    </li>
 
 
-                    </ul>
-                </li>
-                <li class="nav-item active">
-                    <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
-                    <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
-                </li>
-                <li class="nav-item active">
-                    <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
-                </li>
+                </ul>
+            </li>
+            <li class="nav-item active">
+                <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+                <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+            </li>
+            <li class="nav-item active">
+                <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
+            </li>
             </ul>
             <div class="form-inline my-2 my-lg-0">
                 <li class="nav-item">
                     <i class="fas fa-bell fa-lg"></i>
                 </li>
-                @if (Auth::guest())
-                <li class="nav-item">
+                {{--@if (Auth::guest())--}}
+                <li class="nav-item active dropdown2">
                     <a href="{{ route('login') }}"><img src="{{ asset('img/level1/icon_user.svg') }}" width="30" height="30" alt=""></a>
+                    <ul class="dropdown-child2">
+                        <li class="nav-item child2">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: one;">
+                                {{ csrf_field() }}
+
+                                <a class="logout" onClick="document.forms['logout-form'].submit();" href="#"> Выйти</a>
+                            </form>
+                        </li>
+                        <li class="nav-item child">
+                        </li>
+                    </ul>
                 </li>
-                @else
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: one;">
-                    {{ csrf_field() }}
-                    <button type="submit">Logout</button>
-                </form>
-                @endif
+                {{-- @else--}}
+
+                {{--@endif--}}
                 <li class="nav-item">
                     <i class="fas fa-ellipsis-v"></i>
                 </li>
