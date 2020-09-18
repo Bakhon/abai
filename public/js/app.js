@@ -45219,7 +45219,7 @@ var render = function() {
           { staticClass: "col-xl-6 ccol-lg-6 col-md-5 col-sm-12" },
           [
             _c("h5", { staticClass: "subtitle text-wrap" }, [
-              _vm._v("Рейтинг скважин")
+              _vm._v("Рейтинг ТОП 10 прибыльных и убыточных скважин")
             ]),
             _vm._v(" "),
             _c("chart3-component")
