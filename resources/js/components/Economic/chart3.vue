@@ -33,21 +33,21 @@ export default {
         xaxis: {
           categories: ['', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', ''],
         },
-        yaxis: {
-          title: {
-            text: 'Скважины'
-          }
-        },
+        // yaxis: {
+        //   title: {
+        //     text: 'Скважины'
+        //   }
+        // },
         fill: {
           opacity: 1
         },
-        tooltip: {
-          y: {
-            formatter: function(val) {
-              return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(val) + " тыс. тенге"
-            }
-          }
-        }
+        // tooltip: {
+        //   y: {
+        //     formatter: function(val) {
+        //       return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(val) + " тыс. тенге"
+        //     }
+        //   }
+        // }
       },
       series: [{
         name: 'Топ 20 рентабельных скважин',
@@ -62,7 +62,7 @@ export default {
     setValue: function(value) {
         this.series = [
             {
-                name: 'Топ 20 нерентабельных скважин',
+                name: 'Топ 10 нерентабельных скважин',
                 data: [
                     value.Operating_profit[0],
                     value.Operating_profit[1],
@@ -77,7 +77,7 @@ export default {
                 ]
             },
             {
-                name: 'Топ 20 рентабельных скважин',
+                name: 'Топ 10 рентабельных скважин',
                 data: [
                     value.Operating_profit[10],
                     value.Operating_profit[11],

@@ -2535,23 +2535,21 @@ __webpack_require__.r(__webpack_exports__);
         xaxis: {
           categories: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         },
-        yaxis: {
-          title: {
-            text: 'Скважины'
-          }
-        },
+        // yaxis: {
+        //   title: {
+        //     text: 'Скважины'
+        //   }
+        // },
         fill: {
           opacity: 1
-        },
-        tooltip: {
-          y: {
-            formatter: function formatter(val) {
-              return new Intl.NumberFormat('en-IN', {
-                maximumSignificantDigits: 3
-              }).format(val) + " тыс. тенге";
-            }
-          }
-        }
+        } // tooltip: {
+        //   y: {
+        //     formatter: function(val) {
+        //       return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(val) + " тыс. тенге"
+        //     }
+        //   }
+        // }
+
       },
       series: [{
         name: 'Топ 20 рентабельных скважин',
@@ -2565,10 +2563,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     setValue: function setValue(value) {
       this.series = [{
-        name: 'Топ 20 нерентабельных скважин',
+        name: 'Топ 10 нерентабельных скважин',
         data: [value.Operating_profit[0], value.Operating_profit[1], value.Operating_profit[2], value.Operating_profit[3], value.Operating_profit[4], value.Operating_profit[5], value.Operating_profit[6], value.Operating_profit[7], value.Operating_profit[8], value.Operating_profit[9]]
       }, {
-        name: 'Топ 20 рентабельных скважин',
+        name: 'Топ 10 рентабельных скважин',
         data: [value.Operating_profit[10], value.Operating_profit[11], value.Operating_profit[12], value.Operating_profit[13], value.Operating_profit[14], value.Operating_profit[15], value.Operating_profit[16], value.Operating_profit[17], value.Operating_profit[18], value.Operating_profit[19]]
       }];
       this.chartOptions = {
