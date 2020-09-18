@@ -116,7 +116,7 @@
           <chart4-component></chart4-component>
         </div>
         <div class="col-xl-6 ccol-lg-6 col-md-5 col-sm-12">
-          <h5 class="subtitle text-wrap">Рейтинг скважин</h5>
+          <h5 class="subtitle text-wrap">Рейтинг ТОП 10 прибыльных и убыточных скважин</h5>
           <chart3-component></chart3-component>
         </div>
       </div>
