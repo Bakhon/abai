@@ -874,7 +874,7 @@ span.logout {
 
 ul.dropdown-child2 {
     position: absolute;
-    margin-left: -34px;
+    margin-left: -54px;
 }
 
 .dropdown2 {
@@ -1428,6 +1428,7 @@ h2.subtitle {
     z-index: 11111;
 }
 
-#li {
+.nav-item2 {
+    margin-left: 10px;
     list-style-type: none;
 }
