@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class WaterMeasurement extends Model
 {
+    protected $table = 'water_measurements';
+
+    protected $fillable = [
+        'date'
+    ];
+
     public function other_objects()
     {
         return $this->hasOne('App\Models\OtherObjects','id','other_objects_id')->withDefault();

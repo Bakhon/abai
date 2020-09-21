@@ -49,6 +49,21 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
         Route::get('/constructor', 'DruidController@constructor')->name('constructor');
+
+
+        //wm
+        Route::resource('watermeasurement','WaterMeasurementController');
+        Route::get('/getotherobjects', 'WaterMeasurementController@getOtherObjects');
+        Route::get('/getngdu', 'WaterMeasurementController@getNgdu');
+        Route::post('/getcdng', 'WaterMeasurementController@getCdng');
+        Route::post('/getgu', 'WaterMeasurementController@getGu');
+        Route::post('/getzu', 'WaterMeasurementController@getZu');
+        Route::post('/getwell', 'WaterMeasurementController@getWell');
+        Route::get('/getwbs', 'WaterMeasurementController@getWaterBySulin');
+        Route::get('/getsrb', 'WaterMeasurementController@getSulphateReducingBacteria');
+        Route::get('/gethob', 'WaterMeasurementController@getHydrocarbonOxidizingBacteria');
+        Route::get('/gethb', 'WaterMeasurementController@getThionicBacteria');
+
     });
     Auth::routes([
         'reset' => false,
