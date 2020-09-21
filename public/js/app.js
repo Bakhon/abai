@@ -3114,6 +3114,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3121,8 +3123,18 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   props: ["postTitle"],
   data: function data() {
     return {
+      begin: "",
+      end: "",
       chartOptions: {
+        yaxis: {
+          labels: {
+            formatter: function formatter(val) {
+              return val.toFixed(0);
+            }
+          }
+        },
         chart: {
+          scaleIntegersOnly: true,
           toolbar: {
             show: false,
             autoSelected: "pan"
@@ -3215,6 +3227,11 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
       value.push(item.value);
     });
 
+    this.begin = dates[0];
+
+    var end = _.takeRight(dates, 1);
+
+    this.end = end[0];
     this.chartOptions = {
       labels: dates
     };
@@ -3249,6 +3266,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3256,7 +3275,16 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   props: ["postTitles"],
   data: function data() {
     return {
+      begin: "",
+      end: "",
       chartOptions: {
+        yaxis: {
+          labels: {
+            formatter: function formatter(val) {
+              return val.toFixed(0);
+            }
+          }
+        },
         chart: {
           toolbar: {
             show: false,
@@ -3347,9 +3375,14 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
 
     _.forEach(data.data, function (item) {
       dates.push(item.dates);
-      value.push(new Intl.NumberFormat('ru-RU').format(item.value));
+      value.push(new Intl.NumberFormat("ru-RU").format(item.value));
     });
 
+    this.begin = dates[0];
+
+    var end = _.takeRight(dates, 1);
+
+    this.end = end[0];
     this.chartOptions = {
       labels: dates
     };
@@ -3594,7 +3627,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
     };
   },
   created: function created() {
-    console.log(this.wells2);
+    //console.log(this.wells2);
     var a = this.wells2.prod_wells_work;
     var b = this.wells2.prod_wells_idle;
     var wells = new Array(a, b);
@@ -3994,10 +4027,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      period: "7",
+      periodUSD: "7",
       company: "",
       timeSelect: "",
       oilNow: "",
@@ -4016,7 +4069,8 @@ __webpack_require__.r(__webpack_exports__);
       currencyChart: "",
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
-      currencyNowUsd: ""
+      currencyNowUsd: "",
+      monthes2: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     };
   },
   updated: function updated() {},
@@ -4025,8 +4079,8 @@ __webpack_require__.r(__webpack_exports__);
     timeSelect2: function timeSelect2(select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
-      this.getOilNow(this.timeSelect);
-      this.getCurrencyPeriod(this.timeSelect);
+      this.getOilNow(this.timeSelect, this.period);
+      this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     },
     getCurrencyNow: function getCurrencyNow(dates) {
       var _this = this;
@@ -4045,11 +4099,11 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    getCurrencyPeriod: function getCurrencyPeriod(dates) {
+    getCurrencyPeriod: function getCurrencyPeriod(dates, item2) {
       var _this2 = this;
 
       var dates = dates;
-      var uri = "/ru/getcurrencyperiod?dates=" + dates + "";
+      var uri = "/ru/getcurrencyperiod?dates=" + dates + "&period=" + item2 + " ";
       this.axios.get(uri).then(function (response) {
         var data = response.data;
 
@@ -4072,7 +4126,15 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    getOilNow: function getOilNow(dates) {
+    periodSelect: function periodSelect(period) {
+      this.period = period;
+      this.getOilNow(this.timeSelect, this.period);
+    },
+    periodSelectUSD: function periodSelectUSD(period) {
+      this.periodUSD = period;
+      this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    },
+    getOilNow: function getOilNow(dates, period) {
       var _this3 = this;
 
       var datas; //let uri = "/js/json/graph_1006.json";
@@ -4099,27 +4161,12 @@ __webpack_require__.r(__webpack_exports__);
               month: "numeric",
               timeZone: "Europe/Moscow"
             }), oil.push({
+              dateSimple: oilDate,
               date: oilDate2,
               value: oilValue
             });
-          }); //getDataString
+          });
 
-          /*var datesString =new Date(dates.getTime());       
-          console.log(datesString);  */
-
-          /* var dateInOil = [];
-          dateInOil = _.filter(oil, function (item) {
-          return _.every([
-            _.inRange(
-              item.date,
-              timestampMonthStart,
-              timestampMonthStart + 86400000 * dayInMonth
-            ),
-          ]);
-          });*/
-
-
-          _this3.oilChart = [_.takeRight(oil, 31)];
           var oil2 = [];
           oil2 = _.filter(oil, _.iteratee({
             date: dates
@@ -4131,6 +4178,21 @@ __webpack_require__.r(__webpack_exports__);
             oil = _.last(oil);
             _this3.oilNow = oil.value;
           }
+
+          var datesNow = [];
+          datesNow = dates.split(".");
+          var day = datesNow[0];
+          var month = datesNow[1].replace(/^0+/, "");
+          var year = datesNow[2];
+          var timestampToday = new Date(_this3.monthes2[month - 1] + day + " " + year + " 06:00:00 GMT+0600").getTime(); //console.log(timestampToday);
+
+          var dateInOil = [];
+          dateInOil = _.filter(oil, function (item) {
+            return _.every([_.inRange(item.dateSimple, timestampToday - 86400000 * Number(period), timestampToday + 86400000)]);
+          }); //this.oilChart=    [_.takeRight(oil, 31)];
+
+          _this3.oilChart = [dateInOil];
+          console.log(dateInOil);
         } else {
           console.log("No data");
         }
@@ -4886,12 +4948,76 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   template: "#vue-status-overview-template",
   data: function data() {
     return {
       //showTableItem: "No",
+      item: "",
+      item2: "",
+      item3: "",
+      item4: "",
       productionForChart: "",
       tables: "",
       showTable2: "Yes",
@@ -4952,6 +5078,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
+    displaynumbers: function displaynumbers(event) {
+      console.log(event);
+      return this.getProduction(this.item, this.item2, this.item3, this.item4);
+    },
     displayMessage: function displayMessage(message) {
       this.company = message;
     },
@@ -4991,7 +5121,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           };
           days[week].push(a);
 
-          if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
+          if (this.selectedDay == i) {
+            a.current = "#232236";
+          } else if (i == new Date().getDate() && this.year == new Date().getFullYear() && this.month == new Date().getMonth()) {
             a.current = "#747ae6";
           }
 
@@ -5163,6 +5295,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getProduction: function getProduction(item, item2, item3, item4) {
       var _this = this;
 
+      this.item = item;
+      this.item2 = item2;
+      this.item3 = item3;
+      this.item4 = item4;
       this.unit = item4;
 
       if (this.selectedDay == undefined) {
@@ -6340,7 +6476,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     _event_bus_js__WEBPACK_IMPORTED_MODULE_1__["EventBus"].$on("messageSend", this.displayMessage);
   },
   computed: {
+    selectedDay2: function selectedDay2() {
+      this.getProduction("oil_plan", "oil_fact", "Добыча нефти", "тн");
+    },
     dayChange: function dayChange() {
+      $("#ids").change(function () {
+        alert("Works");
+      });
+
       if (this.dFirstMonth == 0) {
         //this.day = ["Su", "Mn", "Tu", "We", "Th", "Fr", "Sa"];
         this.day = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
@@ -6389,8 +6532,8 @@ function animate(id) {
   }, 125); //интервал прокрутки, мс
 }
 
-window.addEventListener('load', function (e) {
-  animate('marqueeline');
+window.addEventListener("load", function (e) {
+  animate("marqueeline");
 }, false);
 
 /***/ }),
@@ -45280,7 +45423,11 @@ var render = function() {
           options: _vm.chartOptions,
           series: _vm.series
         }
-      })
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "begin" }, [_vm._v(_vm._s(_vm.begin))]),
+      _vm._v(" "),
+      _c("div", { staticClass: "end" }, [_vm._v(_vm._s(_vm.end))])
     ],
     1
   )
@@ -45318,7 +45465,11 @@ var render = function() {
           options: _vm.chartOptions,
           series: _vm.series
         }
-      })
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "begin" }, [_vm._v(_vm._s(_vm.begin))]),
+      _vm._v(" "),
+      _c("div", { staticClass: "end" }, [_vm._v(_vm._s(_vm.end))])
     ],
     1
   )
@@ -45534,150 +45685,143 @@ var render = function() {
     _vm._v(" "),
     _vm._m(1),
     _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "collapse sidebar-submenu submenu1",
-        attrs: { id: "submenu1" }
-      },
-      [
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu flex-column align-items-start circle-menu",
-            style: "" + _vm.buttonMenuHover1,
-            attrs: { "data-toggle": "collapse", "aria-expanded": "false" },
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("ОМГ")
-              }
+    _c("div", { staticClass: "collapse", attrs: { id: "submenu1" } }, [
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu flex-column align-items-start circle-menu",
+          style: "" + _vm.buttonMenuHover1,
+          attrs: { "data-toggle": "collapse", "aria-expanded": "false" },
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("ОМГ")
             }
-          },
-          [_vm._m(2)]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
-            style: "" + _vm.buttonMenuHover2,
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("КБМ")
-              }
+          }
+        },
+        [_vm._m(2)]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu",
+          style: "" + _vm.buttonMenuHover2,
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("КБМ")
             }
-          },
-          [_vm._m(3)]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
-            style: "" + _vm.buttonMenuHover3,
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("КГМ")
-              }
+          }
+        },
+        [_vm._m(3)]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu",
+          style: "" + _vm.buttonMenuHover3,
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("КГМ")
             }
-          },
-          [_vm._m(4)]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
-            style: "" + _vm.buttonMenuHover4,
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("ЭМГ")
-              }
+          }
+        },
+        [_vm._m(4)]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu",
+          style: "" + _vm.buttonMenuHover4,
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("ЭМГ")
             }
-          },
-          [_vm._m(5)]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
-            style: "" + _vm.buttonMenuHover5,
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("ММГ")
-              }
+          }
+        },
+        [_vm._m(5)]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu",
+          style: "" + _vm.buttonMenuHover5,
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("ММГ")
             }
-          },
-          [_vm._m(6)]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
-            style: "" + _vm.buttonMenuHover6,
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("КТМ")
-              }
+          }
+        },
+        [_vm._m(6)]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu",
+          style: "" + _vm.buttonMenuHover6,
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("КТМ")
             }
-          },
-          [_vm._m(7)]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
-            style: "" + _vm.buttonMenuHover7,
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("КОА")
-              }
+          }
+        },
+        [_vm._m(7)]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu",
+          style: "" + _vm.buttonMenuHover7,
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("КОА")
             }
-          },
-          [_vm._m(8)]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
-            style: "" + _vm.buttonMenuHover8,
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("ПКИ")
-              }
+          }
+        },
+        [_vm._m(8)]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu",
+          style: "" + _vm.buttonMenuHover8,
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("ПКИ")
             }
-          },
-          [_vm._m(9)]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          {
-            staticClass:
-              "bg-dark list-group-item list-group-item-action circle-menu",
-            style: "" + _vm.buttonMenuHover9,
-            on: {
-              click: function($event) {
-                return _vm.saveCompany("АГГ")
-              }
+          }
+        },
+        [_vm._m(9)]
+      ),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass:
+            "bg-dark list-group-item list-group-item-action circle-menu",
+          style: "" + _vm.buttonMenuHover9,
+          on: {
+            click: function($event) {
+              return _vm.saveCompany("АГГ")
             }
-          },
-          [_vm._m(10)]
-        )
-      ]
-    ),
+          }
+        },
+        [_vm._m(10)]
+      )
+    ]),
     _vm._v(" "),
     _vm._m(11),
     _vm._v(" "),
@@ -45688,11 +45832,76 @@ var render = function() {
       { staticClass: "left-price-oil" },
       [
         _c("div", { staticClass: "left-price-oil2" }, [
-          _vm._v("\n      Цена за нефть\n      "),
+          _vm._v("\n      Цена за барель нефти\n      "),
           _c("div", { staticClass: "price-border" }, [
             _vm._v(_vm._s(_vm.oilNow) + " $")
           ])
         ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelect("7")
+              }
+            }
+          },
+          [_vm._v("7 дней")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelect("30")
+              }
+            }
+          },
+          [_vm._v("1 мес")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelect("133")
+              }
+            }
+          },
+          [_vm._v("6 мес")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelect("365")
+              }
+            }
+          },
+          [_vm._v("1 год")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelect("1825")
+              }
+            }
+          },
+          [_vm._v("5 лет")]
+        ),
         _vm._v(" "),
         _vm._l(_vm.oilChart, function(serial, index) {
           return _c("visual-center-chart-area-oil", {
@@ -45717,19 +45926,70 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(13),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelectUSD("7")
+              }
+            }
+          },
+          [_vm._v("7 дней")]
+        ),
         _vm._v(" "),
-        _c("ul", { staticClass: "oil-string-all" }, [
-          _c("li", { staticClass: "oil-string one2-2 width-price" }, [
-            _vm._v("Доллар США")
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "oil-string two2" }, [
-            _vm._v("\n        " + _vm._s(_vm.currencyNowUsd) + "\n      ")
-          ]),
-          _vm._v(" "),
-          _c("li", { staticClass: "oil-string three2" }, [_vm._v("Доллар")])
-        ]),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelectUSD("30")
+              }
+            }
+          },
+          [_vm._v("1 мес")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelectUSD("133")
+              }
+            }
+          },
+          [_vm._v("6 мес")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelectUSD("365")
+              }
+            }
+          },
+          [_vm._v("1 год")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "period",
+            on: {
+              click: function($event) {
+                return _vm.periodSelectUSD("1825")
+              }
+            }
+          },
+          [_vm._v("5 лет")]
+        ),
         _vm._v(" "),
         _vm._l(_vm.currencyChart, function(serial2, index) {
           return _c("visual-center-chart-area-usd", {
@@ -45751,9 +46011,18 @@ var staticRenderFns = [
       "div",
       { staticClass: "d-flex w-100 justify-content-start align-items-center" },
       [
-        _c("div", { staticClass: "companyLogo-kmg" }),
+        _c("img", {
+          staticClass: "companyLogo",
+          attrs: {
+            src: "/img/level1/kmg_small2.png",
+            width: "25",
+            height: "25"
+          }
+        }),
         _vm._v(" "),
-        _c("span", { staticClass: "menu-collapsed companyName" })
+        _c("span", { staticClass: "menu-collapsed companyName" }, [
+          _c("div", { staticClass: "companyLogo-kmg" })
+        ])
       ]
     )
   },
@@ -46000,108 +46269,90 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "collapse sidebar-submenu", attrs: { id: "submenu2" } },
-      [
-        _c(
-          "a",
-          { staticClass: "bg-dark list-group-item list-group-item-action" },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex w-100 justify-content-start align-items-center"
-              },
-              [
-                _c("img", {
-                  staticClass: "companyLogo",
-                  attrs: {
-                    src: "/img/level1/logo_tengiz.svg",
-                    width: "25",
-                    height: "25"
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "menu-collapsed companyName" }, [
-                  _vm._v("ТОО «Тенгизшевройл»")
-                ])
-              ]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          { staticClass: "bg-dark list-group-item list-group-item-action" },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex w-100 justify-content-start align-items-center"
-              },
-              [
-                _c("img", {
-                  staticClass: "companyLogo",
-                  attrs: {
-                    src: "/img/level1/logo_karachaganak.svg",
-                    width: "25",
-                    height: "25"
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "menu-collapsed companyName" }, [
-                  _vm._v("«Карачаганак Петролеум Оперейтинг б.в.»")
-                ])
-              ]
-            )
-          ]
-        ),
-        _vm._v(" "),
-        _c(
-          "a",
-          { staticClass: "bg-dark list-group-item list-group-item-action" },
-          [
-            _c(
-              "div",
-              {
-                staticClass:
-                  "d-flex w-100 justify-content-start align-items-center"
-              },
-              [
-                _c("img", {
-                  staticClass: "companyLogo",
-                  attrs: {
-                    src: "/img/level1/logo_ncoc.svg",
-                    width: "25",
-                    height: "25"
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "menu-collapsed companyName" }, [
-                  _vm._v("«Норт Каспиан Оперейтинг Компани н.в.»")
-                ])
-              ]
-            )
-          ]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("ul", { staticClass: "oil-string-all" }, [
-      _c("li", { staticClass: "oil-string one2 width-price" }, [
-        _vm._v("1 казахстанский тенге равно")
-      ]),
+    return _c("div", { staticClass: "collapse", attrs: { id: "submenu2" } }, [
+      _c(
+        "a",
+        { staticClass: "bg-dark list-group-item list-group-item-action" },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex w-100 justify-content-start align-items-center"
+            },
+            [
+              _c("img", {
+                staticClass: "companyLogo",
+                attrs: {
+                  src: "/img/level1/logo_tengiz.svg",
+                  width: "25",
+                  height: "25"
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "menu-collapsed companyName" }, [
+                _vm._v("ТОО «Тенгизшевройл»")
+              ])
+            ]
+          )
+        ]
+      ),
       _vm._v(" "),
-      _c("li", { staticClass: "oil-string two2" }, [_vm._v("1")]),
+      _c(
+        "a",
+        { staticClass: "bg-dark list-group-item list-group-item-action" },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex w-100 justify-content-start align-items-center"
+            },
+            [
+              _c("img", {
+                staticClass: "companyLogo",
+                attrs: {
+                  src: "/img/level1/logo_karachaganak.svg",
+                  width: "25",
+                  height: "25"
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "menu-collapsed companyName" }, [
+                _vm._v("«Карачаганак Петролеум Оперейтинг б.в.»")
+              ])
+            ]
+          )
+        ]
+      ),
       _vm._v(" "),
-      _c("li", { staticClass: "oil-string three2" }, [_vm._v("Тенге")])
+      _c(
+        "a",
+        { staticClass: "bg-dark list-group-item list-group-item-action" },
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex w-100 justify-content-start align-items-center"
+            },
+            [
+              _c("img", {
+                staticClass: "companyLogo",
+                attrs: {
+                  src: "/img/level1/logo_ncoc.svg",
+                  width: "25",
+                  height: "25"
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "menu-collapsed companyName" }, [
+                _vm._v("«Норт Каспиан Оперейтинг Компани н.в.»")
+              ])
+            ]
+          )
+        ]
+      )
     ])
   }
 ]
@@ -46214,9 +46465,12 @@ var render = function() {
                                 "background-color": day.current
                               },
                               on: {
-                                click: function($event) {
-                                  _vm.selectedDay = day.index
-                                }
+                                click: [
+                                  function($event) {
+                                    _vm.selectedDay = day.index
+                                  },
+                                  _vm.displaynumbers
+                                ]
                               }
                             },
                             [_c("div", [_vm._v(_vm._s(day.index))])]
@@ -46236,9 +46490,12 @@ var render = function() {
                             "background-color": month.current
                           },
                           on: {
-                            click: function($event) {
-                              _vm.selectedMonth = month.index
-                            }
+                            click: [
+                              function($event) {
+                                _vm.selectedMonth = month.index
+                              },
+                              _vm.displaynumbers
+                            ]
                           }
                         },
                         [
@@ -46261,9 +46518,12 @@ var render = function() {
                             "background-color": year.current
                           },
                           on: {
-                            click: function($event) {
-                              _vm.selectedYear = year.index
-                            }
+                            click: [
+                              function($event) {
+                                _vm.selectedYear = year.index
+                              },
+                              _vm.displaynumbers
+                            ]
                           }
                         },
                         [
@@ -47148,7 +47408,7 @@ var render = function() {
                           _vm._v(_vm._s(_vm.circleMenu))
                         ]),
                         _vm._v(" "),
-                        _c("div", { staticClass: "tables-string" }, [
+                        _c("div", { staticClass: "tables-string2" }, [
                           _c(
                             "div",
                             { staticClass: "cell-number-top table-border" },
@@ -47165,7 +47425,7 @@ var render = function() {
                             "div",
                             {
                               staticClass:
-                                "cell-last-top table-border cell-last"
+                                "table-border cell-last-top-small-table"
                             },
                             [
                               _vm._v(
@@ -47176,76 +47436,29 @@ var render = function() {
                             ]
                           ),
                           _vm._v(" "),
-                          _c("div", { staticClass: "cell2 table-border" }, [
-                            _vm._v(
-                              "\n                      План на " +
-                                _vm._s(_vm.selectedYear) +
-                                " год\n                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell2 table-border" }, [
-                            _vm._v(
-                              "\n                      План на " +
-                                _vm._s(_vm.currentMonth) +
-                                " месяц\n                    "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell3 table-border" }, [
-                            _vm._v("СУТОЧНАЯ")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell3 table-border" }, [
-                            _vm._v("С НАЧАЛА МЕСЯЦА")
-                          ]),
-                          _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "cell3 table-border cell-last" },
-                            [
-                              _vm._v(
-                                "\n                      С НАЧАЛА ГОДА\n                    "
-                              )
-                            ]
+                            { staticClass: "cell4-small-table table-border" },
+                            [_vm._v("ПЛАН")]
                           ),
                           _vm._v(" "),
-                          _c("div", { staticClass: "cell4 table-border" }, [
-                            _vm._v("ПЛАН")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell4 table-border" }, [
-                            _vm._v("ФАКТ")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell4 table-border" }, [
-                            _vm._v("(+,-)")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell4 table-border" }, [
-                            _vm._v("ПЛАН")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell4 table-border" }, [
-                            _vm._v("ФАКТ")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell4 table-border" }, [
-                            _vm._v("(+,-)")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell4 table-border" }, [
-                            _vm._v("ПЛАН")
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "cell4 table-border" }, [
-                            _vm._v("ФАКТ")
-                          ]),
+                          _c(
+                            "div",
+                            { staticClass: "cell4-small-table table-border" },
+                            [_vm._v("ФАКТ")]
+                          ),
                           _vm._v(" "),
                           _c(
                             "div",
-                            { staticClass: "cell4 table-border cell-last" },
-                            [_vm._v("(+,-)")]
+                            {
+                              staticClass:
+                                "cell4-small-table table-border cell-last"
+                            },
+                            [
+                              _vm._v(
+                                "\n                      (+,-)\n                    "
+                              )
+                            ]
                           )
                         ]),
                         _vm._v(" "),
@@ -47277,28 +47490,6 @@ var render = function() {
                                   "div",
                                   { staticClass: "cell table-border" },
                                   [
-                                    item.planYear
-                                      ? _c("div", [
-                                          _vm._v(
-                                            "\n                            " +
-                                              _vm._s(
-                                                new Intl.NumberFormat(
-                                                  "ru-RU"
-                                                ).format(item.planYear)
-                                              ) +
-                                              "\n                          "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "cell table-border" }),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "cell table-border" },
-                                  [
                                     item.plan
                                       ? _c("div", [
                                           _vm._v(
@@ -47307,6 +47498,36 @@ var render = function() {
                                                 new Intl.NumberFormat(
                                                   "ru-RU"
                                                 ).format(item.plan)
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item.productionPlanForMonth
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(
+                                                  item.productionPlanForMonth
+                                                )
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item.planYear
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(item.planYear)
                                               ) +
                                               "\n                          "
                                           )
@@ -47331,69 +47552,8 @@ var render = function() {
                                               "\n                          "
                                           )
                                         ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "cell table-border colour" },
-                                  [
-                                    _c("div", [
-                                      item.fact
-                                        ? _c("div", {
-                                            staticClass: "circle-table",
-                                            style:
-                                              "background: " +
-                                              _vm.getColor(
-                                                item.fact - item.plan
-                                              )
-                                          })
-                                        : _vm._e()
-                                    ]),
+                                      : _vm._e(),
                                     _vm._v(" "),
-                                    item.fact
-                                      ? _c("div", [
-                                          _c("div", [
-                                            _vm._v(
-                                              "\n                              " +
-                                                _vm._s(
-                                                  new Intl.NumberFormat(
-                                                    "ru-RU"
-                                                  ).format(
-                                                    item.fact - item.plan
-                                                  )
-                                                ) +
-                                                "\n                            "
-                                            )
-                                          ])
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "cell table-border" },
-                                  [
-                                    item.productionPlanForMonth
-                                      ? _c("div", [
-                                          _vm._v(
-                                            "\n                            " +
-                                              _vm._s(
-                                                item.productionPlanForMonth
-                                              ) +
-                                              "\n                          "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "cell table-border" },
-                                  [
                                     item.productionFactForMonth
                                       ? _c("div", [
                                           _vm._v(
@@ -47408,14 +47568,54 @@ var render = function() {
                                               "\n                          "
                                           )
                                         ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item.factYear
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(item.factYear)
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
                                       : _vm._e()
                                   ]
                                 ),
                                 _vm._v(" "),
                                 _c(
                                   "div",
-                                  { staticClass: "cell table-border colour" },
+                                  {
+                                    staticClass:
+                                      "cell table-border cell-last colour"
+                                  },
                                   [
+                                    item.plan
+                                      ? _c("div", {
+                                          staticClass: "circle-table",
+                                          style:
+                                            "background: " +
+                                            _vm.getColor(item.fact - item.plan)
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    item.plan
+                                      ? _c("div", [
+                                          _vm._v(
+                                            "\n                            " +
+                                              _vm._s(
+                                                new Intl.NumberFormat(
+                                                  "ru-RU"
+                                                ).format(item.fact - item.plan)
+                                              ) +
+                                              "\n                          "
+                                          )
+                                        ])
+                                      : _vm._e(),
+                                    _vm._v(" "),
                                     item.productionPlanForMonth
                                       ? _c("div", {
                                           staticClass: "circle-table",
@@ -47443,57 +47643,8 @@ var render = function() {
                                               "\n                          "
                                           )
                                         ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "cell table-border" },
-                                  [
-                                    item.planYear
-                                      ? _c("div", [
-                                          _vm._v(
-                                            "\n                            " +
-                                              _vm._s(
-                                                new Intl.NumberFormat(
-                                                  "ru-RU"
-                                                ).format(item.planYear)
-                                              ) +
-                                              "\n                          "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "cell table-border" },
-                                  [
-                                    item.factYear
-                                      ? _c("div", [
-                                          _vm._v(
-                                            "\n                            " +
-                                              _vm._s(
-                                                new Intl.NumberFormat(
-                                                  "ru-RU"
-                                                ).format(item.factYear)
-                                              ) +
-                                              "\n                          "
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "cell table-border cell-last colour"
-                                  },
-                                  [
+                                      : _vm._e(),
+                                    _vm._v(" "),
                                     item.planYear
                                       ? _c("div", {
                                           staticClass: "circle-table",
@@ -47527,7 +47678,9 @@ var render = function() {
                               _c("div", { staticStyle: { clear: "both" } })
                             ]),
                             _vm._v(" "),
-                            _c("div", { staticClass: "tables-bottom-line" })
+                            _c("div", {
+                              staticClass: "tables-bottom-line-small-table"
+                            })
                           ])
                         })
                       ],
@@ -47679,7 +47832,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "marquee" }, [
           _c("span", [
             _vm._v(
-              "Внимание коллеги! Отключение скважин ожидается 12.09.2020 г."
+              "Внимание коллеги! Отключение скважин ожидается\n                      12.09.2020 г."
             )
           ])
         ])
@@ -47728,9 +47881,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "starting" }, [
-      _c("div", { staticClass: "start" }, [_vm._v("Пузки из КРС")]),
+      _c("div", { staticClass: "start" }, [_vm._v("Пуски из КРС")]),
       _vm._v(" "),
-      _c("div", { staticClass: "start" }, [_vm._v("Пузки из ПРС")]),
+      _c("div", { staticClass: "start" }, [_vm._v("Пуски из ПРС")]),
       _vm._v(" "),
       _c("div", { staticClass: "start" }, [_vm._v("Ввод из бурения")])
     ])

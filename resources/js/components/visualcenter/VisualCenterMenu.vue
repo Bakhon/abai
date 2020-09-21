@@ -6,14 +6,22 @@
       @click="saveCompany('all')"
     >
       <div class="d-flex w-100 justify-content-start align-items-center">
-        <div class="companyLogo-kmg"></div>
-        <span class="menu-collapsed companyName"></span>
+        <img
+          src="/img/level1/kmg_small2.png"
+          width="25"
+          height="25"
+          class="companyLogo"
+        />
+
+        <span class="menu-collapsed companyName">
+          <div class="companyLogo-kmg"></div
+        ></span>
       </div>
     </a>
     <a href="#submenu1" data-toggle="collapse" aria-expanded="false">
       <div class="assets2" tabindex="0">Операционные активы</div>
     </a>
-    <div id="submenu1" class="collapse sidebar-submenu submenu1">
+    <div id="submenu1" class="collapse">
       <a
         data-toggle="collapse"
         aria-expanded="false"
@@ -158,7 +166,7 @@
         Неоперационные активы
         <div tabindex="-0" class="button-menu button-menu-position"></div></div
     ></a>
-    <div id="submenu2" class="collapse sidebar-submenu">
+    <div id="submenu2" class="collapse">
       <a class="bg-dark list-group-item list-group-item-action">
         <div class="d-flex w-100 justify-content-start align-items-center">
           <img
@@ -199,9 +207,14 @@
     </div>
     <div class="left-price-oil">
       <div class="left-price-oil2">
-        Цена за нефть
+        Цена за барель нефти
         <div class="price-border">{{ oilNow }} $</div>
       </div>
+      <div class="period" @click="periodSelect('7')">7 дней</div>
+      <div class="period" @click="periodSelect('30')">1 мес</div>
+      <div class="period" @click="periodSelect('133')">6 мес</div>
+      <div class="period" @click="periodSelect('365')">1 год</div>
+      <div class="period" @click="periodSelect('1825')">5 лет</div>
       <!--<hr class="hr-visualcenter" />-->
       <visual-center-chart-area-oil
         v-for="(serial, index) in oilChart"
@@ -238,7 +251,12 @@
         Курс доллара
         <div class="price-border">{{ currencyNow.description }} &#8376;</div>
       </div>
-      <ul class="oil-string-all">
+      <div class="period" @click="periodSelectUSD('7')">7 дней</div>
+      <div class="period" @click="periodSelectUSD('30')">1 мес</div>
+      <div class="period" @click="periodSelectUSD('133')">6 мес</div>
+      <div class="period" @click="periodSelectUSD('365')">1 год</div>
+      <div class="period" @click="periodSelectUSD('1825')">5 лет</div>
+      <!--<ul class="oil-string-all">
         <li class="oil-string one2 width-price">1 казахстанский тенге равно</li>
         <li class="oil-string two2">1</li>
         <li class="oil-string three2">Тенге</li>
@@ -249,7 +267,7 @@
           {{ currencyNowUsd }}
         </li>
         <li class="oil-string three2">Доллар</li>
-      </ul>
+      </ul>-->
       <visual-center-chart-area-usd
         v-for="(serial2, index) in currencyChart"
         v-bind:postTitles="serial2"
@@ -265,6 +283,8 @@ import { EventBus } from "./event-bus.js";
 export default {
   data: function () {
     return {
+      period: "7",
+      periodUSD: "7",
       company: "",
       timeSelect: "",
       oilNow: "",
@@ -284,6 +304,20 @@ export default {
       month: new Date().getMonth(),
       year: new Date().getFullYear(),
       currencyNowUsd: "",
+      monthes2: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
     };
   },
   updated() {},
@@ -292,8 +326,8 @@ export default {
     timeSelect2(select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
-      this.getOilNow(this.timeSelect);
-      this.getCurrencyPeriod(this.timeSelect);
+      this.getOilNow(this.timeSelect, this.period);
+      this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     },
 
     getCurrencyNow: function (dates) {
@@ -312,9 +346,10 @@ export default {
       });
     },
 
-    getCurrencyPeriod: function (dates) {
+    getCurrencyPeriod: function (dates, item2) {
       var dates = dates;
-      let uri = "/ru/getcurrencyperiod?dates=" + dates + "";
+      let uri =
+        "/ru/getcurrencyperiod?dates=" + dates + "&period=" + item2 + " ";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -330,7 +365,17 @@ export default {
       });
     },
 
-    getOilNow: function (dates) {
+    periodSelect(period) {
+      this.period = period;
+      this.getOilNow(this.timeSelect, this.period);
+    },
+
+    periodSelectUSD(period) {
+      this.periodUSD = period;
+      this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    },
+
+    getOilNow: function (dates, period) {
       var datas;
       //let uri = "/js/json/graph_1006.json";
       let uri =
@@ -357,27 +402,11 @@ export default {
               timeZone: "Europe/Moscow",
             })),
               oil.push({
+                dateSimple: oilDate,
                 date: oilDate2,
                 value: oilValue,
               });
           });
-
-          //getDataString
-          /*var datesString =new Date(dates.getTime());       
-console.log(datesString);  */
-
-          /* var dateInOil = [];
-        dateInOil = _.filter(oil, function (item) {
-          return _.every([
-            _.inRange(
-              item.date,
-              timestampMonthStart,
-              timestampMonthStart + 86400000 * dayInMonth
-            ),
-          ]);
-        });*/
-
-          this.oilChart = [_.takeRight(oil, 31)];
 
           var oil2 = [];
 
@@ -389,6 +418,31 @@ console.log(datesString);  */
             oil = _.last(oil);
             this.oilNow = oil.value;
           }
+
+          var datesNow = [];
+          datesNow = dates.split(".");
+          var day = datesNow[0];
+          var month = datesNow[1].replace(/^0+/, "");
+          var year = datesNow[2];
+
+          var timestampToday = new Date(
+            this.monthes2[month - 1] + day + " " + year + " 06:00:00 GMT+0600"
+          ).getTime();
+
+          //console.log(timestampToday);
+          var dateInOil = [];
+          dateInOil = _.filter(oil, function (item) {
+            return _.every([
+              _.inRange(
+                item.dateSimple,
+                timestampToday - 86400000 * Number(period),
+                timestampToday + 86400000
+              ),
+            ]);
+          });
+          //this.oilChart=    [_.takeRight(oil, 31)];
+          this.oilChart = [dateInOil];
+          console.log(dateInOil);
         } else {
           console.log("No data");
         }

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <!-- <div id = "databinding">
+         <button v-on:click = "displaynumbers">Click ME</button>
+      </div>-->
     <div>
       <div class="level1-content row">
         <div class="col-md-12 col-lg-12 row">
@@ -41,6 +44,7 @@
                       color: day.weekend,
                       'background-color': day.current,
                     }"
+                    v-on:click="displaynumbers"
                   >
                     <div>{{ day.index }}</div>
                   </div>
@@ -53,6 +57,7 @@
                     'background-color': month.current,
                   }"
                   @click="selectedMonth = month.index"
+                  v-on:click="displaynumbers"
                 >
                   {{ month.index }}
                 </div>
@@ -65,6 +70,7 @@
                     'background-color': year.current,
                   }"
                   @click="selectedYear = year.index"
+                  v-on:click="displaynumbers"
                 >
                   {{ year.index }}
                 </div>
@@ -433,22 +439,22 @@
                     </div>
                     <div class="tables-name">{{ circleMenu }}</div>
                     <!--<div class="btn btn-info2" >Вывести таблицу</div>-->
-                    <div class="tables-string">
+                    <div class="tables-string2">
                       <!--<div class="cell-colour-top table-border"></div>-->
                       <div class="cell-number-top table-border">№</div>
                       <div class="cell-name-top table-border">Предприятия</div>
-                      <div class="cell-last-top table-border cell-last">
+                      <div class="table-border cell-last-top-small-table">
                         ДОБЫЧА, {{ unit }}
                       </div>
-                      <div class="cell2 table-border">
+                      <!--<div class="cell2 table-border">
                         План на {{ selectedYear }} год
                       </div>
-                      <div class="cell2 table-border">
+                        <div class="cell2 table-border">
                         План на {{ currentMonth }} месяц
                       </div>
                       <div class="cell3 table-border">СУТОЧНАЯ</div>
                       <div class="cell3 table-border">С НАЧАЛА МЕСЯЦА</div>
-                      <div class="cell3 table-border cell-last">
+                    <div class="cell3 table-border cell-last">
                         С НАЧАЛА ГОДА
                       </div>
                       <div class="cell4 table-border">ПЛАН</div>
@@ -456,10 +462,12 @@
                       <div class="cell4 table-border">(+,-)</div>
                       <div class="cell4 table-border">ПЛАН</div>
                       <div class="cell4 table-border">ФАКТ</div>
-                      <div class="cell4 table-border">(+,-)</div>
-                      <div class="cell4 table-border">ПЛАН</div>
-                      <div class="cell4 table-border">ФАКТ</div>
-                      <div class="cell4 table-border cell-last">(+,-)</div>
+                      <div class="cell4 table-border">(+,-)</div>-->
+                      <div class="cell4-small-table table-border">ПЛАН</div>
+                      <div class="cell4-small-table table-border">ФАКТ</div>
+                      <div class="cell4-small-table table-border cell-last">
+                        (+,-)
+                      </div>
                     </div>
                     <div style="clear: both;"></div>
                     <div v-for="item in tables">
@@ -473,7 +481,7 @@
                             {{ item.dzo }}
                             {{ item.timeMonth }}
                           </div>
-                          <div class="cell table-border">
+                          <!--<div class="cell table-border">
                             <div v-if="item.planYear">
                               {{ (new Intl.NumberFormat('ru-RU').format(item.planYear ))}}
                             </div>
@@ -524,25 +532,66 @@
                                   item.productionPlanForMonth
                               )}`"
                             ></div>
-                            <!--3cell-->
+                            3cell
                             <div v-if="item.productionPlanForMonth">
                               {{
                               (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth -
                               item.productionPlanForMonth))
                               }}
                             </div>
-                          </div>
+                          </div>-->
                           <div class="cell table-border">
+                            <div v-if="item.plan">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.plan)) }}
+                            </div>
+
+                            <div v-if="item.productionPlanForMonth">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.productionPlanForMonth)) }}
+                            </div>
+
                             <div v-if="item.planYear">
                               {{ (new Intl.NumberFormat('ru-RU').format(item.planYear)) }}
                             </div>
                           </div>
+
                           <div class="cell table-border">
+                            <div v-if="item.fact">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.fact)) }}
+                            </div>
+
+                            <div v-if="item.productionFactForMonth">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth)) }}
+                            </div>
+
                             <div v-if="item.factYear">
                               {{ (new Intl.NumberFormat('ru-RU').format(item.factYear ))}}
                             </div>
                           </div>
+
                           <div class="cell table-border cell-last colour">
+                            <div
+                              v-if="item.plan"
+                              class="circle-table"
+                              :style="`background: ${getColor(
+                                item.fact - item.plan
+                              )}`"
+                            ></div>
+                            <div v-if="item.plan">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.fact - item.plan)) }}
+                            </div>
+
+                            <div
+                              v-if="item.productionPlanForMonth"
+                              class="circle-table"
+                              :style="`background: ${getColor(
+                                item.productionFactForMonth -
+                                  item.productionPlanForMonth
+                              )}`"
+                            ></div>
+                            <div v-if="item.productionPlanForMonth">
+                              {{ (new Intl.NumberFormat('ru-RU').format(item.productionFactForMonth - item.productionPlanForMonth)) }}
+                            </div>
+
                             <div
                               v-if="item.planYear"
                               class="circle-table"
@@ -557,7 +606,7 @@
                         </div>
                         <div style="clear: both;"></div>
                       </div>
-                      <div class="tables-bottom-line"></div>
+                      <div class="tables-bottom-line-small-table"></div>
                     </div>
                   </div>
                 </div>
@@ -584,9 +633,20 @@
               <div class="visual-center-center">
                 <div class="visual-center-bottom">
                   <div class="visual-center-string1">Отключение РП:</div>
-                  <div class="visual-center-string2"><div class="marquee"><span>Отключение РП: 12.09.2020 г.</span></div></div>
+                  <div class="visual-center-string2">
+                    <div class="marquee">
+                      <span>Отключение РП: 12.09.2020 г.</span>
+                    </div>
+                  </div>
                   <div class="visual-center-string1">Отключение скважин:</div>
-                  <div class="visual-center-string2"><div class="marquee"><span>Внимание коллеги! Отключение скважин ожидается 12.09.2020 г.</span></div></div>
+                  <div class="visual-center-string2">
+                    <div class="marquee">
+                      <span
+                        >Внимание коллеги! Отключение скважин ожидается
+                        12.09.2020 г.</span
+                      >
+                    </div>
+                  </div>
                   <div class="visual-center-string1">Выбросы и разливы:</div>
                   <div class="visual-center-string2"></div>
                   <div class="visual-center-string1">Прочие:</div>
@@ -616,8 +676,8 @@
                     ></visual-center-chart-bar-bottom>
                   </div>
                   <div class="starting">
-                    <div class="start">Пузки из КРС</div>
-                    <div class="start">Пузки из ПРС</div>
+                    <div class="start">Пуски из КРС</div>
+                    <div class="start">Пуски из ПРС</div>
                     <div class="start">Ввод из бурения</div>
                   </div>
                 </div>
@@ -659,6 +719,10 @@ export default {
   data: function () {
     return {
       //showTableItem: "No",
+      item: "",
+      item2: "",
+      item3: "",
+      item4: "",
       productionForChart: "",
       tables: "",
       showTable2: "Yes",
@@ -779,6 +843,10 @@ export default {
     };
   },
   methods: {
+    displaynumbers: function (event) {
+      console.log(event);
+      return this.getProduction(this.item, this.item2, this.item3, this.item4);
+    },
     displayMessage: function (message) {
       this.company = message;
     },
@@ -820,7 +888,9 @@ export default {
           days[week] = [];
           a = { index: i };
           days[week].push(a);
-          if (
+          if (this.selectedDay == i) {
+            a.current = "#232236";
+          } else if (
             i == new Date().getDate() &&
             this.year == new Date().getFullYear() &&
             this.month == new Date().getMonth()
@@ -972,6 +1042,11 @@ export default {
       return n < 10 ? "0" + n : n;
     },
     getProduction(item, item2, item3, item4) {
+      this.item = item;
+      this.item2 = item2;
+      this.item3 = item3;
+      this.item4 = item4;
+
       this.unit = item4;
 
       if (this.selectedDay == undefined) {
@@ -2441,12 +2516,19 @@ export default {
       }
     },
   },
+
   created: function () {
     EventBus.$on("messageSend", this.displayMessage);
   },
 
   computed: {
+    selectedDay2: function () {
+      this.getProduction("oil_plan", "oil_fact", "Добыча нефти", "тн");
+    },
     dayChange: function () {
+      $("#ids").change(function () {
+        alert("Works");
+      });
       if (this.dFirstMonth == 0) {
         //this.day = ["Su", "Mn", "Tu", "We", "Th", "Fr", "Sa"];
         this.day = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
@@ -2469,9 +2551,15 @@ function animate(id) {
   var node = document.getElementById(id).childNodes[0];
   var text = node.data;
   setInterval(function () {
-   text = text.substring(1) + text[0];
-   node.data = text;
+    text = text.substring(1) + text[0];
+    node.data = text;
   }, 125); //интервал прокрутки, мс
- }
- window.addEventListener('load', function (e) { animate('marqueeline'); }, false);
+}
+window.addEventListener(
+  "load",
+  function (e) {
+    animate("marqueeline");
+  },
+  false
+);
 </script>

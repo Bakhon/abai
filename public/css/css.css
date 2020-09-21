@@ -981,6 +981,13 @@ ul.dropdown-child {
     text-align: center;
 }
 
+.tables-string2 {
+    font-size: 14px;
+    position: relative;
+    width: 607px;
+    text-align: center;
+}
+
 .level2-tab {
     width: 190px;
     height: 25px;
@@ -1082,6 +1089,17 @@ ul.dropdown-child {
     width: 902px;
 }
 
+.cell-last-top-small-table {
+    text-align: center;
+    margin-left: 361px;
+    background: #122f70;
+    padding: 5px 10px;
+    width: 246px;
+    border-right-color: #1b6bb0;
+    border-right-style: solid;
+    border-right-width: 1px;
+}
+
 .cell2 {
     width: 82px;
     background: #122f70;
@@ -1105,6 +1123,14 @@ ul.dropdown-child {
     height: 47px;
 }
 
+.cell4-small-table {
+    width: 82px;
+    background: #122f70;
+    float: left;
+    padding: 5px 10px;
+    height: 80px;
+}
+
 .table-border {
     border-top-color: #1b6bb0;
     border-top-style: solid;
@@ -1116,6 +1142,13 @@ ul.dropdown-child {
 
 .tables-bottom-line {
     width: 1263px;
+    border-top-color: #1b6bb0;
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+.tables-bottom-line-small-table {
+    width: 607px;
     border-top-color: #1b6bb0;
     border-top-style: solid;
     border-top-width: 1px;
@@ -1253,11 +1286,11 @@ li.circle-2 {
 .companyLogo-kmg {
     width: 165px;
     height: 45px;
-    background: url(/img/level1/kmg_small.png) no-repeat;
+    background: url(/img/level1/kmg_small3.png) no-repeat;
     position: absolute;
     background-size: contain;
-    margin-top: 18px;
-    margin-left: 10px;
+    margin-top: -27px;
+    margin-left: 15px;
 }
 
 .report-btn {
@@ -1340,4 +1373,61 @@ h2.subtitle {
     font-size: 12px;
     width: 100px;
     text-align: center;
+}
+
+.begin {
+    position: absolute;
+    margin-top: -28px;
+    margin-left: 55px;
+    font-size: 12px;
+}
+
+.end {
+    position: absolute;
+    margin-top: -28px;
+    margin-left: 245px;
+    font-size: 12px;
+}
+
+.period {
+    width: 54px;
+    height: 25px;
+    float: left;
+    text-align: center;
+    margin-left: 10px;
+    margin-top: -15px;
+    margin-bottom: -9px;
+    color: #d6cdcd;
+    font-size: 11px;
+    z-index: 11111;
+}
+
+.period:active {
+    width: 54px;
+    height: 25px;
+    float: left;
+    text-align: center;
+    margin-left: 10px;
+    margin-top: -15px;
+    margin-bottom: -9px;
+    color: white;
+    font-size: 11px;
+    z-index: 11111;
+}
+
+.period:hover {
+    width: 54px;
+    height: 25px;
+    float: left;
+    text-align: center;
+    margin-left: 10px;
+    margin-top: -15px;
+    margin-bottom: -9px;
+    color: white;
+    font-size: 11px;
+    z-index: 11111;
+}
+
+#li {
+    list-style-type: none;
 }

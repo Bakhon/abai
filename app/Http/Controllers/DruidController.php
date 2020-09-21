@@ -182,8 +182,10 @@ class DruidController extends Controller
     function getCurrencyPeriod(Request $request)
     {
         $datesNow = $request->dates;
+        $period = $request->period;
         $datesNowString = strtotime($datesNow);
-        $last = strtotime($datesNow . '- 1 month');
+        $last = strtotime($datesNow . '-' . $period . 'day');
+        //$last = strtotime($datesNow . '- 1 month');
         $countDay = ($datesNowString - $last) / 86400;
         for (
             $i = 1;
