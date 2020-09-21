@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card-header">
+            <div class="card-header float-right">
                 <a class="btn btn-success" href="{{ route('watermeasurement.create') }}">+</a>
             </div>
             <h1 style="color:#fff">Лабораторные данные по промысловой жидкости</h1>
