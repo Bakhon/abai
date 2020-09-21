@@ -207,7 +207,7 @@
     </div>
     <div class="left-price-oil">
       <div class="left-price-oil2">
-        Цена за барель нефти
+        Цена за баррель нефти
         <div class="price-border">{{ oilNow }} $</div>
       </div>
       <div class="period" @click="periodSelect('7')">7 дней</div>

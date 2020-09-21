@@ -45832,7 +45832,7 @@ var render = function() {
       { staticClass: "left-price-oil" },
       [
         _c("div", { staticClass: "left-price-oil2" }, [
-          _vm._v("\n      Цена за барель нефти\n      "),
+          _vm._v("\n      Цена за баррель нефти\n      "),
           _c("div", { staticClass: "price-border" }, [
             _vm._v(_vm._s(_vm.oilNow) + " $")
           ])
