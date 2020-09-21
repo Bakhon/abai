@@ -9,9 +9,12 @@
                     <p>{{ $message }}</p>
                 </div>
             @endif
-            <div class="x_panel">
+            <div class="container">
                 <h1>Просмотр карточки</h1>
                 <h2>Дата: {{ \Carbon\Carbon::parse($wm->date)->format('d.m.Y H:i:s')}}</h2>
+
+                <a class="btn btn-warning float-right" href="{{ route('watermeasurement.edit',$wm->id) }}">{{__('app.edit')}}</a>
+                <a class="btn btn-primary float-right" href="{{ route('watermeasurement.index') }}">{{__('app.back')}}</a>
 
                 <table class="table table-bordered">
                     <tr>
@@ -143,8 +146,6 @@
                         <td>{{$wm->thionicBacteria->name}}</td>
                     </tr>
                 </table>
-                <a class="btn btn-warning" href="{{ route('watermeasurement.edit',$wm->id) }}">{{__('app.edit')}}</a>
-                <a class="btn btn-primary" href="{{ route('watermeasurement.index') }}">{{__('app.back')}}</a>
             </div>
         </div>
     </div>

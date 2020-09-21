@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
+<div class="col p-4" id="app">
             <div class="card-header float-right">
                 <a class="btn btn-success" href="{{ route('watermeasurement.create') }}">+</a>
             </div>
@@ -50,8 +49,8 @@
                             <td>{{ $item->potassium_ion_sodium_ion }}</td>
                             <td>
                                 <form action="{{ route('watermeasurement.destroy',$item->id) }}" method="POST">
-                                    <a class="btn btn-warning" href="{{ route('watermeasurement.edit',$item->id) }}">{{__('app.edit')}}</a><br><br>
-                                    <a class="btn btn-primary" href="{{ route('watermeasurement.show',$item->id) }}">{{__('app.show')}}</a><br><br>
+                                    <a class="btn btn-primary" href="{{ route('watermeasurement.edit',$item->id) }}"><i class="fas fa-edit"></i></a>
+                                    <a class="btn btn-primary" href="{{ route('watermeasurement.show',$item->id) }}"><i class="fas fa-eye"></i></a>
                                     @csrf
                                     @method('DELETE')
                                     {{-- <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button> --}}
@@ -63,7 +62,6 @@
                 {!! $wm->links() !!}
             </div>
         </div>
-    </div>
 @endsection
 <style>
     .table{

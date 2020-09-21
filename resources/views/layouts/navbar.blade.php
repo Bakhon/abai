@@ -231,7 +231,7 @@
     }
 
     .searchInput {
-        width: 328px;
+        width: 320px;
         border: none;
         height: 40px;
         font-size: 16px;
