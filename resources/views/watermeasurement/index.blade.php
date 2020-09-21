@@ -29,7 +29,7 @@
                         <th>Ca2+</th>
                         <th>Mg2+</th>
                         <th>Na+K+</th>
-                        <th width="220px">{{__('app.action')}}</th>
+                        <th>{{__('app.action')}}</th>
                     </tr>
                     @foreach ($wm as $item)
                         <tr>
