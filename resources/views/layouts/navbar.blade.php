@@ -95,11 +95,11 @@
             </li>
             </ul>
             <div class="form-inline my-2 my-lg-0">
-                <li class="nav-item">
+                <li class="nav-item2">
                     <i class="fas fa-bell fa-lg"></i>
                 </li>
                 {{--@if (Auth::guest())--}}
-                <li class="nav-item active dropdown2">
+                <li class="nav-item2 active dropdown2">
                     <a href="{{ route('login') }}"><img src="{{ asset('img/level1/icon_user.svg') }}" width="30" height="30" alt=""></a>
                     <ul class="dropdown-child2">
                         <li class="nav-item child2">
@@ -116,7 +116,7 @@
                 {{-- @else--}}
 
                 {{--@endif--}}
-                <li class="nav-item">
+                <li class="nav-item2">
                     <i class="fas fa-ellipsis-v"></i>
                 </li>
             </div>

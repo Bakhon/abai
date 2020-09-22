@@ -7,6 +7,8 @@
       :options="chartOptions"
       :series="series"
     ></apexchart>
+    <div class="begin">{{ begin }}</div>
+    <div class="end">{{ end }}</div>
   </div>
 </template>
 
@@ -19,7 +21,16 @@ export default {
   props: ["postTitles"],
   data: function () {
     return {
+      begin: "",
+      end: "",
       chartOptions: {
+        yaxis: {
+          labels: {
+            formatter: function (val) {
+              return val.toFixed(0);
+            },
+          },
+        },
         chart: {
           toolbar: {
             show: false,
@@ -113,8 +124,12 @@ export default {
     var value = [];
     _.forEach(data.data, function (item) {
       dates.push(item.dates);
-      value.push(new Intl.NumberFormat('ru-RU').format(item.value));
+      value.push(new Intl.NumberFormat("ru-RU").format(item.value));
     });
+
+    this.begin = dates[0];
+    var end = _.takeRight(dates, 1);
+    this.end = end[0];
 
     this.chartOptions = { labels: dates };
     this.series = [
