@@ -35,9 +35,9 @@ class EconomicController extends Controller
         $builder10 = $client->query('economic_2020v4', Granularity::DAY);
         $builder11 = $client->query('economic_2020v4', Granularity::DAY);
         $builder12 = $client->query('economic_2020v4', Granularity::DAY);
-        $builder13 = $client->query('economic_2020v4', Granularity::MONTH);
+        $builder13 = $client->query('economic_2020v4', Granularity::DAY);
         $builder14 = $client->query('economic_2020v4', Granularity::YEAR);
-        $builder15 = $client->query('economic_2020v4', Granularity::MONTH);
+        $builder15 = $client->query('economic_2020v4', Granularity::DAY);
 
         if ($request->has('org')) {
             $builder
@@ -147,7 +147,7 @@ class EconomicController extends Controller
             $builder13
                 ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM');
+                    $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
                 ->select('price_export_1')
@@ -166,7 +166,7 @@ class EconomicController extends Controller
             $builder15
                 ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM');
+                    $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
                 ->select('price_export_1')
@@ -263,7 +263,7 @@ class EconomicController extends Controller
             $builder13
                 ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM');
+                    $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
                 ->sum('oil');
@@ -278,7 +278,7 @@ class EconomicController extends Controller
             $builder15
                 ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
                 ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM');
+                    $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
                 ->sum('liquid');
