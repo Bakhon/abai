@@ -210,11 +210,25 @@
         Цена за баррель нефти
         <div class="price-border">{{ oilNow }} $</div>
       </div>
-      <div class="period" @click="periodSelect('7')">7 дней</div>
-      <div class="period" @click="periodSelect('30')">1 мес</div>
-      <div class="period" @click="periodSelect('133')">6 мес</div>
-      <div class="period" @click="periodSelect('365')">1 год</div>
-      <div class="period" @click="periodSelect('1825')">5 лет</div>
+
+      <div
+        @click="selectedDMY = menuDMY.id"
+        class="period"
+        v-for="(menuDMY, index) in periodSelectFunc()"
+        :style="{
+          color: menuDMY.current,
+        }"
+        v-on:click="periodSelect"
+      >
+        <div>{{ menuDMY.DMY }}</div>
+      </div>
+
+      <!-- <div class="period" @click="periodSelect('7','7 дней')">7 дней</div>
+      <div class="period" @click="periodSelect('30','1 мес')">1 мес</div>
+      <div class="period" @click="periodSelect('133','6 мес')">6 мес</div>
+      <div class="period" @click="periodSelect('365','1 год')">1 год</div>
+      <div class="period" @click="periodSelect('1825','5 лет')">5 лет</div>-->
+
       <!--<hr class="hr-visualcenter" />-->
       <visual-center-chart-area-oil
         v-for="(serial, index) in oilChart"
@@ -251,11 +265,23 @@
         Курс доллара
         <div class="price-border">{{ currencyNow.description }} &#8376;</div>
       </div>
-      <div class="period" @click="periodSelectUSD('7')">7 дней</div>
+      <div
+        @click="selectedDMY2 = menuDMY.id"
+        class="period"
+        v-for="(menuDMY, index) in periodSelectFunc()"
+        :style="{
+          color: menuDMY.current2,
+        }"
+        v-on:click="periodSelectUSD"
+      >
+        <div>{{ menuDMY.DMY }}</div>
+      </div>
+
+      <!--<div class="period" @click="periodSelectUSD('7')">7 дней</div>
       <div class="period" @click="periodSelectUSD('30')">1 мес</div>
       <div class="period" @click="periodSelectUSD('133')">6 мес</div>
       <div class="period" @click="periodSelectUSD('365')">1 год</div>
-      <div class="period" @click="periodSelectUSD('1825')">5 лет</div>
+      <div class="period" @click="periodSelectUSD('1825')">5 лет</div>-->
       <!--<ul class="oil-string-all">
         <li class="oil-string one2 width-price">1 казахстанский тенге равно</li>
         <li class="oil-string two2">1</li>
@@ -273,6 +299,7 @@
         v-bind:postTitles="serial2"
         :key="serial2"
       ></visual-center-chart-area-usd>
+      <div class="oil-period">{{ oilPeriod }}</div>
     </div>
   </div>
   <!-- sidebar-container END -->
@@ -283,6 +310,10 @@ import { EventBus } from "./event-bus.js";
 export default {
   data: function () {
     return {
+      selectedDMY2: "",
+      selectedDMY: "",
+      periodSelectOil: "",
+      oilPeriod: "",
       period: "7",
       periodUSD: "7",
       company: "",
@@ -323,6 +354,71 @@ export default {
   updated() {},
   mounted() {},
   methods: {
+    periodSelectFunc() {
+      var DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
+      var menuDMY = [];
+      var id = 0;
+      for (let i = 0; i <= 4; i++) {
+        var a = { index: i, id: i };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
+        if (this.selectedDMY == i) {
+          a.current = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+        if (this.selectedDMY2 == i) {
+          a.current2 = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+      }
+
+      if (this.selectedDMY != undefined) {
+      }
+
+      // localStorage.setItem("selectedDMY", this.selectedDMY);
+
+      return menuDMY;
+      // this.periodSelect();
+    },
+
+    periodSelect: function (event) {
+      if (this.selectedDMY == 0) {
+        this.period = 7;
+      }
+      if (this.selectedDMY == 1) {
+        this.period = 30;
+      }
+      if (this.selectedDMY == 2) {
+        this.period = 183;
+      }
+      if (this.selectedDMY == 3) {
+        this.period = 365;
+      }
+      if (this.selectedDMY == 4) {
+        this.period = 1825;
+      }
+      return this.getOilNow(this.timeSelect, this.period);
+    },
+
+    periodSelectUSD: function (event) {
+      if (this.selectedDMY2 == 0) {
+        this.periodUSD = 7;
+      }
+      if (this.selectedDMY2 == 1) {
+        this.periodUSD = 30;
+      }
+      if (this.selectedDMY2 == 2) {
+        this.periodUSD = 183;
+      }
+      if (this.selectedDMY2 == 3) {
+        this.periodUSD = 365;
+      }
+      if (this.selectedDMY2 == 4) {
+        this.periodUSD = 1825;
+      }
+      return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    },
+
     timeSelect2(select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
@@ -365,22 +461,10 @@ export default {
       });
     },
 
-    periodSelect(period) {
-      this.period = period;
-      this.getOilNow(this.timeSelect, this.period);
-    },
-
-    periodSelectUSD(period) {
-      this.periodUSD = period;
-      this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-    },
-
     getOilNow: function (dates, period) {
       var datas;
-      //let uri = "/js/json/graph_1006.json";
-      let uri =
-        "https://cors-anywhere.herokuapp.com/" +
-        "https://yandex.ru/news/quotes/graph_1006.json";
+      let uri = "/js/json/graph_1006.json";
+      //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {

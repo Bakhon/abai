@@ -2931,6 +2931,18 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   data: function data() {
     return {
       chartOptions: {
+        yaxis: {
+          labels: {
+            formatter: function formatter(val) {
+              if (val > 1000) {
+                return new Intl.NumberFormat('ru-RU').format(Math.round(val / 100) * 100);
+              } else {
+                return new Intl.NumberFormat('ru-RU').format(Math.round(val / 10) * 10);
+              }
+            }
+          },
+          min: 0
+        },
         chart: {
           toolbar: {
             show: false,
@@ -3116,6 +3128,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3123,6 +3136,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   props: ["postTitle"],
   data: function data() {
     return {
+      oilPeriod: "",
       begin: "",
       end: "",
       chartOptions: {
@@ -4045,10 +4059,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      selectedDMY2: "",
+      selectedDMY: "",
+      periodSelectOil: "",
+      oilPeriod: "",
       period: "7",
       periodUSD: "7",
       company: "",
@@ -4076,6 +4121,81 @@ __webpack_require__.r(__webpack_exports__);
   updated: function updated() {},
   mounted: function mounted() {},
   methods: {
+    periodSelectFunc: function periodSelectFunc() {
+      var DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
+      var menuDMY = [];
+      var id = 0;
+
+      for (var i = 0; i <= 4; i++) {
+        var a = {
+          index: i,
+          id: i
+        };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
+
+        if (this.selectedDMY == i) {
+          a.current = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+
+        if (this.selectedDMY2 == i) {
+          a.current2 = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+      }
+
+      if (this.selectedDMY != undefined) {} // localStorage.setItem("selectedDMY", this.selectedDMY);
+
+
+      return menuDMY; // this.periodSelect();
+    },
+    periodSelect: function periodSelect(event) {
+      if (this.selectedDMY == 0) {
+        this.period = 7;
+      }
+
+      if (this.selectedDMY == 1) {
+        this.period = 30;
+      }
+
+      if (this.selectedDMY == 2) {
+        this.period = 183;
+      }
+
+      if (this.selectedDMY == 3) {
+        this.period = 365;
+      }
+
+      if (this.selectedDMY == 4) {
+        this.period = 1825;
+      }
+
+      return this.getOilNow(this.timeSelect, this.period);
+    },
+    periodSelectUSD: function periodSelectUSD(event) {
+      if (this.selectedDMY2 == 0) {
+        this.periodUSD = 7;
+      }
+
+      if (this.selectedDMY2 == 1) {
+        this.periodUSD = 30;
+      }
+
+      if (this.selectedDMY2 == 2) {
+        this.periodUSD = 183;
+      }
+
+      if (this.selectedDMY2 == 3) {
+        this.periodUSD = 365;
+      }
+
+      if (this.selectedDMY2 == 4) {
+        this.periodUSD = 1825;
+      }
+
+      return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    },
     timeSelect2: function timeSelect2(select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
@@ -4126,20 +4246,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    periodSelect: function periodSelect(period) {
-      this.period = period;
-      this.getOilNow(this.timeSelect, this.period);
-    },
-    periodSelectUSD: function periodSelectUSD(period) {
-      this.periodUSD = period;
-      this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-    },
     getOilNow: function getOilNow(dates, period) {
       var _this3 = this;
 
-      var datas; //let uri = "/js/json/graph_1006.json";
+      var datas;
+      var uri = "/js/json/graph_1006.json"; //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
 
-      var uri = "https://cors-anywhere.herokuapp.com/" + "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then(function (response) {
         var data = response.data;
 
@@ -5008,12 +5120,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   template: "#vue-status-overview-template",
   data: function data() {
     return {
-      //showTableItem: "No",
+      //showTableItem: "No",]
+      DMY: "День",
       item: "",
       item2: "",
       item3: "",
@@ -5281,6 +5399,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         if (this.selectedDMY == i) {
           a.current = "#1D70B7";
+          this.DMY = menuDMY[i]["DMY"];
         }
       }
 
@@ -45427,6 +45546,8 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "begin" }, [_vm._v(_vm._s(_vm.begin))]),
       _vm._v(" "),
+      _c("div", {}, [_vm._v(_vm._s(_vm.oilPeriod))]),
+      _vm._v(" "),
       _c("div", { staticClass: "end" }, [_vm._v(_vm._s(_vm.end))])
     ],
     1
@@ -45838,70 +45959,26 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("7")
+        _vm._l(_vm.periodSelectFunc(), function(menuDMY, index) {
+          return _c(
+            "div",
+            {
+              staticClass: "period",
+              style: {
+                color: menuDMY.current
+              },
+              on: {
+                click: [
+                  function($event) {
+                    _vm.selectedDMY = menuDMY.id
+                  },
+                  _vm.periodSelect
+                ]
               }
-            }
-          },
-          [_vm._v("7 дней")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("30")
-              }
-            }
-          },
-          [_vm._v("1 мес")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("133")
-              }
-            }
-          },
-          [_vm._v("6 мес")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("365")
-              }
-            }
-          },
-          [_vm._v("1 год")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("1825")
-              }
-            }
-          },
-          [_vm._v("5 лет")]
-        ),
+            },
+            [_c("div", [_vm._v(_vm._s(menuDMY.DMY))])]
+          )
+        }),
         _vm._v(" "),
         _vm._l(_vm.oilChart, function(serial, index) {
           return _c("visual-center-chart-area-oil", {
@@ -45926,77 +46003,37 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("7")
+        _vm._l(_vm.periodSelectFunc(), function(menuDMY, index) {
+          return _c(
+            "div",
+            {
+              staticClass: "period",
+              style: {
+                color: menuDMY.current2
+              },
+              on: {
+                click: [
+                  function($event) {
+                    _vm.selectedDMY2 = menuDMY.id
+                  },
+                  _vm.periodSelectUSD
+                ]
               }
-            }
-          },
-          [_vm._v("7 дней")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("30")
-              }
-            }
-          },
-          [_vm._v("1 мес")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("133")
-              }
-            }
-          },
-          [_vm._v("6 мес")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("365")
-              }
-            }
-          },
-          [_vm._v("1 год")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("1825")
-              }
-            }
-          },
-          [_vm._v("5 лет")]
-        ),
+            },
+            [_c("div", [_vm._v(_vm._s(menuDMY.DMY))])]
+          )
+        }),
         _vm._v(" "),
         _vm._l(_vm.currencyChart, function(serial2, index) {
           return _c("visual-center-chart-area-usd", {
             key: serial2,
             attrs: { postTitles: serial2 }
           })
-        })
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "oil-period" }, [
+          _vm._v(_vm._s(_vm.oilPeriod))
+        ])
       ],
       2
     )
@@ -46840,13 +46877,24 @@ var render = function() {
                           _c(
                             "div",
                             [
-                              _vm._l(_vm.bigTable, function(item) {
+                              _vm._l(_vm.bigTable, function(item, index) {
                                 return _c("div", [
                                   _c("div", [
                                     _c("div", [
-                                      _c("div", {
-                                        staticClass: "cell-number table-border"
-                                      }),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "cell-number table-border"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                              " +
+                                              _vm._s(index + 1) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      ),
                                       _vm._v(" "),
                                       _c(
                                         "div",
@@ -47464,13 +47512,21 @@ var render = function() {
                         _vm._v(" "),
                         _c("div", { staticStyle: { clear: "both" } }),
                         _vm._v(" "),
-                        _vm._l(_vm.tables, function(item) {
+                        _vm._l(_vm.tables, function(item, index) {
                           return _c("div", [
                             _c("div", [
                               _c("div", [
-                                _c("div", {
-                                  staticClass: "cell-number table-border"
-                                }),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell-number table-border" },
+                                  [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(index + 1) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                ),
                                 _vm._v(" "),
                                 _c(
                                   "div",
@@ -47727,13 +47783,19 @@ var render = function() {
                     _c(
                       "div",
                       { staticClass: "otstup" },
-                      _vm._l(_vm.productionForChart, function(serial, index) {
-                        return _c("visual-center-chart-area-center", {
-                          key: serial,
-                          attrs: { postTitle: serial }
-                        })
-                      }),
-                      1
+                      [
+                        _vm._l(_vm.productionForChart, function(serial, index) {
+                          return _c("visual-center-chart-area-center", {
+                            key: serial,
+                            attrs: { postTitle: serial }
+                          })
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "chart-date" }, [
+                          _vm._v(_vm._s(_vm.DMY))
+                        ])
+                      ],
+                      2
                     )
                   ]
                 ),

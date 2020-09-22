@@ -8,6 +8,7 @@
       :series="series"
     ></apexchart>
     <div class="begin">{{ begin }}</div>
+    <div class="">{{oilPeriod}}</div>
     <div class="end">{{ end }}</div>
   </div>
 </template>
@@ -21,6 +22,7 @@ export default {
   props: ["postTitle"],
   data: function () {
     return {
+      oilPeriod:"",
       begin: "",
       end: "",
       chartOptions: {
