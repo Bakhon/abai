@@ -53,7 +53,10 @@
                                     <a class="btn btn-primary" href="{{ route('watermeasurement.show',$item->id) }}"><i class="fas fa-eye"></i></a>
                                     @csrf
                                     @method('DELETE')
-                                    {{-- <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button> --}}
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fas fa-trash"></i>
+
+                                    </button>
                                 </form>
                             </td>
                         </tr>

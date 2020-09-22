@@ -63,7 +63,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getsrb', 'WaterMeasurementController@getSulphateReducingBacteria');
         Route::get('/gethob', 'WaterMeasurementController@getHydrocarbonOxidizingBacteria');
         Route::get('/gethb', 'WaterMeasurementController@getThionicBacteria');
-
+        Route::post('/getwm', 'WaterMeasurementController@getWm');
+        Route::post('/updatewm', 'WaterMeasurementController@update')->name('updatewm');
     });
     Auth::routes([
         'reset' => false,

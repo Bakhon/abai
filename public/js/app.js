@@ -8048,6 +8048,400 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_datetime__WEBPACK_IMPORTED_MO
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wm/edit.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wm/edit.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-datetime */ "./node_modules/vue-datetime/dist/vue-datetime.js");
+/* harmony import */ var vue_datetime__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_datetime__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-datetime/dist/vue-datetime.css */ "./node_modules/vue-datetime/dist/vue-datetime.css");
+/* harmony import */ var vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_datetime_dist_vue_datetime_css__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var luxon__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! luxon */ "./node_modules/luxon/build/cjs-browser/luxon.js");
+/* harmony import */ var luxon__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(luxon__WEBPACK_IMPORTED_MODULE_3__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+ // You need a specific loader for CSS files
+
+
+
+luxon__WEBPACK_IMPORTED_MODULE_3__["Settings"].defaultLocale = 'ru';
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_datetime__WEBPACK_IMPORTED_MODULE_1__["Datetime"]);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "wm-edit",
+  props: ['id'],
+  methods: {
+    chooseNgdu: function chooseNgdu(event) {
+      var _this = this;
+
+      this.axios.post("/ru/getcdng", {
+        ngdu_id: event.target.value
+      }).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          _this.cndgs = data.data;
+        } else {
+          console.log('No data');
+        }
+      });
+    },
+    chooseCdng: function chooseCdng(event) {
+      var _this2 = this;
+
+      this.axios.post("/ru/getgu", {
+        cdng_id: event.target.value
+      }).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          _this2.gus = data.data;
+        } else {
+          console.log('No data');
+        }
+      });
+    },
+    chooseGu: function chooseGu(event) {
+      var _this3 = this;
+
+      this.axios.post("/ru/getzu", {
+        gu_id: event.target.value
+      }).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          _this3.zus = data.data;
+        } else {
+          console.log('No data');
+        }
+      });
+    },
+    chooseZu: function chooseZu(event) {
+      var _this4 = this;
+
+      this.axios.post("/ru/getwell", {
+        zu_id: event.target.value
+      }).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          _this4.wells = data.data;
+        } else {
+          console.log('No data');
+        }
+      });
+    }
+  },
+  data: function data() {
+    return {
+      otherObjects: {},
+      ngdus: {},
+      cndgs: {},
+      gus: {},
+      zus: {},
+      wells: {},
+      wbs: {},
+      srb: {},
+      hob: {},
+      hb: {},
+      otherObject: null,
+      ngdu: null,
+      cdng: null,
+      gu: null,
+      zu: null,
+      well: null,
+      datetimeEmpty: null,
+      wbsmodel: null,
+      srbmodel: null,
+      hobmodel: null,
+      hbmodel: null,
+      barium_content: null,
+      calcium_ion: null,
+      carbon_dioxide: null,
+      carbonate_ion: null,
+      chlorum_ion: null,
+      content_of_petrolium_products: null,
+      density: null,
+      ferric_iron_content: null,
+      ferrous_iron_content: null,
+      hydrocarbonate_ion: null,
+      hydrogen_sulfide: null,
+      magnesium_ion: null,
+      mechanical_impurities: null,
+      mineralization: null,
+      ph: null,
+      potassium_ion_sodium_ion: null,
+      strontium_content: null,
+      sulphate_ion: null,
+      total_hardness: null,
+      total_iron_content: null,
+      oxygen: null
+    };
+  },
+  mounted: function mounted() {
+    var _this5 = this;
+
+    this.axios.post("/ru/getwm", {
+      id: this.id
+    }).then(function (response) {
+      var data = response.data.data;
+
+      if (data) {
+        console.log(data);
+        var dt = data.date.split(' ');
+        _this5.otherObject = data.other_objects_id, _this5.ngdu = data.ngdu_id, _this5.cdng = data.cdng_id, _this5.gu = data.gu_id, _this5.zu = data.zu_id, _this5.well = data.well_id, _this5.datetimeEmpty = dt[0] + "T" + dt[1] + ".000+06:00", _this5.wbsmodel = data.water_type_by_sulin_id, _this5.srbmodel = data.sulphate_reducing_bacteria_id, _this5.hobmodel = data.hydrocarbon_oxidizing_bacteria_id, _this5.hbmodel = data.thionic_bacteria_id, _this5.barium_content = data.barium_content, _this5.calcium_ion = data.calcium_ion, _this5.carbon_dioxide = data.carbon_dioxide, _this5.carbonate_ion = data.thicarbonate_iononic_bacteria_id, _this5.chlorum_ion = data.chlorum_ion, _this5.content_of_petrolium_products = data.content_of_petrolium_products, _this5.density = data.density, _this5.ferric_iron_content = data.ferric_iron_content, _this5.ferrous_iron_content = data.ferrous_iron_content, _this5.hydrocarbonate_ion = data.hydrocarbonate_ion, _this5.hydrogen_sulfide = data.hydrogen_sulfide, _this5.magnesium_ion = data.magnesium_ion, _this5.mechanical_impurities = data.mechanical_impurities, _this5.mineralization = data.mineralization, _this5.ph = data.ph, _this5.potassium_ion_sodium_ion = data.potassium_ion_sodium_ion, _this5.strontium_content = data.strontium_content, _this5.sulphate_ion = data.sulphate_ion, _this5.total_hardness = data.total_hardness, _this5.total_iron_content = data.total_iron_content, _this5.oxygen = data.oxygen;
+      } else {
+        console.log('No data');
+      }
+    });
+  },
+  beforeCreate: function beforeCreate() {
+    var _this6 = this;
+
+    this.axios.get("/ru/getotherobjects").then(function (response) {
+      var data = response.data;
+
+      if (data) {
+        _this6.otherObjects = data.data;
+      } else {
+        console.log('No data');
+      }
+    });
+    this.axios.get("/ru/getngdu").then(function (response) {
+      var data = response.data;
+
+      if (data) {
+        _this6.ngdus = data.data;
+      } else {
+        console.log('No data');
+      }
+    });
+    this.axios.get("/ru/getwbs").then(function (response) {
+      var data = response.data;
+
+      if (data) {
+        _this6.wbs = data.data;
+      } else {
+        console.log('No data');
+      }
+    });
+    this.axios.get("/ru/getsrb").then(function (response) {
+      var data = response.data;
+
+      if (data) {
+        _this6.srb = data.data;
+      } else {
+        console.log('No data');
+      }
+    });
+    this.axios.get("/ru/gethob").then(function (response) {
+      var data = response.data;
+
+      if (data) {
+        _this6.hob = data.data;
+      } else {
+        console.log('No data');
+      }
+    });
+    this.axios.get("/ru/gethb").then(function (response) {
+      var data = response.data;
+
+      if (data) {
+        _this6.hb = data.data;
+      } else {
+        console.log('No data');
+      }
+    });
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap/dist/js/bootstrap.js ***!
@@ -12649,6 +13043,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\n.form-label-group[data-v-697f03cc]{\n    padding-bottom: 30px;\n}\n.form-label-group2[data-v-697f03cc]{\n    padding-bottom: 39px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css&":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.form-label-group[data-v-45b57da8]{\n    padding-bottom: 30px;\n}\n.form-label-group2[data-v-45b57da8]{\n    padding-bottom: 39px;\n}\n", ""]);
 
 // exports
 
@@ -52623,6 +53036,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -59143,6 +59586,1140 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wm/edit.vue?vue&type=template&id=45b57da8&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/wm/edit.vue?vue&type=template&id=45b57da8&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "col-xs-12 col-sm-12 col-md-12 row" }, [
+    _c("div", { staticClass: "col-xs-12 col-sm-4 col-md-4" }, [
+      _c("label", [_vm._v("Прочие объекты")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.otherObject,
+                expression: "otherObject"
+              },
+              {
+                name: "show",
+                rawName: "v-show",
+                value: _vm.otherObjects.length > 0,
+                expression: "otherObjects.length > 0"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "other_objects_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.otherObject = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.otherObjects, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("ГУ")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.gu,
+                expression: "gu"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "gu_id" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.gu = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.chooseGu($event)
+                }
+              ]
+            }
+          },
+          _vm._l(_vm.gus, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("\n          Дата и время\n\n      ")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-label-group2" },
+        [
+          _c("datetime", {
+            attrs: {
+              type: "datetime",
+              "input-class": "date",
+              "value-zone": "Asia/Almaty",
+              zone: "Asia/Almaty",
+              format: {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "2-digit",
+                timeZoneName: "short"
+              },
+              phrases: { ok: "Выбрать", cancel: "Выход" },
+              "hour-step": 1,
+              "minute-step": 5,
+              "week-start": 1,
+              "use24-hour": "",
+              auto: ""
+            },
+            model: {
+              value: _vm.datetimeEmpty,
+              callback: function($$v) {
+                _vm.datetimeEmpty = $$v
+              },
+              expression: "datetimeEmpty"
+            }
+          }),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.datetimeEmpty,
+                expression: "datetimeEmpty"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "hidden", name: "date", placeholder: "" },
+            domProps: { value: _vm.datetimeEmpty },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.datetimeEmpty = $event.target.value
+              }
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("label", [_vm._v("SO42-")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.sulphate_ion,
+              expression: "sulphate_ion"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "sulphate_ion", placeholder: "" },
+          domProps: { value: _vm.sulphate_ion },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.sulphate_ion = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Mg2+")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.magnesium_ion,
+              expression: "magnesium_ion"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "magnesium_ion", placeholder: "" },
+          domProps: { value: _vm.magnesium_ion },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.magnesium_ion = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("рН")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.ph,
+              expression: "ph"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "ph", placeholder: "" },
+          domProps: { value: _vm.ph },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.ph = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Тип воды по Сулину")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.wbsmodel,
+                expression: "wbsmodel"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "water_type_by_sulin_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.wbsmodel = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.wbs, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Cодержание стронция, мг/дм³")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.strontium_content,
+              expression: "strontium_content"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "strontium_content", placeholder: "" },
+          domProps: { value: _vm.strontium_content },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.strontium_content = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Содержание трехвалентного железа мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.ferric_iron_content,
+              expression: "ferric_iron_content"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            name: "ferric_iron_content",
+            placeholder: ""
+          },
+          domProps: { value: _vm.ferric_iron_content },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.ferric_iron_content = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("О2, мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.oxygen,
+              expression: "oxygen"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "oxygen", placeholder: "" },
+          domProps: { value: _vm.oxygen },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.oxygen = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("УОБ, кл/см3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.hobmodel,
+                expression: "hobmodel"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "hydrocarbon_oxidizing_bacteria_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.hobmodel = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.hob, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-xs-12 col-sm-4 col-md-4" }, [
+      _c("label", [_vm._v("НГДУ")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.ngdu,
+                expression: "ngdu"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "ngdu_id" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.ngdu = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.chooseNgdu($event)
+                }
+              ]
+            }
+          },
+          _vm._l(_vm.ngdus, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("ЗУ")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.zu,
+                expression: "zu"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "zu_id" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.zu = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.chooseZu($event)
+                }
+              ]
+            }
+          },
+          _vm._l(_vm.zus, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("НСО3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.hydrocarbonate_ion,
+              expression: "hydrocarbonate_ion"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            name: "hydrocarbonate_ion",
+            placeholder: ""
+          },
+          domProps: { value: _vm.hydrocarbonate_ion },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.hydrocarbonate_ion = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Cl-")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.chlorum_ion,
+              expression: "chlorum_ion"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "chlorum_ion", placeholder: "" },
+          domProps: { value: _vm.chlorum_ion },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.chlorum_ion = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Na+K+")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.potassium_ion_sodium_ion,
+              expression: "potassium_ion_sodium_ion"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            name: "potassium_ion_sodium_ion",
+            placeholder: ""
+          },
+          domProps: { value: _vm.potassium_ion_sodium_ion },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.potassium_ion_sodium_ion = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Общая минерализация, мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.mineralization,
+              expression: "mineralization"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "mineralization", placeholder: "" },
+          domProps: { value: _vm.mineralization },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.mineralization = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Содержание нефтепродуктов, мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.content_of_petrolium_products,
+              expression: "content_of_petrolium_products"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            name: "content_of_petrolium_products",
+            placeholder: ""
+          },
+          domProps: { value: _vm.content_of_petrolium_products },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.content_of_petrolium_products = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Содержание бария, мг/дм³")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.barium_content,
+              expression: "barium_content"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "barium_content", placeholder: "" },
+          domProps: { value: _vm.barium_content },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.barium_content = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Содержание двухвалентного железа мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.ferrous_iron_content,
+              expression: "ferrous_iron_content"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            name: "ferrous_iron_content",
+            placeholder: ""
+          },
+          domProps: { value: _vm.ferrous_iron_content },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.ferrous_iron_content = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("CO2, мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.carbon_dioxide,
+              expression: "carbon_dioxide"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "carbon_dioxide", placeholder: "" },
+          domProps: { value: _vm.carbon_dioxide },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.carbon_dioxide = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("ТБ, кл/см3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.hbmodel,
+                expression: "hbmodel"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "thionic_bacteria_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.hbmodel = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.hb, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-xs-12 col-sm-4 col-md-4" }, [
+      _c("label", [_vm._v("ЦДНГ")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.cdng,
+                expression: "cdng"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "cdng_id" },
+            on: {
+              change: [
+                function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.cdng = $event.target.multiple
+                    ? $$selectedVal
+                    : $$selectedVal[0]
+                },
+                function($event) {
+                  return _vm.chooseCdng($event)
+                }
+              ]
+            }
+          },
+          _vm._l(_vm.cndgs, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Скважина")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.well,
+                expression: "well"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "well_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.well = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.wells, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("СО32-")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.carbonate_ion,
+              expression: "carbonate_ion"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "carbonate_ion", placeholder: "" },
+          domProps: { value: _vm.carbonate_ion },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.carbonate_ion = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.id,
+              expression: "id"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "hidden", name: "id", placeholder: "" },
+          domProps: { value: _vm.id },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.id = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Ca2+")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.calcium_ion,
+              expression: "calcium_ion"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "calcium_ion", placeholder: "" },
+          domProps: { value: _vm.calcium_ion },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.calcium_ion = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Плотность при 20°С, г/см3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.density,
+              expression: "density"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "density", placeholder: "" },
+          domProps: { value: _vm.density },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.density = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Общая жесткость, мг-экв/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.total_hardness,
+              expression: "total_hardness"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "total_hardness", placeholder: "" },
+          domProps: { value: _vm.total_hardness },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.total_hardness = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Механические примеси, мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.mechanical_impurities,
+              expression: "mechanical_impurities"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            name: "mechanical_impurities",
+            placeholder: ""
+          },
+          domProps: { value: _vm.mechanical_impurities },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.mechanical_impurities = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("Содержание общего железа мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.total_iron_content,
+              expression: "total_iron_content"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            name: "total_iron_content",
+            placeholder: ""
+          },
+          domProps: { value: _vm.total_iron_content },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.total_iron_content = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("H2S, мг/дм3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.hydrogen_sulfide,
+              expression: "hydrogen_sulfide"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { type: "number", name: "hydrogen_sulfide", placeholder: "" },
+          domProps: { value: _vm.hydrogen_sulfide },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.hydrogen_sulfide = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("label", [_vm._v("СВБ, кл/см3")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-label-group" }, [
+        _c(
+          "select",
+          {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.srbmodel,
+                expression: "srbmodel"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { name: "sulphate_reducing_bacteria_id" },
+            on: {
+              change: function($event) {
+                var $$selectedVal = Array.prototype.filter
+                  .call($event.target.options, function(o) {
+                    return o.selected
+                  })
+                  .map(function(o) {
+                    var val = "_value" in o ? o._value : o.value
+                    return val
+                  })
+                _vm.srbmodel = $event.target.multiple
+                  ? $$selectedVal
+                  : $$selectedVal[0]
+              }
+            }
+          },
+          _vm._l(_vm.srb, function(row) {
+            return _c("option", { domProps: { value: row.id } }, [
+              _vm._v(_vm._s(row.name))
+            ])
+          }),
+          0
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-xs-12 col-sm-12 col-md-12 text-center" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-success",
+          attrs: { type: "submit", disabled: !_vm.datetimeEmpty }
+        },
+        [_vm._v("Сохранить")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -71863,6 +73440,7 @@ Vue.component('chart2-component', __webpack_require__(/*! ./components/Economic/
 Vue.component('chart3-component', __webpack_require__(/*! ./components/Economic/chart3.vue */ "./resources/js/components/Economic/chart3.vue")["default"]);
 Vue.component('chart4-component', __webpack_require__(/*! ./components/Economic/chart4.vue */ "./resources/js/components/Economic/chart4.vue")["default"]);
 Vue.component('wm-create', __webpack_require__(/*! ./components/wm/create.vue */ "./resources/js/components/wm/create.vue")["default"]);
+Vue.component('wm-edit', __webpack_require__(/*! ./components/wm/edit.vue */ "./resources/js/components/wm/edit.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -73573,6 +75151,93 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_697f03cc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_create_vue_vue_type_template_id_697f03cc_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/wm/edit.vue":
+/*!*********************************************!*\
+  !*** ./resources/js/components/wm/edit.vue ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _edit_vue_vue_type_template_id_45b57da8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit.vue?vue&type=template&id=45b57da8&scoped=true& */ "./resources/js/components/wm/edit.vue?vue&type=template&id=45b57da8&scoped=true&");
+/* harmony import */ var _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./edit.vue?vue&type=script&lang=js& */ "./resources/js/components/wm/edit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _edit_vue_vue_type_style_index_0_id_45b57da8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css& */ "./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _edit_vue_vue_type_template_id_45b57da8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _edit_vue_vue_type_template_id_45b57da8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "45b57da8",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/wm/edit.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/wm/edit.vue?vue&type=script&lang=js&":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/wm/edit.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wm/edit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css& ***!
+  \******************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_id_45b57da8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wm/edit.vue?vue&type=style&index=0&id=45b57da8&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_id_45b57da8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_id_45b57da8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_id_45b57da8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_id_45b57da8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_style_index_0_id_45b57da8_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
+
+/***/ }),
+
+/***/ "./resources/js/components/wm/edit.vue?vue&type=template&id=45b57da8&scoped=true&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/wm/edit.vue?vue&type=template&id=45b57da8&scoped=true& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_45b57da8_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./edit.vue?vue&type=template&id=45b57da8&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/wm/edit.vue?vue&type=template&id=45b57da8&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_45b57da8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_edit_vue_vue_type_template_id_45b57da8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
