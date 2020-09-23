@@ -75,6 +75,13 @@
                             <span class="workTypeText">Осложнения в системе сбора</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/watermeasurement">
+                            <span class="workTypeText">Лабораторные данные по промысловой жидкости</span>
+                        </a>
+                    </li>
+
+
 
 
                 </ul>
@@ -224,7 +231,7 @@
     }
 
     .searchInput {
-        width: 328px;
+        width: 320px;
         border: none;
         height: 40px;
         font-size: 16px;

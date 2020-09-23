@@ -27,10 +27,11 @@
         @elseif (basename(Request::url()) === "mzdn")
         @elseif (basename(Request::url()) === "constructor")
         @elseif (basename(Request::url()) === "production")
+        @elseif (basename(Request::url()) === "watermeasurement")
         @elseif (basename(Request::url()) === "visualcenter")
         @include('layouts.visual-center-sidebar')
         @else
-        @include('layouts.sidebar')
+        {{-- @include('layouts.sidebar') --}}
         @endif
         {{-- <div class="col p-4"> --}}
         @yield('content')

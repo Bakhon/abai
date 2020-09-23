@@ -1,57 +1,78 @@
 <template>
 <div class="example">
-  <apexchart height="350" type="bar" :options="chartOptions" :series="series"></apexchart>
+  <apexchart height="350" type="line" :options="chartOptions" :series="series"></apexchart>
 </div>
 </template>
 
 <script>
+var ru = require("apexcharts/dist/locales/ru.json");
 export default {
-  name: 'ColumnExample',
+  name: 'MixedExample',
   data: function() {
     return {
       chartOptions: {
-        plotOptions: {
-          bar: {
-            horizontal: true,
-            endingShape: 'rounded',
-            columnWidth: '55%',
-          },
-        },
         chart: {
-            stacked: true,
-            foreColor: '#FFFFFF'
-        },
-        colors:['#AB130E'],
-        dataLabels: {
-          enabled: false
+          stacked: false,
         },
         stroke: {
-          show: true,
-          width: 2,
-          colors: ['transparent']
+          width: [0, 2, 5],
+          curve: 'smooth'
         },
-        xaxis: {
-          categories: ['', '', '', '', '', '', '', '', '','', '', '', '', '', '', '', '', '', '', ''],
+        colors:['#13B062', '#F7BB2E', '#AB130E'],
+        chart: {
+            stacked: true,
+            foreColor: '#FFFFFF',
+            locales: [ru],
+            defaultLocale: 'ru'
         },
-        yaxis: {
-          title: {
-            text: 'Топ 20 нерентабельных скважин'
+        plotOptions: {
+          bar: {
+            columnWidth: '50%'
           }
         },
-        fill: {
-          opacity: 1
+        labels: ['01/01/2003', '02/01/2003', '03/01/2003', '04/01/2003', '05/01/2003', '06/01/2003', '07/01/2003', '08/01/2003', '09/01/2003', '10/01/2003', '11/01/2003'],
+        markers: {
+          size: 0
+        },
+        xaxis: {
+          type: 'datetime'
+        },
+        yaxis: {
+          labels: {
+            formatter: function (value) {
+                return Math.round(value);
+            }
+          },
+          title: {
+            text: 'Добыча жидкости',
+          },
+          min: 0
         },
         tooltip: {
+          shared: true,
+          intersect: false,
           y: {
-            formatter: function(val) {
-              return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(val) + " тыс. тенге"
+            formatter: function(y) {
+              if (typeof y !== "undefined") {
+                return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + " тыс. тонн";
+              }
+              return y;
             }
           }
         }
       },
       series: [{
-        name: 'Топ 20 нерентабельных скважин',
-        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        name: 'Рентабельные скважины',
+        type: 'area',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }, {
+        name: 'Условно-рентабельные скважины',
+        type: 'area',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }, {
+        name: 'Нерентабельные скважины',
+        type: 'area',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }],
     }
   },
@@ -59,15 +80,24 @@ export default {
     setValue: function(value) {
         this.series = [
             {
-                name: 'Топ 20 нерентабельных скважин',
-                data: value.Operating_profit
+                name: 'Рентабельные скважины',
+                type: 'area',
+                data: value.profitable
+            },
+            {
+                name: 'Условно-рентабельные скважины',
+                type: 'area',
+                data: value.profitless_cat_2
+            },
+            {
+                name: 'Нерентабельные скважины',
+                type: 'area',
+                data: value.profitless_cat_1
             }
             ];
 
         this.chartOptions = {
-            xaxis: {
-            categories: value.uwi,
-            },
+            labels: value.dt
         };
     }
   },

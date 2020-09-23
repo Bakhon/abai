@@ -44,10 +44,27 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Auth::routes();
         Route::get('/home', 'HomeController@index')->name('home');
         Route::resource('oildaily','OilDailyController');
+        Route::resource('watermeasurement','WaterMeasurementController');
         Route::get('/maps', 'DruidController@maps')->name('maps');
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
         Route::get('/constructor', 'DruidController@constructor')->name('constructor');
+
+
+        //wm
+        Route::resource('watermeasurement','WaterMeasurementController');
+        Route::get('/getotherobjects', 'WaterMeasurementController@getOtherObjects');
+        Route::get('/getngdu', 'WaterMeasurementController@getNgdu');
+        Route::post('/getcdng', 'WaterMeasurementController@getCdng');
+        Route::post('/getgu', 'WaterMeasurementController@getGu');
+        Route::post('/getzu', 'WaterMeasurementController@getZu');
+        Route::post('/getwell', 'WaterMeasurementController@getWell');
+        Route::get('/getwbs', 'WaterMeasurementController@getWaterBySulin');
+        Route::get('/getsrb', 'WaterMeasurementController@getSulphateReducingBacteria');
+        Route::get('/gethob', 'WaterMeasurementController@getHydrocarbonOxidizingBacteria');
+        Route::get('/gethb', 'WaterMeasurementController@getThionicBacteria');
+        Route::post('/getwm', 'WaterMeasurementController@getWm');
+        Route::post('/updatewm', 'WaterMeasurementController@update')->name('updatewm');
     });
     Auth::routes([
         'reset' => false,
