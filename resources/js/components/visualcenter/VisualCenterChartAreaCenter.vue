@@ -20,8 +20,23 @@ export default {
 
   data: function () {
     return {
-      chartOptions: {
-        chart: {
+      chartOptions: {  
+             yaxis: { 
+               labels: {
+            formatter: function (val) {
+           if (val> 1000){
+              return new Intl.NumberFormat('ru-RU').format( (Math.round(val / 100) * 100));
+              } else
+              {
+              return new Intl.NumberFormat('ru-RU').format( (Math.round(val / 10) * 10));
+              }
+              
+              
+              
+            },
+          },
+      min: 0},
+        chart: {         
           toolbar: {
             show: false,
             autoSelected: "pan",
@@ -36,7 +51,7 @@ export default {
         stroke: {
           curve: "smooth",
         },
-        plotOptions: {
+        plotOptions: {       
           bar: {
             columnWidth: "50%",
           },

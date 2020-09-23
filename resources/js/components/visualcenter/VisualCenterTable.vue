@@ -244,13 +244,15 @@
                  
                         </div>-->
 
-                        <div v-for="item in bigTable">
+                        <div v-for="(item, index) in bigTable">
                           <div>
                             <div>
                               <!-- <div class="cell-colour table-border">
                  
                         </div>-->
-                              <div class="cell-number table-border"></div>
+                              <div class="cell-number table-border">
+                                {{ index + 1 }}
+                              </div>
                               <div class="cell-name table-border">
                                 {{ item.dzoDay }}
                                 <!--  {{ item.dzo }}{{ item.dzoMonth }}  {{item.dzoYear}}-->
@@ -470,13 +472,15 @@
                       </div>
                     </div>
                     <div style="clear: both;"></div>
-                    <div v-for="item in tables">
+                    <div v-for="(item, index) in tables">
                       <div>
                         <div>
                           <!-- <div class="cell-colour table-border">
            
                         </div>-->
-                          <div class="cell-number table-border"></div>
+                          <div class="cell-number table-border">
+                            {{ index + 1 }}
+                          </div>
                           <div class="cell-name table-border">
                             {{ item.dzo }}
                             {{ item.timeMonth }}
@@ -628,6 +632,7 @@
                     :key="serial"
                   >
                   </visual-center-chart-area-center>
+                  <div class="chart-date">{{ DMY }}</div>
                 </div>
               </div>
               <div class="visual-center-center">
@@ -718,7 +723,8 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
-      //showTableItem: "No",
+      //showTableItem: "No",]
+      DMY: "День",
       item: "",
       item2: "",
       item3: "",
@@ -1029,6 +1035,7 @@ export default {
         menuDMY.push(a);
         if (this.selectedDMY == i) {
           a.current = "#1D70B7";
+          this.DMY = menuDMY[i]["DMY"];
         }
       }
       if (this.selectedDMY != undefined) {

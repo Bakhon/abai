@@ -245,10 +245,6 @@ canvas#chart-area4 {
     background: #2C3359;
 }
 
-.drop {
-    background: url(data:image/svg+xml;base64,[d="M11.754 4.58455C9.94724 2.14766 8.11539 0.176884 8.09717 0.157146C8.0038 0.0569368 7.87322 0 7.73581 0C7.59916 0 7.46859 0.0569368 7.37521 0.157146C7.35623 0.176884 5.52439 2.14766 3.71835 4.58455C1.25109 7.9127 0 10.4961 0 12.2627C0 16.5291 3.47011 20 7.73657 20C12.0023 20 15.4724 16.5291 15.4724 12.2627C15.4724 10.4953 14.2213 7.9127 11.754 4.58455ZM8.50864 17.4955C8.10325 17.592 7.68495 17.6405 7.26589 17.6405C4.28924 17.6405 1.86677 15.2181 1.86677 12.2414C1.86677 11.8307 1.99355 11.0867 2.59556 9.87512C2.65553 9.75365 2.79522 9.69292 2.92579 9.73164C3.05561 9.77036 3.13912 9.89713 3.12317 10.0323C3.10951 10.1492 3.10268 10.2593 3.10268 10.3587C3.10268 13.5502 5.3718 16.3219 8.49877 16.9497C8.62782 16.9755 8.7212 17.0879 8.72348 17.2192C8.72575 17.3505 8.63617 17.4659 8.50864 17.4955Z" fill="#FEFEFE"]);
-}
-
 .footer-chart {
     background-color: #20274e;
     width: 394px;
@@ -286,8 +282,6 @@ canvas#canvas3 {
 .circle4.circle {
     background: #2C3359;
 }
-
-#chart-0 {}
 
 .wrapper {
     min-height: 400px;
@@ -835,8 +829,6 @@ li.circle-2:hover {
     /* margin-top: 15px; */
 }
 
-.donut-top {}
-
 .right-button-panel {
     height: 100px!important;
     background-color: #20274e;
@@ -1034,7 +1026,7 @@ ul.dropdown-child {
     width: 32px;
     float: left;
     background: #122f70;
-    padding: 5px 10px;
+    padding: 17px 11px;
 }
 
 .cell-number-top {
@@ -1431,4 +1423,12 @@ h2.subtitle {
 .nav-item2 {
     margin-left: 10px;
     list-style-type: none;
+}
+
+.chart-date {
+    color: white;
+    position: absolute;
+    margin-top: -42px;
+    font-size: 12px;
+    margin-left: 15px;
 }

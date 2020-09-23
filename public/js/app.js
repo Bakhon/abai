@@ -2961,6 +2961,18 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   data: function data() {
     return {
       chartOptions: {
+        yaxis: {
+          labels: {
+            formatter: function formatter(val) {
+              if (val > 1000) {
+                return new Intl.NumberFormat('ru-RU').format(Math.round(val / 100) * 100);
+              } else {
+                return new Intl.NumberFormat('ru-RU').format(Math.round(val / 10) * 10);
+              }
+            }
+          },
+          min: 0
+        },
         chart: {
           toolbar: {
             show: false,
@@ -3146,6 +3158,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3153,6 +3166,7 @@ Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a
   props: ["postTitle"],
   data: function data() {
     return {
+      oilPeriod: "",
       begin: "",
       end: "",
       chartOptions: {
@@ -4075,10 +4089,41 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      selectedDMY2: "",
+      selectedDMY: "",
+      periodSelectOil: "",
+      oilPeriod: "",
       period: "7",
       periodUSD: "7",
       company: "",
@@ -4106,6 +4151,81 @@ __webpack_require__.r(__webpack_exports__);
   updated: function updated() {},
   mounted: function mounted() {},
   methods: {
+    periodSelectFunc: function periodSelectFunc() {
+      var DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
+      var menuDMY = [];
+      var id = 0;
+
+      for (var i = 0; i <= 4; i++) {
+        var a = {
+          index: i,
+          id: i
+        };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
+
+        if (this.selectedDMY == i) {
+          a.current = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+
+        if (this.selectedDMY2 == i) {
+          a.current2 = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+      }
+
+      if (this.selectedDMY != undefined) {} // localStorage.setItem("selectedDMY", this.selectedDMY);
+
+
+      return menuDMY; // this.periodSelect();
+    },
+    periodSelect: function periodSelect(event) {
+      if (this.selectedDMY == 0) {
+        this.period = 7;
+      }
+
+      if (this.selectedDMY == 1) {
+        this.period = 30;
+      }
+
+      if (this.selectedDMY == 2) {
+        this.period = 183;
+      }
+
+      if (this.selectedDMY == 3) {
+        this.period = 365;
+      }
+
+      if (this.selectedDMY == 4) {
+        this.period = 1825;
+      }
+
+      return this.getOilNow(this.timeSelect, this.period);
+    },
+    periodSelectUSD: function periodSelectUSD(event) {
+      if (this.selectedDMY2 == 0) {
+        this.periodUSD = 7;
+      }
+
+      if (this.selectedDMY2 == 1) {
+        this.periodUSD = 30;
+      }
+
+      if (this.selectedDMY2 == 2) {
+        this.periodUSD = 183;
+      }
+
+      if (this.selectedDMY2 == 3) {
+        this.periodUSD = 365;
+      }
+
+      if (this.selectedDMY2 == 4) {
+        this.periodUSD = 1825;
+      }
+
+      return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    },
     timeSelect2: function timeSelect2(select) {
       this.timeSelect = select;
       this.getCurrencyNow(this.timeSelect);
@@ -4156,20 +4276,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    periodSelect: function periodSelect(period) {
-      this.period = period;
-      this.getOilNow(this.timeSelect, this.period);
-    },
-    periodSelectUSD: function periodSelectUSD(period) {
-      this.periodUSD = period;
-      this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-    },
     getOilNow: function getOilNow(dates, period) {
       var _this3 = this;
 
-      var datas; //let uri = "/js/json/graph_1006.json";
+      var datas;
+      var uri = "/js/json/graph_1006.json"; //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
 
-      var uri = "https://cors-anywhere.herokuapp.com/" + "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then(function (response) {
         var data = response.data;
 
@@ -5038,12 +5150,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   template: "#vue-status-overview-template",
   data: function data() {
     return {
-      //showTableItem: "No",
+      //showTableItem: "No",]
+      DMY: "День",
       item: "",
       item2: "",
       item3: "",
@@ -5165,7 +5283,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*	if (days[0].length > 0) {
       for (let i = days[0].length; i < 7; i++) {
       days[0].unshift('');
-      }
+      	}
       }*/
 
 
@@ -5311,6 +5429,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         if (this.selectedDMY == i) {
           a.current = "#1D70B7";
+          this.DMY = menuDMY[i]["DMY"];
         }
       }
 
@@ -7638,7 +7757,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       /* if (company == "ОМГ") {
         if (changeButtons2 == "No") {
-               this.changeButtons2 = "Yes";
+                this.changeButtons2 = "Yes";
           dataRem = _.remove(data2, (item) => item.dzo === company);
           localStorage.setItem("welcomePageDzo", JSON.stringify(data2));
           this.changeColour2 = changeColour; 
@@ -13004,7 +13123,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nbody[data-v-79f63cb3] {\n  color: #ffffff;\n}\n", ""]);
+exports.push([module.i, "\nbody[data-v-79f63cb3] {\r\n  color: #ffffff;\n}\r\n", ""]);
 
 // exports
 
@@ -13023,7 +13142,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.title[data-v-763e61b8],\n.subtitle[data-v-763e61b8],\n.drag-area-title[data-v-763e61b8] {\n  color: white;\n}\n.table[data-v-763e61b8] {\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\n  background-color: #20274e !important;\n  border-radius: 15px;\n  flex: 0 0 24%;\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\n  color: #fff;\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\n  color: #fff;\n  font-size: 20px;\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\n  /* background-color: #0F1430;\n  border: 1px solid #0D2B4D; */\n}\n", ""]);
+exports.push([module.i, "\n.title[data-v-763e61b8],\r\n.subtitle[data-v-763e61b8],\r\n.drag-area-title[data-v-763e61b8] {\r\n  color: white;\n}\n.table[data-v-763e61b8] {\r\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\r\n  background-color: #20274e !important;\r\n  border-radius: 15px;\r\n  flex: 0 0 24%;\r\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 20px;\r\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\r\n  /* background-color: #0F1430;\r\n  border: 1px solid #0D2B4D; */\n}\r\n", ""]);
 
 // exports
 
@@ -55596,6 +55715,8 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "begin" }, [_vm._v(_vm._s(_vm.begin))]),
       _vm._v(" "),
+      _c("div", {}, [_vm._v(_vm._s(_vm.oilPeriod))]),
+      _vm._v(" "),
       _c("div", { staticClass: "end" }, [_vm._v(_vm._s(_vm.end))])
     ],
     1
@@ -56007,70 +56128,26 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("7")
+        _vm._l(_vm.periodSelectFunc(), function(menuDMY, index) {
+          return _c(
+            "div",
+            {
+              staticClass: "period",
+              style: {
+                color: menuDMY.current
+              },
+              on: {
+                click: [
+                  function($event) {
+                    _vm.selectedDMY = menuDMY.id
+                  },
+                  _vm.periodSelect
+                ]
               }
-            }
-          },
-          [_vm._v("7 дней")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("30")
-              }
-            }
-          },
-          [_vm._v("1 мес")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("133")
-              }
-            }
-          },
-          [_vm._v("6 мес")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("365")
-              }
-            }
-          },
-          [_vm._v("1 год")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelect("1825")
-              }
-            }
-          },
-          [_vm._v("5 лет")]
-        ),
+            },
+            [_c("div", [_vm._v(_vm._s(menuDMY.DMY))])]
+          )
+        }),
         _vm._v(" "),
         _vm._l(_vm.oilChart, function(serial, index) {
           return _c("visual-center-chart-area-oil", {
@@ -56095,77 +56172,37 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("7")
+        _vm._l(_vm.periodSelectFunc(), function(menuDMY, index) {
+          return _c(
+            "div",
+            {
+              staticClass: "period",
+              style: {
+                color: menuDMY.current2
+              },
+              on: {
+                click: [
+                  function($event) {
+                    _vm.selectedDMY2 = menuDMY.id
+                  },
+                  _vm.periodSelectUSD
+                ]
               }
-            }
-          },
-          [_vm._v("7 дней")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("30")
-              }
-            }
-          },
-          [_vm._v("1 мес")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("133")
-              }
-            }
-          },
-          [_vm._v("6 мес")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("365")
-              }
-            }
-          },
-          [_vm._v("1 год")]
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "period",
-            on: {
-              click: function($event) {
-                return _vm.periodSelectUSD("1825")
-              }
-            }
-          },
-          [_vm._v("5 лет")]
-        ),
+            },
+            [_c("div", [_vm._v(_vm._s(menuDMY.DMY))])]
+          )
+        }),
         _vm._v(" "),
         _vm._l(_vm.currencyChart, function(serial2, index) {
           return _c("visual-center-chart-area-usd", {
             key: serial2,
             attrs: { postTitles: serial2 }
           })
-        })
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "oil-period" }, [
+          _vm._v(_vm._s(_vm.oilPeriod))
+        ])
       ],
       2
     )
@@ -57009,13 +57046,24 @@ var render = function() {
                           _c(
                             "div",
                             [
-                              _vm._l(_vm.bigTable, function(item) {
+                              _vm._l(_vm.bigTable, function(item, index) {
                                 return _c("div", [
                                   _c("div", [
                                     _c("div", [
-                                      _c("div", {
-                                        staticClass: "cell-number table-border"
-                                      }),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "cell-number table-border"
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                              " +
+                                              _vm._s(index + 1) +
+                                              "\n                            "
+                                          )
+                                        ]
+                                      ),
                                       _vm._v(" "),
                                       _c(
                                         "div",
@@ -57633,13 +57681,21 @@ var render = function() {
                         _vm._v(" "),
                         _c("div", { staticStyle: { clear: "both" } }),
                         _vm._v(" "),
-                        _vm._l(_vm.tables, function(item) {
+                        _vm._l(_vm.tables, function(item, index) {
                           return _c("div", [
                             _c("div", [
                               _c("div", [
-                                _c("div", {
-                                  staticClass: "cell-number table-border"
-                                }),
+                                _c(
+                                  "div",
+                                  { staticClass: "cell-number table-border" },
+                                  [
+                                    _vm._v(
+                                      "\n                          " +
+                                        _vm._s(index + 1) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                ),
                                 _vm._v(" "),
                                 _c(
                                   "div",
@@ -57896,13 +57952,19 @@ var render = function() {
                     _c(
                       "div",
                       { staticClass: "otstup" },
-                      _vm._l(_vm.productionForChart, function(serial, index) {
-                        return _c("visual-center-chart-area-center", {
-                          key: serial,
-                          attrs: { postTitle: serial }
-                        })
-                      }),
-                      1
+                      [
+                        _vm._l(_vm.productionForChart, function(serial, index) {
+                          return _c("visual-center-chart-area-center", {
+                            key: serial,
+                            attrs: { postTitle: serial }
+                          })
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "chart-date" }, [
+                          _vm._v(_vm._s(_vm.DMY))
+                        ])
+                      ],
+                      2
                     )
                   ]
                 ),
@@ -73367,10 +73429,10 @@ var regionDayMap = {
 /*!*********************************************!*\
   !*** ./node_modules/weekstart/package.json ***!
   \*********************************************/
-/*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, homepage, keywords, license, main, module, name, repository, scripts, types, umd:main, version, default */
+/*! exports provided: _args, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, description, devDependencies, homepage, keywords, license, main, module, name, repository, scripts, types, umd:main, version, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"_from\":\"weekstart\",\"_id\":\"weekstart@1.0.1\",\"_inBundle\":false,\"_integrity\":\"sha512-h6B1HSJxg7sZEXqIpDqAtwiDBp3x5y2jY8WYcUSBhLTcTCy7laQzBmamqMuQM5fpvo1pgpma0OCRpE2W8xrA9A==\",\"_location\":\"/weekstart\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"tag\",\"registry\":true,\"raw\":\"weekstart\",\"name\":\"weekstart\",\"escapedName\":\"weekstart\",\"rawSpec\":\"\",\"saveSpec\":null,\"fetchSpec\":\"latest\"},\"_requiredBy\":[\"#USER\",\"/\"],\"_resolved\":\"https://registry.npmjs.org/weekstart/-/weekstart-1.0.1.tgz\",\"_shasum\":\"950970b48e5797e06fc1a762f3d0f013312321e1\",\"_spec\":\"weekstart\",\"_where\":\"/Users/almukhanomarov/work/2020/web/dashboard\",\"author\":{\"name\":\"Denis Sikuler\"},\"bugs\":{\"url\":\"https://github.com/gamtiq/weekstart/issues\"},\"bundleDependencies\":false,\"deprecated\":false,\"description\":\"Library to get first day of week.\",\"devDependencies\":{\"@babel/preset-env\":\"7.6.3\",\"eslint\":\"6.5.1\",\"eslint-config-guard\":\"1.0.3\",\"ink-docstrap\":\"1.3.2\",\"jest\":\"24.9.0\",\"jsdoc\":\"3.6.3\",\"microbundle\":\"0.4.4\",\"version-bump-prompt\":\"5.0.5\"},\"homepage\":\"https://github.com/gamtiq/weekstart\",\"keywords\":[\"week\",\"start\",\"first\",\"day\",\"locale\",\"country\",\"region\"],\"license\":\"MIT\",\"main\":\"dist/commonjs/main.js\",\"module\":\"dist/es-module/main.js\",\"name\":\"weekstart\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/gamtiq/weekstart.git\"},\"scripts\":{\"all\":\"npm run check-all && npm run doc && npm run build\",\"build\":\"npm run build-umd && npm run build-commonjs && npm run build-esm && npm run build-umd-min\",\"build-commonjs\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/commonjs --format cjs --strict --no-compress\",\"build-esm\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/es-module --format es --no-compress\",\"build-umd\":\"microbundle build src/main.js src/full.js --output dist --format umd --strict --no-compress\",\"build-umd-min\":\"microbundle build src/main.js src/full.js --output dist/min --format umd --strict\",\"check\":\"npm run lint && npm test\",\"check-all\":\"npm run lint-all && npm test\",\"doc\":\"jsdoc -c jsdoc-conf.json\",\"lint\":\"eslint --cache --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all\":\"eslint --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all-error\":\"eslint \\\"**/*.js\\\"\",\"lint-error\":\"eslint --cache \\\"**/*.js\\\"\",\"release\":\"bump patch --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-major\":\"bump major --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-minor\":\"bump minor --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"test\":\"jest\"},\"types\":\"./index.d.ts\",\"umd:main\":\"dist/main.js\",\"version\":\"1.0.1\"}");
+module.exports = JSON.parse("{\"_args\":[[\"weekstart@1.0.1\",\"D:\\\\openserver\\\\OpenServer\\\\domains\\\\localhost\"]],\"_from\":\"weekstart@1.0.1\",\"_id\":\"weekstart@1.0.1\",\"_inBundle\":false,\"_integrity\":\"sha512-h6B1HSJxg7sZEXqIpDqAtwiDBp3x5y2jY8WYcUSBhLTcTCy7laQzBmamqMuQM5fpvo1pgpma0OCRpE2W8xrA9A==\",\"_location\":\"/weekstart\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"version\",\"registry\":true,\"raw\":\"weekstart@1.0.1\",\"name\":\"weekstart\",\"escapedName\":\"weekstart\",\"rawSpec\":\"1.0.1\",\"saveSpec\":null,\"fetchSpec\":\"1.0.1\"},\"_requiredBy\":[\"/\"],\"_resolved\":\"https://registry.npmjs.org/weekstart/-/weekstart-1.0.1.tgz\",\"_spec\":\"1.0.1\",\"_where\":\"D:\\\\openserver\\\\OpenServer\\\\domains\\\\localhost\",\"author\":{\"name\":\"Denis Sikuler\"},\"bugs\":{\"url\":\"https://github.com/gamtiq/weekstart/issues\"},\"description\":\"Library to get first day of week.\",\"devDependencies\":{\"@babel/preset-env\":\"7.6.3\",\"eslint\":\"6.5.1\",\"eslint-config-guard\":\"1.0.3\",\"ink-docstrap\":\"1.3.2\",\"jest\":\"24.9.0\",\"jsdoc\":\"3.6.3\",\"microbundle\":\"0.4.4\",\"version-bump-prompt\":\"5.0.5\"},\"homepage\":\"https://github.com/gamtiq/weekstart\",\"keywords\":[\"week\",\"start\",\"first\",\"day\",\"locale\",\"country\",\"region\"],\"license\":\"MIT\",\"main\":\"dist/commonjs/main.js\",\"module\":\"dist/es-module/main.js\",\"name\":\"weekstart\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/gamtiq/weekstart.git\"},\"scripts\":{\"all\":\"npm run check-all && npm run doc && npm run build\",\"build\":\"npm run build-umd && npm run build-commonjs && npm run build-esm && npm run build-umd-min\",\"build-commonjs\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/commonjs --format cjs --strict --no-compress\",\"build-esm\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/es-module --format es --no-compress\",\"build-umd\":\"microbundle build src/main.js src/full.js --output dist --format umd --strict --no-compress\",\"build-umd-min\":\"microbundle build src/main.js src/full.js --output dist/min --format umd --strict\",\"check\":\"npm run lint && npm test\",\"check-all\":\"npm run lint-all && npm test\",\"doc\":\"jsdoc -c jsdoc-conf.json\",\"lint\":\"eslint --cache --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all\":\"eslint --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all-error\":\"eslint \\\"**/*.js\\\"\",\"lint-error\":\"eslint --cache \\\"**/*.js\\\"\",\"release\":\"bump patch --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-major\":\"bump major --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-minor\":\"bump minor --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"test\":\"jest\"},\"types\":\"./index.d.ts\",\"umd:main\":\"dist/main.js\",\"version\":\"1.0.1\"}");
 
 /***/ }),
 
@@ -75261,8 +75323,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
