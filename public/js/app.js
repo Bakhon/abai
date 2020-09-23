@@ -5283,7 +5283,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       /*	if (days[0].length > 0) {
       for (let i = days[0].length; i < 7; i++) {
       days[0].unshift('');
-      }
+      	}
       }*/
 
 
@@ -7757,7 +7757,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       /* if (company == "ОМГ") {
         if (changeButtons2 == "No") {
-               this.changeButtons2 = "Yes";
+                this.changeButtons2 = "Yes";
           dataRem = _.remove(data2, (item) => item.dzo === company);
           localStorage.setItem("welcomePageDzo", JSON.stringify(data2));
           this.changeColour2 = changeColour; 
@@ -13123,7 +13123,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\nbody[data-v-79f63cb3] {\n  color: #ffffff;\n}\n", ""]);
+exports.push([module.i, "\nbody[data-v-79f63cb3] {\r\n  color: #ffffff;\n}\r\n", ""]);
 
 // exports
 
@@ -13142,7 +13142,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.title[data-v-763e61b8],\n.subtitle[data-v-763e61b8],\n.drag-area-title[data-v-763e61b8] {\n  color: white;\n}\n.table[data-v-763e61b8] {\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\n  background-color: #20274e !important;\n  border-radius: 15px;\n  flex: 0 0 24%;\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\n  color: #fff;\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\n  color: #fff;\n  font-size: 20px;\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\n  /* background-color: #0F1430;\n  border: 1px solid #0D2B4D; */\n}\n", ""]);
+exports.push([module.i, "\n.title[data-v-763e61b8],\r\n.subtitle[data-v-763e61b8],\r\n.drag-area-title[data-v-763e61b8] {\r\n  color: white;\n}\n.table[data-v-763e61b8] {\r\n  color: #fff !important;\n}\n.bignumber[data-v-763e61b8] {\r\n  background-color: #20274e !important;\r\n  border-radius: 15px;\r\n  flex: 0 0 24%;\r\n  margin-bottom: 5px;\n}\n.bignumber-number[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 40px;\n}\n.bignumber-title[data-v-763e61b8] {\r\n  color: #fff;\r\n  font-size: 20px;\r\n  word-wrap: break-word;\n}\n.modal-bign[data-v-763e61b8]{\r\n  /* background-color: #0F1430;\r\n  border: 1px solid #0D2B4D; */\n}\r\n", ""]);
 
 // exports
 
@@ -47425,45 +47425,10 @@ var DateTime = /*#__PURE__*/function () {
    */
   ;
 
-<<<<<<< HEAD
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("apexchart", {
-        attrs: {
-          type: "area",
-          height: "150",
-          width: "320",
-          options: _vm.chartOptions,
-          series: _vm.series
-        }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "begin" }, [_vm._v(_vm._s(_vm.begin))]),
-      _vm._v(" "),
-      _c("div", {}, [_vm._v(_vm._s(_vm.oilPeriod))]),
-      _vm._v(" "),
-      _c("div", { staticClass: "end" }, [_vm._v(_vm._s(_vm.end))])
-    ],
-    1
-  )
-}
-var staticRenderFns = []
-render._withStripped = true
-=======
   DateTime.fromSeconds = function fromSeconds(seconds, options) {
     if (options === void 0) {
       options = {};
     }
->>>>>>> b5bb47d98ba64ea765c9274bad53cb6a8150225f
 
     if (!isNumber(seconds)) {
       throw new InvalidArgumentError("fromSeconds requires a numerical input");
@@ -55750,6 +55715,8 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "begin" }, [_vm._v(_vm._s(_vm.begin))]),
       _vm._v(" "),
+      _c("div", {}, [_vm._v(_vm._s(_vm.oilPeriod))]),
+      _vm._v(" "),
       _c("div", { staticClass: "end" }, [_vm._v(_vm._s(_vm.end))])
     ],
     1
@@ -57985,13 +57952,19 @@ var render = function() {
                     _c(
                       "div",
                       { staticClass: "otstup" },
-                      _vm._l(_vm.productionForChart, function(serial, index) {
-                        return _c("visual-center-chart-area-center", {
-                          key: serial,
-                          attrs: { postTitle: serial }
-                        })
-                      }),
-                      1
+                      [
+                        _vm._l(_vm.productionForChart, function(serial, index) {
+                          return _c("visual-center-chart-area-center", {
+                            key: serial,
+                            attrs: { postTitle: serial }
+                          })
+                        }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "chart-date" }, [
+                          _vm._v(_vm._s(_vm.DMY))
+                        ])
+                      ],
+                      2
                     )
                   ]
                 ),
@@ -58496,56 +58469,6 @@ var render = function() {
                       }
                     }
                   },
-<<<<<<< HEAD
-                  [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "right-table-button right-button",
-                        style: "" + _vm.showTableOn,
-                        on: {
-                          click: function($event) {
-                            return _vm.changeButton("" + _vm.showTable2, "Yes")
-                          }
-                        }
-                      },
-                      [
-                        _vm._v(
-                          "\n                " +
-                            _vm._s(_vm.ChartTable) +
-                            "\n              "
-                        )
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "tables-name" }, [
-                      _vm._v("График " + _vm._s(_vm.circleMenu))
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "unit" }, [
-                      _vm._v(_vm._s(_vm.unit))
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "otstup" },
-                      [
-                        _vm._l(_vm.productionForChart, function(serial, index) {
-                          return _c("visual-center-chart-area-center", {
-                            key: serial,
-                            attrs: { postTitle: serial }
-                          })
-                        }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "chart-date" }, [
-                          _vm._v(_vm._s(_vm.DMY))
-                        ])
-                      ],
-                      2
-                    )
-                  ]
-                ),
-=======
                   [_vm._v("\n                ✓\n              ")]
                 )
               ]),
@@ -58553,7 +58476,6 @@ var render = function() {
               _c("div", { staticClass: "org-name7 rectangle" }, [
                 _vm._v("\n              ТОО «КазГерМунай»\n              "),
                 _c("div", { staticClass: "icon7 icon" }),
->>>>>>> b5bb47d98ba64ea765c9274bad53cb6a8150225f
                 _vm._v(" "),
                 _c(
                   "div",
@@ -73507,10 +73429,10 @@ var regionDayMap = {
 /*!*********************************************!*\
   !*** ./node_modules/weekstart/package.json ***!
   \*********************************************/
-/*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, homepage, keywords, license, main, module, name, repository, scripts, types, umd:main, version, default */
+/*! exports provided: _args, _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _spec, _where, author, bugs, description, devDependencies, homepage, keywords, license, main, module, name, repository, scripts, types, umd:main, version, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"_from\":\"weekstart\",\"_id\":\"weekstart@1.0.1\",\"_inBundle\":false,\"_integrity\":\"sha512-h6B1HSJxg7sZEXqIpDqAtwiDBp3x5y2jY8WYcUSBhLTcTCy7laQzBmamqMuQM5fpvo1pgpma0OCRpE2W8xrA9A==\",\"_location\":\"/weekstart\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"tag\",\"registry\":true,\"raw\":\"weekstart\",\"name\":\"weekstart\",\"escapedName\":\"weekstart\",\"rawSpec\":\"\",\"saveSpec\":null,\"fetchSpec\":\"latest\"},\"_requiredBy\":[\"#USER\",\"/\"],\"_resolved\":\"https://registry.npmjs.org/weekstart/-/weekstart-1.0.1.tgz\",\"_shasum\":\"950970b48e5797e06fc1a762f3d0f013312321e1\",\"_spec\":\"weekstart\",\"_where\":\"/Users/almukhanomarov/work/2020/web/dashboard\",\"author\":{\"name\":\"Denis Sikuler\"},\"bugs\":{\"url\":\"https://github.com/gamtiq/weekstart/issues\"},\"bundleDependencies\":false,\"deprecated\":false,\"description\":\"Library to get first day of week.\",\"devDependencies\":{\"@babel/preset-env\":\"7.6.3\",\"eslint\":\"6.5.1\",\"eslint-config-guard\":\"1.0.3\",\"ink-docstrap\":\"1.3.2\",\"jest\":\"24.9.0\",\"jsdoc\":\"3.6.3\",\"microbundle\":\"0.4.4\",\"version-bump-prompt\":\"5.0.5\"},\"homepage\":\"https://github.com/gamtiq/weekstart\",\"keywords\":[\"week\",\"start\",\"first\",\"day\",\"locale\",\"country\",\"region\"],\"license\":\"MIT\",\"main\":\"dist/commonjs/main.js\",\"module\":\"dist/es-module/main.js\",\"name\":\"weekstart\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/gamtiq/weekstart.git\"},\"scripts\":{\"all\":\"npm run check-all && npm run doc && npm run build\",\"build\":\"npm run build-umd && npm run build-commonjs && npm run build-esm && npm run build-umd-min\",\"build-commonjs\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/commonjs --format cjs --strict --no-compress\",\"build-esm\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/es-module --format es --no-compress\",\"build-umd\":\"microbundle build src/main.js src/full.js --output dist --format umd --strict --no-compress\",\"build-umd-min\":\"microbundle build src/main.js src/full.js --output dist/min --format umd --strict\",\"check\":\"npm run lint && npm test\",\"check-all\":\"npm run lint-all && npm test\",\"doc\":\"jsdoc -c jsdoc-conf.json\",\"lint\":\"eslint --cache --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all\":\"eslint --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all-error\":\"eslint \\\"**/*.js\\\"\",\"lint-error\":\"eslint --cache \\\"**/*.js\\\"\",\"release\":\"bump patch --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-major\":\"bump major --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-minor\":\"bump minor --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"test\":\"jest\"},\"types\":\"./index.d.ts\",\"umd:main\":\"dist/main.js\",\"version\":\"1.0.1\"}");
+module.exports = JSON.parse("{\"_args\":[[\"weekstart@1.0.1\",\"D:\\\\openserver\\\\OpenServer\\\\domains\\\\localhost\"]],\"_from\":\"weekstart@1.0.1\",\"_id\":\"weekstart@1.0.1\",\"_inBundle\":false,\"_integrity\":\"sha512-h6B1HSJxg7sZEXqIpDqAtwiDBp3x5y2jY8WYcUSBhLTcTCy7laQzBmamqMuQM5fpvo1pgpma0OCRpE2W8xrA9A==\",\"_location\":\"/weekstart\",\"_phantomChildren\":{},\"_requested\":{\"type\":\"version\",\"registry\":true,\"raw\":\"weekstart@1.0.1\",\"name\":\"weekstart\",\"escapedName\":\"weekstart\",\"rawSpec\":\"1.0.1\",\"saveSpec\":null,\"fetchSpec\":\"1.0.1\"},\"_requiredBy\":[\"/\"],\"_resolved\":\"https://registry.npmjs.org/weekstart/-/weekstart-1.0.1.tgz\",\"_spec\":\"1.0.1\",\"_where\":\"D:\\\\openserver\\\\OpenServer\\\\domains\\\\localhost\",\"author\":{\"name\":\"Denis Sikuler\"},\"bugs\":{\"url\":\"https://github.com/gamtiq/weekstart/issues\"},\"description\":\"Library to get first day of week.\",\"devDependencies\":{\"@babel/preset-env\":\"7.6.3\",\"eslint\":\"6.5.1\",\"eslint-config-guard\":\"1.0.3\",\"ink-docstrap\":\"1.3.2\",\"jest\":\"24.9.0\",\"jsdoc\":\"3.6.3\",\"microbundle\":\"0.4.4\",\"version-bump-prompt\":\"5.0.5\"},\"homepage\":\"https://github.com/gamtiq/weekstart\",\"keywords\":[\"week\",\"start\",\"first\",\"day\",\"locale\",\"country\",\"region\"],\"license\":\"MIT\",\"main\":\"dist/commonjs/main.js\",\"module\":\"dist/es-module/main.js\",\"name\":\"weekstart\",\"repository\":{\"type\":\"git\",\"url\":\"git://github.com/gamtiq/weekstart.git\"},\"scripts\":{\"all\":\"npm run check-all && npm run doc && npm run build\",\"build\":\"npm run build-umd && npm run build-commonjs && npm run build-esm && npm run build-umd-min\",\"build-commonjs\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/commonjs --format cjs --strict --no-compress\",\"build-esm\":\"microbundle build \\\"src/!(*.test).js\\\" --output dist/es-module --format es --no-compress\",\"build-umd\":\"microbundle build src/main.js src/full.js --output dist --format umd --strict --no-compress\",\"build-umd-min\":\"microbundle build src/main.js src/full.js --output dist/min --format umd --strict\",\"check\":\"npm run lint && npm test\",\"check-all\":\"npm run lint-all && npm test\",\"doc\":\"jsdoc -c jsdoc-conf.json\",\"lint\":\"eslint --cache --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all\":\"eslint --max-warnings 0 \\\"**/*.js\\\"\",\"lint-all-error\":\"eslint \\\"**/*.js\\\"\",\"lint-error\":\"eslint --cache \\\"**/*.js\\\"\",\"release\":\"bump patch --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-major\":\"bump major --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"release-minor\":\"bump minor --commit --tag --all --push package.json package-lock.json bower.json component.json\",\"test\":\"jest\"},\"types\":\"./index.d.ts\",\"umd:main\":\"dist/main.js\",\"version\":\"1.0.1\"}");
 
 /***/ }),
 
@@ -75401,8 +75323,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/almukhanomarov/work/2020/web/dashboard/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\openserver\OpenServer\domains\localhost\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
