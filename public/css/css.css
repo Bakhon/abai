@@ -928,8 +928,8 @@ ul.dropdown-child {
     /* width:1525px;  */
     /* overflow: hidden; */
     /* width: 100%; */
-    margin-right: unset;
-    margin-left: unset;
+    /* margin-right: unset; */
+    /* margin-left: unset; */
 }
 
 .col-lg-5 {
@@ -1153,7 +1153,7 @@ ul.dropdown-child {
 }
 
 .p-4 {
-    padding: 15px 0px!important;
+    /* padding: 15px 15px!important; */
 }
 
 .left-arrow {

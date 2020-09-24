@@ -31,6 +31,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
+        Route::get('/gno', 'DruidController@gno')->name('gno');
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
         Route::get('/mfond', 'DruidController@mfond')->name('mfond');
