@@ -211,4 +211,9 @@ class DruidController extends Controller
 
         return response()->json($array);
     }
+
+    public function gno()
+    {
+        return view('gno.gno');
+    }
 }
