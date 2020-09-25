@@ -6673,7 +6673,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 });
 
 function animate(id) {
-  var node = document.getElementById(id).childNodes[0];
+  //var node = document.getElementById(id).childNodes[0];
   var text = node.data;
   setInterval(function () {
     text = text.substring(1) + text[0];
