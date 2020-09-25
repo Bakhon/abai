@@ -119,4 +119,4 @@
     </div>-->
 </div>
 @endsection
-<link href="{{ asset('/css/gno.css')}}" rel="stylesheet">
+<link href="{{ asset('css/gno.css')}}" rel="stylesheet">
