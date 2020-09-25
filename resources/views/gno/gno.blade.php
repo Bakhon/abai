@@ -119,18 +119,4 @@
     </div>-->
 </div>
 @endsection
-<link href="http://localhost/css/gno.css" rel="stylesheet">
-<style>
-    .p-4 {
-        background-color: #0F1430;
-    }
-
-    .main {
-        background-color: #0F1430;
-        background-image: url({{ asset('img/level1/grid.svg')
-    }
-
-    .top {
-        display: none;
-    }
-</style>
+<link href="/css/gno.css" rel="stylesheet">
