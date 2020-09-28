@@ -58,7 +58,7 @@ Vue.component('chart3-component', require('./components/Economic/chart3.vue').de
 Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
 Vue.component('wm-create', require('./components/wm/create.vue').default);
 Vue.component('wm-edit', require('./components/wm/edit.vue').default);
-Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);
+// Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
