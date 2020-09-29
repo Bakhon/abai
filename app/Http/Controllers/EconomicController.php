@@ -119,6 +119,7 @@ class EconomicController extends Controller
                 ->select('org_id2')
                 ->count('uwi')
                 ->where('org_id2', '=', $request->org)
+                ->where('status', '=', 'В работе')
                 ->where('profitability', '=', 'profitable');
 
 
@@ -131,6 +132,7 @@ class EconomicController extends Controller
                 ->select('org_id2')
                 ->count('uwi')
                 ->where('org_id2', '=', $request->org)
+                ->where('status', '=', 'В работе')
                 ->where('profitability', '=', 'profitless_cat_1');
 
             $builder12
@@ -142,6 +144,7 @@ class EconomicController extends Controller
                 ->select('org_id2')
                 ->count('uwi')
                 ->where('org_id2', '=', $request->org)
+                ->where('status', '=', 'В работе')
                 ->where('profitability', '=', 'profitless_cat_2');
 
             $builder13
@@ -153,6 +156,7 @@ class EconomicController extends Controller
                 ->select('price_export_1')
                 ->select('org_id2')
                 ->sum('oil')
+                ->where('status', '=', 'В работе')
                 ->where('org_id2', '=', $request->org);
 
             $builder14
@@ -161,6 +165,7 @@ class EconomicController extends Controller
                 ->sum("Operating_profit")
                 ->where('org_id2', '=', $request->org)
                 ->where('Operating_profit', '!=', '0')
+                ->where('status', '=', 'В работе')
                 ->orderBy('Operating_profit', 'desc');
 
             $builder15
@@ -172,6 +177,7 @@ class EconomicController extends Controller
                 ->select('price_export_1')
                 ->select('org_id2')
                 ->sum('liquid')
+                ->where('status', '=', 'В работе')
                 ->where('org_id2', '=', $request->org);
         } else {
             $builder
@@ -240,6 +246,7 @@ class EconomicController extends Controller
                 })
                 ->select('profitability')
                 ->count('uwi')
+                ->where('status', '=', 'В работе')
                 ->where('profitability', '=', 'profitable');
 
             $builder11
@@ -249,6 +256,7 @@ class EconomicController extends Controller
                 })
                 ->select('profitability')
                 ->count('uwi')
+                ->where('status', '=', 'В работе')
                 ->where('profitability', '=', 'profitless_cat_1');
 
             $builder12
@@ -258,6 +266,7 @@ class EconomicController extends Controller
                 })
                 ->select('profitability')
                 ->count('uwi')
+                ->where('status', '=', 'В работе')
                 ->where('profitability', '=', 'profitless_cat_2');
 
             $builder13
@@ -266,6 +275,7 @@ class EconomicController extends Controller
                     $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
+                ->where('status', '=', 'В работе')
                 ->sum('oil');
 
             $builder14
@@ -273,6 +283,7 @@ class EconomicController extends Controller
                 ->select("uwi")
                 ->sum("Operating_profit")
                 ->where('Operating_profit', '!=', '0')
+                ->where('status', '=', 'В работе')
                 ->orderBy('Operating_profit', 'desc');
 
             $builder15
@@ -281,7 +292,8 @@ class EconomicController extends Controller
                     $extractionBuilder->timeFormat('yyyy-MM-dd');
                 })
                 ->select('profitability')
-                ->sum('liquid');
+                ->sum('liquid')
+                ->where('status', '=', 'В работе');
         }
 
 
