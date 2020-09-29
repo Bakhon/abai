@@ -1,11 +1,10 @@
 <template>
-    <div id="app">
         <ejs-pivotview :dataSourceSettings="dataSourceSettings" :height= "height" :showFieldList="showFieldList"> </ejs-pivotview>
-    </div>
 </template>
 
 <script>
-import pivotData from 'datasource.js';
+import { PivotViewPlugin, FieldList } from "@syncfusion/ej2-vue-pivotview";
+import { pivotData } from './datasource.js';
 
 Vue.use(PivotViewPlugin);
 
@@ -31,6 +30,3 @@ export default {
     }
 }
 </script>
-<style>
-@import "~@syncfusion/ej2-vue-pivotview/styles/material.css";
-</style>
