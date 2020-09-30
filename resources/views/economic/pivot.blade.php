@@ -2,7 +2,7 @@
 @section('content')
 <div class="pivot">
     <h1>
-        Конструктов НРС
+        Конструктор НРС
     </h1>
     <div class="x_panel">
         <economic-pivot></economic-pivot>
