@@ -18,19 +18,24 @@ Route::get('/', function () {
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
     Route::group(['middleware' => 'auth'], function () {
-        Route::get("/geteconimicdata", "DruidController@getEconomicData");
+        Route::get("/geteconimicdata", "EconomicController@getEconomicData");
+        Route::get("/getcurrency", "DruidController@getCurrency");
+        Route::get("/getcurrencyperiod", "DruidController@getCurrencyPeriod");
         Route::get('/', function () {
             return view('welcome');
         });
         Route::get('/druid', 'DruidController@index');
         Route::get('/oilprice', 'DruidController@getOilPrice');
         Route::get('/getnkkmg', 'DruidController@getNkKmg');
+        Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
-        Route::get('/economic', 'DruidController@economic')->name('economic');
+        Route::get('/economic', 'EconomicController@index')->name('economic');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
+        Route::get('/gno', 'DruidController@gno')->name('gno');
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
         Route::get('/mfond', 'DruidController@mfond')->name('mfond');
+        Route::get('/map', 'DruidController@map')->name('map');
         Route::get('/oil', 'DruidController@oil')->name('oil');
         Route::get('/facilities', 'DruidController@facilities')->name('facilities');
         Route::get('/liquid', 'DruidController@liquid')->name('liquid');
@@ -40,6 +45,27 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Auth::routes();
         Route::get('/home', 'HomeController@index')->name('home');
         Route::resource('oildaily','OilDailyController');
+        Route::resource('watermeasurement','WaterMeasurementController');
+        Route::get('/maps', 'DruidController@maps')->name('maps');
+        Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
+        Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
+        Route::get('/constructor', 'DruidController@constructor')->name('constructor');
+
+
+        //wm
+        Route::resource('watermeasurement','WaterMeasurementController');
+        Route::get('/getotherobjects', 'WaterMeasurementController@getOtherObjects');
+        Route::get('/getngdu', 'WaterMeasurementController@getNgdu');
+        Route::post('/getcdng', 'WaterMeasurementController@getCdng');
+        Route::post('/getgu', 'WaterMeasurementController@getGu');
+        Route::post('/getzu', 'WaterMeasurementController@getZu');
+        Route::post('/getwell', 'WaterMeasurementController@getWell');
+        Route::get('/getwbs', 'WaterMeasurementController@getWaterBySulin');
+        Route::get('/getsrb', 'WaterMeasurementController@getSulphateReducingBacteria');
+        Route::get('/gethob', 'WaterMeasurementController@getHydrocarbonOxidizingBacteria');
+        Route::get('/gethb', 'WaterMeasurementController@getThionicBacteria');
+        Route::post('/getwm', 'WaterMeasurementController@getWm');
+        Route::post('/updatewm', 'WaterMeasurementController@update')->name('updatewm');
     });
     Auth::routes([
         'reset' => false,

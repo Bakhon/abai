@@ -1,40 +1,40 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <!--<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-    </button>
-    <a href="{{url('/')}}"><div class="logo"> </div>
-   <!-- <a class="navbar-brand" href="#">
-	
-	
-        <img src="{{ asset('img/level1/logo_kmg.svg') }}" width="46" height="46" class="d-inline-block" alt="">
-    <a href="{{url('/')}}"> <span class="menu-collapsed brand-name">Панель управления</span></a>
-    </a>-->
-    <a href="#top" data-toggle="sidebar-colapse">
-        <i class="fas fa-bars fa-lg"></i>
-    </a>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <img src="{{ asset('img/level1/icon_geology.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href=""><span class="workTypeText">Геология</span></a>
-            </li>
-            <li class="nav-item active dropdown">
-                <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href=""><span class="workTypeText">Разработка</span></a>
-                <ul class="dropdown-child">
-                    <li class="nav-item child dropdown">
-                        <a href="">
-                            <span class="workTypeText">Показатели</span>
-                        </a>
-                        <ul>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/tabs">
-                                    <span class="workTypeText">Вкладки (Основные и Дополнительные)</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+    </button>-->
+    <a href="{{url('/')}}">
+        <div class="logo"> </div>
+        <a href="#top" data-toggle="sidebar-colapse">
+            <i class="fas fa-bars fa-lg"></i>
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <img src="{{ asset('img/level1/icon_geology.svg') }}" width="15" height="15" class="workTypeLogo">
+                    <a href=""><span class="workTypeText">Геология</span></a>
+                </li>
+                <li class="nav-item active dropdown">
+                    <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
+                    <a href=""><span class="workTypeText">Разработка</span></a>
+                    <ul class="dropdown-child">
+                        <li class="nav-item child dropdown">
+                            <a href="">
+                                <span class="workTypeText">Показатели</span>
+                            </a>
+                            <ul>
+                                <li class="nav-item child">
+                                    <a href="{{url('/')}}/ru/tabs">
+                                        <span class="workTypeText">Вкладки (Основные и Дополнительные)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/gtmscor">
+                                <span class="workTypeText">ГТМ скорпион</span>
+                            </a>
+                        </li>
+                </li>
+            </ul>
             </li>
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_buren.svg') }}" width="15" height="15" class="workTypeLogo">
@@ -52,11 +52,6 @@
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/mfond">
                             <span class="workTypeText">Мехфонд</span>
-                        </a>
-                    </li>
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/gtmscor">
-                            <span class="workTypeText">ГТМ скорпион</span>
                         </a>
                     </li>
                 </ul>
@@ -80,6 +75,13 @@
                             <span class="workTypeText">Осложнения в системе сбора</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/watermeasurement">
+                            <span class="workTypeText">Лабораторные данные по промысловой жидкости</span>
+                        </a>
+                    </li>
+
+
 
 
                 </ul>
@@ -88,27 +90,37 @@
                 <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
             </li>
-            <button type="button" class="btn btn-primary bigdatabtn">BigDATA</button>
-        </ul>
-        <div class="form-inline my-2 my-lg-0">
-            <li class="nav-item">
-                <i class="fas fa-bell fa-lg"></i>
+            <li class="nav-item active">
+                <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
             </li>
-            @if (Auth::guest())
-                <li class="nav-item">
-                    <a href="{{ route('login') }}"><img src="{{ asset('img/level1/icon_user.svg') }}" width="30" height="30" alt=""></a>
+            </ul>
+            <div class="form-inline my-2 my-lg-0">
+                <li class="nav-item2">
+                    <i class="fas fa-bell fa-lg"></i>
                 </li>
-            @else
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: one;">
-                    {{ csrf_field() }}
-                    <button type="submit">Logout</button>
-                </form>
-            @endif
-            <li class="nav-item">
-                <i class="fas fa-ellipsis-v"></i>
-            </li>
+                {{--@if (Auth::guest())--}}
+                <li class="nav-item2 active dropdown2">
+                    <a href="{{ route('login') }}"><img src="{{ asset('img/level1/icon_user.svg') }}" width="30" height="30" alt=""></a>
+                    <ul class="dropdown-child2">
+                        <li class="nav-item child2">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: one;">
+                                {{ csrf_field() }}
+
+                                <a class="logout" onClick="document.forms['logout-form'].submit();" href="#"> Выйти</a>
+                            </form>
+                        </li>
+                        <li class="nav-item child">
+                        </li>
+                    </ul>
+                </li>
+                {{-- @else--}}
+
+                {{--@endif--}}
+                <li class="nav-item2">
+                    <i class="fas fa-ellipsis-v"></i>
+                </li>
+            </div>
         </div>
-    </div>
 </nav>
 
 
@@ -121,7 +133,7 @@
         SidebarCollapse();
     });
 
-    function SidebarCollapse () {
+    function SidebarCollapse() {
         $('.menu-collapsed').toggleClass('d-none');
         $('.sidebar-submenu').toggleClass('d-none');
         $('.submenu-icon').toggleClass('d-none');
@@ -130,7 +142,7 @@
         // Treating d-flex/d-none on separators with title
         var SeparatorTitle = $('.sidebar-separator-title');
         //var SeparatorTitle = document.getElementsByClassName('sidebar-separator-title');
-        if ( SeparatorTitle.hasClass('d-flex') ) {
+        if (SeparatorTitle.hasClass('d-flex')) {
             SeparatorTitle.removeClass('d-flex');
         } else {
             SeparatorTitle.addClass('d-flex');
@@ -138,20 +150,21 @@
     }
 </script>
 <style>
-
-   .bg-dark {
+    .bg-dark {
         background-color: #20274e !important;
         height: 80px;
-     	z-index: 99999;
+        z-index: 99999;
     }
 
     .fas {
         color: white;
     }
+
     #body-row {
-        margin-left:0;
-        margin-right:0;
+        margin-left: 0;
+        margin-right: 0;
     }
+
     #sidebar-container {
         min-height: 100vh;
         background-color: #20274e;
@@ -160,8 +173,9 @@
 
     /* Sidebar sizes when expanded and expanded */
     .sidebar-expanded {
-        width: 328px;
+        width: 280px;
     }
+
     .sidebar-collapsed {
         width: 60px;
     }
@@ -177,6 +191,7 @@
         height: 45px;
         padding-left: 30px;
     }
+
     .sidebar-submenu {
         font-size: 0.9rem;
     }
@@ -186,10 +201,12 @@
         background-color: #20274e;
         height: 35px;
     }
+
     .sidebar-separator {
         background-color: #20274e;
         height: 25px;
     }
+
     /*.logo-separator {
         background-color: #20274e;
         height: 60px;
@@ -203,6 +220,7 @@
         text-align: right;
         padding-left: 10px;
     }
+
     /* Opened submenu icon */
     #sidebar-container .list-group .list-group-item[aria-expanded="true"] .submenu-icon::after {
         content: " \f0dd";
@@ -213,53 +231,64 @@
     }
 
     .searchInput {
-        width: 328px;
+        width: 320px;
         border: none;
         height: 40px;
         font-size: 16px;
         background-color: #353d6a;
         /* font-family: "Font Awesome 5 Free"; */
         /* font-weight: 600; */
-        background-image: url({{ asset('img/level1/icon_search.svg') }});
-        background-repeat: no-repeat;
-        background-size: 25px 25px;
-        background-position: 22px 10px;
-        padding-left: 72px;
-        color:white;
+        background-image: url({{ asset('img/level1/icon_search.svg')
     }
-    .companyLogo{
+    }
+
+    );
+    background-repeat: no-repeat;
+    background-size: 25px 25px;
+    background-position: 22px 10px;
+    padding-left: 72px;
+    color:white;
+    }
+
+    .companyLogo {
         margin-right: 15px;
     }
+
     .companyName {
         font-size: 16px;
     }
+
     .brand-name {
         margin-left: 15px;
         font-size: 16px;
     }
-    .brand-name{
+
+    .brand-name {
         margin-right: 82px;
     }
-    .workTypeLogo{
-        margin-left:80px;
+
+    .workTypeLogo {
+        margin-left: 80px;
     }
-    .workTypeText{
-        color:white;
+
+    .workTypeText {
+        color: white;
         font-size: 16px;
-        margin-left:13px;
+        margin-left: 13px;
     }
 
 
-	/*.logo a:link, a:hover, a:visited {
+    /*.logo a:link, a:hover, a:visited {
      color: white;*/
 
 
-}
-.bigdatabtn {
-    color: white;
-    background-color: purple;
-    border: none;
-    border-radius: 20px;
-    margin-left: 40px;
-}
-</style >
+    }
+
+    .bigdatabtn {
+        color: white;
+        background-color: purple;
+        border: none;
+        border-radius: 20px;
+        margin-left: 40px;
+    }
+</style>

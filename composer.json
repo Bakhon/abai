@@ -18,6 +18,7 @@
         "laravel/ui": "^1.1",
         "level23/druid-client": "^1.0",
         "maatwebsite/excel": "^3.1",
+        "okipa/laravel-table": "^2.0",
         "spatie/laravel-permission": "^3.13"
     },
     "require-dev": {
