@@ -11,6 +11,11 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 node_modules
+.vscode/formatter.json
+public/test.php
+public/test1.php
+public/test2.php
+public/js/json/gno/line_points — копия.json
 package-lock.json
 package.json
 .vscode/formatter.json

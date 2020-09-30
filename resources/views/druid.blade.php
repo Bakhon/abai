@@ -1,7 +1,10 @@
-<!-- <img src="lavel1.jpg" width=100%> -->
+@extends('layouts.app')
 
-<div class="x_panel">
-    @php
-    print_r($data);
-    @endphp
+@section('content')
+<div class="">
+            <div class="card-header">Dashboard</div>
+            <div class="x_panel">
+                <syncfusion-pivot></syncfusion-pivot>
+            </div>
 </div>
+@endsection
