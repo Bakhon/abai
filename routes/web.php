@@ -30,6 +30,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
+        Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
+        Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/gno', 'DruidController@gno')->name('gno');
         Route::get('/production', 'DruidController@production')->name('production');
@@ -66,6 +68,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/gethb', 'WaterMeasurementController@getThionicBacteria');
         Route::post('/getwm', 'WaterMeasurementController@getWm');
         Route::post('/updatewm', 'WaterMeasurementController@update')->name('updatewm');
+        Route::resource('omgca','OmgCAController');
+        Route::resource('omguhe','OmgUHEController');
+        Route::resource('omgngdu','OmgNGDUController');
     });
     Auth::routes([
         'reset' => false,

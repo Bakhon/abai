@@ -50,7 +50,7 @@ Vue.component('welcome-chart-donut-right4', require('./components/welcome/Welcom
 Vue.component('welcome-chart-bar-bottom1', require('./components/welcome/WelcomeChartBarBottom1.vue').default);
 Vue.component('welcome-chart-bar-bottom2', require('./components/welcome/WelcomeChartBarBottom2.vue').default);
 Vue.component('welcome-page', require('./components/welcome/WelcomePage.vue').default);
-Vue.component('economicpivot', require('./components/Economic/Pivot.vue').default);
+Vue.component('economic-pivot', require('./components/Economic/Pivot.vue').default);
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
 Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
 Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);

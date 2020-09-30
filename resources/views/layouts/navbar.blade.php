@@ -80,15 +80,18 @@
                             <span class="workTypeText">Лабораторные данные по промысловой жидкости</span>
                         </a>
                     </li>
-
-
-
-
                 </ul>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+                <ul class="dropdown-child">
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/economicpivot">
+                            <span class="workTypeText">Констуктор НРС</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item active">
                 <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
