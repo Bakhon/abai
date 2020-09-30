@@ -2930,6 +2930,799 @@ Vue.use(vue_js_modal__WEBPACK_IMPORTED_MODULE_0___default.a, {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/gno/LinePointsChart.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/gno/LinePointsChart.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-apexcharts */ "./node_modules/vue-apexcharts/dist/vue-apexcharts.js");
+/* harmony import */ var vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_apexcharts__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../event-bus.js */ "./resources/js/event-bus.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+Vue.component("apexchart", vue_apexcharts__WEBPACK_IMPORTED_MODULE_0___default.a);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "mix-chart",
+  props: ["postTitle"],
+  data: function data() {
+    return _defineProperty({
+      series: "",
+      oilPeriod: "",
+      begin: "",
+      end: "",
+      chartOptions: {
+        yaxis: {
+          labels: {
+            formatter: function formatter(val) {
+              //return val.toFixed(0);
+              return Math.round(val);
+            }
+          }
+        },
+        chart: {
+          scaleIntegersOnly: true,
+          toolbar: {
+            show: true,
+            Color: '#373d3f' //autoSelected: "pan",
+
+          },
+          zoom: {
+            enabled: true
+          },
+          foreColor: "#FFFFFF" //  height: 150,
+          //   type: "area",
+
+        },
+        stroke: {
+          curve: "smooth",
+          width: 4
+        },
+        plotOptions: {
+          bar: {
+            columnWidth: "50%"
+          }
+        },
+        legend: {
+          position: "bottom",
+          horizontalAlign: "right"
+        },
+        dataLabels: {
+          enabled: false
+        },
+        colors: ["#CC6F3C", "#FF0D18", "#237DEB"],
+        labels: "",
+        xaxis: {
+          labels: {
+            show: true
+          }
+        },
+        annotations: {
+          points: [{
+            x: 14,
+            y: 75,
+            marker: {
+              strokeColor: "red",
+              fillColor: "red",
+              size: 7
+            },
+            label: {
+              //  foreColor: "red",
+              background: "#FF4560",
+              borderColor: "#FF4560",
+              style: {
+                color: "#000" //background: '#FF4560',
+
+              },
+              text: "Point Annotation"
+            }
+          }, {
+            x: 26,
+            y: 39,
+            marker: {
+              strokeColor: "#13B062",
+              fillColor: "#13B062",
+              size: 7
+            },
+            label: {
+              //  foreColor: "red",
+              background: "#13B062",
+              borderColor: "#13B062",
+              style: {
+                color: "#000" //background: '#FF4560',
+
+              },
+              text: "Point Annotation"
+            }
+          }]
+        },
+        tooltip: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          shared: true,
+          followCursor: false,
+          intersect: false,
+          inverseOrder: false,
+          custom: undefined,
+          fillSeriesColor: false,
+          theme: false,
+          style: {
+            fontSize: "12px",
+            fontFamily: undefined
+          },
+          x: {
+            show: false,
+            format: "dd MMM",
+            formatter: undefined
+          },
+          y: {
+            show: false,
+            formatter: undefined,
+            title: {
+              formatter: function formatter(seriesName) {
+                return seriesName;
+              }
+            }
+          },
+          z: {
+            show: false,
+            formatter: undefined,
+            title: "Size: "
+          },
+          marker: {
+            show: false
+          },
+          fixed: {
+            enabled: false,
+            position: "topRight",
+            offsetX: 0,
+            offsetY: 0
+          }
+        }
+      }
+    }, "series", [{
+      name: "1",
+      type: "line",
+      stroke: {// curve: "smooth",
+      },
+      data: [0]
+    }, {
+      name: "2",
+      type: "line",
+      stroke: {// curve: "smooth",
+      },
+      data: [0]
+    }, {
+      name: "3",
+      type: "line",
+      stroke: {// curve: "smooth",
+      },
+      data: [0]
+    }]);
+  },
+  methods: {
+    setValue: function setValue(value) {
+      var ipr_points = [];
+      var pintake_points = [];
+      var freegas_points = [];
+      var qo_points = [];
+      var value2 = [];
+      var ipr_points2 = [];
+      var pintake_points2 = [];
+      var freegas_points2 = [];
+      var qo_points2 = [];
+      var filtered = value.filter(function (_, i) {
+        return i % 20 === 0;
+      }); // console.log(filtered);
+
+      _.forEach(filtered, function (values) {
+        ipr_points = values.ipr_points;
+        pintake_points = values.pintake_points;
+        freegas_points = values.freegas_points;
+        qo_points = values.qo_points;
+        ipr_points2.push(ipr_points);
+        pintake_points2.push(pintake_points);
+        freegas_points2.push(freegas_points);
+        qo_points2.push(qo_points);
+      });
+
+      console.log([ipr_points2]);
+      this.series = [{
+        name: "Pnp",
+        data: pintake_points2
+      }, {
+        name: "IPR (кривая притока)",
+        data: ipr_points2
+      }, {
+        //name: "Текущий режим",
+        name: "Газосодержание в насосе",
+        data: freegas_points2
+      }];
+      this.chartOptions = {
+        labels: qo_points2
+      };
+    }
+  },
+  mounted: function mounted() {},
+  created: function created() {
+    this.$parent.$on("data", this.setValue);
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/gno/Table.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/gno/Table.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _event_bus_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../event-bus.js */ "./resources/js/event-bus.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {};
+  },
+  methods: {
+    getLinePoints: function getLinePoints() {
+      var _this = this;
+
+      var uri = "/js/json/gno/line_points.json";
+      this.axios.get(uri).then(function (response) {
+        var data = response.data;
+
+        if (data) {
+          _this.$emit("data", data);
+        } else {
+          console.log("No data");
+        }
+      });
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    return _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _this2.getLinePoints();
+
+            case 1:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/visualcenter/VisualCenterChartAreaCenter.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/visualcenter/VisualCenterChartAreaCenter.vue?vue&type=script&lang=js& ***!
@@ -55647,6 +56440,1000 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/gno/LinePointsChart.vue?vue&type=template&id=71b83b36&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/gno/LinePointsChart.vue?vue&type=template&id=71b83b36& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("apexchart", {
+        attrs: {
+          type: "line",
+          height: "400",
+          options: _vm.chartOptions,
+          series: _vm.series
+        }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "begin" }, [_vm._v(_vm._s(_vm.begin))]),
+      _vm._v(" "),
+      _c("div", {}, [_vm._v(_vm._s(_vm.oilPeriod))]),
+      _vm._v(" "),
+      _c("div", { staticClass: "end" }, [_vm._v(_vm._s(_vm.end))])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/gno/Table.vue?vue&type=template&id=a68d9be8&":
+/*!************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/gno/Table.vue?vue&type=template&id=a68d9be8& ***!
+  \************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "main col-md-12 col-lg-12 row" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-10"
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "tables-string-gno3" },
+          [_c("gno-line-points-chart")],
+          1
+        ),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _vm._m(2),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "tables-string-gno5 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"
+          },
+          [_vm._v("\n      Анализ потенциала скважины\n    ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "tables-string-gno55 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"
+          },
+          [_vm._v("\n      Анализ эффективности способа эксплуатации\n    ")]
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "tables-string-gno6 col-12" }, [
+          _vm._v("\n      Подбор ГНО\n    ")
+        ])
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "tables-one col-xs-12 col-sm-5 col-md-5 col-lg-3 col-xl-2"
+      },
+      [
+        _c("div", { staticClass: "tables-string-gno col-12" }, [
+          _c("div", { staticClass: "select-well col-12" }, [
+            _vm._v("Выбор скважины")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno col-7" }, [
+            _vm._v("Месторождение")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "cell4-gno table-border-gno cell4-gno-second col-5"
+            },
+            [_vm._v("\n        Узень\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Скважина №")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        6550\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Пласт")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        14Осн\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("\n        Новая скважина "),
+            _c("input", {
+              staticClass: "checkbox0",
+              attrs: { type: "checkbox" }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [
+              _vm._v("\n        с ГРП "),
+              _c("input", {
+                staticClass: "checkbox0",
+                attrs: { type: "checkbox" }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("ЦДНГ-13")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        ГУ-101\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("НГДУ-1")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        АО «ОМГ»\n      ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "tables-string-gno" }, [
+          _c("div", { staticClass: "select-well col-12" }, [
+            _vm._v("Конструкция")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno col-7" }, [
+            _vm._v("Наружн. ØЭК")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "cell4-gno table-border-gno cell4-gno-second col-5"
+            },
+            [_vm._v("\n        168 мм\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Внутрен. ØЭК")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        150 мм\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Нперф.(ВДП MD)")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        1352 м\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Удл. на Нперф.")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        4 м\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Текущий забой")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        1369 м\n      ")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "inclinom" }, [_vm._v("Инклинометрия")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "spoiler" }, [
+          _c("input", {
+            staticStyle: { width: "545px", height: "45px" },
+            attrs: { type: "checkbox", tabindex: "-1" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "box" }, [
+            _c("div", { staticClass: "select-well col-12" }, [
+              _c("div", { staticClass: "select-gno" }, [_vm._v("Оборудование")])
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "closer" }, [_vm._v("Скрыть")]),
+            _c("span", { staticClass: "open" }, [_vm._v("Показать")]),
+            _vm._v(" "),
+            _c("blockquote", [
+              _c("div", { staticClass: "cell4-gno col-7" }, [_vm._v("Qж")]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno cell4-gno-second col-5"
+                },
+                [_vm._v("\n            55 м3/сут\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Qж")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            10 т/сут\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Обв.")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            82 %\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рзаб")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            68 ат\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рпл")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            124 ат\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Ндин")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            658\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рзат")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            4 ат\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рбуф")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            4 ат\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рлин")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            4 ат\n          ")]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "spoiler" }, [
+          _c("input", {
+            staticStyle: { width: "545px", height: "45px" },
+            attrs: { type: "checkbox", tabindex: "-1" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "box" }, [
+            _c("div", { staticClass: "select-well col-12" }, [
+              _c("div", { staticClass: "select-gno" }, [_vm._v("PVT")])
+            ]),
+            _vm._v(" "),
+            _c("span", { staticClass: "closer" }, [_vm._v("Скрыть")]),
+            _c("span", { staticClass: "open" }, [_vm._v("Показать")]),
+            _vm._v(" "),
+            _c("blockquote", [
+              _c("div", { staticClass: "cell4-gno col-7" }, [_vm._v("Qж")]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno cell4-gno-second col-5"
+                },
+                [_vm._v("\n            55 м3/сут\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Qж")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            10 т/сут\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Обв.")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            82 %\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рзаб")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            68 ат\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рпл")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            124 ат\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Ндин")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            658\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рзат")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            4 ат\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рбуф")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            4 ат\n          ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "cell4-gno table-border-gno-top col-7" },
+                [_vm._v("Рлин")]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+                },
+                [_vm._v("\n            4 ат\n          ")]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "tables-string-gno2" }, [
+          _c("div", { staticClass: "select-well col-12" }, [
+            _vm._v("Технологический режим")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno col-7" }, [_vm._v("Qж")]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "cell4-gno table-border-gno cell4-gno-second col-5"
+            },
+            [_vm._v("\n        55 м3/сут\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Qж")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        10 т/сут\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Обв.")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        82 %\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Рзаб")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        68 ат\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Рпл")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        124 ат\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Ндин")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        658\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Рзат")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        4 ат\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Рбуф")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        4 ат\n      ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-7" }, [
+            _vm._v("Рлин")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n        4 ат\n      ")]
+          )
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "tables-string-gno4 col-6" }, [
+      _c("div", { staticClass: "select-well col-12" }, [
+        _vm._v("Настройка кривой притока")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-12 relative" }, [
+        _c("div", { staticClass: "col-6" }, [
+          _c("div", { staticClass: "cell4-gno col-4" }, [
+            _vm._v("\n            Рпл\n          ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "cell4-gno table-border-gno cell4-gno-second col-5"
+            },
+            [_vm._v("\n            124 ат\n          ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-4" }, [
+            _c("input", {
+              staticClass: "checkbox",
+              attrs: { type: "radio", name: "set" }
+            }),
+            _vm._v("Кпрод\n          ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n            1,4 м3/сут/ат\n          ")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "cell4-gno table-border-gno-top col-4" }, [
+            _c("input", {
+              staticClass: "checkbox",
+              attrs: { type: "radio", name: "set" }
+            }),
+            _vm._v("Qж\n          ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
+            },
+            [_vm._v("\n            46 м3/сут\n          ")]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-12 relative left-center" }, [
+        _c("div", { staticClass: "cell4-gno col-4 table-border-gno-top" }, [
+          _c("input", {
+            staticClass: "checkbox2",
+            attrs: { type: "radio", name: "set2" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "text2" }, [_vm._v("Рзаб")])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+          },
+          [_vm._v("\n          64 ат\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass:
+            "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+        }),
+        _vm._v(" "),
+        _c("div", {
+          staticClass:
+            "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-12 relative left-center" }, [
+        _c("div", { staticClass: "cell4-gno col-4 table-border-gno-top" }, [
+          _c("input", {
+            staticClass: "checkbox2",
+            attrs: { type: "radio", name: "set2" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "text2" }, [_vm._v("Ндин")])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+          },
+          [_vm._v("\n          672\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+          },
+          [_vm._v("\n          Рзат\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+          },
+          [_vm._v("\n          4 ат\n        ")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-12 relative left-center" }, [
+        _c("div", { staticClass: "cell4-gno col-4 table-border-gno-top" }, [
+          _c("input", {
+            staticClass: "checkbox2",
+            attrs: { type: "radio", name: "set2" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "text2" }, [_vm._v("Рманом")])
+        ]),
+        _vm._v(" "),
+        _c("div", {
+          staticClass:
+            "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+        }),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+          },
+          [_vm._v("\n          Нсп маном\n        ")]
+        ),
+        _vm._v(" "),
+        _c("div", {
+          staticClass:
+            "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-12 relative left-center" }, [
+        _c("div", { staticClass: "cell4-gno col-4 table-border-gno-top" }, [
+          _c("input", {
+            staticClass: "checkbox2",
+            attrs: { type: "radio", name: "set2" }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "text2" }, [_vm._v("Рбуф (ФЭ)")])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+          },
+          [_vm._v("\n          7 ат\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+          },
+          [_vm._v("\n          Рзат\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
+          },
+          [_vm._v("\n          4 ат\n        ")]
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "tables-string-gno44 col-6" }, [
+      _c("div", { staticClass: "select-well col-12" }, [
+        _vm._v("Параметры подбора")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "select-well col-12" }, [_vm._v("ГНО")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-12 relative left-center" }, [
+        _c("div", { staticClass: "cell4-gno col-3" }, [
+          _c("div", { staticClass: "text3" }, [_vm._v("ШГН")]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "checkbox3",
+            attrs: { type: "radio", name: "gno" }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "cell4-gno table-border-gno cell4-gno-second col-3" },
+          [
+            _c("div", { staticClass: "text3" }, [_vm._v("ЭЦН")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "checkbox3",
+              attrs: { type: "radio", name: "gno" }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "cell4-gno table-border-gno cell4-gno-second col-3" },
+          [_c("div", { staticClass: "text3" }, [_vm._v("НСП")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "cell4-gno table-border-gno cell4-gno-second col-2" },
+          [_vm._v("\n          1280 м\n        ")]
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "select-well col-12" }, [
+        _vm._v("Целевой параметр")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-12 relative left-center" }, [
+        _c("div", { staticClass: "cell4-gno col-3" }, [
+          _c("div", { staticClass: "text3" }, [_vm._v("ШГН")]),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "checkbox3",
+            attrs: { type: "radio", name: "gno" }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "cell4-gno table-border-gno cell4-gno-second col-3" },
+          [
+            _c("div", { staticClass: "text3" }, [_vm._v("ЭЦН")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "checkbox3",
+              attrs: { type: "radio", name: "gno" }
+            })
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "cell4-gno table-border-gno cell4-gno-second col-3" },
+          [_c("div", { staticClass: "text3" }, [_vm._v("НСП")])]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "cell4-gno table-border-gno cell4-gno-second col-2" },
+          [_vm._v("\n          1280 м\n        ")]
+        )
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/visualcenter/VisualCenterChartAreaCenter.vue?vue&type=template&id=9580bb08&":
 /*!*******************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/visualcenter/VisualCenterChartAreaCenter.vue?vue&type=template&id=9580bb08& ***!
@@ -73451,7 +75238,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vue_table_dynamic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-table-dynamic */ "./node_modules/vue-table-dynamic/dist/index.min.js");
 /* harmony import */ var vue_table_dynamic__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_table_dynamic__WEBPACK_IMPORTED_MODULE_2__);
-!(function webpackMissingModule() { var e = new Error("Cannot find module '@syncfusion/ej2-vue-pivotview'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -73461,12 +75247,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 window.Jquery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_0___default.a, axios__WEBPACK_IMPORTED_MODULE_1___default.a, vue_table_dynamic__WEBPACK_IMPORTED_MODULE_2___default.a, !(function webpackMissingModule() { var e = new Error("Cannot find module '@syncfusion/ej2-vue-pivotview'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+Vue.use(vue_axios__WEBPACK_IMPORTED_MODULE_0___default.a, axios__WEBPACK_IMPORTED_MODULE_1___default.a, vue_table_dynamic__WEBPACK_IMPORTED_MODULE_2___default.a);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -73505,7 +75290,8 @@ Vue.component('chart3-component', __webpack_require__(/*! ./components/Economic/
 Vue.component('chart4-component', __webpack_require__(/*! ./components/Economic/chart4.vue */ "./resources/js/components/Economic/chart4.vue")["default"]);
 Vue.component('wm-create', __webpack_require__(/*! ./components/wm/create.vue */ "./resources/js/components/wm/create.vue")["default"]);
 Vue.component('wm-edit', __webpack_require__(/*! ./components/wm/edit.vue */ "./resources/js/components/wm/edit.vue")["default"]);
-Vue.component('syncfusion-pivot', __webpack_require__(/*! ./components/pivot.vue */ "./resources/js/components/pivot.vue")["default"]);
+Vue.component('gno-table', __webpack_require__(/*! ./components/gno/Table.vue */ "./resources/js/components/gno/Table.vue")["default"]);
+Vue.component('gno-line-points-chart', __webpack_require__(/*! ./components/gno/LinePointsChart.vue */ "./resources/js/components/gno/LinePointsChart.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -74082,14 +75868,141 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/pivot.vue":
-/*!*******************************************!*\
-  !*** ./resources/js/components/pivot.vue ***!
-  \*******************************************/
+/***/ "./resources/js/components/gno/LinePointsChart.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/gno/LinePointsChart.vue ***!
+  \*********************************************************/
 /*! exports provided: default */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/vue-loader/lib/index.js):\nError: ENOENT: no such file or directory, open 'D:\\openserver\\OpenServer\\domains\\localhost\\resources\\js\\components\\pivot.vue'");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _LinePointsChart_vue_vue_type_template_id_71b83b36___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LinePointsChart.vue?vue&type=template&id=71b83b36& */ "./resources/js/components/gno/LinePointsChart.vue?vue&type=template&id=71b83b36&");
+/* harmony import */ var _LinePointsChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LinePointsChart.vue?vue&type=script&lang=js& */ "./resources/js/components/gno/LinePointsChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _LinePointsChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _LinePointsChart_vue_vue_type_template_id_71b83b36___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _LinePointsChart_vue_vue_type_template_id_71b83b36___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/gno/LinePointsChart.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/gno/LinePointsChart.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/gno/LinePointsChart.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LinePointsChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./LinePointsChart.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/gno/LinePointsChart.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_LinePointsChart_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/gno/LinePointsChart.vue?vue&type=template&id=71b83b36&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/gno/LinePointsChart.vue?vue&type=template&id=71b83b36& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LinePointsChart_vue_vue_type_template_id_71b83b36___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./LinePointsChart.vue?vue&type=template&id=71b83b36& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/gno/LinePointsChart.vue?vue&type=template&id=71b83b36&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LinePointsChart_vue_vue_type_template_id_71b83b36___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_LinePointsChart_vue_vue_type_template_id_71b83b36___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/gno/Table.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/components/gno/Table.vue ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Table_vue_vue_type_template_id_a68d9be8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Table.vue?vue&type=template&id=a68d9be8& */ "./resources/js/components/gno/Table.vue?vue&type=template&id=a68d9be8&");
+/* harmony import */ var _Table_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Table.vue?vue&type=script&lang=js& */ "./resources/js/components/gno/Table.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Table_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Table_vue_vue_type_template_id_a68d9be8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Table_vue_vue_type_template_id_a68d9be8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/gno/Table.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/gno/Table.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/components/gno/Table.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Table.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/gno/Table.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/gno/Table.vue?vue&type=template&id=a68d9be8&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/components/gno/Table.vue?vue&type=template&id=a68d9be8& ***!
+  \******************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_template_id_a68d9be8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Table.vue?vue&type=template&id=a68d9be8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/gno/Table.vue?vue&type=template&id=a68d9be8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_template_id_a68d9be8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Table_vue_vue_type_template_id_a68d9be8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
 
 /***/ }),
 
@@ -75319,6 +77232,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/event-bus.js":
+/*!***********************************!*\
+  !*** ./resources/js/event-bus.js ***!
+  \***********************************/
+/*! exports provided: EventBus */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EventBus", function() { return EventBus; });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var EventBus = new vue__WEBPACK_IMPORTED_MODULE_0___default.a();
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -75326,7 +77256,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nModuleNotFoundError: Module not found: Error: Can't resolve '@syncfusion/ej2-base/styles/material.css' in 'D:\\openserver\\OpenServer\\domains\\localhost\\resources\\sass'\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\webpack\\lib\\Compilation.js:925:10\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\webpack\\lib\\NormalModuleFactory.js:401:22\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\webpack\\lib\\NormalModuleFactory.js:130:21\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\webpack\\lib\\NormalModuleFactory.js:224:22\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\neo-async\\async.js:2830:7\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\neo-async\\async.js:6877:13\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\webpack\\lib\\NormalModuleFactory.js:214:25\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:213:14\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\UnsafeCachePlugin.js:44:7\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:25:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\DescriptionFilePlugin.js:67:43\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:26:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\ModuleKindPlugin.js:30:40\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\forEachBail.js:30:14\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\UnsafeCachePlugin.js:44:7\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:25:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\DescriptionFilePlugin.js:67:43\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:14:1)\n    at D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (D:\\openserver\\OpenServer\\domains\\localhost\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:25:1)");
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 
