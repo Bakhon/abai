@@ -50,6 +50,11 @@ body {
     margin-bottom: 15px;
 }
 
+.checkbox-hidden {
+    position: absolute;
+    margin-top: 4px;
+}
+
 .tables-string-gno3 {
     font-size: 12px;
     position: relative;
@@ -73,9 +78,9 @@ body {
     height: 220px;
     margin-bottom: 15px;
     /* margin-left: 15px; */
-    border-right-style:solid;
-    border-color:#0F1430;
-    border-right-width:20px;
+    border-right-style: solid;
+    border-color: #0F1430;
+    border-right-width: 20px;
 }
 
 .tables-string-gno44 {
@@ -103,14 +108,10 @@ body {
     height: 45px;
     text-align: center;
     /* font-weight:bold; */
-    border-right-style:solid;
-    border-color:#0F1430;
-    border-right-width:20px;
+    border-right-style: solid;
+    border-color: #0F1430;
+    border-right-width: 20px;
 }
-
-
-
-
 
 .tables-string-gno55 {
     float: left;
@@ -153,6 +154,7 @@ body {
     /* width: 75px!important; */
     float: left;
     padding: 2px 5px;
+    height: 24px;
 }
 
 .table-border-gno {
@@ -178,7 +180,7 @@ body {
 
 .tables-two {}
 
-select.select-gno {
+.select-gno {
     width: 100%;
     /* text-align: center; */
     background: #20274e;
@@ -186,21 +188,144 @@ select.select-gno {
     border-color: #1b6bb0;
     border-style: solid;
     border-width: 1px;
+    margin-left: -16px;
+    padding: 0px 250px 0px 18px;
 }
 
-/*
-.row {
-    flex-wrap: nowrap !important;
+input.checkbox0 {
+    margin-top: 2px;
+    position: relative;
+    float: right;
 }
 
-@media (min-width: 1200px) {
-    body {
-        zoom: 70%
-    }
+.apexcharts-menu-item {
+    color: black;
 }
 
-@media (min-width: 1350px) {
-    body {
-        zoom: 0%
-    }
-}*/
+/* CSS hidden table
+
+.spoiler>input+.box {
+    display: none;
+}
+
+.spoiler>input:checked+.box {
+    display: block;
+}
+*/
+
+.spoiler>input+.box>blockquote {
+    display: none;
+}
+
+.spoiler>input:checked+.box>blockquote {
+    display: block;
+}
+
+.spoiler>input[type="checkbox"] {
+    cursor: pointer;
+    border-color: transparent!important;
+    border-style: none!important;
+    background: transparent none!important;
+    position: relative;
+    z-index: 1;
+    margin: -10px 0 -30px -310px;
+}
+
+.spoiler>input[type="checkbox"]:focus {
+    outline: none;
+    /* Убираем обводку в ИЕ8 при "фокусе" */
+}
+
+.spoiler span.closer, .spoiler span.open {
+    padding-left: 22px;
+    /* color: #00f!important; */
+    text-decoration: underline;
+}
+
+.spoiler>input+.box>span.closer {
+    display: none;
+}
+
+.spoiler>input:checked+.box>span.closer {
+    background: url(/img/gno/minus.png) 4px 60% no-repeat;
+    display: inline;
+}
+
+.spoiler>input:checked+.box>span.open {
+    display: none;
+}
+
+.spoiler>input+.box>span.open {
+    background: url(/img/gno/plus.png) 4px 60% no-repeat;
+    display: inline;
+}
+
+.spoiler blockquote, .spoiler {
+    overflow-x: hidden;
+}
+
+blockquote {
+    width: 100%;
+}
+
+span.open, span.closer {
+    position: absolute;
+    margin-left: -60px;
+    margin-top: 1px;
+    font-size: 12px;
+}
+
+.spoiler {
+    font-size: 12px;
+    position: relative;
+    background-color: #20274e;
+    padding: 13px 33px 8px 15px;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.relative {
+    position: relative;
+    float: left;
+}
+
+.left-center {
+    margin-left: 15px;
+}
+
+input.checkbox {
+    float: left;
+    margin-left: -16px;
+}
+
+.text1 {
+    margin-left: 10px;
+}
+
+
+.text2 {
+    margin-left: 92px;
+}
+
+input.checkbox2 {
+    float: left;
+    margin-left: 55px;
+}
+
+.inclinom {
+    float: left;
+    font-size: 14px;
+    background-color: #15509D;
+    padding: 8px 30px;
+    height: 38px;
+    width: 100%;
+    margin-top: -53px;
+}
+
+.text3{
+    float:right;
+}
+input.checkbox3 {
+    float: right;
+    margin-right: 12px;
+}
