@@ -45,7 +45,22 @@ class OmgCAController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'date' => 'required',
+        ]);
+
+        $omgca = new OmgCA;
+        $omgca->field = ($request->field) ? $request->field : NULL;
+        $omgca->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : NULL;
+        $omgca->cdng_id = ($request->cdng_id) ? $request->cdng_id : NULL;
+        $omgca->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
+        $omgca->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
+        $omgca->well_id = ($request->well_id) ? $request->well_id : NULL;
+        $omgca->date = date("Y-m-d H:i", strtotime($request->date));
+        $omgca->plan_dosage = ($request->plan_dosage) ? $request->plan_dosage : NULL;
+        $omgca->save();
+
+        return redirect()->route('omgca.index')->with('success',__('app.created'));
     }
 
     /**

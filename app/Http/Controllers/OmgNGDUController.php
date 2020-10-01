@@ -45,7 +45,30 @@ class OmgNGDUController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'date' => 'required',
+        ]);
+
+        $omgngdu = new OmgNGDU;
+        $omgngdu->field = ($request->field) ? $request->field : NULL;
+        $omgngdu->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : NULL;
+        $omgngdu->cdng_id = ($request->cdng_id) ? $request->cdng_id : NULL;
+        $omgngdu->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
+        $omgngdu->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
+        $omgngdu->well_id = ($request->well_id) ? $request->well_id : NULL;
+        $omgngdu->date = date("Y-m-d H:i", strtotime($request->date));
+        $omgngdu->daily_fluid_production = ($request->daily_fluid_production) ? $request->daily_fluid_production : NULL;
+        $omgngdu->surge_tank_pressure = ($request->surge_tank_pressure) ? $request->surge_tank_pressure : NULL;
+        $omgngdu->pump_discharge_pressure = ($request->pump_discharge_pressure) ? $request->pump_discharge_pressure : NULL;
+        $omgngdu->heater_inlet_pressure = ($request->heater_inlet_pressure) ? $request->heater_inlet_pressure : NULL;
+        $omgngdu->heater_output_pressure = ($request->heater_output_pressure) ? $request->heater_output_pressure : NULL;
+        $omgngdu->kormass_number = ($request->kormass_number) ? $request->kormass_number : NULL;
+        $omgngdu->pressure = ($request->pressure) ? $request->pressure : NULL;
+        $omgngdu->temperature = ($request->temperature) ? $request->temperature : NULL;
+        $omgngdu->daily_fluid_production_kormass = ($request->daily_fluid_production_kormass) ? $request->daily_fluid_production_kormass : NULL;
+        $omgngdu->save();
+
+        return redirect()->route('omgngdu.index')->with('success',__('app.created'));
     }
 
     /**
