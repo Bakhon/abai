@@ -26,6 +26,8 @@
         @include('layouts.visual-center-sidebar')
         @elseif (basename(Request::url()) === "gno")
         @include('layouts.gno-sidebar')
+        @elseif (basename(Request::url()) === "monitor")
+        @include('layouts.gno-sidebar')
         @endif
         <div class="col p-4">
             @yield('content')

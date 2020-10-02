@@ -216,4 +216,9 @@ class DruidController extends Controller
     {
         return view('gno.gno');
     }
+
+    public function monitor()
+    {
+        return view('monitor.monitor');
+    }
 }

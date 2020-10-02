@@ -1,8 +1,7 @@
 <template>
   <div>
     <apexchart
-
-      type="line"
+      type="line"    
        height="400"
       :options="chartOptions"
       :series="series"
@@ -31,12 +30,13 @@ export default {
           labels: {
             formatter: function (val) {
               //return val.toFixed(0);
-              return Math.round(val);
-            },
+              return (val);
+           //   return (val);         
+              },
           },
         },
         chart: {      
-          scaleIntegersOnly: true,
+         scaleIntegersOnly: true,
           toolbar: {         
             show: true,
              Color: '#373d3f',
@@ -51,13 +51,15 @@ export default {
        //   type: "area",
         },
         stroke: {
-          curve: "smooth",
+          curve: "straight",
           width: 4,
+          //lineCap: 'butt',
+          // dashArray: 0, 
         },
         plotOptions: {
-          bar: {
+          /*bar: {
             columnWidth: "50%",
-          },
+          },*/
         },
        legend: {
           position: "bottom",
@@ -67,7 +69,7 @@ export default {
           enabled: false,
         },
         colors: ["#CC6F3C","#FF0D18",  "#237DEB"],
-        labels: "",
+        labels: ["0"],
         xaxis: {
           labels: {
             show: true,
@@ -142,7 +144,15 @@ export default {
             show: false,
             formatter: undefined,
             title: {
-              formatter: (seriesName) => seriesName,
+              formatter: (seriesName) => Math.round(seriesName),
+
+              //formatter: function (val) {
+              //return val.toFixed(0);
+              //return Math.round(val);
+                       // },
+
+
+              
             },
           },
           z: {
@@ -157,8 +167,8 @@ export default {
           fixed: {
             enabled: false,
             position: "topRight",
-            offsetX: 0,
-            offsetY: 0,
+           // offsetX: 0,
+           // offsetY: 0,
           },
         },
       },
@@ -203,24 +213,25 @@ export default {
       var freegas_points2 = [];
       var qo_points2 = [];
 
-      var filtered = value.filter(function (_, i) {
-        return i % 20 === 0;
-      });
 
-     // console.log(filtered);
-      _.forEach(filtered, function (values) {
+      _.forEach(value, function (values) {
         ipr_points = values.ipr_points;
         pintake_points = values.pintake_points;
         freegas_points = values.freegas_points;
         qo_points = values.qo_points;
 
-        ipr_points2.push(ipr_points);
+//if (freegas_points==0) {freegas_points=0};
+if (freegas_points=="NaN") {freegas_points=null};
+if (pintake_points=="NaN") {pintake_points=null};
+        ipr_points2.push(ipr_points);       
         pintake_points2.push(pintake_points);
         freegas_points2.push(freegas_points);
-        qo_points2.push(qo_points);
+        //qo_points2.push(""+qo_points+"");
       });
 
-      console.log([ipr_points2]);
+//var qo_points2 = qo_points2.filter(function (_, i) {
+     //   return i % 20 === 0;
+ 
       this.series = [
         {
           name: "Pnp",
@@ -231,16 +242,15 @@ export default {
           data: ipr_points2,
         },
 
-        {
-          //name: "Текущий режим",
+        {    
           name: "Газосодержание в насосе",
           data: freegas_points2,
         },
       ];
 
-      this.chartOptions = {
-        labels: qo_points2,
-      };
+      this.chartOptions = {         labels:// ["10", "20", "3", "4", "5", "6", "7", "8", "9", "10"], 
+      qo_points2,   
+        };
     },
   },
 

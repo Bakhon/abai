@@ -61,6 +61,9 @@ Vue.component('wm-edit', require('./components/wm/edit.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
 Vue.component('gno-line-points-chart', require('./components/gno/LinePointsChart.vue').default);
 Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);
+Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
+Vue.component('monitor-chart-bar', require('./components/monitor/MonitorChartBar.vue').default);
+Vue.component('monitor-chart-donut', require('./components/monitor/MonitorChartDonut.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
