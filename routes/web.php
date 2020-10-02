@@ -72,6 +72,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('omgca','OmgCAController');
         Route::resource('omguhe','OmgUHEController');
         Route::resource('omgngdu','OmgNGDUController');
+        Route::resource('ecorefscompaniesids','EcoRefsCompaniesIdsController');
+        Route::resource('ecorefsdirection','EcoRefsDirectionController');
+        Route::resource('ecorefsrouteid','EcoRefsRouteIdController');
+        Route::resource('ecorefsroutetnid','EcoRefsRouteTnIdController');
+        Route::resource('ecorefsequipid','EcoRefsEquipIdController');
     });
     Auth::routes([
         'reset' => false,
