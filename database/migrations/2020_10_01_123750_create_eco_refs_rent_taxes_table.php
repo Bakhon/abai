@@ -15,8 +15,9 @@ class CreateEcoRefsRentTaxesTable extends Migration
     {
         Schema::create('eco_refs_rent_taxes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('world_price_id');
-            $table->float('exp_cust_duty_rate');
+            $table->integer('world_price_beg');
+            $table->integer('world_price_end');
+            $table->float('rate');
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class CreateEcoRefsDirectionIdsTable extends Migration
     {
         Schema::create('eco_refs_direction_ids', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('direction');
+            $table->text('name');
             $table->timestamps();
         });
     }

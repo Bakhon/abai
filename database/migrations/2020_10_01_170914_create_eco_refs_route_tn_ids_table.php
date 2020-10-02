@@ -15,7 +15,7 @@ class CreateEcoRefsRouteTnIdsTable extends Migration
     {
         Schema::create('eco_refs_route_tn_ids', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('route_tn');
+            $table->text('name');
             $table->timestamps();
         });
     }

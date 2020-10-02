@@ -15,7 +15,6 @@ class CreateEcoRefsAnnualProdVolumesTable extends Migration
     {
         Schema::create('eco_refs_annual_prod_volumes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('annual_prod_volume_id');
             $table->integer('annual_prod_volume_beg');
             $table->integer('annual_prod_volume_end');
             $table->float('ndpi',8,2);

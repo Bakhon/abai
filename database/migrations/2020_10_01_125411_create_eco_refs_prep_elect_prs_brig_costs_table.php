@@ -17,8 +17,8 @@ class CreateEcoRefsPrepElectPrsBrigCostsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('company_id');
             $table->date('date');
-            $table->integer('elect_cost,tg');
-            $table->integer('trans_prep_cost,1m3');
+            $table->integer('elect_cost');
+            $table->integer('trans_prep_cost');
             $table->integer('prs_brigade_cost');
             $table->timestamps();
         });

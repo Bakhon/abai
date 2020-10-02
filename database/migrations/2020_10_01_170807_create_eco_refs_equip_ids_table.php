@@ -15,6 +15,7 @@ class CreateEcoRefsEquipIdsTable extends Migration
     {
         Schema::create('eco_refs_equip_ids', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->text('name');
             $table->timestamps();
         });
     }

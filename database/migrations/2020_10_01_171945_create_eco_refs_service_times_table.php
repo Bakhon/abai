@@ -15,6 +15,9 @@ class CreateEcoRefsServiceTimesTable extends Migration
     {
         Schema::create('eco_refs_service_times', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('company_id');
+            $table->integer('equip_id');
+            $table->integer('avg_serv_life');
             $table->timestamps();
         });
     }
