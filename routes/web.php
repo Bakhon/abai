@@ -33,7 +33,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
-        Route::get('/gno', 'DruidController@gno')->name('gno');
+        Route::get('/podnorgno', 'DruidController@gno')->name('gno');
+        Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
         Route::get('/mfond', 'DruidController@mfond')->name('mfond');

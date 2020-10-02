@@ -132,7 +132,7 @@ export default {
     this.begin = dates[0];
     var end = _.takeRight(dates, 1);
     this.end = end[0];
-
+console.log(dates);
     this.chartOptions = { labels: dates };
     this.series = [
       {

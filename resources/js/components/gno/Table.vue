@@ -452,18 +452,21 @@
         <div class="select-well col-12">Целевой параметр</div>
         <div class="col-12 relative left-center">
           <div class="cell4-gno col-3">
-            <div class="text3">ШГН</div>
+            <div class="text3">Qж</div>
             <input class="checkbox3" type="radio" name="gno" />
           </div>
           <div class="cell4-gno table-border-gno cell4-gno-second col-3">
-            <div class="text3">ЭЦН</div>
+          <div class="target">64 м3/сут</div> 
+            <div class="text3">Рзаб</div>
             <input class="checkbox3" type="radio" name="gno" />
           </div>
           <div class="cell4-gno table-border-gno cell4-gno-second col-3">
-            <div class="text3">НСП</div>
+            <div class="target">84 ат</div>        
+            <div class="text3"> Pnp</div>
+            <input class="checkbox3" type="radio" name="gno" />
           </div>
           <div class="cell4-gno table-border-gno cell4-gno-second col-2">
-            1280 м
+            75 атм
           </div>
         </div>
       </div>

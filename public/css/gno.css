@@ -324,8 +324,13 @@ input.checkbox2 {
 
 .text3{
     float:right;
+    width: 20px;
 }
 input.checkbox3 {
     float: right;
     margin-right: 12px;
+}
+
+.target {
+    float: left;
 }

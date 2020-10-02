@@ -54,6 +54,11 @@
                             <span class="workTypeText">Мехфонд</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/podnorgno">
+                            <span class="workTypeText">ПГНО</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item active  dropdown">
