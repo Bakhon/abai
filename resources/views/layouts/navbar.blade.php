@@ -55,7 +55,7 @@
                         </a>
                     </li>
                     <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/podnorgno">
+                        <a href="{{url('/')}}/ru/podborgno">
                             <span class="workTypeText">ПГНО</span>
                         </a>
                     </li>
