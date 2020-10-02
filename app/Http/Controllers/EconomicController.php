@@ -499,4 +499,18 @@ class EconomicController extends Controller
 
         return $format;
     }
+
+    public function economicPivot(){
+        return view('economic.pivot');
+    }
+
+    public function getEconomicPivotData(){
+
+        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+        $response = $client->query('economic_2020v4', Granularity::ALL)
+            ->interval('2020-06-01T00:00:00+00:00/2020-06-02T00:00:00+00:00')
+            ->execute();
+
+        return response()->json($response->data());
+    }
 }

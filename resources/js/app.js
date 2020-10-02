@@ -50,7 +50,7 @@ Vue.component('welcome-chart-donut-right4', require('./components/welcome/Welcom
 Vue.component('welcome-chart-bar-bottom1', require('./components/welcome/WelcomeChartBarBottom1.vue').default);
 Vue.component('welcome-chart-bar-bottom2', require('./components/welcome/WelcomeChartBarBottom2.vue').default);
 Vue.component('welcome-page', require('./components/welcome/WelcomePage.vue').default);
-Vue.component('economicpivot', require('./components/Economic/Pivot.vue').default);
+Vue.component('economic-pivot', require('./components/Economic/Pivot.vue').default);
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
 Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
 Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);
@@ -64,6 +64,12 @@ Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);
 Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
 Vue.component('monitor-chart-bar', require('./components/monitor/MonitorChartBar.vue').default);
 Vue.component('monitor-chart-donut', require('./components/monitor/MonitorChartDonut.vue').default);
+Vue.component('omgca-create', require('./components/omgca/create.vue').default);
+Vue.component('omgca-edit', require('./components/omgca/edit.vue').default);
+Vue.component('omguhe-create', require('./components/omguhe/create.vue').default);
+Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
+Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
+Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

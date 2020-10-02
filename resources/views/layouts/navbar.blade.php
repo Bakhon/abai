@@ -85,15 +85,40 @@
                             <span class="workTypeText">Лабораторные данные по промысловой жидкости</span>
                         </a>
                     </li>
-
-
-
-
+                    <li class="nav-item child dropdown">
+                        <a href="">
+                            <span class="workTypeText">Ввод данных по химизации</span>
+                        </a>
+                        <ul>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/omgca">
+                                    <span class="workTypeText">ОМГ ЦА</span>
+                                </a>
+                            </li>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/omguhe">
+                                    <span class="workTypeText">ОМГ УХЭ</span>
+                                </a>
+                            </li>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/omgngdu">
+                                    <span class="workTypeText">ОМГ НГДУ</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+                <ul class="dropdown-child">
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/economicpivot">
+                            <span class="workTypeText">Констуктор НРС</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="nav-item active">
                 <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
