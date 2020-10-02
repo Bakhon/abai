@@ -15,32 +15,39 @@
                 @endif
                 <table class="table table-bordered">
                     <tr>
-                        <th>Дата отбора</th>
+                        <th colspan="6">Узел отбора</th>
+                        <th colspan="2">Фактические данные ОМГ ЦА</th>
+                        <th rowspan="2">{{__('app.action')}}</th>
+                    </tr>
+                    <tr>
+                        <th>Месторождение</th>
                         <th>НГДУ</th>
                         <th>ЦДНГ</th>
                         <th>ГУ</th>
                         <th>ЗУ</th>
                         <th>Скважина</th>
-                        <th>НСО3-</th>
-                        <th>СО32-</th>
-                        <th>SO42-</th>
-                        <th>Cl-</th>
-                        <th>Ca2+</th>
-                        <th>Mg2+</th>
-                        <th>Na+K+</th>
-                        <th>{{__('app.action')}}</th>
+                        <th>Дата</th>
+                        <th>Планируемая дозировка, г/м3 </th>
                     </tr>
                     @foreach ($omgca as $item)
                         <tr>
-                            <td>{{ $item->date }}</td>
+                            <td>
+                                @if ($item->field === 1)
+                                    Узень
+                                @else
+                                    Карамандыбас
+                                @endif
+                            </td>
                             <td>{{ $item->ngdu->name }}</td>
                             <td>{{ $item->cdng->name }}</td>
                             <td>{{ $item->gu->name }}</td>
                             <td>{{ $item->zu->name }}</td>
                             <td>{{ $item->well->name }}</td>
+                            <td>{{ $item->date }}</td>
+                            <td>{{ $item->plan_dosage }}</td>
                             <td>
                                 <form action="{{ route('omgca.destroy',$item->id) }}" method="POST">
-                                    <a class="btn btn-primary" href="{{ route('omgca.edit',$item->id) }}"><i class="fas fa-edit"></i></a>
+                                    {{-- <a class="btn btn-primary" href="{{ route('omgca.edit',$item->id) }}"><i class="fas fa-edit"></i></a> --}}
                                     <a class="btn btn-primary" href="{{ route('omgca.show',$item->id) }}"><i class="fas fa-eye"></i></a>
                                     @csrf
                                     @method('DELETE')

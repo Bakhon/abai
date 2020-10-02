@@ -34,7 +34,7 @@ class OmgUHEController extends Controller
      */
     public function create()
     {
-        //
+        return view('omguhe.create');
     }
 
     /**
@@ -45,7 +45,26 @@ class OmgUHEController extends Controller
      */
     public function store(Request $request)
     {
-        return view('omguhe.create');
+        $request->validate([
+            'date' => 'required',
+        ]);
+
+        $omgohe = new OmgUHE;
+        $omgohe->field = ($request->field) ? $request->field : NULL;
+        $omgohe->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : NULL;
+        $omgohe->cdng_id = ($request->cdng_id) ? $request->cdng_id : NULL;
+        $omgohe->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
+        $omgohe->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
+        $omgohe->well_id = ($request->well_id) ? $request->well_id : NULL;
+        $omgohe->date = date("Y-m-d H:i", strtotime($request->date));
+        $omgohe->current_dosage = ($request->current_dosage) ? $request->current_dosage : NULL;
+        $omgohe->daily_inhibitor_flowrate = ($request->daily_inhibitor_flowrate) ? $request->daily_inhibitor_flowrate : NULL;
+        $omgohe->monthly_inhibitor_flowrate = ($request->monthly_inhibitor_flowrate) ? $request->monthly_inhibitor_flowrate : NULL;
+        $omgohe->out_of_service_оf_dosing = ($request->out_of_service_оf_dosing) ? $request->out_of_service_оf_dosing : NULL;
+        $omgohe->reason = ($request->reason) ? $request->reason : NULL;
+        $omgohe->save();
+
+        return redirect()->route('omguhe.index')->with('success',__('app.created'));
     }
 
     /**

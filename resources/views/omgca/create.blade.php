@@ -10,12 +10,12 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>Ввод данных</h1>
+            <h1>Ввод данных ОМГ ЦА</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('watermeasurement.store') }}" method="POST">
+                <form action="{{ route('omgca.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <wm-create></wm-create>
+                        <omgca-create></omgca-create>
                     </div>
                 </form>
             </div>
