@@ -29,9 +29,17 @@
         @elseif (basename(Request::url()) === "monitor")
         @include('layouts.gno-sidebar')
         @endif
-        <div class="col p-4">
-            @yield('content')
-        </div>
+
+
+        @if (basename(Request::url()) === "economicpivot")
+            <div class="col">
+                @yield('content')
+            </div>
+        @else
+            <div class="col p-4">
+                @yield('content')
+            </div>
+        @endif
     </div>
 </body>
 
