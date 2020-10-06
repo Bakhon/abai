@@ -77,6 +77,17 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefsrouteid','EcoRefsRouteIdController');
         Route::resource('ecorefsroutetnid','EcoRefsRouteTnIdController');
         Route::resource('ecorefsequipid','EcoRefsEquipIdController');
+        Route::resource('ecorefsannualprodvolume','EcoRefsAnnualProdVolumeController');
+        Route::resource('ecorefsrenttax','EcoRefsRentTaxController');
+        Route::resource('ecorefsavgmarketprice','EcoRefsAvgMarketPriceController');
+        Route::resource('ecorefsdiscontcoefbar','EcoRefsDiscontCoefBarController');
+        Route::resource('ecorefsbranchid','EcoRefsBrachIdController');
+        Route::resource('ecorefsrentequipelectservcost','EcoRefsRentEquipElectServCostController');
+        Route::resource('ecorefsservicetime','EcoRefsServiceTimeController');
+        Route::resource('ecorefsndorates','EcoRefsNdoRatesController');
+        Route::resource('ecorefselectprsbrigcost','EcoRefsPrepElectPrsBrigCostController');
+        Route::resource('ecorefstarifytn','EcoRefsTarifyTnController');
+        Route::resource('ecorefsmacro','EcoRefsMacroController');
     });
     Auth::routes([
         'reset' => false,
