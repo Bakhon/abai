@@ -15,7 +15,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Название компании:</strong>
-                                        <input type="text" name="name" class="form-control" placeholder="Пример: ОзеньМунайГаз">
+                                        <input type="text" name="name" class="form-control" placeholder="Пример: ОзенМунайГаз">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

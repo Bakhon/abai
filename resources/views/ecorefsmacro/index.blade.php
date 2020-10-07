@@ -28,8 +28,8 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->date }}</td>
-                                    <td>{{ $item->"ex_rate,$" }}</td>
-                                    <td>{{ $item->"ex_rate,rub" }}</td>
+                                    <td>{{ $item->ex_rate_dol }}</td>
+                                    <td>{{ $item->ex_rate_rub }}</td>
                                     <td>{{ $item->inf_end }}</td>
                                     <td>
                                         <form action="{{ route('ecorefsmacro.destroy',$item->id) }}" method="POST">

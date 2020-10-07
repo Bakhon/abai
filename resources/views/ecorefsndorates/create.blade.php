@@ -28,7 +28,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Процент НДО:</strong>
-                                        <input type="number" name="ndo_rates" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="float" name="ndo_rates" class="form-control" placeholder="Пример: 0.15">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

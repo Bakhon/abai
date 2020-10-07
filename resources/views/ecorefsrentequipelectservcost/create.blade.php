@@ -41,31 +41,31 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дата:</strong>
-                                        <input type="date" name="date" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="date" name="date" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Стоимость аренды:</strong>
-                                        <input type="number" name="rent_cost" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="number" name="rent_cost" class="form-control" placeholder="Пример: 55000">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Стоимость оборудования:</strong>
-                                        <input type="number" name="equip_cost" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="number" name="equip_cost" class="form-control" placeholder="Пример: 8500000">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Расход электроэнергии:</strong>
-                                        <input type="number" name="elect_cons" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="number" name="elect_cons" class="form-control" placeholder="Пример: 50">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Стоимость суточного обслуживания:</strong>
-                                        <input type="number" name="dayli_serv_cost" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="number" name="dayli_serv_cost" class="form-control" placeholder="Пример: 10000">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

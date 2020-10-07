@@ -21,13 +21,13 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Курс доллара:</strong>
-                                        <input type="integer" name="ex_rate,$" class="form-control" placeholder="Пример: 430">
+                                        <input type="integer" name="ex_rate_dol" class="form-control" placeholder="Пример: 430">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Курс рубля:</strong>
-                                        <input type="integer" name="ex_rate,rub" class="form-control" placeholder="Пример: 6">
+                                        <input type="integer" name="ex_rate_rub" class="form-control" placeholder="Пример: 6">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">

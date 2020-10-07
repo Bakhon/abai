@@ -27,7 +27,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Ставка ЭТП, $ за 1 тонну:</strong>
-                                        <input type="integer" name="exp_cust_duty_rate" class="form-control" placeholder="Пример: 10">
+                                        <input type="float" name="exp_cust_duty_rate" class="form-control" placeholder="Пример: 10">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

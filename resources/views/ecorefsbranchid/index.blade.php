@@ -18,7 +18,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Филлиал:</th>
+                                <th>Филиал:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($ecorefsbranchid as $item)

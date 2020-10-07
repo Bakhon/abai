@@ -41,7 +41,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Средний срок службы:</strong>
-                                        <input type="number" name="avg_serv_life" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="number" name="avg_serv_life" class="form-control" placeholder="Пример: 36">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
