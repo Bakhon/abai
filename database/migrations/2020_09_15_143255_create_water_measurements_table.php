@@ -47,6 +47,7 @@ class CreateWaterMeasurementsTable extends Migration
             $table->integer('sulphate_reducing_bacteria_id')->nullable();
             $table->integer('hydrocarbon_oxidizing_bacteria_id')->nullable();
             $table->integer('thionic_bacteria_id')->nullable();
+            $table->integer('cruser_id');
             $table->timestamps();
         });
     }

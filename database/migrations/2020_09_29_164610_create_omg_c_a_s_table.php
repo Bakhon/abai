@@ -23,6 +23,7 @@ class CreateOmgCASTable extends Migration
             $table->integer('well_id')->nullable();
             $table->date('date');
             $table->float('plan_dosage', 8, 2)->nullable();
+            $table->integer('cruser_id');
             $table->timestamps();
         });
     }

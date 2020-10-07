@@ -5,7 +5,7 @@
             <div class="card-header float-right">
                 <a class="btn btn-success" href="{{ route('omgca.create') }}">+</a>
             </div>
-            <h1 style="color:#fff">Форма ввода данных ОМГ ЦА</h1>
+            <h1 style="color:#fff">Форма ввода данных ОМГ ДДНГ</h1>
             <div class="card-body">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success">
@@ -15,19 +15,19 @@
                 @endif
                 <table class="table table-bordered">
                     <tr>
-                        <th colspan="6">Узел отбора</th>
-                        <th colspan="2">Фактические данные ОМГ ЦА</th>
-                        <th rowspan="2">{{__('app.action')}}</th>
+                        <td colspan="6">Узел отбора</td>
+                        <td colspan="2">Фактические данные ОМГ ЦА</td>
+                        <td rowspan="2">{{__('app.action')}}</td>
                     </tr>
                     <tr>
-                        <th>Месторождение</th>
-                        <th>НГДУ</th>
-                        <th>ЦДНГ</th>
-                        <th>ГУ</th>
-                        <th>ЗУ</th>
-                        <th>Скважина</th>
-                        <th>Дата</th>
-                        <th>Планируемая дозировка, г/м3 </th>
+                        <td>Месторождение</td>
+                        <td>НГДУ</td>
+                        <td>ЦДНГ</td>
+                        <td>ГУ</td>
+                        <td>ЗУ</td>
+                        <td>Скважина</td>
+                        <td>Дата</td>
+                        <td>Планируемая дозировка, г/м3 </td>
                     </tr>
                     @foreach ($omgca as $item)
                         <tr>

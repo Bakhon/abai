@@ -56,12 +56,15 @@
                         <td>{{$omguhe->daily_inhibitor_flowrate}}</td>
                     </tr>
                     <tr>
-                        <td>Расход ингибитора за месяц, т/мес</td>
-                        <td>{{$omguhe->monthly_inhibitor_flowrate}}</td>
-                    </tr>
-                    <tr>
                         <td>Простой дозатора, сутки</td>
-                        <td>{{$omguhe->out_of_service_оf_dosing}}</td>
+                        <td>
+                            @if($omguhe->out_of_service_оf_dosing == 1)
+                                Был простой
+                            @else
+                                Простоя не было
+                            @endif
+                        </td>
+
                     </tr>
                     <tr>
                         <td>Причина</td>

@@ -15,23 +15,22 @@
                 @endif
                 <table class="table table-bordered">
                     <tr>
-                        <th colspan="6">Узел отбора</th>
-                        <th colspan="6">Фактические данные от УХЭ</th>
-                        <th rowspan="2">{{__('app.action')}}</th>
+                        <td colspan="6">Узел отбора</td>
+                        <td colspan="5">Фактические данные от УХЭ</td>
+                        <td rowspan="2">{{__('app.action')}}</td>
                     </tr>
                     <tr>
-                        <th>Месторождение</th>
-                        <th>НГДУ</th>
-                        <th>ЦДНГ</th>
-                        <th>ГУ</th>
-                        <th>ЗУ</th>
-                        <th>Скважина</th>
-                        <th>Дата</th>
-                        <th>Фактическая дозировка, г/м3</th>
-                        <th>Суточный расход ингибитора, кг/сут</th>
-                        <th>Расход ингибитора за месяц, т/мес</th>
-                        <th>Простой дозатора, сутки</th>
-                        <th>Причина</th>
+                        <td>Месторождение</td>
+                        <td>НГДУ</td>
+                        <td>ЦДНГ</td>
+                        <td>ГУ</td>
+                        <td>ЗУ</td>
+                        <td>Скважина</td>
+                        <td>Дата</td>
+                        <td>Фактическая дозировка, г/м3</td>
+                        <td>Суточный расход ингибитора, кг/сут</td>
+                        <td>Простой дозатора, сутки</td>
+                        <td>Причина</td>
                     </tr>
                     @foreach ($omguhe as $item)
                         <tr>
@@ -50,8 +49,13 @@
                             <td>{{ $item->date }}</td>
                             <td>{{ $item->current_dosage }}</td>
                             <td>{{ $item->daily_inhibitor_flowrate }}</td>
-                            <td>{{ $item->monthly_inhibitor_flowrate }}</td>
-                            <td>{{ $item->out_of_service_оf_dosing }}</td>
+                            <td>
+                                @if($item->out_of_service_оf_dosing == 1)
+                                    Был простой
+                                @else
+                                    Простоя не было
+                                @endif
+                            </td>
                             <td>{{ $item->reason }}</td>
                             <td>
                                 <form action="{{ route('omguhe.destroy',$item->id) }}" method="POST">
