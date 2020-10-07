@@ -41,8 +41,8 @@ class EcoRefsMacroController extends Controller
     {
         $request->validate([
             'date' => 'required',
-            'ex_rate,$' => 'required',
-            'ex_rate,rub' => 'required',
+            'ex_rate_dol' => 'required',
+            'ex_rate_rub' => 'required',
             'inf_end' => 'required',
             ]);
 
@@ -86,8 +86,8 @@ class EcoRefsMacroController extends Controller
         $EcoRefsMacro=EcoRefsMacro::find($id);
         $request->validate([
             'date' => 'required',
-            'ex_rate,$' => 'required',
-            'ex_rate,rub' => 'required',
+            'ex_rate_dol' => 'required',
+            'ex_rate_rub' => 'required',
             'inf_end' => 'required',
         ]);
 

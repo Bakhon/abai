@@ -67,19 +67,19 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дата:</strong>
-                                        <input type="date" name="date" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="date" name="date" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Тариф:</strong>
-                                        <input type="number" name="tn_rate" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="float" name="tn_rate" class="form-control" placeholder="Пример: 128">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Протяженность:</strong>
-                                        <input type="number" name="extent" class="form-control" placeholder="Пример: 0.15">
+                                        <input type="float" name="extent" class="form-control" placeholder="Пример: 702.67">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

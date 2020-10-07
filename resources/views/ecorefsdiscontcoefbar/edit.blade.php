@@ -73,31 +73,31 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дата:</strong>
-                                        <input type="date" name="date" value={{$row->date}} class="form-control" placeholder="Пример: 0.15">
+                                        <input type="date" name="date" value={{$row->date}} class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Коэффициент баррелизации:</strong>
-                                        <input type="number" name="barr_coef" value={{$row->barr_coef}} class="form-control" placeholder="Пример: 0.15">
+                                        <input type="float" name="barr_coef" value={{$row->barr_coef}} class="form-control" placeholder="Пример: 7.23">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дисконт:</strong>
-                                        <input type="number" name="discont" value={{$row->discont}} class="form-control" placeholder="Пример: 0.15">
+                                        <input type="float" name="discont" value={{$row->discont}} class="form-control" placeholder="Пример: 2.7">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Стоимость нефти:</strong>
-                                        <input type="number" name="oil_cost" value={{$row->oil_cost}} class="form-control" placeholder="Пример: 0.15">
+                                        <input type="float" name="oil_cost" value={{$row->oil_cost}} class="form-control" placeholder="Пример: 40">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Макро:</strong>
-                                        <input type="number" name="macro" value={{$row->macro}} class="form-control" placeholder="Пример: 0.15">
+                                        <input type="number" name="macro" value={{$row->macro}} class="form-control" placeholder="Пример: 70">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
