@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Refs;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EcoRefsDiscontCoefBar extends Model
+class EcoRefsEmpPer extends Model
 {
-
     protected $fillable = [
-        'sc_fa', 'company_id', 'direction_id', 'route_id', 'date', 'barr_coef', 'discont', 'oil_cost', 'macro'
+        'sc_fa', 'company_id', 'direction_id', 'route_id', 'date', 'emp_per'
     ];
 
     public function scfa()
     {
-        return $this->hasOne('App\Models\EcoRefsScFa','id','sc_fa')->withDefault();
+        return $this->hasOne('App\Models\Refs\EcoRefsScFa','id','sc_fa')->withDefault();
     }
+
     public function company()
     {
         return $this->hasOne('App\Models\EcoRefsCompaniesId','id','company_id')->withDefault();

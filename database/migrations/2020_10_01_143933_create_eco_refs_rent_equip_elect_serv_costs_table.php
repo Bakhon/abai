@@ -15,6 +15,7 @@ class CreateEcoRefsRentEquipElectServCostsTable extends Migration
     {
         Schema::create('eco_refs_rent_equip_elect_serv_costs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sc_fa');
             $table->integer('company_id');
             $table->integer('equip_id');
             $table->date('date');

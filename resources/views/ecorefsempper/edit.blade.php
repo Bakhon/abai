@@ -6,10 +6,10 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <a class="btn btn-primary" href="{{ route('ecorefstarifytn.index') }}">{{__('app.back')}}</a>
+                        <a class="btn btn-primary" href="{{ route('ecorefsempper.index') }}">{{__('app.back')}}</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('ecorefstarifytn.update', $row->id) }}" method="POST">
+                        <form action="{{ route('ecorefsempper.update', $row->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="row">
@@ -20,25 +20,6 @@
                                         <option>Select Item</option>
                                         @foreach ($sc_fa as $item)
                                             @if($item->id==$row->sc_fa)
-                                            <option value="{{ $item->id }}" selected>
-                                                {{ $item->name }}
-                                            </option>
-                                            @else
-                                            <option value="{{ $item->id }}">
-                                                {{ $item->name }}
-                                            </option>
-                                            @endif
-                                        @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Филиал:</strong>
-                                        <select class="form-control" name="branch_id">
-                                        <option>Select Item</option>
-                                        @foreach ($branch as $item)
-                                            @if($item->id==$row->branch_id)
                                             <option value="{{ $item->id }}" selected>
                                                 {{ $item->name }}
                                             </option>
@@ -91,11 +72,11 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Маршрут ТН:</strong>
-                                        <select class="form-control" name="route_tn_id">
+                                        <strong>Маршрут:</strong>
+                                        <select class="form-control" name="route_id">
                                         <option>Select Item</option>
                                         @foreach ($route as $item)
-                                            @if($item->id==$row->route_tn_id)
+                                            @if($item->id==$row->route_id)
                                             <option value="{{ $item->id }}" selected>
                                                 {{ $item->name }}
                                             </option>
@@ -116,14 +97,8 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Тариф:</strong>
-                                        <input type="float" name="tn_rate" value={{$row->tn_rate}} class="form-control" placeholder="Пример: 128">
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Протяженность:</strong>
-                                        <input type="float" name="extent" value={{$row->extent}} class="form-control" placeholder="Пример: 702.67">
+                                        <strong>Процент реализации:</strong>
+                                        <input type="float" name="emp_per" value={{$row->emp_per}} class="form-control" placeholder="Пример: 0.4">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

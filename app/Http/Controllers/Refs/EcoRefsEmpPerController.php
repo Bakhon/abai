@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Refs;
 
-use App\Models\EcoRefsCompaniesId;
 use App\Models\Refs\EcoRefsScFa;
+use App\Http\Controllers\Controller;
+use App\Models\Refs\EcoRefsEmpPer;
+use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsDirectionId;
-use App\Models\EcoRefsDiscontCoefBar;
 use App\Models\EcoRefsRoutesId;
+
 use Illuminate\Http\Request;
 
-class EcoRefsDiscontCoefBarController extends Controller
+class EcoRefsEmpPerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +20,11 @@ class EcoRefsDiscontCoefBarController extends Controller
      */
     public function index()
     {
+        $ecorefsempper = EcoRefsEmpPer::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
 
-            $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
-
-            return view('ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
-                ->with('i', (request()->input('page', 1) - 1) * 5);
-    }
+        return view('ecorefsempper.index',compact('ecorefsempper'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
+}
 
     /**
      * Show the form for creating a new resource.
@@ -36,7 +37,7 @@ class EcoRefsDiscontCoefBarController extends Controller
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
-        return view('ecorefsdiscontcoefbar.create',compact('sc_fa', 'company', 'direction', 'route'));
+        return view('ecorefsempper.create',compact('sc_fa', 'company', 'direction', 'route'));
     }
 
     /**
@@ -53,15 +54,12 @@ class EcoRefsDiscontCoefBarController extends Controller
             'direction_id' => 'required',
             'route_id' => 'required',
             'date' => 'required',
-            'barr_coef' => 'required',
-            'discont' => 'required',
-            'oil_cost' => 'required',
-            'macro' => 'required',
+            'emp_per' => 'required',
         ]);
 
-        EcoRefsDiscontCoefBar::create($request->all());
+        EcoRefsEmpPer::create($request->all());
 
-        return redirect()->route('ecorefsdiscontcoefbar.index')->with('success',__('app.created'));
+        return redirect()->route('ecorefsempper.index')->with('success',__('app.created'));
     }
 
     /**
@@ -83,13 +81,13 @@ class EcoRefsDiscontCoefBarController extends Controller
      */
     public function edit($id)
     {
-        $row = EcoRefsDiscontCoefBar::find($id);
+        $row = EcoRefsEmpPer::find($id);
         $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
 
-        return view('ecorefsdiscontcoefbar.edit',compact('sc_fa', 'row', 'company', 'direction', 'route'));
+        return view('ecorefsempper.edit',compact('row', 'sc_fa', 'company', 'direction', 'route'));
 
     }
 
@@ -102,23 +100,19 @@ class EcoRefsDiscontCoefBarController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $EcoRefsDiscontCoefBar=EcoRefsDiscontCoefBar::find($id);
+        $EcoRefsEmpPer=EcoRefsEmpPer::find($id);
         $request->validate([
             'sc_fa' => 'required',
             'company_id' => 'required',
             'direction_id' => 'required',
             'route_id' => 'required',
             'date' => 'required',
-            'barr_coef' => 'required',
-            'discont' => 'required',
-            'oil_cost' => 'required',
-            'macro' => 'required',
+            'emp_per' => 'required',
         ]);
 
-        $EcoRefsDiscontCoefBar->update($request->all());
+        $EcoRefsEmpPer->update($request->all());
 
-        return redirect()->route('ecorefsdiscontcoefbar.index')->with('success',__('app.updated'));
-
+        return redirect()->route('ecorefsempper.index')->with('success',__('app.updated'));
     }
 
     /**
@@ -129,9 +123,9 @@ class EcoRefsDiscontCoefBarController extends Controller
      */
     public function destroy($id)
     {
-        $row = EcoRefsDiscontCoefBar::find($id);
+        $row = EcoRefsEmpPer::find($id);
         $row->delete();
 
-        return redirect()->route('ecorefsdiscontcoefbar.index')->with('success',__('app.deleted'));
+        return redirect()->route('ecorefsempper.index')->with('success',__('app.deleted'));
     }
 }

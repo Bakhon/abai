@@ -68,7 +68,7 @@ class EcoRefsCompaniesIdsController extends Controller
     {
         $EcoRefsCompaniesId = EcoRefsCompaniesId::find($id);
         return view('ecorefscompanies.edit',compact('EcoRefsCompaniesId'));
- 
+
     }
 
     /**

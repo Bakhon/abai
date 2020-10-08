@@ -15,6 +15,7 @@ class CreateEcoRefsDiscontCoefBarsTable extends Migration
     {
         Schema::create('eco_refs_discont_coef_bars', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sc_fa');
             $table->integer('company_id');
             $table->integer('direction_id');
             $table->integer('route_id');

@@ -15,6 +15,7 @@ class CreateEcoRefsPrepElectPrsBrigCostsTable extends Migration
     {
         Schema::create('eco_refs_prep_elect_prs_brig_costs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sc_fa');
             $table->integer('company_id');
             $table->date('date');
             $table->integer('elect_cost');

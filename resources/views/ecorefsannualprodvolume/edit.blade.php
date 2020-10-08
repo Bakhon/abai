@@ -9,26 +9,45 @@
                         <a class="btn btn-primary" href="{{ route('ecorefsannualprodvolume.index') }}">{{__('app.back')}}</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('ecorefsannualprodvolume.update',$EcoRefsAnnualProdVolume->id) }}" method="POST">
+                        <form action="{{ route('ecorefsannualprodvolume.update',$row->id) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
+                                        <strong>Сценарий/Факт:</strong>
+                                        <select class="form-control" name="sc_fa">
+                                        <option>Select Item</option>
+                                        @foreach ($sc_fa as $item)
+                                            @if($item->id==$row->sc_fa)
+                                            <option value="{{ $item->id }}" selected>
+                                                {{ $item->name }}
+                                            </option>
+                                            @else
+                                            <option value="{{ $item->id }}">
+                                                {{ $item->name }}
+                                            </option>
+                                            @endif
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
                                         <strong>Объем годовой добычи, от:</strong>
-                                        <input type="integer" name="annual_prod_volume_beg" class="form-control" placeholder="" value="{{$EcoRefsAnnualProdVolume->annual_prod_volume_beg}}">
+                                        <input type="integer" name="annual_prod_volume_beg" value={{$row->annual_prod_volume_beg}} class="form-control" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Объем годовой добычи, до:</strong>
-                                        <input type="integer" name="annual_prod_volume_end" class="form-control" placeholder="" value="{{$EcoRefsAnnualProdVolume->annual_prod_volume_end}}">
+                                        <input type="integer" name="annual_prod_volume_end" value={{$row->annual_prod_volume_end}} class="form-control" placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Ставка НДПИ, в %:</strong>
-                                        <input type="float" name="ndpi" class="form-control" placeholder="" value="{{$EcoRefsAnnualProdVolume->ndpi}}">
+                                        <input type="float" name="ndpi" class="form-control" value={{$row->ndpi}} placeholder="">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

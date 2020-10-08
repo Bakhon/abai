@@ -88,6 +88,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefselectprsbrigcost','EcoRefsPrepElectPrsBrigCostController');
         Route::resource('ecorefstarifytn','EcoRefsTarifyTnController');
         Route::resource('ecorefsmacro','EcoRefsMacroController');
+        Route::resource('ecorefsempper','Refs\EcoRefsEmpPerController');
+        Route::resource('ecorefsscfa','Refs\EcoRefsScFaController');
     });
     Auth::routes([
         'reset' => false,

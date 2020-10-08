@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        <a class="btn btn-success" href="{{ route('ecorefsmacro.create') }}">+</a>
+                        <a class="btn btn-success" href="{{ route('ecorefsscfa.create') }}">+</a>
                     </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
@@ -19,23 +19,15 @@
                             <tr>
                                 <th>#</th>
                                 <th>Сценарий/Факт:</th>
-                                <th>Дата:</th>
-                                <th>Курс доллара:</th>
-                                <th>Курс рубля:</th>
-                                <th>Инфляция, в % на конец периода:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($ecorefsmacro as $item)
+                            @foreach ($ecorefsscfa as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td>{{ $item->scfa->name}}</td>
-                                    <td>{{ $item->date }}</td>
-                                    <td>{{ $item->ex_rate_dol }}</td>
-                                    <td>{{ $item->ex_rate_rub }}</td>
-                                    <td>{{ $item->inf_end }}</td>
+                                    <td>{{ $item->name }}</td>
                                     <td>
-                                        <form action="{{ route('ecorefsmacro.destroy',$item->id) }}" method="POST">
-                                            <a class="btn btn-primary" href="{{ route('ecorefsmacro.edit',$item->id) }}">{{__('app.edit')}}</a>
+                                        <form action="{{ route('ecorefsscfa.destroy',$item->id) }}" method="POST">
+                                            <a class="btn btn-primary" href="{{ route('ecorefsscfa.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
@@ -44,7 +36,7 @@
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $ecorefsmacro->links() !!}
+                        {!! $ecorefsscfa->links() !!}
                     </div>
                 </div>
             </div>

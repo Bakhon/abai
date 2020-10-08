@@ -3,10 +3,10 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <a class="btn btn-success" href="{{ route('ecorefsmacro.create') }}">+</a>
+                        <a class="btn btn-success" href="{{ route('ecorefsempper.create') }}">+</a>
                     </div>
                     <div class="card-body">
                         @if ($message = Session::get('success'))
@@ -19,23 +19,25 @@
                             <tr>
                                 <th>#</th>
                                 <th>Сценарий/Факт:</th>
+                                <th>Компания:</th>
+                                <th>Направление:</th>
+                                <th>Маршрут:</th>
                                 <th>Дата:</th>
-                                <th>Курс доллара:</th>
-                                <th>Курс рубля:</th>
-                                <th>Инфляция, в % на конец периода:</th>
+                                <th>Процент реализации:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
-                            @foreach ($ecorefsmacro as $item)
+                            @foreach ($ecorefsempper as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->scfa->name}}</td>
+                                    <td>{{ $item->company->name}}</td>
+                                    <td>{{ $item->direction->name }}</td>
+                                    <td>{{ $item->route->name }}</td>
                                     <td>{{ $item->date }}</td>
-                                    <td>{{ $item->ex_rate_dol }}</td>
-                                    <td>{{ $item->ex_rate_rub }}</td>
-                                    <td>{{ $item->inf_end }}</td>
+                                    <td>{{ $item->emp_per }}</td>
                                     <td>
-                                        <form action="{{ route('ecorefsmacro.destroy',$item->id) }}" method="POST">
-                                            <a class="btn btn-primary" href="{{ route('ecorefsmacro.edit',$item->id) }}">{{__('app.edit')}}</a>
+                                        <form action="{{ route('ecorefsempper.destroy',$item->id) }}" method="POST">
+                                            <a class="btn btn-primary" href="{{ route('ecorefsempper.edit',$item->id) }}">{{__('app.edit')}}</a>
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger">{{__('app.delete')}}</button>
@@ -44,7 +46,7 @@
                                 </tr>
                             @endforeach
                         </table>
-                        {!! $ecorefsmacro->links() !!}
+                        {!! $ecorefsempper->links() !!}
                     </div>
                 </div>
             </div>

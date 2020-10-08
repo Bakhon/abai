@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Refs\EcoRefsScFa;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsPrepElectPrsBrigCost;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class EcoRefsPrepElectPrsBrigCostController extends Controller
     public function index()
     {
 
-            $ecorefselectprsbrigcost = EcoRefsPrepElectPrsBrigCost::latest()->with('company')->paginate(5);
+            $ecorefselectprsbrigcost = EcoRefsPrepElectPrsBrigCost::latest()->with('scfa')->with('company')->paginate(5);
 
             return view('ecorefselectprsbrigcost.index',compact('ecorefselectprsbrigcost'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -29,8 +30,9 @@ class EcoRefsPrepElectPrsBrigCostController extends Controller
      */
     public function create()
     {
+        $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
-        return view('ecorefselectprsbrigcost.create',compact('company'));
+        return view('ecorefselectprsbrigcost.create',compact('sc_fa', 'company'));
     }
 
     /**
@@ -42,6 +44,7 @@ class EcoRefsPrepElectPrsBrigCostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'company_id' => 'required',
             'date' => 'required',
             'elect_cost' => 'required',
@@ -73,10 +76,11 @@ class EcoRefsPrepElectPrsBrigCostController extends Controller
      */
     public function edit($id)
     {
+        $sc_fa = EcoRefsScFa::get();
         $row = EcoRefsPrepElectPrsBrigCost::find($id);
         $company = EcoRefsCompaniesId::get();
 
-        return view('ecorefselectprsbrigcost.edit',compact('row', 'company'));
+        return view('ecorefselectprsbrigcost.edit',compact('sc_fa', 'row', 'company'));
     }
 
     /**
@@ -90,6 +94,7 @@ class EcoRefsPrepElectPrsBrigCostController extends Controller
     {
         $EcoRefsPrepElectPrsBrigCost=EcoRefsPrepElectPrsBrigCost::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'company_id' => 'required',
             'date' => 'required',
             'elect_cost' => 'required',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Refs\EcoRefsScFa;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsRentEquipElectServCost;
 use App\Models\EcoRefsEquipId;
@@ -18,7 +19,7 @@ class EcoRefsRentEquipElectServCostController extends Controller
     public function index()
     {
 
-            $ecorefsrentequipelectservcost = EcoRefsRentEquipElectServCost::latest()->with('company')->with('equip')->paginate(5);
+            $ecorefsrentequipelectservcost = EcoRefsRentEquipElectServCost::latest()->with('scfa')->with('company')->with('equip')->paginate(5);
 
             return view('ecorefsrentequipelectservcost.index',compact('ecorefsrentequipelectservcost'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -31,9 +32,10 @@ class EcoRefsRentEquipElectServCostController extends Controller
      */
     public function create()
     {
+        $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
         $equip = EcoRefsEquipId::get();
-        return view('ecorefsrentequipelectservcost.create',compact('company', 'equip'));
+        return view('ecorefsrentequipelectservcost.create',compact('sc_fa', 'company', 'equip'));
     }
 
     /**
@@ -45,6 +47,7 @@ class EcoRefsRentEquipElectServCostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'company_id' => 'required',
             'equip_id' => 'required',
             'date' => 'required',
@@ -79,10 +82,11 @@ class EcoRefsRentEquipElectServCostController extends Controller
     public function edit($id)
     {
         $row = EcoRefsRentEquipElectServCost::find($id);
+        $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
         $equip = EcoRefsEquipId::get();
 
-        return view('ecorefsrentequipelectservcost.edit',compact('row', 'company', 'equip'));
+        return view('ecorefsrentequipelectservcost.edit',compact('sc_fa', 'row', 'company', 'equip'));
     }
 
     /**
@@ -96,6 +100,7 @@ class EcoRefsRentEquipElectServCostController extends Controller
     {
         $EcoRefsRentEquipElectServCost=EcoRefsRentEquipElectServCost::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'company_id' => 'required',
             'equip_id' => 'required',
             'date' => 'required',

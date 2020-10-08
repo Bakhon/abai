@@ -18,6 +18,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
+                                <th>Сценарий/Факт:</th>
                                 <th>Мировая цена, от:</th>
                                 <th>Мировая цена, до:</th>
                                 <th>Ставка, в %:</th>
@@ -26,6 +27,7 @@
                             @foreach ($ecorefsrenttax as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
+                                    <td>{{ $item->scfa->name}}</td>
                                     <td>{{ $item->world_price_beg }}</td>
                                     <td>{{ $item->world_price_end }}</td>
                                     <td>{{ $item->rate }}</td>

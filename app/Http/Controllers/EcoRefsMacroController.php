@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EcoRefsMacro;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
 
 class EcoRefsMacroController extends Controller
@@ -14,7 +15,7 @@ class EcoRefsMacroController extends Controller
      */
     public function index()
     {
-        $ecorefsmacro = EcoRefsMacro::latest()->paginate(5);
+        $ecorefsmacro = EcoRefsMacro::latest()->with('scfa')->paginate(5);
 
         return view('ecorefsmacro.index',compact('ecorefsmacro'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -28,7 +29,8 @@ class EcoRefsMacroController extends Controller
      */
     public function create()
     {
-        return view('ecorefsmacro.create');
+        $sc_fa = EcoRefsScFa::get();
+        return view('ecorefsmacro.create',compact('sc_fa'));
     }
 
     /**
@@ -40,6 +42,7 @@ class EcoRefsMacroController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'date' => 'required',
             'ex_rate_dol' => 'required',
             'ex_rate_rub' => 'required',
@@ -70,8 +73,9 @@ class EcoRefsMacroController extends Controller
      */
     public function edit($id)
     {
-        $EcoRefsMacro = EcoRefsMacro::find($id);
-        return view('ecorefsmacro.edit',compact('EcoRefsMacro'));
+        $sc_fa = EcoRefsScFa::get();
+        $row = EcoRefsMacro::find($id);
+        return view('ecorefsmacro.edit',compact('row', 'sc_fa'));
     }
 
     /**
@@ -85,6 +89,7 @@ class EcoRefsMacroController extends Controller
     {
         $EcoRefsMacro=EcoRefsMacro::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'date' => 'required',
             'ex_rate_dol' => 'required',
             'ex_rate_rub' => 'required',
