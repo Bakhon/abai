@@ -103,4 +103,7 @@ class EcoRefsScFaController extends Controller
         return redirect()->route('ecorefsscfa.index')->with('success',__('app.deleted'));
         //
     }
+    public function refsList(){
+        return view('ecorefsscfa.list');
+    }
 }
