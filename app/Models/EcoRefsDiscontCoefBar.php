@@ -13,7 +13,7 @@ class EcoRefsDiscontCoefBar extends Model
 
     public function scfa()
     {
-        return $this->hasOne('App\Models\EcoRefsScFa','id','sc_fa')->withDefault();
+        return $this->hasOne('App\Models\Refs\EcoRefsScFa','id','sc_fa')->withDefault();
     }
     public function company()
     {
