@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OmgNGDU;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OmgNGDUController extends Controller
 {
@@ -66,6 +67,7 @@ class OmgNGDUController extends Controller
         $omgngdu->pressure = ($request->pressure) ? $request->pressure : NULL;
         $omgngdu->temperature = ($request->temperature) ? $request->temperature : NULL;
         $omgngdu->daily_fluid_production_kormass = ($request->daily_fluid_production_kormass) ? $request->daily_fluid_production_kormass : NULL;
+        $omgngdu->cruser_id = Auth::user()->id;
         $omgngdu->save();
 
         return redirect()->route('omgngdu.index')->with('success',__('app.created'));

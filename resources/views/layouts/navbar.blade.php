@@ -59,6 +59,11 @@
                             <span class="workTypeText">ПГНО</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/oilpivot">
+                            <span class="workTypeText">Конструктор</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item active  dropdown">
@@ -92,7 +97,7 @@
                         <ul>
                             <li class="nav-item child">
                                 <a href="{{url('/')}}/ru/omgca">
-                                    <span class="workTypeText">ОМГ ЦА</span>
+                                    <span class="workTypeText">ОМГ ДДНГ</span>
                                 </a>
                             </li>
                             <li class="nav-item child">
@@ -115,7 +120,7 @@
                 <ul class="dropdown-child">
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/economicpivot">
-                            <span class="workTypeText">Констуктор НРС</span>
+                            <span class="workTypeText">Конструктор НРС</span>
                         </a>
                     </li>
                 </ul>

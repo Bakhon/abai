@@ -31,6 +31,7 @@ class CreateOmgNGDUSTable extends Migration
             $table->float('pressure', 8, 2)->nullable();
             $table->float('temperature', 8, 2)->nullable();
             $table->float('daily_fluid_production_kormass', 8, 2)->nullable();
+            $table->integer('cruser_id');
             $table->timestamps();
         });
     }

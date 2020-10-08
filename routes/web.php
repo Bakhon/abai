@@ -31,7 +31,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
+        Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
+        Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
@@ -48,7 +50,6 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Auth::routes();
         Route::get('/home', 'HomeController@index')->name('home');
         Route::resource('oildaily','OilDailyController');
-        Route::resource('watermeasurement','WaterMeasurementController');
         Route::get('/maps', 'DruidController@maps')->name('maps');
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');

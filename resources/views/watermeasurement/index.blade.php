@@ -15,21 +15,21 @@
                 @endif
                 <table class="table table-bordered">
                     <tr>
-                        <th>Дата отбора</th>
-                        <th>Прочие объекты</th>
-                        <th>НГДУ</th>
-                        <th>ЦДНГ</th>
-                        <th>ГУ</th>
-                        <th>ЗУ</th>
-                        <th>Скважина</th>
-                        <th>НСО3-</th>
-                        <th>СО32-</th>
-                        <th>SO42-</th>
-                        <th>Cl-</th>
-                        <th>Ca2+</th>
-                        <th>Mg2+</th>
-                        <th>Na+K+</th>
-                        <th>{{__('app.action')}}</th>
+                        <td>Дата отбора</td>
+                        <td>Прочие объекты</td>
+                        <td>НГДУ</td>
+                        <td>ЦДНГ</td>
+                        <td>ГУ</td>
+                        <td>ЗУ</td>
+                        <td>Скважина</td>
+                        <td>НСО3-</td>
+                        <td>СО32-</td>
+                        <td>SO42-</td>
+                        <td>Cl-</td>
+                        <td>Ca2+</td>
+                        <td>Mg2+</td>
+                        <td>Na+K+</td>
+                        <td>{{__('app.action')}}</td>
                     </tr>
                     @foreach ($wm as $item)
                         <tr>

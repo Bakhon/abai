@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OmgUHE;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OmgUHEController extends Controller
 {
@@ -59,9 +60,13 @@ class OmgUHEController extends Controller
         $omgohe->date = date("Y-m-d H:i", strtotime($request->date));
         $omgohe->current_dosage = ($request->current_dosage) ? $request->current_dosage : NULL;
         $omgohe->daily_inhibitor_flowrate = ($request->daily_inhibitor_flowrate) ? $request->daily_inhibitor_flowrate : NULL;
-        $omgohe->monthly_inhibitor_flowrate = ($request->monthly_inhibitor_flowrate) ? $request->monthly_inhibitor_flowrate : NULL;
-        $omgohe->out_of_service_оf_dosing = ($request->out_of_service_оf_dosing) ? $request->out_of_service_оf_dosing : NULL;
+        if($request->out_of_service_оf_dosing == true){
+            $omgohe->out_of_service_оf_dosing = 1;
+        }else{
+            $omgohe->out_of_service_оf_dosing = 0;
+        }
         $omgohe->reason = ($request->reason) ? $request->reason : NULL;
+        $omgohe->cruser_id = Auth::user()->id;
         $omgohe->save();
 
         return redirect()->route('omguhe.index')->with('success',__('app.created'));
