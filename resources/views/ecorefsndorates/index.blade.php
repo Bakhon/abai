@@ -18,6 +18,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
+                                <th>Сценарий/Факт:</th>
                                 <th>Компания:</th>
                                 <th>Процент НДО:</th>
                                 <th width="220px">{{__('app.action')}}</th>
@@ -25,6 +26,7 @@
                             @foreach ($ecorefsndorates as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
+                                    <td>{{ $item->scfa->name}}</td>
                                     <td>{{ $item->company->name}}</td>
                                     <td>{{ $item->ndo_rates }}</td>
                                     <td>

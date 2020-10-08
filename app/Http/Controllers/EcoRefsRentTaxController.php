@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EcoRefsRentTax;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
 
 class EcoRefsRentTaxController extends Controller
@@ -14,7 +15,7 @@ class EcoRefsRentTaxController extends Controller
      */
     public function index()
     {
-        $ecorefsrenttax = EcoRefsRentTax::latest()->paginate(5);
+        $ecorefsrenttax = EcoRefsRentTax::latest()->with('scfa')->paginate(5);
 
         return view('ecorefsrenttax.index',compact('ecorefsrenttax'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -28,7 +29,8 @@ class EcoRefsRentTaxController extends Controller
      */
     public function create()
     {
-        return view('ecorefsrenttax.create');
+        $sc_fa = EcoRefsScFa::get();
+        return view('ecorefsrenttax.create',compact('sc_fa'));
     }
 
     /**
@@ -40,6 +42,7 @@ class EcoRefsRentTaxController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'world_price_beg' => 'required',
             'world_price_end' => 'required',
             'rate' => 'required',
@@ -69,8 +72,9 @@ class EcoRefsRentTaxController extends Controller
      */
     public function edit($id)
     {
-        $EcoRefsRentTax = EcoRefsRentTax::find($id);
-        return view('ecorefsrenttax.edit',compact('EcoRefsRentTax'));
+        $row = EcoRefsRentTax::find($id);
+        $sc_fa = EcoRefsScFa::get();
+        return view('ecorefsrenttax.edit',compact('row', 'sc_fa'));
     }
 
     /**
@@ -84,6 +88,7 @@ class EcoRefsRentTaxController extends Controller
     {
         $EcoRefsRentTax=EcoRefsRentTax::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'world_price_beg' => 'required',
             'world_price_end' => 'required',
             'rate' => 'required',

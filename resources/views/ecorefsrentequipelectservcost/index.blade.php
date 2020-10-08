@@ -18,6 +18,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
+                                <th>Сценарий/Факт:</th>
                                 <th>Компания:</th>
                                 <th>Оборудование:</th>
                                 <th>Дата:</th>
@@ -30,6 +31,7 @@
                             @foreach ($ecorefsrentequipelectservcost as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
+                                    <td>{{ $item->scfa->name}}</td>
                                     <td>{{ $item->company->name}}</td>
                                     <td>{{ $item->equip->name }}</td>
                                     <td>{{ $item->date }}</td>

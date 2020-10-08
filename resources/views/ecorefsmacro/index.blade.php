@@ -18,6 +18,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
+                                <th>Сценарий/Факт:</th>
                                 <th>Дата:</th>
                                 <th>Курс доллара:</th>
                                 <th>Курс рубля:</th>
@@ -27,6 +28,7 @@
                             @foreach ($ecorefsmacro as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
+                                    <td>{{ $item->scfa->name}}</td>
                                     <td>{{ $item->date }}</td>
                                     <td>{{ $item->ex_rate_dol }}</td>
                                     <td>{{ $item->ex_rate_rub }}</td>

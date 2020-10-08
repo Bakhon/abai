@@ -15,6 +15,7 @@ class CreateEcoRefsTarifyTnsTable extends Migration
     {
         Schema::create('eco_refs_tarify_tns', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sc_fa');
             $table->integer('branch_id');
             $table->integer('company_id');
             $table->integer('direction_id');

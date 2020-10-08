@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Refs\EcoRefsScFa;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsNdoRates;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class EcoRefsNdoRatesController extends Controller
     public function index()
     {
 
-            $ecorefsndorates = EcoRefsNdoRates::latest()->with('company')->paginate(5);
+            $ecorefsndorates = EcoRefsNdoRates::latest()->with('scfa')->with('company')->paginate(5);
 
             return view('ecorefsndorates.index',compact('ecorefsndorates'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -29,8 +30,9 @@ class EcoRefsNdoRatesController extends Controller
      */
     public function create()
     {
+        $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
-        return view('ecorefsndorates.create',compact('company'));
+        return view('ecorefsndorates.create',compact('sc_fa', 'company'));
     }
 
     /**
@@ -42,6 +44,7 @@ class EcoRefsNdoRatesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'company_id' => 'required',
             'ndo_rates' => 'required',
         ]);
@@ -70,10 +73,11 @@ class EcoRefsNdoRatesController extends Controller
      */
     public function edit($id)
     {
+        $sc_fa = EcoRefsScFa::get();
         $row = EcoRefsNdoRates::find($id);
         $company = EcoRefsCompaniesId::get();
 
-        return view('ecorefsndorates.edit',compact('row', 'company'));
+        return view('ecorefsndorates.edit',compact('sc_fa', 'row', 'company'));
     }
 
     /**
@@ -87,6 +91,7 @@ class EcoRefsNdoRatesController extends Controller
     {
         $EcoRefsNdoRates=EcoRefsNdoRates::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'company_id' => 'required',
             'ndo_rates' => 'required',
         ]);

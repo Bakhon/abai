@@ -15,6 +15,7 @@ class CreateEcoRefsMacrosTable extends Migration
     {
         Schema::create('eco_refs_macros', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sc_fa');
             $table->date('date');
             $table->integer('ex_rate_dol');
             $table->integer('ex_rate_rub');

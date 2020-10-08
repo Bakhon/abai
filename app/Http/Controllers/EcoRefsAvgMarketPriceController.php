@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EcoRefsAvgMarketPrice;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
 
 class EcoRefsAvgMarketPriceController extends Controller
@@ -14,7 +15,7 @@ class EcoRefsAvgMarketPriceController extends Controller
      */
     public function index()
     {
-        $ecorefsavgmarketprice = EcoRefsAvgMarketPrice::latest()->paginate(5);
+        $ecorefsavgmarketprice = EcoRefsAvgMarketPrice::latest()->with('scfa')->paginate(5);
 
         return view('ecorefsavgmarketprice.index',compact('ecorefsavgmarketprice'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -28,7 +29,8 @@ class EcoRefsAvgMarketPriceController extends Controller
      */
     public function create()
     {
-        return view('ecorefsavgmarketprice.create');
+        $sc_fa = EcoRefsScFa::get();
+        return view('ecorefsavgmarketprice.create',compact('sc_fa'));
     }
 
     /**
@@ -40,6 +42,7 @@ class EcoRefsAvgMarketPriceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'avg_market_price_beg' => 'required',
             'avg_market_price_end' => 'required',
             'exp_cust_duty_rate' => 'required',
@@ -69,8 +72,9 @@ class EcoRefsAvgMarketPriceController extends Controller
      */
     public function edit($id)
     {
-        $EcoRefsAvgMarketPrice = EcoRefsAvgMarketPrice::find($id);
-        return view('ecorefsavgmarketprice.edit',compact('EcoRefsAvgMarketPrice'));
+        $row = EcoRefsAvgMarketPrice::find($id);
+        $sc_fa = EcoRefsScFa::get();
+        return view('ecorefsavgmarketprice.edit',compact('row', 'sc_fa'));
     }
 
     /**
@@ -84,6 +88,7 @@ class EcoRefsAvgMarketPriceController extends Controller
     {
         $EcoRefsAvgMarketPrice=EcoRefsAvgMarketPrice::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'avg_market_price_beg' => 'required',
             'avg_market_price_end' => 'required',
             'exp_cust_duty_rate' => 'required',

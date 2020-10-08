@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Refs\EcoRefsScFa;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsBranchId;
 use App\Models\EcoRefsDirectionId;
@@ -19,7 +20,7 @@ class EcoRefsTarifyTnController extends Controller
     public function index()
     {
 
-            $ecorefstarifytn = EcoRefsTarifyTn::latest()->with('branch')->with('company')->with('direction')->with('routetn')->paginate(5);
+            $ecorefstarifytn = EcoRefsTarifyTn::latest()->with('scfa')->with('branch')->with('company')->with('direction')->with('routetn')->paginate(5);
 
             return view('ecorefstarifytn.index',compact('ecorefstarifytn'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -32,11 +33,12 @@ class EcoRefsTarifyTnController extends Controller
      */
     public function create()
     {
+        $sc_fa = EcoRefsScFa::get();
         $branch = EcoRefsBranchId::get();
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
         $routetn = EcoRefsRouteTnId::get();
-        return view('ecorefstarifytn.create',compact('branch', 'company', 'direction', 'routetn'));
+        return view('ecorefstarifytn.create',compact('sc_fa', 'branch', 'company', 'direction', 'routetn'));
     }
 
     /**
@@ -48,6 +50,7 @@ class EcoRefsTarifyTnController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'branch_id' => 'required',
             'company_id' => 'required',
             'direction_id' => 'required',
@@ -82,12 +85,13 @@ class EcoRefsTarifyTnController extends Controller
     public function edit($id)
     {
             $row = EcoRefsTarifyTn::find($id);
+            $sc_fa = EcoRefsScFa::get();
             $branch = EcoRefsBranchId::get();
             $company = EcoRefsCompaniesId::get();
             $direction = EcoRefsDirectionId::get();
             $route = EcoRefsRouteTnId::get();
 
-            return view('ecorefstarifytn.edit',compact('row', 'branch', 'company', 'direction', 'route'));
+            return view('ecorefstarifytn.edit',compact('row', 'sc_fa', 'branch', 'company', 'direction', 'route'));
     }
 
     /**
@@ -102,6 +106,7 @@ class EcoRefsTarifyTnController extends Controller
     {
         $EcoRefsTarifyTn=EcoRefsTarifyTn::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'branch_id' => 'required',
             'company_id' => 'required',
             'direction_id' => 'required',
