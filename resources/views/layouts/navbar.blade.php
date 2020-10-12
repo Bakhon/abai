@@ -56,7 +56,7 @@
                     </li>
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/podborgno">
-                            <span class="workTypeText">ПГНО</span>
+                            <span class="workTypeText">Подбор ГНО</span>
                         </a>
                     </li>
                 </ul>
@@ -89,25 +89,31 @@
                         <a href="">
                             <span class="workTypeText">Ввод данных по химизации</span>
                         </a>
-                        <ul>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/omgca">
-                                    <span class="workTypeText">ОМГ ЦА</span>
-                                </a>
-                            </li>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/omguhe">
-                                    <span class="workTypeText">ОМГ УХЭ</span>
-                                </a>
-                            </li>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/omgngdu">
-                                    <span class="workTypeText">ОМГ НГДУ</span>
-                                </a>
-                            </li>
-                        </ul>
+
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/monitor">
+                            <span class="workTypeText">Мониторинг коррозии ГУ - Кормасс</span>
+                        </a>
                     </li>
-                </ul>
+                    <ul>
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/omgca">
+                                <span class="workTypeText">ОМГ ЦА</span>
+                            </a>
+                        </li>
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/omguhe">
+                                <span class="workTypeText">ОМГ УХЭ</span>
+                            </a>
+                        </li>
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/omgngdu">
+                                <span class="workTypeText">ОМГ НГДУ</span>
+                            </a>
+                        </li>
+                    </ul>
+            </li>
+            </ul>
             </li>
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
