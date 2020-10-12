@@ -15,6 +15,7 @@ use App\Models\Well;
 use App\Models\Zu;
 use App\Tables\WaterMeasurementTable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WaterMeasurementController extends Controller
 {
@@ -197,6 +198,7 @@ class WaterMeasurementController extends Controller
         $wm->sulphate_reducing_bacteria_id = ($request->sulphate_reducing_bacteria_id) ? $request->sulphate_reducing_bacteria_id : NULL;
         $wm->hydrocarbon_oxidizing_bacteria_id = ($request->hydrocarbon_oxidizing_bacteria_id) ? $request->hydrocarbon_oxidizing_bacteria_id : NULL;
         $wm->thionic_bacteria_id = ($request->thionic_bacteria_id) ? $request->thionic_bacteria_id : NULL;
+        $wm->cruser_id = Auth::user()->id;
         $wm->save();
 
         return redirect()->route('watermeasurement.index')->with('success',__('app.updated'));

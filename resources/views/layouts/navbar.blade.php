@@ -59,6 +59,11 @@
                             <span class="workTypeText">Подбор ГНО</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/oilpivot">
+                            <span class="workTypeText">Конструктор</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item active  dropdown">
@@ -94,6 +99,23 @@
                         <a href="{{url('/')}}/ru/monitor">
                             <span class="workTypeText">Мониторинг коррозии ГУ - Кормасс</span>
                         </a>
+                        <ul>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/omgca">
+                                    <span class="workTypeText">ОМГ ДДНГ</span>
+                                </a>
+                            </li>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/omguhe">
+                                    <span class="workTypeText">ОМГ УХЭ</span>
+                                </a>
+                            </li>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/omgngdu">
+                                    <span class="workTypeText">ОМГ НГДУ</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <ul>
                         <li class="nav-item child">
@@ -121,7 +143,7 @@
                 <ul class="dropdown-child">
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/economicpivot">
-                            <span class="workTypeText">Констуктор НРС</span>
+                            <span class="workTypeText">Конструктор НРС</span>
                         </a>
                     </li>
                 </ul>

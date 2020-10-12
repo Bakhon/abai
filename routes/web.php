@@ -31,7 +31,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
+        Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
+        Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
@@ -48,7 +50,6 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Auth::routes();
         Route::get('/home', 'HomeController@index')->name('home');
         Route::resource('oildaily','OilDailyController');
-        Route::resource('watermeasurement','WaterMeasurementController');
         Route::get('/maps', 'DruidController@maps')->name('maps');
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
@@ -72,6 +73,25 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('omgca','OmgCAController');
         Route::resource('omguhe','OmgUHEController');
         Route::resource('omgngdu','OmgNGDUController');
+        Route::resource('ecorefscompaniesids','EcoRefsCompaniesIdsController');
+        Route::resource('ecorefsdirection','EcoRefsDirectionController');
+        Route::resource('ecorefsrouteid','EcoRefsRouteIdController');
+        Route::resource('ecorefsroutetnid','EcoRefsRouteTnIdController');
+        Route::resource('ecorefsequipid','EcoRefsEquipIdController');
+        Route::resource('ecorefsannualprodvolume','EcoRefsAnnualProdVolumeController');
+        Route::resource('ecorefsrenttax','EcoRefsRentTaxController');
+        Route::resource('ecorefsavgmarketprice','EcoRefsAvgMarketPriceController');
+        Route::resource('ecorefsdiscontcoefbar','EcoRefsDiscontCoefBarController');
+        Route::resource('ecorefsbranchid','EcoRefsBrachIdController');
+        Route::resource('ecorefsrentequipelectservcost','EcoRefsRentEquipElectServCostController');
+        Route::resource('ecorefsservicetime','EcoRefsServiceTimeController');
+        Route::resource('ecorefsndorates','EcoRefsNdoRatesController');
+        Route::resource('ecorefselectprsbrigcost','EcoRefsPrepElectPrsBrigCostController');
+        Route::resource('ecorefstarifytn','EcoRefsTarifyTnController');
+        Route::resource('ecorefsmacro','EcoRefsMacroController');
+        Route::resource('ecorefsempper','Refs\EcoRefsEmpPerController');
+        Route::resource('ecorefsscfa','Refs\EcoRefsScFaController');
+        Route::get('ecorefslist','Refs\EcoRefsScFaController@refsList');
     });
     Auth::routes([
         'reset' => false,

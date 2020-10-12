@@ -10,7 +10,7 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>Ввод данных ОМГ ЦА</h1>
+            <h1>Ввод данных ОМГ ДДНГ</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
                 <form action="{{ route('omgca.store') }}" method="POST">
                     @csrf

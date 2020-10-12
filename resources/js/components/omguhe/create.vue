@@ -34,9 +34,10 @@
         <input type="hidden" name="date" v-model="datetimeEmpty" class="form-control" placeholder="">
 
         </div>
-        <label>Расход ингибитора за месяц, т/мес</label>
+        <label>Причина</label>
         <div class="form-label-group">
-            <input type="number" name="monthly_inhibitor_flowrate" class="form-control" placeholder="">
+            <textarea type="text" name="reason" class="form-control" placeholder="">
+            </textarea>
         </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
@@ -56,9 +57,9 @@
         <div class="form-label-group">
             <input type="number" name="current_dosage" class="form-control" placeholder="">
         </div>
-        <label>Простой дозатора, сутки</label>
-        <div class="form-label-group">
-            <input type="number" name="out_of_service_оf_dosing" class="form-control" placeholder="">
+        <div class="form-label-group form-check">
+            <input type="checkbox" class="form-check-input" name="out_of_service_оf_dosing">
+            <label class="form-check-label" for="out_of_service_оf_dosing">Простой дозатора, сутки</label>
         </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
@@ -77,11 +78,6 @@
         <label>Суточный расход ингибитора, кг/сут</label>
         <div class="form-label-group">
             <input type="number" name="daily_inhibitor_flowrate" class="form-control" placeholder="">
-        </div>
-        <label>Причина</label>
-        <div class="form-label-group">
-            <textarea type="text" name="reason" class="form-control" placeholder="">
-            </textarea>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

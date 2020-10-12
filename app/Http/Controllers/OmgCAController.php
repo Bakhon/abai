@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OmgCA;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OmgCAController extends Controller
 {
@@ -58,6 +59,7 @@ class OmgCAController extends Controller
         $omgca->well_id = ($request->well_id) ? $request->well_id : NULL;
         $omgca->date = date("Y-m-d H:i", strtotime($request->date));
         $omgca->plan_dosage = ($request->plan_dosage) ? $request->plan_dosage : NULL;
+        $omgca->cruser_id = Auth::user()->id;
         $omgca->save();
 
         return redirect()->route('omgca.index')->with('success',__('app.created'));

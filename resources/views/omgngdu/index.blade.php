@@ -15,31 +15,31 @@
                 @endif
                 <table class="table table-bordered">
                     <tr>
-                        <th colspan="6">Узел отбора</th>
-                        <th colspan="10">Фактические данные НГДУ</th>
-                        <th rowspan="3">{{__('app.action')}}</th>
+                        <td colspan="6">Узел отбора</td>
+                        <td colspan="10">Фактические данные НГДУ</td>
+                        <td rowspan="3">{{__('app.action')}}</td>
                     </tr>
                     <tr>
-                        <th rowspan="2">Месторождение</th>
-                        <th rowspan="2">НГДУ</th>
-                        <th rowspan="2">ЦДНГ</th>
-                        <th rowspan="2">ГУ</th>
-                        <th rowspan="2">ЗУ</th>
-                        <th rowspan="2">Скважина</th>
-                        <th rowspan="2">Дата</th>
-                        <th rowspan="2">Суточная добыча  жидкости, м3/сут</th>
-                        <th rowspan="2">Давление в буферной емкости, кгс/см2</th>
-                        <th rowspan="2">Давление на выходе насоса, кгс/см2</th>
-                        <th colspan="2">Печь</th>
-                        <th colspan="4">Кормасс</th>
+                        <td rowspan="2">Месторождение</td>
+                        <td rowspan="2">НГДУ</td>
+                        <td rowspan="2">ЦДНГ</td>
+                        <td rowspan="2">ГУ</td>
+                        <td rowspan="2">ЗУ</td>
+                        <td rowspan="2">Скважина</td>
+                        <td rowspan="2">Дата</td>
+                        <td rowspan="2">Суточная добыча  жидкости, м3/сут</td>
+                        <td rowspan="2">Давление в буферной емкости, кгс/см2</td>
+                        <td rowspan="2">Давление на выходе насоса, кгс/см2</td>
+                        <td colspan="2">Печь</td>
+                        <td colspan="4">Кормасс</td>
                     </tr>
                     <tr>
-                        <th>Давление на входе, кгс/см2</th>
-                        <th>Давление на выходе, кгс/см2</th>
-                        <th>Обозначение Кормасса</th>
-                        <th>Давление, кгс/см2</th>
-                        <th>Температура</th>
-                        <th>Суточная добыча жидкости, м3/сут</th>
+                        <td>Давление на входе, кгс/см2</td>
+                        <td>Давление на выходе, кгс/см2</td>
+                        <td>Обозначение Кормасса</td>
+                        <td>Давление, кгс/см2</td>
+                        <td>Температура</td>
+                        <td>Суточная добыча жидкости, м3/сут</td>
                     </tr>
                     @foreach ($omgngdu as $item)
                         <tr>

@@ -504,13 +504,59 @@ class EconomicController extends Controller
         return view('economic.pivot');
     }
 
+    public function oilPivot(){
+        return view('economic.oilpivot');
+    }
+
     public function getEconomicPivotData(){
 
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-        $response = $client->query('economic_2020v4', Granularity::ALL)
-            ->interval('2020-06-01T00:00:00+00:00/2020-06-02T00:00:00+00:00')
-            ->execute();
 
-        return response()->json($response->data());
+        $builder = $client->query('economic_2020v4', Granularity::DAY);
+
+        $builder
+        ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+        ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+            $extractionBuilder->timeFormat('yyyy-MM-dd');
+        })
+        ->select(['profitability','expl_type'])
+        ->select(['org','status'])
+        ->sum('liquid')
+        ->sum('bsw')
+        ->sum('Operating_profit')
+        ->sum('oil');
+
+        $result = $builder->groupBy();
+
+        $array = $result->data();
+
+        return response()->json($array);
+    }
+
+    public function getOilPivotData(){
+
+        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+
+        $builder = $client->query('economic_2020v4', Granularity::DAY);
+
+        $builder
+        ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+        ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+            $extractionBuilder->timeFormat('yyyy-MM-dd');
+        })
+        ->select(['well_uwi','org'])
+        ->select(['dpz','status'])
+        ->select(['block','cdng'])
+        ->select(['grzs','gu'])
+        ->sum('oil')
+        ->sum('tm_oil')
+        ->sum('density_oil')
+        ->sum('bsw');
+
+        $result = $builder->groupBy();
+
+        $array = $result->data();
+
+        return response()->json($array);
     }
 }
