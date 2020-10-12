@@ -15,7 +15,7 @@
                 :style="{
                   'background-color': menuDMY.current,
                 }"
-                >
+                  >
                 {{ menuDMY.DMY }}
               </div>
 
