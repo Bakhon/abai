@@ -91,7 +91,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Макро:</strong>
-                                        <input type="number" name="macro" class="form-control" placeholder="Пример: 70">
+                                        <input type="float" name="macro" class="form-control" placeholder="Пример: 70">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

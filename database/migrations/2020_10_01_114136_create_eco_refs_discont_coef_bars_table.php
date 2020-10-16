@@ -23,7 +23,7 @@ class CreateEcoRefsDiscontCoefBarsTable extends Migration
             $table->float('barr_coef',8,2);
             $table->float('discont',8,2);
             $table->float('oil_cost',8,2);
-            $table->integer('macro');
+            $table->float('macro', 8,2);
             $table->timestamps();
         });
     }
