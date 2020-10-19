@@ -20,7 +20,18 @@ body {
     background-color: #20274e;
     padding: 15px 15px;
     text-align: left;
-    height: 205px;
+    height: 270px;
+    margin-bottom: 15px;
+}
+
+.tables-string-gno1-1 {
+    font-size: 12px;
+    /* position: relative; */
+    /* width: 220px; */
+    background-color: #20274e;
+    padding: 15px 15px;
+    text-align: left;
+    height: 215px;
     margin-bottom: 15px;
 }
 
@@ -99,7 +110,7 @@ body {
     float: left;
     font-size: 14px;
     position: relative;
-    /* width: 738px; */
+    /* max-width: 745px!important; */
     background-color: #15509D;
     padding: 15px 15px;
     text-align: left;
@@ -108,9 +119,13 @@ body {
     height: 45px;
     text-align: center;
     /* font-weight:bold; */
-    border-right-style: solid;
-    border-color: #0F1430;
-    border-right-width: 20px;
+    /* border-right-style: solid; */
+    /* border-color: #0F1430; */
+    /* border-right-width: 20px; */
+    border-radius: 15px;
+    box-shadow: inset 0 0 4px 0px rgba(0, 0, 0, .8), inset rgb(0 0 0 / 21%) -5px -5px 8px 5px, inset rgb(255 255 255 / 14%) 5px 5px 8px 5px, 1px 1px 1px rgba(255, 255, 255, .1), -2px -2px 5px rgba(0, 0, 0, .5);
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .tables-string-gno55 {
@@ -126,6 +141,10 @@ body {
     height: 45px;
     text-align: center;
     /* font-weight:bold; */
+    border-radius: 15px;
+    box-shadow: inset 0 0 4px 0px rgba(0, 0, 0, .8), inset rgb(0 0 0 / 21%) -5px -5px 8px 5px, inset rgb(255 255 255 / 14%) 5px 5px 8px 5px, 1px 1px 1px rgba(255, 255, 255, .1), -2px -2px 5px rgba(0, 0, 0, .5);
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .tables-string-gno6 {
@@ -142,6 +161,10 @@ body {
     background: rgba(19, 176, 98, 0.8);
     /* width: 1492px; */
     text-align: center;
+    border-radius: 15px;
+    box-shadow: inset 0 0 4px 0px rgba(0, 0, 0, .8), inset rgb(0 0 0 / 21%) -5px -5px 8px 5px, inset rgb(255 255 255 / 14%) 5px 5px 8px 5px, 1px 1px 1px rgba(255, 255, 255, .1), -2px -2px 5px rgba(0, 0, 0, .5);
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .cell4-gno {
@@ -154,8 +177,16 @@ body {
     /* width: 75px!important; */
     float: left;
     padding: 2px 5px;
-    height: 24px;
+    /* height: 24px; */
 }
+
+/*
+.cell4-gno-second-bigger {
+    width: 75px!important; 
+    float: left;
+    padding: 2px 5px;
+    height: 43px;
+}*/
 
 .table-border-gno {
     border-left-color: #1b6bb0;
@@ -189,8 +220,35 @@ body {
     border-style: solid;
     border-width: 1px;
     margin-left: -16px;
-    padding: 0px 250px 0px 18px;
+    padding: 0px 235px 0px 18px;
 }
+
+.select-gno2 {
+    width: 95px;
+    /* text-align: center; */
+    background: rgba(76, 190, 237, 0.278431);
+    color: white;
+    border: 1px solid #00CCFF;
+    border-style: solid;
+    border-width: 1px;
+    margin-left: -16px;
+    /* padding: 0px 10px 4px 0px; */
+    height: 24px;
+    margin-top: -1px;
+}
+
+.select-gno2:invalid:focus {
+    background: red;
+}
+
+/*
+select:invalid:not(:focus) {
+  color: gray;
+}
+
+select:focus option {
+  color: initial;
+}*/
 
 input.checkbox0 {
     margin-top: 2px;
@@ -302,7 +360,6 @@ input.checkbox {
     margin-left: 10px;
 }
 
-
 .text2 {
     margin-left: 92px;
 }
@@ -319,13 +376,18 @@ input.checkbox2 {
     padding: 8px 30px;
     height: 38px;
     width: 100%;
-    margin-top: -53px;
+    /* margin-top: -53px; */
+    border-radius: 15px;
+    box-shadow: inset 0 0 4px 0px rgba(0, 0, 0, .8), inset rgb(0 0 0 / 21%) -5px -5px 8px 5px, inset rgb(255 255 255 / 14%) 5px 5px 8px 5px, 1px 1px 1px rgba(255, 255, 255, .1), -2px -2px 5px rgba(0, 0, 0, .5);
+    text-align: center;
+    margin-bottom: 15px;
 }
 
-.text3{
-    float:right;
+.text3 {
+    float: right;
     width: 20px;
 }
+
 input.checkbox3 {
     float: right;
     margin-right: 12px;
@@ -333,4 +395,36 @@ input.checkbox3 {
 
 .target {
     float: left;
+}
+
+.square2 {
+    border: 1px solid #00CCFF;
+    background: rgba(76, 190, 237, 0.278431);
+    width: 94px;
+    height: 20px;
+    position: relative;
+    color: white;
+    top: 0px;
+    left: -15px;
+    /* text-align: center; */
+}
+
+.center {
+    margin-top: 10px;
+}
+
+input[type="radio"] {
+    /* Base Styles aka unchecked */
+    font-weight: 300; 
+    font-size: 16px; 
+}
+
+input[type="radio"]:not(:checked) {
+    /* Explicit Unchecked Styles */
+    border: 1px solid #FF0000; 
+}
+
+input[type="radio"]:checked {
+    /* Checked Styles */
+    font-weight: 900;
 }

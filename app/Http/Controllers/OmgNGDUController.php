@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GuKormass;
+use App\Models\Kormass;
 use App\Models\OmgNGDU;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -127,5 +129,21 @@ class OmgNGDUController extends Controller
         $omgngdu->delete();
 
         return redirect()->route('omgngdu.index')->with('success',__('app.deleted'));
+    }
+
+    public function getKormass(Request $request){
+        $guKormass = GuKormass::where('gu_id', '=', $request->gu_id)->get();
+        $guKormassArray = [];
+        foreach($guKormass as $row){
+            array_push($guKormassArray, $row->kormass_id);
+        }
+        $kormass = Kormass::wherein('id', $guKormassArray)->get();
+
+
+        return response()->json([
+            'code'=>200,
+            'message' => 'success',
+            'data' => $kormass
+        ]);
     }
 }

@@ -5,7 +5,7 @@
         Конструктор НРС
     </h1>
     <div class="x_panel">
-        <economic-pivot></economic-pivot>
+        <excel-editor></excel-editor>
     </div>
 </div>
 @endsection
