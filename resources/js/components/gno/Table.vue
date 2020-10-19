@@ -316,6 +316,7 @@
 
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
+   <monitor-iframe :src="test.src" @load="onLoad"> </monitor-iframe>
         <gno-line-points-chart></gno-line-points-chart>
       </div>
 

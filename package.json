@@ -21,6 +21,7 @@
         "sass-loader": "7.*",
         "vue": "^2.5.17",
         "vue-axios": "^2.1.5",
+        "vue-friendly-iframe": "^0.18.0",
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {

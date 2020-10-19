@@ -8,6 +8,8 @@ import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueTableDynamic from 'vue-table-dynamic';
 import { PivotViewPlugin, FieldList } from '@syncfusion/ej2-vue-pivotview';
+import Vue from 'vue';
+import VueFriendlyIframe from 'vue-friendly-iframe';
 
 
 
@@ -16,7 +18,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
 
-Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin);
+Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin,VueFriendlyIframe);
 
 
 /**
@@ -68,12 +70,14 @@ Vue.component('monitor-chart-bar-rounded', require('./components/monitor/Monitor
 Vue.component('monitor-chart-donut', require('./components/monitor/MonitorChartDonut.vue').default);
 Vue.component('monitor-chart-tide', require('./components/monitor/MonitorChartTide.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
+Vue.component('monitor-iframe', require('./components/FriendlyIframe/components/FriendlyIframe/index.vue').default);
 Vue.component('omgca-create', require('./components/omgca/create.vue').default);
 Vue.component('omgca-edit', require('./components/omgca/edit.vue').default);
 Vue.component('omguhe-create', require('./components/omguhe/create.vue').default);
 Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
 Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
 Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
