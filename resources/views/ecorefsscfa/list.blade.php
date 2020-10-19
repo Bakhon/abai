@@ -27,6 +27,7 @@
                     <a href="{{url('/')}}/ru/ecorefsempper" class="list-group-item list-group-item-action"> Процент реализации</a>
                     <a href="{{url('/')}}/ru/ecorefsmacro" class="list-group-item list-group-item-action"> Курс доллара/Курс рубля/Инфляция, в % на конец периода</a>
                     <a href="{{url('/')}}/ru/ecorefsavgmarketprice" class="list-group-item list-group-item-action"> Рентный налог</a>
+                    <a href="{{url('/')}}/ru/ecorefsexc" class="list-group-item list-group-item-action"> Тенге/Доллар/Рубль</a>
                 </div>
             </div>
         </div>
