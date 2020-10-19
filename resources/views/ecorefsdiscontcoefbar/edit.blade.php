@@ -15,6 +15,25 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
+                                        <strong>Сценарий/Факт:</strong>
+                                        <select class="form-control" name="sc_fa">
+                                        <option>Select Item</option>
+                                        @foreach ($sc_fa as $item)
+                                            @if($item->id==$row->sc_fa)
+                                            <option value="{{ $item->id }}" selected>
+                                                {{ $item->name }}
+                                            </option>
+                                            @else
+                                            <option value="{{ $item->id }}">
+                                                {{ $item->name }}
+                                            </option>
+                                            @endif
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
                                         <strong>Компания:</strong>
                                         <select class="form-control" name="company_id">
                                         <option>Select Item</option>
@@ -97,7 +116,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Макро:</strong>
-                                        <input type="number" name="macro" value={{$row->macro}} class="form-control" placeholder="Пример: 70">
+                                        <input type="float" name="macro" value={{$row->macro}} class="form-control" placeholder="Пример: 70">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

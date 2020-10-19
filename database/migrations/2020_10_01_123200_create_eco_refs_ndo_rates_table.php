@@ -15,6 +15,7 @@ class CreateEcoRefsNdoRatesTable extends Migration
     {
         Schema::create('eco_refs_ndo_rates', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sc_fa');
             $table->integer('company_id');
             $table->float('ndo_rates',8,2);
             $table->timestamps();

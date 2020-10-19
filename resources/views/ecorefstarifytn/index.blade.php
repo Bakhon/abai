@@ -18,10 +18,13 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
+                                <th>Сценарий/Факт:</th>
                                 <th>Филиал:</th>
                                 <th>Компания:</th>
                                 <th>Направление:</th>
+                                <th>Маршрут:</th>
                                 <th>Маршрут ТН:</th>
+                                <th>Валюта:</th>
                                 <th>Дата:</th>
                                 <th>Тариф:</th>
                                 <th>Протяженность:</th>
@@ -30,10 +33,13 @@
                             @foreach ($ecorefstarifytn as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
+                                    <td>{{ $item->scfa->name}}</td>
                                     <td>{{ $item->branch->name}}</td>
                                     <td>{{ $item->company->name}}</td>
                                     <td>{{ $item->direction->name }}</td>
+                                    <td>{{ $item->route->name }}</td>
                                     <td>{{ $item->routetn->name }}</td>
+                                    <td>{{ $item->exc->name }}</td>
                                     <td>{{ $item->date }}</td>
                                     <td>{{ $item->tn_rate }}</td>
                                     <td>{{ $item->extent }}</td>

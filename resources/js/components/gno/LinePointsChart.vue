@@ -29,7 +29,7 @@ export default {
         yaxis: {
           labels: {
             formatter: function (val) {
-              //return val.toFixed(0);
+              return val.toFixed(0);
               return (val);
            //   return (val);         
               },
@@ -144,12 +144,12 @@ export default {
             show: false,
             formatter: undefined,
             title: {
-              formatter: (seriesName) => Math.round(seriesName),
+             // formatter: (seriesName) => Math.round(seriesName),
 
-              //formatter: function (val) {
+              formatter: function (val) {
               //return val.toFixed(0);
-              //return Math.round(val);
-                       // },
+              return Math.round(val);
+                       },
 
 
               

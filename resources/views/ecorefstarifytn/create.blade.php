@@ -14,6 +14,19 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
+                                        <strong>Сценарий/Факт:</strong>
+                                        <select class="form-control" name="sc_fa">
+                                        <option>Select Item</option>
+                                        @foreach ($sc_fa as $item)
+                                            <option value="{{ $item->id }}">
+                                                {{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                               <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
                                         <strong>Филиал:</strong>
                                         <select class="form-control" name="branch_id">
                                         <option>Select Item</option>
@@ -53,10 +66,36 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
+                                        <strong>Маршрут:</strong>
+                                        <select class="form-control" name="route_id">
+                                        <option>Select Item</option>
+                                        @foreach ($route as $item)
+                                            <option value="{{ $item->id }}">
+                                                {{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
                                         <strong>Маршрут ТН:</strong>
                                         <select class="form-control" name="route_tn_id">
                                         <option>Select Item</option>
                                         @foreach ($routetn as $item)
+                                            <option value="{{ $item->id }}">
+                                                {{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>Валюта:</strong>
+                                        <select class="form-control" name="exc_id">
+                                        <option>Select Item</option>
+                                        @foreach ($exc as $item)
                                             <option value="{{ $item->id }}">
                                                 {{ $item->name }}
                                             </option>

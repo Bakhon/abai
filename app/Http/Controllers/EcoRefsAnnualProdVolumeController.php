@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EcoRefsAnnualProdVolume;
+use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
 
 class EcoRefsAnnualProdVolumeController extends Controller
@@ -14,7 +15,7 @@ class EcoRefsAnnualProdVolumeController extends Controller
      */
     public function index()
     {
-        $ecorefsannualprodvolume = EcoRefsAnnualProdVolume::latest()->paginate(5);
+        $ecorefsannualprodvolume = EcoRefsAnnualProdVolume::latest()->with('scfa')->paginate(5);
 
         return view('ecorefsannualprodvolume.index',compact('ecorefsannualprodvolume'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -28,7 +29,8 @@ class EcoRefsAnnualProdVolumeController extends Controller
      */
     public function create()
     {
-        return view('ecorefsannualprodvolume.create');
+        $sc_fa = EcoRefsScFa::get();
+        return view('ecorefsannualprodvolume.create',compact('sc_fa'));
     }
 
     /**
@@ -40,6 +42,7 @@ class EcoRefsAnnualProdVolumeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'annual_prod_volume_beg' => 'required',
             'annual_prod_volume_end' => 'required',
             'ndpi' => 'required',
@@ -69,8 +72,9 @@ class EcoRefsAnnualProdVolumeController extends Controller
      */
     public function edit($id)
     {
-        $EcoRefsAnnualProdVolume = EcoRefsAnnualProdVolume::find($id);
-        return view('ecorefsannualprodvolume.edit',compact('EcoRefsAnnualProdVolume'));
+        $row = EcoRefsAnnualProdVolume::find($id);
+        $sc_fa = EcoRefsScFa::get();
+        return view('ecorefsannualprodvolume.edit',compact('row', 'sc_fa'));
     }
 
     /**
@@ -84,6 +88,7 @@ class EcoRefsAnnualProdVolumeController extends Controller
     {
         $EcoRefsAnnualProdVolume=EcoRefsAnnualProdVolume::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'annual_prod_volume_beg' => 'required',
             'annual_prod_volume_end' => 'required',
             'ndpi' => 'required',
@@ -102,8 +107,8 @@ class EcoRefsAnnualProdVolumeController extends Controller
      */
     public function destroy($id)
     {
-        $EcoRefsAnnualProdVolume = EcoRefsAnnualProdVolume::find($id);
-        $EcoRefsAnnualProdVolume->delete();
+        $row = EcoRefsAnnualProdVolume::find($id);
+        $row->delete();
 
         return redirect()->route('ecorefsannualprodvolume.index')->with('success',__('app.deleted'));
     }

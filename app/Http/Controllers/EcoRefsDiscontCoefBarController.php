@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\EcoRefsCompaniesId;
+use App\Models\Refs\EcoRefsScFa;
 use App\Models\EcoRefsDirectionId;
 use App\Models\EcoRefsDiscontCoefBar;
 use App\Models\EcoRefsRoutesId;
@@ -18,7 +19,7 @@ class EcoRefsDiscontCoefBarController extends Controller
     public function index()
     {
 
-            $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::latest()->with('company')->with('direction')->with('route')->paginate(5);
+            $ecorefsdiscontcoefbar = EcoRefsDiscontCoefBar::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
 
             return view('ecorefsdiscontcoefbar.index',compact('ecorefsdiscontcoefbar'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -31,10 +32,11 @@ class EcoRefsDiscontCoefBarController extends Controller
      */
     public function create()
     {
+        $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
-        return view('ecorefsdiscontcoefbar.create',compact('company', 'direction', 'route'));
+        return view('ecorefsdiscontcoefbar.create',compact('sc_fa', 'company', 'direction', 'route'));
     }
 
     /**
@@ -46,6 +48,7 @@ class EcoRefsDiscontCoefBarController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'sc_fa' => 'required',
             'company_id' => 'required',
             'direction_id' => 'required',
             'route_id' => 'required',
@@ -81,11 +84,12 @@ class EcoRefsDiscontCoefBarController extends Controller
     public function edit($id)
     {
         $row = EcoRefsDiscontCoefBar::find($id);
+        $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
         $route = EcoRefsRoutesId::get();
 
-        return view('ecorefsdiscontcoefbar.edit',compact('row', 'company', 'direction', 'route'));
+        return view('ecorefsdiscontcoefbar.edit',compact('sc_fa', 'row', 'company', 'direction', 'route'));
 
     }
 
@@ -100,6 +104,7 @@ class EcoRefsDiscontCoefBarController extends Controller
     {
         $EcoRefsDiscontCoefBar=EcoRefsDiscontCoefBar::find($id);
         $request->validate([
+            'sc_fa' => 'required',
             'company_id' => 'required',
             'direction_id' => 'required',
             'route_id' => 'required',

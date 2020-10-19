@@ -18,7 +18,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
-                                <th>Среднемесячная рыночная цена, от:</th>
+                                <th>Сценарий/Факт:</th>
                                 <th>Среднемесячная рыночная цена, до:</th>
                                 <th>Ставка ЭТП, $ за 1 тонну:</th>
                                 <th width="220px">{{__('app.action')}}</th>
@@ -26,6 +26,7 @@
                             @foreach ($ecorefsavgmarketprice as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
+                                    <td>{{ $item->scfa->name}}</td>
                                     <td>{{ $item->avg_market_price_beg }}</td>
                                     <td>{{ $item->avg_market_price_end }}</td>
                                     <td>{{ $item->exp_cust_duty_rate }}</td>

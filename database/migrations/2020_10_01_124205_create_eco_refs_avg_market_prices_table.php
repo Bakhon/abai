@@ -15,6 +15,7 @@ class CreateEcoRefsAvgMarketPricesTable extends Migration
     {
         Schema::create('eco_refs_avg_market_prices', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sc_fa');
             $table->integer('avg_market_price_beg');
             $table->integer('avg_market_price_end');
             $table->integer('exp_cust_duty_rate');

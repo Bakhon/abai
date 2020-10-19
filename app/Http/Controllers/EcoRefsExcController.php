@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EcoRefsCompaniesId;
-use App\Models\EcoRefsNdoRates;
+use App\Models\EcoRefsExc;
 use Illuminate\Http\Request;
 
-class EcoRefsNdoRatesController extends Controller
+class EcoRefsExcController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +14,10 @@ class EcoRefsNdoRatesController extends Controller
      */
     public function index()
     {
+        $ecorefsexc = EcoRefsExc::latest()->paginate(5);
 
-            $ecorefsndorates = EcoRefsNdoRates::latest()->with('company')->paginate(5);
-
-            return view('ecorefsndorates.index',compact('ecorefsndorates'))
-                ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('ecorefsexc.index',compact('ecorefsexc'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -29,8 +27,7 @@ class EcoRefsNdoRatesController extends Controller
      */
     public function create()
     {
-        $company = EcoRefsNdoRates::get();
-        return view('ecorefsndorates.create',compact('company'));
+        return view('ecorefsexc.create');
     }
 
     /**
@@ -42,13 +39,13 @@ class EcoRefsNdoRatesController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'company_id' => 'required',
-            'ndo_rates' => 'required',
+            'name' => 'required',
         ]);
 
-        EcoRefsNdoRates::create($request->all());
+        EcoRefsExc::create($request->all());
 
-        return redirect()->route('ecorefsndorates.index')->with('success',__('app.created'));
+        return redirect()->route('ecorefsexc.index')->with('success',__('app.created'));
+         //
     }
 
     /**
@@ -70,7 +67,9 @@ class EcoRefsNdoRatesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $EcoRefsExc = EcoRefsExc::find($id);
+        return view('ecorefsexc.edit',compact('EcoRefsExc'));
+
     }
 
     /**
@@ -82,7 +81,14 @@ class EcoRefsNdoRatesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $EcoRefsExc=EcoRefsExc::find($id);
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $EcoRefsExc->update($request->all());
+
+        return redirect()->route('ecorefsexc.index')->with('success',__('app.updated'));
     }
 
     /**
@@ -93,9 +99,10 @@ class EcoRefsNdoRatesController extends Controller
      */
     public function destroy($id)
     {
-        $row = EcoRefsNdoRates::find($id);
-        $row->delete();
+        $EcoRefsExc = EcoRefsExc::find($id);
+        $EcoRefsExc->delete();
 
-        return redirect()->route('ecorefsndorates.index')->with('success',__('app.deleted'));
+        return redirect()->route('ecorefsexc.index')->with('success',__('app.deleted'));
+
     }
 }

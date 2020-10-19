@@ -15,6 +15,7 @@ class CreateEcoRefsDiscontCoefBarsTable extends Migration
     {
         Schema::create('eco_refs_discont_coef_bars', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->integer('sc_fa');
             $table->integer('company_id');
             $table->integer('direction_id');
             $table->integer('route_id');
@@ -22,7 +23,7 @@ class CreateEcoRefsDiscontCoefBarsTable extends Migration
             $table->float('barr_coef',8,2);
             $table->float('discont',8,2);
             $table->float('oil_cost',8,2);
-            $table->integer('macro');
+            $table->float('macro', 8,2);
             $table->timestamps();
         });
     }

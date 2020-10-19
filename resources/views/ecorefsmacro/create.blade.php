@@ -12,7 +12,20 @@
                         <form action="{{ route('ecorefsmacro.store') }}" method="POST">
                             @csrf
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                 <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>Сценарий/Факт:</strong>
+                                        <select class="form-control" name="sc_fa">
+                                        <option>Select Item</option>
+                                        @foreach ($sc_fa as $item)
+                                            <option value="{{ $item->id }}">
+                                                {{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                               <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дата:</strong>
                                         <input type="date" name="date" class="form-control">

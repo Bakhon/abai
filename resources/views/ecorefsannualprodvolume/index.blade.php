@@ -18,6 +18,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>#</th>
+                                <th>Сценарий/Факт:</th>
                                 <th>Объем годовой добычи, от:</th>
                                 <th>Объем годовой добычи, до:</th>
                                 <th>Ставка НДПИ, в %:</th>
@@ -26,6 +27,7 @@
                             @foreach ($ecorefsannualprodvolume as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
+                                    <td>{{ $item->scfa->name}}</td>
                                     <td>{{ $item->annual_prod_volume_beg }}</td>
                                     <td>{{ $item->annual_prod_volume_end }}</td>
                                     <td>{{ $item->ndpi }}</td>
