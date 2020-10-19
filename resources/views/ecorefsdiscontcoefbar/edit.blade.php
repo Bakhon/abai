@@ -110,12 +110,6 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Стоимость нефти:</strong>
-                                        <input type="float" name="oil_cost" value={{$row->oil_cost}} class="form-control" placeholder="Пример: 40">
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Макро:</strong>
                                         <input type="float" name="macro" value={{$row->macro}} class="form-control" placeholder="Пример: 70">
                                     </div>
                                 </div>
