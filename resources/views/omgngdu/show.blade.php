@@ -52,27 +52,27 @@
                         <td>{{$omgngdu->daily_fluid_production}}</td>
                     </tr>
                     <tr>
-                        <td>Давление в буферной емкости, кгс/см2</td>
+                        <td>Давление в буферной емкости, бар</td>
                         <td>{{$omgngdu->surge_tank_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>Давление на выходе насоса, кгс/см2</td>
+                        <td>Давление на выходе насоса, бар</td>
                         <td>{{$omgngdu->pump_discharge_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>Давление на входе, кгс/см2</td>
+                        <td>Температура на входе в печи, С</td>
                         <td>{{$omgngdu->heater_inlet_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>Давление на выходе, кгс/см2</td>
+                        <td>Температура на выходе из печи, С</td>
                         <td>{{$omgngdu->heater_output_pressure}}</td>
                     </tr>
                     <tr>
-                        <td>Обозначение Кормасса</td>
+                        <td>Кормасс</td>
                         <td>{{$omgngdu->kormass_number}}</td>
                     </tr>
                     <tr>
-                        <td>Давление, кгс/см2</td>
+                        <td>Давление, бар</td>
                         <td>{{$omgngdu->pressure}}</td>
                     </tr>
                     <tr>

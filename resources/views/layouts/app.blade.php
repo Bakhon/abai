@@ -31,7 +31,7 @@
         @endif
 
 
-        @if (basename(Request::url()) === "economicpivot" || basename(Request::url()) === "oilpivot")
+        @if (basename(Request::url()) === "oilpivot")
             <div class="col">
                 @yield('content')
             </div>

@@ -89,6 +89,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefselectprsbrigcost','EcoRefsPrepElectPrsBrigCostController');
         Route::resource('ecorefstarifytn','EcoRefsTarifyTnController');
         Route::resource('ecorefsmacro','EcoRefsMacroController');
+        Route::post('/getkormass', 'OmgNGDUController@getKormass');
     });
     Auth::routes([
         'reset' => false,
