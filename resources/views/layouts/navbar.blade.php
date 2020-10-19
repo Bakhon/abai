@@ -33,6 +33,11 @@
                                 <span class="workTypeText">ГТМ скорпион</span>
                             </a>
                         </li>
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/calcgtm">
+                                <span class="workTypeText">Расчет ГТМ</span>
+                            </a>
+                        </li>
                 </li>
             </ul>
             </li>
@@ -117,23 +122,6 @@
                             </li>
                         </ul>
                     </li>
-                    <ul>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/omgca">
-                                <span class="workTypeText">ОМГ ЦА</span>
-                            </a>
-                        </li>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/omguhe">
-                                <span class="workTypeText">ОМГ УХЭ</span>
-                            </a>
-                        </li>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/omgngdu">
-                                <span class="workTypeText">ОМГ НГДУ</span>
-                            </a>
-                        </li>
-                    </ul>
             </li>
             </ul>
             </li>

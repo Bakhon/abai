@@ -39,6 +39,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
+        Route::get('/calcgtm', 'DruidController@calcGtm')->name('calcgtm');
         Route::get('/mfond', 'DruidController@mfond')->name('mfond');
         Route::get('/map', 'DruidController@map')->name('map');
         Route::get('/oil', 'DruidController@oil')->name('oil');
@@ -89,15 +90,12 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefselectprsbrigcost','EcoRefsPrepElectPrsBrigCostController');
         Route::resource('ecorefstarifytn','EcoRefsTarifyTnController');
         Route::resource('ecorefsmacro','EcoRefsMacroController');
-<<<<<<< HEAD
         Route::post('/getkormass', 'OmgNGDUController@getKormass');
-=======
         Route::resource('ecorefsempper','Refs\EcoRefsEmpPerController');
         Route::resource('ecorefsscfa','Refs\EcoRefsScFaController');
         Route::get('ecorefslist','Refs\EcoRefsScFaController@refsList');
         Route::get('nnoeco','Refs\EcoRefsScFaController@nnoeco');
         Route::resource('ecorefsexc','EcoRefsExcController');
->>>>>>> 1adab36229f139eeeeaeeabd054d747a252f83ff
     });
     Auth::routes([
         'reset' => false,

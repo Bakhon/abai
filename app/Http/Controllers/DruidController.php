@@ -221,4 +221,9 @@ class DruidController extends Controller
     {
         return view('monitor.monitor');
     }
+
+    public function calcGtm()
+    {
+        return view('production.calcgtm');
+    }
 }
