@@ -316,12 +316,12 @@
 
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
-        <modal name="bign0" :width="1150" :adaptive="true">
+        <modal name="bign0" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign">  
           <div class="Table"
 align=center x:publishsource="Excel">
 
-<table border=0 cellpadding=0 cellspacing=0 width=535 style='border-collapse:
+<table border=1 cellpadding=0 cellspacing=0 width=535 style='border-collapse:
  collapse;table-layout:fixed;width:401pt'>
  <col width=64 span=3 style='width:48pt'>
  <col width=88 style='mso-width-source:userset;mso-width-alt:3218;width:66pt'>
