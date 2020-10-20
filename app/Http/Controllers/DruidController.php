@@ -54,6 +54,11 @@ class DruidController extends Controller
         return view('visualcenter.visualcenter');
     }
 
+    public function visualcenter2()
+    {
+        return view('visualcenter.visualcenter2');
+    }
+
     public function production()
     {
         return view('production.main');
