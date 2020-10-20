@@ -55,7 +55,6 @@ class EcoRefsDiscontCoefBarController extends Controller
             'date' => 'required',
             'barr_coef' => 'required',
             'discont' => 'required',
-            'oil_cost' => 'required',
             'macro' => 'required',
         ]);
 
@@ -111,7 +110,6 @@ class EcoRefsDiscontCoefBarController extends Controller
             'date' => 'required',
             'barr_coef' => 'required',
             'discont' => 'required',
-            'oil_cost' => 'required',
             'macro' => 'required',
         ]);
 

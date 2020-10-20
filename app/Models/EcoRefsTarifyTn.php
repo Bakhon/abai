@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EcoRefsTarifyTn extends Model
 {
     protected $fillable = [
-        'sc_fa', 'branch_id', 'company_id', 'direction_id', 'route_tn_id', 'date', 'tn_rate', 'extent'
+        'sc_fa', 'branch_id', 'company_id', 'direction_id', 'route_id', 'route_tn_id', 'exc_id', 'date', 'tn_rate', 'extent'
     ];
 
     public function scfa()
@@ -26,8 +26,17 @@ class EcoRefsTarifyTn extends Model
     {
         return $this->hasOne('App\Models\EcoRefsDirectionId','id','direction_id')->withDefault();
     }
+    public function route()
+    {
+        return $this->hasOne('App\Models\EcoRefsRoutesId','id','route_id')->withDefault();
+    }
     public function routetn()
     {
         return $this->hasOne('App\Models\EcoRefsRouteTnId','id','route_tn_id')->withDefault();
     }
+    public function exc()
+    {
+        return $this->hasOne('App\Models\EcoRefsExc','id','exc_id')->withDefault();
+    }
+
 }

@@ -8,7 +8,7 @@ class EcoRefsDiscontCoefBar extends Model
 {
 
     protected $fillable = [
-        'sc_fa', 'company_id', 'direction_id', 'route_id', 'date', 'barr_coef', 'discont', 'oil_cost', 'macro'
+        'sc_fa', 'company_id', 'direction_id', 'route_id', 'date', 'barr_coef', 'discont', 'macro'
     ];
 
     public function scfa()

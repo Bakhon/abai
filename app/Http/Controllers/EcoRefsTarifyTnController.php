@@ -8,6 +8,8 @@ use App\Models\EcoRefsBranchId;
 use App\Models\EcoRefsDirectionId;
 use App\Models\EcoRefsRouteTnId;
 use App\Models\EcoRefsTarifyTn;
+use App\Models\EcoRefsExc;
+use App\Models\EcoRefsRoutesId;
 use Illuminate\Http\Request;
 
 class EcoRefsTarifyTnController extends Controller
@@ -20,7 +22,7 @@ class EcoRefsTarifyTnController extends Controller
     public function index()
     {
 
-            $ecorefstarifytn = EcoRefsTarifyTn::latest()->with('scfa')->with('branch')->with('company')->with('direction')->with('routetn')->paginate(5);
+            $ecorefstarifytn = EcoRefsTarifyTn::latest()->with('scfa')->with('branch')->with('company')->with('direction')->with('route')->with('routetn')->with('exc')->paginate(5);
 
             return view('ecorefstarifytn.index',compact('ecorefstarifytn'))
                 ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -37,8 +39,10 @@ class EcoRefsTarifyTnController extends Controller
         $branch = EcoRefsBranchId::get();
         $company = EcoRefsCompaniesId::get();
         $direction = EcoRefsDirectionId::get();
+        $route = EcoRefsRoutesId::get();
         $routetn = EcoRefsRouteTnId::get();
-        return view('ecorefstarifytn.create',compact('sc_fa', 'branch', 'company', 'direction', 'routetn'));
+        $exc = EcoRefsExc::get();
+        return view('ecorefstarifytn.create',compact('sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
     }
 
     /**
@@ -54,7 +58,9 @@ class EcoRefsTarifyTnController extends Controller
             'branch_id' => 'required',
             'company_id' => 'required',
             'direction_id' => 'required',
+            'route_id' => 'required',
             'route_tn_id' => 'required',
+            'exc_id' => 'required',
             'date' => 'required',
             'tn_rate' => 'required',
             'extent' => 'required',
@@ -89,9 +95,11 @@ class EcoRefsTarifyTnController extends Controller
             $branch = EcoRefsBranchId::get();
             $company = EcoRefsCompaniesId::get();
             $direction = EcoRefsDirectionId::get();
-            $route = EcoRefsRouteTnId::get();
+            $route = EcoRefsRoutesId::get();
+            $routetn = EcoRefsRouteTnId::get();
+            $exc = EcoRefsExc::get();
 
-            return view('ecorefstarifytn.edit',compact('row', 'sc_fa', 'branch', 'company', 'direction', 'route'));
+            return view('ecorefstarifytn.edit',compact('row', 'sc_fa', 'branch', 'company', 'direction', 'route', 'routetn', 'exc'));
     }
 
     /**
@@ -110,7 +118,9 @@ class EcoRefsTarifyTnController extends Controller
             'branch_id' => 'required',
             'company_id' => 'required',
             'direction_id' => 'required',
+            'route_id' => 'required',
             'route_tn_id' => 'required',
+            'exc_id' => 'required',
             'date' => 'required',
             'tn_rate' => 'required',
             'extent' => 'required',

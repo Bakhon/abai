@@ -26,7 +26,6 @@
                                 <th>Коэффициент баррелизации:</th>
                                 <th>Дисконт:</th>
                                 <th>Стоимость нефти:</th>
-                                <th>Макро:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($ecorefsdiscontcoefbar as $item)
@@ -39,7 +38,6 @@
                                     <td>{{ $item->date }}</td>
                                     <td>{{ $item->barr_coef }}</td>
                                     <td>{{ $item->discont }}</td>
-                                    <td>{{ $item->oil_cost }}</td>
                                     <td>{{ $item->macro }}</td>
                                     <td>
                                         <form action="{{ route('ecorefsdiscontcoefbar.destroy',$item->id) }}" method="POST">

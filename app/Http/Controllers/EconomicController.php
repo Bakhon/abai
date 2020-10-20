@@ -521,6 +521,7 @@ class EconomicController extends Controller
         })
         ->select(['profitability','expl_type'])
         ->select(['org','status'])
+        ->select('uwi')
         ->sum('liquid')
         ->sum('bsw')
         ->sum('Operating_profit')
@@ -535,28 +536,36 @@ class EconomicController extends Controller
 
     public function getOilPivotData(){
 
+        // $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+
+        // $builder = $client->query('economic_2020v4', Granularity::DAY);
+
+        // $builder
+        // ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+        // ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+        //     $extractionBuilder->timeFormat('yyyy-MM-dd');
+        // })
+        // ->select(['well_uwi','org'])
+        // ->select(['dpz','status'])
+        // ->select(['block','cdng'])
+        // ->select(['grzs','gu'])
+        // ->sum('oil')
+        // ->sum('tm_oil')
+        // ->sum('density_oil')
+        // ->sum('bsw');
+
+        // $result = $builder->groupBy();
+
+        // $array = $result->data();
+
+        // return response()->json($array);
+
+
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+        $response = $client->query('economic_2020v4', Granularity::ALL)
+            ->interval('2020-07-30T18:00:00+00:00/2020-07-31T18:00:00+00:00')
+            ->execute();
 
-        $builder = $client->query('economic_2020v4', Granularity::DAY);
-
-        $builder
-        ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-        ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-            $extractionBuilder->timeFormat('yyyy-MM-dd');
-        })
-        ->select(['well_uwi','org'])
-        ->select(['dpz','status'])
-        ->select(['block','cdng'])
-        ->select(['grzs','gu'])
-        ->sum('oil')
-        ->sum('tm_oil')
-        ->sum('density_oil')
-        ->sum('bsw');
-
-        $result = $builder->groupBy();
-
-        $array = $result->data();
-
-        return response()->json($array);
+        return response()->json($response->data());
     }
 }

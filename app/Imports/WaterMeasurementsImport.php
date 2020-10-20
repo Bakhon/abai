@@ -68,7 +68,8 @@ class WaterMeasurementsImport implements ToModel
             'carbon_dioxide' => $row[29],
             'sulphate_reducing_bacteria_id' => ($sulphateReducingBacteria) ? $sulphateReducingBacteria->id : NULL,
             'hydrocarbon_oxidizing_bacteria_id' => ($hydrocarbonOxidizingBacteria) ? $hydrocarbonOxidizingBacteria->id : NULL,
-            'thionic_bacteria_id' => ($thionicBacteria) ? $thionicBacteria->id : NULL
+            'thionic_bacteria_id' => ($thionicBacteria) ? $thionicBacteria->id : NULL,
+            'cruser_id' => 1
         ]);
     }
 }

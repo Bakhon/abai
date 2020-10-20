@@ -20,7 +20,7 @@ class CreateEcoRefsEmpPersTable extends Migration
             $table->integer('direction_id');
             $table->integer('route_id');
             $table->date('date');
-            $table->float('emp_per',8,2);
+            $table->float('emp_per',8,4);
             $table->timestamps();
         });
     }

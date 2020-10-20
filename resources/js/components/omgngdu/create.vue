@@ -34,13 +34,15 @@
         <input type="hidden" name="date" v-model="datetimeEmpty" class="form-control" placeholder="">
 
         </div>
-        <label>Давление на выходе насоса, кгс/см2</label>
+        <label>Давление на выходе насоса, бар</label>
         <div class="form-label-group">
             <input type="number" name="pump_discharge_pressure" class="form-control" placeholder="">
         </div>
-        <label>Обозначение Кормасса</label>
+        <label>Кормасс</label>
         <div class="form-label-group">
-            <input type="number" name="kormass_number" class="form-control" placeholder="">
+            <select class="form-control"  name="kormass_number" v-model="kormass_id">
+            <option v-for="row in kormass" v-bind:value="row.id">{{ row.name }}</option>
+            </select>
         </div>
         <label>Суточная добыча жидкости, м3/сут</label>
         <div class="form-label-group">
@@ -64,11 +66,11 @@
         <div class="form-label-group">
             <input type="number" name="daily_fluid_production" class="form-control" placeholder="">
         </div>
-        <label>Давление на входе, кгс/см2</label>
+        <label>Температура на входе в печи, С</label>
         <div class="form-label-group">
             <input type="number" name="heater_inlet_pressure" class="form-control" placeholder="">
         </div>
-        <label>Давление, кгс/см2</label>
+        <label>Давление, бар</label>
         <div class="form-label-group">
             <input type="number" name="pressure" class="form-control" placeholder="">
         </div>
@@ -86,11 +88,11 @@
             <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
-        <label>Давление в буферной емкости, кгс/см2</label>
+        <label>Давление в буферной емкости, бар</label>
         <div class="form-label-group">
             <input type="number" name="surge_tank_pressure" class="form-control" placeholder="">
         </div>
-        <label>Давление на выходе, кгс/см2</label>
+        <label>Температура на выходе из печи, С</label>
         <div class="form-label-group">
             <input type="number" name="heater_output_pressure" class="form-control" placeholder="">
         </div>
@@ -149,6 +151,7 @@ export default {
             this.axios.post("/ru/getzu", {
                 gu_id: event.target.value,
             }).then((response) => {
+                this.getKormass(event.target.value);
                 let data = response.data;
                 if(data) {
                     this.zus = data.data;
@@ -165,6 +168,19 @@ export default {
                 let data = response.data;
                 if(data) {
                     this.wells = data.data;
+                }
+                else {
+                    console.log('No data');
+                }
+            });
+        },
+        getKormass(gu){
+            this.axios.post("/ru/getkormass", {
+                gu_id: gu,
+            }).then((response) => {
+                let data = response.data;
+                if(data) {
+                    this.kormass = data.data;
                 }
                 else {
                     console.log('No data');
@@ -197,7 +213,10 @@ export default {
         wbsmodel: null,
         srbmodel: null,
         hobmodel: null,
-        hbmodel: null
+        hbmodel: null,
+        kormass: null,
+        kormass_id: null,
+        field: null
     }
   },
   beforeCreate: function () {
