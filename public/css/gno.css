@@ -20,7 +20,7 @@ body {
     background-color: #20274e;
     padding: 15px 15px;
     text-align: left;
-    height: 270px;
+    height: 230px;
     margin-bottom: 15px;
 }
 
@@ -31,7 +31,7 @@ body {
     background-color: #20274e;
     padding: 15px 15px;
     text-align: left;
-    height: 215px;
+    height: 170px;
     margin-bottom: 15px;
 }
 
@@ -341,7 +341,7 @@ span.open, span.closer {
     font-size: 12px;
     position: relative;
     background-color: #20274e;
-    padding: 13px 33px 8px 15px;
+    padding: 8px 14px 0px 23px;
     text-align: left;
     margin-bottom: 15px;
 }
@@ -404,7 +404,7 @@ input.checkbox3 {
 .square2 {
     border: 1px solid #00CCFF;
     background: rgba(76, 190, 237, 0.278431);
-    width: 94px;
+    width: 60px;
     height: 20px;
     position: relative;
     color: white;
@@ -453,11 +453,37 @@ iframe.iframe {
     margin-bottom: 15px;
 }
 
+
 .modal-bign{
     color:black;
+    overflow-y: auto;
+    max-height: 800px;
+}
+
+.modal-bign2{
+    color:black;
+    overflow-y: auto;
+    max-height: 800px;
+    background: #134487;
 }
 
 table {
     color: black;
     height: 1000px;
+}
+
+td {
+    border: solid 1px #000;
+    text-align: center;
+    width: 80px;
+    border-color: #1b6bb0;
+    border-style: solid;
+    border-width: 1px;
+    background: #0F1430;
+    color: white;
+}
+
+
+.table th, .table td{
+    border-top: 1px solid #1b6bb0!important;
 }
