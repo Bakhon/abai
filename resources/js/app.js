@@ -10,6 +10,7 @@ import VueTableDynamic from 'vue-table-dynamic';
 import { PivotViewPlugin, FieldList } from '@syncfusion/ej2-vue-pivotview';
 import Vue from 'vue';
 import VueFriendlyIframe from 'vue-friendly-iframe';
+import { Plotly } from 'vue-plotly';
 
 
 
@@ -18,7 +19,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
 
-Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin,VueFriendlyIframe);
+Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly);
 
 
 /**
@@ -63,6 +64,7 @@ Vue.component('wm-create', require('./components/wm/create.vue').default);
 Vue.component('wm-edit', require('./components/wm/edit.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
 Vue.component('gno-line-points-chart', require('./components/gno/LinePointsChart.vue').default);
+Vue.component('gno-chart-bar', require('./components/gno/GnoChartBar.vue').default);
 Vue.component('gno-iframe', require('./components/FriendlyIframe/components/FriendlyIframe/index.vue').default);
 //Vue.component('gno-test-chart', require('./components/gno/Test.vue').default);
 Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);

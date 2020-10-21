@@ -228,10 +228,7 @@
                     <td class="left">Исследования скважин</td>
                     <td><input type="text" value="" class="square2"></td>
                 </tr>
-                <tr>
-                    <td class="left">Прочие</td>
-                    <td><input type="text" value="" class="square2"></td>
-                </tr>
+               
                 <tr>
                     <td class="left">Нерентабельные</td>
                     <td><input type="text" value="" class="square2"></td>
@@ -242,6 +239,10 @@
                 </tr>
                 <tr>
                     <td class="left">Ограничение скважин с чрф</td>
+                    <td><input type="text" value="" class="square2"></td>
+                </tr>
+                <tr>
+                    <td class="left">Прочие</td>
                     <td><input type="text" value="" class="square2"></td>
                 </tr>
                 <tr>
