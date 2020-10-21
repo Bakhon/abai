@@ -83,8 +83,8 @@ body {
     font-size: 12px;
     position: relative;
     /* width: 738px; */
-    background-color: #20274e;
-    padding: 15px 15px;
+    /* background-color: #20274e; */
+    /* padding: 15px 15px; */
     text-align: left;
     height: 220px;
     margin-bottom: 15px;
@@ -92,6 +92,8 @@ body {
     border-right-style: solid;
     border-color: #0F1430;
     border-right-width: 20px;
+    padding-right: 0px!important; 
+    padding-left: 0px!important;
 }
 
 .tables-string-gno44 {
@@ -99,11 +101,13 @@ body {
     font-size: 12px;
     position: relative;
     /* width: 738px; */
-    background-color: #20274e;
-    padding: 15px 15px;
+    /* background-color: #20274e; */
+   
     text-align: left;
-    height: 220px;
+    height: 280px;
     margin-bottom: 15px;
+    padding-right: 0px!important; 
+    padding-left: 0px!important;
 }
 
 .tables-string-gno5 {
@@ -286,7 +290,7 @@ input.checkbox0 {
     background: transparent none!important;
     position: relative;
     z-index: 1;
-    margin: -10px 0 -30px -310px;
+    margin: -10px 0 -30px -470px;
 }
 
 .spoiler>input[type="checkbox"]:focus {
@@ -427,4 +431,33 @@ input[type="radio"]:not(:checked) {
 input[type="radio"]:checked {
     /* Checked Styles */
     font-weight: 900;
+}
+
+
+iframe.iframe {
+    width: 1300px;
+    height: 500px;
+}
+
+.tables-string-gno44-inner {
+    padding: 15px 15px;
+    height: 220px;
+    background-color: #20274e;
+    margin-bottom: 15px;
+}
+
+.tables-string-gno4-inner{
+    padding: 15px 15px;
+    height: 220px;
+    background-color: #20274e;
+    margin-bottom: 15px;
+}
+
+.modal-bign{
+    color:black;
+}
+
+table {
+    color: black;
+    height: 1000px;
 }
