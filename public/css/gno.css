@@ -20,7 +20,7 @@ body {
     background-color: #20274e;
     padding: 15px 15px;
     text-align: left;
-    height: 270px;
+    height: 230px;
     margin-bottom: 15px;
 }
 
@@ -31,7 +31,7 @@ body {
     background-color: #20274e;
     padding: 15px 15px;
     text-align: left;
-    height: 215px;
+    height: 170px;
     margin-bottom: 15px;
 }
 
@@ -83,8 +83,8 @@ body {
     font-size: 12px;
     position: relative;
     /* width: 738px; */
-    background-color: #20274e;
-    padding: 15px 15px;
+    /* background-color: #20274e; */
+    /* padding: 15px 15px; */
     text-align: left;
     height: 220px;
     margin-bottom: 15px;
@@ -92,6 +92,8 @@ body {
     border-right-style: solid;
     border-color: #0F1430;
     border-right-width: 20px;
+    padding-right: 0px!important; 
+    padding-left: 0px!important;
 }
 
 .tables-string-gno44 {
@@ -99,11 +101,13 @@ body {
     font-size: 12px;
     position: relative;
     /* width: 738px; */
-    background-color: #20274e;
-    padding: 15px 15px;
+    /* background-color: #20274e; */
+   
     text-align: left;
-    height: 220px;
+    height: 280px;
     margin-bottom: 15px;
+    padding-right: 0px!important; 
+    padding-left: 0px!important;
 }
 
 .tables-string-gno5 {
@@ -286,7 +290,7 @@ input.checkbox0 {
     background: transparent none!important;
     position: relative;
     z-index: 1;
-    margin: -10px 0 -30px -310px;
+    margin: -10px 0 -30px -470px;
 }
 
 .spoiler>input[type="checkbox"]:focus {
@@ -337,7 +341,7 @@ span.open, span.closer {
     font-size: 12px;
     position: relative;
     background-color: #20274e;
-    padding: 13px 33px 8px 15px;
+    padding: 8px 14px 0px 23px;
     text-align: left;
     margin-bottom: 15px;
 }
@@ -400,7 +404,7 @@ input.checkbox3 {
 .square2 {
     border: 1px solid #00CCFF;
     background: rgba(76, 190, 237, 0.278431);
-    width: 94px;
+    width: 60px;
     height: 20px;
     position: relative;
     color: white;
@@ -427,4 +431,59 @@ input[type="radio"]:not(:checked) {
 input[type="radio"]:checked {
     /* Checked Styles */
     font-weight: 900;
+}
+
+
+iframe.iframe {
+    width: 1300px;
+    height: 500px;
+}
+
+.tables-string-gno44-inner {
+    padding: 15px 15px;
+    height: 220px;
+    background-color: #20274e;
+    margin-bottom: 15px;
+}
+
+.tables-string-gno4-inner{
+    padding: 15px 15px;
+    height: 220px;
+    background-color: #20274e;
+    margin-bottom: 15px;
+}
+
+
+.modal-bign{
+    color:black;
+    overflow-y: auto;
+    max-height: 800px;
+}
+
+.modal-bign2{
+    color:black;
+    overflow-y: auto;
+    max-height: 800px;
+    background: #134487;
+}
+
+table {
+    color: black;
+    height: 1000px;
+}
+
+td {
+    border: solid 1px #000;
+    text-align: center;
+    width: 80px;
+    border-color: #1b6bb0;
+    border-style: solid;
+    border-width: 1px;
+    background: #0F1430;
+    color: white;
+}
+
+
+.table th, .table td{
+    border-top: 1px solid #1b6bb0!important;
 }
