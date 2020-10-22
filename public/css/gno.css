@@ -216,7 +216,7 @@ body {
 .tables-two {}
 
 .select-gno {
-    width: 100%;
+    /* width: 100%; */
     /* text-align: center; */
     background: #20274e;
     color: white;
@@ -224,7 +224,7 @@ body {
     border-style: solid;
     border-width: 1px;
     margin-left: -16px;
-    padding: 0px 235px 0px 18px;
+    padding: 0px 0px 0px 18px;
 }
 
 .select-gno2 {
@@ -332,7 +332,7 @@ blockquote {
 
 span.open, span.closer {
     position: absolute;
-    margin-left: -60px;
+    margin-left: -110px;
     margin-top: 1px;
     font-size: 12px;
 }
