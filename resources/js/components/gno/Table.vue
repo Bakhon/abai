@@ -6387,7 +6387,8 @@
           </div>
         </modal>
 
-        <modal name="bign2" :width="1150" :height="395" :adaptive="true">
+        <modal name="bign2" :width="1150" :height="395" :adaptive="true" class="chart" style="    margin-top: -180px;
+    margin-left:100px;">
           <div class="modal-bign2">
             <gno-chart-bar></gno-chart-bar>
           </div>
