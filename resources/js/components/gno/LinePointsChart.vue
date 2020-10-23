@@ -1,5 +1,5 @@
 <template>
-  <Plotly :data="data" :layout="layout" :display-mode-bar="true"></Plotly>
+  <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
 </template>
 
 <script>
@@ -13,7 +13,9 @@ export default {
   data: function () {
     return {
       layout: {
+        //      showlegend: false,
         xaxis: {
+          hoverformat: ".1f",
           //  showline: true,
           zeroline: false,
           // showgrid: true,
@@ -23,6 +25,7 @@ export default {
           //tickfont: {size: 10},
         },
         yaxis: {
+          hoverformat: ".1f",
           // showline: true,
           zeroline: false,
           //showgrid: true,
@@ -2163,7 +2166,7 @@ export default {
           y: pintake_points2,
 
           marker: {
-            size: "20",
+            size: "15",
             color: "#CC6F3C",
           },
         },
@@ -2174,7 +2177,7 @@ export default {
           y: ipr_points2,
 
           marker: {
-            size: "20",
+            size: "15",
             color: "#FF0D18",
           },
         },
@@ -2184,7 +2187,7 @@ export default {
           x: qo_points2,
           y: freegas_points2,
           marker: {
-            size: "20",
+            size: "15",
             color: "#237DEB",
           },
         },
@@ -2195,7 +2198,7 @@ export default {
           y: [53.25],
           mode: "markers",
           marker: {
-            size: "20",
+            size: "15",
             color: "#00A0E3",
           },
         },
@@ -2206,7 +2209,7 @@ export default {
           y: [35.7],
           mode: "markers",
           marker: {
-            size: "20",
+            size: "15",
             color: "#13B062",
           },
         },
@@ -2217,7 +2220,7 @@ export default {
           y: [43.37],
           mode: "markers",
           marker: {
-            size: "20",
+            size: "15",
             color: "#FBA409",
           },
         },
