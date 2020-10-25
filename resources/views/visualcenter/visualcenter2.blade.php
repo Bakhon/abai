@@ -97,7 +97,7 @@
                     <td class="bg">(+,-)</td>
                 </tr>
                 <tr>
-                    <td class="fs">Всего, в т.ч</td>
+                    <td class="fs">Всего, в т.ч.</td>
                     <td>1</td>
                     <td>2</td>
                     <td><input type="text" value="" class="square2"></td>
@@ -127,7 +127,7 @@
                     <td>18</td>
                 </tr>
                 <tr>
-                    <td class="fs">Гсп ДЗО</td>
+                    <td class="fs">ГСП ДЗО</td>
                     <td>19</td>
                     <td>20</td>
                     <td><input type="text" value="" class="square2"></td>
@@ -179,7 +179,7 @@
                     <td>4</td>
                 </tr>
                 <tr>
-                    <td class="fs">В .т. ч. морская</td>
+                    <td class="fs">В т. ч. морская</td>
                     <td>1111</td>
                     <td>36</td>
                     <td><input type="text" value="" class="square2"></td>
@@ -209,11 +209,11 @@
                 </tr>
 
                 <tr>
-                    <td class="left">ПРС</td>
+                    <td class="left">ОПРС</td>
                     <td><input type="text" value="" class="square2"></td>
                 </tr>
                 <tr>
-                    <td class="left">ОПРС</td>
+                    <td class="left">ПРС</td>
                     <td><input type="text" value="" class="square2"></td>
                 </tr>
                 <tr>
@@ -228,10 +228,7 @@
                     <td class="left">Исследования скважин</td>
                     <td><input type="text" value="" class="square2"></td>
                 </tr>
-                <tr>
-                    <td class="left">Прочие</td>
-                    <td><input type="text" value="" class="square2"></td>
-                </tr>
+
                 <tr>
                     <td class="left">Нерентабельные</td>
                     <td><input type="text" value="" class="square2"></td>
@@ -240,8 +237,12 @@
                     <td class="left">Ограничение скважин по добыче</td>
                     <td><input type="text" value="" class="square2"></td>
                 </tr>
+                <!-- <tr>
+                    <td class="left">Ограничение скважин с ЧРФ</td>
+                    <td><input type="text" value="" class="square2"></td>
+                </tr>-->
                 <tr>
-                    <td class="left">Ограничение скважин с чрф</td>
+                    <td class="left">Прочие</td>
                     <td><input type="text" value="" class="square2"></td>
                 </tr>
                 <tr>
@@ -256,18 +257,35 @@
 
         </div>
 
+        <div class="right-side2">
+            <table>
+
+                <tr>
+                    <td class="left">Товарный остаток, тонн</td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td><input type="text" value="" class="square2"></td>
+                </tr>
+            </table>
+
+        </div>
+
         <br><br>
         <table>
             <tr>
                 <td class="fs" rowspan="3">Динамика фонда скважин</td>
                 <td class="bg" colspan="5">Добывающий фонд</td>
                 <td class="bg" rowspan="2">
-                    <div>Ожид.ликвид
+                    <div>Ожидание ликвидации
                 </td>
-                <td class="bg" rowspan="2">В консер-ии</td>
+                <td class="bg" rowspan="2">В консервации</td>
                 <td class="bg" colspan="5">Нагнетательный фонд</td>
                 <td class="bg" rowspan="2">
-                    <div>Ожид.ликвид
+                    <div>Ожидание ликвидации
                 </td>
                 <td class="bg" rowspan="2">В консервации</td>
             </tr>
@@ -281,7 +299,7 @@
                 <td class="bg">Действ.</td>
                 <td class="bg">Простой</td>
                 <td class="bg">Б/д</td>
-                <td class="bg">Обустр-во</td>
+                <td class="bg">Обустройство</td>
             </tr>
             <tr>
                 <td><input type="text" value="" class="square2"></td>
@@ -301,8 +319,10 @@
             </tr>
             <tr>
                 <td></td>
-                <td colspan="7">Из освоения 9816/73</td>
-                <td colspan="7">Из бурения 809/10</td>
+                <td colspan="7">
+                    <!--Из освоения 9816/73--> Здесь будет дополнительная информация </td>
+                <td colspan="7">
+                    <!--Из бурения 809/10--> Здесь будет дополнительная информация </td>
             </tr>
         </table>
 
@@ -352,11 +372,11 @@
         <table>
             <tr>
                 <td class="fs">Причины невыполнения</td>
-                <td></td>
+
             </tr>
         </table>
 
-        <br><br>
+        <br>
 
         <table>
             <tr>
@@ -393,7 +413,9 @@
 
             </tr>
             <tr>
-                <td>2</td>
+
+
+                <!--<td>2</td>
                 <td>41</td>
                 <td>19</td>
                 <td>8:54:00</td>
@@ -401,7 +423,16 @@
                 <td>6,9</td>
                 <td>0,8</td>
                 <td>0:11</td>
-                <td>Касание проводов спец/техникой трубоукладчика(ккс)</td>
+                <td>Касание проводов спец/техникой трубоукладчика(ккс)</td>-->
+                <td> <input type="text" value="" class="square2"></td>
+                <td> <input type="text" value="" class="square2"></td>
+                <td> <input type="text" value="" class="square2"></td>
+                <td> <input type="text" value="" class="square2"></td>
+                <td> <input type="text" value="" class="square2"></td>
+                <td> <input type="text" value="" class="square2"></td>
+                <td> <input type="text" value="" class="square2"></td>
+                <td> <input type="text" value="" class="square2"></td>
+                <td> <input type="text" value="" class="square2"></td>
             </tr>
             <tr>
                 <td></td>

@@ -24,7 +24,7 @@
         @include('layouts.sidebar')
         @elseif (basename(Request::url()) === "visualcenter")
         @include('layouts.visual-center-sidebar')
-        @elseif (basename(Request::url()) === "gno")
+        @elseif (basename(Request::url()) === "podborgno")
         @include('layouts.gno-sidebar')
         @elseif (basename(Request::url()) === "monitor")
         @include('layouts.gno-sidebar')

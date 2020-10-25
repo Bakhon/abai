@@ -100,6 +100,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('ecorefslist','Refs\EcoRefsScFaController@refsList');
         Route::get('nnoeco','Refs\EcoRefsScFaController@nnoeco');
         Route::resource('ecorefsexc','EcoRefsExcController');
+        Route::resource('antiecoone','AntiCrisis\AntiEcoOneController');
+        Route::resource('antiecotwo','AntiCrisis\AntiEcoTwoController');
     });
     Auth::routes([
         'reset' => false,
