@@ -71,6 +71,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/gethob', 'WaterMeasurementController@getHydrocarbonOxidizingBacteria');
         Route::get('/gethb', 'WaterMeasurementController@getThionicBacteria');
         Route::post('/getwm', 'WaterMeasurementController@getWm');
+        Route::get('/getallgus', 'WaterMeasurementController@getAllGu');
+        Route::post('/getgudata', 'WaterMeasurementController@getGuData');
+        Route::post('/getgudatabyday', 'OmgNGDUController@getGuDataByDay');
         Route::post('/updatewm', 'WaterMeasurementController@update')->name('updatewm');
         Route::resource('omgca','OmgCAController');
         Route::resource('omguhe','OmgUHEController');

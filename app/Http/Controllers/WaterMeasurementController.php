@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cdng;
+use App\Models\Corrosion;
 use App\Models\Gu;
+use App\Models\GuKormass;
 use App\Models\HydrocarbonOxidizingBacteria;
+use App\Models\Kormass;
 use App\Models\Ngdu;
+use App\Models\OmgUHE;
 use App\Models\OtherObjects;
 use App\Models\SulphateReducingBacteria;
 use App\Models\ThionicBacteria;
@@ -14,6 +18,7 @@ use App\Models\WaterTypeBySulin;
 use App\Models\Well;
 use App\Models\Zu;
 use App\Tables\WaterMeasurementTable;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -330,6 +335,70 @@ class WaterMeasurementController extends Controller
             'code'=>200,
             'message' => 'success',
             'data' => $wm
+        ]);
+    }
+
+    public function getAllGu(){
+        $gus = Gu::orderBy('name')->get();
+
+        return response()->json([
+            'code'=>200,
+            'message' => 'success',
+            'data' => $gus
+        ]);
+    }
+
+    public function getGuData(Request $request){
+        $wm = WaterMeasurement::where('gu_id','=',$request->gu_id)->get();
+        $uhe = OmgUHE::where('gu_id','=',$request->gu_id)->get();
+        $corrosion = Corrosion::where('gu_id','=',$request->gu_id)->get();
+        $kormass = GuKormass::where('gu_id','=',$request->gu_id)->with('kormass')->first();
+
+        $chartDtCarbonDioxide['dt']  = [];
+        $chartDtHydrogenSulfide['dt']  = [];
+        $chartDtCarbonDioxide['value']  = [];
+        $chartDtHydrogenSulfide['value']  = [];
+
+        foreach($wm as $row){
+            $date = new DateTime($row->date);
+            array_push($chartDtCarbonDioxide['dt'], $date->format('Y-m-d'));
+            array_push($chartDtHydrogenSulfide['dt'], $date->format('Y-m-d'));
+            array_push($chartDtCarbonDioxide['value'], $row->carbon_dioxide);
+            array_push( $chartDtHydrogenSulfide['value'], $row->hydrogen_sulfide);
+        }
+
+        $chartIngibitor['dt']  = [];
+        $chartIngibitor['value']  = [];
+        foreach($uhe as $row){
+            $date = new DateTime($row->date);
+            array_push($chartIngibitor['dt'], $date->format('Y-m-d'));
+            array_push($chartIngibitor['value'], $row->current_dosage);
+        }
+
+        $chartCorrosion['dt']  = [];
+        $chartCorrosion['value']  = [];
+        foreach($corrosion as $row){
+            $date = new DateTime($row->final_date_of_corrosion_velocity_with_inhibitor_measure);
+            array_push($chartCorrosion['dt'], $date->format('Y-m-d'));
+            array_push($chartCorrosion['value'], $row->corrosion_velocity_with_inhibitor);
+        }
+
+        if($kormass->kormass->name != 'Прямой УПСВ'){
+            $kn = explode("-", $kormass->kormass->name);
+            $kormass = $kn[1];
+        }else{
+            $kormass = 'Прямой УПСВ';
+        }
+
+
+        return response()->json([
+            'code'=>200,
+            'message' => 'success',
+            'chart1' => $chartDtCarbonDioxide,
+            'chart2' => $chartDtHydrogenSulfide,
+            'chart3' => $chartCorrosion,
+            'chart4' => $chartIngibitor,
+            'kormass' =>$kormass
         ]);
     }
 }
