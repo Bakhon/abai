@@ -27,7 +27,6 @@
                                 <th>Валюта:</th>
                                 <th>Дата:</th>
                                 <th>Тариф:</th>
-                                <th>Протяженность:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($ecorefstarifytn as $item)
@@ -42,7 +41,6 @@
                                     <td>{{ $item->exc->name }}</td>
                                     <td>{{ $item->date }}</td>
                                     <td>{{ $item->tn_rate }}</td>
-                                    <td>{{ $item->extent }}</td>
                                     <td>
                                         <form action="{{ route('ecorefstarifytn.destroy',$item->id) }}" method="POST">
                                             <a class="btn btn-primary" href="{{ route('ecorefstarifytn.edit',$item->id) }}">{{__('app.edit')}}</a>

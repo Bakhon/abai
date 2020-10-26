@@ -63,7 +63,6 @@ class EcoRefsTarifyTnController extends Controller
             'exc_id' => 'required',
             'date' => 'required',
             'tn_rate' => 'required',
-            'extent' => 'required',
         ]);
 
         EcoRefsTarifyTn::create($request->all());
@@ -123,7 +122,6 @@ class EcoRefsTarifyTnController extends Controller
             'exc_id' => 'required',
             'date' => 'required',
             'tn_rate' => 'required',
-            'extent' => 'required',
         ]);
 
         $EcoRefsTarifyTn->update($request->all());

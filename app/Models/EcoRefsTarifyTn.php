@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EcoRefsTarifyTn extends Model
 {
     protected $fillable = [
-        'sc_fa', 'branch_id', 'company_id', 'direction_id', 'route_id', 'route_tn_id', 'exc_id', 'date', 'tn_rate', 'extent'
+        'sc_fa', 'branch_id', 'company_id', 'direction_id', 'route_id', 'route_tn_id', 'exc_id', 'date', 'tn_rate'
     ];
 
     public function scfa()
