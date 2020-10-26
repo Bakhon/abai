@@ -115,12 +115,6 @@
                                         <input type="float" name="tn_rate" class="form-control" placeholder="Пример: 128">
                                     </div>
                                 </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Протяженность:</strong>
-                                        <input type="float" name="extent" class="form-control" placeholder="Пример: 702.67">
-                                    </div>
-                                </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                                     <button type="submit" class="btn btn-primary">{{__('app.submit')}}</button>
                                 </div>
