@@ -4,7 +4,7 @@ body {
 
 .table {
     color: white!important;
-  margin-bottom: unset!important;
+    margin-bottom: unset!important;
 }
 
 .left-side {
@@ -17,12 +17,9 @@ body {
     overflow: hidden;
 }
 
-
-
 .first-string {
     background: #272953;
 }
-
 
 .nu {
     height: 60px;
@@ -46,7 +43,6 @@ body {
 .txt2 {
     float: left;
 }
-
 
 .txt3 {
     float: left;
@@ -83,6 +79,11 @@ body {
     padding: 1rem 1.5rem !important;
 }
 
+.table4 td {
+width:80px;
+}
+
+
 td:last-of-type {
     border-right: unset!important;
 }
@@ -92,11 +93,7 @@ td:last-of-type {
     font-weight: 550;
 }
 
-
-.txt5 {
-
-}
-
+.txt5 {}
 
 .in-work {
     color: #82BAFF
@@ -121,7 +118,6 @@ td:last-of-type {
     border-radius: 10px;
 }
 
-
 .icon-all {
     position: relative;
     height: 30px;
@@ -133,9 +129,7 @@ td:last-of-type {
 }
 
 .icons1 {
-   
     background: white url(/img/visualcenter3/icon1.svg) 65% 30% no-repeat;
- 
 }
 
 .icons2 {
@@ -164,7 +158,7 @@ td:last-of-type {
 .button2 {
     position: relative;
     background: #333975;
-    width: 100%;
+    /* width: 100%; */
     height: 40px;
     text-align: center;
     line-height: 42px;
@@ -175,4 +169,83 @@ td:last-of-type {
     margin-left: 55px;
     margin-top: 6px;
     font-size: 13px;
+}
+
+.table-striped>tbody>tr:nth-child(2n+1)>td, .table-striped>tbody>tr:nth-child(2n+1)>th {
+    background: #454D7D;
+
+}
+
+td.first-td {
+    width: 330px!important;
+}
+
+/* Calendar */
+.month-day {
+    width: 293px;
+    width: unset!important;
+    background: unset!important;
+    height: 40px;
+    color: #fff;
+    height: 270px!important;
+}
+
+.calendar-tab {
+    margin-top: 10px;
+    width: 74px;
+    height: 25px;
+    background-color: #0F254A;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    margin-right: -4px !important;
+    outline: none;
+}
+
+.calendar-tab:focus {
+    width: 74px;
+    height: 25px;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    margin-right: -4px !important;
+    outline: none;
+    background-color: #15509D;
+}
+
+.calendar-days {
+    width: 300px;
+    height: 30px;
+    margin-left: 20px;
+}
+
+.calendar-day {
+    width: 260px;
+    margin-left: 20px;
+}
+
+.day-begin {
+    width: 14px;
+}
+
+.week {
+    float: left;
+    padding: 11px 11px 0px 10px!important;
+}
+/* Calendar */
+
+.bign1{
+    margin-left:-150px!important;
+    margin-top:150px!important;
+}
+
+.modal-bign{
+background:#272953;;
+}
+
+.progress{
+    height: 5px!important;
+}
+.progress-bar{
+background-color: #2E50E9!important;
 }
