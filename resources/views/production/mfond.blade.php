@@ -3,10 +3,11 @@
     {{-- content --}}
     <div class="col p-4" id="app">
         <h2 class="subtitle">Мехфонд</h2>
+        <button class="mleft" onclick="document.location='{{url('/')}}/ru/map'">Карта</button>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-            <iframe src="{{ url('http://cent7-bigdata.kmg.kz:9088/superset/dashboard/44') }}" width="100%" height="1050px" frameborder="0" allowfullscreen></iframe>
-            <iframe src="{{ url('http://localhost:8088/superset/dashboard/24') }}" width="100%" height="1050px" frameborder="0" allowfullscreen></iframe>
+            <iframe onload="this.style.opacity=1;" style="opacity:0;border:none;" src="{{ url('http://172.20.103.32:8080/superset/dashboard/7') }}" width="100%" height="1050px" frameborder="0" allowfullscreen></iframe>
+            <!--<iframe onload="this.style.opacity=1;" style="opacity:0;border:none;" src="{{ url('http://localhost:8088/superset/dashboard/24') }}" width="100%" height="1050px" frameborder="0" allowfullscreen></iframe>-->
             </div>
         </div>
     </div>
@@ -29,3 +30,4 @@
         display: none;
     }
 </style>
+
