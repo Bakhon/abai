@@ -1,7 +1,5 @@
 <template>
   <div>
-    
-
     <div class="col-9 left-side">
       <div class="first-string">
         <div class="table-responsive">
@@ -13,9 +11,21 @@
                   <div class="unit-vc">тыс. тонн</div>
                 </div>
                 <div class="txt1">Добыча нефти</div>
-                <div class="progress"><br />
-  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
+                <br/>
+                <div class="progress">
+                  <br />
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    :style="{
+                      width: widthProgress + '%',
+                    }"
+                    style="width: 25%;"
+                    aria-valuenow="25"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
                 <br />
                 <div class="arrow"></div>
                 <div class="txt2">5,2%</div>
@@ -54,9 +64,9 @@
         </div>
       </div>
 
-      <br />
+    
 
-      <div class="first-string">
+      <div class="first-string first-string2">
         <div>
           <!--class="table-responsive"-->
           <table class="table table2">
@@ -164,15 +174,15 @@
           </table>
         </div>
 
-        <div class="table-responsive">
+        <div>
           <table
-            class="table table4 table-striped"
-            v-for="(item, index) in bigTable"
+            class="table table4"
+        
             border="1"
           >
             <tbody>
-             <!--   <tr>
-              <td class="first-td"></td>
+              <!--   <tr>
+             <td class="first-td"></td>
                 <td colspan="7"></td>
                 <td></td>
                 <td></td>
@@ -186,33 +196,32 @@
                 <td>+/-</td>
                 <td>%</td>
               </tr>-->
-              <tr>
-                <td class="first-td">{{ item.dzoDay }}</td>
-                <td>  План: </td> <td colspan="6"  > 
-                <div class="progress"><br /> 
-<div class="progress-bar" role="progressbar" style="width: 25%"  aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"> </div>
- 
-</div></td> 
-<td> </td>
-<td> </td>
-<td> </td>
-           
-                <td>
+              <tr     v-for="(item, index) in bigTable">
+                <td
+                  :class="
+                    index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
+                  "
+                >
+                  {{ item.dzoDay }}
+                </td>
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'"></td>
+
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                   <div>
                     {{(new Intl.NumberFormat('ru-RU').format(item.planDay)) }}
                   </div>
                 </td>
-                <td>
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                   <div>
                     {{(new Intl.NumberFormat('ru-RU').format( item.factDay)) }}
                   </div>
                 </td>
-                <td>
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                   <div>
                     {{(new Intl.NumberFormat('ru-RU').format( item.factDay - item.planDay)) }}
                   </div>
                 </td>
-                <td>5,2%</td>
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">5,2%</td>
               </tr>
 
               <!--  <tr>
@@ -226,91 +235,120 @@
               <tr>
                 <td colspan="13">3</td>
               </tr>-->
+
+
+                    <tr>
+                <td
+                  :class="
+                    index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
+                  "
+                >
+                 Итого по операционным активам:
+                </td>
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'"></td>
+
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                  <div>
+                    {{(new Intl.NumberFormat('ru-RU').format(planDaySumm)) }}
+                  </div>
+                </td>
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                  <div>
+                    {{(new Intl.NumberFormat('ru-RU').format( factDaySumm)) }}
+                  </div>
+                </td>
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                  <div>
+                    {{(new Intl.NumberFormat('ru-RU').format( factDaySumm - planDaySumm)) }}
+                  </div>
+                </td>
+                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">5,2%</td>
+              </tr>
             </tbody>
           </table>
         </div>
-     
       </div>
 
- <modal name="bign1" :width="300" :height="300" :adaptive="true" class="bign1">
-          <div class="modal-bign">
-          
-     
-
-<div
-      class="calendar-tab"
-      v-for="(menuDMY, index) in menuDMY()"
-      @click="selectedDMY = menuDMY.id"
-      :style="{
-        'background-color': menuDMY.current,
-      }"
-    >
-      {{ menuDMY.DMY }}
-    </div>
-
-    <div class="month-day">
-      <div class="navigation-table" v-bind:style="{ display: display }">
-        <div class="navigation">
-          <div v-on:click="decrease"><</div>
-        </div>
-        <div class="navigation-month navigation" colspan="5">
-          {{ monthes[month] }} {{ year }}
-        </div>
-        <div class="navigation">
-          <div v-on:click="increase">></div>
-        </div>
-      </div>
-      <div style="clear: both;"></div>
-      <div class="calendar-days" v-bind:style="{ display: display }">
-        <div class="day" v-for="d in day">{{ d }}</div>
-      </div>
-      <div style="clear: both;"></div>
-      <div class="calendar-day">
-        <div v-for="week in calendar()">
+      <modal
+        name="bign1"
+        :width="300"
+        :height="300"
+        :adaptive="true"
+        class="bign1"
+      >
+        <div class="modal-bign">
           <div
-            @click="selectedDay = day.index"
-            class="week"
-            v-for="(day, index) in week"
+            class="calendar-tab"
+            v-for="(menuDMY, index) in menuDMY()"
+            @click="selectedDMY = menuDMY.id"
             :style="{
-              color: day.weekend,
-              'background-color': day.current,
+              'background-color': menuDMY.current,
             }"
-            v-on:click="displaynumbers"
           >
-            <div class="day-begin">{{ day.index }}</div>
+            {{ menuDMY.DMY }}
+          </div>
+
+          <div class="month-day">
+            <div class="navigation-table" v-bind:style="{ display: display }">
+              <div class="navigation">
+                <div v-on:click="decrease"><</div>
+              </div>
+              <div class="navigation-month navigation" colspan="5">
+                {{ monthes[month] }} {{ year }}
+              </div>
+              <div class="navigation">
+                <div v-on:click="increase">></div>
+              </div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="calendar-days" v-bind:style="{ display: display }">
+              <div class="day" v-for="d in day">{{ d }}</div>
+            </div>
+            <div style="clear: both;"></div>
+            <div class="calendar-day">
+              <div v-for="week in calendar()">
+                <div
+                  @click="selectedDay = day.index"
+                  class="week"
+                  v-for="(day, index) in week"
+                  :style="{
+                    color: day.weekend,
+                    'background-color': day.current,
+                  }"
+                  v-on:click="displaynumbers"
+                >
+                  <div class="day-begin">{{ day.index }}</div>
+                </div>
+              </div>
+              <div
+                class="week"
+                v-for="(month, index) in getMonths()"
+                :key="index.id"
+                :style="{
+                  'background-color': month.current,
+                }"
+                @click="selectedMonth = month.index"
+                v-on:click="displaynumbers"
+              >
+                {{ month.index }}
+              </div>
+
+              <div
+                class="week"
+                v-for="(year, index) in getYears()"
+                :key="year.id"
+                :style="{
+                  'background-color': year.current,
+                }"
+                @click="selectedYear = year.index"
+                v-on:click="displaynumbers"
+              >
+                {{ year.index }}
+              </div>
+            </div>
           </div>
         </div>
-        <div
-          class="week"
-          v-for="(month, index) in getMonths()"
-          :key="index.id"
-          :style="{
-            'background-color': month.current,
-          }"
-          @click="selectedMonth = month.index"
-          v-on:click="displaynumbers"
-        >
-          {{ month.index }}
-        </div>
-
-        <div
-          class="week"
-          v-for="(year, index) in getYears()"
-          :key="year.id"
-          :style="{
-            'background-color': year.current,
-          }"
-          @click="selectedYear = year.index"
-          v-on:click="displaynumbers"
-        >
-          {{ year.index }}
-        </div>
-      </div>
-    </div>
-      </div>
-   </modal>
-
-        
+      </modal>
     </div>
     <div class="col-3 right-side2">
       <div class="first-string">
@@ -318,7 +356,7 @@
           <table class="table table1">
             <tr>
               <td>
-                <div class="txt4">1005</div>
+                <div class="txt4">{{wells2[0].prod_wells_work}}</div>
                 <div class="in-work">В работе</div>
                 <br />
                 <div class="arrow"></div>
@@ -326,7 +364,7 @@
               </td>
 
               <td>
-                <div class="txt4">1011</div>
+                <div class="txt4">{{wells2[0].prod_wells_idle}}</div>
                 <div class="in-idle">В простое</div>
                 <br />
                 <div class="arrow"></div>
@@ -348,7 +386,7 @@
             <table class="table table1">
               <tr>
                 <td>
-                  <div class="txt4">1005</div>
+                  <div class="txt4">{{wells[0].inj_wells_work}}</div>
                   <div class="in-work">В работе</div>
                   <br />
                   <div class="arrow"></div>
@@ -356,7 +394,7 @@
                 </td>
 
                 <td>
-                  <div class="txt4">1011</div>
+                  <div class="txt4">{{wells[0].inj_wells_work}}</div>
                   <div class="in-idle">В простое</div>
                   <br />
                   <div class="arrow"></div>
@@ -377,8 +415,8 @@
         </div>
       </div>
 
-      <br />
-      <div class="first-string">
+   
+      <div class="first-string first-string2">
         <div class="table-responsive">
           <table class="table table3">
             <tr>
@@ -441,6 +479,8 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      index:'',
+      widthProgress: "90",
       //showTableItem: "No",]
       DMY: "День",
       item: "",
@@ -567,7 +607,7 @@ export default {
     };
   },
   methods: {
-      pushBign(bign) {
+    pushBign(bign) {
       switch (bign) {
         case "bign1":
           //  this.params.data = this.wellsList;
@@ -2286,20 +2326,4 @@ export default {
     localStorage.setItem("selectedDMY", "undefined");
   },
 };
-
-function animate(id) {
-  //var node = document.getElementById(id).childNodes[0];
-  var text = node.data;
-  setInterval(function () {
-    text = text.substring(1) + text[0];
-    node.data = text;
-  }, 125); //интервал прокрутки, мс
-}
-window.addEventListener(
-  "load",
-  function (e) {
-    animate("marqueeline");
-  },
-  false
-);
 </script>
