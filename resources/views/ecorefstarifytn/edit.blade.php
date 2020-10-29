@@ -113,7 +113,7 @@
                                         <strong>Маршрут ТН:</strong>
                                         <select class="form-control" name="route_tn_id">
                                         <option>Select Item</option>
-                                        @foreach ($route as $item)
+                                        @foreach ($routetn as $item)
                                             @if($item->id==$row->route_tn_id)
                                             <option value="{{ $item->id }}" selected>
                                                 {{ $item->name }}
@@ -156,12 +156,6 @@
                                     <div class="form-group">
                                         <strong>Тариф:</strong>
                                         <input type="float" name="tn_rate" value={{$row->tn_rate}} class="form-control" placeholder="Пример: 128">
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Протяженность:</strong>
-                                        <input type="float" name="extent" value={{$row->extent}} class="form-control" placeholder="Пример: 702.67">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

@@ -57,6 +57,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
         Route::get('/constructor', 'DruidController@constructor')->name('constructor');
+        Route::get('/export', 'HomeController@export');
 
 
         //wm
@@ -72,6 +73,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/gethob', 'WaterMeasurementController@getHydrocarbonOxidizingBacteria');
         Route::get('/gethb', 'WaterMeasurementController@getThionicBacteria');
         Route::post('/getwm', 'WaterMeasurementController@getWm');
+        Route::get('/getallgus', 'WaterMeasurementController@getAllGu');
+        Route::post('/getgudata', 'WaterMeasurementController@getGuData');
+        Route::post('/getgudatabyday', 'OmgNGDUController@getGuDataByDay');
         Route::post('/updatewm', 'WaterMeasurementController@update')->name('updatewm');
         Route::resource('omgca','OmgCAController');
         Route::resource('omguhe','OmgUHEController');
@@ -98,6 +102,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('ecorefslist','Refs\EcoRefsScFaController@refsList');
         Route::get('nnoeco','Refs\EcoRefsScFaController@nnoeco');
         Route::resource('ecorefsexc','EcoRefsExcController');
+        Route::resource('antiecoone','AntiCrisis\AntiEcoOneController');
+        Route::resource('antiecotwo','AntiCrisis\AntiEcoTwoController');
     });
     Auth::routes([
         'reset' => false,
