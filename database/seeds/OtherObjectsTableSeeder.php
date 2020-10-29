@@ -1,0 +1,17 @@
+<?php
+
+use App\Imports\OtherObjectsImport;
+use Illuminate\Database\Seeder;
+
+class OtherObjectsTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        Excel::import(new OtherObjectsImport, public_path('otherObjects.xlsx'));
+    }
+}

@@ -1,0 +1,287 @@
+.col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
+    position: relative;
+    width: 100%;
+    padding-right: 5px!important;
+    padding-left: 5px!important;
+}
+
+body {
+    color: white!important;
+}
+
+.tables-string-gno {
+    font-size: 12px;
+    background-color: #20274e;
+    text-align: left;
+    height: 204px;
+    margin-bottom: 10px;
+}
+
+.tables-string-gno3 {
+    font-size: 12px;
+    position: relative;
+    background-color: #20274e;
+    text-align: left;
+    height: 847px;
+    margin-bottom: 15px;
+    margin-top: -12px;
+}
+
+.tables-string-gno4 {
+    font-size: 12px;
+    position: relative;
+    background-color: #20274e;
+    text-align: left;
+    height: 360px;
+    margin-bottom: 10px;
+    margin-top: -12px;
+}
+
+.tables-string-gno5 {
+    font-size: 12px;
+    position: relative;
+    background-color: #20274e;
+    text-align: left;
+    height: 477px;
+    margin-top: 10px;
+}
+
+.heading {
+    float: left;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.head-monitor {
+    padding: 15px 0px 0px 18px;
+    margin-bottom: -15px;
+    font-size: 13px;
+    height: 46px;
+}
+
+.tables-one {
+    margin-top: -12px;
+}
+
+.radialbar {
+    position: absolute;
+    overflow: hidden;
+    width: 250px;
+}
+
+.center {
+    position: relative;
+    margin: 0px auto;
+    width: 1110px;
+}
+
+.schema {
+    height: 863px;
+    background: url(/img/monitor/schema.svg) no-repeat;
+    background-size: contain;
+    overflow: hidden;
+}
+
+.nav-string {
+    margin-left: 10px;
+    list-style-type: none;
+    display: inline-block;
+}
+
+.square2 {
+    border: 1px solid #00CCFF;
+    background: #272953;
+    width: 42px;
+    height: 15px;
+    position: relative;
+    color: white;
+}
+
+.gu2 {
+    width: 53px!important;
+    height: 24px!important;
+    font-size: 18px;
+    text-align: center;
+}
+
+ul.string1.col-12 {
+    position: relative;
+    top: 5px;
+    left: 295px;
+}
+
+ul.string2.col-12 {
+    position: relative;
+    top: 34px;
+    left: 72px;
+}
+
+ul.string3.col-12 {
+    position: relative;
+    top: 65px;
+    left: 470px;
+}
+
+ul.string4.col-12 {
+    position: relative;
+    top: 53px;
+    left: 384px;
+}
+
+ul.string5.col-12 {
+    position: relative;
+    top: 120px;
+    left: 545px;
+}
+
+ul.string6.col-12 {
+    position: relative;
+    top: 210px;
+    left: 255px;
+    width: 170px;
+}
+
+ul.string7.col-12 {
+    position: relative;
+    top: 240px;
+    left: 156px;
+    width: 173px;
+    height: 100px;
+}
+
+ul.string8.col-12 {
+    position: relative;
+    top: 170px;
+    left: -55px;
+}
+
+ul.string9.col-12 {
+    position: relative;
+    top: 228px;
+    left: 46px;
+}
+
+li.nav-string.vkor-fact {
+    position: relative;
+    left: 157px;
+}
+
+li.nav-string.vkor-ab {
+    position: relative;
+    left: 20px;
+    top: 20px;
+}
+
+li.nav-string.kormas {
+    position: relative;
+    left: 225px;
+    top: -36px;
+}
+
+.second {
+    margin-left: 340px;
+}
+
+.trio {
+    float: left;
+}
+
+.month-day {
+    width: 293px;
+    width: unset!important;
+    background: unset!important;
+    height: 40px;
+    color: #fff;
+    height: 175px!important;
+}
+
+.calendar-tab {
+    margin-top: 10px;
+    width: 74px;
+    height: 25px;
+    background-color: #0F254A;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    margin-right: -4px !important;
+    outline: none;
+}
+
+.calendar-tab:focus {
+    width: 74px;
+    height: 25px;
+    color: #fff;
+    display: inline-block;
+    text-align: center;
+    margin-right: -4px !important;
+    outline: none;
+    background-color: #15509D;
+}
+
+.gu {
+    position: relative;
+    float: left;
+    font-size: 25px;
+    left: -10px;
+    top: -8px;
+}
+
+.radial-bar-style {
+    margin-top: -46px;
+    margin-left: 90px;
+    font-size: 18px;
+    overflow: hidden;
+}
+
+.messages {
+    height: 80px;
+    margin-top: 10px;
+    background: #2D3170;
+    padding: 10px;
+}
+
+.rek {
+    position: relative;
+    text-align: center;
+    top: 25px;
+}
+
+.rek2 {
+    position: relative;
+    text-align: center;
+    top: 25px;
+    margin-top: 115px;
+}
+
+.navigation-table {
+    float: unset!important;
+    margin-left: 70px!important;
+}
+
+.calendar-days {
+    width: 300px;
+    height: 30px;
+    margin-left: 20px;
+}
+
+.calendar-day {
+    width: 260px;
+    margin-left: 20px;
+}
+
+.day-begin {
+    width: 14px;
+}
+
+.radialbar2 {
+    margin-top: -75px;
+}
+
+#chart {
+    height: 75px;
+}
+
+.week {
+    float: left;
+    padding: 11px 11px 0px 10px!important;
+}

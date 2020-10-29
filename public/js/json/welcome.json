@@ -1,0 +1,23 @@
+       [ {
+            "dzo": "ОМГ",
+            "proportion": "100%",
+            "gk_fact": "1173137",
+            "gas_fact": "148698",
+            "colors": "#3B86FF"
+        },
+        {
+            "dzo": "КТМ",
+            "proportion": "100%",
+            "gk_fact": "41640",
+            "gas_fact": "6419",
+            "colors": "#FF9769"
+        },
+        {
+            "dzo": "КГМ",
+            "proportion": "50%",
+            "gk_fact": "61910",
+            "gas_fact": "10203",
+            "colors": "#13B062"
+        }
+        ]
+    
