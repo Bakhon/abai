@@ -7,7 +7,7 @@
         <h2 class="subtitle">Отчет месячной замерной добычи нефти</h2>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-                   <iframe onload="this.style.opacity=1;" style="opacity:0;border:none;" src="{{ url('http://172.20.103.32:8080/superset/dashboard/20') }}" width="100%" height="1050px" frameborder="0" allowfullscreen></iframe>
+                   <iframe onload="this.style.opacity=1;" style="opacity:0;border:none;" src="http://172.20.103.32:8080/superset/dashboard/20" width="100%" height="1050px" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
     </div>
