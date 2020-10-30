@@ -14,7 +14,7 @@
     <div>
       Your date is {{ date }}
 
-      <vue-table-dynamic :params="params"> </vue-table-dynamic>
+      <vue-table-dynamic  ref="table" :params="params"> </vue-table-dynamic>
     </div>
   </div>
 </template>
@@ -41,6 +41,14 @@ export default {
           ["Cell-4", "Cell-5", "Cell-6"],
           ["Cell-7", "Cell-8", "Cell-9"],
         ],
+        enableSearch: true,
+            header: 'row',
+            border: true,
+            stripe: true,
+            pagination: true,
+            pageSize: 10,
+            pageSizes: [10, 20, 50],
+            height: 90
       },
       date: null,
       showCalendar: false,
