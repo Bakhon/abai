@@ -34,8 +34,12 @@
         <input type="hidden" name="date" v-model="datetimeEmpty" class="form-control" placeholder="">
 
         </div>
-        <label>Причина</label>
-        <div class="form-label-group">
+        <div class="form-label-group form-check">
+            <input type="checkbox" class="form-check-input" name="out_of_service_оf_dosing" v-model="out_of_service_оf_dosing">
+            <label class="form-check-label" for="out_of_service_оf_dosing">Простой дозатора, сутки</label>
+        </div>
+        <div class="form-label-group" v-show="out_of_service_оf_dosing">
+            <label>Причина</label>
             <textarea type="text" name="reason" class="form-control" placeholder="">
             </textarea>
         </div>
@@ -43,7 +47,7 @@
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>НГДУ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)">
+            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)" disabled>
             <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -57,15 +61,11 @@
         <div class="form-label-group">
             <input type="number" name="current_dosage" class="form-control" placeholder="">
         </div>
-        <div class="form-label-group form-check">
-            <input type="checkbox" class="form-check-input" name="out_of_service_оf_dosing">
-            <label class="form-check-label" for="out_of_service_оf_dosing">Простой дозатора, сутки</label>
-        </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>ЦДНГ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="cdng_id" v-model="cdng" @change="chooseCdng($event)">
+            <select class="form-control"  name="cdng_id" v-model="cdng" @change="chooseCdng($event)" disabled>
             <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -138,6 +138,19 @@ export default {
                     console.log('No data');
                 }
             });
+
+            this.axios.post("/ru/getgucdngngdufield", {
+                gu_id: event.target.value,
+            }).then((response) => {
+                let data = response.data;
+                if(data) {
+                    this.cdng = data.cdng;
+                    this.ngdu = data.ngdu;
+                }
+                else {
+                    console.log('No data');
+                }
+            });
         },
         chooseZu(event){
             this.axios.post("/ru/getwell", {
@@ -169,6 +182,7 @@ export default {
             {"id":"1", "name" : "Узень"},
             {"id":"2", "name" : "Карамандыбас"}
         ],
+        field: null,
         ngdu: null,
         cdng: null,
         gu: null,
@@ -178,7 +192,8 @@ export default {
         wbsmodel: null,
         srbmodel: null,
         hobmodel: null,
-        hbmodel: null
+        hbmodel: null,
+        out_of_service_оf_dosing: false
     }
   },
   beforeCreate: function () {
@@ -187,6 +202,16 @@ export default {
         let data = response.data;
         if(data) {
             this.ngdus = data.data;
+        }
+        else {
+            console.log('No data');
+        }
+    });
+
+    this.axios.get("/ru/getcdng").then((response) => {
+        let data = response.data;
+        if(data) {
+            this.cndgs = data.data;
         }
         else {
             console.log('No data');
@@ -227,6 +252,16 @@ export default {
         let data = response.data;
         if(data) {
             this.hb = data.data;
+        }
+        else {
+            console.log('No data');
+        }
+    });
+
+    this.axios.get("/ru/getallgus").then((response) => {
+        let data = response.data;
+        if(data) {
+            this.gus = data.data;
         }
         else {
             console.log('No data');

@@ -74,7 +74,7 @@
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>НГДУ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)">
+            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)" disabled>
             <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -191,32 +191,6 @@ Vue.use(Datetime)
 export default {
     name: "wm-create",
     methods: {
-        chooseNgdu(event){
-            this.axios.post("/ru/getcdng", {
-                ngdu_id: event.target.value,
-            }).then((response) => {
-                let data = response.data;
-                if(data) {
-                    this.cndgs = data.data;
-                }
-                else {
-                    console.log('No data');
-                }
-            });
-        },
-        chooseCdng(event){
-            this.axios.post("/ru/getgu", {
-                cdng_id: event.target.value,
-            }).then((response) => {
-                let data = response.data;
-                if(data) {
-                    this.gus = data.data;
-                }
-                else {
-                    console.log('No data');
-                }
-            });
-        },
         chooseGu(event){
             this.axios.post("/ru/getzu", {
                 gu_id: event.target.value,
@@ -224,6 +198,20 @@ export default {
                 let data = response.data;
                 if(data) {
                     this.zus = data.data;
+                    this.well = null
+                }
+                else {
+                    console.log('No data');
+                }
+            });
+
+            this.axios.post("/ru/getgucdngngdufield", {
+                gu_id: event.target.value,
+            }).then((response) => {
+                let data = response.data;
+                if(data) {
+                    this.cdng = data.cdng;
+                    this.ngdu = data.ngdu;
                 }
                 else {
                     console.log('No data');
@@ -290,6 +278,16 @@ export default {
         }
     });
 
+    this.axios.get("/ru/getcdng").then((response) => {
+        let data = response.data;
+        if(data) {
+            this.cndgs = data.data;
+        }
+        else {
+            console.log('No data');
+        }
+    });
+
     this.axios.get("/ru/getwbs").then((response) => {
         let data = response.data;
         if(data) {
@@ -324,6 +322,16 @@ export default {
         let data = response.data;
         if(data) {
             this.hb = data.data;
+        }
+        else {
+            console.log('No data');
+        }
+    });
+
+    this.axios.get("/ru/getallgus").then((response) => {
+        let data = response.data;
+        if(data) {
+            this.gus = data.data;
         }
         else {
             console.log('No data');

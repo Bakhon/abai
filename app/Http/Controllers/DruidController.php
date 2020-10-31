@@ -233,7 +233,7 @@ class DruidController extends Controller
     }
     public function corrosion(Request $request)
     {
-        if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('rhog') && 
+        if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('rhog') &&
         $request->has('d') && $request->has('mul') && $request->has('l') && $request->has('roughness') &&
         $request->has('mug') && $request->has('mug') && $request->has('P')) {
             //$flow = $request->flow;
@@ -244,10 +244,12 @@ class DruidController extends Controller
             //liquid density
             $rhol = $request->rhol;
             //flowrate of gas
-            $GOR = $request->GOR;
             $q_g = $q_l*$GOR;
             //denisty of gas
+
+            //TODO
             $rhog = $request->rhog;
+
             //mass flowrate of liquid
             $m_dotl = $rhol * $q_l;
             //mass flowrate of gas
@@ -258,6 +260,8 @@ class DruidController extends Controller
             $x = $m_dotg / $m_dot;
             //Viscosity of liquid
             $mul = $request->mul;
+
+            //TODO
             //Viscosity of gas
             $mug = $request->mug;
             //
@@ -276,14 +280,14 @@ class DruidController extends Controller
 //          Liquid-only properties, for calculation of E, dP_lo
 //          Calculate velocity
             $v_lo = $m_dot/$rhol/(pi()/4*$d**2);
-//          Calculate Reynolds number 
+//          Calculate Reynolds number
             $Re_lo = $v_lo * $d * $rhol / $mul;
             $A = pow(2.457 * log(1 / (pow(7/$Re_lo,0.9)+(0.27 * $roughness / $d))),16);
             $B = pow(37530 / $Re_lo,16);
-//          Calculate Friction factor            
+//          Calculate Friction factor
             $f_lo = 8 * pow(pow(8 / $Re_lo,12) + 1 / (pow($A+$B,1.5)),1 / 12);
             $dP_lo = $f_lo*$l/$d*(0.5*$rhol*$v_lo**2);
-            
+
 //          Gas-only properties, for calculation of E
             $v_go = $m_dot/$rhog/(pi()/4*$d**2);
             $Re_go = $v_go * $d * $rhog / $mug;
@@ -312,7 +316,7 @@ class DruidController extends Controller
 
 // dP =  Friedel(m, x, rhol, rhog, mul, mug, sigma, D, roughness, L)
             $P_final = $P - $dP/100000;
-            
+
             //TEMPERATURE CALCULATIONS TO BE ADDED LATER!!! 12.10.2010
             //These variables are constant for only ONE simulation
             //To be as INPUT in future
@@ -333,7 +337,7 @@ class DruidController extends Controller
             $k = 45;
             //thermal conductivity of fluid in W/(m*k)
             $k_f = 0.6;
-            //thermal conductivity of ground 
+            //thermal conductivity of ground
             $k_g = 0.774;
             //Outside temperature in K
             $to = 288.0;
@@ -341,13 +345,13 @@ class DruidController extends Controller
             $ti = 313.0;
             //heat capacity Cp fluid in J/kg*K
             $c_p = 4184.4;
-            //Stefan-Boltzmann constant 
+            //Stefan-Boltzmann constant
             $sigma_s = 5.678 * pow(10,-8); # W/m^2 K
             //print("sigma_s = ", sigma_s)
             //Emissivity of pipe material mild steel @ 20 C
             $epsilon = 0.12;
 
-            //Turn all values into floating points // from m3/day to kg/sec 
+            //Turn all values into floating points // from m3/day to kg/sec
             //$flow = $Q_h / 24 / 3600;
             //print("flow m3/sec = ", flow)
 
@@ -394,7 +398,7 @@ class DruidController extends Controller
             //According to Dalton's law of partial pressures, the partial pressure of CO2 is proportional to the mole fraction
             //First we need to get the solubility coefficient from the following formula:
             //Henry's Law constant: kH(T) = kH * exp(d(ln(kH))/d(1/T) ((1/T) - 1/(298.15 K)))
-            //where kH as per NIST 0.034 mol/lg*bar, 
+            //where kH as per NIST 0.034 mol/lg*bar,
             //d(ln(kH))/d(1/T) = 2600
             $khCO2 = 0.034;
             $dtCO2 = 2600;
@@ -412,7 +416,7 @@ class DruidController extends Controller
             $co2 = $pCO2 / 1000; //convert to float type and MPa
 
             //def corrosion_rate(co2,t):
-                
+
             $a = 7.96 - 2320 / ($t+273);
             $b = $t * 5.55 * pow(10,-3);
             $c = 0.67 * log10($co2);
@@ -429,7 +433,7 @@ class DruidController extends Controller
             // According to Dalton's law of partial pressures, the partial pressure of CO2 is proportional to the mole fraction
             // First we need to get the solubility coefficient from the following formula:
             // Henry's Law constant: kH(T) = kH * exp(d(ln(kH))/d(1/T) ((1/T) - 1/(298.15 K)))
-            // where kH as per NIST 0.034 mol/lg*bar, 
+            // where kH as per NIST 0.034 mol/lg*bar,
             // d(ln(kH))/d(1/T) = 2600
             $khCO2 = 0.034;
             $dtCO2 = 2600;
@@ -460,7 +464,7 @@ class DruidController extends Controller
             $ppmH2S = $conH2S * 10000;
             $pH2S = $pH2S / 1000;  #convert to float type and MPa
 
-            $ratio = $pCO2 / $pH2S; 
+            $ratio = $pCO2 / $pH2S;
 
             if ($pCO2 / $pH2S >= 500){
                 $x = 7.96 - 2320 / ($t+273);
@@ -494,15 +498,15 @@ class DruidController extends Controller
                     //return $dose;
                 }
             }
-            
+
             else {
                 $dose = 0; }
-            
+
             //****************************//
             //LOCAL CORROSION CALCULATION*//
             //****************************//
                 //H2O water concentration in %
-                $H2O = 0.90;                  
+                $H2O = 0.90;
                 //Please enter T temperature in C
                 $T = $t_final - 273;
                 //Pressure in bar [convert to psi]
@@ -513,14 +517,14 @@ class DruidController extends Controller
                 $pCO2 = $pCO2 * 0.1450377377;
                 //SO4 partial pressure in mg/dm3 [convert to ppm]
                 $SO4 = 200;
-                $SO4 = $SO4 * 1; 
+                $SO4 = $SO4 * 1;
                 //HCO3 partial pressure in mg/dm3 [convert to ppm]
                 $HCO3 = 200;
-                $HCO3 = $HCO3 * 1; 
+                $HCO3 = $HCO3 * 1;
                 //CL partial pressure in mg/dm3 [convert to ppm] :  "))
                 $Cl = 200;
-                $Cl = $Cl * 1; 
-                
+                $Cl = $Cl * 1;
+
                 //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
 
                 $pcr_W = 0.51 * $H2O + 12.13;
@@ -531,10 +535,10 @@ class DruidController extends Controller
                 $pcr_SO4 = -0.013 * $SO4 + 57;
                 $pcr_HCO3 = -0.014 * $HCO3 + 81;
                 $pcr_Cl = -0.0007 * $Cl + 9.2;
-                    
+
                 $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
                 $PCR = array_sum($arr)/8;
-                    
+
 
         $vdata = [
             'Final pressure' => $P_final,
@@ -551,23 +555,12 @@ class DruidController extends Controller
             'CO2 mg perl' => round($CO2,4),
             'environment' => $output,
             'pCO2 per pH2S' => $ratio,
-            'Papavinasam corrosion' => $PCR,
-            //var_dump(round(5.045, 2));
-            // 'averageProfitlessCat1MonthCount' => round($averageProfitlessCat1Month),
-            // 'prs' => round($array5[0]["prs1"]),
-            // 'wellsList' => $data['wellsList'],
-            // 'OperatingProfitMonth' => $data['OperatingProfitMonth'],
-            // 'OperatingProfitYear' => $data['OperatingProfitYear'],
-            // 'prs1' => $data['prs1'],
-            // 'chart1' => $dataChart,
-            // 'chart2' => $dataChart2,
-            // 'chart3' => $dataChart3,
-            // 'chart4' => $dataChart4,
+            'Papavinasam corrosion' => $PCR
         ];
 
 
-        return response()->json($vdata); 
- 
+        return response()->json($vdata);
+
 
         } else {
             return "Error. Invalid url";
