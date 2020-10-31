@@ -36,6 +36,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/visualcenter2', 'DruidController@visualcenter2')->name('visualcenter2');
+        Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');

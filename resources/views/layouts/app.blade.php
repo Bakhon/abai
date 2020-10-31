@@ -28,17 +28,19 @@
         @include('layouts.gno-sidebar')
         @elseif (basename(Request::url()) === "monitor")
         @include('layouts.gno-sidebar')
+        @elseif (basename(Request::url()) === "visualcenter3")
+        @include('layouts.gno-sidebar')
         @endif
 
 
         @if (basename(Request::url()) === "oilpivot")
-            <div class="col">
-                @yield('content')
-            </div>
+        <div class="col">
+            @yield('content')
+        </div>
         @else
-            <div class="col p-4">
-                @yield('content')
-            </div>
+        <div class="col p-4">
+            @yield('content')
+        </div>
         @endif
     </div>
 </body>
