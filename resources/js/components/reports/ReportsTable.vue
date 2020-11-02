@@ -157,7 +157,7 @@ export default {
         this.year = event.target.value;
 
     },
-  },
+  }, 
 };
 </script>
 <style>

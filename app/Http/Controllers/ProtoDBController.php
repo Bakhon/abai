@@ -59,7 +59,7 @@ public function getProtoOtchet1(Request $request)
                 ->where('month', '=', $request->month)
                 ->where('year', '=', $request->year)
                 ->where('dzo_short', '=', $request->org);
-        }
+        } 
         else {
             $builder
                 ->interval('2014-01-01T00:00:00+00:00/2020-10-31T00:00:00+00:00')

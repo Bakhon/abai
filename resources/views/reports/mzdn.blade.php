@@ -29,7 +29,7 @@
     }
     .top{
         display: none;
-    }
+    } 
 </style>
 
 
