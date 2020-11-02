@@ -81,7 +81,7 @@
     <div>
       <!-- Дата {{ date }} -->
 
-      <vue-table-dynamic :params="params"> </vue-table-dynamic>
+      <vue-table-dynamic  ref="table" :params="params"> </vue-table-dynamic>
     </div>
     
   </div>
