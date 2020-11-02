@@ -70,9 +70,11 @@ Vue.component('gno-iframe', require('./components/FriendlyIframe/components/Frie
 Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);
 Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
 Vue.component('monitor-chart-bar', require('./components/monitor/MonitorChartBar.vue').default);
-Vue.component('monitor-chart-bar-rounded', require('./components/monitor/MonitorChartBarRounded.vue').default);
+Vue.component('monitor-chart1', require('./components/monitor/chart1.vue').default);
+Vue.component('monitor-chart2', require('./components/monitor/chart2.vue').default);
+Vue.component('monitor-chart3', require('./components/monitor/chart3.vue').default);
 Vue.component('monitor-chart-donut', require('./components/monitor/MonitorChartDonut.vue').default);
-Vue.component('monitor-chart-tide', require('./components/monitor/MonitorChartTide.vue').default);
+Vue.component('monitor-chart-tide', require('./components/monitor/chart4.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('omgca-create', require('./components/omgca/create.vue').default);
 Vue.component('omgca-edit', require('./components/omgca/edit.vue').default);

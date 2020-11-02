@@ -37,6 +37,14 @@ td {
     padding: 0px 25px 120px 16px;
 }
 
+
+.right-side2 {
+    width: 235px;
+    float: left;
+    margin-left: 25px; 
+    padding: 0px 25px 120px 16px;
+}
+
 td.left {
     text-align: left;
     padding: 2px 5px 5px;

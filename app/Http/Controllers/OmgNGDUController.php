@@ -146,4 +146,14 @@ class OmgNGDUController extends Controller
             'data' => $kormass
         ]);
     }
+
+    public function getGuDataByDay(Request $request){
+        $guData = OmgNGDU::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
+
+        return response()->json([
+            'code'=>200,
+            'message' => 'success',
+            'data' => $guData
+        ]);
+    }
 }
