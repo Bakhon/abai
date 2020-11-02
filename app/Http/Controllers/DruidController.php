@@ -238,11 +238,7 @@ return $response;
     }
     public function corrosion(Request $request)
     {
-<<<<<<< HEAD
-        if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('SG') && 
-=======
         if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('rhog') &&
->>>>>>> 3266f14bbab8920cacb63e2955b68fc8d82ba4d9
         $request->has('d') && $request->has('mul') && $request->has('l') && $request->has('roughness') &&
         $request->has('mug') && $request->has('mug') && $request->has('P')) {
             //flowrate of liquid q_l
@@ -267,13 +263,7 @@ return $response;
             $x = $m_dotg / $m_dot;
             //Dead oil viscosity
             $mul = $request->mul;
-<<<<<<< HEAD
-            // //Viscosity of gas
-=======
-
-            //TODO
             //Viscosity of gas
->>>>>>> 3266f14bbab8920cacb63e2955b68fc8d82ba4d9
             $mug = $request->mug;
             $sigma = $request->sigma;
             $d = $request->d;
