@@ -103,6 +103,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefsexc','EcoRefsExcController');
         Route::resource('antiecoone','AntiCrisis\AntiEcoOneController');
         Route::resource('antiecotwo','AntiCrisis\AntiEcoTwoController');
+        Route::resource('ecorefsprocdob','EcoRefsProcDobController');
+        Route::resource('ecorefsavgprs','EcoRefsAvgPrsController');
+
     });
     Auth::routes([
         'reset' => false,

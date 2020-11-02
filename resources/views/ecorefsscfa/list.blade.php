@@ -28,6 +28,8 @@
                     <a href="{{url('/')}}/ru/ecorefsmacro" class="list-group-item list-group-item-action"> Курс доллара/Курс рубля/Инфляция, в % на конец периода</a>
                     <a href="{{url('/')}}/ru/ecorefsrenttax" class="list-group-item list-group-item-action"> Рентный налог</a>
                     <a href="{{url('/')}}/ru/ecorefsexc" class="list-group-item list-group-item-action"> Тенге/Доллар/Рубль</a>
+                    <a href="{{url('/')}}/ru/ecorefsprocdob" class="list-group-item list-group-item-action"> Процент от добычи на реализацию</a>
+                    <a href="{{url('/')}}/ru/ecorefsavgprs" class="list-group-item list-group-item-action"> Средняя продолжительность 1 ПРС, сут</a>
                 </div>
             </div>
         </div>
