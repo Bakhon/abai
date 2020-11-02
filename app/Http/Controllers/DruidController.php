@@ -233,21 +233,22 @@ class DruidController extends Controller
     }
     public function corrosion(Request $request)
     {
-        if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('rhog') && 
+        if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('SG') && 
         $request->has('d') && $request->has('mul') && $request->has('l') && $request->has('roughness') &&
         $request->has('mug') && $request->has('mug') && $request->has('P')) {
             //$flow = $request->flow;
-            //flowrate of liquid
-            $q_l = $request->q_l;
-            $GOR = $request->GOR;
-            $q_l = $q_l / 24.0 / 60.0 / 60.0 * (1 - $GOR);
+            //flowrate of liquid            
+            $q_l = $request->q_l; // input in pipesim
+            $WC = 30; // input in pipesim
+            $q_l = $q_l / 24.0 / 60.0 / 60.0 * (1 - $WC); // input in pipesim
             //liquid density
-            $rhol = $request->rhol;
+            $rhol = $request->rhol; //input in pipesim 
             //flowrate of gas
-            $GOR = $request->GOR;
-            $q_g = $q_l*$GOR;
-            //denisty of gas
-            $rhog = $request->rhog;
+            $GOR = $request->GOR; // input in pipesim
+            $q_g = $q_l * $GOR;
+            //density of gas
+            $SG = $request-> SG;
+            $rhog = $SG * 1.204 // 1.204 kg/m3 = SG of Water
             //mass flowrate of liquid
             $m_dotl = $rhol * $q_l;
             //mass flowrate of gas
@@ -256,23 +257,18 @@ class DruidController extends Controller
             $m_dot = $m_dotl + $m_dotg;
             //Density of two phase
             $x = $m_dotg / $m_dot;
-            //Viscosity of liquid
+            //Dead oil viscosity
             $mul = $request->mul;
-            //Viscosity of gas
+            // //Viscosity of gas
             $mug = $request->mug;
-            //
             $sigma = $request->sigma;
             $d = $request->d;
             $roughness = $request->roughness;
             $l = $request->l;
             $P = $request->P;
-            // $t = $request->t;
-            // $gor = $request->gor;
-            // $wc = $request->wc;
             //Gravitational acceleration
             $g = 9.8;
             // $h = $request->h;
-
 //          Liquid-only properties, for calculation of E, dP_lo
 //          Calculate velocity
             $v_lo = $m_dot/$rhol/(pi()/4*$d**2);
