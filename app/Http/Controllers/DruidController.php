@@ -15,13 +15,13 @@ class DruidController extends Controller
     public function index()
     {
 
-        // $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-        // $response = $client->query('well_daily_oil2_v4', Granularity::ALL)
-        //     ->interval('2012-12-24 20:00:00', '2020-12-24 22:00:00')
-        //     ->count('totalNrRecords')
-        //     ->execute();
-
-        return view('druid');
+        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+        $response = $client->query('month_meter_prod_oil_v02', Granularity::MONTH)
+            ->interval('2014-01-01 20:00:00', '2020-10-20 22:00:00')
+            ->count('totalNrRecords')
+            ->execute();
+return $response;
+     //   return view('druid');
     }
 
     public function getOilPrice(Request $request)
@@ -57,6 +57,11 @@ class DruidController extends Controller
     public function visualcenter2()
     {
         return view('visualcenter.visualcenter2');
+    }
+
+    public function visualcenter3()
+    {
+        return view('visualcenter.visualcenter3');
     }
 
     public function production()
