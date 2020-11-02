@@ -178,7 +178,7 @@ export default {
                 this.is_data_fetched = true,
                 this.params.data = data.wellsList,
                 this.$emit('chart1', data.chart1),
-                this.$emit('chart2', data.chart2)
+                this.$emit('chart2', data.chart2),
                 this.$emit('chart3', data.chart3),
                 this.$emit('chart4', data.chart4)
             }

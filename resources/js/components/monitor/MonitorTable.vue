@@ -1,27 +1,55 @@
 <template>
   <div class="main col-md-12 col-lg-12 row">
+      <modal name="economicmodal" :width="1000" :height="430" :adaptive="true">
+        <div class="container economicModal">
+            <div class="row">
+                <div class="col-9">
+                    <h3 class="economicHeader">Экономический эффект</h3>
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-success">Скачать отчет в excel</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <monitor-chart1></monitor-chart1>
+                </div>
+                <div class="col-6">
+                    <monitor-chart1></monitor-chart1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <monitor-chart-tide></monitor-chart-tide>
+                </div>
+                <div class="col-6">
+                    <monitor-chart-tide></monitor-chart-tide>
+                </div>
+            </div>
+        </div>
+      </modal>
+
     <div class="tables-one col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-2">
       <div class="tables-string-gno col-12">
         <div class="head-monitor">Фактическая содержание углекислого газа</div>
-
-        <!-- <div><monitor-chart-tide></monitor-chart-tide></div>-->
-        <monitor-chart-bar-rounded></monitor-chart-bar-rounded>
+        <monitor-chart1></monitor-chart1>
       </div>
 
       <div class="tables-string-gno col-12">
         <div class="head-monitor">Фактическое содержание сероводорода</div>
-        <monitor-chart-bar-rounded></monitor-chart-bar-rounded>
+        <monitor-chart2></monitor-chart2>
       </div>
 
       <div class="tables-string-gno col-12">
         <div class="head-monitor">Фактическая скорость коррозии</div>
-
-        <monitor-chart-bar-rounded></monitor-chart-bar-rounded>
+        <monitor-chart3></monitor-chart3>
       </div>
 
       <div class="tables-string-gno col-12">
         <div class="head-monitor">Фактическая закачка ингибитора коррозии</div>
-        <div><monitor-chart-tide></monitor-chart-tide></div>
+        <div>
+            <monitor-chart-tide></monitor-chart-tide>
+        </div>
       </div>
     </div>
 
@@ -31,17 +59,17 @@
           <div class="schema">
             <ul class="string1 col-12">
               <li class="nav-string">
-                Q1 м3/сут<input type="text" class="square2" value="888.88" />
+                Q1 м3/сут<input type="text" class="square2" v-model="daily_fluid_production_kormass" />
                 м3/сут
               </li>
 
               <li class="nav-string">
-                р<input type="text" class="square2" value="888.88" />
+                р<input type="text" class="square2" v-model="pressure" />
                 бар
               </li>
 
               <li class="nav-string">
-                t3 выход<input type="text" class="square2" value="888.88" />
+                t3 выход<input type="text" class="square2" v-model="temperature" />
                 C
               </li>
             </ul>
@@ -49,7 +77,18 @@
             <ul class="string2 col-12">
               <li class="nav-string">
                 <div class="gu"></div>
-                <input type="text" class="square2 gu2" value="25" />
+                <div class="form-label-group">
+                  <select
+                    class="form-control form-control-sm"
+                    name="gu_id"
+                    v-model="gu"
+                    @change="chooseGu($event)"
+                  >
+                    <option v-for="row in gus" v-bind:value="row.id">
+                      {{ row.name }}
+                    </option>
+                  </select>
+                </div>
               </li>
 
               <li class="nav-string second">
@@ -59,7 +98,7 @@
 
               <li class="nav-string kormas">
                 <div class=""></div>
-                <input type="text" class="square2 gu2" value="25" />
+                <input type="text" class="square2 gu2" v-model = "kormass" />
               </li>
             </ul>
 
@@ -72,17 +111,17 @@
 
             <ul class="string4 col-12">
               <li class="nav-string">
-                Q1 м3/сут<input type="text" class="square2" value="888.88" />
+                Q1 м3/сут<input type="text" class="square2" v-model="daily_fluid_production" />
               </li>
 
               <li class="nav-string">
-                t2 выход<input type="text" class="square2" value="888.88" />С
+                t2 выход<input type="text" class="square2" v-model="heater_output_pressure" />С
               </li>
             </ul>
 
             <ul class="string5 col-12">
               <li class="nav-string">
-                T1вход <input type="text" class="square2" value="25" /> C
+                T1вход <input type="text" class="square2" v-model="heater_inlet_pressure" /> C
               </li>
             </ul>
 
@@ -98,11 +137,11 @@
                 </li>
 
                 <li class="nav-string">
-                  ИК (факт)<input type="text" class="square2" value="888.88" />
+                  ИК (факт)<input type="text" class="square2" v-model="current_dosage" />
                   г/м3
                 </li>
                 <li class="nav-string">
-                  ИК (план)<input type="text" class="square2" value="888.88" />
+                  ИК (план)<input type="text" class="square2" v-model="plan_dosage" />
                   г/м3
                 </li>
               </ul>
@@ -121,14 +160,14 @@
 
               <ul class="string9 col-12">
                 <li class="nav-string">
-                  р <input type="text" class="square2" value="888.88" /> бар
+                  р <input type="text" class="square2" v-model="surge_tank_pressure" /> бар
                 </li>
               </ul>
             </div>
             <div class="col-4 trio">
               <ul class="string8 col-12">
                 <li class="nav-string">
-                  р <input type="text" class="square2" value="888.88" /> бар
+                  р <input type="text" class="square2"  v-model="pump_discharge_pressure" /> бар
                 </li>
               </ul>
             </div>
@@ -136,367 +175,174 @@
         </div>
       </div>
     </div>
-
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-2 col-xl-2">
       <div class="tables-string-gno4">
         <div class="head-monitor">Рекомендации</div>
         <div class="rek">Рекомендации дозирования ИК</div>
         <monitor-chart-radialbar></monitor-chart-radialbar>
-        <div class="head-monitor">Сообщения</div>
-        <div class="messages">В нашем здании будет проводится мероприятие</div>
-
-        <div class="head-monitor">Ответственный: Ипполитов К.В.</div>
-        <div class="responsible"></div>
+        <div v-if="signalizotor > 0 && signalizotor != null" class="text-wrap">
+            <div v-if="signalizotorAbs <= 10" class="alert alert-success" role="alert">
+            Плановая превышает фактическую дозировку на {{signalizotorAbs}}%
+            </div>
+            <div v-if="signalizotorAbs > 10 && signalizotorAbs <=30" class="alert alert-warning" role="alert">
+            Плановая превышает фактическую дозировку на {{signalizotorAbs}}%
+            </div>
+            <div v-if="signalizotorAbs > 30" class="alert alert-danger" role="alert">
+            Плановая превышает фактическую дозировку на {{signalizotorAbs}}%
+            </div>
+        </div>
+        <div v-if="signalizotor < 0 && signalizotor != null" class="text-wrap">
+            <div v-if="signalizotorAbs <= 10" class="alert alert-success" role="alert">
+            Фактическая превышает плановую дозировку на {{signalizotorAbs}}%
+            </div>
+            <div v-if="signalizotorAbs > 10 && signalizotorAbs <=30" class="alert alert-warning" role="alert">
+            Фактическая превышает плановую дозировку на {{signalizotorAbs}}%
+            </div>
+            <div v-if="signalizotorAbs > 30" class="alert alert-danger" role="alert">
+            Фактическая превышает плановую дозировку на {{signalizotorAbs}}%
+            </div>
+        </div>
+        <div class="responsible">
+            <button type="button" class="btn btn-info" @click="pushBtn">Экономический эффект</button>
+        </div>
       </div>
-      <div class="tables-string-gno5">
-        <div class="head-monitor">Календарь</div>
-        <div
-          class="calendar-tab"
-          v-for="(menuDMY, index) in menuDMY()"
-          @click="selectedDMY = menuDMY.id"
-          :style="{
-            'background-color': menuDMY.current,
-          }"
+      <!-- <div class="tables-string-gno4">
+      </div> -->
+      <div class="tables-string-gno4">
+        <calendar
+          is-dark
+          is-expanded
+          :first-day-of-week="2"
+          locale="ru"
+          :max-date="new Date()"
+          @dayclick="dayClicked"
         >
-          {{ menuDMY.DMY }}
-        </div>
-
-        <div class="month-day">
-          <div class="navigation-table" v-bind:style="{ display: display }">
-            <div class="navigation">
-              <div v-on:click="decrease"><</div>
-            </div>
-            <div class="navigation-month navigation" colspan="5">
-              {{ monthes[month] }} {{ year }}
-            </div>
-            <div class="navigation">
-              <div v-on:click="increase">></div>
-            </div>
-          </div>
-          <div style="clear: both;"></div>
-          <div class="calendar-days" v-bind:style="{ display: display }">
-            <div class="day" v-for="d in day">{{ d }}</div>
-          </div>
-          <div style="clear: both;"></div>
-          <div class="calendar-day">
-            <div v-for="week in calendar()">
-              <div
-                @click="selectedDay = day.index"
-                class="week"
-                v-for="(day, index) in week"
-                :style="{
-                  color: day.weekend,
-                  'background-color': day.current,
-                }"
-                v-on:click="displaynumbers"
-              >
-                <div class="day-begin">{{ day.index }}</div>
-              </div>
-            </div>
-            <div
-              class="week"
-              v-for="(month, index) in getMonths()"
-              :key="index.id"
-              :style="{
-                'background-color': month.current,
-              }"
-              @click="selectedMonth = month.index"
-              v-on:click="displaynumbers"
-            >
-              {{ month.index }}
-            </div>
-
-            <div
-              class="week"
-              v-for="(year, index) in getYears()"
-              :key="year.id"
-              :style="{
-                'background-color': year.current,
-              }"
-              @click="selectedYear = year.index"
-              v-on:click="displaynumbers"
-            >
-              {{ year.index }}
-            </div>
-          </div>
-        </div>
-        <div class="radialbar2">
-          <div class="rek2">Фактическая закачка ИК</div>
-          <monitor-chart-radialbar></monitor-chart-radialbar>
-        </div>
+        </calendar>
       </div>
     </div>
-    <!--<monitor-chart-donut></monitor-chart-donut>-->
-    <!--<monitor-chart-bar></monitor-chart-bar>-->
   </div>
 </template>
 
 <script>
-import { EventBus } from "../../event-bus.js";
+import Calendar from "v-calendar/lib/components/calendar.umd";
+import DatePicker from "v-calendar/lib/components/date-picker.umd";
+import VModal from 'vue-js-modal';
+
+Vue.component("calendar", Calendar);
+Vue.component("date-picker", DatePicker);
 export default {
+  components: {
+    Calendar,
+    DatePicker,
+  },
   data: function () {
     return {
-      display: "none",
-      date: new Date(),
-      selectedDay: undefined,
-      selectedMonth: undefined,
-      selectedYear: undefined,
-      selectedDMY: undefined,
-      month: new Date().getMonth(),
-      year: new Date().getFullYear(),
-      currentMonth: [],
-      ChartTable: "График",
-      date2: new Date().toLocaleString("ru", {
-        /*year: 'numeric',
-	month: 'long',
-	day: 'numeric',
-	weekday: 'long',
-	timezone: 'UTC',*/
-        hour: "numeric",
-        minute: "numeric",
-        //second: 'numeric'
-      }),
-
-      date3: new Date().toLocaleString("ru", {
-        weekday: "long",
-      }),
-      dFirstMonth: "0",
-      //day: ["Mn", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-      day: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
-      monthes: [
-        "ЯНВАРЬ",
-        "ФЕВРАЛЬ",
-        "МАРТ",
-        "АПРЕЛЬ",
-        "МАЙ",
-        "ИЮНЬ",
-        "ИЮЛЬ",
-        "АВГУСТ",
-        "СЕНТЯБРЬ",
-        "ОКТЯБРЬ",
-        "НОЯБРЬ",
-        "ДЕКАБРЬ",
-      ],
-      monthes3: [
-        "",
-        "январь",
-        "февраль",
-        "март",
-        "апрель",
-        "май",
-        "июнь",
-        "июль",
-        "август",
-        "сентябрь",
-        "октябрь",
-        "ноябрь",
-        "декабрь",
-      ],
-      monthes2: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ],
+      gus: null,
+      gu: null,
+      date: null,
+      kormass: null,
+      showCalendar: false,
+      ngdu: null,
+      plan_dosage: null,
+      current_dosage: null,
+      daily_fluid_production_kormass: null,
+      pressure: null,
+      temperature: null,
+      pump_discharge_pressure: null,
+      surge_tank_pressure: null,
+      heater_inlet_pressure: null,
+      heater_output_pressure: null,
+      daily_fluid_production: null,
+      signalizotor:null,
+      signalizotorAbs:null
     };
   },
-
-  methods: {
-    calendar: function () {
-      var days = [];
-      var week = 0;
-      days[week] = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate();
-      for (let i = 1; i <= dlast; i++) {
-        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
-          var a = { index: i, id: i };
-          days[week].push(a);
-          if (this.selectedDay == i) {
-            a.current = "#232236";
-          } else if (
-            i == new Date().getDate() &&
-            this.year == new Date().getFullYear() &&
-            this.month == new Date().getMonth()
-          ) {
-            a.current = "#13B062";
-          }
-
-          if (
-            new Date(this.year, this.month, i).getDay() == 6 ||
-            new Date(this.year, this.month, i).getDay() == 0
-          ) {
-            a.weekend = "#ff0000";
-          }
-        } else {
-          week++;
-
-          days[week] = [];
-          a = { index: i };
-          days[week].push(a);
-          if (this.selectedDay == i) {
-            a.current = "#232236";
-          } else if (
-            i == new Date().getDate() &&
-            this.year == new Date().getFullYear() &&
-            this.month == new Date().getMonth()
-          ) {
-            a.current = "#747ae6";
-          }
-          if (
-            new Date(this.year, this.month, i).getDay() == 6 ||
-            new Date(this.year, this.month, i).getDay() == 0
-          ) {
-            a.weekend = "#ff0000";
-          }
-        }
+  beforeCreate: function () {
+    this.axios.get("/ru/getallgus").then((response) => {
+      let data = response.data;
+      if (data) {
+        this.gus = data.data;
+      } else {
+        console.log("No data");
       }
-      if (days[0].length > 0) {
-        for (let i = days[0].length; i < 6; i++) {
-          days[0].unshift("");
-        }
-      }
-      this.dayChange;
-      if (this.selectedDMY == "0") {
-        this.display = "block";
-        return days;
-      }
-    },
-
-    decrease: function () {
-      this.month--;
-      if (this.month < 0) {
-        this.month = 12;
-        this.month--;
-        this.year--;
-      }
-    },
-    increase: function () {
-      this.month++;
-      if (this.month > 11) {
-        this.month = -1;
-        this.month++;
-        this.year++;
-      }
-    },
-
-    getMonths: function () {
-      var monthAll = [];
-      var month = new Date(this.year, this.month + 1, 0).getMonth();
-
-      for (let i = 1; i <= 12; i++) {
-        if (new Date(this.year, this.month + 1, i)) {
-          var a = { index: i, id: i };
-          monthAll.push(a);
-          if (this.selectedMonth == i) {
-            a.current = "#232236";
-          } else if (
-            i == Number(new Date().getMonth() + 1) &&
-            this.year == new Date().getFullYear()
-          ) {
-            a.current = "#13B062";
-          }
-        }
-      }
-      if (this.selectedDMY == "1") {
-        this.display = "none";
-        return monthAll;
-      }
-    },
-
-    getDays: function () {
-      var DaysInMonth = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate();
-      for (let i = 1; i <= dlast; i++) {
-        var a = { index: i, id: i };
-        DaysInMonth.push(a);
-      }
-      return DaysInMonth;
-    },
-
-    getDaysMonth: function () {
-      var DaysInMonth = [];
-      var dlast = new Date(this.year, this.selectedMonth, 0).getDate();
-      for (let i = 1; i <= dlast; i++) {
-        var a = { index: i, id: i };
-        DaysInMonth.push(a);
-      }
-      return DaysInMonth;
-    },
-
-    getDaysInYear: function () {
-      var getDaysInYear = [];
-      for (let q = 1; q <= 12; q++) {
-        var dlast = new Date(this.year, q, 0).getDate();
-        for (let i = 1; i <= dlast; i++) {
-          var a = { month: q, day: i };
-          getDaysInYear.push(a);
-        }
-      }
-      return getDaysInYear;
-    },
-
-    getYears: function () {
-      var yearAll = [];
-      var year = this.year;
-      for (let i = 2018; i <= year; i++) {
-        var a = { index: i, id: i };
-        yearAll.push(a);
-        if (this.selectedYear == i) {
-          a.current = "#232236";
-        } else if (i == year) {
-          a.current = "#13B062";
-        }
-      }
-
-      if (this.selectedDMY == "3") {
-        this.display = "none";
-        return yearAll;
-      }
-    },
-
-    menuDMY() {
-      var DMY = ["День", "Месяц", "Квартал", "Год"];
-      var menuDMY = [];
-      var id = 0;
-      for (let i = 0; i <= 3; i++) {
-        var a = { index: i, id: i };
-        a.DMY = DMY[i];
-        menuDMY.push(a);
-        if (this.selectedDMY == i) {
-          a.current = "#1D70B7";
-          this.DMY = menuDMY[i]["DMY"];
-        }
-      }
-      if (this.selectedDMY != undefined) {
-      }
-
-      localStorage.setItem("selectedDMY", this.selectedDMY);
-
-      return menuDMY;
-    },
-
-    getLinePoints: function () {
-      let uri = "/js/json/gno/line_points.json";
-      this.axios.get(uri).then((response) => {
-        var data = response.data;
-        if (data) {
-          this.$emit("data", data);
-        } else {
-          console.log("No data");
-        }
-      });
-    },
+    });
   },
-  async mounted() {
-    this.getLinePoints();
+  methods: {
+    chooseGu(event) {
+      this.axios
+        .post("/ru/getgudata", {
+          gu_id: event.target.value,
+        })
+        .then((response) => {
+          let data = response.data;
+          if (data) {
+            this.$emit("chart1", data.chart1),
+            this.$emit("chart2", data.chart2),
+            this.$emit("chart3", data.chart3),
+            this.$emit("chart4", data.chart4),
+            this.kormass = data.kormass
+          } else {
+            console.log("No data");
+          }
+        });
+    },
+    dayClicked(day) {
+        this.date = day.id;
+        this.ngdu = null,
+        this.uhe = null,
+        this.plan_dosage = null,
+        this.current_dosage = null,
+        this.daily_fluid_production_kormass = null,
+        this.pressure = null,
+        this.temperature = null,
+        this.pump_discharge_pressure = null,
+        this.surge_tank_pressure = null,
+        this.heater_inlet_pressure = null,
+        this.heater_output_pressure = null,
+        this.daily_fluid_production = null,
+        this.signalizotor = null,
+        this.signalizotorAbs = null
+        this.axios
+            .post("/ru/getgudatabyday", {
+                gu_id: this.gu,
+                dt: day.id
+            })
+            .then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.ngdu = data.ngdu,
+                    this.uhe = data.uhe,
+                    this.plan_dosage = response.data.ca.plan_dosage,
+                    this.current_dosage = response.data.uhe.current_dosage,
+                    this.daily_fluid_production_kormass = response.data.ngdu.daily_fluid_production_kormass,
+                    this.pressure = response.data.ngdu.pressure,
+                    this.temperature = response.data.ngdu.temperature,
+                    this.pump_discharge_pressure = response.data.ngdu.pump_discharge_pressure,
+                    this.surge_tank_pressure = response.data.ngdu.surge_tank_pressure,
+                    this.heater_inlet_pressure = response.data.ngdu.heater_inlet_pressure,
+                    this.heater_output_pressure = response.data.ngdu.heater_output_pressure,
+                    this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
+                    this.signalizotor = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
+                    this.signalizotorAbs = Math.abs(this.signalizotor)
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    pushBtn(){
+        this.$modal.show('economicmodal');
+    }
   },
 };
 </script>
+<style scoped>
+.btn {
+    display: block !important;
+    width: 100% !important;
+}
+
+.economicModal{
+  background-color: #0F1430;
+  border: 1px solid #0D2B4D;
+}
+</style>

@@ -45,6 +45,7 @@ Vue.component('visual-center-chart-bar-bottom', require('./components/visualcent
 Vue.component('visual-center-chart-donut-right1', require('./components/visualcenter/VisualCenterChartDonutRight1.vue').default);
 Vue.component('visual-center-chart-donut-right2', require('./components/visualcenter/VisualCenterChartDonutRight2.vue').default);
 Vue.component('visual-center-table', require('./components/visualcenter/VisualCenterTable.vue').default);
+Vue.component('visual-center-table3', require('./components/visualcenter3/VisualCenterTable3.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 Vue.component('welcome-chart-donut-right1', require('./components/welcome/WelcomeChartDonutRight1.vue').default);
 Vue.component('welcome-chart-donut-right2', require('./components/welcome/WelcomeChartDonutRight2.vue').default);
@@ -69,10 +70,10 @@ Vue.component('gno-iframe', require('./components/FriendlyIframe/components/Frie
 //Vue.component('gno-test-chart', require('./components/gno/Test.vue').default);
 Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);
 Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
-Vue.component('monitor-chart-bar', require('./components/monitor/MonitorChartBar.vue').default);
-Vue.component('monitor-chart-bar-rounded', require('./components/monitor/MonitorChartBarRounded.vue').default);
-Vue.component('monitor-chart-donut', require('./components/monitor/MonitorChartDonut.vue').default);
-Vue.component('monitor-chart-tide', require('./components/monitor/MonitorChartTide.vue').default);
+Vue.component('monitor-chart1', require('./components/monitor/chart1.vue').default);
+Vue.component('monitor-chart2', require('./components/monitor/chart2.vue').default);
+Vue.component('monitor-chart3', require('./components/monitor/chart3.vue').default);
+Vue.component('monitor-chart-tide', require('./components/monitor/chart4.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('omgca-create', require('./components/omgca/create.vue').default);
 Vue.component('omgca-edit', require('./components/omgca/edit.vue').default);
@@ -80,6 +81,7 @@ Vue.component('omguhe-create', require('./components/omguhe/create.vue').default
 Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
 Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
 Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
+Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
