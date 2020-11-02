@@ -252,20 +252,11 @@ return $response;
             //liquid density
             $rhol = $request->rhol; //input in pipesim 
             //flowrate of gas
-<<<<<<< HEAD
             $GOR = $request->GOR; // input in pipesim
             $q_g = $q_l * $GOR;
             //density of gas
             $SG = $request-> SG;
             $rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Water
-=======
-            $q_g = $q_l*$GOR;
-            //denisty of gas
-
-            //TODO
-            $rhog = $request->rhog;
-
->>>>>>> 3266f14bbab8920cacb63e2955b68fc8d82ba4d9
             //mass flowrate of liquid
             $m_dotl = $rhol * $q_l;
             //mass flowrate of gas
