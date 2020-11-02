@@ -243,7 +243,7 @@ return $response;
         $request->has('mug') && $request->has('mug') && $request->has('P')) {
             //flowrate of liquid///
             $q_l = $request->q_l; // input in pipesim
-            $WC = 30; // input in pipesim
+            $WC = 0.30; // input in pipesim
             $q_l = $q_l / 24.0 / 60.0 / 60.0 * (1 - $WC); // input in pipesim
             //liquid density
             $rhol = $request->rhol; //input in pipesim 
@@ -251,7 +251,7 @@ return $response;
             $GOR = $request->GOR; // input in pipesim
             $q_g = $q_l * $GOR;
             //density of gas
-            $SG = $request-> SG;
+            $SG = 0.64;
             $rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Water
             //mass flowrate of liquid
             $m_dotl = $rhol * $q_l;
@@ -316,7 +316,7 @@ return $response;
             //TEMPERATURE CALCULATIONS TO BE ADDED LATER!!! 12.10.2010
             //These variables are constant for only ONE simulation
             //To be as INPUT in future
-            $q_l = $Q_h * 3600 * 24 * (1-$GOR);
+            //$flow = $Q_h * 3600 * 24 * (1 - $WC);
             //Outside diameter in m
             $do = 0.110;
             //Inside diameter in m
@@ -352,9 +352,9 @@ return $response;
             //print("flow m3/sec = ", flow)
 
 
-            //def temp_drop(flow,do,di,roughness,density,viscosity,l,k,k_f,k_g,to,ti,c_p,g,sigma_s,epsilon):
-            //calculate the mass flow rate
-            $m_dot = $q_l * $density;
+            // def temp_drop(flow,do,di,roughness,density,viscosity,l,k,k_f,k_g,to,ti,c_p,g,sigma_s,epsilon):
+            // calculate the mass flow rate
+            //$m_dot = $flow * $density;
             //calculate the cross sectional area of the inner pipe
             $ax = ($di**2) * pi() / 4;
             //Heat transfer coefficient outside pipe in W/(m^2*K)
@@ -537,9 +537,10 @@ return $response;
 
 
         $vdata = [
+            'v_lo' => $v_lo,
+            'm_dot' => $m_dot,
             'Final pressure' => $P_final,
             'corrosion rate in mm' => $r,
-            'final temperature' => $t_final,
             'dose' => $dose,
             'dP' => $dP,
             't_final K' => round($t_final,4),
