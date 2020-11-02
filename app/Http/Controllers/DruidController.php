@@ -247,7 +247,7 @@ class DruidController extends Controller
             $q_g = $q_l * $GOR;
             //density of gas
             $SG = $request-> SG;
-            $rhog = $SG * 1.204 // 1.204 kg/m3 = SG of Water
+            $rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Water
             //mass flowrate of liquid
             $m_dotl = $rhol * $q_l;
             //mass flowrate of gas
