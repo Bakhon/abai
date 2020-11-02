@@ -27318,8 +27318,7 @@ ejs-listbox {
 /*! Tooltip theme */
 .e-tooltip-wrap {
   border-radius: 2px;
-  -webkit-filter: none;
-          filter: none;
+  filter: none;
   opacity: 0.9;
   /*! tooltip arrow */
   /*! tooltip sticky mode close icon */
@@ -54417,22 +54416,12 @@ pre code {
   box-shadow: 0 0 0 0.2rem rgba(52, 144, 220, 0.25);
 }
 
-.form-control::-webkit-input-placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
 .form-control::-moz-placeholder {
   color: #6c757d;
   opacity: 1;
 }
 
 .form-control:-ms-input-placeholder {
-  color: #6c757d;
-  opacity: 1;
-}
-
-.form-control::-ms-input-placeholder {
   color: #6c757d;
   opacity: 1;
 }
@@ -57410,12 +57399,10 @@ input[type=button].btn-block {
 
 @media (min-width: 576px) {
   .card-columns {
-    -webkit-column-count: 3;
-       -moz-column-count: 3;
-            column-count: 3;
-    -webkit-column-gap: 1.25rem;
-       -moz-column-gap: 1.25rem;
-            column-gap: 1.25rem;
+    -moz-column-count: 3;
+         column-count: 3;
+    -moz-column-gap: 1.25rem;
+         column-gap: 1.25rem;
     orphans: 1;
     widows: 1;
   }
@@ -63371,8 +63358,7 @@ a.text-dark:focus {
 :root .fa-flip-horizontal,
 :root .fa-flip-vertical,
 :root .fa-flip-both {
-  -webkit-filter: none;
-          filter: none;
+  filter: none;
 }
 
 .fa-stack {
