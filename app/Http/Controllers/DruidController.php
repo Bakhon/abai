@@ -236,7 +236,7 @@ class DruidController extends Controller
         if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('SG') && 
         $request->has('d') && $request->has('mul') && $request->has('l') && $request->has('roughness') &&
         $request->has('mug') && $request->has('mug') && $request->has('P')) {
-            //flowrate of liquid            
+            //flowrate of liquid q_l            
             $q_l = $request->q_l; // input in pipesim
             $WC = 30; // input in pipesim
             $q_l = $q_l / 24.0 / 60.0 / 60.0 * (1 - $WC); // input in pipesim
