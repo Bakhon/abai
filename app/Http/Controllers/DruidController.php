@@ -241,20 +241,18 @@ return $response;
         if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('rhog') &&
         $request->has('d') && $request->has('mul') && $request->has('l') && $request->has('roughness') &&
         $request->has('mug') && $request->has('mug') && $request->has('P')) {
-            //$flow = $request->flow;
-            //flowrate of liquid
-            $q_l = $request->q_l;
-            $GOR = $request->GOR;
-            $q_l = $q_l / 24.0 / 60.0 / 60.0 * (1 - $GOR);
+            //flowrate of liquid///
+            $q_l = $request->q_l; // input in pipesim
+            $WC = 30; // input in pipesim
+            $q_l = $q_l / 24.0 / 60.0 / 60.0 * (1 - $WC); // input in pipesim
             //liquid density
-            $rhol = $request->rhol;
+            $rhol = $request->rhol; //input in pipesim 
             //flowrate of gas
-            $q_g = $q_l*$GOR;
-            //denisty of gas
-
-            //TODO
-            $rhog = $request->rhog;
-
+            $GOR = $request->GOR; // input in pipesim
+            $q_g = $q_l * $GOR;
+            //density of gas
+            $SG = $request-> SG;
+            $rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Water
             //mass flowrate of liquid
             $m_dotl = $rhol * $q_l;
             //mass flowrate of gas
@@ -263,25 +261,18 @@ return $response;
             $m_dot = $m_dotl + $m_dotg;
             //Density of two phase
             $x = $m_dotg / $m_dot;
-            //Viscosity of liquid
+            //Dead oil viscosity
             $mul = $request->mul;
-
-            //TODO
             //Viscosity of gas
             $mug = $request->mug;
-            //
             $sigma = $request->sigma;
             $d = $request->d;
             $roughness = $request->roughness;
             $l = $request->l;
             $P = $request->P;
-            // $t = $request->t;
-            // $gor = $request->gor;
-            // $wc = $request->wc;
             //Gravitational acceleration
             $g = 9.8;
             // $h = $request->h;
-
 //          Liquid-only properties, for calculation of E, dP_lo
 //          Calculate velocity
             $v_lo = $m_dot/$rhol/(pi()/4*$d**2);
@@ -325,7 +316,7 @@ return $response;
             //TEMPERATURE CALCULATIONS TO BE ADDED LATER!!! 12.10.2010
             //These variables are constant for only ONE simulation
             //To be as INPUT in future
-            $flow = $Q_h * 3600 * 24 * (1-$GOR);
+            $q_l = $Q_h * 3600 * 24 * (1-$GOR);
             //Outside diameter in m
             $do = 0.110;
             //Inside diameter in m
@@ -363,7 +354,7 @@ return $response;
 
             //def temp_drop(flow,do,di,roughness,density,viscosity,l,k,k_f,k_g,to,ti,c_p,g,sigma_s,epsilon):
             //calculate the mass flow rate
-            $m_dot = $flow * $density;
+            $m_dot = $q_l * $density;
             //calculate the cross sectional area of the inner pipe
             $ax = ($di**2) * pi() / 4;
             //Heat transfer coefficient outside pipe in W/(m^2*K)
