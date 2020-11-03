@@ -85,6 +85,11 @@ body {
     padding: 1rem!important;
 }
 
+.table1-2 td{
+    border-right: 1px solid #454D7D;
+    padding: 10px!important;
+}
+
 .table2 td {
     padding: 10px!important;
 }

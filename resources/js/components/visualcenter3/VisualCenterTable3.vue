@@ -11,7 +11,7 @@
                   <div class="unit-vc">тыс. тонн</div>
                 </div>
                 <div class="txt1">Добыча нефти</div>
-                <br/>
+                <br />
                 <div class="progress">
                   <br />
                   <div
@@ -63,8 +63,6 @@
           </table>
         </div>
       </div>
-
-    
 
       <div class="first-string first-string2">
         <div>
@@ -175,11 +173,7 @@
         </div>
 
         <div>
-          <table
-            class="table table4"
-        
-            border="1"
-          >
+          <table class="table table4" border="1">
             <tbody>
               <!--   <tr>
              <td class="first-td"></td>
@@ -196,7 +190,7 @@
                 <td>+/-</td>
                 <td>%</td>
               </tr>-->
-              <tr     v-for="(item, index) in bigTable">
+              <tr v-for="(item, index) in bigTable">
                 <td
                   :class="
                     index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
@@ -236,14 +230,13 @@
                 <td colspan="13">3</td>
               </tr>-->
 
-
-                    <tr>
+              <tr>
                 <td
                   :class="
                     index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
                   "
                 >
-                 Итого по операционным активам:
+                  Итого по операционным активам:
                 </td>
                 <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'"></td>
 
@@ -353,20 +346,18 @@
     <div class="col-3 right-side2">
       <div class="first-string">
         <div class="table-responsive">
-          <table class="table table1">
+          <table class="table table1-2">
             <tr>
               <td>
-                <div class="txt4">{{wells2[0].prod_wells_work}}</div>
+                <div class="txt4">{{ wells2[0].prod_wells_work }}</div>
                 <div class="in-work">В работе</div>
-                <br />
                 <div class="arrow"></div>
                 <div class="txt2">48</div>
               </td>
 
               <td>
-                <div class="txt4">{{wells2[0].prod_wells_idle}}</div>
+                <div class="txt4">{{ wells2[0].prod_wells_idle }}</div>
                 <div class="in-idle">В простое</div>
-                <br />
                 <div class="arrow"></div>
                 <div class="txt2">200</div>
                 <br />
@@ -375,28 +366,27 @@
             <tr>
               <td colspan="2">
                 <div class="txt2">
-                  Фонд добывающих<br />
-                  скважин
+                  Фонд добывающих скважин
                 </div>
               </td>
             </tr>
           </table>
-          <div class="line-bottom"></div>
+          <!-- <div class="line-bottom"></div>-->
+        </div>
+        <div class="first-string first-string2">
           <div class="table-responsive">
-            <table class="table table1">
+            <table class="table table1-2">
               <tr>
                 <td>
-                  <div class="txt4">{{wells[0].inj_wells_work}}</div>
+                  <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-work">В работе</div>
-                  <br />
                   <div class="arrow"></div>
                   <div class="txt2">48</div>
                 </td>
 
                 <td>
-                  <div class="txt4">{{wells[0].inj_wells_work}}</div>
+                  <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-idle">В простое</div>
-                  <br />
                   <div class="arrow"></div>
                   <div class="txt2">200</div>
                   <br />
@@ -405,8 +395,7 @@
               <tr>
                 <td colspan="2">
                   <div class="txt2">
-                    Фонд нагнетательных <br />
-                    скважин
+                    Фонд нагнетательных скважин
                   </div>
                 </td>
               </tr>
@@ -415,7 +404,6 @@
         </div>
       </div>
 
-   
       <div class="first-string first-string2">
         <div class="table-responsive">
           <table class="table table3">
@@ -479,7 +467,7 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
-      index:'',
+      index: "",
       widthProgress: "90",
       //showTableItem: "No",]
       DMY: "День",
