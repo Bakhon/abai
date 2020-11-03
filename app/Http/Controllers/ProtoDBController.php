@@ -68,7 +68,7 @@ public function getProtoOtchet1(Request $request)
         }
         $result = $builder->groupBy();
         $array = $result->data();
-        $data['wellsList'] =  [['Месторождение', 
+        $data['wellsList'] =  [['Месторождение 0', 
         'НГДУ', 
         'ЦДНГ', 
         'ГУ', 
@@ -83,7 +83,7 @@ public function getProtoOtchet1(Request $request)
         'Техрежим - Qн, т/сут', 
         'Qж, м3/сут',
         'Qн, т/сут',
-        'Обв, %',
+        'Обв, % 15',
         'Дата исследования', 
         'Заключение',
         'Hдин, м',
@@ -147,6 +147,7 @@ public function getProtoOtchet1(Request $request)
         $vdata = [
 
             'wellsList' => $data['wellsList'],
+            'excel' => $data['excel']
 
         ];
 
