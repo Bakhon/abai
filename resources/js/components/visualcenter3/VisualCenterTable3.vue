@@ -8,7 +8,7 @@
               <td>
                 <div class="nu">
                   <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="unit-vc">тонн</div>
                 </div>
                 <div class="txt1">Добыча нефти</div>
                 <br />
@@ -34,30 +34,74 @@
               <td>
                 <div class="nu">
                   <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="unit-vc">тн</div>
                 </div>
-                <div class="txt1">Добыча нефти</div>
+                <div class="txt1">Сдача нефти</div>
+                   <br />
+                <div class="progress">
+                  <br />
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    :style="{
+                      width: widthProgress + '%',
+                    }"
+                    style="width: 25%;"
+                    aria-valuenow="25"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <br />
+                    <div class="arrow"></div>
+                <div class="txt2">5,2%</div>
+                <div class="txt3">vs сентябрь</div>
               </td>
               <td>
                 <div class="nu">
                   <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="unit-vc">млрд. м3</div>
                 </div>
-                <div class="txt1">Добыча нефти</div>
+                <div class="txt1">Добыча газа</div>
+                   <br />
+                <div class="progress">
+                  <br />
+                  
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    :style="{
+                      width: widthProgress + '%',
+                    }"
+                    style="width: 25%;"
+                    aria-valuenow="25"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <br />
+                    <div class="arrow"></div>
+                <div class="txt2">5,2%</div>
+                <div class="txt3">vs сентябрь</div>
               </td>
               <td>
                 <div class="nu">
-                  <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="number">{{ oilNow }}</div>
+                  <div class="unit-vc">$ / bbl</div>
                 </div>
-                <div class="txt1">Добыча нефти</div>
+                <div class="txt1">Цена на нефть</div>
+                       <br><br>
+                 <div class="arrow"></div><div class="txt2">5,2%</div><div class="txt3">vs сентябрь</div>
               </td>
               <td>
                 <div class="nu">
-                  <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="number">{{ currencyNow.description }}</div>
+                  <div class="unit-vc">kzt / $</div>
                 </div>
-                <div class="txt1">Добыча нефти</div>
+                <div class="txt1">Курс доллара</div>
+                  
+               <br><br>  <div class="arrow"></div>
+                 <div class="txt2">5,2%</div><div class="txt3">vs сентябрь</div>
               </td>
             </tr>
           </table>
@@ -79,7 +123,7 @@
                 >
                   <div class="icon-all icons1"></div>
                   <div class="txt5">Добыча нефти</div>
-                  <div class="txt6">тыс. тонн</div>
+                  <div class="txt6">тыс. тн</div>
                 </div>
               </td>
               <td>
@@ -173,23 +217,8 @@
         </div>
 
         <div>
-          <table class="table table4" border="1">
-            <tbody>
-              <!--   <tr>
-             <td class="first-td"></td>
-                <td colspan="7"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>план<span style="white-space: pre-wrap;"></span></td>
-                <td>факт</td>
-                <td>+/-</td>
-                <td>%</td>
-              </tr>-->
+          <table class="table table4">
+            <tbody>        
               <tr v-for="(item, index) in bigTable">
                 <td
                   :class="
@@ -198,21 +227,23 @@
                 >
                   {{ item.dzoDay }}
                 </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'"></td>
+                <td :class="index % 2 === 0 ? 'tdStyle w-50' : 'tdNone w-50'" >
+         
+                </td>
 
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                <td :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'">
                   <div>
-                    {{(new Intl.NumberFormat('ru-RU').format(item.planDay)) }}
+                    {{(new Intl.NumberFormat('ru-RU').format(item.planDay)) }} {{item4}} 
                   </div>
                 </td>
                 <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                   <div>
-                    {{(new Intl.NumberFormat('ru-RU').format( item.factDay)) }}
+                    {{(new Intl.NumberFormat('ru-RU').format( item.factDay)) }} {{item4}} 
                   </div>
                 </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                  <td :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'">
                   <div>
-                    {{(new Intl.NumberFormat('ru-RU').format( item.factDay - item.planDay)) }}
+                    {{(new Intl.NumberFormat('ru-RU').format( item.factDay - item.planDay)) }} {{item4}} 
                   </div>
                 </td>
                 <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">5,2%</td>
@@ -238,21 +269,23 @@
                 >
                   Итого по операционным активам:
                 </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'"></td>
+                <td :class="index % 2 === 0 ? 'tdStyle w-50' : 'tdNone w-50'">
+                  <div class="vc-chart"> <gno-line-points-chart> </gno-line-points-chart></div>
+                </td>
 
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                  <td :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'">
                   <div>
-                    {{(new Intl.NumberFormat('ru-RU').format(planDaySumm)) }}
+                    {{(new Intl.NumberFormat('ru-RU').format(planDaySumm)) }} {{item4}} 
                   </div>
                 </td>
                 <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                   <div>
-                    {{(new Intl.NumberFormat('ru-RU').format( factDaySumm)) }}
+                    {{(new Intl.NumberFormat('ru-RU').format( factDaySumm)) }} {{item4}} 
                   </div>
                 </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                   <td :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'">
                   <div>
-                    {{(new Intl.NumberFormat('ru-RU').format( factDaySumm - planDaySumm)) }}
+                    {{(new Intl.NumberFormat('ru-RU').format( factDaySumm - planDaySumm)) }} {{item4}} 
                   </div>
                 </td>
                 <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">5,2%</td>
@@ -348,14 +381,14 @@
         <div class="table-responsive">
           <table class="table table1-2">
             <tr>
-              <td>
+              <td class="w-50">
                 <div class="txt4">{{ wells2[0].prod_wells_work }}</div>
                 <div class="in-work">В работе</div>
                 <div class="arrow"></div>
                 <div class="txt2">48</div>
               </td>
 
-              <td>
+              <td class="w-50">
                 <div class="txt4">{{ wells2[0].prod_wells_idle }}</div>
                 <div class="in-idle">В простое</div>
                 <div class="arrow"></div>
@@ -377,14 +410,14 @@
           <div class="table-responsive">
             <table class="table table1-2">
               <tr>
-                <td>
+                <td class="w-50">
                   <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-work">В работе</div>
                   <div class="arrow"></div>
                   <div class="txt2">48</div>
                 </td>
 
-                <td>
+                <td class="w-50">
                   <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-idle">В простое</div>
                   <div class="arrow"></div>
@@ -402,56 +435,157 @@
             </table>
           </div>
         </div>
+
+        <div class="first-string first-string2">
+          <div class="table-responsive">
+            <table class="table table5">
+              <tr>
+                <td class="w-50">
+                <div class="otm"></div>
+                  <div class="txt2">ОТМ</div>
+                </td>
+
+                <td class="w-50">
+                <div class="him"></div>
+                  <div class="txt2">Химизация</div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
 
       <div class="first-string first-string2">
         <div class="table-responsive">
-          <table class="table table3">
+          <table class="table">
             <tr>
-              <td>
-                <div class="txt4">14</div>
-                <div class="txt2">Covid-19</div>
+              <td class="size-td">
+                <div class="number">908</div>
               </td>
 
-              <td>
-                <br />
+              <td class="w-65">  
+              <div class="column-1">
                 <div class="arrow"></div>
-                <div class="txt2">200</div>
-                <br />
-                <div class="in-idle">Прирост за сутки</div>
-                <br />
+                <div class="txt2">7</div></div>
+                <div class="column-1">
+              
+              
+                <div class="in-idle">Прирост</div>
+                <div class="in-idle">с начала месяца</div>
+                </div>
+                
+
               </td>
             </tr>
-
             <tr>
-              <td>
-                <div class="txt4">27</div>
-                <div class="txt2">Несчастные случаи</div>
-              </td>
-
-              <td>
-                <br />
-                <div class="arrow"></div>
-                <div class="txt2">1</div>
-                <br />
-                <div class="in-idle">vs сентябрь</div>
-                <br />
+              <td colspan="2">
+                <div class="txt2">
+                  Численность персонала
+                </div>
               </td>
             </tr>
+          </table>
+        </div>
+      </div>
 
+      <div class="first-string first-string2">
+        <div class="table-responsive">
+          <table class="table">
             <tr>
-              <td>
-                <div class="txt4">2</div>
-                <div class="txt2">Смертельных случая</div>
+              <td class="size-td">
+                <div class="number">24</div>
               </td>
 
-              <td>
-                <br />
+              <td class="w-65">
+                      <div class="column-1">
                 <div class="arrow"></div>
-                <div class="txt2">1</div>
-                <br />
-                <div class="in-idle">vs сентябрь</div>
-                <br />
+                <div class="txt2">11</div></div>
+                <div class="column-1">
+              
+              
+                <div class="in-idle">Прирост</div>
+                <div class="in-idle">с начала месяца</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="txt2">
+                  Covid-19
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="first-string first-string2">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <td class="w-50">
+                <div class="number">11</div>
+                <div class="near-number">
+                <div class="column-1">
+                  <div class="arrow"></div>
+                  <div class="txt2">7</div>
+                  </div>
+                  <div class="column-1">
+                  <div class="in-idle">Прирост</div>
+                  <div class="in-idle">с начала месяца</div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="w-50">
+                <div class="number">11</div>
+                <div class="near-number">
+                 <div class="column-1">
+                  <div class="arrow"></div>
+                  <div class="txt2">7</div>
+                 </div> <div class="column-1">
+                  <div class="in-idle">Прирост</div>
+                  <div class="in-idle">с начала месяца</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="txt2">
+                  Несчастные случаи
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="first-string first-string2">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <td class="size-td">
+                <div class="number">2</div>
+              </td>
+
+              <td class="w-65">
+                   <div class="column-1">
+                <div class="arrow"></div>
+                <div class="txt2">1</div></div>
+                <div class="column-1">
+              
+              
+                <div class="in-idle">Прирост</div>
+                <div class="in-idle">с начала месяца</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="txt2">
+                  Смертельные случаи
+                </div>
               </td>
             </tr>
           </table>
@@ -467,6 +601,21 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      //oil and currency down
+            currencyNow: "",
+      currencyChart: "",
+        currencyNowUsd: "",
+    selectedDMY2: "",
+      selectedDMY: "",
+      periodSelectOil: "",
+      oilPeriod: "",
+      period: "7",
+      periodUSD: "7",
+      company: "",
+      timeSelect: "",
+      oilNow: "",
+      oilChart: "",
+      //oil and currency up
       index: "",
       widthProgress: "90",
       //showTableItem: "No",]
@@ -591,10 +740,189 @@ export default {
       factMonthSumm: "",
       factDaySumm: "",
       planDaySumm: "",
-      unit: "",
+      //unit: "",
     };
   },
   methods: {
+    //currency and oil down
+    periodSelectFunc() {
+      var DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
+      var menuDMY = [];
+      var id = 0;
+      for (let i = 0; i <= 4; i++) {
+        var a = { index: i, id: i };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
+        if (this.selectedDMY == i) {
+          a.current = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+        if (this.selectedDMY2 == i) {
+          a.current2 = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+      }
+
+      if (this.selectedDMY != undefined) {
+      }
+
+      // localStorage.setItem("selectedDMY", this.selectedDMY);
+
+      return menuDMY;
+      // this.periodSelect();
+    },
+
+    periodSelect: function (event) {
+      if (this.selectedDMY == 0) {
+        this.period = 7;
+      }
+      if (this.selectedDMY == 1) {
+        this.period = 30;
+      }
+      if (this.selectedDMY == 2) {
+        this.period = 183;
+      }
+      if (this.selectedDMY == 3) {
+        this.period = 365;
+      }
+      if (this.selectedDMY == 4) {
+        this.period = 1825;
+      }
+      return this.getOilNow(this.timeSelect, this.period);
+    },
+
+    periodSelectUSD: function (event) {
+      if (this.selectedDMY2 == 0) {
+        this.periodUSD = 7;
+      }
+      if (this.selectedDMY2 == 1) {
+        this.periodUSD = 30;
+      }
+      if (this.selectedDMY2 == 2) {
+        this.periodUSD = 183;
+      }
+      if (this.selectedDMY2 == 3) {
+        this.periodUSD = 365;
+      }
+      if (this.selectedDMY2 == 4) {
+        this.periodUSD = 1825;
+      }
+      return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    },
+
+    timeSelect2(select) {
+      //this.timeSelect = select;
+    
+    },
+
+    getCurrencyNow: function (dates) {
+      var datas;
+      let uri = "/ru/getcurrency?fdate=" + dates + "";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          //console.log(data);
+          this.currencyNow = data;
+          this.currencyNowUsd =
+            Math.trunc((1 / data.description) * 10000) / 10000;
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+
+    getCurrencyPeriod: function (dates, item2) {
+      var dates = dates;
+      let uri =
+        "/ru/getcurrencyperiod?dates=" + dates + "&period=" + item2 + " ";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          var arrdata2 = [];
+          _.forEach(data, function (item) {
+            arrdata2.push({ dates: item.dates, value: item.description["0"] });
+          });
+          var currencyChart = Array({ data: arrdata2 });
+          this.currencyChart = currencyChart;
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+
+    getOilNow: function (dates, period) {
+      console.log(dates);
+      var datas;
+      let uri = "/js/json/graph_1006.json";
+      //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          var oilDate;
+          var oilDate2;
+          var oilValue;
+          var splits = [];
+          var oil = [];
+          var oil2;
+          _.forEach(data.prices, function (prices) {
+            splits = prices.toString().split(",");
+            oilValue = splits["1"];
+            oilDate = Number(splits["0"]);
+
+            (oilDate2 = new Date(oilDate).toLocaleString("ru", {
+              year: "numeric",
+              day: "numeric",
+              month: "numeric",
+              timeZone: "Europe/Moscow",
+            })),
+              oil.push({
+                dateSimple: oilDate,
+                date: oilDate2,
+                value: oilValue,
+              });
+          });
+
+          var oil2 = [];
+
+          oil2 = _.filter(oil, _.iteratee({ date: dates }));
+
+          if (oil2.length != "0") {
+            this.oilNow = oil2[0].value;
+          } else {
+            oil = _.last(oil);
+            this.oilNow = oil.value;
+          }
+
+          var datesNow = [];
+          datesNow = dates.split(".");
+          var day = datesNow[0];
+          var month = datesNow[1].replace(/^0+/, "");
+          var year = datesNow[2];
+
+          var timestampToday = new Date(
+            this.monthes2[month - 1] + day + " " + year + " 06:00:00 GMT+0600"
+          ).getTime();
+
+          //console.log(timestampToday);
+          var dateInOil = [];
+          dateInOil = _.filter(oil, function (item) {
+            return _.every([
+              _.inRange(
+                item.dateSimple,
+                timestampToday - 86400000 * Number(period),
+                timestampToday + 86400000
+              ),
+            ]);
+          });
+          //this.oilChart=    [_.takeRight(oil, 31)];
+          this.oilChart = [dateInOil];
+          console.log(dateInOil);
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+//currency and oil up
     pushBign(bign) {
       switch (bign) {
         case "bign1":
@@ -817,7 +1145,7 @@ export default {
       this.item3 = item3;
       this.item4 = item4;
 
-      this.unit = item4;
+     // this.unit = item4;
 
       if (this.selectedDay == undefined) {
         var timeSelect =
@@ -834,7 +1162,8 @@ export default {
           "." +
           this.year;
       }
-      EventBus.$emit("timeSelect", timeSelect);
+      this.timeSelect=timeSelect;
+      //EventBus.$emit("timeSelect", timeSelect);
 
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
@@ -2236,6 +2565,10 @@ export default {
       });
 
       this.showTable(localStorage.getItem("changeButton"));
+
+        this.getCurrencyNow(this.timeSelect);
+      this.getOilNow(this.timeSelect, this.period);
+      this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     },
 
     changeButton(showTableItem, changeButton) {
