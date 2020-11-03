@@ -147,7 +147,7 @@ public function getProtoOtchet1(Request $request)
         $vdata = [
 
             'wellsList' => $data['wellsList'],
-            'excel' => $data['excel']
+            // 'excel' => $data['excel']
 
         ];
 
