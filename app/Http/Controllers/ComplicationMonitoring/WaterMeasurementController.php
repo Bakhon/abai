@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion as ComplicationMonitoringCorrosion;
 use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
+use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\ComplicationMonitoring\WaterMeasurement as ComplicationMonitoringWaterMeasurement;
 use App\Models\Refs\Cdng as RefsCdng;
 use App\Models\Refs\Gu as RefsGu;
@@ -353,6 +355,10 @@ class WaterMeasurementController extends Controller
         $uhe = ComplicationMonitoringOmgUHE::where('gu_id','=',$request->gu_id)->get();
         $corrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->get();
         $kormass = ComplicationMonitoringGuKormass::where('gu_id','=',$request->gu_id)->with('kormass')->first();
+        $pipe = Pipe::where('gu_id','=',$request->gu_id)->first();
+        $lastCorrosion = ComplicationMonitoringCorrosion::latest()->first();
+        $wmLast = ComplicationMonitoringWaterMeasurement::where('gu_id','=',$request->gu_id)->latest()->first();
+        $constantsValues = ConstantsValue::get();
 
         $chartDtCarbonDioxide['dt']  = [];
         $chartDtHydrogenSulfide['dt']  = [];
@@ -398,7 +404,11 @@ class WaterMeasurementController extends Controller
             'chart2' => $chartDtHydrogenSulfide,
             'chart3' => $chartCorrosion,
             'chart4' => $chartIngibitor,
-            'kormass' =>$kormass
+            'kormass' => $kormass,
+            'pipe' => $pipe,
+            'lastCorrosion' => $lastCorrosion,
+            'wmLast' => $wmLast,
+            'constantsValues' => $constantsValues
         ]);
     }
 

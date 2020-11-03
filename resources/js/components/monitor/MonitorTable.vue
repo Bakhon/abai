@@ -92,7 +92,7 @@
               </li>
 
               <li class="nav-string second">
-                Vкор(f-g) <input type="text" class="square2" value="888.88" />
+                Vкор(e-g) <input type="text" class="square2" value="888.88" />
                 мм/г
               </li>
 
@@ -104,8 +104,6 @@
 
             <ul class="string3 col-12">
               <li class="nav-string">
-                Vкор(e-f)<input type="text" class="square2" value="888.88" />
-                мм/г
               </li>
             </ul>
 
@@ -254,7 +252,11 @@ export default {
       heater_output_pressure: null,
       daily_fluid_production: null,
       signalizotor:null,
-      signalizotorAbs:null
+      signalizotorAbs:null,
+      pipe: null,
+      lastCorrosion: null,
+      wmLast: null,
+      constantsValues: null
     };
   },
   beforeCreate: function () {
@@ -275,12 +277,17 @@ export default {
         })
         .then((response) => {
           let data = response.data;
+          console.log(data);
           if (data) {
             this.$emit("chart1", data.chart1),
             this.$emit("chart2", data.chart2),
             this.$emit("chart3", data.chart3),
             this.$emit("chart4", data.chart4),
-            this.kormass = data.kormass
+            this.kormass = data.kormass,
+            this.pipe = data.pipe,
+            this.lastCorrosion = data.lastCorrosion,
+            this.wmLast = data.wmLast,
+            this.constantsValues = data.constantsValues
           } else {
             console.log("No data");
           }
@@ -323,7 +330,38 @@ export default {
                     this.heater_output_pressure = response.data.ngdu.heater_output_pressure,
                     this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
                     this.signalizotor = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
-                    this.signalizotorAbs = Math.abs(this.signalizotor)
+                    this.signalizotorAbs = Math.abs(this.signalizotor),
+                    this.calc()
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    calc() {
+        this.axios
+            .post("/ru/corrosion", {
+                wc: this.ngdu.bsw,
+                rhol: this.wmLast.density,
+                GOR: this.constantsValues[0].value,
+                mul: 0.007074,
+                mug: 0.00015,
+                sigma: this.constantsValues[1].value,
+                d: this.pipe.inner_diameter,
+                di: this.pipe.inner_diameter,
+                do: this.pipe.outside_diameter,
+                roughness: this.pipe.roughness,
+                length: this.pipe.length,
+                p: this.ngdu.surge_tank_pressure,
+                to: 10,
+                ti: this.ngdu.heater_output_pressure,
+                conH2S: this.wmLast.hydrogen_sulfide,
+                conCO2: this.wmLast.carbon_dioxide,
+                q_l: 777,
+                rhog: 0.7705
+            })
+            .then((response) => {
+                let data = response.data;
+                if (data) {
                 } else {
                     console.log("No data");
                 }

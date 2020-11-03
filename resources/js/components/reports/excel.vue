@@ -4,7 +4,7 @@
 </template>
 
 <script>
-    import download from "browser-downloads";
+    // import download from "browser-downloads";
 
     export default {
         name: 'export-excel',

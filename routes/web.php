@@ -21,7 +21,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get("/geteconimicdata", "EconomicController@getEconomicData");
         Route::get("/getcurrency", "DruidController@getCurrency");
         Route::get("/getcurrencyperiod", "DruidController@getCurrencyPeriod");
-        Route::get("/corrosion", "DruidController@corrosion");
+        Route::post("/corrosion", "DruidController@corrosion");
         Route::get('/', function () {
             return view('welcome');
         });

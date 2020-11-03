@@ -34,17 +34,15 @@
         <input type="hidden" name="date" v-model="datetimeEmpty" class="form-control" placeholder="">
 
         </div>
-        <label>Давление на выходе насоса, бар</label>
+        <label>Давление на выходе насоса в ГУ, бар</label>
         <div class="form-label-group">
             <input type="number" name="pump_discharge_pressure" class="form-control" placeholder="">
         </div>
-        <label>Кормасс</label>
+        <label>Обводненность в ГУ, %</label>
         <div class="form-label-group">
-            <select class="form-control"  name="kormass_number" v-model="kormass_id" disabled>
-            <option v-for="row in kormass" v-bind:value="row.id">{{ row.name }}</option>
-            </select>
+            <input type="number" name="bsw" class="form-control" placeholder="">
         </div>
-        <label>Суточная добыча жидкости, м3/сут</label>
+        <label>Суточная добыча жидкости в кормассе, м3/сут</label>
         <div class="form-label-group">
             <input type="number" name="daily_fluid_production_kormass" class="form-control" placeholder="">
         </div>
@@ -62,17 +60,23 @@
             <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
-        <label>Суточная добыча  жидкости, м3/сут</label>
+        <label>Суточная добыча  жидкости в ГУ, м3/сут</label>
         <div class="form-label-group">
             <input type="number" name="daily_fluid_production" class="form-control" placeholder="">
         </div>
-        <label>Температура на входе в печи, С</label>
+        <label>Температура на входе в печь в ГУ, С</label>
         <div class="form-label-group">
             <input type="number" name="heater_inlet_pressure" class="form-control" placeholder="">
         </div>
-        <label>Давление, бар</label>
+        <label>Давление в кормассе, бар</label>
         <div class="form-label-group">
             <input type="number" name="pressure" class="form-control" placeholder="">
+        </div>
+        <label>Кормасс</label>
+        <div class="form-label-group">
+            <select class="form-control"  name="kormass_number" v-model="kormass_id" disabled>
+            <option v-for="row in kormass" v-bind:value="row.id">{{ row.name }}</option>
+            </select>
         </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
@@ -88,15 +92,15 @@
             <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
-        <label>Давление в буферной емкости, бар</label>
+        <label>Давление в буферной емкости в ГУ, бар</label>
         <div class="form-label-group">
             <input type="number" name="surge_tank_pressure" class="form-control" placeholder="">
         </div>
-        <label>Температура на выходе из печи, С</label>
+        <label>Температура на выходе из печи в ГУ, С</label>
         <div class="form-label-group">
             <input type="number" name="heater_output_pressure" class="form-control" placeholder="">
         </div>
-        <label>Температура</label>
+        <label>Температура в кормассе</label>
         <div class="form-label-group">
             <input type="number" name="temperature" class="form-control" placeholder="">
         </div>

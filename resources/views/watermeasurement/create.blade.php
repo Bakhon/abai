@@ -11,7 +11,7 @@
             @endif
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a><hr>
             <div class="container">
-            <h1>Ввод данных</h1>
+            <h1>Ввод данных по воде</h1>
                 <form action="{{ route('watermeasurement.store') }}" method="POST">
                     @csrf
                     <div class="row">
