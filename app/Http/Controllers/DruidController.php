@@ -239,14 +239,14 @@ return $response;
     public function corrosion(Request $request)
     {
         if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('rhog') &&
-        $request->has('d') && $request->has('mul') && $request->has('l') && $request->has('roughness') &&
-        $request->has('mug') && $request->has('mug') && $request->has('P')) {
+        $request->has('d') && $request->has('mul') && $request->has('length') && $request->has('roughness') &&
+        $request->has('mug') && $request->has('mug') && $request->has('p')) {
             //flowrate of liquid///
             $q_l = $request->q_l; // input in pipesim
             $WC = 0.30; // input in pipesim
             $q_l = $q_l / 24.0 / 60.0 / 60.0 * (1 - $WC); // input in pipesim
             //liquid density
-            $rhol = $request->rhol; //input in pipesim 
+            $rhol = $request->rhol; //input in pipesim
             //flowrate of gas
             $GOR = $request->GOR; // input in pipesim
             $q_g = $q_l * $GOR;
