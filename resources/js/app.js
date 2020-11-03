@@ -82,6 +82,9 @@ Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
 Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
 Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
+Vue.component('export-excel', require('./components/reports/excel.vue').default);
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
