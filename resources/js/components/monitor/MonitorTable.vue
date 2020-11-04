@@ -92,7 +92,7 @@
               </li>
 
               <li class="nav-string second">
-                Vкор(e-g) <input type="text" class="square2" value="888.88" />
+                Vкор(e-g) <input type="text" class="square2" v-model = "corrosionRateInMm" />
                 мм/г
               </li>
 
@@ -129,7 +129,7 @@
                   ИК (реком.)<input
                     type="text"
                     class="square2"
-                    value="888.88"
+                    v-model = "doseMgPerL"
                   />
                   г/м3
                 </li>
@@ -256,7 +256,9 @@ export default {
       pipe: null,
       lastCorrosion: null,
       wmLast: null,
-      constantsValues: null
+      constantsValues: null,
+      corrosionRateInMm: null,
+      doseMgPerL: null
     };
   },
   beforeCreate: function () {
@@ -356,12 +358,14 @@ export default {
                 ti: this.ngdu.heater_output_pressure,
                 conH2S: this.wmLast.hydrogen_sulfide,
                 conCO2: this.wmLast.carbon_dioxide,
-                q_l: 777,
+                q_l: this.ngdu.daily_fluid_production,
                 rhog: 0.7705
             })
             .then((response) => {
                 let data = response.data;
                 if (data) {
+                    this.corrosionRateInMm = data.corrosion_rate_in_mm,
+                    this.doseMgPerL = data.dose_mg_per_l
                 } else {
                     console.log("No data");
                 }

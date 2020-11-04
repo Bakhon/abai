@@ -496,7 +496,8 @@ return $response;
             }
 
             else {
-                $dose = 0; }
+                $dose = 0;
+            }
 
             //****************************//
             //LOCAL CORROSION CALCULATION*//
@@ -539,20 +540,20 @@ return $response;
         $vdata = [
             'v_lo' => $v_lo,
             'm_dot' => $m_dot,
-            'Final pressure' => $P_final,
-            'corrosion rate in mm' => $r,
+            'final_pressure' => $P_final,
+            'corrosion_rate_in_mm' => $r,
             'dose' => $dose,
             'dP' => $dP,
-            't_final K' => round($t_final,4),
-            'corrosion mm per year' => round($r,4),
-            'pCO2 kPa' => round($pCO2,4),
-            'pH2S kPa' => round($pH2S,4),
-            'dose mg per l' => round($dose,4),
-            'H2S mg per l' => round($H2S,4),
-            'CO2 mg perl' => round($CO2,4),
+            't_final_k' => round($t_final,4),
+            'corrosion_mm_per_year' => round($r,4),
+            'pCO2_kPa' => round($pCO2,4),
+            'pH2S_kPa' => round($pH2S,4),
+            'dose_mg_per_l' => round($dose,4),
+            'H2S_mg_per_l' => round($H2S,4),
+            'CO2_mg_perl' => round($CO2,4),
             'environment' => $output,
-            'pCO2 per pH2S' => $ratio,
-            'Papavinasam corrosion' => $PCR
+            'pCO2_per_pH2S' => $ratio,
+            'Papavinasam_corrosion' => $PCR
         ];
 
 
