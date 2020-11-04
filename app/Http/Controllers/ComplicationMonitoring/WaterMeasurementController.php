@@ -106,6 +106,7 @@ class WaterMeasurementController extends Controller
         $wm->sulphate_reducing_bacteria_id = ($request->sulphate_reducing_bacteria_id) ? $request->sulphate_reducing_bacteria_id : NULL;
         $wm->hydrocarbon_oxidizing_bacteria_id = ($request->hydrocarbon_oxidizing_bacteria_id) ? $request->hydrocarbon_oxidizing_bacteria_id : NULL;
         $wm->thionic_bacteria_id = ($request->thionic_bacteria_id) ? $request->thionic_bacteria_id : NULL;
+        $wm->cruser_id = Auth::user()->id;
         $wm->save();
 
         return redirect()->route('watermeasurement.index')->with('success',__('app.created'));
