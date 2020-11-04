@@ -355,8 +355,9 @@ class WaterMeasurementController extends Controller
         $uhe = ComplicationMonitoringOmgUHE::where('gu_id','=',$request->gu_id)->get();
         $corrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->get();
         $kormass = ComplicationMonitoringGuKormass::where('gu_id','=',$request->gu_id)->with('kormass')->first();
-        $pipe = Pipe::where('gu_id','=',$request->gu_id)->first();
-        $lastCorrosion = ComplicationMonitoringCorrosion::latest()->first();
+        $pipe = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','eg')->first();
+        $pipeAB = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','ab')->first();
+        $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->latest()->first();
         $wmLast = ComplicationMonitoringWaterMeasurement::where('gu_id','=',$request->gu_id)->latest()->first();
         $constantsValues = ConstantsValue::get();
 
@@ -406,6 +407,7 @@ class WaterMeasurementController extends Controller
             'chart4' => $chartIngibitor,
             'kormass' => $kormass,
             'pipe' => $pipe,
+            'pipeab' => $pipeAB,
             'lastCorrosion' => $lastCorrosion,
             'wmLast' => $wmLast,
             'constantsValues' => $constantsValues

@@ -29,7 +29,7 @@ export default {
           y: {
             formatter: function(y) {
               if (typeof y !== "undefined") {
-                return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + "";
+                // return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + "";
               }
               return y;
             }

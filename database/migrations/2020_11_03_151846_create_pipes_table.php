@@ -22,6 +22,7 @@ class CreatePipesTable extends Migration
             $table->float('thickness', 8, 4)->nullable();
             $table->float('roughness', 8, 4)->nullable();
             $table->integer('material_id');
+            $table->char('plot',10);
             $table->timestamps();
         });
     }
