@@ -263,7 +263,9 @@ export default {
       doseMgPerL: null,
       corrosionRateInMmAB: null,
       doseMgPerLAB: null,
-      corrosionVelocityWithInhibitor: null
+      corrosionVelocityWithInhibitor: null,
+      wmLastH2S: null,
+      wmLastCO2: null
     };
   },
   beforeCreate: function () {
@@ -294,7 +296,9 @@ export default {
             this.pipeab = data.pipeab,
             this.lastCorrosion = data.lastCorrosion,
             this.wmLast = data.wmLast,
-            this.constantsValues = data.constantsValues
+            this.constantsValues = data.constantsValues,
+            this.wmLastH2S = data.wmLastH2S,
+            this.wmLastCO2 = data.wmLastCO2
           } else {
             console.log("No data");
           }
@@ -368,8 +372,8 @@ export default {
                 p: this.ngdu.surge_tank_pressure,
                 to: 10,
                 ti: this.ngdu.heater_output_pressure,
-                conH2S: this.wmLast.hydrogen_sulfide,
-                conCO2: this.wmLast.carbon_dioxide,
+                conH2S: this.wmLastH2S.hydrogen_sulfide,
+                conCO2: this.wmLastCO2.carbon_dioxide,
                 q_l: this.ngdu.daily_fluid_production,
                 rhog: 0.7705
             })
@@ -400,8 +404,8 @@ export default {
                 p: this.ngdu.surge_tank_pressure,
                 to: 10,
                 ti: this.ngdu.heater_output_pressure,
-                conH2S: this.wmLast.hydrogen_sulfide,
-                conCO2: this.wmLast.carbon_dioxide,
+                conH2S: this.wmLastH2S.hydrogen_sulfide,
+                conCO2: this.wmLastCO2.carbon_dioxide,
                 q_l: this.ngdu.daily_fluid_production,
                 rhog: 0.7705
             })
