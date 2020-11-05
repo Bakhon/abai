@@ -207,15 +207,42 @@ td:last-of-type {
 
 .tdStyle {
     background: #313561;
+    line-height: 48px;
 }
 
 .tdStyleLight {
     background: #464d7d;
+    line-height: 48px;
 }
 
 .tdStyleLight2 {
     background: #3d4272eb;
+    line-height: 48px;
 }
+.tdStyle3 {
+    background:  #293688;
+    line-height: 48px;
+}
+
+.tdStyle3-total {
+    background:  #293688;
+    margin-top:20px;
+ 
+}
+
+
+.tdStyleLight3 {
+    background: #334296;
+    line-height: 48px;
+}
+
+.tdNone{
+    line-height: 48px;  
+}
+
+
+
+
 
 .table4 td {
     height: 60px;
@@ -235,7 +262,7 @@ td:last-of-type {
 }
 
 td.first-td {
-    width: 180px!important;
+    width: 225px!important;
     overflow: hidden;
 }
 
@@ -354,4 +381,51 @@ td.size-td {
     position: absolute;
     margin-top: -366px;
     background: #272953!important;
+}
+
+.right {
+    float: right;
+    margin-right: -2px;
+    font-size: 12px;
+}
+.close2{
+float: right;
+    margin-right: 10px;
+    font-size: 20px;
+    color: red;
+}
+
+
+.svg-container {
+    width: 630px!important;
+}
+
+
+td.big-table-hidtd {
+    opacity: 0;
+}
+
+.center {
+    margin-top: 8px;
+    position: absolute;
+    margin-left: 35px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+td.small-td {
+    height: 0px;
+}
+
+.triangle {
+    border: 8px solid transparent;
+    width: 10px;
+    height: 10px;
+    float: left;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+
+.percent {
+    margin-left: 29px;
 }
