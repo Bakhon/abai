@@ -5,7 +5,7 @@
             <div class="card-header float-right">
                 <a class="btn btn-success" href="{{ route('watermeasurement.create') }}">+</a>
             </div>
-            <h1 style="color:#fff">Лабораторные данные по промысловой жидкости</h1>
+            <h1 style="color:#fff">Лабораторные данные по промысловой жидкости и газу</h1>
             <div class="card-body">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success">
@@ -49,7 +49,7 @@
                             <td>{{ $item->potassium_ion_sodium_ion }}</td>
                             <td>
                                 <form action="{{ route('watermeasurement.destroy',$item->id) }}" method="POST">
-                                    <a class="btn btn-primary" href="{{ route('watermeasurement.edit',$item->id) }}"><i class="fas fa-edit"></i></a>
+                                    {{-- <a class="btn btn-primary" href="{{ route('watermeasurement.edit',$item->id) }}"><i class="fas fa-edit"></i></a> --}}
                                     <a class="btn btn-primary" href="{{ route('watermeasurement.show',$item->id) }}"><i class="fas fa-eye"></i></a>
                                     @csrf
                                     @method('DELETE')

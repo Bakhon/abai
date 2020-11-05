@@ -16,7 +16,7 @@
                 <table class="table table-bordered">
                     <tr>
                         <td colspan="6">Узел отбора</td>
-                        <td colspan="10">Фактические данные НГДУ</td>
+                        <td colspan="11">Фактические данные НГДУ</td>
                         <td rowspan="3">{{__('app.action')}}</td>
                     </tr>
                     <tr>
@@ -27,14 +27,15 @@
                         <td rowspan="2">ЗУ</td>
                         <td rowspan="2">Скважина</td>
                         <td rowspan="2">Дата</td>
-                        <td rowspan="2">Суточная добыча  жидкости, м3/сут</td>
-                        <td rowspan="2">Давление в буферной емкости, бар</td>
-                        <td rowspan="2">Давление на выходе насоса, бар</td>
-                        <td colspan="2">Печь</td>
+                        <td colspan="5">ГУ</td>
                         <td colspan="4">Кормасс</td>
                     </tr>
                     <tr>
-                        <td>Температура на входе в печи, С</td>
+                        <td>Суточная добыча  жидкости, м3/сут</td>
+                        <td>Обводненность, %</td>
+                        <td>Давление в буферной емкости, бар</td>
+                        <td>Давление на выходе насоса, бар</td>
+                        <td>Температура на входе в печь, С</td>
                         <td>Температура на выходе из печи, С</td>
                         <td>Кормасс</td>
                         <td>Давление, бар</td>
@@ -57,6 +58,7 @@
                             <td>{{ $item->well->name }}</td>
                             <td>{{ $item->date }}</td>
                             <td>{{ $item->daily_fluid_production }}</td>
+                            <td>{{ $item->bsw }}</td>
                             <td>{{ $item->surge_tank_pressure }}</td>
                             <td>{{ $item->pump_discharge_pressure }}</td>
                             <td>{{ $item->heater_inlet_pressure }}</td>

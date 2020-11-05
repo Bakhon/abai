@@ -21,6 +21,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get("/geteconimicdata", "EconomicController@getEconomicData");
         Route::get("/getcurrency", "DruidController@getCurrency");
         Route::get("/getcurrencyperiod", "DruidController@getCurrencyPeriod");
+        Route::post("/corrosion", "DruidController@corrosion");
         Route::get('/', function () {
             return view('welcome');
         });
@@ -52,34 +53,39 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/tabs', 'DruidController@tabs')->name('tabs');
         Auth::routes();
         Route::get('/home', 'HomeController@index')->name('home');
-        Route::resource('oildaily','OilDailyController');
         Route::get('/maps', 'DruidController@maps')->name('maps');
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
+        Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
         Route::get('/constructor', 'DruidController@constructor')->name('constructor');
         Route::get('/export', 'HomeController@export');
 
 
         //wm
-        Route::resource('watermeasurement','WaterMeasurementController');
-        Route::get('/getotherobjects', 'WaterMeasurementController@getOtherObjects');
-        Route::get('/getngdu', 'WaterMeasurementController@getNgdu');
-        Route::post('/getcdng', 'WaterMeasurementController@getCdng');
-        Route::post('/getgu', 'WaterMeasurementController@getGu');
-        Route::post('/getzu', 'WaterMeasurementController@getZu');
-        Route::post('/getwell', 'WaterMeasurementController@getWell');
-        Route::get('/getwbs', 'WaterMeasurementController@getWaterBySulin');
-        Route::get('/getsrb', 'WaterMeasurementController@getSulphateReducingBacteria');
-        Route::get('/gethob', 'WaterMeasurementController@getHydrocarbonOxidizingBacteria');
-        Route::get('/gethb', 'WaterMeasurementController@getThionicBacteria');
-        Route::post('/getwm', 'WaterMeasurementController@getWm');
-        Route::get('/getallgus', 'WaterMeasurementController@getAllGu');
-        Route::post('/getgudata', 'WaterMeasurementController@getGuData');
-        Route::post('/getgudatabyday', 'OmgNGDUController@getGuDataByDay');
-        Route::post('/updatewm', 'WaterMeasurementController@update')->name('updatewm');
-        Route::resource('omgca','OmgCAController');
-        Route::resource('omguhe','OmgUHEController');
-        Route::resource('omgngdu','OmgNGDUController');
+        Route::resource('watermeasurement','ComplicationMonitoring\WaterMeasurementController');
+        Route::get('/getotherobjects', 'ComplicationMonitoring\WaterMeasurementController@getOtherObjects');
+        Route::get('/getngdu', 'ComplicationMonitoring\WaterMeasurementController@getNgdu');
+        Route::get('/getcdng', 'ComplicationMonitoring\WaterMeasurementController@getCdng');
+        Route::post('/getgu', 'ComplicationMonitoring\WaterMeasurementController@getGu');
+        Route::post('/getzu', 'ComplicationMonitoring\WaterMeasurementController@getZu');
+        Route::post('/getwell', 'ComplicationMonitoring\WaterMeasurementController@getWell');
+        Route::get('/getwbs', 'ComplicationMonitoring\WaterMeasurementController@getWaterBySulin');
+        Route::get('/getsrb', 'ComplicationMonitoring\WaterMeasurementController@getSulphateReducingBacteria');
+        Route::get('/gethob', 'ComplicationMonitoring\WaterMeasurementController@getHydrocarbonOxidizingBacteria');
+        Route::get('/gethb', 'ComplicationMonitoring\WaterMeasurementController@getThionicBacteria');
+        Route::post('/getwm', 'ComplicationMonitoring\WaterMeasurementController@getWm');
+        Route::get('/getallgus', 'ComplicationMonitoring\WaterMeasurementController@getAllGu');
+        Route::get('/getallkormasses', 'ComplicationMonitoring\WaterMeasurementController@getAllKormasses');
+        Route::post('/getgudata', 'ComplicationMonitoring\WaterMeasurementController@getGuData');
+        Route::post('/getgudatabyday', 'ComplicationMonitoring\OmgNGDUController@getGuDataByDay');
+        Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
+        Route::resource('omgca','ComplicationMonitoring\OmgCAController');
+        Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
+        Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');
+        Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
+
+
+        //gno economic
         Route::resource('ecorefscompaniesids','EcoRefsCompaniesIdsController');
         Route::resource('ecorefsdirection','EcoRefsDirectionController');
         Route::resource('ecorefsrouteid','EcoRefsRouteIdController');
@@ -104,6 +110,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefsexc','EcoRefsExcController');
         Route::resource('antiecoone','AntiCrisis\AntiEcoOneController');
         Route::resource('antiecotwo','AntiCrisis\AntiEcoTwoController');
+        Route::resource('ecorefsprocdob','EcoRefsProcDobController');
+        Route::resource('ecorefsavgprs','EcoRefsAvgPrsController');
+
     });
     Auth::routes([
         'reset' => false,

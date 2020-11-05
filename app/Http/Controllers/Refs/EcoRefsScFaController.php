@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
 use App\Models\EcoRefsAvgMarketPrice;
+use App\Models\EcoRefsAvgPrs;
 use App\Models\EcoRefsCompaniesId;
 use App\Models\EcoRefsDirectionId;
 use App\Models\EcoRefsDiscontCoefBar;
@@ -11,6 +12,7 @@ use App\Models\EcoRefsEquipId;
 use App\Models\EcoRefsMacro;
 use App\Models\EcoRefsNdoRates;
 use App\Models\EcoRefsPrepElectPrsBrigCost;
+use App\Models\EcoRefsProcDob;
 use App\Models\EcoRefsRentEquipElectServCost;
 use App\Models\EcoRefsRentTax;
 use App\Models\EcoRefsRoutesId;
@@ -20,6 +22,8 @@ use App\Models\Refs\EcoRefsEmpPer;
 use App\Models\Refs\EcoRefsScFa;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Exporter;
+
+use function Complex\ln;
 
 class EcoRefsScFaController extends Controller
 {
@@ -124,8 +128,6 @@ class EcoRefsScFaController extends Controller
 
     public function nnoeco(Request $request){
         $result = [];
-        $liquid = $request->liquid;
-        $oil = $request->oil;
         $workday = $request->workday;
         $prs = $request->prs;
         $avgprs = $request->avgprs;
@@ -133,17 +135,42 @@ class EcoRefsScFaController extends Controller
         $equipIdRequest = $request->equip;
         $serviceTime = $request->time;
         $qZhidkosti = $request->qzh;
-        $shgnParam = $request->shgn;
-        $ecnParam = $request->ecn;
+        $razrab = $request->razr;
+        $qoil = $request->qo;
+        $startdate = $request->start;
+        $month = $request->mon;
+        $scorfa = $request->scfa;
+        $reqDay = $request->reqd;
+        $reqecn = $request->reqecn;
         // Raspredelenie po napravleniyam realizacii NDO
         // To do
-        $perreal = EcoRefsEmpPer::where('company_id', '=', $org)->first();
-        $empper = $oil - $oil * $perreal->emp_per;
+
+        $liquid = $qZhidkosti * $workday;
+        $oil = $qoil * (1 - exp(log(1 - $razrab/100) / 365 * $workday)) /-(log(1 - $razrab/100)/365);
+        $perreal = EcoRefsProcDob::where('company_id', '=', $org)->first();
+        $empper = $oil - $oil * $perreal->proc_dob;
+
+        $ecnParam = 200.96 * pow($qZhidkosti,-0.6565);
+        $shgnParam = 88.013 * pow($qZhidkosti,-0.749);
 
         // ------------------------NDO podschet po marshrutam
         // Export BEGIN
         $directionExp = EcoRefsDirectionId::where('name','=','Экспорт')->get();
         $exports = [];
+
+        $scenariofact = EcoRefsScFa::where('name','=',$scorfa)->get();
+        $scfa = [];
+
+        foreach($scenariofact as $item){
+            array_push($scfa,$item->id);
+        }
+
+        $periodcalc = EcoRefsMacro::where('date','>=',$startdate)->take($month)->get();
+        $periodc = [];
+
+        foreach($periodcalc as $item){
+            array_push($periodc,$item->date);
+        }
 
         foreach($directionExp as $item){
             array_push($exports,$item->id);
@@ -182,6 +209,23 @@ class EcoRefsScFaController extends Controller
         $zatrElectResults = [];
         $prsCostResults = [];
         $expDayResults = [];
+        $prsResult = [];
+        // $ecnParam = [];
+
+        // foreach($compRas as $item){
+        //     $avgdailyprs = EcoRefsAvgPrs::where('company_id','=',$item->company_id)->first();
+        //     $ecnParam[$item->route_id] = $insideResults[$item->route_id]*$item->macro * $stavki->ndo_rates * 0.5;
+        // }
+
+        foreach($compRas as $item){
+            $avgprsday = EcoRefsAvgPrs::where('company_id', '=', $item->company_id)->first();
+            if($equipIdRequest == 2){
+                $prsResult[$item->company_id] = $reqDay;
+            }
+            else{
+                $prsResult[$item->company_id] = 365 / ($reqecn + $avgprsday->avg_prs);
+            }
+        }
 
         foreach($emppersExp as $item){
             $exportsResults[$item->route_id] = $empper * $item->emp_per;
@@ -202,6 +246,16 @@ class EcoRefsScFaController extends Controller
             }
         }
 
+        // foreach($compRas as $item){
+        //     $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
+        //     if($equipIdRequest == 1){
+        //         $zatrElectResults[$item->equip_id] = $workday * $qZhidkosti * $shgnParam * $electCost->elect_cost;
+        //     }
+        //     else{
+        //         $zatrElectResults[$item->equip_id] = $workday * $qZhidkosti * $ecnParam * $electCost->elect_cost;
+        //     }
+        // }
+
         foreach($compRas as $item){
             $prsCostResults[$item->company_id] = $prs * $avgprs * $item->prs_brigade_cost;
         }
@@ -219,7 +273,7 @@ class EcoRefsScFaController extends Controller
         }
         else{
             $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
-            $rentCostResult = $buyCost->rent_cost;
+            $rentCostResult = $buyCost->rent_cost * $workday;
         }
 
 
@@ -251,14 +305,15 @@ class EcoRefsScFaController extends Controller
                     $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_rub;
                 }
             }
-            $exportsTarTnResults[$key] = $tarifTnItemValue;
+            $exportsTarTnResults[$key] = $tarifTnItemValue/12;
         }
 
         $exportsTarTnResultsTotal = array_sum($exportsTarTnResults);
 
+        //To do rate->exp_dol
         foreach($discontExp as $item){
             $rate = EcoRefsMacro::where('date','=',$item->date)->first();
-            $exportsDiscontResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont)*$rate->ex_rate_dol);
+            $exportsDiscontResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * (($item->macro - $item->discont) * $rate->ex_rate_dol);
         }
         $exportsDiscontResultsTotal = array_sum($exportsDiscontResults);
 
@@ -266,7 +321,7 @@ class EcoRefsScFaController extends Controller
         foreach($discontExp as $item){
             $rate = EcoRefsMacro::where('date','=',$item->date)->first();
             $stavki = EcoRefsNdoRates::where('company_id','=',$item->company_id)->first();
-            $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rate->ex_rate_dol * $stavki->ndo_rates;
+            $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $stavki->ndo_rates * $rate->ex_rate_dol;
         }
 
         $exportsNdpiResultsTotal = array_sum($exportsNdpiResults);
@@ -274,7 +329,7 @@ class EcoRefsScFaController extends Controller
         foreach($discontExp as $item){
             $rate = EcoRefsMacro::where('date','=',$item->date)->first();
             $rent = EcoRefsRentTax::where('world_price_beg','<',$item->macro)->where('world_price_end','<=',$item->macro)->first();
-            $exportsRentTaxResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rate->ex_rate_dol * $rent->rate;
+            $exportsRentTaxResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rent->rate * $rate->ex_rate_dol;
         }
 
         $exportsRentTaxResultsTotal = array_sum($exportsRentTaxResults);
@@ -342,7 +397,7 @@ class EcoRefsScFaController extends Controller
                     $tarifTnItemValue += $value * $row->tn_rate * $rate->ex_rate_rub;
                 }
             }
-            $insideTarTnResults[$key] = $tarifTnItemValue;
+            $insideTarTnResults[$key] = $tarifTnItemValue/12;
         }
 
         $insideTarTnResultsTotal = array_sum($insideTarTnResults);
@@ -398,39 +453,40 @@ class EcoRefsScFaController extends Controller
             $svobodDenPotok[$item->company_id] = $chistayaPribyl[$item->company_id] -  $buyCostResult + $amortizaciyaResult;
 
         }
-
-        array_push($result,$empper);                        // 0    % OT DOBYCHI NA REALIZACIYA
-        array_push($result,$exportsResultsTotal);           // 1    % OT DOBYCHI NA REALIZACIYA --- EXPORT TOTAL
-        array_push($result,$exportsResults);                // 2    % OT DOBYCHI NA REALIZACIYA ----- EXPORT
-        array_push($result,$insideResultsTotal);            // 3    % OT DOBYCHI NA REALIZACIYA  ------ VNUTR RYNOK TOTAL
-        array_push($result,$insideResults);                 // 4    % OT DOBYCHI NA REALIZACIYA ----- VNUTR RYNOK
-        array_push($result,$exportsDiscontResultsTotal);    // 5    OPREDELENIE DOHODNOY CHASTI ----- EXPORT TOTAL
-        array_push($result,$exportsDiscontResults);         // 6    OPREDELENIE DOHODNOY CHASTI ----- EXPORT
-        array_push($result,$insideDiscontResultsTotal);     // 7    OPREDELENIE DOHODNOY CHASTI ----- VNUTR RYNOK TOTAL
-        array_push($result,$insideDiscontResults);          // 8    OPREDELENIE DOHODNOY CHASTI ----- VNUTR RYNOK
-        array_push($result,$exportsNdpiResultsTotal);       // 9    RASCHET NDPI ----- EXPORT TOTAL
-        array_push($result,$exportsNdpiResults);            // 10   RASCHET NDPI ----- EXPORT
-        array_push($result,$insideNdpiResultsTotal);        // 11   RASCHET NDPI ----- VNUTR RYNOK TOTAL
-        array_push($result,$insideNdpiResults);             // 12   RASCHET NDPI ----- VNUTR RYNOK
-        array_push($result,$exportsRentTaxResultsTotal);    // 13   RASCHET RENTNOGO NALOGA ----- TOTAL
-        array_push($result,$exportsRentTaxResults);         // 14   RASCHET RENTNOGO NALOGA ----- TUT TOLKO EXPORT
-        array_push($result,$exportsEtpResultsTotal);        // 15   RASCHE ETP ----- TOTAL
-        array_push($result,$exportsEtpResults);             // 16   RASCHET ETP ------ TUT TOLKO EXPORT
-        array_push($result,$exportsTarTnResultsTotal);      // 17   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- EXPORT TOTAL
-        array_push($result,$exportsTarTnResults);           // 18   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- EXPORT
-        array_push($result,$insideTarTnResultsTotal);       // 19   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- VNUTR RYNOK TOTAL
-        array_push($result,$insideTarTnResults);            // 20   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- VNUTR RYNOK
-        array_push($result,$zatrElectResults);              // 21   ZATRATY NA ELECTOENERGIYU
-        array_push($result,$zatrPrepResults);               // 22   ZATRATY NA PODGOTOVKU
-        array_push($result,$prsCostResults);                // 23   ZATRATY NA PRS
-        array_push($result,$expDayResults);                 // 24   ZATRATY ZA SUTOCHNOE OBSLUZHIVANIE
-        array_push($result,$rentCostResult);                // 25   STOIMOST ARENDY OBORUDOVANIYA
-        array_push($result,$amortizaciyaResult);            // 26   AMORTIZACIYA
-        array_push($result,$operPrib);                      // 27   OPERACIONNAYA PRIBYL
-        array_push($result,$kpnResult);                     // 28   KPN
-        array_push($result,$chistayaPribyl);                // 29   CHISTAYA PRIBYL
-        array_push($result,$buyCostResult);                 // 30   KVL (STOIMOST OBORUDOVANIYA)
-        array_push($result,$svobodDenPotok);                // 31   SVOBODNYI DENEZHNYI POTOK
+        array_push($result,$liquid);                        // 0    % OT DOBYCHI NA REALIZACIYA
+        array_push($result,$oil);                        // 0    % OT DOBYCHI NA REALIZACIYA
+        array_push($result,$empper);                        // 2    % OT DOBYCHI NA REALIZACIYA
+        array_push($result,$exportsResultsTotal);           // 3    % OT DOBYCHI NA REALIZACIYA --- EXPORT TOTAL
+        array_push($result,$exportsResults);                // 4    % OT DOBYCHI NA REALIZACIYA ----- EXPORT
+        array_push($result,$insideResultsTotal);            // 5    % OT DOBYCHI NA REALIZACIYA  ------ VNUTR RYNOK TOTAL
+        array_push($result,$insideResults);                 // 6    % OT DOBYCHI NA REALIZACIYA ----- VNUTR RYNOK
+        array_push($result,$exportsDiscontResultsTotal);    // 7    OPREDELENIE DOHODNOY CHASTI ----- EXPORT TOTAL
+        array_push($result,$exportsDiscontResults);         // 8    OPREDELENIE DOHODNOY CHASTI ----- EXPORT
+        array_push($result,$insideDiscontResultsTotal);     // 9    OPREDELENIE DOHODNOY CHASTI ----- VNUTR RYNOK TOTAL
+        array_push($result,$insideDiscontResults);          // 10   OPREDELENIE DOHODNOY CHASTI ----- VNUTR RYNOK
+        array_push($result,$exportsNdpiResultsTotal);       // 11   RASCHET NDPI ----- EXPORT TOTAL
+        array_push($result,$exportsNdpiResults);            // 12   RASCHET NDPI ----- EXPORT
+        array_push($result,$insideNdpiResultsTotal);        // 13   RASCHET NDPI ----- VNUTR RYNOK TOTAL
+        array_push($result,$insideNdpiResults);             // 14   RASCHET NDPI ----- VNUTR RYNOK
+        array_push($result,$exportsRentTaxResultsTotal);    // 15   RASCHET RENTNOGO NALOGA ----- TOTAL
+        array_push($result,$exportsRentTaxResults);         // 16   RASCHET RENTNOGO NALOGA ----- TUT TOLKO EXPORT
+        array_push($result,$exportsEtpResultsTotal);        // 17   RASCHE ETP ----- TOTAL
+        array_push($result,$exportsEtpResults);             // 18   RASCHET ETP ------ TUT TOLKO EXPORT
+        array_push($result,$exportsTarTnResultsTotal);      // 19   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- EXPORT TOTAL
+        array_push($result,$exportsTarTnResults);           // 20   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- EXPORT
+        array_push($result,$insideTarTnResultsTotal);       // 21   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- VNUTR RYNOK TOTAL
+        array_push($result,$insideTarTnResults);            // 22   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- VNUTR RYNOK
+        array_push($result,$zatrElectResults);              // 23   ZATRATY NA ELECTOENERGIYU
+        array_push($result,$zatrPrepResults);               // 24   ZATRATY NA PODGOTOVKU
+        array_push($result,$prsCostResults);                // 25   ZATRATY NA PRS
+        array_push($result,$expDayResults);                 // 26   ZATRATY ZA SUTOCHNOE OBSLUZHIVANIE
+        array_push($result,$rentCostResult);                // 27   STOIMOST ARENDY OBORUDOVANIYA
+        array_push($result,$amortizaciyaResult);            // 28   AMORTIZACIYA
+        array_push($result,$operPrib);                      // 29   OPERACIONNAYA PRIBYL
+        array_push($result,$kpnResult);                     // 30   KPN
+        array_push($result,$chistayaPribyl);                // 31   CHISTAYA PRIBYL
+        array_push($result,$buyCostResult);                 // 32   KVL (STOIMOST OBORUDOVANIYA)
+        array_push($result,$svobodDenPotok);                // 33   SVOBODNYI DENEZHNYI POTOK
 
         return $result;
 

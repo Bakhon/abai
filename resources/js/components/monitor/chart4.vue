@@ -27,7 +27,7 @@ export default {
           y: {
             formatter: function(y) {
               if (typeof y !== "undefined") {
-                return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + "";
+                // return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + "";
               }
               return y;
             }
@@ -63,7 +63,7 @@ export default {
     setValue: function(value) {
         this.series = [
             {
-                name: 'Фактическая скорость коррозии',
+                name: 'Фактическая закачка ингибитора коррозии',
                 data: value.value
             }
             ];
