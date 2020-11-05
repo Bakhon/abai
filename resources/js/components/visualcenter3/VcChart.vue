@@ -1,5 +1,5 @@
 <template>
-  <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+  <Plotly :data="data" :layout="layout" :display-mode-bar="false" :config="config"></Plotly>
 </template>
 
 <script>
@@ -12,10 +12,16 @@ export default {
   props: ["postTitle"],
   data: function () {
     return {
-      layout: {
-        autosize: true,
-        // width: 200,
-        //height: 500,
+    /*  rendererOptions: {
+plotlyConfig: {
+responsive: true,
+displayModeBar: true
+},},*/
+config: {responsive: true},
+      layout: {     
+      autosize: true,
+      width: 680,
+        height: 600,
         //      showlegend: false,
         xaxis: {
           hoverformat: ".1f",
@@ -47,7 +53,7 @@ export default {
 
         legend: {
           orientation: "h",
-          y: -3.8,
+          //y: -3.8,
           font: {
             size: 12,
             color: "#fff",

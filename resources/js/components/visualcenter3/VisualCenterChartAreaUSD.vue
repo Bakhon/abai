@@ -2,13 +2,13 @@
   <div>
     <apexchart
       type="area"
-      height="150"
-      width="320"
+      height="580"
+      width="960"
       :options="chartOptions"
       :series="series"
     ></apexchart>
     <div class="begin">{{ begin }}</div>
-    <div class="end">{{ end }}</div>
+    <div class="end2">{{ end }}</div>
   </div>
 </template>
 

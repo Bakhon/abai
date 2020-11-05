@@ -206,7 +206,7 @@
 <style>
     .bg-dark {
         background-color: #20274e !important;
-        /*height: 80px;*/
+        height: 80px;
         z-index: 99999;
     }
 
@@ -292,11 +292,7 @@
         background-color: #353d6a;
         /* font-family: "Font Awesome 5 Free"; */
         /* font-weight: 600; */
-        background-image: url({{ asset('img/level1/icon_search.svg')
-    }
-    }
-
-    );
+        background-image: url('img/level1/icon_search.svg');
     background-repeat: no-repeat;
     background-size: 25px 25px;
     background-position: 22px 10px;

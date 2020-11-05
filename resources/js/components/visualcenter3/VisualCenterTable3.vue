@@ -84,9 +84,10 @@
                 <div class="txt2">5,2%</div>
                 <div class="txt3">vs сентябрь</div>
               </td>
-              <td
+              <td 
                 style="width: 200px; border-left: 10px solid #0f1430;"
                 @click="changeTable('2')"
+                :style="`${tableHover2}`"
               >
                 <div class="nu">
                   <div class="number">{{ oilNow }}</div>
@@ -101,6 +102,7 @@
               <td
                 style="width: 200px; border-left: 10px solid #0f1430;"
                 @click="changeTable('3')"
+                 :style="`${tableHover3}`"
               >
                 <div class="nu">
                   <div class="number">{{ currencyNow }}</div>
@@ -389,6 +391,7 @@
       <div class="second-table" :style="`${Table2}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
+           <div class="big-area">
           <br />
 
           <div
@@ -402,18 +405,20 @@
           >
             <div>{{ menuDMY.DMY }}</div>
           </div>
-          <visual-center-chart-area-oil
+          <visual-center-chart-area-oil3
             v-for="(serial, index) in oilChart"
             v-bind:postTitle="serial"
             :key="serial"
-          ></visual-center-chart-area-oil>
+          ></visual-center-chart-area-oil3></div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table3}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
+            <div class="big-area">
           <br />
+         
           <div
             @click="selectedDMY2 = menuDMY.id"
             class="period"
@@ -425,39 +430,45 @@
           >
             <div>{{ menuDMY.DMY }}</div>
           </div>
-          <visual-center-chart-area-usd
+          <visual-center-chart-area-usd3
             v-for="(serial2, index) in currencyChart"
             v-bind:postTitles="serial2"
             :key="serial2"
-          ></visual-center-chart-area-usd>
+          ></visual-center-chart-area-usd3></div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table4}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
+           <div class="big-area">
           Фонд добывающих скважин
-        </div>
+        </div></div>
       </div>
 
       <div class="third-table" :style="`${Table5}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
+           <div class="big-area">
           Фонд нагнетательных скважин
+          </div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table6}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-          ОТМ
+          <div class="big-area">
+          ОТМ</div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table7}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
+           <div class="big-area">
           Химизация
+          </div>
         </div>
       </div>
 
@@ -547,14 +558,14 @@
         <div class="table-responsive">
           <table class="table table1-2">
             <tr>
-              <td class="w-50" @click="changeTable('4')">
+              <td class="w-50" @click="changeTable('4')"  :style="`${tableHover4}`">
                 <div class="txt4">{{ wells2[0].prod_wells_work }}</div>
                 <div class="in-work">В работе</div>
                 <div class="arrow"></div>
                 <div class="txt2">48</div>
               </td>
 
-              <td class="w-50" @click="changeTable('4')">
+              <td class="w-50" @click="changeTable('4')"  :style="`${tableHover4}`">
                 <div class="txt4">{{ wells2[0].prod_wells_idle }}</div>
                 <div class="in-idle">В простое</div>
                 <div class="arrow"></div>
@@ -563,7 +574,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2">
+              <td colspan="2"  @click="changeTable('4')"  :style="`${tableHover4}`">
                 <div class="txt2">
                   Фонд добывающих скважин
                 </div>
@@ -576,14 +587,14 @@
           <div class="table-responsive">
             <table class="table table1-2">
               <tr>
-                <td class="w-50" @click="changeTable('5')">
+                <td class="w-50" @click="changeTable('5')"  :style="`${tableHover5}`">
                   <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-work">В работе</div>
                   <div class="arrow"></div>
                   <div class="txt2">48</div>
                 </td>
 
-                <td class="w-50" @click="changeTable('5')">
+                <td class="w-50" @click="changeTable('5')"  :style="`${tableHover5}`">
                   <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-idle">В простое</div>
                   <div class="arrow"></div>
@@ -592,7 +603,7 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="2">
+                <td colspan="2"  @click="changeTable('5')"  :style="`${tableHover5}`">
                   <div class="txt2">
                     Фонд нагнетательных скважин
                   </div>
@@ -606,12 +617,12 @@
           <div class="table-responsive">
             <table class="table table5">
               <tr>
-                <td class="w-50" @click="changeTable('6')">
+                <td class="w-50" @click="changeTable('6')"  :style="`${tableHover6}`">
                   <div class="otm"></div>
                   <div class="txt2">ОТМ</div>
                 </td>
 
-                <td class="w-50" @click="changeTable('7')">
+                <td class="w-50" @click="changeTable('7')"  :style="`${tableHover7}`">
                   <div class="him"></div>
                   <div class="txt2">Химизация</div>
                 </td>
@@ -694,7 +705,8 @@
                   </div>
                   <div class="column-1">
                     <div class="in-idle">Прирост</div>
-                    <div class="in-idle">с начала месяца</div>
+                    <div class="in-idle">с начала</div>
+                    <div class="in-idle">месяца</div>
                   </div>
                 </div>
               </td>
@@ -708,7 +720,8 @@
                   </div>
                   <div class="column-1">
                     <div class="in-idle">Прирост</div>
-                    <div class="in-idle">с начала месяца</div>
+                    <div class="in-idle">с начала </div>
+                    <div class="in-idle">месяца</div>
                   </div>
                 </div>
               </td>
@@ -805,6 +818,13 @@ export default {
       buttonHover4: "",
       buttonHover5: "",
       buttonHover6: "",
+
+      tableHover7:"",
+        tableHover8:"",
+          tableHover9:"",
+            tableHover10:"",
+              tableHover11:"",
+                tableHover12:"",
 
       circleMenu: "",
       month: new Date().getMonth(),
@@ -922,20 +942,78 @@ export default {
       this.Table6 = "display:none";
       this.Table7 = "display:none";
 
+
+       this.tableHover1 = "";
+        this.tableHover2 = "";
+         this.tableHover3 = "";
+          this.tableHover4 = "";
+           this.tableHover5 = "";
+            this.tableHover6 = "";
+             this.tableHover7 = "";
+          var buttonHover2 = " background: #0d2792";
+/*
+
+            if (color == "7") {
+            this.buttonHover7 = buttonHover2;
+          } else {
+           
+          }
+
+                if (color == "8") {
+            this.buttonHover8 = buttonHover2;
+          } else {
+   
+          }
+
+
+      if (color == "9") {
+            this.buttonHover9 = buttonHover2;
+          } else {
+            this.buttonHover9 = "";
+          }
+
+
+      if (color == "10") {
+            this.buttonHover10 = buttonHover2;
+          } else {
+            this.buttonHover10 = "";
+          }
+
+
+      if (color == "11") {
+            this.buttonHover11 = buttonHover2;
+          } else {
+            this.buttonHover11 = "";
+          }
+
+
+      if (color == "12") {
+            this.buttonHover12 = buttonHover2;
+          } else {
+            this.buttonHover12 = "";       }*/
+
+
       if (change == "1") {
         this.Table1 = "display:block";
+         this.tableHover1 = buttonHover2;
       } else if (change == "2") {
         this.Table2 = "display:block";
+        this.tableHover2 = buttonHover2;
       } else if (change == "3") {
         this.Table3 = "display:block";
+      this.tableHover3 = buttonHover2;
       } else if (change == "4") {
         this.Table4 = "display:block";
+     this.tableHover4 = buttonHover2;
       } else if (change == "5") {
         this.Table5 = "display:block";
+       this.tableHover5 = buttonHover2;
       } else if (change == "6") {
         this.Table6 = "display:block";
+    this.tableHover6 = buttonHover2;
       } else if (change == "7") {
         this.Table7 = "display:block";
+  this.tableHover7 = buttonHover2;
       }
     },
 
@@ -2329,6 +2407,7 @@ export default {
           this.wells = wells;
 
           var buttonHover = "border: none;" + " background: #2E50E9";
+        
           //"    background-size: 100% auto;" +
           //" background-color: #1c6fb6;";
 
@@ -2366,6 +2445,7 @@ export default {
           } else {
             this.buttonHover6 = "";
           }
+
         } else {
           console.log("No data");
         }
@@ -2769,6 +2849,8 @@ export default {
 
       //return factDaySumm;
     },
+
+
 
     changeButton(showTableItem, changeButton) {
       var a;
