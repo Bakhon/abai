@@ -381,7 +381,8 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.corrosionRateInMm = data.corrosion_rate_in_mm,
-                    this.doseMgPerL = data.dose_mg_per_l
+                    this.doseMgPerL = data.dose_mg_per_l,
+                    this.$emit("chart5", data.dose_mg_per_l)
                 } else {
                     console.log("No data");
                 }
