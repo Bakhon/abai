@@ -5,3 +5,4 @@
             </div>       
         @endsection
         <link href="{{ asset('css/visualcenter3.css')}}" rel="stylesheet">
+        

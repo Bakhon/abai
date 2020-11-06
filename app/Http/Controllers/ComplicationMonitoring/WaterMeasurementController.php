@@ -106,6 +106,7 @@ class WaterMeasurementController extends Controller
         $wm->sulphate_reducing_bacteria_id = ($request->sulphate_reducing_bacteria_id) ? $request->sulphate_reducing_bacteria_id : NULL;
         $wm->hydrocarbon_oxidizing_bacteria_id = ($request->hydrocarbon_oxidizing_bacteria_id) ? $request->hydrocarbon_oxidizing_bacteria_id : NULL;
         $wm->thionic_bacteria_id = ($request->thionic_bacteria_id) ? $request->thionic_bacteria_id : NULL;
+        $wm->cruser_id = Auth::user()->id;
         $wm->save();
 
         return redirect()->route('watermeasurement.index')->with('success',__('app.created'));
@@ -355,10 +356,13 @@ class WaterMeasurementController extends Controller
         $uhe = ComplicationMonitoringOmgUHE::where('gu_id','=',$request->gu_id)->get();
         $corrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->get();
         $kormass = ComplicationMonitoringGuKormass::where('gu_id','=',$request->gu_id)->with('kormass')->first();
-        $pipe = Pipe::where('gu_id','=',$request->gu_id)->first();
-        $lastCorrosion = ComplicationMonitoringCorrosion::latest()->first();
+        $pipe = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','eg')->first();
+        $pipeAB = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','ab')->first();
+        $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->latest()->first();
         $wmLast = ComplicationMonitoringWaterMeasurement::where('gu_id','=',$request->gu_id)->latest()->first();
         $constantsValues = ConstantsValue::get();
+        $wmLastCO2 = ComplicationMonitoringWaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('carbon_dioxide')->latest()->first();
+        $wmLastH2S = ComplicationMonitoringWaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('hydrogen_sulfide')->latest()->first();
 
         $chartDtCarbonDioxide['dt']  = [];
         $chartDtHydrogenSulfide['dt']  = [];
@@ -406,9 +410,12 @@ class WaterMeasurementController extends Controller
             'chart4' => $chartIngibitor,
             'kormass' => $kormass,
             'pipe' => $pipe,
+            'pipeab' => $pipeAB,
             'lastCorrosion' => $lastCorrosion,
             'wmLast' => $wmLast,
-            'constantsValues' => $constantsValues
+            'constantsValues' => $constantsValues,
+            'wmLastH2S' => $wmLastH2S,
+            'wmLastCO2' => $wmLastCO2
         ]);
     }
 

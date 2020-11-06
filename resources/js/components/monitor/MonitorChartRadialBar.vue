@@ -72,10 +72,20 @@ export default {
             stops: [0, 50, 53, 91],
           },
         },
-        
+
         labels: ["Average Results"],
       },
     };
   },
+  methods: {
+    setValue: function(value) {
+        this.series = [
+                value
+            ];
+    }
+  },
+  created: function() {
+    this.$parent.$on('chart5', this.setValue);
+  }
 };
 </script>

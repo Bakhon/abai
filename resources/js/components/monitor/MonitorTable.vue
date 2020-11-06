@@ -104,6 +104,7 @@
 
             <ul class="string3 col-12">
               <li class="nav-string">
+                  <br>
               </li>
             </ul>
 
@@ -147,11 +148,11 @@
             <div class="col-4 trio">
               <ul class="string7 col-12">
                 <li class="vkor-ab">
-                  Vкор(a-b)<input type="text" class="square2" value="888.88" />
+                  Vкор(a-b)<input type="text" class="square2" v-model = "corrosionRateInMmAB" />
                   мм/г
                 </li>
                 <li class="vkor-fact">
-                  Vкор(факт)<input type="text" class="square2" value="888.88" />
+                  Vкор(факт)<input type="text" class="square2" v-model = "corrosionVelocityWithInhibitor" />
                   мм/г
                 </li>
               </ul>
@@ -254,11 +255,17 @@ export default {
       signalizotor:null,
       signalizotorAbs:null,
       pipe: null,
+      pipeab: null,
       lastCorrosion: null,
       wmLast: null,
       constantsValues: null,
       corrosionRateInMm: null,
-      doseMgPerL: null
+      doseMgPerL: null,
+      corrosionRateInMmAB: null,
+      doseMgPerLAB: null,
+      corrosionVelocityWithInhibitor: null,
+      wmLastH2S: null,
+      wmLastCO2: null
     };
   },
   beforeCreate: function () {
@@ -279,7 +286,6 @@ export default {
         })
         .then((response) => {
           let data = response.data;
-          console.log(data);
           if (data) {
             this.$emit("chart1", data.chart1),
             this.$emit("chart2", data.chart2),
@@ -287,9 +293,12 @@ export default {
             this.$emit("chart4", data.chart4),
             this.kormass = data.kormass,
             this.pipe = data.pipe,
+            this.pipeab = data.pipeab,
             this.lastCorrosion = data.lastCorrosion,
             this.wmLast = data.wmLast,
-            this.constantsValues = data.constantsValues
+            this.constantsValues = data.constantsValues,
+            this.wmLastH2S = data.wmLastH2S,
+            this.wmLastCO2 = data.wmLastCO2
           } else {
             console.log("No data");
           }
@@ -310,7 +319,12 @@ export default {
         this.heater_output_pressure = null,
         this.daily_fluid_production = null,
         this.signalizotor = null,
-        this.signalizotorAbs = null
+        this.signalizotorAbs = null,
+        this.corrosionRateInMm = null,
+        this.doseMgPerL = null,
+        this.corrosionRateInMmAB = null,
+        this.doseMgPerLAB = null,
+        this.corrosionVelocityWithInhibitor = null,
         this.axios
             .post("/ru/getgudatabyday", {
                 gu_id: this.gu,
@@ -333,7 +347,9 @@ export default {
                     this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
                     this.signalizotor = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
                     this.signalizotorAbs = Math.abs(this.signalizotor),
-                    this.calc()
+                    this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor
+                    this.calc(),
+                    this.calcab()
                 } else {
                     console.log("No data");
                 }
@@ -356,8 +372,8 @@ export default {
                 p: this.ngdu.surge_tank_pressure,
                 to: 10,
                 ti: this.ngdu.heater_output_pressure,
-                conH2S: this.wmLast.hydrogen_sulfide,
-                conCO2: this.wmLast.carbon_dioxide,
+                conH2S: this.wmLastH2S.hydrogen_sulfide,
+                conCO2: this.wmLastCO2.carbon_dioxide,
                 q_l: this.ngdu.daily_fluid_production,
                 rhog: 0.7705
             })
@@ -365,7 +381,40 @@ export default {
                 let data = response.data;
                 if (data) {
                     this.corrosionRateInMm = data.corrosion_rate_in_mm,
-                    this.doseMgPerL = data.dose_mg_per_l
+                    this.doseMgPerL = data.dose_mg_per_l,
+                    this.$emit("chart5", data.dose_mg_per_l)
+                } else {
+                    console.log("No data");
+                }
+            });
+    },
+    calcab() {
+        this.axios
+            .post("/ru/corrosion", {
+                wc: this.ngdu.bsw,
+                rhol: this.wmLast.density,
+                GOR: this.constantsValues[0].value,
+                mul: 0.007074,
+                mug: 0.00015,
+                sigma: this.constantsValues[1].value,
+                d: this.pipeab.inner_diameter,
+                di: this.pipeab.inner_diameter,
+                do: this.pipeab.outside_diameter,
+                roughness: this.pipeab.roughness,
+                length: this.pipeab.length,
+                p: this.ngdu.surge_tank_pressure,
+                to: 10,
+                ti: this.ngdu.heater_output_pressure,
+                conH2S: this.wmLastH2S.hydrogen_sulfide,
+                conCO2: this.wmLastCO2.carbon_dioxide,
+                q_l: this.ngdu.daily_fluid_production,
+                rhog: 0.7705
+            })
+            .then((response) => {
+                let data = response.data;
+                if (data) {
+                    this.corrosionRateInMmAB = data.corrosion_rate_in_mm,
+                    this.doseMgPerLAB = data.dose_mg_per_l
                 } else {
                     console.log("No data");
                 }
