@@ -36,15 +36,15 @@
         </div>
         <label>SO42-</label>
         <div class="form-label-group">
-            <input type="number" name="sulphate_ion" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="sulphate_ion" class="form-control" placeholder="">
         </div>
         <label>Mg2+</label>
         <div class="form-label-group">
-            <input type="number" name="magnesium_ion" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="magnesium_ion" class="form-control" placeholder="">
         </div>
         <label>рН</label>
         <div class="form-label-group">
-            <input type="number" name="ph" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="ph" class="form-control" placeholder="">
         </div>
         <label>Тип воды по Сулину</label>
         <div class="form-label-group">
@@ -54,15 +54,15 @@
         </div>
         <label>Cодержание стронция, мг/дм³</label>
         <div class="form-label-group">
-            <input type="number" name="strontium_content" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="strontium_content" class="form-control" placeholder="">
         </div>
         <label>Содержание трехвалентного железа мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="ferric_iron_content" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="ferric_iron_content" class="form-control" placeholder="">
         </div>
         <label>О2, мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="oxygen" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="oxygen" class="form-control" placeholder="">
         </div>
         <label>УОБ, кл/см3</label>
         <div class="form-label-group">
@@ -86,35 +86,35 @@
         </div>
         <label>НСО3</label>
         <div class="form-label-group">
-            <input type="number" name="hydrocarbonate_ion" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="hydrocarbonate_ion" class="form-control" placeholder="">
         </div>
         <label>Cl-</label>
         <div class="form-label-group">
-            <input type="number" name="chlorum_ion" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="chlorum_ion" class="form-control" placeholder="">
         </div>
         <label>Na+K+</label>
         <div class="form-label-group">
-            <input type="number" name="potassium_ion_sodium_ion" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="potassium_ion_sodium_ion" class="form-control" placeholder="">
         </div>
         <label>Общая минерализация, мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="mineralization" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="mineralization" class="form-control" placeholder="">
         </div>
         <label>Содержание нефтепродуктов, мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="content_of_petrolium_products" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="content_of_petrolium_products" class="form-control" placeholder="">
         </div>
         <label>Содержание бария, мг/дм³</label>
         <div class="form-label-group">
-            <input type="number" name="barium_content" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="barium_content" class="form-control" placeholder="">
         </div>
         <label>Содержание двухвалентного железа мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="ferrous_iron_content" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="ferrous_iron_content" class="form-control" placeholder="">
         </div>
         <label>CO2, мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="carbon_dioxide" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="carbon_dioxide" class="form-control" placeholder="">
         </div>
         <label>ТБ, кл/см3</label>
         <div class="form-label-group">
@@ -138,31 +138,31 @@
         </div>
         <label>СО32-</label>
         <div class="form-label-group">
-            <input type="number" name="carbonate_ion" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="carbonate_ion" class="form-control" placeholder="">
         </div>
         <label>Ca2+</label>
         <div class="form-label-group">
-            <input type="number" name="calcium_ion" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="calcium_ion" class="form-control" placeholder="">
         </div>
         <label>Плотность при 20°С, г/см3</label>
         <div class="form-label-group">
-            <input type="number" name="density" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="density" class="form-control" placeholder="">
         </div>
         <label>Общая жесткость, мг-экв/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="total_hardness" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="total_hardness" class="form-control" placeholder="">
         </div>
         <label>Механические примеси, мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="mechanical_impurities" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="mechanical_impurities" class="form-control" placeholder="">
         </div>
         <label>Содержание общего железа мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="total_iron_content" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="total_iron_content" class="form-control" placeholder="">
         </div>
         <label>H2S, мг/дм3</label>
         <div class="form-label-group">
-            <input type="number" name="hydrogen_sulfide" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="hydrogen_sulfide" class="form-control" placeholder="">
         </div>
         <label>СВБ, кл/см3</label>
         <div class="form-label-group">

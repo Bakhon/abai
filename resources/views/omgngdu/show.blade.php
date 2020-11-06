@@ -52,6 +52,10 @@
                         <td>{{$omgngdu->daily_fluid_production}}</td>
                     </tr>
                     <tr>
+                        <td>Обводненность, %</td>
+                        <td>{{$omgngdu->bsw}}</td>
+                    </tr>
+                    <tr>
                         <td>Давление в буферной емкости, бар</td>
                         <td>{{$omgngdu->surge_tank_pressure}}</td>
                     </tr>
