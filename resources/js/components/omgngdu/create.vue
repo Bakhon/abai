@@ -42,6 +42,10 @@
         <div class="form-label-group">
             <input type="number" step="0.0001" name="bsw" class="form-control" placeholder="">
         </div>
+        <label>Суточная добыча воды, м3/сут</label>
+        <div class="form-label-group">
+            <input type="number" step="0.0001" name="daily_water_production" class="form-control" placeholder="">
+        </div>
         <label>Суточная добыча жидкости в кормассе, м3/сут</label>
         <div class="form-label-group">
             <input type="number" step="0.0001" name="daily_fluid_production_kormass" class="form-control" placeholder="">
@@ -67,6 +71,10 @@
         <label>Температура на входе в печь в ГУ, С</label>
         <div class="form-label-group">
             <input type="number" step="0.0001" name="heater_inlet_pressure" class="form-control" placeholder="">
+        </div>
+        <label>Суточная добыча нефти, т/сут</label>
+        <div class="form-label-group">
+            <input type="number" step="0.0001" name="daily_oil_production" class="form-control" placeholder="">
         </div>
         <label>Давление в кормассе, бар</label>
         <div class="form-label-group">
@@ -95,6 +103,10 @@
         <label>Давление в буферной емкости в ГУ, бар</label>
         <div class="form-label-group">
             <input type="number" step="0.0001" name="surge_tank_pressure" class="form-control" placeholder="">
+        </div>
+        <label>Количество газа в СИБ, ст.м3/сут</label>
+        <div class="form-label-group">
+            <input type="number" step="0.0001" name="daily_gas_production_in_sib" class="form-control" placeholder="">
         </div>
         <label>Температура на выходе из печи в ГУ, С</label>
         <div class="form-label-group">

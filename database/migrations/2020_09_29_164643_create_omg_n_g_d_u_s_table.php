@@ -23,6 +23,9 @@ class CreateOmgNGDUSTable extends Migration
             $table->integer('well_id')->nullable();
             $table->date('date');
             $table->float('daily_fluid_production', 8, 4)->nullable();
+            $table->float('daily_water_production', 8, 4)->nullable();
+            $table->float('daily_oil_production', 8, 4)->nullable();
+            $table->float('daily_gas_production_in_sib', 8, 4)->nullable();
             $table->float('bsw', 8, 4)->nullable();
             $table->float('surge_tank_pressure', 8, 4)->nullable();
             $table->float('pump_discharge_pressure', 8, 4)->nullable();
