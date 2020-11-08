@@ -238,15 +238,10 @@ return $response;
     }
     public function corrosion(Request $request)
     {
-        if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR1') && $request->has('rhog') &&
-        $request->has('do') && $request->has('mul') && $request->has('l') && $request->has('roughness') &&
-        $request->has('P_bufer') && $request->has('mug') && $request->has('P') && $request->has('thickness') &&
-        $request->has('conCO2') && $request->has('conH2S') && $request->has('t_heater') && $request->has('H2O') &&
-        $request->has('HCO3') && $request->has('Cl') && $request->has('SO4') && $request->has('WC') && 
-        $request->has('q_g_sib') && $request->has('sigma')) {
+        if (true) {
             //flowrate of liquid oil//
             $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim tonne/day
-            $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut 
+            $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
             //oil density
             $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
             $q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
@@ -255,14 +250,14 @@ return $response;
             $GOR1 = $request->GOR1; // БД ОМГ НГДУ input in pipesim Gas-Oil-Ratio газосодержание на входе в ГУ
             $q_g_sib = $request->q_g_sib; // m3/day расход газа в СИБ => БД ОМГ НГДУ
             $q_g_sib = $q_g_sib / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
-            $GOR=($GOR1*$q_l - $q_g_sib) / $q_l; // газосодержание на выходе с ГУ                    
+            $GOR=($GOR1*$q_l - $q_g_sib) / $q_l; // газосодержание на выходе с ГУ
             $q_g = $q_l * $GOR; // m3/sec расход газа в ГУ
             //density of gas
             //$SG = 0.64; //input pipesim
             //$rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Air
             $rhog = $request->rhog; // БД Лабараторная по нефти и газу kg/m3 ???? надо перепроверить 06.11.2020
             //mass flowrate of liquid
-            $m_dotl = $rhol * $q_l; // kg/m3 * m3/s = kg/s 
+            $m_dotl = $rhol * $q_l; // kg/m3 * m3/s = kg/s
             //mass flowrate of gas
             $m_dotg = $rhog * $q_g; // kg/s
             //combined mass flowrate of mixture
@@ -285,7 +280,7 @@ return $response;
             //Roughness of pipes
             $roughness = $request->roughness; // Внутренняя БД константа mm
             $roughness = $roughness / 1000; // from mm to m
-            //Length 
+            //Length
             $l = $request->l; // // Внутренняя БД константа meters
             //Pressure
             $P = $request->P; // БД ОМГ НГДУ bar
@@ -298,7 +293,7 @@ return $response;
 //          Calculate velocity
             $v_lo = $m_dot/$rhol/(pi()/4*$d**2);
 //          Calculate Reynolds number
-            $Re_lo = $v_lo * $d * $rhol / $mul; // m/s * m * kg/m3 / (kg/(m.s)) 
+            $Re_lo = $v_lo * $d * $rhol / $mul; // m/s * m * kg/m3 / (kg/(m.s))
             $A = pow(2.457 * log(1 / (pow(7/$Re_lo,0.9)+(0.27 * $roughness / $d))),16);
             $B = pow(37530 / $Re_lo,16);
 //          Calculate Friction factor
@@ -405,7 +400,7 @@ return $response;
             //Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
             //log r = 7.96 - 2320 / (T + 273) - 5.55 * 10^-3 * T + 0.67 * log(pCo2)
             //pressure in bar
-            //****************                            
+            //****************
             //    POINT A    *
             //****************
             $p = $P_bufer * 100; // from bar to kPa
@@ -526,7 +521,7 @@ return $response;
                 //H2O water concentration in %
                 $H2O = $request->H2O; // БД ОМГ НГДУ
                 //Please enter T temperature in C
-                $T = 25; // 
+                $T = 25; //
                 //Pressure in bar [convert to psi]
                 $P = $P_bufer * 14.503773773; //БД ОМГ НГДУ
                 //pH2S partial pressure kPa [convert to psi]
@@ -535,7 +530,7 @@ return $response;
                 $pCO2 = $pCO2 * 0.1450377377;
                 //SO4 content in mg/dm3
                 $SO4 = $request->SO4; // БД Лабораторная по жидкости
-                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l 
+                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
                 //HCO3 content in mg/dm3
                 $HCO3 = $request->HCO3; // БД Лабораторная по жидкости
                 $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
@@ -544,8 +539,8 @@ return $response;
                 $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
 
                 //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
-                
-                //PAPAVINASAM Corrosion rate 
+
+                //PAPAVINASAM Corrosion rate
                 $pcr_W = 0.54 * $H2O + 12.13;
                 $pcr_T = 0.57 * $T + 20;
                 $pcr_P = -0.081 * $P + 88;
@@ -564,8 +559,8 @@ return $response;
             //Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
             //log r = 7.96 - 2320 / (T + 273) - 5.55 * 10^-3 * T + 0.67 * log(pCo2)
             //pressure in bar
-            //***********************************//                            
-            // GENERAL CORROSION RATE IN POINT E // 
+            //***********************************//
+            // GENERAL CORROSION RATE IN POINT E //
             //***********************************//
             $p = $P_pump * 100; // БД ОМГ НГДУ from bar to kPa
             $t_heater = $request->t_heater; // БД ОМГ НГДУ temperature from Печь taken from database
@@ -648,7 +643,7 @@ return $response;
                 $pCO2 = $pCO2 * 0.1450377377;
                 //SO4 content in mg/dm3
                 $SO4 = $request->SO4; // БД Лабораторная по жидкости
-                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l 
+                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
                 //HCO3 content in mg/dm3
                 $HCO3 = $request->HCO3; // БД Лабораторная по жидкости
                 $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
@@ -657,8 +652,8 @@ return $response;
                 $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
 
                 //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
-                
-                //PAPAVINASAM Corrosion rate 
+
+                //PAPAVINASAM Corrosion rate
                 $pcr_W = 0.54 * $H2O + 12.13;
                 $pcr_T = 0.57 * $T + 20;
                 $pcr_P = -0.081 * $P + 88;
@@ -673,12 +668,12 @@ return $response;
                 // Local corrosion rate in point G pipeline
                 $PCR_E = 0.0254  * $PCR; // convert mpy => mm per year
 
-            
-            //***********************************//                            
-            // GENERAL CORROSION RATE IN POINT F // 
+
+            //***********************************//
+            // GENERAL CORROSION RATE IN POINT F //
             //***********************************//
             $p = $P_final * 100; //from bar to kPa
-            $t = $t_final; // 
+            $t = $t_final; //
             //H2S concentration
             $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
             $conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
@@ -758,7 +753,7 @@ return $response;
                 $pCO2 = $pCO2 * 0.1450377377;
                 //SO4 content in mg/dm3
                 $SO4 = $request->SO4; // БД Лабараторная по жидкости
-                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l 
+                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
                 //HCO3 content in mg/dm3
                 $HCO3 = $request->HCO3; // БД Лабараторная по жидкости
                 $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
@@ -767,8 +762,8 @@ return $response;
                 $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
 
                 //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
-                
-                //PAPAVINASAM Corrosion rate 
+
+                //PAPAVINASAM Corrosion rate
                 $pcr_W = 0.54 * $H2O + 12.13;
                 $pcr_T = 0.57 * $T + 20;
                 $pcr_P = -0.081 * $P + 88;
