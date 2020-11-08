@@ -74,7 +74,7 @@
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>НГДУ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)" disabled>
+            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)">
             <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>

@@ -13,7 +13,7 @@
                         <p>{{ $message }}</p>
                     </div>
                 @endif
-                <table class="table table-bordered">
+                <table class="table table-responsive table-bordered">
                     <tr>
                         <td colspan="6">Узел отбора</td>
                         <td colspan="14">Фактические данные НГДУ</td>

@@ -86,6 +86,7 @@ Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').defau
 Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
+Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
 
 
 
