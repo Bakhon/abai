@@ -280,8 +280,13 @@ return $response;
             //Roughness of pipes
             $roughness = $request->roughness; // Внутренняя БД константа mm
             $roughness = $roughness / 1000; // from mm to m
+<<<<<<< HEAD
+            //Length 
+            $l = $request->l; // // Внутренняя БД константа в метрах
+=======
             //Length
             $l = $request->l; // // Внутренняя БД константа meters
+>>>>>>> cc3b5eb038ac3829b30969a72ba6a516a871070f
             //Pressure
             $P = $request->P; // БД ОМГ НГДУ bar
             $P_pump = $P; // в точке Е
@@ -400,17 +405,23 @@ return $response;
             //Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
             //log r = 7.96 - 2320 / (T + 273) - 5.55 * 10^-3 * T + 0.67 * log(pCo2)
             //pressure in bar
+<<<<<<< HEAD
+            //*********************************/                            
+            //    GENERAL CORROSION POINT A    /
+            //*********************************/
+=======
             //****************
             //    POINT A    *
             //****************
+>>>>>>> cc3b5eb038ac3829b30969a72ba6a516a871070f
             $p = $P_bufer * 100; // from bar to kPa
             $t = 25;  //temperature in C
             //H2S concentration
             $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
-            $conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
             //CO2 concentraiton
             $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
-            $conCO2 = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
             // //According to Dalton's law of partial pressures, the partial pressure of CO2 is proportional to the mole fraction
             // //First we need to get the solubility coefficient from the following formula:
             // //Henry's Law constant: kH(T) = kH * exp(d(ln(kH))/d(1/T) ((1/T) - 1/(298.15 K)))
@@ -427,7 +438,7 @@ return $response;
             // // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
             // $pCO2 = $CO2 / $kCO2 / 44000;   //kPa
             //print("pCO2 [kPa] = ", pCO2)
-            $pCO2 = $conCO2 * $p;
+            $pCO2 = $conCO2_frac / 100 * $p;
 
             //convert data to proper type
             $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
@@ -476,7 +487,7 @@ return $response;
             // // Converting from % to ppm
             // $ppmH2S = $conH2S * 10000;
             // $pH2S = $pH2S / 1000;  #convert to float type and MPa
-            $pH2S = $p * $conH2S; // partial pressure H2S in kPa
+            $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
             $ratio = $pCO2 / $pH2S;
 
             if ($pCO2 / $pH2S >= 500){
