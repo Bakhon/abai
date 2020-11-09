@@ -5,9 +5,11 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 use App\Http\Controllers\Controller;
 use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
 use App\Models\ComplicationMonitoring\Kormass as ComplicationMonitoringKormass;
+use App\Models\ComplicationMonitoring\OilGas;
 use App\Models\ComplicationMonitoring\OmgCA as ComplicationMonitoringOmgCA;
 use App\Models\ComplicationMonitoring\OmgNGDU as ComplicationMonitoringOmgNGDU;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,6 +66,9 @@ class OmgNGDUController extends Controller
         $omgngdu->well_id = ($request->well_id) ? $request->well_id : NULL;
         $omgngdu->date = date("Y-m-d H:i", strtotime($request->date));
         $omgngdu->daily_fluid_production = ($request->daily_fluid_production) ? $request->daily_fluid_production : NULL;
+        $omgngdu->daily_water_production = ($request->daily_water_production) ? $request->daily_water_production : NULL;
+        $omgngdu->daily_oil_production = ($request->daily_oil_production) ? $request->daily_oil_production : NULL;
+        $omgngdu->daily_gas_production_in_sib = ($request->daily_gas_production_in_sib) ? $request->daily_gas_production_in_sib : NULL;
         $omgngdu->bsw = ($request->bsw) ? $request->bsw : NULL;
         $omgngdu->surge_tank_pressure = ($request->surge_tank_pressure) ? $request->surge_tank_pressure : NULL;
         $omgngdu->pump_discharge_pressure = ($request->pump_discharge_pressure) ? $request->pump_discharge_pressure : NULL;
@@ -155,14 +160,27 @@ class OmgNGDUController extends Controller
         $ngdu = ComplicationMonitoringOmgNGDU::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
         $uhe = ComplicationMonitoringOmgUHE::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
         $ca = ComplicationMonitoringOmgCA::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
-
+        $wmLast = WaterMeasurement::where('gu_id','=',$request->gu_id)->latest()->first();
+        $wmLastCO2 = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('carbon_dioxide')->latest()->first();
+        $wmLastH2S = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('hydrogen_sulfide')->latest()->first();
+        $wmLastHCO3 = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('hydrocarbonate_ion')->latest()->first();
+        $wmLastCl = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('chlorum_ion')->latest()->first();
+        $wmLastSO4 = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('sulphate_ion')->latest()->first();
+        $oilGas = OilGas::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
 
         return response()->json([
             'code'=>200,
             'message' => 'success',
             'ngdu' => $ngdu,
             'uhe' => $uhe,
-            'ca' => $ca
+            'ca' => $ca,
+            'wmLastH2S' => $wmLastH2S,
+            'wmLastCO2' => $wmLastCO2,
+            'wmLastHCO3' => $wmLastHCO3,
+            'wmLastCl' => $wmLastCl,
+            'wmLast' => $wmLast,
+            'wmLastSO4' => $wmLastSO4,
+            'oilGas' => $oilGas
         ]);
     }
 }

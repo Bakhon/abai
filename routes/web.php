@@ -83,6 +83,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
         Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
+        Route::resource('oilgas','ComplicationMonitoring\OilGasController');
 
 
         //gno economic

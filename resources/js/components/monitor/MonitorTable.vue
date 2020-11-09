@@ -92,7 +92,7 @@
               </li>
 
               <li class="nav-string second">
-                Vкор(e-g) <input type="text" class="square2" v-model = "corrosionRateInMm" />
+                Vкор(F) <input type="text" class="square2" v-model = "corF" />
                 мм/г
               </li>
 
@@ -116,6 +116,10 @@
               <li class="nav-string">
                 t2 выход<input type="text" class="square2" v-model="heater_output_pressure" />С
               </li>
+
+              <li class="nav-string">
+                Vкор(E)<input type="text" class="square2" v-model="corE" />С
+              </li>
             </ul>
 
             <ul class="string5 col-12">
@@ -130,7 +134,7 @@
                   ИК (реком.)<input
                     type="text"
                     class="square2"
-                    v-model = "doseMgPerL"
+                    v-model = "dose"
                   />
                   г/м3
                 </li>
@@ -148,7 +152,7 @@
             <div class="col-4 trio">
               <ul class="string7 col-12">
                 <li class="vkor-ab">
-                  Vкор(a-b)<input type="text" class="square2" v-model = "corrosionRateInMmAB" />
+                  Vкор(A)<input type="text" class="square2" v-model = "corA" />
                   мм/г
                 </li>
                 <li class="vkor-fact">
@@ -179,26 +183,26 @@
         <div class="head-monitor">Рекомендации</div>
         <div class="rek">Рекомендации дозирования ИК</div>
         <monitor-chart-radialbar></monitor-chart-radialbar>
-        <div v-if="signalizotor > 0 && signalizotor != null" class="text-wrap">
-            <div v-if="signalizotorAbs <= 10" class="alert alert-success" role="alert">
-            Плановая превышает фактическую дозировку на {{signalizotorAbs}}%
+        <div v-if="signalizator > 0 && signalizator != null" class="text-wrap">
+            <div v-if="signalizatorAbs <= 10" class="alert alert-success" role="alert">
+            Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
             </div>
-            <div v-if="signalizotorAbs > 10 && signalizotorAbs <=30" class="alert alert-warning" role="alert">
-            Плановая превышает фактическую дозировку на {{signalizotorAbs}}%
+            <div v-if="signalizatorAbs > 10 && signalizatorAbs <=30" class="alert alert-warning" role="alert">
+            Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
             </div>
-            <div v-if="signalizotorAbs > 30" class="alert alert-danger" role="alert">
-            Плановая превышает фактическую дозировку на {{signalizotorAbs}}%
+            <div v-if="signalizatorAbs > 30" class="alert alert-danger" role="alert">
+            Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
             </div>
         </div>
-        <div v-if="signalizotor < 0 && signalizotor != null" class="text-wrap">
-            <div v-if="signalizotorAbs <= 10" class="alert alert-success" role="alert">
-            Фактическая превышает плановую дозировку на {{signalizotorAbs}}%
+        <div v-if="signalizator < 0 && signalizator != null" class="text-wrap">
+            <div v-if="signalizatorAbs <= 10" class="alert alert-success" role="alert">
+            Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
             </div>
-            <div v-if="signalizotorAbs > 10 && signalizotorAbs <=30" class="alert alert-warning" role="alert">
-            Фактическая превышает плановую дозировку на {{signalizotorAbs}}%
+            <div v-if="signalizatorAbs > 10 && signalizatorAbs <=30" class="alert alert-warning" role="alert">
+            Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
             </div>
-            <div v-if="signalizotorAbs > 30" class="alert alert-danger" role="alert">
-            Фактическая превышает плановую дозировку на {{signalizotorAbs}}%
+            <div v-if="signalizatorAbs > 30" class="alert alert-danger" role="alert">
+            Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
             </div>
         </div>
         <div class="responsible">
@@ -252,8 +256,8 @@ export default {
       heater_inlet_pressure: null,
       heater_output_pressure: null,
       daily_fluid_production: null,
-      signalizotor:null,
-      signalizotorAbs:null,
+      signalizator:null,
+      signalizatorAbs:null,
       pipe: null,
       pipeab: null,
       lastCorrosion: null,
@@ -265,7 +269,16 @@ export default {
       doseMgPerLAB: null,
       corrosionVelocityWithInhibitor: null,
       wmLastH2S: null,
-      wmLastCO2: null
+      wmLastCO2: null,
+      wmLastH2O: null,
+      wmLastHCO3: null,
+      wmLastCl: null,
+      wmLastSO4: null,
+      oilGas: null,
+      corA: null,
+      corE: null,
+      corF: null,
+      dose: null
     };
   },
   beforeCreate: function () {
@@ -295,10 +308,7 @@ export default {
             this.pipe = data.pipe,
             this.pipeab = data.pipeab,
             this.lastCorrosion = data.lastCorrosion,
-            this.wmLast = data.wmLast,
-            this.constantsValues = data.constantsValues,
-            this.wmLastH2S = data.wmLastH2S,
-            this.wmLastCO2 = data.wmLastCO2
+            this.constantsValues = data.constantsValues
           } else {
             console.log("No data");
           }
@@ -318,8 +328,8 @@ export default {
         this.heater_inlet_pressure = null,
         this.heater_output_pressure = null,
         this.daily_fluid_production = null,
-        this.signalizotor = null,
-        this.signalizotorAbs = null,
+        this.signalizator = null,
+        this.signalizatorAbs = null,
         this.corrosionRateInMm = null,
         this.doseMgPerL = null,
         this.corrosionRateInMmAB = null,
@@ -345,11 +355,18 @@ export default {
                     this.heater_inlet_pressure = response.data.ngdu.heater_inlet_pressure,
                     this.heater_output_pressure = response.data.ngdu.heater_output_pressure,
                     this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
-                    this.signalizotor = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
-                    this.signalizotorAbs = Math.abs(this.signalizotor),
-                    this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor
-                    this.calc(),
-                    this.calcab()
+                    this.signalizator = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
+                    this.signalizatorAbs = Math.abs(this.signalizator),
+                    this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor,
+                    this.wmLast = data.wmLast,
+                    this.wmLastH2S = data.wmLastH2S,
+                    this.wmLastCO2 = data.wmLastCO2,
+                    this.wmLastH2O = data.wmLastH2O,
+                    this.wmLastHCO3 = data.wmLastHCO3,
+                    this.wmLastCl = data.wmLastCl,
+                    this.wmLastSO4 = data.wmLastSO4,
+                    this.oilGas = data.oilGas
+                    this.calc()
                 } else {
                     console.log("No data");
                 }
@@ -358,63 +375,37 @@ export default {
     calc() {
         this.axios
             .post("/ru/corrosion", {
-                wc: this.ngdu.bsw,
-                rhol: this.wmLast.density,
-                GOR: this.constantsValues[0].value,
-                mul: 0.007074,
-                mug: 0.00015,
+                WC: this.ngdu.bsw,
+                GOR1: this.constantsValues[0].value,
                 sigma: this.constantsValues[1].value,
-                d: this.pipe.inner_diameter,
-                di: this.pipe.inner_diameter,
                 do: this.pipe.outside_diameter,
                 roughness: this.pipe.roughness,
-                length: this.pipe.length,
-                p: this.ngdu.surge_tank_pressure,
-                to: 10,
-                ti: this.ngdu.heater_output_pressure,
+                l: this.pipe.length,
+                thickness: this.pipe.thickness,
+                P: this.ngdu.pump_discharge_pressure,
+                t_heater: this.ngdu.heater_output_pressure,
                 conH2S: this.wmLastH2S.hydrogen_sulfide,
                 conCO2: this.wmLastCO2.carbon_dioxide,
                 q_l: this.ngdu.daily_fluid_production,
-                rhog: 0.7705
+                H2O: this.ngdu.bsw,
+                HCO3: this.wmLastHCO3.hydrocarbonate_ion,
+                Cl: this.wmLastCl.chlorum_ion,
+                SO4: this.wmLastSO4.sulphate_ion,
+                q_g_sib: this.ngdu.daily_gas_production_in_sib,
+                P_bufer: this.ngdu.surge_tank_pressure,
+                rhol: this.oilGas.water_density_at_20,
+                rhog: this.oilGas.gas_density_at_20,
+                mul: this.oilGas.oil_viscosity_at_20,
+                mug: this.oilGas.gas_viscosity_at_20
             })
             .then((response) => {
                 let data = response.data;
                 if (data) {
-                    this.corrosionRateInMm = data.corrosion_rate_in_mm,
-                    this.doseMgPerL = data.dose_mg_per_l,
-                    this.$emit("chart5", data.dose_mg_per_l)
-                } else {
-                    console.log("No data");
-                }
-            });
-    },
-    calcab() {
-        this.axios
-            .post("/ru/corrosion", {
-                wc: this.ngdu.bsw,
-                rhol: this.wmLast.density,
-                GOR: this.constantsValues[0].value,
-                mul: 0.007074,
-                mug: 0.00015,
-                sigma: this.constantsValues[1].value,
-                d: this.pipeab.inner_diameter,
-                di: this.pipeab.inner_diameter,
-                do: this.pipeab.outside_diameter,
-                roughness: this.pipeab.roughness,
-                length: this.pipeab.length,
-                p: this.ngdu.surge_tank_pressure,
-                to: 10,
-                ti: this.ngdu.heater_output_pressure,
-                conH2S: this.wmLastH2S.hydrogen_sulfide,
-                conCO2: this.wmLastCO2.carbon_dioxide,
-                q_l: this.ngdu.daily_fluid_production,
-                rhog: 0.7705
-            })
-            .then((response) => {
-                let data = response.data;
-                if (data) {
-                    this.corrosionRateInMmAB = data.corrosion_rate_in_mm,
-                    this.doseMgPerLAB = data.dose_mg_per_l
+                    this.corA = data.corrosion_rate_mm_per_y_point_A,
+                    this.corE = data.corrosion_rate_mm_per_y_point_E,
+                    this.corF = data.corrosion_rate_mm_per_y_point_F,
+                    this.dose = data.dose_mg_per_l_point_E,
+                    this.$emit("chart5", data.dose_mg_per_l_point_E)
                 } else {
                     console.log("No data");
                 }
