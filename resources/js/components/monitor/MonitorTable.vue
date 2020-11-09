@@ -92,7 +92,7 @@
               </li>
 
               <li class="nav-string second">
-                Vкор(e-g) <input type="text" class="square2" v-model = "corE" />
+                Vкор(F) <input type="text" class="square2" v-model = "corF" />
                 мм/г
               </li>
 
@@ -115,6 +115,10 @@
 
               <li class="nav-string">
                 t2 выход<input type="text" class="square2" v-model="heater_output_pressure" />С
+              </li>
+
+              <li class="nav-string">
+                Vкор(E)<input type="text" class="square2" v-model="corE" />С
               </li>
             </ul>
 
@@ -148,7 +152,7 @@
             <div class="col-4 trio">
               <ul class="string7 col-12">
                 <li class="vkor-ab">
-                  Vкор(a-b)<input type="text" class="square2" v-model = "corA" />
+                  Vкор(A)<input type="text" class="square2" v-model = "corA" />
                   мм/г
                 </li>
                 <li class="vkor-fact">
@@ -273,6 +277,7 @@ export default {
       oilGas: null,
       corA: null,
       corE: null,
+      corF: null,
       dose: null
     };
   },
@@ -398,6 +403,7 @@ export default {
                 if (data) {
                     this.corA = data.corrosion_rate_mm_per_y_point_A,
                     this.corE = data.corrosion_rate_mm_per_y_point_E,
+                    this.corF = data.corrosion_rate_mm_per_y_point_F,
                     this.dose = data.dose_mg_per_l_point_E,
                     this.$emit("chart5", data.dose_mg_per_l_point_E)
                 } else {
