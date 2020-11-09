@@ -17,6 +17,8 @@ export default {
         xaxis: {
           hoverformat: ".1f",
           //  showline: true,
+          // autorange: false,
+          // range: [0,150],
           zeroline: false,
           // showgrid: true,
           // mirror:true,
