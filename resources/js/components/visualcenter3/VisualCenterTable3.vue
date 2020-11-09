@@ -150,12 +150,12 @@
                   <!-- <div class="dropdown">-->
 
                   <ul>
-                    <li class="center-li">
-                      <a href>С учётом доли участия КМГ</a>
+                    <li class="center-li"     @click="changeMenu('101')">
+                      <a>С учётом доли участия КМГ</a>
 
                       <div
                         class="square-small2"
-                        @click="changeMenu('101')"
+                    
                         :style="`${changeMenuButton1}`"
                       >
                         &#10003;
@@ -182,22 +182,22 @@
                   </div>
 
                   <ul>
-                    <li class="center-li">
-                      <a href>Сдача нефти по узлам учёта</a>
+                    <li class="center-li"   @click="changeMenu('102')">
+                      <a>Сдача нефти по узлам учёта</a>
                            <div
                         class="square-small2"
-                        @click="changeMenu('102')"
+                      
                         :style="`${changeMenuButton2}`"
                       >
                         &#10003;
                       </div>
                     </li>
 
-                    <li class="center-li">
-                      <a href>Товарный остаток нефти</a>
+                    <li class="center-li" @click="changeMenu('103')">
+                      <a>Товарный остаток нефти</a>
                            <div
                         class="square-small2"
-                        @click="changeMenu('103')"
+                        
                         :style="`${changeMenuButton3}`"
                       >
                         &#10003;
@@ -392,7 +392,8 @@
             </table>
           </div>
 
-          <div class="container-fluid ">
+
+<div class="container-fluid "  :style="`${displayTable}`">
             <table class="table table4">
               <tbody>
                 <tr>
@@ -417,13 +418,162 @@
                   <td class="small-td"><div class="center">%</div></td>
                 </tr>
 
-                <tr v-for="(item, index) in bigTable">
-                  <td
+                <tr 
+                 v-for="(item, index) in tables">
+                  <td   @click="saveCompany(item.dzoBriefly)"
                     :class="
                       index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
                     "
                   >
-                    {{ item.dzoDay }}
+                    {{ item.dzo }} 
+                  </td>
+                  <td class="w-50"></td>
+
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                  >
+                    <div>
+                      {{(new Intl.NumberFormat('ru-RU').format(item.pla)) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <div>
+                      {{(new Intl.NumberFormat('ru-RU').format( item.fact)) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                  >
+                    <div
+                      v-if="item.fact"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        item.fact - item.plan
+                      )}`"
+                    ></div>
+                    <div class="percent">
+                      {{(new Intl.NumberFormat('ru-RU').format( item.fact - item.plan)) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <div
+                      v-if="item.fact"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        item.fact - item.plan
+                      )}`"
+                    ></div>
+                    <div class="percent">5,2%</div>
+                  </td>
+                </tr>
+
+                <!--  <tr>
+                <td colspan="13">1</td>
+              </tr>
+
+              <tr>
+                <td>2</td>
+              </tr>
+
+              <tr>
+                <td colspan="13">3</td>
+              </tr>-->
+
+                <tr>
+                  <td
+                    :class="
+                      index % 2 === 0
+                        ? 'tdStyle3-total first-td'
+                        : 'tdNone first-td'
+                    "
+                  >
+                    Итого по операционным активам:
+                  </td>
+                  <td>
+                    <div class="vc-chart"><vc-chart> </vc-chart></div>
+                  </td>
+
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                  >
+                    <div>
+                      {{(new Intl.NumberFormat('ru-RU').format(planDaySumm)) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <div>
+                      {{(new Intl.NumberFormat('ru-RU').format( factDaySumm)) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                  >
+                    <div
+                      v-if="factDaySumm"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        factDaySumm - planDaySumm
+                      )}`"
+                    ></div>
+                    <div class="percent">
+                      {{(new Intl.NumberFormat('ru-RU').format( factDaySumm - planDaySumm)) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <div
+                      v-if="factDaySumm"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        factDaySumm - planDaySumm
+                      )}`"
+                    ></div>
+                    <div class="percent">5,2%</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+          <div class="container-fluid "  :style="`${displayHeadTables}`">
+            <table class="table table4">
+              <tbody>
+                <tr>
+                  <td class="big-table-hidtd small-td"></td>
+                  <td class="big-table-hidtd small-td"></td>
+
+                  <td class="small-td">
+                    <div class="center">
+                      план
+                    </div>
+                  </td>
+                  <td class="small-td">
+                    <div class="center">
+                      факт
+                    </div>
+                  </td>
+                  <td class="small-td">
+                    <div class="center">
+                      +/-
+                    </div>
+                  </td>
+                  <td class="small-td"><div class="center">%</div></td>
+                </tr>
+
+                <tr 
+                 v-for="(item, index) in bigTable">
+                  <td   @click="saveCompany(item.dzoBriefly)"
+                    :class="
+                      index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
+                    "
+                  >
+                    {{ item.dzoDay }} 
                   </td>
                   <td class="w-50"></td>
 
@@ -883,6 +1033,7 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+
       tableHover1: "",
       tableHover2: "",
       tableHover3: "",
@@ -1052,6 +1203,80 @@ export default {
     };
   },
   methods: {
+    saveCompany(com) {
+      localStorage.setItem("company", com);
+      var company = localStorage.getItem("company");
+      this.company = company;
+
+      var buttonMenuHover =
+        "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
+        "background-size: 9% auto;" +
+        "background-position: 75% 50%;" +
+        "border: none;" +
+        "height: 40px;" +
+        "pointer-events: none;";
+
+      if (company == "ОМГ") {
+        this.buttonMenuHover1 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover1 = "";
+      }
+      if (company == "КБМ") {
+        this.buttonMenuHover2 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover2 = "";
+      }
+
+      if (company == "КГМ") {
+        this.buttonMenuHover3 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover3 = "";
+      }
+
+      if (company == "ЭМГ") {
+        this.buttonMenuHover4 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover4 = "";
+      }
+
+      if (company == "ММГ") {
+        this.buttonMenuHover5 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover5 = "";
+      }
+
+      if (company == "КТМ") {
+        this.buttonMenuHover6 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover6 = "";
+      }
+
+      if (company == "КОА") {
+        this.buttonMenuHover7 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover7 = "";
+      }
+
+      if (company == "ПКИ") {
+        this.buttonMenuHover8 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover8 = "";
+      }
+
+      if (company == "АГГ") {
+        this.buttonMenuHover9 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover9 = "";
+      }
+
+      if (company == "all") {
+        this.buttonMenuHover10 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover10 = "";
+      }
+
+      this.company=company;
+    },
     changeTable(change) {
       this.Table1 = "display:none";
       this.Table2 = "display:none";
@@ -1323,9 +1548,9 @@ export default {
       console.log(event);
       return this.getProduction(this.item, this.item2, this.item3, this.item4);
     },
-    displayMessage: function (message) {
+    /*displayMessage: function (message) {
       this.company = message;
-    },
+    },*/
     getCompany() {},
 
     getColor(status) {
@@ -2283,6 +2508,7 @@ export default {
           var NameDzoFull = this.NameDzoFull;
 
           var dzo2 = new Array();
+          var dzoBriefly2 = new Array();
           var name;
           _.each(dzo, function (dzo) {
             if (String(dzo) === "ОМГ") {
@@ -2298,8 +2524,11 @@ export default {
             } else if (String(dzo) === "КБМ") {
               name = NameDzoFull[3];
             }
+            var dzoBriefly= dzo;
             dzo = name;
-
+            
+            
+             dzoBriefly2.push({ dzoBriefly });
             dzo2.push({ dzo });
           });
 
@@ -2362,6 +2591,7 @@ export default {
           this.productionForChart = productionForChart;
 
           var tables = _.zipWith(
+            _.sortBy(dzoBriefly2, (dzoBriefly) => dzoBriefly.dzoBriefly),
             _.sortBy(dzo2, (dzo) => dzo.dzo),
             _.sortBy(liq_fact2, (liq_fact) => liq_fact.liq_fact),
             _.sortBy(liq_plan2, (liq_plan) => liq_plan.liq_plan),
@@ -2716,6 +2946,7 @@ export default {
         var starts_prs = [];
         var starts_drl = [];
         var NameDzoFull = this.NameDzoFull;
+        var dzoBriefly= [];
         _.forEach(dataDay, function (item) {
           if (String(item.dzo) === "ОМГ") {
             name = NameDzoFull[1];
@@ -2730,6 +2961,8 @@ export default {
           } else if (String(item.dzo) === "КБМ") {
             name = NameDzoFull[3];
           }
+
+          dzoBriefly.push({dzoBriefly:item.dzo});
           e = { dzoDay: name };
           f = { factDay: Math.ceil(item[productionFact]) };
           p = { planDay: Math.ceil(item[productionPlan]) };
@@ -2869,6 +3102,7 @@ export default {
 
         if (this.company == "all") {
           var bigTable = _.zipWith(
+            dzoBriefly,
             dzoYear,
             dzoMonth,
             factYear,
@@ -2880,7 +3114,7 @@ export default {
             dzoDay,
             factDay,
             planDay,
-            (
+            (dzoBriefly,
               dzoYear,
               dzoMonth,
               factYear,
@@ -2894,6 +3128,7 @@ export default {
               planDay
             ) =>
               _.defaults(
+                dzoBriefly,
                 dzoYear,
                 dzoMonth,
                 factYear,
@@ -2970,6 +3205,20 @@ export default {
       this.showTable(localStorage.getItem("changeButton"));
     },
 
+       changeButton(showTableItem, changeButton) {
+      var a;
+      if (changeButton == "Yes") {
+        if (showTableItem == "Yes") {
+          a = "No";
+        } else {
+          a = "Yes";
+        }
+        this.showTable2 = a;
+        localStorage.setItem("changeButton", a);
+      }
+      this.showTable(localStorage.getItem("changeButton"));
+    },
+
     showTable(showTableItem, changeButton) {
       var showTableOn =
         " border: none;" +
@@ -3003,9 +3252,9 @@ export default {
     },
   },
 
-  created: function () {
+  /*created: function () {
     EventBus.$on("messageSend", this.displayMessage);
-  },
+  },*/
 
   computed: {
     /* selectedDay2: function () {
