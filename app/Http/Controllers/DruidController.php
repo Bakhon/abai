@@ -280,13 +280,8 @@ return $response;
             //Roughness of pipes
             $roughness = $request->roughness; // Внутренняя БД константа mm
             $roughness = $roughness / 1000; // from mm to m
-<<<<<<< HEAD
             //Length 
             $l = $request->l; // // Внутренняя БД константа в метрах
-=======
-            //Length
-            $l = $request->l; // // Внутренняя БД константа meters
->>>>>>> cc3b5eb038ac3829b30969a72ba6a516a871070f
             //Pressure
             $P = $request->P; // БД ОМГ НГДУ bar
             $P_pump = $P; // в точке Е
@@ -405,15 +400,9 @@ return $response;
             //Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
             //log r = 7.96 - 2320 / (T + 273) - 5.55 * 10^-3 * T + 0.67 * log(pCo2)
             //pressure in bar
-<<<<<<< HEAD
             //*********************************/                            
             //    GENERAL CORROSION POINT A    /
             //*********************************/
-=======
-            //****************
-            //    POINT A    *
-            //****************
->>>>>>> cc3b5eb038ac3829b30969a72ba6a516a871070f
             $p = $P_bufer * 100; // from bar to kPa
             $t = 25;  //temperature in C
             //H2S concentration
