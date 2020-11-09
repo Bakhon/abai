@@ -84,7 +84,7 @@
                 <div class="txt2">5,2%</div>
                 <div class="txt3">vs сентябрь</div>
               </td>
-              <td 
+              <td
                 style="width: 200px; border-left: 10px solid #0f1430;"
                 @click="changeTable('2')"
                 :style="`${tableHover2}`"
@@ -102,7 +102,7 @@
               <td
                 style="width: 200px; border-left: 10px solid #0f1430;"
                 @click="changeTable('3')"
-                 :style="`${tableHover3}`"
+                :style="`${tableHover3}`"
               >
                 <div class="nu">
                   <div class="number">{{ currencyNow }}</div>
@@ -121,11 +121,13 @@
       </div>
       <div class="first-table" :style="`${Table1}`">
         <div class="first-string first-string2">
-          <div>
+          <div class="container-fluid ">
             <!--class="table-responsive"-->
             <table class="table table2">
               <tr>
-                <td>
+                <td class="dropdown3">
+                  <input type="checkbox" id="menu" />
+
                   <div
                     class="button1"
                     :style="`${buttonHover1}`"
@@ -138,12 +140,30 @@
                       )
                     "
                   >
+                    <!-- <label for="menu">-->
                     <div class="icon-all icons1"></div>
                     <div class="txt5">Добыча нефти</div>
                     <div class="txt6">тыс. тн</div>
+                    <!--   </label>-->
                   </div>
+
+                  <!-- <div class="dropdown">-->
+
+                  <ul>
+                    <li class="center-li">
+                      <a href>С учётом доли участия КМГ</a>
+
+                      <div
+                        class="square-small2"
+                        @click="changeMenu('101')"
+                        :style="`${changeMenuButton1}`"
+                      >
+                        &#10003;
+                      </div>
+                    </li>
+                  </ul>
                 </td>
-                <td>
+                <td class="dropdown3">
                   <div
                     class="button1"
                     :style="`${buttonHover2}`"
@@ -160,8 +180,32 @@
                     <div class="txt5">Сдача нефти</div>
                     <div class="txt6">тыс. тонн</div>
                   </div>
+
+                  <ul>
+                    <li class="center-li">
+                      <a href>Сдача нефти по узлам учёта</a>
+                           <div
+                        class="square-small2"
+                        @click="changeMenu('102')"
+                        :style="`${changeMenuButton2}`"
+                      >
+                        &#10003;
+                      </div>
+                    </li>
+
+                    <li class="center-li">
+                      <a href>Товарный остаток нефти</a>
+                           <div
+                        class="square-small2"
+                        @click="changeMenu('103')"
+                        :style="`${changeMenuButton3}`"
+                      >
+                        &#10003;
+                      </div>
+                    </li>
+                  </ul>
                 </td>
-                <td>
+                <td class="dropdown3">
                   <div
                     class="button1"
                     :style="`${buttonHover3}`"
@@ -178,8 +222,21 @@
                     <div class="txt5">Добыча газа</div>
                     <div class="txt6">млрд. м³</div>
                   </div>
+                 <ul>             
+<li class="center-li"> <a href> Сдача природного газа</a>  </li>
+<li class="center-li">  <a href>Расход природного газа на собственные нужды </a> </li>
+<li class="center-li">  <a href>Переработка природного газа</a>  </li>
+<li class="center-li">  <a href>Сдача попутного газа </a></li>
+<li class="center-li">  <a href>Расход попутного газа на собственные нужды </a></li>
+<li class="center-li"> <a href> Переработка попутного газа  </a></li>
+
+
+
+
+ 
+                  </ul>
                 </td>
-                <td>
+               <td class="dropdown3">
                   <div
                     class="button1"
                     :style="`${buttonHover5}`"
@@ -196,8 +253,12 @@
                     <div class="txt5">Добыча конденсата</div>
                     <div class="txt6">тыс. тонн</div>
                   </div>
+                    <ul>
+                    <li class="center-li">
+                      <a href>С учётом доли участия КМГ</a></li>
+                      </ul>
                 </td>
-                <td>
+               <td class="dropdown3">
                   <div
                     class="button1"
                     :style="`${buttonHover6}`"
@@ -214,12 +275,23 @@
                     <div class="txt5">Объём закачки воды</div>
                     <div class="txt6">тыс. м³</div>
                   </div>
+                <ul>             
+<li class="center-li"> <a href> Закачка морской воды</a>  </li>
+<li class="center-li">  <a href>Закачка сточной воды</a> </li>
+<li class="center-li">  <a href>Закачка альбсен. воды</a>  </li>
+
+
+
+
+
+ 
+                  </ul>
                 </td>
               </tr>
             </table>
           </div>
 
-          <div class="table-responsive">
+          <div class="container-fluid ">
             <table class="table table2">
               <tr>
                 <td>
@@ -231,16 +303,96 @@
                 <td>
                   <div class="button2">С начала года</div>
                 </td>
-                <td>
+                <td class="dropdown3">
                   <div class="button2" @click="pushBign('bign1')">
                     Календарь
                   </div>
+                  <ul class="center-menu2">
+                    <li class="center-li">
+                      <div
+                        class="calendar-tab"
+                        v-for="(menuDMY, index) in menuDMY()"
+                        @click="selectedDMY = menuDMY.id"
+                        :style="{
+                          'background-color': menuDMY.current,
+                        }"
+                      >
+                        {{ menuDMY.DMY }}
+                      </div>
+
+                      <div class="month-day">
+                        <div
+                          class="navigation-table"
+                          v-bind:style="{ display: display }"
+                        >
+                          <div class="navigation">
+                            <div v-on:click="decrease"><</div>
+                          </div>
+                          <div class="navigation-month navigation" colspan="5">
+                            {{ monthes[month] }} {{ year }}
+                          </div>
+                          <div class="navigation">
+                            <div v-on:click="increase">></div>
+                          </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div
+                          class="calendar-days"
+                          v-bind:style="{ display: display }"
+                        >
+                          <div class="day" v-for="d in day">{{ d }}</div>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div class="calendar-day">
+                          <div v-for="week in calendar()">
+                            <div
+                              @click="selectedDay = day.index"
+                              class="week"
+                              v-for="(day, index) in week"
+                              :style="{
+                                color: day.weekend,
+                                'background-color': day.current,
+                              }"
+                              v-on:click="displaynumbers"
+                            >
+                              <div class="day-begin">{{ day.index }}</div>
+                            </div>
+                          </div>
+                          <div
+                            class="week"
+                            v-for="(month, index) in getMonths()"
+                            :key="index.id"
+                            :style="{
+                              'background-color': month.current,
+                            }"
+                            @click="selectedMonth = month.index"
+                            v-on:click="displaynumbers"
+                          >
+                            {{ month.index }}
+                          </div>
+
+                          <div
+                            class="week"
+                            v-for="(year, index) in getYears()"
+                            :key="year.id"
+                            :style="{
+                              'background-color': year.current,
+                            }"
+                            @click="selectedYear = year.index"
+                            v-on:click="displaynumbers"
+                          >
+                            {{ year.index }}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
                 </td>
               </tr>
             </table>
           </div>
 
-          <div>
+          <div class="container-fluid ">
             <table class="table table4">
               <tbody>
                 <tr>
@@ -391,66 +543,69 @@
       <div class="second-table" :style="`${Table2}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-           <div class="big-area">
-          <br />
+          <div class="big-area">
+            <br />
 
-          <div
-            @click="selectedDMY = menuDMY.id"
-            class="period"
-            v-for="(menuDMY, index) in periodSelectFunc()"
-            :style="{
-              color: menuDMY.current,
-            }"
-            v-on:click="periodSelect"
-          >
-            <div>{{ menuDMY.DMY }}</div>
+            <div
+              @click="selectedDMY = menuDMY.id"
+              class="period"
+              v-for="(menuDMY, index) in periodSelectFunc()"
+              :style="{
+                color: menuDMY.current,
+              }"
+              v-on:click="periodSelect"
+            >
+              <div>{{ menuDMY.DMY }}</div>
+            </div>
+            <visual-center-chart-area-oil3
+              v-for="(serial, index) in oilChart"
+              v-bind:postTitle="serial"
+              :key="serial"
+            ></visual-center-chart-area-oil3>
           </div>
-          <visual-center-chart-area-oil3
-            v-for="(serial, index) in oilChart"
-            v-bind:postTitle="serial"
-            :key="serial"
-          ></visual-center-chart-area-oil3></div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table3}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-            <div class="big-area">
-          <br />
-         
-          <div
-            @click="selectedDMY2 = menuDMY.id"
-            class="period"
-            v-for="(menuDMY, index) in periodSelectFunc()"
-            :style="{
-              color: menuDMY.current2,
-            }"
-            v-on:click="periodSelectUSD"
-          >
-            <div>{{ menuDMY.DMY }}</div>
+          <div class="big-area">
+            <br />
+
+            <div
+              @click="selectedDMY2 = menuDMY.id"
+              class="period"
+              v-for="(menuDMY, index) in periodSelectFunc()"
+              :style="{
+                color: menuDMY.current2,
+              }"
+              v-on:click="periodSelectUSD"
+            >
+              <div>{{ menuDMY.DMY }}</div>
+            </div>
+            <visual-center-chart-area-usd3
+              v-for="(serial2, index) in currencyChart"
+              v-bind:postTitles="serial2"
+              :key="serial2"
+            ></visual-center-chart-area-usd3>
           </div>
-          <visual-center-chart-area-usd3
-            v-for="(serial2, index) in currencyChart"
-            v-bind:postTitles="serial2"
-            :key="serial2"
-          ></visual-center-chart-area-usd3></div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table4}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-           <div class="big-area">
-          Фонд добывающих скважин
-        </div></div>
+          <div class="big-area">
+            Фонд добывающих скважин
+          </div>
+        </div>
       </div>
 
       <div class="third-table" :style="`${Table5}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-           <div class="big-area">
-          Фонд нагнетательных скважин
+          <div class="big-area">
+            Фонд нагнетательных скважин
           </div>
         </div>
       </div>
@@ -459,113 +614,41 @@
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
           <div class="big-area">
-          ОТМ</div>
+            ОТМ
+          </div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table7}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-           <div class="big-area">
-          Химизация
+          <div class="big-area">
+            Химизация
           </div>
         </div>
       </div>
-
-      <modal
-        name="bign1"
-        :width="300"
-        :height="300"
-        :adaptive="true"
-        class="bign1"
-      >
-        <div class="modal-bign">
-          <div
-            class="calendar-tab"
-            v-for="(menuDMY, index) in menuDMY()"
-            @click="selectedDMY = menuDMY.id"
-            :style="{
-              'background-color': menuDMY.current,
-            }"
-          >
-            {{ menuDMY.DMY }}
-          </div>
-
-          <div class="month-day">
-            <div class="navigation-table" v-bind:style="{ display: display }">
-              <div class="navigation">
-                <div v-on:click="decrease"><</div>
-              </div>
-              <div class="navigation-month navigation" colspan="5">
-                {{ monthes[month] }} {{ year }}
-              </div>
-              <div class="navigation">
-                <div v-on:click="increase">></div>
-              </div>
-            </div>
-            <div style="clear: both;"></div>
-            <div class="calendar-days" v-bind:style="{ display: display }">
-              <div class="day" v-for="d in day">{{ d }}</div>
-            </div>
-            <div style="clear: both;"></div>
-            <div class="calendar-day">
-              <div v-for="week in calendar()">
-                <div
-                  @click="selectedDay = day.index"
-                  class="week"
-                  v-for="(day, index) in week"
-                  :style="{
-                    color: day.weekend,
-                    'background-color': day.current,
-                  }"
-                  v-on:click="displaynumbers"
-                >
-                  <div class="day-begin">{{ day.index }}</div>
-                </div>
-              </div>
-              <div
-                class="week"
-                v-for="(month, index) in getMonths()"
-                :key="index.id"
-                :style="{
-                  'background-color': month.current,
-                }"
-                @click="selectedMonth = month.index"
-                v-on:click="displaynumbers"
-              >
-                {{ month.index }}
-              </div>
-
-              <div
-                class="week"
-                v-for="(year, index) in getYears()"
-                :key="year.id"
-                :style="{
-                  'background-color': year.current,
-                }"
-                @click="selectedYear = year.index"
-                v-on:click="displaynumbers"
-              >
-                {{ year.index }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </modal>
     </div>
     <div class="col-2 right-side2">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1-2">
             <tr>
-              <td class="w-50" @click="changeTable('4')"  :style="`${tableHover4}`">
+              <td
+                class="w-50"
+                @click="changeTable('4')"
+                :style="`${tableHover4}`"
+              >
                 <div class="txt4">{{ wells2[0].prod_wells_work }}</div>
                 <div class="in-work">В работе</div>
                 <div class="arrow"></div>
                 <div class="txt2">48</div>
               </td>
 
-              <td class="w-50" @click="changeTable('4')"  :style="`${tableHover4}`">
+              <td
+                class="w-50"
+                @click="changeTable('4')"
+                :style="`${tableHover4}`"
+              >
                 <div class="txt4">{{ wells2[0].prod_wells_idle }}</div>
                 <div class="in-idle">В простое</div>
                 <div class="arrow"></div>
@@ -574,7 +657,11 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2"  @click="changeTable('4')"  :style="`${tableHover4}`">
+              <td
+                colspan="2"
+                @click="changeTable('4')"
+                :style="`${tableHover4}`"
+              >
                 <div class="txt2">
                   Фонд добывающих скважин
                 </div>
@@ -587,14 +674,22 @@
           <div class="table-responsive">
             <table class="table table1-2">
               <tr>
-                <td class="w-50" @click="changeTable('5')"  :style="`${tableHover5}`">
+                <td
+                  class="w-50"
+                  @click="changeTable('5')"
+                  :style="`${tableHover5}`"
+                >
                   <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-work">В работе</div>
                   <div class="arrow"></div>
                   <div class="txt2">48</div>
                 </td>
 
-                <td class="w-50" @click="changeTable('5')"  :style="`${tableHover5}`">
+                <td
+                  class="w-50"
+                  @click="changeTable('5')"
+                  :style="`${tableHover5}`"
+                >
                   <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-idle">В простое</div>
                   <div class="arrow"></div>
@@ -603,7 +698,11 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="2"  @click="changeTable('5')"  :style="`${tableHover5}`">
+                <td
+                  colspan="2"
+                  @click="changeTable('5')"
+                  :style="`${tableHover5}`"
+                >
                   <div class="txt2">
                     Фонд нагнетательных скважин
                   </div>
@@ -617,12 +716,20 @@
           <div class="table-responsive">
             <table class="table table5">
               <tr>
-                <td class="w-50" @click="changeTable('6')"  :style="`${tableHover6}`">
+                <td
+                  class="w-50"
+                  @click="changeTable('6')"
+                  :style="`${tableHover6}`"
+                >
                   <div class="otm"></div>
                   <div class="txt2">ОТМ</div>
                 </td>
 
-                <td class="w-50" @click="changeTable('7')"  :style="`${tableHover7}`">
+                <td
+                  class="w-50"
+                  @click="changeTable('7')"
+                  :style="`${tableHover7}`"
+                >
                   <div class="him"></div>
                   <div class="txt2">Химизация</div>
                 </td>
@@ -720,7 +827,7 @@
                   </div>
                   <div class="column-1">
                     <div class="in-idle">Прирост</div>
-                    <div class="in-idle">с начала </div>
+                    <div class="in-idle">с начала</div>
                     <div class="in-idle">месяца</div>
                   </div>
                 </div>
@@ -776,6 +883,18 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      tableHover1: "",
+      tableHover2: "",
+      tableHover3: "",
+      tableHover4: "",
+      tableHover5: "",
+      tableHover6: "",
+      tableHover7: "",
+      changeMenuButton1: "",
+      changeMenuButton2: "",
+      changeMenuButton3: "",
+      changeMenuButton4: "",
+      changeMenuButton5: "",
       Table1: "display:block;",
       Table2: "display:none;",
       Table3: "display:none;",
@@ -819,12 +938,12 @@ export default {
       buttonHover5: "",
       buttonHover6: "",
 
-      tableHover7:"",
-        tableHover8:"",
-          tableHover9:"",
-            tableHover10:"",
-              tableHover11:"",
-                tableHover12:"",
+      tableHover7: "",
+      tableHover8: "",
+      tableHover9: "",
+      tableHover10: "",
+      tableHover11: "",
+      tableHover12: "",
 
       circleMenu: "",
       month: new Date().getMonth(),
@@ -942,78 +1061,65 @@ export default {
       this.Table6 = "display:none";
       this.Table7 = "display:none";
 
-
-       this.tableHover1 = "";
-        this.tableHover2 = "";
-         this.tableHover3 = "";
-          this.tableHover4 = "";
-           this.tableHover5 = "";
-            this.tableHover6 = "";
-             this.tableHover7 = "";
-          var buttonHover2 = " background: #0d2792";
-/*
-
-            if (color == "7") {
-            this.buttonHover7 = buttonHover2;
-          } else {
-           
-          }
-
-                if (color == "8") {
-            this.buttonHover8 = buttonHover2;
-          } else {
-   
-          }
-
-
-      if (color == "9") {
-            this.buttonHover9 = buttonHover2;
-          } else {
-            this.buttonHover9 = "";
-          }
-
-
-      if (color == "10") {
-            this.buttonHover10 = buttonHover2;
-          } else {
-            this.buttonHover10 = "";
-          }
-
-
-      if (color == "11") {
-            this.buttonHover11 = buttonHover2;
-          } else {
-            this.buttonHover11 = "";
-          }
-
-
-      if (color == "12") {
-            this.buttonHover12 = buttonHover2;
-          } else {
-            this.buttonHover12 = "";       }*/
-
+      this.tableHover1 = "";
+      this.tableHover2 = "";
+      this.tableHover3 = "";
+      this.tableHover4 = "";
+      this.tableHover5 = "";
+      this.tableHover6 = "";
+      this.tableHover7 = "";
+      var buttonHover2 = " background: #0d2792";
 
       if (change == "1") {
         this.Table1 = "display:block";
-         this.tableHover1 = buttonHover2;
+        this.tableHover1 = buttonHover2;
       } else if (change == "2") {
         this.Table2 = "display:block";
         this.tableHover2 = buttonHover2;
       } else if (change == "3") {
         this.Table3 = "display:block";
-      this.tableHover3 = buttonHover2;
+        this.tableHover3 = buttonHover2;
       } else if (change == "4") {
         this.Table4 = "display:block";
-     this.tableHover4 = buttonHover2;
+        this.tableHover4 = buttonHover2;
       } else if (change == "5") {
         this.Table5 = "display:block";
-       this.tableHover5 = buttonHover2;
+        this.tableHover5 = buttonHover2;
       } else if (change == "6") {
         this.Table6 = "display:block";
-    this.tableHover6 = buttonHover2;
+        this.tableHover6 = buttonHover2;
       } else if (change == "7") {
         this.Table7 = "display:block";
-  this.tableHover7 = buttonHover2;
+        this.tableHover7 = buttonHover2;
+      }
+    },
+
+    changeMenu(change) {
+      var changeMenuButton = "color: #fff;";
+      this.changeMenuButton1 = "color: ##237deb";
+      this.changeMenuButton2 = "color: ##237deb";
+      this.changeMenuButton3 = "color: ##237deb";
+      this.changeMenuButton4 = "color: ##237deb";
+      this.changeMenuButton5 = "color: ##237deb";
+
+      if (change == "101") {
+        this.changeMenuButton1 = changeMenuButton;
+      }
+
+      if (change == "102") {
+        this.changeMenuButton2 = changeMenuButton;
+      }
+
+      if (change == "103") {
+        this.changeMenuButton3 = changeMenuButton;
+      }
+
+      if (change == "104") {
+        this.changeMenuButton4 = changeMenuButton;
+      }
+
+      if (change == "105") {
+        this.changeMenuButton5 = changeMenuButton;
       }
     },
 
@@ -1243,7 +1349,8 @@ export default {
             this.year == new Date().getFullYear() &&
             this.month == new Date().getMonth()
           ) {
-            a.current = "#13B062";
+            //a.current = "#13B062";
+            a.current = "#007aff";
           }
 
           if (
@@ -2407,7 +2514,7 @@ export default {
           this.wells = wells;
 
           var buttonHover = "border: none;" + " background: #2E50E9";
-        
+
           //"    background-size: 100% auto;" +
           //" background-color: #1c6fb6;";
 
@@ -2445,7 +2552,6 @@ export default {
           } else {
             this.buttonHover6 = "";
           }
-
         } else {
           console.log("No data");
         }
@@ -2849,8 +2955,6 @@ export default {
 
       //return factDaySumm;
     },
-
-
 
     changeButton(showTableItem, changeButton) {
       var a;
