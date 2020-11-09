@@ -40,7 +40,7 @@
                 Рпл
               </div>
               <div class="cell4-gno table-border-gno cell4-gno-second col-5">
-                <input v-model="pResInput" type="text" class="square1" />
+                <input v-model="pResInput" type="text" class="square2" />
               </div>
 
               <div class="cell4-gno table-border-gno-top col-4">
@@ -51,7 +51,7 @@
                 class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
               >
                 <!-- <input :disabled="curveSelect != 'pi'" v-model="piInput" @ type="string" class="square1" /> -->
-                <input :disabled="curveSelect != 'pi'" v-model="piInput" @change="postCurveData()" type="string" class="square1" />
+                <input :disabled="curveSelect != 'pi'" v-model="piInput" @change="postCurveData()" type="string" class="square2" />
               </div>
 
               <div class="cell4-gno table-border-gno-top col-4">
@@ -61,7 +61,7 @@
               <div
                 class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
               >
-                <input :disabled="curveSelect != 'ql'" v-model="qLInput" @change="postCurveData()" type="text" class="square1" />
+                <input :disabled="curveSelect != 'ql'" v-model="qLInput" @change="postCurveData()" type="text" class="square2" />
               </div>
             </div>
           </div>
@@ -637,7 +637,7 @@ export default {
           this.hPumpManomInput = 0
           this.whpInput = this.whp
           this.qlCelButton = true
-          this.qlCelValue = this.qLInput.toFixed(2) + 10
+          this.qlCelValue = this.qLInput
           this.hPumpValue = this.hPumpSet
           if (this.expMeth == "ШГН") {
             this.shgnButton = true;
@@ -780,7 +780,6 @@ export default {
           this.hPumpManomInput = 0
           this.whpInput = this.whp
           this.qlCelButton = true
-
           this.expChoose = this.expMeth
           this.piButton = true
           this.curveLineData = JSON.parse(data.LineData)["data"]
