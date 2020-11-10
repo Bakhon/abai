@@ -47,7 +47,7 @@
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>НГДУ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)" disabled>
+            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)">
             <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -59,13 +59,13 @@
         </div>
         <label>Фактическая дозировка, г/м3</label>
         <div class="form-label-group">
-            <input type="number" name="current_dosage" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="current_dosage" class="form-control" placeholder="">
         </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>ЦДНГ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="cdng_id" v-model="cdng" @change="chooseCdng($event)" disabled>
+            <select class="form-control"  name="cdng_id" v-model="cdng" @change="chooseCdng($event)">
             <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -77,7 +77,7 @@
         </div>
         <label>Суточный расход ингибитора, кг/сут</label>
         <div class="form-label-group">
-            <input type="number" name="daily_inhibitor_flowrate" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="daily_inhibitor_flowrate" class="form-control" placeholder="">
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

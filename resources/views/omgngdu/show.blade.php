@@ -52,6 +52,22 @@
                         <td>{{$omgngdu->daily_fluid_production}}</td>
                     </tr>
                     <tr>
+                        <td>Суточная добыча  воды, м3/сут</td>
+                        <td>{{$omgngdu->daily_water_production}}</td>
+                    </tr>
+                    <tr>
+                        <td>Суточная добыча нефти, т/сут</td>
+                        <td>{{$omgngdu->daily_oil_production}}</td>
+                    </tr>
+                    <tr>
+                        <td>Количество газа в СИБ, ст.м3/сут</td>
+                        <td>{{$omgngdu->daily_gas_production_in_sib}}</td>
+                    </tr>
+                    <tr>
+                        <td>Обводненность, %</td>
+                        <td>{{$omgngdu->bsw}}</td>
+                    </tr>
+                    <tr>
                         <td>Давление в буферной емкости, бар</td>
                         <td>{{$omgngdu->surge_tank_pressure}}</td>
                     </tr>

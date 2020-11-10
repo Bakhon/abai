@@ -13,10 +13,10 @@
                         <p>{{ $message }}</p>
                     </div>
                 @endif
-                <table class="table table-bordered">
+                <table class="table table-responsive table-bordered">
                     <tr>
                         <td colspan="6">Узел отбора</td>
-                        <td colspan="11">Фактические данные НГДУ</td>
+                        <td colspan="14">Фактические данные НГДУ</td>
                         <td rowspan="3">{{__('app.action')}}</td>
                     </tr>
                     <tr>
@@ -32,6 +32,9 @@
                     </tr>
                     <tr>
                         <td>Суточная добыча  жидкости, м3/сут</td>
+                        <td>Суточная добыча  воды, м3/сут</td>
+                        <td>Суточная добыча нефти, т/сут</td>
+                        <td>Количество газа в СИБ, ст.м3/сут</td>
                         <td>Обводненность, %</td>
                         <td>Давление в буферной емкости, бар</td>
                         <td>Давление на выходе насоса, бар</td>
@@ -58,6 +61,9 @@
                             <td>{{ $item->well->name }}</td>
                             <td>{{ $item->date }}</td>
                             <td>{{ $item->daily_fluid_production }}</td>
+                            <td>{{ $item->daily_water_production }}</td>
+                            <td>{{ $item->daily_oil_production }}</td>
+                            <td>{{ $item->daily_gas_production_in_sib }}</td>
                             <td>{{ $item->bsw }}</td>
                             <td>{{ $item->surge_tank_pressure }}</td>
                             <td>{{ $item->pump_discharge_pressure }}</td>

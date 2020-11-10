@@ -238,46 +238,62 @@ return $response;
     }
     public function corrosion(Request $request)
     {
-        if ($request->has('q_l') && $request->has('rhol') && $request->has('GOR') && $request->has('rhog') &&
-        $request->has('d') && $request->has('mul') && $request->has('length') && $request->has('roughness') &&
-        $request->has('mug') && $request->has('mug') && $request->has('p')) {
-            //flowrate of liquid///
-            $q_l = $request->q_l; // input in pipesim
-            $WC = 0.30; // input in pipesim
-            $q_l = $q_l / 24.0 / 60.0 / 60.0 * (1 - $WC); // input in pipesim
-            //liquid density
-            $rhol = $request->rhol; //input in pipesim
+        if (true) {
+            //flowrate of liquid oil//
+            $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim tonne/day
+            $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
+            //oil density
+            $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+            $q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
+            $q_l = $q_l / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
             //flowrate of gas
-            $GOR = $request->GOR; // input in pipesim
-            $q_g = $q_l * $GOR;
+            $GOR1 = $request->GOR1; // БД ОМГ НГДУ input in pipesim Gas-Oil-Ratio газосодержание на входе в ГУ
+            $q_g_sib = $request->q_g_sib; // m3/day расход газа в СИБ => БД ОМГ НГДУ
+            $q_g_sib = $q_g_sib / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
+            $GOR=($GOR1*$q_l - $q_g_sib) / $q_l; // газосодержание на выходе с ГУ
+            $q_g = $q_l * $GOR; // m3/sec расход газа в ГУ
             //density of gas
-            $SG = 0.64;
-            $rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Water
+            //$SG = 0.64; //input pipesim
+            //$rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Air
+            $rhog = $request->rhog; // БД Лабараторная по нефти и газу kg/m3 ???? надо перепроверить 06.11.2020
             //mass flowrate of liquid
-            $m_dotl = $rhol * $q_l;
+            $m_dotl = $rhol * $q_l; // kg/m3 * m3/s = kg/s
             //mass flowrate of gas
-            $m_dotg = $rhog * $q_g;
+            $m_dotg = $rhog * $q_g; // kg/s
             //combined mass flowrate of mixture
             $m_dot = $m_dotl + $m_dotg;
             //Density of two phase
             $x = $m_dotg / $m_dot;
             //Dead oil viscosity
-            $mul = $request->mul;
+            $mul = $request->mul; // kg/(m.s) БД Лабараторная по нефти и газу
             //Viscosity of gas
-            $mug = $request->mug;
-            $sigma = $request->sigma;
-            $d = $request->d;
-            $roughness = $request->roughness;
-            $l = $request->l;
-            $P = $request->P;
+            $mug = $request->mug; // ???? kg/(m.s) БД Лабараторная по нефти и газу
+            //Surface tension
+            $sigma = $request->sigma; // Внутренняя БД константа N/m
+            //Outside diameter
+            $do = $request->do; // Наружный диаметр Внутренняя БД константа mm
+            $do = $do / 1000; // from mm to m
+            $thickness = $request->thickness; // Внутренняя БД константа thickness  in mm
+            $thickness = $thickness / 1000; // from mm to m
+            //Inner diameter
+            $d = $do - 2 * $thickness; // in m
+            //Roughness of pipes
+            $roughness = $request->roughness; // Внутренняя БД константа mm
+            $roughness = $roughness / 1000; // from mm to m
+            //Length
+            $l = $request->l; // // Внутренняя БД константа в метрах
+            //Pressure
+            $P = $request->P; // БД ОМГ НГДУ bar
+            $P_pump = $P; // в точке Е
+            $P_bufer = $request->P_bufer; // БД ОМГ НГДУ в точке А bar
             //Gravitational acceleration
-            $g = 9.8;
+            $g = 9.81; // m2/s
             // $h = $request->h;
 //          Liquid-only properties, for calculation of E, dP_lo
 //          Calculate velocity
             $v_lo = $m_dot/$rhol/(pi()/4*$d**2);
 //          Calculate Reynolds number
-            $Re_lo = $v_lo * $d * $rhol / $mul;
+            $Re_lo = $v_lo * $d * $rhol / $mul; // m/s * m * kg/m3 / (kg/(m.s))
             $A = pow(2.457 * log(1 / (pow(7/$Re_lo,0.9)+(0.27 * $roughness / $d))),16);
             $B = pow(37530 / $Re_lo,16);
 //          Calculate Friction factor
@@ -318,15 +334,15 @@ return $response;
             //To be as INPUT in future
             //$flow = $Q_h * 3600 * 24 * (1 - $WC);
             //Outside diameter in m
-            $do = 0.110;
+            $do = $do;
             //Inside diameter in m
-            $di = 0.100;
+            $di = $d;
             //Roughness in m
-            $roughness = 0.00004572;
+            $roughness = $roughness;
             //Density in kg / m3
             $density = $rho_h;
             //Fluid viscosity in Pa.s  x 1000 to cP
-            $viscosity = 7.974;
+            $viscosity = $mul;
             //Length of the pipe in m
             $l = 1000.0;
             //thermal conductivity of piping material in W/(m*K)
@@ -384,147 +400,148 @@ return $response;
             //Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
             //log r = 7.96 - 2320 / (T + 273) - 5.55 * 10^-3 * T + 0.67 * log(pCo2)
             //pressure in bar
-            $p = 7;//$P_final;
-            $t = 40;//$t_final - 273;  //temperature in K
+            //*********************************/
+            //    GENERAL CORROSION POINT A    /
+            //*********************************/
+            $p = $P_bufer * 100; // from bar to kPa
+            $t = 25;  //temperature in C
             //H2S concentration
-            $conH2S = 0.01;  //0.0008;
+            $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
+            $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
             //CO2 concentraiton
-            $conCO2 = 0.008; //0.008;
+            $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
+            $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            // //According to Dalton's law of partial pressures, the partial pressure of CO2 is proportional to the mole fraction
+            // //First we need to get the solubility coefficient from the following formula:
+            // //Henry's Law constant: kH(T) = kH * exp(d(ln(kH))/d(1/T) ((1/T) - 1/(298.15 K)))
+            // //where kH as per NIST 0.034 mol/lg*bar,
+            // //d(ln(kH))/d(1/T) = 2600
+            // $khCO2 = 0.034;
+            // $dtCO2 = 2600;
 
-            //According to Dalton's law of partial pressures, the partial pressure of CO2 is proportional to the mole fraction
-            //First we need to get the solubility coefficient from the following formula:
-            //Henry's Law constant: kH(T) = kH * exp(d(ln(kH))/d(1/T) ((1/T) - 1/(298.15 K)))
-            //where kH as per NIST 0.034 mol/lg*bar,
-            //d(ln(kH))/d(1/T) = 2600
-            $khCO2 = 0.034;
-            $dtCO2 = 2600;
-
-            //Now let's calculate the partial pressure using the Henry's constant:
-            $kCO2 = $khCO2 * exp($dtCO2 * (1/($t + 273) - 1/285.15));   # mol/kg*bar
-            //print("kCO2 [mol/kg*bar]= ", kCO2)
-            //Converting from % to mg/l
-            $CO2 = $conCO2 * 44000 / 22.4 * 273 / (273 + $t) * 10 * $p / 1013;
-            // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
-            $pCO2 = $CO2 / $kCO2 / 44000;   # kPa
+            // //Now let's calculate the partial pressure using the Henry's constant:
+            // $kCO2 = $khCO2 * exp($dtCO2 * (1/($t + 273) - 1/285.15));   # mol/kg*bar
+            // //print("kCO2 [mol/kg*bar]= ", kCO2)
+            // //Converting from % to mg/l
+            // $CO2 = $conCO2 * 44000 / 22.4 * 273 / (273 + $t) * 10 * $p / 1013;
+            // // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
+            // $pCO2 = $CO2 / $kCO2 / 44000;   //kPa
             //print("pCO2 [kPa] = ", pCO2)
+            $pCO2 = $conCO2_frac / 100 * $p; // measured in kPa as per formula
 
             //convert data to proper type
-            $co2 = $pCO2 / 1000; //convert to float type and MPa
+            $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
 
             //def corrosion_rate(co2,t):
 
-            $a = 7.96 - 2320 / ($t+273);
-            $b = $t * 5.55 * pow(10,-3);
-            $c = 0.67 * log10($co2);
-            $d = $a - $b + $c;
-            $r = pow(10,$d);
+            // $a = 7.96 - 2320 / ($t+273);
+            // $b = $t * 5.55 * pow(10,-3);
+            // $c = 0.67 * log10($co2);
+            // $d = $a - $b + $c;
+            // $r_a = pow(10,$d);
             // r = pow(10, (7.96 - 2320 / (ti + 273) - 5.55 * 10**(-3) * ti + 0.67 * math.log10(co2))
             // return r
             //x = corrosion_rate(co2,t)
 
-            //******************************//
-            //GENERAL CORROSION CALCULATION*//
-            //******************************//
+            //******************************************//
+            //GENERAL CORROSION CALCULATION in POINT A  //
+            //******************************************//
 
             // According to Dalton's law of partial pressures, the partial pressure of CO2 is proportional to the mole fraction
             // First we need to get the solubility coefficient from the following formula:
             // Henry's Law constant: kH(T) = kH * exp(d(ln(kH))/d(1/T) ((1/T) - 1/(298.15 K)))
             // where kH as per NIST 0.034 mol/lg*bar,
             // d(ln(kH))/d(1/T) = 2600
-            $khCO2 = 0.034;
-            $dtCO2 = 2600;
-            //Convert pressure to kPa
-            $p = $p * 100;
-            //Now let's calculate the partial pressure using the Henry's constant:
-            $kCO2 = $khCO2 * exp($dtCO2 * (1/($t + 273) - 1/285.15));   # mol/kg*bar
-            //print("kCO2 [mol/kg*bar]= ", kCO2)
-            //Converting from % to mg/l
-            $CO2 = $conCO2 * 44000 / 22.4 * 273 / (273 + $t) * 10 * $p / 1013;
-            // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
-            $pCO2 = $CO2 / $kCO2 / 44000;   # kPa
-            //print("pCO2 [kPa] = ", pCO2)
-
+            // $khCO2 = 0.034;
+            // $dtCO2 = 2600;
+            // //Convert pressure to kPa
+            // $p = $p * 100;
+            // //Now let's calculate the partial pressure using the Henry's constant:
+            // $kCO2 = $khCO2 * exp($dtCO2 * (1/($t + 273) - 1/285.15));   # mol/kg*bar
+            // //print("kCO2 [mol/kg*bar]= ", kCO2)
+            // //Converting from % to mg/l
+            // $CO2 = $conCO2 * 44000 / 22.4 * 273 / (273 + $t) * 10 * $p / 1013;
+            // // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
+            // $pCO2 = $CO2 / $kCO2 / 44000;   # kPa
+            // //print("pCO2 [kPa] = ", pCO2)
             // Same conversion for H2S partial pressure calculations
-            $khH2S = 0.10;
-            $dtH2S = 2600;
-
-            // Now let's calculate the partial pressure using the Henry's constant:
-            $kH2S = $khH2S * exp($dtH2S * (1/($t + 273) - 1/285.15));   # mol/kg*bar
-            // Converting from % to mg/l
-            $H2S = $conH2S * 34000 / 22.4 * 273 / (273 + $t) * 10 * $p / 1013;
-            // 1 mol/kg of CO2 => 34 g/l or 34000 mg/l assuming that 1l = 1kg the parital pressure equals:
-            $pH2S = $H2S / $kH2S / 34000;   # kPa
-
-
-            // Converting from % to ppm
-            $ppmH2S = $conH2S * 10000;
-            $pH2S = $pH2S / 1000;  #convert to float type and MPa
-
+            // $khH2S = 0.10;
+            // $dtH2S = 2600;
+            // // Now let's calculate the partial pressure using the Henry's constant:
+            // $kH2S = $khH2S * exp($dtH2S * (1/($t + 273) - 1/285.15));   # mol/kg*bar
+            // // Converting from % to mg/l
+            // $H2S = $conH2S * 34000 / 22.4 * 273 / (273 + $t) * 10 * $p / 1013;
+            // // 1 mol/kg of CO2 => 34 g/l or 34000 mg/l assuming that 1l = 1kg the parital pressure equals:
+            // $pH2S = $H2S / $kH2S / 34000;   # kPa
+            // // Converting from % to ppm
+            // $ppmH2S = $conH2S * 10000;
+            // $pH2S = $pH2S / 1000;  #convert to float type and MPa
+            $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
             $ratio = $pCO2 / $pH2S;
 
             if ($pCO2 / $pH2S >= 500){
                 $x = 7.96 - 2320 / ($t+273);
                 $y = $t * 5.55 * pow(10,-3);
-                $z = 0.67 * log10($pCO2);
+                $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
-                $r = pow(10,$omega);
+                $r_a = pow(10,$omega);
                 ob_start(); //Start output buffer
                 echo "CO2";
-                $output = ob_get_contents(); //Grab output
+                $output_a = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
                 //return $r;
             }
                 //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
             else if ($pCO2 / $pH2S < 500) {
-                $r = -0.605 + 0.390 * $conCO2 + 0.0000932 * $ppmH2S; //ppmH2w parts per million & conCO2 %
+                $r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
                 ob_start(); //Start output buffer
-                echo "H2S";
-                $output = ob_get_contents(); //Grab output
+                echo "H2S+CO2";
+                $output_a = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
                 //return $r;
             }
 
-            if  ($r > 0 && $r <= 0.125) {
-                if ($H2S < 17 && $CO2 < 121) {
-                    $dose = 22.725 * log($r) + 58.968;
+            if  ($r_a > 0.125) {
+                if ($conH2S < 17) {
+                    $dose_a = 22.725 * log($r_a) + 58.968;
                     //return $dose;
                 }
-                else if ($H2S > 17 && $CO2 > 121) {
-                    $dose = 26.868 * log($r) + 55.793;
+                else if ($conH2S > 17) {
+                    $dose_a = 26.868 * log($r_a) + 55.783;
                     //return $dose;
                 }
             }
 
             else {
-                $dose = 0;
+                $dose_a = 0;
             }
-
-            //****************************//
-            //LOCAL CORROSION CALCULATION*//
-            //****************************//
+            //************************************************//
+            //LOCAL CORROSION CALCULATION IN POINT A*//
+            //************************************************//
                 //H2O water concentration in %
-                $H2O = 0.90;
+                $H2O = $request->H2O; // БД ОМГ НГДУ
                 //Please enter T temperature in C
-                $T = $t_final - 273;
+                $T = 25; //
                 //Pressure in bar [convert to psi]
-                $P = $P_final * 14.503773773;
+                $P = $P_bufer * 14.503773773; //БД ОМГ НГДУ
                 //pH2S partial pressure kPa [convert to psi]
                 $pH2S = $pH2S * 0.1450377377;
                 //pCO2 partial pressure kPa [convert to psi]
                 $pCO2 = $pCO2 * 0.1450377377;
-                //SO4 partial pressure in mg/dm3 [convert to ppm]
-                $SO4 = 200;
-                $SO4 = $SO4 * 1;
-                //HCO3 partial pressure in mg/dm3 [convert to ppm]
-                $HCO3 = 200;
-                $HCO3 = $HCO3 * 1;
-                //CL partial pressure in mg/dm3 [convert to ppm] :  "))
-                $Cl = 200;
-                $Cl = $Cl * 1;
+                //SO4 content in mg/dm3
+                $SO4 = $request->SO4; // БД Лабораторная по жидкости
+                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
+                //HCO3 content in mg/dm3
+                $HCO3 = $request->HCO3; // БД Лабораторная по жидкости
+                $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
+                //CL content in mg/dm3
+                $Cl = $request->Cl; // БД Лабораторная по жидкости
+                $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
 
                 //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
 
-                $pcr_W = 0.51 * $H2O + 12.13;
+                //PAPAVINASAM Corrosion rate
+                $pcr_W = 0.54 * $H2O + 12.13;
                 $pcr_T = 0.57 * $T + 20;
                 $pcr_P = -0.081 * $P + 88;
                 $pcr_H2S = -0.54 * $pH2S + 67;
@@ -534,26 +551,269 @@ return $response;
                 $pcr_Cl = -0.0007 * $Cl + 9.2;
 
                 $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
-                $PCR = array_sum($arr)/8;
+                $PCR = array_sum($arr)/8; // mpy
+                // Local corrosion rate in point A
+                $PCR_A = 0.0254  * $PCR; // convert mpy => mm per year
 
+
+            //Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
+            //log r = 7.96 - 2320 / (T + 273) - 5.55 * 10^-3 * T + 0.67 * log(pCo2)
+            //pressure in bar
+            //***********************************//
+            // GENERAL CORROSION RATE IN POINT E //
+            //***********************************//
+            $p = $P_pump * 100; // БД ОМГ НГДУ from bar to kPa
+            $t_heater = $request->t_heater; // БД ОМГ НГДУ temperature from Печь taken from database
+            $t = $t_heater; // measured in Celsius
+            //H2S concentration
+            $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
+            //$conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            //CO2 concentration
+            $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
+            //$conCO2 = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $pCO2 = $conCO2_frac / 100 * $p;
+
+            //convert data to proper type
+            $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
+
+            // //def corrosion_rate(co2,t):
+
+            // $a = 7.96 - 2320 / ($t+273);
+            // $b = $t * 5.55 * pow(10,-3);
+            // $c = 0.67 * log10($co2);
+            // $d = $a - $b + $c;
+            // $r = pow(10,$d);
+            // // r = pow(10, (7.96 - 2320 / (ti + 273) - 5.55 * 10**(-3) * ti + 0.67 * math.log10(co2))
+            // // return r
+            // //x = corrosion_rate(co2,t)
+
+            //***************************************//
+            //GENERAL CORROSION CALCULATION POINT E *//
+            //***************************************//
+
+            $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
+            $ratio = $pCO2 / $pH2S;
+
+            if ($pCO2 / $pH2S >= 500){
+                $x = 7.96 - 2320 / ($t+273);
+                $y = $t * 5.55 * pow(10,-3);
+                $z = 0.67 * log10($co2);
+                $omega = $x - $y + $z;
+                $r_e = pow(10,$omega);
+                ob_start(); //Start output buffer
+                echo "CO2";
+                $output_e = ob_get_contents(); //Grab output
+                ob_end_clean(); //Discard output buffer
+            }
+                //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            else if ($pCO2 / $pH2S < 500) {
+                $r_e = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                ob_start(); //Start output buffer
+                echo "H2S+CO2";
+                $output_e = ob_get_contents(); //Grab output
+                ob_end_clean(); //Discard output buffer
+            }
+
+            if  ($r_e > 0.125) {
+                if ($conH2S < 17 ) {
+                    $dose_e = 22.725 * log($r_e) + 58.968;
+                    //return $dose;
+                }
+                else if ($conH2S > 17) {
+                    $dose_e = 26.868 * log($r_e) + 55.783;
+                    //return $dose;
+                }
+            }
+
+            else {
+                $dose_e = 0;
+            }
+            //************************************************//
+            //LOCAL CORROSION CALCULATION IN POINT E PIPELINE*//
+            //************************************************//
+                //H2O water concentration in %
+                $H2O = $request->H2O; // БД ОМГ НГДУ
+                //Please enter T temperature in C
+                $T = $t_heater; // БД ОМГ НГДУ
+                //Pressure in bar [convert to psi]
+                $P = $P_pump * 14.503773773; //БД ОМГ НГДУ
+                //pH2S partial pressure kPa [convert to psi]
+                $pH2S = $pH2S * 0.1450377377;
+                //pCO2 partial pressure kPa [convert to psi]
+                $pCO2 = $pCO2 * 0.1450377377;
+                //SO4 content in mg/dm3
+                $SO4 = $request->SO4; // БД Лабораторная по жидкости
+                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
+                //HCO3 content in mg/dm3
+                $HCO3 = $request->HCO3; // БД Лабораторная по жидкости
+                $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
+                //CL content in mg/dm3
+                $Cl = $request->Cl; // БД Лабораторная по жидкости
+                $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
+
+                //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
+
+                //PAPAVINASAM Corrosion rate
+                $pcr_W = 0.54 * $H2O + 12.13;
+                $pcr_T = 0.57 * $T + 20;
+                $pcr_P = -0.081 * $P + 88;
+                $pcr_H2S = -0.54 * $pH2S + 67;
+                $pcr_CO2 = -0.63 * $pCO2 + 74;
+                $pcr_SO4 = -0.013 * $SO4 + 57;
+                $pcr_HCO3 = -0.014 * $HCO3 + 81;
+                $pcr_Cl = -0.0007 * $Cl + 9.2;
+
+                $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
+                $PCR = array_sum($arr)/8; // mpy
+                // Local corrosion rate in point G pipeline
+                $PCR_E = 0.0254  * $PCR; // convert mpy => mm per year
+
+
+            //***********************************//
+            // GENERAL CORROSION RATE IN POINT F //
+            //***********************************//
+            $p = $P_final * 100; //from bar to kPa
+            $t = $t_final; //
+            //H2S concentration
+            $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
+            //$conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            //CO2 concentration
+            $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
+            //$conCO2 = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $pCO2 = $conCO2 * $p / 100;
+
+            //convert data to proper type
+            $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
+
+            // //def corrosion_rate(co2,t):
+
+            // $a = 7.96 - 2320 / ($t+273);
+            // $b = $t * 5.55 * pow(10,-3);
+            // $c = 0.67 * log10($co2);
+            // $d = $a - $b + $c;
+            // $r = pow(10,$d);
+            // // r = pow(10, (7.96 - 2320 / (ti + 273) - 5.55 * 10**(-3) * ti + 0.67 * math.log10(co2))
+            // // return r
+            // //x = corrosion_rate(co2,t)
+
+            //***************************************//
+            //GENERAL CORROSION CALCULATION POINT F *//
+            //***************************************//
+
+            $pH2S = $p * $conH2S / 100; // partial pressure H2S in kPa
+            $ratio = $pCO2 / $pH2S;
+
+            if ($pCO2 / $pH2S >= 500){
+                $x = 7.96 - 2320 / ($t+273);
+                $y = $t * 5.55 * pow(10,-3);
+                $z = 0.67 * log10($co2);
+                $omega = $x - $y + $z;
+                $r_f = pow(10,$omega);
+                ob_start(); //Start output buffer
+                echo "CO2";
+                $output_f = ob_get_contents(); //Grab output
+                ob_end_clean(); //Discard output buffer
+            }
+                //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            else if ($pCO2 / $pH2S < 500) {
+                $r_f = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                ob_start(); //Start output buffer
+                echo "H2S+CO2";
+                $output_f = ob_get_contents(); //Grab output
+                ob_end_clean(); //Discard output buffer
+            }
+
+            if  ($r_f > 0.125) {
+                if ($conH2S < 17 ) {
+                    $dose_f = 22.725 * log($r_f) + 58.968;
+                    //return $dose;
+                }
+                else if ($conH2S > 17) {
+                    $dose_f = 26.868 * log($r_f) + 55.783;
+                    //return $dose;
+                }
+            }
+
+            else {
+                $dose_f = 0;
+            }
+
+            //************************************************//
+            //LOCAL CORROSION CALCULATION IN POINT F PIPELINE*//
+            //************************************************//
+                //H2O water concentration in %
+                $H2O = $request->H2O; // БД ОМГ НГДУ
+                //Please enter T temperature in C
+                $T = $t_final - 273; //
+                //Pressure in bar [convert to psi]
+                $P = $P_final * 14.503773773;
+                //pH2S partial pressure kPa [convert to psi]
+                $pH2S = $pH2S * 0.1450377377;
+                //pCO2 partial pressure kPa [convert to psi]
+                $pCO2 = $pCO2 * 0.1450377377;
+                //SO4 content in mg/dm3
+                $SO4 = $request->SO4; // БД Лабараторная по жидкости
+                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
+                //HCO3 content in mg/dm3
+                $HCO3 = $request->HCO3; // БД Лабараторная по жидкости
+                $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
+                //CL content in mg/dm3
+                $Cl = $request->Cl; // БД Лабараторная по жидкости
+                $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
+
+                //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
+
+                //PAPAVINASAM Corrosion rate
+                $pcr_W = 0.54 * $H2O + 12.13;
+                $pcr_T = 0.57 * $T + 20;
+                $pcr_P = -0.081 * $P + 88;
+                $pcr_H2S = -0.54 * $pH2S + 67;
+                $pcr_CO2 = -0.63 * $pCO2 + 74;
+                $pcr_SO4 = -0.013 * $SO4 + 57;
+                $pcr_HCO3 = -0.014 * $HCO3 + 81;
+                $pcr_Cl = -0.0007 * $Cl + 9.2;
+
+                $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
+                $PCR = array_sum($arr)/8; // mpy
+                // Local corrosion rate in point F
+                $PCR_F = 0.0254  * $PCR; // convert mpy => mm per year
+
+
+                /////////////////////////////////
+                //MAX DOSE
+                $max_dose = max($dose_a, $dose_e, $dose_f);
+                /////////////////////////////////
 
         $vdata = [
-            'v_lo' => $v_lo,
-            'm_dot' => $m_dot,
-            'final_pressure' => $P_final,
-            'corrosion_rate_in_mm' => $r,
-            'dose' => $dose,
-            'dP' => $dP,
-            't_final_k' => round($t_final,4),
-            'corrosion_mm_per_year' => round($r,4),
-            'pCO2_kPa' => round($pCO2,4),
-            'pH2S_kPa' => round($pH2S,4),
-            'dose_mg_per_l' => round($dose,4),
-            'H2S_mg_per_l' => round($H2S,4),
-            'CO2_mg_perl' => round($CO2,4),
-            'environment' => $output,
-            'pCO2_per_pH2S' => $ratio,
-            'Papavinasam_corrosion' => $PCR
+            'flow_velocity_meter_per_sec' => $v_lo,
+            //'m_dot' => $m_dot,
+            'final_pressure_bar_point_F' => $P_final,
+            'corrosion_rate_mm_per_y_point_A' => $r_a,
+            'corrosion_rate_mm_per_y_point_E' => $r_e,
+            'corrosion_rate_mm_per_y_point_F' => $r_f,
+            'dose_mg_per_l_point_A' => $dose_a,
+            'dose_mg_per_l_point_E' => $dose_e,
+            'dose_mg_per_l_point_F' => $dose_f,
+            'max_dose' => round($max_dose),
+            //'dP' => $dP,
+            't_final_celsius_point_F' => round($t_final,4),
+            //'corrosion_mm_per_year' => round($r,4),
+            // 'pCO2_kPa' => round($pCO2,4),
+            // 'pH2S_kPa' => round($pH2S,4),
+            // 'dose_mg_per_l' => round($dose,4),
+            // 'H2S_mg_per_l' => round($H2S,4),
+            // 'CO2_mg_perl' => round($CO2,4),
+            'environment_point_A' => $output_a,
+            'environment_point_E' => $output_e,
+            'environment_point_F' => $output_f,
+            //'pCO2_per_pH2S' => $ratio,
+            'papavinasam_corrosion_mm_per_y_point_A' => $PCR_A,
+            'papavinasam_corrosion_mm_per_y_point_E' => $PCR_E,
+            'papavinasam_corrosion_mm_per_y_point_F' => $PCR_F,
         ];
 
 

@@ -359,11 +359,7 @@ class WaterMeasurementController extends Controller
         $pipe = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','eg')->first();
         $pipeAB = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','ab')->first();
         $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->latest()->first();
-        $wmLast = ComplicationMonitoringWaterMeasurement::where('gu_id','=',$request->gu_id)->latest()->first();
         $constantsValues = ConstantsValue::get();
-        $wmLastCO2 = ComplicationMonitoringWaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('carbon_dioxide')->latest()->first();
-        $wmLastH2S = ComplicationMonitoringWaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('hydrogen_sulfide')->latest()->first();
-
         $chartDtCarbonDioxide['dt']  = [];
         $chartDtHydrogenSulfide['dt']  = [];
         $chartDtCarbonDioxide['value']  = [];
@@ -412,10 +408,7 @@ class WaterMeasurementController extends Controller
             'pipe' => $pipe,
             'pipeab' => $pipeAB,
             'lastCorrosion' => $lastCorrosion,
-            'wmLast' => $wmLast,
-            'constantsValues' => $constantsValues,
-            'wmLastH2S' => $wmLastH2S,
-            'wmLastCO2' => $wmLastCO2
+            'constantsValues' => $constantsValues
         ]);
     }
 
