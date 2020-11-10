@@ -9,9 +9,9 @@ import { EventBus } from "../../event-bus.js";
 Vue.component("Plotly", Plotly);
 export default {
   name: "mix-chart",
-  props: ["postTitle"],
   data: function () {
     return {
+   
     /*  rendererOptions: {
 plotlyConfig: {
 responsive: true,
@@ -61,14 +61,11 @@ config: {responsive: true},
         },
       },
 
-      data: {
-        data: [
-          {
-            name: "Line1",
-            x: [""],
-          },
-        ],
-      },
+    data:[{
+      x: [1,2,3,4],
+      y: [10,15,13,17],
+      mode:"scatter"
+    }],
     };
   },
   methods: {

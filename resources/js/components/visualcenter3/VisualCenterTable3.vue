@@ -20,7 +20,7 @@
                     :style="{
                       width: widthProgress + '%',
                     }"
-                    style="width: 25%;"
+                    style="width: 25%"
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
@@ -46,7 +46,7 @@
                     :style="{
                       width: widthProgress + '%',
                     }"
-                    style="width: 25%;"
+                    style="width: 25%"
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
@@ -73,7 +73,7 @@
                     :style="{
                       width: widthProgress + '%',
                     }"
-                    style="width: 25%;"
+                    style="width: 25%"
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
@@ -85,7 +85,7 @@
                 <div class="txt3">vs сентябрь</div>
               </td>
               <td
-                style="width: 200px; border-left: 10px solid #0f1430;"
+                style="width: 200px; border-left: 10px solid #0f1430"
                 @click="changeTable('2')"
                 :style="`${tableHover2}`"
               >
@@ -100,7 +100,7 @@
                 <div class="txt3">vs сентябрь</div>
               </td>
               <td
-                style="width: 200px; border-left: 10px solid #0f1430;"
+                style="width: 200px; border-left: 10px solid #0f1430"
                 @click="changeTable('3')"
                 :style="`${tableHover3}`"
               >
@@ -121,7 +121,7 @@
       </div>
       <div class="first-table" :style="`${Table1}`">
         <div class="first-string first-string2">
-          <div class="container-fluid ">
+          <div class="container-fluid">
             <!--class="table-responsive"-->
             <table class="table table2">
               <tr>
@@ -150,12 +150,11 @@
                   <!-- <div class="dropdown">-->
 
                   <ul>
-                    <li class="center-li"     @click="changeMenu('101')">
+                    <li class="center-li" @click="changeMenu('101')">
                       <a>С учётом доли участия КМГ</a>
 
                       <div
                         class="square-small2"
-                    
                         :style="`${changeMenuButton1}`"
                       >
                         &#10003;
@@ -182,11 +181,10 @@
                   </div>
 
                   <ul>
-                    <li class="center-li"   @click="changeMenu('102')">
+                    <li class="center-li" @click="changeMenu('102')">
                       <a>Сдача нефти по узлам учёта</a>
-                           <div
+                      <div
                         class="square-small2"
-                      
                         :style="`${changeMenuButton2}`"
                       >
                         &#10003;
@@ -195,9 +193,8 @@
 
                     <li class="center-li" @click="changeMenu('103')">
                       <a>Товарный остаток нефти</a>
-                           <div
+                      <div
                         class="square-small2"
-                        
                         :style="`${changeMenuButton3}`"
                       >
                         &#10003;
@@ -222,21 +219,26 @@
                     <div class="txt5">Добыча газа</div>
                     <div class="txt6">млрд. м³</div>
                   </div>
-                 <ul>             
-<li class="center-li"> <a href> Сдача природного газа</a>  </li>
-<li class="center-li">  <a href>Расход природного газа на собственные нужды </a> </li>
-<li class="center-li">  <a href>Переработка природного газа</a>  </li>
-<li class="center-li">  <a href>Сдача попутного газа </a></li>
-<li class="center-li">  <a href>Расход попутного газа на собственные нужды </a></li>
-<li class="center-li"> <a href> Переработка попутного газа  </a></li>
-
-
-
-
- 
+                  <ul>
+                    <li class="center-li">
+                      <a href> Сдача природного газа</a>
+                    </li>
+                    <li class="center-li">
+                      <a href>Расход природного газа на собственные нужды </a>
+                    </li>
+                    <li class="center-li">
+                      <a href>Переработка природного газа</a>
+                    </li>
+                    <li class="center-li"><a href>Сдача попутного газа </a></li>
+                    <li class="center-li">
+                      <a href>Расход попутного газа на собственные нужды </a>
+                    </li>
+                    <li class="center-li">
+                      <a href> Переработка попутного газа </a>
+                    </li>
                   </ul>
                 </td>
-               <td class="dropdown3">
+                <td class="dropdown3">
                   <div
                     class="button1"
                     :style="`${buttonHover5}`"
@@ -253,12 +255,13 @@
                     <div class="txt5">Добыча конденсата</div>
                     <div class="txt6">тыс. тонн</div>
                   </div>
-                    <ul>
+                  <ul>
                     <li class="center-li">
-                      <a href>С учётом доли участия КМГ</a></li>
-                      </ul>
+                      <a href>С учётом доли участия КМГ</a>
+                    </li>
+                  </ul>
                 </td>
-               <td class="dropdown3">
+                <td class="dropdown3">
                   <div
                     class="button1"
                     :style="`${buttonHover6}`"
@@ -275,23 +278,17 @@
                     <div class="txt5">Объём закачки воды</div>
                     <div class="txt6">тыс. м³</div>
                   </div>
-                <ul>             
-<li class="center-li"> <a href> Закачка морской воды</a>  </li>
-<li class="center-li">  <a href>Закачка сточной воды</a> </li>
-<li class="center-li">  <a href>Закачка альбсен. воды</a>  </li>
-
-
-
-
-
- 
+                  <ul>
+                    <li class="center-li"><a href> Закачка морской воды</a></li>
+                    <li class="center-li"><a href>Закачка сточной воды</a></li>
+                    <li class="center-li"><a href>Закачка альбсен. воды</a></li>
                   </ul>
                 </td>
               </tr>
             </table>
           </div>
 
-          <div class="container-fluid ">
+          <div class="container-fluid">
             <table class="table table2">
               <tr>
                 <td>
@@ -335,14 +332,14 @@
                             <div v-on:click="increase">></div>
                           </div>
                         </div>
-                        <div style="clear: both;"></div>
+                        <div style="clear: both"></div>
                         <div
                           class="calendar-days"
                           v-bind:style="{ display: display }"
                         >
                           <div class="day" v-for="d in day">{{ d }}</div>
                         </div>
-                        <div style="clear: both;"></div>
+                        <div style="clear: both"></div>
                         <div class="calendar-day">
                           <div v-for="week in calendar()">
                             <div
@@ -392,8 +389,7 @@
             </table>
           </div>
 
-
-<div class="container-fluid "  :style="`${displayTable}`">
+          <div class="container-fluid" :style="`${displayTable}`">
             <table class="table table4">
               <tbody>
                 <tr>
@@ -401,31 +397,25 @@
                   <td class="big-table-hidtd small-td"></td>
 
                   <td class="small-td">
-                    <div class="center">
-                      план
-                    </div>
+                    <div class="center">план</div>
                   </td>
                   <td class="small-td">
-                    <div class="center">
-                      факт
-                    </div>
+                    <div class="center">факт</div>
                   </td>
                   <td class="small-td">
-                    <div class="center">
-                      +/-
-                    </div>
+                    <div class="center">+/-</div>
                   </td>
                   <td class="small-td"><div class="center">%</div></td>
                 </tr>
 
-                <tr 
-                 v-for="(item, index) in tables">
-                  <td   @click="saveCompany(item.dzoBriefly)"
+                <tr v-for="(item, index) in tables">
+                  <td
+                    @click="saveCompany(item.dzoBriefly)"
                     :class="
                       index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
                     "
                   >
-                    {{ item.dzo }} 
+                    {{ item.dzo }}
                   </td>
                   <td class="w-50"></td>
 
@@ -433,13 +423,13 @@
                     :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
                   >
                     <div>
-                      {{(new Intl.NumberFormat('ru-RU').format(item.pla)) }}
+                      {{ new Intl.NumberFormat("ru-RU").format(item.pla) }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
                   <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                     <div>
-                      {{(new Intl.NumberFormat('ru-RU').format( item.fact)) }}
+                      {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
@@ -454,7 +444,11 @@
                       )}`"
                     ></div>
                     <div class="percent">
-                      {{(new Intl.NumberFormat('ru-RU').format( item.fact - item.plan)) }}
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          item.fact - item.plan
+                        )
+                      }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
@@ -500,13 +494,13 @@
                     :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
                   >
                     <div>
-                      {{(new Intl.NumberFormat('ru-RU').format(planDaySumm)) }}
+                      {{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
                   <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                     <div>
-                      {{(new Intl.NumberFormat('ru-RU').format( factDaySumm)) }}
+                      {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
@@ -521,7 +515,11 @@
                       )}`"
                     ></div>
                     <div class="percent">
-                      {{(new Intl.NumberFormat('ru-RU').format( factDaySumm - planDaySumm)) }}
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          factDaySumm - planDaySumm
+                        )
+                      }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
@@ -540,8 +538,7 @@
             </table>
           </div>
 
-
-          <div class="container-fluid "  :style="`${displayHeadTables}`">
+          <div class="container-fluid" :style="`${displayHeadTables}`">
             <table class="table table4">
               <tbody>
                 <tr>
@@ -549,31 +546,25 @@
                   <td class="big-table-hidtd small-td"></td>
 
                   <td class="small-td">
-                    <div class="center">
-                      план
-                    </div>
+                    <div class="center">план</div>
                   </td>
                   <td class="small-td">
-                    <div class="center">
-                      факт
-                    </div>
+                    <div class="center">факт</div>
                   </td>
                   <td class="small-td">
-                    <div class="center">
-                      +/-
-                    </div>
+                    <div class="center">+/-</div>
                   </td>
                   <td class="small-td"><div class="center">%</div></td>
                 </tr>
 
-                <tr 
-                 v-for="(item, index) in bigTable">
-                  <td   @click="saveCompany(item.dzoBriefly)"
+                <tr v-for="(item, index) in bigTable">
+                  <td
+                    @click="saveCompany(item.dzoBriefly)"
                     :class="
                       index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
                     "
                   >
-                    {{ item.dzoDay }} 
+                    {{ item.dzoDay }}
                   </td>
                   <td class="w-50"></td>
 
@@ -581,13 +572,13 @@
                     :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
                   >
                     <div>
-                      {{(new Intl.NumberFormat('ru-RU').format(item.planDay)) }}
+                      {{ new Intl.NumberFormat("ru-RU").format(item.planDay) }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
                   <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                     <div>
-                      {{(new Intl.NumberFormat('ru-RU').format( item.factDay)) }}
+                      {{ new Intl.NumberFormat("ru-RU").format(item.factDay) }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
@@ -602,7 +593,11 @@
                       )}`"
                     ></div>
                     <div class="percent">
-                      {{(new Intl.NumberFormat('ru-RU').format( item.factDay - item.planDay)) }}
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          item.factDay - item.planDay
+                        )
+                      }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
@@ -648,13 +643,13 @@
                     :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
                   >
                     <div>
-                      {{(new Intl.NumberFormat('ru-RU').format(planDaySumm)) }}
+                      {{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
                   <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                     <div>
-                      {{(new Intl.NumberFormat('ru-RU').format( factDaySumm)) }}
+                      {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
@@ -669,7 +664,11 @@
                       )}`"
                     ></div>
                     <div class="percent">
-                      {{(new Intl.NumberFormat('ru-RU').format( factDaySumm - planDaySumm)) }}
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          factDaySumm - planDaySumm
+                        )
+                      }}
                       <div class="right">{{ item4 }}</div>
                     </div>
                   </td>
@@ -707,11 +706,7 @@
             >
               <div>{{ menuDMY.DMY }}</div>
             </div>
-            <visual-center-chart-area-oil3
-              v-for="(serial, index) in oilChart"
-              v-bind:postTitle="serial"
-              :key="serial"
-            ></visual-center-chart-area-oil3>
+            <visual-center-chart-area-oil3></visual-center-chart-area-oil3>
           </div>
         </div>
       </div>
@@ -733,11 +728,7 @@
             >
               <div>{{ menuDMY.DMY }}</div>
             </div>
-            <visual-center-chart-area-usd3
-              v-for="(serial2, index) in currencyChart"
-              v-bind:postTitles="serial2"
-              :key="serial2"
-            ></visual-center-chart-area-usd3>
+            <visual-center-chart-area-usd3></visual-center-chart-area-usd3>
           </div>
         </div>
       </div>
@@ -745,36 +736,28 @@
       <div class="third-table" :style="`${Table4}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-          <div class="big-area">
-            Фонд добывающих скважин
-          </div>
+          <div class="big-area">Фонд добывающих скважин</div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table5}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-          <div class="big-area">
-            Фонд нагнетательных скважин
-          </div>
+          <div class="big-area">Фонд нагнетательных скважин</div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table6}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-          <div class="big-area">
-            ОТМ
-          </div>
+          <div class="big-area">ОТМ</div>
         </div>
       </div>
 
       <div class="third-table" :style="`${Table7}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">x</div>
-          <div class="big-area">
-            Химизация
-          </div>
+          <div class="big-area">Химизация</div>
         </div>
       </div>
     </div>
@@ -812,9 +795,7 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt2">
-                  Фонд добывающих скважин
-                </div>
+                <div class="txt2">Фонд добывающих скважин</div>
               </td>
             </tr>
           </table>
@@ -853,9 +834,7 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt2">
-                    Фонд нагнетательных скважин
-                  </div>
+                  <div class="txt2">Фонд нагнетательных скважин</div>
                 </td>
               </tr>
             </table>
@@ -910,9 +889,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <div class="txt2">
-                  Численность персонала
-                </div>
+                <div class="txt2">Численность персонала</div>
               </td>
             </tr>
           </table>
@@ -940,9 +917,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <div class="txt2">
-                  COVID-19
-                </div>
+                <div class="txt2">COVID-19</div>
               </td>
             </tr>
           </table>
@@ -985,9 +960,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <div class="txt2">
-                  Несчастные случаи
-                </div>
+                <div class="txt2">Несчастные случаи</div>
               </td>
             </tr>
           </table>
@@ -1015,9 +988,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                <div class="txt2">
-                  Смертельные случаи
-                </div>
+                <div class="txt2">Смертельные случаи</div>
               </td>
             </tr>
           </table>
@@ -1033,7 +1004,6 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
-
       tableHover1: "",
       tableHover2: "",
       tableHover3: "",
@@ -1275,7 +1245,7 @@ export default {
         this.buttonMenuHover10 = "";
       }
 
-      this.company=company;
+      this.company = company;
     },
     changeTable(change) {
       this.Table1 = "display:none";
@@ -1444,8 +1414,10 @@ export default {
           _.forEach(data, function (item) {
             arrdata2.push({ dates: item.dates, value: item.description["0"] });
           });
-          var currencyChart = Array({ data: arrdata2 });
-          this.currencyChart = currencyChart;
+
+          //var currencyChart = Array({ data: arrdata2 });
+          this.$emit("currencyChart", arrdata2);
+          //this.currencyChart = currencyChart;
         } else {
           console.log("No data");
         }
@@ -1520,7 +1492,8 @@ export default {
             ]);
           });
           //this.oilChart=    [_.takeRight(oil, 31)];
-          this.oilChart = [dateInOil];
+          // this.oilChart = [dateInOil];
+          this.$emit("oilChart", dateInOil);
         } else {
           console.log("No data");
         }
@@ -1545,7 +1518,7 @@ export default {
       this.$modal.show(bign);
     },
     displaynumbers: function (event) {
-      console.log(event);
+      // console.log(event);
       return this.getProduction(this.item, this.item2, this.item3, this.item4);
     },
     /*displayMessage: function (message) {
@@ -2524,11 +2497,10 @@ export default {
             } else if (String(dzo) === "КБМ") {
               name = NameDzoFull[3];
             }
-            var dzoBriefly= dzo;
+            var dzoBriefly = dzo;
             dzo = name;
-            
-            
-             dzoBriefly2.push({ dzoBriefly });
+
+            dzoBriefly2.push({ dzoBriefly });
             dzo2.push({ dzo });
           });
 
@@ -2946,7 +2918,7 @@ export default {
         var starts_prs = [];
         var starts_drl = [];
         var NameDzoFull = this.NameDzoFull;
-        var dzoBriefly= [];
+        var dzoBriefly = [];
         _.forEach(dataDay, function (item) {
           if (String(item.dzo) === "ОМГ") {
             name = NameDzoFull[1];
@@ -2962,7 +2934,7 @@ export default {
             name = NameDzoFull[3];
           }
 
-          dzoBriefly.push({dzoBriefly:item.dzo});
+          dzoBriefly.push({ dzoBriefly: item.dzo });
           e = { dzoDay: name };
           f = { factDay: Math.ceil(item[productionFact]) };
           p = { planDay: Math.ceil(item[productionPlan]) };
@@ -3114,7 +3086,8 @@ export default {
             dzoDay,
             factDay,
             planDay,
-            (dzoBriefly,
+            (
+              dzoBriefly,
               dzoYear,
               dzoMonth,
               factYear,
@@ -3205,7 +3178,7 @@ export default {
       this.showTable(localStorage.getItem("changeButton"));
     },
 
-       changeButton(showTableItem, changeButton) {
+    changeButton(showTableItem, changeButton) {
       var a;
       if (changeButton == "Yes") {
         if (showTableItem == "Yes") {
