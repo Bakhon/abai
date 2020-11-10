@@ -99,7 +99,7 @@ body {
 }
 
 .table4 td {
-    width: 80px;
+    width: 100px;
     overflow: hidden;
 }
 
@@ -362,7 +362,7 @@ td.size-td {
 }
 
 .table th, .table td {
-    padding: 0.4rem!important;
+    padding: 0.5rem!important;
 }
 
 .column-1 {
@@ -446,4 +446,58 @@ td.small-td {
     margin-top: -28px;
     margin-left: 900px;
     font-size: 12px;
+}
+
+
+/*center menu*/
+.dropdown3 {
+    position: relative; 
+   }
+   .dropdown3 input, .dropdown3 ul { display: none;}
+   .dropdown3 label {
+    cursor: pointer; 
+      }
+   .dropdown3 ul {
+    position: absolute; 
+    left: 0;     top: 3.7em; 
+    margin: 0; padding: 5px; 
+    list-style: none; 
+    background: #fff; 
+    z-index: 999;
+    min-width: 96%;
+    border-radius: 10px;
+    margin-left:9px;
+    border: 2px solid #2743cb;;
+   }
+
+   ul.center-menu2 {
+    top: 3em!important; 
+   }
+
+   .dropdown3 a { color: #000;}
+   .dropdown3:hover ul {
+    display: inline-block; 
+   }
+
+
+   .square-small2 {
+    background: #237deb;
+    width: 22px;
+    height: 22px;
+    position: relative;
+    left: 200px;
+    top: -15px;
+    text-align: center;
+    color:#237deb;
+}
+
+/*calendar */
+.month-day{
+    color:black!important;
+}
+
+li.center-li {
+    color: black;
+    padding: 4px;
+    font-size: 14px;
 }

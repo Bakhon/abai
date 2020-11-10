@@ -211,7 +211,7 @@
 <style>
     .bg-dark {
         background-color: #20274e !important;
-        height: 80px;
+       /* height: 80px;*/
         z-index: 99999;
     }
 

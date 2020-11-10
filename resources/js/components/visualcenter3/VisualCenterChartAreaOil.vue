@@ -2,13 +2,13 @@
   <div>
     <apexchart
       type="area"
-        height="580"
+      height="580"
       width="960"
       :options="chartOptions"
       :series="series"
     ></apexchart>
     <div class="begin">{{ begin }}</div>
-    <div class="">{{oilPeriod}}</div>
+    <div class="">{{ oilPeriod }}</div>
     <div class="end2">{{ end }}</div>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
   props: ["postTitle"],
   data: function () {
     return {
-      oilPeriod:"",
+      oilPeriod: "",
       begin: "",
       end: "",
       chartOptions: {
@@ -120,9 +120,9 @@ export default {
       ],
     };
   },
-
-  mounted() {
-    var data = this.postTitle;
+methods: {
+  oilChart: function (data) {
+    // var data = this.postTitle;
     var dates = [];
     var value = [];
     _.forEach(data, function (item) {
@@ -132,7 +132,7 @@ export default {
     this.begin = dates[0];
     var end = _.takeRight(dates, 1);
     this.end = end[0];
-console.log(dates);
+    //console.log(dates);
     this.chartOptions = { labels: dates };
     this.series = [
       {
@@ -140,5 +140,8 @@ console.log(dates);
       },
     ];
   },
+  created() {
+    this.$parent.$on("oilChart", this.oilChart);
+  },}
 };
 </script>
