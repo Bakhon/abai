@@ -567,11 +567,13 @@ return $response;
             $t = $t_heater;
             //H2S concentration
             $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
-            $conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            //$conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
             //CO2 concentration
             $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
-            $conCO2 = $conCO2 * 0.05464; // from mg/l => volumetric fraction
-            $pCO2 = $conCO2 * $p;
+            //$conCO2 = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $pCO2 = $conCO2_frac / 100 * $p;
 
             //convert data to proper type
             $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
@@ -591,7 +593,7 @@ return $response;
             //GENERAL CORROSION CALCULATION POINT E *//
             //***************************************//
 
-            $pH2S = $p * $conH2S; // partial pressure H2S in kPa
+            $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
             $ratio = $pCO2 / $pH2S;
 
             if ($pCO2 / $pH2S >= 500){
@@ -676,11 +678,13 @@ return $response;
             $t = $t_final; //
             //H2S concentration
             $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
-            $conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            //$conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
+            $conH2S_frac = $conH2S * 0.07055; // from mg/l => volumetric fraction
             //CO2 concentration
             $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
-            $conCO2 = $conCO2 * 0.05464; // from mg/l => volumetric fraction
-            $pCO2 = $conCO2 * $p;
+            //$conCO2 = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
+            $pCO2 = $conCO2 * $p / 100;
 
             //convert data to proper type
             $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
@@ -700,7 +704,7 @@ return $response;
             //GENERAL CORROSION CALCULATION POINT F *//
             //***************************************//
 
-            $pH2S = $p * $conH2S; // partial pressure H2S in kPa
+            $pH2S = $p * $conH2S / 100; // partial pressure H2S in kPa
             $ratio = $pCO2 / $pH2S;
 
             if ($pCO2 / $pH2S >= 500){
