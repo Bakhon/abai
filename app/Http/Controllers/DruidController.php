@@ -782,6 +782,12 @@ return $response;
                 // Local corrosion rate in point F
                 $PCR_F = 0.0254  * $PCR; // convert mpy => mm per year
 
+
+                /////////////////////////////////
+                //MAX DOSE
+                $max_dose = max($dose_a, $dose_e, $dose_f);
+                /////////////////////////////////
+
         $vdata = [
             'flow_velocity_meter_per_sec' => $v_lo,
             //'m_dot' => $m_dot,
