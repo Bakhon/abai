@@ -427,18 +427,18 @@ return $response;
             // // 1 mol/kg of CO2 => 44 g/l or 44000 mg/l assuming that 1l = 1kg the partial pressure equals:
             // $pCO2 = $CO2 / $kCO2 / 44000;   //kPa
             //print("pCO2 [kPa] = ", pCO2)
-            $pCO2 = $conCO2_frac / 100 * $p;
+            $pCO2 = $conCO2_frac / 100 * $p; // measured in kPa as per formula
 
             //convert data to proper type
             $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
 
             //def corrosion_rate(co2,t):
 
-            $a = 7.96 - 2320 / ($t+273);
-            $b = $t * 5.55 * pow(10,-3);
-            $c = 0.67 * log10($co2);
-            $d = $a - $b + $c;
-            $r_a = pow(10,$d);
+            // $a = 7.96 - 2320 / ($t+273);
+            // $b = $t * 5.55 * pow(10,-3);
+            // $c = 0.67 * log10($co2);
+            // $d = $a - $b + $c;
+            // $r_a = pow(10,$d);
             // r = pow(10, (7.96 - 2320 / (ti + 273) - 5.55 * 10**(-3) * ti + 0.67 * math.log10(co2))
             // return r
             //x = corrosion_rate(co2,t)
@@ -482,7 +482,7 @@ return $response;
             if ($pCO2 / $pH2S >= 500){
                 $x = 7.96 - 2320 / ($t+273);
                 $y = $t * 5.55 * pow(10,-3);
-                $z = 0.67 * log10($pCO2);
+                $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
                 $r_a = pow(10,$omega);
                 ob_start(); //Start output buffer
@@ -564,7 +564,7 @@ return $response;
             //***********************************//
             $p = $P_pump * 100; // БД ОМГ НГДУ from bar to kPa
             $t_heater = $request->t_heater; // БД ОМГ НГДУ temperature from Печь taken from database
-            $t = $t_heater;
+            $t = $t_heater; // measured in Celsius
             //H2S concentration
             $conH2S = $request->conH2S; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
             //$conH2S = $conH2S * 0.07055; // from mg/l => volumetric fraction
@@ -599,7 +599,7 @@ return $response;
             if ($pCO2 / $pH2S >= 500){
                 $x = 7.96 - 2320 / ($t+273);
                 $y = $t * 5.55 * pow(10,-3);
-                $z = 0.67 * log10($pCO2);
+                $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
                 $r_e = pow(10,$omega);
                 ob_start(); //Start output buffer
@@ -710,7 +710,7 @@ return $response;
             if ($pCO2 / $pH2S >= 500){
                 $x = 7.96 - 2320 / ($t+273);
                 $y = $t * 5.55 * pow(10,-3);
-                $z = 0.67 * log10($pCO2);
+                $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
                 $r_f = pow(10,$omega);
                 ob_start(); //Start output buffer
