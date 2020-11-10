@@ -335,6 +335,8 @@ export default {
         this.corrosionRateInMmAB = null,
         this.doseMgPerLAB = null,
         this.corrosionVelocityWithInhibitor = null,
+        this.dose = null,
+        this.$emit("chart5", this.dose)
         this.axios
             .post("/ru/getgudatabyday", {
                 gu_id: this.gu,
@@ -404,8 +406,8 @@ export default {
                     this.corA = data.corrosion_rate_mm_per_y_point_A,
                     this.corE = data.corrosion_rate_mm_per_y_point_E,
                     this.corF = data.corrosion_rate_mm_per_y_point_F,
-                    this.dose = data.dose_mg_per_l_point_E,
-                    this.$emit("chart5", data.dose_mg_per_l_point_E)
+                    this.dose = data.max_dose,
+                    this.$emit("chart5", this.dose)
                 } else {
                     console.log("No data");
                 }
