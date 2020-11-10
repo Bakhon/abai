@@ -306,6 +306,14 @@
                   </div>
                   <ul class="center-menu2">
                     <li class="center-li">
+                      <date-picker
+                        mode="range"
+                        v-model="range"
+                        is-range
+                        class="m-auto"
+                        @input="changeDate"
+                      />
+
                       <div
                         class="calendar-tab"
                         v-for="(menuDMY, index) in menuDMY()"
@@ -1000,10 +1008,24 @@
 
 <script>
 import { EventBus } from "../../event-bus.js";
+import Calendar from "v-calendar/lib/components/calendar.umd";
+import DatePicker from "v-calendar/lib/components/date-picker.umd";
+Vue.component("calendar", Calendar);
+Vue.component("date-picker", DatePicker);
 export default {
+  components: {
+    Calendar,
+    DatePicker,
+  },
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      selectedDate: "",
+      range: {
+        start: new Date(2020, 0, 1),
+        end: new Date(2020, 0, 5),
+      },
+
       tableHover1: "",
       tableHover2: "",
       tableHover3: "",
@@ -1173,6 +1195,9 @@ export default {
     };
   },
   methods: {
+    dayClicked(day) {
+      this.date = day.id;
+    },
     saveCompany(com) {
       localStorage.setItem("company", com);
       var company = localStorage.getItem("company");
