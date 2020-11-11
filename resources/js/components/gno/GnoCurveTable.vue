@@ -52,7 +52,7 @@ export default {
         },
       },
 
-      data: {}
+      data: []
     };
   },
   methods: {
@@ -164,7 +164,6 @@ export default {
       this.data[5]['y'][0] = value[1]["p"]
       this.data[4]['x'][0] = value[2]["q_l"]
       this.data[4]['y'][0] = value[2]["p"]
-      console.log(data)
     },
   },
 
