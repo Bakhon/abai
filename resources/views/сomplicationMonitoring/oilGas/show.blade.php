@@ -43,43 +43,43 @@
                     </tr>
                     <tr>
                         <td>Плотность нефти при 20°С, кг/м3</td>
-                        <td>{{ $item->water_density_at_20 }}</td>
+                        <td>{{ $oilgas->water_density_at_20 }}</td>
                     </tr>
                     <tr>
                         <td>Вязкость нефти при 20С, мм2/с</td>
-                        <td>{{ $item->oil_viscosity_at_20 }}</td>
+                        <td>{{ $oilgas->oil_viscosity_at_20 }}</td>
                     </tr>
                     <tr>
                         <td>Вязкость нефти при 40С, мм2/с</td>
-                        <td>{{ $item->oil_viscosity_at_40 }}</td>
+                        <td>{{ $oilgas->oil_viscosity_at_40 }}</td>
                     </tr>
                     <tr>
                         <td>Вязкость нефти при 50С, мм2/с</td>
-                        <td>{{ $item->oil_viscosity_at_50 }}</td>
+                        <td>{{ $oilgas->oil_viscosity_at_50 }}</td>
                     </tr>
                     <tr>
                         <td>Вязкость нефти при 60С, мм2/с</td>
-                        <td>{{ $item->oil_viscosity_at_60 }}</td>
+                        <td>{{ $oilgas->oil_viscosity_at_60 }}</td>
                     </tr>
                     <tr>
                         <td>H2S в газе, ppm</td>
-                        <td>{{ $item->hydrogen_sulfide_in_gas }}</td>
+                        <td>{{ $oilgas->hydrogen_sulfide_in_gas }}</td>
                     </tr>
                     <tr>
                         <td>О2 в газе, %</td>
-                        <td>{{ $item->oxygen_in_gas }}</td>
+                        <td>{{ $oilgas->oxygen_in_gas }}</td>
                     </tr>
                     <tr>
                         <td>CO2 в газе, %</td>
-                        <td>{{ $item->carbon_dioxide_in_gas }}</td>
+                        <td>{{ $oilgas->carbon_dioxide_in_gas }}</td>
                     </tr>
                     <tr>
                         <td>Плотность газа при 20°С, кг/м3</td>
-                        <td>{{ $item->gas_density_at_20 }}</td>
+                        <td>{{ $oilgas->gas_density_at_20 }}</td>
                     </tr>
                     <tr>
                         <td>Вязкость газа при 20С, сП</td>
-                        <td>{{ $item->gas_viscosity_at_20 }}</td>
+                        <td>{{ $oilgas->gas_viscosity_at_20 }}</td>
                     </tr>
                 </table>
                 <a class="btn btn-primary" href="{{ route('oilgas.index') }}">{{__('app.back')}}</a>

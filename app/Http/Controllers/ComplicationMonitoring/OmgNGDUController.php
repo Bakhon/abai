@@ -66,6 +66,9 @@ class OmgNGDUController extends Controller
         $omgngdu->well_id = ($request->well_id) ? $request->well_id : NULL;
         $omgngdu->date = date("Y-m-d H:i", strtotime($request->date));
         $omgngdu->daily_fluid_production = ($request->daily_fluid_production) ? $request->daily_fluid_production : NULL;
+        $omgngdu->daily_water_production = ($request->daily_water_production) ? $request->daily_water_production : NULL;
+        $omgngdu->daily_oil_production = ($request->daily_oil_production) ? $request->daily_oil_production : NULL;
+        $omgngdu->daily_gas_production_in_sib = ($request->daily_gas_production_in_sib) ? $request->daily_gas_production_in_sib : NULL;
         $omgngdu->bsw = ($request->bsw) ? $request->bsw : NULL;
         $omgngdu->surge_tank_pressure = ($request->surge_tank_pressure) ? $request->surge_tank_pressure : NULL;
         $omgngdu->pump_discharge_pressure = ($request->pump_discharge_pressure) ? $request->pump_discharge_pressure : NULL;
