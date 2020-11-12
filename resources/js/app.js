@@ -11,6 +11,7 @@ import { PivotViewPlugin, FieldList } from '@syncfusion/ej2-vue-pivotview';
 import Vue from 'vue';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import { Plotly } from 'vue-plotly';
+import excel from 'vue-excel-export'; 
 
 
 
@@ -19,7 +20,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
 
-Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly);
+Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel);
 
 
 /**
