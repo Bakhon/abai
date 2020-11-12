@@ -116,7 +116,7 @@ export default {
     setValue: function(value) {
         this.series = [
             {
-                name: 'Фактическая закачка ингибитора коррозии',
+                name: 'Фактическая скорость коррозии',
                 data: value.value
             }
             ];

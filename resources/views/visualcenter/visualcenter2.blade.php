@@ -1,8 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <div class="col p-4">
-    <div>
-        <link href="style.css" type="text/css" rel="stylesheet" />
+    <div>    
         <div class="head-info">Оперативная информация по ДЗО для АО "НК "КазМунайГаз"</div>
         <table>
             <tr>
