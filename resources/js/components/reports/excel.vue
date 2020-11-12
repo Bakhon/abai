@@ -1,10 +1,10 @@
 <template>
-    <button type="button" class="btn btn-success" :id="idName"
+    <button type="button" class="btn btn-success" :id="idName" 
             @click="generate">export to excel</button>
 </template>
 
 <script>
-    // import download from "browser-downloads";
+    import download from "browser-downloads";
 
     export default {
         name: 'export-excel',
