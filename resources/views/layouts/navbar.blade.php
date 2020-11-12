@@ -128,6 +128,11 @@
                                     <span class="workTypeText">Лабораторные данные по промысловой жидкости и газу</span>
                                 </a>
                             </li>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/oilgas">
+                                    <span class="workTypeText">Данных по нефти и газу</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
             </li>

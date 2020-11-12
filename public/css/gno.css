@@ -212,9 +212,9 @@ body {
     font-size: 14px;
 }
 
-.tables-one {}
+/* .tables-one {}
 
-.tables-two {}
+.tables-two {} */
 
 .select-gno {
     /* width: 100%; */
@@ -494,4 +494,4 @@ td {
     margin-top: -15px;
 }
 
-.vm--modal {}
+/* .vm--modal {} */

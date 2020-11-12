@@ -22,10 +22,10 @@ class CreateOmgUHESTable extends Migration
             $table->integer('zu_id')->nullable();
             $table->integer('well_id')->nullable();
             $table->date('date');
-            $table->float('current_dosage', 8, 2)->nullable();
-            $table->float('daily_inhibitor_flowrate', 8, 2)->nullable();
-            $table->float('monthly_inhibitor_flowrate', 8, 2)->nullable();
-            $table->float('out_of_service_оf_dosing', 8, 2)->nullable();
+            $table->float('current_dosage', 8, 4)->nullable();
+            $table->float('daily_inhibitor_flowrate', 8, 4)->nullable();
+            $table->float('monthly_inhibitor_flowrate', 8, 4)->nullable();
+            $table->float('out_of_service_оf_dosing', 8, 4)->nullable();
             $table->longText('reason')->nullable();
             $table->integer('cruser_id');
             $table->timestamps();
