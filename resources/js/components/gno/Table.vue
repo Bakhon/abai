@@ -3,7 +3,7 @@
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
 
-        <modal name="bign0" :width="551" :height="780">
+        <modal name="modalIncl" :width="551" :height="780">
           <div class="modal-bign">
             <div class="Table" align="center" x:publishsource="Excel">
               <gno-incl-table></gno-incl-table>
@@ -11,31 +11,43 @@
           </div>
         </modal>
 
-        <modal name="bign1" :width="1150" :height="450" :adaptive="true" >
+        <modal name="modalOldWell" :width="1150" :height="450" :adaptive="true" >
           <div class="modal-bign" >
             <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
           </div>
           <div class="modal-analysis-menu">
-            <div><input v-model="analysisBox1" class="checkbox1" @change="postAnalysis()" type="checkbox">Рпл = Рнач
+            <div><input v-model="analysisBox1" class="checkbox1" @change="postAnalysisOld()" type="checkbox">Рпл = Рнач
             </div>
-            <div><input v-model="analysisBox2" class="checkbox1" @change="postAnalysis()" type="checkbox">Н дин = Ндин мин
+            <div><input v-model="analysisBox2" class="checkbox1" @change="postAnalysisOld()" type="checkbox">Н дин = Ндин мин
             </div>
-            <div><input v-model="analysisBox3" class="checkbox1" @change="postAnalysis()" type="checkbox">Рзаб пот = Рнас*
+            <div><input v-model="analysisBox3" class="checkbox1" @change="postAnalysisOld()" type="checkbox">Рзаб пот = Рнас*
             </div>
-            <div><input v-model="analysisBox4" class="checkbox1" @change="postAnalysis()" type="checkbox">Qж = Qж АСМА
+            <div><input v-model="analysisBox4" class="checkbox1" @change="postAnalysisOld()" type="checkbox">Qж = Qж АСМА
             </div>
-            <div><input v-model="analysisBox5" class="checkbox1" @change="postAnalysis()" type="checkbox">Обв = Обв АСМА
+            <div><input v-model="analysisBox5" class="checkbox1" @change="postAnalysisOld()" type="checkbox">Обв = Обв АСМА
             </div>
           </div>
         </modal>
-
-        <modal name="bign2" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-top: -180px; margin-left:100px;">
+        <modal name="modalNewWell" :width="1150" :height="450" :adaptive="true" >
+          <div class="modal-bign" >
+            <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+          </div>
+          <div class="modal-analysis-menu">
+            <div><input v-model="analysisBox6" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Pпл = P по окр.
+            </div>
+            <div><input v-model="analysisBox7" class="checkbox1" @change="postAnalysisNew()" type="checkbox">К пр = К по окр.
+            </div>
+            <div><input v-model="analysisBox8" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Рзаб пот = Рнас*
+            </div>
+          </div>
+        </modal>
+        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-top: -180px; margin-left:100px;">
           <div class="modal-bign2">
             <gno-chart-bar></gno-chart-bar>
           </div>
         </modal>
 
-        <modal name="bign3" :width="1150" :height="400" :adaptive="true">
+        <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign3">
             Тест 3
           </div>
@@ -178,7 +190,7 @@
             ></div>
           </div>
         </div>
-        <div class="tables-string-gno5 col-12" @click="pushBign('bign1')">
+        <div class="tables-string-gno5 col-12" @click="PotAnalysisMenu()">
           Анализ потенциала скважины
         </div>
       </div>
@@ -228,7 +240,7 @@
             </div>
           </div>
         </div>
-        <div class="tables-string-gno55 col-12" @click="pushBign('bign2')">
+        <div class="tables-string-gno55 col-12" @click="ExpAnalysisMenu()">
           Анализ эффективности способа эксплуатации
         </div>
       </div>
@@ -236,7 +248,7 @@
       <div class="col-12 row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"></div>
       </div>
-      <div class="tables-string-gno6 col-12" @click="pushBign('bign3')">
+      <div class="tables-string-gno6 col-12" @click="PgnoMenu()">
         Подбор ГНО
       </div>
     </div>
@@ -259,7 +271,7 @@
           <input v-model="wellNumber" type="text" @change="getWellNumber(wellNumber)" class="square2" />
         </div>
         <div class="cell4-gno table-border-gno-top col-7">
-          Новая скважина <input v-model="age" @change="updateData()" class="checkbox0" type="checkbox" />
+          Новая скважина <input v-model="age" class="checkbox0" type="checkbox" />
         </div>
         <div
           class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
@@ -338,7 +350,7 @@
           No Data
         </div>
       </div>
-      <div class="inclinom" @click="pushBign('bign0')">Инклинометрия</div>
+      <div class="inclinom" @click="InclMenu()">Инклинометрия</div>
       <div class="spoiler">
         <input
           style="width: 845px; height: 35px;"
@@ -657,6 +669,9 @@ export default {
         analysisBox3: false,
         analysisBox4: false,
         analysisBox5: false,
+        analysisBox6: false,
+        analysisBox7: false,
+        analysisBox8: false,
         menu: "main",
     };
   },
@@ -711,7 +726,7 @@ export default {
         this.whp = data["Well Data"]["whp"][0].toFixed(2)
         this.lineP = data["Well Data"]["line_p"][0].toFixed(2)
         this.piInput = data["Well Data"]["pi"][0].toFixed(2)
-        this.pResInput = this.pRes + " ат"
+        this.pResInput = this.pRes
         this.qLInput = this.qL
         this.wctInput = this.wct
         this.gorInput = this.gor
@@ -736,6 +751,7 @@ export default {
       }
     },
     setLine: function (value) {
+      console.log(value)
       var ipr_points = [];
       var qo_points = [];
       var value2 = [];
@@ -760,6 +776,7 @@ export default {
             color: "#FF0D18",
           },
         },
+        
         {
           name: "Текущий режим",
           x: [40],
@@ -781,10 +798,40 @@ export default {
             color: "#FBA409",
           },
         },
+        {
+          name: "New Line",
+          x: [],
+          y: [],
+
+          marker: {
+            size: "15",
+            color: "#237DEB",
+          },
+        },
       ];
       this.chartOptions = {
         labels: qo_points2,
       };
+    },
+    updateLine:  function (value) {
+      var ipr_points = [];
+      var qo_points = [];
+      var ipr_points2 = [];
+      var qo_points2 = [];
+
+      _.forEach(value, function (values) {
+        ipr_points = values.ipr_points;
+        qo_points = values.qo_points;
+        ipr_points2.push(ipr_points);
+        qo_points2.push("" + qo_points + "");
+      });
+      this.data[3]['x'] = qo_points2
+      this.data[3]['y'] = ipr_points2
+      console.log(JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']))
+      if (JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']) && JSON.stringify(this.data[0]['y']) == JSON.stringify(this.data[3]['y'])) {
+        this.data[3]['x'] = []
+        this.data[3]['y'] = []
+      }
     },
     setPoints: function (value) {
       this.data[1]['x'][0] = value[0]["q_l"]
@@ -792,21 +839,30 @@ export default {
       this.data[2]['x'][0] = value[1]["q_l"]
       this.data[2]['y'][0] = value[1]["p"]
     },
-    pushBign(bign) {
-      switch (bign) {
-        case "bign1":
-          break;
-        case "bign2":
-          break;
-        case "bign3":
-          break;
-        case "bign4":
-          break;
-      }
+    PotAnalysisMenu() {
+      this.analysisBox1 = false
+      this.analysisBox2 = false
+      this.analysisBox3 = false
+      this.analysisBox4 = false
+      this.analysisBox5 = false
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
-      this.$modal.show(bign);
+      if (this.age) {
+        this.$modal.show('modalNewWell');
+      } else {
+        this.$modal.show('modalOldWell');
+      }
     },
+    ExpAnalysisMenu() {
+      this.$modal.show('modalExpAnalysis')
+    },
+    PgnoMenu() {
+      this.$modal.show('modalPGNO')
+    },
+    InclMenu() {
+      this.$modal.show('modalIncl')
+    },
+    
     getWellNumber(wellnumber) {
       let uri = "http://172.20.103.187:7575/api/pgno/" + wellnumber;
       this.axios.get(uri).then((response) => {
@@ -866,6 +922,130 @@ export default {
         }
       });
     },
+    postAnalysisOld() {
+      let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
+      if (this.CelButton == 'ql') {
+        this.CelValue = this.qlCelValue
+      } else if (this.CelButton == 'bhp') {
+        this.CelValue = this.bhpCelValue
+      } else if (this.CelButton == 'pin') {
+        this.CelValue = this.piCelValue
+      }
+      if (this.curveSelect == 'pi') {
+        this.curveValue = this.piInput
+      } else if (this.curveSelect == 'ql') {
+        this.curveValue = this.qLInput
+      } else if (this.curveSelect == 'bhp') {
+        this.curveValue = this.bhpInput
+      } else if (this.curveSelect == 'hdyn') {
+        this.curveValue = [this.hDynInput, this.pAnnularInput]
+      } else if (this.curveSelect == 'pmanom') {
+        this.curveValue = [this.pManomInput, this.hPumpManomInput]
+      } else if (this.curveSelect == 'whp') {
+        this.curveValue = this.whpInput
+      }
+      let jsonData = JSON.stringify(
+        {
+        "menu": "PotencialAnalysis",
+        "well_number": this.wellnumber,
+        "well_age": this.age,
+        "user_button": "true",
+        "analysisBox1": this.analysisBox1,  
+        "analysisBox2": this.analysisBox2,
+        "analysisBox3": this.analysisBox3,
+        "analysisBox4": this.analysisBox4,
+        "analysisBox5": this.analysisBox5,
+        "curveSelect": this.curveSelect,  
+        "curveValue": this.curveValue,
+        "wctValue": this.wctInput,
+        "gorValue": this.gorInput,
+        "expSelect": this.expChoose,
+        "hPumpValue": this.hPumpValue,
+        "celSelect": this.CelButton, 
+        "celValue": this.CelValue
+        }
+      )
+      // console.log("JSON =", jsonData)
+      this.axios.post(uri, jsonData).then((response) => {
+        var data = response.data;
+        if (data) {
+          console.log(data)
+          this.method = "CurveSetting"
+          // this.setData(data)
+          this.newCurveLineData = JSON.parse(data.LineData)["data"]
+          this.newPointsData = JSON.parse(data.PointsData)["data"]
+          this.updateLine(this.newCurveLineData)
+          this.setPoints(this.newPointsData)
+          // this.$emit('LineData', this.curveLineData)
+          // this.$emit('PointsData', this.curvePointsData)
+          } else {
+        }
+      });
+    },
+    postAnalysisNew() {
+      console.log("POST NEW WELL")
+      let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
+      if (this.CelButton == 'ql') {
+        this.CelValue = this.qlCelValue
+      } else if (this.CelButton == 'bhp') {
+        this.CelValue = this.bhpCelValue
+      } else if (this.CelButton == 'pin') {
+        this.CelValue = this.piCelValue
+      }
+      if (this.curveSelect == 'pi') {
+        this.curveValue = this.piInput
+      } else if (this.curveSelect == 'ql') {
+        this.curveValue = this.qLInput
+      } else if (this.curveSelect == 'bhp') {
+        this.curveValue = this.bhpInput
+      } else if (this.curveSelect == 'hdyn') {
+        this.curveValue = [this.hDynInput, this.pAnnularInput]
+      } else if (this.curveSelect == 'pmanom') {
+        this.curveValue = [this.pManomInput, this.hPumpManomInput]
+      } else if (this.curveSelect == 'whp') {
+        this.curveValue = this.whpInput
+      }
+      let jsonData = JSON.stringify(
+        {
+        "menu": "PotencialAnalysis",
+        "well_number": "0046",
+        "well_age": this.age,
+        "horizon": "14_Основной свод",
+        "x": 52.971,
+        "y": 43.369,
+        "analysisBox8": true,
+        "Facies_13": "Floodplain",
+        "user_button": "true",
+        "analysisBox6": this.analysisBox6,  
+        "analysisBox7": this.analysisBox7,
+        "analysisBox8": this.analysisBox8,
+        "curveSelect": this.curveSelect,  
+        "curveValue": this.curveValue,
+        "wctValue": this.wctInput,
+        "gorValue": this.gorInput,
+        "expSelect": this.expChoose,
+        "hPumpValue": this.hPumpValue,
+        "celSelect": this.CelButton, 
+        "celValue": this.CelValue
+        }
+      )
+      // console.log("JSON =", jsonData)
+      this.axios.post(uri, jsonData).then((response) => {
+        var data = response.data;
+        if (data) {
+          console.log(data)
+          this.method = "CurveSetting"
+          // this.setData(data)
+          this.newCurveLineData = JSON.parse(data.LineData)["data"]
+          this.newPointsData = JSON.parse(data.PointsData)["data"]
+          this.updateLine(this.newCurveLineData)
+          this.setPoints(this.newPointsData)
+          // this.$emit('LineData', this.curveLineData)
+          // this.$emit('PointsData', this.curvePointsData)
+          } else {
+        }
+      });
+    }
   },
   beforeCreate: function() {
     let uri = "http://172.20.103.187:7575/api/pgno/0046/";
