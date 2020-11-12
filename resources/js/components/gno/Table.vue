@@ -11,9 +11,21 @@
           </div>
         </modal>
 
-        <modal name="bign1" :width="1150" :height="400" :adaptive="true">
-          <div class="modal-bign">
-            <gno-analysis-menu></gno-analysis-menu>>
+        <modal name="bign1" :width="1150" :height="450" :adaptive="true" >
+          <div class="modal-bign" >
+            <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+          </div>
+          <div class="modal-analysis-menu">
+            <div><input v-model="analysisBox1" class="checkbox1" @change="postAnalysis()" type="checkbox">Рпл = Рнач
+            </div>
+            <div><input v-model="analysisBox2" class="checkbox1" @change="postAnalysis()" type="checkbox">Н дин = Ндин мин
+            </div>
+            <div><input v-model="analysisBox3" class="checkbox1" @change="postAnalysis()" type="checkbox">Рзаб пот = Рнас*
+            </div>
+            <div><input v-model="analysisBox4" class="checkbox1" @change="postAnalysis()" type="checkbox">Qж = Qж АСМА
+            </div>
+            <div><input v-model="analysisBox5" class="checkbox1" @change="postAnalysis()" type="checkbox">Обв = Обв АСМА
+            </div>
           </div>
         </modal>
 
@@ -527,10 +539,64 @@
 </template>
 
 <script>
+import { Plotly } from "vue-plotly";
 import { EventBus } from "../../event-bus.js";
+Vue.component("Plotly", Plotly);
 export default {
   data: function () {
     return {
+      layout: {
+        width: 950,
+        height: 450,
+        showlegend: true,
+        xaxis: {
+          hoverformat: ".1f",
+          //  showline: true,
+          zeroline: false,
+          // showgrid: true,
+          // mirror:true,
+          // ticklen: 4,
+          gridcolor: "#123E73",
+          //tickfont: {size: 10},
+        },
+        yaxis: {
+          hoverformat: ".1f",
+          // showline: true,
+          zeroline: false,
+          //showgrid: true,
+          // mirror:true,
+          // ticklen: 4,
+          gridcolor: "#123E73",
+          //tickfont: {size: 10},
+        },
+
+        //   scene:{ gridcolor: '#ffffff',},
+        paper_bgcolor: "#20274e",
+        plot_bgcolor: "#20274e",
+        font: { color: "#fff" },
+
+        legend: {
+          orientation: "h",
+          y: -0.3,
+          font: {
+            size: 12,
+            color: "#fff",
+          },
+        },
+      },
+
+      data: [ 
+        {
+          name: "IPR (кривая притока)",
+          x: [0,1,3],
+          y: [0,1,3],
+
+          marker: {
+            size: "15",
+            color: "#FF0D18",
+          },
+        },
+        ],
         type: String,
         required: true,
         wellNumber: null,
@@ -586,67 +652,167 @@ export default {
         piCelValue: null,
         expID: null,
         CelValue: null,
+        analysisBox1: false,
+        analysisBox2: false,
+        analysisBox3: false,
+        analysisBox4: false,
+        analysisBox5: false,
+        menu: "main",
     };
   },
 
   methods: {
+    setData: function(data) {
+      if (this.method == "CurveSetting") {
+        this.pResInput = data["Well Data"]["p_res"][0].toFixed(2)
+        this.piInput = data["Well Data"]["pi"][0].toFixed(2)
+        this.qLInput = data["Well Data"]["q_l"][0].toFixed(2)
+        this.wctInput = data["Well Data"]["wct"][0].toFixed(2)
+        this.gorInput = data["Well Data"]["gor"][0].toFixed(2)
+        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(2)
+        this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(2)
+        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(2)
+        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(2),
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(2),
+        this.pManomInput = 0
+        this.hPumpManomInput = 0
+        this.whpInput = data["Well Data"]["whp"][0].toFixed(2)
+        this.curveLineData = JSON.parse(data.LineData)["data"]
+        this.curvePointsData = JSON.parse(data.PointsData)["data"]
+      } else {
+        this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
+        this.horizon = data["Well Data"]["horizon"][0]
+        this.expMeth = data["Well Data"]["exp_meth"][0]
+        this.tseh = data["Well Data"]["tseh"][0]
+        this.gu = data["Well Data"]["gu"][0]
+        this.casOD = data["Well Data"]["cas_OD"][0]
+        this.casID = data["Well Data"]["cas_ID"][0]
+        this.hPerf = data["Well Data"]["h_perf"][0]
+        this.udl = data["Well Data"]["h_up_perf_md"][0]
+        this.hPumpSet = data["Well Data"]["h_pump_set"][0]
+        this.tubOD = data["Well Data"]["tub_OD"][0]
+        this.tubID = data["Well Data"]["tub_ID"][0]
+        this.stopDate = data["Well Data"]["stop_date"][0]
+        this.pumpType = data["Well Data"]["pump_type"][0]
+        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
+        this.gor = data["Well Data"]["gor"][0].toFixed(2)
+        this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
+        this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
+        this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
+        this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
+        this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
+        this.qL = data["Well Data"]["q_l"][0].toFixed(2)
+        this.qO = data["Well Data"]["q_o"][0].toFixed(2)
+        this.wct = data["Well Data"]["wct"][0].toFixed(2)
+        this.bhp = data["Well Data"]["bhp"][0].toFixed(2)
+        this.pRes = data["Well Data"]["p_res"][0].toFixed(2)
+        this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(2)
+        this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(2)
+        this.whp = data["Well Data"]["whp"][0].toFixed(2)
+        this.lineP = data["Well Data"]["line_p"][0].toFixed(2)
+        this.piInput = data["Well Data"]["pi"][0].toFixed(2)
+        this.pResInput = this.pRes + " ат"
+        this.qLInput = this.qL
+        this.wctInput = this.wct
+        this.gorInput = this.gor
+        this.bhpInput = this.bhp
+        this.hDynInput = this.hDyn
+        this.pAnnularInput = this.pAnnular
+        this.pManomInput = 0
+        this.hPumpManomInput = 0
+        this.whpInput = this.whp
+        this.qlCelButton = true
+        this.qlCelValue = this.qLInput*1 + 10
+        this.hPumpValue = this.hPumpSet
+        if (this.expMeth == "ШГН") {
+              this.shgnButton = true;
+        } else {
+              this.shgnButton = false
+        }
+        this.expChoose = this.expMeth
+        this.piButton = true
+        this.curveLineData = JSON.parse(data.LineData)["data"]
+        this.curvePointsData = JSON.parse(data.PointsData)["data"]
+      }
+    },
+    setLine: function (value) {
+      var ipr_points = [];
+      var qo_points = [];
+      var value2 = [];
+      var ipr_points2 = [];
+      var qo_points2 = [];
+
+      _.forEach(value, function (values) {
+        ipr_points = values.ipr_points;
+        qo_points = values.qo_points;
+        ipr_points2.push(ipr_points);
+        qo_points2.push("" + qo_points + "");
+      });
+
+      this.data = [
+        {
+          name: "IPR (кривая притока)",
+          x: qo_points2,
+          y: ipr_points2,
+
+          marker: {
+            size: "15",
+            color: "#FF0D18",
+          },
+        },
+        {
+          name: "Текущий режим",
+          x: [40],
+          y: [40],
+          mode: "markers",
+          marker: {
+            size: "15",
+            color: "#00A0E3",
+          },
+        },
+
+        {
+          name: "Потенциальный режим",
+          x: [],
+          y: [],
+          mode: "markers",
+          marker: {
+            size: "15",
+            color: "#FBA409",
+          },
+        },
+      ];
+      this.chartOptions = {
+        labels: qo_points2,
+      };
+    },
+    setPoints: function (value) {
+      this.data[1]['x'][0] = value[0]["q_l"]
+      this.data[1]['y'][0] = value[0]["p"]
+      this.data[2]['x'][0] = value[1]["q_l"]
+      this.data[2]['y'][0] = value[1]["p"]
+    },
+    pushBign(bign) {
+      switch (bign) {
+        case "bign1":
+          break;
+        case "bign2":
+          break;
+        case "bign3":
+          break;
+        case "bign4":
+          break;
+      }
+      this.setLine(this.curveLineData)
+      this.setPoints(this.curvePointsData)
+      this.$modal.show(bign);
+    },
     getWellNumber(wellnumber) {
       let uri = "http://172.20.103.187:7575/api/pgno/" + wellnumber;
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
-          this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
-          this.horizon = data["Well Data"]["horizon"][0]
-          this.expMeth = data["Well Data"]["exp_meth"][0]
-          this.tseh = data["Well Data"]["tseh"][0]
-          this.gu = data["Well Data"]["gu"][0]
-          this.casOD = data["Well Data"]["cas_OD"][0]
-          this.casID = data["Well Data"]["cas_ID"][0]
-          this.hPerf = data["Well Data"]["h_perf"][0]
-          this.udl = data["Well Data"]["h_up_perf_md"][0]
-          this.hPumpSet = data["Well Data"]["h_pump_set"][0]
-          this.tubOD = data["Well Data"]["tub_OD"][0]
-          this.tubID = data["Well Data"]["tub_ID"][0]
-          this.stopDate = data["Well Data"]["stop_date"][0]
-          this.pumpType = data["Well Data"]["pump_type"][0]
-          this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
-          this.gor = data["Well Data"]["gor"][0].toFixed(2)
-          this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
-          this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
-          this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
-          this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
-          this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
-          this.qL = data["Well Data"]["q_l"][0].toFixed(2)
-          this.qO = data["Well Data"]["q_o"][0].toFixed(2)
-          this.wct = data["Well Data"]["wct"][0].toFixed(2)
-          this.bhp = data["Well Data"]["bhp"][0].toFixed(2)
-          this.pRes = data["Well Data"]["p_res"][0].toFixed(2)
-          this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(2)
-          this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(2)
-          this.whp = data["Well Data"]["whp"][0].toFixed(2)
-          this.lineP = data["Well Data"]["line_p"][0].toFixed(2)
-          this.piInput = data["Well Data"]["pi"][0].toFixed(2)
-          this.pResInput = this.pRes
-          this.qLInput = this.qL
-          this.wctInput = this.wct
-          this.gorInput = this.gor
-          this.bhpInput = this.bhp
-          this.hDynInput = this.hDyn
-          this.pAnnularInput = this.pAnnular
-          this.pManomInput = 0
-          this.hPumpManomInput = 0
-          this.whpInput = this.whp
-          this.qlCelButton = true
-          this.qlCelValue = this.qLInput
-          this.hPumpValue = this.hPumpSet
-          if (this.expMeth == "ШГН") {
-            this.shgnButton = true;
-          } else {
-            this.shgnButton = false
-          }
-          this.piButton = true
-          this.curveLineData = JSON.parse(data.LineData)["data"]
-          this.curvePointsData = JSON.parse(data.PointsData)["data"]
+          this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
         } else {
@@ -677,7 +843,9 @@ export default {
         this.curveValue = this.whpInput
       }
       let jsonData = JSON.stringify(
-        {"curveSelect": this.curveSelect,  
+        {
+        "menu": "MainMenu",
+        "curveSelect": this.curveSelect,  
         "curveValue": this.curveValue,
         "wctValue": this.wctInput,
         "gorValue": this.gorInput,
@@ -686,50 +854,17 @@ export default {
         "celSelect": this.CelButton, 
         "celValue": this.CelValue}
       )
-      console.log("JSON =", jsonData)
+      // console.log("JSON =", jsonData)
       this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
-          console.log(data)
-          this.pResInput = data["Well Data"]["p_res"][0].toFixed(2)
-          this.piInput = data["Well Data"]["pi"][0].toFixed(2)
-          this.qLInput = data["Well Data"]["q_l"][0].toFixed(2)
-          this.wctInput = data["Well Data"]["wct"][0].toFixed(2)
-          this.gorInput = data["Well Data"]["gor"][0].toFixed(2)
-          this.bhpInput = data["Well Data"]["bhp"][0].toFixed(2)
-          this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(2)
-          this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(2)
-          this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(2),
-          this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(2),
-          this.pManomInput = 0
-          this.hPumpManomInput = 0
-          this.whpInput = data["Well Data"]["whp"][0].toFixed(2)
-          this.curveLineData = JSON.parse(data.LineData)["data"]
-          this.curvePointsData = JSON.parse(data.PointsData)["data"]
+          this.method = "CurveSetting"
+          this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-        } else {
-          console.log("No data");
+          } else {
         }
       });
-    },
-    pushBign(bign) {
-      switch (bign) {
-        case "bign1":
-          // this.$emit('LineData', this.curveLineData)
-          // this.$emit('PointsData', this.curvePointsData)
-          break;
-        case "bign2":
-          // this.params.data = this.OperatingProfitYear;
-          break;
-        case "bign3":
-          //  this.params.data = this.OperatingProfitMonth;
-          break;
-        case "bign4":
-          //  this.params.data = this.prs1;
-          break;
-      }
-      this.$modal.show(bign);
     },
   },
   beforeCreate: function() {
@@ -737,54 +872,7 @@ export default {
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
-          console.log(data)
-          this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
-          this.horizon = data["Well Data"]["horizon"][0]
-          this.expMeth = data["Well Data"]["exp_meth"][0]
-          this.tseh = data["Well Data"]["tseh"][0]
-          this.gu = data["Well Data"]["gu"][0]
-          this.casOD = data["Well Data"]["cas_OD"][0]
-          this.casID = data["Well Data"]["cas_ID"][0]
-          this.hPerf = data["Well Data"]["h_perf"][0]
-          this.udl = data["Well Data"]["h_up_perf_md"][0]
-          this.hPumpSet = data["Well Data"]["h_pump_set"][0]
-          this.tubOD = data["Well Data"]["tub_OD"][0]
-          this.tubID = data["Well Data"]["tub_ID"][0]
-          this.stopDate = data["Well Data"]["stop_date"][0]
-          this.pumpType = data["Well Data"]["pump_type"][0]
-          this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
-          this.gor = data["Well Data"]["gor"][0].toFixed(2)
-          this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
-          this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
-          this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
-          this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
-          this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
-          this.qL = data["Well Data"]["q_l"][0].toFixed(2)
-          this.qO = data["Well Data"]["q_o"][0].toFixed(2)
-          this.wct = data["Well Data"]["wct"][0].toFixed(2)
-          this.bhp = data["Well Data"]["bhp"][0].toFixed(2)
-          this.pRes = data["Well Data"]["p_res"][0].toFixed(2)
-          this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(2)
-          this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(2)
-          this.whp = data["Well Data"]["whp"][0].toFixed(2)
-          this.lineP = data["Well Data"]["line_p"][0].toFixed(2)
-          this.piInput = data["Well Data"]["pi"][0].toFixed(2)
-          this.pResInput = this.pRes + " ат"
-          this.qLInput = this.qL
-          this.wctInput = this.wct
-          this.gorInput = this.gor
-          this.bhpInput = this.bhp
-          this.hDynInput = this.hDyn
-          this.pAnnularInput = this.pAnnular
-          this.pManomInput = 0
-          this.hPumpManomInput = 0
-          this.whpInput = this.whp
-          this.qlCelButton = true
-          this.expChoose = this.expMeth
-          this.piButton = true
-          this.curveLineData = JSON.parse(data.LineData)["data"]
-          this.curvePointsData = JSON.parse(data.PointsData)["data"]
-          this.hPumpValue = this.hPumpSet
+          this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
         } else {
@@ -793,7 +881,5 @@ export default {
       });
     
   },
-  
-
 };
 </script>

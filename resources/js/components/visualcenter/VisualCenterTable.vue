@@ -1071,7 +1071,7 @@ export default {
           "." +
           this.year;
       }
-      EventBus.$emit("timeSelect", timeSelect);
+     // EventBus.$emit("timeSelect", timeSelect);
 
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);

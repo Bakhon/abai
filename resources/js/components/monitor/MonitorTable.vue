@@ -28,6 +28,98 @@
             </div>
         </div>
       </modal>
+      <modal name="corrosion" :width="1000" :height="430" :adaptive="true">
+        <div class="container economicModal" style="min-height: 430px">
+            <br>
+            <div class="row">
+                <div class="col-4">
+                    <h6 class="economicHeader">Cкорость потока, м/сек: {{result.flow_velocity_meter_per_sec}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Массовый расход, кг/сек: {{result.m_dot}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Конечное давление, бар: {{result.final_pressure_bar_point_F}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h6 class="economicHeader">Cкорость коррзоии в точке А, мм/год: {{result.corrosion_rate_mm_per_y_point_A}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Cкорость коррзоии в точке Е, мм/год: {{result.corrosion_rate_mm_per_y_point_E}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Cкорость коррзоии в точке F, мм/год: {{result.corrosion_rate_mm_per_y_point_F}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h6 class="economicHeader">Дозировка в точке А, г/м3: {{result.dose_mg_per_l_point_A}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Дозировка в точке E, г/м3: {{result.dose_mg_per_l_point_E}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Дозировка в точке F, г/м3: {{result.dose_mg_per_l_point_F}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h6 class="economicHeader">Cреда в точке А: {{result.environment_point_A}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Cреда в точке E: {{result.environment_point_E}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Cреда в точке F: {{result.environment_point_F}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h6 class="economicHeader">Папавинасам скорость коррзоии в точке А, мм/год: {{result.papavinasam_corrosion_mm_per_y_point_A}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Папавинасам скорость коррзоии в точке E, мм/год: {{result.papavinasam_corrosion_mm_per_y_point_E}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Папавинасам скорость коррзоии в точке F, мм/год: {{result.papavinasam_corrosion_mm_per_y_point_F}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h6 class="economicHeader">Падение давления: {{result.dP}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Конечная температура в точке F: {{result.t_final_celsius_point_F}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Скорость коррзоии,мм/год: {{result.corrosion_mm_per_year}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h6 class="economicHeader">Парциальное давление pCO2, кПа: {{result.pCO2_kPa}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Парциальное давление pH2S, кПа: {{result.pH2S_kPa}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">H2S, мг/л: {{result.H2S_mg_per_l}}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <h6 class="economicHeader">CO2, мг/л: {{result.CO2_mg_perl}}</h6>
+                </div>
+                <div class="col-4">
+                    <h6 class="economicHeader">Пропорция pCO2 к pH2S: {{result.pCO2_per_pH2S}}</h6>
+                </div>
+                <div class="col-4">
+                </div>
+            </div>
+        </div>
+      </modal>
 
     <div class="tables-one col-xs-12 col-sm-5 col-md-5 col-lg-2 col-xl-2">
       <div class="tables-string-gno col-12">
@@ -181,36 +273,42 @@
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-2 col-xl-2">
       <div class="tables-string-gno4">
         <div class="head-monitor">Рекомендации</div>
-        <div class="rek">Рекомендации дозирования ИК</div>
-        <monitor-chart-radialbar></monitor-chart-radialbar>
-        <div v-if="signalizator > 0 && signalizator != null" class="text-wrap">
-            <div v-if="signalizatorAbs <= 10" class="alert alert-success" role="alert">
-            Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
-            </div>
-            <div v-if="signalizatorAbs > 10 && signalizatorAbs <=30" class="alert alert-warning" role="alert">
-            Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
-            </div>
-            <div v-if="signalizatorAbs > 30" class="alert alert-danger" role="alert">
-            Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
-            </div>
+        <div style="min-height: 125px">
+            <div class="rek" v-if="dose">Рекомендации дозирования ИК</div>
+            <monitor-chart-radialbar v-if="dose"></monitor-chart-radialbar>
         </div>
-        <div v-if="signalizator < 0 && signalizator != null" class="text-wrap">
-            <div v-if="signalizatorAbs <= 10" class="alert alert-success" role="alert">
-            Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
+        <div style="min-height: 80px">
+            <div v-if="signalizator > 0 && signalizator != null" class="text-wrap">
+                <div v-if="signalizatorAbs <= 10" class="alert alert-success" role="alert">
+                Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
+                </div>
+                <div v-if="signalizatorAbs > 10 && signalizatorAbs <=30" class="alert alert-warning" role="alert">
+                Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
+                </div>
+                <div v-if="signalizatorAbs > 30" class="alert alert-danger" role="alert">
+                Плановая превышает фактическую дозировку на {{signalizatorAbs}}%
+                </div>
             </div>
-            <div v-if="signalizatorAbs > 10 && signalizatorAbs <=30" class="alert alert-warning" role="alert">
-            Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
-            </div>
-            <div v-if="signalizatorAbs > 30" class="alert alert-danger" role="alert">
-            Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
+            <div v-if="signalizator < 0 && signalizator != null" class="text-wrap">
+                <div v-if="signalizatorAbs <= 10" class="alert alert-success" role="alert">
+                Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
+                </div>
+                <div v-if="signalizatorAbs > 10 && signalizatorAbs <=30" class="alert alert-warning" role="alert">
+                Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
+                </div>
+                <div v-if="signalizatorAbs > 30" class="alert alert-danger" role="alert">
+                Фактическая превышает плановую дозировку на {{signalizatorAbs}}%
+                </div>
             </div>
         </div>
         <div class="responsible">
-            <button type="button" class="btn btn-info" @click="pushBtn">Экономический эффект</button>
+            <button type="button" class="btn btn-info" @click="pushBtn">Экономический эффект</button><br>
+            <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">Коррозия</button>
         </div>
       </div>
       <!-- <div class="tables-string-gno4">
       </div> -->
+      <br>
       <div class="tables-string-gno4">
         <calendar
           is-dark
@@ -278,7 +376,8 @@ export default {
       corA: null,
       corE: null,
       corF: null,
-      dose: null
+      dose: null,
+      result: {}
     };
   },
   beforeCreate: function () {
@@ -407,6 +506,7 @@ export default {
                     this.corE = data.corrosion_rate_mm_per_y_point_E,
                     this.corF = data.corrosion_rate_mm_per_y_point_F,
                     this.dose = data.max_dose,
+                    this.result = data,
                     this.$emit("chart5", this.dose)
                 } else {
                     console.log("No data");
@@ -415,6 +515,9 @@ export default {
     },
     pushBtn(){
         this.$modal.show('economicmodal');
+    },
+    pushBtn2(){
+        this.$modal.show('corrosion');
     }
   },
 };

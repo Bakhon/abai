@@ -789,15 +789,15 @@ return $response;
                 /////////////////////////////////
 
         $vdata = [
-            'flow_velocity_meter_per_sec' => $v_lo,
+            'flow_velocity_meter_per_sec' => round($v_lo,2),
             //'m_dot' => $m_dot,
-            'final_pressure_bar_point_F' => $P_final,
-            'corrosion_rate_mm_per_y_point_A' => $r_a,
-            'corrosion_rate_mm_per_y_point_E' => $r_e,
-            'corrosion_rate_mm_per_y_point_F' => $r_f,
-            'dose_mg_per_l_point_A' => $dose_a,
-            'dose_mg_per_l_point_E' => $dose_e,
-            'dose_mg_per_l_point_F' => $dose_f,
+            'final_pressure_bar_point_F' => round($P_final,2),
+            'corrosion_rate_mm_per_y_point_A' => round($r_a,2),
+            'corrosion_rate_mm_per_y_point_E' => round($r_e,2),
+            'corrosion_rate_mm_per_y_point_F' => round($r_f,2),
+            'dose_mg_per_l_point_A' => round($dose_a,2),
+            'dose_mg_per_l_point_E' => round($dose_e,2),
+            'dose_mg_per_l_point_F' => round($dose_f,2),
             'max_dose' => round($max_dose),
             //'dP' => $dP,
             't_final_celsius_point_F' => round($t_final,4),
@@ -807,13 +807,13 @@ return $response;
             // 'dose_mg_per_l' => round($dose,4),
             // 'H2S_mg_per_l' => round($H2S,4),
             // 'CO2_mg_perl' => round($CO2,4),
-            'environment_point_A' => $output_a,
-            'environment_point_E' => $output_e,
-            'environment_point_F' => $output_f,
+            'environment_point_A' => round($output_a,2),
+            'environment_point_E' => round($output_e,2),
+            'environment_point_F' => round($output_f,2),
             //'pCO2_per_pH2S' => $ratio,
-            'papavinasam_corrosion_mm_per_y_point_A' => $PCR_A,
-            'papavinasam_corrosion_mm_per_y_point_E' => $PCR_E,
-            'papavinasam_corrosion_mm_per_y_point_F' => $PCR_F,
+            'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A,2),
+            'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E,2),
+            'papavinasam_corrosion_mm_per_y_point_F' => round($PCR_F,2),
         ];
 
 
