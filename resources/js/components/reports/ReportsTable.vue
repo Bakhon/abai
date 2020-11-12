@@ -2,8 +2,7 @@
   <div>
     <export-excel
     class   = "btn btn-default"
-    :params   = "params.data"
-    :fields = "json_fields"
+    :data   = "json_data"
     worksheet = "My Worksheet"
     name    = "filename.xls">
  
@@ -199,7 +198,7 @@ export default {
           let data = response.data;
           if (data) {
             this.params.data = data.wellsList,
-            this.params.json_data = data.excel
+            this.json_data = data.excel
           } else {
             console.log("No data");
           }
