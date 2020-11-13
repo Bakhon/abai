@@ -1,17 +1,6 @@
 <template>
-  <div>
-    <export-excel
-    class   = "btn btn-default"
-    :title = "json_header"
-    :data   = "json_data"
-    :fields = "json_fields"
-    worksheet = "My Worksheet"
-    name    = "filename.xls">
- 
-    Download Excel (you can customize this with html code!)
- 
-  </export-excel>
-  <div class="container">  
+<div>
+    <div class="container">  
     <div class="row">
  <div class="col-sm">
         <div class="form-group">
@@ -82,120 +71,67 @@
     </div>
 <button :disabled='org==null || month==null || year==null' @click="updateData">Сформировать отчет</button>
 
-    <div>
-
-      <vue-table-dynamic  ref="table" :params="params"> </vue-table-dynamic>
-    </div>
   </div>
-  </div>
+  <BootstrapTable
+    :columns="columns"
+    :data="data"
+    :options="options"
+    
+  />
+</div>
 </template>
 
 <script>
-import VueTableDynamic from "vue-table-dynamic";
+import BootstrapTable from 'bootstrap-table/dist/bootstrap-table-vue.esm.js'
 
 export default {
   components: {
-    VueTableDynamic,
-     },
-  data: function () {
+    BootstrapTable
+  },
+  data () {
     return {
-      json_header:{
-        fields: ['custome'], 
-        title: '排序', 
-        titleAlign: 'center', 
-        colspan: 2
-      },
-        json_fields: {
-      
-      'Месторождение ' : "0.0", 
-        'НГДУ' : 1, 
-        'ЦДНГ' : 2, 
-        
-        
-      
-    },
-    json_data: [
-      {
-        name: "Tony Peña",
-        city: "New York",
-        country: "United States",
-        birthdate: "1978-03-15",
-        phone: {
-          mobile: "1-541-754-3010",
-          landline: "(541) 754-3010",
+      columns: [
+          [{
+          title: 'Item Detail',
+          colspan: 2,
+          align: 'center'
         },
-      },
-      {
-        name: "Thessaloniki",
-        city: "Athens",
-        country: "Greece",
-        birthdate: "1987-11-23",
-        phone: {
-          mobile: "+1 855 275 5071",
-          landline: "(2741) 2621-244",
-        },
-      },
-    ],
-        json_meta: [
-            [
-                {
-                    'key': 'charset',
-                    'value': 'utf-8'
-                }
-            ]
-        ],
-  
-
-
-      params: {
-        data: [
-          ["..."],
-        ],
-      enableSearch: true,
-      whiteSpace: 'normal',
-      wordWrap: 'break-word',
-      header: 'row',
-      sort: [10, 11, 12],
-      filter: [
         {
-        column: 10, 
-          content: [{text: '> 50', value: 50}, {text: '> 80', value: 80}], 
-          method: (value, tableCell) => { return tableCell.data > value }
-        }, 
-        
+        title: 'Item Detail2',
+          
+          align: 'center'
+    },
         ],
-            border: true,
-            stripe: true,
-            showTotal: true,
-            pagination: true,
-            pageSize: 10,
-            pageSizes: [10, 20, 50],
-            height: 400,
-            fixed: 1,
-            headerHeight: 60,
-            rowHeight: 60,
-            maxWidth:1500,
-        columnWidth:[
-          {column: 0, width: 160},
-          {column: 1, width: 100},
-          {column: 2, width: 100},
-          {column: 6, width: 100},
-          {column: 7, width: 100},
-          {column: 8, width: 150},
-          {column: 9, width: 400},
-          {column: 10, width: 160},
-          {column: 11, width: 160},
-          {column: 12, width: 160},
-          {column: 13, width: 160},
-          {column: 16, width: 160},
-          {column: 17, width: 160},
-          {column: 27, width: 400},
-          ],
+        [
+        {
+          title: 'МР',
+          field: '0'
         },
+        {
+          field: '1',
+          title: 'НГДУ'
+        },
+        {
+          field: '2',
+          title: 'ЦДНГ'
+        }]
+      ],
+      data: [
+        {
+          id: 1,
+          name: 'Item 1',
+          price: '$1'
+        }
+      ],
+      options: {
+        search: true,
+        showColumns: true,
+        toolbar: true
+      },
       org: null,
       month: null,
       year: null,
-    };
+    }
   },
   methods: {
     // dayClicked(day) {
@@ -215,8 +151,7 @@ export default {
         .then((response) => {
           let data = response.data;
           if (data) {
-            this.params.data = data.wellsList,
-            this.json_data = data.excel
+            this.data = data.wellsList
           } else {
             console.log("No data");
           }
@@ -235,6 +170,5 @@ export default {
 
     },
   }, 
-};
+}
 </script>
-
