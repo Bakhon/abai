@@ -12,6 +12,7 @@ import Vue from 'vue';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import { Plotly } from 'vue-plotly';
 import excel from 'vue-excel-export'; 
+import 'bootstrap-table/dist/bootstrap-table.js';
 
 
 
@@ -88,6 +89,7 @@ Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
 Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
 Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
+Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
 
