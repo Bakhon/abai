@@ -109,7 +109,7 @@ export default {
           stroke: {
             show: true,
           },
-          data: [1, 1, 2, 4, 3],
+          data: [5, , 5, 6, 6],
         },
         {
           name: "ЭЦН (аренда)",
@@ -117,10 +117,25 @@ export default {
           stroke: {
             show: true,
           },
-          data: [2, 2, 3, 6, 4],
+          data: [5, 5, 5, 5, 5],
         },
       ],
     };
   },
-};
+
+
+   methods: {
+    setValue: function(value) {
+        this.series[0].data[1]=value
+
+    }
+  },
+
+  mounted() {},
+  created: function () {
+    this.$parent.$on("NNO", this.setValue);
+
+  },
+
+}
 </script>
