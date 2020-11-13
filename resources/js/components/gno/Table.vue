@@ -3,13 +3,15 @@
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
 
-        <modal name="modalIncl" :width="551" :height="780">
+        <modal name="modalIncl" :width="1150" :height="500" style="background:transparent">
           <div class="modal-bign">
             <div class="Table" align="center" x:publishsource="Excel">
-              <gno-incl-table></gno-incl-table>
+              <gno-incl-table :wellNumber="wellNumber"></gno-incl-table>
             </div>
           </div>
         </modal>
+
+
 
         <modal name="modalOldWell" :width="1150" :height="450" :adaptive="true" >
           <div class="modal-bign" >
@@ -41,6 +43,7 @@
             </div>
           </div>
         </modal>
+
         <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-top: -180px; margin-left:100px;">
           <div class="modal-bign2">
             <gno-chart-bar></gno-chart-bar>
@@ -597,7 +600,7 @@ export default {
         },
       },
 
-      data: [ 
+      data: [
         {
           name: "IPR (кривая притока)",
           x: [0,1,3],
@@ -776,7 +779,7 @@ export default {
             color: "#FF0D18",
           },
         },
-        
+
         {
           name: "Текущий режим",
           x: [40],
@@ -862,7 +865,7 @@ export default {
     InclMenu() {
       this.$modal.show('modalIncl')
     },
-    
+
     getWellNumber(wellnumber) {
       let uri = "http://172.20.103.187:7575/api/pgno/" + wellnumber;
       this.axios.get(uri).then((response) => {
@@ -901,13 +904,13 @@ export default {
       let jsonData = JSON.stringify(
         {
         "menu": "MainMenu",
-        "curveSelect": this.curveSelect,  
+        "curveSelect": this.curveSelect,
         "curveValue": this.curveValue,
         "wctValue": this.wctInput,
         "gorValue": this.gorInput,
         "expSelect": this.expChoose,
         "hPumpValue": this.hPumpValue,
-        "celSelect": this.CelButton, 
+        "celSelect": this.CelButton,
         "celValue": this.CelValue}
       )
       // console.log("JSON =", jsonData)
@@ -950,18 +953,18 @@ export default {
         "well_number": this.wellnumber,
         "well_age": this.age,
         "user_button": "true",
-        "analysisBox1": this.analysisBox1,  
+        "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
         "analysisBox4": this.analysisBox4,
         "analysisBox5": this.analysisBox5,
-        "curveSelect": this.curveSelect,  
+        "curveSelect": this.curveSelect,
         "curveValue": this.curveValue,
         "wctValue": this.wctInput,
         "gorValue": this.gorInput,
         "expSelect": this.expChoose,
         "hPumpValue": this.hPumpValue,
-        "celSelect": this.CelButton, 
+        "celSelect": this.CelButton,
         "celValue": this.CelValue
         }
       )
@@ -1016,16 +1019,16 @@ export default {
         "analysisBox8": true,
         "Facies_13": "Floodplain",
         "user_button": "true",
-        "analysisBox6": this.analysisBox6,  
+        "analysisBox6": this.analysisBox6,
         "analysisBox7": this.analysisBox7,
         "analysisBox8": this.analysisBox8,
-        "curveSelect": this.curveSelect,  
+        "curveSelect": this.curveSelect,
         "curveValue": this.curveValue,
         "wctValue": this.wctInput,
         "gorValue": this.gorInput,
         "expSelect": this.expChoose,
         "hPumpValue": this.hPumpValue,
-        "celSelect": this.CelButton, 
+        "celSelect": this.CelButton,
         "celValue": this.CelValue
         }
       )
@@ -1045,6 +1048,38 @@ export default {
           } else {
         }
       });
+    },
+
+    modalExpAnalysis(){
+        let uri = "http://172.20.103.187:7575/api/nno/";
+
+        let jsonData = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": this.expMeth,
+            }
+        )
+        //console.log("JSON =", jsonData)
+
+        this.axios.post(uri, jsonData).then((response) => {
+        //var data = response.data;
+        var data = JSON.parse(response.data)
+        if (data) {
+          console.log(data)
+
+          this.nno=this.data.map((r) => r.NNO)
+          this.prs=this.data.map((r) => r.prs)
+          //this.$emit('NNO', this.nno)
+          //this.$emit('PRS', this.prs)
+
+          this.$modal.show("showEconomicModal");
+
+        } else {
+          console.log("No data");
+        }
+
+      });
+
+
     }
   },
   beforeCreate: function() {
@@ -1059,7 +1094,7 @@ export default {
           console.log("No data");
         }
       });
-    
+
   },
 };
 </script>
