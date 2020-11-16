@@ -206,6 +206,8 @@
             ></div>
           </div>
         </div>
+
+
         <div class="tables-string-gno5 col-12" @click="PotAnalysisMenu()">
           Анализ потенциала скважины
         </div>
@@ -895,7 +897,7 @@ export default {
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
-          return this.whp, this.pAnnular, this.hDyn, this.pRes, this.bhp, this.wct, this.qO, this.qL, this.densWater, this.densOil, this.densWater, this.densOil, this.viscWaterRc, this.viscOilRc, this.tRes, this.gor, this.PBubblePoint  = 0;
+          return this.hdynValue = [this.hDynInput = 0, this.pAnnularInput = 0], this.hDyn, this.lineP, this.casOD, this.tubID, this.bhp, this.bhpInput, this.casID, this.hPerf, this.pumpType, this.hPumpSet, this.hPumpValue, this.wctInput, this.wct, this.whp, this.pRes, this.pResInput, this.wctInput, this.qO, this.qLInput, this.qlCelValue, this.densWater, this.densOil, this.densWater, this.densOil, this.viscWaterRc, this.viscOilRc, this.tRes, this.gor, this.gorInput, this.PBubblePoint, this.tubOD = 0;
         } else if (data) {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
@@ -1165,6 +1167,10 @@ export default {
 </script>
 
 <style scoped>
+.modalOldWell {
+  font-family: 'Courier New', Courier, monospace;
+}
+
 .checkbox-modal-analysis-menu-label {
   font-family: 'Courier New', Courier, monospace;
   margin-right: px;
@@ -1172,12 +1178,17 @@ export default {
 }
 
 .checkbox-modal-analysis-menu {
-margin-left: -15px;
+  margin-left: -15px;
 }
 
 .modal-analysis-menu {
   display: flex;
   flex-direction: column;
   justify-content: left;
+}
+
+div {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400; 
 }
 </style>
