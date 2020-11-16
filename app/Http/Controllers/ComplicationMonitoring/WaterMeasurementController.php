@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion as ComplicationMonitoringCorrosion;
 use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
 use App\Models\ComplicationMonitoring\Kormass;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
+use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\ComplicationMonitoring\WaterMeasurement as ComplicationMonitoringWaterMeasurement;
 use App\Models\Refs\Cdng as RefsCdng;
 use App\Models\Refs\Gu as RefsGu;
@@ -104,6 +106,7 @@ class WaterMeasurementController extends Controller
         $wm->sulphate_reducing_bacteria_id = ($request->sulphate_reducing_bacteria_id) ? $request->sulphate_reducing_bacteria_id : NULL;
         $wm->hydrocarbon_oxidizing_bacteria_id = ($request->hydrocarbon_oxidizing_bacteria_id) ? $request->hydrocarbon_oxidizing_bacteria_id : NULL;
         $wm->thionic_bacteria_id = ($request->thionic_bacteria_id) ? $request->thionic_bacteria_id : NULL;
+        $wm->cruser_id = Auth::user()->id;
         $wm->save();
 
         return redirect()->route('watermeasurement.index')->with('success',__('app.created'));
@@ -353,7 +356,10 @@ class WaterMeasurementController extends Controller
         $uhe = ComplicationMonitoringOmgUHE::where('gu_id','=',$request->gu_id)->get();
         $corrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->get();
         $kormass = ComplicationMonitoringGuKormass::where('gu_id','=',$request->gu_id)->with('kormass')->first();
-
+        $pipe = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','eg')->first();
+        $pipeAB = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','ab')->first();
+        $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->latest()->first();
+        $constantsValues = ConstantsValue::get();
         $chartDtCarbonDioxide['dt']  = [];
         $chartDtHydrogenSulfide['dt']  = [];
         $chartDtCarbonDioxide['value']  = [];
@@ -398,7 +404,11 @@ class WaterMeasurementController extends Controller
             'chart2' => $chartDtHydrogenSulfide,
             'chart3' => $chartCorrosion,
             'chart4' => $chartIngibitor,
-            'kormass' =>$kormass
+            'kormass' => $kormass,
+            'pipe' => $pipe,
+            'pipeab' => $pipeAB,
+            'lastCorrosion' => $lastCorrosion,
+            'constantsValues' => $constantsValues
         ]);
     }
 

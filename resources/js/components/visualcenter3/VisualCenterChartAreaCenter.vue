@@ -12,6 +12,7 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
+import { EventBus } from "../../event-bus.js";
 
 Vue.component("apexchart", VueApexCharts);
 export default {
@@ -20,6 +21,7 @@ export default {
 
   data: function () {
     return {
+      bigTable:'',
       chartOptions: {  
              yaxis: { 
                labels: {
@@ -210,5 +212,8 @@ export default {
       ];
     }
   },
+    created() {
+    EventBus.$on("bigTable", this.bigTable);
+    }
 };
 </script>

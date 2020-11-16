@@ -34,25 +34,27 @@
         <input type="hidden" name="date" v-model="datetimeEmpty" class="form-control" placeholder="">
 
         </div>
-        <label>Давление на выходе насоса, бар</label>
+        <label>Давление на выходе насоса в ГУ, бар</label>
         <div class="form-label-group">
-            <input type="number" name="pump_discharge_pressure" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="pump_discharge_pressure" class="form-control" placeholder="">
         </div>
-        <label>Кормасс</label>
+        <label>Обводненность в ГУ, %</label>
         <div class="form-label-group">
-            <select class="form-control"  name="kormass_number" v-model="kormass_id" disabled>
-            <option v-for="row in kormass" v-bind:value="row.id">{{ row.name }}</option>
-            </select>
+            <input type="number" step="0.0001" name="bsw" class="form-control" placeholder="">
         </div>
-        <label>Суточная добыча жидкости, м3/сут</label>
+        <label>Суточная добыча воды, м3/сут</label>
         <div class="form-label-group">
-            <input type="number" name="daily_fluid_production_kormass" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="daily_water_production" class="form-control" placeholder="">
+        </div>
+        <label>Суточная добыча жидкости в кормассе, м3/сут</label>
+        <div class="form-label-group">
+            <input type="number" step="0.0001" name="daily_fluid_production_kormass" class="form-control" placeholder="">
         </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>НГДУ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)" disabled>
+            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)">
             <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -62,23 +64,33 @@
             <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
-        <label>Суточная добыча  жидкости, м3/сут</label>
+        <label>Суточная добыча  жидкости в ГУ, м3/сут</label>
         <div class="form-label-group">
-            <input type="number" name="daily_fluid_production" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="daily_fluid_production" class="form-control" placeholder="">
         </div>
-        <label>Температура на входе в печи, С</label>
+        <label>Температура на входе в печь в ГУ, С</label>
         <div class="form-label-group">
-            <input type="number" name="heater_inlet_pressure" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="heater_inlet_pressure" class="form-control" placeholder="">
         </div>
-        <label>Давление, бар</label>
+        <label>Суточная добыча нефти, т/сут</label>
         <div class="form-label-group">
-            <input type="number" name="pressure" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="daily_oil_production" class="form-control" placeholder="">
+        </div>
+        <label>Давление в кормассе, бар</label>
+        <div class="form-label-group">
+            <input type="number" step="0.0001" name="pressure" class="form-control" placeholder="">
+        </div>
+        <label>Кормасс</label>
+        <div class="form-label-group">
+            <select class="form-control"  name="kormass_number" v-model="kormass_id">
+            <option v-for="row in kormass" v-bind:value="row.id">{{ row.name }}</option>
+            </select>
         </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>ЦДНГ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="cdng_id" v-model="cdng" @change="chooseCdng($event)" disabled>
+            <select class="form-control"  name="cdng_id" v-model="cdng" @change="chooseCdng($event)">
             <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -88,17 +100,21 @@
             <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
-        <label>Давление в буферной емкости, бар</label>
+        <label>Давление в буферной емкости в ГУ, бар</label>
         <div class="form-label-group">
-            <input type="number" name="surge_tank_pressure" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="surge_tank_pressure" class="form-control" placeholder="">
         </div>
-        <label>Температура на выходе из печи, С</label>
+        <label>Количество газа в СИБ, ст.м3/сут</label>
         <div class="form-label-group">
-            <input type="number" name="heater_output_pressure" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="daily_gas_production_in_sib" class="form-control" placeholder="">
         </div>
-        <label>Температура</label>
+        <label>Температура на выходе из печи в ГУ, С</label>
         <div class="form-label-group">
-            <input type="number" name="temperature" class="form-control" placeholder="">
+            <input type="number" step="0.0001" name="heater_output_pressure" class="form-control" placeholder="">
+        </div>
+        <label>Температура в кормассе</label>
+        <div class="form-label-group">
+            <input type="number" step="0.0001" name="temperature" class="form-control" placeholder="">
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

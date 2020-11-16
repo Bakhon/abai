@@ -2,19 +2,19 @@
   <div>
     <apexchart
       type="area"
-      height="150"
-      width="320"
+      height="580"
+      width="960"
       :options="chartOptions"
       :series="series"
     ></apexchart>
     <div class="begin">{{ begin }}</div>
-    <div class="end">{{ end }}</div>
+    <div class="end2">{{ end }}</div>
   </div>
 </template>
 
 <script>
 import VueApexCharts from "vue-apexcharts";
-
+import { EventBus } from "../../event-bus.js";
 Vue.component("apexchart", VueApexCharts);
 export default {
   name: "mix-chart",
@@ -117,15 +117,19 @@ export default {
       ],
     };
   },
-
-  mounted() {
-    var data = this.postTitles;
+  
+methods: {
+    currencyChart: function (data) {
+    //var data =    this.currencyChart;
+     // console.log(this.postTitles);
     var dates = [];
     var value = [];
-    _.forEach(data.data, function (item) {
+    _.forEach(data, function (item) {
       dates.push(item.dates);
       value.push(new Intl.NumberFormat("ru-RU").format(item.value));
     });
+
+    
 
     this.begin = dates[0];
     var end = _.takeRight(dates, 1);
@@ -137,6 +141,10 @@ export default {
         data: value,
       },
     ];
+    }
   },
+   created() {
+    this.$parent.$on("currencyChart", this.currencyChart);
+   }
 };
 </script>

@@ -11,6 +11,7 @@ import { PivotViewPlugin, FieldList } from '@syncfusion/ej2-vue-pivotview';
 import Vue from 'vue';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import { Plotly } from 'vue-plotly';
+import excel from 'vue-excel-export';
 
 
 
@@ -19,7 +20,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
 
-Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly);
+Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel);
 
 
 /**
@@ -46,6 +47,9 @@ Vue.component('visual-center-chart-donut-right1', require('./components/visualce
 Vue.component('visual-center-chart-donut-right2', require('./components/visualcenter/VisualCenterChartDonutRight2.vue').default);
 Vue.component('visual-center-table', require('./components/visualcenter/VisualCenterTable.vue').default);
 Vue.component('visual-center-table3', require('./components/visualcenter3/VisualCenterTable3.vue').default);
+Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
+Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
+Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 Vue.component('welcome-chart-donut-right1', require('./components/welcome/WelcomeChartDonutRight1.vue').default);
 Vue.component('welcome-chart-donut-right2', require('./components/welcome/WelcomeChartDonutRight2.vue').default);
@@ -64,8 +68,10 @@ Vue.component('chart4-component', require('./components/Economic/chart4.vue').de
 Vue.component('wm-create', require('./components/wm/create.vue').default);
 Vue.component('wm-edit', require('./components/wm/edit.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
-Vue.component('gno-line-points-chart', require('./components/gno/LinePointsChart.vue').default);
+Vue.component('gno-incl-table', require('./components/gno/GnoInclTable.vue').default);
+Vue.component('gno-line-points-chart', require('./components/gno/GnoCurveTable.vue').default);
 Vue.component('gno-chart-bar', require('./components/gno/GnoChartBar.vue').default);
+Vue.component('gno-analysis-menu', require('./components/gno/GnoAnalysisMenu.vue').default);
 Vue.component('gno-iframe', require('./components/FriendlyIframe/components/FriendlyIframe/index.vue').default);
 //Vue.component('gno-test-chart', require('./components/gno/Test.vue').default);
 Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);
@@ -84,6 +90,9 @@ Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
+Vue.component('export-excel', require('./components/reports/excel.vue').default);
+Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
+
 
 
 /**

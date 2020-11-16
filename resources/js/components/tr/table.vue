@@ -70,7 +70,7 @@
             <td>т/сут</td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row_index">
-            <td> {{row.well}}</td>
+            <td contenteditable='true'>{{row.well}}</td>
             <td>{{row.well_type}}</td>
             <td>{{row.horizon}}</td>
             <td>{{row.cas_OD}}</td>
@@ -80,24 +80,24 @@
             <td>{{row.exp_meth}}</td>
             <td>{{row.pump_type}}</td>
             <td>{{row.freq}}</td>
-            <td>{{row.h_pump_set}}</td>
-            <td>{{row.p_res}}</td>
-            <td>{{row.h_dyn}}</td>
-            <td>{{row.p_annular}}</td>
-            <td>{{row.bhp}}</td>
-            <td>{{row.q_o}}</td>
-            <td>{{row.q_l}}</td>
-            <td>{{row.wct}}</td>
+            <td>{{Math.round(row.h_pump_set*10)/10}}</td>
+            <td>{{Math.round(row.p_res*10)/10}}</td>
+            <td>{{Math.round(row.h_dyn*10)/10}}</td>
+            <td>{{Math.round(row.p_annular*10)/10}}</td>
+            <td>{{Math.round(row.bhp*10)/10}}</td>
+            <td>{{Math.round(row.q_o*10)/10}}</td>
+            <td>{{Math.round(row.q_l*10)/10}}</td>
+            <td>{{Math.round(row.wct*10)/10}}</td>
             <td>{{row.well_status_last_day}}</td>
-            <td>{{row.gor}}</td>
-            <td>{{row.pi}}</td>
-            <td>{{row.tp_idn_bhp}}</td>
-            <td>{{row.tp_idn_liq}}</td>
-            <td>{{row.tp_idn_oil_inc}}</td>
-            <td>{{row.tp_idn_pi_after}}</td>
-            <td>{{row.tp_idn_grp_q_liq}}</td>
-            <td>{{row.tp_idn_grp_q_oil_inc}}</td>
-            <td>{{row.EMPTY}}</td>
+            <td>{{Math.round(row.gor*10)/10}}</td>
+            <td>{{Math.round(row.pi*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_bhp*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_liq*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_oil_inc*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_pi_after*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_grp_q_liq*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_grp_q_oil_inc*10)/10}}</td>
+            <td>{{Math.round(row.EMPTY*10)/10}}</td>
         </tr>
     </table>
 </template>

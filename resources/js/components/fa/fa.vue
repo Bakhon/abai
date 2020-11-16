@@ -65,23 +65,23 @@
                     <td>{{row.field}}</td>
                     <td>{{row.horizon}}</td>
                     <td>{{row.exp_meth}}</td>
-                    <td>{{row.q_l_1}}</td>
-                    <td>{{row.q_o_1}}</td>
-                    <td>{{row.wct_1}}</td>
-                    <td>{{row.bhp_1}}</td>
-                    <td>{{row.p_res_1}}</td>
-                    <td>{{row.pi_1}}</td>
-                    <td>{{row.q_l_2}}</td>
-                    <td>{{row.q_o_2}}</td>
-                    <td>{{row.wct_2}}</td>
-                    <td>{{row.bhp_2}}</td>
-                    <td>{{row.p_res_2}}</td>
-                    <td>{{row.pi_2}}</td>
-                    <td>{{row.dqo}}</td>
-                    <td>{{row.Pbh}}</td>
-                    <td>{{row.wct}}</td>
-                    <td>{{row.p_res}}</td>
-                    <td>{{row.PI}}</td>
+                    <td>{{Math.round(row.q_l_1*10)/10}}</td>
+                    <td>{{Math.round(row.q_o_1*10)/10}}</td>
+                    <td>{{Math.round(row.wct_1*10)/10}}</td>
+                    <td>{{Math.round(row.bhp_1*10)/10}}</td>
+                    <td>{{Math.round(row.p_res_1*10)/10}}</td>
+                    <td>{{Math.round(row.pi_1*10)/10}}</td>
+                    <td>{{Math.round(row.q_l_2*10)/10}}</td>
+                    <td>{{Math.round(row.q_o_2*10)/10}}</td>
+                    <td>{{Math.round(row.wct_2*10)/10}}</td>
+                    <td>{{Math.round(row.bhp_2*10)/10}}</td>
+                    <td>{{Math.round(row.p_res_2*10)/10}}</td>
+                    <td>{{Math.round(row.pi_2*10)/10}}</td>
+                    <td>{{Math.round(row.dqo*10)/10}}</td>
+                    <td>{{Math.round(row.Pbh*10)/10}}</td>
+                    <td>{{Math.round(row.wct*10)/10}}</td>
+                    <td>{{Math.round(row.p_res*10)/10}}</td>
+                    <td>{{Math.round(row.PI*10)/10}}</td>
                     <td>{{row.Main_problem}}</td>
                 </tr>
             </table>

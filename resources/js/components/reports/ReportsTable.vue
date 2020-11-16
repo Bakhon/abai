@@ -1,17 +1,17 @@
 <template>
   <div>
-    <!-- <calendar
-      is-dark
-      color="orange"
-      is-expanded
-      :first-day-of-week="2"
-      locale="ru"
-      :max-date="new Date()"
-      @dayclick="dayClicked"
-    >
-    </calendar> -->
-    
- <div >
+    <export-excel
+    class   = "btn btn-default"
+    :data   = "json_data"
+    worksheet = "My Worksheet"
+    name    = "filename.xls">
+ 
+    Download Excel (you can customize this with html code!)
+ 
+  </export-excel>
+  <div class="container">  
+    <div class="row">
+ <div class="col-sm">
         <div class="form-group">
           <label class="text-wrap" style="color:white;" for="companySelect">Выберите компанию</label>
           <select
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-     <div >
+     <div class="col-sm">
         <div class="form-group">
           <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
           <select
@@ -56,7 +56,7 @@
         </div>
     </div>
 
-    <div >
+    <div class="col-sm">
         <div class="form-group">
           <label class="text-wrap" style="color:white;" for="companySelect">Выберите год</label>
           <select
@@ -66,56 +66,114 @@
             @change="onChangeYear($event)"
           >
            <option value=''> Выберите год </option>
-            <option value="2014">2014</option>
-            <option value="2015">2015</option>
-            <option value="2016">2016</option>
-            <option value="2017">2017</option>
-            <option value="2018">2018</option>
-            <option value="2019">2019</option>
             <option value="2020">2020</option>
+            <option value="2019">2019</option>
+            <option value="2018">2018</option>
+            <option value="2017">2017</option>
+            <option value="2016">2016</option>
+            <option value="2015">2015</option>
+            <option value="2014">2014</option>
            
           </select>
         </div>
     </div>
+    </div>
 <button :disabled='org==null || month==null || year==null' @click="updateData">Сформировать отчет</button>
+
     <div>
-      <!-- Дата {{ date }} -->
 
       <vue-table-dynamic  ref="table" :params="params"> </vue-table-dynamic>
     </div>
-    
+  </div>
   </div>
 </template>
 
 <script>
-// import Calendar from "v-calendar/lib/components/calendar.umd";
-// import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import VueTableDynamic from "vue-table-dynamic";
 
-// Register components in your 'main.js'
-// Vue.component("calendar", Calendar);
-// Vue.component("date-picker", DatePicker);
 export default {
   components: {
     VueTableDynamic,
-    // Calendar,
-    // DatePicker,
-  },
+     },
   data: function () {
     return {
+        json_data: [
+            {
+                'name': 'Tony Peña',
+                'city': 'New York',
+                'country': 'United States',
+                'birthdate': '1978-03-15',
+                'phone': {
+                    'mobile': '1-541-754-3010',
+                    'landline': '(541) 754-3010'
+                }
+            },
+            {
+                'name': 'Thessaloniki',
+                'city': 'Athens',
+                'country': 'Greece',
+                'birthdate': '1987-11-23',
+                'phone': {
+                    'mobile': '+1 855 275 5071',
+                    'landline': '(2741) 2621-244'
+                }
+            }
+        ],
+        json_meta: [
+            [
+                {
+                    'key': 'charset',
+                    'value': 'utf-8'
+                }
+            ]
+        ],
+  
+
+
       params: {
         data: [
           ["..."],
         ],
-          enableSearch: true,
-            header: 'row',
+      enableSearch: true,
+      whiteSpace: 'normal',
+      wordWrap: 'break-word',
+      header: 'row',
+      sort: [10, 11, 12],
+      filter: [
+        {
+        column: 10, 
+          content: [{text: '> 50', value: 50}, {text: '> 80', value: 80}], 
+          method: (value, tableCell) => { return tableCell.data > value }
+        }, 
+        
+        ],
             border: true,
             stripe: true,
+            showTotal: true,
             pagination: true,
             pageSize: 10,
             pageSizes: [10, 20, 50],
-            height: 400 
-      },
+            height: 400,
+            headerHeight: 60,
+            rowHeight: 60,
+            maxWidth:1500,
+        columnWidth:[
+          {column: 0, width: 160},
+          {column: 1, width: 100},
+          {column: 2, width: 100},
+          {column: 6, width: 100},
+          {column: 7, width: 100},
+          {column: 8, width: 150},
+          {column: 9, width: 400},
+          {column: 10, width: 160},
+          {column: 11, width: 160},
+          {column: 12, width: 160},
+          {column: 13, width: 160},
+          {column: 16, width: 160},
+          {column: 17, width: 160},
+          {column: 27, width: 400},
+          ],
+        },
       org: null,
       month: null,
       year: null,
@@ -139,7 +197,8 @@ export default {
         .then((response) => {
           let data = response.data;
           if (data) {
-            this.params.data = data.wellsList
+            this.params.data = data.wellsList,
+            this.json_data = data.excel
           } else {
             console.log("No data");
           }
@@ -160,8 +219,4 @@ export default {
   }, 
 };
 </script>
-<style>
-body {
-  color: white !important;
-}
-</style>
+

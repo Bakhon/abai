@@ -212,9 +212,9 @@ body {
     font-size: 14px;
 }
 
-.tables-one {}
+/* .tables-one {}
 
-.tables-two {}
+.tables-two {} */
 
 .select-gno {
     /* width: 100%; */
@@ -455,6 +455,7 @@ iframe.iframe {
 
 .modal-bign {
     color: black;
+    background: #20274e;
     overflow-y: auto;
     max-height: 800px;
 }
@@ -494,4 +495,18 @@ td {
     margin-top: -15px;
 }
 
-.vm--modal {}
+.modal-analysis-menu {
+    color: white;
+    overflow-y: auto;
+    max-height: 800px;
+    left: 85%;
+    top: 10%;
+    background: #20274e;
+    position: absolute;
+}
+
+.checkbox1 {
+    border: 15px solid transparent;
+    text-align: left;
+}
+/* .vm--modal {} */

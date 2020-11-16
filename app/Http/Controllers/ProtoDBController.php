@@ -16,7 +16,7 @@ public function getProtoOtchet1(Request $request)
     {
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
 
-        $builder = $client->query('month_meter_prod_oil_v02', Granularity::MONTH);
+        $builder = $client->query('month_meter_prod_oil_v03', Granularity::MONTH);
         if ($request->has('month')) {
             $builder
                 ->interval('2014-01-01T00:00:00+00:00/2020-10-31T00:00:00+00:00')
@@ -28,6 +28,7 @@ public function getProtoOtchet1(Request $request)
                 ->select('zu')
                 ->select('uwi')
                 ->select('drill_year')
+                ->select('grzs')
                 ->select('block2')
                 ->select('perf_intr')
                 ->select('tm_liquid')
@@ -68,7 +69,7 @@ public function getProtoOtchet1(Request $request)
         }
         $result = $builder->groupBy();
         $array = $result->data();
-        $data['wellsList'] =  [['Месторождение', 
+        $data['wellsList'] =  [['Месторождение 0', 
         'НГДУ', 
         'ЦДНГ', 
         'ГУ', 
@@ -76,6 +77,7 @@ public function getProtoOtchet1(Request $request)
         'ЗУ/ГЗУ',
         'Скважина', 
         'Год бурения', 
+        'Горизонт', 
         'Блок', 
         'Действующие интервалы перфорации',
         'Техрежим - Qж, м3/сут', 
@@ -83,7 +85,7 @@ public function getProtoOtchet1(Request $request)
         'Техрежим - Qн, т/сут', 
         'Qж, м3/сут',
         'Qн, т/сут',
-        'Обв, %',
+        'Обв, % 15',
         'Дата исследования', 
         'Заключение',
         'Hдин, м',
@@ -113,7 +115,8 @@ public function getProtoOtchet1(Request $request)
             array_push($well, $item['tap']);
             array_push($well, $item['zu']);
             array_push($well, $item['uwi']);
-            array_push($well, date("Y", strtotime($item['drill_year'])));
+            array_push($well, date("m.Y", strtotime($item['drill_year'])));
+            array_push($well, $item['grzs']);
             array_push($well, $item['block2']);
             array_push($well, $item['perf_intr']);
             array_push($well, $item['tm_liquid']);
@@ -143,10 +146,12 @@ public function getProtoOtchet1(Request $request)
             array_push($well, $item['liq_cumm']);
             array_push($well, $item['dzo']);
             array_push($data['wellsList'], $well);
+            
         }
         $vdata = [
 
             'wellsList' => $data['wellsList'],
+            'excel' => $data['wellsList'],
 
         ];
 

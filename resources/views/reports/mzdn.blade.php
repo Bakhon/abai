@@ -8,8 +8,9 @@
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
             <reports-table></reports-table>
-              
+            
                               </div>
+                              
         </div>
     </div>
 @endsection
@@ -30,6 +31,7 @@
     .top{
         display: none;
     } 
+
 </style>
 
 

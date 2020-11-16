@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="col-9 left-side">
+    <div class="col-10 left-side">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1">
@@ -8,10 +8,10 @@
               <td>
                 <div class="nu">
                   <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="unit-vc">тонн</div>
                 </div>
                 <div class="txt1">Добыча нефти</div>
-                <br/>
+                <br />
                 <div class="progress">
                   <br />
                   <div
@@ -20,7 +20,7 @@
                     :style="{
                       width: widthProgress + '%',
                     }"
-                    style="width: 25%;"
+                    style="width: 25%"
                     aria-valuenow="25"
                     aria-valuemin="0"
                     aria-valuemax="100"
@@ -34,197 +34,445 @@
               <td>
                 <div class="nu">
                   <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="unit-vc">тн</div>
                 </div>
-                <div class="txt1">Добыча нефти</div>
+                <div class="txt1">Сдача нефти</div>
+                <br />
+                <div class="progress">
+                  <br />
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    :style="{
+                      width: widthProgress + '%',
+                    }"
+                    style="width: 25%"
+                    aria-valuenow="25"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <br />
+                <div class="arrow"></div>
+                <div class="txt2">5,2%</div>
+                <div class="txt3">vs сентябрь</div>
               </td>
               <td>
                 <div class="nu">
                   <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="unit-vc">млрд. м³</div>
                 </div>
-                <div class="txt1">Добыча нефти</div>
+                <div class="txt1">Добыча газа</div>
+                <br />
+                <div class="progress">
+                  <br />
+
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    :style="{
+                      width: widthProgress + '%',
+                    }"
+                    style="width: 25%"
+                    aria-valuenow="25"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <br />
+                <div class="arrow"></div>
+                <div class="txt2">5,2%</div>
+                <div class="txt3">vs сентябрь</div>
               </td>
-              <td>
+              <td
+                style="width: 200px; border-left: 10px solid #0f1430"
+                @click="changeTable('2')"
+                :style="`${tableHover2}`"
+              >
                 <div class="nu">
-                  <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="number">{{ oilNow }}</div>
+                  <div class="unit-vc">$ / bbl</div>
                 </div>
-                <div class="txt1">Добыча нефти</div>
+                <div class="txt1">Цена на нефть</div>
+                <br /><br />
+                <div class="arrow"></div>
+                <div class="txt2">5,2%</div>
+                <div class="txt3">vs сентябрь</div>
               </td>
-              <td>
+              <td
+                style="width: 200px; border-left: 10px solid #0f1430"
+                @click="changeTable('3')"
+                :style="`${tableHover3}`"
+              >
                 <div class="nu">
-                  <div class="number">430</div>
-                  <div class="unit-vc">тыс. тонн</div>
+                  <div class="number">{{ currencyNow }}</div>
+                  <div class="unit-vc">kzt / $</div>
                 </div>
-                <div class="txt1">Добыча нефти</div>
+                <div class="txt1">Курс доллара</div>
+
+                <br /><br />
+                <div class="arrow"></div>
+                <div class="txt2">5,2%</div>
+                <div class="txt3">vs сентябрь</div>
               </td>
             </tr>
           </table>
         </div>
       </div>
+      <div class="first-table" :style="`${Table1}`">
+        <div class="first-string first-string2">
+          <div class="container-fluid">
+            <!--class="table-responsive"-->
+            <table class="table table2">
+              <tr>
+                <td class="dropdown3">
+                  <input type="checkbox" id="menu" />
 
-    
-
-      <div class="first-string first-string2">
-        <div>
-          <!--class="table-responsive"-->
-          <table class="table table2">
-            <tr>
-              <td>
-                <div
-                  class="button1"
-                  :style="`${buttonHover1}`"
-                  @click="
-                    getProduction('oil_plan', 'oil_fact', ' Добыча нефти', 'тн')
-                  "
-                >
-                  <div class="icon-all icons1"></div>
-                  <div class="txt5">Добыча нефти</div>
-                  <div class="txt6">тыс. тонн</div>
-                </div>
-              </td>
-              <td>
-                <div
-                  class="button1"
-                  :style="`${buttonHover2}`"
-                  @click="
-                    getProduction(
-                      'oil_dlv_plan',
-                      'oil_dlv_fact',
-                      'Сдача нефти',
-                      'тн'
-                    )
-                  "
-                >
-                  <div class="icon-all icons2"></div>
-                  <div class="txt5">Сдача нефти</div>
-                  <div class="txt6">тыс. тонн</div>
-                </div>
-              </td>
-              <td>
-                <div
-                  class="button1"
-                  :style="`${buttonHover3}`"
-                  @click="
-                    getProduction(
-                      'gas_plan',
-                      'gas_fact',
-                      'Добыча газа',
-                      'тыс м3'
-                    )
-                  "
-                >
-                  <div class="icon-all icons3"></div>
-                  <div class="txt5">Добыча газа</div>
-                  <div class="txt6">млрд. м3</div>
-                </div>
-              </td>
-              <td>
-                <div
-                  class="button1"
-                  :style="`${buttonHover5}`"
-                  @click="
-                    getProduction(
-                      'gk_plan',
-                      'gk_fact',
-                      'Добыча конденсата',
-                      'тн'
-                    )
-                  "
-                >
-                  <div class="icon-all icons4"></div>
-                  <div class="txt5">Добыча конденсата</div>
-                  <div class="txt6">тыс. тонн</div>
-                </div>
-              </td>
-              <td>
-                <div
-                  class="button1"
-                  :style="`${buttonHover6}`"
-                  @click="
-                    getProduction('inj_plan', 'inj_fact', 'Объём закачки', 'м3')
-                  "
-                >
-                  <div class="icon-all icons5"></div>
-                  <div class="txt5">Объём закачки воды</div>
-                  <div class="txt6">тыс. м3</div>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table table2">
-            <tr>
-              <td>
-                <div class="button2">Суточная</div>
-              </td>
-              <td>
-                <div class="button2">С начала месяца</div>
-              </td>
-              <td>
-                <div class="button2">С начала года</div>
-              </td>
-              <td>
-                <div class="button2" @click="pushBign('bign1')">Календарь</div>
-              </td>
-            </tr>
-          </table>
-        </div>
-
-        <div>
-          <table
-            class="table table4"
-        
-            border="1"
-          >
-            <tbody>
-              <!--   <tr>
-             <td class="first-td"></td>
-                <td colspan="7"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>план<span style="white-space: pre-wrap;"></span></td>
-                <td>факт</td>
-                <td>+/-</td>
-                <td>%</td>
-              </tr>-->
-              <tr     v-for="(item, index) in bigTable">
-                <td
-                  :class="
-                    index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
-                  "
-                >
-                  {{ item.dzoDay }}
-                </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'"></td>
-
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                  <div>
-                    {{(new Intl.NumberFormat('ru-RU').format(item.planDay)) }}
+                  <div
+                    class="button1"
+                    :style="`${buttonHover1}`"
+                    @click="
+                      getProduction(
+                        'oil_plan',
+                        'oil_fact',
+                        ' Добыча нефти',
+                        'тн'
+                      )
+                    "
+                  >
+                    <!-- <label for="menu">-->
+                    <div class="icon-all icons1"></div>
+                    <div class="txt5">Добыча нефти</div>
+                    <div class="txt6">тыс. тн</div>
+                    <!--   </label>-->
                   </div>
+
+                  <!-- <div class="dropdown">-->
+
+                  <ul>
+                    <li class="center-li" @click="changeMenu('101')">
+                      <a>С учётом доли участия КМГ</a>
+
+                      <div
+                        class="square-small2"
+                        :style="`${changeMenuButton1}`"
+                      >
+                        &#10003;
+                      </div>
+                    </li>
+                  </ul>
                 </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                  <div>
-                    {{(new Intl.NumberFormat('ru-RU').format( item.factDay)) }}
+                <td class="dropdown3">
+                  <div
+                    class="button1"
+                    :style="`${buttonHover2}`"
+                    @click="
+                      getProduction(
+                        'oil_dlv_plan',
+                        'oil_dlv_fact',
+                        'Сдача нефти',
+                        'тн'
+                      )
+                    "
+                  >
+                    <div class="icon-all icons2"></div>
+                    <div class="txt5">Сдача нефти</div>
+                    <div class="txt6">тыс. тонн</div>
                   </div>
+
+                  <ul>
+                    <li class="center-li" @click="changeMenu('102')">
+                      <a>Сдача нефти по узлам учёта</a>
+                      <div
+                        class="square-small2"
+                        :style="`${changeMenuButton2}`"
+                      >
+                        &#10003;
+                      </div>
+                    </li>
+
+                    <li class="center-li" @click="changeMenu('103')">
+                      <a>Товарный остаток нефти</a>
+                      <div
+                        class="square-small2"
+                        :style="`${changeMenuButton3}`"
+                      >
+                        &#10003;
+                      </div>
+                    </li>
+                  </ul>
                 </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                  <div>
-                    {{(new Intl.NumberFormat('ru-RU').format( item.factDay - item.planDay)) }}
+                <td class="dropdown3">
+                  <div
+                    class="button1"
+                    :style="`${buttonHover3}`"
+                    @click="
+                      getProduction(
+                        'gas_plan',
+                        'gas_fact',
+                        'Добыча газа',
+                        'тыс м³'
+                      )
+                    "
+                  >
+                    <div class="icon-all icons3"></div>
+                    <div class="txt5">Добыча газа</div>
+                    <div class="txt6">млрд. м³</div>
                   </div>
+                  <ul>
+                    <li class="center-li">
+                      <a href> Сдача природного газа</a>
+                    </li>
+                    <li class="center-li">
+                      <a href>Расход природного газа на собственные нужды </a>
+                    </li>
+                    <li class="center-li">
+                      <a href>Переработка природного газа</a>
+                    </li>
+                    <li class="center-li"><a href>Сдача попутного газа </a></li>
+                    <li class="center-li">
+                      <a href>Расход попутного газа на собственные нужды </a>
+                    </li>
+                    <li class="center-li">
+                      <a href> Переработка попутного газа </a>
+                    </li>
+                  </ul>
                 </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">5,2%</td>
+                <td class="dropdown3">
+                  <div
+                    class="button1"
+                    :style="`${buttonHover5}`"
+                    @click="
+                      getProduction(
+                        'gk_plan',
+                        'gk_fact',
+                        'Добыча конденсата',
+                        'тн'
+                      )
+                    "
+                  >
+                    <div class="icon-all icons4"></div>
+                    <div class="txt5">Добыча конденсата</div>
+                    <div class="txt6">тыс. тонн</div>
+                  </div>
+                  <ul>
+                    <li class="center-li">
+                      <a href>С учётом доли участия КМГ</a>
+                    </li>
+                  </ul>
+                </td>
+                <td class="dropdown3">
+                  <div
+                    class="button1"
+                    :style="`${buttonHover6}`"
+                    @click="
+                      getProduction(
+                        'inj_plan',
+                        'inj_fact',
+                        'Объём закачки',
+                        'м³'
+                      )
+                    "
+                  >
+                    <div class="icon-all icons5"></div>
+                    <div class="txt5">Объём закачки воды</div>
+                    <div class="txt6">тыс. м³</div>
+                  </div>
+                  <ul>
+                    <li class="center-li"><a href> Закачка морской воды</a></li>
+                    <li class="center-li"><a href>Закачка сточной воды</a></li>
+                    <li class="center-li"><a href>Закачка альбсен. воды</a></li>
+                  </ul>
+                </td>
               </tr>
+            </table>
+          </div>
 
-              <!--  <tr>
+          <div class="container-fluid">
+            <table class="table table2">
+              <tr>
+                <td>
+                  <div class="button2">Суточная</div>
+                </td>
+                <td>
+                  <div class="button2">С начала месяца</div>
+                </td>
+                <td>
+                  <div class="button2">С начала года</div>
+                </td>
+                <td class="dropdown3">
+                  <div class="button2" @click="pushBign('bign1')">
+                    Календарь
+                  </div>
+                  <ul class="center-menu2">
+                    <li class="center-li">
+                      <date-picker
+                        mode="range"
+                        v-model="range"
+                        is-range
+                        class="m-auto"
+                        @input="changeDate"
+                      />
+
+                      <div
+                        class="calendar-tab"
+                        v-for="(menuDMY, index) in menuDMY()"
+                        @click="selectedDMY = menuDMY.id"
+                        :style="{
+                          'background-color': menuDMY.current,
+                        }"
+                      >
+                        {{ menuDMY.DMY }}
+                      </div>
+
+                      <div class="month-day">
+                        <div
+                          class="navigation-table"
+                          v-bind:style="{ display: display }"
+                        >
+                          <div class="navigation">
+                            <div v-on:click="decrease"><</div>
+                          </div>
+                          <div class="navigation-month navigation" colspan="5">
+                            {{ monthes[month] }} {{ year }}
+                          </div>
+                          <div class="navigation">
+                            <div v-on:click="increase">></div>
+                          </div>
+                        </div>
+                        <div style="clear: both"></div>
+                        <div
+                          class="calendar-days"
+                          v-bind:style="{ display: display }"
+                        >
+                          <div class="day" v-for="d in day">{{ d }}</div>
+                        </div>
+                        <div style="clear: both"></div>
+                        <div class="calendar-day">
+                          <div v-for="week in calendar()">
+                            <div
+                              @click="selectedDay = day.index"
+                              class="week"
+                              v-for="(day, index) in week"
+                              :style="{
+                                color: day.weekend,
+                                'background-color': day.current,
+                              }"
+                              v-on:click="displaynumbers"
+                            >
+                              <div class="day-begin">{{ day.index }}</div>
+                            </div>
+                          </div>
+                          <div
+                            class="week"
+                            v-for="(month, index) in getMonths()"
+                            :key="index.id"
+                            :style="{
+                              'background-color': month.current,
+                            }"
+                            @click="selectedMonth = month.index"
+                            v-on:click="displaynumbers"
+                          >
+                            {{ month.index }}
+                          </div>
+
+                          <div
+                            class="week"
+                            v-for="(year, index) in getYears()"
+                            :key="year.id"
+                            :style="{
+                              'background-color': year.current,
+                            }"
+                            @click="selectedYear = year.index"
+                            v-on:click="displaynumbers"
+                          >
+                            {{ year.index }}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="container-fluid" :style="`${displayTable}`">
+            <table class="table table4">
+              <tbody>
+                <tr>
+                  <td class="big-table-hidtd small-td"></td>
+                  <td class="big-table-hidtd small-td"></td>
+
+                  <td class="small-td">
+                    <div class="center">план</div>
+                  </td>
+                  <td class="small-td">
+                    <div class="center">факт</div>
+                  </td>
+                  <td class="small-td">
+                    <div class="center">+/-</div>
+                  </td>
+                  <td class="small-td"><div class="center">%</div></td>
+                </tr>
+
+                <tr v-for="(item, index) in tables">
+                  <td
+                    @click="saveCompany(item.dzoBriefly)"
+                    :class="
+                      index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
+                    "
+                  >
+                    {{ item.dzo }}
+                  </td>
+                  <td class="w-50"></td>
+
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                  >
+                    <div>
+                      {{ new Intl.NumberFormat("ru-RU").format(item.pla) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <div>
+                      {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                  >
+                    <div
+                      v-if="item.fact"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        item.fact - item.plan
+                      )}`"
+                    ></div>
+                    <div class="percent">
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          item.fact - item.plan
+                        )
+                      }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <div
+                      v-if="item.fact"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        item.fact - item.plan
+                      )}`"
+                    ></div>
+                    <div class="percent">5,2%</div>
+                  </td>
+                </tr>
+
+                <!--  <tr>
                 <td colspan="13">1</td>
               </tr>
 
@@ -236,178 +484,391 @@
                 <td colspan="13">3</td>
               </tr>-->
 
+                <tr>
+                  <td
+                    :class="
+                      index % 2 === 0
+                        ? 'tdStyle3-total first-td'
+                        : 'tdNone first-td'
+                    "
+                  >
+                    Итого по операционным активам:
+                  </td>
+                  <td>
+                    <div class="vc-chart"><vc-chart> </vc-chart></div>
+                  </td>
 
-                    <tr>
-                <td
-                  :class="
-                    index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
-                  "
-                >
-                 Итого по операционным активам:
-                </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'"></td>
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                  >
+                    <div>
+                      {{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <div>
+                      {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                  >
+                    <div
+                      v-if="factDaySumm"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        factDaySumm - planDaySumm
+                      )}`"
+                    ></div>
+                    <div class="percent">
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          factDaySumm - planDaySumm
+                        )
+                      }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <div
+                      v-if="factDaySumm"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        factDaySumm - planDaySumm
+                      )}`"
+                    ></div>
+                    <div class="percent">5,2%</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                  <div>
-                    {{(new Intl.NumberFormat('ru-RU').format(planDaySumm)) }}
-                  </div>
-                </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                  <div>
-                    {{(new Intl.NumberFormat('ru-RU').format( factDaySumm)) }}
-                  </div>
-                </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                  <div>
-                    {{(new Intl.NumberFormat('ru-RU').format( factDaySumm - planDaySumm)) }}
-                  </div>
-                </td>
-                <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">5,2%</td>
+          <div class="container-fluid" :style="`${displayHeadTables}`">
+            <table class="table table4">
+              <tbody>
+                <tr>
+                  <td class="big-table-hidtd small-td"></td>
+                  <td class="big-table-hidtd small-td"></td>
+
+                  <td class="small-td">
+                    <div class="center">план</div>
+                  </td>
+                  <td class="small-td">
+                    <div class="center">факт</div>
+                  </td>
+                  <td class="small-td">
+                    <div class="center">+/-</div>
+                  </td>
+                  <td class="small-td"><div class="center">%</div></td>
+                </tr>
+
+                <tr v-for="(item, index) in bigTable">
+                  <td
+                    @click="saveCompany(item.dzoBriefly)"
+                    :class="
+                      index % 2 === 0 ? 'tdStyle first-td' : 'tdNone first-td'
+                    "
+                  >
+                    {{ item.dzoDay }}
+                  </td>
+                  <td class="w-50"></td>
+
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                  >
+                    <div>
+                      {{ new Intl.NumberFormat("ru-RU").format(item.planDay) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <div>
+                      {{ new Intl.NumberFormat("ru-RU").format(item.factDay) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                  >
+                    <div
+                      v-if="item.factDay"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        item.factDay - item.planDay
+                      )}`"
+                    ></div>
+                    <div class="percent">
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          item.factDay - item.planDay
+                        )
+                      }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <div
+                      v-if="item.factDay"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        item.factDay - item.planDay
+                      )}`"
+                    ></div>
+                    <div class="percent">5,2%</div>
+                  </td>
+                </tr>
+
+                <!--  <tr>
+                <td colspan="13">1</td>
               </tr>
-            </tbody>
-          </table>
+
+              <tr>
+                <td>2</td>
+              </tr>
+
+              <tr>
+                <td colspan="13">3</td>
+              </tr>-->
+
+                <tr>
+                  <td
+                    :class="
+                      index % 2 === 0
+                        ? 'tdStyle3-total first-td'
+                        : 'tdNone first-td'
+                    "
+                  >
+                    Итого по операционным активам:
+                  </td>
+                  <td>
+                    <div class="vc-chart"><vc-chart> </vc-chart></div>
+                  </td>
+
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                  >
+                    <div>
+                      {{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <div>
+                      {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td
+                    :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                  >
+                    <div
+                      v-if="factDaySumm"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        factDaySumm - planDaySumm
+                      )}`"
+                    ></div>
+                    <div class="percent">
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          factDaySumm - planDaySumm
+                        )
+                      }}
+                      <div class="right">{{ item4 }}</div>
+                    </div>
+                  </td>
+                  <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <div
+                      v-if="factDaySumm"
+                      class="triangle"
+                      :style="`border-top: 10px solid ${getColor(
+                        factDaySumm - planDaySumm
+                      )}`"
+                    ></div>
+                    <div class="percent">5,2%</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <modal
-        name="bign1"
-        :width="300"
-        :height="300"
-        :adaptive="true"
-        class="bign1"
-      >
-        <div class="modal-bign">
-          <div
-            class="calendar-tab"
-            v-for="(menuDMY, index) in menuDMY()"
-            @click="selectedDMY = menuDMY.id"
-            :style="{
-              'background-color': menuDMY.current,
-            }"
-          >
-            {{ menuDMY.DMY }}
-          </div>
+      <div class="second-table" :style="`${Table2}`">
+        <div class="first-string first-string2">
+          <div class="close2" @click="changeTable('1')">x</div>
+          <div class="big-area">
+            <br />
 
-          <div class="month-day">
-            <div class="navigation-table" v-bind:style="{ display: display }">
-              <div class="navigation">
-                <div v-on:click="decrease"><</div>
-              </div>
-              <div class="navigation-month navigation" colspan="5">
-                {{ monthes[month] }} {{ year }}
-              </div>
-              <div class="navigation">
-                <div v-on:click="increase">></div>
-              </div>
+            <div
+              @click="selectedDMY = menuDMY.id"
+              class="period"
+              v-for="(menuDMY, index) in periodSelectFunc()"
+              :style="{
+                color: menuDMY.current,
+              }"
+              v-on:click="periodSelect"
+            >
+              <div>{{ menuDMY.DMY }}</div>
             </div>
-            <div style="clear: both;"></div>
-            <div class="calendar-days" v-bind:style="{ display: display }">
-              <div class="day" v-for="d in day">{{ d }}</div>
-            </div>
-            <div style="clear: both;"></div>
-            <div class="calendar-day">
-              <div v-for="week in calendar()">
-                <div
-                  @click="selectedDay = day.index"
-                  class="week"
-                  v-for="(day, index) in week"
-                  :style="{
-                    color: day.weekend,
-                    'background-color': day.current,
-                  }"
-                  v-on:click="displaynumbers"
-                >
-                  <div class="day-begin">{{ day.index }}</div>
-                </div>
-              </div>
-              <div
-                class="week"
-                v-for="(month, index) in getMonths()"
-                :key="index.id"
-                :style="{
-                  'background-color': month.current,
-                }"
-                @click="selectedMonth = month.index"
-                v-on:click="displaynumbers"
-              >
-                {{ month.index }}
-              </div>
-
-              <div
-                class="week"
-                v-for="(year, index) in getYears()"
-                :key="year.id"
-                :style="{
-                  'background-color': year.current,
-                }"
-                @click="selectedYear = year.index"
-                v-on:click="displaynumbers"
-              >
-                {{ year.index }}
-              </div>
-            </div>
+            <visual-center-chart-area-oil3></visual-center-chart-area-oil3>
           </div>
         </div>
-      </modal>
+      </div>
+
+      <div class="third-table" :style="`${Table3}`">
+        <div class="first-string first-string2">
+          <div class="close2" @click="changeTable('1')">x</div>
+          <div class="big-area">
+            <br />
+
+            <div
+              @click="selectedDMY2 = menuDMY.id"
+              class="period"
+              v-for="(menuDMY, index) in periodSelectFunc()"
+              :style="{
+                color: menuDMY.current2,
+              }"
+              v-on:click="periodSelectUSD"
+            >
+              <div>{{ menuDMY.DMY }}</div>
+            </div>
+            <visual-center-chart-area-usd3></visual-center-chart-area-usd3>
+          </div>
+        </div>
+      </div>
+
+      <div class="third-table" :style="`${Table4}`">
+        <div class="first-string first-string2">
+          <div class="close2" @click="changeTable('1')">x</div>
+          <div class="big-area">Фонд добывающих скважин</div>
+        </div>
+      </div>
+
+      <div class="third-table" :style="`${Table5}`">
+        <div class="first-string first-string2">
+          <div class="close2" @click="changeTable('1')">x</div>
+          <div class="big-area">Фонд нагнетательных скважин</div>
+        </div>
+      </div>
+
+      <div class="third-table" :style="`${Table6}`">
+        <div class="first-string first-string2">
+          <div class="close2" @click="changeTable('1')">x</div>
+          <div class="big-area">ОТМ</div>
+        </div>
+      </div>
+
+      <div class="third-table" :style="`${Table7}`">
+        <div class="first-string first-string2">
+          <div class="close2" @click="changeTable('1')">x</div>
+          <div class="big-area">Химизация</div>
+        </div>
+      </div>
     </div>
-    <div class="col-3 right-side2">
+    <div class="col-2 right-side2">
       <div class="first-string">
         <div class="table-responsive">
-          <table class="table table1">
+          <table class="table table1-2">
             <tr>
-              <td>
-                <div class="txt4">{{wells2[0].prod_wells_work}}</div>
+              <td
+                class="w-50"
+                @click="changeTable('4')"
+                :style="`${tableHover4}`"
+              >
+                <div class="txt4">{{ wells2[0].prod_wells_work }}</div>
                 <div class="in-work">В работе</div>
-                <br />
                 <div class="arrow"></div>
                 <div class="txt2">48</div>
               </td>
 
-              <td>
-                <div class="txt4">{{wells2[0].prod_wells_idle}}</div>
+              <td
+                class="w-50"
+                @click="changeTable('4')"
+                :style="`${tableHover4}`"
+              >
+                <div class="txt4">{{ wells2[0].prod_wells_idle }}</div>
                 <div class="in-idle">В простое</div>
-                <br />
                 <div class="arrow"></div>
                 <div class="txt2">200</div>
                 <br />
               </td>
             </tr>
             <tr>
-              <td colspan="2">
-                <div class="txt2">
-                  Фонд добывающих<br />
-                  скважин
-                </div>
+              <td
+                colspan="2"
+                @click="changeTable('4')"
+                :style="`${tableHover4}`"
+              >
+                <div class="txt2">Фонд добывающих скважин</div>
               </td>
             </tr>
           </table>
-          <div class="line-bottom"></div>
+          <!-- <div class="line-bottom"></div>-->
+        </div>
+        <div class="first-string first-string2">
           <div class="table-responsive">
-            <table class="table table1">
+            <table class="table table1-2">
               <tr>
-                <td>
-                  <div class="txt4">{{wells[0].inj_wells_work}}</div>
+                <td
+                  class="w-50"
+                  @click="changeTable('5')"
+                  :style="`${tableHover5}`"
+                >
+                  <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-work">В работе</div>
-                  <br />
                   <div class="arrow"></div>
                   <div class="txt2">48</div>
                 </td>
 
-                <td>
-                  <div class="txt4">{{wells[0].inj_wells_work}}</div>
+                <td
+                  class="w-50"
+                  @click="changeTable('5')"
+                  :style="`${tableHover5}`"
+                >
+                  <div class="txt4">{{ wells[0].inj_wells_work }}</div>
                   <div class="in-idle">В простое</div>
-                  <br />
                   <div class="arrow"></div>
                   <div class="txt2">200</div>
                   <br />
                 </td>
               </tr>
               <tr>
-                <td colspan="2">
-                  <div class="txt2">
-                    Фонд нагнетательных <br />
-                    скважин
-                  </div>
+                <td
+                  colspan="2"
+                  @click="changeTable('5')"
+                  :style="`${tableHover5}`"
+                >
+                  <div class="txt2">Фонд нагнетательных скважин</div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="first-string first-string2">
+          <div class="table-responsive">
+            <table class="table table5">
+              <tr>
+                <td
+                  class="w-50"
+                  @click="changeTable('6')"
+                  :style="`${tableHover6}`"
+                >
+                  <div class="otm"></div>
+                  <div class="txt2">ОТМ</div>
+                </td>
+
+                <td
+                  class="w-50"
+                  @click="changeTable('7')"
+                  :style="`${tableHover7}`"
+                >
+                  <div class="him"></div>
+                  <div class="txt2">Химизация</div>
                 </td>
               </tr>
             </table>
@@ -415,55 +876,127 @@
         </div>
       </div>
 
-   
       <div class="first-string first-string2">
         <div class="table-responsive">
-          <table class="table table3">
+          <table class="table">
             <tr>
-              <td>
-                <div class="txt4">14</div>
-                <div class="txt2">Covid-19</div>
+              <td class="size-td">
+                <div class="number">908</div>
               </td>
 
-              <td>
-                <br />
-                <div class="arrow"></div>
-                <div class="txt2">200</div>
-                <br />
-                <div class="in-idle">Прирост за сутки</div>
-                <br />
+              <td class="w-65">
+                <div class="column-1">
+                  <div class="arrow"></div>
+                  <div class="txt2">7</div>
+                </div>
+                <div class="column-1">
+                  <div class="in-idle">Прирост</div>
+                  <div class="in-idle">с начала месяца</div>
+                </div>
               </td>
             </tr>
-
             <tr>
-              <td>
-                <div class="txt4">27</div>
+              <td colspan="2">
+                <div class="txt2">Численность персонала</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="first-string first-string2">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <td class="size-td">
+                <div class="number">24</div>
+              </td>
+
+              <td class="w-65">
+                <div class="column-1">
+                  <div class="arrow"></div>
+                  <div class="txt2">11</div>
+                </div>
+                <div class="column-1">
+                  <div class="in-idle">Прирост</div>
+                  <div class="in-idle">с начала месяца</div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <div class="txt2">COVID-19</div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="first-string first-string2">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <td class="w-50">
+                <div class="number">11</div>
+                <div class="near-number">
+                  <div class="column-1">
+                    <div class="arrow"></div>
+                    <div class="txt2">7</div>
+                  </div>
+                  <div class="column-1">
+                    <div class="in-idle">Прирост</div>
+                    <div class="in-idle">с начала</div>
+                    <div class="in-idle">месяца</div>
+                  </div>
+                </div>
+              </td>
+
+              <td class="w-50">
+                <div class="number">11</div>
+                <div class="near-number">
+                  <div class="column-1">
+                    <div class="arrow"></div>
+                    <div class="txt2">7</div>
+                  </div>
+                  <div class="column-1">
+                    <div class="in-idle">Прирост</div>
+                    <div class="in-idle">с начала</div>
+                    <div class="in-idle">месяца</div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
                 <div class="txt2">Несчастные случаи</div>
               </td>
+            </tr>
+          </table>
+        </div>
+      </div>
 
-              <td>
-                <br />
-                <div class="arrow"></div>
-                <div class="txt2">1</div>
-                <br />
-                <div class="in-idle">vs сентябрь</div>
-                <br />
+      <div class="first-string first-string2">
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <td class="size-td">
+                <div class="number">2</div>
+              </td>
+
+              <td class="w-65">
+                <div class="column-1">
+                  <div class="arrow"></div>
+                  <div class="txt2">1</div>
+                </div>
+                <div class="column-1">
+                  <div class="in-idle">Прирост</div>
+                  <div class="in-idle">с начала месяца</div>
+                </div>
               </td>
             </tr>
-
             <tr>
-              <td>
-                <div class="txt4">2</div>
-                <div class="txt2">Смертельных случая</div>
-              </td>
-
-              <td>
-                <br />
-                <div class="arrow"></div>
-                <div class="txt2">1</div>
-                <br />
-                <div class="in-idle">vs сентябрь</div>
-                <br />
+              <td colspan="2">
+                <div class="txt2">Смертельные случаи</div>
               </td>
             </tr>
           </table>
@@ -474,12 +1007,60 @@
 </template>
 
 <script>
-import { EventBus } from "./event-bus.js";
+import { EventBus } from "../../event-bus.js";
+import Calendar from "v-calendar/lib/components/calendar.umd";
+import DatePicker from "v-calendar/lib/components/date-picker.umd";
+Vue.component("calendar", Calendar);
+Vue.component("date-picker", DatePicker);
 export default {
+  components: {
+    Calendar,
+    DatePicker,
+  },
   template: "#vue-status-overview-template",
   data: function () {
     return {
-      index:'',
+      selectedDate: "",
+      range: {
+        start: new Date(2020, 0, 1),
+        end: new Date(2020, 0, 5),
+      },
+
+      tableHover1: "",
+      tableHover2: "",
+      tableHover3: "",
+      tableHover4: "",
+      tableHover5: "",
+      tableHover6: "",
+      tableHover7: "",
+      changeMenuButton1: "",
+      changeMenuButton2: "",
+      changeMenuButton3: "",
+      changeMenuButton4: "",
+      changeMenuButton5: "",
+      Table1: "display:block;",
+      Table2: "display:none;",
+      Table3: "display:none;",
+      Table4: "display:none;",
+      Table5: "display:none;",
+      Table6: "display:none;",
+      Table7: "display:none;",
+      //oil and currency down
+      currencyNow: "",
+      currencyChart: "",
+      currencyNowUsd: "",
+      selectedDMY2: "",
+      selectedDMY: "",
+      periodSelectOil: "",
+      oilPeriod: "",
+      period: "7",
+      periodUSD: "7",
+      company: "",
+      timeSelect: "",
+      oilNow: "",
+      oilChart: "",
+      //oil and currency up
+      index: "",
       widthProgress: "90",
       //showTableItem: "No",]
       DMY: "День",
@@ -499,6 +1080,13 @@ export default {
       buttonHover4: "",
       buttonHover5: "",
       buttonHover6: "",
+
+      tableHover7: "",
+      tableHover8: "",
+      tableHover9: "",
+      tableHover10: "",
+      tableHover11: "",
+      tableHover12: "",
 
       circleMenu: "",
       month: new Date().getMonth(),
@@ -603,10 +1191,340 @@ export default {
       factMonthSumm: "",
       factDaySumm: "",
       planDaySumm: "",
-      unit: "",
+      //unit: "",
     };
   },
   methods: {
+    dayClicked(day) {
+      this.date = day.id;
+    },
+    saveCompany(com) {
+      localStorage.setItem("company", com);
+      var company = localStorage.getItem("company");
+      this.company = company;
+
+      var buttonMenuHover =
+        "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
+        "background-size: 9% auto;" +
+        "background-position: 75% 50%;" +
+        "border: none;" +
+        "height: 40px;" +
+        "pointer-events: none;";
+
+      if (company == "ОМГ") {
+        this.buttonMenuHover1 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover1 = "";
+      }
+      if (company == "КБМ") {
+        this.buttonMenuHover2 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover2 = "";
+      }
+
+      if (company == "КГМ") {
+        this.buttonMenuHover3 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover3 = "";
+      }
+
+      if (company == "ЭМГ") {
+        this.buttonMenuHover4 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover4 = "";
+      }
+
+      if (company == "ММГ") {
+        this.buttonMenuHover5 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover5 = "";
+      }
+
+      if (company == "КТМ") {
+        this.buttonMenuHover6 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover6 = "";
+      }
+
+      if (company == "КОА") {
+        this.buttonMenuHover7 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover7 = "";
+      }
+
+      if (company == "ПКИ") {
+        this.buttonMenuHover8 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover8 = "";
+      }
+
+      if (company == "АГГ") {
+        this.buttonMenuHover9 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover9 = "";
+      }
+
+      if (company == "all") {
+        this.buttonMenuHover10 = buttonMenuHover;
+      } else {
+        this.buttonMenuHover10 = "";
+      }
+
+      this.company = company;
+    },
+    changeTable(change) {
+      this.Table1 = "display:none";
+      this.Table2 = "display:none";
+      this.Table3 = "display:none";
+      this.Table4 = "display:none";
+      this.Table5 = "display:none";
+      this.Table6 = "display:none";
+      this.Table7 = "display:none";
+
+      this.tableHover1 = "";
+      this.tableHover2 = "";
+      this.tableHover3 = "";
+      this.tableHover4 = "";
+      this.tableHover5 = "";
+      this.tableHover6 = "";
+      this.tableHover7 = "";
+      var buttonHover2 = " background: #0d2792";
+
+      if (change == "1") {
+        this.Table1 = "display:block";
+        this.tableHover1 = buttonHover2;
+      } else if (change == "2") {
+        this.Table2 = "display:block";
+        this.tableHover2 = buttonHover2;
+      } else if (change == "3") {
+        this.Table3 = "display:block";
+        this.tableHover3 = buttonHover2;
+      } else if (change == "4") {
+        this.Table4 = "display:block";
+        this.tableHover4 = buttonHover2;
+      } else if (change == "5") {
+        this.Table5 = "display:block";
+        this.tableHover5 = buttonHover2;
+      } else if (change == "6") {
+        this.Table6 = "display:block";
+        this.tableHover6 = buttonHover2;
+      } else if (change == "7") {
+        this.Table7 = "display:block";
+        this.tableHover7 = buttonHover2;
+      }
+    },
+
+    changeMenu(change) {
+      var changeMenuButton = "color: #fff;";
+      this.changeMenuButton1 = "color: ##237deb";
+      this.changeMenuButton2 = "color: ##237deb";
+      this.changeMenuButton3 = "color: ##237deb";
+      this.changeMenuButton4 = "color: ##237deb";
+      this.changeMenuButton5 = "color: ##237deb";
+
+      if (change == "101") {
+        this.changeMenuButton1 = changeMenuButton;
+      }
+
+      if (change == "102") {
+        this.changeMenuButton2 = changeMenuButton;
+      }
+
+      if (change == "103") {
+        this.changeMenuButton3 = changeMenuButton;
+      }
+
+      if (change == "104") {
+        this.changeMenuButton4 = changeMenuButton;
+      }
+
+      if (change == "105") {
+        this.changeMenuButton5 = changeMenuButton;
+      }
+    },
+
+    //currency and oil down
+    periodSelectFunc() {
+      var DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
+      var menuDMY = [];
+      var id = 0;
+      for (let i = 0; i <= 4; i++) {
+        var a = { index: i, id: i };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
+        if (this.selectedDMY == i) {
+          a.current = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+        if (this.selectedDMY2 == i) {
+          a.current2 = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+      }
+
+      if (this.selectedDMY != undefined) {
+      }
+
+      // localStorage.setItem("selectedDMY", this.selectedDMY);
+
+      return menuDMY;
+      // this.periodSelect();
+    },
+
+    periodSelect: function (event) {
+      if (this.selectedDMY == 0) {
+        this.period = 7;
+      }
+      if (this.selectedDMY == 1) {
+        this.period = 30;
+      }
+      if (this.selectedDMY == 2) {
+        this.period = 183;
+      }
+      if (this.selectedDMY == 3) {
+        this.period = 365;
+      }
+      if (this.selectedDMY == 4) {
+        this.period = 1825;
+      }
+      return this.getOilNow(this.timeSelect, this.period);
+    },
+
+    periodSelectUSD: function (event) {
+      if (this.selectedDMY2 == 0) {
+        this.periodUSD = 7;
+      }
+      if (this.selectedDMY2 == 1) {
+        this.periodUSD = 30;
+      }
+      if (this.selectedDMY2 == 2) {
+        this.periodUSD = 183;
+      }
+      if (this.selectedDMY2 == 3) {
+        this.periodUSD = 365;
+      }
+      if (this.selectedDMY2 == 4) {
+        this.periodUSD = 1825;
+      }
+      return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    },
+
+    timeSelect2(select) {
+      //this.timeSelect = select;
+    },
+
+    getCurrencyNow: function (dates) {
+      var datas;
+      let uri = "/ru/getcurrency?fdate=" + dates + "";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          //console.log(data);
+          this.currencyNow = parseInt(data.description * 10) / 10;
+          this.currencyNowUsd = parseInt(data.description * 10) / 10;
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+
+    getCurrencyPeriod: function (dates, item2) {
+      var dates = dates;
+      let uri =
+        "/ru/getcurrencyperiod?dates=" + dates + "&period=" + item2 + " ";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          var arrdata2 = [];
+          _.forEach(data, function (item) {
+            arrdata2.push({ dates: item.dates, value: item.description["0"] });
+          });
+
+          //var currencyChart = Array({ data: arrdata2 });
+          this.$emit("currencyChart", arrdata2);
+          //this.currencyChart = currencyChart;
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+
+    getOilNow: function (dates, period) {
+      var datas;
+      let uri = "/js/json/graph_1006.json";
+      //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+        if (data) {
+          var oilDate;
+          var oilDate2;
+          var oilValue;
+          var splits = [];
+          var oil = [];
+          var oil2;
+          _.forEach(data.prices, function (prices) {
+            splits = prices.toString().split(",");
+            oilValue = splits["1"];
+            oilDate = Number(splits["0"]);
+
+            (oilDate2 = new Date(oilDate).toLocaleString("ru", {
+              year: "numeric",
+              day: "numeric",
+              month: "numeric",
+              timeZone: "Europe/Moscow",
+            })),
+              oil.push({
+                dateSimple: oilDate,
+                date: oilDate2,
+                value: oilValue,
+              });
+          });
+
+          var oil2 = [];
+
+          oil2 = _.filter(oil, _.iteratee({ date: dates }));
+
+          if (oil2.length != "0") {
+            this.oilNow = oil2[0].value;
+          } else {
+            oil2 = _.last(oil);
+            /*var oilNow2=oil.value;
+            oilNow2=oilNow2.toFixed(1);*/
+
+            this.oilNow = parseInt(oil2.value * 10) / 10; //Number(oil2.value).toFixed(2);
+          }
+
+          var datesNow = [];
+          datesNow = dates.split(".");
+          var day = datesNow[0];
+          var month = datesNow[1].replace(/^0+/, "");
+          var year = datesNow[2];
+
+          var timestampToday = new Date(
+            this.monthes2[month - 1] + day + " " + year + " 06:00:00 GMT+0600"
+          ).getTime();
+
+          //console.log(timestampToday);
+          var dateInOil = [];
+
+          dateInOil = _.filter(oil, function (item) {
+            return _.every([
+              _.inRange(
+                item.dateSimple,
+                timestampToday - 86400000 * Number(period),
+                timestampToday + 86400000
+              ),
+            ]);
+          });
+          //this.oilChart=    [_.takeRight(oil, 31)];
+          // this.oilChart = [dateInOil];
+          this.$emit("oilChart", dateInOil);
+        } else {
+          console.log("No data");
+        }
+      });
+    },
+    //currency and oil up
     pushBign(bign) {
       switch (bign) {
         case "bign1":
@@ -625,12 +1543,12 @@ export default {
       this.$modal.show(bign);
     },
     displaynumbers: function (event) {
-      console.log(event);
+      // console.log(event);
       return this.getProduction(this.item, this.item2, this.item3, this.item4);
     },
-    displayMessage: function (message) {
+    /*displayMessage: function (message) {
       this.company = message;
-    },
+    },*/
     getCompany() {},
 
     getColor(status) {
@@ -654,7 +1572,8 @@ export default {
             this.year == new Date().getFullYear() &&
             this.month == new Date().getMonth()
           ) {
-            a.current = "#13B062";
+            //a.current = "#13B062";
+            a.current = "#007aff";
           }
 
           if (
@@ -829,7 +1748,7 @@ export default {
       this.item3 = item3;
       this.item4 = item4;
 
-      this.unit = item4;
+      // this.unit = item4;
 
       if (this.selectedDay == undefined) {
         var timeSelect =
@@ -846,7 +1765,8 @@ export default {
           "." +
           this.year;
       }
-      EventBus.$emit("timeSelect", timeSelect);
+      this.timeSelect = timeSelect;
+      //EventBus.$emit("timeSelect", timeSelect);
 
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
@@ -1586,6 +2506,7 @@ export default {
           var NameDzoFull = this.NameDzoFull;
 
           var dzo2 = new Array();
+          var dzoBriefly2 = new Array();
           var name;
           _.each(dzo, function (dzo) {
             if (String(dzo) === "ОМГ") {
@@ -1601,8 +2522,10 @@ export default {
             } else if (String(dzo) === "КБМ") {
               name = NameDzoFull[3];
             }
+            var dzoBriefly = dzo;
             dzo = name;
 
+            dzoBriefly2.push({ dzoBriefly });
             dzo2.push({ dzo });
           });
 
@@ -1665,6 +2588,7 @@ export default {
           this.productionForChart = productionForChart;
 
           var tables = _.zipWith(
+            _.sortBy(dzoBriefly2, (dzoBriefly) => dzoBriefly.dzoBriefly),
             _.sortBy(dzo2, (dzo) => dzo.dzo),
             _.sortBy(liq_fact2, (liq_fact) => liq_fact.liq_fact),
             _.sortBy(liq_plan2, (liq_plan) => liq_plan.liq_plan),
@@ -1817,6 +2741,7 @@ export default {
           this.wells = wells;
 
           var buttonHover = "border: none;" + " background: #2E50E9";
+
           //"    background-size: 100% auto;" +
           //" background-color: #1c6fb6;";
 
@@ -2018,6 +2943,7 @@ export default {
         var starts_prs = [];
         var starts_drl = [];
         var NameDzoFull = this.NameDzoFull;
+        var dzoBriefly = [];
         _.forEach(dataDay, function (item) {
           if (String(item.dzo) === "ОМГ") {
             name = NameDzoFull[1];
@@ -2032,6 +2958,8 @@ export default {
           } else if (String(item.dzo) === "КБМ") {
             name = NameDzoFull[3];
           }
+
+          dzoBriefly.push({ dzoBriefly: item.dzo });
           e = { dzoDay: name };
           f = { factDay: Math.ceil(item[productionFact]) };
           p = { planDay: Math.ceil(item[productionPlan]) };
@@ -2171,6 +3099,7 @@ export default {
 
         if (this.company == "all") {
           var bigTable = _.zipWith(
+            dzoBriefly,
             dzoYear,
             dzoMonth,
             factYear,
@@ -2183,6 +3112,7 @@ export default {
             factDay,
             planDay,
             (
+              dzoBriefly,
               dzoYear,
               dzoMonth,
               factYear,
@@ -2196,6 +3126,7 @@ export default {
               planDay
             ) =>
               _.defaults(
+                dzoBriefly,
                 dzoYear,
                 dzoMonth,
                 factYear,
@@ -2242,11 +3173,33 @@ export default {
 
           this.starts = starts;
 
+          this.$emit("data", productionForChart);
+
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
         }
       });
 
+      this.showTable(localStorage.getItem("changeButton"));
+
+      //this.getCurrencyNow(this.timeSelect);
+      // this.getOilNow(this.timeSelect, this.period);
+      //this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+
+      //return factDaySumm;
+    },
+
+    changeButton(showTableItem, changeButton) {
+      var a;
+      if (changeButton == "Yes") {
+        if (showTableItem == "Yes") {
+          a = "No";
+        } else {
+          a = "Yes";
+        }
+        this.showTable2 = a;
+        localStorage.setItem("changeButton", a);
+      }
       this.showTable(localStorage.getItem("changeButton"));
     },
 
@@ -2297,14 +3250,14 @@ export default {
     },
   },
 
-  created: function () {
+  /*created: function () {
     EventBus.$on("messageSend", this.displayMessage);
-  },
+  },*/
 
   computed: {
-    selectedDay2: function () {
+    /* selectedDay2: function () {
       this.getProduction("oil_plan", "oil_fact", "Добыча нефти", "тн");
-    },
+    },*/
     dayChange: function () {
       $("#ids").change(function () {
         alert("Works");
@@ -2324,6 +3277,10 @@ export default {
       this.changeButton("No");
     }
     localStorage.setItem("selectedDMY", "undefined");
+
+    this.getCurrencyNow(this.timeSelect);
+    this.getOilNow(this.timeSelect, this.period);
+    this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
   },
 };
 </script>

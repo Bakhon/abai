@@ -21,7 +21,7 @@
             <td rowspan="4" @click="sortBy('h_up_perf_vd')">Число качаний</td>
             <td rowspan="4" @click="sortBy('h_up_perf_vd')">Длина хода</td>
             <td rowspan="4" @click="sortBy('h_up_perf_vd')">Q теор</td>
-            <td rowspan="4" @click="sortBy('freq')"><span>Частота работы насоса или число оборотов</span></td>
+            <td rowspan="4" @click="sortBy('freq')">Частота работы насоса или число оборотов</td>
             <td rowspan="4" @click="sortBy('h_pump_set')">Н сп насоса</td>
             <td rowspan="4" @click="sortBy('h_up_perf_vd')">P буф</td>
             <td rowspan="4" @click="sortBy('h_up_perf_vd')">P лин</td>
@@ -257,83 +257,83 @@
             <td>{{row.well_type}}</td>
             <td>{{row.horizon}}</td>
             <td>{{row.block}}</td>
-            <td>{{row.r_con}}</td>
-            <td>{{row.cas_OD}}</td>
-            <td>{{row.cas_ID}}</td>
-            <td>{{row.tub_OD}}</td>
-            <td>{{row.tub_ID}}</td>
-            <td>{{row.choke_d}}</td>
-            <td>{{row.h_up_perf_vd}}</td>
-            <td>{{row.h_up_perf_md}}</td>
+            <td>{{Math.round(row.r_con*10)/10}}</td>
+            <td>{{Math.round(row.cas_OD*10)/10}}</td>
+            <td>{{Math.round(row.cas_ID*10)/10}}</td>
+            <td>{{Math.round(row.tub_OD*10)/10}}</td>
+            <td>{{Math.round(row.tub_ID*10)/10}}</td>
+            <td>{{Math.round(row.choke_d*10)/10}}</td>
+            <td>{{Math.round(row.h_up_perf_vd*10)/10}}</td>
+            <td>{{Math.round(row.h_up_perf_md*10)/10}}</td>
             <td>{{row.exp_meth}}</td>
-            <td>{{row.pump_type}}</td>
-            <td>{{row.EMPTY}}</td>
-            <td>{{row.spm}}</td>
-            <td>{{row.stroke_len}}</td>
-            <td>{{row.q_theor}}</td>
-            <td>{{row.freq}}</td>
-            <td>{{row.h_pump_set}}</td>
-            <td>{{row.whp}}</td>
-            <td>{{row.line_p}}</td>
-            <td>{{row.p_res}}</td>
-            <td>{{row.h_dyn}}</td>
-            <td>{{row.p_annular}}</td>
-            <td>{{row.p_intake}}</td>
-            <td>{{row.bhp_prev_m}}</td>
-            <td>{{row.q_l_prev_m}}</td>
-            <td>{{row.wct_prev_m}}</td>
-            <td>{{row.h_dyn_prev_m}}</td>
-            <td>{{row.pi_prev_m}}</td>
-            <td>{{row.bhp}}</td>
-            <td>{{row.q_o}}</td>
-            <td>{{row.q_l}}</td>
-            <td>{{row.wct}}</td>
+            <td>{{Math.round(row.pump_type*10)/10}}</td>
+            <td>{{Math.round(row.EMPTY*10)/10}}</td>
+            <td>{{Math.round(row.spm*10)/10}}</td>
+            <td>{{Math.round(row.stroke_len*10)/10}}</td>
+            <td>{{Math.round(row.q_theor*10)/10}}</td>
+            <td>{{Math.round(row.freq*10)/10}}</td>
+            <td>{{Math.round(row.h_pump_set*10)/10}}</td>
+            <td>{{Math.round(row.whp*10)/10}}</td>
+            <td>{{Math.round(row.line_p*10)/10}}</td>
+            <td>{{Math.round(row.p_res*10)/10}}</td>
+            <td>{{Math.round(row.h_dyn*10)/10}}</td>
+            <td>{{Math.round(row.p_annular*10)/10}}</td>
+            <td>{{Math.round(row.p_intake*10)/10}}</td>
+            <td>{{Math.round(row.bhp_prev_m*10)/10}}</td>
+            <td>{{Math.round(row.q_l_prev_m*10)/10}}</td>
+            <td>{{Math.round(row.wct_prev_m*10)/10}}</td>
+            <td>{{Math.round(row.h_dyn_prev_m*10)/10}}</td>
+            <td>{{Math.round(row.pi_prev_m*10)/10}}</td>
+            <td>{{Math.round(row.bhp*10)/10}}</td>
+            <td>{{Math.round(row.q_o*10)/10}}</td>
+            <td>{{Math.round(row.q_l*10)/10}}</td>
+            <td>{{Math.round(row.wct*10)/10}}</td>
             <td>{{row.well_status_last_day}}</td>
-            <td>{{row.P_bubble_point}}</td>
-            <td>{{row.gor}}</td>
-            <td>{{row.t_res}}</td>
-            <td>{{row.wht}}</td>
-            <td>{{row.grp_skin}}</td>
-            <td>{{row.grp_jd}}</td>
+            <td>{{Math.round(row.P_bubble_point*10)/10}}</td>
+            <td>{{Math.round(row.gor*10)/10}}</td>
+            <td>{{Math.round(row.t_res*10)/10}}</td>
+            <td>{{Math.round(row.wht*10)/10}}</td>
+            <td>{{Math.round(row.grp_skin*10)/10}}</td>
+            <td>{{Math.round(row.grp_jd*10)/10}}</td>
             <td>{{row.grp_date}}</td>
             <td>{{row.grp_contractor}}</td>
-            <td>{{row.visc_oil_rc}}</td>
-            <td>{{row.visc_wat_rc}}</td>
-            <td>{{row.visc_liq_rc}}</td>
-            <td>{{row.bo}}</td>
-            <td>{{row.dens_oil}}</td>
-            <td>{{row.dens_liq}}</td>
-            <td>{{row.h_perf}}</td>
-            <td>{{row.k}}</td>
-            <td>{{row.kh}}</td>
-            <td>{{row.pi}}</td>
-            <td>{{row.tp_idn_bhp}}</td>
-            <td>{{row.tp_idn_liq}}</td>
-            <td>{{row.tp_idn_liq_cas_d_corr}}</td>
-            <td>{{row.tp_idn_oil}}</td>
-            <td>{{row.tp_idn_oil_inc}}</td>
-            <td>{{row.tp_idn_jd}}</td>
-            <td>{{row.tp_idn_skin}}</td>
-            <td>{{row.tp_idn_pi_after}}</td>
-            <td>{{row.tp_idn_grp_q_liq}}</td>
-            <td>{{row.tp_idn_grp_q_liq_cas_d_corr}}</td>
-            <td>{{row.tp_idn_grp_q_oil}}</td>
-            <td>{{row.tp_idn_grp_q_oil_inc}}</td>
-            <td>{{row.tp_idn_q_oil_inc_perc}}</td>
-            <td>{{row.gp_idn_bhp}}</td>
-            <td>{{row.gp_idn_q_liq}}</td>
-            <td>{{row.gp_idn_q_liq_cas_d_corr}}</td>
-            <td>{{row.gp_idn_q_oil}}</td>
-            <td>{{row.gp_idn_q_oil_inc}}</td>
-            <td>{{row.gp_grp_q_liq}}</td>
-            <td>{{row.gp_grp_q_liq_cas_d_corr}}</td>
-            <td>{{row.gp_grp_q_oil}}</td>
-            <td>{{row.gp_grp_q_oil_inc}}</td>
+            <td>{{Math.round(row.visc_oil_rc*10)/10}}</td>
+            <td>{{Math.round(row.visc_wat_rc*10)/10}}</td>
+            <td>{{Math.round(row.visc_liq_rc*10)/10}}</td>
+            <td>{{Math.round(row.bo*10)/10}}</td>
+            <td>{{Math.round(row.dens_oil*10)/10}}</td>
+            <td>{{Math.round(row.dens_liq*10)/10}}</td>
+            <td>{{Math.round(row.h_perf*10)/10}}</td>
+            <td>{{Math.round(row.k*10)/10}}</td>
+            <td>{{Math.round(row.kh*10)/10}}</td>
+            <td>{{Math.round(row.pi*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_bhp*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_liq*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_liq_cas_d_corr*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_oil*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_oil_inc*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_jd*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_skin*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_pi_after*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_grp_q_liq*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_grp_q_liq_cas_d_corr*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_grp_q_oil*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_grp_q_oil_inc*10)/10}}</td>
+            <td>{{Math.round(row.tp_idn_q_oil_inc_perc*10)/10}}</td>
+            <td>{{Math.round(row.gp_idn_bhp*10)/10}}</td>
+            <td>{{Math.round(row.gp_idn_q_liq*10)/10}}</td>
+            <td>{{Math.round(row.gp_idn_q_liq_cas_d_corr*10)/10}}</td>
+            <td>{{Math.round(row.gp_idn_q_oil*10)/10}}</td>
+            <td>{{Math.round(row.gp_idn_q_oil_inc*10)/10}}</td>
+            <td>{{Math.round(row.gp_grp_q_liq*10)/10}}</td>
+            <td>{{Math.round(row.gp_grp_q_liq_cas_d_corr*10)/10}}</td>
+            <td>{{Math.round(row.gp_grp_q_oil*10)/10}}</td>
+            <td>{{Math.round(row.gp_grp_q_oil_inc*10)/10}}</td>
             <td>{{row.error_count}}</td>
             <td>{{row.error_first}}</td>
             <td>{{row.error_warning}}</td>
             <td>{{row.error_first_warning}}</td>
-            <td>{{row.idn_pump_depth_max}}</td>
+            <td>{{Math.round(row.idn_pump_depth_max*10)/10}}</td>
             <td>{{row.stop_date}}</td>
             <td>{{row.layers_count}}</td>
             <td>{{row.zone}}</td>
@@ -343,22 +343,22 @@
             <td>{{row.unsteady_state}}</td>
             <td>{{row.start_up_date}}</td>
             <td>{{row.well_project_purpose}}</td>
-            <td>{{row.bhp_meter}}</td>
-            <td>{{row.oil_net_pay}}</td>
-            <td>{{row.oil_cumulative}}</td>
-            <td>{{row.max_q_liq_hist}}</td>
-            <td>{{row.dist_to_inj_well}}</td>
-            <td>{{row.dist_to_woc}}</td>
-            <td>{{row.curr_bh}}</td>
-            <td>{{row.pump_fillage}}</td>
-            <td>{{row.gzu_type}}</td>
-            <td>{{row.p_res_init}}</td>
-            <td>{{row.q_liq_charac}}</td>
+            <td>{{Math.round(row.bhp_meter*10)/10}}</td>
+            <td>{{Math.round(row.oil_net_pay*10)/10}}</td>
+            <td>{{Math.round(row.oil_cumulative*10)/10}}</td>
+            <td>{{Math.round(row.max_q_liq_hist*10)/10}}</td>
+            <td>{{Math.round(row.dist_to_inj_well*10)/10}}</td>
+            <td>{{Math.round(row.dist_to_woc*10)/10}}</td>
+            <td>{{Math.round(row.curr_bh*10)/10}}</td>
+            <td>{{Math.round(row.pump_fillage*10)/10}}</td>
+            <td>{{Math.round(row.gzu_type*10)/10}}</td>
+            <td>{{Math.round(row.p_res_init*10)/10}}</td>
+            <td>{{Math.round(row.q_liq_charac*10)/10}}</td>
             <td>{{row.APV_t_rab}}</td>
             <td>{{row.APV_t_nak}}</td>
             <td>{{row.plan_izo_work}}</td>
-            <td>{{row.plan_act_q_l}}</td>
-            <td>{{row.plan_act_wct}}</td>
+            <td>{{Math.round(row.plan_act_q_l*10)/10}}</td>
+            <td>{{Math.round(row.plan_act_wct*10)/10}}</td>
             <td>{{row.plan_activities}}</td>
             <td>{{row.plan_casing_info}}</td>
             <td>{{row.plan_comment}}</td>

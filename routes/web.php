@@ -21,6 +21,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get("/geteconimicdata", "EconomicController@getEconomicData");
         Route::get("/getcurrency", "DruidController@getCurrency");
         Route::get("/getcurrencyperiod", "DruidController@getCurrencyPeriod");
+        Route::post("/corrosion", "DruidController@corrosion");
         Route::get('/', function () {
             return view('welcome');
         });
@@ -84,6 +85,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
         Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
+        Route::resource('oilgas','ComplicationMonitoring\OilGasController');
 
 
         //gno economic
@@ -117,7 +119,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
     });
     Auth::routes([
         'reset' => false,
-        'verify' => false,
+        'verify' => true,
         'register' => false,
     ]);
 });
