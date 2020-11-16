@@ -92,6 +92,8 @@ Vue.component('reports-table', require('./components/reports/ReportsTable.vue').
 Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
+Vue.component('fa', require('./components/fa/fa.vue').default);
+Vue.component('tr', require('./components/tr/tr.vue').default);
 
 
 
