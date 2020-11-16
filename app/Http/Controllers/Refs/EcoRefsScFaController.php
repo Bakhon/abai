@@ -133,7 +133,6 @@ class EcoRefsScFaController extends Controller
         $avgprs = $request->avgprs;
         $org = $request->org;
         $equipIdRequest = $request->equip;
-        $serviceTime = $request->time;
         $qZhidkosti = $request->qzh;
         $razrab = $request->razr;
         $qoil = $request->qo;

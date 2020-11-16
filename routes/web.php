@@ -58,7 +58,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
         Route::get('/constructor', 'DruidController@constructor')->name('constructor');
+        Route::get('/tr', 'DruidController@tr')->name('tr');
         Route::get('/export', 'HomeController@export');
+        Route::get('/fa', 'DruidController@fa')->name('fa');
 
 
         //wm
@@ -117,7 +119,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
     });
     Auth::routes([
         'reset' => false,
-        'verify' => false,
+        'verify' => true,
         'register' => false,
     ]);
 });

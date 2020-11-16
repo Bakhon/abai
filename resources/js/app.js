@@ -11,7 +11,7 @@ import { PivotViewPlugin, FieldList } from '@syncfusion/ej2-vue-pivotview';
 import Vue from 'vue';
 import VueFriendlyIframe from 'vue-friendly-iframe';
 import { Plotly } from 'vue-plotly';
-import excel from 'vue-excel-export'; 
+import excel from 'vue-excel-export';
 import 'bootstrap-table/dist/bootstrap-table.js';
 
 
