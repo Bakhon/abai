@@ -30,6 +30,10 @@
         @include('layouts.gno-sidebar')
         @elseif (basename(Request::url()) === "visualcenter3")
         @include('layouts.gno-sidebar')
+        @elseif (basename(Request::url()) === "tr")
+        @include('layouts.gno-sidebar')
+        @elseif (basename(Request::url()) === "fa")
+        @include('layouts.gno-sidebar')
         @endif
 
 
