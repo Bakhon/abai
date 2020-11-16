@@ -8,11 +8,11 @@
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
             <reports-table></reports-table>
-
+<!-- 
                               </div>
-                              <div>
+                              <div style="background: white">
                               <new-reports-table></new-reports-table>
-                              </div>
+                              </div> -->
                               
         </div>
     </div>
