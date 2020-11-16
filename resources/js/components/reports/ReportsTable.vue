@@ -2,9 +2,9 @@
   <div>
     <export-excel
     class   = "btn btn-default"
-    :title = "json_header"
+    
     :data   = "json_data"
-    :fields = "json_fields"
+
     worksheet = "My Worksheet"
     name    = "filename.xls">
  
@@ -99,21 +99,16 @@ export default {
      },
   data: function () {
     return {
-      json_header:{
-        fields: ['custome'], 
-        title: '排序', 
-        titleAlign: 'center', 
-        colspan: 2
-      },
-        json_fields: {
+    
+    //     json_fields: {
       
-      'Месторождение ' : "0.0", 
-        'НГДУ' : 1, 
-        'ЦДНГ' : 2, 
+    //   'Месторождение ' : "0", 
+    //     'НГДУ' : 1, 
+    //     'ЦДНГ' : 2, 
         
         
       
-    },
+    // },
     json_data: [
       {
         name: "Tony Peña",
@@ -171,7 +166,7 @@ export default {
             pageSize: 10,
             pageSizes: [10, 20, 50],
             height: 400,
-            fixed: 1,
+            // fixed: 1,
             headerHeight: 60,
             rowHeight: 60,
             maxWidth:1500,
