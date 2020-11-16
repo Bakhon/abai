@@ -20,6 +20,7 @@
                 <option value="Нуралы">Нуралы</option>
                 <option value="Аксай">Аксай</option>
                 <option value="Аксай Южный">Аксай Южный</option>
+                <option value="Аксай Южный">Аксай Южный</option>
             </select>
         </div>
         <button id="bt1"  @click="swap">Версия для отображения</button>
