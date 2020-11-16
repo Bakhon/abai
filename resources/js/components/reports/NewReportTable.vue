@@ -83,6 +83,12 @@
 
 <script>
 import BootstrapTable from 'bootstrap-table/dist/bootstrap-table-vue.esm.js'
+import 'bootstrap-table/dist/bootstrap-table.min.css'
+// import theme
+import 'bootstrap-table/dist/themes/materialize/bootstrap-table-materialize.min.css'
+
+// import extension
+import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css'
 
 export default {
   components: {
@@ -126,7 +132,8 @@ export default {
       options: {
         search: true,
         showColumns: true,
-        toolbar: true
+        toolbar: true,
+        pagination: true
       },
       org: null,
       month: null,
