@@ -128,21 +128,28 @@ class EcoRefsScFaController extends Controller
 
     public function nnoeco(Request $request){
         $result = [];
-        $workday = $request->workday;
+        //$workday = $request->workday;
         $prs = $request->prs;
-        $avgprs = $request->avgprs;
-        $org = $request->org;
-        $equipIdRequest = $request->equip;
-        $serviceTime = $request->time;
+        //$avgprs = $request->avgprs;
+        //$serviceTime = $request->time;
+
         $qZhidkosti = $request->qzh;
-        $razrab = $request->razr;
         $qoil = $request->qo;
-        $startdate = $request->start;
-        $month = 12;
-        $scorfa = $request->scfa;
         $reqDay = $request->reqd;
         $reqecn = $request->reqecn;
 
+        $org = $request->org;
+        $equipIdRequest = $request->equip;
+        $scorfa = $request->scfa;
+
+        $razrab = 5;
+        $startdate ="2021-01-01";
+        $month = 12;
+
+
+
+
+        $workday=30;
         $monthname=[];
         // Raspredelenie po napravleniyam realizacii NDO
         // To do
@@ -155,6 +162,10 @@ class EcoRefsScFaController extends Controller
         }
 
         $result2=[];
+        $nakoplSvobPotok=null;
+        $discSvobPotok=null;
+        $nakopDiscSvodPotok=null;
+        $npv=null;
 
         foreach($periodc as $element){
 
@@ -170,6 +181,8 @@ class EcoRefsScFaController extends Controller
 
             $ecnParam = 200.96 * pow($qZhidkosti,-0.6565);
             $shgnParam = 88.013 * pow($qZhidkosti,-0.749);
+
+            $discont=EcoRefsDiscontCoefBar::whereMonth('date',$monthname)->first()->discont;
 
             // ------------------------NDO podschet po marshrutam
             // Export BEGIN
@@ -260,8 +273,10 @@ class EcoRefsScFaController extends Controller
             }
 
 
+
             foreach($compRas as $item){
-                $prsCostResults[$item->company_id] = $prs * $avgprs * $item->prs_brigade_cost;
+
+                $prsCostResults[$item->company_id] = $prs * $avgprsday->avg_prs * $item->prs_brigade_cost;
             }
 
 
@@ -495,6 +510,12 @@ class EcoRefsScFaController extends Controller
 
             //return $result;
 
+            $nakoplSvobPotok=$nakoplSvobPotok+$svobodDenPotok[5];
+            $discSvobPotok=$discSvobPotok+$nakoplSvobPotok*$discont;
+            $nakopDiscSvodPotok=$nakopDiscSvodPotok+$discSvobPotok;
+
+            $npv=$npv+($discSvobPotok+$amortizaciyaResult-$buyCostResult);
+
             $vdata2=[
 
                 'monthname'=>$monthname,
@@ -532,7 +553,13 @@ class EcoRefsScFaController extends Controller
                 'kpnResult' => $kpnResult,
                 'chistayaPribyl' => $chistayaPribyl,
                 'buyCostResult' => $buyCostResult,
-                'svobodDenPotok' => $svobodDenPotok
+                'svobodDenPotok' => $svobodDenPotok,
+                'nakopSvobodPotok'=>$nakoplSvobPotok,
+                'nakopDiskSvobodPotok'=>$nakopDiscSvodPotok,
+                'diskSvobodPotok'=>$discSvobPotok,
+                'npv'=>$npv,
+                'shgnParam'=>$shgnParam,
+                'ecnParam'=>$ecnParam
 
 
             ];

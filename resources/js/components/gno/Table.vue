@@ -44,9 +44,9 @@
           </div>
         </modal>
 
-        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-top: -180px; margin-left:100px;">
+        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-left:100px;">
           <div class="modal-bign2">
-            <gno-chart-bar></gno-chart-bar>
+            <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
           </div>
         </modal>
 
@@ -560,10 +560,13 @@ Vue.component("Plotly", Plotly);
 export default {
   data: function () {
     return {
+      expAnalysisData:{},
+
       layout: {
         width: 950,
         height: 450,
         showlegend: true,
+
         xaxis: {
           hoverformat: ".1f",
           //  showline: true,
@@ -676,6 +679,8 @@ export default {
         analysisBox7: false,
         analysisBox8: false,
         menu: "main",
+        prs1:null,
+        prs2:null,
     };
   },
 
@@ -856,8 +861,82 @@ export default {
         this.$modal.show('modalOldWell');
       }
     },
-    ExpAnalysisMenu() {
-      this.$modal.show('modalExpAnalysis')
+    ExpAnalysisMenu(){
+      let uri = "http://172.20.103.187:7575/api/nno/";
+
+
+        let jsonData = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": "ШГН",
+            }
+        )
+
+        let jsonData2 = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": "ЭЦН",
+            }
+        )
+
+        //console.log("JSON =", jsonData)
+
+
+        this.axios.post(uri, jsonData).then((response) => {
+        //var data = response.data;
+        var data = JSON.parse(response.data.Result)
+        if (data) {
+          console.log("1",data)
+
+          this.expAnalysisData.NNO1=data.NNO
+          this.expAnalysisData.qoil=this.qO
+          this.prs1=data.prs
+
+          //this.$modal.show("modalExpAnalysis");
+
+        } else {
+          console.log("No data");
+        }
+
+        });
+
+
+        this.axios.post(uri, jsonData2).then((response) => {
+        //var data = response.data;
+        var data = JSON.parse(response.data.Result)
+
+
+        if (data) {
+          console.log("2",data)
+          this.expAnalysisData.NNO2=data.NNO
+          this.prs2=data.prs
+
+
+
+        } else {
+          console.log("No data");
+        }
+
+
+
+
+        });
+
+        let uri2= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qO+"&qzh="+this.qL+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn="+this.expAnalysisData.NNO1+"&reqd="+this.prs1+"";
+        this.axios.get(uri2).then((response) => {
+            let data = response.data;
+            if(data) {
+                console.log("eco",data);
+                this.$modal.show("modalExpAnalysis");
+                this.expAnalysisData.ecnParam=data[0].ecnParam
+                this.expAnalysisData.shgnParam=data[0].shgnParam
+                this.expAnalysisData.npv=data[11].npv
+            }
+            else {
+                console.log('No data');
+            }
+        });
+        //zatrElectResults
+
+      //this.$modal.show('modalExpAnalysis')
     },
     PgnoMenu() {
       this.$modal.show('modalPGNO')
@@ -1050,37 +1129,7 @@ export default {
       });
     },
 
-    modalExpAnalysis(){
-        let uri = "http://172.20.103.187:7575/api/nno/";
 
-        let jsonData = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": this.expMeth,
-            }
-        )
-        //console.log("JSON =", jsonData)
-
-        this.axios.post(uri, jsonData).then((response) => {
-        //var data = response.data;
-        var data = JSON.parse(response.data)
-        if (data) {
-          console.log(data)
-
-          this.nno=this.data.map((r) => r.NNO)
-          this.prs=this.data.map((r) => r.prs)
-          //this.$emit('NNO', this.nno)
-          //this.$emit('PRS', this.prs)
-
-          this.$modal.show("showEconomicModal");
-
-        } else {
-          console.log("No data");
-        }
-
-      });
-
-
-    }
   },
   beforeCreate: function() {
     let uri = "http://172.20.103.187:7575/api/pgno/0046/";

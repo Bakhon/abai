@@ -181,7 +181,7 @@ export default {
 
   mounted(){
     console.log(this.wellNumber)
-    let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber;
+    let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber+"/incl";
     this.axios.get(uri).then((response) => {
 
         var data = JSON.parse(response.data.InclData)
