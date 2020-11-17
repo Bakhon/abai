@@ -127,6 +127,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('abd35','VizCenter\Abd35Controller');
         Route::resource('abd46','VizCenter\Abd46Controller');
         Route::get('kpicalc','VizCenter\Marab2Controller@kpicalculation');
+        Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
 
     });
     Auth::routes([
