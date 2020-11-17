@@ -1,5 +1,10 @@
 <template>
-  <Plotly :data="data" :layout="layout" :display-mode-bar="false" :config="config"></Plotly>
+  <Plotly
+    :data="data"
+    :layout="layout"
+    :display-mode-bar="false"
+    :config="config"
+  ></Plotly>
 </template>
 
 <script>
@@ -11,16 +16,15 @@ export default {
   name: "mix-chart",
   data: function () {
     return {
-   
-    /*  rendererOptions: {
+      /*  rendererOptions: {
 plotlyConfig: {
 responsive: true,
 displayModeBar: true
 },},*/
-config: {responsive: true},
-      layout: {     
-      autosize: true,
-      width: 680,
+      config: { responsive: true },
+      layout: {
+        autosize: true,
+        width: 680,
         height: 600,
         //      showlegend: false,
         xaxis: {
@@ -61,15 +65,18 @@ config: {responsive: true},
         },
       },
 
-    data:[{
-      x: [1,2,3,4],
-      y: [10,15,13,17],
-      mode:"scatter"
-    }],
+      data: [
+        {
+          x: [1, 2, 3, 4],
+          y: [10, 15, 13, 17],
+          mode: "scatter",
+        },
+      ],
     };
   },
   methods: {
     setValue: function (value) {
+      var mode;
       var productionFactForChart = new Array();
       _.forEach(value, function (item) {
         productionFactForChart.push(item.productionFactForChart);
@@ -87,15 +94,21 @@ config: {responsive: true},
         quantity2.push(i);
       }
 
+      if (quantity <= 1) {
+        mode = "markers";
+      } else {
+        mode = "lines";
+      }
+
       this.data = [
         {
           name: "План",
           x: quantity2,
           y: productionPlanForChart,
-          mode: "lines",
+          mode: mode,
 
           marker: {
-            size: "15",
+            size: "20",
             color: "#a0a7cb",
           },
         },
@@ -103,10 +116,10 @@ config: {responsive: true},
           name: "Факт",
           x: quantity2,
           y: productionFactForChart,
-          mode: "lines",
+          mode: mode,
 
           marker: {
-            size: "15",
+            size: "20",
             color: "#2e50ea",
           },
         },

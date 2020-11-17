@@ -11,16 +11,34 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
-       modelConfig: {
-        type: 'string',
-        mask: 'YYYY.MM.DD', // Uses 'iso' if missing
-      },
-      selectedDate: "",
+      /*calendar*/
       range: {
-        start: new Date(2020, 0, 1),
-        end: new Date(2020, 0, 5),
+        start: "2020-01-01T06:00:00+06:00",
+        end: "2020-01-05T06:00:00+06:00",
       },
-
+      modelConfig: {
+        start: {
+          timeAdjust: '06:00:00',
+          type: 'string',
+          mask: 'YYYY-MM-DDTHH:mm:ssXXX',
+        },
+        end: {
+          timeAdjust: '06:00:00',
+          type: 'string',
+          mask: 'YYYY-MM-DDTHH:mm:ssXXX',
+        },
+      },
+      /*calendar*/
+      oil_factDay: "",
+      oil_planDay: "",
+      oil_dlv_factDay: "",
+      oil_dlv_planDay: "",
+      gas_factDay: "",
+      gas_planDay: "",
+      oil_dlv_factDayProgressBar:"",
+      oil_factDayProgressBar:"",
+      gas_factDayProgressBar:"",      
+      selectedDate: "",
       tableHover1: "",
       tableHover2: "",
       tableHover3: "",
@@ -69,12 +87,17 @@ export default {
       displayTable: "display: none;",
       displayChart: "display: none;",
       showTableOn: "",
+      buttonHover:"border: none;" + " background: #2E50E9;color:white",
       buttonHover1: "",
       buttonHover2: "",
       buttonHover3: "",
       buttonHover4: "",
       buttonHover5: "",
       buttonHover6: "",
+      buttonHover7: "",
+      buttonHover8: "",
+      buttonHover9: "",
+      buttonHover10: "",
 
       tableHover7: "",
       tableHover8: "",
@@ -90,10 +113,10 @@ export default {
       ChartTable: "График",
       date2: new Date().toLocaleString("ru", {
         /*year: 'numeric',
-	month: 'long',
-	day: 'numeric',
-	weekday: 'long',
-	timezone: 'UTC',*/
+  month: 'long',
+  day: 'numeric',
+  weekday: 'long',
+  timezone: 'UTC',*/
         hour: "numeric",
         minute: "numeric",
         //second: 'numeric'
@@ -186,22 +209,11 @@ export default {
       factMonthSumm: "",
       factDaySumm: "",
       planDaySumm: "",
-      //unit: "",
+      timestampToday: "",
+      timestampEnd: "",
     };
   },
   methods: {
-    //When we change date
-       changeDate: function () {
-       //console.log(this.range.start);         
-       this.timeSelect =this.range.start;
-       this.selectedDay=0;
-          this.getProduction(this.item, this.item2, this.item3, this.item4);    
-       },
-      
-
-    /*dayClicked(day) {
-      this.date = day.id;
-    },*/
     saveCompany(com) {
       localStorage.setItem("company", com);
       var company = localStorage.getItem("company");
@@ -319,6 +331,7 @@ export default {
     },
 
     changeMenu(change) {
+      var buttonHover=this.buttonHover;
       var changeMenuButton = "color: #fff;";
       this.changeMenuButton1 = "color: ##237deb";
       this.changeMenuButton2 = "color: ##237deb";
@@ -345,6 +358,41 @@ export default {
       if (change == "105") {
         this.changeMenuButton5 = changeMenuButton;
       }
+
+      
+      if (change == "day") {
+        this.buttonHover7 = buttonHover;
+        this.range.start = new Date();
+        this.range.end = new Date();
+        this.getProduction(this.item, this.item2, this.item3, this.item4);  
+      } else {
+        this.buttonHover7 = "";
+      }
+
+      if (change == "month") {
+        this.buttonHover8 = buttonHover;
+        this.getProduction(this.item, this.item2, this.item3, this.item4);  
+        this.range.start = new Date(new Date().setDate(1));
+        this.range.end = new Date();
+      } else {
+        this.buttonHover8 = "";
+      }
+      
+      if (change == "year") {
+        this.buttonHover9 = buttonHover;
+        this.range.start =  new Date(this.year,'00','01');
+        this.range.end = new Date();
+        this.getProduction(this.item, this.item2, this.item3, this.item4);  
+      } else {
+        this.buttonHover9 = "";
+      }
+
+      if (change == "calendar") {
+        this.buttonHover10 = buttonHover;
+         } else {
+        this.buttonHover10 = "";
+      }
+   
     },
 
     //currency and oil down
@@ -413,12 +461,7 @@ export default {
       return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     },
 
-    timeSelect2(select) {
-      //this.timeSelect = select;
-    },
-
-    getCurrencyNow: function (dates) {
-      var datas;
+    getCurrencyNow(dates) {    
       let uri = "/ru/getcurrency?fdate=" + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
@@ -453,8 +496,8 @@ export default {
       });
     },
 
-    getOilNow: function (dates, period) {
-      var datas;
+    getOilNow(dates, period) {    
+      var timestampToday = this.timestampToday; 
       let uri = "/js/json/graph_1006.json";
       //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then((response) => {
@@ -489,13 +532,13 @@ export default {
           oil2 = _.filter(oil, _.iteratee({ date: dates }));
 
           if (oil2.length != "0") {
-            this.oilNow = oil2[0].value;
+            this.oilNow =Number(oil2[0].value).toFixed(1);
           } else {
             oil2 = _.last(oil);
             /*var oilNow2=oil.value;
             oilNow2=oilNow2.toFixed(1);*/
 
-            this.oilNow = parseInt(oil2.value * 10) / 10; //Number(oil2.value).toFixed(2);
+            this.oilNow = Number(oil2.value).toFixed(1);
           }
 
           var datesNow = [];
@@ -504,11 +547,12 @@ export default {
           var month = datesNow[1].replace(/^0+/, "");
           var year = datesNow[2];
 
-          var timestampToday = new Date(
+        
+          /*var timestampToday = new Date(
             this.monthes2[month - 1] + day + " " + year + " 06:00:00 GMT+0600"
-          ).getTime();
+          ).getTime();*/
 
-          //console.log(timestampToday);
+
           var dateInOil = [];
 
           dateInOil = _.filter(oil, function (item) {
@@ -530,115 +574,24 @@ export default {
     },
     //currency and oil up
     pushBign(bign) {
+      // @click="pushBign('bign1')"
       switch (bign) {
         case "bign1":
           //  this.params.data = this.wellsList;
-          break;
-        case "bign2":
-          // this.params.data = this.OperatingProfitYear;
-          break;
-        case "bign3":
-          //  this.params.data = this.OperatingProfitMonth;
-          break;
-        case "bign4":
-          //  this.params.data = this.prs1;
-          break;
-      }
+          break;      
+            }
       this.$modal.show(bign);
     },
     displaynumbers: function (event) {
       // console.log(event);
       return this.getProduction(this.item, this.item2, this.item3, this.item4);
     },
-    /*displayMessage: function (message) {
-      this.company = message;
-    },*/
-    getCompany() {},
 
     getColor(status) {
-      if (status < "0") return "#b40300";
-      return "#008a17";
+      if (status < "0") return "    margin-top: 28px;border-top: 10px solid #b40300";
+      return "border-bottom: 10px solid #008a17";
     },
 
-    calendar: function () {
-      var days = [];
-      var week = 0;
-      days[week] = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate();
-      for (let i = 1; i <= dlast; i++) {
-        if (new Date(this.year, this.month, i).getDay() != this.dFirstMonth) {
-          var a = { index: i, id: i };
-          days[week].push(a);
-          if (this.selectedDay == i) {
-            a.current = "#232236";
-          } else if (
-            i == new Date().getDate() &&
-            this.year == new Date().getFullYear() &&
-            this.month == new Date().getMonth()
-          ) {
-            //a.current = "#13B062";
-            a.current = "#007aff";
-          }
-
-          if (
-            new Date(this.year, this.month, i).getDay() == 6 ||
-            new Date(this.year, this.month, i).getDay() == 0
-          ) {
-            a.weekend = "#ff0000";
-          }
-        } else {
-          week++;
-
-          days[week] = [];
-          a = { index: i };
-          days[week].push(a);
-          if (this.selectedDay == i) {
-            a.current = "#232236";
-          } else if (
-            i == new Date().getDate() &&
-            this.year == new Date().getFullYear() &&
-            this.month == new Date().getMonth()
-          ) {
-            a.current = "#747ae6";
-          }
-          if (
-            new Date(this.year, this.month, i).getDay() == 6 ||
-            new Date(this.year, this.month, i).getDay() == 0
-          ) {
-            a.weekend = "#ff0000";
-          }
-        }
-      }
-
-      /*	if (days[0].length > 0) {
-					for (let i = days[0].length; i < 7; i++) {
-						days[0].unshift('');
-
-					}
-				}*/
-      this.dayChange;
-      if (this.selectedDMY == "0") {
-        this.display = "block";
-        return days;
-      }
-    },
-
-    decrease: function () {
-      this.month--;
-      if (this.month < 0) {
-        this.month = 12;
-        this.month--;
-        this.year--;
-      }
-    },
-    increase: function () {
-      this.month++;
-      if (this.month > 11) {
-        this.month = -1;
-        this.month++;
-        this.year++;
-      }
-    },
 
     getMonths: function () {
       var monthAll = [];
@@ -653,7 +606,7 @@ export default {
           } else if (
             i == Number(new Date().getMonth() + 1) && //new Date().getMonth() &&
             this.year ==
-              new Date().getFullYear() /* &&
+            new Date().getFullYear() /* &&
         this.month == new Date().getMonth()*/
           ) {
             a.current = "#13B062";
@@ -668,7 +621,7 @@ export default {
 
     getDays: function () {
       var DaysInMonth = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate(); 
+      var dlast = new Date(this.year, this.month + 1, 0).getDate();
       for (let i = 1; i <= dlast; i++) {
         var a = { index: i, id: i };
         DaysInMonth.push(a);
@@ -678,7 +631,7 @@ export default {
 
     getDaysMonth: function () {
       var DaysInMonth = [];
-      var dlast = new Date(this.year, this.selectedMonth, 0).getDate(); 
+      var dlast = new Date(this.year, this.selectedMonth, 0).getDate();
       for (let i = 1; i <= dlast; i++) {
         var a = { index: i, id: i };
         DaysInMonth.push(a);
@@ -746,7 +699,115 @@ export default {
     pad(n) {
       return n < 10 ? "0" + n : n;
     },
+    getProductionOilandGas() {
+      //data from the day
+      let uri = "/js/json/getnkkmg.json";
+      //let uri = "/ru/getnkkmg";
+      this.axios.get(uri).then((response) => {
+        let data = response.data;
+        if (data) {
+
+          var dataDay = [];
+          var timestampToday = this.timestampToday;
+          var factDay = [];
+          var planDay = [];
+
+          var oil_dlv_fact = [];
+          var oil_dlv_plan = [];
+          var gas_plan = [];
+          var gas_fact = [];
+
+
+          dataDay = _.filter(data, _.iteratee({ __time: timestampToday }));
+          dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
+
+          _.forEach(dataDay, function (item) {
+            var f = { factDay: Math.ceil(item['oil_fact']) };
+            var p = { planDay: Math.ceil(item['oil_plan']) };
+            factDay.push(f);
+            planDay.push(p);
+
+            var o = { oil_dlv_fact: Math.ceil(item['oil_dlv_fact']) };
+            var oi = { oil_dlv_plan: Math.ceil(item['oil_dlv_plan']) };
+            oil_dlv_fact.push(o);
+            oil_dlv_plan.push(oi);
+
+            var g = { gas_plan: Math.ceil(item['gas_plan']) };
+            var ga = { gas_fact: Math.ceil(item['gas_fact']) };
+            gas_plan.push(g);
+            gas_fact.push(ga);
+
+          });
+
+          var factDaySumm = _.reduce(
+            factDay,
+            function (memo, item) {
+              return memo + item.factDay;
+            },
+            0
+          );
+
+          var planDaySumm = _.reduce(
+            planDay,
+            function (memo, item) {
+              return memo + item.planDay;
+            },
+            0
+          );
+
+          this.oil_factDay = factDaySumm;
+          this.oil_planDay = planDaySumm;
+          this.oil_factDayProgressBar=(factDaySumm/planDaySumm)*100;
+
+          var oil_dlv_factDay = _.reduce(
+            oil_dlv_fact,
+            function (memo, item) {
+              return memo + item.oil_dlv_fact;
+            },
+            0
+          );
+
+          var oil_dlv_planDay = _.reduce(
+            oil_dlv_plan,
+            function (memo, item) {
+              return memo + item.oil_dlv_plan;
+            },
+            0
+          );
+
+          this.oil_dlv_factDay = oil_dlv_factDay;
+          this.oil_dlv_planDay = oil_dlv_planDay;
+          this.oil_dlv_factDayProgressBar=(oil_dlv_factDay/oil_dlv_planDay)*100;
+
+          var gas_factDay = _.reduce(
+            gas_fact,
+            function (memo, item) {
+              return memo + item.gas_fact;
+            },
+            0
+          );
+
+          var gas_planDay = _.reduce(
+            gas_plan,
+            function (memo, item) {
+              return memo + item.gas_plan;
+            },
+            0
+          );
+
+          this.gas_factDay = gas_factDay;
+          this.gas_planDay = gas_planDay;
+          this.gas_factDayProgressBar=(gas_factDay/gas_planDay)*100;
+        }
+      });
+    },
+
+
+
     getProduction(item, item2, item3, item4) {
+      var timestampToday = this.timestampToday;
+      var timestampEnd = this.timestampEnd
+      var timestampMonthStart = this.timestampToday;
       this.item = item;
       this.item2 = item2;
       this.item3 = item3;
@@ -754,7 +815,7 @@ export default {
 
       // this.unit = item4;
 
-      if (this.selectedDay == undefined) {
+     /* if (this.selectedDay == undefined) {
         var timeSelect =
           this.pad(new Date().getDate()) +
           "." +
@@ -769,8 +830,7 @@ export default {
           "." +
           this.year;
       }
-      this.timeSelect = timeSelect;
-      //EventBus.$emit("timeSelect", timeSelect);
+ */
 
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
@@ -805,10 +865,10 @@ export default {
           //select date filter k1q
           var timestamp = new Date(
             this.monthes2[this.month] +
-              this.selectedDay +
-              " " +
-              this.year +
-              " 06:00:00 GMT+0600"
+            this.selectedDay +
+            " " +
+            this.year +
+            " 06:00:00 GMT+0600"
           ).getTime();
 
           arrdata = _.filter(data, _.iteratee({ dzo: company }));
@@ -822,14 +882,14 @@ export default {
 
           if (this.selectedDMY == 0) {
             //selectedDay by chart
-            var timestampMonthStart = new Date(
+           /* var timestampMonthStart = new Date(
               this.monthes2[this.month] +
-                //this.selectedDay +
-                "1" +
-                " " +
-                SelectYearInMonth +
-                " 06:00:00 GMT+0600"
-            ).getTime();
+              //this.selectedDay +
+              "1" +
+              " " +
+              SelectYearInMonth +
+              " 06:00:00 GMT+0600"
+            ).getTime();*/
 
             var dayInMonth = this.getDays().length;
 
@@ -1170,14 +1230,14 @@ export default {
           //select data by
           if (this.selectedDMY == 1) {
             //select only for month
-            var timestampMonthStart = new Date(
+           /* var timestampMonthStart = new Date(
               this.monthes2[this.selectedMonth - 1] +
-                //this.selectedDay +
-                "1" +
-                " " +
-                SelectYearInMonth +
-                " 06:00:00 GMT+0600"
-            ).getTime();
+              //this.selectedDay +
+              "1" +
+              " " +
+              SelectYearInMonth +
+              " 06:00:00 GMT+0600"
+            ).getTime();*/
 
             var dayInMonth2 = this.getDaysMonth().length;
 
@@ -1210,7 +1270,7 @@ export default {
                   month: "numeric",
                   day: "numeric",
                   /*	weekday: 'long',
-	timezone: 'UTC',
+  timezone: 'UTC',
         hour: "numeric",
         minute: "numeric",*/
                   //second: 'numeric'
@@ -1292,7 +1352,7 @@ export default {
           }
 
           if (this.selectedDMY == 0) {
-            arrdata = _.filter(arrdata, _.iteratee({ __time: timestamp }));
+            arrdata = _.filter(arrdata, _.iteratee({ __time: timestampToday }));
             /*if (arrdata.length == 0) {
             alert(
               "К сожалению на текущую дату нет данных, выберите другую дату"
@@ -1744,11 +1804,7 @@ export default {
 
           this.wells = wells;
 
-          var buttonHover = "border: none;" + " background: #2E50E9";
-
-          //"    background-size: 100% auto;" +
-          //" background-color: #1c6fb6;";
-
+          var buttonHover = this.buttonHover;
           if (productionPlan == "oil_plan") {
             this.buttonHover1 = buttonHover;
           } else {
@@ -1782,7 +1838,8 @@ export default {
             this.buttonHover6 = buttonHover;
           } else {
             this.buttonHover6 = "";
-          }
+          }     
+
         } else {
           console.log("No data");
         }
@@ -1818,58 +1875,17 @@ export default {
           planYear.push(p);
         });
 
-        this.currentMonth = this.monthes3[this.month + 1];
 
-        //console.log(timestampMonthStart);
+
         var selectedDay = this.selectedDay;
-        var monthBigTable;
-        var timestampToday;
-        if (selectedDay == undefined) {
-          timestampToday = new Date(
-            this.monthes2["5"] + "15" + " " + this.year + 
-            " 06:00:00 GMT+0600"
-          ).getTime();
-          this.currentMonth = this.monthes3["6"];
-          monthBigTable = "5";
-        } else {
-          //k1q now
-          timestampToday = new Date(
-            this.range.start
-            //this.monthes2[this.month] +              this.selectedDay +     " " +   this.year +
-              +" 06:00:00 GMT+0600"
-          ).getTime();
+
+        //if (selectedDay == undefined) {     
+       /* var timestampToday = this.timestampToday;
+        var timestampEnd = this.timestampEnd;*/
+        //}
 
 
-         var timestampEnd = new Date(
-            this.range.end
-            //this.monthes2[this.month] +              this.selectedDay +     " " +   this.year +
-              +" 06:00:00 GMT+0600"
-          ).getTime();
-         /* timestampToday = new Date(
-            this.monthes2[this.month] +
-              this.selectedDay +
-              " " +
-              this.year +
-              " 06:00:00 GMT+0600"
-          ).getTime();*/
-          monthBigTable = this.month;
-        }
 
-        /*
-          
-           if (this.selectedDMY == 1) {
-            monthBigTable=this.selectedMonth-1;
-           }*/
-//k1q!!!
-        var timestampMonthStart = new Date(
-          //   this.monthes2[this.selectedMonth] + //change when data upgrade
-          this.monthes2[monthBigTable] +
-            //this.selectedDay +
-            "1" +
-            " " +
-            SelectYearInMonth +
-            " 06:00:00 GMT+0600"
-        ).getTime();
 
         var dayInMonth = this.getDays().length;
         var dataWithMay = new Array();
@@ -1920,6 +1936,8 @@ export default {
         var f = [];
         var p = [];
         var getMonthBigTable = [];
+console.log(dataWithMay);
+
         _.forEach(dataWithMay, function (item) {
           e = { dzo2: item.dzo };
           f = { factMonth: Math.ceil(item[productionFact]) };
@@ -1952,7 +1970,6 @@ export default {
         var dzoDay = [];
         var factDay = [];
         var planDay = [];
-        var getDayTable = [];
         var inj_wells_idle = [];
         var inj_wells_work = [];
         var prod_wells_work = [];
@@ -2199,26 +2216,6 @@ export default {
       });
 
       this.showTable(localStorage.getItem("changeButton"));
-
-      //this.getCurrencyNow(this.timeSelect);
-      // this.getOilNow(this.timeSelect, this.period);
-      //this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-
-      //return factDaySumm;
-    },
-
-    changeButton(showTableItem, changeButton) {
-      var a;
-      if (changeButton == "Yes") {
-        if (showTableItem == "Yes") {
-          a = "No";
-        } else {
-          a = "Yes";
-        }
-        this.showTable2 = a;
-        localStorage.setItem("changeButton", a);
-      }
-      this.showTable(localStorage.getItem("changeButton"));
     },
 
     changeButton(showTableItem, changeButton) {
@@ -2266,32 +2263,27 @@ export default {
         this.showTableOn = showTableOn; //colour button
       }
     },
-  },
-
-  /*created: function () {
-    EventBus.$on("messageSend", this.displayMessage);
-  },*/
- //props: ['changeDate'],
-  computed: {
- 
-
-    /* selectedDay2: function () {
-      this.getProduction("oil_plan", "oil_fact", "Добыча нефти", "тн");
-    },*/
-    
-    dayChange: function () {
-      $("#ids").change(function () {
-        alert("Works");
-      });
-      if (this.dFirstMonth == 0) {
-        //this.day = ["Su", "Mn", "Tu", "We", "Th", "Fr", "Sa"];
-        this.day = ["ВС", "ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ"];
-      }
+    //When we change date
+    changeDate() {
+      //"27.05.2020"
+      this.selectedDay = 0;
+      this.timestampToday = new Date(this.range.start).getTime();
+      this.timestampEnd = new Date(this.range.end).getTime();
+      var nowDate=new Date(this.range.start).toLocaleDateString();      
+      this.timeSelect = nowDate;    
+      this.getProduction(this.item, this.item2, this.item3, this.item4);  
+      this.getProductionOilandGas();
+      this.getCurrencyNow(this.timeSelect);
+    this.getOilNow(this.timeSelect, this.period);
     },
   },
-  
-  async mounted() {   
-     this.selectedYear = this.year;
+
+  async mounted() {
+    var nowDate=new Date().toLocaleDateString();      
+    this.timeSelect = nowDate;
+    this.timestampToday = new Date(this.range.start).getTime();
+    this.timestampEnd = new Date(this.range.end).getTime();
+    this.selectedYear = this.year;
     var productionPlan = localStorage.getItem("production-plan");
     var productionFact = localStorage.getItem("production-fact");
     if (this.company == "all") {
@@ -2299,9 +2291,11 @@ export default {
       this.changeButton("No");
     }
     localStorage.setItem("selectedDMY", "undefined");
-
     this.getCurrencyNow(this.timeSelect);
     this.getOilNow(this.timeSelect, this.period);
     this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    this.getProductionOilandGas();
+  },
+  computed: {
   },
 };

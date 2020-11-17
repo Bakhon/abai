@@ -7,7 +7,9 @@
             <tr>
               <td>
                 <div class="nu">
-                  <div class="number">430</div>
+                  <div class="number">
+                    {{ new Intl.NumberFormat("ru-RU").format(oil_factDay) }}
+                  </div>
                   <div class="unit-vc">тонн</div>
                 </div>
                 <div class="txt1">Добыча нефти</div>
@@ -18,12 +20,11 @@
                     class="progress-bar"
                     role="progressbar"
                     :style="{
-                      width: widthProgress + '%',
+                      width: oil_factDayProgressBar + '%',
                     }"
-                    style="width: 25%"
-                    aria-valuenow="25"
+                    :aria-valuenow="oil_planDay"
                     aria-valuemin="0"
-                    aria-valuemax="100"
+                    :aria-valuemax="oil_factDay"
                   ></div>
                 </div>
                 <br />
@@ -33,7 +34,9 @@
               </td>
               <td>
                 <div class="nu">
-                  <div class="number">430</div>
+                  <div class="number">
+                    {{ new Intl.NumberFormat("ru-RU").format(oil_dlv_factDay) }}
+                  </div>
                   <div class="unit-vc">тн</div>
                 </div>
                 <div class="txt1">Сдача нефти</div>
@@ -44,12 +47,11 @@
                     class="progress-bar"
                     role="progressbar"
                     :style="{
-                      width: widthProgress + '%',
+                      width: oil_dlv_factDayProgressBar + '%',
                     }"
-                    style="width: 25%"
-                    aria-valuenow="25"
+                    :aria-valuenow="oil_dlv_factDay"
                     aria-valuemin="0"
-                    aria-valuemax="100"
+                    :aria-valuemax="oil_dlv_planDay"
                   ></div>
                 </div>
                 <br />
@@ -59,7 +61,9 @@
               </td>
               <td>
                 <div class="nu">
-                  <div class="number">430</div>
+                  <div class="number">
+                    {{ new Intl.NumberFormat("ru-RU").format(gas_factDay) }}
+                  </div>
                   <div class="unit-vc">млрд. м³</div>
                 </div>
                 <div class="txt1">Добыча газа</div>
@@ -71,12 +75,11 @@
                     class="progress-bar"
                     role="progressbar"
                     :style="{
-                      width: widthProgress + '%',
+                      width: gas_factDayProgressBar + '%',
                     }"
-                    style="width: 25%"
-                    aria-valuenow="25"
+                    :aria-valuenow="gas_factDay"
                     aria-valuemin="0"
-                    aria-valuemax="100"
+                    :aria-valuemax="gas_planDay"
                   ></div>
                 </div>
                 <br />
@@ -85,7 +88,7 @@
                 <div class="txt3">vs сентябрь</div>
               </td>
               <td
-                style="width: 200px; border-left: 10px solid #0f1430"
+                style="width: 200px; border-left: 10px solid #0f1430;"
                 @click="changeTable('2')"
                 :style="`${tableHover2}`"
               >
@@ -100,7 +103,7 @@
                 <div class="txt3">vs сентябрь</div>
               </td>
               <td
-                style="width: 200px; border-left: 10px solid #0f1430"
+                style="width: 200px; border-left: 10px solid #0f1430;"
                 @click="changeTable('3')"
                 :style="`${tableHover3}`"
               >
@@ -292,20 +295,20 @@
             <table class="table table2">
               <tr>
                 <td>
-                  <div class="button2">Суточная</div>
+                  <div class="button2"  :style="`${buttonHover7}`" @click="changeMenu('day')">Суточная</div>
                 </td>
                 <td>
-                  <div class="button2">С начала месяца</div>
+                  <div class="button2" :style="`${buttonHover8}`" @click="changeMenu('month')">С начала месяца</div>
                 </td>
                 <td>
-                  <div class="button2">С начала года</div>
+                  <div class="button2" :style="`${buttonHover9}`" @click="changeMenu('year')">С начала года</div>
                 </td>
                 <td class="dropdown3">
-                  <div class="button2" @click="pushBign('bign1')">
+                  <div class="button2" :style="`${buttonHover10}`" @click="changeMenu('calendar')">
                     Календарь
                   </div>
                   <ul class="center-menu2">
-                    <li class="center-li">                
+                    <li class="center-li">
                       <div
                         class="calendar-tab"
                         v-for="(menuDMY, index) in menuDMY()"
@@ -316,54 +319,19 @@
                       >
                         {{ menuDMY.DMY }}
                       </div>
-<br><br>
-                        <date-picker
-                        mode="range"
-                        v-model="range"
-                        is-range
-                        class="m-auto"
-                        :model-config="modelConfig"
-                        @input="changeDate"
-                      />
+                      <br /><br />
 
-                     <!-- <div class="month-day">
-                        <div
-                          class="navigation-table"
-                          v-bind:style="{ display: display }"
-                        >
-                          <div class="navigation">
-                            <div v-on:click="decrease"><</div>
-                          </div>
-                          <div class="navigation-month navigation" colspan="5">
-                            {{ monthes[month] }} {{ year }}
-                          </div>
-                          <div class="navigation">
-                            <div v-on:click="increase">></div>
-                          </div>
-                        </div>
-                        <div style="clear: both"></div>
-                        <div
-                          class="calendar-days"
-                          v-bind:style="{ display: display }"
-                        >
-                          <div class="day" v-for="d in day">{{ d }}</div>
-                        </div>
-                        <div style="clear: both"></div>
+                      <div class="month-day">
                         <div class="calendar-day">
-                          <div v-for="week in calendar()">
-                            <div
-                              @click="selectedDay = day.index"
-                              class="week"
-                              v-for="(day, index) in week"
-                              :style="{
-                                color: day.weekend,
-                                'background-color': day.current,
-                              }"
-                              v-on:click="displaynumbers"
-                            >
-                              <div class="day-begin">{{ day.index }}</div>
-                            </div>
-                          </div>
+                          <date-picker
+                            v-if="selectedDMY == 0"
+                            mode="range"
+                            v-model="range"
+                            is-range
+                            class="m-auto"
+                            :model-config="modelConfig"
+                            @input="changeDate"
+                          />
                           <div
                             class="week"
                             v-for="(month, index) in getMonths()"
@@ -390,16 +358,32 @@
                             {{ year.index }}
                           </div>
                         </div>
-                      </div>-->
+                      </div>
                     </li>
                   </ul>
                 </td>
+              </tr>
+
+              <tr>
+              <td>
+<div class="assets4"> Операционные активы</div>
+              </td>
+
+                  <td colspan="2">
+                  <div class="assets4"> 
+Неоперационные активы</div>
+              </td>
+
+                  <td>
+                  <div class="assets4"> 
+Все активы КМГ</div>
+              </td>
               </tr>
             </table>
           </div>
 
           <div class="container-fluid" :style="`${displayTable}`">
-            <table class="table table4">
+            <table class="table4">
               <tbody>
                 <tr>
                   <td class="big-table-hidtd small-td"></td>
@@ -448,9 +432,7 @@
                     <div
                       v-if="item.fact"
                       class="triangle"
-                      :style="`border-top: 10px solid ${getColor(
-                        item.fact - item.plan
-                      )}`"
+                      :style="`${getColor(item.fact - item.plan)}`"
                     ></div>
                     <div class="percent">
                       {{
@@ -465,9 +447,7 @@
                     <div
                       v-if="item.fact"
                       class="triangle"
-                      :style="`border-top: 10px solid ${getColor(
-                        item.fact - item.plan
-                      )}`"
+                      :style="`${getColor(item.fact - item.plan)}`"
                     ></div>
                     <div class="percent">5,2%</div>
                   </td>
@@ -519,9 +499,7 @@
                     <div
                       v-if="factDaySumm"
                       class="triangle"
-                      :style="`border-top: 10px solid ${getColor(
-                        factDaySumm - planDaySumm
-                      )}`"
+                      :style="`${getColor(factDaySumm - planDaySumm)}`"
                     ></div>
                     <div class="percent">
                       {{
@@ -536,9 +514,7 @@
                     <div
                       v-if="factDaySumm"
                       class="triangle"
-                      :style="`border-top: 10px solid ${getColor(
-                        factDaySumm - planDaySumm
-                      )}`"
+                      :style="`${getColor(factDaySumm - planDaySumm)}`"
                     ></div>
                     <div class="percent">5,2%</div>
                   </td>
@@ -546,13 +522,13 @@
               </tbody>
             </table>
           </div>
-
-          <div class="container-fluid" :style="`${displayHeadTables}`">
+          <div class="w-50 table-near-chart2" :style="`${displayHeadTables}`">
+          <div class="container-fluid">
             <table class="table table4">
               <tbody>
                 <tr>
                   <td class="big-table-hidtd small-td"></td>
-                  <td class="big-table-hidtd small-td"></td>
+                 
 
                   <td class="small-td">
                     <div class="center">план</div>
@@ -564,6 +540,7 @@
                     <div class="center">+/-</div>
                   </td>
                   <td class="small-td"><div class="center">%</div></td>
+                   <td class="big-table-hidtd small-td"></td>
                 </tr>
 
                 <tr v-for="(item, index) in bigTable">
@@ -575,7 +552,7 @@
                   >
                     {{ item.dzoDay }}
                   </td>
-                  <td class="w-50"></td>
+                 
 
                   <td
                     :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
@@ -597,14 +574,12 @@
                     <div
                       v-if="item.factDay"
                       class="triangle"
-                      :style="`border-top: 10px solid ${getColor(
-                        item.factDay - item.planDay
-                      )}`"
+                      :style="`${getColor(item.factDay - item.planDay)}`"
                     ></div>
                     <div class="percent">
                       {{
                         new Intl.NumberFormat("ru-RU").format(
-                          item.factDay - item.planDay
+                          Math.abs(item.factDay - item.planDay)
                         )
                       }}
                       <div class="right">{{ item4 }}</div>
@@ -614,12 +589,12 @@
                     <div
                       v-if="item.factDay"
                       class="triangle"
-                      :style="`border-top: 10px solid ${getColor(
-                        item.factDay - item.planDay
-                      )}`"
+                      :style="`${getColor(item.factDay - item.planDay)}`"
                     ></div>
-                    <div class="percent">5,2%</div>
+                    <div class="percent">5,2%</div>                 
+                    
                   </td>
+
                 </tr>
 
                 <!--  <tr>
@@ -644,9 +619,7 @@
                   >
                     Итого по операционным активам:
                   </td>
-                  <td>
-                    <div class="vc-chart"><vc-chart> </vc-chart></div>
-                  </td>
+                 
 
                   <td
                     :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
@@ -668,14 +641,12 @@
                     <div
                       v-if="factDaySumm"
                       class="triangle"
-                      :style="`border-top: 10px solid ${getColor(
-                        factDaySumm - planDaySumm
-                      )}`"
+                      :style="`${getColor(factDaySumm - planDaySumm)}`"
                     ></div>
                     <div class="percent">
                       {{
                         new Intl.NumberFormat("ru-RU").format(
-                          factDaySumm - planDaySumm
+                          Math.abs(factDaySumm - planDaySumm)
                         )
                       }}
                       <div class="right">{{ item4 }}</div>
@@ -685,9 +656,7 @@
                     <div
                       v-if="factDaySumm"
                       class="triangle"
-                      :style="`border-top: 10px solid ${getColor(
-                        factDaySumm - planDaySumm
-                      )}`"
+                      :style="`${getColor(factDaySumm - planDaySumm)}`"
                     ></div>
                     <div class="percent">5,2%</div>
                   </td>
@@ -695,6 +664,9 @@
               </tbody>
             </table>
           </div>
+           </div>
+          <div class="w-50 vc-chart"><vc-chart> </vc-chart></div>
+         
         </div>
       </div>
 
@@ -780,7 +752,13 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt4">{{ wells2[0].prod_wells_work }}</div>
+                <div class="txt4">
+                  {{
+                    new Intl.NumberFormat("ru-RU").format(
+                      wells2[0].prod_wells_work
+                    )
+                  }}
+                </div>
                 <div class="in-work">В работе</div>
                 <div class="arrow"></div>
                 <div class="txt2">48</div>
@@ -791,7 +769,13 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt4">{{ wells2[0].prod_wells_idle }}</div>
+                <div class="txt4">
+                  {{
+                    new Intl.NumberFormat("ru-RU").format(
+                      wells2[0].prod_wells_idle
+                    )
+                  }}
+                </div>
                 <div class="in-idle">В простое</div>
                 <div class="arrow"></div>
                 <div class="txt2">200</div>
@@ -819,7 +803,13 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt4">{{ wells[0].inj_wells_work }}</div>
+                  <div class="txt4">
+                    {{
+                      new Intl.NumberFormat("ru-RU").format(
+                        wells[0].inj_wells_work
+                      )
+                    }}
+                  </div>
                   <div class="in-work">В работе</div>
                   <div class="arrow"></div>
                   <div class="txt2">48</div>
@@ -830,7 +820,13 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt4">{{ wells[0].inj_wells_work }}</div>
+                  <div class="txt4">
+                    {{
+                      new Intl.NumberFormat("ru-RU").format(
+                        wells[0].inj_wells_work
+                      )
+                    }}
+                  </div>
                   <div class="in-idle">В простое</div>
                   <div class="arrow"></div>
                   <div class="txt2">200</div>
