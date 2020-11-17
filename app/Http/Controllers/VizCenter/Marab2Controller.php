@@ -135,6 +135,10 @@ class Marab2Controller extends Controller
         return redirect()->route('marab2.index')->with('success',__('app.deleted'));
     }
 
+    public function kpiList(){
+        return view('marab2.list');
+    }
+
     public function kpicalculation(Request $request)
     {
         $result = [];
