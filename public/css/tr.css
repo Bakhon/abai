@@ -1,0 +1,123 @@
+td.fitwidth {
+    width: 1px;
+    white-space: nowrap;
+}
+
+
+.but {
+    height: min-content
+}
+
+.nav {
+    position: initial;
+    width: 1850px;
+    left: 30px;
+    top: 1px;
+    height: 77px;
+    flex-wrap: initial;
+}
+
+.sizing {
+    max-width: 92% !important;
+  }
+
+
+.but-nav__link {
+
+    font-weight: inherit;
+    line-height: 3;
+    text-decoration: none;
+    margin-right: 124px;
+    padding: 10px 15px;
+    border: 3px solid #0638E9;
+    box-sizing: border-box;
+    border-radius: 20px;
+    font-family: Roboto;
+    font-style: normal;
+    font-size: 17px;
+    color: #FFFFFF;
+}
+
+.headerColumn {
+    background:#0D1E63;
+}
+
+.headerColumn td {
+    text-align: center;
+    vertical-align: middle !important;
+    font-size: 12px;
+    width: 64px;
+    cursor: pointer;
+}
+
+.headerColumn td span {
+    display: block;
+    /* width: 164px;
+    height: 164px; */
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.table .subHeaderColumn td {
+    vertical-align: middle;
+}
+
+.verticalTableHeader {
+    width: 64.26px;
+    text-align: center;
+    vertical-align: middle !important;
+    height: 165.2px;
+    font-size: 12px;
+    /* -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg); */
+
+}
+.verticalTableHeader p {
+    margin:0 -100% ;
+    display:inline-block;
+}
+.verticalTableHeader p:before{
+    content:'';
+    width:0;
+    padding-top:100%;/* takes width as reference, + 10% for faking some extra padding */
+    display:inline-block;
+    vertical-align:bottom;
+}
+table {
+    text-align:center;
+    table-layout : fixed;
+    width:150px
+}
+
+.ce {
+    position: relative;
+    top: 54.7901% !important;
+    bottom: 66.58%;
+    background: rgb(13, 30, 99) none repeat scroll 0% 0%;
+    left: 14px !important;
+    right: 20px;
+    border-right-style: solid;
+    display: inline;
+}
+
+.buto {
+    position: relative;
+    top: -97px;
+    right: -14px;
+    border-top-width: 0px;
+    border-top-style: solid;
+    border-bottom-width: 0px;
+    border-bottom-style: solid;
+}
+
+.dataga {
+    position: absolute;
+    bottom: -188.033px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}

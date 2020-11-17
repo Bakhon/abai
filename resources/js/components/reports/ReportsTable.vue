@@ -2,8 +2,9 @@
   <div>
     <export-excel
     class   = "btn btn-default"
-    :params   = "params.data"
-    :fields = "json_fields"
+    
+    :data   = "json_data"
+
     worksheet = "My Worksheet"
     name    = "filename.xls">
  
@@ -98,28 +99,38 @@ export default {
      },
   data: function () {
     return {
-        json_data: [
-            {
-                'name': 'Tony Peña',
-                'city': 'New York',
-                'country': 'United States',
-                'birthdate': '1978-03-15',
-                'phone': {
-                    'mobile': '1-541-754-3010',
-                    'landline': '(541) 754-3010'
-                }
-            },
-            {
-                'name': 'Thessaloniki',
-                'city': 'Athens',
-                'country': 'Greece',
-                'birthdate': '1987-11-23',
-                'phone': {
-                    'mobile': '+1 855 275 5071',
-                    'landline': '(2741) 2621-244'
-                }
-            }
-        ],
+    
+    //     json_fields: {
+      
+    //   'Месторождение ' : "0", 
+    //     'НГДУ' : 1, 
+    //     'ЦДНГ' : 2, 
+        
+        
+      
+    // },
+    json_data: [
+      {
+        name: "Tony Peña",
+        city: "New York",
+        country: "United States",
+        birthdate: "1978-03-15",
+        phone: {
+          mobile: "1-541-754-3010",
+          landline: "(541) 754-3010",
+        },
+      },
+      {
+        name: "Thessaloniki",
+        city: "Athens",
+        country: "Greece",
+        birthdate: "1987-11-23",
+        phone: {
+          mobile: "+1 855 275 5071",
+          landline: "(2741) 2621-244",
+        },
+      },
+    ],
         json_meta: [
             [
                 {
@@ -155,6 +166,7 @@ export default {
             pageSize: 10,
             pageSizes: [10, 20, 50],
             height: 400,
+            // fixed: 1,
             headerHeight: 60,
             rowHeight: 60,
             maxWidth:1500,
@@ -199,7 +211,7 @@ export default {
           let data = response.data;
           if (data) {
             this.params.data = data.wellsList,
-            this.params.json_data = data.excel
+            this.json_data = data.excel
           } else {
             console.log("No data");
           }

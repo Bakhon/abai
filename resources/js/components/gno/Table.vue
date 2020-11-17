@@ -3,33 +3,73 @@
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
 
-        <modal name="bign0" :width="551" :height="780">
+        <modal name="modalIncl" :width="1150" :height="500" style="background:transparent">
           <div class="modal-bign">
             <div class="Table" align="center" x:publishsource="Excel">
-              <gno-incl-table></gno-incl-table>
+              <gno-incl-table :wellNumber="wellNumber"></gno-incl-table>
             </div>
           </div>
         </modal>
 
-        <modal name="bign1" :width="1150" :height="400" :adaptive="true">
-          <div class="modal-bign">
-            <gno-analysis-menu></gno-analysis-menu>>
+
+
+        <modal name="modalOldWell" :width="1150" :height="450" :adaptive="true" >
+          <div class="modal-bign" >
+            <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+          </div>
+          <div class="modal-analysis-menu">
+            <div class="form-check">
+              <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
+            </div>
+            <div class="form-check">
+              <input v-model="analysisBox2" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
+            </div>
+            <div class="form-check">
+              <input v-model="analysisBox3" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот = Рнас*</label>
+            </div>
+            <div class="form-check">
+              <input v-model="analysisBox4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Qж = Qж АСМА</label>
+            </div>
+            <div class="form-check">
+              <input v-model="analysisBox5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
+            </div>
+          </div>
+        </modal>
+        <modal name="modalNewWell" :width="1150" :height="450" :adaptive="true" >
+          <div class="modal-bign" >
+            <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+          </div>
+          <div class="modal-analysis-menu">
+            <div><input v-model="analysisBox6" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Pпл = P по окр.
+            </div>
+            <div><input v-model="analysisBox7" class="checkbox1" @change="postAnalysisNew()" type="checkbox">К пр = К по окр.
+            </div>
+            <div><input v-model="analysisBox8" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Рзаб пот = Рнас*
+            </div>
           </div>
         </modal>
 
-        <modal name="bign2" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-top: -180px; margin-left:100px;">
+        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-left:100px;">
           <div class="modal-bign2">
-            <gno-chart-bar></gno-chart-bar>
+            <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
           </div>
         </modal>
 
-        <modal name="bign3" :width="1150" :height="400" :adaptive="true">
+        <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign3">
             Тест 3
           </div>
         </modal>
         <gno-line-points-chart></gno-line-points-chart>
       </div>
+
+
+
 
       <div class="tables-string-gno4 col-6">
         <div class="tables-string-gno4-inner">
@@ -166,7 +206,9 @@
             ></div>
           </div>
         </div>
-        <div class="tables-string-gno5 col-12" @click="pushBign('bign1')">
+
+
+        <div class="tables-string-gno5 col-12" @click="PotAnalysisMenu()">
           Анализ потенциала скважины
         </div>
       </div>
@@ -216,7 +258,7 @@
             </div>
           </div>
         </div>
-        <div class="tables-string-gno55 col-12" @click="pushBign('bign2')">
+        <div class="tables-string-gno55 col-12" @click="ExpAnalysisMenu()">
           Анализ эффективности способа эксплуатации
         </div>
       </div>
@@ -224,7 +266,7 @@
       <div class="col-12 row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"></div>
       </div>
-      <div class="tables-string-gno6 col-12" @click="pushBign('bign3')">
+      <div class="tables-string-gno6 col-12" @click="PgnoMenu()">
         Подбор ГНО
       </div>
     </div>
@@ -247,7 +289,7 @@
           <input v-model="wellNumber" type="text" @change="getWellNumber(wellNumber)" class="square2" />
         </div>
         <div class="cell4-gno table-border-gno-top col-7">
-          Новая скважина <input v-model="age" @change="updateData()" class="checkbox0" type="checkbox" />
+          Новая скважина <input v-model="age" class="checkbox0" type="checkbox" />
         </div>
         <div
           class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
@@ -326,7 +368,7 @@
           No Data
         </div>
       </div>
-      <div class="inclinom" @click="pushBign('bign0')">Инклинометрия</div>
+      <div class="inclinom" @click="InclMenu()">Инклинометрия</div>
       <div class="spoiler">
         <input
           style="width: 845px; height: 35px;"
@@ -523,14 +565,78 @@
         </div>
       </div>
     </div>
+    <notifications position="top"></notifications>
   </div>
 </template>
 
 <script>
+import { Plotly } from "vue-plotly";
 import { EventBus } from "../../event-bus.js";
+import NotifyPlugin from "vue-easy-notify";
+import 'vue-easy-notify/dist/vue-easy-notify.css'
+
+
+
+Vue.use(NotifyPlugin)
+Vue.component("Plotly", Plotly);
 export default {
   data: function () {
     return {
+      expAnalysisData:{},
+
+      layout: {
+        width: 950,
+        height: 450,
+        showlegend: true,
+
+        xaxis: {
+          hoverformat: ".1f",
+          //  showline: true,
+          zeroline: false,
+          // showgrid: true,
+          // mirror:true,
+          // ticklen: 4,
+          gridcolor: "#123E73",
+          //tickfont: {size: 10},
+        },
+        yaxis: {
+          hoverformat: ".1f",
+          // showline: true,
+          zeroline: false,
+          //showgrid: true,
+          // mirror:true,
+          // ticklen: 4,
+          gridcolor: "#123E73",
+          //tickfont: {size: 10},
+        },
+
+        //   scene:{ gridcolor: '#ffffff',},
+        paper_bgcolor: "#20274e",
+        plot_bgcolor: "#20274e",
+        font: { color: "#fff" },
+
+        legend: {
+          orientation: "h",
+          y: -0.3,
+          font: {
+            size: 12,
+            color: "#fff",
+          },
+        },
+      },
+
+      data: [
+        {
+          name: "IPR (кривая притока)",
+          x: [0,1,3],
+          y: [0,1,3],
+
+          marker: {
+            size: "15",
+            color: "#FF0D18",
+          },
+        },
+        ],
         type: String,
         required: true,
         wellNumber: null,
@@ -555,7 +661,6 @@ export default {
         viscWaterRc: null,
         densOil: null,
         densWater: null,
-        qL: null,
         qO: null,
         wct: null,
         bhp: null,
@@ -586,73 +691,328 @@ export default {
         piCelValue: null,
         expID: null,
         CelValue: null,
+        analysisBox1: true,
+        analysisBox2: true,
+        analysisBox3: true,
+        analysisBox4: true,
+        analysisBox5: true,
+        analysisBox6: true,
+        analysisBox7: true,
+        analysisBox8: true,
+        menu: "MainMenu",
+        grp_skin: false
     };
+
   },
 
   methods: {
+    setData: function(data) {
+      if (this.method == "CurveSetting") {
+        this.pResInput = data["Well Data"]["p_res"][0]
+        this.piInput = data["Well Data"]["pi"][0]
+        this.qLInput = data["Well Data"]["q_l"][0]
+        this.wctInput = data["Well Data"]["wct"][0]
+        this.gorInput = data["Well Data"]["gor"][0]
+        this.bhpInput = data["Well Data"]["bhp"][0]
+        this.hDynInput = data["Well Data"]["h_dyn"][0]
+        this.pAnnularInput = data["Well Data"]["p_annular"][0]
+        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"],
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"],
+        this.pManomInput = 0
+        this.hPumpManomInput = 0
+        this.whpInput = data["Well Data"]["whp"][0]
+        this.curveLineData = JSON.parse(data.LineData)["data"]
+        this.curvePointsData = JSON.parse(data.PointsData)["data"]
+      } else {
+        this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
+        this.age = data["Age"]
+        this.horizon = data["Well Data"]["horizon"][0]
+        this.expMeth = data["Well Data"]["exp_meth"][0]
+        this.tseh = data["Well Data"]["tseh"][0]
+        this.gu = data["Well Data"]["gu"][0]
+        this.casOD = data["Well Data"]["cas_OD"][0]
+        this.casID = data["Well Data"]["cas_ID"][0]
+        this.hPerf = data["Well Data"]["h_perf"][0]
+        this.udl = data["Well Data"]["h_up_perf_md"][0]
+        this.hPumpSet = data["Well Data"]["h_pump_set"][0]
+        this.tubOD = data["Well Data"]["tub_OD"][0]
+        this.tubID = data["Well Data"]["tub_ID"][0]
+        this.stopDate = data["Well Data"]["stop_date"][0]
+        this.pumpType = data["Well Data"]["pump_type"][0]
+        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0]
+        this.gor = data["Well Data"]["gor"][0]
+        this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
+        this.viscOilRc = data["Well Data"]["visc_oil_rc"][0]
+        this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0]
+        this.densOil = data["Well Data"]["dens_oil"][0]
+        this.densWater = data["Well Data"]["dens_liq"][0]
+        this.qL = data["Well Data"]["q_l"][0]
+        this.qO = data["Well Data"]["q_o"][0]
+        this.wct = data["Well Data"]["wct"][0]
+        this.bhp = data["Well Data"]["bhp"][0]
+        this.pRes = data["Well Data"]["p_res"][0]
+        this.hDyn = data["Well Data"]["h_dyn"][0]
+        this.pAnnular = data["Well Data"]["p_annular"][0]
+        this.whp = data["Well Data"]["whp"][0]
+        this.lineP = data["Well Data"]["line_p"][0]
+        this.piInput = data["Well Data"]["pi"][0]
+        this.pResInput = this.pRes
+        this.qLInput = this.qL
+        this.wctInput = this.wct
+        this.gorInput = this.gor
+        this.bhpInput = this.bhp
+        this.hDynInput = this.hDyn
+        this.pAnnularInput = this.pAnnular
+        this.pManomInput = 0
+        this.hPumpManomInput = 0
+        this.whpInput = this.whp
+        this.qlCelButton = true
+        this.qlCelValue = this.qLInput*1
+        this.hPumpValue = this.hPumpSet
+        if (this.expMeth == "ШГН") {
+              this.shgnButton = true;
+        } else {
+              this.shgnButton = false
+        }
+        this.expChoose = this.expMeth
+        this.piButton = true
+        this.curveLineData = JSON.parse(data.LineData)["data"]
+        this.curvePointsData = JSON.parse(data.PointsData)["data"]
+      }
+    },
+    setLine: function (value) {
+      console.log(value)
+      var ipr_points = [];
+      var qo_points = [];
+      var value2 = [];
+      var ipr_points2 = [];
+      var qo_points2 = [];
+
+      _.forEach(value, function (values) {
+        ipr_points = values.ipr_points;
+        qo_points = values.qo_points;
+        ipr_points2.push(ipr_points);
+        qo_points2.push("" + qo_points + "");
+      });
+
+      this.data = [
+        {
+          name: "IPR (кривая притока)",
+          x: qo_points2,
+          y: ipr_points2,
+
+          marker: {
+            size: "15",
+            color: "#FF0D18",
+          },
+        },
+
+        {
+          name: "Текущий режим",
+          x: [40],
+          y: [40],
+          mode: "markers",
+          marker: {
+            size: "15",
+            color: "#00A0E3",
+          },
+        },
+
+        {
+          name: "Потенциальный режим",
+          x: [],
+          y: [],
+          mode: "markers",
+          marker: {
+            size: "15",
+            color: "#FBA409",
+          },
+        },
+        {
+          name: "New Line",
+          x: [],
+          y: [],
+
+          marker: {
+            size: "15",
+            color: "#237DEB",
+          },
+        },
+      ];
+      this.chartOptions = {
+        labels: qo_points2,
+      };
+    },
+    updateLine:  function (value) {
+      var ipr_points = [];
+      var qo_points = [];
+      var ipr_points2 = [];
+      var qo_points2 = [];
+
+      _.forEach(value, function (values) {
+        ipr_points = values.ipr_points;
+        qo_points = values.qo_points;
+        ipr_points2.push(ipr_points);
+        qo_points2.push("" + qo_points + "");
+      });
+      this.data[3]['x'] = qo_points2
+      this.data[3]['y'] = ipr_points2
+      console.log(JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']))
+      if (JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']) && JSON.stringify(this.data[0]['y']) == JSON.stringify(this.data[3]['y'])) {
+        this.data[3]['x'] = []
+        this.data[3]['y'] = []
+      }
+    },
+    setPoints: function (value) {
+      this.data[1]['x'][0] = value[0]["q_l"]
+      this.data[1]['y'][0] = value[0]["p"]
+      this.data[2]['x'][0] = value[1]["q_l"]
+      this.data[2]['y'][0] = value[1]["p"]
+    },
+    PotAnalysisMenu() {
+      this.analysisBox1 = false
+      this.analysisBox2 = false
+      this.analysisBox3 = false
+      this.analysisBox4 = false
+      this.analysisBox5 = false
+      this.setLine(this.curveLineData)
+      this.setPoints(this.curvePointsData)
+      if (this.age) {
+        this.$modal.show('modalNewWell');
+      } else {
+        this.$modal.show('modalOldWell');
+      }
+    },
+    ExpAnalysisMenu(){
+      let uri = "http://172.20.103.187:7575/api/nno/";
+
+
+        let jsonData = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": "ШГН",
+            }
+        )
+
+        let jsonData2 = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": "ЭЦН",
+            }
+        )
+
+        //console.log("JSON =", jsonData)
+
+
+        this.axios.post(uri, jsonData).then((response) => {
+        //var data = response.data;
+        var data = JSON.parse(response.data.Result)
+        if (data) {
+          console.log("1",data)
+
+          this.expAnalysisData.NNO1=data.NNO
+          this.expAnalysisData.qoil=this.qO
+          this.prs1=data.prs
+
+          //this.$modal.show("modalExpAnalysis");
+
+        } else {
+          console.log("No data");
+        }
+
+        });
+
+
+        this.axios.post(uri, jsonData2).then((response) => {
+        //var data = response.data;
+        var data = JSON.parse(response.data.Result)
+
+
+        if (data) {
+          console.log("2",data)
+          this.expAnalysisData.NNO2=data.NNO
+          this.prs2=data.prs
+
+
+
+        } else {
+          console.log("No data");
+        }
+
+
+
+
+        });
+
+        let uri2= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qO+"&qzh="+this.qL+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn="+this.expAnalysisData.NNO1+"&reqd="+this.prs1+"";
+        this.axios.get(uri2).then((response) => {
+            let data = response.data;
+            if(data) {
+                console.log("eco",data);
+                this.$modal.show("modalExpAnalysis");
+                this.expAnalysisData.ecnParam=data[0].ecnParam
+                this.expAnalysisData.shgnParam=data[0].shgnParam
+                this.expAnalysisData.npv=data[11].npv
+            }
+            else {
+                console.log('No data');
+            }
+        });
+        //zatrElectResults
+
+      //this.$modal.show('modalExpAnalysis')
+    },
+    PgnoMenu() {
+      this.$modal.show('modalPGNO')
+    },
+    InclMenu() {
+      this.$modal.show('modalIncl')
+    },
+
     getWellNumber(wellnumber) {
       let uri = "http://172.20.103.187:7575/api/pgno/" + wellnumber;
       this.axios.get(uri).then((response) => {
         var data = response.data;
-        if (data) {
-          this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
-          this.horizon = data["Well Data"]["horizon"][0]
-          this.expMeth = data["Well Data"]["exp_meth"][0]
-          this.tseh = data["Well Data"]["tseh"][0]
-          this.gu = data["Well Data"]["gu"][0]
-          this.casOD = data["Well Data"]["cas_OD"][0]
-          this.casID = data["Well Data"]["cas_ID"][0]
-          this.hPerf = data["Well Data"]["h_perf"][0]
-          this.udl = data["Well Data"]["h_up_perf_md"][0]
-          this.hPumpSet = data["Well Data"]["h_pump_set"][0]
-          this.tubOD = data["Well Data"]["tub_OD"][0]
-          this.tubID = data["Well Data"]["tub_ID"][0]
-          this.stopDate = data["Well Data"]["stop_date"][0]
-          this.pumpType = data["Well Data"]["pump_type"][0]
-          this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
-          this.gor = data["Well Data"]["gor"][0].toFixed(2)
-          this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
-          this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
-          this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
-          this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
-          this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
-          this.qL = data["Well Data"]["q_l"][0].toFixed(2)
-          this.qO = data["Well Data"]["q_o"][0].toFixed(2)
-          this.wct = data["Well Data"]["wct"][0].toFixed(2)
-          this.bhp = data["Well Data"]["bhp"][0].toFixed(2)
-          this.pRes = data["Well Data"]["p_res"][0].toFixed(2)
-          this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(2)
-          this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(2)
-          this.whp = data["Well Data"]["whp"][0].toFixed(2)
-          this.lineP = data["Well Data"]["line_p"][0].toFixed(2)
-          this.piInput = data["Well Data"]["pi"][0].toFixed(2)
-          this.pResInput = this.pRes
-          this.qLInput = this.qL
-          this.wctInput = this.wct
-          this.gorInput = this.gor
-          this.bhpInput = this.bhp
-          this.hDynInput = this.hDyn
-          this.pAnnularInput = this.pAnnular
-          this.pManomInput = 0
-          this.hPumpManomInput = 0
-          this.whpInput = this.whp
-          this.qlCelButton = true
-          this.qlCelValue = this.qLInput
-          this.hPumpValue = this.hPumpSet
-          if (this.expMeth == "ШГН") {
-            this.shgnButton = true;
-          } else {
-            this.shgnButton = false
-          }
-          this.piButton = true
-          this.curveLineData = JSON.parse(data.LineData)["data"]
-          this.curvePointsData = JSON.parse(data.PointsData)["data"]
+
+        if (data["Error"] === "NoData"){
+          Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
+          return this.hdynValue = [this.hDynInput = 0, this.pAnnularInput = 0], this.hDyn, this.lineP, this.casOD, this.tubID, this.bhp, this.bhpInput, this.casID, this.hPerf, this.pumpType, this.hPumpSet, this.hPumpValue, this.wctInput, this.wct, this.whp, this.pRes, this.pResInput, this.wctInput, this.qO, this.qLInput, this.qlCelValue, this.densWater, this.densOil, this.densWater, this.densOil, this.viscWaterRc, this.viscOilRc, this.tRes, this.gor, this.gorInput, this.PBubblePoint, this.tubOD = 0;
+        } else if (data) {
+          this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-        } else {
-          console.log("No data");
         }
-      });
+
+
+        // if (data) {
+        //   this.setData(data)
+        //   this.$emit('LineData', this.curveLineData)
+        //   this.$emit('PointsData', this.curvePointsData)
+
+
+        // } else if (data["Error"] === "NoData"){
+        //   Vue.prototype.$notifyError('Такой скважины нет');
+        //   this.lineP = 0;
+        //   this.whp = 0
+        //   this.setData(data = []);}
+        //   }).catch(function(error) {
+        //   Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
+
+
+
+            // return this.whp, this.pAnnular, this.hDyn, this.pRes, this.bhp, this.wct, this.qO, this.qL, this.densWater, this.densOil  = 0;
+            // this.pAnnular = 0;
+            // this.hDyn = 0;
+            // this.pRes = 0;
+            // this.bhp = 0;
+            // this.wct = 0;
+            // this.qO = 0;
+            // this.qL = 0;
+            // this.densWater = 0;
+            // this.densOil = 0;
+        }
+      );
+
+
+
     },
     postCurveData() {
       let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
@@ -663,137 +1023,219 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-      if (this.curveSelect == 'pi') {
-        this.curveValue = this.piInput
-      } else if (this.curveSelect == 'ql') {
-        this.curveValue = this.qLInput
-      } else if (this.curveSelect == 'bhp') {
-        this.curveValue = this.bhpInput
-      } else if (this.curveSelect == 'hdyn') {
-        this.curveValue = [this.hDynInput, this.pAnnularInput]
-      } else if (this.curveSelect == 'pmanom') {
-        this.curveValue = [this.pManomInput, this.hPumpManomInput]
-      } else if (this.curveSelect == 'whp') {
-        this.curveValue = this.whpInput
-      }
+
+
+
+      // if (this.curveSelect == 'pi') {
+      //   this.curveValue = this.piInput
+      // } else if (this.curveSelect == 'ql') {
+      //   this.curveValue = this.qLInput
+      // } else if (this.curveSelect == 'bhp') {
+      //   this.curveValue = this.bhpInput
+      // } else if (this.curveSelect == 'hdyn') {
+      //   this.curveValue = [this.hDynInput, this.pAnnularInput]
+      // } else if (this.curveSelect == 'pmanom') {
+      //   this.curveValue = [this.pManomInput, this.hPumpManomInput]
+      // } else if (this.curveSelect == 'whp') {
+      //   this.curveValue = this.whpInput
+      // }
       let jsonData = JSON.stringify(
-        {"curveSelect": this.curveSelect,  
-        "curveValue": this.curveValue,
+        {
+        "curveSelect": this.curveSelect,
+        "presValue": this.pResInput,
+        "piValue": this.piInput,
+        "qlValue": this.qLInput,
+        "bhpValue": this.bhpInput,
+        "hdynValue": [this.hDynInput, this.pAnnularInput],
+        "pmanomValue": [this.pManomInput, this.hPumpManomInput],
+        "whpValue": this.whpInput,
         "wctValue": this.wctInput,
         "gorValue": this.gorInput,
         "expSelect": this.expChoose,
         "hPumpValue": this.hPumpValue,
-        "celSelect": this.CelButton, 
-        "celValue": this.CelValue}
+        "celSelect": this.CelButton,
+        "celValue": this.CelValue,
+        "menu": "MainMenu",
+        "well_age": this.age,
+        "grp_skin": true,
+        "analysisBox1": this.analysisBox1,
+        "analysisBox2": this.analysisBox2,
+        "analysisBox3": this.analysisBox3,
+        "analysisBox4": this.analysisBox4,
+        "analysisBox5": this.analysisBox5,
+        "analysisBox6": this.analysisBox6,
+        "analysisBox7": this.analysisBox7,
+        "analysisBox8": this.analysisBox8
+                   }
       )
-      console.log("JSON =", jsonData)
+      // console.log("JSON =", jsonData)
+      this.axios.post(uri, jsonData).then((response) => {
+        var data = response.data;
+        if (data) {
+          this.method = "CurveSetting"
+          this.setData(data)
+          this.$emit('LineData', this.curveLineData)
+          this.$emit('PointsData', this.curvePointsData)
+          } else {
+        }
+      });
+    },
+    postAnalysisOld() {
+      let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
+      if (this.CelButton == 'ql') {
+        this.CelValue = this.qlCelValue
+      } else if (this.CelButton == 'bhp') {
+        this.CelValue = this.bhpCelValue
+      } else if (this.CelButton == 'pin') {
+        this.CelValue = this.piCelValue
+      }
+
+      let jsonData = JSON.stringify(
+        {
+        "curveSelect": this.curveSelect,
+        "presValue": this.pResInput,
+        "piValue": this.piInput,
+        "qlValue": this.qLInput,
+        "bhpValue": this.bhpInput,
+        "hdynValue": [this.hDynInput, this.pAnnularInput],
+        "pmanomValue": [this.pManomInput, this.hPumpManomInput],
+        "whpValue": this.whpInput,
+        "wctValue": this.wctInput,
+        "gorValue": this.gorInput,
+        "expSelect": this.expChoose,
+        "hPumpValue": this.hPumpValue,
+        "celSelect": this.celSelect,
+        "celValue": this.celValue,
+        "menu": "PotencialAnalysis",
+        "well_age": this.age,
+        "grp_skin": true,
+        "analysisBox1": this.analysisBox1,
+        "analysisBox2": this.analysisBox2,
+        "analysisBox3": this.analysisBox3,
+        "analysisBox4": this.analysisBox4,
+        "analysisBox5": this.analysisBox5,
+        "analysisBox6": this.analysisBox6,
+        "analysisBox7": this.analysisBox7,
+        "analysisBox8": this.analysisBox8
+                   }
+      )
+      // console.log("JSON =", jsonData)
       this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
           console.log(data)
-          this.pResInput = data["Well Data"]["p_res"][0].toFixed(2)
-          this.piInput = data["Well Data"]["pi"][0].toFixed(2)
-          this.qLInput = data["Well Data"]["q_l"][0].toFixed(2)
-          this.wctInput = data["Well Data"]["wct"][0].toFixed(2)
-          this.gorInput = data["Well Data"]["gor"][0].toFixed(2)
-          this.bhpInput = data["Well Data"]["bhp"][0].toFixed(2)
-          this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(2)
-          this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(2)
-          this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(2),
-          this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(2),
-          this.pManomInput = 0
-          this.hPumpManomInput = 0
-          this.whpInput = data["Well Data"]["whp"][0].toFixed(2)
-          this.curveLineData = JSON.parse(data.LineData)["data"]
-          this.curvePointsData = JSON.parse(data.PointsData)["data"]
-          this.$emit('LineData', this.curveLineData)
-          this.$emit('PointsData', this.curvePointsData)
-        } else {
-          console.log("No data");
+          this.method = "CurveSetting"
+          // this.setData(data)
+          this.newCurveLineData = JSON.parse(data.LineData)["data"]
+          this.newPointsData = JSON.parse(data.PointsData)["data"]
+          this.updateLine(this.newCurveLineData)
+          this.setPoints(this.newPointsData)
+          // this.$emit('LineData', this.curveLineData)
+          // this.$emit('PointsData', this.curvePointsData)
+          } else {
         }
       });
     },
-    pushBign(bign) {
-      switch (bign) {
-        case "bign1":
+    postAnalysisNew() {
+      console.log("POST NEW WELL")
+      let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
+      if (this.CelButton == 'ql') {
+        this.CelValue = this.qlCelValue
+      } else if (this.CelButton == 'bhp') {
+        this.CelValue = this.bhpCelValue
+      } else if (this.CelButton == 'pin') {
+        this.CelValue = this.piCelValue
+      }
+
+      let jsonData = JSON.stringify(
+        {
+        "curveSelect": this.curveSelect,
+        "presValue": this.pResInput,
+        "piValue": this.piInput,
+        "qlValue": this.qLInput,
+        "bhpValue": this.bhpInput,
+        "hdynValue": [this.hDynInput, this.pAnnularInput],
+        "pmanomValue": [this.pManomInput, this.hPumpManomInput],
+        "whpValue": this.whpInput,
+        "wctValue": this.wctInput,
+        "gorValue": this.gorInput,
+        "expSelect": this.expChoose,
+        "hPumpValue": this.hPumpValue,
+        "celSelect": this.celSelect,
+        "celValue": this.celValue,
+        "menu": "MainMenu",
+        "well_age": this.age,
+        "grp_skin": true,
+        "analysisBox1": this.analysisBox1,
+        "analysisBox2": this.analysisBox2,
+        "analysisBox3": this.analysisBox3,
+        "analysisBox4": this.analysisBox4,
+        "analysisBox5": this.analysisBox5,
+        "analysisBox6": this.analysisBox6,
+        "analysisBox7": this.analysisBox7,
+        "analysisBox8": this.analysisBox8
+        }
+      )
+      // console.log("JSON =", jsonData)
+      this.axios.post(uri, jsonData).then((response) => {
+        var data = response.data;
+        if (data) {
+          console.log(data)
+          this.method = "CurveSetting"
+          // this.setData(data)
+          this.newCurveLineData = JSON.parse(data.LineData)["data"]
+          this.newPointsData = JSON.parse(data.PointsData)["data"]
+          this.updateLine(this.newCurveLineData)
+          this.setPoints(this.newPointsData)
           // this.$emit('LineData', this.curveLineData)
           // this.$emit('PointsData', this.curvePointsData)
-          break;
-        case "bign2":
-          // this.params.data = this.OperatingProfitYear;
-          break;
-        case "bign3":
-          //  this.params.data = this.OperatingProfitMonth;
-          break;
-        case "bign4":
-          //  this.params.data = this.prs1;
-          break;
-      }
-      this.$modal.show(bign);
+          } else {
+        }
+      });
     },
+
+
   },
   beforeCreate: function() {
     let uri = "http://172.20.103.187:7575/api/pgno/0046/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
-          console.log(data)
-          this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
-          this.horizon = data["Well Data"]["horizon"][0]
-          this.expMeth = data["Well Data"]["exp_meth"][0]
-          this.tseh = data["Well Data"]["tseh"][0]
-          this.gu = data["Well Data"]["gu"][0]
-          this.casOD = data["Well Data"]["cas_OD"][0]
-          this.casID = data["Well Data"]["cas_ID"][0]
-          this.hPerf = data["Well Data"]["h_perf"][0]
-          this.udl = data["Well Data"]["h_up_perf_md"][0]
-          this.hPumpSet = data["Well Data"]["h_pump_set"][0]
-          this.tubOD = data["Well Data"]["tub_OD"][0]
-          this.tubID = data["Well Data"]["tub_ID"][0]
-          this.stopDate = data["Well Data"]["stop_date"][0]
-          this.pumpType = data["Well Data"]["pump_type"][0]
-          this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
-          this.gor = data["Well Data"]["gor"][0].toFixed(2)
-          this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
-          this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
-          this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
-          this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
-          this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
-          this.qL = data["Well Data"]["q_l"][0].toFixed(2)
-          this.qO = data["Well Data"]["q_o"][0].toFixed(2)
-          this.wct = data["Well Data"]["wct"][0].toFixed(2)
-          this.bhp = data["Well Data"]["bhp"][0].toFixed(2)
-          this.pRes = data["Well Data"]["p_res"][0].toFixed(2)
-          this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(2)
-          this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(2)
-          this.whp = data["Well Data"]["whp"][0].toFixed(2)
-          this.lineP = data["Well Data"]["line_p"][0].toFixed(2)
-          this.piInput = data["Well Data"]["pi"][0].toFixed(2)
-          this.pResInput = this.pRes + " ат"
-          this.qLInput = this.qL
-          this.wctInput = this.wct
-          this.gorInput = this.gor
-          this.bhpInput = this.bhp
-          this.hDynInput = this.hDyn
-          this.pAnnularInput = this.pAnnular
-          this.pManomInput = 0
-          this.hPumpManomInput = 0
-          this.whpInput = this.whp
-          this.qlCelButton = true
-          this.expChoose = this.expMeth
-          this.piButton = true
-          this.curveLineData = JSON.parse(data.LineData)["data"]
-          this.curvePointsData = JSON.parse(data.PointsData)["data"]
-          this.hPumpValue = this.hPumpSet
+          this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
         } else {
           console.log("No data");
         }
       });
-    
-  },
-  
 
+  },
 };
 </script>
+
+<style scoped>
+.modalOldWell {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.checkbox-modal-analysis-menu-label {
+  font-family: 'Courier New', Courier, monospace;
+  margin-right: px;
+  font-size: 13.5px;
+}
+
+.checkbox-modal-analysis-menu {
+  margin-left: -15px;
+}
+
+.modal-analysis-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+div {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+}
+</style>
