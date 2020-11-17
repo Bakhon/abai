@@ -69,7 +69,8 @@ public function getProtoOtchet1(Request $request)
         }
         $result = $builder->groupBy();
         $array = $result->data();
-        $data['wellsList'] =  [['Месторождение 0', 
+        $data['wellsList'] =  [[
+            'Месторождение ', 
         'НГДУ', 
         'ЦДНГ', 
         'ГУ', 

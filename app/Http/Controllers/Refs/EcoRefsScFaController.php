@@ -513,7 +513,6 @@ class EcoRefsScFaController extends Controller
             $nakoplSvobPotok=$nakoplSvobPotok+$svobodDenPotok[5];
             $discSvobPotok=$discSvobPotok+$nakoplSvobPotok*$discont;
             $nakopDiscSvodPotok=$nakopDiscSvodPotok+$discSvobPotok;
-
             $npv=$npv+($discSvobPotok+$amortizaciyaResult-$buyCostResult);
 
             $vdata2=[
@@ -560,8 +559,6 @@ class EcoRefsScFaController extends Controller
                 'npv'=>$npv,
                 'shgnParam'=>$shgnParam,
                 'ecnParam'=>$ecnParam
-
-
             ];
 
             array_push($result2,$vdata2);

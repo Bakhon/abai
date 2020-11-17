@@ -824,5 +824,13 @@ return $response;
             return "Error. Invalid url";
         }
     }
-    ///
+
+    public function tr()
+    {
+        return view('tr.tr');
+    }    ///
+    public function fa()
+    {
+        return view('fa.fa');
+    }    ///
 }
