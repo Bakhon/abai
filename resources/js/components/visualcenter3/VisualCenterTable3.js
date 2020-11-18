@@ -99,8 +99,8 @@ export default {
       buttonHover8: "",
       buttonHover9: "",
       buttonHover10: "",
-      buttonHover11: "",
-      buttonHover12: "",
+      buttonHover11: "",//this.changeMenuButton,
+      buttonHover12: this.changeMenuButton,
       buttonHover13: "",
 
       tableHover7: "",
@@ -111,7 +111,7 @@ export default {
       tableHover12: "",
 
       circleMenu: "",
-      month: new Date().getMonth(),
+      month: new Date().getMonth()+1,
       year: new Date().getFullYear(),
       currentMonth: [],
       ChartTable: "График",
@@ -336,8 +336,7 @@ export default {
       }
     },
 
-    changeMenu(change) {
-      var buttonHover = this.buttonHover;
+    changeMenu(change) {     
       var changeMenuButton = this.changeMenuButton ;
       this.changeMenuButton1 = "color: ##237deb";
       this.changeMenuButton2 = "color: ##237deb";
@@ -364,44 +363,73 @@ export default {
 
       if (change == "105") {
         this.changeMenuButton5 = changeMenuButton;
-      }
+      }},
 
-
-      if (change == "day") {
+      
+      changeMenu2(change){   
+       
+      var buttonHover = this.buttonHover;
+      if (change == 1) {
+     
         this.buttonHover7 = buttonHover;
-        this.range.start = new Date();
-        this.range.end = new Date();
-        this.getProduction(this.item, this.item2, this.item3, this.item4);
+        this.range ={
+          start: new Date(),
+          end: new Date(),         
+          formatInput: true,
+        };
+        
+        //this.updateValue();
+
+        //this.range.start = new Date();
+        //this.range.end = new Date();
+  
+        this.changeDate();
+       
+        console.log('день'); 
       } else {
         this.buttonHover7 = "";
       }
 
-      if (change == "month") {
-        this.buttonHover8 = buttonHover;
-        this.getProduction(this.item, this.item2, this.item3, this.item4);
-        this.range.start = new Date(new Date().setDate(1));
-        this.range.end = new Date();
+      if (change == 2) {
+        this.buttonHover8 = buttonHover; 
+        this.range ={
+          start:  new Date(this.year+'-'+ this.month  +'-01T06:00:00+06:00'),
+          end: new Date(),
+          formatInput: true,
+        };
+
+       
+       this.changeDate();
       } else {
         this.buttonHover8 = "";
       }
 
-      if (change == "year") {
+      if (change == 3) {
         this.buttonHover9 = buttonHover;
-        this.range.start = new Date(this.year, '00', '01');
-        this.range.end = new Date();
-        this.getProduction(this.item, this.item2, this.item3, this.item4);
+        this.range ={
+          start:  new Date(this.year+'-'+ '01'+'-01T06:00:00+06:00'),
+          end: new Date(),
+          formatInput: true,
+        };
+      //  this.updateValue();      
+        this.changeDate();
       } else {
         this.buttonHover9 = "";
       }
 
-      if (change == "calendar") {
+      if (change == 4) {
         this.buttonHover10 = buttonHover;
       } else {
         this.buttonHover10 = "";
       }
     },
 
-
+  
+      /*updateValue()
+      {this.range, {
+                  formatInput: true,
+        }},*/
+      
     
 
       changeAssets(change) {
@@ -412,14 +440,20 @@ export default {
 
         if (change == "b11") {
           this.buttonHover11 = changeMenuButton;
+          this.NameDzoFull[0]='Итого по операционным активам:';
+          this.changeDate();
         }
   
         if (change == "b12") {
           this.buttonHover12 = changeMenuButton;
+          this.NameDzoFull[0]='Итого по неоперационным активам:';
+          this.changeDate();
         }
   
         if (change == "b13") {
           this.buttonHover13 = changeMenuButton;
+          this.NameDzoFull[0]='Итого по всем активам:';
+          this.changeDate();
         }
 
     },
@@ -2002,7 +2036,7 @@ export default {
           getMonthBigTable.push([e, f, p, oil_fact, oil_plan]);
         });
 
-        var factMonth2 = _.reduce(
+        var factMonth = _.reduce(
           factMonth,
           function (memo, item) {
             return memo + item.productionFact;
@@ -2034,7 +2068,17 @@ export default {
         var starts_drl = [];
         var NameDzoFull = this.NameDzoFull;
         var dzoBriefly = [];
+
+
+
+      if (this.buttonHover12!=''){
+          dzoDay.push({ dzoDay: NameDzoFull[5] }, { dzoDay: NameDzoFull[11] }, { dzoDay: NameDzoFull[12] });
+     }
+     else 
+
+      {
         _.forEach(dataDay, function (item) {
+  
           if (String(item.dzo) === "ОМГ") {
             name = NameDzoFull[1];
           } else if (String(item.dzo) === "ММГ") {
@@ -2047,7 +2091,8 @@ export default {
             name = NameDzoFull[4];
           } else if (String(item.dzo) === "КБМ") {
             name = NameDzoFull[3];
-          }
+          }    
+     
 
           dzoBriefly.push({ dzoBriefly: item.dzo });
           e = { dzoDay: name };
@@ -2064,9 +2109,25 @@ export default {
           starts_krs.push({ starts_krs: item.starts_krs });
           starts_prs.push({ starts_prs: item.starts_prs });
           starts_drl.push({ starts_drl: item.starts_drl });
-        });
-
+        }); 
+      
+      
         dzoDay.push({ dzoDay: NameDzoFull[2] }, { dzoDay: NameDzoFull[9] }, { dzoDay: NameDzoFull[10] });
+      }
+
+      if (this.buttonHover13!=''){
+        dzoDay.push({ dzoDay: NameDzoFull[5] }, { dzoDay: NameDzoFull[11] }, { dzoDay: NameDzoFull[12] });
+   }
+
+
+
+
+    
+           /* if (String(item.dzo) === "ОМГ") {
+              name = NameDzoFull[1];          
+            } */
+
+       
 
        
 
@@ -2195,41 +2256,41 @@ export default {
         if (this.company == "all") {
           var bigTable = _.zipWith(
             dzoBriefly,
-            dzoYear,
+           /* dzoYear,
             dzoMonth,
-            factYear,
+            factYear,*/
             dzo,
             dzo2,
-            planYear,
+           /* planYear,
             planMonth,
-            factMonth,
+            factMonth,*/
             dzoDay,
             factDay,
             planDay,
             (
               dzoBriefly,
-              dzoYear,
+             /*  dzoYear,
               dzoMonth,
-              factYear,
+              factYear,*/
               dzo,
               dzo2,
-              planYear,
+              /*  planYear,
               planMonth,
-              factMonth,
+              factMonth,*/
               dzoDay,
               factDay,
               planDay
             ) =>
               _.defaults(
                 dzoBriefly,
-                dzoYear,
+               /*  dzoYear,
                 dzoMonth,
-                factYear,
+                factYear,*/
                 dzo,
                 dzo2,
-                planYear,
+               /*  planYear,
                 planMonth,
-                factMonth,
+                factMonth,*/
                 dzoDay,
                 factDay,
                 planDay
@@ -2237,6 +2298,8 @@ export default {
           );
 
           this.bigTable = bigTable;
+
+         console.log(bigTable);
 
           var wells = [];
           wells = _.zipWith(
@@ -2355,6 +2418,7 @@ export default {
     this.getOilNow(this.timeSelect, this.period);
     this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     this.getProductionOilandGas();
+    this.changeAssets('b11');
   },
   computed: {
   },

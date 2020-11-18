@@ -126,7 +126,16 @@ body {
     overflow: hidden;
     padding: 0px 30px 10px 0px;
     line-height: 44px;
+    min-width: 105px; 
+}
+
+.table4-2 td {
+    /* width: 100px; */
+    overflow: hidden;
+    padding: 0px 30px 10px 0px;
+    line-height: 525px;
     min-width: 105px;
+    height:50vh;
 }
 
 .table4 {
@@ -422,7 +431,7 @@ td.size-td {
 
 .background-center {
     background-color: #272953!important;
-    height: 63%;
+    /* height: 63%; */
     overflow: hidden;
 }
 
@@ -479,6 +488,15 @@ td.small-td {
     float: left;
     margin-top: 8px;
     margin-left: 5px;
+}
+
+.triangle2 {
+    border: 8px solid transparent;
+    width: 10px;
+    height: 10px;
+    float: left;
+    margin-left: 5px;
+    margin-top: 27vh!important;
 }
 
 .percent {

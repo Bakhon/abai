@@ -81,7 +81,7 @@ displayModeBar: true
   },
   methods: {
     setValue: function (value) {
-      console.log(value);   
+  //    console.log(value);   
       var mode;
       var productionFactForChart = new Array();
       _.forEach(value, function (item) {

@@ -298,7 +298,7 @@
                   <div
                     class="button2"
                     :style="`${buttonHover7}`"
-                    @click="changeMenu('day')"
+                    @click="changeMenu2(1)"
                   >
                     Суточная
                   </div>
@@ -307,7 +307,7 @@
                   <div
                     class="button2"
                     :style="`${buttonHover8}`"
-                    @click="changeMenu('month')"
+                    @click="changeMenu2(2)"
                   >
                     С начала месяца
                   </div>
@@ -316,7 +316,7 @@
                   <div
                     class="button2"
                     :style="`${buttonHover9}`"
-                    @click="changeMenu('year')"
+                    @click="changeMenu2(3)"
                   >
                     С начала года
                   </div>
@@ -325,7 +325,7 @@
                   <div
                     class="button2"
                     :style="`${buttonHover10}`"
-                    @click="changeMenu('calendar')"
+                    @click="changeMenu2(4)"
                   >
                     Календарь
                   </div>
@@ -421,8 +421,8 @@
           </div>
 
           <div :style="`${displayTable}`">
-            <div class="container-fluid w-50 table-near-chart2">
-              <table class="table4">
+            <div class="container-fluid w-50 table-near-chart2 table-responsive">
+              <table class="table4-2">
                 <tbody>
                   <tr>
                     <td class="big-table-hidtd small-td"></td>
@@ -489,8 +489,8 @@
                       "
                     >
                       <div
-                        v-if="item.factDay"
-                        class="triangle"
+                        v-if="item.fact"
+                        class="triangle2"
                         :style="`${getColor(item.fact - item.plan)}`"
                       ></div>
                       <div class="percent font" v-if="item.fact">
@@ -504,13 +504,13 @@
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div
-                        v-if="item.factDay"
-                        class="triangle"
-                        :style="`${getColor(item.factDay - item.planDay)}`"
+                        v-if="item.fact"
+                        class="triangle2"
+                        :style="`${getColor(item.fact - item.plan)}`"
                       ></div>
                       <div class="percent font">5,2%</div>
                     </td>
-                  </tr>
+                  </tr>                  
                 </tbody>
               </table>
             </div>
@@ -609,7 +609,7 @@
 
                   <tr>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
-                      <div class="first-td">Итого по операционным активам:</div>
+                      <div class="first-td">{{NameDzoFull[0]}}</div>
                     </td>
 
                     <td
