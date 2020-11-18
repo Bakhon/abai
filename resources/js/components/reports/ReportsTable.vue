@@ -92,22 +92,16 @@
 
 <script>
 import VueTableDynamic from "vue-table-dynamic";
-
 export default {
   components: {
     VueTableDynamic,
      },
   data: function () {
     return {
-    
-    //     json_fields: {
-      
+    //     json_fields: {      
     //   'Месторождение ' : "0", 
     //     'НГДУ' : 1, 
     //     'ЦДНГ' : 2, 
-        
-        
-      
     // },
     json_data: [
       {
@@ -139,9 +133,6 @@ export default {
                 }
             ]
         ],
-  
-
-
       params: {
         data: [
           ["..."],
