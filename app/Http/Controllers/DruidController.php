@@ -64,6 +64,11 @@ return $response;
         return view('visualcenter.visualcenter3');
     }
 
+    public function visualcenter4()
+    {
+        return view('visualcenter.visualcenter4');
+    }
+
     public function production()
     {
         return view('production.main');

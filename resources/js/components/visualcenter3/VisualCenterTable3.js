@@ -35,9 +35,9 @@ export default {
       oil_dlv_planDay: "",
       gas_factDay: "",
       gas_planDay: "",
-      oil_dlv_factDayProgressBar:"",
-      oil_factDayProgressBar:"",
-      gas_factDayProgressBar:"",      
+      oil_dlv_factDayProgressBar: "",
+      oil_factDayProgressBar: "",
+      gas_factDayProgressBar: "",
       selectedDate: "",
       tableHover1: "",
       tableHover2: "",
@@ -46,6 +46,7 @@ export default {
       tableHover5: "",
       tableHover6: "",
       tableHover7: "",
+      changeMenuButton:"color: #fff;",
       changeMenuButton1: "",
       changeMenuButton2: "",
       changeMenuButton3: "",
@@ -87,7 +88,7 @@ export default {
       displayTable: "display: none;",
       displayChart: "display: none;",
       showTableOn: "",
-      buttonHover:"border: none;" + " background: #2E50E9;color:white",
+      buttonHover: "border: none;" + " background: #2E50E9;color:white",
       buttonHover1: "",
       buttonHover2: "",
       buttonHover3: "",
@@ -98,6 +99,9 @@ export default {
       buttonHover8: "",
       buttonHover9: "",
       buttonHover10: "",
+      buttonHover11: "",
+      buttonHover12: "",
+      buttonHover13: "",
 
       tableHover7: "",
       tableHover8: "",
@@ -282,11 +286,13 @@ export default {
 
       if (company == "all") {
         this.buttonMenuHover10 = buttonMenuHover;
+    
       } else {
         this.buttonMenuHover10 = "";
       }
 
       this.company = company;
+      this.getProduction(this.item, this.item2, this.item3, this.item4);
     },
     changeTable(change) {
       this.Table1 = "display:none";
@@ -331,13 +337,14 @@ export default {
     },
 
     changeMenu(change) {
-      var buttonHover=this.buttonHover;
-      var changeMenuButton = "color: #fff;";
+      var buttonHover = this.buttonHover;
+      var changeMenuButton = this.changeMenuButton ;
       this.changeMenuButton1 = "color: ##237deb";
       this.changeMenuButton2 = "color: ##237deb";
       this.changeMenuButton3 = "color: ##237deb";
       this.changeMenuButton4 = "color: ##237deb";
       this.changeMenuButton5 = "color: ##237deb";
+
 
       if (change == "101") {
         this.changeMenuButton1 = changeMenuButton;
@@ -359,40 +366,62 @@ export default {
         this.changeMenuButton5 = changeMenuButton;
       }
 
-      
+
       if (change == "day") {
         this.buttonHover7 = buttonHover;
         this.range.start = new Date();
         this.range.end = new Date();
-        this.getProduction(this.item, this.item2, this.item3, this.item4);  
+        this.getProduction(this.item, this.item2, this.item3, this.item4);
       } else {
         this.buttonHover7 = "";
       }
 
       if (change == "month") {
         this.buttonHover8 = buttonHover;
-        this.getProduction(this.item, this.item2, this.item3, this.item4);  
+        this.getProduction(this.item, this.item2, this.item3, this.item4);
         this.range.start = new Date(new Date().setDate(1));
         this.range.end = new Date();
       } else {
         this.buttonHover8 = "";
       }
-      
+
       if (change == "year") {
         this.buttonHover9 = buttonHover;
-        this.range.start =  new Date(this.year,'00','01');
+        this.range.start = new Date(this.year, '00', '01');
         this.range.end = new Date();
-        this.getProduction(this.item, this.item2, this.item3, this.item4);  
+        this.getProduction(this.item, this.item2, this.item3, this.item4);
       } else {
         this.buttonHover9 = "";
       }
 
       if (change == "calendar") {
         this.buttonHover10 = buttonHover;
-         } else {
+      } else {
         this.buttonHover10 = "";
       }
-   
+    },
+
+
+    
+
+      changeAssets(change) {
+        var changeMenuButton = this.changeMenuButton ;
+        this.buttonHover11 ="";
+        this.buttonHover12 ="";
+        this.buttonHover13 ="";
+
+        if (change == "b11") {
+          this.buttonHover11 = changeMenuButton;
+        }
+  
+        if (change == "b12") {
+          this.buttonHover12 = changeMenuButton;
+        }
+  
+        if (change == "b13") {
+          this.buttonHover13 = changeMenuButton;
+        }
+
     },
 
     //currency and oil down
@@ -461,7 +490,7 @@ export default {
       return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     },
 
-    getCurrencyNow(dates) {    
+    getCurrencyNow(dates) {
       let uri = "/ru/getcurrency?fdate=" + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
@@ -496,8 +525,8 @@ export default {
       });
     },
 
-    getOilNow(dates, period) {    
-      var timestampToday = this.timestampToday; 
+    getOilNow(dates, period) {
+      var timestampToday = this.timestampToday;
       let uri = "/js/json/graph_1006.json";
       //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then((response) => {
@@ -532,7 +561,7 @@ export default {
           oil2 = _.filter(oil, _.iteratee({ date: dates }));
 
           if (oil2.length != "0") {
-            this.oilNow =Number(oil2[0].value).toFixed(1);
+            this.oilNow = Number(oil2[0].value).toFixed(1);
           } else {
             oil2 = _.last(oil);
             /*var oilNow2=oil.value;
@@ -547,7 +576,7 @@ export default {
           var month = datesNow[1].replace(/^0+/, "");
           var year = datesNow[2];
 
-        
+
           /*var timestampToday = new Date(
             this.monthes2[month - 1] + day + " " + year + " 06:00:00 GMT+0600"
           ).getTime();*/
@@ -578,17 +607,16 @@ export default {
       switch (bign) {
         case "bign1":
           //  this.params.data = this.wellsList;
-          break;      
-            }
+          break;
+      }
       this.$modal.show(bign);
     },
-    displaynumbers: function (event) {
-      // console.log(event);
+    displaynumbers: function (event) {   
       return this.getProduction(this.item, this.item2, this.item3, this.item4);
     },
 
     getColor(status) {
-      if (status < "0") return "    margin-top: 28px;border-top: 10px solid #b40300";
+      if (status < "0") return "    margin-top: 17px;border-top: 10px solid #b40300";
       return "border-bottom: 10px solid #008a17";
     },
 
@@ -757,7 +785,7 @@ export default {
 
           this.oil_factDay = factDaySumm;
           this.oil_planDay = planDaySumm;
-          this.oil_factDayProgressBar=(factDaySumm/planDaySumm)*100;
+          this.oil_factDayProgressBar = (factDaySumm / planDaySumm) * 100;
 
           var oil_dlv_factDay = _.reduce(
             oil_dlv_fact,
@@ -777,7 +805,7 @@ export default {
 
           this.oil_dlv_factDay = oil_dlv_factDay;
           this.oil_dlv_planDay = oil_dlv_planDay;
-          this.oil_dlv_factDayProgressBar=(oil_dlv_factDay/oil_dlv_planDay)*100;
+          this.oil_dlv_factDayProgressBar = (oil_dlv_factDay / oil_dlv_planDay) * 100;
 
           var gas_factDay = _.reduce(
             gas_fact,
@@ -797,7 +825,7 @@ export default {
 
           this.gas_factDay = gas_factDay;
           this.gas_planDay = gas_planDay;
-          this.gas_factDayProgressBar=(gas_factDay/gas_planDay)*100;
+          this.gas_factDayProgressBar = (gas_factDay / gas_planDay) * 100;
         }
       });
     },
@@ -815,22 +843,22 @@ export default {
 
       // this.unit = item4;
 
-     /* if (this.selectedDay == undefined) {
-        var timeSelect =
-          this.pad(new Date().getDate()) +
-          "." +
-          this.pad(this.month + 1) +
-          "." +
-          this.year;
-      } else {
-        var timeSelect =
-          this.pad(this.selectedDay) +
-          "." +
-          this.pad(this.month + 1) +
-          "." +
-          this.year;
-      }
- */
+      /* if (this.selectedDay == undefined) {
+         var timeSelect =
+           this.pad(new Date().getDate()) +
+           "." +
+           this.pad(this.month + 1) +
+           "." +
+           this.year;
+       } else {
+         var timeSelect =
+           this.pad(this.selectedDay) +
+           "." +
+           this.pad(this.month + 1) +
+           "." +
+           this.year;
+       }
+  */
 
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
@@ -863,14 +891,15 @@ export default {
         if (data) {
           var arrdata = new Array();
           //select date filter k1q
-          var timestamp = new Date(
+         /* var timestamp = new Date(
             this.monthes2[this.month] +
             this.selectedDay +
             " " +
             this.year +
             " 06:00:00 GMT+0600"
-          ).getTime();
+          ).getTime();*/
 
+         
           arrdata = _.filter(data, _.iteratee({ dzo: company }));
           //get data by Month
           var SelectYearInMonth; //value
@@ -882,14 +911,14 @@ export default {
 
           if (this.selectedDMY == 0) {
             //selectedDay by chart
-           /* var timestampMonthStart = new Date(
-              this.monthes2[this.month] +
-              //this.selectedDay +
-              "1" +
-              " " +
-              SelectYearInMonth +
-              " 06:00:00 GMT+0600"
-            ).getTime();*/
+            /* var timestampMonthStart = new Date(
+               this.monthes2[this.month] +
+               //this.selectedDay +
+               "1" +
+               " " +
+               SelectYearInMonth +
+               " 06:00:00 GMT+0600"
+             ).getTime();*/
 
             var dayInMonth = this.getDays().length;
 
@@ -899,14 +928,14 @@ export default {
                 _.inRange(
                   item.__time,
                   // 1588291200000, // May 2020
-                  timestampMonthStart,
-                  timestampMonthStart + 86400000 * dayInMonth
+                  timestampToday,
+                  timestampEnd + 86400000 //* dayInMonth
                 ),
               ]);
             });
 
             //for chart
-            var productionPlanForChart = new Array();
+            /*var productionPlanForChart = new Array();
             _.forEach(dataWithMay, function (item) {
               productionPlanForChart.push({
                 productionPlanForChart: item[productionPlan],
@@ -919,6 +948,27 @@ export default {
                 productionFactForChart: item[productionFact],
               });
             });
+
+            var time = new Array(); 
+            _.forEach(dataWithMay, function (item) {
+              time.push({
+                time: item.__time,
+              });
+            });*/
+
+            var productionForChart = _(dataWithMay)
+            .groupBy("__time")
+            .map((__time, id) => ({
+              time: id,
+              productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
+              productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
+            }))
+            .value();
+            if (this.company != "all") {
+              this.$emit("data", productionForChart); //k1q new
+            }
+
+           
           }
 
           if (this.selectedDMY == 1) {
@@ -1230,14 +1280,14 @@ export default {
           //select data by
           if (this.selectedDMY == 1) {
             //select only for month
-           /* var timestampMonthStart = new Date(
-              this.monthes2[this.selectedMonth - 1] +
-              //this.selectedDay +
-              "1" +
-              " " +
-              SelectYearInMonth +
-              " 06:00:00 GMT+0600"
-            ).getTime();*/
+            /* var timestampMonthStart = new Date(
+               this.monthes2[this.selectedMonth - 1] +
+               //this.selectedDay +
+               "1" +
+               " " +
+               SelectYearInMonth +
+               " 06:00:00 GMT+0600"
+             ).getTime();*/
 
             var dayInMonth2 = this.getDaysMonth().length;
 
@@ -1593,8 +1643,12 @@ export default {
             dzo2.push({ dzo });
           });
 
+
+
           var productionForChart = [{}];
-          productionForChart = _.zipWith(
+
+       
+         /* productionForChart = _.zipWith(
             _.sortBy(
               productionPlanForChart,
               (productionPlanForChart) =>
@@ -1646,8 +1700,8 @@ export default {
                 productionPlanForChartYear,
                 productionFactForChartYear
               )
-          );
-
+          );*/
+      
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
 
@@ -1838,7 +1892,7 @@ export default {
             this.buttonHover6 = buttonHover;
           } else {
             this.buttonHover6 = "";
-          }     
+          }
 
         } else {
           console.log("No data");
@@ -1880,8 +1934,8 @@ export default {
         var selectedDay = this.selectedDay;
 
         //if (selectedDay == undefined) {     
-       /* var timestampToday = this.timestampToday;
-        var timestampEnd = this.timestampEnd;*/
+        /* var timestampToday = this.timestampToday;
+         var timestampEnd = this.timestampEnd;*/
         //}
 
 
@@ -1921,6 +1975,7 @@ export default {
         var productionForChart = _(dataWithMay)
           .groupBy("__time")
           .map((__time, id) => ({
+            time: id,
             productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
             productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
           }))
@@ -1936,7 +1991,7 @@ export default {
         var f = [];
         var p = [];
         var getMonthBigTable = [];
-console.log(dataWithMay);
+        //console.log(dataWithMay);
 
         _.forEach(dataWithMay, function (item) {
           e = { dzo2: item.dzo };
@@ -1998,6 +2053,7 @@ console.log(dataWithMay);
           e = { dzoDay: name };
           f = { factDay: Math.ceil(item[productionFact]) };
           p = { planDay: Math.ceil(item[productionPlan]) };
+
           dzoDay.push(e);
           factDay.push(f);
           planDay.push(p);
@@ -2009,6 +2065,10 @@ console.log(dataWithMay);
           starts_prs.push({ starts_prs: item.starts_prs });
           starts_drl.push({ starts_drl: item.starts_drl });
         });
+
+        dzoDay.push({ dzoDay: NameDzoFull[2] }, { dzoDay: NameDzoFull[9] }, { dzoDay: NameDzoFull[10] });
+
+       
 
         var starts_krs = _.reduce(
           starts_krs,
@@ -2207,7 +2267,7 @@ console.log(dataWithMay);
           );
 
           this.starts = starts;
-
+          // console.log(productionForChart);
           this.$emit("data", productionForChart);
 
           productionForChart = { data: productionForChart };
@@ -2269,17 +2329,17 @@ console.log(dataWithMay);
       this.selectedDay = 0;
       this.timestampToday = new Date(this.range.start).getTime();
       this.timestampEnd = new Date(this.range.end).getTime();
-      var nowDate=new Date(this.range.start).toLocaleDateString();      
-      this.timeSelect = nowDate;    
-      this.getProduction(this.item, this.item2, this.item3, this.item4);  
+      var nowDate = new Date(this.range.start).toLocaleDateString();
+      this.timeSelect = nowDate;
+      this.getProduction(this.item, this.item2, this.item3, this.item4);
       this.getProductionOilandGas();
       this.getCurrencyNow(this.timeSelect);
-    this.getOilNow(this.timeSelect, this.period);
+      this.getOilNow(this.timeSelect, this.period);
     },
   },
 
   async mounted() {
-    var nowDate=new Date().toLocaleDateString();      
+    var nowDate = new Date().toLocaleDateString();
     this.timeSelect = nowDate;
     this.timestampToday = new Date(this.range.start).getTime();
     this.timestampEnd = new Date(this.range.end).getTime();

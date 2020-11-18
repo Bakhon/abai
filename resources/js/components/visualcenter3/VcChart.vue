@@ -22,15 +22,20 @@ responsive: true,
 displayModeBar: true
 },},*/
       config: { responsive: true },
-      layout: {
+      layout: { 
         autosize: true,
-        width: 680,
-        height: 600,
-        //      showlegend: false,
+        width: 780,
+        height: 545,
+        //      showlegend: false,    
         xaxis: {
-          hoverformat: ".1f",
-          // showline: true,
-          zeroline: false,
+            type: 'date',
+            tickformat: '%d. %m. %Y',
+          /*range:[new Date('2020, 01, 1').getTime(),
+          new Date('2020, 01, 5').getTime()],*/
+             
+         // hoverformat: ".1f",
+          showline: false,
+          zeroline: false ,
           showgrid: false,
           // mirror:true,
           // ticklen: 4,
@@ -76,6 +81,7 @@ displayModeBar: true
   },
   methods: {
     setValue: function (value) {
+      console.log(value);   
       var mode;
       var productionFactForChart = new Array();
       _.forEach(value, function (item) {
@@ -87,12 +93,22 @@ displayModeBar: true
         productionPlanForChart.push(item.productionPlanForChart);
       });
 
+    var quantity2 = new Array();
+      _.forEach(value, function (item) {
+        quantity2.push(item.time);
+        //quantity2.push(new Date(Number(item.time)).toLocaleDateString());
+      });
+
+      //console.log(quantity2);
+       // console.log(productionPlanForChart);
+
+
       var quantity = value.length;
 
-      var quantity2 = [];
+    /*  var quantity2 = [];
       for (let i = 1; i <= quantity; i++) {
         quantity2.push(i);
-      }
+      }*/
 
       if (quantity <= 1) {
         mode = "markers";
@@ -101,9 +117,12 @@ displayModeBar: true
       }
 
       this.data = [
+      
+         
         {
           name: "План",
-          x: quantity2,
+           x :quantity2,
+         // x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],//quantity2,
           y: productionPlanForChart,
           mode: mode,
 
@@ -114,7 +133,10 @@ displayModeBar: true
         },
         {
           name: "Факт",
-          x: quantity2,
+
+           x :quantity2,
+         // x: ['1', '2', '3','5','10'],
+        //  x: ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],//quantity2,
           y: productionFactForChart,
           mode: mode,
 
@@ -123,6 +145,7 @@ displayModeBar: true
             color: "#2e50ea",
           },
         },
+       
       ];
     },
   },
