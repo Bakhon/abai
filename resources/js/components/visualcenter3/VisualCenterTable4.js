@@ -336,8 +336,7 @@ export default {
       }
     },
 
-    changeMenu(change) {
-      var buttonHover = this.buttonHover;
+    changeMenu(change) {     
       var changeMenuButton = this.changeMenuButton ;
       this.changeMenuButton1 = "color: ##237deb";
       this.changeMenuButton2 = "color: ##237deb";
@@ -364,10 +363,14 @@ export default {
 
       if (change == "105") {
         this.changeMenuButton5 = changeMenuButton;
-      }
+      }},
 
+      
+      changeMenu2(change){   
+        console.log('день');   
+      var buttonHover = this.buttonHover;
+      if (change == "1") {
 
-      if (change == "day") {
         this.buttonHover7 = buttonHover;
         this.range.start = new Date();
         this.range.end = new Date();
@@ -376,16 +379,16 @@ export default {
         this.buttonHover7 = "";
       }
 
-      if (change == "month") {
-        this.buttonHover8 = buttonHover;
-        this.getProduction(this.item, this.item2, this.item3, this.item4);
+      if (change == "2") {
+        this.buttonHover8 = buttonHover;      
         this.range.start = new Date(new Date().setDate(1));
         this.range.end = new Date();
+        this.getProduction(this.item, this.item2, this.item3, this.item4);
       } else {
         this.buttonHover8 = "";
       }
 
-      if (change == "year") {
+      if (change == "3") {
         this.buttonHover9 = buttonHover;
         this.range.start = new Date(this.year, '00', '01');
         this.range.end = new Date();
@@ -394,7 +397,7 @@ export default {
         this.buttonHover9 = "";
       }
 
-      if (change == "calendar") {
+      if (change == "4") {
         this.buttonHover10 = buttonHover;
       } else {
         this.buttonHover10 = "";

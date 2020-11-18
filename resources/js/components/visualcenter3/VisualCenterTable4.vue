@@ -298,7 +298,7 @@
                   <div
                     class="button2"
                     :style="`${buttonHover7}`"
-                    @click="changeMenu('day')"
+                    @click="changeMenu2('1')"
                   >
                     Суточная
                   </div>
@@ -307,7 +307,7 @@
                   <div
                     class="button2"
                     :style="`${buttonHover8}`"
-                    @click="changeMenu('month')"
+                    @click="changeMenu2('2')"
                   >
                     С начала месяца
                   </div>
@@ -316,7 +316,7 @@
                   <div
                     class="button2"
                     :style="`${buttonHover9}`"
-                    @click="changeMenu('year')"
+                    @click="changeMenu2('3')"
                   >
                     С начала года
                   </div>
@@ -325,7 +325,7 @@
                   <div
                     class="button2"
                     :style="`${buttonHover10}`"
-                    @click="changeMenu('calendar')"
+                    @click="changeMenu2('4')"
                   >
                     Календарь
                   </div>
@@ -999,4 +999,4 @@
     </div>
   </div>
 </template>
-<script src="./VisualCenterTable3.js"></script>
+<script src="./VisualCenterTable4.js"></script>
