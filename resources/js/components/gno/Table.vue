@@ -942,23 +942,35 @@ export default {
 
         });
 
-        let uri2= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qO+"&qzh="+this.qL+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn="+this.expAnalysisData.NNO1+"&reqd="+this.prs1+"";
+        let uri2= "/ru/nnoeco?avgprs=3&equip=1&org=5&qo="+this.qO+"&qzh="+this.qL+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn=2&reqd="+this.expAnalysisData.NNO1+"";
+
         this.axios.get(uri2).then((response) => {
             let data = response.data;
             if(data) {
-                console.log("eco",data);
-                this.$modal.show("modalExpAnalysis");
+                //console.log("eco",this.qO,this.qL);
+
                 this.expAnalysisData.ecnParam=data[0].ecnParam
                 this.expAnalysisData.shgnParam=data[0].shgnParam
-                this.expAnalysisData.npv=data[11].npv
+                this.expAnalysisData.shgnNpv=data[11].npv
             }
             else {
                 console.log('No data');
             }
         });
-        //zatrElectResults
 
-      //this.$modal.show('modalExpAnalysis')
+        let uri3= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qO+"&qzh="+this.qL+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn=2&reqd="+this.expAnalysisData.NNO2+"";
+
+        this.axios.get(uri3).then((response) => {
+            let data = response.data;
+            if(data) {
+                //console.log("eco",this.qO,this.qL);
+                this.expAnalysisData.ecnNpv=data[11].npv
+                this.$modal.show("modalExpAnalysis");
+            }
+            else {
+                console.log('No data');
+            }
+        });
     },
     PgnoMenu() {
       this.$modal.show('modalPGNO')
