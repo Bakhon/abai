@@ -1290,7 +1290,7 @@ li.circle-2 {
     background: #102784;
     color: white;
     border-radius: unset;
-    
+    margin: 5px;
 }
 
 .report-btn:hover {
