@@ -270,7 +270,7 @@ class EcoRefsScFaController extends Controller
 
 
             foreach($compRas as $item){
-                $avgprsday = EcoRefsAvgPrs::where('company_id', $item->company_id)->whereMonth('date',$monthname)->first();
+                $avgprsday = EcoRefsAvgPrs::where('company_id', $item->company_id)->first();
                 if($equipIdRequest == 2){
                     $prsResult[$item->company_id] = $reqecn;
                 }
@@ -280,7 +280,7 @@ class EcoRefsScFaController extends Controller
             }
 
             //foreach($compRas as $item){
-            $avgprsday = EcoRefsAvgPrs::where('company_id', $item->company_id)->whereMonth('date',$monthname)->first();
+            $avgprsday = EcoRefsAvgPrs::where('company_id', $item->company_id)->first();
 
             $workday = 365-array_sum($prsResult) * $avgprsday->avg_prs;
 
@@ -292,8 +292,9 @@ class EcoRefsScFaController extends Controller
 
 
 
-            $ecnParam = 200.96 * pow($qZhidkosti,-0.6565);
-            $shgnParam = 88.013 * pow($qZhidkosti,-0.749);
+
+            $ecnParam = 95.343 * pow($qZhidkosti,-0.607)*$qZhidkosti;
+            $shgnParam = 108.29 * pow($qZhidkosti,-0.743)*$qZhidkosti;
 
             foreach($emppersExp as $item){
                 $exportsResults[$item->route_id] = $empper * $item->emp_per;
@@ -305,7 +306,7 @@ class EcoRefsScFaController extends Controller
             }
 
             foreach($equipRas as $item){
-                $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->whereMonth('date',$monthname)->first();
+                $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
                 if($item->equip_id == 1){
                     $zatrElectResults[$item->equip_id] = $workday * $qZhidkosti * $shgnParam * $electCost->elect_cost;
                 }
@@ -328,11 +329,11 @@ class EcoRefsScFaController extends Controller
             $rentCostResult = 0;
 
             if($equipIdRequest == 1){
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->whereMonth('date',$monthname)->first();
+                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
                 $rentCostResult = 0;
             }
             else{
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->whereMonth('date',$monthname)->first();
+                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
                 $rentCostResult = $buyCost->rent_cost * $workday;
             }
 

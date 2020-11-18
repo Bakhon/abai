@@ -700,7 +700,11 @@ export default {
         analysisBox7: true,
         analysisBox8: true,
         menu: "MainMenu",
-        grp_skin: false
+        grp_skin: false,
+        qZhExpEcn:null,
+        qOilExpEcn:null,
+        qZhExpShgn:null,
+        qOilExpShgn:null,
     };
 
   },
@@ -886,6 +890,18 @@ export default {
     ExpAnalysisMenu(){
       let uri = "http://172.20.103.187:7575/api/nno/";
 
+        this.qZhExpEcn=this.qlCelValue
+        this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil*1000
+
+        if (this.qlCelValue<106){
+            this.qZhExpShgn=this.qlCelValue
+            this.qOilExpShgn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil*1000
+
+        } else {
+            this.qZhExpShgn=106
+            this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil*1000
+        }
+
 
         let jsonData = JSON.stringify(
             {"well_number": this.wellNumber,
@@ -909,7 +925,8 @@ export default {
           console.log("1",data)
 
           this.expAnalysisData.NNO1=data.NNO
-          this.expAnalysisData.qoil=this.qO
+          this.expAnalysisData.qoilShgn=this.qOilExpShgn
+          this.expAnalysisData.qoilEcn=this.qOilExpEcn
           this.prs1=data.prs
 
           //this.$modal.show("modalExpAnalysis");
@@ -942,8 +959,7 @@ export default {
 
         });
 
-        let uri2= "/ru/nnoeco?avgprs=3&equip=1&org=5&qo="+this.qO+"&qzh="+this.qL+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn=2&reqd="+this.expAnalysisData.NNO1+"";
-
+        let uri2= "/ru/nnoeco?avgprs=3&equip=1&org=5&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn=2&reqd="+this.expAnalysisData.NNO1+"";
         this.axios.get(uri2).then((response) => {
             let data = response.data;
             if(data) {
@@ -958,7 +974,7 @@ export default {
             }
         });
 
-        let uri3= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qO+"&qzh="+this.qL+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn=2&reqd="+this.expAnalysisData.NNO2+"";
+        let uri3= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn=2&reqd="+this.expAnalysisData.NNO2+"";
 
         this.axios.get(uri3).then((response) => {
             let data = response.data;
