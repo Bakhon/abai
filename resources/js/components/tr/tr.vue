@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-between">
-            <a href="http://127.0.0.1:8000/ru/fa" class="but-nav__link but">Факторный анализ отклонений ТР</a>
+            <a href="fa" class="but-nav__link but">Факторный анализ отклонений ТР</a>
             <form class="form-group but-nav__link">
                     <label for="inputDate">Введите дату:</label>
                     <input type="date" class="form-control" v-model="dt">

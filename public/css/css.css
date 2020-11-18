@@ -926,7 +926,7 @@ ul.dropdown-child {
 
 .row {
     width:1525px; 
-    overflow: hidden;
+    /* overflow: hidden; */
     width: 100%;
     margin-right: unset;
     margin-left: unset;
