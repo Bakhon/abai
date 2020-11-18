@@ -60,6 +60,7 @@ class OmgCAController extends Controller
         $omgca->well_id = ($request->well_id) ? $request->well_id : NULL;
         $omgca->date = date("Y-m-d H:i", strtotime($request->date));
         $omgca->plan_dosage = ($request->plan_dosage) ? $request->plan_dosage : NULL;
+        $omgca->q_v = ($request->q_v) ? $request->q_v : NULL;
         $omgca->cruser_id = Auth::user()->id;
         $omgca->save();
 

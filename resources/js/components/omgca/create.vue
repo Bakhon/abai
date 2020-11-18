@@ -1,70 +1,29 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-        <label >Месторождение</label>
+        <label >Год</label>
         <div class="form-label-group">
-            <select class="form-control"  name="field" v-model="field" v-show="fields.length > 0">
-            <option v-for="row in fields" v-bind:value="row.id">{{ row.name }}</option>
+            <select class="form-control"  name="year" v-model="year" v-show="years.length > 0">
+            <option v-for="row in years" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
+        <label>Qв, тыс.м³/год</label>
+        <div class="form-label-group">
+            <input type="number" step="0.0001" name="q_v" class="form-control" placeholder="">
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-4 col-md-4">
         <label>ГУ</label>
         <div class="form-label-group">
             <select class="form-control"  name="gu_id" v-model="gu" @change="chooseGu($event)">
             <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
-        <label>
-            Дата и время
-
-        </label>
-        <div class="form-label-group2">
-        <datetime
-        type="date" v-model="datetimeEmpty" input-class="date"
-        value-zone="Asia/Almaty"
-        zone="Asia/Almaty"
-        :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
-        :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
-        :hour-step="1"
-        :minute-step="5"
-        :week-start="1"
-        use24-hour
-        auto
-        >
-        </datetime>
-        <input type="hidden" name="date" v-model="datetimeEmpty" class="form-control" placeholder="">
-
-        </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-        <label>НГДУ</label>
-        <div class="form-label-group">
-            <select class="form-control"  name="ngdu_id" v-model="ngdu" @change="chooseNgdu($event)">
-            <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
-            </select>
-        </div>
-        <label>ЗУ</label>
-        <div class="form-label-group">
-            <select class="form-control"  name="zu_id" v-model="zu" @change="chooseZu($event)">
-            <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
-            </select>
-        </div>
         <label>Планируемая дозировка, г/м3</label>
         <div class="form-label-group">
             <input type="number" step="0.0001" name="plan_dosage" class="form-control" placeholder="">
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-4 col-md-4">
-        <label>ЦДНГ</label>
-        <div class="form-label-group">
-            <select class="form-control"  name="cdng_id" v-model="cdng" @change="chooseCdng($event)">
-            <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
-            </select>
-        </div>
-        <label>Скважина</label>
-        <div class="form-label-group">
-            <select class="form-control"  name="well_id" v-model="well">
-            <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
-            </select>
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -170,7 +129,12 @@ export default {
             {"id":"1", "name" : "Узень"},
             {"id":"2", "name" : "Карамандыбас"}
         ],
+        years: [
+            {"id":"2019-01-01", "name" : "2019"},
+            {"id":"2020-01-01", "name" : "2020"}
+        ],
         field: null,
+        year: null,
         ngdu: null,
         cdng: null,
         gu: null,
