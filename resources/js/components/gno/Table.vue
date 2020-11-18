@@ -54,9 +54,9 @@
           </div>
         </modal>
 
-        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-left:100px;">
+        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-top: -180px; margin-left:100px;">
           <div class="modal-bign2">
-            <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
+            <gno-chart-bar></gno-chart-bar>
           </div>
         </modal>
 
@@ -80,7 +80,8 @@
                 Рпл
               </div>
               <div class="cell4-gno table-border-gno cell4-gno-second col-5">
-                <input v-model="pResInput" type="text" class="square2" />
+                <!-- <input v-model="pResInput" type="text" class="square2" /> -->
+                <input v-model="pResInput" @change="postCurveData()" type="string" class="square2" />
               </div>
 
               <div class="cell4-gno table-border-gno-top col-4">
@@ -146,13 +147,13 @@
 
           <div class="col-12 relative left-center">
             <div class="cell4-gno col-4 table-border-gno-top">
-              <input v-model="curveSelect" value="hdyn" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio" name="set2" />
+              <input v-model="curveSelect" value="hdyn" :disabled="curveSelect == 'pi'"  class="checkbox2" type="radio" name="set2" />
               <div class="text2">Ндин</div>
             </div>
             <div
               class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
             >
-              <input :disabled="curveSelect != 'hdyn'" v-model="hDynInput" type="text" class="square2" />
+              <input :disabled="curveSelect != 'hdyn'" v-model="hDynInput" @change="postCurveData()" type="text" class="square2" />
             </div>
             <div
               class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
@@ -162,7 +163,7 @@
             <div
               class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
             >
-              <input :disabled="curveSelect != 'hdyn'" v-model="pAnnularInput" type="text" class="square2" />
+              <input :disabled="curveSelect != 'hdyn'" v-model="pAnnularInput" @change="postCurveData()" type="text" class="square2" />
             </div>
           </div>
 
@@ -170,11 +171,11 @@
             <div class="cell4-gno col-4 table-border-gno-top">
               <input v-model="curveSelect" value="pmanom" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio" name="set2" />
               <div class="text2">Рманом</div>
-            </div>
+            </div>  
             <div
               class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
             >
-              <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput" type="text" class="square2" />
+              <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput"  @change="postCurveData()" type="text" class="square2" />
             </div>
             <div
               class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
@@ -184,19 +185,19 @@
             <div
               class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
             >
-              <input :disabled="curveSelect != 'pmanom'" v-model="hPumpManomInput" type="text" class="square2" />
+              <input :disabled="curveSelect != 'pmanom'" v-model="hPumpManomInput" @change="postCurveData()" type="text" class="square2" />
             </div>
           </div>
 
           <div class="col-12 relative left-center">
             <div class="cell4-gno col-4 table-border-gno-top">
-              <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio" name="set2" />
+              <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'"  class="checkbox2" type="radio" name="set2" />
               <div class="text2">Рбуф (ФЭ)</div>
             </div>
             <div
               class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
             >
-              <input :disabled="curveSelect != 'whp'" v-model="whpInput" type="text" class="square2" />
+              <input :disabled="curveSelect != 'whp'"  v-model="whpInput" @change="postCurveData()"  type="text" class="square2" />
             </div>
             <div
               class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
@@ -219,17 +220,17 @@
           <div class="col-12 relative left-center">
             <div class="cell4-gno col-3">
               <div class="text3">ШГН</div>
-              <input class="checkbox3" value="ШГН" v-model="expChoose" :checked="expChoose == 'ШГН'" type="radio"  name="gno10" />
+              <input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()" :checked="expChoose == 'ШГН'" type="radio"  name="gno10" />
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="text3">ЭЦН</div>
-              <input class="checkbox3" value="ЭЦН" v-model="expChoose" :checked="expChoose == 'ЭЦН'" type="radio"  name="gno10" />
+              <input class="checkbox3" value="ЭЦН" v-model="expChoose" @change="postCurveData()" :checked="expChoose == 'ЭЦН'" type="radio"  name="gno10" />
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="text3">Нсп</div>
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-2">
-              <input v-model="hPumpValue" type="text" class="square2" />
+              <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square2" />
             </div>
           </div>
 
@@ -241,20 +242,20 @@
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="target">
-                <input v-model="qlCelValue" :disabled="CelButton != 'ql'" type="text" class="square2" />
+                <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'" type="text" class="square2" />
               </div>
               <div class="text3">Рзаб</div>
               <input v-model="CelButton" class="checkbox3" value="bhp" type="radio" name="gno11" />
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="target">
-                <input v-model="bhpCelValue" :disabled="CelButton != 'bhp'" type="text"  class="square2" />
+                <input v-model="bhpCelValue" @change="postCurveData()" :disabled="CelButton != 'bhp'" type="text"  class="square2" />
               </div>
               <div class="text3">Pnp</div>
-              <input v-model="CelButton" class="checkbox3" value="pin" type="radio" name="gno11" />
+              <input v-model="CelButton"  class="checkbox3" value="pin" type="radio" name="gno11" />
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-2">
-              <input v-model="piCelValue" :disabled="CelButton != 'pin'" type="text" class="square2" />
+              <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin'" type="text" class="square2" />
             </div>
           </div>
         </div>
@@ -289,12 +290,13 @@
           <input v-model="wellNumber" type="text" @change="getWellNumber(wellNumber)" class="square2" />
         </div>
         <div class="cell4-gno table-border-gno-top col-7">
-          Новая скважина <input v-model="age" class="checkbox0" type="checkbox" />
+          Новая скважина 
+          <input v-model="age" class="checkbox0" type="checkbox" />
         </div>
         <div
           class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
         >
-          с ГРП <input class="checkbox0" type="checkbox" />
+          с ГРП <input class="checkbox0" :disabled="!age" type="checkbox"/>
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Пласт</div>
@@ -582,13 +584,10 @@ Vue.component("Plotly", Plotly);
 export default {
   data: function () {
     return {
-      expAnalysisData:{},
-
       layout: {
         width: 950,
         height: 450,
         showlegend: true,
-
         xaxis: {
           hoverformat: ".1f",
           //  showline: true,
@@ -642,6 +641,8 @@ export default {
         wellNumber: null,
         age: false,
         horizon: null,
+        x: null,
+        y: null,
         expMeth: null,
         tseh: null,
         gu: null,
@@ -670,6 +671,7 @@ export default {
         whp: null,
         lineP: null,
         piInput: null,
+        pplInput: null,
         pResInput: null,
         qLInput: null,
         wctInput: null,
@@ -715,14 +717,16 @@ export default {
         this.gorInput = data["Well Data"]["gor"][0]
         this.bhpInput = data["Well Data"]["bhp"][0]
         this.hDynInput = data["Well Data"]["h_dyn"][0]
+        this.CelValue = data["Well Data"][""]
         this.pAnnularInput = data["Well Data"]["p_annular"][0]
         this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"],
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"],
-        this.pManomInput = 0
-        this.hPumpManomInput = 0
+        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"]
         this.whpInput = data["Well Data"]["whp"][0]
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
+        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
+        this.gor = data["Well Data"]["gor"][0].toFixed(2)
       } else {
         this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
         this.age = data["Age"]
@@ -739,23 +743,26 @@ export default {
         this.tubID = data["Well Data"]["tub_ID"][0]
         this.stopDate = data["Well Data"]["stop_date"][0]
         this.pumpType = data["Well Data"]["pump_type"][0]
-        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0]
-        this.gor = data["Well Data"]["gor"][0]
-        this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
-        this.viscOilRc = data["Well Data"]["visc_oil_rc"][0]
-        this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0]
-        this.densOil = data["Well Data"]["dens_oil"][0]
-        this.densWater = data["Well Data"]["dens_liq"][0]
-        this.qL = data["Well Data"]["q_l"][0]
-        this.qO = data["Well Data"]["q_o"][0]
-        this.wct = data["Well Data"]["wct"][0]
-        this.bhp = data["Well Data"]["bhp"][0]
-        this.pRes = data["Well Data"]["p_res"][0]
-        this.hDyn = data["Well Data"]["h_dyn"][0]
-        this.pAnnular = data["Well Data"]["p_annular"][0]
-        this.whp = data["Well Data"]["whp"][0]
-        this.lineP = data["Well Data"]["line_p"][0]
-        this.piInput = data["Well Data"]["pi"][0]
+        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
+        this.gor = data["Well Data"]["gor"][0].toFixed(2)
+        this.tRes = data["Well Data"]["t_res"][0].toFixed(2)
+        this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
+        this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
+        this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
+        this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
+        this.qL = data["Well Data"]["q_l"][0].toFixed(2)
+        this.qO = data["Well Data"]["q_o"][0].toFixed(2)
+        this.wct = data["Well Data"]["wct"][0].toFixed(2)
+        this.bhp = data["Well Data"]["bhp"][0].toFixed(2)
+        this.pRes = data["Well Data"]["p_res"][0].toFixed(2)
+        this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(2)
+        this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(2)
+        this.whp = data["Well Data"]["whp"][0].toFixed(2)
+        this.lineP = data["Well Data"]["line_p"][0].toFixed(2)
+        this.piInput = data["Well Data"]["pi"][0].toFixed(2)
+        this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"]
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"]
+
         this.pResInput = this.pRes
         this.qLInput = this.qL
         this.wctInput = this.wct
@@ -870,95 +877,18 @@ export default {
       this.data[2]['y'][0] = value[1]["p"]
     },
     PotAnalysisMenu() {
-      this.analysisBox1 = false
-      this.analysisBox2 = false
-      this.analysisBox3 = false
-      this.analysisBox4 = false
-      this.analysisBox5 = false
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
       if (this.age) {
+        this.postAnalysisNew();
         this.$modal.show('modalNewWell');
       } else {
+        this.postAnalysisOld();
         this.$modal.show('modalOldWell');
       }
     },
-    ExpAnalysisMenu(){
-      let uri = "http://172.20.103.187:7575/api/nno/";
-
-
-        let jsonData = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": "ШГН",
-            }
-        )
-
-        let jsonData2 = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": "ЭЦН",
-            }
-        )
-
-        //console.log("JSON =", jsonData)
-
-
-        this.axios.post(uri, jsonData).then((response) => {
-        //var data = response.data;
-        var data = JSON.parse(response.data.Result)
-        if (data) {
-          console.log("1",data)
-
-          this.expAnalysisData.NNO1=data.NNO
-          this.expAnalysisData.qoil=this.qO
-          this.prs1=data.prs
-
-          //this.$modal.show("modalExpAnalysis");
-
-        } else {
-          console.log("No data");
-        }
-
-        });
-
-
-        this.axios.post(uri, jsonData2).then((response) => {
-        //var data = response.data;
-        var data = JSON.parse(response.data.Result)
-
-
-        if (data) {
-          console.log("2",data)
-          this.expAnalysisData.NNO2=data.NNO
-          this.prs2=data.prs
-
-
-
-        } else {
-          console.log("No data");
-        }
-
-
-
-
-        });
-
-        let uri2= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qO+"&qzh="+this.qL+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn="+this.expAnalysisData.NNO1+"&reqd="+this.prs1+"";
-        this.axios.get(uri2).then((response) => {
-            let data = response.data;
-            if(data) {
-                console.log("eco",data);
-                this.$modal.show("modalExpAnalysis");
-                this.expAnalysisData.ecnParam=data[0].ecnParam
-                this.expAnalysisData.shgnParam=data[0].shgnParam
-                this.expAnalysisData.npv=data[11].npv
-            }
-            else {
-                console.log('No data');
-            }
-        });
-        //zatrElectResults
-
-      //this.$modal.show('modalExpAnalysis')
+    ExpAnalysisMenu() {
+      this.$modal.show('modalExpAnalysis')
     },
     PgnoMenu() {
       this.$modal.show('modalPGNO')
@@ -974,48 +904,70 @@ export default {
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
-          return this.hdynValue = [this.hDynInput = 0, this.pAnnularInput = 0], this.hDyn, this.lineP, this.casOD, this.tubID, this.bhp, this.bhpInput, this.casID, this.hPerf, this.pumpType, this.hPumpSet, this.hPumpValue, this.wctInput, this.wct, this.whp, this.pRes, this.pResInput, this.wctInput, this.qO, this.qLInput, this.qlCelValue, this.densWater, this.densOil, this.densWater, this.densOil, this.viscWaterRc, this.viscOilRc, this.tRes, this.gor, this.gorInput, this.PBubblePoint, this.tubOD = 0;
+        //Выбор скважины
+        this.horizon = 0;
+        this.expMeth = 0;
+        this.tseh = 0;
+        this.gu = 0;
+
+        // Конструкция
+        this.casOD = 0;
+        this.casID = 0;
+        this.hPerf = 0;
+        this.udl = 0;
+
+        //PVT
+        this.PBubblePoint = 0;
+        this.gor = 0;
+        this.tRes = 0;
+        this.densOil = 0;
+        this.viscOilRc = 0;
+        this.viscWaterRc = 0;
+        this.densWater = 0;
+        this.hdynValue = [this.hDynInput = 0, this.pAnnularInput = 0];
+        
+        //Оборудование 
+        this.pumpType = 0;
+        this.hPumpSet = 0;
+        this.tubOD = 0;
+        this.tubID = 0;
+        
+        //Технологический  режим
+        this.qL = 0;
+        this.qO = 0;
+        this.wct = 0;
+        this.bhp = 0;
+        this.pRes = 0;
+        this.hDyn = 0;
+        this.pAnnular = 0;
+        this.whp = 0;
+        this.lineP = 0;
+
+        //Настройка кривой притока
+        this.pResInput = 0;
+        this.piInput = 0;
+        this.qLInput = 0;
+        this.bhpInput = 0;
+        this.wctInput = 0;
+        this.gorInput = 0;
+
+        //Параметры подбора
+        this.hPumpValue = 0;
+        this.qlCelValue = 0;
+
         } else if (data) {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
         }
-
-
-        // if (data) {
-        //   this.setData(data)
-        //   this.$emit('LineData', this.curveLineData)
-        //   this.$emit('PointsData', this.curvePointsData)
-
-
-        // } else if (data["Error"] === "NoData"){
-        //   Vue.prototype.$notifyError('Такой скважины нет');
-        //   this.lineP = 0;
-        //   this.whp = 0
-        //   this.setData(data = []);}
-        //   }).catch(function(error) {
-        //   Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
-
-
-
-            // return this.whp, this.pAnnular, this.hDyn, this.pRes, this.bhp, this.wct, this.qO, this.qL, this.densWater, this.densOil  = 0;
-            // this.pAnnular = 0;
-            // this.hDyn = 0;
-            // this.pRes = 0;
-            // this.bhp = 0;
-            // this.wct = 0;
-            // this.qO = 0;
-            // this.qL = 0;
-            // this.densWater = 0;
-            // this.densOil = 0;
         }
       );
 
 
-
+      
     },
     postCurveData() {
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
+        let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1024,21 +976,6 @@ export default {
         this.CelValue = this.piCelValue
       }
 
-
-
-      // if (this.curveSelect == 'pi') {
-      //   this.curveValue = this.piInput
-      // } else if (this.curveSelect == 'ql') {
-      //   this.curveValue = this.qLInput
-      // } else if (this.curveSelect == 'bhp') {
-      //   this.curveValue = this.bhpInput
-      // } else if (this.curveSelect == 'hdyn') {
-      //   this.curveValue = [this.hDynInput, this.pAnnularInput]
-      // } else if (this.curveSelect == 'pmanom') {
-      //   this.curveValue = [this.pManomInput, this.hPumpManomInput]
-      // } else if (this.curveSelect == 'whp') {
-      //   this.curveValue = this.whpInput
-      // }
       let jsonData = JSON.stringify(
         {
         "curveSelect": this.curveSelect,
@@ -1058,7 +995,7 @@ export default {
         "menu": "MainMenu",
         "well_age": this.age,
         "grp_skin": true,
-        "analysisBox1": this.analysisBox1,
+        "analysisBox1": this.analysisBox1,  
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
         "analysisBox4": this.analysisBox4,
@@ -1068,8 +1005,9 @@ export default {
         "analysisBox8": this.analysisBox8
                    }
       )
-      // console.log("JSON =", jsonData)
-      this.axios.post(uri, jsonData).then((response) => {
+        
+
+        this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
           this.method = "CurveSetting"
@@ -1080,6 +1018,7 @@ export default {
         }
       });
     },
+
     postAnalysisOld() {
       let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
@@ -1089,7 +1028,7 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-
+    
       let jsonData = JSON.stringify(
         {
         "curveSelect": this.curveSelect,
@@ -1104,12 +1043,12 @@ export default {
         "gorValue": this.gorInput,
         "expSelect": this.expChoose,
         "hPumpValue": this.hPumpValue,
-        "celSelect": this.celSelect,
-        "celValue": this.celValue,
+        "celSelect": this.CelButton,
+        "celValue": this.CelValue,
         "menu": "PotencialAnalysis",
         "well_age": this.age,
         "grp_skin": true,
-        "analysisBox1": this.analysisBox1,
+        "analysisBox1": this.analysisBox1,  
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
         "analysisBox4": this.analysisBox4,
@@ -1130,12 +1069,14 @@ export default {
           this.newPointsData = JSON.parse(data.PointsData)["data"]
           this.updateLine(this.newCurveLineData)
           this.setPoints(this.newPointsData)
+          console.log('timer srabotal')
           // this.$emit('LineData', this.curveLineData)
           // this.$emit('PointsData', this.curvePointsData)
           } else {
         }
       });
     },
+
     postAnalysisNew() {
       console.log("POST NEW WELL")
       let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
@@ -1146,7 +1087,7 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-
+     
       let jsonData = JSON.stringify(
         {
         "curveSelect": this.curveSelect,
@@ -1161,12 +1102,12 @@ export default {
         "gorValue": this.gorInput,
         "expSelect": this.expChoose,
         "hPumpValue": this.hPumpValue,
-        "celSelect": this.celSelect,
-        "celValue": this.celValue,
-        "menu": "MainMenu",
+        "celSelect": this.CelButton,
+        "celValue": this.CelValue,
+        "menu": "PotencialAnalysis",
         "well_age": this.age,
         "grp_skin": true,
-        "analysisBox1": this.analysisBox1,
+        "analysisBox1": this.analysisBox1,  
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
         "analysisBox4": this.analysisBox4,
@@ -1194,7 +1135,37 @@ export default {
       });
     },
 
+    modalExpAnalysis(){
+        let uri = "http://172.20.103.187:7575/api/nno/";
 
+        let jsonData = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": this.expMeth,
+            }
+        )
+        //console.log("JSON =", jsonData)
+
+        this.axios.post(uri, jsonData).then((response) => {
+        //var data = response.data;
+        var data = JSON.parse(response.data)
+        if (data) {
+          console.log(data)
+
+          this.nno=this.data.map((r) => r.NNO)
+          this.prs=this.data.map((r) => r.prs)
+          //this.$emit('NNO', this.nno)
+          //this.$emit('PRS', this.prs)
+
+          this.$modal.show("showEconomicModal");
+
+        } else {
+          console.log("No data");
+        }
+
+      });
+
+
+    }
   },
   beforeCreate: function() {
     let uri = "http://172.20.103.187:7575/api/pgno/0046/";
@@ -1236,6 +1207,6 @@ export default {
 
 div {
   font-family: 'Roboto', sans-serif;
-  font-weight: 400;
+  font-weight: 400; 
 }
 </style>
