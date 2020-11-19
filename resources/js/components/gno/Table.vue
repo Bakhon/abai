@@ -898,7 +898,7 @@ export default {
           this.gor = data["Well Data"]["gor"][0].toFixed(1)
           this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
           this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(1)
-          this.viscWaterRc = data["Well Data"]["visc_water_rc"][0].toFixed(1)
+          this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
           this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
 
