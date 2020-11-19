@@ -524,7 +524,7 @@ class EcoRefsScFaController extends Controller
 
 
             $nakoplSvobPotok=$nakoplSvobPotok+$svobodDenPotok[5];
-            $discSvobPotok=$discSvobPotok+$nakoplSvobPotok*$discont;
+            $discSvobPotok=$discSvobPotok+$nakoplSvobPotok;
             $nakopDiscSvodPotok=$nakopDiscSvodPotok+$discSvobPotok;
             $npv=$npv+($discSvobPotok+$amortizaciyaResult-$buyCostResult);
 
@@ -535,6 +535,9 @@ class EcoRefsScFaController extends Controller
                 'liquid' => $liquid,
                 'oil' => $oil,
                 'empper' => $empper,
+                'workday'=>$workday,
+                'prs'=>array_sum($prsResult),
+                'srednii'=>$avgprsday->avg_prs,
                 'exportsResultsTotal' => $exportsResultsTotal,
                 'exportsResults' => $exportsResults,
                 'insideResultsTotal' => $insideResultsTotal,

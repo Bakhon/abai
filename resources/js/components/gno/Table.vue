@@ -889,7 +889,9 @@ export default {
       }
     },
     ExpAnalysisMenu(){
-      let uri = "http://172.20.103.187:7575/api/nno/";
+        let uri = "http://172.20.103.187:7575/api/nno/";
+
+        this.eco_param=null;
 
         this.qZhExpEcn=this.qlCelValue
         this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
@@ -943,23 +945,29 @@ export default {
         }
         });
 
-        this.param_eco='3'
+        this.param_eco=this.EconomParam();
+        console.log("eco param data",this.param_eco);
 
-        if (this.expAnalysisData.prs1!==0 && this.expAnalysisData.prs2!==0){
-            this.param_eco='1'
+        this.EconomCalc();
+
+    },
+    EconomParam(){
+        var prs1 = this.expAnalysisData.prs1;
+        var prs2 = this.expAnalysisData.prs2;
+
+        if (prs1!=0 && prs2!=0){
+            return 1
+        } else if (prs1==0){
+            return 2
+        } else {
+            return 3
         }
-
-        if (this.expAnalysisData.prs1==0){
-            this.param_eco='2'
-        }
-
-
-
-        let uri2= "/ru/nnoeco?avgprs=3&equip=1&org=5&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&param="+this.param_eco+"&reqd="+this.expAnalysisData.NNO1+"&reqecn=2";
+    },
+    EconomCalc(){
+        let uri2="/ru/nnoeco?equip=1&org=5&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
         this.axios.get(uri2).then((response) => {
             let data = response.data;
             if(data) {
-                console.log(this.qOilExpShgn,this.qZhExpShgn,this.param_eco,this.expAnalysisData.NNO1);
 
                 this.expAnalysisData.ecnParam=data[0].ecnParam
                 this.expAnalysisData.shgnParam=data[0].shgnParam
@@ -970,12 +978,11 @@ export default {
             }
         });
 
-        let uri3= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&param="+this.param_eco+"&reqd="+this.expAnalysisData.NNO2+"&reqecn=2";
-
+        let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
         this.axios.get(uri3).then((response) => {
             let data = response.data;
             if(data) {
-                //console.log("eco",this.qO,this.qL);
+
                 this.expAnalysisData.ecnNpv=data[0].npv
                 this.$modal.show("modalExpAnalysis");
             }
