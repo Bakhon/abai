@@ -824,7 +824,7 @@ export default {
     },
 
     getWellNumber(wellnumber) {
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellNumber + "/";
+      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         
@@ -893,6 +893,16 @@ export default {
         } else if(data["Age"] === true) {
 
           this.horizon = data["Well Data"]["horizon"][0]
+          
+          this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
+          this.gor = data["Well Data"]["gor"][0].toFixed(1)
+          this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
+          this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(1)
+          this.viscWaterRc = data["Well Data"]["visc_water_rc"][0].toFixed(1)
+          this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
+          this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
+
+        
 
           Vue.prototype.$notifyWarning("Скважина что была указана является новой");
 
@@ -943,14 +953,10 @@ export default {
         this.bhpCelValue = 0;
         this.piCelValue = 0;
 
-        this.$emit('LineData')
-        this.$emit('PointsData')
-
-        } else if (data && data['Age'] === false) {
+        } 
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-        }
         }
       );
 
