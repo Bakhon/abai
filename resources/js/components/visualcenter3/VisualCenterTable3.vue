@@ -370,12 +370,12 @@
               </td>
 
                   <td colspan="2">
-                  <div class="assets4"> 
+                  <div class="assets4">
 Неоперационные активы</div>
               </td>
 
                   <td>
-                  <div class="assets4"> 
+                  <div class="assets4">
 Все активы КМГ</div>
               </td>
               </tr>
@@ -528,7 +528,7 @@
               <tbody>
                 <tr>
                   <td class="big-table-hidtd small-td"></td>
-                 
+
 
                   <td class="small-td">
                     <div class="center">план</div>
@@ -552,7 +552,7 @@
                   >
                     {{ item.dzoDay }}
                   </td>
-                 
+
 
                   <td
                     :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
@@ -591,8 +591,8 @@
                       class="triangle"
                       :style="`${getColor(item.factDay - item.planDay)}`"
                     ></div>
-                    <div class="percent">5,2%</div>                 
-                    
+                    <div class="percent">5,2%</div>
+
                   </td>
 
                 </tr>
@@ -619,7 +619,7 @@
                   >
                     Итого по операционным активам:
                   </td>
-                 
+
 
                   <td
                     :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
@@ -666,7 +666,7 @@
           </div>
            </div>
           <div class="w-50 vc-chart"><vc-chart> </vc-chart></div>
-         
+
         </div>
       </div>
 
