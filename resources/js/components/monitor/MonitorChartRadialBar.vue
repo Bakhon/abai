@@ -79,10 +79,11 @@ export default {
   },
   methods: {
     setValue: function(value) {
+        console.log(value);
         this.series[0] = value;
     }
   },
-  created: function() {
+  mounted: function() {
     this.$parent.$on('chart5', this.setValue);
   }
 };

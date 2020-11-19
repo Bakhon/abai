@@ -302,7 +302,7 @@
             </div>
         </div>
         <div class="responsible">
-            <button type="button" class="btn btn-info" @click="pushBtn">Экономический эффект</button><br>
+            <button type="button" class="btn btn-info" disabled @click="pushBtn">Экономический эффект</button><br>
             <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">Коррозия</button>
         </div>
       </div>
@@ -509,7 +509,7 @@ export default {
                     this.corF = data.corrosion_rate_mm_per_y_point_F,
                     this.dose = data.max_dose,
                     this.result = data,
-                    this.$emit("chart5", this.dose)
+                    this.$emit("chart5", data.max_dose)
                 } else {
                     console.log("No data");
                 }
