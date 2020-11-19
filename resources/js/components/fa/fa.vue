@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-between">
-                <a href="#" class="but-nav__link but">Факторный анализ отклонений ТР</a>
+                <a href="tr" class="but-nav__link but">Технологический режим</a>
                 <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="dt">
