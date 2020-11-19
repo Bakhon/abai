@@ -705,6 +705,7 @@ export default {
         qOilExpEcn:null,
         qZhExpShgn:null,
         qOilExpShgn:null,
+        param_eco:null,
     };
 
   },
@@ -891,17 +892,16 @@ export default {
       let uri = "http://172.20.103.187:7575/api/nno/";
 
         this.qZhExpEcn=this.qlCelValue
-        this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil*1000
+        this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
 
         if (this.qlCelValue<106){
             this.qZhExpShgn=this.qlCelValue
-            this.qOilExpShgn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil*1000
+            this.qOilExpShgn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
 
         } else {
             this.qZhExpShgn=106
-            this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil*1000
+            this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil
         }
-
 
         let jsonData = JSON.stringify(
             {"well_number": this.wellNumber,
@@ -915,72 +915,68 @@ export default {
             }
         )
 
-        //console.log("JSON =", jsonData)
-
-
+        //microservise na SHGN NNO
         this.axios.post(uri, jsonData).then((response) => {
-        //var data = response.data;
         var data = JSON.parse(response.data.Result)
         if (data) {
-          console.log("1",data)
-
+          console.log("ШГН",data)
           this.expAnalysisData.NNO1=data.NNO
           this.expAnalysisData.qoilShgn=this.qOilExpShgn
           this.expAnalysisData.qoilEcn=this.qOilExpEcn
-          this.prs1=data.prs
-
+          this.expAnalysisData.prs1=data.prs
           //this.$modal.show("modalExpAnalysis");
-
         } else {
           console.log("No data");
         }
-
         });
 
-
+        //microservise na ECN NNO
         this.axios.post(uri, jsonData2).then((response) => {
-        //var data = response.data;
         var data = JSON.parse(response.data.Result)
-
-
         if (data) {
-          console.log("2",data)
+          console.log("ЭЦН",data)
           this.expAnalysisData.NNO2=data.NNO
-          this.prs2=data.prs
-
-
-
+          this.expAnalysisData.prs2=data.prs
+          console.log("asd",typeof this.expAnalysisData.NNO2, typeof this.expAnalysisData.prs2, typeof this.qOilExpShgn)
         } else {
           console.log("No data");
+        }
+        });
+
+        this.param_eco='3'
+
+        if (this.expAnalysisData.prs1!==0 && this.expAnalysisData.prs2!==0){
+            this.param_eco='1'
+        }
+
+        if (this.expAnalysisData.prs1==0){
+            this.param_eco='2'
         }
 
 
 
-
-        });
-
-        let uri2= "/ru/nnoeco?avgprs=3&equip=1&org=5&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn=2&reqd="+this.expAnalysisData.NNO1+"";
+        let uri2= "/ru/nnoeco?avgprs=3&equip=1&org=5&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&param="+this.param_eco+"&reqd="+this.expAnalysisData.NNO1+"&reqecn=2";
         this.axios.get(uri2).then((response) => {
             let data = response.data;
             if(data) {
-                //console.log("eco",this.qO,this.qL);
+                console.log(this.qOilExpShgn,this.qZhExpShgn,this.param_eco,this.expAnalysisData.NNO1);
 
                 this.expAnalysisData.ecnParam=data[0].ecnParam
                 this.expAnalysisData.shgnParam=data[0].shgnParam
-                this.expAnalysisData.shgnNpv=data[11].npv
+                this.expAnalysisData.shgnNpv=data[0].npv
             }
             else {
                 console.log('No data');
             }
         });
 
-        let uri3= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&reqecn=2&reqd="+this.expAnalysisData.NNO2+"";
+        let uri3= "/ru/nnoeco?avgprs=3&equip=2&org=5&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&razr=5&scfa=%D0%A4%D0%B0%D0%BA%D1%82&param="+this.param_eco+"&reqd="+this.expAnalysisData.NNO2+"&reqecn=2";
 
         this.axios.get(uri3).then((response) => {
             let data = response.data;
             if(data) {
                 //console.log("eco",this.qO,this.qL);
-                this.expAnalysisData.ecnNpv=data[11].npv
+                this.expAnalysisData.ecnNpv=data[0].npv
                 this.$modal.show("modalExpAnalysis");
             }
             else {

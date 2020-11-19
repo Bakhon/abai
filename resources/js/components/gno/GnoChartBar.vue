@@ -121,7 +121,7 @@ export default {
           stroke: {
             show: true,
           },
-          data: [Math.round(this.data.qoilShgn/1000), Math.round(this.data.NNO1), Math.round(this.data.shgnParam), Math.round(this.data.shgnNpv/1000000000000)],
+          data: [Math.round(this.data.qoilShgn/1000), Math.round(this.data.NNO1), Math.round(this.data.shgnParam), Math.round(this.data.shgnNpv/1000)],
         },
         {
           name: "ЭЦН (аренда)",
@@ -129,7 +129,7 @@ export default {
           stroke: {
             show: true,
           },
-          data: [Math.round(this.data.qoilEcn/1000), Math.round(this.data.NNO2), Math.round(this.data.ecnParam), Math.round(this.data.ecnNpv/1000000000000)],
+          data: [Math.round(this.data.qoilEcn/1000), Math.round(this.data.NNO2), Math.round(this.data.ecnParam), Math.round(this.data.ecnNpv/1000)],
         },
       ]
 

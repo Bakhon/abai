@@ -139,6 +139,7 @@ class EcoRefsScFaController extends Controller
         $qoil = $request->qo;
         $reqDay = $request->reqd;
         $reqecn = $request->reqecn;
+        $param=$request->param;
 
         $org = $request->org;
         $equipIdRequest = $request->equip;
@@ -271,12 +272,26 @@ class EcoRefsScFaController extends Controller
 
             foreach($compRas as $item){
                 $avgprsday = EcoRefsAvgPrs::where('company_id', $item->company_id)->first();
-                if($equipIdRequest == 2){
-                    $prsResult[$item->company_id] = $reqecn;
-                }
-                else{
+                if($param == 1){
                     $prsResult[$item->company_id] = 365 / ($reqDay + $avgprsday->avg_prs);
+                } else {
+                    if($param == 2){
+                        if($equipIdRequest == 1){
+                            $prsResult[$item->company_id] = 365 / ($reqDay + $avgprsday->avg_prs);
+                        }
+                        else{
+                            $prsResult[$item->company_id] = $reqecn;
+                        }
+                    }else{
+                        if($equipIdRequest == 1){
+                            $prsResult[$item->company_id] = $reqecn;
+                        }
+                        else{
+                            $prsResult[$item->company_id] = 365 / ($reqDay + $avgprsday->avg_prs);
+                        }
+                    }
                 }
+
             }
 
             //foreach($compRas as $item){
@@ -505,61 +520,8 @@ class EcoRefsScFaController extends Controller
 
             }
 
-            array_push($result,$liquid);                        // 0    % OT DOBYCHI NA REALIZACIYA
-            array_push($result,$oil);                        // 0    % OT DOBYCHI NA REALIZACIYA
-            array_push($result,$empper);                        // 2    % OT DOBYCHI NA REALIZACIYA
-            array_push($result,$exportsResultsTotal);           // 3    % OT DOBYCHI NA REALIZACIYA --- EXPORT TOTAL
-            array_push($result,$exportsResults);                // 4    % OT DOBYCHI NA REALIZACIYA ----- EXPORT
-            array_push($result,$insideResultsTotal);            // 5    % OT DOBYCHI NA REALIZACIYA  ------ VNUTR RYNOK TOTAL
-            array_push($result,$insideResults);                 // 6    % OT DOBYCHI NA REALIZACIYA ----- VNUTR RYNOK
-            array_push($result,$exportsDiscontResultsTotal);    // 7    OPREDELENIE DOHODNOY CHASTI ----- EXPORT TOTAL
-            array_push($result,$exportsDiscontResults);         // 8    OPREDELENIE DOHODNOY CHASTI ----- EXPORT
-            array_push($result,$insideDiscontResultsTotal);     // 9    OPREDELENIE DOHODNOY CHASTI ----- VNUTR RYNOK TOTAL
-            array_push($result,$insideDiscontResults);          // 10   OPREDELENIE DOHODNOY CHASTI ----- VNUTR RYNOK
-            array_push($result,$exportsNdpiResultsTotal);       // 11   RASCHET NDPI ----- EXPORT TOTAL
-            array_push($result,$exportsNdpiResults);            // 12   RASCHET NDPI ----- EXPORT
-            array_push($result,$insideNdpiResultsTotal);        // 13   RASCHET NDPI ----- VNUTR RYNOK TOTAL
-            array_push($result,$insideNdpiResults);             // 14   RASCHET NDPI ----- VNUTR RYNOK
-            array_push($result,$exportsRentTaxResultsTotal);    // 15   RASCHET RENTNOGO NALOGA ----- TOTAL
-            array_push($result,$exportsRentTaxResults);         // 16   RASCHET RENTNOGO NALOGA ----- TUT TOLKO EXPORT
-            array_push($result,$exportsEtpResultsTotal);        // 17   RASCHE ETP ----- TOTAL
-            array_push($result,$exportsEtpResults);             // 18   RASCHET ETP ------ TUT TOLKO EXPORT
-            array_push($result,$exportsTarTnResultsTotal);      // 19   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- EXPORT TOTAL
-            array_push($result,$exportsTarTnResults);           // 20   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- EXPORT
-            array_push($result,$insideTarTnResultsTotal);       // 21   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- VNUTR RYNOK TOTAL
-            array_push($result,$insideTarTnResults);            // 22   RASCHET RASHODOV PO TRANSPORTIROVKE NEFTI ----- VNUTR RYNOK
-            array_push($result,$zatrElectResults);              // 23   ZATRATY NA ELECTOENERGIYU
-            array_push($result,$zatrPrepResults);               // 24   ZATRATY NA PODGOTOVKU
-            array_push($result,$prsCostResults);                // 25   ZATRATY NA PRS
-            array_push($result,$expDayResults);                 // 26   ZATRATY ZA SUTOCHNOE OBSLUZHIVANIE
-            array_push($result,$rentCostResult);                // 27   STOIMOST ARENDY OBORUDOVANIYA
-            array_push($result,$amortizaciyaResult);            // 28   AMORTIZACIYA
-            array_push($result,$operPrib);                      // 29   OPERACIONNAYA PRIBYL
-            array_push($result,$kpnResult);                     // 30   KPN
-            array_push($result,$chistayaPribyl);                // 31   CHISTAYA PRIBYL
-            array_push($result,$buyCostResult);                 // 32   KVL (STOIMOST OBORUDOVANIYA)
-            array_push($result,$svobodDenPotok);                // 33   SVOBODNYI DENEZHNYI POTOK
 
-            //return $result;
 
-            $godovoiNdo=$godovoiNdo+$exportsResultsTotal+$insideResultsTotal;
-            $godovoiDohod=$godovoiDohod+$exportsDiscontResultsTotal+$insideDiscontResultsTotal;
-            $godovoiNdnpi=$godovoiNdnpi+$exportsNdpiResultsTotal+$insideNdpiResultsTotal;
-            $godovoiRent=$godovoiRent+$exportsRentTaxResultsTotal;
-            $godovoiEtp=$godovoiEtp+$exportsEtpResultsTotal;
-            $godovoiTrans=$godovoiTrans+$exportsTarTnResultsTotal+$insideTarTnResultsTotal;
-            $godovoiZatrElectrShgn=$godovoiZatrElectrShgn+$zatrElectResults[1];
-            $godovoiZatrElectrEcn=$godovoiZatrElectrEcn+$zatrElectResults[2];
-            $godovoiZatrPrep=$godovoiZatrPrep+array_sum($zatrPrepResults);
-            $godovoiZatrPrs=$godovoiZatrPrs+array_sum($prsCostResults);
-            $godovoiZatrSutObs=$godovoiZatrSutObs+$expDayResults[1];
-            $godovoiArenda=$godovoiArenda+$rentCostResult;
-            $godovoiAmortizacia=$godovoiAmortizacia+$amortizaciyaResult;
-            $godovoiOperPryb=$godovoiOperPryb+array_sum($operPrib);
-            $godovoiKpn= $godovoiKpn+array_sum($kpnResult);
-            $godovoiChistPryb=$godovoiChistPryb+array_sum($chistayaPribyl);
-            $godovoiKvl=$godovoiKvl+$buyCostResult;
-            $godovoiSvobPot=$godovoiSvobPot+array_sum($svobodDenPotok);
 
             $nakoplSvobPotok=$nakoplSvobPotok+$svobodDenPotok[5];
             $discSvobPotok=$discSvobPotok+$nakoplSvobPotok*$discont;
@@ -567,7 +529,7 @@ class EcoRefsScFaController extends Controller
             $npv=$npv+($discSvobPotok+$amortizaciyaResult-$buyCostResult);
 
             $vdata2=[
-                'check'=>$rent,
+
                 'monthname'=>$monthname,
                 'month'=>$element,
                 'liquid' => $liquid,
@@ -615,40 +577,6 @@ class EcoRefsScFaController extends Controller
             array_push($result2,$vdata2);
         }
 
-        $godovoi=[
-
-            'liquid' => $liquid,
-            'oil' => $oil,
-            'empper' => $empper,
-            'workday'=>$workday,
-            'kolichestvoPrs'=>array_sum($prsResult),
-            'sredniiPrs'=>$avgprsday->avg_prs,
-            'godovoiNdo'=>$godovoiNdo,
-            'godovoiDohod'=>$godovoiDohod,
-            'godovoiNdpi'=>$godovoiNdnpi,
-            'godovoiRent'=>$godovoiRent,
-            'godovoiEtp'=>$godovoiEtp,
-            'godovoiTrans'=>$godovoiTrans,
-            'godovoiZatrElectShgn'=>$godovoiZatrElectrShgn,
-            'godovoiZatrElectEcn'=>$godovoiZatrElectrEcn,
-            'godovoiZatrPrep'=>$godovoiZatrPrep,
-            'godovoiZatrPrs'=>$godovoiZatrPrs,
-            'godovoiZatrSutObs'=>$godovoiZatrSutObs,
-            'godovoiRent'=>$godovoiRent,
-            'godovoiAmortizacia'=>$godovoiAmortizacia,
-            'godovoiOperPryb'=>$godovoiOperPryb,
-            'godovoiKpn'=>$godovoiKpn,
-            'godovoiChistPryb'=>$godovoiChistPryb,
-            'godovoiKvl'=>$godovoiKvl,
-            'godovoiSvobPot'=>$godovoiSvobPot,
-            'nakopSvobodPotok'=>$nakoplSvobPotok,
-            'nakopDiskSvobodPotok'=>$nakopDiscSvodPotok,
-            'diskSvobodPotok'=>$discSvobPotok,
-            'npv'=>$npv
-
-        ];
-
-        array_push($result2,$godovoi);
 
         return response()->json($result2);
 
