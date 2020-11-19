@@ -18,7 +18,7 @@ export default {
   name: "mix-chart",
   data: function () {
     return {
-      series: [80],
+      series: [this.dose],
       chartOptions: {
         chart: {
           type: "radialBar",
@@ -79,9 +79,7 @@ export default {
   },
   methods: {
     setValue: function(value) {
-        this.series = [
-                value
-            ];
+        this.series[0] = value;
     }
   },
   created: function() {
