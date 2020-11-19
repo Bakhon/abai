@@ -25,7 +25,7 @@
         <button id="bt1"  @click="swap">Версия для отображения</button>
         <div >
             <TrTable :wells="wells" @onSort="sortBy" v-show="show_first"/>
-            <TrFullTable :wells="wells" @onSort="sortBy" v-show="show_second"/>
+            <TrFullTable :wells="wells" :check_wells="check_wells" @onSort="sortBy" v-show="show_second"/>
         </div>
     </div>
 </template>
@@ -39,13 +39,28 @@ export default {
       TrTable, TrFullTable,
   },
   beforeCreate: function () {
-        this.axios.get("http://172.20.103.51:7576/api/techregime/2020/6/").then((response) => {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var prMm = mm-2;
+        this.axios.get("http://172.20.103.51:7576/api/techregime/check/"+yyyy+"/"+prMm+"/").then((response) => {
+        let data = response.data;
+        if(data) {
+            console.log('checkWells', data);
+            this.check_wells = data.data;
+        }
+        else {
+            console.log('No data');
+        }
+    });
+        this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
         let data = response.data;
         if(data) {
             console.log(data);
             this.wells = data.data;
             this.fullWells = data.data;
-       }
+        }
         else {
             console.log('No data');
         }
@@ -60,6 +75,7 @@ export default {
         fullWells: [],
         show_first: true,
         show_second: false,
+        check_wells: [],
     }
   },
   methods: {

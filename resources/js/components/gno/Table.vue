@@ -11,55 +11,62 @@
           </div>
         </modal>
 
-
-
-        <modal name="modalOldWell" :width="1150" :height="450" :adaptive="true" >
-          <div class="modal-bign" >
+        <modal name="modalOldWell" :width="1150" :height="450" :adaptive="true">
+          <div class="modal-bign">
             <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
           </div>
           <div class="modal-analysis-menu">
             <div class="form-check">
-              <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
             </div>
             <div class="form-check">
-              <input v-model="analysisBox2" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <input v-model="analysisBox2" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
             </div>
             <div class="form-check">
-              <input v-model="analysisBox3" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <input v-model="analysisBox3" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот = Рнас*</label>
             </div>
             <div class="form-check">
-              <input v-model="analysisBox4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <input v-model="analysisBox4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Qж = Qж АСМА</label>
             </div>
             <div class="form-check">
-              <input v-model="analysisBox5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()" type="checkbox">
+              <input v-model="analysisBox5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
             </div>
           </div>
         </modal>
-        <modal name="modalNewWell" :width="1150" :height="450" :adaptive="true" >
-          <div class="modal-bign" >
+
+        <modal name="modalNewWell" :width="1150" :height="450" :adaptive="true">
+          <div class="modal-bign">
             <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
           </div>
           <div class="modal-analysis-menu">
-            <div><input v-model="analysisBox6" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Pпл = P по окр.
+            <div><input v-model="analysisBox6" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Pпл = P по
+              окр.
             </div>
-            <div><input v-model="analysisBox7" class="checkbox1" @change="postAnalysisNew()" type="checkbox">К пр = К по окр.
+            <div><input v-model="analysisBox7" class="checkbox1" @change="postAnalysisNew()" type="checkbox">К пр = К по
+              окр.
             </div>
-            <div><input v-model="analysisBox8" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Рзаб пот = Рнас*
+            <div><input v-model="analysisBox8" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Рзаб пот =
+              Рнас*
             </div>
           </div>
         </modal>
 
-        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart" style="margin-left:100px;">
+        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart"
+          style="margin-top: -180px; margin-left:100px;">
           <div class="modal-bign2">
-            <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
+            <gno-chart-bar></gno-chart-bar>
           </div>
         </modal>
-
         <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign3">
             Тест 3
@@ -68,145 +75,126 @@
         <gno-line-points-chart></gno-line-points-chart>
       </div>
 
-
-
-
       <div class="tables-string-gno4 col-6">
         <div class="tables-string-gno4-inner">
           <div class="select-well col-12">Настройка кривой притока</div>
           <div class="col-8 relative">
             <div class="col-6">
               <div class="cell4-gno col-4">
-                Рпл
+                <span>Рпл</span>
               </div>
               <div class="cell4-gno table-border-gno cell4-gno-second col-5">
-                <input v-model="pResInput" type="text" class="square2" />
+                <!-- <input v-model="pResInput" type="text" class="square2" /> -->
+                <input v-model="pResInput" @change="postCurveData()" type="text" class="square2" />
               </div>
 
-              <div class="cell4-gno table-border-gno-top col-4">
-                <input v-model="curveSelect" class="checkbox" value="pi" type="radio" name="set" />
-                Кпрод
-              </div>
-              <div
-                class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-              >
-                <!-- <input :disabled="curveSelect != 'pi'" v-model="piInput" @ type="string" class="square1" /> -->
-                <input :disabled="curveSelect != 'pi'" v-model="piInput" @change="postCurveData()" type="string" class="square2" />
-              </div>
+                <div class="cell4-gno table-border-gno-top col-4">
+                  <input v-model="curveSelect" class="checkbox" value="pi" type="radio" name="set" />
+                  <span>Кпрод</span>
+
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <!-- <input :disabled="curveSelect != 'pi'" v-model="piInput" @ type="string" class="square1" /> -->
+                  <input v-model="piInput" :disabled="curveSelect != 'pi'" @change="postCurveData()" type="text" class="square2" />
+                </div>
 
               <div class="cell4-gno table-border-gno-top col-4">
-                <input v-model="curveSelect" class="checkbox" value="ql" type="radio" name="set" />
-                Qж
+                <input v-model="curveSelect" class="checkbox" value="ql" type="radio"
+                  name="set" />
+                  <span>Qж</span>
               </div>
-              <div
-                class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-              >
-                <input :disabled="curveSelect != 'ql'" v-model="qLInput" @change="postCurveData()" type="text" class="square2" />
+              <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                <input :disabled="curveSelect == 'pi'" v-model="qLInput" @change="postCurveData()" type="text"
+                  class="square2" />
               </div>
             </div>
           </div>
 
           <div class="col-4 relative">
             <div class="cell4-gno col-4">
-              Обв.
+              <span>Обв.</span>
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-5">
               <input v-model="wctInput" @change="postCurveData()" type="text" class="square2" />
             </div>
 
             <div class="cell4-gno table-border-gno-top col-4">
-              ГФ.
+              <span>ГФ.</span>
             </div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               <input v-model="gorInput" @change="postCurveData()" type="text" class="square2" />
             </div>
           </div>
 
           <br />
           <br />
+
           <div class="col-12 relative left-center">
             <div class="cell4-gno col-4 table-border-gno-top">
-              <input v-model="curveSelect" value="bhp" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio" name="set2" />
+              <input v-model="curveSelect" value="bhp" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio"
+                name="set2" />
               <div class="text2">Рзаб</div>
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            >
-              <input :disabled="curveSelect != 'bhp'" v-model="bhpInput" @change="postCurveData()" type="text" class="square2" />
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top">
+              <input :disabled="curveSelect != 'bhp'" v-model="bhpInput" @change="postCurveData()" type="text"
+                class="square2" />
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            ></div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            ></div>
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"></div>
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"></div>
           </div>
 
           <div class="col-12 relative left-center">
             <div class="cell4-gno col-4 table-border-gno-top">
-              <input v-model="curveSelect" value="hdyn" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio" name="set2" />
+              <input v-model="curveSelect"  value="hdyn" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio"
+                name="set2" />
               <div class="text2">Ндин</div>
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            >
-              <input :disabled="curveSelect != 'hdyn'" v-model="hDynInput" type="text" class="square2" />
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top">
+              <input :disabled="curveSelect != 'hdyn'" v-model="hDynInput" @change="postCurveData()" type="text"
+                class="square2" />
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            >
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top">
               Рзат
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            >
-              <input :disabled="curveSelect != 'hdyn'" v-model="pAnnularInput" type="text" class="square2" />
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top">
+              <input :disabled="curveSelect != 'hdyn'" v-model="pAnnularInput" @change="postCurveData()" type="text"
+                class="square2" />
             </div>
           </div>
 
           <div class="col-12 relative left-center">
             <div class="cell4-gno col-4 table-border-gno-top">
-              <input v-model="curveSelect" value="pmanom" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio" name="set2" />
+              <input v-model="curveSelect" value="pmanom" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio"
+                name="set2" />
               <div class="text2">Рманом</div>
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            >
-              <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput" type="text" class="square2" />
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top">
+              <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput" @change="postCurveData()" type="text"
+                class="square2" />
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            >
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top">
               Нсп маном
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            >
-              <input :disabled="curveSelect != 'pmanom'" v-model="hPumpManomInput" type="text" class="square2" />
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top">
+              <input :disabled="curveSelect != 'pmanom'" v-model="hPumpManomInput" @change="postCurveData()" type="text"
+                class="square2" />
             </div>
           </div>
 
           <div class="col-12 relative left-center">
             <div class="cell4-gno col-4 table-border-gno-top">
-              <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio" name="set2" />
+              <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'" class="checkbox2" type="radio"
+                name="set2" />
               <div class="text2">Рбуф (ФЭ)</div>
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            >
-              <input :disabled="curveSelect != 'whp'" v-model="whpInput" type="text" class="square2" />
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top">
+              <input :disabled="curveSelect != 'whp'" v-model="whpInput" @change="postCurveData()" type="text"
+                class="square2" />
             </div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            ></div>
-            <div
-              class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"
-            ></div>
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"></div>
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2 table-border-gno-top"></div>
           </div>
         </div>
-
 
         <div class="tables-string-gno5 col-12" @click="PotAnalysisMenu()">
           Анализ потенциала скважины
@@ -219,17 +207,19 @@
           <div class="col-12 relative left-center">
             <div class="cell4-gno col-3">
               <div class="text3">ШГН</div>
-              <input class="checkbox3" value="ШГН" v-model="expChoose" :checked="expChoose == 'ШГН'" type="radio"  name="gno10" />
+              <input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()"
+                :checked="expChoose === 'ШГН'" type="radio" name="gno10" />
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="text3">ЭЦН</div>
-              <input class="checkbox3" value="ЭЦН" v-model="expChoose" :checked="expChoose == 'ЭЦН'" type="radio"  name="gno10" />
+              <input class="checkbox3" value="ЭЦН" v-model="expChoose" @change="postCurveData()"
+                :checked="expChoose === 'ЭЦН'" type="radio" name="gno10" />
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="text3">Нсп</div>
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-2">
-              <input v-model="hPumpValue" type="text" class="square2" />
+              <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square2" />
             </div>
           </div>
 
@@ -241,20 +231,23 @@
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="target">
-                <input v-model="qlCelValue" :disabled="CelButton != 'ql'" type="text" class="square2" />
+                <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'" type="text"
+                  class="square2" />
               </div>
               <div class="text3">Рзаб</div>
               <input v-model="CelButton" class="checkbox3" value="bhp" type="radio" name="gno11" />
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="target">
-                <input v-model="bhpCelValue" :disabled="CelButton != 'bhp'" type="text"  class="square2" />
+                <input v-model="bhpCelValue" @change="postCurveData()" :disabled="CelButton != 'bhp'" type="text"
+                  class="square2" />
               </div>
               <div class="text3">Pnp</div>
               <input v-model="CelButton" class="checkbox3" value="pin" type="radio" name="gno11" />
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-2">
-              <input v-model="piCelValue" :disabled="CelButton != 'pin'" type="text" class="square2" />
+              <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin'" type="text"
+                class="square2" />
             </div>
           </div>
         </div>
@@ -275,41 +268,32 @@
         <div class="select-well col-12">Выбор скважины</div>
         <div class="cell4-gno col-7">Месторождение</div>
         <div class="cell4-gno table-border-gno cell4-gno-second col-5">
-          <select class="select-gno2">
-            <option value="" hidden>Выбор</option>
-            <option>Узень</option>
-            <option>Карамандыбас</option>
+          <select class="select-gno2" v-model="field">
+            <option value="UZN">Узень</option>
+            <option value="KMB">Карамандыбас</option>
           </select>
         </div>
-
         <div class="cell4-gno table-border-gno-top col-7">Скважина №</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           <input v-model="wellNumber" type="text" @change="getWellNumber(wellNumber)" class="square2" />
         </div>
         <div class="cell4-gno table-border-gno-top col-7">
-          Новая скважина <input v-model="age" class="checkbox0" type="checkbox" />
+          Новая скважина
+          <input v-model="age" class="checkbox0" type="checkbox" />
         </div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
-          с ГРП <input class="checkbox0" type="checkbox" />
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+          с ГРП <input class="checkbox0" :disabled="!age" type="checkbox" />
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Пласт</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{horizon}}
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">
           Способ эксплуатации
         </div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           <div class="center">
             {{expMeth}}
           </div>
@@ -318,19 +302,15 @@
         <div class="cell4-gno table-border-gno-top col-7">
           {{tseh}}
         </div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{gu}}
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">
-          No Data
+          НГДУ
         </div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
-          No Data
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+          АО "ОМГ"
         </div>
       </div>
       <div class="tables-string-gno1-1">
@@ -341,40 +321,29 @@
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Внутрен. ØЭК</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{casID}} мм
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Нперф.(ВДП м)</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{hPerf}} м
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Удл. на Нперф.</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{udl}} м
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Текущий забой</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
-          No Data
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+          {{curr}} м
         </div>
       </div>
+
       <div class="inclinom" @click="InclMenu()">Инклинометрия</div>
       <div class="spoiler">
-        <input
-          style="width: 845px; height: 35px;"
-          type="checkbox"
-          tabindex="-1"
-        />
+        <input style="width: 845px; height: 35px;" type="checkbox" tabindex="-1" />
         <div class="box">
           <div class="select-well col-12">
             <div class="select-gno">Оборудование</div>
@@ -384,51 +353,32 @@
             <div class="cell4-gno table-border-gno-top col-7">
               Станок-качалка
             </div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               No Data
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
               Диаметр насоса
             </div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{pumpType}}
             </div>
 
-            <div class="cell4-gno table-border-gno-top col-7">Код насоса</div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
-              No Data
-            </div>
-
             <div class="cell4-gno table-border-gno-top col-7">Нсп</div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{hPumpSet}} м
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Наружн. фНКТ</div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{tubOD}} м
             </div>
             <div class="cell4-gno table-border-gno-top col-7">Внутр. фНКТ</div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{tubID}} мм
             </div>
             <div class="cell4-gno table-border-gno-top col-7">Дата запуска</div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{stopDate}}
             </div>
           </blockquote>
@@ -436,11 +386,7 @@
       </div>
 
       <div class="spoiler">
-        <input
-          style="width: 845px; height: 45px;"
-          type="checkbox"
-          tabindex="-1"
-        />
+        <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" />
         <div class="box">
           <div class="select-well col-12">
             <div class="select-gno">PVT</div>
@@ -453,51 +399,39 @@
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">ГФ</div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{gor}}
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Т пл</div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{tRes}} ℃
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
               Вязкость нефти (пл.усл.)
             </div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{viscOilRc}} сПз
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
               Вязкость воды (пл.усл.)
             </div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{viscWaterRc}} сПз
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
               Плотность нефти
             </div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{densOil}} г/cм³
             </div>
             <div class="cell4-gno table-border-gno-top col-7">
               Плотность воды
             </div>
-            <div
-              class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-            >
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{densWater}} г/cм³
             </div>
           </blockquote>
@@ -512,55 +446,39 @@
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Qн</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{qO}} т/сут
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Обвод</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{wct}} %
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Рзаб</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{bhp}} атм
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Рпл</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{pRes}} ат
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Ндин</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{hDyn}} м
         </div>
         <div class="cell4-gno table-border-gno-top col-7">Рзат</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{pAnnular}} атм
         </div>
         <div class="cell4-gno table-border-gno-top col-7">Рбуф</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{whp}} атм
         </div>
         <div class="cell4-gno table-border-gno-top col-7">Рлин</div>
-        <div
-          class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5"
-        >
+        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{lineP}} атм
         </div>
       </div>
@@ -582,13 +500,10 @@ Vue.component("Plotly", Plotly);
 export default {
   data: function () {
     return {
-      expAnalysisData:{},
-
       layout: {
         width: 950,
         height: 450,
         showlegend: true,
-
         xaxis: {
           hoverformat: ".1f",
           //  showline: true,
@@ -642,6 +557,8 @@ export default {
         wellNumber: null,
         age: false,
         horizon: null,
+        x: null,
+        y: null,
         expMeth: null,
         tseh: null,
         gu: null,
@@ -670,6 +587,7 @@ export default {
         whp: null,
         lineP: null,
         piInput: null,
+        pplInput: null,
         pResInput: null,
         qLInput: null,
         wctInput: null,
@@ -683,6 +601,7 @@ export default {
         hPumpValue: null,
         curveSelect: 'pi',
         curveValue: '',
+        curr: null,
         expChoose: 'ШГН',
         CelButton: 'ql',
         bhpCurveButton: '',
@@ -701,11 +620,15 @@ export default {
         analysisBox8: true,
         menu: "MainMenu",
         grp_skin: false,
+
         qZhExpEcn:null,
         qOilExpEcn:null,
         qZhExpShgn:null,
         qOilExpShgn:null,
         param_eco:null,
+
+        field: "UZN"
+
     };
 
   },
@@ -715,16 +638,16 @@ export default {
       if (this.method == "CurveSetting") {
         this.pResInput = data["Well Data"]["p_res"][0]
         this.piInput = data["Well Data"]["pi"][0]
-        this.qLInput = data["Well Data"]["q_l"][0]
+        this.qLInput = data["Well Data"]["q_l"][0].toFixed(0)
         this.wctInput = data["Well Data"]["wct"][0]
         this.gorInput = data["Well Data"]["gor"][0]
-        this.bhpInput = data["Well Data"]["bhp"][0]
+        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0),
         this.hDynInput = data["Well Data"]["h_dyn"][0]
-        this.pAnnularInput = data["Well Data"]["p_annular"][0]
-        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"],
-        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"],
-        this.pManomInput = 0
-        this.hPumpManomInput = 0
+        this.CelValue = data["Well Data"][""]
+        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0),
+        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0),
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0),
+        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0),
         this.whpInput = data["Well Data"]["whp"][0]
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -737,30 +660,36 @@ export default {
         this.gu = data["Well Data"]["gu"][0]
         this.casOD = data["Well Data"]["cas_OD"][0]
         this.casID = data["Well Data"]["cas_ID"][0]
-        this.hPerf = data["Well Data"]["h_perf"][0]
-        this.udl = data["Well Data"]["h_up_perf_md"][0]
+        this.hPerf = data["Well Data"]["h_up_perf_vd"][0]
+        this.udl = data["udl"].toFixed(1)
         this.hPumpSet = data["Well Data"]["h_pump_set"][0]
         this.tubOD = data["Well Data"]["tub_OD"][0]
         this.tubID = data["Well Data"]["tub_ID"][0]
         this.stopDate = data["Well Data"]["stop_date"][0]
         this.pumpType = data["Well Data"]["pump_type"][0]
-        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0]
-        this.gor = data["Well Data"]["gor"][0]
-        this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
-        this.viscOilRc = data["Well Data"]["visc_oil_rc"][0]
-        this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0]
-        this.densOil = data["Well Data"]["dens_oil"][0]
-        this.densWater = data["Well Data"]["dens_liq"][0]
-        this.qL = data["Well Data"]["q_l"][0]
-        this.qO = data["Well Data"]["q_o"][0]
-        this.wct = data["Well Data"]["wct"][0]
-        this.bhp = data["Well Data"]["bhp"][0]
-        this.pRes = data["Well Data"]["p_res"][0]
+        this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(2)
+        this.gor = data["Well Data"]["gor"][0].toFixed(0)
+        this.tRes = data["Well Data"]["t_res"][0].toFixed(2)
+        this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(2)
+        this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(2)
+        this.densOil = data["Well Data"]["dens_oil"][0].toFixed(2)
+        this.densWater = data["Well Data"]["dens_liq"][0].toFixed(2)
+        this.qL = data["Well Data"]["q_l"][0].toFixed(0)
+        this.qO = data["Well Data"]["q_o"][0].toFixed(0)
+        this.wct = data["Well Data"]["wct"][0].toFixed(0)
+        this.bhp = data["Well Data"]["bhp"][0].toFixed(0)
+        this.pRes = data["Well Data"]["p_res"][0].toFixed(0)
         this.hDyn = data["Well Data"]["h_dyn"][0]
-        this.pAnnular = data["Well Data"]["p_annular"][0]
-        this.whp = data["Well Data"]["whp"][0]
-        this.lineP = data["Well Data"]["line_p"][0]
-        this.piInput = data["Well Data"]["pi"][0]
+        this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(0)
+        this.whp = data["Well Data"]["whp"][0].toFixed(0)
+        this.lineP = data["Well Data"]["line_p"][0].toFixed(0)
+        this.piInput = data["Well Data"]["pi"][0].toFixed(2)
+        this.curr = data["Well Data"]["curr_bh"][0].toFixed(0)
+        this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0)
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0)
+
+
+        this.stopDate = this.stopDate.substring(0, 10)
         this.pResInput = this.pRes
         this.qLInput = this.qL
         this.wctInput = this.wct
@@ -768,17 +697,24 @@ export default {
         this.bhpInput = this.bhp
         this.hDynInput = this.hDyn
         this.pAnnularInput = this.pAnnular
-        this.pManomInput = 0
-        this.hPumpManomInput = 0
+        this.pManomInput = data["Well Data"]["p_intake"][0]
+        this.hPumpManomInput = data["Well Data"]["h_pump_set"][0]
         this.whpInput = this.whp
         this.qlCelButton = true
         this.qlCelValue = this.qLInput*1
         this.hPumpValue = this.hPumpSet
+
         if (this.expMeth == "ШГН") {
               this.shgnButton = true;
         } else {
               this.shgnButton = false
         }
+        if (this.age === true) {
+          this.curveSelect = 'pi'
+        } else {
+          this.curveSelect = 'hdyn'
+        }
+
         this.expChoose = this.expMeth
         this.piButton = true
         this.curveLineData = JSON.parse(data.LineData)["data"]
@@ -875,19 +811,17 @@ export default {
       this.data[2]['y'][0] = value[1]["p"]
     },
     PotAnalysisMenu() {
-      this.analysisBox1 = false
-      this.analysisBox2 = false
-      this.analysisBox3 = false
-      this.analysisBox4 = false
-      this.analysisBox5 = false
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
       if (this.age) {
+        this.postAnalysisNew();
         this.$modal.show('modalNewWell');
       } else {
+        this.postAnalysisOld();
         this.$modal.show('modalOldWell');
       }
     },
+
     ExpAnalysisMenu(){
         let uri = "http://172.20.103.187:7575/api/nno/";
 
@@ -990,6 +924,8 @@ export default {
                 console.log('No data');
             }
         });
+
+
     },
     PgnoMenu() {
       this.$modal.show('modalPGNO')
@@ -999,54 +935,151 @@ export default {
     },
 
     getWellNumber(wellnumber) {
-      let uri = "http://172.20.103.187:7575/api/pgno/" + wellnumber;
+      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
 
+
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
-          return this.hdynValue = [this.hDynInput = 0, this.pAnnularInput = 0], this.hDyn, this.lineP, this.casOD, this.tubID, this.bhp, this.bhpInput, this.casID, this.hPerf, this.pumpType, this.hPumpSet, this.hPumpValue, this.wctInput, this.wct, this.whp, this.pRes, this.pResInput, this.wctInput, this.qO, this.qLInput, this.qlCelValue, this.densWater, this.densOil, this.densWater, this.densOil, this.viscWaterRc, this.viscOilRc, this.tRes, this.gor, this.gorInput, this.PBubblePoint, this.tubOD = 0;
-        } else if (data) {
+          //Выбор скважины
+        this.horizon = 0;
+        this.expMeth = 0;
+        this.tseh = 0;
+        this.gu = 0;
+        this.curr = 0;
+
+        // Конструкция
+        this.casOD = 0;
+        this.casID = 0;
+        this.hPerf = 0;
+        this.udl = 0;
+
+        //PVT
+        this.PBubblePoint = 0;
+        this.gor = 0;
+        this.tRes = 0;
+        this.densOil = 0;
+        this.viscOilRc = 0;
+        this.viscWaterRc = 0;
+        this.densWater = 0;
+        this.hdynValue = [this.hDynInput = 0, this.pAnnularInput = 0];
+
+        //Оборудование
+        this.pumpType = 0;
+        this.hPumpSet = 0;
+        this.tubOD = 0;
+        this.tubID = 0;
+
+        //Технологический  режим
+        this.qL = 0;
+        this.qO = 0;
+        this.wct = 0;
+        this.bhp = 0;
+        this.pRes = 0;
+        this.hDyn = 0;
+        this.pAnnular = 0;
+        this.whp = 0;
+        this.lineP = 0;
+
+        //Настройка кривой притока
+        this.pResInput = 0;
+        this.piInput = 0;
+        this.qLInput = 0;
+        this.bhpInput = 0;
+        this.wctInput = 0;
+        this.gorInput = 0;
+        this.hDynInput = 0;
+        this.pAnnularInput = 0;
+        this.hPumpManomInput = 0;
+        this.whpInput = 0;
+
+        //Параметры подбора
+        this.hPumpValue = 0;
+        this.qlCelValue = 0;
+        this.bhpCelValue = 0;
+        this.piCelValue = 0;
+
+
+        } else if(data["Age"] === true) {
+
+          this.horizon = data["Well Data"]["horizon"][0]
+
+          this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
+          this.gor = data["Well Data"]["gor"][0].toFixed(1)
+          this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
+          this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(1)
+          this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
+          this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
+          this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
+
+
+
+          Vue.prototype.$notifyWarning("Скважина что была указана является новой");
+
+          //Выбор скважины
+        this.expMeth = 0;
+        this.tseh = 0;
+        this.gu = 0;
+        this.curr = 0;
+
+        // Конструкция
+        this.casOD = 0;
+        this.casID = 0;
+        this.hPerf = 0;
+        this.udl = 0;
+
+        //Оборудование
+        this.pumpType = 0;
+        this.hPumpSet = 0;
+        this.tubOD = 0;
+        this.tubID = 0;
+
+        //Технологический  режим
+        this.qL = 0;
+        this.qO = 0;
+        this.wct = 0;
+        this.bhp = 0;
+        this.pRes = 0;
+        this.hDyn = 0;
+        this.pAnnular = 0;
+        this.whp = 0;
+        this.lineP = 0;
+
+        //Настройка кривой притока
+        this.pResInput = 0;
+        this.piInput = 0;
+        this.qLInput = 0;
+        this.bhpInput = 0;
+        this.wctInput = 0;
+        this.gorInput = 0;
+        this.hDynInput = 0;
+        this.pAnnularInput = 0;
+        this.hPumpManomInput = 0;
+        this.whpInput = 0;
+
+        //Параметры подбора
+        this.hPumpValue = 0;
+        this.qlCelValue = 0;
+        this.bhpCelValue = 0;
+        this.piCelValue = 0;
+
+        }
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-        }
-
-
-        // if (data) {
-        //   this.setData(data)
-        //   this.$emit('LineData', this.curveLineData)
-        //   this.$emit('PointsData', this.curvePointsData)
-
-
-        // } else if (data["Error"] === "NoData"){
-        //   Vue.prototype.$notifyError('Такой скважины нет');
-        //   this.lineP = 0;
-        //   this.whp = 0
-        //   this.setData(data = []);}
-        //   }).catch(function(error) {
-        //   Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
-
-
-
-            // return this.whp, this.pAnnular, this.hDyn, this.pRes, this.bhp, this.wct, this.qO, this.qL, this.densWater, this.densOil  = 0;
-            // this.pAnnular = 0;
-            // this.hDyn = 0;
-            // this.pRes = 0;
-            // this.bhp = 0;
-            // this.wct = 0;
-            // this.qO = 0;
-            // this.qL = 0;
-            // this.densWater = 0;
-            // this.densOil = 0;
         }
       );
 
 
 
     },
-    postCurveData() {
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
+
+    postCurveData(value) {
+      console.log(value)
+        let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
+        // api/pgno/UZN/
+        // KMB
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1055,21 +1088,10 @@ export default {
         this.CelValue = this.piCelValue
       }
 
+      if(this.piCelValue > this.bhpCelValue) {
+        Vue.prototype.$notifyError("Pпр не должно быть больше чем Рзаб");
+      }
 
-
-      // if (this.curveSelect == 'pi') {
-      //   this.curveValue = this.piInput
-      // } else if (this.curveSelect == 'ql') {
-      //   this.curveValue = this.qLInput
-      // } else if (this.curveSelect == 'bhp') {
-      //   this.curveValue = this.bhpInput
-      // } else if (this.curveSelect == 'hdyn') {
-      //   this.curveValue = [this.hDynInput, this.pAnnularInput]
-      // } else if (this.curveSelect == 'pmanom') {
-      //   this.curveValue = [this.pManomInput, this.hPumpManomInput]
-      // } else if (this.curveSelect == 'whp') {
-      //   this.curveValue = this.whpInput
-      // }
       let jsonData = JSON.stringify(
         {
         "curveSelect": this.curveSelect,
@@ -1099,8 +1121,9 @@ export default {
         "analysisBox8": this.analysisBox8
                    }
       )
-      // console.log("JSON =", jsonData)
-      this.axios.post(uri, jsonData).then((response) => {
+
+
+        this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
           this.method = "CurveSetting"
@@ -1111,8 +1134,9 @@ export default {
         }
       });
     },
+
     postAnalysisOld() {
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
+      let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1135,8 +1159,8 @@ export default {
         "gorValue": this.gorInput,
         "expSelect": this.expChoose,
         "hPumpValue": this.hPumpValue,
-        "celSelect": this.celSelect,
-        "celValue": this.celValue,
+        "celSelect": this.CelButton,
+        "celValue": this.CelValue,
         "menu": "PotencialAnalysis",
         "well_age": this.age,
         "grp_skin": true,
@@ -1150,7 +1174,6 @@ export default {
         "analysisBox8": this.analysisBox8
                    }
       )
-      // console.log("JSON =", jsonData)
       this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
@@ -1167,9 +1190,10 @@ export default {
         }
       });
     },
+
     postAnalysisNew() {
       console.log("POST NEW WELL")
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/";
+      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -1192,9 +1216,9 @@ export default {
         "gorValue": this.gorInput,
         "expSelect": this.expChoose,
         "hPumpValue": this.hPumpValue,
-        "celSelect": this.celSelect,
-        "celValue": this.celValue,
-        "menu": "MainMenu",
+        "celSelect": this.CelButton,
+        "celValue": this.CelValue,
+        "menu": "PotencialAnalysis",
         "well_age": this.age,
         "grp_skin": true,
         "analysisBox1": this.analysisBox1,
@@ -1207,13 +1231,11 @@ export default {
         "analysisBox8": this.analysisBox8
         }
       )
-      // console.log("JSON =", jsonData)
       this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
           console.log(data)
           this.method = "CurveSetting"
-          // this.setData(data)
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
           this.updateLine(this.newCurveLineData)
@@ -1225,10 +1247,39 @@ export default {
       });
     },
 
+    modalExpAnalysis(){
+        let uri = "http://172.20.103.187:7575/api/nno/";
+
+        let jsonData = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": this.expMeth,
+            }
+        )
+        //console.log("JSON =", jsonData)
+
+        this.axios.post(uri, jsonData).then((response) => {
+        var data = JSON.parse(response.data)
+        if (data) {
+          console.log(data)
+
+          this.nno=this.data.map((r) => r.NNO)
+          this.prs=this.data.map((r) => r.prs)
+          //this.$emit('NNO', this.nno)
+          //this.$emit('PRS', this.prs)
+
+          this.$modal.show("showEconomicModal");
+
+        } else {
+          console.log("No data");
+        }
+
+      });
+    },
+
 
   },
   beforeCreate: function() {
-    let uri = "http://172.20.103.187:7575/api/pgno/0046/";
+    let uri = "http://172.20.103.187:7575/api/pgno/UZN/0046/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -1239,12 +1290,16 @@ export default {
           console.log("No data");
         }
       });
-
   },
 };
 </script>
 
 <style scoped>
+
+.checkboxQ {
+  border-radius: 100%;
+}
+
 .modalOldWell {
   font-family: 'Courier New', Courier, monospace;
 }
@@ -1269,4 +1324,5 @@ div {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
 }
+
 </style>
