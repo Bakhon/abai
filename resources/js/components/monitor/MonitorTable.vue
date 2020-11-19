@@ -275,7 +275,7 @@
         <div class="head-monitor">Рекомендации</div>
         <div style="min-height: 125px">
             <div class="rek" v-if="dose">Рекомендации дозирования ИК</div>
-            <monitor-chart-radialbar v-if="dose"></monitor-chart-radialbar>
+            <monitor-chart-radialbar v-if="dose" :dose="dose"></monitor-chart-radialbar>
         </div>
         <div style="min-height: 80px">
             <div v-if="signalizator > 0 && signalizator != null" class="text-wrap">
