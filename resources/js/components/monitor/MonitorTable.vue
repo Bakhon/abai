@@ -497,7 +497,8 @@ export default {
                 rhol: this.oilGas.water_density_at_20,
                 rhog: this.oilGas.gas_density_at_20,
                 mul: this.oilGas.oil_viscosity_at_20,
-                mug: this.oilGas.gas_viscosity_at_20
+                mug: this.oilGas.gas_viscosity_at_20,
+                g_o: this.ngdu.daily_oil_production
             })
             .then((response) => {
                 let data = response.data;
