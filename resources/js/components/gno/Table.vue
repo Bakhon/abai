@@ -6,7 +6,7 @@
         <modal name="modalIncl" :width="1150" :height="500" style="background:transparent">
           <div class="modal-bign">
             <div class="Table" align="center" x:publishsource="Excel">
-              <gno-incl-table :wellNumber="wellNumber"></gno-incl-table>
+              <gno-incl-table :wellNumber="wellNumber" :wellIncl="wellIncl"></gno-incl-table>
             </div>
           </div>
         </modal>
@@ -620,7 +620,8 @@ export default {
         analysisBox8: true,
         menu: "MainMenu",
         grp_skin: false,
-        field: "UZN"
+        field: "UZN",
+        wellIncl: null
     };
 
   },
@@ -679,6 +680,7 @@ export default {
         this.curr = data["Well Data"]["curr_bh"][0].toFixed(0)
         this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0)
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0)
+        this.wellIncl = data["Well Data"]["well"][0]
 
 
         this.stopDate = this.stopDate.substring(0, 10)
