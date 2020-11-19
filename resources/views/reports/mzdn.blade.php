@@ -1,18 +1,18 @@
 @extends('layouts.app')
 @section('content')
-    <div class="col p-4" id="app">
+    <div  id="app">
         <a href="{{url('/')}}/ru/export" class="float-right">
             <!-- <button type="button" class="btn btn-success">в Excel</button> -->
         </a>
         <h2 class="subtitle">Отчет месячной замерной добычи нефти</h2>
-        <div class="level1-content row">
-            <div class="main col-md-12 col-lg-12 row">
-            <reports-table></reports-table>
-<!-- 
+        <div>
+            <div class="main col-md-12 col-lg-12 ">
+            <!-- <reports-table></reports-table> -->
+
                               </div>
-                              <div style="background: white">
+                              <div >
                               <new-reports-table></new-reports-table>
-                              </div> -->
+                              </div>
                               
         </div>
     </div>
@@ -21,6 +21,14 @@
     .p-4{
         background-color: #0F1430;
     }
+    .fixed-table-container{
+        background: #20274e;
+    }
+   
+    .bootstrap-table .fixed-table-container .table {
+
+    color: white;
+}
     .main{
         background-color: #0F1430;
         background-image: url({{ asset('img/level1/grid.svg') }});
@@ -34,6 +42,11 @@
     .top{
         display: none;
     } 
+    .table-hover tbody tr:hover 
+    {
+    color: #d4d4d4 !important;
+    background-color: rgba(0, 0, 0, 0.075);
+}
 
 </style>
 

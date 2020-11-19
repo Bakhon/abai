@@ -36,6 +36,7 @@
         "gridjs-vue": "^0.5.2",
         "jquery": "^3.5.1",
         "luxon": "^1.25.0",
+        "tableexport.jquery.plugin": "^1.10.21",
         "v-calendar": "^1.1.1",
         "vue-apexcharts": "^1.6.0",
         "vue-chartjs": "^3.5.1",

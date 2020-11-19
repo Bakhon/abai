@@ -1,14 +1,20 @@
 @extends('layouts.app')
 @section('content')
     <div class="col p-4" id="app">
-        <h2 class="subtitle">Big data</h2>   
+        <h2 class="subtitle">Big data</h2>
+        <div class="bg-dark">
+            <button  type="button" class="btn report-btn">Вывод данных</button>
+            <button disabled onclick="document.location='{{url('/')}}/ru/mzdn'" type="button" class="btn report-btn">Ввод данных</button>
+            </div>
            <div class="level1-content row">       
             <div class="main col-md-12 col-lg-12 row"> 
-            <div style="float:left">
+            <div class="col-md-12 col-lg-12" style="padding: 10px;">
+            </div>
+            <div class="col-md-2 col-lg-2">
         <button onclick="document.location='{{url('/')}}/ru/mzdn'" type="button" class="btn report-btn">Отчёт месячной замерной нефти</button>
 </div>
-        <div>
-        <button onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="btn report-btn">Конструктор отчётов</button> 
+        <div class="col-md-2 col-lg-2">
+        <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="btn report-btn">Конструктор отчётов</button> 
         </div>
                 <div class="emptyPage"></div>
          
