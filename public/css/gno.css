@@ -402,6 +402,7 @@ input.checkbox3 {
     float: left;
 }
 
+
 .square2 {
     /* border: 1px solid #00CCFF; */
     background: rgba(76, 190, 237, 0.278431);
@@ -433,6 +434,21 @@ input[type="radio"]:checked {
     /* Checked Styles */
     font-weight: 900;
 }
+
+input[type="text"]:disabled.square2{
+    background: #37373a;
+    color: #69697a;
+
+    /* background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABADeOQ8CXl/xfgAAAABJRU5ErkJggg==) repeat; */
+}
+
+input[type="text"]:enabled.square2{
+    background: #134487;
+    color: rgb(255, 255, 255);
+}
+
+
+
 
 iframe.iframe {
     width: 1300px;

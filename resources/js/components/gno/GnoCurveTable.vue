@@ -14,7 +14,9 @@ export default {
     return {
       layout: {
         //      showlegend: false,
+        
         xaxis: {
+          title: "Дебит, q, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           // autorange: false,
