@@ -551,18 +551,34 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-                      <div class="font" v-if="item.planDay">
-                        {{
+                      <div class="font" v-if="item.planMonth">
+                       <!-- {{
                           new Intl.NumberFormat("ru-RU").format(item.planDay)
+                        }}-->
+
+
+                             {{
+                          new Intl.NumberFormat("ru-RU").format(item.planMonth)
                         }}
+
+
+
+
+                        
                         <div class="right">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div class="font" v-if="item.factDay">
-                        {{
+                      <div class="font" v-if="item.factMonth">
+                      <!--  {{
                           new Intl.NumberFormat("ru-RU").format(item.factDay)
+                        }}-->
+
+
+                              {{
+                          new Intl.NumberFormat("ru-RU").format(item.factMonth)
                         }}
+
                         <div class="right">{{ item4 }}</div>
                       </div>
                     </td>
@@ -572,14 +588,14 @@
                       "
                     >
                       <div
-                        v-if="item.factDay"
+                        v-if="item.factMonth"
                         class="triangle"
-                        :style="`${getColor(item.factDay - item.planDay)}`"
+                        :style="`${getColor(item.factMonth - item.planMonth)}`"
                       ></div>
-                      <div class="percent font" v-if="item.factDay">
+                      <div class="percent font" v-if="item.factMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(item.factDay - item.planDay)
+                            Math.abs(item.factMonth - item.planMonth)
                           )
                         }}
                         <div class="right">{{ item4 }}</div>
@@ -587,9 +603,9 @@
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div
-                        v-if="item.factDay"
+                        v-if="item.factMonth"
                         class="triangle"
-                        :style="`${getColor(item.factDay - item.planDay)}`"
+                        :style="`${getColor(item.factMonth - item.planMonth)}`"
                       ></div>
                       <div class="percent font">5,2%</div>
                     </td>
@@ -618,13 +634,18 @@
                       "
                     >
                       <div class="font">
-                        {{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}
+                          <!--{{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}-->
+
+                         {{ new Intl.NumberFormat("ru-RU").format(planMonthSumm) }}
+
+                        
                         <div class="right">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                       <div class="font">
-                        {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}
+                       <!-- {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}-->
+                         {{ new Intl.NumberFormat("ru-RU").format(factMonthSumm) }}
                         <div class="right">{{ item4 }}</div>
                       </div>
                     </td>
@@ -634,24 +655,25 @@
                       "
                     >
                       <div
-                        v-if="factDaySumm"
+                        v-if="factMonthSumm"
                         class="triangle"
-                        :style="`${getColor(factDaySumm - planDaySumm)}`"
+                        :style="`${getColor(factMonthSumm - planMonthSumm)}`"
                       ></div>
                       <div class="percent font">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(factDaySumm - planDaySumm)
+                            Math.abs(factMonthSumm - planMonthSumm)
                           )
                         }}
+                        
                         <div class="right">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                       <div
-                        v-if="factDaySumm"
+                        v-if="factMonthSumm"
                         class="triangle"
-                        :style="`${getColor(factDaySumm - planDaySumm)}`"
+                        :style="`${getColor(factMonthSumm - planMonthSumm)}`"
                       ></div>
                       <div class="percent font">5,2%</div>
                     </td>

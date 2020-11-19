@@ -1999,6 +1999,7 @@ export default {
           }))
 
           .value();
+          //console.log(productionPlanAndFactMonth);
 
         productionPlanAndFactMonth = _.orderBy(
           productionPlanAndFactMonth,
@@ -2256,41 +2257,41 @@ export default {
         if (this.company == "all") {
           var bigTable = _.zipWith(
             dzoBriefly,
-           /* dzoYear,
+           /* dzoYear,,*/
             dzoMonth,
-            factYear,*/
+            //factYear
             dzo,
             dzo2,
-           /* planYear,
+           /* planYear,*/
             planMonth,
-            factMonth,*/
+            factMonth,
             dzoDay,
             factDay,
             planDay,
             (
               dzoBriefly,
-             /*  dzoYear,
+             /*  dzoYear,*/
               dzoMonth,
-              factYear,*/
+              //factYear,
               dzo,
               dzo2,
-              /*  planYear,
+              /*  planYear,*/
               planMonth,
-              factMonth,*/
+              factMonth,
               dzoDay,
               factDay,
               planDay
             ) =>
               _.defaults(
                 dzoBriefly,
-               /*  dzoYear,
+               /*  dzoYear,*/
                 dzoMonth,
-                factYear,*/
+                //factYear,
                 dzo,
                 dzo2,
-               /*  planYear,
+               /*  planYear,*/
                 planMonth,
-                factMonth,*/
+                factMonth,
                 dzoDay,
                 factDay,
                 planDay

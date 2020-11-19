@@ -75,7 +75,13 @@ body {
     display: inline-block;
 }
 
+.txt1 {
+ font-family: Bold;
+}
+
+
 .txt2 {
+    font-family: Bold;
     float: left;
     font-size: 16px;
     margin-top: -1px;
