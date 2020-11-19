@@ -6,7 +6,7 @@
         <modal name="modalIncl" :width="1150" :height="500" style="background:transparent">
           <div class="modal-bign">
             <div class="Table" align="center" x:publishsource="Excel">
-              <gno-incl-table :wellNumber="wellNumber"></gno-incl-table>
+              <gno-incl-table :wellNumber="wellNumber" :wellIncl="wellIncl"></gno-incl-table>
             </div>
           </div>
         </modal>
@@ -64,7 +64,7 @@
         <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart"
           style="margin-top: -180px; margin-left:100px;">
           <div class="modal-bign2">
-            <gno-chart-bar></gno-chart-bar>
+            <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
           </div>
         </modal>
         <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
@@ -620,15 +620,26 @@ export default {
         analysisBox8: true,
         menu: "MainMenu",
         grp_skin: false,
-
+        expAnalysisData:{
+            NNO1:null,
+            NNO2:null,
+            prs1:null,
+            prs2:null,
+            qoilEcn:null,
+            qoilShgn:null,
+            shgnParam:null,
+            ecnParam:null,
+            ecnNpv:null,
+            shgnNpv:null
+        },
         qZhExpEcn:null,
         qOilExpEcn:null,
         qZhExpShgn:null,
         qOilExpShgn:null,
         param_eco:null,
 
-        field: "UZN"
-
+        field: "UZN",
+        wellIncl: null
     };
 
   },
@@ -687,6 +698,7 @@ export default {
         this.curr = data["Well Data"]["curr_bh"][0].toFixed(0)
         this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0)
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0)
+        this.wellIncl = data["Well Data"]["well"][0]
 
 
         this.stopDate = this.stopDate.substring(0, 10)
@@ -823,6 +835,54 @@ export default {
     },
 
     ExpAnalysisMenu(){
+        if(this.expAnalysisData.NNO1!=null) {
+            this.EconomParam();
+        }
+    },
+    EconomParam(){
+        var prs1 = this.expAnalysisData.prs1;
+        var prs2 = this.expAnalysisData.prs2;
+
+        if (prs1!=0 && prs2!=0){
+            this.param_eco=1;
+            this.EconomCalc();
+        } else if (prs1==0){
+            this.param_eco=2;
+            this.EconomCalc();
+        } else {
+            this.param_eco=3;
+            this.EconomCalc();
+        }
+    },
+    EconomCalc(){
+        let uri2="/ru/nnoeco?equip=1&org=5&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+        this.axios.get(uri2).then((response) => {
+            let data = response.data;
+            if(data) {
+
+                this.expAnalysisData.ecnParam=data[0].ecnParam
+                this.expAnalysisData.shgnParam=data[0].shgnParam
+                this.expAnalysisData.shgnNpv=data[0].npv
+            }
+            else {
+                console.log('No data');
+            }
+        });
+
+        let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+        this.axios.get(uri3).then((response) => {
+            let data = response.data;
+            if(data) {
+
+                this.expAnalysisData.ecnNpv=data[0].npv
+                this.$modal.show("modalExpAnalysis");
+            }
+            else {
+                console.log('No data');
+            }
+        });
+    },
+    NnoCalc(){
         let uri = "http://172.20.103.187:7575/api/nno/";
 
         this.eco_param=null;
@@ -855,12 +915,9 @@ export default {
         this.axios.post(uri, jsonData).then((response) => {
         var data = JSON.parse(response.data.Result)
         if (data) {
-          console.log("ШГН",data)
           this.expAnalysisData.NNO1=data.NNO
           this.expAnalysisData.qoilShgn=this.qOilExpShgn
-          this.expAnalysisData.qoilEcn=this.qOilExpEcn
           this.expAnalysisData.prs1=data.prs
-          //this.$modal.show("modalExpAnalysis");
         } else {
           console.log("No data");
         }
@@ -870,62 +927,13 @@ export default {
         this.axios.post(uri, jsonData2).then((response) => {
         var data = JSON.parse(response.data.Result)
         if (data) {
-          console.log("ЭЦН",data)
           this.expAnalysisData.NNO2=data.NNO
+          this.expAnalysisData.qoilEcn=this.qOilExpEcn
           this.expAnalysisData.prs2=data.prs
-          console.log("asd",typeof this.expAnalysisData.NNO2, typeof this.expAnalysisData.prs2, typeof this.qOilExpShgn)
         } else {
           console.log("No data");
         }
         });
-
-        this.param_eco=this.EconomParam();
-        console.log("eco param data",this.param_eco);
-
-        this.EconomCalc();
-
-    },
-    EconomParam(){
-        var prs1 = this.expAnalysisData.prs1;
-        var prs2 = this.expAnalysisData.prs2;
-
-        if (prs1!=0 && prs2!=0){
-            return 1
-        } else if (prs1==0){
-            return 2
-        } else {
-            return 3
-        }
-    },
-    EconomCalc(){
-        let uri2="/ru/nnoeco?equip=1&org=5&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-        this.axios.get(uri2).then((response) => {
-            let data = response.data;
-            if(data) {
-
-                this.expAnalysisData.ecnParam=data[0].ecnParam
-                this.expAnalysisData.shgnParam=data[0].shgnParam
-                this.expAnalysisData.shgnNpv=data[0].npv
-            }
-            else {
-                console.log('No data');
-            }
-        });
-
-        let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-        this.axios.get(uri3).then((response) => {
-            let data = response.data;
-            if(data) {
-
-                this.expAnalysisData.ecnNpv=data[0].npv
-                this.$modal.show("modalExpAnalysis");
-            }
-            else {
-                console.log('No data');
-            }
-        });
-
-
     },
     PgnoMenu() {
       this.$modal.show('modalPGNO')
@@ -1068,6 +1076,7 @@ export default {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          this.NnoCalc();
         }
       );
 
@@ -1286,10 +1295,12 @@ export default {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          this.NnoCalc();
         } else {
           console.log("No data");
         }
       });
+
   },
 };
 </script>

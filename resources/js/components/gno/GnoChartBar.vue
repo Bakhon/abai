@@ -103,24 +103,14 @@ export default {
           },
         },
       },
-      series:[]
-    };
-  },
-
-  mounted(){
-
-
-
-      //this.data=JSON.parse(this.data)
-
-
-      this.series= [
+      series:[
         {
           name: "ШГН",
           type: "bar",
           stroke: {
             show: true,
           },
+          //data: [Math.round(this.data.qoilShgn), Math.round(this.data.NNO1), Math.round(this.data.shgnParam), Math.round(this.data.shgnNpv/1000000)],
           data: [Math.round(this.data.qoilShgn), Math.round(this.data.NNO1), Math.round(this.data.shgnParam), Math.round(this.data.shgnNpv/1000000)],
         },
         {
@@ -129,11 +119,12 @@ export default {
           stroke: {
             show: true,
           },
+          //data: [Math.round(this.data.qoilEcn), Math.round(this.data.NNO2), Math.round(this.data.ecnParam), Math.round(this.data.ecnNpv/1000000)],
           data: [Math.round(this.data.qoilEcn), Math.round(this.data.NNO2), Math.round(this.data.ecnParam), Math.round(this.data.ecnNpv/1000000)],
-        },
+        }
       ]
-
-  }
+    };
+  },
 
 
 
