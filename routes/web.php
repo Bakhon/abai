@@ -116,6 +116,19 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefsprocdob','EcoRefsProcDobController');
         Route::resource('ecorefsavgprs','EcoRefsAvgPrsController');
 
+        Route::resource('marabkpiid','VizCenter\MarabKpiIdController');
+        Route::resource('abdkpiid','VizCenter\AbdKpiIdController');
+        Route::resource('typeid','VizCenter\TypeIdController');
+        Route::resource('marab1','VizCenter\Marab1Controller');
+        Route::resource('marab2','VizCenter\Marab2Controller');
+        Route::resource('marab345','VizCenter\Marab345Controller');
+        Route::resource('marab6','VizCenter\Marab6Controller');
+        Route::resource('abd12','VizCenter\Abd12Controller');
+        Route::resource('abd35','VizCenter\Abd35Controller');
+        Route::resource('abd46','VizCenter\Abd46Controller');
+        Route::get('kpicalc','VizCenter\Marab2Controller@kpicalculation');
+        Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
+
     });
     Auth::routes([
         'reset' => false,

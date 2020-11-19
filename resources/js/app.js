@@ -13,6 +13,10 @@ import VueFriendlyIframe from 'vue-friendly-iframe';
 import { Plotly } from 'vue-plotly';
 import excel from 'vue-excel-export';
 import 'bootstrap-table/dist/bootstrap-table.js';
+import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
+// import  jquery from 'jquery';
+
+
 
 
 

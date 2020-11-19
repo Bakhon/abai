@@ -16,6 +16,7 @@ import VueApexCharts from "vue-apexcharts";
 Vue.component("apexchart", VueApexCharts);
 export default {
   name: "mix-chart",
+  props:["data"],
   data: function () {
     return {
       chartOptions: {
@@ -70,7 +71,7 @@ export default {
             colors: ["#c5c5c5"],
           },
         },
-        labels: ["Qн, т/сут", "ННО, сут", "Энергопотребление кВт*ч", "Затраты на ГНО, тыс. тг", "NPV, тыс. тг"],
+        labels: ["Qн, т/сут", "ННО, сут", "Энергопотребление кВт*ч",  "NPV, млрд.тг"],
         legend: {
           show: true,
           position: "bottom",
@@ -102,14 +103,25 @@ export default {
           },
         },
       },
-      series: [
+      series:[]
+    };
+  },
+
+  mounted(){
+
+
+
+      //this.data=JSON.parse(this.data)
+
+
+      this.series= [
         {
           name: "ШГН",
           type: "bar",
           stroke: {
             show: true,
           },
-          data: [5, , 5, 6, 6],
+          data: [this.data.qoil, Math.round(this.data.NNO1), Math.round(this.data.shgnParam), Math.round(this.data.npv/1000000000*-1)],
         },
         {
           name: "ЭЦН (аренда)",
@@ -117,25 +129,15 @@ export default {
           stroke: {
             show: true,
           },
-          data: [5, 5, 5, 5, 5],
+          data: [this.data.qoil, Math.round(this.data.NNO2), Math.round(this.data.ecnParam), Math.round(this.data.npv/1000000000*-1)],
         },
-      ],
-    };
-  },
+      ]
+
+  }
 
 
-   methods: {
-    setValue: function(value) {
-        this.series[0].data[1]=value
 
-    }
-  },
 
-  mounted() {},
-  created: function () {
-    this.$parent.$on("NNO", this.setValue);
-
-  },
 
 }
 </script>

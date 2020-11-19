@@ -925,11 +925,11 @@ ul.dropdown-child {
 }
 
 .row {
-    /* width:1525px;  */
+    width:1525px; 
     /* overflow: hidden; */
-    /* width: 100%; */
-    /* margin-right: unset; */
-    /* margin-left: unset; */
+    width: 100%;
+    margin-right: unset;
+    margin-left: unset;
 }
 
 .col-lg-5 {
@@ -1286,21 +1286,18 @@ li.circle-2 {
 }
 
 .report-btn {
-    background: #15509d;
-    height: 38px;
-    border-radius: 50px;
+    padding: 20px;
+    background: #102784;
     color: white;
-    margin-left: 25px;
-    margin-top: 10px;
+    border-radius: unset;
+    margin: 5px;
 }
 
 .report-btn:hover {
-    background: #15509d;
-    height: 38px;
-    border-radius: 50px;
+    padding: 20px;
+    background: #237DEB;
     color: white;
-    margin-left: 25px;
-    margin-top: 10px;
+ 
 }
 
 .sidebar-expanded {

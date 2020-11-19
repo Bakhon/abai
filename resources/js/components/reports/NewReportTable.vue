@@ -11,7 +11,7 @@
             id="companySelect"
             @change="onChange($event)"
           >
-           <option>Выберите компанию</option>
+           <option value="">Выберите компанию</option>
             <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
             <option value="КБМ">АО «Каражанбасмунай»</option>
             <option value="КазГерМунай">ТОО «КазГерМунай»</option>
@@ -30,7 +30,7 @@
             id="companySelect"
             @change="onChangeMonth($event)"
           >
-           <option>Выберите месяц</option>
+           <option value="">Выберите месяц</option>
             <option value="1">январь</option>
             <option value="2">февраль</option>
             <option value="3">март</option>
@@ -41,8 +41,8 @@
             <option value="8">август</option>
             <option value="9">сентябрь</option>
             <option value="10">октябрь</option>
-            <option value="11">ноябрь</option>
-            <option value="12">декабрь</option>
+            <option :hidden='year==2020' value="11">ноябрь</option>
+            <option :hidden='year==2020' value="12">декабрь</option>
           </select>
         </div>
     </div>
@@ -69,76 +69,291 @@
         </div>
     </div>
     </div>
-<button :disabled='org==null || month==null || year==null' @click="updateData">Сформировать отчет</button>
+<button :disabled='org=="" || month=="" || year=="" || year==2020 && month>10' @click="updateData">Сформировать отчет</button>
 
   </div>
-  <BootstrapTable
+ <div :hidden='data==""'>
+ <BootstrapTable
     :columns="columns"
     :data="data"
     :options="options"
     
   />
 </div>
+</div>
+
 </template>
 
 <script>
 import BootstrapTable from 'bootstrap-table/dist/bootstrap-table-vue.esm.js'
+import 'tableexport.jquery.plugin'
+import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js'
 import 'bootstrap-table/dist/bootstrap-table.min.css'
-// import theme
-import 'bootstrap-table/dist/themes/materialize/bootstrap-table-materialize.min.css'
 
-// import extension
-import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.css'
 
 export default {
   components: {
     BootstrapTable
   },
   data () {
+    
     return {
-      columns: [
-          [{
-          title: 'Item Detail',
+       xmay: [{
+      '1': "январь",
+      '2': "февраль",
+      '3': "март",
+      '4': "апрель",
+      '5': "май",
+      '6': "июнь",
+      '7': "июль",
+      '8': "август",
+      '9': "сентябрь",
+      '10': "октябрь",
+      '11': "ноябрь",
+      '12': "декабрь"
+    },],
+       columns: [
+          [
+        {
+        title: 'Месторождение',
+        rowspan: 3,
+          align: 'center'
+    },
+  {
+        title: 'НГДУ',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'ЦДНГ',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'ГУ',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'Отвод',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'ЗУ/ГЗУ',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'Номер скважины',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'Год бурения',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'Горизонт',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'Блок',
+        rowspan: 3,
+          align: 'center'
+    },
+     {
+        title: 'Действующие интервалы перфорации',
+        rowspan: 3,
+          align: 'center'
+    },
+      {
+        title: '',
+          colspan: 19,
+          align: 'center'
+    },
+{
+        title: 'Факт с начала года',
+          colspan: 6,
+          align: 'center'
+    }
+        ],
+        [{
+         title: 'Техрежим',
+          colspan: 3,
+          align: 'center'
+},
+          {
+          title: 'Qж, м3',
+          rowspan: 2,
+          align: 'center'
+},
+{
+          title: 'Qн, т/сут',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Обв, %',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Дата исследования',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Заключение',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Hдин, м',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Pзатр, атм',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Pзаб, атм',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Pбуф, атм',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Pмакс.нагрузки, кг',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Отработанные дни',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Qн, т',
+          rowspan: 2,
+          align: 'center'
+},{
+          title: 'Qж, м3',
+          rowspan: 2,
+          align: 'center'
+},
+{
+        title: 'Примечание',
           colspan: 2,
           align: 'center'
-        },
-        {
-        title: 'Item Detail2',
-          
+    },
+{
+        title: 'Кол-во ПРС',
+          rowspan: 2,
+          align: 'center'
+    },
+{
+        title: 'Qж, м3',
+          rowspan: 2,
+          align: 'center'
+    },
+    {
+        title: 'Qн, т/сут',
+          rowspan: 2,
+          align: 'center'
+    },
+    {
+        title: 'Обв, %',
+          rowspan: 2,
+          align: 'center'
+    },
+    {
+        title: 'Отработанные дни',
+          rowspan: 2,
+          align: 'center'
+    },
+    {
+        title: 'Qн, т',
+          rowspan: 2,
+          align: 'center'
+    },
+    {
+        title: 'Qж, м3',
+          rowspan: 2,
+          align: 'center'
+    }
+        ],
+        [
+ {
+        title: 'Qж, м3',
+   
+          align: 'center'
+    },
+     {
+        title: 'Обв, %',
+
+          align: 'center'
+    },
+     {
+        title: 'Qн, т/сут',
+
+          align: 'center'
+    },
+     {
+        title: 'Пробы',
+
+          align: 'center'
+    },
+     {
+        title: 'Простои',
+
           align: 'center'
     },
         ],
-        [
-        {
-          title: 'МР',
-          field: '0'
-        },
-        {
-          field: '1',
-          title: 'НГДУ'
-        },
-        {
-          field: '2',
-          title: 'ЦДНГ'
-        }]
+//         [
+   
+// {
+//         title: 'Qж, м3',
+//           align: 'center'
+//     },
+//     {
+//         title: 'Обв, %',
+//           align: 'center'
+//     },
+//     {
+//         title: 'Qн, т/сут',
+//           align: 'center'
+//     },
+//     {
+//         title: 'Пробы',
+//           align: 'center'
+//     },
+//     {
+//         title: 'Простои',
+//           align: 'center'
+//     }
+        
+
+//         ]
+     
+  
       ],
-      data: [
-        {
-          id: 1,
-          name: 'Item 1',
-          price: '$1'
-        }
-      ],
+      
+      data: [],
       options: {
         search: true,
+        pagination: true,
         showColumns: true,
-        toolbar: true,
-        pagination: true
+        showExport: true,
+        locale: 'ru-RU',      
+        exportTypes: ['excel', 'csv', 'doc'],
+        exportDataType: 'all',
+
       },
-      org: null,
-      month: null,
-      year: null,
+
+      org: '',
+      month: '',
+      year: '',
+      
     }
+    
   },
   methods: {
     // dayClicked(day) {
@@ -158,7 +373,8 @@ export default {
         .then((response) => {
           let data = response.data;
           if (data) {
-            this.data = data.wellsList
+            this.data = data.wellsList;
+            this.columns[0][11]['title'] = this.xmay[0][this.month] + " " + this.year; 
           } else {
             console.log("No data");
           }
@@ -170,6 +386,7 @@ export default {
     },
      onChangeMonth(event) {
         this.month = event.target.value;
+        
 
     },
     onChangeYear(event) {
@@ -178,4 +395,5 @@ export default {
     },
   }, 
 }
+
 </script>
