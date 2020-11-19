@@ -293,8 +293,8 @@ class EcoRefsScFaController extends Controller
 
 
 
-            $ecnParam = 95.343 * pow($qZhidkosti,-0.607)*$qZhidkosti;
-            $shgnParam = 108.29 * pow($qZhidkosti,-0.743)*$qZhidkosti;
+            $ecnParam = 95.343 * pow($qZhidkosti,-0.607);
+            $shgnParam = 108.29 * pow($qZhidkosti,-0.743);
 
             foreach($emppersExp as $item){
                 $exportsResults[$item->route_id] = $empper * $item->emp_per;
@@ -311,16 +311,13 @@ class EcoRefsScFaController extends Controller
                     $zatrElectResults[$item->equip_id] = $workday * $qZhidkosti * $shgnParam * $electCost->elect_cost;
                 }
                 else{
-                    $zatrElectResults[$item->equip_id] = $workday * $qZhidkosti * $ecnParam * $electCost->elect_cost;
+                    $zatrElectResults[$item->equip_id] = $workday  * $qZhidkosti * $ecnParam * $electCost->elect_cost;
                 }
             }
 
-
-
             foreach($compRas as $item){
-                $prsCostResults[$item->company_id] = $prs * $avgprsday->avg_prs * $item->prs_brigade_cost;
+                $prsCostResults[$item->company_id] = array_sum($prsResult) * $avgprsday->avg_prs * $item->prs_brigade_cost;
             }
-
 
             foreach($equipRas as $item){
                 $expDayResults[$item->equip_id] = $workday * $item->dayli_serv_cost;
@@ -384,7 +381,6 @@ class EcoRefsScFaController extends Controller
                 $stavki = EcoRefsNdoRates::where('company_id','=',$item->company_id)->first();
                 $exportsNdpiResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $stavki->ndo_rates * $rate->ex_rate_dol;
             }
-
             $exportsNdpiResultsTotal = array_sum($exportsNdpiResults);
 
             foreach($discontExp as $item){
@@ -392,16 +388,13 @@ class EcoRefsScFaController extends Controller
                 $rent = EcoRefsRentTax::where('world_price_beg','<',$item->macro)->where('world_price_end','<=',$item->macro)->first();
                 $exportsRentTaxResults[$item->route_id] = $exportsResults[$item->route_id] * $item->barr_coef * $item->macro * $rent->rate * $rate->ex_rate_dol;
             }
-
             $exportsRentTaxResultsTotal = array_sum($exportsRentTaxResults);
-
 
             foreach($discontExp as $item){
                 $rate = EcoRefsMacro::where('date','=',$item->date)->first();
                 $etp = EcoRefsAvgMarketPrice::where('avg_market_price_beg','>=',$item->macro)->where('avg_market_price_end','>',$item->macro)->first();
                 $exportsEtpResults[$item->route_id] = $exportsResults[$item->route_id] * $etp->exp_cust_duty_rate * $rate->ex_rate_dol;
             }
-
             $exportsEtpResultsTotal = array_sum($exportsEtpResults);
 
 
@@ -435,7 +428,6 @@ class EcoRefsScFaController extends Controller
             $insideDiscontResultsTotal = array_sum($insideDiscontResults);
 
             foreach($discontIns as $item){
-
                 $insideNdpiResults[$item->route_id] = $insideResults[$item->route_id]*$item->macro * $stavki->ndo_rates * 0.5;
             }
 
@@ -460,12 +452,7 @@ class EcoRefsScFaController extends Controller
                 }
                 $insideTarTnResults[$key] = $tarifTnItemValue/12;
             }
-
             $insideTarTnResultsTotal = array_sum($insideTarTnResults);
-
-
-
-
 
             // TO DO Vytashit' $serviceTime
             $amortizaciyaResult = [];
@@ -580,7 +567,7 @@ class EcoRefsScFaController extends Controller
             $npv=$npv+($discSvobPotok+$amortizaciyaResult-$buyCostResult);
 
             $vdata2=[
-
+                'check'=>$rent,
                 'monthname'=>$monthname,
                 'month'=>$element,
                 'liquid' => $liquid,
@@ -621,8 +608,8 @@ class EcoRefsScFaController extends Controller
                 'nakopDiskSvobodPotok'=>$nakopDiscSvodPotok,
                 'diskSvobodPotok'=>$discSvobPotok,
                 'npv'=>$npv,
-                'shgnParam'=>$shgnParam,
-                'ecnParam'=>$ecnParam,
+                'shgnParam'=>$shgnParam*$qZhidkosti,
+                'ecnParam'=>$ecnParam*$qZhidkosti,
             ];
 
             array_push($result2,$vdata2);
