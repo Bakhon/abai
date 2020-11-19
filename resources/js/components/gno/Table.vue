@@ -81,7 +81,7 @@
           <div class="col-8 relative">
             <div class="col-6">
               <div class="cell4-gno col-4">
-                <span>Рпл</span>  
+                <span>Рпл</span>
               </div>
               <div class="cell4-gno table-border-gno cell4-gno-second col-5">
                 <!-- <input v-model="pResInput" type="text" class="square2" /> -->
@@ -91,7 +91,7 @@
                 <div class="cell4-gno table-border-gno-top col-4">
                   <input v-model="curveSelect" class="checkbox" value="pi" type="radio" name="set" />
                   <span>Кпрод</span>
-                  
+
                 </div>
                 <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
                   <!-- <input :disabled="curveSelect != 'pi'" v-model="piInput" @ type="string" class="square1" /> -->
@@ -827,7 +827,7 @@ export default {
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
-        
+
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
@@ -853,13 +853,13 @@ export default {
         this.viscWaterRc = 0;
         this.densWater = 0;
         this.hdynValue = [this.hDynInput = 0, this.pAnnularInput = 0];
-        
-        //Оборудование 
+
+        //Оборудование
         this.pumpType = 0;
         this.hPumpSet = 0;
         this.tubOD = 0;
         this.tubID = 0;
-        
+
         //Технологический  режим
         this.qL = 0;
         this.qO = 0;
@@ -888,21 +888,21 @@ export default {
         this.qlCelValue = 0;
         this.bhpCelValue = 0;
         this.piCelValue = 0;
-          
-          
+
+
         } else if(data["Age"] === true) {
 
           this.horizon = data["Well Data"]["horizon"][0]
-          
+
           this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
           this.gor = data["Well Data"]["gor"][0].toFixed(1)
           this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
           this.viscOilRc = data["Well Data"]["visc_oil_rc"][0].toFixed(1)
-          this.viscWaterRc = data["Well Data"]["visc_water_rc"][0].toFixed(1)
+          this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
           this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
 
-        
+
 
           Vue.prototype.$notifyWarning("Скважина что была указана является новой");
 
@@ -917,13 +917,13 @@ export default {
         this.casID = 0;
         this.hPerf = 0;
         this.udl = 0;
-        
-        //Оборудование 
+
+        //Оборудование
         this.pumpType = 0;
         this.hPumpSet = 0;
         this.tubOD = 0;
         this.tubID = 0;
-        
+
         //Технологический  режим
         this.qL = 0;
         this.qO = 0;
@@ -953,7 +953,7 @@ export default {
         this.bhpCelValue = 0;
         this.piCelValue = 0;
 
-        } 
+        }
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
@@ -961,13 +961,13 @@ export default {
       );
 
 
-      
+
     },
 
     postCurveData(value) {
       console.log(value)
         let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
-        // api/pgno/UZN/ 
+        // api/pgno/UZN/
         // KMB
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
@@ -1000,7 +1000,7 @@ export default {
         "menu": "MainMenu",
         "well_age": this.age,
         "grp_skin": true,
-        "analysisBox1": this.analysisBox1,  
+        "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
         "analysisBox4": this.analysisBox4,
@@ -1010,7 +1010,7 @@ export default {
         "analysisBox8": this.analysisBox8
                    }
       )
-        
+
 
         this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
@@ -1033,7 +1033,7 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-    
+
       let jsonData = JSON.stringify(
         {
         "curveSelect": this.curveSelect,
@@ -1053,7 +1053,7 @@ export default {
         "menu": "PotencialAnalysis",
         "well_age": this.age,
         "grp_skin": true,
-        "analysisBox1": this.analysisBox1,  
+        "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
         "analysisBox4": this.analysisBox4,
@@ -1090,7 +1090,7 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-     
+
       let jsonData = JSON.stringify(
         {
         "curveSelect": this.curveSelect,
@@ -1110,7 +1110,7 @@ export default {
         "menu": "PotencialAnalysis",
         "well_age": this.age,
         "grp_skin": true,
-        "analysisBox1": this.analysisBox1,  
+        "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
         "analysisBox4": this.analysisBox4,
@@ -1211,7 +1211,7 @@ export default {
 
 div {
   font-family: 'Roboto', sans-serif;
-  font-weight: 400; 
+  font-weight: 400;
 }
 
 </style>

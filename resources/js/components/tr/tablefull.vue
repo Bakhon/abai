@@ -264,7 +264,7 @@
             <td>{{Math.round(row.tub_ID*10)/10}}</td>
             <td>{{Math.round(row.choke_d*10)/10}}</td>
             <td>{{Math.round(row.h_up_perf_vd*10)/10}}</td>
-            <td :class="{ 'cell-with-comment': check_wells && check_wells[row_index] &&
+            <td :class="{'cell-with-comment': check_wells && check_wells[row_index] &&
             check_wells[row_index].h_up_perf_md_check !== '0_Нет Ошибок'}">
                 <span class="circle-err"> </span>
                 <span>{{Math.round(row.h_up_perf_md*10)/10}}</span>
@@ -282,7 +282,7 @@
             <td>{{Math.round(row.h_pump_set*10)/10}}</td>
             <td>{{Math.round(row.whp*10)/10}}</td>
             <td>{{Math.round(row.line_p*10)/10}}</td>
-            <td :class="{ 'cell-with-comment': check_wells && check_wells[row_index] &&
+            <td :class="{'cell-with-comment': check_wells && check_wells[row_index] &&
             check_wells[row_index].p_res_check !== '0_Нет Ошибок'}">
                 <span class="circle-err"> </span>
                 <span>{{Math.round(row.p_res*10)/10}}</span>
