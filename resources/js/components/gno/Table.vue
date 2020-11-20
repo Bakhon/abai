@@ -835,9 +835,24 @@ export default {
     },
 
     ExpAnalysisMenu(){
+        this.qZhExpEcn=this.qlCelValue
+        this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
+
+        if (this.qlCelValue<106){
+            this.qZhExpShgn=this.qlCelValue
+            this.qOilExpShgn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
+
+        } else {
+            this.qZhExpShgn=106
+            this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil
+        }
+
         if(this.expAnalysisData.NNO1!=null) {
             this.EconomParam();
         }
+
+        this.expAnalysisData.qoilShgn=this.qOilExpShgn
+        this.expAnalysisData.qoilEcn=this.qOilExpEcn
     },
     EconomParam(){
         var prs1 = this.expAnalysisData.prs1;
@@ -947,6 +962,7 @@ export default {
       this.axios.get(uri).then((response) => {
         var data = response.data;
         
+
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
@@ -1077,6 +1093,7 @@ export default {
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
           this.NnoCalc();
+
         }
       );
 
@@ -1256,34 +1273,7 @@ export default {
       });
     },
 
-    modalExpAnalysis(){
-        let uri = "http://172.20.103.187:7575/api/nno/";
 
-        let jsonData = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": this.expMeth,
-            }
-        )
-        //console.log("JSON =", jsonData)
-
-        this.axios.post(uri, jsonData).then((response) => {
-        var data = JSON.parse(response.data)
-        if (data) {
-          console.log(data)
-
-          this.nno=this.data.map((r) => r.NNO)
-          this.prs=this.data.map((r) => r.prs)
-          //this.$emit('NNO', this.nno)
-          //this.$emit('PRS', this.prs)
-
-          this.$modal.show("showEconomicModal");
-
-        } else {
-          console.log("No data");
-        }
-
-      });
-    },
 
 
   },
