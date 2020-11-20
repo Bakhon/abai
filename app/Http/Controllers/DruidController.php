@@ -61,6 +61,9 @@ return $response;
 
     public function visualcenter3()
     {
+//$file = 'https://yandex.ru/news/quotes/graph_1006.json';
+//$file_name = 'D:/openserver/OpenServer/domains/localhost/public/js/json/graph_1006.json';
+//file_put_contents($file_name, file_get_contents($file));
         return view('visualcenter.visualcenter3');
     }
 

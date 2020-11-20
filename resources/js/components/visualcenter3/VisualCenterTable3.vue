@@ -28,9 +28,13 @@
                   ></div>
                 </div>
                 <br />
-                <div class="arrow"></div>
-                <div class="txt2">5,2%</div>
-                <div class="txt3">vs сентябрь</div>
+                <div v-if="((oil_factDayPercent/oil_factDay-1) *100) > 0" class="arrow2">   
+                </div>
+                   <div v-if="((oil_factDayPercent/oil_factDay-1) *100) < 0" class="arrow3">   
+                </div>     
+
+                <div class="txt2" v-if="oil_factDay">{{ new Intl.NumberFormat("ru-RU").format(Math.abs((oil_factDayPercent/oil_factDay-1) *100).toFixed(2))  }}%</div>
+                <div class="txt3">vs прошлый период</div>
               </td>
               <td>
                 <div class="nu">
@@ -55,14 +59,18 @@
                   ></div>
                 </div>
                 <br />
-                <div class="arrow"></div>
-                <div class="txt2">5,2%</div>
-                <div class="txt3">vs сентябрь</div>
+                 <div v-if="((oil_dlv_factDayPercent/oil_dlv_factDay-1) *100) > 0" class="arrow2">   
+                </div>
+                   <div v-if="((oil_dlv_factDayPercent/oil_dlv_factDay-1) *100) < 0" class="arrow3">   
+                </div>  
+
+                <div class="txt2" v-if="gas_factDay">{{ new Intl.NumberFormat("ru-RU").format(Math.abs((oil_dlv_factDayPercent/oil_dlv_factDay-1) *100).toFixed(2))  }}%</div>
+                <div class="txt3">vs прошлый период</div>                
               </td>
               <td>
                 <div class="nu">
                   <div class="number">
-                    {{ new Intl.NumberFormat("ru-RU").format(gas_factDay) }}
+                    {{ new Intl.NumberFormat("ru-RU").format(gas_factDay) }} 
                   </div>
                   <div class="unit-vc">млрд. м³</div>
                 </div>
@@ -83,9 +91,13 @@
                   ></div>
                 </div>
                 <br />
-                <div class="arrow"></div>
-                <div class="txt2">5,2%</div>
-                <div class="txt3">vs сентябрь</div>
+                        <div v-if="((gas_factDayPercent/gas_factDay-1) *100) > 0" class="arrow2">   
+                </div>
+                   <div v-if="((gas_factDayPercent/gas_factDay-1) *100) < 0" class="arrow3">   
+                </div>  
+
+                <div class="txt2" v-if="gas_factDay">{{ new Intl.NumberFormat("ru-RU").format(Math.abs((gas_factDayPercent/gas_factDay-1) *100).toFixed(2))  }}%</div>
+                <div class="txt3">vs прошлый период</div> 
               </td>
               <td
                 style="width: 200px; border-left: 10px solid #0f1430;"
@@ -331,7 +343,7 @@
                   </div>
                   <ul class="center-menu2">
                     <li class="center-li">
-                      <div
+                       <!--<div
                         class="calendar-tab"
                         v-for="(menuDMY, index) in menuDMY()"
                         @click="selectedDMY = menuDMY.id"
@@ -339,8 +351,8 @@
                           'background-color': menuDMY.current,
                         }"
                       >
-                        {{ menuDMY.DMY }}
-                      </div>
+                     {{ menuDMY.DMY }}
+                      </div>-->
                       <br /><br />
 
                       <div class="month-day">
@@ -421,7 +433,9 @@
           </div>
 
           <div :style="`${displayTable}`">
-            <div class="container-fluid w-50 table-near-chart2 table-responsive">
+            <div
+              class="container-fluid w-50 table-near-chart2 table-responsive"
+            >
               <table class="table4-2">
                 <tbody>
                   <tr>
@@ -510,7 +524,7 @@
                       ></div>
                       <div class="percent font">5,2%</div>
                     </td>
-                  </tr>                  
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -552,30 +566,24 @@
                       "
                     >
                       <div class="font" v-if="item.planMonth">
-                       <!-- {{
+                        <!-- {{
                           new Intl.NumberFormat("ru-RU").format(item.planDay)
                         }}-->
 
-
-                             {{
+                        {{
                           new Intl.NumberFormat("ru-RU").format(item.planMonth)
                         }}
 
-
-
-
-                        
                         <div class="right">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div class="font" v-if="item.factMonth">
-                      <!--  {{
+                        <!--  {{
                           new Intl.NumberFormat("ru-RU").format(item.factDay)
                         }}-->
 
-
-                              {{
+                        {{
                           new Intl.NumberFormat("ru-RU").format(item.factMonth)
                         }}
 
@@ -598,16 +606,19 @@
                             Math.abs(item.factMonth - item.planMonth)
                           )
                         }}
-                        <div class="right">{{ item4 }}</div>
+                       <!-- <div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div
                         v-if="item.factMonth"
                         class="triangle"
-                        :style="`${getColor(item.factMonth - item.planMonth)}`"
+                        :style="`${getColor((item.factMonth/item.productionFactPercent-1) *100)}`"
                       ></div>
-                      <div class="percent font">5,2%</div>
+                      <div class="percent font" v-if="item.productionFactPercent">
+                     
+                      {{new Intl.NumberFormat("ru-RU").format(Math.abs((item.productionFactPercent/item.factMonth-1) *100).toFixed(2))  }} %
+                      </div>
                     </td>
                   </tr>
 
@@ -625,7 +636,7 @@
 
                   <tr>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
-                      <div class="first-td">{{NameDzoFull[0]}}</div>
+                      <div class="first-td">{{ NameDzoFull[0] }}</div>
                     </td>
 
                     <td
@@ -634,18 +645,21 @@
                       "
                     >
                       <div class="font">
-                          <!--{{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}-->
+                        <!--{{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}-->
 
-                         {{ new Intl.NumberFormat("ru-RU").format(planMonthSumm) }}
+                        {{
+                          new Intl.NumberFormat("ru-RU").format(planMonthSumm)
+                        }}
 
-                        
                         <div class="right">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                       <div class="font">
-                       <!-- {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}-->
-                         {{ new Intl.NumberFormat("ru-RU").format(factMonthSumm) }}
+                        <!-- {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}-->
+                        {{
+                          new Intl.NumberFormat("ru-RU").format(factMonthSumm)
+                        }}
                         <div class="right">{{ item4 }}</div>
                       </div>
                     </td>
@@ -665,17 +679,19 @@
                             Math.abs(factMonthSumm - planMonthSumm)
                           )
                         }}
-                        
-                        <div class="right">{{ item4 }}</div>
+
+                        <!--<div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                       <div
                         v-if="factMonthSumm"
                         class="triangle"
-                        :style="`${getColor(factMonthSumm - planMonthSumm)}`"
+                       :style="`${getColor((factMonthSumm/productionFactPercentSumm-1) *100)}`"
                       ></div>
-                      <div class="percent font">5,2%</div>
+                      <div class="percent font"v-if="factMonthSumm">
+                     
+                      {{new Intl.NumberFormat("ru-RU").format(Math.abs((productionFactPercentSumm/factMonthSumm-1) *100).toFixed(2))  }} %</div>
                     </td>
                   </tr>
                 </tbody>
@@ -771,7 +787,7 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt4">
+                <div class="txt4" v-if="wells2[0].prod_wells_work">
                   {{
                     new Intl.NumberFormat("ru-RU").format(
                       wells2[0].prod_wells_work
@@ -788,7 +804,7 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt4">
+                <div class="txt4" v-if="wells2[0].prod_wells_idle">
                   {{
                     new Intl.NumberFormat("ru-RU").format(
                       wells2[0].prod_wells_idle
@@ -822,7 +838,7 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt4">
+                  <div class="txt4" v-if="wells[0].inj_wells_work">
                     {{
                       new Intl.NumberFormat("ru-RU").format(
                         wells[0].inj_wells_work
@@ -839,10 +855,10 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt4">
+                  <div class="txt4" v-if="wells[0].inj_wells_idle">
                     {{
                       new Intl.NumberFormat("ru-RU").format(
-                        wells[0].inj_wells_work
+                        wells[0].inj_wells_idle
                       )
                     }}
                   </div>
