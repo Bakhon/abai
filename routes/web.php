@@ -55,7 +55,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/maps', 'DruidController@maps')->name('maps');
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
+        Route::get('/gtm', 'DruidController@gtm')->name('gtm');
         Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
+        Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
         Route::get('/constructor', 'DruidController@constructor')->name('constructor');
         Route::get('/tr', 'DruidController@tr')->name('tr');
