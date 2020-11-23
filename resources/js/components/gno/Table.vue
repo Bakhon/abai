@@ -307,7 +307,7 @@
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">
-          НГДУ
+          {{ngdu}}
         </div>
         <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           АО "ОМГ"
@@ -354,7 +354,7 @@
               Станок-качалка
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              No Data
+              {{sk}}
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
@@ -619,6 +619,8 @@ export default {
         analysisBox7: true,
         analysisBox8: true,
         menu: "MainMenu",
+        ngdu: null,
+        sk: null,
         grp_skin: false,
         expAnalysisData:{
             NNO1:null,
@@ -663,6 +665,8 @@ export default {
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
       } else {
+        this.ngdu = data["Well Data"]["ngdu"][0]
+        this.sk = data["Well Data"]["sk_type"][0]
         this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
         this.age = data["Age"]
         this.horizon = data["Well Data"]["horizon"][0]
@@ -966,6 +970,10 @@ export default {
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
+        
+        this.curveLineData = JSON.parse(data.LineData)["data"]
+        this.curvePointsData = JSON.parse(data.PointsData)["data"]
+
           //Выбор скважины
         this.horizon = 0;
         this.expMeth = 0;
@@ -1027,6 +1035,9 @@ export default {
 
         } else if(data["Age"] === true) {
 
+
+          this.curveLineData = JSON.parse(data.LineData)["data"]
+          this.curvePointsData = JSON.parse(data.PointsData)["data"]
           this.horizon = data["Well Data"]["horizon"][0]
 
           this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
@@ -1039,7 +1050,7 @@ export default {
 
 
 
-          Vue.prototype.$notifyWarning("Скважина что была указана является новой");
+          Vue.prototype.$notifyWarning("Новая скважина");
 
           //Выбор скважины
         this.expMeth = 0;
@@ -1088,12 +1099,12 @@ export default {
         this.bhpCelValue = 0;
         this.piCelValue = 0;
 
+        } else if (data["Age"] === false){
+        this.setData(data)
         }
-          this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
           this.NnoCalc();
-
         }
       );
 
