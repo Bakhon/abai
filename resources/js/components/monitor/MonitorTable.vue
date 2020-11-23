@@ -275,7 +275,7 @@
         <div class="head-monitor">Рекомендации</div>
         <div style="min-height: 125px">
             <div class="rek" v-if="dose">Рекомендации дозирования ИК</div>
-            <monitor-chart-radialbar v-if="dose"></monitor-chart-radialbar>
+            <monitor-chart-radialbar v-if="dose" :dose="dose"></monitor-chart-radialbar>
         </div>
         <div style="min-height: 80px">
             <div v-if="signalizator > 0 && signalizator != null" class="text-wrap">
@@ -302,7 +302,7 @@
             </div>
         </div>
         <div class="responsible">
-            <button type="button" class="btn btn-info" @click="pushBtn">Экономический эффект</button><br>
+            <button type="button" class="btn btn-info" disabled @click="pushBtn">Экономический эффект</button><br>
             <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">Коррозия</button>
         </div>
       </div>
@@ -497,7 +497,9 @@ export default {
                 rhol: this.oilGas.water_density_at_20,
                 rhog: this.oilGas.gas_density_at_20,
                 mul: this.oilGas.oil_viscosity_at_20,
-                mug: this.oilGas.gas_viscosity_at_20
+                mug: this.oilGas.gas_viscosity_at_20,
+                q_o: this.ngdu.daily_oil_production,
+                rho_o: this.oilGas.water_density_at_20
             })
             .then((response) => {
                 let data = response.data;
@@ -507,7 +509,7 @@ export default {
                     this.corF = data.corrosion_rate_mm_per_y_point_F,
                     this.dose = data.max_dose,
                     this.result = data,
-                    this.$emit("chart5", this.dose)
+                    this.$emit("chart5", data.max_dose)
                 } else {
                     console.log("No data");
                 }
