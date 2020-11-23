@@ -9,7 +9,7 @@
             <a href="#" class="but-nav__link but">Выбор даты 2</a>
             <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a>
             <a href="#" class="but-nav__link but">Редактировать</a>
-            <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Factor_Analysis.xlsx" class="but-nav__link but">Экспорт</a>
+            <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a>
         </div>
         <div>
             <select name="Company" class="from-control" id="companySelect"
@@ -116,6 +116,10 @@ export default {
       swap() {
           this.show_first = !this.show_first;
           this.show_second = !this.show_second;
+      },
+      getColor(status) {
+          if (status === "1") return "#ffff00";
+          return "#ff0000";
       }
   }
 }
