@@ -1,34 +1,34 @@
 <template>
     <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
         <tr class="headerColumn">
-            <td rowspan="4" @click="sortBy('field')">Раб. Группа</td>
+            <td rowspan="4" @click="sortBy('gu')">Раб. Группа</td>
             <td rowspan="4" @click="sortBy('field')">НГДУ/месторождение</td>
             <td rowspan="4" @click="sortBy('well')">№ скв</td>
             <td rowspan="4" @click="sortBy('well_type')">Тип скважины</td>
             <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
-            <td rowspan="4" @click="sortBy('well')">Блок</td>
-            <td rowspan="4" @click="sortBy('well')">R контура питания</td>
+            <td rowspan="4" @click="sortBy('block')">Блок</td>
+            <td rowspan="4" @click="sortBy('r_con')">R контура питания</td>
             <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
-            <td rowspan="4" @click="sortBy('cas_OD')">Внутренний диаметр э/к</td>
+            <td rowspan="4" @click="sortBy('cas_ID')">Внутренний диаметр э/к</td>
             <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НТК</td>
-            <td rowspan="4" @click="sortBy('tub_OD')">Внутренний диаметр НТК</td>
+            <td rowspan="4" @click="sortBy('tub_ID')">Внутренний диаметр НТК</td>
             <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
             <td rowspan="4" @click="sortBy('h_up_perf_vd')">Нвдп</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Удлинение(Нвдп)</td>
+            <td rowspan="4" @click="sortBy('h_up_perf_md')">Удлинение(Нвдп)</td>
             <td rowspan="4" @click="sortBy('exp_meth')">Способ эксплуатации</td>
             <td rowspan="4" @click="sortBy('pump_type')">Тип Насоса</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Тип СК</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Число качаний</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Длина хода</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Q теор</td>
+            <td rowspan="4" @click="sortBy('EMPTY')">Тип СК</td>
+            <td rowspan="4" @click="sortBy('spm')">Число качаний</td>
+            <td rowspan="4" @click="sortBy('stroke_len')">Длина хода</td>
+            <td rowspan="4" @click="sortBy('q_theor')">Q теор</td>
             <td rowspan="4" @click="sortBy('freq')">Частота работы насоса или число оборотов</td>
             <td rowspan="4" @click="sortBy('h_pump_set')">Н сп насоса</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">P буф</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">P лин</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">P пл</td>
+            <td rowspan="4" @click="sortBy('whp')">P буф</td>
+            <td rowspan="4" @click="sortBy('line_p')">P лин</td>
+            <td rowspan="4" @click="sortBy('p_res')">P пл</td>
             <td rowspan="4" @click="sortBy('h_dyn')">Н дин</td>
             <td rowspan="4" @click="sortBy('p_annular')">Р затр</td>
-            <td rowspan="4" @click="sortBy('p_annular')">Р на приеме</td>
+            <td rowspan="4" @click="sortBy('p_intake')">Р на приеме</td>
             <td class="colspan" colspan="5">Данные за предыдущий месяц</td>
             <td class="colspan" colspan="4">Фактический режим</td>
             <td rowspan="4" @click="sortBy('p_annular')"><span>Состояние на конец месяца</span></td>

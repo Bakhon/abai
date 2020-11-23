@@ -81,14 +81,35 @@
             <td>{{row.pump_type}}</td>
             <td>{{row.freq}}</td>
             <td>{{Math.round(row.h_pump_set*10)/10}}</td>
-            <td>{{Math.round(row.p_res*10)/10}}</td>
+
+            <td :class="{'cell-with-comment': wells && wells[row_index] &&
+            wells[row_index].p_res[1][0] !== '0'}">
+                <span class="circle-err" :style="`background :${getColor(
+            wells[row_index].p_res[1][0])}`"> </span>
+                <span>{{Math.round(row.p_res[0]*10)/10}}</span>
+                <span v-if="wells && wells[row_index]" class="cell-comment">
+                    {{ wells[row_index].p_res[1][1]}}
+                </span>
+            </td>
+
             <td>{{Math.round(row.h_dyn*10)/10}}</td>
             <td>{{Math.round(row.p_annular*10)/10}}</td>
             <td>{{Math.round(row.bhp*10)/10}}</td>
             <td>{{Math.round(row.q_o*10)/10}}</td>
             <td>{{Math.round(row.q_l*10)/10}}</td>
             <td>{{Math.round(row.wct*10)/10}}</td>
-            <td>{{row.well_status_last_day}}</td>
+            <!-- <td>{{row.well_status_last_day[0]}}</td> -->
+
+            <td :class="{'cell-with-comment': wells && wells[row_index] &&
+            wells[row_index].well_status_last_day[1][0] !== '0'}">
+                <span class="circle-err" :style="`background :${getColor(
+            wells[row_index].well_status_last_day[1][0])}`"> </span>
+                <span>{{Math.round(row.well_status_last_day[0]*10)/10}}</span>
+                <span v-if="wells && wells[row_index]" class="cell-comment">
+                    {{ wells[row_index].well_status_last_day[1][1]}}
+                </span>
+            </td>
+
             <td>{{Math.round(row.gor*10)/10}}</td>
             <td>{{Math.round(row.pi*10)/10}}</td>
             <td>{{Math.round(row.tp_idn_bhp*10)/10}}</td>
@@ -110,6 +131,10 @@ export default {
     methods: {
         sortBy(type) {
             this.$emit('onSort', type);
+        },
+        getColor(status) {
+            if (status === "1") return "#ffff00";
+            return "#ff0000";
         }
     }
 }
