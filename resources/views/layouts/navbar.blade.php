@@ -69,6 +69,11 @@
                             <span class="workTypeText">Конструктор</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/tr">
+                            <span class="workTypeText">Тех режим</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item active  dropdown">
