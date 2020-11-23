@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row justify-content-between">
-                <a href="#" class="but-nav__link but">Факторный анализ отклонений ТР</a>
+                <a href="tr" class="but-nav__link but">Технологический режим</a>
                 <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="dt">
@@ -12,8 +12,7 @@
                 </form>
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
                 <a href="#" class="but-nav__link but">Редактировать</a>
-                <a href="#" class="but-nav__link but">Экспорт</a>
-
+                <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a>
         </div>
         <div>
             <select name="Company" class="from-control" id="companySelect"

@@ -15,6 +15,7 @@ export default {
       layout: {
         //      showlegend: false,
         xaxis: {
+          title: "Дебит, q, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           // autorange: false,
@@ -57,6 +58,7 @@ export default {
   },
   methods: {
     setLine: function (value) {
+      console.log(value)
       var ipr_points = [];
       var pintake_points = [];
       var freegas_points = [];
