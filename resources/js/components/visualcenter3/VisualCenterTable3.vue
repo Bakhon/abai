@@ -458,7 +458,7 @@
                       @click="saveCompany('all')"
                       :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
                     >
-                      <div class="first-td">{{ item.dzo }}</div>
+                      <div class="first-td">{{ item.dzo |dzo }}</div>
                     </td>
 
                     <td
@@ -554,10 +554,10 @@
 
                   <tr v-for="(item, index) in bigTable">
                     <td
-                      @click="saveCompany(item.dzoBriefly)"
+                      @click="saveCompany(item.dzoMonth)"
                       :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
                     >
-                      <div class="first-td">{{ item.dzoDay }}</div>
+                      <div class="first-td" >{{getNameDzoFull(item.dzoMonth) }}   </div>
                     </td>
 
                     <td

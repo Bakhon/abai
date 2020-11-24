@@ -96,22 +96,22 @@ body {
 
 .arrow {
     background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
-    height: 25px;
-    width: 25px;
+    height: 15px;
+    width: 15px;
     background-size: contain;
     float: left;
-    margin-top: 1px;
+    margin-top: 5px;
     margin-right: 5px;
     overflow: hidden;
 }
 
 .arrow2 {
     background: url(/img/visualcenter3/red-arrow.svg) no-repeat;
-    height: 25px;
-    width: 25px;
+    height: 15px;
+    width: 15px;
     background-size: contain;
     float: left;
-    margin-top: 1px;
+    margin-top: 5px;
     margin-right: 5px;
     overflow: hidden;
 }
@@ -328,7 +328,7 @@ td:last-of-type {
 
 .first-td {
     /* width: 225px!important; */
-    width: 150%!important;
+    /* width: 150%!important; */
     overflow: hidden;
     font-size: 14px;
     margin-left: 10px;
