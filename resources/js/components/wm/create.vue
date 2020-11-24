@@ -112,7 +112,7 @@
         <div class="form-label-group">
             <input type="number" step="0.0001" name="ferrous_iron_content" class="form-control" placeholder="">
         </div>
-        <label>CO2, мг/дм3</label>
+        <label>CO2, мг/дм3 (после буферной емкости)</label>
         <div class="form-label-group">
             <input type="number" step="0.0001" name="carbon_dioxide" class="form-control" placeholder="">
         </div>
@@ -160,7 +160,7 @@
         <div class="form-label-group">
             <input type="number" step="0.0001" name="total_iron_content" class="form-control" placeholder="">
         </div>
-        <label>H2S, мг/дм3</label>
+        <label>H2S, мг/дм3 (после буферной емкости)</label>
         <div class="form-label-group">
             <input type="number" step="0.0001" name="hydrogen_sulfide" class="form-control" placeholder="">
         </div>
