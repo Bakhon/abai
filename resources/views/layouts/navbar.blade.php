@@ -8,7 +8,7 @@
             <i class="fas fa-bars fa-lg"></i>
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <?
+        <?php
     $user = Auth::user()->username;
     if (strpos($user, 'Almukhan_test') === false) { ?>
             <ul class="navbar-nav mr-auto">

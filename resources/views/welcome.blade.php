@@ -1,4 +1,4 @@
-<?
+<?php
     $user = Auth::user()->username;
     if (strpos($user, 'Almukhan_test') !== false) { 
         header('HTTP/1.1 200 OK');
