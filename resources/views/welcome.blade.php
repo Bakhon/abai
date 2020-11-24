@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
 <div class="col p-4" id="app">
-    <div>
-        <welcome-page></welcome-page>
+    <div >
+        <!-- <welcome-page></welcome-page> -->
     </div>
 </div>
 @endsection
