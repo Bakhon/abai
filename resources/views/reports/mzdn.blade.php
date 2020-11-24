@@ -17,7 +17,16 @@
         </div>
     </div>
 @endsection
+<script>
+$('select').selectpicker();
+</script>
+
 <style>
+
+.fixed-columns {
+    left: 0;
+    background: #20274e!important;
+}
     .p-4{
         background-color: #0F1430;
     }

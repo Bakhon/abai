@@ -30,6 +30,7 @@
         "@syncfusion/ej2-vue-pivotview": "^18.3.44",
         "apexcharts": "^3.22.0",
         "beegridtable": "^1.1.2",
+        "bootstrap-select": "^1.13.18",
         "bootstrap-table": "^1.18.0",
         "chart.js": "^2.9.4",
         "d3": "^5.16.0",

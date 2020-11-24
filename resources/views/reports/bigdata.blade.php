@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="col p-4" id="app">
-        <h2 class="subtitle">Big data</h2>
+        <!-- <h2 class="subtitle">Big data</h2> -->
         <div class="bg-dark">
             <button  type="button" class="btn report-btn">Отчеты</button>
             <button disabled onclick="document.location='{{url('/')}}/ru/mzdn'" type="button" class="btn report-btn">Ввод данных</button>
