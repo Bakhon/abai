@@ -141,7 +141,7 @@
             <li class="nav-item active">
                 <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
             </li>
-            </ul><?  } ?>
+            </ul><?php  } ?>
             <div class="form-inline my-2 my-lg-0">
                 <li class="nav-item2">
                     <i class="fas fa-bell fa-lg"></i>
