@@ -118,7 +118,7 @@
                         <td>{{$wm->ferrous_iron_content}}</td>
                     </tr>
                     <tr>
-                        <td>H2S, мг/дм3</td>
+                        <td>H2S, мг/дм3 (после буферной емкости)</td>
                         <td>{{$wm->hydrogen_sulfide}}</td>
                     </tr>
                     <tr>
@@ -126,7 +126,7 @@
                         <td>{{$wm->oxygen}}</td>
                     </tr>
                     <tr>
-                        <td>CO2, мг/дм3</td>
+                        <td>CO2, мг/дм3 (после буферной емкости)</td>
                         <td>{{$wm->carbon_dioxide}}</td>
                     </tr>
                     <tr>

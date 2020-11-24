@@ -24,13 +24,15 @@
      <div class="col-sm">
         <div class="form-group">
           <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
-          <select
+          <!-- https://developer.snapappointments.com/bootstrap-select/examples/#basic-examples -->
+          <!-- multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"-->
+          <select data-live-search="true" 
             style="background-color:#20274e;border-color:#20274e;color:white;"
             class="form-control"
             id="companySelect"
             @change="onChangeMonth($event)"
           >
-           <option value="">Выберите месяц</option>
+           <option value="" >Выберите месяц</option>
             <option value="1">январь</option>
             <option value="2">февраль</option>
             <option value="3">март</option>
@@ -41,8 +43,8 @@
             <option value="8">август</option>
             <option value="9">сентябрь</option>
             <option value="10">октябрь</option>
-            <option :hidden='year==2020' value="11">ноябрь</option>
-            <option :hidden='year==2020' value="12">декабрь</option>
+            <option :disabled='year==2020' value="11">ноябрь</option>
+            <option :disabled='year==2020' value="12">декабрь</option>
           </select>
         </div>
     </div>
@@ -68,8 +70,9 @@
           </select>
         </div>
     </div>
+    <button :disabled='org=="" || month=="" || year=="" || year==2020 && month>10' @click="updateData" class="btn report-btn">Сформировать отчет</button>
     </div>
-<button :disabled='org=="" || month=="" || year=="" || year==2020 && month>10' @click="updateData">Сформировать отчет</button>
+
 
   </div>
  <div :hidden='data==""'>
@@ -87,7 +90,8 @@
 <script>
 import BootstrapTable from 'bootstrap-table/dist/bootstrap-table-vue.esm.js'
 import 'tableexport.jquery.plugin'
-import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js'
+import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css'
 import 'bootstrap-table/dist/bootstrap-table.min.css'
 
 
@@ -307,32 +311,6 @@ export default {
           align: 'center'
     },
         ],
-//         [
-   
-// {
-//         title: 'Qж, м3',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Обв, %',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Qн, т/сут',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Пробы',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Простои',
-//           align: 'center'
-//     }
-        
-
-//         ]
-     
   
       ],
       
@@ -343,8 +321,10 @@ export default {
         showColumns: true,
         showExport: true,
         locale: 'ru-RU',      
-        exportTypes: ['excel', 'csv', 'doc'],
+        exportTypes: ['excel', 'csv'],
         exportDataType: 'all',
+        // fixedColumns: true,
+        // fixedNumber: 2,
 
       },
 

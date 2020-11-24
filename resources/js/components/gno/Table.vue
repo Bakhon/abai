@@ -279,10 +279,10 @@
         </div>
         <div class="cell4-gno table-border-gno-top col-7">
           Новая скважина
-          <input v-model="age" class="checkbox0" type="checkbox" />
+          <input :checked="age===true" v-model="age" class="checkbox0" type="checkbox" />
         </div>
         <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-          с ГРП <input class="checkbox0" :disabled="!age" type="checkbox" />
+          с ГРП <input class="checkbox0" v-model="grp_skin" :disabled="!age" type="checkbox" />
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Пласт</div>
@@ -307,7 +307,7 @@
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">
-          НГДУ
+          {{ngdu}}
         </div>
         <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           АО "ОМГ"
@@ -354,7 +354,7 @@
               Станок-качалка
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              No Data
+              {{sk}}
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
@@ -619,6 +619,8 @@ export default {
         analysisBox7: true,
         analysisBox8: true,
         menu: "MainMenu",
+        ngdu: null,
+        sk: null,
         grp_skin: false,
         expAnalysisData:{
             NNO1:null,
@@ -652,17 +654,18 @@ export default {
         this.qLInput = data["Well Data"]["q_l"][0].toFixed(0)
         this.wctInput = data["Well Data"]["wct"][0]
         this.gorInput = data["Well Data"]["gor"][0]
-        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0),
+        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0)
         this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0)
-        this.CelValue = data["Well Data"][""]
-        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0),
-        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0),
-        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0),
-        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0),
+        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0)
+        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"]
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"]
+        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"]
         this.whpInput = data["Well Data"]["whp"][0].toFixed(0)
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
       } else {
+        this.ngdu = data["Well Data"]["ngdu"][0]
+        this.sk = data["Well Data"]["sk_type"][0]
         this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
         this.age = data["Age"]
         this.horizon = data["Well Data"]["horizon"][0]
@@ -961,11 +964,18 @@ export default {
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
+        this.method = 'MainMenu'
 
 
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
+        
+        this.curveLineData = JSON.parse(data.LineData)["data"]
+        this.curvePointsData = JSON.parse(data.PointsData)["data"]
+        this.ngdu = 0
+        this.sk = 0
+
           //Выбор скважины
         this.horizon = 0;
         this.expMeth = 0;
@@ -1027,7 +1037,12 @@ export default {
 
         } else if(data["Age"] === true) {
 
+
+          this.curveLineData = JSON.parse(data.LineData)["data"]
+          this.curvePointsData = JSON.parse(data.PointsData)["data"]
           this.horizon = data["Well Data"]["horizon"][0]
+          this.curveSelect = 'pi'
+          this.age = data["Age"]
 
           this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
           this.gor = data["Well Data"]["gor"][0].toFixed(1)
@@ -1039,7 +1054,10 @@ export default {
 
 
 
-          Vue.prototype.$notifyWarning("Скважина что была указана является новой");
+          Vue.prototype.$notifyWarning("Новая скважина");
+
+        this.ngdu = 0
+        this.sk = 0
 
           //Выбор скважины
         this.expMeth = 0;
@@ -1088,12 +1106,12 @@ export default {
         this.bhpCelValue = 0;
         this.piCelValue = 0;
 
+        } else if (data["Age"] === false){
+        this.setData(data)
         }
-          this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
           this.NnoCalc();
-
         }
       );
 
@@ -1114,9 +1132,11 @@ export default {
         this.CelValue = this.piCelValue
       }
 
-      if(this.piCelValue > this.bhpCelValue) {
-        Vue.prototype.$notifyError("Pпр не должно быть больше чем Рзаб");
-      }
+      // if(this.piCelValue > this.bhpCelValue) {
+      //   Vue.prototype.$notifyError("Pпр не должно быть больше чем Рзаб");
+      // }
+
+
 
       let jsonData = JSON.stringify(
         {
@@ -1136,7 +1156,7 @@ export default {
         "celValue": this.CelValue,
         "menu": "MainMenu",
         "well_age": this.age,
-        "grp_skin": true,
+        "grp_skin": this.grp_skin,
         "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
@@ -1189,7 +1209,7 @@ export default {
         "celValue": this.CelValue,
         "menu": "PotencialAnalysis",
         "well_age": this.age,
-        "grp_skin": true,
+        "grp_skin": this.grp_skin,
         "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
@@ -1246,7 +1266,7 @@ export default {
         "celValue": this.CelValue,
         "menu": "PotencialAnalysis",
         "well_age": this.age,
-        "grp_skin": true,
+        "grp_skin": this.grp_skin,
         "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,

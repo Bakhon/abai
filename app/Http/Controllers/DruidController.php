@@ -203,6 +203,10 @@ return $response;
     {
         return view('reports.constructor');
     }
+    public function gtm()
+    {
+        return view('reports.gtm');
+    }
 
     function getCurrencyPeriod(Request $request)
     {

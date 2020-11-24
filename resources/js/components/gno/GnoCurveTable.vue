@@ -58,6 +58,7 @@ export default {
   },
   methods: {
     setLine: function (value) {
+      console.log(value)
       var ipr_points = [];
       var pintake_points = [];
       var freegas_points = [];

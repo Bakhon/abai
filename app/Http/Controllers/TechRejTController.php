@@ -1,21 +1,4 @@
 <?php
-
-namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-
-use Illuminate\Http\Request;
-
-class TechRejTController extends Controller
-{
-public function getTrTable(Request $request)
-    {
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-}
-
-}
-
-<?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;

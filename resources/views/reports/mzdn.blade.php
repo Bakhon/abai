@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @section('content')
+
+
     <div  id="app">
         <a href="{{url('/')}}/ru/export" class="float-right">
             <!-- <button type="button" class="btn btn-success">в Excel</button> -->
         </a>
-        <h2 class="subtitle">Отчет месячной замерной добычи нефти</h2>
+        <h2 class="subtitle">Отчет месячной замерной добычи нефти </h2>
         <div>
             <div class="main col-md-12 col-lg-12 ">
             <!-- <reports-table></reports-table> -->
@@ -16,8 +18,18 @@
                               
         </div>
     </div>
+
 @endsection
+<script>
+$('select').selectpicker();
+</script>
+
 <style>
+
+.fixed-columns {
+    left: 0;
+    background: #20274e!important;
+}
     .p-4{
         background-color: #0F1430;
     }

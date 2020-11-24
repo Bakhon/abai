@@ -1,8 +1,17 @@
+<?
+    $user = Auth::user()->username;
+    if (strpos($user, 'Almukhan_test') !== false) { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/bigdata');
+        
+    }
+        ?>
 @extends('layouts.app')
 @section('content')
 <div class="col p-4" id="app">
-    <div>
-        <welcome-page></welcome-page>
+    <div >
+   
+        <!-- <welcome-page></welcome-page> -->
     </div>
 </div>
 @endsection
