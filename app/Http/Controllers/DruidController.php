@@ -61,7 +61,15 @@ return $response;
 
     public function visualcenter3()
     {
+//$file = 'https://yandex.ru/news/quotes/graph_1006.json';
+//$file_name = 'D:/openserver/OpenServer/domains/localhost/public/js/json/graph_1006.json';
+//file_put_contents($file_name, file_get_contents($file));
         return view('visualcenter.visualcenter3');
+    }
+
+    public function visualcenter4()
+    {
+        return view('visualcenter.visualcenter4');
     }
 
     public function production()
@@ -188,6 +196,10 @@ return $response;
     {
         return view('reports.constructor');
     }
+    public function gtm()
+    {
+        return view('reports.gtm');
+    }
 
     function getCurrencyPeriod(Request $request)
     {
@@ -240,18 +252,35 @@ return $response;
     {
         if (true) {
             //flowrate of liquid oil//
-            $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim tonne/day
+            $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim m3/day
             $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
             //oil density
             $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
-            $q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
+            //$q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
             $q_l = $q_l / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
             //flowrate of gas
             $GOR1 = $request->GOR1; // БД ОМГ НГДУ input in pipesim Gas-Oil-Ratio газосодержание на входе в ГУ
+            $GOR1 = $GOR1 / 100;
             $q_g_sib = $request->q_g_sib; // m3/day расход газа в СИБ => БД ОМГ НГДУ
             $q_g_sib = $q_g_sib / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
-            $GOR=($GOR1*$q_l - $q_g_sib) / $q_l; // газосодержание на выходе с ГУ
-            $q_g = $q_l * $GOR; // m3/sec расход газа в ГУ
+            //$GOR = ($GOR1*$q_l - $q_g_sib) / $q_l; // газосодержание на выходе с ГУ добоваить переменную q_o
+            //Qoil(m3/d)=(Qoil(t/d)*1000)/ρoil(kg/m3)- перевод массового расхода (т/сут) в объемный (м3/сут)
+            //GOR2=(GOR1*Qoil(m3/d) - Qsib(m3/d)/))/Qoil(m3/d)-газосодержание на выходе с ГУ
+            $q_o = $request->q_o;
+            $rho_o = $request->rho_o;
+            $q_o = $q_o * 1000 / $rho_o; // convert from t/day => m3/day
+            $q_o = $q_o / 24.0 / 60.0 / 60.0; // convert from m3/day => m3/sec
+            $GOR = ($GOR1 * $q_o - $q_g_sib) / $q_o; // газосодержание на выходе с ГУ добоваить переменную q_o
+
+            if ($GOR <= 0) {
+                $GOR = 0.001;
+                ob_start(); //Start output buffer
+                echo "GOR1 x q_o less or equal to q_g_sib";
+                //$environment_a = "CO2";
+                $warning = ob_get_contents(); //Grab output
+                ob_end_clean(); //Discard output buffer
+            }
+            $q_g = $q_o * $GOR; // m3/sec расход газа в ГУ
             //density of gas
             //$SG = 0.64; //input pipesim
             //$rhog = $SG * 1.204; // 1.204 kg/m3 = SG of Air
@@ -265,9 +294,11 @@ return $response;
             //Density of two phase
             $x = $m_dotg / $m_dot;
             //Dead oil viscosity
-            $mul = $request->mul; // kg/(m.s) БД Лабараторная по нефти и газу
+            $mul = $request->mul; // mm2/m.s БД Лабараторная по нефти и газу
+            $mul = $mul / 1000; // from mm2/sec to kg/(kg.s)
             //Viscosity of gas
-            $mug = $request->mug; // ???? kg/(m.s) БД Лабараторная по нефти и газу
+            $mug = $request->mug; // mm2/s БД Лабараторная по нефти и газу
+            $mug = $mug / 1000; // from mm2/sec to kg/(kg.s)
             //Surface tension
             $sigma = $request->sigma; // Внутренняя БД константа N/m
             //Outside diameter
@@ -278,13 +309,13 @@ return $response;
             //Inner diameter
             $d = $do - 2 * $thickness; // in m
             //Roughness of pipes
-            $roughness = $request->roughness; // Внутренняя БД константа mm
-            $roughness = $roughness / 1000; // from mm to m
+            $roughness = $request->roughness; // Внутренняя БД константа m
+            //$roughness = $roughness / 1000; // from mm to m
             //Length
             $l = $request->l; // // Внутренняя БД константа в метрах
             //Pressure
             $P = $request->P; // БД ОМГ НГДУ bar
-            $P_pump = $P; // в точке Е
+            $P_pump = $P; // в точке Е бар
             $P_bufer = $request->P_bufer; // БД ОМГ НГДУ в точке А bar
             //Gravitational acceleration
             $g = 9.81; // m2/s
@@ -352,9 +383,10 @@ return $response;
             //thermal conductivity of ground
             $k_g = 0.774;
             //Outside temperature in K
-            $to = 288.0;
+            $to = 298.0;
             //Inside temperature in K
-            $ti = 313.0;
+            $t_heater = $request->t_heater; // БД ОМГ НГДУ temperature from Печь taken from database in Celsius
+            $ti = 273.0 + $t_heater;
             //heat capacity Cp fluid in J/kg*K
             $c_p = 4184.4;
             //Stefan-Boltzmann constant
@@ -395,14 +427,15 @@ return $response;
             $Q_total = $Q_rad + $Q_conv;
             //Calculate the temperature final
             $t_final = $to + ($ti - $to) * exp(-$U * pi() * $do * $l / $m_dot / $c_p);
+            $t_final = $t_final - 273; //Kelvin to Celsius
 
 
-            //Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
-            //log r = 7.96 - 2320 / (T + 273) - 5.55 * 10^-3 * T + 0.67 * log(pCo2)
-            //pressure in bar
-            //*********************************/
+            // Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
+            // log r = 7.96 - 2320 / (T + 273) - 5.55 * 10^-3 * T + 0.67 * log(pCo2)
+            // pressure in bar
+            // *********************************/
             //    GENERAL CORROSION POINT A    /
-            //*********************************/
+            // *********************************/
             $p = $P_bufer * 100; // from bar to kPa
             $t = 25;  //temperature in C
             //H2S concentration
@@ -479,7 +512,8 @@ return $response;
             $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
             $ratio = $pCO2 / $pH2S;
 
-            if ($pCO2 / $pH2S >= 500){
+            if ($pCO2 / $pH2S >= 20){
+            //if ($pH2S < 0.3){// in kPa
                 $x = 7.96 - 2320 / ($t+273);
                 $y = $t * 5.55 * pow(10,-3);
                 $z = 0.67 * log10($co2);
@@ -487,15 +521,20 @@ return $response;
                 $r_a = pow(10,$omega);
                 ob_start(); //Start output buffer
                 echo "CO2";
+                $environment_a = "CO2";
                 $output_a = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
                 //return $r;
             }
                 //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
-            else if ($pCO2 / $pH2S < 500) {
-                $r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            else if ($pCO2 / $pH2S < 20) {
+            //else if ($pH2S > 0.3){
+                //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                $r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
                 ob_start(); //Start output buffer
                 echo "H2S+CO2";
+                //$environment_a = "H2S+CO2";
                 $output_a = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
                 //return $r;
@@ -503,11 +542,11 @@ return $response;
 
             if  ($r_a > 0.125) {
                 if ($conH2S < 17) {
-                    $dose_a = 22.725 * log($r_a) + 58.968;
+                    $dose_a = 14.177 * log($r_a) + 35.222;
                     //return $dose;
                 }
                 else if ($conH2S > 17) {
-                    $dose_a = 26.868 * log($r_a) + 55.783;
+                    $dose_a = 13.137 * log($r_a) + 26.859;
                     //return $dose;
                 }
             }
@@ -515,9 +554,9 @@ return $response;
             else {
                 $dose_a = 0;
             }
-            //************************************************//
-            //LOCAL CORROSION CALCULATION IN POINT A*//
-            //************************************************//
+            // //************************************************//
+            // //LOCAL CORROSION CALCULATION IN POINT A*//
+            // //************************************************//
                 //H2O water concentration in %
                 $H2O = $request->H2O; // БД ОМГ НГДУ
                 //Please enter T temperature in C
@@ -593,23 +632,27 @@ return $response;
             //GENERAL CORROSION CALCULATION POINT E *//
             //***************************************//
 
-            $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
+            $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa//
             $ratio = $pCO2 / $pH2S;
 
-            if ($pCO2 / $pH2S >= 500){
+            if ($pCO2 / $pH2S >= 20){
+            //if ($pH2S < 0.3){// in kPa
                 $x = 7.96 - 2320 / ($t+273);
                 $y = $t * 5.55 * pow(10,-3);
                 $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
                 $r_e = pow(10,$omega);
-                ob_start(); //Start output buffer
+                ob_start(); //Start output buffer///
                 echo "CO2";
                 $output_e = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
             }
                 //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
-            else if ($pCO2 / $pH2S < 500) {
-                $r_e = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            else if ($pCO2 / $pH2S < 20) {
+            //else if ($pH2S > 0.3){// in kPa
+                //$r_e = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                $r_e = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
                 ob_start(); //Start output buffer
                 echo "H2S+CO2";
                 $output_e = ob_get_contents(); //Grab output
@@ -618,11 +661,11 @@ return $response;
 
             if  ($r_e > 0.125) {
                 if ($conH2S < 17 ) {
-                    $dose_e = 22.725 * log($r_e) + 58.968;
+                    $dose_e = 14.177 * log($r_e) + 35.222;
                     //return $dose;
                 }
                 else if ($conH2S > 17) {
-                    $dose_e = 26.868 * log($r_e) + 55.783;
+                    $dose_e = 13.137 * log($r_e) + 26.859;
                     //return $dose;
                 }
             }
@@ -684,7 +727,7 @@ return $response;
             $conCO2 = $request->conCO2; // БД Лаборатория жидкости, mg/l soluble in water previous was mole fraction ex: 0.0001
             //$conCO2 = $conCO2 * 0.05464; // from mg/l => volumetric fraction
             $conCO2_frac = $conCO2 * 0.05464; // from mg/l => volumetric fraction
-            $pCO2 = $conCO2 * $p / 100;
+            $pCO2 = $conCO2_frac * $p / 100;
 
             //convert data to proper type
             $co2 = $pCO2 / 1000; //convert partial pressure CO2 from kPa => MPa
@@ -704,10 +747,12 @@ return $response;
             //GENERAL CORROSION CALCULATION POINT F *//
             //***************************************//
 
-            $pH2S = $p * $conH2S / 100; // partial pressure H2S in kPa
+            $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
             $ratio = $pCO2 / $pH2S;
+            //$r_f = 0;
 
-            if ($pCO2 / $pH2S >= 500){
+            if ($pCO2 / $pH2S >= 20){
+            //if ($pH2S <= 0.3){// in kPa
                 $x = 7.96 - 2320 / ($t+273);
                 $y = $t * 5.55 * pow(10,-3);
                 $z = 0.67 * log10($co2);
@@ -719,8 +764,11 @@ return $response;
                 ob_end_clean(); //Discard output buffer
             }
                 //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
-            else if ($pCO2 / $pH2S < 500) {
-                $r_f = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+            else if ($pCO2 / $pH2S < 20) {
+            //else if ($pH2S > 0.3){// in kPa
+                //$r_f = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
+                //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
+                $r_f = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
                 ob_start(); //Start output buffer
                 echo "H2S+CO2";
                 $output_f = ob_get_contents(); //Grab output
@@ -729,11 +777,11 @@ return $response;
 
             if  ($r_f > 0.125) {
                 if ($conH2S < 17 ) {
-                    $dose_f = 22.725 * log($r_f) + 58.968;
+                    $dose_f = 14.177 * log($r_f) + 35.222;
                     //return $dose;
                 }
                 else if ($conH2S > 17) {
-                    $dose_f = 26.868 * log($r_f) + 55.783;
+                    $dose_f = 13.137 * log($r_f) + 26.859;
                     //return $dose;
                 }
             }
@@ -790,7 +838,7 @@ return $response;
 
         $vdata = [
             'flow_velocity_meter_per_sec' => round($v_lo,2),
-            //'m_dot' => $m_dot,
+            'm_dot' => round($m_dot,2),
             'final_pressure_bar_point_F' => round($P_final,2),
             'corrosion_rate_mm_per_y_point_A' => round($r_a,2),
             'corrosion_rate_mm_per_y_point_E' => round($r_e,2),
@@ -798,18 +846,34 @@ return $response;
             'dose_mg_per_l_point_A' => round($dose_a,2),
             'dose_mg_per_l_point_E' => round($dose_e,2),
             'dose_mg_per_l_point_F' => round($dose_f,2),
-            'max_dose' => round($max_dose),
-            //'dP' => $dP,
+            'max_dose' => round($max_dose,2),
+            'warning' => $warning,
+            'GOR1' => $GOR1,
+            'GOR' => $GOR,
+            'q_o' => round($q_o,4),
+            'q_g_sib' => round($q_g_sib,4),
+            'q_l' => round($q_l,4),
+            'q_g' => round($q_g,4),
+            //'Q_h' => round($Q_h,4),
+            //'dP' => round($dP,4),
+            //'d' => round($d,4),
+            //'GOR' => round($GOR,4),
+            //'Re_lo' => round($Re_lo,4),
+            //'Re_go' => round($Re_go,4),
+            //'rho_h' => round($rho_h,4),
+            //'mdotl' => round($m_dotl,4),
+            //'mdotg' => round($m_dotg,4),
             't_final_celsius_point_F' => round($t_final,4),
             //'corrosion_mm_per_year' => round($r,4),
-            // 'pCO2_kPa' => round($pCO2,4),
-            // 'pH2S_kPa' => round($pH2S,4),
-            // 'dose_mg_per_l' => round($dose,4),
-            // 'H2S_mg_per_l' => round($H2S,4),
-            // 'CO2_mg_perl' => round($CO2,4),
-            'environment_point_A' => round($output_a,2),
-            'environment_point_E' => round($output_e,2),
-            'environment_point_F' => round($output_f,2),
+            'pCO2_kPa' => round($pCO2,4),
+            'pH2S_kPa' => round($pH2S,4),
+            //'dose_mg_per_l' => round($dose,4),
+            //'H2S_mg_per_l' => round($H2S,4),
+            //'CO2_mg_perl' => round($CO2,4),
+            //'environment_point_A' => $environment_a,
+            'environment_point_A' => $output_a,
+            'environment_point_E' => $output_e,
+            'environment_point_F' => $output_f,
             //'pCO2_per_pH2S' => $ratio,
             'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A,2),
             'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E,2),

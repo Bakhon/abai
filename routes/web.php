@@ -38,6 +38,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/visualcenter2', 'DruidController@visualcenter2')->name('visualcenter2');
         Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
+        Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
@@ -55,7 +56,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/maps', 'DruidController@maps')->name('maps');
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
+        Route::get('/gtm', 'DruidController@gtm')->name('gtm');
         Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
+        Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
         Route::get('/constructor', 'DruidController@constructor')->name('constructor');
         Route::get('/tr', 'DruidController@tr')->name('tr');

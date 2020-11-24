@@ -156,7 +156,7 @@ import { Plotly } from "vue-plotly";
 Vue.component("Plotly", Plotly);
 
 export default {
-  props:["wellNumber"],
+  props:["wellNumber", "wellIncl"],
   data: function () {
     return {
         data:null,
@@ -180,8 +180,8 @@ export default {
   },
 
   mounted(){
-    console.log(this.wellNumber)
-    let uri = "http://172.20.103.187:7575/api/pgno/" + this.wellNumber + "/incl";
+    var wi = this.wellIncl.split('_');
+    let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
     this.axios.get(uri).then((response) => {
 
         console.log(response);

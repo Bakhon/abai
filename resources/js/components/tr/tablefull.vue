@@ -1,34 +1,34 @@
 <template>
     <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
         <tr class="headerColumn">
-            <td rowspan="4" @click="sortBy('field')">Раб. Группа</td>
+            <td rowspan="4" @click="sortBy('gu')">Раб. Группа</td>
             <td rowspan="4" @click="sortBy('field')">НГДУ/месторождение</td>
             <td rowspan="4" @click="sortBy('well')">№ скв</td>
             <td rowspan="4" @click="sortBy('well_type')">Тип скважины</td>
             <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
-            <td rowspan="4" @click="sortBy('well')">Блок</td>
-            <td rowspan="4" @click="sortBy('well')">R контура питания</td>
+            <td rowspan="4" @click="sortBy('block')">Блок</td>
+            <td rowspan="4" @click="sortBy('r_con')">R контура питания</td>
             <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
-            <td rowspan="4" @click="sortBy('cas_OD')">Внутренний диаметр э/к</td>
+            <td rowspan="4" @click="sortBy('cas_ID')">Внутренний диаметр э/к</td>
             <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НТК</td>
-            <td rowspan="4" @click="sortBy('tub_OD')">Внутренний диаметр НТК</td>
+            <td rowspan="4" @click="sortBy('tub_ID')">Внутренний диаметр НТК</td>
             <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
             <td rowspan="4" @click="sortBy('h_up_perf_vd')">Нвдп</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Удлинение(Нвдп)</td>
+            <td rowspan="4" @click="sortBy('h_up_perf_md')">Удлинение(Нвдп)</td>
             <td rowspan="4" @click="sortBy('exp_meth')">Способ эксплуатации</td>
             <td rowspan="4" @click="sortBy('pump_type')">Тип Насоса</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Тип СК</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Число качаний</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Длина хода</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Q теор</td>
+            <td rowspan="4" @click="sortBy('EMPTY')">Тип СК</td>
+            <td rowspan="4" @click="sortBy('spm')">Число качаний</td>
+            <td rowspan="4" @click="sortBy('stroke_len')">Длина хода</td>
+            <td rowspan="4" @click="sortBy('q_theor')">Q теор</td>
             <td rowspan="4" @click="sortBy('freq')">Частота работы насоса или число оборотов</td>
             <td rowspan="4" @click="sortBy('h_pump_set')">Н сп насоса</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">P буф</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">P лин</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">P пл</td>
+            <td rowspan="4" @click="sortBy('whp')">P буф</td>
+            <td rowspan="4" @click="sortBy('line_p')">P лин</td>
+            <td rowspan="4" @click="sortBy('p_res')">P пл</td>
             <td rowspan="4" @click="sortBy('h_dyn')">Н дин</td>
             <td rowspan="4" @click="sortBy('p_annular')">Р затр</td>
-            <td rowspan="4" @click="sortBy('p_annular')">Р на приеме</td>
+            <td rowspan="4" @click="sortBy('p_intake')">Р на приеме</td>
             <td class="colspan" colspan="5">Данные за предыдущий месяц</td>
             <td class="colspan" colspan="4">Фактический режим</td>
             <td rowspan="4" @click="sortBy('p_annular')"><span>Состояние на конец месяца</span></td>
@@ -264,7 +264,14 @@
             <td>{{Math.round(row.tub_ID*10)/10}}</td>
             <td>{{Math.round(row.choke_d*10)/10}}</td>
             <td>{{Math.round(row.h_up_perf_vd*10)/10}}</td>
-            <td>{{Math.round(row.h_up_perf_md*10)/10}}</td>
+            <td :class="{'cell-with-comment': check_wells && check_wells[row_index] &&
+            check_wells[row_index].h_up_perf_md_check !== '0_Нет Ошибок'}">
+                <span class="circle-err"> </span>
+                <span>{{Math.round(row.h_up_perf_md*10)/10}}</span>
+                <span v-if="check_wells && check_wells[row_index]" class="cell-comment">
+                    {{ check_wells[row_index].h_up_perf_md_check }}
+                </span>
+            </td>
             <td>{{row.exp_meth}}</td>
             <td>{{Math.round(row.pump_type*10)/10}}</td>
             <td>{{Math.round(row.EMPTY*10)/10}}</td>
@@ -275,7 +282,14 @@
             <td>{{Math.round(row.h_pump_set*10)/10}}</td>
             <td>{{Math.round(row.whp*10)/10}}</td>
             <td>{{Math.round(row.line_p*10)/10}}</td>
-            <td>{{Math.round(row.p_res*10)/10}}</td>
+            <td :class="{'cell-with-comment': check_wells && check_wells[row_index] &&
+            check_wells[row_index].p_res_check !== '0_Нет Ошибок'}">
+                <span class="circle-err"> </span>
+                <span>{{Math.round(row.p_res*10)/10}}</span>
+                <span v-if="check_wells && check_wells[row_index]" class="cell-comment">
+                    {{ check_wells[row_index].p_res_check }}
+                </span>
+            </td>
             <td>{{Math.round(row.h_dyn*10)/10}}</td>
             <td>{{Math.round(row.p_annular*10)/10}}</td>
             <td>{{Math.round(row.p_intake*10)/10}}</td>
@@ -371,11 +385,26 @@
 export default {
     name: "TrFullTable",
     props: {
-        wells: Array
+        wells: Array,
+        check_wells: Array,
+    },
+    watch: {
+        check_wells: {
+            deep: true,
+            handler(newValue) {
+                console.log('q', newValue);
+            }
+        }
     },
     methods: {
         sortBy(type) {
             this.$emit('onSort', type);
+    //     },
+    //     getColor(status) {
+    //         if (status === "1") return "#b40300";
+    //         if (status === "2") return "#b40300";
+    //         return "#008a17";
+    // },
         }
     }
 }

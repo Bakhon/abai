@@ -55,6 +55,7 @@ Vue.component('visual-center-chart-donut-right1', require('./components/visualce
 Vue.component('visual-center-chart-donut-right2', require('./components/visualcenter/VisualCenterChartDonutRight2.vue').default);
 Vue.component('visual-center-table', require('./components/visualcenter/VisualCenterTable.vue').default);
 Vue.component('visual-center-table3', require('./components/visualcenter3/VisualCenterTable3.vue').default);
+Vue.component('visual-center-table4', require('./components/visualcenter3/VisualCenterTable4.vue').default);
 Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
 Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
@@ -96,6 +97,7 @@ Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
 Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
 Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
+Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
