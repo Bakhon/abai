@@ -27,7 +27,7 @@
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" :disabled="!datetimeEmpty" class="btn btn-success">Сохранить</button>
+        <button type="submit" :disabled="!year" class="btn btn-success">Сохранить</button>
     </div>
   </div>
 </template>
