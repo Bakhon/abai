@@ -416,7 +416,7 @@
 
 
     </div>
-    <button :disabled='dzo==null'   @click="updateData">Сформировать отчет</button>
+    <button :disabled='dzo==null'   @click="updateData" class="btn report-btn">Сформировать отчет</button>
 </div>
   <BootstrapTable
     :columns="columns"

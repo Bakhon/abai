@@ -32,7 +32,7 @@
             id="companySelect"
             @change="onChangeMonth($event)"
           >
-           <option value="" disabled hidden>Выберите месяц</option>
+           <option value="" >Выберите месяц</option>
             <option value="1">январь</option>
             <option value="2">февраль</option>
             <option value="3">март</option>
