@@ -41,6 +41,7 @@
                 type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
             </div>
+             <button type="button" class="old_well_button">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -49,6 +50,7 @@
             <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
           </div>
           <div class="modal-analysis-menu">
+            <!-- <div class="modal_analysis_menu_new"> -->
             <div><input v-model="analysisBox6" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Pпл = P по
               окр.
             </div>
@@ -58,6 +60,7 @@
             <div><input v-model="analysisBox8" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Рзаб пот =
               Рнас*
             </div>
+            <!-- <button type="button" class="old_well_button">Применить</button> -->
           </div>
         </modal>
 
@@ -505,6 +508,7 @@ export default {
         height: 450,
         showlegend: true,
         xaxis: {
+          title: "Дебит, q, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           zeroline: false,
@@ -1325,6 +1329,10 @@ export default {
   font-family: 'Courier New', Courier, monospace;
 }
 
+.modalNewWell {
+  font-family: 'Courier New', Courier, monospace;
+}
+
 .checkbox-modal-analysis-menu-label {
   font-family: 'Courier New', Courier, monospace;
   margin-right: px;
@@ -1335,14 +1343,7 @@ export default {
   margin-left: -15px;
 }
 
-.modal-analysis-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-}
-
 div {
-  font-family: 'Roboto', sans-serif;
   font-weight: 400;
 }
 
