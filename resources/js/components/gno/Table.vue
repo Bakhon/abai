@@ -51,16 +51,16 @@
           </div>
           <div class="modal-analysis-menu">
             <!-- <div class="modal_analysis_menu_new"> -->
-            <div><input v-model="analysisBox6" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Pпл = P по
+            <div><input v-model="analysisBox6" class="checkbox-modal-analysis-menu-label" @change="postAnalysisNew()" type="checkbox">Pпл = P по
               окр.
             </div>
-            <div><input v-model="analysisBox7" class="checkbox1" @change="postAnalysisNew()" type="checkbox">К пр = К по
+            <div><input v-model="analysisBox7" class="checkbox-modal-analysis-menu-label" @change="postAnalysisNew()" type="checkbox">К пр = К по
               окр.
             </div>
-            <div><input v-model="analysisBox8" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Рзаб пот =
+            <div><input v-model="analysisBox8" class="checkbox-modal-analysis-menu-label" @change="postAnalysisNew()" type="checkbox">Рзаб пот =
               Рнас*
             </div>
-            <!-- <button type="button" class="old_well_button">Применить</button> -->
+             <button type="button" class="old_well_button">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -1323,14 +1323,6 @@ export default {
 
 .checkboxQ {
   border-radius: 100%;
-}
-
-.modalOldWell {
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.modalNewWell {
-  font-family: 'Courier New', Courier, monospace;
 }
 
 .checkbox-modal-analysis-menu-label {
