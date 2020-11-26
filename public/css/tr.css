@@ -128,7 +128,7 @@ table {
 }
 
 .cell-with-comment {
-    display: flex;
+    display: revert;
     align-items: center;
     text-align: center;
     position: relative;
@@ -138,6 +138,7 @@ table {
 }
 
 .circle-err {
+    /* display: flex; */
     background: #0d092a;
     height: 10px;
     border-radius: 50px;
