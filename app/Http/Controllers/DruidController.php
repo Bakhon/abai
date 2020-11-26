@@ -904,4 +904,8 @@ return $response;
     {
         return view('fa.fa');
     }    ///
+    public function tredit()
+    {
+        return view('tredit.tredit');
+    }    ///
 }

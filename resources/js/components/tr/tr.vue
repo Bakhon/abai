@@ -4,7 +4,7 @@
             <a href="fa" class="but-nav__link but">Факторный анализ отклонений ТР</a>
             <form class="form-group but-nav__link">
                     <label for="inputDate">Введите дату:</label>
-                    <input type="date" class="form-control" v-model="dt">
+                    <input type="date" value = "01.06.2020" class="form-control" v-model="dt">
             </form>
             <a href="#" class="but-nav__link but">Выбор даты 2</a>
             <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a>
@@ -25,7 +25,7 @@
         <button id="bt1"  @click="swap">Версия для отображения</button>
         <div >
             <TrTable :wells="wells" @onSort="sortBy" v-show="show_first"/>
-            <TrFullTable :wells="wells" :check_wells="check_wells" @onSort="sortBy" v-show="show_second"/>
+            <TrFullTable :wells="wells" @onSort="sortBy" v-show="show_second"/>
         </div>
     </div>
 </template>
@@ -44,16 +44,6 @@ export default {
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
         var prMm = mm-2;
-        this.axios.get("http://172.20.103.51:7576/api/techregime/check/"+yyyy+"/"+prMm+"/").then((response) => {
-        let data = response.data;
-        if(data) {
-            console.log('checkWells', data);
-            this.check_wells = data.data;
-        }
-        else {
-            console.log('No data');
-        }
-    });
         this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
         let data = response.data;
         if(data) {
@@ -75,7 +65,6 @@ export default {
         fullWells: [],
         show_first: true,
         show_second: false,
-        check_wells: [],
     }
   },
   methods: {
@@ -121,6 +110,7 @@ export default {
           if (status === "1") return "#ffff00";
           return "#ff0000";
       }
+
   }
 }
 
