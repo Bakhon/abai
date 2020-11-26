@@ -41,7 +41,7 @@
                 type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
             </div>
-             <button type="button" class="old_well_button">Применить&nbsp;выполненные корректировки</button>
+             <button type="button" class="old_well_button" @click="setGraph()">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -50,17 +50,22 @@
             <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
           </div>
           <div class="modal-analysis-menu">
-            <!-- <div class="modal_analysis_menu_new"> -->
-            <div><input v-model="analysisBox6" class="checkbox-modal-analysis-menu-label" @change="postAnalysisNew()" type="checkbox">Pпл = P по
-              окр.
+
+
+            <div class="form-check-new">
+              <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = P по окр.</label>
             </div>
-            <div><input v-model="analysisBox7" class="checkbox-modal-analysis-menu-label" @change="postAnalysisNew()" type="checkbox">К пр = К по
-              окр.
+            <div class="form-check-new">
+              <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
+              
             </div>
-            <div><input v-model="analysisBox8" class="checkbox-modal-analysis-menu-label" @change="postAnalysisNew()" type="checkbox">Рзаб пот =
-              Рнас*
+            <div class="form-check-new">
+              <input v-model="analysisBox8" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 * Рнас</label>
             </div>
-             <button type="button" class="old_well_button">Применить&nbsp;выполненные корректировки</button>
+            <button type="button" class="old_well_button" @click="setGraph()">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -492,9 +497,11 @@
 
 <script>
 import { Plotly } from "vue-plotly";
-import { EventBus } from "../../event-bus.js";
+import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
 import 'vue-easy-notify/dist/vue-easy-notify.css'
+
+Vue.prototype.$eventBus = new Vue();
 
 
 
@@ -1296,6 +1303,14 @@ export default {
         }
       });
     },
+    setGraph() {
+      this.updateLine(this.newCurveLineData)
+      this.setPoints(this.newPointsData)
+      this.$modal.hide('modalOldWell');
+      this.$modal.hide('modalNewWell');
+      this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
+      this.$eventBus.$emit('newPointsData', this.newPointsData)
+    }
 
 
 
@@ -1320,23 +1335,4 @@ export default {
 </script>
 
 <style scoped>
-
-.checkboxQ {
-  border-radius: 100%;
-}
-
-.checkbox-modal-analysis-menu-label {
-  font-family: 'Courier New', Courier, monospace;
-  margin-right: px;
-  font-size: 13.5px;
-}
-
-.checkbox-modal-analysis-menu {
-  margin-left: -15px;
-}
-
-div {
-  font-weight: 400;
-}
-
 </style>
