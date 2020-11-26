@@ -5,13 +5,16 @@
 <script>
 //
 import { Plotly } from "vue-plotly";
-import { EventBus } from "../../event-bus.js";
+import { eventBus } from "../../event-bus.js";
+
+Vue.prototype.$eventBus = new Vue();
 Vue.component("Plotly", Plotly);
 export default {
   name: "mix-chart",
   props: ["postTitle"],
   data: function () {
     return {
+      flag: false,
       layout: {
         //      showlegend: false,
         xaxis: {
@@ -58,6 +61,7 @@ export default {
   },
   methods: {
     setLine: function (value) {
+      console.log(value)
       var ipr_points = [];
       var pintake_points = [];
       var freegas_points = [];
@@ -172,7 +176,14 @@ export default {
   created: function () {
     this.$parent.$on("LineData", this.setLine);
     this.$parent.$on("PointsData", this.setPoints);
+    // this.$on("LineData", this.setLine);
+    // this.$on("PointsData", this.setPoints);
+    
   },
+  updated: function() {
+    this.$eventBus.$on("newCurveLineData", this.setLine);
+    this.$eventBus.$on("newPointsData", this.setPoints);
+  }
 
 };
 </script>

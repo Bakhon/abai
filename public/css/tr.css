@@ -128,7 +128,7 @@ table {
 }
 
 .cell-with-comment {
-    display: revert;
+    display: flex;
     align-items: center;
     text-align: center;
     position: relative;

@@ -41,6 +41,7 @@
                 type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
             </div>
+             <button type="button" class="old_well_button" @click="setGraph()">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -49,15 +50,22 @@
             <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
           </div>
           <div class="modal-analysis-menu">
-            <div><input v-model="analysisBox6" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Pпл = P по
-              окр.
+
+
+            <div class="form-check-new">
+              <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = P по окр.</label>
             </div>
-            <div><input v-model="analysisBox7" class="checkbox1" @change="postAnalysisNew()" type="checkbox">К пр = К по
-              окр.
+            <div class="form-check-new">
+              <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
+              
             </div>
-            <div><input v-model="analysisBox8" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Рзаб пот =
-              Рнас*
+            <div class="form-check-new">
+              <input v-model="analysisBox8" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 * Рнас</label>
             </div>
+            <button type="button" class="old_well_button" @click="setGraph()">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -279,10 +287,10 @@
         </div>
         <div class="cell4-gno table-border-gno-top col-7">
           Новая скважина
-          <input v-model="age" class="checkbox0" type="checkbox" />
+          <input :checked="age===true" v-model="age" class="checkbox0" type="checkbox" />
         </div>
         <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-          с ГРП <input class="checkbox0" :disabled="!age" type="checkbox" />
+          с ГРП <input class="checkbox0" v-model="grp_skin" :disabled="!age" type="checkbox" />
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">Пласт</div>
@@ -307,7 +315,7 @@
         </div>
 
         <div class="cell4-gno table-border-gno-top col-7">
-          НГДУ
+          {{ngdu}}
         </div>
         <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           АО "ОМГ"
@@ -354,7 +362,7 @@
               Станок-качалка
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              No Data
+              {{sk}}
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
@@ -489,9 +497,11 @@
 
 <script>
 import { Plotly } from "vue-plotly";
-import { EventBus } from "../../event-bus.js";
+import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
 import 'vue-easy-notify/dist/vue-easy-notify.css'
+
+Vue.prototype.$eventBus = new Vue();
 
 
 
@@ -505,6 +515,7 @@ export default {
         height: 450,
         showlegend: true,
         xaxis: {
+          title: "Дебит, q, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           zeroline: false,
@@ -619,6 +630,8 @@ export default {
         analysisBox7: true,
         analysisBox8: true,
         menu: "MainMenu",
+        ngdu: null,
+        sk: null,
         grp_skin: false,
         expAnalysisData:{
             NNO1:null,
@@ -652,17 +665,18 @@ export default {
         this.qLInput = data["Well Data"]["q_l"][0].toFixed(0)
         this.wctInput = data["Well Data"]["wct"][0]
         this.gorInput = data["Well Data"]["gor"][0]
-        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0),
+        this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0)
         this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0)
-        this.CelValue = data["Well Data"][""]
-        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0),
-        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0),
-        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0),
-        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0),
+        this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0)
+        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"]
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"]
+        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"]
         this.whpInput = data["Well Data"]["whp"][0].toFixed(0)
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
       } else {
+        this.ngdu = data["Well Data"]["ngdu"][0]
+        this.sk = data["Well Data"]["sk_type"][0]
         this.wellNumber = data["Well Data"]["well"][0].split("_")[1]
         this.age = data["Age"]
         this.horizon = data["Well Data"]["horizon"][0]
@@ -961,11 +975,18 @@ export default {
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
+        this.method = 'MainMenu'
 
 
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
+        
+        this.curveLineData = JSON.parse(data.LineData)["data"]
+        this.curvePointsData = JSON.parse(data.PointsData)["data"]
+        this.ngdu = 0
+        this.sk = 0
+
           //Выбор скважины
         this.horizon = 0;
         this.expMeth = 0;
@@ -1027,7 +1048,12 @@ export default {
 
         } else if(data["Age"] === true) {
 
+
+          this.curveLineData = JSON.parse(data.LineData)["data"]
+          this.curvePointsData = JSON.parse(data.PointsData)["data"]
           this.horizon = data["Well Data"]["horizon"][0]
+          this.curveSelect = 'pi'
+          this.age = data["Age"]
 
           this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
           this.gor = data["Well Data"]["gor"][0].toFixed(1)
@@ -1039,7 +1065,10 @@ export default {
 
 
 
-          Vue.prototype.$notifyWarning("Скважина что была указана является новой");
+          Vue.prototype.$notifyWarning("Новая скважина");
+
+        this.ngdu = 0
+        this.sk = 0
 
           //Выбор скважины
         this.expMeth = 0;
@@ -1088,12 +1117,12 @@ export default {
         this.bhpCelValue = 0;
         this.piCelValue = 0;
 
+        } else if (data["Age"] === false){
+        this.setData(data)
         }
-          this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
           this.NnoCalc();
-
         }
       );
 
@@ -1114,9 +1143,11 @@ export default {
         this.CelValue = this.piCelValue
       }
 
-      if(this.piCelValue > this.bhpCelValue) {
-        Vue.prototype.$notifyError("Pпр не должно быть больше чем Рзаб");
-      }
+      // if(this.piCelValue > this.bhpCelValue) {
+      //   Vue.prototype.$notifyError("Pпр не должно быть больше чем Рзаб");
+      // }
+
+
 
       let jsonData = JSON.stringify(
         {
@@ -1136,7 +1167,7 @@ export default {
         "celValue": this.CelValue,
         "menu": "MainMenu",
         "well_age": this.age,
-        "grp_skin": true,
+        "grp_skin": this.grp_skin,
         "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
@@ -1189,7 +1220,7 @@ export default {
         "celValue": this.CelValue,
         "menu": "PotencialAnalysis",
         "well_age": this.age,
-        "grp_skin": true,
+        "grp_skin": this.grp_skin,
         "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
@@ -1246,7 +1277,7 @@ export default {
         "celValue": this.CelValue,
         "menu": "PotencialAnalysis",
         "well_age": this.age,
-        "grp_skin": true,
+        "grp_skin": this.grp_skin,
         "analysisBox1": this.analysisBox1,
         "analysisBox2": this.analysisBox2,
         "analysisBox3": this.analysisBox3,
@@ -1272,6 +1303,14 @@ export default {
         }
       });
     },
+    setGraph() {
+      this.updateLine(this.newCurveLineData)
+      this.setPoints(this.newPointsData)
+      this.$modal.hide('modalOldWell');
+      this.$modal.hide('modalNewWell');
+      this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
+      this.$eventBus.$emit('newPointsData', this.newPointsData)
+    }
 
 
 
@@ -1296,34 +1335,4 @@ export default {
 </script>
 
 <style scoped>
-
-.checkboxQ {
-  border-radius: 100%;
-}
-
-.modalOldWell {
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.checkbox-modal-analysis-menu-label {
-  font-family: 'Courier New', Courier, monospace;
-  margin-right: px;
-  font-size: 13.5px;
-}
-
-.checkbox-modal-analysis-menu {
-  margin-left: -15px;
-}
-
-.modal-analysis-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-}
-
-div {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-}
-
 </style>
