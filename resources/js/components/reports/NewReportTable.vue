@@ -26,7 +26,7 @@
           <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
           <!-- https://developer.snapappointments.com/bootstrap-select/examples/#basic-examples -->
           <!-- multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"-->
-          <select data-live-search="true" 
+          <select data-live-search="true"
             style="background-color:#20274e;border-color:#20274e;color:white;"
             class="form-control"
             id="companySelect"
@@ -311,37 +311,7 @@ export default {
           align: 'center'
     },
         ],
-<<<<<<< HEAD
-//         [
 
-// {
-//         title: 'Qж, м3',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Обв, %',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Qн, т/сут',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Пробы',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Простои',
-//           align: 'center'
-//     }
-
-
-//         ]
-
-
-=======
-  
->>>>>>> 400287fdd9414c5e19cdc17a03ee91e0593427e4
       ],
 
       data: [],
@@ -350,13 +320,8 @@ export default {
         pagination: true,
         showColumns: true,
         showExport: true,
-<<<<<<< HEAD
         locale: 'ru-RU',
-        exportTypes: ['excel', 'csv', 'doc'],
-=======
-        locale: 'ru-RU',      
         exportTypes: ['excel', 'csv'],
->>>>>>> 400287fdd9414c5e19cdc17a03ee91e0593427e4
         exportDataType: 'all',
         // fixedColumns: true,
         // fixedNumber: 2,
