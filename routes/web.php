@@ -64,6 +64,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/tr', 'DruidController@tr')->name('tr');
         Route::get('/export', 'HomeController@export');
         Route::get('/fa', 'DruidController@fa')->name('fa');
+        Route::get('/tredit', 'DruidController@tredit')->name('tredit');
 
 
         //wm

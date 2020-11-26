@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="container">  
+    <div class="container">
     <div class="row">
  <div class="col-sm">
         <div class="form-group">
@@ -66,7 +66,7 @@
             <option value="2016">2016</option>
             <option value="2015">2015</option>
             <option value="2014">2014</option>
-           
+
           </select>
         </div>
     </div>
@@ -80,7 +80,7 @@
     :columns="columns"
     :data="data"
     :options="options"
-    
+
   />
 </div>
 </div>
@@ -100,7 +100,7 @@ export default {
     BootstrapTable
   },
   data () {
-    
+
     return {
        xmay: [{
       '1': "январь",
@@ -287,7 +287,7 @@ export default {
         [
  {
         title: 'Qж, м3',
-   
+
           align: 'center'
     },
      {
@@ -311,17 +311,52 @@ export default {
           align: 'center'
     },
         ],
+<<<<<<< HEAD
+//         [
+
+// {
+//         title: 'Qж, м3',
+//           align: 'center'
+//     },
+//     {
+//         title: 'Обв, %',
+//           align: 'center'
+//     },
+//     {
+//         title: 'Qн, т/сут',
+//           align: 'center'
+//     },
+//     {
+//         title: 'Пробы',
+//           align: 'center'
+//     },
+//     {
+//         title: 'Простои',
+//           align: 'center'
+//     }
+
+
+//         ]
+
+
+=======
   
+>>>>>>> 400287fdd9414c5e19cdc17a03ee91e0593427e4
       ],
-      
+
       data: [],
       options: {
         search: true,
         pagination: true,
         showColumns: true,
         showExport: true,
+<<<<<<< HEAD
+        locale: 'ru-RU',
+        exportTypes: ['excel', 'csv', 'doc'],
+=======
         locale: 'ru-RU',      
         exportTypes: ['excel', 'csv'],
+>>>>>>> 400287fdd9414c5e19cdc17a03ee91e0593427e4
         exportDataType: 'all',
         // fixedColumns: true,
         // fixedNumber: 2,
@@ -331,34 +366,34 @@ export default {
       org: '',
       month: '',
       year: '',
-      
+
     }
-    
+
   },
   methods: {
     // dayClicked(day) {
     //   this.date = day.id;
     //   var dt = this.date.split('-');
-     
+
 
     // },
     updateData(){
       let uri = '/ru/protodata';
       this.axios.post("/ru/protodata", {
           org: this.org,
-          month: this.month, 
+          month: this.month,
           year: this.year,
-          
+
         })
         .then((response) => {
           let data = response.data;
           if (data) {
             this.data = data.wellsList;
-            this.columns[0][11]['title'] = this.xmay[0][this.month] + " " + this.year; 
+            this.columns[0][11]['title'] = this.xmay[0][this.month] + " " + this.year;
           } else {
             console.log("No data");
           }
-        }); 
+        });
     },
      onChange(event) {
         this.org = event.target.value;
@@ -366,14 +401,14 @@ export default {
     },
      onChangeMonth(event) {
         this.month = event.target.value;
-        
+
 
     },
     onChangeYear(event) {
         this.year = event.target.value;
 
     },
-  }, 
+  },
 }
 
 </script>
