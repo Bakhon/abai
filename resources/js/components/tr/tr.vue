@@ -6,10 +6,13 @@
                     <label for="inputDate">Введите дату:</label>
                     <input type="date" value = "01.06.2020" class="form-control" v-model="dt">
             </form>
-            <a href="#" class="but-nav__link but">Выбор даты 2</a>
+            <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
             <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a>
             <a href="#" class="but-nav__link but">Редактировать</a>
             <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a>
+        </div>
+        <div class='tech'>
+            <td> Технологический режим на {{dt}}</td>
         </div>
         <div>
             <select name="Company" class="from-control" id="companySelect"
@@ -53,6 +56,12 @@ export default {
         }
         else {
             console.log('No data');
+        }
+        if(prMm < 10) {
+            this.dt = '01' + '.0' + prMm + '.' + yyyy;
+        }
+        else {
+            this.dt = '01' + '.' + prMm + '.' + yyyy;
         }
     });
   },

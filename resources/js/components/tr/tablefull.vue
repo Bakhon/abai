@@ -37,12 +37,12 @@
             <td rowspan="4" @click="sortBy('p_annular')">Т пл</td>
             <td rowspan="4" @click="sortBy('p_annular')">Т уст</td>
             <td class="colspan" colspan="4">ГРП</td>
-            <td rowspan="4" @click="sortBy('p_annular')"><span>"Вязкость нефти в пл. условиях"</span></td>
-            <td rowspan="4" @click="sortBy('p_annular')"><span>"Вязкость воды в пл. условиях"</span></td>
-            <td rowspan="4" @click="sortBy('p_annular')">"Вязкость жидкости"</td>
-            <td rowspan="4" @click="sortBy('p_annular')">"Объемный коэффициент"</td>
-            <td rowspan="4" @click="sortBy('p_annular')">"Плотность нефти"</td>
-            <td rowspan="4" @click="sortBy('p_annular')">"Плотность воды"</td>
+            <td rowspan="4" @click="sortBy('p_annular')"><span>Вязкость нефти в пластовых условиях</span></td>
+            <td rowspan="4" @click="sortBy('p_annular')"><span>Вязкость воды в пластовых условиях</span></td>
+            <td rowspan="4" @click="sortBy('p_annular')">Вязкость жидкости</td>
+            <td rowspan="4" @click="sortBy('p_annular')">Объемный коэффициент</td>
+            <td rowspan="4" @click="sortBy('p_annular')">Плотность нефти</td>
+            <td rowspan="4" @click="sortBy('p_annular')">Плотность воды</td>
             <td rowspan="4" @click="sortBy('p_annular')">Н перф</td>
             <td rowspan="4" @click="sortBy('p_annular')">k</td>
             <td rowspan="4" @click="sortBy('p_annular')">КН</td>
@@ -76,8 +76,8 @@
             <td rowspan="4" @click="sortBy('p_annular')"><span>Мероприятия</span></td>
             <td rowspan="4" @click="sortBy('p_annular')"><span>Сведения о тех.состоянии  экс.колонны</span></td>
             <td rowspan="4" @click="sortBy('p_annular')"><span>Комментарии</span></td>
-            <!-- <td rowspan="4" @click="sortBy('p_annular')"><span>Дата последнего ГТМ</span></td>
-            <td rowspan="4" @click="sortBy('p_annular')"><span>Вид последнего ГТМ</span></td> -->
+            <td rowspan="4" @click="sortBy('p_annular')"><span>Дата последнего ГТМ</span></td>
+            <td rowspan="4" @click="sortBy('p_annular')"><span>Вид последнего ГТМ</span></td>
         </tr>
         <tr class="headerColumn">
             <td rowspan="3"><span>P заб</span></td>
@@ -247,8 +247,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <!-- <td></td>
-            <td></td> -->
+            <td></td>
+            <td></td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row_index">
             <td>{{row.gu}}</td>
@@ -1170,8 +1170,8 @@
             <td>{{row.plan_activities}}</td>
             <td>{{row.plan_casing_info}}</td>
             <td>{{row.plan_comment}}</td>
-            <!-- <td>{{row.q_liq_charac}}</td>
-            <td>{{row.q_liq_charac}}</td>-->
+            <td>{{row.EMPTY}}</td>
+            <td>{{row.EMPTY}}</td>
         </tr>
     </table>
 </template>

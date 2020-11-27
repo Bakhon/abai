@@ -170,10 +170,11 @@ export default {
     return {
         wells: [],
         sortType: 'asc',
-        dt: null,
+        dt: '01.' + prMm + '.' + yyyy,
         dt2: null,
         fullWells: []
     }
+  console.log(dt)
   },
   methods: {
       sortBy(type) {

@@ -4,6 +4,7 @@
             <td rowspan="4" @click="sortBy('well')">№ скв</td>
             <td rowspan="4" @click="sortBy('well_type')">Тип скважины</td>
             <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
+            <td rowspan="4" @click="sortBy('block')">Блок</td>
             <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
             <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НТК</td>
             <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
@@ -18,7 +19,7 @@
             <td class="colspan" colspan="4">Фактический режим</td>
             <td rowspan="4" @click="sortBy('well_status_last_day')">Состояние на конец месяца</td>
             <td rowspan="4" @click="sortBy('')">ГФ</td>
-            <td rowspan="4" @click="sortBy('')">К пр</td>
+            <td rowspan="4" @click="sortBy('')">К прод</td>
             <td class="colspan" colspan="7">Расчет технологического потенциала от ИДН</td>
         </tr>
         <tr class="headerColumn">
@@ -28,7 +29,7 @@
             <td rowspan="3"><span>Обводненность</span></td>
             <td rowspan="3">P заб</td>
             <td class="colspan" colspan="2">ИДН</td>
-            <td rowspan="3">К пр от стимуляции</td>
+            <td rowspan="3">К прод от стимуляции</td>
             <td class="colspan" colspan="2">ГРП</td>
             <td rowspan="3">Общий прирост Q н</td>
         </tr>
@@ -40,6 +41,7 @@
         </tr>
         <tr></tr>
         <tr class="subHeaderColumn">
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -94,6 +96,8 @@
                     {{ wells[row_index].horizon[1][1]}}
                 </span>
             </td>
+
+            <td>{{row.block}}</td>
 
             <!-- <td>{{row.cas_OD}}</td> -->
             <td :class="{'cell-with-comment': wells && wells[row_index] &&
