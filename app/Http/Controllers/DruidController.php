@@ -847,7 +847,7 @@ return $response;
             'dose_mg_per_l_point_E' => round($dose_e,2),
             'dose_mg_per_l_point_F' => round($dose_f,2),
             'max_dose' => round($max_dose,2),
-            'warning' => $warning,
+            //'warning' => $warning,
             'GOR1' => $GOR1,
             'GOR' => $GOR,
             'q_o' => round($q_o,4),
