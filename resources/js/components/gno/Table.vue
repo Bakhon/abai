@@ -41,7 +41,7 @@
                 type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
             </div>
-             <button type="button" class="old_well_button" @click="setGraph()">Применить&nbsp;выполненные корректировки</button>
+             <button type="button" class="old_well_button" @click="setGraphOld()">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -65,7 +65,15 @@
               <input v-model="analysisBox8" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
               <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 * Рнас</label>
             </div>
-            <button type="button" class="old_well_button" @click="setGraph()">Применить&nbsp;выполненные корректировки</button>
+            <div class="form-check-new">
+              <input v-model="grp_skin" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
+            </div>
+            <div class="form-check-new">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Обв</label>
+              <input v-model="wctInput" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="input">
+            </div>
+            <button type="button" class="old_well_button" @click="setGraphNew()">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -74,6 +82,7 @@
           <div class="modal-bign2">
             <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
           </div>
+          <button class="btn-primary"></button>
         </modal>
         <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign3">
@@ -82,6 +91,8 @@
         </modal>
         <gno-line-points-chart></gno-line-points-chart>
       </div>
+
+      <modal name="table" :width="1150" :height="395" :adaptive="true"></modal>
 
       <div class="tables-string-gno4 col-6">
         <div class="tables-string-gno4-inner">
@@ -218,11 +229,12 @@
               <input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()"
                 :checked="expChoose === 'ШГН'" type="radio" name="gno10" />
             </div>
-            <div class="cell4-gno table-border-gno cell4-gno-second col-3">
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2">
               <div class="text3">ЭЦН</div>
               <input class="checkbox3" value="ЭЦН" v-model="expChoose" @change="postCurveData()"
                 :checked="expChoose === 'ЭЦН'" type="radio" name="gno10" />
             </div>
+           
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="text3">Нсп</div>
             </div>
@@ -613,7 +625,7 @@ export default {
         curveSelect: 'pi',
         curveValue: '',
         curr: null,
-        expChoose: 'ШГН',
+        expChoose: null,
         CelButton: 'ql',
         bhpCurveButton: '',
         qlCelValue: null,
@@ -633,6 +645,7 @@ export default {
         ngdu: null,
         sk: null,
         grp_skin: false,
+        newData: null,
         expAnalysisData:{
             NNO1:null,
             NNO2:null,
@@ -731,9 +744,9 @@ export default {
         this.hPumpValue = this.hPumpSet
 
         if (this.expMeth == "ШГН") {
-              this.shgnButton = true;
+              this.expChoose = "ШГН"
         } else {
-              this.shgnButton = false
+              this.expChoose = "ЭЦН" 
         }
         if (this.age === true) {
           this.curveSelect = 'pi'
@@ -741,7 +754,6 @@ export default {
           this.curveSelect = 'hdyn'
         }
 
-        this.expChoose = this.expMeth
         this.piButton = true
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -940,6 +952,13 @@ export default {
             }
         )
 
+         let jsonData3 = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": "УЭЦН",
+    
+            }
+        )
+
         //microservise na SHGN NNO
         this.axios.post(uri, jsonData).then((response) => {
         var data = JSON.parse(response.data.Result)
@@ -1015,6 +1034,7 @@ export default {
         this.hPumpSet = 0;
         this.tubOD = 0;
         this.tubID = 0;
+        this.stopDate = 0;
 
         //Технологический  режим
         this.qL = 0;
@@ -1055,6 +1075,7 @@ export default {
           this.curveSelect = 'pi'
           this.age = data["Age"]
 
+        
           this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
           this.gor = data["Well Data"]["gor"][0].toFixed(1)
           this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
@@ -1077,16 +1098,17 @@ export default {
         this.curr = 0;
 
         // Конструкция
-        this.casOD = 0;
-        this.casID = 0;
+        this.casOD = 163;
+        this.casID = 150;
         this.hPerf = 0;
         this.udl = 0;
 
         //Оборудование
         this.pumpType = 0;
         this.hPumpSet = 0;
-        this.tubOD = 0;
-        this.tubID = 0;
+        this.tubOD = 73;
+        this.tubID = 62;
+        this.stopDate = 0;
 
         //Технологический  режим
         this.qL = 0;
@@ -1105,7 +1127,7 @@ export default {
         this.qLInput = 0;
         this.bhpInput = 0;
         this.wctInput = 0;
-        this.gorInput = 0;
+        this.gorInput = this.gor;
         this.hDynInput = 0;
         this.pAnnularInput = 0;
         this.hPumpManomInput = 0;
@@ -1236,6 +1258,7 @@ export default {
         if (data) {
           console.log(data)
           this.method = "CurveSetting"
+          this.newData = data["Well Data"]
           // this.setData(data)
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
@@ -1292,6 +1315,7 @@ export default {
         var data = response.data;
         if (data) {
           console.log(data)
+          this.newData = data["Well Data"]
           this.method = "CurveSetting"
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
@@ -1303,13 +1327,35 @@ export default {
         }
       });
     },
-    setGraph() {
+    setGraphOld() {
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalOldWell');
+      this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
+      this.$eventBus.$emit('newPointsData', this.newPointsData)
+      this.pResInput = this.newData["p_res"][0].toFixed(0)
+      this.piInput = this.newData["pi"][0].toFixed(2)
+      this.qLInput = this.newData["q_l"][0].toFixed(0)
+      this.bhpInput = this.newData["bhp"][0].toFixed(0)
+      this.hDynInput = this.newData["h_dyn"][0].toFixed(0)
+      this.pAnnularInput = this.newData["p_annular"][0].toFixed(0)
+      this.pManomInput = this.newData["p_intake"][0].toFixed(0)
+      this.hPumpManomInput = this.newData["h_pump_set"][0].toFixed(0)
+      this.whpInput = this.newData["whp"][0].toFixed(0)
+      this.wctInput = this.newData["wct"][0].toFixed(0)
+      this.qlCelValue = this.newPointsData[0]["q_l"].toFixed(0)
+      this.bhpCelValue = this.newPointsData[0]["p"].toFixed(0)
+      this.piCelValue = this.newPointsData[0]["pin"].toFixed(0)
+    },
+
+     setGraphNew() {
+      this.updateLine(this.newCurveLineData)
+      this.setPoints(this.newPointsData)
       this.$modal.hide('modalNewWell');
       this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
       this.$eventBus.$emit('newPointsData', this.newPointsData)
+      this.pResInput = this.newData["p_res"][0].toFixed(0)
+      this.piInput = this.newData["pi"][0].toFixed(2)
     }
 
 
@@ -1320,6 +1366,7 @@ export default {
     let uri = "http://172.20.103.187:7575/api/pgno/UZN/0046/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
+
         if (data) {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
@@ -1328,6 +1375,8 @@ export default {
         } else {
           console.log("No data");
         }
+
+
       });
 
   },

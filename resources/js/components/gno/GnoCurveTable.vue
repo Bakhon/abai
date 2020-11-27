@@ -181,8 +181,14 @@ export default {
     
   },
   updated: function() {
+
+
     this.$eventBus.$on("newCurveLineData", this.setLine);
     this.$eventBus.$on("newPointsData", this.setPoints);
+    
+    
+    
+
   }
 
 };
