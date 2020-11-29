@@ -100,6 +100,10 @@
           </div>
         </modal>
 
+        <modal name="tablePGNO"  :width="1300" :height="550" :adaptive="true" class="chart">
+          
+        </modal>
+
 
         <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign3">
@@ -1409,7 +1413,7 @@ export default {
     },
 
     onCompareNpv() {
-      if(this.expAnalysisData.ecnParam > this.expAnalysisData.shgnParam) {
+      if(this.expAnalysisData.ecnNpv > this.expAnalysisData.shgnNpv) {
         this.expChoose == "ЭЦН"
       } else {
         this.expChoose == "ШГН"
@@ -1420,6 +1424,7 @@ export default {
     onShowTable() {
       console.log('mytable');
       this.$modal.hide("modalExpAnalysis");
+      // this.$modal.show("tablePGNO")
     }
 
 
