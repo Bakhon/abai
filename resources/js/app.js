@@ -13,8 +13,14 @@ import VueFriendlyIframe from 'vue-friendly-iframe';
 import { Plotly } from 'vue-plotly';
 import excel from 'vue-excel-export';
 import 'bootstrap-table/dist/bootstrap-table.js';
+import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
+<<<<<<< HEAD
 import VueMomentLib from 'vue-moment-lib';
+=======
+import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
+import 'bootstrap-select/dist/js/bootstrap-select.min.js';
+>>>>>>> fa7063cdc6c3083076a74f3d398db6f122795abd
 // import  jquery from 'jquery';
 
 
@@ -96,12 +102,15 @@ Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
 Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
 Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
+Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
+Vue.component('tredit-table', require('./components/tr/tredit.vue').default);
 
+Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 
 
 /**

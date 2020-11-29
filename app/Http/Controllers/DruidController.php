@@ -9,6 +9,9 @@ use Level23\Druid\Context\GroupByV2QueryContext;
 use Level23\Druid\Filters\FilterBuilder;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Adldap\Laravel\Facades\Adldap;
+use Spatie\Permission\Contracts\Permission;
+use Spatie\Permission\Models\Permission as ModelsPermission;
+use Spatie\Permission\Models\Role;
 
 class DruidController extends Controller
 {
@@ -64,6 +67,10 @@ return $response;
 //$file = 'https://yandex.ru/news/quotes/graph_1006.json';
 //$file_name = 'D:/openserver/OpenServer/domains/localhost/public/js/json/graph_1006.json';
 //file_put_contents($file_name, file_get_contents($file));
+
+//Role::create(['name'=>'writer']); 
+//$permission = Permission::create(['name'=>'writer post']);
+//auth()->user()->givePermissionTo('edit post');
         return view('visualcenter.visualcenter3');
     }
 
@@ -195,6 +202,10 @@ return $response;
     public function constructor()
     {
         return view('reports.constructor');
+    }
+    public function gtm()
+    {
+        return view('reports.gtm');
     }
 
     function getCurrencyPeriod(Request $request)
@@ -843,7 +854,7 @@ return $response;
             'dose_mg_per_l_point_E' => round($dose_e,2),
             'dose_mg_per_l_point_F' => round($dose_f,2),
             'max_dose' => round($max_dose,2),
-            'warning' => $warning,
+            //'warning' => $warning,
             'GOR1' => $GOR1,
             'GOR' => $GOR,
             'q_o' => round($q_o,4),
@@ -892,5 +903,9 @@ return $response;
     public function fa()
     {
         return view('fa.fa');
+    }    ///
+    public function tredit()
+    {
+        return view('tredit.tredit');
     }    ///
 }
