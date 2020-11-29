@@ -59,7 +59,7 @@
             <div class="form-check-new">
               <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
               <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
-              
+
             </div>
              <div class="form-check-new">
               <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Обв по окр. = </label>
@@ -101,7 +101,7 @@
         </modal>
 
         <modal name="tablePGNO"  :width="1300" :height="550" :adaptive="true" class="chart">
-          
+
         </modal>
 
 
@@ -255,7 +255,7 @@
               <input class="checkbox3" value="ЭЦН" v-model="expChoose" @change="postCurveData()"
                 :checked="expChoose === 'ЭЦН'" type="radio" name="gno10" />
             </div>
-           
+
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="text3">Нсп</div>
             </div>
@@ -401,7 +401,7 @@
            d="M6.34317 7.75732L4.92896 9.17154L12 16.2426L19.0711 9.17157L17.6569 7.75735L12 13.4142L6.34317 7.75732Z"
            fill="currentColor" />
        </svg></span>
-    
+
     <blockquote>
             <div class="cell4-gno table-border-gno-top col-7">
               Станок-качалка
@@ -437,7 +437,7 @@
           </blockquote>
         </div>
       </div>
-      
+
 
       <div class="spoiler">
         <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" />
@@ -797,7 +797,7 @@ export default {
         if (this.expMeth == "ШГН") {
               this.expChoose = "ШГН"
         } else {
-              this.expChoose = "ЭЦН" 
+              this.expChoose = "ЭЦН"
         }
         if (this.age === true) {
           this.curveSelect = 'pi'
@@ -924,16 +924,18 @@ export default {
             this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil
         }
 
+        this.expAnalysisData.qoilShgn=this.qOilExpShgn
+        this.expAnalysisData.qoilEcn=this.qOilExpEcn
+
         if(this.expAnalysisData.NNO1!=null) {
             this.EconomParam();
         }
 
-        this.expAnalysisData.qoilShgn=this.qOilExpShgn
-        this.expAnalysisData.qoilEcn=this.qOilExpEcn
+
     },
     EconomParam(){
-        var prs1 = this.expAnalysisData.prs1;
-        var prs2 = this.expAnalysisData.prs2;
+        var prs1 = this.expAnalysisData.prs1
+        var prs2 = this.expAnalysisData.prs2
 
         var nnoDayUp=moment(this.dataNNO, 'YYYY-MM-DD').toDate()
         var nnoDayFrom=moment(this.stopDate, 'YYYY-MM-DD').toDate()
@@ -944,19 +946,22 @@ export default {
             date_diff=date_diff-365
         }
 
-        if ((prs1!=0 && prs2!=0)||((prs1==0 && prs2==0))){
-            if(prs1==0 && prs2==0){
-                if(this.expChoose=="ШГН"){
-                    this.expAnalysisData.NNO1=date_diff
-                }else{
-                    this.expAnalysisData.NNO2=date_diff
-                }
-            } else{
-                this.param_eco=1;
-                this.EconomCalc();
-            }
+        console.log('data', date_diff)
 
-        } else if (prs1==0){
+        if (prs1!=0 && prs2!=0){
+            this.param_eco=1;
+            this.EconomCalc();
+        } else if (prs1==0 && prs2==0){
+            if(this.expChoose=="ШГН"){
+                this.expAnalysisData.NNO1=date_diff
+                this.param_eco=1;
+                this.EconomCalc()
+            }else{
+                this.expAnalysisData.NNO2=date_diff
+                this.param_eco=1;
+                this.EconomCalc()
+            }
+        } else if (prs1==0 && prs2!=0){
             this.param_eco=2;
             this.EconomCalc();
         } else {
@@ -986,8 +991,9 @@ export default {
                 this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam
                 this.expAnalysisData.ecnNpv=data2[12].npv
 
-                this.$modal.show("modalExpAnalysis");
-
+                if(this.expAnalysisData.shgnParam,this.expAnalysisData.shgnNpv,this.expAnalysisData.ecnParam,this.expAnalysisData.ecnNpv){
+                    this.$modal.show("modalExpAnalysis");
+                }
 
             }
             else {
@@ -1027,7 +1033,7 @@ export default {
          let jsonData3 = JSON.stringify(
             {"well_number": this.wellNumber,
             "exp_meth": "УЭЦН",
-    
+
             }
         )
 
@@ -1061,7 +1067,7 @@ export default {
     InclMenu() {
         if (this.data["Age"] === true) {
         Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
-        
+
       } else {
         this.$modal.show('modalIncl')
       }
@@ -1152,7 +1158,7 @@ export default {
           this.curveSelect = 'pi'
           this.age = data["Age"]
 
-        
+
           this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
           this.gor = data["Well Data"]["gor"][0].toFixed(1)
           this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
@@ -1451,7 +1457,7 @@ export default {
     onShowTable() {
       console.log('mytable');
       this.$modal.hide("modalExpAnalysis");
-      // this.$modal.show("tablePGNO")
+      this.$modal.show("tablePGNO")
     }
 
 
