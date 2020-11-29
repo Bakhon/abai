@@ -2125,7 +2125,7 @@ export default {
                 if(response.data) {
                     // console.log('EDIT_RESPONSE', response.data.data[0])
                     this.wells = this.wells.map((currentRow, index) => {
-                        console.log('norm', index, rowId)
+                        // console.log('norm', index, rowId)
                         return (index === rowId) ? response.data.data[0] : currentRow;
                     })
 
