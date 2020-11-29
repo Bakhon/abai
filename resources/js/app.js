@@ -15,12 +15,9 @@ import excel from 'vue-excel-export';
 import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
-<<<<<<< HEAD
 import VueMomentLib from 'vue-moment-lib';
-=======
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
->>>>>>> fa7063cdc6c3083076a74f3d398db6f122795abd
 // import  jquery from 'jquery';
 
 
