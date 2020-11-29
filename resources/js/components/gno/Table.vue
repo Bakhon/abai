@@ -491,12 +491,15 @@
 import { Plotly } from "vue-plotly";
 import { EventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
-import 'vue-easy-notify/dist/vue-easy-notify.css'
+import 'vue-easy-notify/dist/vue-easy-notify.css';
+import { VueMomentLib }from "vue-moment-lib";
+import moment from "moment";
+import Vue from 'vue';
 
 
-
-Vue.use(NotifyPlugin)
+Vue.use(NotifyPlugin,VueMomentLib);
 Vue.component("Plotly", Plotly);
+
 export default {
   data: function () {
     return {
@@ -641,12 +644,15 @@ export default {
         param_eco:null,
 
         field: "UZN",
-        wellIncl: null
+        wellIncl: null,
+        dataNNO:"2020-11-01",
+
     };
 
   },
 
   methods: {
+
     setData: function(data) {
       if (this.method == "CurveSetting") {
         this.pResInput = data["Well Data"]["p_res"][0]
@@ -862,9 +868,27 @@ export default {
         var prs1 = this.expAnalysisData.prs1;
         var prs2 = this.expAnalysisData.prs2;
 
-        if (prs1!=0 && prs2!=0){
-            this.param_eco=1;
-            this.EconomCalc();
+        var nnoDayUp=moment(this.dataNNO, 'YYYY-MM-DD').toDate()
+        var nnoDayFrom=moment(this.stopDate, 'YYYY-MM-DD').toDate()
+
+        var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24)
+
+        if (date_diff>365){
+            date_diff=date_diff-365
+        }
+
+        if ((prs1!=0 && prs2!=0)||((prs1==0 && prs2==0))){
+            if(prs1==0 && prs2==0){
+                if(this.expChoose=="ШГН"){
+                    this.expAnalysisData.NNO1=date_diff
+                }else{
+                    this.expAnalysisData.NNO2=date_diff
+                }
+            } else{
+                this.param_eco=1;
+                this.EconomCalc();
+            }
+
         } else if (prs1==0){
             this.param_eco=2;
             this.EconomCalc();
@@ -879,9 +903,8 @@ export default {
             let data = response.data;
             if(data) {
 
-                this.expAnalysisData.ecnParam=data[0].ecnParam
-                this.expAnalysisData.shgnParam=data[0].shgnParam
-                this.expAnalysisData.shgnNpv=data[0].npv
+                this.expAnalysisData.shgnParam=data[12].godovoiShgnParam
+                this.expAnalysisData.shgnNpv=data[12].npv
             }
             else {
                 console.log('No data');
@@ -890,11 +913,15 @@ export default {
 
         let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
         this.axios.get(uri3).then((response) => {
-            let data = response.data;
-            if(data) {
+            let data2 = response.data;
+            if(data2) {
 
-                this.expAnalysisData.ecnNpv=data[0].npv
+                this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam
+                this.expAnalysisData.ecnNpv=data2[12].npv
+
                 this.$modal.show("modalExpAnalysis");
+
+
             }
             else {
                 console.log('No data');
@@ -970,7 +997,7 @@ export default {
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
-        
+
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
 

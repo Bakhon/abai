@@ -14,6 +14,7 @@ import { Plotly } from 'vue-plotly';
 import excel from 'vue-excel-export';
 import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
+import VueMomentLib from 'vue-moment-lib';
 // import  jquery from 'jquery';
 
 
@@ -25,7 +26,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
 
-Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel);
+Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib);
 
 
 /**
@@ -43,6 +44,7 @@ Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Pl
 //Vue.component('doughnut-component', require('./components/DoughnutLevelOneComponent.vue').default);
 // Vue.component('pie', require('./components/PieChart.vue').default);
 //Vue.component('chartbar', require('./components/ChartBar.vue').default);
+
 Vue.component('charttide', require('./components/ChartTide.vue').default);
 Vue.component('visual-center-chart-area-oil', require('./components/visualcenter/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd', require('./components/visualcenter/VisualCenterChartAreaUSD.vue').default);
