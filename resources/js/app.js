@@ -105,6 +105,7 @@ Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('tredit-table', require('./components/tr/tredit.vue').default);
 
+Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 
 
 /**

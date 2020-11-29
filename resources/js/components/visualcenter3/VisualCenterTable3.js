@@ -11,6 +11,7 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      productionFactPercentOneDzo: '',
       productionFactPercentSumm: '',
       quantityRange: '',
       productionFactPersent: '',
@@ -77,7 +78,6 @@ export default {
       oilPeriod: "",
       period: "7",
       periodUSD: "7",
-      company: "",
       timeSelect: "",
       oilNow: "",
       oilChart: "",
@@ -108,7 +108,7 @@ export default {
       buttonHover9: "",
       buttonHover10: "",
       buttonHover11: "",//this.changeMenuButton,
-      buttonHover12: this.changeMenuButton,
+      buttonHover12: "",//this.changeMenuButton,
       buttonHover13: "",
 
       tableHover7: "",
@@ -227,82 +227,9 @@ export default {
   },
   methods: {
     saveCompany(com) {
-      localStorage.setItem("company", com);
-      var company = localStorage.getItem("company");
-      this.company = company;
-
+      this.company = com;
       this.getProductionOilandGas();
       this.getProductionOilandGasPercent();
-
-        var buttonMenuHover =
-        "background: url(../img/visualcenter/circle-menu-white.png) no-repeat;" +
-        "background-size: 9% auto;" +
-        "background-position: 75% 50%;" +
-        "border: none;" +
-        "height: 40px;" +
-        "pointer-events: none;";
-
-      if (company == "ОМГ") {
-        this.buttonMenuHover1 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover1 = "";
-      }
-      if (company == "КБМ") {
-        this.buttonMenuHover2 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover2 = "";
-      }
-
-      if (company == "КГМ") {
-        this.buttonMenuHover3 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover3 = "";
-      }
-
-      if (company == "ЭМГ") {
-        this.buttonMenuHover4 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover4 = "";
-      }
-
-      if (company == "ММГ") {
-        this.buttonMenuHover5 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover5 = "";
-      }
-
-      if (company == "КТМ") {
-        this.buttonMenuHover6 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover6 = "";
-      }
-
-      if (company == "КОА") {
-        this.buttonMenuHover7 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover7 = "";
-      }
-
-      if (company == "ПКИ") {
-        this.buttonMenuHover8 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover8 = "";
-      }
-
-      if (company == "АГГ") {
-        this.buttonMenuHover9 = buttonMenuHover;
-      } else {
-        this.buttonMenuHover9 = "";
-      }
-
-      if (company == "all") {
-        this.buttonMenuHover10 = buttonMenuHover;
-
-      } else {
-        this.buttonMenuHover10 = "";
-      }
-
-      this.company = company;
       this.getProduction(this.item, this.item2, this.item3, this.item4);
     },
     changeTable(change) {
@@ -390,11 +317,6 @@ export default {
           formatInput: true,
         };
 
-        //this.updateValue();
-
-        //this.range.start = new Date();
-        //this.range.end = new Date();
-
         this.changeDate();
 
       } else {
@@ -422,7 +344,7 @@ export default {
           end: new Date(),
           formatInput: true,
         };
-        //  this.updateValue();      
+
         this.changeDate();
       } else {
         this.buttonHover9 = "";
@@ -434,13 +356,6 @@ export default {
         this.buttonHover10 = "";
       }
     },
-
-
-    /*updateValue()
-    {this.range, {
-                formatInput: true,
-      }},*/
-
 
 
     changeAssets(change) {
@@ -488,16 +403,11 @@ export default {
         }
       }
 
-    /*  if (this.selectedDMY != undefined) {
-      }*/
-
-      // localStorage.setItem("selectedDMY", this.selectedDMY);
-
       return menuDMY;
-      // this.periodSelect();
+
     },
 
-    periodSelect: function (event) {
+    periodSelect(event) {
       if (this.selectedDMY == 0) {
         this.period = 7;
       }
@@ -516,7 +426,7 @@ export default {
       return this.getOilNow(this.timeSelect, this.period);
     },
 
-    periodSelectUSD: function (event) {
+    periodSelectUSD(event) {
       if (this.selectedDMY2 == 0) {
         this.periodUSD = 7;
       }
@@ -571,12 +481,12 @@ export default {
     },
 
     getOilNow(dates, period) {
-      var timestampToday = this.timestampToday;
       let uri = "/js/json/graph_1006.json";
       //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
+          var timestampToday = this.timestampToday;
           var oilDate;
           var oilDate2;
           var oilValue;
@@ -619,13 +529,7 @@ export default {
           datesNow = dates.split(".");
           var day = datesNow[0];
           var month = datesNow[1].replace(/^0+/, "");
-          var year = datesNow[2];
-
-
-          /*var timestampToday = new Date(
-            this.monthes2[month - 1] + day + " " + year + " 06:00:00 GMT+0600"
-          ).getTime();*/
-
+          var year = datesNow[2]; 
 
           var dateInOil = [];
 
@@ -638,8 +542,7 @@ export default {
               ),
             ]);
           });
-          //this.oilChart=    [_.takeRight(oil, 31)];
-          // this.oilChart = [dateInOil];
+          console.log(dateInOil);
           this.$emit("oilChart", dateInOil);
         } else {
           console.log("No data");
@@ -667,88 +570,85 @@ export default {
     },
 
 
-    getMonths: function () {
-      var monthAll = [];
-      var month = new Date(this.year, this.month + 1, 0).getMonth();
-
-      for (let i = 1; i <= 12; i++) {
-        if (new Date(this.year, this.month + 1, i)) {
-          var a = { index: i, id: i };
-          monthAll.push(a);
-          if (this.selectedMonth == i) {
-            a.current = "#232236";
-          } else if (
-            i == Number(new Date().getMonth() + 1) && //new Date().getMonth() &&
-            this.year ==
-            new Date().getFullYear() /* &&
-        this.month == new Date().getMonth()*/
-          ) {
-            a.current = "#13B062";
-          }
-        }
-      }
-      if (this.selectedDMY == "1") {
-        this.display = "none";
-        return monthAll;
-      }
-    },
-
-    getDays: function () {
-      var DaysInMonth = [];
-      var dlast = new Date(this.year, this.month + 1, 0).getDate();
-      for (let i = 1; i <= dlast; i++) {
-        var a = { index: i, id: i };
-        DaysInMonth.push(a);
-      }
-      return DaysInMonth;
-    },
-
-    getDaysMonth: function () {
-      var DaysInMonth = [];
-      var dlast = new Date(this.year, this.selectedMonth, 0).getDate();
-      for (let i = 1; i <= dlast; i++) {
-        var a = { index: i, id: i };
-        DaysInMonth.push(a);
-      }
-      return DaysInMonth;
-    },
-
-    getDaysInYear: function () {
-      var getDaysInYear = [];
-      for (let q = 1; q <= 12; q++) {
-        var dlast = new Date(this.year, q, 0).getDate();
-        for (let i = 1; i <= dlast; i++) {
-          var a = { month: q, day: i };
-          getDaysInYear.push(a);
-        }
-      }
-      return getDaysInYear;
-    },
-
-    getYears: function () {
-      var yearAll = [];
-      var year = this.year;
-      for (let i = 2018; i <= year; i++) {
-        //if (this.year, this.month, i).getYear() ) {
-        var a = { index: i, id: i };
-        yearAll.push(a);
-        if (this.selectedYear == i) {
-          a.current = "#232236";
-        } else if (
-          i ==
-          year /*&&
-          this.year == new Date().getFullYear() &&
-          this.month == new Date().getMonth()*/
-        ) {
-          a.current = "#13B062";
-        }
-      }
-
-      if (this.selectedDMY == "2") {
-        this.display = "none";
-        return yearAll;
-      }
-    },
+    /*   getMonths: function () {
+         var monthAll = [];
+         var month = new Date(this.year, this.month + 1, 0).getMonth();
+   
+         for (let i = 1; i <= 12; i++) {
+           if (new Date(this.year, this.month + 1, i)) {
+             var a = { index: i, id: i };
+             monthAll.push(a);
+             if (this.selectedMonth == i) {
+               a.current = "#232236";
+             } else if (
+               i == Number(new Date().getMonth() + 1) && 
+               this.year ==
+               new Date().getFullYear() 
+             ) {
+               a.current = "#13B062";
+             }
+           }
+         }
+         if (this.selectedDMY == "1") {
+           this.display = "none";
+           return monthAll;
+         }
+       },
+   
+       getDays: function () {
+         var DaysInMonth = [];
+         var dlast = new Date(this.year, this.month + 1, 0).getDate();
+         for (let i = 1; i <= dlast; i++) {
+           var a = { index: i, id: i };
+           DaysInMonth.push(a);
+         }
+         return DaysInMonth;
+       },
+   
+       getDaysMonth: function () {
+         var DaysInMonth = [];
+         var dlast = new Date(this.year, this.selectedMonth, 0).getDate();
+         for (let i = 1; i <= dlast; i++) {
+           var a = { index: i, id: i };
+           DaysInMonth.push(a);
+         }
+         return DaysInMonth;
+       },
+   
+       getDaysInYear: function () {
+         var getDaysInYear = [];
+         for (let q = 1; q <= 12; q++) {
+           var dlast = new Date(this.year, q, 0).getDate();
+           for (let i = 1; i <= dlast; i++) {
+             var a = { month: q, day: i };
+             getDaysInYear.push(a);
+           }
+         }
+         return getDaysInYear;
+       },
+   
+       getYears: function () {
+         var yearAll = [];
+         var year = this.year;
+         for (let i = 2018; i <= year; i++) {
+           //if (this.year, this.month, i).getYear() ) {
+           var a = { index: i, id: i };
+           yearAll.push(a);
+           if (this.selectedYear == i) {
+             a.current = "#232236";
+           } else if (
+             i ==
+             year 
+           ) {
+             a.current = "#13B062";
+           }
+         }
+   
+         if (this.selectedDMY == "2") {
+           this.display = "none";
+           return yearAll;
+         }
+       },*/
 
     menuDMY() {
       var DMY = ["День", "Месяц", "Год"];
@@ -787,9 +687,9 @@ export default {
 
           var timestampToday = this.timestampToday;
           var timestampEnd = this.timestampEnd;
-var company = this.company;
+          var company = this.company;
           if (company != "all") {
-                  data = _.filter(data, _.iteratee({ dzo: company }));
+            data = _.filter(data, _.iteratee({ dzo: company }));
           }
           var dataWithMay = new Array();
           dataWithMay = _.filter(data, function (item) {
@@ -910,7 +810,7 @@ var company = this.company;
           var timestampEnd = this.timestampEnd;
           var company = this.company;
           if (company != "all") {
-                  data = _.filter(data, _.iteratee({ dzo: company }));
+            data = _.filter(data, _.iteratee({ dzo: company }));
           }
           //var quantity = this.quantityGetProductionOilandGas;
           var quantityRange = this.quantityRange;
@@ -1002,23 +902,14 @@ var company = this.company;
           this.gas_factDayPercent = gas_factSumm;
           this.oil_dlv_factDayPercent = oil_dlv_factSumm;
 
-          /*   this.oil_factDay = oil_factSumm;
-             this.oil_planDay = oil_planSumm;
-             this.oil_factDayProgressBar = (oil_factSumm / oil_planSumm) * 100;
-             this.oil_dlv_factDay = oil_dlv_factSumm;
-             this.oil_dlv_planDay = oil_dlv_planSumm;
-             this.oil_dlv_factDayProgressBar = (oil_dlv_factSumm / oil_dlv_planSumm) * 100;
-             this.gas_factDay = gas_factSumm;
-             this.gas_planDay = gas_planSumm;
-             this.gas_factDayProgressBar = (gas_factSumm / gas_planSumm) * 100;*/
-
         }
       });
     },
 
     getProduction(item, item2, item3, item4) {
       var timestampToday = this.timestampToday;
-      var timestampEnd = this.timestampEnd
+      var timestampEnd = this.timestampEnd;
+
 
       this.item = item;
       this.item2 = item2;
@@ -1052,15 +943,61 @@ var company = this.company;
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
-          if (this.company != "all") {
+          var NameDzoFull = this.NameDzoFull;
+          var company = this.company;
+          var summForTables = [];
+
+
+          //test data
+          if (company === 'ЭМГ') {
+            summForTables.push({ dzo: NameDzoFull[2], productionFactForMonth: 1, productionPlanForMonth: 1 });
+            this.tables = summForTables;
+            this.productionFactPercentOneDzo=0;
+          }
+
+          else if (company === 'ПКИ') {
+            summForTables.push({ dzo: NameDzoFull[9], productionFactForMonth: 1, productionPlanForMonth: 1 });
+            this.tables = summForTables;
+            this.productionFactPercentOneDzo=0;
+          }
+
+          else if (company === 'АМГ') {
+            summForTables.push({ dzo: NameDzoFull[10], productionFactForMonth: 1, productionPlanForMonth: 1 });
+            this.tables = summForTables;
+            this.productionFactPercentOneDzo=0;
+          }
+
+          else if (company === 'ТШ') {
+            summForTables.push({ dzo: NameDzoFull[5], productionFactForMonth: 1, productionPlanForMonth: 1 });
+            this.tables = summForTables;
+            this.productionFactPercentOneDzo=0;
+          }
+
+
+          else if (company === 'НКО') {
+            summForTables.push({ dzo: NameDzoFull[12], productionFactForMonth: 1, productionPlanForMonth: 1 });
+            this.tables = summForTables;
+            this.productionFactPercentOneDzo=0;
+          }
+
+          else if (company === 'КПО') {
+            summForTables.push({ dzo: NameDzoFull[11], productionFactForMonth: 1, productionPlanForMonth: 1 });
+            this.tables = summForTables;
+            this.productionFactPercentOneDzo=0;
+          }
+
+          else if (company != "all") {
             var arrdata = new Array();
             arrdata = _.filter(data, _.iteratee({ dzo: company }));
+
+            this.getProductionPercentOneDzo(arrdata);
 
             var dataDay = [];
             dataDay = _.filter(arrdata, _.iteratee({ __time: timestampToday }));
             dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
             this.wells = dataDay;
             this.wells2 = dataDay;
+
 
             //get data by Month        
             var dataWithMay = new Array();
@@ -1087,7 +1024,7 @@ var company = this.company;
               this.$emit("data", productionForChart); //k1q new
             }
 
-            var summForTables = _(dataWithMay)
+            summForTables = _(dataWithMay)
               .groupBy("dzo")
               .map((dzo, id) => ({
                 dzo: id,
@@ -1096,35 +1033,39 @@ var company = this.company;
               }))
               .value();
 
+            if (this.buttonHover12 != '') {
+              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
+              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
+              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ММГ" }));
+              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КТМ" }));
+              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КБМ" }));
+              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КОА" }));
+
+              data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
+              data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
+              data = _.reject(data, _.iteratee({ dzo: "ММГ" }));
+              data = _.reject(data, _.iteratee({ dzo: "КТМ" }));
+              data = _.reject(data, _.iteratee({ dzo: "КБМ" }));
+              data = _.reject(data, _.iteratee({ dzo: "КОА" }));
+
+
+              dzoMonth.push({ dzoMonth: NameDzoFull[5] }, { dzoMonth: NameDzoFull[11] }, { dzoMonth: NameDzoFull[12] });
+              factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+              planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+              productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+            }
+
+            if (this.buttonHover13 != '') {
+              dzoMonth.push({ dzoMonth: NameDzoFull[5] }, { dzoMonth: NameDzoFull[11] }, { dzoMonth: NameDzoFull[12] }, { dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] });
+              factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+              planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+              productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+            }
+
 
             this.tables = summForTables;
           }
 
-          //all variables
-          /*var NameDzoFull = this.NameDzoFull;
-          var dzo2 = new Array();
-          var dzoBriefly2 = new Array();
-          var name;
-          _.each(dzo, function (dzo) {
-            if (String(dzo) === "ОМГ") {
-              name = NameDzoFull[1];
-            } else if (String(dzo) === "ММГ") {
-              name = NameDzoFull[6];
-            } else if (String(dzo) === "КТМ") {
-              name = NameDzoFull[7];
-            } else if (String(dzo) === "КОА") {
-              name = NameDzoFull[8];
-            } else if (String(dzo) === "КГМ") {
-              name = NameDzoFull[4];
-            } else if (String(dzo) === "КБМ") {
-              name = NameDzoFull[3];
-            }
-            var dzoBriefly = dzo;
-            dzo = name;
-
-            dzoBriefly2.push({ dzoBriefly });
-            dzo2.push({ dzo });
-          });*/
 
           var buttonHover = this.buttonHover;
           if (productionPlan == "oil_plan") {
@@ -1209,7 +1150,7 @@ var company = this.company;
             ]);
           });
 
-          //Summ plan and fact from dzo
+          //Summ plan and fact from dzo k1q!!!
           var productionPlanAndFactMonth = _(dataWithMay)
             .groupBy("dzo")
             .map((dzo, id) => ({
@@ -1290,15 +1231,15 @@ var company = this.company;
           var starts_drl = [];
           var NameDzoFull = this.NameDzoFull;
           var dzoBriefly = [];
+          var dzoPercent = [];
+          var productionFactPercent = [];
 
 
-          if (this.buttonHover12 != '') {
-            dzoDay.push({ dzoDay: NameDzoFull[5] }, { dzoDay: NameDzoFull[11] }, { dzoDay: NameDzoFull[12] });
-          }
-          else {
-            _.forEach(dataDay, function (item) {
 
-              if (String(item.dzo) === "ОМГ") {
+
+          _.forEach(dataDay, function (item) {
+
+            /*  if (String(item.dzo) === "ОМГ") {
                 name = NameDzoFull[1];
               } else if (String(item.dzo) === "ММГ") {
                 name = NameDzoFull[6];
@@ -1310,31 +1251,27 @@ var company = this.company;
                 name = NameDzoFull[4];
               } else if (String(item.dzo) === "КБМ") {
                 name = NameDzoFull[3];
-              }
+              }*/
 
-              dzoBriefly.push({ dzoBriefly: item.dzo });
-              e = { dzoDay: name };
-              f = { factDay: Math.ceil(item[productionFact]) };
-              p = { planDay: Math.ceil(item[productionPlan]) };
+            dzoBriefly.push({ dzoBriefly: item.dzo });
+            e = { dzoDay: name };
+            f = { factDay: Math.ceil(item[productionFact]) };
+            p = { planDay: Math.ceil(item[productionPlan]) };
 
-              dzoDay.push(e);
-              factDay.push(f);
-              planDay.push(p);
-              inj_wells_idle.push({ inj_wells_idle: item.inj_wells_idle });
-              inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
-              prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
-              prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });
-              starts_krs.push({ starts_krs: item.starts_krs });
-              starts_prs.push({ starts_prs: item.starts_prs });
-              starts_drl.push({ starts_drl: item.starts_drl });
-            });
+            dzoDay.push(e);
+            factDay.push(f);
+            planDay.push(p);
+            inj_wells_idle.push({ inj_wells_idle: item.inj_wells_idle });
+            inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
+            prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
+            prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });
+            starts_krs.push({ starts_krs: item.starts_krs });
+            starts_prs.push({ starts_prs: item.starts_prs });
+            starts_drl.push({ starts_drl: item.starts_drl });
+          });
 
-            dzoDay.push({ dzoDay: NameDzoFull[2] }, { dzoDay: NameDzoFull[9] }, { dzoDay: NameDzoFull[10] });
-          }
 
-          if (this.buttonHover13 != '') {
-            dzoDay.push({ dzoDay: NameDzoFull[5] }, { dzoDay: NameDzoFull[11] }, { dzoDay: NameDzoFull[12] });
-          }
+
 
           var starts_krs = _.reduce(
             starts_krs,
@@ -1396,11 +1333,94 @@ var company = this.company;
           var factMonth = [];
           var planMonth = [];
 
-          _.forEach(productionPlanAndFactMonth, function (item) {
+          if (this.buttonHover11 != '') {
+            dzoMonth.push(
+              { dzoMonth: "ЭМГ" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" }
+              //{ dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] }
+            );
+            factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+            planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+          }
+
+          if (this.buttonHover12 != '') {
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ММГ" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КТМ" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КБМ" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КОА" }));
+
+            data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
+            data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
+            data = _.reject(data, _.iteratee({ dzo: "ММГ" }));
+            data = _.reject(data, _.iteratee({ dzo: "КТМ" }));
+            data = _.reject(data, _.iteratee({ dzo: "КБМ" }));
+            data = _.reject(data, _.iteratee({ dzo: "КОА" }));
+
+
+            dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" });
+            factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+            planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+          }
+
+          if (this.buttonHover13 != '') {
+            dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" }, { dzoMonth: "ЭМГ" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" });
+            factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+            planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+          }
+
+
+
+
+
+          /*
+          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
+          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
+          data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
+          data = _.reject(data, _.iteratee({ dzo: "КГМ" }));*/
+
+
+
+          //productionPlanAndFactMonth= _.reject([{dzo:"ОМГ"}]);
+
+          _.forEach(productionPlanAndFactMonth, function (item) { //k1q!!!
             factMonth.push({ factMonth: item.productionFactForChart });
             planMonth.push({ planMonth: item.productionPlanForChart });
             dzoMonth.push({ dzoMonth: item.dzo });
           });
+
+
+
+
+
+
+
+          //changed data reject
+          var getProductionPercent = this.getProductionPercent(data);
+          getProductionPercent = _.orderBy(getProductionPercent, ["dzoPercent"], ["desc"]);
+
+
+          _.forEach(getProductionPercent, function (item) {
+            // dzoPercent.push({ dzoPercent: item.dzoPercent });
+            productionFactPercent.push({ productionFactPercent: item.productionFactPercent });
+          });
+
+
+
+
+
+
+
+
+
+
+
+
+
+          //if (this.buttonHover11 != '') {
 
           //summ table value
           var factYearSumm = _.reduce(
@@ -1457,18 +1477,7 @@ var company = this.company;
           this.factMonthSumm = factMonthSumm;
           this.factDaySumm = factDaySumm;
           this.planDaySumm = planDaySumm;
-          var dzoPercent = [];
-          var productionFactPercent = [];
-          var productionPlanPercent = [];
 
-          var getProductionPercent = this.getProductionPercent(data);
-          getProductionPercent = _.orderBy(getProductionPercent, ["dzoPercent"], ["desc"]);
-
-
-          _.forEach(getProductionPercent, function (item) {
-            dzoPercent.push({ dzoPercent: item.dzoPercent });
-            productionFactPercent.push({ productionFactPercent: item.productionFactPercent });
-          });
 
 
           var productionFactPercentSumm = _.reduce(
@@ -1479,13 +1488,14 @@ var company = this.company;
             0
           );
 
+
           this.productionFactPercentSumm = productionFactPercentSumm;
 
           var bigTable = _.zipWith(
             productionFactPercent,
             dzoPercent,
             //getProductionPercent
-            dzoBriefly,
+            // dzoBriefly,
             /* dzoYear,,*/
             dzoMonth,
             //factYear
@@ -1494,13 +1504,13 @@ var company = this.company;
             /* planYear,*/
             planMonth,
             factMonth,
-            dzoDay,
-            factDay,
-            planDay,
+            // dzoDay,
+            // factDay,
+            // planDay,
             (
               productionFactPercent,
               dzoPercent,
-              dzoBriefly,
+              //dzoBriefly,
               /*  dzoYear,*/
               dzoMonth,
               //factYear,
@@ -1509,14 +1519,14 @@ var company = this.company;
               /*  planYear,*/
               planMonth,
               factMonth,
-              dzoDay,
-              factDay,
-              planDay
+              // dzoDay,
+              // factDay,
+              //  planDay
             ) =>
               _.defaults(
                 productionFactPercent,
                 dzoPercent,
-                dzoBriefly,
+                // dzoBriefly,
                 /*  dzoYear,*/
                 dzoMonth,
                 //factYear,
@@ -1525,12 +1535,16 @@ var company = this.company;
                 /*  planYear,*/
                 planMonth,
                 factMonth,
-                dzoDay,
-                factDay,
-                planDay
+                //  dzoDay,
+                //  factDay,
+                //  planDay
               )
           );
 
+
+          bigTable = _.orderBy(bigTable, ["dzoMonth"], ["desc"]);
+
+          //console.log(bigTable);
           this.bigTable = bigTable;
 
 
@@ -1574,6 +1588,48 @@ var company = this.company;
       });
       this.showTable(localStorage.getItem("changeButton"));
     },
+
+
+    getProductionPercentOneDzo(data) {
+      var timestampToday = this.timestampToday;
+      var timestampEnd = this.timestampEnd
+      var quantityRange = this.quantityRange;
+
+
+      var productionPlan = localStorage.getItem("production-plan");
+      var productionFact = localStorage.getItem("production-fact");
+
+
+      //console.log(this.quantityGetProductionOilandGas);
+
+      var dataWithMay = new Array();
+      dataWithMay = _.filter(data, function (item) {
+        return _.every([
+          _.inRange(
+            item.__time,
+            timestampToday - quantityRange * 86400000,
+            timestampToday
+          ),
+        ]);
+      });
+
+
+      var productionForChart = _(dataWithMay)
+        .groupBy("dzo")
+        .map((dzo, id) => ({
+          dzoPercent: id,
+          productionFactPercent: _.round(_.sumBy(dzo, productionFact), 0),
+          productionPlanPercent: _.round(_.sumBy(dzo, productionPlan), 0),
+        }))
+        .value();
+      this.productionFactPercentOneDzo = productionForChart[0]['productionFactPercent'];
+      // console.log(productionForChart[0]['productionFactPercent']);
+      // return productionForChart;
+    },
+
+
+
+
 
 
     getProductionPercent(data) {
@@ -1671,6 +1727,43 @@ var company = this.company;
       this.getOilNow(this.timeSelect, this.period);
       this.getProductionOilandGasPercent();
     },
+
+    getNameDzoFull: function (dzo) {
+      var NameDzoFull = this.NameDzoFull;
+      if (String(dzo) === "ОМГ") {
+        name = NameDzoFull[1];
+      } else if (String(dzo) === "ММГ") {
+        name = NameDzoFull[6];
+      } else if (String(dzo) === "КТМ") {
+        name = NameDzoFull[7];
+      } else if (String(dzo) === "КОА") {
+        name = NameDzoFull[8];
+      } else if (String(dzo) === "КГМ") {
+        name = NameDzoFull[4];
+      } else if (String(dzo) === "КБМ") {
+        name = NameDzoFull[3];
+      }
+      else if (String(dzo) === "ЭМГ") {
+        name = NameDzoFull[2];
+      }
+      else if (String(dzo) === "ПКИ") {
+        name = NameDzoFull[9];
+      } else if (String(dzo) === "АМГ") {
+        name = NameDzoFull[10];
+      }
+      else if (String(dzo) === "ТШ") {
+        name = NameDzoFull[5];
+      }
+      else if (String(dzo) === "НКО") {
+        name = NameDzoFull[12];
+      }
+      else if (String(dzo) === "КПО") {
+        name = NameDzoFull[11];
+      }
+      else { name = dzo }
+      return name;
+    },
+
   },
 
   async mounted() {
@@ -1695,4 +1788,26 @@ var company = this.company;
   },
   computed: {
   },
+
+  /* filters: {
+     replace: function (dzo) {
+       var NameDzoFull=this.NameDzoFull; 
+       if (String(dzo) === "ОМГ") {
+         name = NameDzoFull[1];
+       } else if (String(dzo) === "ММГ") {
+         name = NameDzoFull[6];
+       } else if (String(dzo) === "КТМ") {
+         name = NameDzoFull[7];
+       } else if (String(dzo) === "КОА") {
+         name = NameDzoFull[8];
+       } else if (String(dzo) === "КГМ") {
+         name = NameDzoFull[4];
+       } else if (String(dzo) === "КБМ") {
+         name = NameDzoFull[3];
+       }
+       return name;
+ 
+       //return '<strong>' + value + '</strong>'
+     }}*/
+
 };
