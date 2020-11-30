@@ -629,7 +629,8 @@ class EcoRefsScFaController extends Controller
             'godovoiZatrPrep'=>$godovoiZatrPrep,
             'godovoiZatrPrs'=>$godovoiZatrPrs,
             'godovoiZatrSutObs'=>$godovoiZatrSutObs,
-            'godovoiRent'=>$godovoiRent,
+            'godovoiArenda'=>$godovoiArenda,
+
             'godovoiAmortizacia'=>$godovoiAmortizacia,
             'godovoiOperPryb'=>$godovoiOperPryb,
             'godovoiKpn'=>$godovoiKpn,
