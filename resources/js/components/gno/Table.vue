@@ -1388,10 +1388,6 @@ export default {
         this.CelValue = this.piCelValue
       }
 
-      if(this.pResInput >= this.bhpCelValue || this.pResInput <= this.bhpCelValue) {
-        Vue.prototype.$notifyError("Pпр не должно быть больше чем Рзаб");
-      }
-
 
 
       let jsonData = JSON.stringify(
@@ -1424,10 +1420,12 @@ export default {
                    }
       )
 
-
-        this.axios.post(uri, jsonData).then((response) => {
-        var data = response.data;
-        if (data) {
+        if(this.pResInput * 1 <= this.bhpInput * 1 || this.pResInput * 1 <= this.bhpCelValue * 1) {
+          Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
+          } else {
+            this.axios.post(uri, jsonData).then((response) => {
+              var data = response.data;
+              if (data) {
           this.method = "CurveSetting"
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
@@ -1435,6 +1433,8 @@ export default {
           } else {
         }
       });
+            }
+        
     },
 
     postAnalysisOld() {
@@ -1586,6 +1586,8 @@ export default {
     },
 
     onCompareNpv() {
+      console.log(this.expAnalysisData.ecnNpv);
+      console.log(this.expAnalysisData.shgnNpv);
       if(this.expAnalysisData.ecnNpv > this.expAnalysisData.shgnNpv) {
         this.expChoose == "ЭЦН"
       } else {
