@@ -100,14 +100,117 @@
           </div>
         </modal>
 
-        <modal name="tablePGNO"  :width="1300" :height="550" :adaptive="true" class="chart">
+        <modal name="tablePGNO"  :width="500" :height="550" :adaptive="true" class="chart">
+            <div class="col-2" style="height: 100%; overflow-y: auto;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th scope="col">Параметры</th>
+                    <th scope="col">Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Доп. добыча жидкости, тыс.т</td>
+                        <td>{{expAnalysisData.npvTable1.liquid}}</td>
+                    </tr>
+                    <tr>
+                        <td>Доп. добыча нефти, тыс.т</td>
+                        <td>{{expAnalysisData.npvTable1.oil}}</td>
+                    </tr>
+                    <tr>
+                        <td>Количество отработанных дней</td>
+                        <td>{{expAnalysisData.npvTable1.workday}}</td>
+                    </tr>
+                     <tr>
+                        <td>Количество ПРС</td>
+                        <td>{{expAnalysisData.npvTable1.kolichestvoPrs}}</td>
+                    </tr>
+                    <tr>
+                        <td>Среднее продолжительность 1 ПРС</td>
+                        <td>{{expAnalysisData.npvTable1.sredniiPrs}}</td>
+                    </tr>
+                    <tr>
+                        <td>Распределение по направлениям реализации НДО</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiNdo}}</td>
+                    </tr>
+                      <tr>
+                        <td>Определение доходной части</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiDohod}}</td>
+                    </tr>
+                    <tr>
+                        <td>Расчет НДПИ</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiNdpi}}</td>
+                    </tr>
+                    <tr>
+                        <td>Расчет Рентного налога</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiRent}}</td>
+                    </tr>
+                        <tr>
+                        <td>Расчет ЭТП</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiEtp}}</td>
+                    </tr>
+                    <tr>
+                        <td>Расчет Расходов по транспортировке нефти</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiTrans}}</td>
+                    </tr>
+                    <tr>
+                        <td>Затраты на электроэнергию</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiZatrElectShgn}}</td>
+                    </tr>
+                    <tr>
+                        <td>Затраты на подготовку</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiZatrPrep}}</td>
+                    </tr>
+                    <tr>
+                        <td>Затраты на ПРС</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiZatrPrs}}</td>
+                    </tr>
+                    <tr>
+                        <td>Затраты за суточное обслуживание</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiZatrSutObs}}</td>
+                    </tr>
+                      <tr>
+                        <td>Стоимость аренды оборудования</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiAmortizacia}}</td>
+                    </tr>
+                    <tr>
+                        <td>Амортизация</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiOperPryb}}</td>
+                    </tr>
+                    <tr>
+                        <td>Операционная прибыль</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiOperPryb}}</td>
+                    </tr>
+                     <tr>
+                        <td>КПН</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiKpn}}</td>
+                    </tr>
+                    <tr>
+                        <td>Чистая прибыль</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiChistPryb}}</td>
+                    </tr>
+                     <tr>
+                        <td>КВЛ</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiKvl}}</td>
+                    </tr>
+                    <tr>
+                        <td>Свободный денежный поток</td>
+                        <td>{{expAnalysisData.npvTable1.godovoiSvobPot}}</td>
+                    </tr>
+                    <tr>
+                        <td>NPV</td>
+                        <td>{{expAnalysisData.npvTable1.npv}}</td>
+                    </tr>
 
+                </tbody>
+            </table>
         </modal>
 
 
         <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign3">
-            Тест 3
+
           </div>
         </modal>
         <gno-line-points-chart></gno-line-points-chart>
@@ -704,7 +807,9 @@ export default {
             shgnParam:null,
             ecnParam:null,
             ecnNpv:null,
-            shgnNpv:null
+            shgnNpv:null,
+            npvTable1:{},
+            npvTable2:{},
         },
         qZhExpEcn:null,
         qOilExpEcn:null,
@@ -977,6 +1082,7 @@ export default {
 
                 this.expAnalysisData.shgnParam=data[12].godovoiShgnParam
                 this.expAnalysisData.shgnNpv=data[12].npv
+                this.expAnalysisData.npvTable1=data[12]
             }
             else {
                 console.log('No data');
@@ -990,6 +1096,7 @@ export default {
 
                 this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam
                 this.expAnalysisData.ecnNpv=data2[12].npv
+                this.expAnalysisData.npvTable2=data2[12]
 
                 if(this.expAnalysisData.shgnParam,this.expAnalysisData.shgnNpv,this.expAnalysisData.ecnParam,this.expAnalysisData.ecnNpv){
                     this.$modal.show("modalExpAnalysis");
