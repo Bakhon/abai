@@ -3,7 +3,7 @@
     <div v-else-if="data.length === 0">No data</div>
 
     <div v-else class="row col-12 relative" style="height: 100%;">
-        <div class="col-6" style="height: 100%; overflow-y: auto;">
+        <div class="col-6" style="width: 100%; height: 100%; overflow-y: auto;">
             <table
     border="1"
     cellpadding="0"
@@ -193,13 +193,13 @@ export default {
             this.data = data.data
             this.chart=[{
                 type: 'scatter3d',
-                mode: 'markers',
+                mode: 'lines',
                 x: this.data.map((r) => r.dx),
                 y: this.data.map((r) => r.dy),
-                z: this.data.map((r) => r.md),
+                z: this.data.map((r) => r.md * -1),
                 opacity: 1,
-                marker:{
-                    size:3
+                line:{
+                    width: 12
                 }
 
             }]

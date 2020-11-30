@@ -120,28 +120,30 @@ export default {
       ],
     };
   },
-methods: {
-  oilChart: function (data) {
-    // var data = this.postTitle;
-    var dates = [];
-    var value = [];
-    _.forEach(data, function (item) {
-      dates.push(item.date);
-      value.push(item.value);
-    });
-    this.begin = dates[0];
-    var end = _.takeRight(dates, 1);
-    this.end = end[0];
-    //console.log(dates);
-    this.chartOptions = { labels: dates };
-    this.series = [
-      {
-        data: value,
-      },
-    ];
+  methods: {
+    oilChart: function (data) {
+      // var data = this.postTitle;
+      console.log(data);
+      var dates = [];
+      var value = [];
+      _.forEach(data, function (item) {
+        dates.push(item.date);
+        value.push(item.value);
+      });
+      this.begin = dates[0];
+      var end = _.takeRight(dates, 1);
+      this.end = end[0];
+
+      this.chartOptions = { labels: dates };
+      this.series = [
+        {
+          data: value,
+        },
+      ];
+    },
   },
   created() {
     this.$parent.$on("oilChart", this.oilChart);
-  },}
+  },
 };
 </script>

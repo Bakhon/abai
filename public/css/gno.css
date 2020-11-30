@@ -111,7 +111,7 @@ body {
 
 .tables-string-gno5 {
     float: left;
-    font-size: 14.5px;
+    font-size: 15px;
     position: relative;
     /* max-width: 745px!important; */
     background-color: #15509D;
@@ -128,6 +128,8 @@ body {
     border-radius: 8px;
     text-align: center;
     margin-bottom: 15px;
+    font-weight: bold;
+
 }
 
 .tables-string-gno5:active {
@@ -144,7 +146,8 @@ body {
 
 .tables-string-gno55 {
     float: left;
-    font-size: 14.5px;
+    font-size: 15px;
+    font-weight: bold;
     position: relative;
     /* width: 738px; */
     background-color: #15509D;
@@ -173,8 +176,8 @@ body {
 
 .tables-string-gno6 {
     float: left;
-    font-size: 14.5px;
-    font-weight: 100;
+    font-size: 15px;
+    font-weight: bold;
     position: relative;
     background-color: #15509D;
     padding: 15px 15px;
@@ -219,7 +222,7 @@ body {
 
 /*
 .cell4-gno-second-bigger {
-    width: 75px!important; 
+    width: 75px!important;
     float: left;
     padding: 2px 5px;
     height: 43px;
@@ -253,11 +256,11 @@ body {
     /* text-align: center; */
     background: #20274e;
     color: white;
-    border-color: #1b6bb0;
-    border-style: solid;
+    border-color: transparent;
     border-width: 1px;
     margin-left: -16px;
-    padding: 0px 0px 0px 18px;
+    padding: 0px 0px 0px 9px;
+    outline: none;
 }
 
 .select-gno2 {
@@ -266,8 +269,8 @@ body {
     background: rgba(76, 190, 237, 0.278431);
     color: white;
     /* border: 1px solid #00CCFF; */
-    border-style: solid;
-    border-width: 1px;
+    outline: none; /*обводка inputov - */
+    border-width: 0px;/*обводка inputov -*/
     /* margin-left: -16px; */
     /* padding: 0px 10px 4px 0px; */
     height: 24px;
@@ -342,7 +345,6 @@ input.checkbox0 {
 }
 
 .spoiler>input:checked+.box>span.closer {
-    background: url(/img/gno/minus.png) 4px 60% no-repeat;
     display: inline;
 }
 
@@ -351,7 +353,6 @@ input.checkbox0 {
 }
 
 .spoiler>input+.box>span.open {
-    background: url(/img/gno/plus.png) 4px 60% no-repeat;
     display: inline;
 }
 
@@ -365,7 +366,7 @@ blockquote {
 
 span.open, span.closer {
     position: absolute;
-    margin-left: -110px;
+    margin-left: -50px;
     margin-top: 1px;
     font-size: 12px;
 }
@@ -377,6 +378,11 @@ span.open, span.closer {
     padding: 8px 14px 0px 23px;
     text-align: left;
     margin-bottom: 15px;
+}
+
+.spoiler-device {
+    background-color: #20274e;
+
 }
 
 .relative {
@@ -391,6 +397,8 @@ span.open, span.closer {
 input.checkbox {
     float: left;
     margin-left: -16px;
+    outline: none;
+    border: 0px;
 }
 
 .text1 {
@@ -404,11 +412,14 @@ input.checkbox {
 input.checkbox2 {
     float: left;
     margin-left: 55px;
+    outline: none;
+    border: 0px;
 }
 
 .inclinom {
     float: left;
     font-size: 15px;
+    font-weight: bold;
     background-color: #15509D;
     padding: 8px 30px;
     height: 38px;
@@ -457,6 +468,7 @@ input.checkbox3 {
 .square2 {
     /* border: 1px solid #00CCFF; */
     background: rgba(76, 190, 237, 0.278431);
+    outline:none;
     width: 60px;
     height: 20px;
     position: relative;
@@ -474,7 +486,7 @@ input[type="radio"] {
     /* Base Styles aka unchecked */
     font-weight: 300;
     font-size: 16px;
-    color: white;
+    color: #237DEB;
 }
 
 input[type="radio"]:not(:checked) {
@@ -485,18 +497,22 @@ input[type="radio"]:not(:checked) {
 input[type="radio"]:checked {
     /* Checked Styles */
     font-weight: 900;
+    color: #237DEB;
 }
 
 input[type="text"]:disabled.square2{
-    background: #20274E;
+    background: #353e70;
     color: #928f8f;
+    outline: none;
+    border: 0px;
 
     /* background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABADeOQ8CXl/xfgAAAABJRU5ErkJggg==) repeat; */
 }
 
 input[type="text"]:enabled.square2{
     background: #15509D;
-    color: rgb(255, 255, 255);
+    outline: none;
+    border: 0px;
 }
 
 
@@ -566,15 +582,124 @@ td {
 .modal-analysis-menu {
     color: white;
     overflow-y: auto;
-    max-height: 800px;
-    left: 85%;
-    top: 10%;
+    max-height: 500px;
+    margin-right: 400px;
+    left: 80%;
+    top: 20%;
     background: #20274e;
     position: absolute;
 }
+
+.modal_analysis_menu_new {
+    color: white;
+    overflow-y: auto;
+    max-height: 500px;
+    margin-right: 400px;
+    left: 75%;
+    top: 20%;
+    background: #20274e;
+    position: absolute;
+
+}
+
+
+.old_well_button {
+    width: 220px;
+    height: 47px;
+	background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);
+	background-color:#237DEB;
+    border-radius:21px;
+    margin-right: 200px;
+    white-space: pre-wrap;
+    margin-top: 140px;
+	border:1px solid #337fed;
+	display:block;
+	cursor:pointer;
+	color:#ffffff;
+    font-weight: lighter;
+    font-size:14px;
+    text-align: center;
+    padding:0px;
+	text-decoration:none;
+    text-shadow:0px 0px 0px #1570cd;
+    letter-spacing: 0.08em;
+    outline: none !important;
+}
+
+.old_well_button:hover {
+    background:linear-gradient(to bottom, #1e62d0 5%, #3d94f6 100%);
+	background-color:#1e62d0;
+}
+
+.old_well_button:active {
+    position:relative;
+    transform: translateY(1px);
+    outline: none !important;
+    box-shadow: 0 2px #666;
+}
+
 
 .checkbox1 {
     border: 15px solid transparent;
     text-align: left;
 }
+
+.nno-modal {
+    background-color: #134487;
+    width: 1300px;
+    height: 650px;
+}
+
+.button-nno {
+    width: 750px;
+    height: 50px;
+    margin-left: 260px;
+    margin-bottom: 30px;
+    border-radius: 23px;
+    font-size: 18px;
+    background-color: #237DEB;
+    font-weight: 300;
+}
+
+.nno-icon {
+    margin-left: 999px;
+    margin-bottom: 48px;
+}
+
+.nno-info-button {
+    width: 800px;
+    height: 24px;
+    right: 300px;
+    align-items: center;
+}
+
+.nno-title {
+    font-size: 25px;
+    text-align: center;
+    background-color: #134487 ;
+}
+
+.checkbox-modal-analysis-menu {
+    color: #134487;
+}
+
+.checkbox-modal-analysis-menu input[type="radio"] {
+    display: none;
+}
+
+.checkbox-modal-analysis-menu input[type="radio"] ::before {
+    color: #1570cd;
+}
+
+.checkbox-modal-analysis-menu input[type="radio"]:checked {
+    color: #1570cd;
+    }
+
+.tablePgno {
+    width: 100%;
+    height: 100%;
+    background-color:#0f1430;
+
+}
+
 /* .vm--modal {} */

@@ -6,6 +6,7 @@
           <table class="table table1">
             <tr>
               <td>
+              <div class="first-td-header">
                 <div class="nu">
                   <div class="number">
                     {{ new Intl.NumberFormat("ru-RU").format(oil_factDay) }}
@@ -27,6 +28,12 @@
                     :aria-valuemax="oil_factDay"
                   ></div>
                 </div>
+                <div class="percent-header"  v-if="oil_factDay">
+               {{(100-(oil_factDayPercent/oil_factDay-1) *100).toFixed(2)}}%
+               </div>
+               <div class="plan-header"  v-if="oil_planDay">
+               {{new Intl.NumberFormat("ru-RU").format(oil_planDay)}}
+               </div>              
                 <br />
                 <div v-if="((oil_factDayPercent/oil_factDay-1) *100) > 0" class="arrow2">   
                 </div>
@@ -35,13 +42,18 @@
 
                 <div class="txt2" v-if="oil_factDay">{{ new Intl.NumberFormat("ru-RU").format(Math.abs((oil_factDayPercent/oil_factDay-1) *100).toFixed(2))  }}%</div>
                 <div class="txt3">vs прошлый период</div>
+                </div>
+                <div class="second-td-header">
+                <div class="vert-line"> </div>
+                 </div>
               </td>
               <td>
+                    <div class="first-td-header">
                 <div class="nu">
                   <div class="number">
                     {{ new Intl.NumberFormat("ru-RU").format(oil_dlv_factDay) }}
                   </div>
-                  <div class="unit-vc">тн</div>
+                  <div class="unit-vc">тонн</div>
                 </div>
                 <div class="txt1">Сдача нефти</div>
                 <br />
@@ -58,6 +70,13 @@
                     :aria-valuemax="oil_dlv_planDay"
                   ></div>
                 </div>
+
+                 <div class="percent-header"  v-if="oil_dlv_factDay">
+               {{(100-(oil_dlv_factDayPercent/oil_dlv_factDay-1) *100).toFixed(2)}}%
+               </div>
+               <div class="plan-header"  v-if="oil_dlv_planDay">
+               {{new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay)}}
+               </div>  
                 <br />
                  <div v-if="((oil_dlv_factDayPercent/oil_dlv_factDay-1) *100) > 0" class="arrow2">   
                 </div>
@@ -65,14 +84,21 @@
                 </div>  
 
                 <div class="txt2" v-if="gas_factDay">{{ new Intl.NumberFormat("ru-RU").format(Math.abs((oil_dlv_factDayPercent/oil_dlv_factDay-1) *100).toFixed(2))  }}%</div>
-                <div class="txt3">vs прошлый период</div>                
+                <div class="txt3">vs прошлый период</div>
+                </div>
+    <div class="second-td-header">
+                <div class="vert-line"> </div>
+                 </div>
+
+                
               </td>
               <td>
+                    <div class="first-td-header">
                 <div class="nu">
                   <div class="number">
                     {{ new Intl.NumberFormat("ru-RU").format(gas_factDay) }} 
                   </div>
-                  <div class="unit-vc">млрд. м³</div>
+                  <div class="unit-vc"><!--млрд.--> млн. м³</div>
                 </div>
                 <div class="txt1">Добыча газа</div>
                 <br />
@@ -90,6 +116,15 @@
                     :aria-valuemax="gas_planDay"
                   ></div>
                 </div>
+
+
+                 <div class="percent-header"  v-if="gas_factDay">
+               {{(100-(gas_factDayPercent/gas_factDay-1) *100).toFixed(2)}}%
+               </div>
+               <div class="plan-header"  v-if="gas_planDay">
+               {{new Intl.NumberFormat("ru-RU").format(gas_planDay)}}
+               </div>   
+
                 <br />
                         <div v-if="((gas_factDayPercent/gas_factDay-1) *100) > 0" class="arrow2">   
                 </div>
@@ -98,6 +133,9 @@
 
                 <div class="txt2" v-if="gas_factDay">{{ new Intl.NumberFormat("ru-RU").format(Math.abs((gas_factDayPercent/gas_factDay-1) *100).toFixed(2))  }}%</div>
                 <div class="txt3">vs прошлый период</div> 
+                </div>
+    <div class="second-td-header">              
+                 </div>
               </td>
               <td
                 style="width: 200px; border-left: 10px solid #0f1430;"
@@ -108,11 +146,14 @@
                   <div class="number">{{ oilNow }}</div>
                   <div class="unit-vc">$ / bbl</div>
                 </div>
+                <br>
                 <div class="txt1">Цена на нефть</div>
-                <br /><br />
+                <br />
+                <div class="percent-currency">
                 <div class="arrow"></div>
                 <div class="txt2">5,2%</div>
                 <div class="txt3">vs сентябрь</div>
+                </div>
               </td>
               <td
                 style="width: 200px; border-left: 10px solid #0f1430;"
@@ -123,12 +164,14 @@
                   <div class="number">{{ currencyNow }}</div>
                   <div class="unit-vc">kzt / $</div>
                 </div>
+                <br>
                 <div class="txt1">Курс доллара</div>
-
-                <br /><br />
+                <br />
+                <div class="percent-currency">
                 <div class="arrow"></div>
                 <div class="txt2">5,2%</div>
                 <div class="txt3">vs сентябрь</div>
+                </div>
               </td>
             </tr>
           </table>
@@ -366,7 +409,7 @@
                             :model-config="modelConfig"
                             @input="changeDate"
                           />
-                          <div
+                          <!--<div
                             class="week"
                             v-for="(month, index) in getMonths()"
                             :key="index.id"
@@ -390,7 +433,7 @@
                             v-on:click="displaynumbers"
                           >
                             {{ year.index }}
-                          </div>
+                          </div>-->
                         </div>
                       </div>
                     </li>
@@ -458,7 +501,7 @@
                       @click="saveCompany('all')"
                       :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
                     >
-                      <div class="first-td">{{ item.dzo }}</div>
+                      <div class="first-td">{{getNameDzoFull( item.dzo) }}</div>
                     </td>
 
                     <td
@@ -503,14 +546,14 @@
                       "
                     >
                       <div
-                        v-if="item.fact"
+                        v-if="item.productionFactForMonth"
                         class="triangle2"
-                        :style="`${getColor(item.fact - item.plan)}`"
+                        :style="`${getColor(item.productionFactForMonth - item.productionPlanForMonth)}`"
                       ></div>
-                      <div class="percent font" v-if="item.fact">
+                      <div class="percent font" v-if="item.productionFactForMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(item.fact - item.plan)
+                            Math.abs(item.productionFactForMonth - item.productionPlanForMonth)
                           )
                         }}
                         <div class="right">{{ item4 }}</div>
@@ -518,11 +561,13 @@
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div
-                        v-if="item.fact"
+                        v-if="item.productionFactForMonth"
                         class="triangle2"
-                        :style="`${getColor(item.fact - item.plan)}`"
+                        :style="`${getColor((item.productionFactForMonth/productionFactPercentOneDzo-1) *100)}`"
                       ></div>
-                      <div class="percent font">5,2%</div>
+                      <div class="percent font">
+                       {{new Intl.NumberFormat("ru-RU").format(Math.abs((productionFactPercentOneDzo/item.productionFactForMonth-1) *100).toFixed(2))}}
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -554,10 +599,10 @@
 
                   <tr v-for="(item, index) in bigTable">
                     <td
-                      @click="saveCompany(item.dzoBriefly)"
+                      @click="saveCompany(item.dzoMonth)"
                       :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
                     >
-                      <div class="first-td">{{ item.dzoDay }}</div>
+                      <div class="first-td" >{{getNameDzoFull(item.dzoMonth) }}   </div>
                     </td>
 
                     <td

@@ -17,12 +17,7 @@
           </div>
           <div class="modal-analysis-menu">
             <div class="form-check">
-              <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
-                type="checkbox">
-              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
-            </div>
-            <div class="form-check">
-              <input v-model="analysisBox2" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+              <input v-model="analysisBox1" class="checkbox-modal-analysnauryzbekis-menu" @change="postAnalysisOld()"
                 type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
             </div>
@@ -41,6 +36,7 @@
                 type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
             </div>
+             <button type="button" class="old_well_button" @click="setGraphOld()">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
@@ -49,31 +45,205 @@
             <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
           </div>
           <div class="modal-analysis-menu">
-            <div><input v-model="analysisBox6" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Pпл = P по
-              окр.
+
+
+            <div class="form-check-new">
+              <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = P по окр.</label>
             </div>
-            <div><input v-model="analysisBox7" class="checkbox1" @change="postAnalysisNew()" type="checkbox">К пр = К по
-              окр.
+            <div class="form-check-new">
+              <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
+
             </div>
-            <div><input v-model="analysisBox8" class="checkbox1" @change="postAnalysisNew()" type="checkbox">Рзаб пот =
-              Рнас*
+             <div class="form-check-new">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Обв по окр. = </label>
+              <label for="checkbox1">{{wctOkr}}%</label>
             </div>
+            <div class="form-check-new">
+              <input v-model="analysisBox8" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 * Рнас</label>
+            </div>
+            <div class="form-check-new">
+              <input v-model="grp_skin" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()" type="checkbox">
+              <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
+            </div>
+            <button type="button" class="old_well_button" @click="setGraphNew()">Применить&nbsp;выполненные корректировки</button>
           </div>
         </modal>
 
-        <modal name="modalExpAnalysis" :width="1150" :height="395" :adaptive="true" class="chart"
-          style="margin-top: -180px; margin-left:100px;">
-          <div class="modal-bign2">
-            <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
+
+        <modal name="modalExpAnalysis" :width="1300" :height="550" :adaptive="true" class="chart">
+          <div class="nno-modal">
+            <h4 class="nno-title">Сравнение технико-экономических показателей за 1 год эксплуатации</h4>
+            <div class="nno-graph">
+              <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
+            </div>
+            <div class="nno-info-button">
+              <div class="nno-icon" @click="onShowTable()">
+                <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M15.131 0.290039C6.83973 0.290039 0.117188 6.77814 0.117188 14.7803C0.117188 19.0149 2.00031 22.8253 5.00172 25.4754L3.66936 34.3624L11.2537 28.7829C12.4906 29.1013 13.7903 29.2719 15.131 29.2719C23.4223 29.2719 30.1463 22.7824 30.1463 14.7803C30.1463 6.77814 23.4223 0.290039 15.131 0.290039ZM18.2567 22.7482C17.4838 23.0426 16.8686 23.2656 16.4071 23.4202C15.9471 23.5749 15.4118 23.6521 14.8033 23.6521C13.8676 23.6521 13.1392 23.4316 12.6208 22.9909C12.102 22.5506 11.8441 21.9925 11.8441 21.3142C11.8441 21.0504 11.863 20.7804 11.9015 20.5057C11.9407 20.2306 12.0029 19.9217 12.0881 19.5746L13.0555 16.2768C13.1403 15.9606 13.2141 15.6601 13.2726 15.3803C13.331 15.0979 13.3593 14.8392 13.3593 14.6038C13.3593 14.1843 13.2689 13.8899 13.0898 13.7244C12.9077 13.5584 12.5661 13.4776 12.0564 13.4776C11.8072 13.4776 11.5504 13.5133 11.2872 13.5879C11.0267 13.6654 10.8006 13.7352 10.6151 13.804L10.8703 12.7881C11.5033 12.5392 12.1096 12.3256 12.6879 12.1491C13.2663 11.9698 13.8129 11.8817 14.3279 11.8817C15.2569 11.8817 15.9736 12.1 16.4784 12.5316C16.9806 12.9649 17.2336 13.5278 17.2336 14.2199C17.2336 14.3633 17.2154 14.6162 17.1814 14.9768C17.1468 15.3385 17.082 15.6685 16.9881 15.9716L16.026 19.2594C15.9472 19.5229 15.8771 19.8249 15.8137 20.1622C15.7512 20.4995 15.721 20.7571 15.721 20.93C15.721 21.3666 15.8212 21.665 16.0248 21.8233C16.2254 21.9816 16.5775 22.0612 17.0756 22.0612C17.3108 22.0612 17.5739 22.0205 17.8714 21.9422C18.1662 21.8636 18.3801 21.7938 18.5147 21.7337L18.2567 22.7482ZM18.0863 9.40345C17.6376 9.80588 17.0974 10.0071 16.4656 10.0071C15.8352 10.0071 15.2912 9.80588 14.8388 9.40345C14.3887 9.00138 14.1612 8.51159 14.1612 7.93996C14.1612 7.36978 14.3902 6.87891 14.8388 6.47284C15.2912 6.06567 15.8352 5.86336 16.4656 5.86336C17.0974 5.86336 17.6388 6.06567 18.0863 6.47284C18.5349 6.87891 18.76 7.36978 18.76 7.93996C18.76 8.51304 18.5349 9.00138 18.0863 9.40345Z"
+                    fill="#FEFEFE" />
+                </svg>
+              </div>
+            </div>
+
+            <button class="button-nno btn-primary" @click="onCompareNpv()">Выбрать способ эксплуатации с более высоким
+              NPV</button>
+
           </div>
         </modal>
+
+        <modal name="tablePGNO"  :width="500" :height="550" :adaptive="true" class="chart">
+
+        <div class="tablePgno col-13" style="width: 100%; height: 100%; overflow-y: auto;">
+            <table class="table" >
+
+                <tr height="60" style="height: 60pt;">
+                <td>
+                    Наименование
+                </td>
+                <td>
+                    ШГН (покупка)
+                </td>
+                <td>
+                    ЭЦН (аренда)
+                </td>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>Доп. добыча жидкости, тыс.т</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.liquid)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.liquid)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Доп. добыча нефти, тыс.т</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.oil)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.oil)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Количество отработанных дней, сут</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.workday)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.workday)}}</td>
+                    </tr>
+                     <tr>
+                        <td>Количество ПРС</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.kolichestvoPrs)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.kolichestvoPrs)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Среднее продолжительность 1 ПРС, сут</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.sredniiPrs)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.sredniiPrs)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Распределение по направлениям реализации НДО, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo/1000)}}</td>
+                    </tr>
+                      <tr>
+                        <td>Определение доходной части, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiDohod/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiDohod/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Расчет НДПИ, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdpi/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdpi/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Расчет Рентного налога, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiRent/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiRent/1000)}}</td>
+                    </tr>
+                        <tr>
+                        <td>Расчет ЭТП, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiEtp/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiEtp/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Расчет Расходов по транспортировке нефти, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiTrans/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiTrans/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Затраты на электроэнергию, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrElectShgn/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrElectEcn/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Затраты на подготовку, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrPrep/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrPrep/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Затраты на ПРС, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrPrs/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrPrs/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Затраты за суточное обслуживание, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrSutObs/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrSutObs/1000)}}</td>
+                    </tr>
+                      <tr>
+                        <td>Стоимость аренды оборудования, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiArenda/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiArenda/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Амортизация, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiAmortizacia/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiAmortizacia/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Операционная прибыль, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiOperPryb/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiOperPryb/1000)}}</td>
+                    </tr>
+                     <tr>
+                        <td>КПН, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiKpn/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiKpn/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Чистая прибыль, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiChistPryb/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiChistPryb/1000)}}</td>
+                    </tr>
+                     <tr>
+                        <td>КВЛ, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiKvl/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiKvl/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>Свободный денежный поток, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiSvobPot/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiSvobPot/1000)}}</td>
+                    </tr>
+                    <tr>
+                        <td>NPV, млн.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.npv/1000000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.npv/1000000)}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        </modal>
+
+
         <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign3">
-            Тест 3
+
           </div>
         </modal>
         <gno-line-points-chart></gno-line-points-chart>
       </div>
+
+      <modal name="table" :width="1150" :height="395" :adaptive="true"></modal>
 
       <div class="tables-string-gno4 col-6">
         <div class="tables-string-gno4-inner">
@@ -210,11 +380,12 @@
               <input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()"
                 :checked="expChoose === 'ШГН'" type="radio" name="gno10" />
             </div>
-            <div class="cell4-gno table-border-gno cell4-gno-second col-3">
+            <div class="cell4-gno table-border-gno cell4-gno-second col-2">
               <div class="text3">ЭЦН</div>
               <input class="checkbox3" value="ЭЦН" v-model="expChoose" @change="postCurveData()"
                 :checked="expChoose === 'ЭЦН'" type="radio" name="gno10" />
             </div>
+
             <div class="cell4-gno table-border-gno cell4-gno-second col-3">
               <div class="text3">Нсп</div>
             </div>
@@ -342,14 +513,26 @@
       </div>
 
       <div class="inclinom" @click="InclMenu()">Инклинометрия</div>
+
       <div class="spoiler">
         <input style="width: 845px; height: 35px;" type="checkbox" tabindex="-1" />
         <div class="box">
           <div class="select-well col-12">
             <div class="select-gno">Оборудование</div>
           </div>
-          <span class="closer">Скрыть</span><span class="open">Показать</span>
-          <blockquote>
+     <span class="closer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+         xmlns="http://www.w3.org/2000/svg">
+         <path
+           d="M17.6569 16.2427L19.0711 14.8285L12.0001 7.75739L4.92896 14.8285L6.34317 16.2427L12.0001 10.5858L17.6569 16.2427Z"
+           fill="currentColor" />
+       </svg></span><span class="open"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+         xmlns="http://www.w3.org/2000/svg">
+         <path
+           d="M6.34317 7.75732L4.92896 9.17154L12 16.2426L19.0711 9.17157L17.6569 7.75735L12 13.4142L6.34317 7.75732Z"
+           fill="currentColor" />
+       </svg></span>
+
+    <blockquote>
             <div class="cell4-gno table-border-gno-top col-7">
               Станок-качалка
             </div>
@@ -385,13 +568,24 @@
         </div>
       </div>
 
+
       <div class="spoiler">
         <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" />
         <div class="box">
           <div class="select-well col-12">
             <div class="select-gno">PVT</div>
           </div>
-          <span class="closer">Скрыть</span><span class="open">Показать</span>
+          <span class="closer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M17.6569 16.2427L19.0711 14.8285L12.0001 7.75739L4.92896 14.8285L6.34317 16.2427L12.0001 10.5858L17.6569 16.2427Z"
+        fill="currentColor" />
+    </svg></span><span class="open"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path d="M6.34317 7.75732L4.92896 9.17154L12 16.2426L19.0711 9.17157L17.6569 7.75735L12 13.4142L6.34317 7.75732Z"
+        fill="currentColor" />
+    </svg></span>
+
+
           <blockquote>
             <div class="cell4-gno col-7">Рнас</div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-5">
@@ -489,14 +683,19 @@
 
 <script>
 import { Plotly } from "vue-plotly";
-import { EventBus } from "../../event-bus.js";
+import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
-import 'vue-easy-notify/dist/vue-easy-notify.css'
+import 'vue-easy-notify/dist/vue-easy-notify.css';
+import { VueMomentLib }from "vue-moment-lib";
+import moment from "moment";
+import Vue from 'vue';
+
+Vue.prototype.$eventBus = new Vue();
 
 
-
-Vue.use(NotifyPlugin)
+Vue.use(NotifyPlugin,VueMomentLib);
 Vue.component("Plotly", Plotly);
+
 export default {
   data: function () {
     return {
@@ -505,6 +704,7 @@ export default {
         height: 450,
         showlegend: true,
         xaxis: {
+          title: "Дебит, q, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           zeroline: false,
@@ -559,6 +759,7 @@ export default {
         horizon: null,
         x: null,
         y: null,
+        wctOkr: null,
         expMeth: null,
         tseh: null,
         gu: null,
@@ -602,7 +803,7 @@ export default {
         curveSelect: 'pi',
         curveValue: '',
         curr: null,
-        expChoose: 'ШГН',
+        expChoose: null,
         CelButton: 'ql',
         bhpCurveButton: '',
         qlCelValue: null,
@@ -622,6 +823,7 @@ export default {
         ngdu: null,
         sk: null,
         grp_skin: false,
+        newData: null,
         expAnalysisData:{
             NNO1:null,
             NNO2:null,
@@ -632,7 +834,9 @@ export default {
             shgnParam:null,
             ecnParam:null,
             ecnNpv:null,
-            shgnNpv:null
+            shgnNpv:null,
+            npvTable1:{},
+            npvTable2:{},
         },
         qZhExpEcn:null,
         qOilExpEcn:null,
@@ -641,12 +845,15 @@ export default {
         param_eco:null,
 
         field: "UZN",
-        wellIncl: null
+        wellIncl: null,
+        dataNNO:"2020-11-01",
+
     };
 
   },
 
   methods: {
+
     setData: function(data) {
       if (this.method == "CurveSetting") {
         this.pResInput = data["Well Data"]["p_res"][0]
@@ -720,9 +927,9 @@ export default {
         this.hPumpValue = this.hPumpSet
 
         if (this.expMeth == "ШГН") {
-              this.shgnButton = true;
+              this.expChoose = "ШГН"
         } else {
-              this.shgnButton = false
+              this.expChoose = "ЭЦН"
         }
         if (this.age === true) {
           this.curveSelect = 'pi'
@@ -730,7 +937,6 @@ export default {
           this.curveSelect = 'hdyn'
         }
 
-        this.expChoose = this.expMeth
         this.piButton = true
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -838,6 +1044,7 @@ export default {
     },
 
     ExpAnalysisMenu(){
+        this.NnoCalc()
         this.qZhExpEcn=this.qlCelValue
         this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
 
@@ -850,21 +1057,49 @@ export default {
             this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil
         }
 
+        this.expAnalysisData.qoilShgn=this.qOilExpShgn
+        this.expAnalysisData.qoilEcn=this.qOilExpEcn
+
         if(this.expAnalysisData.NNO1!=null) {
             this.EconomParam();
         }
 
-        this.expAnalysisData.qoilShgn=this.qOilExpShgn
-        this.expAnalysisData.qoilEcn=this.qOilExpEcn
+
     },
     EconomParam(){
-        var prs1 = this.expAnalysisData.prs1;
-        var prs2 = this.expAnalysisData.prs2;
+        var prs1 = this.expAnalysisData.prs1
+        var prs2 = this.expAnalysisData.prs2
+
+        var nnoDayUp=moment(this.dataNNO, 'YYYY-MM-DD').toDate()
+        var nnoDayFrom=moment(this.stopDate, 'YYYY-MM-DD').toDate()
+
+        var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24)
+
+        if (date_diff>365){
+            date_diff=date_diff-365
+        }
+
+        console.log('data', date_diff)
 
         if (prs1!=0 && prs2!=0){
             this.param_eco=1;
             this.EconomCalc();
-        } else if (prs1==0){
+        } else if (prs1==0 && prs2==0){
+            if(this.age){
+                this.param_eco=1;
+                this.EconomCalc()
+            } else {
+                if(this.expChoose=="ШГН"){
+                    this.expAnalysisData.NNO1=date_diff
+                    this.param_eco=1;
+                    this.EconomCalc()
+                }else{
+                    this.expAnalysisData.NNO2=date_diff
+                    this.param_eco=1;
+                    this.EconomCalc()
+                }
+            }
+        } else if (prs1==0 && prs2!=0){
             this.param_eco=2;
             this.EconomCalc();
         } else {
@@ -878,9 +1113,9 @@ export default {
             let data = response.data;
             if(data) {
 
-                this.expAnalysisData.ecnParam=data[0].ecnParam
-                this.expAnalysisData.shgnParam=data[0].shgnParam
-                this.expAnalysisData.shgnNpv=data[0].npv
+                this.expAnalysisData.shgnParam=data[12].godovoiShgnParam
+                this.expAnalysisData.shgnNpv=data[12].npv
+                this.expAnalysisData.npvTable1=data[12]
             }
             else {
                 console.log('No data');
@@ -889,11 +1124,17 @@ export default {
 
         let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
         this.axios.get(uri3).then((response) => {
-            let data = response.data;
-            if(data) {
+            let data2 = response.data;
+            if(data2) {
 
-                this.expAnalysisData.ecnNpv=data[0].npv
-                this.$modal.show("modalExpAnalysis");
+                this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam
+                this.expAnalysisData.ecnNpv=data2[12].npv
+                this.expAnalysisData.npvTable2=data2[12]
+
+                if(this.qOilExpShgn!=null && this.qOilExpEcn!=null && this.expAnalysisData.NNO1!=null && this.expAnalysisData.NNO2!=null && this.expAnalysisData.shgnParam!=null && this.expAnalysisData.shgnNpv!=null && this.expAnalysisData.ecnParam!=null && this.expAnalysisData.ecnNpv!=null ){
+                    this.$modal.show("modalExpAnalysis");
+                }
+
             }
             else {
                 console.log('No data');
@@ -929,6 +1170,13 @@ export default {
             }
         )
 
+         let jsonData3 = JSON.stringify(
+            {"well_number": this.wellNumber,
+            "exp_meth": "УЭЦН",
+
+            }
+        )
+
         //microservise na SHGN NNO
         this.axios.post(uri, jsonData).then((response) => {
         var data = JSON.parse(response.data.Result)
@@ -957,7 +1205,12 @@ export default {
       this.$modal.show('modalPGNO')
     },
     InclMenu() {
-      this.$modal.show('modalIncl')
+        if (this.data["Age"] === true) {
+        Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
+
+      } else {
+        this.$modal.show('modalIncl')
+      }
     },
 
     getWellNumber(wellnumber) {
@@ -970,7 +1223,7 @@ export default {
 
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
-        
+
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
         this.ngdu = 0
@@ -1004,6 +1257,7 @@ export default {
         this.hPumpSet = 0;
         this.tubOD = 0;
         this.tubID = 0;
+        this.stopDate = 0;
 
         //Технологический  режим
         this.qL = 0;
@@ -1044,6 +1298,7 @@ export default {
           this.curveSelect = 'pi'
           this.age = data["Age"]
 
+
           this.PBubblePoint = data["Well Data"]["P_bubble_point"][0].toFixed(1)
           this.gor = data["Well Data"]["gor"][0].toFixed(1)
           this.tRes = data["Well Data"]["t_res"][0].toFixed(1)
@@ -1066,16 +1321,17 @@ export default {
         this.curr = 0;
 
         // Конструкция
-        this.casOD = 0;
-        this.casID = 0;
-        this.hPerf = 0;
+        this.casOD = 168;
+        this.casID = 150;
+        this.hPerf = data["Well Data"]["h_up_perf_vd"][0].toFixed(0);
         this.udl = 0;
 
         //Оборудование
         this.pumpType = 0;
-        this.hPumpSet = 0;
-        this.tubOD = 0;
-        this.tubID = 0;
+        this.hPumpSet = 0
+        this.tubOD = 73;
+        this.tubID = 62;
+        this.stopDate = 0;
 
         //Технологический  режим
         this.qL = 0;
@@ -1094,14 +1350,14 @@ export default {
         this.qLInput = 0;
         this.bhpInput = 0;
         this.wctInput = 0;
-        this.gorInput = 0;
+        this.gorInput = this.gor;
         this.hDynInput = 0;
         this.pAnnularInput = 0;
         this.hPumpManomInput = 0;
         this.whpInput = 0;
 
         //Параметры подбора
-        this.hPumpValue = 0;
+        this.hPumpValue = 0
         this.qlCelValue = 0;
         this.bhpCelValue = 0;
         this.piCelValue = 0;
@@ -1131,10 +1387,6 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-
-      // if(this.piCelValue > this.bhpCelValue) {
-      //   Vue.prototype.$notifyError("Pпр не должно быть больше чем Рзаб");
-      // }
 
 
 
@@ -1168,10 +1420,12 @@ export default {
                    }
       )
 
-
-        this.axios.post(uri, jsonData).then((response) => {
-        var data = response.data;
-        if (data) {
+        if(this.pResInput * 1 <= this.bhpInput * 1 || this.pResInput * 1 <= this.bhpCelValue * 1) {
+          Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
+          } else {
+            this.axios.post(uri, jsonData).then((response) => {
+              var data = response.data;
+              if (data) {
           this.method = "CurveSetting"
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
@@ -1179,6 +1433,8 @@ export default {
           } else {
         }
       });
+            }
+
     },
 
     postAnalysisOld() {
@@ -1225,6 +1481,7 @@ export default {
         if (data) {
           console.log(data)
           this.method = "CurveSetting"
+          this.newData = data["Well Data"]
           // this.setData(data)
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
@@ -1281,17 +1538,69 @@ export default {
         var data = response.data;
         if (data) {
           console.log(data)
+          this.newData = data["Well Data"]
           this.method = "CurveSetting"
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
           this.updateLine(this.newCurveLineData)
           this.setPoints(this.newPointsData)
+          this.wctOkr = data["Well Data"]["wct"][0].toFixed(0)
           // this.$emit('LineData', this.curveLineData)
           // this.$emit('PointsData', this.curvePointsData)
           } else {
         }
       });
     },
+    setGraphOld() {
+      this.updateLine(this.newCurveLineData)
+      this.setPoints(this.newPointsData)
+      this.$modal.hide('modalOldWell');
+      this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
+      this.$eventBus.$emit('newPointsData', this.newPointsData)
+      this.pResInput = this.newData["p_res"][0].toFixed(0)
+      this.piInput = this.newData["pi"][0].toFixed(2)
+      this.qLInput = this.newData["q_l"][0].toFixed(0)
+      this.bhpInput = this.newData["bhp"][0].toFixed(0)
+      this.hDynInput = this.newData["h_dyn"][0].toFixed(0)
+      this.pAnnularInput = this.newData["p_annular"][0].toFixed(0)
+      this.pManomInput = this.newData["p_intake"][0].toFixed(0)
+      this.hPumpManomInput = this.newData["h_pump_set"][0].toFixed(0)
+      this.whpInput = this.newData["whp"][0].toFixed(0)
+      this.wctInput = this.newData["wct"][0].toFixed(0)
+      this.qlCelValue = this.newPointsData[0]["q_l"].toFixed(0)
+      this.bhpCelValue = this.newPointsData[0]["p"].toFixed(0)
+      this.piCelValue = this.newPointsData[0]["pin"].toFixed(0)
+    },
+
+     setGraphNew() {
+      this.updateLine(this.newCurveLineData)
+      this.setPoints(this.newPointsData)
+      this.$modal.hide('modalNewWell');
+      this.$eventBus.$emit('newCurveLineData', this.newCurveLineData)
+      this.$eventBus.$emit('newPointsData', this.newPointsData)
+      this.pResInput = this.newData["p_res"][0].toFixed(0)
+      this.piInput = this.newData["pi"][0].toFixed(2)
+      this.wctInput = this.newData["wct"][0].toFixed(0)
+      this.hPumpValue = this.newData["h_pump_set"][0].toFixed(0)
+      console.log(this.newData)
+    },
+
+    onCompareNpv() {
+      console.log(this.expAnalysisData.ecnNpv);
+      console.log(this.expAnalysisData.shgnNpv);
+      if(this.expAnalysisData.ecnNpv > this.expAnalysisData.shgnNpv) {
+        this.expChoose == "ЭЦН"
+      } else {
+        this.expChoose == "ШГН"
+      }
+      this.$modal.hide("modalExpAnalysis");
+    },
+
+    onShowTable() {
+      console.log('mytable');
+      this.$modal.hide("modalExpAnalysis");
+      this.$modal.show("tablePGNO")
+    }
 
 
 
@@ -1301,6 +1610,7 @@ export default {
     let uri = "http://172.20.103.187:7575/api/pgno/UZN/0046/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
+
         if (data) {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
@@ -1309,6 +1619,8 @@ export default {
         } else {
           console.log("No data");
         }
+
+
       });
 
   },
@@ -1316,34 +1628,4 @@ export default {
 </script>
 
 <style scoped>
-
-.checkboxQ {
-  border-radius: 100%;
-}
-
-.modalOldWell {
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.checkbox-modal-analysis-menu-label {
-  font-family: 'Courier New', Courier, monospace;
-  margin-right: px;
-  font-size: 13.5px;
-}
-
-.checkbox-modal-analysis-menu {
-  margin-left: -15px;
-}
-
-.modal-analysis-menu {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-}
-
-div {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 400;
-}
-
 </style>
