@@ -191,12 +191,17 @@ export default {
 
         if (data.data) {
             this.data = data.data
+            let dls = this.data.dls;
+
+             _.forEach( dls, function () {
+               console.log(dls);
+             }),
             this.chart=[{
                 type: 'scatter3d',
-                mode: 'markers',
+                mode: 'lines',
                 x: this.data.map((r) => r.dx),
                 y: this.data.map((r) => r.dy),
-                z: this.data.map((r) => r.md),
+                z: this.data.map((r) => r.md * -1),
                 opacity: 1,
                 marker:{
                     size:3
