@@ -31,6 +31,77 @@ ol, ul, dl {
     padding-right: 0px!important;
 }
 
+.kpd {
+    height: 40px;
+}
+
+.kpd-txt {
+    font-size: 20px;
+    font-family: Bold;
+    margin-left: 10px;
+    float: left;
+}
+
+.kpd-line {
+    width: 55%;
+    float: left;
+    margin-top: 12px;
+    margin-left: 40px;
+}
+
+
+.progress2 {
+    display: flex;
+    height: 1rem;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0.675rem;
+    border-radius: 0.25rem;
+    height: 15px!important;
+    background-color: #323370!important;
+}
+
+.close2 {
+    float: right;
+    margin-right: 10px;
+    font-size: 15px;
+    color: #fff;
+    background: #656A8A;
+    margin-top: 7px;
+    margin-bottom: -20px;
+    border-radius: 10px;
+    padding: 1px 12px;
+}
+
+
+.txt7 {
+    font-family: "HarmoniaSansProCyr-Bold";
+    font-size: 58px;
+    font-weight: 550;
+}
+
+.txt8 {
+    font-family: Bold;
+    float: left;
+    font-size: 21px;
+}
+
+
+.report-execution {
+    font-size: 14px;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.float{
+    float:left;
+}
+
+.table-border2{
+    border-right: 10px solid #0f1430;
+}
+
+
 @font-face {
     font-family: "HarmoniaSansProCyr-Regular";
     src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Regular.ttf") format("truetype");
@@ -211,7 +282,6 @@ td:last-of-type {
     font-weight: 550;
 }
 
-.txt5 {}
 
 .in-work {
     color: #82BAFF
@@ -500,17 +570,7 @@ td.size-td {
     color: red;
 }*/
 
-.close2 {
-    float: right;
-    margin-right: 10px;
-    font-size: 15px;
-    color: #fff;
-    background: #656A8A;
-    margin-top: 15px;
-    margin-bottom: -20px;
-    border-radius: 10px;
-    padding: 1px 12px;
-}
+
 
 /*
 .svg-container {

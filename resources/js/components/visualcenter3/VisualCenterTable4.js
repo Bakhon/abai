@@ -11,6 +11,7 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      default2:'111',
       currentMonth:'',
       lastMonth:'',
       //kpi

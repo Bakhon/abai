@@ -29,7 +29,7 @@
         @elseif (basename(Request::url()) === "monitor")
         @include('layouts.gno-sidebar')
         @elseif (basename(Request::url()) === "visualcenter3")
-        @include('layouts.gno-sidebar')
+        @include('layouts.visual-center4-sidebar')
         @elseif (basename(Request::url()) === "visualcenter4")
         @include('layouts.visual-center4-sidebar')
         @elseif (basename(Request::url()) === "tr")
