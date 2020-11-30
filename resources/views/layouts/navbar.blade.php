@@ -313,7 +313,7 @@
     }
 
     .workTypeLogo {
-        margin-left: 80px;
+        margin-left: 60px;
     }
 
     .workTypeText {
