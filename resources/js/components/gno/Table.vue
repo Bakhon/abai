@@ -1131,7 +1131,7 @@ export default {
                 this.expAnalysisData.ecnNpv=data2[12].npv
                 this.expAnalysisData.npvTable2=data2[12]
 
-                if(this.expAnalysisData.shgnParam!=null,this.expAnalysisData.shgnNpv!=null,this.expAnalysisData.ecnParam!=null,this.expAnalysisData.ecnNpv!=null){
+                if(this.qOilExpShgn!=null && this.qOilExpEcn!=null && this.expAnalysisData.NNO1!=null && this.expAnalysisData.NNO2!=null && this.expAnalysisData.shgnParam!=null && this.expAnalysisData.shgnNpv!=null && this.expAnalysisData.ecnParam!=null && this.expAnalysisData.ecnNpv!=null ){
                     this.$modal.show("modalExpAnalysis");
                 }
 
@@ -1434,7 +1434,7 @@ export default {
         }
       });
             }
-        
+
     },
 
     postAnalysisOld() {
