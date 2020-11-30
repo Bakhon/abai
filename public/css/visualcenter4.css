@@ -1,3 +1,36 @@
+.unit-vc {
+    color: #82BAFF;
+    display: block;
+    margin-top: -8px;
+    margin-left: 2px;
+}
+
+.nu {
+    height: 80px;
+}
+
+.txt2 {
+    font-family: Bold;
+    float: left;
+    font-size: 16px;
+    margin-top: -1px;
+}
+
+.table1-2 td {
+    border-right: 10px solid #0f1430;  
+    padding: 10px!important;
+}
+
+.header-bottom {
+    width: 140px;
+}
+
+
+ol, ul, dl {
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
 @font-face {
     font-family: "HarmoniaSansProCyr-Regular";
     src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Regular.ttf") format("truetype");
@@ -15,7 +48,7 @@ body {
 .font {
     font-family: "Bold";
     font-size: 16px;
-    margin-left:5px;
+    margin-left: 5px;
 }
 
 .col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
@@ -25,9 +58,7 @@ body {
     padding-left: 5px!important;
 }
 
-.p-4 {
-    padding: 15px !important;
-}
+
 
 body {
     color: white!important;
@@ -42,20 +73,22 @@ body {
     float: left;
     overflow: hidden;
     margin-top: -13px;
+    flex: 0 0 78%;
+    max-width: 78%;
+ 
 }
 
 .right-side2 {
     float: left;
     overflow: hidden;
     margin-top: -13px;
+    flex: 0 0 22%;
+    max-width: 22%;
+    padding-left: 10px!important;
 }
 
 .first-string {
     background: #272953;
-}
-
-.nu {
-    height: 60px;
 }
 
 .number {
@@ -66,29 +99,48 @@ body {
     margin-top: -1px;
 }
 
-.unit-vc {
-    color: #82BAFF;
-    display: inline-block;
-}
-
 .float {
     display: inline-block;
 }
 
-.txt2 {
-    float: left;
-    font-size: 16px;
-    margin-top: -1px;
+.txt1 {
+    font-family: Bold;
 }
 
+
+
 .txt3 {
-    float: left;
+    /* display: inline-block; */
     color: #82BAFF;
-    size: 12px;
+    font-size: 12px;
     margin-left: 10px;
+    float: left;
+    margin-top: 5px;
 }
 
 .arrow {
+    background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+}
+
+.arrow2 {
+    background: url(/img/visualcenter3/red-arrow.svg) no-repeat;
+    height: 15px;
+    width: 15px;
+    background-size: contain;
+    float: left;
+    margin-top: 5px;
+    margin-right: 5px;
+    overflow: hidden;
+}
+
+.arrow3 {
     background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
     height: 25px;
     width: 25px;
@@ -104,14 +156,11 @@ body {
 }
 
 .table1 td {
-    border-right: 1px solid #454D7D;
+    /* border-right: 1px solid #454D7D; */
     padding: 1rem!important;
 }
 
-.table1-2 td {
-    border-right: 1px solid #454D7D;
-    padding: 10px!important;
-}
+
 
 .table2 td {
     padding: 10px!important;
@@ -124,9 +173,19 @@ body {
 .table4 td {
     /* width: 100px; */
     overflow: hidden;
-    padding: 0px 30px 10px 0px;
+    /* padding: 0px 30px 10px 0px; */
     line-height: 44px;
+    min-width: 115px;
+    padding: 0px 10px 10px 0px;
+}
+
+.table4-2 td {
+    /* width: 100px; */
+    overflow: hidden;
+    padding: 0px 30px 10px 0px;
+    line-height: 525px;
     min-width: 105px;
+    height: 50vh;
 }
 
 .table4 {
@@ -148,7 +207,7 @@ td:last-of-type {
 
 .txt4 {
     font-family: "HarmoniaSansProCyr-Bold";
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 550;
 }
 
@@ -159,7 +218,7 @@ td:last-of-type {
 }
 
 .in-idle {
-    color: #656A8A;
+    color: #9FA5C7;
     font-size: 14px;
 }
 
@@ -290,7 +349,7 @@ td:last-of-type {
 
 .first-td {
     /* width: 225px!important; */
-    width: 150%!important;
+    /* width: 150%!important; */
     overflow: hidden;
     font-size: 14px;
     margin-left: 10px;
@@ -363,11 +422,13 @@ td:last-of-type {
 }
 
 .progress {
-    height: 5px!important;
+    height: 7px!important;
+    background-color: #323370!important;
 }
 
 .progress-bar {
     background-color: #2E50E9!important;
+    border-radius: 20px;
 }
 
 .first-string2 {
@@ -422,13 +483,13 @@ td.size-td {
 
 .background-center {
     background-color: #272953!important;
-    height: 63%;
+    /* height: 63%; */
     overflow: hidden;
 }
 
 .right {
     float: right;
-    margin-right: -20px;
+    margin-right: -5px;
     font-size: 12px;
 }
 
@@ -450,6 +511,7 @@ td.size-td {
     border-radius: 10px;
     padding: 1px 12px;
 }
+
 /*
 .svg-container {
     width: 630px!important;
@@ -479,6 +541,15 @@ td.small-td {
     float: left;
     margin-top: 8px;
     margin-left: 5px;
+}
+
+.triangle2 {
+    border: 8px solid transparent;
+    width: 10px;
+    height: 10px;
+    float: left;
+    margin-left: 5px;
+    margin-top: 27vh!important;
 }
 
 .percent {
@@ -582,4 +653,66 @@ li.center-li {
 
 .center-background {
     background: #272953;
+}
+
+.percent-header {
+    color: #82BAFF;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: -5px;
+}
+
+.plan-header {
+    color: #82BAFF;
+    font-size: 12px;
+    margin-top: -12px;
+    text-align: right;
+    margin-bottom: -5px;
+}
+
+.first-td-header {
+    float: left;
+    margin-left: 10%;
+    width: 80%;
+}
+
+.second-td-header {
+    float: left;
+}
+
+.vert-line {
+    /*width: 2px;
+    height: 165px;*/
+    background: url(/img/visualcenter3/line.png) no-repeat;
+    /* margin-left: 3%; */
+    position: absolute;
+    width: 1px;
+    height: 14vh;
+    margin-top: 1vh;
+}
+
+
+.vert-line2 {
+    /*width: 2px;
+    height: 165px;*/
+    background: url(/img/visualcenter3/line.png) no-repeat;
+    /* margin-left: 3%; */
+    position: absolute;
+    width: 1px;
+    height: 8vh;
+    margin-top: 1vh;
+}
+
+
+.percent-currency {
+    margin-top: 25px;
+}
+
+.percent-arrow {
+    float: right;
+    margin-right: 5px;
+}
+
+.right-side-bottom {
+    margin-top: -15px;
 }

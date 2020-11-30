@@ -30,6 +30,8 @@
         @include('layouts.gno-sidebar')
         @elseif (basename(Request::url()) === "visualcenter3")
         @include('layouts.gno-sidebar')
+        @elseif (basename(Request::url()) === "visualcenter4")
+        @include('layouts.visual-center4-sidebar')
         @elseif (basename(Request::url()) === "tr")
         @include('layouts.gno-sidebar')
         @elseif (basename(Request::url()) === "fa")
@@ -42,7 +44,7 @@
             @yield('content')
         </div>
         @else
-        <div class="col p-4">
+        <div class="container-fluid col spacing">
             @yield('content')
         </div>
         @endif
