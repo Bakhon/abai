@@ -252,9 +252,11 @@
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row_index">
             <td>{{row.gu}}</td>
-            <td>{{row.field}}</td>
+            <td v-if="!edit">{{row.field}}</td>
+            <td v-if="edit" contenteditable='true'><input :value="row.field" @change="editrow(row)" :disabled="!edit"></td>
             <td>{{row.well}}</td>
             <!-- <td>{{row.well_type}}</td> -->
+
             <td :class="{'cell-with-comment': wells && wells[row_index] &&
             wells[row_index].well_type[1][0] !== '0'}">
                 <span :class="{'circle-err': wells && wells[row_index] &&
@@ -1180,6 +1182,7 @@ export default {
     name: "TrFullTable",
     props: {
         wells: Array,
+        edit: null,
     },
 
     methods: {
@@ -1190,6 +1193,9 @@ export default {
             if (status === "1") return "#ffff00";
             return "#ff0000";
         },
+        editrow(row) {
+            console.log(row);
+        }
     }
 }
 </script>

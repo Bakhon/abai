@@ -8,7 +8,7 @@
             <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
             <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НТК</td>
             <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_vd')">Нвдп</td>
+            <td rowspan="4" @click="sortBy('h_up_perf_md')">Нвдп</td>
             <td rowspan="4" @click="sortBy('exp_meth')"><span>Способ эксплуатации</span></td>
             <td rowspan="4" @click="sortBy('pump_type')">Тип насоса</td>
             <td rowspan="4" @click="sortBy('freq')">Частота работы насоса или число оборотов</td>
@@ -135,7 +135,17 @@
                 </span>
             </td>
 
-            <td>{{row.h_up_perf_vd}}</td>
+            <!-- <td>{{row.h_up_perf_md}}</td> -->
+            <td :class="{'cell-with-comment': wells && wells[row_index] &&
+            wells[row_index].h_up_perf_md[1][0] !== '0'}">
+                <span :class="{'circle-err': wells && wells[row_index] &&
+            wells[row_index].h_up_perf_md[1][0] !== '0'}" :style="`background :${getColor(
+            wells[row_index].h_up_perf_md[1][0])}`"> </span>
+                <span>{{Math.round(row.h_up_perf_md[0]*10)/10}}</span>
+                <span v-if="wells && wells[row_index]" class="cell-comment">
+                    {{ wells[row_index].h_up_perf_md[1][1]}}
+                </span>
+            </td>
             <!-- <td>{{row.exp_meth}}</td> -->
             <td :class="{'cell-with-comment': wells && wells[row_index] &&
             wells[row_index].exp_meth[1][0] !== '0'}">
@@ -274,7 +284,7 @@
                 <span :class="{'circle-err': wells && wells[row_index] &&
             wells[row_index].well_status_last_day[1][0] !== '0'}" :style="`background :${getColor(
             wells[row_index].well_status_last_day[1][0])}`"> </span>
-                <span>{{Math.round(row.well_status_last_day[0]*10)/10}}</span>
+                <span>{{row.well_status_last_day[0]}}</span>
                 <span v-if="wells && wells[row_index]" class="cell-comment">
                     {{ wells[row_index].well_status_last_day[1][1]}}
                 </span>

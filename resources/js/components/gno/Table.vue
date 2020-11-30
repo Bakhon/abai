@@ -101,7 +101,7 @@
         </modal>
 
         <modal name="tablePGNO"  :width="500" :height="550" :adaptive="true" class="chart">
-            <div class="col-2" style="height: 100%; overflow-y: auto;">
+
             <table class="table table-striped">
                 <thead>
                     <tr>
