@@ -17,12 +17,7 @@
           </div>
           <div class="modal-analysis-menu">
             <div class="form-check">
-              <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
-                type="checkbox">
-              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
-            </div>
-            <div class="form-check">
-              <input v-model="analysisBox2" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+              <input v-model="analysisBox1" class="checkbox-modal-analysnauryzbekis-menu" @change="postAnalysisOld()"
                 type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
             </div>
@@ -102,109 +97,141 @@
 
         <modal name="tablePGNO"  :width="500" :height="550" :adaptive="true" class="chart">
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th scope="col">Параметры</th>
-                    <th scope="col">Значение</th>
-                    </tr>
-                </thead>
+        <div class="tablePgno col-13" style="width: 100%; height: 100%; overflow-y: auto;">
+            <table class="table" >
+
+                <tr height="60" style="height: 60pt;">
+                <td>
+                    Наименование
+                </td>
+                <td>
+                    ШГН (покупка)
+                </td>
+                <td>
+                    ЭЦН (аренда)
+                </td>
+                </tr>
                 <tbody>
                     <tr>
                         <td>Доп. добыча жидкости, тыс.т</td>
-                        <td>{{expAnalysisData.npvTable1.liquid}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.liquid)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.liquid)}}</td>
                     </tr>
                     <tr>
                         <td>Доп. добыча нефти, тыс.т</td>
-                        <td>{{expAnalysisData.npvTable1.oil}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.oil)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.oil)}}</td>
                     </tr>
                     <tr>
-                        <td>Количество отработанных дней</td>
-                        <td>{{expAnalysisData.npvTable1.workday}}</td>
+                        <td>Количество отработанных дней, сут</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.workday)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.workday)}}</td>
                     </tr>
                      <tr>
                         <td>Количество ПРС</td>
-                        <td>{{expAnalysisData.npvTable1.kolichestvoPrs}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.kolichestvoPrs)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.kolichestvoPrs)}}</td>
                     </tr>
                     <tr>
-                        <td>Среднее продолжительность 1 ПРС</td>
-                        <td>{{expAnalysisData.npvTable1.sredniiPrs}}</td>
+                        <td>Среднее продолжительность 1 ПРС, сут</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.sredniiPrs)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.sredniiPrs)}}</td>
                     </tr>
                     <tr>
-                        <td>Распределение по направлениям реализации НДО</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiNdo}}</td>
+                        <td>Распределение по направлениям реализации НДО, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo/1000)}}</td>
                     </tr>
                       <tr>
-                        <td>Определение доходной части</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiDohod}}</td>
+                        <td>Определение доходной части, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiDohod/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiDohod/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Расчет НДПИ</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiNdpi}}</td>
+                        <td>Расчет НДПИ, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdpi/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdpi/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Расчет Рентного налога</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiRent}}</td>
+                        <td>Расчет Рентного налога, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiRent/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiRent/1000)}}</td>
                     </tr>
                         <tr>
-                        <td>Расчет ЭТП</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiEtp}}</td>
+                        <td>Расчет ЭТП, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiEtp/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiEtp/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Расчет Расходов по транспортировке нефти</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiTrans}}</td>
+                        <td>Расчет Расходов по транспортировке нефти, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiTrans/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiTrans/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Затраты на электроэнергию</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiZatrElectShgn}}</td>
+                        <td>Затраты на электроэнергию, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrElectShgn/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrElectEcn/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Затраты на подготовку</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiZatrPrep}}</td>
+                        <td>Затраты на подготовку, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrPrep/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrPrep/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Затраты на ПРС</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiZatrPrs}}</td>
+                        <td>Затраты на ПРС, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrPrs/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrPrs/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Затраты за суточное обслуживание</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiZatrSutObs}}</td>
+                        <td>Затраты за суточное обслуживание, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrSutObs/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrSutObs/1000)}}</td>
                     </tr>
                       <tr>
-                        <td>Стоимость аренды оборудования</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiAmortizacia}}</td>
+                        <td>Стоимость аренды оборудования, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiArenda/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiArenda/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Амортизация</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiOperPryb}}</td>
+                        <td>Амортизация, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiAmortizacia/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiAmortizacia/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Операционная прибыль</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiOperPryb}}</td>
+                        <td>Операционная прибыль, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiOperPryb/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiOperPryb/1000)}}</td>
                     </tr>
                      <tr>
-                        <td>КПН</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiKpn}}</td>
+                        <td>КПН, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiKpn/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiKpn/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Чистая прибыль</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiChistPryb}}</td>
+                        <td>Чистая прибыль, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiChistPryb/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiChistPryb/1000)}}</td>
                     </tr>
                      <tr>
-                        <td>КВЛ</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiKvl}}</td>
+                        <td>КВЛ, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiKvl/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiKvl/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>Свободный денежный поток</td>
-                        <td>{{expAnalysisData.npvTable1.godovoiSvobPot}}</td>
+                        <td>Свободный денежный поток, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiSvobPot/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiSvobPot/1000)}}</td>
                     </tr>
                     <tr>
-                        <td>NPV</td>
-                        <td>{{expAnalysisData.npvTable1.npv}}</td>
+                        <td>NPV, млн.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.npv/1000000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.npv/1000000)}}</td>
                     </tr>
 
                 </tbody>
             </table>
+        </div>
+
         </modal>
 
 
@@ -1017,6 +1044,7 @@ export default {
     },
 
     ExpAnalysisMenu(){
+        this.NnoCalc()
         this.qZhExpEcn=this.qlCelValue
         this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
 
@@ -1057,14 +1085,19 @@ export default {
             this.param_eco=1;
             this.EconomCalc();
         } else if (prs1==0 && prs2==0){
-            if(this.expChoose=="ШГН"){
-                this.expAnalysisData.NNO1=date_diff
+            if(this.age){
                 this.param_eco=1;
                 this.EconomCalc()
-            }else{
-                this.expAnalysisData.NNO2=date_diff
-                this.param_eco=1;
-                this.EconomCalc()
+            } else {
+                if(this.expChoose=="ШГН"){
+                    this.expAnalysisData.NNO1=date_diff
+                    this.param_eco=1;
+                    this.EconomCalc()
+                }else{
+                    this.expAnalysisData.NNO2=date_diff
+                    this.param_eco=1;
+                    this.EconomCalc()
+                }
             }
         } else if (prs1==0 && prs2!=0){
             this.param_eco=2;
@@ -1098,7 +1131,7 @@ export default {
                 this.expAnalysisData.ecnNpv=data2[12].npv
                 this.expAnalysisData.npvTable2=data2[12]
 
-                if(this.expAnalysisData.shgnParam,this.expAnalysisData.shgnNpv,this.expAnalysisData.ecnParam,this.expAnalysisData.ecnNpv){
+                if(this.expAnalysisData.shgnParam!=null,this.expAnalysisData.shgnNpv!=null,this.expAnalysisData.ecnParam!=null,this.expAnalysisData.ecnNpv!=null){
                     this.$modal.show("modalExpAnalysis");
                 }
 
