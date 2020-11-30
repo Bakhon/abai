@@ -64,6 +64,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/tr', 'DruidController@tr')->name('tr');
         Route::get('/export', 'HomeController@export');
         Route::get('/fa', 'DruidController@fa')->name('fa');
+        Route::get('/tredit', 'DruidController@tredit')->name('tredit');
 
 
         //wm
@@ -131,6 +132,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('abd46','VizCenter\Abd46Controller');
         Route::get('kpicalc','VizCenter\Marab2Controller@kpicalculation');
         Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
+
+        Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
 
     });
     Auth::routes([

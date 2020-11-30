@@ -1,5 +1,69 @@
 <template>
     <div class="container-fluid">
+        <modal name="chart" :width="2000" :height="1000" :adaptive="true">
+            <div class="main_modals">
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="first_block">
+                            <apexchart
+                                v-if="barChartData && pieChartRerender"
+                                type="bar"
+                                :options="chartBarOptions"
+                                :series="[{ name:'', data: barChartData}]"
+                            ></apexchart>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="first_block">
+                            <apexchart
+                                v-if="pieChartData && pieChartRerender"
+                                type="pie"
+                                :options="chartOptions"
+                                :series="pieChartData"
+                            ></apexchart>
+                        </div>
+                    </div>
+                    <div class="filter_chart">
+                        <td class="filter_font"> Фильтр по: </td>
+                        <div>
+                            <select
+                                class="form-control"
+                                v-model="chartFilter_field"
+                                value="Месторождение"
+                            >
+                                <option
+                                    v-for="(f, k) in fieldFilters"
+                                    :key="k"
+                                    :value="f">{{f}}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select
+                                class="form-control"
+                                v-model="chartFilter_horizon"
+                            >
+                                <option
+                                    v-for="(f, k) in horizonFilters"
+                                    :key="k"
+                                    :value="f">{{f}}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select
+                                v-if="exp_methFilters"
+                                class="form-control"
+                                v-model="chartFilter_exp_meth"
+                            >
+                                <option
+                                    v-for="(f, k) in exp_methFilters"
+                                    :key="k"
+                                    :value="f">{{f}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </modal>
         <div class="row justify-content-between">
                 <a href="tr" class="but-nav__link but">Технологический режим</a>
                 <form class="form-group but-nav__link">
@@ -11,8 +75,12 @@
                         <input type="date" class="form-control" v-model="dt2">
                 </form>
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
-                <a href="#" class="but-nav__link but">Редактировать</a>
+                <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
+                <a class="but-nav__link but " @click="pushBign('chart')">Графики</a>
                 <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a>
+        </div>
+        <div class="tech">
+            <td> Факторный анализ </td>
         </div>
         <div>
             <select name="Company" class="from-control" id="companySelect"
@@ -30,7 +98,7 @@
                 <tr class="headerColumn">
                     <td rowspan="3" @click="sortBy('well')"><span>Скважина</span></td>
                     <td rowspan="3" @click="sortBy('field')"><span>Месторождение</span></td>
-                    <td rowspan="3" @click="sortBy('horizon')"><span>Пласт</span></td>
+                    <td rowspan="3" @click="sortBy('horizon')"><span>Горизонт</span></td>
                     <td rowspan="3" @click="sortBy('exp_meth')"><span>Способ Эксплуатации</span></td>
                     <td class="colspan" colspan="6">ТР на {{dt}}</td>
                     <td class="colspan" colspan="6">ТР на {{dt2}}</td>
@@ -76,11 +144,40 @@
                     <td>{{Math.round(row.bhp_2*10)/10}}</td>
                     <td>{{Math.round(row.p_res_2*10)/10}}</td>
                     <td>{{Math.round(row.pi_2*10)/10}}</td>
-                    <td>{{Math.round(row.dqo*10)/10}}</td>
-                    <td>{{Math.round(row.Pbh*10)/10}}</td>
-                    <td>{{Math.round(row.wct*10)/10}}</td>
-                    <td>{{Math.round(row.p_res*10)/10}}</td>
-                    <td>{{Math.round(row.PI*10)/10}}</td>
+
+                    <!-- <td>{{Math.round(row.dqo*10)/10}}</td> -->
+                    <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
+                    <td
+                        :style="{
+                            background: getColor(Math.round(row.dqo*10)/10),
+                        }"
+                    >
+                        <span> {{Math.round(row.dqo*10)/10}} </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.Pbh*10)/10}}</td> -->
+                    <td :style="`background :${getColor(
+                    Math.round(row.Pbh*10)/10)}`">
+                        <span> {{Math.round(row.Pbh*10)/10}} </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.wct*10)/10}}</td> -->
+                    <td :style="`background :${getColor(
+                    Math.round(row.wct*10)/10)}`">
+                        <span> {{Math.round(row.wct*10)/10}} </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.p_res*10)/10}}</td> -->
+                    <td :style="`background :${getColor(
+                    Math.round(row.p_res*10)/10)}`">
+                        <span> {{Math.round(row.p_res*10)/10}} </span>
+                    </td>
+
+                    <td :style="`background :${getColor(
+                    Math.round(row.PI*10)/10)}`">
+                        <span> {{Math.round(row.PI*10)/10}} </span>
+                    </td>
+                    <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
                     <td>{{row.Main_problem}}</td>
                 </tr>
             </table>
@@ -88,34 +185,261 @@
     </div>
 </template>
 <script>
+
+import VueApexCharts from "vue-apexcharts";
 export default {
-  beforeCreate: function () {
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        var prMm = mm-2;
-        var prPrMm = mm-3;
-        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+yyyy+"/"+prPrMm+"/").then((response) => {
-        let data = response.data;
-        if(data) {
-            console.log(data);
-            this.wells = data.data;
-            this.fullWells = data.data;
-        }
-        else {
-            console.log('No data');
-        }
-    });
+    computed: {
+      // field horizon exp_meth
+      // Pbh wct p_res PI
+        pieChartData(){
+            if (this.chartWells && this.chartWells.length > 0){
+                let field = this.chartFilter_field;
+                let horizon = this.chartFilter_horizon;
+                let exp_meth = this.chartFilter_exp_meth;
+                try {
+                    let filteredResult = this.chartWells.filter((row) => (
+                        (!field || row.field === field)
+                        && (!horizon || row.horizon === horizon)
+                        && (!exp_meth || row.exp_meth === exp_meth)
+                    ));
+                    console.log(filteredResult);
+                    let filteredData = filteredResult.reduce((acc, res) => {
+                        //acc = {
+                        //    'Pbh': acc['Pbh'] + res['Pbh'],
+                        //    'wct': acc['wct'] + res['wct'],
+                        //    'p_res': acc['p_res'] + res['p_res'],
+                        //    'PI': acc['PI'] + res['PI'],
+                        //}
+                        if (acc.hasOwnProperty(res['Main_problem'])) {
+                            acc[res['Main_problem']]+=1;
+                        } else {
+                            acc[res['Main_problem']]=1;
+                        }
+                        return acc;
+                    }, {})
+                    console.log('Pie chart filtered data:',filteredData)
+                    return [
+                        filteredData['Pbh'] || 0,
+                        filteredData['wct'] || 0,
+                        // filteredData['p_res'],
+                        filteredData['No problem'] || 0,
+                        filteredData['PI'] || 0,
+                    ]
+                } catch(err) {
+                    console.error(err);
+                    return false
+                }
+                return false;
+            } else return false
+        },
+        barChartData(){
+            if (this.chartWells && this.chartWells.length > 0){
+                let field = this.chartFilter_field;
+                let horizon = this.chartFilter_horizon;
+                let exp_meth = this.chartFilter_exp_meth;
+                try {
+                    let filteredResult = this.chartWells.filter((row) => (
+                        (!field || row.field === field)
+                        && (!horizon || row.horizon === horizon)
+                        && (!exp_meth || row.exp_meth === exp_meth)
+                    ));
+                    console.log(filteredResult);
+                    let filteredData = filteredResult.reduce((acc, res) => {
+                        acc = {
+                            'Pbh': acc['Pbh'] + res['Pbh'],
+                            'wct': acc['wct'] + res['wct'],
+                            'p_res': acc['p_res'] + res['p_res'],
+                            'PI': acc['PI'] + res['PI'],
+                        }
+                        return acc;
+                    }, {
+                        Pbh: 0,
+                        wct: 0,
+                        p_res:0,
+                        PI: 0,
+                    })
+                    return [filteredData['Pbh'],
+                        filteredData['wct'],
+                        filteredData['p_res'],
+                        filteredData['PI']
+                    ]
+                } catch(err) {
+                    console.error(err);
+                    return false
+                }
+                //return false;
+            } else return false
+        },
+
+        fieldFilters(){
+            if (this.chartWells && this.chartWells.length > 0){
+                let filters = []
+                this.chartWells.forEach((el) => {
+                    if (filters.indexOf(el.field) === -1){
+                        filters = [ ...filters, el.field]
+                    }
+                })
+                return [ undefined, ...filters]
+            } else return []
+        },
+        horizonFilters(){
+            if (this.chartWells && this.chartWells.length > 0){
+                let filters = []
+                this.chartWells.forEach((el) => {
+                    if (filters.indexOf(el.horizon) === -1){
+                        filters= [ ...filters, el.horizon]
+                    }
+                })
+                return [ undefined, ...filters]
+            } else return []
+        },
+        exp_methFilters(){
+            if (this.chartWells && this.chartWells.length > 0){
+                let filters = []
+                this.chartWells.forEach((el) => {
+                    if (filters.indexOf(el.exp_meth) === -1){
+                        filters = [ ...filters, el.exp_meth]
+                    }
+                })
+                return [ undefined, ...filters]
+            } else return []
+        },
   },
   data: function () {
     return {
+        pieChartRerender: true,
         wells: [],
+        chartWells: [],
         sortType: 'asc',
         dt: null,
         dt2: null,
-        fullWells: []
+        fullWells: [],
+        filter: null,
+        chartFilter_field: undefined,
+        chartFilter_horizon: undefined,
+        chartFilter_exp_meth: undefined,
+        chartBarOptions: {
+            chart: {
+              height: 350,
+              type: 'bar',
+            },
+            plotOptions: {
+              bar: {
+                dataLabels: {
+                  position: 'bottom', // top, center, bottom
+                },
+              }
+            },
+            dataLabels: {
+              enabled: true,
+              formatter: function (val) {
+                return val;
+              },
+              offsetY: -20,
+              style: {
+                fontSize: '12px',
+                colors: ["#304758"]
+              }
+            },
+
+            xaxis: {
+              categories: ["Недостижение режимного Pзаб", "Рост обводненности", "Снижение Pпл", "Снижение Kпрод"],
+              position: 'bottom',
+              axisBorder: {
+                show: false
+              },
+              axisTicks: {
+                show: false
+              },
+              crosshairs: {
+                fill: {
+                  type: 'gradient',
+                  gradient: {
+                    colorFrom: '#D8E3F0',
+                    colorTo: '#BED1E6',
+                    stops: [0, 100],
+                    opacityFrom: 0.4,
+                    opacityTo: 0.5,
+                  }
+                }
+              },
+              tooltip: {
+                enabled: true,
+              }
+            },
+            yaxis: {
+              axisBorder: {
+                show: false
+              },
+              axisTicks: {
+                show: false,
+              },
+              labels: {
+                show: true,
+                formatter: function (val) {
+                  return val;
+                }
+              }
+
+            },
+            // title: {
+            //   text: 'asd',
+            //   floating: true,
+            //   offsetY: 500,
+            //   align: 'top',
+            //   style: {
+            //     color: '#444'
+            //   }
+            // }
+        },
+        chartOptions: {
+            labels: ["Недостижение режимного Pзаб", "Рост обводненности","Снижение Pпл","Снижение Kпрод"],
+            chart: {
+            type: "pie",
+            },
+            dataLabels: {
+            enabled: false,
+            } /*убирается подсветка процентов на круге*/,
+            /*tooltip: {
+        enabled: false},*/
+            legend: {
+            show: false,
+            } /*убирается навигация рядом с кругом*/,
+            colors: ["#330000", "#804d00", "#00004d", "#999900"],
+            plotOptions: {
+                pie: {
+                    expandOnClick: true,
+                },
+            },
+            responsive: [
+                {
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200,
+                        },
+                        legend: {
+                            position: "bottom",
+                        },
+                    },
+                },
+            ],
+        },
     }
+  },
+  watch: {
+      pieChartData(){
+          this.pieChartRerender = false;
+          this.$nextTick(() => {
+              this.pieChartRerender = true;
+          })
+      },
+      barChartData(){
+          this.pieChartRerender = false;
+          this.$nextTick(() => {
+              this.pieChartRerender = true;
+          })
+      }
   },
   methods: {
       sortBy(type) {
@@ -152,9 +476,51 @@ export default {
 
           this.wells = fullWells.filter(e => e.field === filter);
       },
-  }
+      pushBign(bign){
+          switch (bign) {
+              case 'bign1':
+                  this.params.data = this.wellsList;
+                  break;
+          }
+          this.$modal.show(bign);
+      },
+      getColor(status) {
+          if (status < "0") return "#ac3939";
+      },
+    },
+    beforeCreate: function () {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var prMm = mm-2;
+        var prPrMm = mm-3;
+        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+yyyy+"/"+prPrMm+"/").then((response) => {
+        let data = response.data;
+        if(data) {
+            console.log(data);
+            this.wells = data.data;
+            this.fullWells = data.data;
+            this.chartWells = data.data;
+        }
+        else {
+            console.log('No data');
+        }
+        if(prMm < 10 && prPrMm < 10) {
+            this.dt = '01' + '.0' + prMm + '.' + yyyy;
+            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy ;
+        }
+        else if(prMm <= 10 && prPrMM <=10) {
+            this.dt = '01'+ '.' + prMm + '.' + yyyy;
+            this.dt2 = '01' + '.' + prPrMm + '.' + yyyy;
+        }
+        else if(prMm >= 10 && prPrMM < 10) {
+            this.dt = '01' + '.0' + prMm + '.' + yyyy;
+            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy;
+        }
+    });
+   },
 }
-
 </script>
 <style>
 body {
