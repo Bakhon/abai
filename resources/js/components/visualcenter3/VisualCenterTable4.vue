@@ -336,7 +336,7 @@
                   </div>
                   <div class="txt3">vs от плана</div>
                 </div></div>
-                <div class="second-td-header"></div>
+             
               </td>
               <td
              
