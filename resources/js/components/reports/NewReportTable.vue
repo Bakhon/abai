@@ -28,7 +28,7 @@
           <!-- multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"-->
           <select data-live-search="true" 
             style="background-color:#20274e;border-color:#20274e;color:white;"
-            class="form-control"
+            multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"
             id="companySelect"
             @change="onChangeMonth($event)"
           >
@@ -80,6 +80,7 @@
     :columns="columns"
     :data="data"
     :options="options"
+    :height="100"
     
   />
 </div>
@@ -323,8 +324,8 @@ export default {
         locale: 'ru-RU',      
         exportTypes: ['excel', 'csv'],
         exportDataType: 'all',
-        // fixedColumns: true,
-        // fixedNumber: 2,
+        fixedColumns: true,
+        fixedNumber: 2,
 
       },
 
@@ -354,7 +355,7 @@ export default {
           let data = response.data;
           if (data) {
             this.data = data.wellsList;
-            this.columns[0][11]['title'] = this.xmay[0][this.month] + " " + this.year; 
+            this.columns[0].push({title: this.xmay[0][this.month] + " " + this.year}); 
           } else {
             console.log("No data");
           }
