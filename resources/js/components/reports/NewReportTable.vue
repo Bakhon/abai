@@ -191,7 +191,7 @@ export default {
           align: 'center'
 },
           {
-          title: 'Qж, м3',
+          title: 'Qж, м3/сут',
           rowspan: 2,
           align: 'center'
 },
@@ -255,7 +255,7 @@ export default {
           align: 'center'
     },
 {
-        title: 'Qж, м3',
+        title: 'Qж, м3/сут',
           rowspan: 2,
           align: 'center'
     },
@@ -287,7 +287,7 @@ export default {
         ],
         [
  {
-        title: 'Qж, м3',
+        title: 'Qж, м3/сут',
 
           align: 'center'
     },
