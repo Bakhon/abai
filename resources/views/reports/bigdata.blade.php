@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <div class="line"></div>
-                        <div class="col-md-12 col-lg-12 row" >
+                        <div id="dobycha" class="col-md-12 col-lg-12 row" >
                             <button onclick="document.location='{{url('/')}}/ru/mzdn'" type="button" class="col-md-2 col-lg-2 btn report-btn">Отчёт по месячной замерной добычи нефти</button>
                             <button onclick="document.location='{{url('/')}}/ru/gtm'" type="button" class="col-md-2 col-lg-2 btn report-btn">Анализ эффективности ГТМ</button> 
                             <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Месячный экс рапорт</button> 
