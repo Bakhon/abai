@@ -324,8 +324,8 @@ export default {
         locale: 'ru-RU',
         exportTypes: ['excel', 'csv'],
         exportDataType: 'all',
-        fixedColumns: true,
-        fixedNumber: 2,
+        // fixedColumns: true,
+        // fixedNumber: 2,
 
       },
 
@@ -355,6 +355,7 @@ export default {
           let data = response.data;
           if (data) {
             this.data = data.wellsList;
+            this.columns[0][11]['title'] = this.xmay[0][this.month] + " " + this.year;
             this.columns[0].push({title: this.xmay[0][this.month] + " " + this.year}); 
           } else {
             console.log("No data");

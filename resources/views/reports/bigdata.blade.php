@@ -22,7 +22,7 @@
                 <div class="level1-content row">       
                     <div class="col-md-12 col-lg-12" style="padding: 10px;">
                     </div>
-                    <div class="center-content">
+                    <div class="center-content col-md-12">
                         <div class="col-md-12 row">
                             <div class="col btn-clk">
                                 <div class="btn-blocks">
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-12 btn-blocks-txt">Разработка</div>
                             </div>
-                            <div class="col btn-clk">
+                            <div class="col btn-clk" onclick="myFunction()">
                                 <div class="btn-blocks">
                                     <svg style="height:180;" width="40" height="43" viewBox="0 0 40 43"  xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M39.0188 36.8928H36.9765V27.8142C36.9765 27.5773 36.7529 27.382 36.48 27.382H34.1812V20.4453L34.4235 20.5326C34.5506 20.5761 34.6777 20.5997 34.8024 20.5997C35.1882 20.5997 35.56 20.398 35.7153 20.0639L37.1224 17.0868C37.2188 16.8723 37.2188 16.6345 37.1224 16.424C37.0235 16.2134 36.8259 16.0417 36.5859 15.9545L15.2306 8.20323C16.0118 6.89592 16.7129 5.56826 17.3153 4.25267C17.52 3.80886 17.2753 3.31019 16.7765 3.1286L8.34353 0.0661289C7.84235 -0.115463 7.26824 0.0897737 7.05176 0.524601C4.96235 4.81565 3.61412 9.59331 2.81412 15.566C2.76471 15.9509 3.01176 16.3205 3.41882 16.4666L7.03529 17.7803C7.44471 17.9293 7.91294 17.8203 8.18588 17.5162C9.75765 15.7729 11.1106 14.135 12.3294 12.5097L16.5929 14.0615L16.3835 15.3345L15.7482 19.1988L12.8353 36.8928H6.01412H0.988235C0.444706 36.8928 0 37.2825 0 37.7618V41.696C0 42.1718 0.444706 42.5605 0.988235 42.5605H39.0188C39.56 42.5605 40 42.1718 40 41.696V37.7618C40 37.2825 39.56 36.8928 39.0188 36.8928ZM32.203 27.3825H29.9065C29.6312 27.3825 29.4077 27.5778 29.4077 27.8147V36.8933H27.163L24.2524 19.1992L23.8406 16.6922L32.203 19.7284V27.3825ZM22.4487 21.5146L18.9781 19.2454L21.7381 17.198L22.4487 21.5146ZM21.2985 23.1264L16.8937 25.5833L17.6843 20.7676L21.2985 23.1264ZM22.9354 24.4621L23.9989 30.9041L18.2812 27.0571L22.9354 24.4621ZM18.6938 36.8918L24.3879 33.2801L24.9832 36.8918H18.6938ZM20.6367 15.5291L18.2531 17.2952L18.6602 14.8082L20.6367 15.5291ZM16.4517 28.2215L22.3764 32.2101L15.0281 36.8816L16.4517 28.2215Z" />
@@ -66,7 +66,16 @@
                             </div>
                         </div>
                         <div class="line"></div>
-                        <div id="dobycha" class="col-md-12 col-lg-12 row" >
+                        <div id="noitems"  class="col-md-12 col-lg-12 row" >
+                        <p class="col-md-12"> no items </p>
+                        </div>
+                        <div id="izbr" hidden="hidden" class="col-md-12 col-lg-12 row" >
+                            <button onclick="document.location='{{url('/')}}/ru/mzdn'" type="button" class="col-md-2 col-lg-2 btn report-btn">Отчёт по месячной замерной добычи нефти</button>
+                            <button onclick="document.location='{{url('/')}}/ru/gtm'" type="button" class="col-md-2 col-lg-2 btn report-btn">Анализ эффективности ГТМ</button> 
+                            <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ежедневная динамика показателей добычи по скважинам</button> 
+                            <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ежедневная динамика показателей закачки по скважинам</button>        
+                        </div>
+                        <div id="dobycha" hidden="hidden" class="col-md-12 col-lg-12 row" >
                             <button onclick="document.location='{{url('/')}}/ru/mzdn'" type="button" class="col-md-2 col-lg-2 btn report-btn">Отчёт по месячной замерной добычи нефти</button>
                             <button onclick="document.location='{{url('/')}}/ru/gtm'" type="button" class="col-md-2 col-lg-2 btn report-btn">Анализ эффективности ГТМ</button> 
                             <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Месячный экс рапорт</button> 
@@ -151,6 +160,8 @@ border: 2px solid #333975;
 transform: rotate(180deg);
 margin-top: 50px;
 margin-bottom: 50px;
+margin-right: 50px;
+    margin-left: 50px;
 }
 .center-content{
     background:#272953;
@@ -168,6 +179,10 @@ margin-bottom: 50px;
     background: #334296;
     fill:#FEFEFE!important;
 }
+/* .btn-blocks, .active{
+    background: #334296;
+    fill:#FEFEFE!important;
+} */
 .btn-blocks-icon{
     fill: #393D75;
 }
@@ -185,13 +200,16 @@ margin-bottom: 50px;
 </style>
 <script>
 function myFunction() {
-  var x = document.getElementById("rep1");
-  var y = document.getElementById("navrep");
+  var x = document.getElementById("dobycha");
+  var y = document.getElementById("noitems");
+  var y = document.getElementById("noitems");
+//   var active = document.getElementsByClassName("btn-blocks");
   if (x.hasAttribute("hidden") === false) {
     x.setAttribute("hidden", "hidden");
     y.removeAttribute("hidden");
   } else {
     x.removeAttribute("hidden");
+    // active.classList.toggle("active");
     y.setAttribute("hidden", "hidden");
   }
 }
