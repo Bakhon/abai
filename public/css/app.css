@@ -1,4 +1,12 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@font-face {
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@font-face {
+    font-family: 'Harmonia Sans Light';
+    src: local('Harmonia Sans Light'), local('Harmonia-Sans-Light'),
+        url(/fonts/HarmoniaSansProCyr-Light.woff2?99e3b68c4d5fbcf2022fbba1b466792a) format('woff2'),
+        url(/fonts/HarmoniaSansProCyr-Light.woff?5b38b598316bcb19e97c4b56dcdc6bfc) format('woff'),
+        url(/fonts/HarmoniaSansProCyr-Light.ttf?ac4e0d31e316a036cac38e49c7d3d642) format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }@font-face {
   font-family: "e-icons";
   font-style: normal;
   font-weight: normal;
@@ -23371,12 +23379,13 @@ ejs-dropdownlist {
   width: 16px;
 }
 
-.e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
+.e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
   right: 52px;
 }
 
 .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
-  right: 45px;
+  right: 52px;
 }
 
 .e-bigger.e-small.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
@@ -23393,7 +23402,11 @@ ejs-dropdownlist {
 .e-bigger.e-small.e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
 .e-bigger.e-small .e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
 .e-bigger .e-small.e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
-.e-small .e-bigger.e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
+.e-small .e-bigger.e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-bigger.e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-bigger.e-small .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-bigger .e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-small .e-bigger.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
   right: 48px;
 }
 
@@ -23421,12 +23434,16 @@ ejs-dropdownlist {
 }
 
 .e-small.e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
-.e-small .e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
+.e-small .e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-small .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
   right: 48px;
 }
 
 .e-rtl.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
-.e-rtl .e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker {
+.e-rtl .e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
   left: 52px;
   right: auto;
 }
@@ -23442,7 +23459,19 @@ ejs-dropdownlist {
 .e-rtl.e-small .e-bigger.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
 .e-rtl .e-small .e-bigger.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
 .e-small .e-rtl .e-bigger.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
-.e-small .e-rtl.e-bigger.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker {
+.e-small .e-rtl.e-bigger.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl.e-bigger.e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl.e-bigger.e-small .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl .e-bigger.e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-bigger.e-small .e-rtl.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl.e-bigger .e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl .e-bigger .e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-bigger .e-rtl.e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-bigger .e-rtl .e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl.e-small .e-bigger.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl .e-small .e-bigger.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-small .e-rtl .e-bigger.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-small .e-rtl.e-bigger.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
   left: 48px;
   right: auto;
 }
@@ -23452,7 +23481,13 @@ ejs-dropdownlist {
 .e-rtl .e-bigger.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
 .e-rtl .e-bigger .e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
 .e-bigger .e-rtl.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
-.e-bigger .e-rtl .e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker {
+.e-bigger .e-rtl .e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl.e-bigger.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl.e-bigger .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl .e-bigger.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl .e-bigger .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-bigger .e-rtl.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-bigger .e-rtl .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
   left: 60px;
   right: auto;
 }
@@ -23462,7 +23497,13 @@ ejs-dropdownlist {
 .e-rtl .e-small.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
 .e-rtl .e-small .e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
 .e-small .e-rtl.e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker,
-.e-small .e-rtl .e-multiselect.e-outline .e-multi-select-wrapper .e-chips-close.e-close-hooker {
+.e-small .e-rtl .e-multiselect.e-outline .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl.e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl.e-small .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl .e-small.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-rtl .e-small .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-small .e-rtl.e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker,
+.e-small .e-rtl .e-multiselect.e-filled .e-multi-select-wrapper.e-down-icon .e-chips-close.e-close-hooker {
   left: 48px;
   right: auto;
 }
@@ -23660,7 +23701,7 @@ ejs-dropdownlist {
 
 .e-bigger.e-filled.e-float-input .e-multi-select-wrapper .e-chips-close.e-close-hooker,
 .e-bigger .e-filled.e-float-input.e-multiselect .e-down-icon .e-chips-close.e-close-hooker {
-  margin-top: -36px;
+  margin-top: -40px;
 }
 
 .e-bigger.e-small.e-filled.e-float-input.e-multiselect .e-down-icon .e-chips-close.e-close-hooker,
@@ -23677,24 +23718,24 @@ ejs-dropdownlist {
 
 .e-bigger.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
 .e-bigger .e-filled.e-multiselect .e-down-icon .e-chips-close.e-close-hooker {
-  margin-top: -42px;
+  margin-top: -44px;
 }
 
-.e-bigger.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-bigger .e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-filled.e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips .e-chips-close {
+.e-bigger.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-bigger .e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-filled.e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close {
   height: 14px;
   width: 14px;
 }
 
-.e-bigger.e-filled.e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-bigger .e-filled.e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips .e-chips-close {
+.e-bigger.e-filled.e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-bigger .e-filled.e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close {
   height: 16px;
   width: 16px;
 }
 
-.e-small.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-small .e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close {
+.e-small.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-small .e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close {
   height: 10px;
   width: 10px;
 }
@@ -23736,29 +23777,55 @@ ejs-dropdownlist {
 .e-bigger .e-small.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker::before,
 .e-small .e-bigger.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker::before {
   content: '\E208';
-  font-size: 14px;
+  font-size: 16px;
+  height: 16px;
   padding: 0;
   text-align: center;
   vertical-align: middle;
+  width: 16px;
 }
 
 .e-small.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker::before,
 .e-small .e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker::before {
-  font-size: 12px;
-  height: 12px;
-  width: 12px;
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
 }
 
 .e-bigger.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker::before,
 .e-bigger .e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker::before {
-  font-size: 16px;
-  height: 16px;
-  width: 16px;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+.e-bigger.e-small.e-rtl.e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-bigger.e-small .e-rtl .e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl.e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl .e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker {
+  left: 10px;
+  right: auto;
+}
+
+.e-small.e-rtl.e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl .e-small.e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-small .e-rtl.e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl.e-small .e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker {
+  left: 6px;
+  right: auto;
+}
+
+.e-bigger.e-rtl.e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl .e-bigger.e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-bigger .e-rtl.e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker,
+.e-rtl.e-bigger .e-multiselect.e-filled .e-multi-select-wrapper .e-chips-close.e-close-hooker {
+  left: 12px;
+  right: auto;
 }
 
 .e-multiselect.e-input-group.e-filled .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon,
 .e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon {
-  margin: 11px 0 9px;
+  margin: 10px 0 9px;
 }
 
 .e-multiselect.e-filled.e-input-group.e-float-input.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon {
@@ -23788,7 +23855,7 @@ ejs-dropdownlist {
 
 .e-bigger.e-multiselect.e-input-group.e-filled.e-float-input .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon,
 .e-bigger .e-multiselect.e-filled.e-input-group.e-control-wrapper.e-float-input .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon {
-  margin: 4px 8px 8px 0;
+  margin: 0;
 }
 
 .e-bigger.e-small.e-multiselect.e-input-group.e-float-input.e-filled .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon,
@@ -23796,34 +23863,49 @@ ejs-dropdownlist {
 .e-bigger .e-small.e-multiselect.e-input-group.e-float-input.e-filled .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon,
 .e-small .e-bigger.e-multiselect.e-input-group.e-float-input.e-filled .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon {
   height: 20px;
-  margin: 0 8px 8px 0;
+  margin: 0 0 8px;
   padding: 0;
   width: 20px;
 }
 
 .e-multiselect.e-input-group.e-filled .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
-.e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
-.e-bigger.e-small.e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
-.e-bigger.e-small .e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
-.e-bigger .e-small.e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
-.e-small .e-bigger.e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before {
-  font-size: 10px;
-  height: 10px;
-  width: 10px;
+.e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before {
+  font-size: 16px;
+  height: 16px;
+  width: 16px;
 }
 
 .e-small.e-multiselect.e-input-group.e-filled .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
 .e-small .e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before {
-  font-size: 8px;
-  height: 8px;
-  width: 8px;
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
 }
 
 .e-bigger.e-multiselect.e-input-group.e-filled .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
 .e-bigger .e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before {
-  font-size: 12px;
-  height: 12px;
-  width: 12px;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+.e-bigger.e-small.e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
+.e-bigger .e-small .e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
+.e-small.e-bigger.e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before,
+.e-small .e-bigger.e-multiselect.e-filled.e-input-group.e-control-wrapper .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon::before {
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.e-bigger.e-small.e-multiselect.e-filled.e-input-group.e-control-wrapper:not(.e-float-input) .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon,
+.e-bigger .e-small .e-multiselect.e-filled.e-input-group.e-control-wrapper:not(.e-float-input) .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon,
+.e-small.e-bigger.e-multiselect.e-filled.e-input-group.e-control-wrapper:not(.e-float-input) .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon,
+.e-small .e-bigger.e-multiselect.e-filled.e-input-group.e-control-wrapper:not(.e-float-input) .e-multi-select-wrapper .e-input-group-icon.e-ddl-icon {
+  height: 24px;
+  margin: 7px -4px 8px -1px;
+  padding: 0;
+  width: 24px;
 }
 
 .e-multiselect.e-outline .e-multi-select-wrapper .e-close-hooker.e-ddl-disable-icon::before,
@@ -24028,6 +24110,10 @@ ejs-dropdownlist {
   outline: none;
   padding: 0;
   text-indent: 0;
+}
+
+.e-rtl.e-multiselect.e-filled .e-multi-select-wrapper input[type='text'] {
+  padding: 5px;
 }
 
 .e-bigger .e-multi-select-wrapper input[type='text'],
@@ -24833,7 +24919,7 @@ ejs-multiselect {
 
 .e-small.e-filled:not(.e-bigger).e-multiselect:not(.e-float-input) .e-multi-select-wrapper,
 .e-small .e-filled:not(.e-bigger).e-multiselect:not(.e-float-input) .e-multi-select-wrapper {
-  padding: 0 12px 0 4px;
+  padding: 3px 12px 0 4px;
 }
 
 .e-multiselect.e-filled.e-input-group.e-control-wrapper,
@@ -24849,7 +24935,7 @@ ejs-multiselect {
 .e-bigger.e-small .e-filled.e-float-input .e-multi-select-wrapper,
 .e-bigger .e-small.e-filled.e-float-input .e-multi-select-wrapper,
 .e-small .e-bigger.e-filled.e-float-input .e-multi-select-wrapper {
-  padding: 14px 12px 0;
+  padding: 11px 12px 0;
 }
 
 .e-small.e-filled.e-float-input .e-multi-select-wrapper,
@@ -24859,7 +24945,16 @@ ejs-multiselect {
 
 .e-bigger.e-filled.e-float-input .e-multi-select-wrapper,
 .e-bigger .e-filled.e-float-input .e-multi-select-wrapper {
-  padding: 14px 12px 0 16px;
+  padding: 19px 12px 0 16px;
+}
+
+.e-bigger:not(.e-small).e-filled.e-multiselect:not(.e-float-input) .e-multi-select-wrapper {
+  padding-top: 3px;
+}
+
+.e-rtl.e-multiselect.e-filled.e-input-group.e-control-wrapper,
+.e-rtl.e-multiselect.e-filled.e-float-input.e-control-wrapper {
+  padding: 0;
 }
 
 .e-multiselect.e-filled:not(.e-float-input) .e-multi-select-wrapper input[type='text'],
@@ -24868,6 +24963,7 @@ ejs-multiselect {
 .e-bigger .e-small.e-multiselect.e-filled:not(.e-float-input) .e-multi-select-wrapper input[type='text'],
 .e-small .e-bigger.e-multiselect.e-filled:not(.e-float-input) .e-multi-select-wrapper input[type='text'] {
   min-height: 39px;
+  padding-right: 10px;
 }
 
 .e-small.e-multiselect.e-filled:not(.e-float-input) .e-multi-select-wrapper input[type='text'],
@@ -24941,7 +25037,7 @@ ejs-multiselect {
 .e-small.e-bigger .e-multiselect.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-delim-values,
 .e-small .e-bigger.e-multiselect.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-delim-values,
 .e-bigger .e-small.e-multiselect.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-delim-values {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 39px;
 }
 
@@ -25022,7 +25118,21 @@ ejs-multiselect {
 .e-bigger.e-small .e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips,
 .e-bigger .e-small.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips,
 .e-small .e-bigger.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips {
-  margin: 5px 8px 0 0;
+  margin: 8px 8px 0 0;
+  padding: 0 8px;
+}
+
+.e-rtl.e-filled.e-float-input .e-multi-select-wrapper .e-chips,
+.e-rtl.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger.e-small.e-filled.e-float-input .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger.e-small .e-filled.e-float-input .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger .e-small.e-filled.e-float-input .e-multi-select-wrapper .e-chips,
+.e-rtl.e-small .e-bigger.e-filled.e-float-input .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger.e-small.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger.e-small .e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger .e-small.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips,
+.e-rtl.e-small .e-bigger.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips {
+  margin: 8px 0 0 8px;
   padding: 0 8px;
 }
 
@@ -25040,18 +25150,23 @@ ejs-multiselect {
   padding-right: 8px;
 }
 
+.e.rtl.e-small .e-filled.e-float-input .e-multi-select-wrapper .e-chips,
+.e-rtl.e-small.e-filled.e-float-input .e-multi-select-wrapper .e-chips {
+  margin: 4px 0 0 4px;
+}
+
 .e-small .e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips,
 .e-small.e-filled:not(.e-float-input) .e-multi-select-wrapper .e-chips {
   height: 24px;
 }
 
-.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-small.e-filled:not(.e-bigger).e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-small .e-filled:not(.e-bigger).e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-bigger.e-small.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-bigger.e-small .e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-bigger .e-small.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close,
-.e-small .e-bigger.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips .e-chips-close {
+.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-small.e-filled:not(.e-bigger).e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-small .e-filled:not(.e-bigger).e-multiselect:not(.e-float-input) .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-bigger.e-small.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-bigger.e-small .e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-bigger .e-small.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close,
+.e-small .e-bigger.e-filled.e-multiselect.e-float-input .e-multi-select-wrapper .e-chips:not(.e-mob-chip) .e-chips-close {
   height: 12px;
   width: 12px;
 }
@@ -25079,6 +25194,14 @@ ejs-multiselect {
   padding: 0 4px 0 0;
 }
 
+.e-rtl.e-filled.e-multiselect .e-multi-select-wrapper .e-chips > .e-chipcontent,
+.e-rtl.e-bigger.e-small.e-filled.e-multiselect .e-multi-select-wrapper .e-chips > .e-chipcontent,
+.e-rtl.e-bigger.e-small .e-filled.e-multiselect .e-multi-select-wrapper .e-chips > .e-chipcontent,
+.e-rtl.e-bigger .e-small.e-filled.e-multiselect .e-multi-select-wrapper .e-chips > .e-chipcontent,
+.e-rtl.e-small .e-bigger.e-filled.e-multiselect .e-multi-select-wrapper .e-chips > .e-chipcontent {
+  padding: 0 0 0 4px;
+}
+
 .e-small.e-filled.e-float-input.e-multiselect .e-multi-select-wrapper .e-chips > .e-chipcontent,
 .e-small .e-filled.e-float-input.e-multiselect .e-multi-select-wrapper .e-chips > .e-chipcontent {
   font-size: 10px;
@@ -25099,6 +25222,10 @@ ejs-multiselect {
   font-size: 14px;
 }
 
+.e-rtl.e-bigger.e-filled .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger .e-filled .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger.e-filled.e-float-input .e-multi-select-wrapper .e-chips,
+.e-rtl.e-bigger .e-filled.e-float-input .e-multi-select-wrapper .e-chips,
 .e-bigger.e-filled .e-multi-select-wrapper .e-chips,
 .e-bigger .e-filled .e-multi-select-wrapper .e-chips {
   padding: 0 12px;
@@ -25107,63 +25234,6 @@ ejs-multiselect {
 .e-bigger.e-filled.e-float-input .e-multi-select-wrapper .e-chips,
 .e-bigger .e-filled.e-float-input .e-multi-select-wrapper .e-chips {
   padding-right: 8px;
-}
-
-.e-filled.e-float-input .e-multi-select-wrapper.e-mob-wrapper .e-chips.e-mob-chip .e-chips-close {
-  height: 14px;
-  margin: 0;
-  width: 14px;
-}
-
-.e-filled.e-multiselect.e-float-input input:focus ~ label.e-float-text,
-.e-filled.e-multiselect.e-float-input input:valid ~ label.e-float-text,
-.e-filled.e-multiselect.e-float-input input ~ label.e-label-top.e-float-text,
-.e-filled.e-multiselect.e-float-input input[readonly] ~ label.e-label-top.e-float-text,
-.e-filled.e-multiselect.e-float-input input[disabled] ~ label.e-label-top.e-float-text,
-.e-filled.e-multiselect.e-float-input input label.e-float-text.e-label-top,
-.e-filled.e-multiselect.e-float-input.e-control-wrapper input:focus ~ label.e-float-text,
-.e-filled.e-multiselect.e-float-input.e-control-wrapper input:valid ~ label.e-float-text,
-.e-filled.e-multiselect.e-float-input.e-control-wrapper input ~ label.e-label-top.e-float-text,
-.e-filled.e-multiselect.e-float-input.e-control-wrapper input[readonly] ~ label.e-label-top.e-float-text,
-.e-filled.e-multiselect.e-float-input.e-control-wrapper input[disabled] ~ label.e-label-top.e-float-text,
-.e-filled.e-multiselect.e-float-input.e-control-wrapper input label.e-float-text.e-label-top,
-.e-filled.e-multiselect.e-float-input.e-input-focus input ~ label.e-float-text,
-.e-filled.e-multiselect.e-float-input.e-control-wrapper.e-input-focus input ~ label.e-float-text {
-  font-size: 14px;
-}
-
-.e-bigger.e-filled.e-multiselect.e-float-input input:focus ~ label.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input input:valid ~ label.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input input ~ label.e-label-top.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input input[readonly] ~ label.e-label-top.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input input[disabled] ~ label.e-label-top.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input input label.e-float-text.e-label-top,
-.e-bigger.e-filled.e-multiselect.e-float-input.e-control-wrapper input:focus ~ label.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input.e-control-wrapper input:valid ~ label.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input.e-control-wrapper input ~ label.e-label-top.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input.e-control-wrapper input[readonly] ~ label.e-label-top.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input.e-control-wrapper input[disabled] ~ label.e-label-top.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input.e-control-wrapper input label.e-float-text.e-label-top,
-.e-bigger.e-filled.e-multiselect.e-float-input.e-input-focus input ~ label.e-float-text,
-.e-bigger.e-filled.e-multiselect.e-float-input.e-control-wrapper.e-input-focus input ~ label.e-float-text {
-  font-size: 12px;
-}
-
-.e-small.e-filled.e-multiselect.e-float-input input:focus ~ label.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input input:valid ~ label.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input input ~ label.e-label-top.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input input[readonly] ~ label.e-label-top.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input input[disabled] ~ label.e-label-top.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input input label.e-float-text.e-label-top,
-.e-small.e-filled.e-multiselect.e-float-input.e-control-wrapper input:focus ~ label.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input.e-control-wrapper input:valid ~ label.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input.e-control-wrapper input ~ label.e-label-top.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input.e-control-wrapper input[readonly] ~ label.e-label-top.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input.e-control-wrapper input[disabled] ~ label.e-label-top.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input.e-control-wrapper input label.e-float-text.e-label-top,
-.e-small.e-filled.e-multiselect.e-float-input.e-input-focus input ~ label.e-float-text,
-.e-small.e-filled.e-multiselect.e-float-input.e-control-wrapper.e-input-focus input ~ label.e-float-text {
-  font-size: 10px;
 }
 
 .e-filled.e-multi-select-wrapper .e-chips-close.e-close-hooker {
@@ -30206,6 +30276,7 @@ ejs-listbox {
   font-size: 14px;
   line-height: 36px;
   margin-right: 10px;
+  width: 1em;
 }
 
 .e-contextmenu-wrapper ul .e-menu-item .e-caret,
@@ -35455,6 +35526,11 @@ ejs-sidebar {
   padding: 0;
 }
 
+.e-menu-wrapper ul.e-menu .e-menu-item .e-menu-icon,
+.e-menu-container ul.e-menu .e-menu-item .e-menu-icon {
+  width: 24px;
+}
+
 .e-menu-wrapper ul .e-menu-item,
 .e-menu-container ul .e-menu-item {
   cursor: pointer;
@@ -35503,7 +35579,6 @@ ejs-sidebar {
   line-height: 42px;
   margin-right: 8px;
   text-align: center;
-  width: 24px;
 }
 
 .e-menu-wrapper ul .e-menu-item .e-caret,
@@ -35554,6 +35629,7 @@ ejs-sidebar {
   font-size: 14px;
   line-height: 36px;
   margin-right: 10px;
+  width: 1em;
 }
 
 .e-menu-wrapper .e-ul .e-menu-item .e-caret,
@@ -35581,11 +35657,6 @@ ejs-sidebar {
 .e-menu-wrapper .e-ul .e-menu-item .e-caret,
 .e-menu-container .e-ul .e-menu-item .e-caret {
   font-size: 11px;
-}
-
-.e-menu-wrapper .e-ul .e-menu-item .e-menu-icon,
-.e-menu-container .e-ul .e-menu-item .e-menu-icon {
-  width: 1em;
 }
 
 .e-menu-wrapper.e-menu-icon-right .e-menu-header .e-menu-icon,
@@ -35733,6 +35804,11 @@ ejs-sidebar {
   overflow: auto;
 }
 
+.e-menu-wrapper.e-contextmenu-container,
+.e-menu-container.e-contextmenu-container {
+  height: 1px;
+}
+
 .e-menu-wrapper.e-contextmenu-container .e-menu-vscroll ul.e-ul,
 .e-menu-container.e-contextmenu-container .e-menu-vscroll ul.e-ul {
   width: inherit;
@@ -35828,7 +35904,6 @@ ejs-sidebar {
   font-size: 16px;
   line-height: 56px;
   margin-right: 10px;
-  width: 24px;
 }
 
 .e-bigger .e-menu-wrapper ul .e-menu-item.e-menu-caret-icon,
@@ -35932,7 +36007,6 @@ ejs-sidebar {
 .e-bigger .e-menu-container ul.e-ul .e-menu-item .e-menu-icon,
 .e-bigger.e-menu-container ul.e-ul .e-menu-item .e-menu-icon {
   margin-right: 10px;
-  width: 1em;
 }
 
 .e-bigger .e-menu-container:not(.e-hamburger):not(.e-rtl) .e-menu.e-vertical .e-blankicon,
@@ -36453,6 +36527,11 @@ ejs-sidebar {
 .e-menu-wrapper.e-menu-popup,
 .e-menu-container.e-menu-popup {
   background-color: #fff;
+}
+
+.e-menu-wrapper.e-menu-popup.e-sfcontextmenu .e-menu-vscroll,
+.e-menu-container.e-menu-popup.e-sfcontextmenu .e-menu-vscroll {
+  background-color: inherit;
 }
 
 .e-menu-wrapper .e-menu-hscroll.e-hscroll .e-scroll-nav,
@@ -37515,6 +37594,14 @@ ejs-sidebar {
   content: '\E7A7';
 }
 
+.e-excelfilter .e-sortascending::before {
+  content: '\E734';
+}
+
+.e-excelfilter .e-sortdescending::before {
+  content: '\E733';
+}
+
 /*! Excel-Filter layout */
 .sf-grid .e-excelfilter .e-dlg-content {
   overflow: visible;
@@ -37909,6 +37996,15 @@ ejs-sidebar {
 
 .e-excelfilter .e-filtered::before {
   color: #e3165b;
+}
+
+.e-excelfilter .e-dlg-content {
+  padding-bottom: 0;
+}
+
+li.e-separator.e-menu-item.e-excel-separator {
+  margin-bottom: 4px;
+  margin-top: 4px;
 }
 
 .e-xlsel {
@@ -52307,7 +52403,7 @@ ejs-sidebar {
   --breakpoint-md: 768px;
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
-  --font-family-sans-serif: "Roboto", sans-serif;
+  --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
@@ -52339,10 +52435,10 @@ section {
 
 body {
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #212529;
   text-align: left;
   background-color: #f8fafc;
@@ -54391,11 +54487,11 @@ pre code {
 .form-control {
   display: block;
   width: 100%;
-  height: calc(1.6em + 0.75rem + 2px);
+  height: calc(1.5em + 0.75rem + 2px);
   padding: 0.375rem 0.75rem;
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
@@ -54474,7 +54570,7 @@ select.form-control:focus::-ms-value {
   padding-bottom: calc(0.375rem + 1px);
   margin-bottom: 0;
   font-size: inherit;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .col-form-label-lg {
@@ -54497,7 +54593,7 @@ select.form-control:focus::-ms-value {
   padding: 0.375rem 0;
   margin-bottom: 0;
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #212529;
   background-color: transparent;
   border: solid transparent;
@@ -54610,7 +54706,7 @@ textarea.form-control {
   padding: 0.25rem 0.5rem;
   margin-top: 0.1rem;
   font-size: 0.7875rem;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #fff;
   background-color: rgba(56, 193, 114, 0.9);
   border-radius: 0.25rem;
@@ -54626,11 +54722,11 @@ textarea.form-control {
 .was-validated .form-control:valid,
 .form-control.is-valid {
   border-color: #38c172;
-  padding-right: calc(1.6em + 0.75rem);
+  padding-right: calc(1.5em + 0.75rem);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2338c172' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right calc(0.4em + 0.1875rem) center;
-  background-size: calc(0.8em + 0.375rem) calc(0.8em + 0.375rem);
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
 .was-validated .form-control:valid:focus,
@@ -54641,15 +54737,15 @@ textarea.form-control {
 
 .was-validated textarea.form-control:valid,
 textarea.form-control.is-valid {
-  padding-right: calc(1.6em + 0.75rem);
-  background-position: top calc(0.4em + 0.1875rem) right calc(0.4em + 0.1875rem);
+  padding-right: calc(1.5em + 0.75rem);
+  background-position: top calc(0.375em + 0.1875rem) right calc(0.375em + 0.1875rem);
 }
 
 .was-validated .custom-select:valid,
 .custom-select.is-valid {
   border-color: #38c172;
   padding-right: calc(0.75em + 2.3125rem);
-  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2338c172' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") #fff no-repeat center right 1.75rem/calc(0.8em + 0.375rem) calc(0.8em + 0.375rem);
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2338c172' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") #fff no-repeat center right 1.75rem/calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
 .was-validated .custom-select:valid:focus,
@@ -54725,7 +54821,7 @@ textarea.form-control.is-valid {
   padding: 0.25rem 0.5rem;
   margin-top: 0.1rem;
   font-size: 0.7875rem;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #fff;
   background-color: rgba(227, 52, 47, 0.9);
   border-radius: 0.25rem;
@@ -54741,11 +54837,11 @@ textarea.form-control.is-valid {
 .was-validated .form-control:invalid,
 .form-control.is-invalid {
   border-color: #e3342f;
-  padding-right: calc(1.6em + 0.75rem);
+  padding-right: calc(1.5em + 0.75rem);
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23e3342f' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23e3342f' stroke='none'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right calc(0.4em + 0.1875rem) center;
-  background-size: calc(0.8em + 0.375rem) calc(0.8em + 0.375rem);
+  background-position: right calc(0.375em + 0.1875rem) center;
+  background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
 .was-validated .form-control:invalid:focus,
@@ -54756,15 +54852,15 @@ textarea.form-control.is-valid {
 
 .was-validated textarea.form-control:invalid,
 textarea.form-control.is-invalid {
-  padding-right: calc(1.6em + 0.75rem);
-  background-position: top calc(0.4em + 0.1875rem) right calc(0.4em + 0.1875rem);
+  padding-right: calc(1.5em + 0.75rem);
+  background-position: top calc(0.375em + 0.1875rem) right calc(0.375em + 0.1875rem);
 }
 
 .was-validated .custom-select:invalid,
 .custom-select.is-invalid {
   border-color: #e3342f;
   padding-right: calc(0.75em + 2.3125rem);
-  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23e3342f' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23e3342f' stroke='none'/%3e%3c/svg%3e") #fff no-repeat center right 1.75rem/calc(0.8em + 0.375rem) calc(0.8em + 0.375rem);
+  background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px, url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23e3342f' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23e3342f' stroke='none'/%3e%3c/svg%3e") #fff no-repeat center right 1.75rem/calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
 
 .was-validated .custom-select:invalid:focus,
@@ -54903,7 +54999,7 @@ textarea.form-control.is-invalid {
   border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.5;
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
@@ -56134,7 +56230,7 @@ input[type=button].btn-block {
   margin-bottom: 0;
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #495057;
   text-align: center;
   white-space: nowrap;
@@ -56211,7 +56307,7 @@ input[type=button].btn-block {
   position: relative;
   z-index: 1;
   display: block;
-  min-height: 1.44rem;
+  min-height: 1.35rem;
   padding-left: 1.5rem;
   -webkit-print-color-adjust: exact;
           color-adjust: exact;
@@ -56227,7 +56323,7 @@ input[type=button].btn-block {
   left: 0;
   z-index: -1;
   width: 1rem;
-  height: 1.22rem;
+  height: 1.175rem;
   opacity: 0;
 }
 
@@ -56269,7 +56365,7 @@ input[type=button].btn-block {
 
 .custom-control-label::before {
   position: absolute;
-  top: 0.22rem;
+  top: 0.175rem;
   left: -1.5rem;
   display: block;
   width: 1rem;
@@ -56282,7 +56378,7 @@ input[type=button].btn-block {
 
 .custom-control-label::after {
   position: absolute;
-  top: 0.22rem;
+  top: 0.175rem;
   left: -1.5rem;
   display: block;
   width: 1rem;
@@ -56340,7 +56436,7 @@ input[type=button].btn-block {
 }
 
 .custom-switch .custom-control-label::after {
-  top: calc(0.22rem + 2px);
+  top: calc(0.175rem + 2px);
   left: calc(-2.25rem + 2px);
   width: calc(1rem - 4px);
   height: calc(1rem - 4px);
@@ -56367,11 +56463,11 @@ input[type=button].btn-block {
 .custom-select {
   display: inline-block;
   width: 100%;
-  height: calc(1.6em + 0.75rem + 2px);
+  height: calc(1.5em + 0.75rem + 2px);
   padding: 0.375rem 1.75rem 0.375rem 0.75rem;
   font-size: 0.9rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #495057;
   vertical-align: middle;
   background: #fff url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") no-repeat right 0.75rem center/8px 10px;
@@ -56434,7 +56530,7 @@ input[type=button].btn-block {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: calc(1.6em + 0.75rem + 2px);
+  height: calc(1.5em + 0.75rem + 2px);
   margin-bottom: 0;
 }
 
@@ -56442,7 +56538,7 @@ input[type=button].btn-block {
   position: relative;
   z-index: 2;
   width: 100%;
-  height: calc(1.6em + 0.75rem + 2px);
+  height: calc(1.5em + 0.75rem + 2px);
   margin: 0;
   opacity: 0;
 }
@@ -56471,10 +56567,10 @@ input[type=button].btn-block {
   right: 0;
   left: 0;
   z-index: 1;
-  height: calc(1.6em + 0.75rem + 2px);
+  height: calc(1.5em + 0.75rem + 2px);
   padding: 0.375rem 0.75rem;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #495057;
   background-color: #fff;
   border: 1px solid #ced4da;
@@ -56488,9 +56584,9 @@ input[type=button].btn-block {
   bottom: 0;
   z-index: 3;
   display: block;
-  height: calc(1.6em + 0.75rem);
+  height: calc(1.5em + 0.75rem);
   padding: 0.375rem 0.75rem;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #495057;
   content: "Browse";
   background-color: #e9ecef;
@@ -56791,8 +56887,8 @@ input[type=button].btn-block {
 
 .navbar-brand {
   display: inline-block;
-  padding-top: 0.32rem;
-  padding-bottom: 0.32rem;
+  padding-top: 0.33125rem;
+  padding-bottom: 0.33125rem;
   margin-right: 1rem;
   font-size: 1.125rem;
   line-height: inherit;
@@ -58567,7 +58663,7 @@ a.close.disabled {
 
 .modal-title {
   margin-bottom: 0;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .modal-body {
@@ -58647,10 +58743,10 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   text-align: left;
   text-align: start;
   text-decoration: none;
@@ -58772,10 +58868,10 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Roboto", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: normal;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.5;
   text-align: left;
   text-align: start;
   text-decoration: none;

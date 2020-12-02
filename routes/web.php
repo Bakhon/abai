@@ -133,6 +133,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('kpicalc','VizCenter\Marab2Controller@kpicalculation');
         Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
 
+        Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
+
     });
     Auth::routes([
         'reset' => false,
