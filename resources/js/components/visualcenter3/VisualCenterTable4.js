@@ -11,6 +11,32 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      t1:'',
+      t11:'',
+      t2:'',
+      t22:'',
+      t3:'',
+      t33:'',
+      t4:'',
+      t44:'',
+      t5:'',
+      t55:'',
+      t6:'',
+      t66:'',      
+      specificIncomePlanTG:'',
+      specificIncomeFactTG:'',
+      specificIncomePlanUSD:'',
+      specificIncomeFactUSD:'',
+      unitCostsPlanTG:'',
+      unitCostsFactTG:'',
+      unitCostsPlanUSD:'',
+      unitCostsFactUSD:'',
+      kvlPerTonPlan:'',
+      kvlPerTonFact:'',
+      actualEfficiencyGTMP:'',
+      actualEfficiencyGTMUN:'',
+      actualDrillingEfficiencyP:'',
+      actualDrillingEfficiencyUN:'',
       default2:'111',
       currentMonth:'',
       lastMonth:'',
@@ -1784,6 +1810,33 @@ export default {
       this.net_profit = '114'; //чистая прибыль
       this.сapital_investment = '198'; //капиталовложения
       this.cash_flow = '-10';
+      this.specificIncomePlanTG='136602';
+      this.specificIncomeFactTG='127567';
+      this.specificIncomePlanUSD='49.98';
+      this.specificIncomeFactUSD='46.68';
+      this.unitCostsPlanTG='105864';
+      this. unitCostsFactTG='101854';
+      this. unitCostsPlanUSD='38.74';
+      this.unitCostsFactUSD='37.27';
+      this. kvlPerTonPlan='16517';
+      this.kvlPerTonFact='14432';
+      this.actualEfficiencyGTMP='2560';
+      this.actualEfficiencyGTMUN='575';
+      this.actualDrillingEfficiencyP='211';
+      this.actualDrillingEfficiencyUN='32';
+      this.t1='780';
+      this.t11='370';
+      this.t2='3.637';
+      this.t22='2.411';
+      this.t3='2.78';
+      this.t33='2.66';
+      this.t4='3.121';
+      this.t44='3.071'; 
+      this.t5='3.245';
+      this.t55='3.701';
+      this.t6='3.637';
+      this.t66='2.411';
+
     },
     //kpi
 

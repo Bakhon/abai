@@ -69334,3 +69334,47 @@ readers do not read off random characters that represent icons */
   margin-left: unset;
 }
 
+ol,
+ul,
+dl {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+/* left menu*/
+
+.list-group-item {
+  padding: 15px 0px 15px 15px;
+}
+
+div#sidebar-container2 {
+  background-color: #20274e;
+}
+
+.dropright:hover > .dropdown-menu {
+  display: block;
+}
+
+.dropright .dropdown-menu {
+  background-color: #20274e;
+  color: white;
+}
+
+.dropright .dropdown-menu a:link {
+  color: white;
+}
+
+.dropright .dropdown-menu a {
+  color: white;
+}
+
+.dropright .dropdown-menu a:visited {
+  color: white;
+}
+
+.move-menu {
+  margin-left: 15px;
+}
+
+/* left menu*/
+

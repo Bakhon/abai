@@ -49,7 +49,7 @@
                     class="arrow3"
                   ></div>
                   <div class="header-bottom">
-                    <div class="txt2" v-if="oil_factDay">
+                    <div class="txt2-2" v-if="oil_factDay">
                       {{
                         new Intl.NumberFormat("ru-RU").format(
                           Math.abs(
@@ -107,7 +107,7 @@
                     class="arrow3"
                   ></div>
                   <div class="header-bottom">
-                    <div class="txt2" v-if="oil_factDay">
+                    <div class="txt2-2" v-if="oil_factDay">
                       {{
                         new Intl.NumberFormat("ru-RU").format(
                           Math.abs(
@@ -116,7 +116,7 @@
                         )
                       }}%
                     </div>
-                    <div class="txt3">vs от плана</div>
+                    <div class="txt3">от плана</div>
                   </div>
                 </div>
               </td>
@@ -165,7 +165,7 @@
                     class="arrow3"
                   ></div>
                   <div class="header-bottom">
-                    <div class="txt2" v-if="oil_factDay">
+                    <div class="txt2-2" v-if="oil_factDay">
                       {{
                         new Intl.NumberFormat("ru-RU").format(
                           Math.abs(
@@ -174,7 +174,7 @@
                         )
                       }}%
                     </div>
-                    <div class="txt3">vs от плана</div>
+                    <div class="txt3">от плана</div>
                   </div>
                 </div>
               </td>
@@ -223,7 +223,7 @@
                     class="arrow3"
                   ></div>
                   <div class="header-bottom">
-                    <div class="txt2" v-if="oil_factDay">
+                    <div class="txt2-2" v-if="oil_factDay">
                       {{
                         new Intl.NumberFormat("ru-RU").format(
                           Math.abs(
@@ -232,7 +232,7 @@
                         )
                       }}%
                     </div>
-                    <div class="txt3">vs от плана</div>
+                    <div class="txt3">от плана</div>
                   </div>
                 </div>
               </td>
@@ -289,7 +289,7 @@
                     class="arrow3"
                   ></div>
                   <div class="header-bottom">
-                    <div class="txt2" v-if="gas_factDay">
+                    <div class="txt2-2" v-if="gas_factDay">
                       {{
                         new Intl.NumberFormat("ru-RU").format(
                           Math.abs(
@@ -298,7 +298,7 @@
                         )
                       }}%
                     </div>
-                    <div class="txt3">vs от плана</div>
+                    <div class="txt3">от плана</div>
                   </div>
                 </div>
               </td>
@@ -325,7 +325,7 @@
                     class="arrow3"
                   ></div>
                   <div class="header-bottom">
-                    <div class="txt2" v-if="gas_factDay">
+                    <div class="txt2-2" v-if="gas_factDay">
                       {{
                         new Intl.NumberFormat("ru-RU").format(
                           Math.abs(
@@ -334,7 +334,7 @@
                         )
                       }}%
                     </div>
-                    <div class="txt3">vs от плана</div>
+                    <div class="txt3">от плана</div>
                   </div>
                 </div>
               </td>
@@ -348,8 +348,8 @@
                 <br />
                 <div class="percent-currency">
                   <div class="arrow"></div>
-                  <div class="txt2">5,2%</div>
-                  <div class="txt3">vs сентябрь</div>
+                  <div class="txt2-2">5,2%</div>
+                  <div class="txt3">vs прошл. период</div>
                 </div>
               </td>
               <td @click="changeTable('3')" :style="`${tableHover3}`">
@@ -362,8 +362,8 @@
                 <br />
                 <div class="percent-currency">
                   <div class="arrow"></div>
-                  <div class="txt2">5,2%</div>
-                  <div class="txt3">vs сентябрь</div>
+                  <div class="txt2-2">5,2%</div>
+                  <div class="txt3">vs вчера</div>
                 </div>
               </td>
             </tr>
@@ -405,8 +405,8 @@
                   :style="`${tableHover4}`"
                 >
                   <div class="first-td-header">
-                    <div class="txt7" v-if="default2">
-                      {{ new Intl.NumberFormat("ru-RU").format(default2) }}
+                    <div class="txt7" v-if="t1">
+                      {{ new Intl.NumberFormat("ru-RU").format(t1) }}
                     </div>
 
                     <div class="in-work">млрд. тенге</div>
@@ -421,107 +421,12 @@
                 </td>
 
                 <td>
-                    <div class="report-execution">
-                   Текущее исполнение КПД
-                    </div>
-                
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colspan="2"
-                  @click="changeTable('4')"
-                  :style="`${tableHover4}`"
-                >
-                  <div class="right-side-bottom">
-                    <div class="txt8">Снижение OPEX и CAPEX</div>
+                  <div>
+                    <visual-center-speedometer1></visual-center-speedometer1>
                   </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-
-
-           <div class="first-string col-4 first-string2 float table-border2">
-          <div class="table-responsive">
-            <table class="table">
-              <tr>
-                <td
-                  class="w-50"
-                  @click="changeTable('4')"
-                  :style="`${tableHover4}`"
-                >
-                  <div class="first-td-header">
-                    <div class="txt7" v-if="default2">
-                      {{ new Intl.NumberFormat("ru-RU").format(default2) }}
-                    </div>
-
-                    <div class="in-work">млрд. тенге</div>
-
-                    <div class="report-execution">
-                      Исполнение за отчётный период
-                    </div>
+                  <div class="report-execution">
+                    Текущее исполнение КПД
                   </div>
-                  <div class="second-td-header">
-                    <div class="vert-line"></div>
-                  </div>
-                </td>
-
-                <td>
-                    <div class="report-execution">
-                   Текущее исполнение КПД
-                    </div>
-                
-                </td>
-              </tr>
-              <tr>
-                <td
-                  colspan="2"
-                  @click="changeTable('4')"
-                  :style="`${tableHover4}`"
-                >
-                  <div class="right-side-bottom">
-                    <div class="txt8">Снижение OPEX и CAPEX</div>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-
-
-        <div class="first-string col-4 first-string2 float">
-          <div class="table-responsive">
-            <table class="table">
-              <tr>
-                <td
-                  class="w-50"
-                  @click="changeTable('4')"
-                  :style="`${tableHover4}`"
-                >
-                  <div class="first-td-header">
-                    <div class="txt7" v-if="default2">
-                      {{ new Intl.NumberFormat("ru-RU").format(default2) }}
-                    </div>
-
-                    <div class="in-work">млрд. тенге</div>
-
-                    <div class="report-execution">
-                      Исполнение за отчётный период
-                    </div>
-                  </div>
-                  <div class="second-td-header">
-                    <div class="vert-line"></div>
-                  </div>
-                </td>
-
-                <td>
-                    <div class="report-execution">
-                   Текущее исполнение КПД
-                    </div>
-                
                 </td>
               </tr>
               <tr>
@@ -549,8 +454,8 @@
                   :style="`${tableHover4}`"
                 >
                   <div class="first-td-header">
-                    <div class="txt7" v-if="default2">
-                      {{ new Intl.NumberFormat("ru-RU").format(default2) }}
+                    <div class="txt7" v-if="t2">
+                      {{ new Intl.NumberFormat("ru-RU").format(t2) }}
                     </div>
 
                     <div class="in-work">млрд. тенге</div>
@@ -565,10 +470,10 @@
                 </td>
 
                 <td>
-                    <div class="report-execution">
-                   Текущее исполнение КПД
-                    </div>
-                
+                  <visual-center-speedometer2></visual-center-speedometer2>
+                  <div class="report-execution">
+                    Текущее исполнение КПД
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -578,7 +483,54 @@
                   :style="`${tableHover4}`"
                 >
                   <div class="right-side-bottom">
-                    <div class="txt8">Снижение OPEX и CAPEX</div>
+                    <div class="txt8">Долг/EBIDTA</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="first-string col-4 first-string2 float">
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <td
+                  class="w-50"
+                  @click="changeTable('4')"
+                  :style="`${tableHover4}`"
+                >
+                  <div class="first-td-header">
+                    <div class="txt7" v-if="t3">
+                      {{ new Intl.NumberFormat("ru-RU").format(t3) }}
+                    </div>
+
+                    <div class="in-work">%</div>
+
+                    <div class="report-execution">
+                      Исполнение за отчётный период
+                    </div>
+                  </div>
+                  <div class="second-td-header">
+                    <div class="vert-line"></div>
+                  </div>
+                </td>
+
+                <td>
+                  <visual-center-speedometer3></visual-center-speedometer3>
+                  <div class="report-execution">
+                    Текущее исполнение КПД
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colspan="2"
+                  @click="changeTable('4')"
+                  :style="`${tableHover4}`"
+                >
+                  <div class="right-side-bottom">
+                    <div class="txt8">ROACE</div>
                   </div>
                 </td>
               </tr>
@@ -596,8 +548,8 @@
                   :style="`${tableHover4}`"
                 >
                   <div class="first-td-header">
-                    <div class="txt7" v-if="default2">
-                      {{ new Intl.NumberFormat("ru-RU").format(default2) }}
+                    <div class="txt7" v-if="t4">
+                      {{ new Intl.NumberFormat("ru-RU").format(t4) }}
                     </div>
 
                     <div class="in-work">млрд. тенге</div>
@@ -612,10 +564,10 @@
                 </td>
 
                 <td>
-                    <div class="report-execution">
-                   Текущее исполнение КПД
-                    </div>
-                
+                  <visual-center-speedometer4></visual-center-speedometer4>
+                  <div class="report-execution">
+                    Текущее исполнение КПД
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -625,7 +577,7 @@
                   :style="`${tableHover4}`"
                 >
                   <div class="right-side-bottom">
-                    <div class="txt8">Снижение OPEX и CAPEX</div>
+                    <div class="txt8">Запасы (A+B+C1)</div>
                   </div>
                 </td>
               </tr>
@@ -633,6 +585,52 @@
           </div>
         </div>
 
+        <div class="first-string col-4 first-string2 float table-border2">
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <td
+                  class="w-50"
+                  @click="changeTable('4')"
+                  :style="`${tableHover4}`"
+                >
+                  <div class="first-td-header">
+                    <div class="txt7" v-if="t5">
+                      {{ new Intl.NumberFormat("ru-RU").format(t5) }}
+                    </div>
+
+                    <div class="in-work">млрд. тенге</div>
+
+                    <div class="report-execution">
+                      Исполнение за отчётный период
+                    </div>
+                  </div>
+                  <div class="second-td-header">
+                    <div class="vert-line"></div>
+                  </div>
+                </td>
+
+                <td>
+                  <visual-center-speedometer5></visual-center-speedometer5>
+                  <div class="report-execution">
+                    Текущее исполнение КПД
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colspan="2"
+                  @click="changeTable('4')"
+                  :style="`${tableHover4}`"
+                >
+                  <div class="right-side-bottom">
+                    <div class="txt8">ESG рейтинг</div>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
 
         <div class="first-string col-4 first-string2 float">
           <div class="table-responsive">
@@ -644,11 +642,11 @@
                   :style="`${tableHover4}`"
                 >
                   <div class="first-td-header">
-                    <div class="txt7" v-if="default2">
-                      {{ new Intl.NumberFormat("ru-RU").format(default2) }}
+                    <div class="txt7" v-if="t6">
+                      {{ new Intl.NumberFormat("ru-RU").format(t6) }}
                     </div>
 
-                    <div class="in-work">млрд. тенге</div>
+                    <div class="in-work">%</div>
 
                     <div class="report-execution">
                       Исполнение за отчётный период
@@ -660,10 +658,10 @@
                 </td>
 
                 <td>
-                    <div class="report-execution">
-                   Текущее исполнение КПД
-                    </div>
-                
+                  <visual-center-speedometer6></visual-center-speedometer6>
+                  <div class="report-execution">
+                    Текущее исполнение КПД
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -673,14 +671,13 @@
                   :style="`${tableHover4}`"
                 >
                   <div class="right-side-bottom">
-                    <div class="txt8">Снижение OPEX и CAPEX</div>
+                    <div class="txt8">Местное содержание</div>
                   </div>
                 </td>
               </tr>
             </table>
           </div>
         </div>
-        
       </div>
 
       <div class="second-table" :style="`${Table2}`"></div>
@@ -747,19 +744,19 @@
               >
                 <div class="first-td-header">
                   <div class="in-work">план</div>
-                  <div class="txt4" v-if="wells2[0].prod_wells_work">
+                  <div class="txt4" v-if="specificIncomePlanTG">
                     {{
                       new Intl.NumberFormat("ru-RU").format(
-                        wells2[0].prod_wells_work
+                        specificIncomePlanTG
                       )
                     }}
                   </div>
 
                   <div class="in-work">факт</div>
-                  <div class="txt4" v-if="wells2[0].prod_wells_work">
+                  <div class="txt4" v-if="specificIncomeFactTG">
                     {{
                       new Intl.NumberFormat("ru-RU").format(
-                        wells2[0].prod_wells_work
+                        specificIncomeFactTG
                       )
                     }}
                   </div>
@@ -776,20 +773,16 @@
                 :style="`${tableHover4}`"
               >
                 <div class="in-work">план</div>
-                <div class="txt4" v-if="wells2[0].prod_wells_idle">
+                <div class="txt4" v-if="specificIncomePlanUSD">
                   {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      wells2[0].prod_wells_idle
-                    )
+                    new Intl.NumberFormat("ru-RU").format(specificIncomePlanUSD)
                   }}
                 </div>
 
                 <div class="in-work">факт</div>
-                <div class="txt4" v-if="wells2[0].prod_wells_idle">
+                <div class="txt4" v-if="specificIncomeFactUSD">
                   {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      wells2[0].prod_wells_idle
-                    )
+                    new Intl.NumberFormat("ru-RU").format(specificIncomeFactUSD)
                   }}
                 </div>
 
@@ -806,7 +799,7 @@
                   <div class="txt2">Удельные доходы</div>
                   <div class="percent-arrow">
                     <div class="arrow"></div>
-                    <div class="txt2">48%</div>
+                    <div class="txt2-2">48%</div>
                   </div>
                 </div>
               </td>
@@ -826,21 +819,13 @@
               >
                 <div class="first-td-header">
                   <div class="in-work">план</div>
-                  <div class="txt4" v-if="wells2[0].prod_wells_work">
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        wells2[0].prod_wells_work
-                      )
-                    }}
+                  <div class="txt4" v-if="unitCostsPlanTG">
+                    {{ new Intl.NumberFormat("ru-RU").format(unitCostsPlanTG) }}
                   </div>
 
                   <div class="in-work">факт</div>
-                  <div class="txt4" v-if="wells2[0].prod_wells_work">
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        wells2[0].prod_wells_work
-                      )
-                    }}
+                  <div class="txt4" v-if="unitCostsFactTG">
+                    {{ new Intl.NumberFormat("ru-RU").format(unitCostsFactTG) }}
                   </div>
                   <div class="in-idle">тенге/тонна</div>
                 </div>
@@ -855,21 +840,13 @@
                 :style="`${tableHover4}`"
               >
                 <div class="in-work">план</div>
-                <div class="txt4" v-if="wells2[0].prod_wells_idle">
-                  {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      wells2[0].prod_wells_idle
-                    )
-                  }}
+                <div class="txt4" v-if="unitCostsPlanUSD">
+                  {{ new Intl.NumberFormat("ru-RU").format(unitCostsPlanUSD) }}
                 </div>
 
                 <div class="in-work">факт</div>
-                <div class="txt4" v-if="wells2[0].prod_wells_idle">
-                  {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      wells2[0].prod_wells_idle
-                    )
-                  }}
+                <div class="txt4" v-if="unitCostsFactUSD">
+                  {{ new Intl.NumberFormat("ru-RU").format(unitCostsFactUSD) }}
                 </div>
 
                 <div class="in-idle">$/bbl</div>
@@ -885,7 +862,7 @@
                   <div class="txt2">Удельные расходы</div>
                   <div class="percent-arrow">
                     <div class="arrow"></div>
-                    <div class="txt2">48%</div>
+                    <div class="txt2-2">48%</div>
                   </div>
                 </div>
               </td>
@@ -905,53 +882,21 @@
               >
                 <div class="first-td-header">
                   <div class="in-work">план</div>
-                  <div class="txt4" v-if="wells2[0].prod_wells_work">
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        wells2[0].prod_wells_work
-                      )
-                    }}
-                  </div>
-
-                  <div class="in-work">факт</div>
-                  <div class="txt4" v-if="wells2[0].prod_wells_work">
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        wells2[0].prod_wells_work
-                      )
-                    }}
+                  <div class="txt4" v-if="kvlPerTonPlan">
+                    {{ new Intl.NumberFormat("ru-RU").format(kvlPerTonPlan) }}
                   </div>
                   <div class="in-idle">тенге/тонна</div>
                 </div>
                 <div class="second-td-header">
-                  <div class="vert-line"></div>
+                  <div class="vert-line2"></div>
                 </div>
               </td>
-
-              <td
-                class="w-50"
-                @click="changeTable('4')"
-                :style="`${tableHover4}`"
-              >
-                <div class="in-work">план</div>
-                <div class="txt4" v-if="wells2[0].prod_wells_idle">
-                  {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      wells2[0].prod_wells_idle
-                    )
-                  }}
-                </div>
-
+              <td>
                 <div class="in-work">факт</div>
-                <div class="txt4" v-if="wells2[0].prod_wells_idle">
-                  {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      wells2[0].prod_wells_idle
-                    )
-                  }}
+                <div class="txt4" v-if="kvlPerTonFact">
+                  {{ new Intl.NumberFormat("ru-RU").format(kvlPerTonFact) }}
                 </div>
-
-                <div class="in-idle">$/bbl</div>
+                <div class="in-idle">тенге/тонна</div>
               </td>
             </tr>
             <tr>
@@ -964,7 +909,7 @@
               <td @click="changeTable('4')" :style="`${tableHover4}`">
                 <div class="right-side-bottom">
                   <div class="arrow"></div>
-                  <div class="txt2">48%</div>
+                  <div class="txt2-2">48%</div>
                 </div>
               </td>
             </tr>
@@ -982,11 +927,11 @@
                 :style="`${tableHover4}`"
               >
                 <div class="first-td-header">
-                  <div class="in-work">Рентабельные</div>
-                  <div class="txt4" v-if="wells2[0].prod_wells_work">
+                  <div class="in-work">рентабельные</div>
+                  <div class="txt4" v-if="actualEfficiencyGTMP">
                     {{
                       new Intl.NumberFormat("ru-RU").format(
-                        wells2[0].prod_wells_work
+                        actualEfficiencyGTMP
                       )
                     }}
                   </div>
@@ -1003,12 +948,10 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="in-work">Нерентабельные</div>
-                <div class="txt4" v-if="wells2[0].prod_wells_idle">
+                <div class="in-work">нерентабельные</div>
+                <div class="txt4" v-if="actualEfficiencyGTMUN">
                   {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      wells2[0].prod_wells_idle
-                    )
+                    new Intl.NumberFormat("ru-RU").format(actualEfficiencyGTMUN)
                   }}
                 </div>
 
@@ -1023,10 +966,6 @@
               >
                 <div class="right-side-bottom">
                   <div class="txt2">Фактическая эффективность ГТМ</div>
-                  <div class="percent-arrow">
-                    <div class="arrow"></div>
-                    <div class="txt2">48%</div>
-                  </div>
                 </div>
               </td>
             </tr>
@@ -1044,11 +983,11 @@
                 :style="`${tableHover4}`"
               >
                 <div class="first-td-header">
-                  <div class="in-work">Рентабельные</div>
-                  <div class="txt4" v-if="wells2[0].prod_wells_work">
+                  <div class="in-work">рентабельные</div>
+                  <div class="txt4" v-if="actualDrillingEfficiencyP">
                     {{
                       new Intl.NumberFormat("ru-RU").format(
-                        wells2[0].prod_wells_work
+                        actualDrillingEfficiencyP
                       )
                     }}
                   </div>
@@ -1065,11 +1004,11 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="in-work">Нерентабельные</div>
-                <div class="txt4" v-if="wells2[0].prod_wells_idle">
+                <div class="in-work">нерентабельные</div>
+                <div class="txt4" v-if="actualDrillingEfficiencyUN">
                   {{
                     new Intl.NumberFormat("ru-RU").format(
-                      wells2[0].prod_wells_idle
+                      actualDrillingEfficiencyUN
                     )
                   }}
                 </div>
@@ -1085,10 +1024,6 @@
               >
                 <div class="right-side-bottom">
                   <div class="txt2">Фактическая эффективность бурения</div>
-                  <div class="percent-arrow">
-                    <div class="arrow"></div>
-                    <div class="txt2">48%</div>
-                  </div>
                 </div>
               </td>
             </tr>
@@ -1101,23 +1036,22 @@
           <table class="table">
             <tr>
               <td class="size-td">
-                <div class="number">2</div>
-              </td>
+              <div class="first-td-header">
+                <div class="number">24</div>
+            <div class="in-idle2">млн. тенге</div>
+              </div></td>
 
               <td class="w-65">
+                  
                 <!--  <div class="column-1">
                   <div class="arrow"></div>
                   <div class="txt2">1</div>
                 </div>-->
-                <div class="column-1">
-                  <div class="in-idle">Прирост</div>
-                  <div class="in-idle">с начала месяца</div>
-                </div>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <div class="txt2">Смертельные случаи</div>
+                <div class="txt2">Штрафы и пени</div>
               </td>
             </tr>
           </table>

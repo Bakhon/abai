@@ -1,3 +1,37 @@
+@font-face {
+    font-family: "HarmoniaSansProCyr-Regular";
+    src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Bold";
+    src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Bold.ttf") format("truetype");
+}
+
+ol, ul, dl {
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
+
+.left-side {
+    float: left;
+    overflow: hidden;
+    margin-top: -13px;
+    flex: 0 0 81%;
+    max-width: 81%;
+ 
+}
+
+.right-side2 {
+    float: left;
+    overflow: hidden;
+    margin-top: -13px;
+    flex: 0 0 19%;
+    max-width: 19%;
+    padding-left: 10px!important;
+}
+
 .unit-vc {
     color: #82BAFF;
     display: block;
@@ -13,7 +47,14 @@
     font-family: Bold;
     float: left;
     font-size: 16px;
-    margin-top: -1px;
+    margin-left: 14px;
+}
+
+.txt2-2 {
+    font-family: Bold;
+    float: left;
+    font-size: 16px;
+    margin-top: -1px;    
 }
 
 .table1-2 td {
@@ -26,10 +67,7 @@
 }
 
 
-ol, ul, dl {
-    padding-left: 0px!important;
-    padding-right: 0px!important;
-}
+
 
 .kpd {
     height: 40px;
@@ -75,15 +113,18 @@ ol, ul, dl {
 
 
 .txt7 {
-    font-family: "HarmoniaSansProCyr-Bold";
-    font-size: 58px;
+    font-family: "Bold";
+    font-size: 70px;
     font-weight: 550;
+    margin-top: 25px;
 }
 
 .txt8 {
     font-family: Bold;
     float: left;
     font-size: 21px;
+    margin-top: 10px;
+    margin-bottom: 37px;
 }
 
 
@@ -101,16 +142,23 @@ ol, ul, dl {
     border-right: 10px solid #0f1430;
 }
 
-
-@font-face {
-    font-family: "HarmoniaSansProCyr-Regular";
-    src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Regular.ttf") format("truetype");
+.table-responsive{
+overflow: hidden;
 }
 
-@font-face {
-    font-family: "Bold";
-    src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Bold.ttf") format("truetype");
+.round-slider {
+    margin-top: 30px;
+    height: 110px;
 }
+
+.in-idle2 {
+    color: #9FA5C7;
+    font-size: 14px; 
+    margin-top: -10px;
+    margin-bottom: -9px;
+}
+
+/*Доработки этой страницы */
 
 body {
     font-family: "HarmoniaSansProCyr-Regular"!important;
@@ -140,23 +188,6 @@ body {
     margin-bottom: unset!important;
 }
 
-.left-side {
-    float: left;
-    overflow: hidden;
-    margin-top: -13px;
-    flex: 0 0 78%;
-    max-width: 78%;
- 
-}
-
-.right-side2 {
-    float: left;
-    overflow: hidden;
-    margin-top: -13px;
-    flex: 0 0 22%;
-    max-width: 22%;
-    padding-left: 10px!important;
-}
 
 .first-string {
     background: #272953;
@@ -277,8 +308,8 @@ td:last-of-type {
 }
 
 .txt4 {
-    font-family: "HarmoniaSansProCyr-Bold";
-    font-size: 34px;
+    font-family: "Bold";
+    font-size: 32px;
     font-weight: 550;
 }
 
@@ -747,8 +778,9 @@ li.center-li {
     /* margin-left: 3%; */
     position: absolute;
     width: 1px;
-    height: 14vh;
+    height: 12vh;
     margin-top: 1vh;
+    margin-left: 20px;
 }
 
 
@@ -759,8 +791,9 @@ li.center-li {
     /* margin-left: 3%; */
     position: absolute;
     width: 1px;
-    height: 8vh;
+    height: 6vh;
     margin-top: 1vh;
+    margin-left: 20px;
 }
 
 
@@ -774,5 +807,5 @@ li.center-li {
 }
 
 .right-side-bottom {
-    margin-top: -15px;
+    margin-top: -5px;
 }
