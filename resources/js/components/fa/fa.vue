@@ -80,7 +80,7 @@
                 <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a>
         </div>
         <div class="tech">
-            <td> Факторный анализ </td>
+            <td> Факторный анализ</td>
         </div>
         <div>
             <select name="Company" class="from-control" id="companySelect"
@@ -108,25 +108,49 @@
                     <td rowspan="3" @click="sortBy('Main_problem')"><span>Основное отклонение в ТР</span></td>
                 </tr>
                 <tr class="headerColumn">
-                    <td rowspan="2" @click="sortBy('q_l_1')"><span>Qж, м3/сут</span></td>
-                    <td rowspan="2" @click="sortBy('q_o_1')"><span>Qн, м3/сут</span></td>
+                    <td rowspan="2" @click="sortBy('q_l_1')"><span>Qж</span></td>
+                    <td rowspan="2" @click="sortBy('q_o_1')"><span>Qн</span></td>
                     <td rowspan="2" @click="sortBy('wct_1')"><span>Обводненность</span></td>
-                    <td rowspan="2" @click="sortBy('bhp_1')"><span>Pзаб, ат</span></td>
-                    <td rowspan="2" @click="sortBy('p_res_1')"><span>Pпл,ат</span></td>
-                    <td rowspan="2" @click="sortBy('pi_1')"><span>Кпр,м3/сут/ат</span></td>
-                    <td rowspan="2" @click="sortBy('q_l_2')"><span>Qж, м3/сут</span></td>
-                    <td rowspan="2" @click="sortBy('q_o_2')"><span>Qн, м3/сут</span></td>
+                    <td rowspan="2" @click="sortBy('bhp_1')"><span>Pзаб</span></td>
+                    <td rowspan="2" @click="sortBy('p_res_1')"><span>Pпл</span></td>
+                    <td rowspan="2" @click="sortBy('pi_1')"><span>Кпр</span></td>
+                    <td rowspan="2" @click="sortBy('q_l_2')"><span>Qж</span></td>
+                    <td rowspan="2" @click="sortBy('q_o_2')"><span>Qн</span></td>
                     <td rowspan="2" @click="sortBy('wct_2')"><span>Обводненность</span></td>
-                    <td rowspan="2" @click="sortBy('bhp_2')"><span>Pзаб, ат</span></td>
-                    <td rowspan="2" @click="sortBy('p_res_2')"><span>Pпл,ат</span></td>
-                    <td rowspan="2" @click="sortBy('pi_2')"><span>Кпр,м3/сут/ат</span></td>
-                    <td rowspan="2" @click="sortBy('dqo')"><span>dQн, т/сут</span></td>
+                    <td rowspan="2" @click="sortBy('bhp_2')"><span>Pзаб</span></td>
+                    <td rowspan="2" @click="sortBy('p_res_2')"><span>Pпл</span></td>
+                    <td rowspan="2" @click="sortBy('pi_2')"><span>Кпр</span></td>
+                    <td rowspan="2" @click="sortBy('dqo')"><span>dQн</span></td>
                     <td rowspan="2" @click="sortBy('Pbh')"><span>Недостижение режимного Pзаб</span></td>
                     <td rowspan="2" @click="sortBy('wct')"><span>Рост обводненности</span></td>
                     <td rowspan="2" @click="sortBy('p_res')"><span>Снижение Pпл</span></td>
                     <td rowspan="2" @click="sortBy('PI')"><span>Снижение Kпрод</span></td>
                 </tr>
                 <tr></tr>
+                <tr class="subHeaderColumn">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>м3/сут</td>
+                    <td>м3/сут</td>
+                    <td></td>
+                    <td>ат</td>
+                    <td>ат</td>
+                    <td>м3/сут/ат</td>
+                    <td>м3/сут</td>
+                    <td>м3/сут</td>
+                    <td></td>
+                    <td>ат</td>
+                    <td>ат</td>
+                    <td>м3/сут/ат</td>
+                    <td>т/сут</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
                 <tr v-for="(row, row_index) in wells" :key="row_index">
                     <td> {{row.well}}</td>
                     <td>{{row.field}}</td>
@@ -149,10 +173,10 @@
                     <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
                     <td
                         :style="{
-                            background: getColor(Math.round(row.dqo*10)/10),
+                            background: getColor(Math.round(row.dqn*10)/10),
                         }"
                     >
-                        <span> {{Math.round(row.dqo*10)/10}} </span>
+                        <span> {{Math.round(row.dqn*10)/10}} </span>
                     </td>
 
                     <!-- <td>{{Math.round(row.Pbh*10)/10}}</td> -->
@@ -315,6 +339,10 @@ export default {
         dt2: null,
         fullWells: [],
         filter: null,
+        editdtm: null,
+        editdty: null,
+        editdtprevm: null,
+        editdtprevy: null,
         chartFilter_field: undefined,
         chartFilter_horizon: undefined,
         chartFilter_exp_meth: undefined,
@@ -461,6 +489,10 @@ export default {
           var choosenSecDt = dt2.split("-");
           this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+choosenDt[0]+"/"+choosenDt[1]+"/"+choosenSecDt[0]+"/"+choosenSecDt[1]+"/").then((response) => {
                 let data = response.data;
+                this.editdtm = choosenDt[1];
+                this.editdty = choosenDt[0];
+                this.editdtprevm = choosenSecDt[1];
+                this.editdtprevy = choosenSecDt[0];
                 if(data) {
                     console.log(data);
                     this.wells = data.data;
@@ -468,6 +500,7 @@ export default {
                 else {
                     console.log('No data');
                 }
+
             });
       },
       chooseField() {
@@ -497,6 +530,14 @@ export default {
         var prPrMm = mm-3;
         this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+yyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
+        this.editdtm = prMm;
+        console.log(this.editdtm);
+        this.editdty = yyyy;
+        console.log(this.editdty);
+        this.editdtprevm = prPrMm;
+        console.log(this.editdtprevm);
+        this.editdtprevy = yyyy;
+        console.log(this.editdtprevy);
         if(data) {
             console.log(data);
             this.wells = data.data;
@@ -517,6 +558,18 @@ export default {
         else if(prMm >= 10 && prPrMM < 10) {
             this.dt = '01' + '.0' + prMm + '.' + yyyy;
             this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy;
+        }
+        if(prMm < 10) {
+            this.dt = '01' + '.0' + prMm + '.' + yyyy;
+        }
+        else {
+            this.dt = '01' + '.' + prMm + '.' + yyyy;
+        }
+        if(prPrMm < 10) {
+            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy;
+        }
+        else {
+            this.dt2 = '01' + '.' + prPrMm + '.' + yyyy;
         }
     });
    },

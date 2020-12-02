@@ -2,15 +2,65 @@
     <div class="container-fluid">
         <div class="row justify-content-between">
             <a href="fa" class="but-nav__link but">Факторный анализ отклонений ТР</a>
-            <form class="form-group but-nav__link">
+            <!-- <form class="form-group but-nav__link">
                     <label for="inputDate">Введите дату:</label>
                     <input type="date" value = "01.06.2020" class="form-control" v-model="dt">
-            </form>
+            </form> -->
+            <div>
+                <div>
+                    <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
+                    <select
+                        style="background-color:#20274e;border-color:#20274e;color:white;"
+                        class="form-control"
+                        id="companySelect"
+                        @change="onChangeMonth($event)"
+                    >
+                    <option>Выберите месяц</option>
+                        <option value="1">январь</option>
+                        <option value="2">февраль</option>
+                        <option value="3">март</option>
+                        <option value="4">апрель</option>
+                        <option value="5">май</option>
+                        <option value="6">июнь</option>
+                        <option value="7">июль</option>
+                        <option value="8">август</option>
+                        <option value="9">сентябрь</option>
+                        <option value="10">октябрь</option>
+                        <option value="11">ноябрь</option>
+                        <option value="12">декабрь</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-wrap" style="color:white;" for="companySelect">Выберите год</label>
+                    <select
+                        style="background-color:#20274e;border-color:#20274e;color:white;"
+                        class="form-control"
+                        id="companySelect"
+                        @change="onChangeYear($event)"
+                    >
+                    <option value=''> Выберите год </option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+
+                    </select>
+                </div>
+                <!-- <div>
+                    <button :disabled='year==null || month==null' @click="updateData">Сформировать отчет</button>
+                </div> -->
+            </div>
             <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
             <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a>
             <a @click="editable()" v-if="!edit" class="but-nav__link but">Редактировать</a>
             <a @click="savetable()" v-if="edit" class="but-nav__link but">Сохранить</a>
             <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a>
+        </div>
+        <div>
+            <!-- <input type="text" placeholder="Enter Name" v-model="searchText"> -->
         </div>
         <div class='tech'>
             <td> Технологический режим на {{dt}}</td>
@@ -18,6 +68,7 @@
         <div>
             <select name="Company" class="from-control" id="companySelect"
                 v-model="filter" @change="chooseField">
+                <option value="Акшабулак Центральный">КазГер</option>
                 <option value="Акшабулак Центральный">Акшабулак Центральный</option>
                 <option value="Акшабулак Южный">Акшабулак Южный</option>
                 <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -41,8 +92,8 @@
                     <td rowspan="4" @click="sortBy('r_con')">R контура питания</td>
                     <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
                     <td rowspan="4" @click="sortBy('cas_ID')">Внутренний диаметр э/к</td>
-                    <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НТК</td>
-                    <td rowspan="4" @click="sortBy('tub_ID')">Внутренний диаметр НТК</td>
+                    <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НКТ</td>
+                    <td rowspan="4" @click="sortBy('tub_ID')">Внутренний диаметр НКТ</td>
                     <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
                     <td rowspan="4" @click="sortBy('h_up_perf_vd')">Нвдп</td>
                     <td rowspan="4" @click="sortBy('h_up_perf_md')">Удлинение(Нвдп)</td>
@@ -178,7 +229,7 @@
                     <td>мм</td>
                     <td>мм</td>
                     <td>мм</td>
-                    <td>м</td>
+                    <td>мм</td>
                     <td>м</td>
                     <td></td>
                     <td></td>
@@ -418,8 +469,8 @@
                         </span>
                     </td>
 
-                    <td v-if="!edit">{{Math.round(row.h_up_perf_ext*10)/10}}</td>
-                    <td v-if="edit">{{Math.round(row.h_up_perf_ext*10)/10}}</td>
+                    <td v-if="!edit">{{Math.round(row.h_up_perf_ext[0]*10)/10}}</td>
+                    <td v-if="edit">{{Math.round(row.h_up_perf_ext[0]*10)/10}}</td>
 
                     <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
                     wells[row_index].h_up_perf_md[1][0] !== '0'}">
@@ -949,8 +1000,8 @@
                     <td v-if="!edit">{{Math.round(row.grp_skin[0]*10)/10}}</td>
                     <td v-if="edit">{{Math.round(row.grp_skin[0]*10)/10}}</td>
 
-                    <td v-if="!edit">{{Math.round(row.grp_jd*10)/10}}</td>
-                    <td v-if="edit">{{Math.round(row.grp_jd*10)/10}}</td>
+                    <td v-if="!edit">{{Math.round(row.grp_jd*100)/100}}</td>
+                    <td v-if="edit">{{Math.round(row.grp_jd*100)/100}}</td>
 
                     <!-- <td>{{row.grp_date}}</td> -->
                     <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -1004,7 +1055,7 @@
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].visc_oil_rc[1][0] !== '0'}" :style="`background :${getColor(
                     wells[row_index].visc_oil_rc[1][0])}`"> </span>
-                        <span>{{Math.round(row.visc_oil_rc[0]*10)/10}}</span>
+                        <span>{{Math.round(row.visc_oil_rc[0]*100)/100}}</span>
                         <span v-if="wells && wells[row_index]" class="cell-comment">
                             {{ wells[row_index].visc_oil_rc[1][1]}}
                         </span>
@@ -1027,7 +1078,7 @@
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].visc_wat_rc[1][0] !== '0'}" :style="`background :${getColor(
                     wells[row_index].visc_wat_rc[1][0])}`"> </span>
-                        <span>{{Math.round(row.visc_wat_rc[0]*10)/10}}</span>
+                        <span>{{Math.round(row.visc_wat_rc[0]*100)/100}}</span>
                         <span v-if="wells && wells[row_index]" class="cell-comment">
                             {{ wells[row_index].visc_wat_rc[1][1]}}
                         </span>
@@ -1050,7 +1101,7 @@
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].visc_liq_rc[1][0] !== '0'}" :style="`background :${getColor(
                     wells[row_index].visc_liq_rc[1][0])}`"> </span>
-                        <span>{{Math.round(row.visc_liq_rc[0]*10)/10}}</span>
+                        <span>{{Math.round(row.visc_liq_rc[0]*100)/100}}</span>
                         <span v-if="wells && wells[row_index]" class="cell-comment">
                             {{ wells[row_index].visc_liq_rc[1][1]}}
                         </span>
@@ -1073,7 +1124,7 @@
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].bo[1][0] !== '0'}" :style="`background :${getColor(
                     wells[row_index].bo[1][0])}`"> </span>
-                        <span>{{Math.round(row.bo[0]*10)/10}}</span>
+                        <span>{{Math.round(row.bo[0]*100)/100}}</span>
                         <span v-if="wells && wells[row_index]" class="cell-comment">
                             {{ wells[row_index].bo[1][1]}}
                         </span>
@@ -1096,7 +1147,7 @@
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].dens_oil[1][0] !== '0'}" :style="`background :${getColor(
                     wells[row_index].dens_oil[1][0])}`"> </span>
-                        <span>{{Math.round(row.dens_oil[0]*10)/10}}</span>
+                        <span>{{Math.round(row.dens_oil[0]*100)/100}}</span>
                         <span v-if="wells && wells[row_index]" class="cell-comment">
                             {{ wells[row_index].dens_oil[1][1]}}
                         </span>
@@ -1119,7 +1170,7 @@
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].dens_liq[1][0] !== '0'}" :style="`background :${getColor(
                     wells[row_index].dens_liq[1][0])}`"> </span>
-                        <span>{{Math.round(row.dens_liq[0]*10)/10}}</span>
+                        <span>{{Math.round(row.dens_liq[0]*100)/100}}</span>
                         <span v-if="wells && wells[row_index]" class="cell-comment">
                             {{ wells[row_index].dens_liq[1][1]}}
                         </span>
@@ -1211,7 +1262,7 @@
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].pi[1][0] !== '0'}" :style="`background :${getColor(
                     wells[row_index].pi[1][0])}`"> </span>
-                        <span>{{Math.round(row.pi[0]*10)/10}}</span>
+                        <span>{{Math.round(row.pi[0]*100)/100}}</span>
                         <span v-if="wells && wells[row_index]" class="cell-comment">
                             {{ wells[row_index].pi[1][1]}}
                         </span>
@@ -2104,7 +2155,7 @@ export default {
   data: function () {
     return {
         wells: [],
-        sortType: 'asc',
+        sortType: 'name',
         filter: null,
         dt: null,
         fullWells: [],
@@ -2113,6 +2164,10 @@ export default {
         edit: false,
         editdtm: null,
         editdty: null,
+        // sortField: null,
+        // currentSortDir: 'asc',
+        year: null,
+        month: null,
     }
   },
   methods: {
@@ -2148,25 +2203,55 @@ export default {
           this.show_second = true;
           this.show_first = false;
       },
-      sortBy(type) {
-          let { wells, sortType } = this;
-          console.log(type, sortType);
-          if(sortType === 'asc') {
-            wells.sort((a, b) => a[type].localeCompare(b[type]))
-            this.sortType = 'desc';
-          } else {
-            wells.sort((a, b) => b[type].localeCompare(a[type]))
-            this.sortType = 'asc';
-          }
+      sortBy(sortType) {
+        //   let { wells, sortType } = this;
+        //   this.reverse = (this.sortType == sortType) ? !this.reverse : false;
+        //   this.sortType = sortType;
+
+        //   console.log(type, sortType);
+        //   if(sortType === 'asc') {
+        //     wells.sort((a, b) => a[type].localeCompare(b[type]))
+        //     this.sortType = 'desc';
+        //   } else {
+        //     wells.sort((a, b) => b[type].localeCompare(a[type]))
+        //     this.sortType = 'asc';
+        //   }
+        //   if (this.sortField === null) {
+        //       return this.wells;
+        //   }
+        //   return this.wells.sort((a, b) => {
+        //       let res;
+        //       if (typeof a[this.sortField] === 'string') {
+        //       res = a[this.sortField].localeCompare(b[this.sortField])
+        //       } else {
+        //       res = a[this.sortField] > b[this.sortField] ? 1 :
+        //           a[this.sortField] < b[this.sortField] ? -1 : 0
+        //       }
+        //       if (this.currentSortDir !== 'asc') {
+        //       ret = ret * -1;
+        //       }
+        //       return ret
+        //   })
 
       },
+      onChangeMonth(event) {
+          this.month = event.target.value;
+
+      },
+      onChangeYear(event) {
+          this.year = event.target.value;
+
+      },
+
       chooseDt() {
-          const { dt } = this;
-          console.log(dt)
-          var choosenDt = dt.split("-");
-          this.axios.get("http://172.20.103.51:7576/api/techregime/"+choosenDt[0]+"/"+choosenDt[1]+"/").then((response) => {
-                this.editdtm = choosenDt[1];
-                this.editdty = choosenDt[0];
+        //   const { dt } = this;
+        //   console.log(dt)
+        //   var choosenDt = dt.split("-");
+          this.axios.get("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/").then((response) => {
+                // this.editdtm = choosenDt[1];
+                // this.editdty = choosenDt[0];
+                console.log(this.year);
+                console.log(this.month)
                 let data = response.data;
                 if(data) {
                     console.log(data);
