@@ -31,6 +31,8 @@ class CreateVis2FormsTable extends Migration
             $table->float('burenie_skvajin_prohodka_fact',8,4);
             $table->float('tovarnyi_ostatok',8,4);
 
+            $table->integer('dzo');
+
             $table->integer('expl');
             $table->integer('deistv');
             $table->integer('prostoy');
