@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="col-10 left-side">
+    <div class="left-side">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1">
@@ -822,7 +822,7 @@
         </div>
       </div>
     </div>
-    <div class="col-2 right-side2">
+    <div class="right-side2">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1-2">
@@ -1013,7 +1013,7 @@
         <div class="table-responsive">
           <table class="table table1-2">
             <tr>
-              <td class="w-50">
+              <td>
                 <div class="number">11</div>
                 <div class="near-number">
                   <!-- <div class="column-1">
@@ -1028,7 +1028,7 @@
                 </div>
               </td>
 
-              <td class="w-50">
+              <td>
                 <div class="number">11</div>
                 <div class="near-number">
                   <!--  <div class="column-1">

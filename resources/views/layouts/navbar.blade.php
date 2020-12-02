@@ -313,13 +313,13 @@
     }
 
     .workTypeLogo {
-        margin-left: 80px;
+        margin-left: 60px;
     }
 
     .workTypeText {
         color: white;
         font-size: 16px;
-        margin-left: 13px;
+        margin-left: 2px;
     }
 
 
