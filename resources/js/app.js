@@ -14,7 +14,6 @@ import { Plotly } from 'vue-plotly';
 import excel from 'vue-excel-export';
 import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
-// import  jquery from 'jquery';
 
 
 
@@ -98,6 +97,7 @@ Vue.component('export-excel', require('./components/reports/excel.vue').default)
 Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
+Vue.component('oilgastable-create', require('./components/сomplicationMonitoring/oilGas/table.vue').default);
 
 
 

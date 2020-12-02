@@ -15,6 +15,8 @@ Route::get('/', function () {
 });
 
 
+Route::get('vcoreconomic','ComplicationMonitoring\OilGasController@getNgduByYear');
+Route::get('table','ComplicationMonitoring\OilGasController@economicTable');
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
     Route::group(['middleware' => 'auth'], function () {
