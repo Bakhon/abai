@@ -949,12 +949,17 @@ export default {
       var value2 = [];
       var ipr_points2 = [];
       var qo_points2 = [];
+      var q_oil = [];
+      var q_oil2 = [];
+      
 
       _.forEach(value, function (values) {
         ipr_points = values.ipr_points;
         qo_points = values.qo_points;
+        q_oil = values.q_oil
         ipr_points2.push(ipr_points);
         qo_points2.push("" + qo_points + "");
+        q_oil2.push(q_oil);
       });
 
       this.data = [
@@ -962,18 +967,27 @@ export default {
           name: "IPR (кривая притока)",
           x: qo_points2,
           y: ipr_points2,
+          text: q_oil2,
+          hovertemplate:  "<b>IPR (кривая притока)</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "P = %{y:.1f} атм<extra></extra>",
 
           marker: {
             size: "15",
             color: "#FF0D18",
           },
         },
-
         {
           name: "Текущий режим",
-          x: [40],
-          y: [40],
+          x: [],
+          y: [],
+          text: [],
           mode: "markers",
+          hovertemplate:  "<b>Текущий режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "P = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
             color: "#00A0E3",
@@ -984,7 +998,12 @@ export default {
           name: "Потенциальный режим",
           x: [],
           y: [],
+          text: [],
           mode: "markers",
+          hovertemplate:  "<b>Потенциальный режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "P = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
             color: "#FBA409",
@@ -994,6 +1013,11 @@ export default {
           name: "New Line",
           x: [],
           y: [],
+          text: [],
+          hovertemplate:  "<b>New Line</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "P = %{y:.1f} атм<extra></extra>",
 
           marker: {
             size: "15",
@@ -1010,26 +1034,34 @@ export default {
       var qo_points = [];
       var ipr_points2 = [];
       var qo_points2 = [];
+      var q_oil = [];
+      var q_oil2 = [];
 
       _.forEach(value, function (values) {
         ipr_points = values.ipr_points;
         qo_points = values.qo_points;
+        q_oil = values.q_oil
         ipr_points2.push(ipr_points);
         qo_points2.push("" + qo_points + "");
+        q_oil2.push(q_oil)
       });
       this.data[3]['x'] = qo_points2
       this.data[3]['y'] = ipr_points2
+      this.data[3]['text'] = q_oil2
       console.log(JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']))
       if (JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']) && JSON.stringify(this.data[0]['y']) == JSON.stringify(this.data[3]['y'])) {
         this.data[3]['x'] = []
         this.data[3]['y'] = []
+        this.data[3]['text'] = []
       }
     },
     setPoints: function (value) {
       this.data[1]['x'][0] = value[0]["q_l"]
       this.data[1]['y'][0] = value[0]["p"]
+      this.data[1]['text'][0] = value[0]["q_oil"]
       this.data[2]['x'][0] = value[1]["q_l"]
       this.data[2]['y'][0] = value[1]["p"]
+      this.data[2]['text'][0] = value[1]["q_oil"]
     },
     PotAnalysisMenu() {
       this.setLine(this.curveLineData)
