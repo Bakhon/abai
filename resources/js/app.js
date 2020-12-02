@@ -60,6 +60,13 @@ Vue.component('visual-center-table3', require('./components/visualcenter3/Visual
 Vue.component('visual-center-table4', require('./components/visualcenter3/VisualCenterTable4.vue').default);
 Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
+Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
+Vue.component('visual-center-speedometer1', require('./components/visualcenter3/VCSpeedometer1.vue').default);
+Vue.component('visual-center-speedometer2', require('./components/visualcenter3/VCSpeedometer2.vue').default);
+Vue.component('visual-center-speedometer3', require('./components/visualcenter3/VCSpeedometer3.vue').default);
+Vue.component('visual-center-speedometer4', require('./components/visualcenter3/VCSpeedometer4.vue').default);
+Vue.component('visual-center-speedometer5', require('./components/visualcenter3/VCSpeedometer5.vue').default);
+Vue.component('visual-center-speedometer6', require('./components/visualcenter3/VCSpeedometer6.vue').default);
 Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 Vue.component('welcome-chart-donut-right1', require('./components/welcome/WelcomeChartDonutRight1.vue').default);
