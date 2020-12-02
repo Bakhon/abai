@@ -240,10 +240,112 @@
 
           </div>
         </modal>
-        <gno-line-points-chart></gno-line-points-chart>
+        <div class="gno-line-chart" v-if="visibleChart">
+          <gno-line-points-chart></gno-line-points-chart>
+        </div>
+
+        <div class="podbor-gno" v-if="!visibleChart">
+          <div class="img-text">
+            <div class="text_img_1">Экс.колонка 168мм</div>
+            <div class="text_img_2">НКТ 73мм</div>
+            <div class="text_img_3">Штанги 22мм</div>
+            <div class="text_img_4">Штанги 19мм</div>
+            <div class="text_img_5">Штанги 22мм</div>
+            <div class="text_img_6">Насос 57мм</div>
+            <div class="text_img_7">Интервал перфорации 1345-1352м</div>
+            <div class="text_img_8">Текущий забой 1369м</div>
+          </div>
+          <div class="image-data">
+            <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px" >
+          </div>
+          
+          <div class="table-pgno-button col-6">
+           
+            <div class="table-title-pgno col-12 table-border-gno-top"><b>Насос</b></div>
+            
+              
+              <div class="cell4-gno table-border-gno-top col-7">
+                Диаметр плунжера
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <div class="center">
+                    57 мм
+                    </div>
+                    </div>
+
+                    <div class="cell4-gno table-border-gno-top col-7">
+                Давление на приеме
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <div class="center">
+                    75 ат
+                    </div>
+                    </div>
+
+
+                    <div class="cell4-gno table-border-gno-top col-7">
+                Длина хода(штак)
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <div class="center">
+                    3м
+                    </div>
+                    </div>
+
+
+                    <div class="cell4-gno table-border-gno-top col-7">
+                Газосодержание
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <div class="center">
+                    2%
+                    </div>
+                    </div>
+
+
+                    <div class="cell4-gno table-border-gno-top col-7">
+                Число качаний
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <div class="center">
+                    7 мин - 1
+                    </div>
+                    </div>
+
+
+                     <div class="cell4-gno table-border-gno-top col-7">
+                К-сеп
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <div class="center">
+                    0,37
+                    </div>
+                    </div>
+
+                       <div class="cell4-gno table-border-gno-top col-7">
+                К-под
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <div class="center">
+                    0,8
+                    </div>
+                    </div>
+
+                    
+                       <div class="cell4-gno table-border-gno-top col-7">
+                Длина хода (плунж)
+                </div>
+                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+                  <div class="center">
+                    2,88 м
+                    </div>
+                    </div>
+
+              </div>
+        </div>
       </div>
 
-      <modal name="table" :width="1150" :height="395" :adaptive="true"></modal>
+      <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
 
       <div class="tables-string-gno4 col-6">
         <div class="tables-string-gno4-inner">
@@ -430,8 +532,9 @@
       <div class="col-12 row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-6"></div>
       </div>
-      <div class="tables-string-gno6 col-12" @click="PgnoMenu()">
-        Подбор ГНО
+      <!-- <div class="tables-string-gno6 col-12" @click="visibleChart=!visibleChart"> -->
+      <div class="tables-string-gno6 col-12" @click="onPgnoClick()">
+        {{visibleChart? 'Подбор ГНО':'Кривая притока'}}
       </div>
     </div>
     <div class="tables-one col-xs-12 col-sm-5 col-md-5 col-lg-3 col-xl-3">
@@ -752,6 +855,7 @@ export default {
           },
         },
         ],
+        visibleChart: true,
         type: String,
         required: true,
         wellNumber: null,
@@ -1233,9 +1337,9 @@ export default {
         }
         });
     },
-    PgnoMenu() {
-      this.$modal.show('modalPGNO')
-    },
+    // PgnoMenu() {
+      
+    // },
     InclMenu() {
         if (this.data["Age"] === true) {
         Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
@@ -1632,6 +1736,16 @@ export default {
       console.log('mytable');
       this.$modal.hide("modalExpAnalysis");
       this.$modal.show("tablePGNO")
+    },
+
+    onPgnoClick() {
+      this.visibleChart = !this.visibleChart;
+
+      if(this.visibleChart) {
+        Vue.prototype.$notifyWarning("Измените настройки кривой притока или параметры подбора");
+      } else {
+        return;
+      }
     }
 
 
