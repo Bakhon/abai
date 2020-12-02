@@ -3,7 +3,7 @@
     <div v-else-if="data.length === 0">No data</div>
 
     <div v-else class="row col-12 relative" style="height: 100%;">
-        <div class="col-6" style="width: 100%; height: 100%; overflow-y: auto;">
+        <div class="col-6" style="height: 100%; overflow-y: auto;">
             <table
     border="1"
     cellpadding="0"
