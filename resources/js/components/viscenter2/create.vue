@@ -340,6 +340,22 @@
 
         </div>
 
+        <div class="right-side2">
+            <table>
+                <tr>
+                    <td class="left">Выбор ДЗО</td>
+                </tr>
+                <tr>
+                    <td>
+                        <select class="form-control"  name="dzo" v-model="dzo" v-show="dzos.length > 0">
+                        <option v-for="row in dzos" v-bind:value="row.id">{{ row.name }}</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
         <br><br>
         <table>
             <tr>
@@ -649,7 +665,17 @@ export default {
         gu:null,
         well_number:null,
         qzh_loss:null,
-        qn_loss:null
+        qn_loss:null,
+        tovarnyi_ostatok:null,
+        dzo:null,
+        dzos: [
+            {"id":"1", "name" : "КБМ"},
+            {"id":"2", "name" : "КГМ"},
+            {"id":"3", "name" : "КОА"},
+            {"id":"4", "name" : "КТМ"},
+            {"id":"5", "name" : "ММГ"},
+            {"id":"6", "name" : "ОМГ"}
+        ],
     }
   },
     
