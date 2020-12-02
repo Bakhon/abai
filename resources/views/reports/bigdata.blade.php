@@ -183,5 +183,54 @@ margin-bottom: 50px;
     cursor: pointer;
 }
 </style>
+<script>
+function myFunction() {
+  var x = document.getElementById("rep1");
+  var y = document.getElementById("navrep");
+  if (x.hasAttribute("hidden") === false) {
+    x.setAttribute("hidden", "hidden");
+    y.removeAttribute("hidden");
+  } else {
+    x.removeAttribute("hidden");
+    y.setAttribute("hidden", "hidden");
+  }
+}
+</script>
 
+<style>
 
+.fixed-columns {
+    left: 0;
+    background: #20274e!important;
+}
+    .p-4{
+        background-color: #0F1430;
+    }
+    .fixed-table-container{
+        background: #20274e;
+    }
+   
+    .bootstrap-table .fixed-table-container .table {
+
+    color: white;
+}
+    .main{
+        background-color: #0F1430;
+        background-image: url({{ asset('img/level1/grid.svg') }});
+        border: 1px solid #0D2B4D;
+        margin-left: 0px !important;
+        padding-top: 20px;
+    }
+    .title, .subtitle {
+        color:white;
+    }
+    .top{
+        display: none;
+    } 
+    .table-hover tbody tr:hover 
+    {
+    color: #d4d4d4 !important;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+</style>

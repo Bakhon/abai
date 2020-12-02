@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <?php
     $user = Auth::user()->username;
-    if (strpos($user, 'Almukhan_test') === false) { ?>
+    if (strpos($user, 'Almukhan_test') === false || strpos($user, 'vcuser') === false || strpos($user, 'gnouser') === false || strpos($user, 'truser') === false) { ?>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <img src="{{ asset('img/level1/icon_geology.svg') }}" width="15" height="15" class="workTypeLogo">
