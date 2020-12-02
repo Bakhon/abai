@@ -30,6 +30,8 @@ class Vis2FormController extends Controller
         $alldata->burenie_skvajin_prohodka_fact = $request->input('burenie_skvajin_prohodka_fact');
         $alldata->tovarnyi_ostatok = $request->input('tovarnyi_ostatok');
 
+        $alldata->dzo = $request->input('dzo');
+
         $alldata->ngdu = $request->input('ngdu');
         $alldata->gu = $request->input('gu');
         $alldata->well_number = $request->input('well_number');

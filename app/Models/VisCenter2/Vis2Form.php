@@ -22,6 +22,8 @@ class Vis2Form extends Model
         'burenie_skvajin_prohodka_fact',
         'tovarnyi_ostatok',
 
+        'dzo',
+
         'expl',
         'deistv',
         'prostoy',
