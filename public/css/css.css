@@ -924,13 +924,12 @@ ul.dropdown-child {
     height: 47px!important;
 }
 
-.row {
-    width:1525px; 
-    /* overflow: hidden; */
+/*.row {
+    width:1525px;   
     width: 100%;
     margin-right: unset;
     margin-left: unset;
-}
+}*/
 
 .col-lg-5 {
     flex: 0 0 40.666667%;

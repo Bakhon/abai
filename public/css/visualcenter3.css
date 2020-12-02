@@ -8,6 +8,38 @@
     src: url("../fonts/visualcenter3/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 }
 
+ol, ul, dl {
+    padding-left: 0px!important;
+    padding-right: 0px!important;
+}
+
+
+
+.left-side {
+    float: left;
+    overflow: hidden;
+    margin-top: -13px;
+    flex: 0 0 81%;
+    max-width: 81%;
+ 
+}
+
+.right-side2 {
+    float: left;
+    overflow: hidden;
+    margin-top: -13px;
+    flex: 0 0 19%;
+    max-width: 19%;
+    padding-left: 10px!important;
+}
+
+.txt2 {
+    font-family: Bold;
+    float: left;
+    font-size: 16px;
+    margin-left: 14px;
+}
+
 body {
     font-family: "HarmoniaSansProCyr-Regular"!important;
 }
@@ -38,7 +70,7 @@ body {
     margin-bottom: unset!important;
 }
 
-.left-side {
+/*.left-side {
     float: left;
     overflow: hidden;
     margin-top: -13px;
@@ -48,7 +80,7 @@ body {
     float: left;
     overflow: hidden;
     margin-top: -13px;
-}
+}*/
 
 .first-string {
     background: #272953;
@@ -79,12 +111,12 @@ body {
     font-family: Bold;
 }
 
-.txt2 {
+/*.txt2 {
     font-family: Bold;
     float: left;
     font-size: 18px;
     margin-top: -1px;
-}
+}*/
 
 .txt3 {
     /* display: inline-block; */
@@ -186,7 +218,7 @@ td:last-of-type {
 }
 
 .txt4 {
-    font-family: "HarmoniaSansProCyr-Bold";
+    font-family: "Bold";
     font-size: 34px;
     font-weight: 550;
 }
@@ -198,7 +230,7 @@ td:last-of-type {
 }
 
 .in-idle {
-    color: #656A8A;
+    color: #9FA5C7;
     font-size: 14px;
 }
 

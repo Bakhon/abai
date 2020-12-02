@@ -2,14 +2,14 @@
 @import url('./font/style.css');
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
-@import '~@fortawesome/fontawesome-free/scss/brands';
+@import "~bootstrap/scss/bootstrap";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/brands";
 
 // Material theme used for this sample
 @import "~@syncfusion/ej2-base/styles/material.css";
@@ -22,3 +22,57 @@
 @import "~@syncfusion/ej2-navigations/styles/material.css";
 @import "~@syncfusion/ej2-grids/styles/material.css";
 @import "~@syncfusion/ej2-pivotview/styles/material.css";
+
+/*.p-4 {
+  padding: 1.5rem !important;
+}*/
+
+.spacing {
+  padding: 30px 0px;
+  margin-left: 15px;
+}
+
+.row {
+  margin-right: unset;
+  margin-left: unset;
+}
+
+ol, ul, dl {
+  padding-left: 0px!important;
+  padding-right: 0px!important;
+}
+
+/* left menu*/
+.list-group-item {
+  padding: 15px 0px 15px 15px;
+}
+
+div#sidebar-container2 {
+  background-color: #20274e;
+}
+
+.dropright:hover > .dropdown-menu {
+  display: block;
+}
+
+.dropright .dropdown-menu {
+  background-color: #20274e;
+  color: white;
+}
+
+.dropright .dropdown-menu a:link {
+  color: white;
+}
+
+.dropright .dropdown-menu a {
+  color: white;
+}
+
+.dropright .dropdown-menu a:visited {
+  color: white;
+}
+
+.move-menu{
+  margin-left:15px;
+}
+/* left menu*/
