@@ -6,10 +6,10 @@
             <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
             <td rowspan="4" @click="sortBy('block')">Блок</td>
             <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
-            <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НТК</td>
+            <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НКТ</td>
             <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
             <td rowspan="4" @click="sortBy('h_up_perf_md')">Нвдп</td>
-            <td rowspan="4" @click="sortBy('exp_meth')"><span>Способ эксплуатации</span></td>
+            <td rowspan="4" @click="sortBy('exp_meth')">Способ эксплуатации</td>
             <td rowspan="4" @click="sortBy('pump_type')">Тип насоса</td>
             <td rowspan="4" @click="sortBy('freq')">Частота работы насоса или число оборотов</td>
             <td rowspan="4" @click="sortBy('h_pump_set')">Н сп насоса</td>
@@ -26,7 +26,7 @@
             <td rowspan="3">P заб</td>
             <td rowspan="3">Q н</td>
             <td rowspan="3">Q ж</td>
-            <td rowspan="3"><span>Обводненность</span></td>
+            <td rowspan="3">Обводненность</td>
             <td rowspan="3">P заб</td>
             <td class="colspan" colspan="2">ИДН</td>
             <td rowspan="3">К прод от стимуляции</td>
@@ -47,7 +47,7 @@
             <td></td>
             <td>мм</td>
             <td>мм</td>
-            <td>м</td>
+            <td>мм</td>
             <td>м</td>
             <td></td>
             <td></td>

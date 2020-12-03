@@ -21,21 +21,19 @@ td.fitwidth {
     max-width: 92% !important;
   }
 
-
 .but-nav__link {
 
     font-weight: inherit;
-    line-height: 3;
-    text-decoration: none;
-    margin-right: 124px;
-    padding: 10px 15px;
-    border: 3px solid #0638E9;
-    box-sizing: border-box;
-    border-radius: 20px;
+    padding: 5px 15px;
+    border-radius: 5px;
     font-family: Roboto;
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
+    background: #656A8A;
+    border: none!important;
+    text-align: left!important;
+    cursor: pointer;
 }
 
 .headerColumn {
@@ -54,10 +52,10 @@ td.fitwidth {
     display: block;
     /* width: 164px;
     height: 164px; */
-    -moz-transform: rotate(-90deg);
+    /* -moz-transform: rotate(-90deg);
     -ms-transform: rotate(-90deg);
     -o-transform: rotate(-90deg);
-    transform: rotate(-90deg);
+    transform: rotate(-90deg); */
 }
 
 .table .subHeaderColumn td {
