@@ -277,7 +277,11 @@ class EcoRefsScFaController extends Controller
             foreach($compRas as $item){
                 $avgprsday = EcoRefsAvgPrs::where('company_id', $item->company_id)->first();
                 if($param == 1){
-                    $prsResult[$item->company_id] = 365 / ($reqDay + $avgprsday->avg_prs);
+                    if($reqDay>=365){
+                        $prsResult[$item->company_id] = 365 / ($reqDay);
+                    }else{
+                        $prsResult[$item->company_id] = 365 / ($reqDay + $avgprsday->avg_prs);
+                    }
                 } else {
                     if($param == 2){
                         if($equipIdRequest == 1){

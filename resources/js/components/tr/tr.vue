@@ -12,7 +12,7 @@
             </form> -->
             <div class="col dropdown">
                 <button class="col-md-12 but-nav__link but " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               <i style=" margin-right: 10px; "> 
+               <i style=" margin-right: 10px; ">
                    <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z" fill="white"/>
 </svg>
@@ -20,7 +20,7 @@
                </i>
                    Выберите месяц
                 </button>
-  
+
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" data-toggle="dropdown">
                <div>
                     <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
@@ -65,9 +65,9 @@
                     </select>
                 </div>
                 <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a>
-                
+
             </div>
-  
+
 </div>
             <!-- <div>
                 <div>
@@ -112,11 +112,11 @@
 
                     </select>
                 </div>
-                
+
             </div> -->
             <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
             <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-            <a @click="editable()" v-if="!edit" class=" col but-nav__link but"><i style=" margin-right: 10px; "> 
+            <a @click="editable()" v-if="!edit" class=" col but-nav__link but"><i style=" margin-right: 10px; ">
                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.10481 18.579C0.824148 18.5785 0.55658 18.4602 0.367405 18.253C0.174748 18.0475 0.0790152 17.7695 0.104259 17.489L0.349395 14.795L11.6737 3.481L15.2126 7.017L3.89136 18.33L1.19586 18.575C1.16485 18.578 1.13383 18.579 1.10481 18.579ZM15.919 6.31L12.3811 2.774L14.5032 0.653001C14.691 0.465221 14.9456 0.359711 15.2111 0.359711C15.4767 0.359711 15.7313 0.465221 15.919 0.653001L18.0412 2.774C18.2291 2.96157 18.3347 3.21609 18.3347 3.4815C18.3347 3.74691 18.2291 4.00143 18.0412 4.189L15.92 6.309L15.919 6.31Z" fill="white"/>
 </svg>
@@ -124,11 +124,11 @@
                 </i>
                 Редактировать</a>
             <a @click="savetable()" v-if="edit" class="col but-nav__link but">Сохранить</a>
-            
+
             <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a> -->
-        
+
         <div class="col">
-                       
+
                         <div class="input-group input-group-sm">
                             <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
                             <div class="input-group-prepend">
@@ -137,8 +137,8 @@
                         </div>
         </div>
         </div>
-        
-        
+
+
     </div>
 
         <div>
@@ -2197,7 +2197,7 @@
                 </table>
 
             </div>
-        </div> 
+        </div>
         </div>
     </div>
 </template>
@@ -2368,7 +2368,7 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
 body {
   color: white !important;
 }
@@ -2387,20 +2387,20 @@ body {
     position: absolute!important;
     right: 0!important;
     z-index: 9999;
-    
+
 }
 .input-group-prepend{
-    
+
     padding-top: 3px!important;
     margin-right: -3px!important;
-    
+
 }
 a:hover{
     color: white!important;
     text-decoration: none!important;
 }
 .maintable{
-    
+
     padding-top: 35px;
 
 }
