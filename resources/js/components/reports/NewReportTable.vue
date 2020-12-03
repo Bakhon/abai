@@ -1,6 +1,6 @@
 <template>
 <div>
-    <div class="container">  
+    <div class="container">
     <div class="row">
  <div class="col-sm">
         <div class="form-group">
@@ -24,13 +24,15 @@
      <div class="col-sm">
         <div class="form-group">
           <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
-          <select
+          <!-- https://developer.snapappointments.com/bootstrap-select/examples/#basic-examples -->
+          <!-- multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"-->
+          <select data-live-search="true"
             style="background-color:#20274e;border-color:#20274e;color:white;"
-            class="form-control"
+            multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"
             id="companySelect"
             @change="onChangeMonth($event)"
           >
-           <option value="">Выберите месяц</option>
+           <option value="" >Выберите месяц</option>
             <option value="1">январь</option>
             <option value="2">февраль</option>
             <option value="3">март</option>
@@ -41,8 +43,8 @@
             <option value="8">август</option>
             <option value="9">сентябрь</option>
             <option value="10">октябрь</option>
-            <option :hidden='year==2020' value="11">ноябрь</option>
-            <option :hidden='year==2020' value="12">декабрь</option>
+            <option :disabled='year==2020' value="11">ноябрь</option>
+            <option :disabled='year==2020' value="12">декабрь</option>
           </select>
         </div>
     </div>
@@ -64,12 +66,13 @@
             <option value="2016">2016</option>
             <option value="2015">2015</option>
             <option value="2014">2014</option>
-           
+
           </select>
         </div>
     </div>
+    <button :disabled='org=="" || month=="" || year=="" || year==2020 && month>10' @click="updateData" class="btn report-btn">Сформировать отчет</button>
     </div>
-<button :disabled='org=="" || month=="" || year=="" || year==2020 && month>10' @click="updateData">Сформировать отчет</button>
+
 
   </div>
  <div :hidden='data==""'>
@@ -77,6 +80,7 @@
     :columns="columns"
     :data="data"
     :options="options"
+    :height="100"
     
   />
 </div>
@@ -87,7 +91,8 @@
 <script>
 import BootstrapTable from 'bootstrap-table/dist/bootstrap-table-vue.esm.js'
 import 'tableexport.jquery.plugin'
-import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js'
+import 'bootstrap-select/dist/css/bootstrap-select.min.css';
+import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css'
 import 'bootstrap-table/dist/bootstrap-table.min.css'
 
 
@@ -96,7 +101,7 @@ export default {
     BootstrapTable
   },
   data () {
-    
+
     return {
        xmay: [{
       '1': "январь",
@@ -186,7 +191,7 @@ export default {
           align: 'center'
 },
           {
-          title: 'Qж, м3',
+          title: 'Qж, м3/сут',
           rowspan: 2,
           align: 'center'
 },
@@ -250,7 +255,7 @@ export default {
           align: 'center'
     },
 {
-        title: 'Qж, м3',
+        title: 'Qж, м3/сут',
           rowspan: 2,
           align: 'center'
     },
@@ -282,8 +287,8 @@ export default {
         ],
         [
  {
-        title: 'Qж, м3',
-   
+        title: 'Qж, м3/сут',
+
           align: 'center'
     },
      {
@@ -307,78 +312,55 @@ export default {
           align: 'center'
     },
         ],
-//         [
-   
-// {
-//         title: 'Qж, м3',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Обв, %',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Qн, т/сут',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Пробы',
-//           align: 'center'
-//     },
-//     {
-//         title: 'Простои',
-//           align: 'center'
-//     }
-        
 
-//         ]
-     
-  
       ],
-      
+
       data: [],
       options: {
         search: true,
         pagination: true,
         showColumns: true,
         showExport: true,
-        locale: 'ru-RU',      
-        exportTypes: ['excel', 'csv', 'doc'],
+        locale: 'ru-RU',
+        exportTypes: ['excel', 'csv'],
         exportDataType: 'all',
+        // fixedColumns: true,
+        // fixedNumber: 2,
 
       },
 
       org: '',
       month: '',
       year: '',
-      
+
     }
-    
+
   },
   methods: {
     // dayClicked(day) {
     //   this.date = day.id;
     //   var dt = this.date.split('-');
-     
+
 
     // },
     updateData(){
       let uri = '/ru/protodata';
       this.axios.post("/ru/protodata", {
           org: this.org,
-          month: this.month, 
+          month: this.month,
           year: this.year,
-          
+
         })
         .then((response) => {
           let data = response.data;
           if (data) {
             this.data = data.wellsList;
-            this.columns[0][11]['title'] = this.xmay[0][this.month] + " " + this.year; 
+            this.columns[0][11]['title'] = this.xmay[0][this.month] + " " + this.year;
+            this.columns[0].push({title: this.xmay[0][this.month] + " " + this.year}); 
           } else {
             console.log("No data");
           }
-        }); 
+        });
     },
      onChange(event) {
         this.org = event.target.value;
@@ -386,14 +368,14 @@ export default {
     },
      onChangeMonth(event) {
         this.month = event.target.value;
-        
+
 
     },
     onChangeYear(event) {
         this.year = event.target.value;
 
     },
-  }, 
+  },
 }
 
 </script>

@@ -1,15 +1,15 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('./font/style.css');
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
-@import '~@fortawesome/fontawesome-free/scss/fontawesome';
-@import '~@fortawesome/fontawesome-free/scss/regular';
-@import '~@fortawesome/fontawesome-free/scss/solid';
-@import '~@fortawesome/fontawesome-free/scss/brands';
+@import "~bootstrap/scss/bootstrap";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+@import "~@fortawesome/fontawesome-free/scss/brands";
 
 // Material theme used for this sample
 @import "~@syncfusion/ej2-base/styles/material.css";
@@ -22,3 +22,4 @@
 @import "~@syncfusion/ej2-navigations/styles/material.css";
 @import "~@syncfusion/ej2-grids/styles/material.css";
 @import "~@syncfusion/ej2-pivotview/styles/material.css";
+

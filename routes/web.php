@@ -38,6 +38,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/visualcenter2', 'DruidController@visualcenter2')->name('visualcenter2');
         Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
+        Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
@@ -55,12 +56,15 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('/maps', 'DruidController@maps')->name('maps');
         Route::get('/mzdn', 'DruidController@mzdn')->name('mzdn');
+        Route::get('/gtm', 'DruidController@gtm')->name('gtm');
         Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
+        Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
         Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
         Route::get('/constructor', 'DruidController@constructor')->name('constructor');
         Route::get('/tr', 'DruidController@tr')->name('tr');
         Route::get('/export', 'HomeController@export');
         Route::get('/fa', 'DruidController@fa')->name('fa');
+        Route::get('/tredit', 'DruidController@tredit')->name('tredit');
 
 
         //wm
@@ -129,6 +133,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('abd46','VizCenter\Abd46Controller');
         Route::get('kpicalc','VizCenter\Marab2Controller@kpicalculation');
         Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
+
+        Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
 
     });
     Auth::routes([

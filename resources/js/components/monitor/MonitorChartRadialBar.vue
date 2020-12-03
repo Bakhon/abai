@@ -15,10 +15,11 @@ import VueApexCharts from "vue-apexcharts";
 
 Vue.component("apexchart", VueApexCharts);
 export default {
+  props:["dose"],
   name: "mix-chart",
   data: function () {
     return {
-      series: [0],
+      series: [this.dose],
       chartOptions: {
         chart: {
           type: "radialBar",
@@ -77,15 +78,14 @@ export default {
       },
     };
   },
-  methods: {
-    setValue: function(value) {
-        this.series = [
-                value
-            ];
-    }
-  },
-  created: function() {
-    this.$parent.$on('chart5', this.setValue);
-  }
+//   methods: {
+//     setValue: function(value) {
+//         console.log(value);
+//         this.series[0] = value;
+//     }
+//   },
+//   mounted: function() {
+//     this.$parent.$on('chart5', this.setValue);
+//   }
 };
 </script>

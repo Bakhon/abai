@@ -1,8 +1,32 @@
+<?php
+    $user = Auth::user()->username;
+    if (strpos($user, 'Almukhan_test') !== false) { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/bigdata');
+        
+    }
+    elseif(strpos($user, 'vcuser') !== false) { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/visualcenter3');
+        
+    }
+    elseif(strpos($user, 'gnouser') !== false) { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/podborgno');
+        
+    }
+    elseif(strpos($user, 'truser') !== false) { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/tr');
+        
+    }
+        ?>
 @extends('layouts.app')
 @section('content')
 <div class="col p-4" id="app">
-    <div>
-        <welcome-page></welcome-page>
+    <div >
+   
+        <!-- <welcome-page></welcome-page> -->
     </div>
 </div>
 @endsection

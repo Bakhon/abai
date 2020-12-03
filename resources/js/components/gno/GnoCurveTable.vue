@@ -3,15 +3,19 @@
 </template>
 
 <script>
+import { Scatter } from 'vue-chartjs';
 //
 import { Plotly } from "vue-plotly";
-import { EventBus } from "../../event-bus.js";
+import { eventBus } from "../../event-bus.js";
+
+Vue.prototype.$eventBus = new Vue();
 Vue.component("Plotly", Plotly);
 export default {
   name: "mix-chart",
   props: ["postTitle"],
   data: function () {
     return {
+      flag: false,
       layout: {
         //      showlegend: false,
         xaxis: {
@@ -58,6 +62,7 @@ export default {
   },
   methods: {
     setLine: function (value) {
+      console.log(value)
       var ipr_points = [];
       var pintake_points = [];
       var freegas_points = [];
@@ -67,12 +72,15 @@ export default {
       var pintake_points2 = [];
       var freegas_points2 = [];
       var qo_points2 = [];
+      var q_oil = [];
+      var q_oil2 = [];
 
       _.forEach(value, function (values) {
         ipr_points = values.ipr_points;
         pintake_points = values.pintake_points;
         freegas_points = values.freegas_points;
         qo_points = values.qo_points;
+        q_oil = values.q_oil;
 
         //if (freegas_points==0) {freegas_points=0};
         if (freegas_points == "nan") {
@@ -85,6 +93,7 @@ export default {
         pintake_points2.push(pintake_points);
         freegas_points2.push(freegas_points);
         qo_points2.push("" + qo_points + "");
+        q_oil2.push(q_oil);
       });
 
       this.data = [
@@ -92,6 +101,7 @@ export default {
           name: "Pnp",
           x: qo_points2,
           y: pintake_points2,
+          hovertemplate: '<b>P npиёма = %{y:.1f} атм</b><extra></extra>',
 
           marker: {
             size: "15",
@@ -103,8 +113,14 @@ export default {
           name: "IPR (кривая притока)",
           x: qo_points2,
           y: ipr_points2,
-
+          text: q_oil2,
+          hovertemplate: "<b>IPR (кривая притока)</b><br>" + 
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "P = %{y:.1f} атм<extra></extra>",
           marker: {
+            x: 20,
+            y: 60,
             size: "15",
             color: "#FF0D18",
           },
@@ -114,6 +130,7 @@ export default {
           name: "Газосодержание в насосе",
           x: qo_points2,
           y: freegas_points2,
+          hovertemplate: '<b>Газосодержание в насосе = %{y:.1f}%</b><extra></extra>',
           marker: {
             size: "15",
             color: "#237DEB",
@@ -122,9 +139,14 @@ export default {
 
         {
           name: "Текущий режим",
-          x: [40],
-          y: [40],
+          x: [],
+          y: [],
+          text: [],
           mode: "markers",
+          hovertemplate:  "<b>Текущий режим</b><br><extra></extra>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "P = %{y:.1f} атм",
           marker: {
             size: "15",
             color: "#00A0E3",
@@ -135,7 +157,12 @@ export default {
           name: "Целевой (расчётный) режим",
           x: [],
           y: [],
+          text: [],
           mode: "markers",
+          hovertemplate:  "<b>Целевой (расчётный) режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "P = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
             color: "#13B062",
@@ -146,7 +173,12 @@ export default {
           name: "Потенциальный режим",
           x: [],
           y: [],
+          text: [],
           mode: "markers",
+          hovertemplate:  "<b>Потенциальный режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "P = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
             color: "#FBA409",
@@ -161,10 +193,13 @@ export default {
     setPoints: function (value) {
       this.data[3]['x'][0] = value[0]["q_l"]
       this.data[3]['y'][0] = value[0]["p"]
+      this.data[3]['text'][0] = value[0]["q_oil"]
       this.data[5]['x'][0] = value[1]["q_l"]
       this.data[5]['y'][0] = value[1]["p"]
+      this.data[5]['text'][0] = value[1]["q_oil"]
       this.data[4]['x'][0] = value[2]["q_l"]
       this.data[4]['y'][0] = value[2]["p"]
+      this.data[4]['text'][0] = value[2]["q_oil"]
     },
   },
 
@@ -172,7 +207,20 @@ export default {
   created: function () {
     this.$parent.$on("LineData", this.setLine);
     this.$parent.$on("PointsData", this.setPoints);
+    // this.$on("LineData", this.setLine);
+    // this.$on("PointsData", this.setPoints);
+    
   },
+  updated: function() {
+
+
+    this.$eventBus.$on("newCurveLineData", this.setLine);
+    this.$eventBus.$on("newPointsData", this.setPoints);
+    
+    
+    
+
+  }
 
 };
 </script>

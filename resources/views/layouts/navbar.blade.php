@@ -8,6 +8,9 @@
             <i class="fas fa-bars fa-lg"></i>
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <?php
+    $user = Auth::user()->username;
+    if (strpos($user, 'Almukhan_test') === false || strpos($user, 'vcuser') === false || strpos($user, 'gnouser') === false || strpos($user, 'truser') === false) { ?>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <img src="{{ asset('img/level1/icon_geology.svg') }}" width="15" height="15" class="workTypeLogo">
@@ -69,32 +72,17 @@
                             <span class="workTypeText">Конструктор</span>
                         </a>
                     </li>
+                    <li class="nav-item child">
+                        <a href="{{url('/')}}/ru/tr">
+                            <span class="workTypeText">Тех режим</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item active  dropdown">
                 <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href="{{url('/')}}/ru/facilities"><span class="workTypeText">Обустройство</span></a>
                 <ul class="dropdown-child">
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/oil">
-                            <span class="workTypeText">Добыча нефти</span>
-                        </a>
-                    </li>
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/hydraulics">
-                            <span class="workTypeText">Гидравлика</span>
-                        </a>
-                    </li>
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/complications">
-                            <span class="workTypeText">Осложнения в системе сбора</span>
-                        </a>
-                    </li>
-                    <li class="nav-item child dropdown">
-                        <a href="">
-                            <span class="workTypeText">Ввод данных по химизации</span>
-                        </a>
-
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/monitor">
                             <span class="workTypeText">Мониторинг коррозии ГУ - Кормасс</span>
@@ -148,11 +136,12 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+    </li>
+    
             <li class="nav-item active">
                 <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
             </li>
-            </ul>
+            </ul><?php  } ?>
             <div class="form-inline my-2 my-lg-0">
                 <li class="nav-item2">
                     <i class="fas fa-bell fa-lg"></i>
@@ -178,6 +167,7 @@
                 <li class="nav-item2">
                     <i class="fas fa-ellipsis-v"></i>
                 </li>
+ 
             </div>
         </div>
 </nav>
@@ -323,13 +313,13 @@
     }
 
     .workTypeLogo {
-        margin-left: 80px;
+        margin-left: 60px;
     }
 
     .workTypeText {
         color: white;
         font-size: 16px;
-        margin-left: 13px;
+        margin-left: 2px;
     }
 
 

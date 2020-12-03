@@ -1,3 +1,55 @@
+.padding {
+    padding-left: 15px!important;
+}
+
+.spacing {
+    padding: 30px 0px;
+    margin-left: 5px;
+}
+
+.left-panel{
+    background-color: #20274e;
+    height: 97%;  
+}
+
+/* left menu*/
+
+.list-group-item {
+    padding: 15px 0px 15px 15px;
+}
+
+div#sidebar-container2 {
+    /* background-color: #20274e; */
+    padding-right: 10px!important;
+}
+
+.dropright:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropright .dropdown-menu {
+    background-color: #20274e;
+    color: white;
+}
+
+.dropright .dropdown-menu a:link {
+    color: white;
+}
+
+.dropright .dropdown-menu a {
+    color: white;
+}
+
+.dropright .dropdown-menu a:visited {
+    color: white;
+}
+
+.move-menu {
+    margin-left: 15px;
+}
+
+/* left menu*/
+
 .companyName {
     font-size: 12px!important;
 }
@@ -924,13 +976,12 @@ ul.dropdown-child {
     height: 47px!important;
 }
 
-.row {
-    width:1525px; 
-    /* overflow: hidden; */
+/*.row {
+    width:1525px;   
     width: 100%;
     margin-right: unset;
     margin-left: unset;
-}
+}*/
 
 .col-lg-5 {
     flex: 0 0 40.666667%;
@@ -1297,7 +1348,6 @@ li.circle-2 {
     padding: 20px;
     background: #237DEB;
     color: white;
- 
 }
 
 .sidebar-expanded {
