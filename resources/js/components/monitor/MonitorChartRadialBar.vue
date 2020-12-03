@@ -18,7 +18,7 @@ export default {
   name: "mix-chart",
   data: function () {
     return {
-      series: [80],
+      series: [0],
       chartOptions: {
         chart: {
           type: "radialBar",
