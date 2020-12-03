@@ -1,6 +1,6 @@
 <!-- Sidebar -->
 <div id="sidebar-container2" class="col-0">
-    <div>
+    <div class="left-panel">
         <!--<ul class="menu-collapsed d-none " aria-expanded="false" data-toggle="collapse show">-->
         <ul class="menu-collapsed padding" aria-expanded="false" data-toggle="collapse show">
             <a href="#" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">

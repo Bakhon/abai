@@ -1,11 +1,15 @@
 .padding {
     padding-left: 15px!important;
-    padding-right: 0px!important;
 }
 
 .spacing {
     padding: 30px 0px;
     margin-left: 5px;
+}
+
+.left-panel{
+    background-color: #20274e;
+    height: 97%;  
 }
 
 /* left menu*/
@@ -15,7 +19,8 @@
 }
 
 div#sidebar-container2 {
-    background-color: #20274e;
+    /* background-color: #20274e; */
+    padding-right: 10px!important;
 }
 
 .dropright:hover>.dropdown-menu {
