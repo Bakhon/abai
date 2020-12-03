@@ -1774,8 +1774,5 @@ export default {
 </script>
 
 <style scoped>
-input, .form-control, .fix-rounded-right {
-    height: 20px!important;
-}
 
 </style>
