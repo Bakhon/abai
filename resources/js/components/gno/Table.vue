@@ -138,9 +138,9 @@
                         <td>{{Math.round(expAnalysisData.npvTable2.sredniiPrs)}}</td>
                     </tr>
                     <tr>
-                        <td>Распределение по направлениям реализации НДО, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo/1000)}}</td>
+                        <td>Распределение по направлениям реализации НДО</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo)}}</td>
                     </tr>
                       <tr>
                         <td>Определение доходной части, тыс.тг</td>
@@ -1075,8 +1075,8 @@ export default {
 
         var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24)
 
-        if (date_diff>365){
-            date_diff=date_diff-365
+        if (date_diff<365){
+            date_diff=365
         }
 
         console.log('data', date_diff)
