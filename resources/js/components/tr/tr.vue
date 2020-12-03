@@ -2368,7 +2368,7 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
 body {
   color: white !important;
 }
