@@ -165,29 +165,32 @@ class OilGasController extends Controller
         foreach ($economicNextYear as $item){
             $array = [];
             array_push($array, $item->gu->name);
-            array_push($array, $item->plan_dosage);
-            array_push($array, $item->q_v);
+            array_push($array, round($item->plan_dosage,2));
+            array_push($array, round($item->q_v,2));
             $cg = $item->plan_dosage * $item->q_v / 1000;
-            array_push($array, $cg);
+            array_push($array, round($cg,2));
             $ch = $cg * 2.74;
-            array_push($array, $ch);
+            array_push($array, round($ch,2));
             $ck = self::getCorrosion($item->gu->id);
-            array_push($array, $ck);
+            array_push($array, round($ck,2));
             if($ck > 0.1){
                 $ci = 14.177*log($ck)+35.222;
-                array_push($array, $ci);
+                array_push($array, round($ci,2));
             }else{
                 $ci = 0;
-                array_push($array, $ci);
+                array_push($array, round($ci,2));
             }
             $cj = $ci*$item->q_v/1000;
-            array_push($array, $cj);
+            array_push($array, round($cj,2));
             $co = ($cg-$cj)*690000/1000000;
-            array_push($array, $co);
+            array_push($array, round($co,2));
             array_push($data,$array);
         }
 
+        return response()->json($data);
+    }
 
+    public function economicCurrentYear(Request $request){
         $economicCurrentYear = OmgCA::with('gu')
             ->where('date', '=', '2020-01-01')
             ->where('gu_id', '=', $request->gu)
@@ -236,14 +239,7 @@ class OilGasController extends Controller
             array_push($data2,$array);
         }
 
-
-
-        $vdata = [
-            '2021' => $data,
-            '2020' => $data2,
-        ];
-
-        return response()->json($vdata);
+        return response()->json($data2);
     }
 
     static function getCorrosion($gu){

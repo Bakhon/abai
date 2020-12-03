@@ -91,6 +91,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
         Route::resource('oilgas','ComplicationMonitoring\OilGasController');
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
+        Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
 
 
         //gno economic
