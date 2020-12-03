@@ -138,9 +138,9 @@
                         <td>{{Math.round(expAnalysisData.npvTable2.sredniiPrs)}}</td>
                     </tr>
                     <tr>
-                        <td>Распределение по направлениям реализации НДО</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo)}}</td>
+                        <td>Распределение по направлениям реализации НДО, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo/1000)}}</td>
                     </tr>
                       <tr>
                         <td>Определение доходной части, тыс.тг</td>
@@ -258,25 +258,8 @@
           <div class="image-data">
             <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px" >
           </div>
-<<<<<<< HEAD
-
-          <div class="table-pgno-button col-6">
-
-            <div class="table-title-pgno col-12 table-border-gno-top"><b>Насос</b></div>
-
-
-              <div class="cell4-gno table-border-gno-top col-7">
-                Диаметр плунжера
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    57 мм
-                    </div>
-                    </div>
-=======
           
           <div class="table-pgno-button">
->>>>>>> a4928b9... table for button pgno
 
 
 
@@ -357,26 +340,6 @@
   <div class="table-pgno-four">
     <table class="table-pgno" >
 
-<<<<<<< HEAD
-                       <div class="cell4-gno table-border-gno-top col-7">
-                К-под
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    0,8
-                    </div>
-                    </div>
-
-
-                       <div class="cell4-gno table-border-gno-top col-7">
-                Длина хода (плунж)
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    2,88 м
-                    </div>
-                    </div>
-=======
                  <tr class="tr-pgno" height="5px" style="height: 10pt;">
                 <td>
                     Штанги
@@ -384,7 +347,6 @@
                 <td>
                     Ø 
                 </td>
->>>>>>> a4928b9... table for button pgno
 
                 <td>
                     Длина
@@ -1144,7 +1106,7 @@ export default {
       var qo_points2 = [];
       var q_oil = [];
       var q_oil2 = [];
-
+      
 
       _.forEach(value, function (values) {
         ipr_points = values.ipr_points;
@@ -1163,7 +1125,7 @@ export default {
           text: q_oil2,
           hovertemplate:  "<b>IPR (кривая притока)</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
                           "P = %{y:.1f} атм<extra></extra>",
 
           marker: {
@@ -1179,7 +1141,7 @@ export default {
           mode: "markers",
           hovertemplate:  "<b>Текущий режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
                           "P = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
@@ -1195,7 +1157,7 @@ export default {
           mode: "markers",
           hovertemplate:  "<b>Потенциальный режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
                           "P = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
@@ -1209,7 +1171,7 @@ export default {
           text: [],
           hovertemplate:  "<b>New Line</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
                           "P = %{y:.1f} атм<extra></extra>",
 
           marker: {
@@ -1302,8 +1264,8 @@ export default {
 
         var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24)
 
-        if (date_diff<365){
-            date_diff=365
+        if (date_diff>365){
+            date_diff=date_diff-365
         }
 
         console.log('data', date_diff)
@@ -1429,7 +1391,7 @@ export default {
         });
     },
     // PgnoMenu() {
-
+      
     // },
     InclMenu() {
         if (this.data["Age"] === true) {
@@ -1894,5 +1856,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
