@@ -199,6 +199,7 @@ export default {
         "«Норт Каспиан Оперейтинг Компани н.в.»",
         "(конденсат)(100%)",
         "в т.ч.:газовый конденсат",
+        'АО "Тургай-Петролеум" (50%*33)',
       ],
       date: new Date(),
       selectedDay: undefined,
@@ -1745,6 +1746,10 @@ export default {
       }
       else if (String(dzo) === "ЭМГ") {
         name = NameDzoFull[2];
+      }
+
+      else if (String(dzo) === "ТП") {
+        name = NameDzoFull[15];
       }
       else if (String(dzo) === "ПКИ") {
         name = NameDzoFull[9];
