@@ -107,12 +107,14 @@ Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').defau
 Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
+Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
 Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
-Vue.component('tredit-table', require('./components/tr/tredit.vue').default);
+Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
+Vue.component('oilgastable-create', require('./components/сomplicationMonitoring/oilGas/table.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 

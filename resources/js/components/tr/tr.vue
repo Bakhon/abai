@@ -12,7 +12,7 @@
             </form> -->
             <div class="col dropdown">
                 <button class="col-md-12 but-nav__link but " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               <i style=" margin-right: 10px; "> 
+               <i style=" margin-right: 10px; ">
                    <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z" fill="white"/>
 </svg>
@@ -20,7 +20,7 @@
                </i>
                    Выберите месяц
                 </button>
-  
+
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" data-toggle="dropdown">
                <div>
                     <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
@@ -65,9 +65,9 @@
                     </select>
                 </div>
                 <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a>
-                
+
             </div>
-  
+
 </div>
             <!-- <div>
                 <div>
@@ -112,11 +112,11 @@
 
                     </select>
                 </div>
-                
+
             </div> -->
             <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
             <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-            <a @click="editable()" v-if="!edit" class=" col but-nav__link but"><i style=" margin-right: 10px; "> 
+            <a @click="editable()" v-if="!edit" class=" col but-nav__link but"><i style=" margin-right: 10px; ">
                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.10481 18.579C0.824148 18.5785 0.55658 18.4602 0.367405 18.253C0.174748 18.0475 0.0790152 17.7695 0.104259 17.489L0.349395 14.795L11.6737 3.481L15.2126 7.017L3.89136 18.33L1.19586 18.575C1.16485 18.578 1.13383 18.579 1.10481 18.579ZM15.919 6.31L12.3811 2.774L14.5032 0.653001C14.691 0.465221 14.9456 0.359711 15.2111 0.359711C15.4767 0.359711 15.7313 0.465221 15.919 0.653001L18.0412 2.774C18.2291 2.96157 18.3347 3.21609 18.3347 3.4815C18.3347 3.74691 18.2291 4.00143 18.0412 4.189L15.92 6.309L15.919 6.31Z" fill="white"/>
 </svg>
@@ -124,11 +124,11 @@
                 </i>
                 Редактировать</a>
             <a @click="savetable()" v-if="edit" class="col but-nav__link but">Сохранить</a>
-            
+
             <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a> -->
-        
+
         <div class="col">
-                       
+
                         <div class="input-group input-group-sm">
                             <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
                             <div class="input-group-prepend">
@@ -137,8 +137,8 @@
                         </div>
         </div>
         </div>
-        
-        
+
+
     </div>
 
         <div>
@@ -146,6 +146,7 @@
         </div>
        <div class="col-md-12 maintable" >
            <div class="maintable-level2">
+<<<<<<< HEAD
                <div class="techvers" style="display: flex;">
                     <div class="tech">
                         <h3> Технологический режим на {{dt}}</h3>
@@ -172,13 +173,31 @@
 <path d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
 </svg>Версия для отображения</button>
                 </div>
+=======
+            <div class='tech'>
+                <h3> Технологический режим на {{dt}}</h3>
+            </div>
+            <!-- <div>
+                <select name="Company" class="from-control" id="companySelect"
+                    v-model="filter" @change="chooseField">
+                    <option value="Казгермунай">КазГерМунай</option>
+                    <option value="Акшабулак Центральный">Акшабулак Центральный</option>
+                    <option value="Акшабулак Южный">Акшабулак Южный</option>
+                    <option value="Акшабулак Восточный">Акшабулак Восточный</option>
+                    <option value="Нуралы">Нуралы</option>
+                    <option value="Аксай">Аксай</option>
+                    <option value="Аксай Южный">Аксай Южный</option>
+                </select>
+            </div> -->
+            <button id="bt1"  @click="swap">Версия для отображения</button>
+>>>>>>> 13083904af89c4c27bed4e1dfa2280603710a4b3
             <div >
-                <TrTable :wells="wells" @onSort="sortBy" v-show="show_first"/>
+                <TrTable :wells="wells" @onSort="sortField" v-show="show_first"/>
                 <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
                 <table v-show="show_second" class="table table-bordered table-dark table-responsive ce">
                     <tr class="headerColumn">
-                        <td rowspan="4" @click="sortBy('gu')">Раб. Группа</td>
-                        <td rowspan="4" @click="sortBy('field')">НГДУ/месторождение</td>
+                        <td rowspan="4" @click="sortField=wells.gu">Раб. Группа</td>
+                        <td rowspan="4" @click="sortField=wells.field">НГДУ/месторождение</td>
                         <td rowspan="4" @click="sortBy('well')">№ скв</td>
                         <td rowspan="4" @click="sortBy('well_type')">Тип скважины</td>
                         <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
@@ -189,8 +208,8 @@
                         <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НКТ</td>
                         <td rowspan="4" @click="sortBy('tub_ID')">Внутренний диаметр НКТ</td>
                         <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
-                        <td rowspan="4" @click="sortBy('h_up_perf_vd')">Нвдп</td>
-                        <td rowspan="4" @click="sortBy('h_up_perf_md')">Удлинение(Нвдп)</td>
+                        <td rowspan="4" @click="sortBy('h_up_perf_md')">Нвдп</td>
+                        <td rowspan="4" @click="sortBy('h_up_perf_vd')">Удлинение(Нвдп)</td>
                         <td rowspan="4" @click="sortBy('exp_meth')">Способ эксплуатации</td>
                         <td rowspan="4" @click="sortBy('pump_type')">Тип Насоса</td>
                         <td rowspan="4" @click="sortBy('EMPTY')">Тип СК</td>
@@ -434,7 +453,7 @@
                         <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.field" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.well}}</td>
-                        <td v-if="edit">{{row.well}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.well" :disabled="!edit"></td>
                         <!-- <td>{{row.well_type}}</td> -->
 
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -482,11 +501,32 @@
                             </span>
                         </td>
 
-                        <td v-if="!edit">{{row.block}}</td>
-                        <td v-if="edit">{{row.block}}</td>
+                        <!-- <td v-if="!edit">{{row.block}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.block" :disabled="!edit"></td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].block[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].block[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].block[1][0])}`"> </span>
+                            <span>{{row.block[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].block[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].block[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].block[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].block[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.block[0]" :disabled="!edit">
+                            <!-- <span>{{Math.round(row.cas_OD[0]*10)/10}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].block[1][1]}}
+                            </span>
+                        </td>
 
                         <td v-if="!edit">{{Math.round(row.r_con*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.r_con*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.r_con" :disabled="!edit"></td>
 
                         <!-- <td>{{Math.round(row.cas_OD*10)/10}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -512,7 +552,7 @@
                         </td>
 
                         <td v-if="!edit">{{Math.round(row.cas_ID*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.cas_ID*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.cas_ID" :disabled="!edit"></td>
 
                         <!-- <td>{{Math.round(row.tub_OD*10)/10}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -538,7 +578,7 @@
                         </td>
 
                         <td v-if="!edit">{{Math.round(row.tub_ID*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.tub_ID*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.tub_ID" :disabled="!edit"></td>
 
                         <!-- <td>{{Math.round(row.choke_d*10)/10}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -563,28 +603,28 @@
                             </span>
                         </td>
 
-                        <td v-if="!edit">{{Math.round(row.h_up_perf_ext[0]*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.h_up_perf_ext[0]*10)/10}}</td>
+                        <td v-if="!edit">{{Math.round(row.h_up_perf_md[0]*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.h_up_perf_md[0]" :disabled="!edit"></td>
 
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
-                        wells[row_index].h_up_perf_md[1][0] !== '0'}">
+                        wells[row_index].h_up_perf_ext[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
-                        wells[row_index].h_up_perf_md[1][0] !== '0'}" :style="`background :${getColor(
-                        wells[row_index].h_up_perf_md[1][0])}`"> </span>
-                            <span>{{Math.round(row.h_up_perf_md[0]*10)/10}}</span>
+                        wells[row_index].h_up_perf_ext[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].h_up_perf_ext[1][0])}`"> </span>
+                            <span>{{Math.round(row.h_up_perf_ext[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
-                                {{ wells[row_index].h_up_perf_md[1][1]}}
+                                {{ wells[row_index].h_up_perf_ext[1][1]}}
                             </span>
                         </td>
                         <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
-                        wells[row_index].h_up_perf_md[1][0] !== '0'}">
+                        wells[row_index].h_up_perf_ext[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
-                        wells[row_index].h_up_perf_md[1][0] !== '0'}" :style="`background :${getColor(
-                        wells[row_index].h_up_perf_md[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.h_up_perf_md[0]" :disabled="!edit">
+                        wells[row_index].h_up_perf_ext[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].h_up_perf_ext[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.h_up_perf_ext[0]" :disabled="!edit">
                             <!-- <span>{{Math.round(row.h_up_perf_md[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
-                                {{ wells[row_index].h_up_perf_md[1][1]}}
+                                {{ wells[row_index].h_up_perf_ext[1][1]}}
                             </span>
                         </td>
 
@@ -699,8 +739,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].q_theor[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].q_theor[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.q_theor[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.q_theor[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.q_theor[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.q_theor[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].q_theor[1][1]}}
                             </span>
@@ -890,19 +930,19 @@
                         </td>
 
                         <td v-if="!edit">{{Math.round(row.bhp_prev_m*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.bhp_prev_m*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.bhp_prev_m" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.q_l_prev_m*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.q_l_prev_m*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.q_l_prev_m" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.wct_prev_m*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.wct_prev_m*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.wct_prev_m" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.h_dyn_prev_m*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.h_dyn_prev_m*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.h_dyn_prev_m" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.pi_prev_m*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.pi_prev_m*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.pi_prev_m" :disabled="!edit"></td>
 
                         <!-- <td>{{Math.round(row.bhp*10)/10}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -920,8 +960,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].bhp[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].bhp[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.bhp[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.bhp[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.bhp[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.bhp[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].bhp[1][1]}}
                             </span>
@@ -943,8 +983,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].q_o[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].q_o[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.q_o[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.q_o[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.q_o[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.q_o[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].q_o[1][1]}}
                             </span>
@@ -1089,10 +1129,10 @@
                         </td>
 
                         <td v-if="!edit">{{Math.round(row.wht*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.wht*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.wht" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.grp_skin[0]*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.grp_skin[0]*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.grp_skin[0]" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.grp_jd*100)/100}}</td>
                         <td v-if="edit">{{Math.round(row.grp_jd*100)/100}}</td>
@@ -1205,8 +1245,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].visc_liq_rc[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].visc_liq_rc[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.visc_liq_rc[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.visc_liq_rc[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.visc_liq_rc[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.visc_liq_rc[0]*100)/100}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].visc_liq_rc[1][1]}}
                             </span>
@@ -1320,8 +1360,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].k[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].k[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.k[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.k[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.k[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.k[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].k[1][1]}}
                             </span>
@@ -1343,8 +1383,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].kh[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].kh[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.kh[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.kh[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.kh[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.kh[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].kh[1][1]}}
                             </span>
@@ -1366,8 +1406,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].pi[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].pi[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.pi[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.pi[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.pi[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.pi[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].pi[1][1]}}
                             </span>
@@ -1389,8 +1429,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_bhp[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_bhp[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_bhp[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_bhp[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_bhp[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_bhp[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_bhp[1][1]}}
                             </span>
@@ -1412,8 +1452,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_liq[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_liq[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_liq[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_liq[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_liq[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_liq[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_liq[1][1]}}
                             </span>
@@ -1435,8 +1475,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_liq_cas_d_corr[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_liq_cas_d_corr[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_liq_cas_d_corr[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_liq_cas_d_corr[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_liq_cas_d_corr[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_liq_cas_d_corr[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_liq_cas_d_corr[1][1]}}
                             </span>
@@ -1458,8 +1498,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_oil[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_oil[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_oil[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_oil[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_oil[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_oil[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_oil[1][1]}}
                             </span>
@@ -1481,8 +1521,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_oil_inc[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_oil_inc[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_oil_inc[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_oil_inc[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_oil_inc[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_oil_inc[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_oil_inc[1][1]}}
                             </span>
@@ -1504,8 +1544,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_jd[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_jd[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_jd[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_jd[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_jd[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_jd[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_jd[1][1]}}
                             </span>
@@ -1527,8 +1567,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_skin[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_skin[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_skin[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_skin[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_skin[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_skin[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_skin[1][1]}}
                             </span>
@@ -1550,8 +1590,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_pi_after[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_pi_after[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_pi_after[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_pi_after[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_pi_after[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_pi_after[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_pi_after[1][1]}}
                             </span>
@@ -1573,8 +1613,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_grp_q_liq[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_grp_q_liq[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_liq[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_grp_q_liq[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_liq[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_grp_q_liq[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_grp_q_liq[1][1]}}
                             </span>
@@ -1596,8 +1636,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_grp_q_liq_cas_d_corr[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_grp_q_liq_cas_d_corr[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_liq_cas_d_corr[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_grp_q_liq_cas_d_corr[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_liq_cas_d_corr[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_grp_q_liq_cas_d_corr[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_grp_q_liq_cas_d_corr[1][1]}}
                             </span>
@@ -1619,8 +1659,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_grp_q_oil[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_grp_q_oil[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_oil[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_grp_q_oil[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_oil[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_grp_q_oil[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_grp_q_oil[1][1]}}
                             </span>
@@ -1642,8 +1682,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].tp_idn_grp_q_oil_inc[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].tp_idn_grp_q_oil_inc[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_oil_inc[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.tp_idn_grp_q_oil_inc[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.tp_idn_grp_q_oil_inc[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.tp_idn_grp_q_oil_inc[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].tp_idn_grp_q_oil_inc[1][1]}}
                             </span>
@@ -1668,8 +1708,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_idn_bhp[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_idn_bhp[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_idn_bhp[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_idn_bhp[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_bhp[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_idn_bhp[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_idn_bhp[1][1]}}
                             </span>
@@ -1691,8 +1731,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_idn_q_liq[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_idn_q_liq[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_liq[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_idn_q_liq[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_liq[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_idn_q_liq[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_idn_q_liq[1][1]}}
                             </span>
@@ -1714,8 +1754,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_idn_q_liq_cas_d_corr[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_idn_q_liq_cas_d_corr[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_liq_cas_d_corr[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_idn_q_liq_cas_d_corr[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_liq_cas_d_corr[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_idn_q_liq_cas_d_corr[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_idn_q_liq_cas_d_corr[1][1]}}
                             </span>
@@ -1737,8 +1777,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_idn_q_oil[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_idn_q_oil[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_oil[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_idn_q_oil[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_oil[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_idn_q_oil[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_idn_q_oil[1][1]}}
                             </span>
@@ -1760,8 +1800,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_idn_q_oil_inc[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_idn_q_oil_inc[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_oil_inc[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_idn_q_oil_inc[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_idn_q_oil_inc[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_idn_q_oil_inc[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_idn_q_oil_inc[1][1]}}
                             </span>
@@ -1783,8 +1823,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_grp_q_liq[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_grp_q_liq[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_liq[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_grp_q_liq[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_liq[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_grp_q_liq[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_grp_q_liq[1][1]}}
                             </span>
@@ -1806,8 +1846,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_grp_q_liq_cas_d_corr[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_grp_q_liq_cas_d_corr[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_liq_cas_d_corr[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_grp_q_liq_cas_d_corr[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_liq_cas_d_corr[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_grp_q_liq_cas_d_corr[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_grp_q_liq_cas_d_corr[1][1]}}
                             </span>
@@ -1829,8 +1869,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_grp_q_oil[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_grp_q_oil[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_oil[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_grp_q_oil[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_oil[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_grp_q_oil[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_grp_q_oil[1][1]}}
                             </span>
@@ -1852,8 +1892,8 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].gp_grp_q_oil_inc[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].gp_grp_q_oil_inc[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_oil_inc[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.gp_grp_q_oil_inc[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.gp_grp_q_oil_inc[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.gp_grp_q_oil_inc[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].gp_grp_q_oil_inc[1][1]}}
                             </span>
@@ -1940,14 +1980,56 @@
                             </span>
                         </td>
 
-                        <td v-if="!edit">{{row.zone}}</td>
-                        <td v-if="edit">{{row.zone}}</td>
+                        <!-- <td v-if="!edit">{{row.zone}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.zone" :disabled="!edit"></td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].zone[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].zone[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].zone[1][0])}`"> </span>
+                            <span>{{row.zone[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].zone[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].zone[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].zone[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].zone[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.zone[0]" :disabled="!edit">
+                            <!-- <span>{{row.layers_count[0]}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].zone[1][1]}}
+                            </span>
+                        </td>
 
-                        <td v-if="!edit">{{row.tseh}}</td>
-                        <td v-if="edit">{{row.tseh}}</td>
+                        <!-- <td v-if="!edit">{{row.tseh}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.tseh" :disabled="!edit"></td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].tseh[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].tseh[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].tseh[1][0])}`"> </span>
+                            <span>{{row.tseh[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].tseh[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].tseh[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].tseh[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].tseh[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.tseh[0]" :disabled="!edit">
+                            <!-- <span>{{row.layers_count[0]}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].tseh[1][1]}}
+                            </span>
+                        </td>
 
                         <td v-if="!edit">{{row.semi_free_flow[0]}}</td>
-                        <td v-if="edit">{{row.semi_free_flow[0]}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.semi_free_flow[0]" :disabled="!edit"></td>
 
                         <!-- <td>{{row.non_profit[0]}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -1972,8 +2054,29 @@
                             </span>
                         </td>
 
-                        <td v-if="!edit">{{row.unsteady_state}}</td>
-                        <td v-if="edit">{{row.unsteady_state}}</td>
+                        <!-- <td v-if="!edit">{{row.unsteady_state}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.unsteady_state" :disabled="!edit"></td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].unsteady_state[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].unsteady_state[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].unsteady_state[1][0])}`"> </span>
+                            <span>{{row.unsteady_state[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].unsteady_state[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].unsteady_state[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].unsteady_state[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].unsteady_state[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.unsteady_state[0]" :disabled="!edit">
+                            <!-- <span>{{row.start_up_date[0]}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].unsteady_state[1][1]}}
+                            </span>
+                        </td>
 
                         <!-- <td>{{row.start_up_date}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -2114,10 +2217,10 @@
                         </td>
 
                         <td v-if="!edit">{{Math.round(row.dist_to_inj_well*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.dist_to_inj_well*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.dist_to_inj_well" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.dist_to_woc*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.dist_to_woc*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.dist_to_woc" :disabled="!edit"></td>
 
                         <!-- <td>{{Math.round(row.curr_bh*10)/10}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -2158,56 +2261,98 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].pump_fillage[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].pump_fillage[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.pump_fillage[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.pump_fillage[0]*10)/10}}</span> -->
+                            <!-- <input @change="editrow(row, row_index)" v-model="row.pump_fillage[0]" :disabled="!edit"> -->
+                            <span>{{Math.round(row.pump_fillage[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].pump_fillage[1][1]}}
                             </span>
                         </td>
 
                         <td v-if="!edit">{{row.gzu_type}}</td>
-                        <td v-if="edit">{{row.gzu_type}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.gzu_type" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.p_res_init*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.p_res_init*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.p_res_init" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.q_liq_charac*10)/10}}</td>
                         <td v-if="edit">{{Math.round(row.q_liq_charac*10)/10}}</td>
 
-                        <td v-if="!edit">{{row.APV_t_rab}}</td>
-                        <td v-if="edit">{{row.APV_t_rab}}</td>
+                        <!-- <td v-if="!edit">{{row.APV_t_rab}}</td>
+                        <td v-if="edit">{{row.APV_t_rab}}</td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].APV_t_rab[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].APV_t_rab[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].APV_t_rab[1][0])}`"> </span>
+                            <span>{{row.APV_t_rab[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].APV_t_rab[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].APV_t_rab[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].APV_t_rab[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].APV_t_rab[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.APV_t_rab[0]" :disabled="!edit">
+                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].APV_t_rab[1][1]}}
+                            </span>
+                        </td>
 
-                        <td v-if="!edit">{{row.APV_t_nak}}</td>
-                        <td v-if="edit">{{row.APV_t_nak}}</td>
+                        <!-- <td v-if="!edit">{{row.APV_t_nak}}</td>
+                        <td v-if="edit">{{row.APV_t_nak}}</td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].APV_t_nak[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].APV_t_nak[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].APV_t_nak[1][0])}`"> </span>
+                            <span>{{row.APV_t_nak[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].APV_t_nak[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].APV_t_nak[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].APV_t_nak[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].APV_t_nak[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.APV_t_nak[0]" :disabled="!edit">
+                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].APV_t_nak[1][1]}}
+                            </span>
+                        </td>
 
                         <td v-if="!edit">{{row.plan_izo_work}}</td>
-                        <td v-if="edit">{{row.plan_izo_work}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_izo_work" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.plan_act_q_l*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.plan_act_q_l*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_act_q_l" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.plan_act_wct*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.plan_act_wct*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_act_wct" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.plan_activities}}</td>
-                        <td v-if="edit">{{row.plan_activities}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_activities" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.plan_casing_info}}</td>
-                        <td v-if="edit">{{row.plan_casing_info}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_casing_info" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.plan_comment}}</td>
-                        <td v-if="edit">{{row.plan_comment}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_comment" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.EMPTY}}</td>
-                        <td v-if="edit">{{row.EMPTY}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.EMPTY" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.EMPTY}}</td>
-                        <td v-if="edit">{{row.EMPTY}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.EMPTY" :disabled="!edit"></td>
                     </tr>
                 </table>
 
             </div>
-        </div> 
+        </div>
         </div>
     </div>
 </template>
@@ -2225,7 +2370,12 @@ export default {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        var prMm = mm-2;
+        if(mm==0){
+            var prMm = 12
+        }
+        else{
+            var prMm = mm - 1
+        }
         this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
@@ -2251,7 +2401,7 @@ export default {
   data: function () {
     return {
         wells: [],
-        sortType: 'name',
+        // sortKey: 'name',
         filter: null,
         dt: null,
         fullWells: [],
@@ -2260,17 +2410,50 @@ export default {
         edit: false,
         editdtm: null,
         editdty: null,
-        // sortField: null,
-        // currentSortDir: 'asc',
+        sortField: null,
+        currentSortDir: 'asc',
         year: null,
         month: null,
     }
   },
+//   computed:{
+//       sortedData() {
+//         // //   let { wells, sortType } = this;
+//         //   this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
+//         //   this.sortKey = sortKey;
+
+//         //   console.log(type, sortType);
+//         //   if(sortType === 'asc') {
+//         //     wells.sort((a, b) => a[type].localeCompare(b[type]))
+//         //     this.sortType = 'desc';
+//         //   } else {
+//         //     wells.sort((a, b) => b[type].localeCompare(a[type]))
+//         //     this.sortType = 'asc';
+//         //   }
+//           if (this.sortField === null) {
+//               return this.wells;
+//           }
+//           return this.wells.sort((a, b) => {
+//               let res;
+//               if (typeof a[this.sortField] === 'string') {
+//               res = a[this.sortField].localeCompare(b[this.sortField])
+//               } else {
+//               res = a[this.sortField] > b[this.sortField] ? 1 :
+//                   a[this.sortField] < b[this.sortField] ? -1 : 0
+//               }
+//               if (this.currentSortDir !== 'asc') {
+//               ret = ret * -1;
+//               }
+//               return ret
+//           })
+//       },
+
+//   },
   methods: {
       editrow(row, rowId) {
           // console.log(row);
           row['index'] = 0;
-          this.axios.post("http://172.20.103.51:7576/api/techregime/edit/"+this.editdty+"/"+this.editdtm+"/", {
+          this.axios.post("http://172.20.103.51:7576/api/techregime/edit/"+this.year+"/"+this.month+"/", {
                 row: row,
             }).then((response) => {
                 if(response.data) {
@@ -2288,7 +2471,7 @@ export default {
       },
       savetable(){
           this.edit = false;
-          this.axios.post("http://172.20.103.51:7576/api/techregime/"+this.editdty+"/"+this.editdtm+"/",{
+          this.axios.post("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/",{
               well: this.wells
           }).then((response) => {
               console.log(response.data)
@@ -2299,50 +2482,59 @@ export default {
           this.show_second = true;
           this.show_first = false;
       },
-      sortBy(sortType) {
-        //   let { wells, sortType } = this;
-        //   this.reverse = (this.sortType == sortType) ? !this.reverse : false;
-        //   this.sortType = sortType;
+    //   sortBy(sortKey) {
+    //     //   let { wells, sortType } = this;
+    //       this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
+    //       this.sortKey = sortKey;
 
-        //   console.log(type, sortType);
-        //   if(sortType === 'asc') {
-        //     wells.sort((a, b) => a[type].localeCompare(b[type]))
-        //     this.sortType = 'desc';
-        //   } else {
-        //     wells.sort((a, b) => b[type].localeCompare(a[type]))
-        //     this.sortType = 'asc';
-        //   }
-        //   if (this.sortField === null) {
-        //       return this.wells;
-        //   }
-        //   return this.wells.sort((a, b) => {
-        //       let res;
-        //       if (typeof a[this.sortField] === 'string') {
-        //       res = a[this.sortField].localeCompare(b[this.sortField])
-        //       } else {
-        //       res = a[this.sortField] > b[this.sortField] ? 1 :
-        //           a[this.sortField] < b[this.sortField] ? -1 : 0
-        //       }
-        //       if (this.currentSortDir !== 'asc') {
-        //       ret = ret * -1;
-        //       }
-        //       return ret
-        //   })
+    //     //   console.log(type, sortType);
+    //     //   if(sortType === 'asc') {
+    //     //     wells.sort((a, b) => a[type].localeCompare(b[type]))
+    //     //     this.sortType = 'desc';
+    //     //   } else {
+    //     //     wells.sort((a, b) => b[type].localeCompare(a[type]))
+    //     //     this.sortType = 'asc';
+    //     //   }
+    //     //   if (this.sortField === null) {
+    //     //       return this.wells;
+    //     //   }
+    //     //   return this.wells.sort((a, b) => {
+    //     //       let res;
+    //     //       if (typeof a[this.sortField] === 'string') {
+    //     //       res = a[this.sortField].localeCompare(b[this.sortField])
+    //     //       } else {
+    //     //       res = a[this.sortField] > b[this.sortField] ? 1 :
+    //     //           a[this.sortField] < b[this.sortField] ? -1 : 0
+    //     //       }
+    //     //       if (this.currentSortDir !== 'asc') {
+    //     //       ret = ret * -1;
+    //     //       }
+    //     //       return ret
+    //     //   })
 
-      },
+    //   },
       onChangeMonth(event) {
-          this.month = event.target.value;
-
+          if(event.target.value == 1){
+              this.month = 12;
+          }
+          else{
+              this.month = event.target.value - 1;
+          }
       },
       onChangeYear(event) {
-          this.year = event.target.value;
-
+              this.year = event.target.value;
       },
 
       chooseDt() {
         //   const { dt } = this;
         //   console.log(dt)
         //   var choosenDt = dt.split("-");
+          if(this.month == 12){
+              this.year = this.year - 1;
+          }
+          else{
+              this.year = this.year;
+          }
           this.axios.get("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/").then((response) => {
                 // this.editdtm = choosenDt[1];
                 // this.editdty = choosenDt[0];
@@ -2357,13 +2549,26 @@ export default {
                 else {
                     console.log('No data');
                 }
+                if(this.month < 9) {
+                    this.dt = '01' + '.0' + (this.month + 1) + '.' + this.year;
+                }
+                else if(this.month == 12){
+                    this.dt = '01' + '.01.' + (this.year + 1);
+                }
+                else {
+                    this.dt = '01' + '.' + (this.month+1) + '.' + this.year;
+                }
             });
       },
       chooseField() {
           const { filter, fullWells } = this;
           console.log(filter, fullWells);
-
-          this.wells = fullWells.filter(e => e.field === filter);
+          if(filter == 'Казгермунай'){
+            this.wells = fullWells.filter(undefined);
+          }
+          else{
+            this.wells = fullWells.filter(e => e.field === filter);
+          }
       },
       swap() {
           this.show_first = !this.show_first;
@@ -2378,11 +2583,11 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
 body {
   color: white !important;
 }
-input, .form-control, .fix-rounded-right{
+.form-control, .fix-rounded-right{
     background: #272953!important;
     border: 1px solid #656A8A!important;
     height: 35px!important;
@@ -2397,20 +2602,20 @@ input, .form-control, .fix-rounded-right{
     position: absolute!important;
     right: 0!important;
     z-index: 9999;
-    
+
 }
 .input-group-prepend{
-    
+
     padding-top: 3px!important;
     margin-right: -3px!important;
-    
+
 }
 a:hover{
     color: white!important;
     text-decoration: none!important;
 }
 .maintable{
-    
+
     padding-top: 35px;
 
 }
