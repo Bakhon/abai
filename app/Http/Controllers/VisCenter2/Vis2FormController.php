@@ -5,6 +5,7 @@ namespace App\Http\Controllers\VisCenter2;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\VisCenter2\Vis2Form;
+use Carbon\Carbon;
 
 class Vis2FormController extends Controller
 {
@@ -15,6 +16,7 @@ class Vis2FormController extends Controller
     {
         $alldata = new Vis2Form;
 
+        $alldata->date = Carbon::yesterday();
         $alldata->dobycha_nefti_fact = $request->input('dobycha_nefti_fact');
         $alldata->dobycha_nefti_condensat_fact = $request->input('dobycha_nefti_condensat_fact');
         $alldata->sdacha_nefti_fact = $request->input('sdacha_nefti_fact');
