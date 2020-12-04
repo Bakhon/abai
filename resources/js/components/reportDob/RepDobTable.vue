@@ -740,8 +740,9 @@ export default {
 
 
       },
-      field: '',
-      dzo: ''
+      dzo: '',
+      field: ''
+      
      
     }
   },
