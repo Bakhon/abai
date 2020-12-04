@@ -1,0 +1,22 @@
+.sec_nav{
+    background: #272953;
+}
+
+.but-nav__link {
+
+    font-weight: inherit;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-family: Roboto;
+    font-style: normal;
+    font-size: 17px;
+    color: #FFFFFF;
+    background: #656A8A;
+    border: none!important;
+    text-align: left!important;
+    cursor: pointer;
+}
+
+.but {
+    height: min-content
+}
