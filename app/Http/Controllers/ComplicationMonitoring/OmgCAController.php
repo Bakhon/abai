@@ -16,7 +16,7 @@ class OmgCAController extends Controller
      */
     public function index()
     {
-        $omgca = OmgCA::orderByDesc('date')
+        $omgca = OmgCA::orderByDesc('created_at')
                                 ->with('ngdu')
                                 ->with('cdng')
                                 ->with('gu')
@@ -47,8 +47,9 @@ class OmgCAController extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         $request->validate([
-            'date' => 'required',
+            'year' => 'required',
         ]);
 
         $omgca = new OmgCA;
@@ -58,8 +59,9 @@ class OmgCAController extends Controller
         $omgca->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
         $omgca->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
         $omgca->well_id = ($request->well_id) ? $request->well_id : NULL;
-        $omgca->date = date("Y-m-d H:i", strtotime($request->date));
+        $omgca->date = $request->year."-01-01";
         $omgca->plan_dosage = ($request->plan_dosage) ? $request->plan_dosage : NULL;
+        $omgca->q_v = ($request->q_v) ? $request->q_v : NULL;
         $omgca->cruser_id = Auth::user()->id;
         $omgca->save();
 

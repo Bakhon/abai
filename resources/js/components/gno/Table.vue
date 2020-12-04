@@ -138,9 +138,9 @@
                         <td>{{Math.round(expAnalysisData.npvTable2.sredniiPrs)}}</td>
                     </tr>
                     <tr>
-                        <td>Распределение по направлениям реализации НДО</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo)}}</td>
+                        <td>Распределение по направлениям реализации НДО, тыс.тг</td>
+                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo/1000)}}</td>
+                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo/1000)}}</td>
                     </tr>
                       <tr>
                         <td>Определение доходной части, тыс.тг</td>
@@ -243,103 +243,136 @@
 
         <div class="podbor-gno" v-if="!visibleChart">
           <div class="img-text">
-            <div class="text_img_1">Экс.колонка 168мм</div>
-            <div class="text_img_2">НКТ 73мм</div>
-            <div class="text_img_3">Штанги 22мм</div>
-            <div class="text_img_4">Штанги 19мм</div>
-            <div class="text_img_5">Штанги 22мм</div>
-            <div class="text_img_6">Насос 57мм</div>
-            <div class="text_img_7">Интервал перфорации 1345-1352м</div>
-            <div class="text_img_8">Текущий забой 1369м</div>
+            <div class="text_img_1">Экс.колонка {{this.casID}}мм</div>
+            <div class="text_img_2">НКТ {{this.tubOD}}мм</div>
+            <div class="text_img_3">Штанги {{this.shgnS1D}}мм 0-{{this.shgnS1L}}м</div>
+            <div class="text_img_4">Штанги {{this.shgnS2D}}мм {{this.shgnS1L}}-{{this.shgnS1L * 1 + this.shgnS2L * 1}}м</div>
+            <div class="text_img_5">Штанги {{this.shgnS1D}}мм {{this.shgnS1L * 1 + this.shgnS2L * 1}}-{{this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1}}м</div>
+            <div class="text_img_6">Насос {{this.shgnPumpType}}мм </div>
+            <div class="text_img_7">Интервал перфорации {{this.hPerf}}-{{this.hPerf * 1 + this.hPerfND * 1}}м</div>
+            <div class="text_img_8">Текущий забой {{this.curr}}м</div>
           </div>
           <div class="image-data">
             <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px" >
           </div>
 
-          <div class="table-pgno-button col-6">
-
-            <div class="table-title-pgno col-12 table-border-gno-top"><b>Насос</b></div>
+          <div class="table-pgno-button">
 
 
-              <div class="cell4-gno table-border-gno-top col-7">
-                Диаметр плунжера
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    57 мм
-                    </div>
-                    </div>
 
-                    <div class="cell4-gno table-border-gno-top col-7">
-                Давление на приеме
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    75 ат
-                    </div>
-                    </div>
+       <div class="table-pgno-one">
+         <table class="table-pgno" >
+
+                <tr class="tr-pgno" height="10" style="height: 10pt;">
+                <td colspan="2">
+                    Расчетный режим:
+                </td>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>Qж</td>
+                        <td>{{qlCelValue}}</td>
+                    </tr>
+                    <tr>
+                        <td>Qн</td>
+                        <td>{{qOil}}</td>
+                    </tr>
+                    <tr>
+                        <td>Обв</td>
+                        <td>{{wctInput}}</td>
+                    </tr>
+                    <tr>
+                        <td>Рзаб</td>
+                        <td>{{bhpCelValue}}</td>
+                    </tr>
+                    <tr>
+                        <td>Рпр</td>
+                        <td>{{piCelValue}}</td>
+                    </tr>
+                </tbody>
+                </table>
+       </div>
+
+ <div class="table-pgno-two">
+    <table class="table-pgno" >
+
+                <tr class="tr-pgno" height="5px" style="height: 10pt;">
+                <td colspan="2">
+                    Компоновка:
+                </td>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>Ø насоса</td>
+                        <td>{{shgnPumpType}}</td>
+                    </tr>
+                    <tr>
+                        <td>Число качаний</td>
+                        <td>{{shgnSPM}}</td>
+                    </tr>
+                    <tr>
+                        <td>Длина хода</td>
+                        <td>{{shgnLen}}</td>
+                    </tr>
+                    <tr>
+                        <td>Тип СК</td>
+                        <td>{{sk}}</td>
+                    </tr>
+                    <tr>
+                        <td>Ø НКТ</td>
+                        <td>{{tubOD}}</td>
+                    </tr>
+                    <tr>
+                        <td>Нсп насоса</td>
+                        <td>{{hPumpValue}}</td>
+                    </tr>
+                </tbody>
+                </table>
+ </div>
 
 
-                    <div class="cell4-gno table-border-gno-top col-7">
-                Длина хода(штак)
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    3м
-                    </div>
-                    </div>
 
 
-                    <div class="cell4-gno table-border-gno-top col-7">
-                Газосодержание
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    2%
-                    </div>
-                    </div>
+
+  <div class="table-pgno-four">
+    <table class="table-pgno" >
+
+                 <tr class="tr-pgno" height="5px" style="height: 10pt;">
+                <td>
+                    Штанги
+                </td>
+                <td>
+                    Ø
+                </td>
+
+                <td>
+                    Длина
+                </td>
 
 
-                    <div class="cell4-gno table-border-gno-top col-7">
-                Число качаний
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    7 мин - 1
-                    </div>
-                    </div>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td>Секция 1</td>
+                        <td>{{shgnS1D}}</td>
+                        <td>{{shgnS1L}}</td>
+                    </tr>
+                    <tr class="tr-pgno">
+                        <td>Секция 2</td>
+                        <td>{{shgnS2D}}</td>
+                        <td>{{shgnS2L}}</td>
+                    </tr>
+                      <tr>
+                        <td>ТН</td>
+                        <td>{{shgnS1D}}</td>
+                        <td>{{shgnTNL}}</td>
+                    </tr>
+                </tbody>
+                </table>
+ </div>
 
-
-                     <div class="cell4-gno table-border-gno-top col-7">
-                К-сеп
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    0,37
-                    </div>
-                    </div>
-
-                       <div class="cell4-gno table-border-gno-top col-7">
-                К-под
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    0,8
-                    </div>
-                    </div>
-
-
-                       <div class="cell4-gno table-border-gno-top col-7">
-                Длина хода (плунж)
-                </div>
-                <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <div class="center">
-                    2,88 м
-                    </div>
-                    </div>
-
-              </div>
-        </div>
+       </div>
+       </div>
       </div>
 
       <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
@@ -853,6 +886,18 @@ export default {
         },
         ],
         visibleChart: true,
+        stroke_len: null,
+        qOil: null,
+        shgnPumpType: null,
+        shgnSPM: null,
+        shgnLen: null,
+        shgnS1D: null,
+        shgnS2D: null,
+        shgnS1L: null,
+        shgnS2L: null,
+        shgnTNL: null,
+        shgnTNL: null,
+        hPerfND: null,
         type: String,
         required: true,
         wellNumber: null,
@@ -919,6 +964,7 @@ export default {
         analysisBox5: true,
         analysisBox6: true,
         analysisBox7: true,
+
         analysisBox8: true,
         menu: "MainMenu",
         ngdu: null,
@@ -967,11 +1013,12 @@ export default {
         this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0)
         this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0)
         this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"]
-        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"]
-        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"]
+        this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0)
+        this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0)
         this.whpInput = data["Well Data"]["whp"][0].toFixed(0)
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
+        this.qOil = this.curvePointsData[2]["q_oil"].toFixed(0)
       } else {
         this.ngdu = data["Well Data"]["ngdu"][0]
         this.sk = data["Well Data"]["sk_type"][0]
@@ -981,6 +1028,7 @@ export default {
         this.expMeth = data["Well Data"]["exp_meth"][0]
         this.tseh = data["Well Data"]["tseh"][0]
         this.gu = data["Well Data"]["gu"][0]
+        this.stroke_len = data["Well Data"]["stroke_len"][0]
         this.casOD = data["Well Data"]["cas_OD"][0]
         this.casID = data["Well Data"]["cas_ID"][0]
         this.hPerf = data["Well Data"]["h_up_perf_vd"][0]
@@ -1011,6 +1059,7 @@ export default {
         this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0)
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0)
         this.wellIncl = data["Well Data"]["well"][0]
+        this.hPerfND = data["Well Data"]["h_perf"][0]
 
 
         this.stopDate = this.stopDate.substring(0, 10)
@@ -1028,6 +1077,7 @@ export default {
         this.qlCelValue = this.qLInput*1
         this.hPumpValue = this.hPumpSet
 
+
         if (this.expMeth == "ШГН") {
               this.expChoose = "ШГН"
         } else {
@@ -1042,6 +1092,7 @@ export default {
         this.piButton = true
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
+        this.qOil = this.curvePointsData[2]["q_oil"]
       }
     },
     setLine: function (value) {
@@ -1164,8 +1215,10 @@ export default {
       this.data[2]['x'][0] = value[1]["q_l"]
       this.data[2]['y'][0] = value[1]["p"]
       this.data[2]['text'][0] = value[1]["q_oil"]
+
     },
     PotAnalysisMenu() {
+      this.postCurveData()
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
       if (this.age) {
@@ -1352,13 +1405,11 @@ export default {
     },
 
     getWellNumber(wellnumber) {
+      this.visibleChart = true;
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         this.method = 'MainMenu'
-
-
-
         if (data["Error"] === "NoData"){
           Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
 
@@ -1514,6 +1565,7 @@ export default {
     },
 
     postCurveData(value) {
+      this.visibleChart = true;
       console.log(value)
         let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
         // api/pgno/UZN/
@@ -1576,6 +1628,7 @@ export default {
     },
 
     postAnalysisOld() {
+      this.visibleChart = true;
       let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
@@ -1633,6 +1686,7 @@ export default {
     },
 
     postAnalysisNew() {
+      this.visibleChart = true;
       console.log("POST NEW WELL")
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
@@ -1741,19 +1795,46 @@ export default {
     },
 
     onPgnoClick() {
-      this.visibleChart = !this.visibleChart;
-
-      if(this.visibleChart) {
-        Vue.prototype.$notifyWarning("Измените настройки кривой притока или параметры подбора");
-      } else {
-        return;
-      }
+        if(this.visibleChart) {
+        let uri = "http://172.20.103.187:7575/api/pgno/shgn";
+        let jsonData = JSON.stringify(
+        {
+        "ql_cel": this.qlCelValue,
+        "h_pump_set": this.hPumpValue,
+        "sk_type": this.sk,
+        "dens_oil": this.densOil,
+        "dens_water": this.densWater,
+        "wct": this.wctInput,
+        "stroke_len": this.stroke_len
+        }
+        )
+        this.axios.post(uri, jsonData).then((response) => {
+          var data = JSON.parse(response.data);
+          console.log(data);
+          if(data) {
+            if (data["error"] == "NoIntersection") {
+              Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать невозможно, попробуйте изменить глубину спуска или ожидаемый дебит");
+            } else {
+          this.shgnPumpType = data["pump_type"]
+          this.shgnSPM = data["spm"].toFixed(0)
+          this.shgnLen = data["stroke_len"]
+          this.shgnS1D = data["s1d"].toFixed(0)
+          this.shgnS2D = data["s2d"].toFixed(0)
+          this.shgnS1L = data["s1l"].toFixed(0)
+          this.shgnS2L = data["s2l"].toFixed(0)
+          this.shgnTN = data["tn"]
+          this.shgnTNL = data["tn_l"]
+          this.visibleChart = !this.visibleChart
+            }
+          } else {
+          }
+          })
+    } else {
+      this.visibleChart = !this.visibleChart
+      this.postCurveData()
     }
-
-
-
-
-  },
+    }
+    },
   beforeCreate: function() {
     let uri = "http://172.20.103.187:7575/api/pgno/UZN/0046/";
       this.axios.get(uri).then((response) => {
@@ -1764,6 +1845,7 @@ export default {
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
           this.NnoCalc();
+          this.qOil = this.curvePointsData[0]["q_oil"].toFixed(0)
         } else {
           console.log("No data");
         }
@@ -1776,5 +1858,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

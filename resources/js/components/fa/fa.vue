@@ -68,11 +68,11 @@
                 <a href="tr" class="but-nav__link but">Технологический режим</a>
                 <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
-                        <input type="date" class="form-control" v-model="dt">
+                        <input type="date" class="form-control" v-model="date1">
                 </form>
                 <form class="form-group but-nav__link">
                         <label for="inputDate">Выбор даты 2:</label>
-                        <input type="date" class="form-control" v-model="dt2">
+                        <input type="date" class="form-control" v-model="date2">
                 </form>
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
@@ -337,6 +337,8 @@ export default {
         sortType: 'asc',
         dt: null,
         dt2: null,
+        date1: null,
+        date2: null,
         fullWells: [],
         filter: null,
         editdtm: null,
@@ -483,11 +485,30 @@ export default {
 
       },
       chooseDt() {
-          const { dt, dt2 } = this;
-          console.log('dt1-', dt, ' dt2-', dt2);
-          var choosenDt = dt.split("-");
-          var choosenSecDt = dt2.split("-");
-          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+choosenDt[0]+"/"+choosenDt[1]+"/"+choosenSecDt[0]+"/"+choosenSecDt[1]+"/").then((response) => {
+          const { date1, date2 } = this;
+          console.log('dt1-', date1, ' dt2-', date2);
+          var choosenDt = date1.split("-");
+          var choosenSecDt = date2.split("-");
+          if(choosenDt[1]==1){
+              var prMm = 12;
+              var prPrMm = 11;
+              var yyyy = choosenDt[0] - 1;
+              var pryyyy = choosenSecDt[0];
+          }
+          else if(choosenSecDt[1] == 1){
+              var prMm = choosenDt[1] - 1;
+              var prPrMm = 12;
+              var yyyy = choosenDt[0];
+              var pryyyy = choosenSecDt[0] - 1;
+          }
+          else{
+              var prMm = choosenDt[1] - 1;
+              var prPrMm = choosenSecDt[1] - 1;
+              var yyyy = choosenDt[0];
+              var pryyyy = choosenSecDt[0];
+          }
+          console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                 let data = response.data;
                 this.editdtm = choosenDt[1];
                 this.editdty = choosenDt[0];
@@ -500,6 +521,8 @@ export default {
                 else {
                     console.log('No data');
                 }
+                this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+                this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
 
             });
       },
@@ -526,9 +549,22 @@ export default {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        var prMm = mm-2;
-        var prPrMm = mm-3;
-        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+yyyy+"/"+prPrMm+"/").then((response) => {
+        var pryyyy = today.getFullYear();
+        var prMm = mm;
+        var prPrMm = mm;
+        if(mm==0){
+            var prMm = 12;
+            var prPrMm = 11;
+            var yyyy = yyyy - 1;
+            var pryyyy = pryyyy - 1;
+        }
+        else{
+            var prMm = prMm - 1;
+            var prPrMm = prPrMm -2;
+            var yyyy = yyyy;
+            var pryyyy = pryyyy;
+        }
+        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
         console.log(this.editdtm);
@@ -547,29 +583,29 @@ export default {
         else {
             console.log('No data');
         }
-        if(prMm < 10 && prPrMm < 10) {
-            this.dt = '01' + '.0' + prMm + '.' + yyyy;
-            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy ;
+        if(this.editdtm < 10 && this.editdtprevm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy ;
         }
-        else if(prMm <= 10 && prPrMM <=10) {
-            this.dt = '01'+ '.' + prMm + '.' + yyyy;
-            this.dt2 = '01' + '.' + prPrMm + '.' + yyyy;
+        else if(this.editdtm <= 10 && this.editdtprevm <=10) {
+            this.dt = '01'+ '.' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
         }
-        else if(prMm >= 10 && prPrMM < 10) {
-            this.dt = '01' + '.0' + prMm + '.' + yyyy;
-            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy;
+        else if(editdtm >= 10 && editdtprevm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
         }
-        if(prMm < 10) {
-            this.dt = '01' + '.0' + prMm + '.' + yyyy;
-        }
-        else {
-            this.dt = '01' + '.' + prMm + '.' + yyyy;
-        }
-        if(prPrMm < 10) {
-            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy;
+        if(this.editdtm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
         }
         else {
-            this.dt2 = '01' + '.' + prPrMm + '.' + yyyy;
+            this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+        }
+        if(this.editdtprevm < 10) {
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
+        }
+        else {
+            this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
         }
     });
    },

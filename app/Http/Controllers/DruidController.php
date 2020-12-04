@@ -68,7 +68,7 @@ return $response;
 //$file_name = 'D:/openserver/OpenServer/domains/localhost/public/js/json/graph_1006.json';
 //file_put_contents($file_name, file_get_contents($file));
 
-//Role::create(['name'=>'writer']); 
+//Role::create(['name'=>'writer']);
 //$permission = Permission::create(['name'=>'writer post']);
 //auth()->user()->givePermissionTo('edit post');
         return view('visualcenter.visualcenter3');
@@ -206,6 +206,10 @@ return $response;
     public function gtm()
     {
         return view('reports.gtm');
+    }
+    public function dob()
+    {
+        return view('reports.dob');
     }
 
     function getCurrencyPeriod(Request $request)
@@ -904,8 +908,8 @@ return $response;
     {
         return view('fa.fa');
     }    ///
-    public function tredit()
+    public function trfa()
     {
-        return view('tredit.tredit');
+        return view('trfa.trfa');
     }    ///
 }
