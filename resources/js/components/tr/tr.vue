@@ -115,7 +115,7 @@
 
             </div> -->
             <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
-            <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
+            <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a>
             <a @click="editable()" v-if="!edit" class=" col but-nav__link but"><i style=" margin-right: 10px; ">
                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.10481 18.579C0.824148 18.5785 0.55658 18.4602 0.367405 18.253C0.174748 18.0475 0.0790152 17.7695 0.104259 17.489L0.349395 14.795L11.6737 3.481L15.2126 7.017L3.89136 18.33L1.19586 18.575C1.16485 18.578 1.13383 18.579 1.10481 18.579ZM15.919 6.31L12.3811 2.774L14.5032 0.653001C14.691 0.465221 14.9456 0.359711 15.2111 0.359711C15.4767 0.359711 15.7313 0.465221 15.919 0.653001L18.0412 2.774C18.2291 2.96157 18.3347 3.21609 18.3347 3.4815C18.3347 3.74691 18.2291 4.00143 18.0412 4.189L15.92 6.309L15.919 6.31Z" fill="white"/>
@@ -146,7 +146,6 @@
         </div>
        <div class="col-md-12 maintable" >
            <div class="maintable-level2">
-<<<<<<< HEAD
                <div class="techvers" style="display: flex;">
                     <div class="tech">
                         <h3> Технологический режим на {{dt}}</h3>
@@ -173,24 +172,6 @@
 <path d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
 </svg>Версия для отображения</button>
                 </div>
-=======
-            <div class='tech'>
-                <h3> Технологический режим на {{dt}}</h3>
-            </div>
-            <!-- <div>
-                <select name="Company" class="from-control" id="companySelect"
-                    v-model="filter" @change="chooseField">
-                    <option value="Казгермунай">КазГерМунай</option>
-                    <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-                    <option value="Акшабулак Южный">Акшабулак Южный</option>
-                    <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-                    <option value="Нуралы">Нуралы</option>
-                    <option value="Аксай">Аксай</option>
-                    <option value="Аксай Южный">Аксай Южный</option>
-                </select>
-            </div> -->
-            <button id="bt1"  @click="swap">Версия для отображения</button>
->>>>>>> 13083904af89c4c27bed4e1dfa2280603710a4b3
             <div >
                 <TrTable :wells="wells" @onSort="sortField" v-show="show_first"/>
                 <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->

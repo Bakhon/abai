@@ -69,15 +69,14 @@
                     <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
                     </svg>
                     </i>Технологический режим</a>
-                <!-- <form class="form-group but-nav__link">
+                <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
-<<<<<<< HEAD
-                        <input type="date" class="form-control" v-model="dt">
-                </form> -->
-                <!-- <form class="form-group but-nav__link">
+                        <input type="date" class="form-control" v-model="date1">
+                </form>
+                <form class="form-group but-nav__link">
                         <label for="inputDate">Выбор даты 2:</label>
-                        <input type="date" class="form-control" v-model="dt2">
-                </form> -->
+                        <input type="date" class="form-control" v-model="date2">
+                </form>
                 
                 <div class="col">
                        
@@ -89,16 +88,7 @@
                         </div>
                 </div>
 
-                <!-- <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> -->
-=======
-                        <input type="date" class="form-control" v-model="date1">
-                </form>
-                <form class="form-group but-nav__link">
-                        <label for="inputDate">Выбор даты 2:</label>
-                        <input type="date" class="form-control" v-model="date2">
-                </form>
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
->>>>>>> 13083904af89c4c27bed4e1dfa2280603710a4b3
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
                 <a class="but-nav__link but " @click="pushBign('chart')">Графики</a>
                 <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
@@ -603,9 +593,6 @@ export default {
             this.wells = data.data;
             this.fullWells = data.data;
             this.chartWells = data.data;
-        }
-        else {
-            console.log('No data');
         }
         if(this.editdtm < 10 && this.editdtprevm < 10) {
             this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
