@@ -258,7 +258,7 @@ return $response;
       public function corrosion(Request $request)
     {
         if (true) {
-            //flowrate of liquid oil//
+            //flowrate of liquid oil///
             $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim m3/day
             $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
             //oil density
