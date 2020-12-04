@@ -235,10 +235,7 @@
         </modal>
 
 
-        <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
-          <div class="modal-bign3">
 
-          </div>
         </modal>
         <div class="gno-line-chart" v-if="visibleChart">
           <gno-line-points-chart></gno-line-points-chart>
@@ -942,6 +939,7 @@ export default {
             npvTable1:{},
             npvTable2:{},
         },
+
         qZhExpEcn:null,
         qOilExpEcn:null,
         qZhExpShgn:null,
@@ -1203,19 +1201,19 @@ export default {
 
     },
     EconomParam(){
-        var prs1 = this.expAnalysisData.prs1
-        var prs2 = this.expAnalysisData.prs2
+        var prs1 = this.expAnalysisData.prs1;
+        var prs2 = this.expAnalysisData.prs2;
 
-        var nnoDayUp=moment(this.dataNNO, 'YYYY-MM-DD').toDate()
-        var nnoDayFrom=moment(this.stopDate, 'YYYY-MM-DD').toDate()
+        var nnoDayUp=moment(this.dataNNO, 'YYYY-MM-DD').toDate();
+        var nnoDayFrom=moment(this.stopDate, 'YYYY-MM-DD').toDate();
 
-        var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24)
+        var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24);
 
         if (date_diff<365){
-            date_diff=365
+            date_diff=365;
         }
 
-        console.log('data', date_diff)
+
 
         if (prs1!=0 && prs2!=0){
             this.param_eco=1;
@@ -1223,16 +1221,16 @@ export default {
         } else if (prs1==0 && prs2==0){
             if(this.age){
                 this.param_eco=1;
-                this.EconomCalc()
+                this.EconomCalc();
             } else {
                 if(this.expChoose=="ШГН"){
-                    this.expAnalysisData.NNO1=date_diff
+                    this.expAnalysisData.NNO1=date_diff;
                     this.param_eco=1;
-                    this.EconomCalc()
+                    this.EconomCalc();
                 }else{
-                    this.expAnalysisData.NNO2=date_diff
+                    this.expAnalysisData.NNO2=date_diff;
                     this.param_eco=1;
-                    this.EconomCalc()
+                    this.EconomCalc();
                 }
             }
         } else if (prs1==0 && prs2!=0){
@@ -1244,14 +1242,16 @@ export default {
         }
     },
     EconomCalc(){
+        console.log('Nno',typeof this.expAnalysisData.NNO1,typeof this.expAnalysisData.NNO2);
+
         let uri2="/ru/nnoeco?equip=1&org=5&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
         this.axios.get(uri2).then((response) => {
             let data = response.data;
             if(data) {
 
-                this.expAnalysisData.shgnParam=data[12].godovoiShgnParam
-                this.expAnalysisData.shgnNpv=data[12].npv
-                this.expAnalysisData.npvTable1=data[12]
+                this.expAnalysisData.shgnParam=data[12].godovoiShgnParam;
+                this.expAnalysisData.shgnNpv=data[12].npv;
+                this.expAnalysisData.npvTable1=data[12];
             }
             else {
                 console.log('No data');
@@ -1263,9 +1263,9 @@ export default {
             let data2 = response.data;
             if(data2) {
 
-                this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam
-                this.expAnalysisData.ecnNpv=data2[12].npv
-                this.expAnalysisData.npvTable2=data2[12]
+                this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam;
+                this.expAnalysisData.ecnNpv=data2[12].npv;
+                this.expAnalysisData.npvTable2=data2[12];
 
                 if(this.qOilExpShgn!=null && this.qOilExpEcn!=null && this.expAnalysisData.NNO1!=null && this.expAnalysisData.NNO2!=null && this.expAnalysisData.shgnParam!=null && this.expAnalysisData.shgnNpv!=null && this.expAnalysisData.ecnParam!=null && this.expAnalysisData.ecnNpv!=null ){
                     this.$modal.show("modalExpAnalysis");
@@ -1276,6 +1276,9 @@ export default {
                 console.log('No data');
             }
         });
+
+        console.log('Nno',this.expAnalysisData.NNO1,this.expAnalysisData.NNO2);
+
     },
     NnoCalc(){
         let uri = "http://172.20.103.187:7575/api/nno/";
@@ -1294,48 +1297,47 @@ export default {
             this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil
         }
 
-        let jsonData = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": "ШГН",
+        if(this.wellNumber!=null){
+            let jsonData = JSON.stringify(
+                {"well_number": this.wellNumber,
+                "exp_meth": "ШГН",
+                }
+            )
+
+            let jsonData2 = JSON.stringify(
+                {"well_number": this.wellNumber,
+                "exp_meth": "ЭЦН",
+                }
+            )
+
+
+
+            //microservise na SHGN NNO
+            this.axios.post(uri, jsonData).then((response) => {
+            var data = JSON.parse(response.data.Result)
+            if (data) {
+                this.expAnalysisData.NNO1=data.NNO
+                this.expAnalysisData.qoilShgn=this.qOilExpShgn
+                this.expAnalysisData.prs1=data.prs
+            } else {
+            console.log("No data");
             }
-        )
+            });
 
-        let jsonData2 = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": "ЭЦН",
+            //microservise na ECN NNO
+            this.axios.post(uri, jsonData2).then((response2) => {
+            var data2 = JSON.parse(response2.data.Result)
+            if (data2) {
+                this.expAnalysisData.NNO2=data2.NNO
+                this.expAnalysisData.qoilEcn=this.qOilExpEcn
+                this.expAnalysisData.prs2=data2.prs
+            } else {
+                console.log("No data");
             }
-        )
+            });
 
-         let jsonData3 = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": "УЭЦН",
 
-            }
-        )
-
-        //microservise na SHGN NNO
-        this.axios.post(uri, jsonData).then((response) => {
-        var data = JSON.parse(response.data.Result)
-        if (data) {
-          this.expAnalysisData.NNO1=data.NNO
-          this.expAnalysisData.qoilShgn=this.qOilExpShgn
-          this.expAnalysisData.prs1=data.prs
-        } else {
-          console.log("No data");
         }
-        });
-
-        //microservise na ECN NNO
-        this.axios.post(uri, jsonData2).then((response) => {
-        var data = JSON.parse(response.data.Result)
-        if (data) {
-          this.expAnalysisData.NNO2=data.NNO
-          this.expAnalysisData.qoilEcn=this.qOilExpEcn
-          this.expAnalysisData.prs2=data.prs
-        } else {
-          console.log("No data");
-        }
-        });
     },
     // PgnoMenu() {
 

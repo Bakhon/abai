@@ -19,6 +19,7 @@ export default {
   props:["data"],
   data: function () {
     return {
+
       chartOptions: {
         tooltip: {
           theme: "dark",
@@ -125,6 +126,8 @@ export default {
       ]
     };
   },
+
+
 
 
 
