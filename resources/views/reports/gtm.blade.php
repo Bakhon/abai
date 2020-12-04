@@ -43,7 +43,8 @@
     color: #d4d4d4 !important;
     background-color: rgba(0, 0, 0, 0.075);
 }
-
+.fixed-columns {
+     background-color: #20274e !important;;
 </style>
 
 
