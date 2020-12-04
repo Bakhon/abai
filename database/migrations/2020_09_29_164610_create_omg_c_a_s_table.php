@@ -22,7 +22,8 @@ class CreateOmgCASTable extends Migration
             $table->integer('zu_id')->nullable();
             $table->integer('well_id')->nullable();
             $table->date('date');
-            $table->float('plan_dosage', 8, 4)->nullable();
+            $table->double('plan_dosage')->nullable();
+            $table->double('q_v')->nullable();
             $table->integer('cruser_id');
             $table->timestamps();
         });

@@ -90,6 +90,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
         Route::resource('oilgas','ComplicationMonitoring\OilGasController');
+        Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
+        Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
 
 
         //gno economic
@@ -134,6 +136,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
 
         Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
+
+        Route::get('importdzoday','DZOdayController@importExcel');
+        Route::get('importdzoyear','DZOyearController@importExcel');
 
     });
     Auth::routes([
