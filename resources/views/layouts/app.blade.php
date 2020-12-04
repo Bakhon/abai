@@ -19,8 +19,10 @@
 
 <body style="background-color: #0F1430;">
     @include('layouts.navbar')
-    <div class="row" id="app">
-    @include('layouts.visual-center4-sidebar')
+    <div class="no-row row" id="app">
+    
+        @include('layouts.visual-center4-sidebar')
+    
 
        {{-- @if (basename(Request::url()) === "ru")
         @include('layouts.sidebar')

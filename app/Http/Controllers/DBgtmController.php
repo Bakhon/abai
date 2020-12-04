@@ -21,7 +21,7 @@ class DBgtmController extends Controller
     public function gtm1(Request $request)
     {
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-        $builder = $client->query('raschet_by_gtm_month_v06', Granularity::ALL);
+        $builder = $client->query('raschet_by_gtm_month_v07', Granularity::ALL);
 
         if  ($request->has('ngdu')) {
             $builder
@@ -129,12 +129,15 @@ class DBgtmController extends Controller
                 ->select('totaloil2')
                 ->select('totalotrabotana') 
                 ->select('totalwork_time')
+                ->select('year')
                 ->where('dzo_short', '=', $request->dzo)
                 ->where('ngdu', '=', $request->ngdu)
                 ->where('block', '=', $request->block)
                 ->where('horizon', '=', $request->horizon)
-                ->where('tseh', '=', $request->tseh)
-                ->where('gzu_type', '=', $request->zu);
+                ->where('year', '=', $request->year)
+                ->where('long_name', '=', $request->long_name)
+                ->where('tseh', '=', $request->tseh);
+                // ->where('gzu_type', '=', $request->zu);
                 // ->subtotals([['dt']]);
 
         } 
@@ -187,89 +190,100 @@ class DBgtmController extends Controller
             array_push($well, date("Y.m.d", strtotime($item['dend'])));
             array_push($well, $item['long_name']);
             array_push($well, $item['contractor']);
-            array_push($well, $item['liquid_avg_before']);
-            array_push($well, $item['oil2_avg_before']);
+            array_push($well, round(($item['liquid_avg_before']), 1));
+            array_push($well, round(($item['oil2_avg_before']), 1));
             array_push($well, $item['1_calendar']);
-            array_push($well, $item['1_dob']);
-            array_push($well, $item['1_gdis_hdyn']);
-            array_push($well, $item['1_gdis_pzab']);
-            array_push($well, $item['1_liquid']);
-            array_push($well, $item['1_obv']);
-            array_push($well, $item['1_oil2']);
-            array_push($well, $item['1_otrabotana']);
-            array_push($well, $item['1_work_time']);
+            array_push($well, round(($item['1_dob']), 1));
+            array_push($well, round(($item['1_gdis_hdyn']), 1));
+            array_push($well, round(($item['1_gdis_pzab']), 1));
+            array_push($well, round(($item['1_liquid']), 1));
+            array_push($well, round(($item['1_obv']), 1));
+            array_push($well, round(($item['1_oil2']), 1));
+            array_push($well, round(($item['1_otrabotana']), 1));
+            array_push($well, round(($item['1_work_time']), 3));
             array_push($well, $item['2_calendar']);
-            array_push($well, $item['2_dob']);
-            array_push($well, $item['2_gdis_hdyn']);
-            array_push($well, $item['2_gdis_pzab']);
-            array_push($well, $item['2_liquid']);
-            array_push($well, $item['2_obv']);
-            array_push($well, $item['2_oil2']);
-            array_push($well, $item['2_otrabotana']);
-            array_push($well, $item['2_work_time']);
+            array_push($well, round(($item['2_dob']), 1));
+            array_push($well, round(($item['2_gdis_hdyn']), 1));
+            array_push($well, round(($item['2_gdis_pzab']), 1));
+            array_push($well, round(($item['2_liquid']), 1));
+            array_push($well, round(($item['2_obv']), 1));
+            array_push($well, round(($item['2_oil2']), 1));
+            array_push($well, round(($item['2_otrabotana']), 1));
+            array_push($well, round(($item['2_work_time']), 3));
             array_push($well, $item['3_calendar']);
-            array_push($well, $item['3_dob']);
-            array_push($well, $item['3_gdis_hdyn']);
-            array_push($well, $item['3_gdis_pzab']);
-            array_push($well, $item['3_liquid']);
-            array_push($well, $item['3_obv']);
-            array_push($well, $item['3_oil2']);
-            array_push($well, $item['3_otrabotana']);
-            array_push($well, $item['3_work_time']);
+            array_push($well, round(($item['3_dob']), 1));
+            array_push($well, round(($item['3_gdis_hdyn']), 1));
+            array_push($well, round(($item['3_gdis_pzab']), 1));
+            array_push($well, round(($item['3_liquid']), 1));
+            array_push($well, round(($item['3_obv']), 1));
+            array_push($well, round(($item['3_oil2']), 1));
+            array_push($well, round(($item['3_otrabotana']), 1));
+            array_push($well, round(($item['3_work_time']), 3));
             array_push($well, $item['4_calendar']);
-            array_push($well, $item['4_dob']);
-            array_push($well, $item['4_gdis_hdyn']);
-            array_push($well, $item['4_gdis_pzab']);
-            array_push($well, $item['4_liquid']);
-            array_push($well, $item['4_obv']);
-            array_push($well, $item['4_oil2']);
-            array_push($well, $item['4_otrabotana']);
-            array_push($well, $item['4_work_time']);
+            array_push($well, round(($item['4_dob']), 1));
+            array_push($well, round(($item['4_gdis_hdyn']), 1));
+            array_push($well, round(($item['4_gdis_pzab']), 1));
+            array_push($well, round(($item['4_liquid']), 1));
+            array_push($well, round(($item['4_obv']), 1));
+            array_push($well, round(($item['4_oil2']), 1));
+            array_push($well, round(($item['4_otrabotana']), 1));
+            array_push($well, round(($item['4_work_time']), 3));
             array_push($well, $item['5_calendar']);
-            array_push($well, $item['5_dob']);
-            array_push($well, $item['5_gdis_hdyn']);
-            array_push($well, $item['5_gdis_pzab']);
-            array_push($well, $item['5_liquid']);
-            array_push($well, $item['5_obv']);
-            array_push($well, $item['5_oil2']);
-            array_push($well, $item['5_otrabotana']);
-            array_push($well, $item['5_work_time']);
+            array_push($well, round(($item['5_dob']), 1));
+            array_push($well, round(($item['5_gdis_hdyn']), 1));
+            array_push($well, round(($item['5_gdis_pzab']), 1));
+            array_push($well, round(($item['5_liquid']), 1));
+            array_push($well, round(($item['5_obv']), 1));
+            array_push($well, round(($item['5_oil2']), 1));
+            array_push($well, round(($item['5_otrabotana']), 1));
+            array_push($well, round(($item['5_work_time']), 3));
             array_push($well, $item['6_calendar']);
-            array_push($well, $item['6_dob']);
-            array_push($well, $item['6_gdis_hdyn']);
-            array_push($well, $item['6_gdis_pzab']);
-            array_push($well, $item['6_liquid']);
-            array_push($well, $item['6_obv']);
-            array_push($well, $item['6_oil2']);
-            array_push($well, $item['6_otrabotana']);
-            array_push($well, $item['6_work_time']);
+            array_push($well, round(($item['6_dob']), 1));
+            array_push($well, round(($item['6_gdis_hdyn']), 1));
+            array_push($well, round(($item['6_gdis_pzab']), 1));
+            array_push($well, round(($item['6_liquid']), 1));
+            array_push($well, round(($item['6_obv']), 1));
+            array_push($well, round(($item['6_oil2']), 1));
+            array_push($well, round(($item['6_otrabotana']), 1));
+            array_push($well, round(($item['6_work_time']), 3));
             array_push($well, $item['7_calendar']);
-            array_push($well, $item['7_dob']);
-            array_push($well, $item['7_gdis_hdyn']);
-            array_push($well, $item['7_gdis_pzab']);
-            array_push($well, $item['7_liquid']);
-            array_push($well, $item['7_obv']);
-            array_push($well, $item['7_oil2']);
-            array_push($well, $item['7_otrabotana']);
-            array_push($well, $item['7_work_time']);
+            array_push($well, round(($item['7_dob']), 1));
+            array_push($well, round(($item['7_gdis_hdyn']), 1));
+            array_push($well, round(($item['7_gdis_pzab']), 1));
+            array_push($well, round(($item['7_liquid']), 1));
+            array_push($well, round(($item['7_obv']), 1));
+            array_push($well, round(($item['7_oil2']), 1));
+            array_push($well, round(($item['7_otrabotana']), 1));
+            array_push($well, round(($item['7_work_time']), 3));
             array_push($well, $item['8_calendar']);
-            array_push($well, $item['8_dob']);
-            array_push($well, $item['8_gdis_hdyn']);
-            array_push($well, $item['8_gdis_pzab']);
-            array_push($well, $item['8_liquid']);
-            array_push($well, $item['8_obv']);
-            array_push($well, $item['8_oil2']);
-            array_push($well, $item['8_otrabotana']);
-            array_push($well, $item['8_work_time']);
+            array_push($well, round(($item['8_dob']), 1));
+            array_push($well, round(($item['8_gdis_hdyn']), 1));
+            array_push($well, round(($item['8_gdis_pzab']), 1));
+            array_push($well, round(($item['8_liquid']), 1));
+            array_push($well, round(($item['8_obv']), 1));
+            array_push($well, round(($item['8_oil2']), 1));
+            array_push($well, round(($item['8_otrabotana']), 1));
+            array_push($well, round(($item['8_work_time']), 3));
             array_push($well, $item['9_calendar']);
-            array_push($well, $item['9_dob']);
-            array_push($well, $item['9_gdis_hdyn']);
-            array_push($well, $item['9_gdis_pzab']);
-            array_push($well, $item['9_liquid']);
-            array_push($well, $item['9_obv']);
-            array_push($well, $item['9_oil2']);
-            array_push($well, $item['9_otrabotana']);
-            array_push($well, $item['9_work_time']);
+            array_push($well, round(($item['9_dob']), 1));
+            array_push($well, round(($item['9_gdis_hdyn']), 1));
+            array_push($well, round(($item['9_gdis_pzab']), 1));
+            array_push($well, round(($item['9_liquid']), 1));
+            array_push($well, round(($item['9_obv']), 1));
+            array_push($well, round(($item['9_oil2']), 1));
+            array_push($well, round(($item['9_otrabotana']), 1));
+            array_push($well, round(($item['9_work_time']), 3));
+
+            array_push($well, $item['totalcalendar']);
+            array_push($well, round(($item['totaldob']), 1));
+            array_push($well, round(($item['totalgdis_hdyn']), 1));
+            array_push($well, round(($item['totalgdis_pzab']), 1));
+            array_push($well, round(($item['totalliquid']), 1));
+            array_push($well, round(($item['totalobv']), 1));
+            array_push($well, round(($item['totaloil2']), 1));
+            array_push($well, round(($item['9_otrabotana']), 1));
+            array_push($well, round(($item['9_work_time']), 3));
+
             array_push($well, $item['totalcalendar']);
             array_push($well, $item['totaldob']);
             array_push($well, $item['totalgdis_hdyn']);
@@ -279,6 +293,7 @@ class DBgtmController extends Controller
             array_push($well, $item['totaloil2']);
             array_push($well, $item['totalotrabotana']);
             array_push($well, $item['totalwork_time']);
+            array_push($well, $item['year']);
             array_push($data['wellsList1'], $well);
         }
     

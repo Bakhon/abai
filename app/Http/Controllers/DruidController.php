@@ -207,6 +207,10 @@ return $response;
     {
         return view('reports.gtm');
     }
+    public function dob()
+    {
+        return view('reports.dob');
+    }
 
     function getCurrencyPeriod(Request $request)
     {

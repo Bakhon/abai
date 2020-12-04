@@ -349,7 +349,6 @@ export default {
           org: this.org,
           month: this.month,
           year: this.year,
-
         })
         .then((response) => {
           let data = response.data;
@@ -364,16 +363,12 @@ export default {
     },
      onChange(event) {
         this.org = event.target.value;
-
     },
      onChangeMonth(event) {
         this.month = event.target.value;
-
-
     },
     onChangeYear(event) {
         this.year = event.target.value;
-
     },
   },
 }
