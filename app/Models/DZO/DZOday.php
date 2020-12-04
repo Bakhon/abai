@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class DZOday extends Model
 {
-    //
+    protected $table = 'd_z_odays';
 }
