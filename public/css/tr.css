@@ -89,7 +89,8 @@ td.fitwidth {
 table {
     text-align:center;
     table-layout : fixed;
-    width:150px
+    width:150px;
+    /* background : #333975 */
 }
 
 .ce {
@@ -171,3 +172,6 @@ table {
     color: #ffffff;
     text-align: left;
 }
+
+
+

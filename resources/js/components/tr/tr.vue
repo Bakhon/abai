@@ -146,26 +146,36 @@
         </div>
        <div class="col-md-12 maintable" >
            <div class="maintable-level2">
-            <div class='tech'>
-                <h3> Технологический режим на {{dt}}</h3>
-            </div>
-            <!-- <div>
-                <select name="Company" class="from-control" id="companySelect"
-                    v-model="filter" @change="chooseField">
-                    <option value="Акшабулак Центральный">КазГер</option>
-                    <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-                    <option value="Акшабулак Южный">Акшабулак Южный</option>
-                    <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-                    <option value="Нуралы">Нуралы</option>
-                    <option value="Аксай">Аксай</option>
-                    <option value="Аксай Южный">Аксай Южный</option>
-                </select>
-            </div> -->
-            <button id="bt1"  @click="swap">Версия для отображения</button>
+               <div class="techvers" style="display: flex;">
+                    <div class="tech">
+                        <h3> Технологический режим на {{dt}}</h3>
+                    </div>
+
+
+
+
+
+                    <!-- <div>
+                        <select name="Company" class="from-control" id="companySelect"
+                            v-model="filter" @change="chooseField">
+                            <option value="Акшабулак Центральный">КазГер</option>
+                            <option value="Акшабулак Центральный">Акшабулак Центральный</option>
+                            <option value="Акшабулак Южный">Акшабулак Южный</option>
+                            <option value="Акшабулак Восточный">Акшабулак Восточный</option>
+                            <option value="Нуралы">Нуралы</option>
+                            <option value="Аксай">Аксай</option>
+                            <option value="Аксай Южный">Аксай Южный</option>
+                        </select>
+                    </div> -->
+                    <button id="bt1"   @click="swap" style="background: #272953; color: white; margin-left: 1071px; border: none;"><svg width="19" style="margin-right:10px;" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<path d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>Версия для отображения</button>
+                </div>
             <div >
                 <TrTable :wells="wells" @onSort="sortBy" v-show="show_first"/>
                 <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
-                <table v-show="show_second" class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
+                <table v-show="show_second" class="table table-bordered table-dark table-responsive ce">
                     <tr class="headerColumn">
                         <td rowspan="4" @click="sortBy('gu')">Раб. Группа</td>
                         <td rowspan="4" @click="sortBy('field')">НГДУ/месторождение</td>
@@ -301,7 +311,7 @@
                         <td rowspan="2"><span>Обводненность</span></td>
                     </tr>
                     <tr></tr>
-                    <tr class="subHeaderColumn">
+                    <tr class="subHeaderColumn" style="color: white">
                         <td></td>
                         <td></td>
                         <td></td>
@@ -2407,4 +2417,19 @@ a:hover{
 .maintable-level2{
     background: #272953;
 }
+.table th, .table td {
+    padding: 5px !important; 
+    /* vertical-align: top;
+    border-top: 1px solid #dee2e6; */
+}
+table.table.table-bordered.table-dark.table-responsive.ce {
+    position: sticky;
+    inset: 48.21% 2.4% 66.58% 5.31%;
+    background: rgb(13, 30, 99);
+    font-size: 9px;
+    padding: unset;
+}
+
+tr:nth-child(odd) {background-color:#454d7d;}
+tr:nth-child(even) {background-color:#454d7d73;}
 </style>

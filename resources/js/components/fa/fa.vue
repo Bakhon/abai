@@ -65,24 +65,38 @@
             </div>
         </modal>
         <div class="row justify-content-between">
-                <a href="tr" class="but-nav__link but">Технологический режим</a>
-                <form class="form-group but-nav__link">
+                <a href="tr" class="col but-nav__link but"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
+                    </svg>
+                    </i>Технологический режим</a>
+                <!-- <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="dt">
-                </form>
-                <form class="form-group but-nav__link">
+                </form> -->
+                <!-- <form class="form-group but-nav__link">
                         <label for="inputDate">Выбор даты 2:</label>
                         <input type="date" class="form-control" v-model="dt2">
-                </form>
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
+                </form> -->
+                
+                <div class="col">
+                       
+                        <div class="input-group input-group-sm">
+                            <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
+                            <div class="input-group-prepend">
+                                <button class="input-group-text" style="font-size: 14px;">Поиск</button>
+                            </div>
+                        </div>
+                </div>
+
+                <!-- <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> -->
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
                 <a class="but-nav__link but " @click="pushBign('chart')">Графики</a>
-                <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a>
+                <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
         </div>
         <div class="tech">
             <td> Факторный анализ</td>
         </div>
-        <div>
+        <!-- <div>
             <select name="Company" class="from-control" id="companySelect"
                 v-model="filter" @change="chooseField">
                 <option value="Акшабулак Центральный">Акшабулак Центральный</option>
@@ -92,7 +106,7 @@
                 <option value="Аксай">Аксай</option>
                 <option value="Аксай Южный">Аксай Южный</option>
             </select>
-        </div>
+        </div> -->
         <div>
             <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
                 <tr class="headerColumn">
@@ -579,4 +593,55 @@ export default {
 body {
   color: white !important;
 }
+
+input, .form-control, .fix-rounded-right{
+    background: #272953!important;
+    border: 1px solid #656A8A!important;
+    height: 35px!important;
+    color: white!important;
+}
+.input-group-text
+{
+    background: #656A8A!important;
+    color: white!important;
+    border-radius: 6px!important;
+    border: none!important;
+    position: absolute!important;
+    right: 0!important;
+    z-index: 9999;
+    
+}
+.input-group-prepend{
+    
+    padding-top: 3px!important;
+    margin-right: -3px!important;
+    
+}
+a:hover{
+    color: white!important;
+    text-decoration: none!important;
+}
+.maintable{
+    
+    padding-top: 35px;
+
+}
+.maintable-level2{
+    background: #272953;
+}
+.table th, .table td {
+    padding: 5px !important; 
+    /* vertical-align: top;
+    border-top: 1px solid #dee2e6; */
+}
+table.table.table-bordered.table-dark.table-responsive.ce {
+    position: sticky;
+    inset: 48.21% 2.4% 66.58% 5.31%;
+    background: rgb(13, 30, 99);
+    font-size: 9px;
+    padding: unset;
+}
+
+tr:nth-child(odd) {background-color:#454d7d;}
+tr:nth-child(even) {background-color:#454d7d73;}
 </style>
