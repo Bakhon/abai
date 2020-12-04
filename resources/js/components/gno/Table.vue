@@ -2,6 +2,7 @@
   <div class="main col-md-12 col-lg-12 row">
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
+        
 
         <modal name="modalIncl" :width="1150" :height="500" style="background:transparent">
           <div class="modal-bign">
@@ -272,30 +273,30 @@
          <table class="table-pgno" >
 
                 <tr class="tr-pgno" height="10" style="height: 10pt;">
-                <td colspan="2">
+                <td class="td-pgno" rowspan="1" colspan="2">
                     Расчетный режим:
                 </td>
                 </tr>
                 <tbody>
                     <tr>
-                        <td>Qж</td>
-                        <td>{{qlCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">Qж</td>
+                        <td class="td-pgno" rowspan="1">{{qlCelValue}}</td>
                     </tr>
                     <tr>
-                        <td>Qн</td>
-                        <td>{{qOil}}</td>
+                        <td class="td-pgno" rowspan="1">Qн</td>
+                        <td class="td-pgno" rowspan="1">{{qOil}}</td>
                     </tr>
                     <tr>
-                        <td>Обв</td>
-                        <td>{{wctInput}}</td>
+                        <td class="td-pgno" rowspan="1">Обв</td>
+                        <td class="td-pgno" rowspan="1">{{wctInput}}</td>
                     </tr>
                     <tr>
-                        <td>Рзаб</td>
-                        <td>{{bhpCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">Рзаб</td>
+                        <td class="td-pgno" rowspan="1">{{bhpCelValue}}</td>
                     </tr>
                     <tr>
-                        <td>Рпр</td>
-                        <td>{{piCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">Рпр</td>
+                        <td class="td-pgno" rowspan="1">{{piCelValue}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -305,34 +306,34 @@
     <table class="table-pgno" >
 
                 <tr class="tr-pgno" height="5px" style="height: 10pt;">
-                <td colspan="2">
+                <td class="td-pgno" rowspan="1" colspan="2">
                     Компоновка:
                 </td>
                 </tr>
                 <tbody>
                     <tr>
-                        <td>Ø насоса</td>
-                        <td>{{shgnPumpType}}</td>
+                        <td class="td-pgno" rowspan="1">Ø насоса</td>
+                        <td class="td-pgno" rowspan="1">{{shgnPumpType}}</td>
                     </tr>
                     <tr>
-                        <td>Число качаний</td>
-                        <td>{{shgnSPM}}</td>
+                        <td class="td-pgno" rowspan="1">Число качаний</td>
+                        <td class="td-pgno" rowspan="1">{{shgnSPM}}</td>
                     </tr>
                     <tr>
-                        <td>Длина хода</td>
-                        <td>{{shgnLen}}</td>
+                        <td class="td-pgno" rowspan="1">Длина хода</td>
+                        <td class="td-pgno" rowspan="1">{{shgnLen}}</td>
                     </tr>
                     <tr>
-                        <td>Тип СК</td>
-                        <td>{{sk}}</td>
+                        <td class="td-pgno" rowspan="1">Тип СК</td>
+                        <td class="td-pgno" rowspan="1">{{sk}}</td>
                     </tr>
                     <tr>
-                        <td>Ø НКТ</td>
-                        <td>{{tubOD}}</td>
+                        <td class="td-pgno" rowspan="1">Ø НКТ</td>
+                        <td class="td-pgno" rowspan="1">{{tubOD}}</td>
                     </tr>
                     <tr>
-                        <td>Нсп насоса</td>
-                        <td>{{hPumpValue}}</td>
+                        <td class="td-pgno" rowspan="1">Нсп насоса</td>
+                        <td class="td-pgno" rowspan="1">{{hPumpValue}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -346,14 +347,14 @@
     <table class="table-pgno" >
 
                  <tr class="tr-pgno" height="5px" style="height: 10pt;">
-                <td>
+                <td class="td-pgno" rowspan="1">
                     Штанги
                 </td>
-                <td>
+                <td class="td-pgno" rowspan="1">
                     Ø 
                 </td>
 
-                <td>
+                <td class="td-pgno" rowspan="1">
                     Длина
                 </td>
 
@@ -361,19 +362,19 @@
                 </tr>
                 <tbody>
                     <tr>
-                        <td>Секция 1</td>
-                        <td>{{shgnS1D}}</td>
-                        <td>{{shgnS1L}}</td>
+                        <td class="td-pgno" rowspan="1">Секция 1</td>
+                        <td class="td-pgno" rowspan="1">{{shgnS1D}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnS1L}}</td>
                     </tr>
                     <tr class="tr-pgno">
-                        <td>Секция 2</td>
-                        <td>{{shgnS2D}}</td>
-                        <td>{{shgnS2L}}</td>
+                        <td class="td-pgno" rowspan="1">Секция 2</td>
+                        <td class="td-pgno" rowspan="1">{{shgnS2D}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnS2L}}</td>
                     </tr>
                       <tr>
-                        <td>ТН</td>
-                        <td>{{shgnS1D}}</td>
-                        <td>{{shgnTNL}}</td>
+                        <td class="td-pgno" rowspan="1">ТН</td>
+                        <td class="td-pgno" rowspan="1">{{shgnS1D}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnTNL}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -597,7 +598,7 @@
           с ГРП <input class="checkbox0" v-model="grp_skin" :disabled="!age" type="checkbox" />
         </div>
 
-        <div class="cell4-gno table-border-gno-top col-7">Пласт</div>
+        <div class="cell4-gno table-border-gno-top col-7">Горизонт</div>
         <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
           {{horizon}}
         </div>
@@ -614,14 +615,14 @@
         <div class="cell4-gno table-border-gno-top col-7">
           {{tseh}}
         </div>
-        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+        <div class="cell4-gno table-border-gno-top cell4-gno-second col-5">
           {{gu}}
         </div>
 
-        <div class="cell4-gno table-border-gno-top col-7">
+        <div class="cell4-gno col-7">
           {{ngdu}}
         </div>
-        <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+        <div class="cell4-gno cell4-gno-second col-5">
           АО "ОМГ"
         </div>
       </div>
@@ -685,7 +686,7 @@
               Диаметр насоса
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{pumpType}}
+              {{pumpType}}м
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Нсп</div>
@@ -695,7 +696,7 @@
 
             <div class="cell4-gno table-border-gno-top col-7">Наружн. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{tubOD}} м
+              {{tubOD}}мм
             </div>
             <div class="cell4-gno table-border-gno-top col-7">Внутр. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
@@ -1410,7 +1411,7 @@ export default {
     // },
     InclMenu() {
         if (this.age === true) {
-        Vue.prototype.$notifyError("Данные инклинометрии новой скважины отсутствуют");
+        Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
 
       } else {
         this.$modal.show('modalIncl')
@@ -1626,13 +1627,13 @@ export default {
         if(this.pResInput * 1 <= this.bhpInput * 1 || this.pResInput * 1 <= this.bhpCelValue * 1) {
           Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
           } else if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
-          Vue.prototype.$notifyError("Целевой режим не должен быть меньше потенциального режима")
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
           console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
-          Vue.prototype.$notifyError("Целевой режим не должен быть меньше потенциального режима")
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
           console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
-          Vue.prototype.$notifyError("Целевой режим не должен быть меньше потенциального режима")
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
           console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else {
             this.axios.post(uri, jsonData).then((response) => {
@@ -1640,7 +1641,7 @@ export default {
               if (data) {
           this.method = "CurveSetting"
           if(data["Well Data"]["pi"][0] * 1 < 0) {
-            Vue.prototype.$notifyError("Кпрод не должен быть меньше нуля")
+            Vue.prototype.$notifyWarning("Pзаб не должно быть больше чем Рпл")
           } else {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
