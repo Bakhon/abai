@@ -2558,7 +2558,7 @@ export default {
 body {
   color: white !important;
 }
-input, .form-control, .fix-rounded-right{
+.form-control, .fix-rounded-right{
     background: #272953!important;
     border: 1px solid #656A8A!important;
     height: 35px!important;

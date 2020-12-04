@@ -711,7 +711,7 @@ td {
 
 .image-data {
     width: 500px;
-    height: 250px;
+    height: 450px;
     margin-left: 230px;
     padding-top: 5px;
     padding-bottom: 5px;
@@ -724,9 +724,9 @@ td {
 }
 
 .text_img_1 {
-    width: 150px;
+    width: 200px;
     height: 27px;
-    margin-left: 130px;
+    margin-left: 110px;
     margin-top: 43px;
     font-size: 13px;
 }
@@ -740,25 +740,25 @@ td {
 }
 
 .text_img_3 {
-    width: 150px;
+    width: 200px;
     height: 90px;
-    margin-left: 180px;
+    margin-left: 110px;
     margin-top: 0px;
     font-size: 13px;
 }
 
 .text_img_4 {
-    width: 150px;
+    width: 200px;
     height: 83px;
-    margin-left: 180px;
+    margin-left: 90px;
     margin-top: 0px;
     font-size: 13px;
 }
 
 .text_img_5 {
-    width: 150px;
+    width: 200px;
     height: 45px;
-    margin-left: 180px;
+    margin-left: 90px;
     margin-top: 0px;
     font-size: 13px;
 }
@@ -772,9 +772,9 @@ td {
 }
 
 .text_img_7 {
-    width: 155px;
-    height: 43px;
-    margin-left: 116px;
+    width: 250px;
+    height: 45px;
+    margin-left: 30px;
     margin-top: 0px;
     font-size: 13px;
 }
@@ -789,9 +789,11 @@ td {
 
 .table-pgno-button {
     font-size: 13px;
-    width: 400px;
+    width: 1200px;
     height: 450px;
     background-color: #20274e;
+    display: flex;
+    justify-content: flex-start;
 }
 
 .table-title-pgno {
@@ -799,7 +801,77 @@ td {
     font-size: 16px;
 }
 
+.table-pgno-one {
+    width: 170px;
+    height: 225px;
+    display: flex;
+    margin-left: 30px;
+    margin-top: 100px;
+    
+}
+
+.table-pgno-two {
+    width: 150px;
+    height: 225px;
+    margin-left: 10px;
+    margin-top: 100px;
+    display: flex;
+}
 
 
 
+.table-pgno-four {
+    width: 250px;
+    height: 225px;
+    display: flex;
+    margin-top: 100px;
+    margin-left: 20px;
+}
+
+.table-pgno {
+    height: 225px;
+    font-size: 13px;
+}
+
+.table-pgno { 
+    display: table;
+}
+
+/* .tr-pgno { 
+    display: table-row; }
+.td-pgno { 
+    width: 20px;
+    display: table-cell;
+    border: 5px #134487;
+ }
+.tbody-pgno { display: table-row-group; }
+.thead-pgno { display: table-row-group; }
+.th-pgno { display: table-cell; 
+    vertical-align: inherit; 
+    font-weight: bold; 
+    text-align: center; } */
+
+.tr-pgno { 
+    display: table-row;
+}
+.td-pgno { 
+    display: table-cell;
+    text-align: center; 
+    height: 10px;
+    width: 100px;
+}
+
+.thead-pgno { 
+    display: table-header-group; 
+}
+.tbody-pgno { 
+    display: table-row-group; 
+}
+
+.th-pgno { 
+    display: table-cell; 
+    font-weight: bold; 
+    text-align: center;
+    height: 0px;
+}
 /* .vm--modal {} */

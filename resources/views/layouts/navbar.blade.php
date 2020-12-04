@@ -19,57 +19,18 @@
                 <li class="nav-item active dropdown">
                     <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
                     <a href=""><span class="workTypeText">Разработка</span></a>
-                    <ul class="dropdown-child">
-                        <li class="nav-item child dropdown">
-                            <a href="">
-                                <span class="workTypeText">Показатели</span>
-                            </a>
-                            <ul>
-                                <li class="nav-item child">
-                                    <a href="{{url('/')}}/ru/tabs">
-                                        <span class="workTypeText">Вкладки (Основные и Дополнительные)</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/gtmscor">
-                                <span class="workTypeText">ГТМ скорпион</span>
-                            </a>
-                        </li>
-                        <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/calcgtm">
-                                <span class="workTypeText">Расчет ГТМ</span>
-                            </a>
-                        </li>
                 </li>
-            </ul>
-            </li>
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_buren.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href=""><span class="workTypeText">Бурение</span></a>
             </li>
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href="{{url('/')}}/ru/visualcenter"><span class="workTypeText">Добыча</span></a>
+                <a href=""><span class="workTypeText">Добыча</span></a>
                 <ul class="dropdown-child">
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/production">
-                            <span class="workTypeText">МРП</span>
-                        </a>
-                    </li>
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/mfond">
-                            <span class="workTypeText">Мехфонд</span>
-                        </a>
-                    </li>
                     <li class="nav-item child">
                         <a href="{{url('/')}}/ru/podborgno">
                             <span class="workTypeText">Подбор ГНО</span>
-                        </a>
-                    </li>
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/oilpivot">
-                            <span class="workTypeText">Конструктор</span>
                         </a>
                     </li>
                     <li class="nav-item child">
@@ -129,15 +90,8 @@
             <li class="nav-item active dropdown">
                 <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
                 <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
-                <ul class="dropdown-child">
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/economicpivot">
-                            <span class="workTypeText">Конструктор НРС</span>
-                        </a>
-                    </li>
-                </ul>
-    </li>
-    
+            </li>
+
             <li class="nav-item active">
                 <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
             </li>
@@ -167,7 +121,7 @@
                 <li class="nav-item2">
                     <i class="fas fa-ellipsis-v"></i>
                 </li>
- 
+
             </div>
         </div>
 </nav>
