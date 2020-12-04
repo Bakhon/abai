@@ -17,14 +17,19 @@
           </div>
           <div class="modal-analysis-menu">
             <div class="form-check">
-              <input v-model="analysisBox1" class="checkbox-modal-analysnauryzbekis-menu" @change="postAnalysisOld()"
+              <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                type="checkbox">
+              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
+            </div>
+            <div class="form-check">
+              <input v-model="analysisBox2" class="checkbox-modal-analysnauryzbekis-menu" @change="postAnalysisOld()"
                 type="checkbox">
               <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
             </div>
             <div class="form-check">
-              <input v-model="analysisBox3" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+              <input v-model="analysisBox3" class="checkbox-modal-analysnauryzbekis-menu" @change="postAnalysisOld()"
                 type="checkbox">
-              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот = Рнас*</label>
+              <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот >= 0,75 * Рнас</label>
             </div>
             <div class="form-check">
               <input v-model="analysisBox4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
@@ -688,11 +693,11 @@
               {{hPumpSet}} м
             </div>
 
-            <div class="cell4-gno table-border-gno-top col-7">Наружн. фНКТ</div>
+            <div class="cell4-gno table-border-gno-top col-7">Наружн. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{tubOD}} м
             </div>
-            <div class="cell4-gno table-border-gno-top col-7">Внутр. фНКТ</div>
+            <div class="cell4-gno table-border-gno-top col-7">Внутр. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{tubID}} мм
             </div>
@@ -840,7 +845,7 @@ export default {
         height: 450,
         showlegend: true,
         xaxis: {
-          title: "Дебит, q, м³/сут.",
+          title: "Дебит, Qж, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           zeroline: false,
@@ -888,6 +893,9 @@ export default {
           },
         },
         ],
+        bhpPot: null,
+        qlPot: null,
+        pinPot: null,
         visibleChart: true,
         stroke_len: null,
         qOil: null,
@@ -1021,6 +1029,9 @@ export default {
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
         this.qOil = this.curvePointsData[2]["q_oil"].toFixed(0)
+        this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
+        this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
+        this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
       } else {
         this.ngdu = data["Well Data"]["ngdu"][0]
         this.sk = data["Well Data"]["sk_type"][0]
@@ -1079,6 +1090,7 @@ export default {
         this.qlCelValue = this.qLInput*1
         this.hPumpValue = this.hPumpSet
         
+        
 
         if (this.expMeth == "ШГН") {
               this.expChoose = "ШГН"
@@ -1095,6 +1107,9 @@ export default {
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
         this.qOil = this.curvePointsData[2]["q_oil"]
+        this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
+        this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
+        this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
       }
     },
     setLine: function (value) {
@@ -1126,7 +1141,7 @@ export default {
           hovertemplate:  "<b>IPR (кривая притока)</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
-                          "P = %{y:.1f} атм<extra></extra>",
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
 
           marker: {
             size: "15",
@@ -1142,7 +1157,7 @@ export default {
           hovertemplate:  "<b>Текущий режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
-                          "P = %{y:.1f} атм<extra></extra>",
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
             color: "#00A0E3",
@@ -1158,7 +1173,7 @@ export default {
           hovertemplate:  "<b>Потенциальный режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
-                          "P = %{y:.1f} атм<extra></extra>",
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
             color: "#FBA409",
@@ -1172,7 +1187,7 @@ export default {
           hovertemplate:  "<b>New Line</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
-                          "P = %{y:.1f} атм<extra></extra>",
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
 
           marker: {
             size: "15",
@@ -1394,8 +1409,8 @@ export default {
       
     // },
     InclMenu() {
-        if (this.data["Age"] === true) {
-        Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
+        if (this.age === true) {
+        Vue.prototype.$notifyError("Данные инклинометрии новой скважины отсутствуют");
 
       } else {
         this.$modal.show('modalIncl')
@@ -1409,7 +1424,7 @@ export default {
         var data = response.data;
         this.method = 'MainMenu'
         if (data["Error"] === "NoData"){
-          Vue.prototype.$notifyError("Данные по указанной скважине отсутствуют");
+          Vue.prototype.$notifyError("Указанная скважина отсутствует");
 
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -1610,14 +1625,28 @@ export default {
 
         if(this.pResInput * 1 <= this.bhpInput * 1 || this.pResInput * 1 <= this.bhpCelValue * 1) {
           Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
+          } else if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
+          Vue.prototype.$notifyError("Целевой режим не должен быть меньше потенциального режима")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
+          Vue.prototype.$notifyError("Целевой режим не должен быть меньше потенциального режима")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
+          Vue.prototype.$notifyError("Целевой режим не должен быть меньше потенциального режима")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else {
             this.axios.post(uri, jsonData).then((response) => {
               var data = response.data;
               if (data) {
           this.method = "CurveSetting"
+          if(data["Well Data"]["pi"][0] * 1 < 0) {
+            Vue.prototype.$notifyError("Кпрод не должен быть меньше нуля")
+          } else {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          }
+          
           } else {
         }
       });
@@ -1763,6 +1792,7 @@ export default {
     },
 
      setGraphNew() {
+      Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalNewWell');
@@ -1793,7 +1823,8 @@ export default {
     },
 
     onPgnoClick() {
-        if(this.visibleChart) {
+        if(this.expChoose == 'ШГН'){
+          if(this.visibleChart) {
         let uri = "http://172.20.103.187:7575/api/pgno/shgn";
         let jsonData = JSON.stringify(
         {
@@ -1813,6 +1844,7 @@ export default {
             if (data["error"] == "NoIntersection") {
               Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать невозможно, попробуйте изменить глубину спуска или ожидаемый дебит");
             } else {
+          Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
           this.shgnPumpType = data["pump_type"]
           this.shgnSPM = data["spm"].toFixed(0)
           this.shgnLen = data["stroke_len"]
@@ -1831,6 +1863,10 @@ export default {
       this.visibleChart = !this.visibleChart
       this.postCurveData()
     }
+        } else {
+          Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
+        }
+        
     }
     },
   beforeCreate: function() {
@@ -1844,6 +1880,8 @@ export default {
           this.$emit('PointsData', this.curvePointsData)
           this.NnoCalc();
           this.qOil = this.curvePointsData[0]["q_oil"].toFixed(0)
+          this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
+          console.log(this.bhpPot);
         } else {
           console.log("No data");
         }

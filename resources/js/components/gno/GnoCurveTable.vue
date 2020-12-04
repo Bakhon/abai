@@ -19,7 +19,7 @@ export default {
       layout: {
         //      showlegend: false,
         xaxis: {
-          title: "Дебит, q, м³/сут.",
+          title: "Дебит, Qж, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           // autorange: false,
@@ -98,10 +98,10 @@ export default {
 
       this.data = [
         {
-          name: "Pnp",
+          name: "Давление на приёме насоса",
           x: qo_points2,
           y: pintake_points2,
-          hovertemplate: '<b>P npиёма = %{y:.1f} атм</b><extra></extra>',
+          hovertemplate: '<b>Pnp = %{y:.1f} атм</b><extra></extra>',
 
           marker: {
             size: "15",
@@ -117,7 +117,7 @@ export default {
           hovertemplate: "<b>IPR (кривая притока)</b><br>" + 
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
-                          "P = %{y:.1f} атм<extra></extra>",
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             x: 20,
             y: 60,
@@ -146,7 +146,7 @@ export default {
           hovertemplate:  "<b>Текущий режим</b><br><extra></extra>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
-                          "P = %{y:.1f} атм",
+                          "Pзаб = %{y:.1f} атм",
           marker: {
             size: "15",
             color: "#00A0E3",
@@ -162,7 +162,7 @@ export default {
           hovertemplate:  "<b>Целевой (расчётный) режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
-                          "P = %{y:.1f} атм<extra></extra>",
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
             color: "#13B062",
@@ -178,7 +178,7 @@ export default {
           hovertemplate:  "<b>Потенциальный режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
-                          "P = %{y:.1f} атм<extra></extra>",
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
             color: "#FBA409",
