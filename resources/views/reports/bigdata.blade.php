@@ -131,7 +131,7 @@
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ревизия фонда скважин по месторождениям</button> 
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Расшифровка бездействующего фонда скважин</button> 
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Отчет по месячной замерной закаче воды</button> 
-                <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ежедневная динамика показателей добычи по скважинам</button> 
+                <button onclick="document.location='{{url('/')}}/ru/dob'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ежедневная динамика показателей добычи по скважинам</button> 
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ежедневная динамика показателей закачки по скважинам</button> 
 
             </div>
