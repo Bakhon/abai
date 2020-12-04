@@ -895,7 +895,6 @@ return $response;
             return "Error. Invalid url";
         }
     }
-
     public function tr()
     {
         return view('tr.tr');
