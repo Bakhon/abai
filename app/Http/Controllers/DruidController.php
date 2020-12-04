@@ -255,7 +255,7 @@ return $response;
     {
         return view('production.calcgtm');
     }
-    public function corrosion(Request $request)
+      public function corrosion(Request $request)
     {
         if (true) {
             //flowrate of liquid oil//
