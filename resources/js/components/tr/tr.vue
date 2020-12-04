@@ -152,7 +152,7 @@
             <!-- <div>
                 <select name="Company" class="from-control" id="companySelect"
                     v-model="filter" @change="chooseField">
-                    <option value="Акшабулак Центральный">КазГер</option>
+                    <option value="Казгермунай">КазГерМунай</option>
                     <option value="Акшабулак Центральный">Акшабулак Центральный</option>
                     <option value="Акшабулак Южный">Акшабулак Южный</option>
                     <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -163,12 +163,12 @@
             </div> -->
             <button id="bt1"  @click="swap">Версия для отображения</button>
             <div >
-                <TrTable :wells="wells" @onSort="sortBy" v-show="show_first"/>
+                <TrTable :wells="wells" @onSort="sortField" v-show="show_first"/>
                 <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
                 <table v-show="show_second" class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
                     <tr class="headerColumn">
-                        <td rowspan="4" @click="sortBy('gu')">Раб. Группа</td>
-                        <td rowspan="4" @click="sortBy('field')">НГДУ/месторождение</td>
+                        <td rowspan="4" @click="sortField=wells.gu">Раб. Группа</td>
+                        <td rowspan="4" @click="sortField=wells.field">НГДУ/месторождение</td>
                         <td rowspan="4" @click="sortBy('well')">№ скв</td>
                         <td rowspan="4" @click="sortBy('well_type')">Тип скважины</td>
                         <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
@@ -179,8 +179,8 @@
                         <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НКТ</td>
                         <td rowspan="4" @click="sortBy('tub_ID')">Внутренний диаметр НКТ</td>
                         <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
-                        <td rowspan="4" @click="sortBy('h_up_perf_vd')">Нвдп</td>
-                        <td rowspan="4" @click="sortBy('h_up_perf_md')">Удлинение(Нвдп)</td>
+                        <td rowspan="4" @click="sortBy('h_up_perf_md')">Нвдп</td>
+                        <td rowspan="4" @click="sortBy('h_up_perf_vd')">Удлинение(Нвдп)</td>
                         <td rowspan="4" @click="sortBy('exp_meth')">Способ эксплуатации</td>
                         <td rowspan="4" @click="sortBy('pump_type')">Тип Насоса</td>
                         <td rowspan="4" @click="sortBy('EMPTY')">Тип СК</td>
@@ -472,8 +472,29 @@
                             </span>
                         </td>
 
-                        <td v-if="!edit">{{row.block}}</td>
-                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.block" :disabled="!edit"></td>
+                        <!-- <td v-if="!edit">{{row.block}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.block" :disabled="!edit"></td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].block[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].block[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].block[1][0])}`"> </span>
+                            <span>{{row.block[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].block[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].block[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].block[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].block[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.block[0]" :disabled="!edit">
+                            <!-- <span>{{Math.round(row.cas_OD[0]*10)/10}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].block[1][1]}}
+                            </span>
+                        </td>
 
                         <td v-if="!edit">{{Math.round(row.r_con*10)/10}}</td>
                         <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.r_con" :disabled="!edit"></td>
@@ -553,28 +574,28 @@
                             </span>
                         </td>
 
-                        <td v-if="!edit">{{Math.round(row.h_up_perf_ext[0]*10)/10}}</td>
-                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.h_up_perf_ext[0]" :disabled="!edit"></td>
+                        <td v-if="!edit">{{Math.round(row.h_up_perf_md[0]*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.h_up_perf_md[0]" :disabled="!edit"></td>
 
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
-                        wells[row_index].h_up_perf_md[1][0] !== '0'}">
+                        wells[row_index].h_up_perf_ext[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
-                        wells[row_index].h_up_perf_md[1][0] !== '0'}" :style="`background :${getColor(
-                        wells[row_index].h_up_perf_md[1][0])}`"> </span>
-                            <span>{{Math.round(row.h_up_perf_md[0]*10)/10}}</span>
+                        wells[row_index].h_up_perf_ext[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].h_up_perf_ext[1][0])}`"> </span>
+                            <span>{{Math.round(row.h_up_perf_ext[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
-                                {{ wells[row_index].h_up_perf_md[1][1]}}
+                                {{ wells[row_index].h_up_perf_ext[1][1]}}
                             </span>
                         </td>
                         <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
-                        wells[row_index].h_up_perf_md[1][0] !== '0'}">
+                        wells[row_index].h_up_perf_ext[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
-                        wells[row_index].h_up_perf_md[1][0] !== '0'}" :style="`background :${getColor(
-                        wells[row_index].h_up_perf_md[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.h_up_perf_md[0]" :disabled="!edit">
+                        wells[row_index].h_up_perf_ext[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].h_up_perf_ext[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.h_up_perf_ext[0]" :disabled="!edit">
                             <!-- <span>{{Math.round(row.h_up_perf_md[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
-                                {{ wells[row_index].h_up_perf_md[1][1]}}
+                                {{ wells[row_index].h_up_perf_ext[1][1]}}
                             </span>
                         </td>
 
@@ -1930,11 +1951,53 @@
                             </span>
                         </td>
 
-                        <td v-if="!edit">{{row.zone}}</td>
-                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.zone" :disabled="!edit"></td>
+                        <!-- <td v-if="!edit">{{row.zone}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.zone" :disabled="!edit"></td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].zone[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].zone[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].zone[1][0])}`"> </span>
+                            <span>{{row.zone[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].zone[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].zone[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].zone[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].zone[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.zone[0]" :disabled="!edit">
+                            <!-- <span>{{row.layers_count[0]}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].zone[1][1]}}
+                            </span>
+                        </td>
 
-                        <td v-if="!edit">{{row.tseh}}</td>
-                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.tseh" :disabled="!edit"></td>
+                        <!-- <td v-if="!edit">{{row.tseh}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.tseh" :disabled="!edit"></td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].tseh[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].tseh[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].tseh[1][0])}`"> </span>
+                            <span>{{row.tseh[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].tseh[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].tseh[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].tseh[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].tseh[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.tseh[0]" :disabled="!edit">
+                            <!-- <span>{{row.layers_count[0]}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].tseh[1][1]}}
+                            </span>
+                        </td>
 
                         <td v-if="!edit">{{row.semi_free_flow[0]}}</td>
                         <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.semi_free_flow[0]" :disabled="!edit"></td>
@@ -1962,8 +2025,29 @@
                             </span>
                         </td>
 
-                        <td v-if="!edit">{{row.unsteady_state}}</td>
-                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.unsteady_state" :disabled="!edit"></td>
+                        <!-- <td v-if="!edit">{{row.unsteady_state}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.unsteady_state" :disabled="!edit"></td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].unsteady_state[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].unsteady_state[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].unsteady_state[1][0])}`"> </span>
+                            <span>{{row.unsteady_state[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].unsteady_state[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].unsteady_state[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].unsteady_state[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].unsteady_state[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.unsteady_state[0]" :disabled="!edit">
+                            <!-- <span>{{row.start_up_date[0]}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].unsteady_state[1][1]}}
+                            </span>
+                        </td>
 
                         <!-- <td>{{row.start_up_date}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -2164,35 +2248,77 @@
                         <td v-if="!edit">{{Math.round(row.q_liq_charac*10)/10}}</td>
                         <td v-if="edit">{{Math.round(row.q_liq_charac*10)/10}}</td>
 
-                        <td v-if="!edit">{{row.APV_t_rab}}</td>
-                        <td v-if="edit">{{row.APV_t_rab}}</td>
+                        <!-- <td v-if="!edit">{{row.APV_t_rab}}</td>
+                        <td v-if="edit">{{row.APV_t_rab}}</td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].APV_t_rab[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].APV_t_rab[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].APV_t_rab[1][0])}`"> </span>
+                            <span>{{row.APV_t_rab[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].APV_t_rab[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].APV_t_rab[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].APV_t_rab[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].APV_t_rab[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.APV_t_rab[0]" :disabled="!edit">
+                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].APV_t_rab[1][1]}}
+                            </span>
+                        </td>
 
-                        <td v-if="!edit">{{row.APV_t_nak}}</td>
-                        <td v-if="edit">{{row.APV_t_nak}}</td>
+                        <!-- <td v-if="!edit">{{row.APV_t_nak}}</td>
+                        <td v-if="edit">{{row.APV_t_nak}}</td> -->
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].APV_t_nak[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].APV_t_nak[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].APV_t_nak[1][0])}`"> </span>
+                            <span>{{row.APV_t_nak[0]}}</span>
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].APV_t_nak[1][1]}}
+                            </span>
+                        </td>
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        wells[row_index].APV_t_nak[1][0] !== '0'}">
+                            <span :class="{'circle-err': wells && wells[row_index] &&
+                        wells[row_index].APV_t_nak[1][0] !== '0'}" :style="`background :${getColor(
+                        wells[row_index].APV_t_nak[1][0])}`"> </span>
+                            <input @change="editrow(row, row_index)" v-model="row.APV_t_nak[0]" :disabled="!edit">
+                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
+                            <span v-if="wells && wells[row_index]" class="cell-comment">
+                                {{ wells[row_index].APV_t_nak[1][1]}}
+                            </span>
+                        </td>
 
                         <td v-if="!edit">{{row.plan_izo_work}}</td>
-                        <td v-if="edit">{{row.plan_izo_work}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_izo_work" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.plan_act_q_l*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.plan_act_q_l*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_act_q_l" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.plan_act_wct*10)/10}}</td>
-                        <td v-if="edit">{{Math.round(row.plan_act_wct*10)/10}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_act_wct" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.plan_activities}}</td>
-                        <td v-if="edit">{{row.plan_activities}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_activities" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.plan_casing_info}}</td>
-                        <td v-if="edit">{{row.plan_casing_info}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_casing_info" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.plan_comment}}</td>
-                        <td v-if="edit">{{row.plan_comment}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.plan_comment" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.EMPTY}}</td>
-                        <td v-if="edit">{{row.EMPTY}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.EMPTY" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{row.EMPTY}}</td>
-                        <td v-if="edit">{{row.EMPTY}}</td>
+                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.EMPTY" :disabled="!edit"></td>
                     </tr>
                 </table>
 
@@ -2215,7 +2341,12 @@ export default {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        var prMm = mm-2;
+        if(mm==0){
+            var prMm = 12
+        }
+        else{
+            var prMm = mm - 1
+        }
         this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
@@ -2241,7 +2372,7 @@ export default {
   data: function () {
     return {
         wells: [],
-        sortType: 'name',
+        // sortKey: 'name',
         filter: null,
         dt: null,
         fullWells: [],
@@ -2250,17 +2381,50 @@ export default {
         edit: false,
         editdtm: null,
         editdty: null,
-        // sortField: null,
-        // currentSortDir: 'asc',
+        sortField: null,
+        currentSortDir: 'asc',
         year: null,
         month: null,
     }
   },
+//   computed:{
+//       sortedData() {
+//         // //   let { wells, sortType } = this;
+//         //   this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
+//         //   this.sortKey = sortKey;
+
+//         //   console.log(type, sortType);
+//         //   if(sortType === 'asc') {
+//         //     wells.sort((a, b) => a[type].localeCompare(b[type]))
+//         //     this.sortType = 'desc';
+//         //   } else {
+//         //     wells.sort((a, b) => b[type].localeCompare(a[type]))
+//         //     this.sortType = 'asc';
+//         //   }
+//           if (this.sortField === null) {
+//               return this.wells;
+//           }
+//           return this.wells.sort((a, b) => {
+//               let res;
+//               if (typeof a[this.sortField] === 'string') {
+//               res = a[this.sortField].localeCompare(b[this.sortField])
+//               } else {
+//               res = a[this.sortField] > b[this.sortField] ? 1 :
+//                   a[this.sortField] < b[this.sortField] ? -1 : 0
+//               }
+//               if (this.currentSortDir !== 'asc') {
+//               ret = ret * -1;
+//               }
+//               return ret
+//           })
+//       },
+
+//   },
   methods: {
       editrow(row, rowId) {
           // console.log(row);
           row['index'] = 0;
-          this.axios.post("http://172.20.103.51:7576/api/techregime/edit/"+this.editdty+"/"+this.editdtm+"/", {
+          this.axios.post("http://172.20.103.51:7576/api/techregime/edit/"+this.year+"/"+this.month+"/", {
                 row: row,
             }).then((response) => {
                 if(response.data) {
@@ -2278,7 +2442,7 @@ export default {
       },
       savetable(){
           this.edit = false;
-          this.axios.post("http://172.20.103.51:7576/api/techregime/"+this.editdty+"/"+this.editdtm+"/",{
+          this.axios.post("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/",{
               well: this.wells
           }).then((response) => {
               console.log(response.data)
@@ -2289,50 +2453,59 @@ export default {
           this.show_second = true;
           this.show_first = false;
       },
-      sortBy(sortType) {
-        //   let { wells, sortType } = this;
-        //   this.reverse = (this.sortType == sortType) ? !this.reverse : false;
-        //   this.sortType = sortType;
+    //   sortBy(sortKey) {
+    //     //   let { wells, sortType } = this;
+    //       this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
+    //       this.sortKey = sortKey;
 
-        //   console.log(type, sortType);
-        //   if(sortType === 'asc') {
-        //     wells.sort((a, b) => a[type].localeCompare(b[type]))
-        //     this.sortType = 'desc';
-        //   } else {
-        //     wells.sort((a, b) => b[type].localeCompare(a[type]))
-        //     this.sortType = 'asc';
-        //   }
-        //   if (this.sortField === null) {
-        //       return this.wells;
-        //   }
-        //   return this.wells.sort((a, b) => {
-        //       let res;
-        //       if (typeof a[this.sortField] === 'string') {
-        //       res = a[this.sortField].localeCompare(b[this.sortField])
-        //       } else {
-        //       res = a[this.sortField] > b[this.sortField] ? 1 :
-        //           a[this.sortField] < b[this.sortField] ? -1 : 0
-        //       }
-        //       if (this.currentSortDir !== 'asc') {
-        //       ret = ret * -1;
-        //       }
-        //       return ret
-        //   })
+    //     //   console.log(type, sortType);
+    //     //   if(sortType === 'asc') {
+    //     //     wells.sort((a, b) => a[type].localeCompare(b[type]))
+    //     //     this.sortType = 'desc';
+    //     //   } else {
+    //     //     wells.sort((a, b) => b[type].localeCompare(a[type]))
+    //     //     this.sortType = 'asc';
+    //     //   }
+    //     //   if (this.sortField === null) {
+    //     //       return this.wells;
+    //     //   }
+    //     //   return this.wells.sort((a, b) => {
+    //     //       let res;
+    //     //       if (typeof a[this.sortField] === 'string') {
+    //     //       res = a[this.sortField].localeCompare(b[this.sortField])
+    //     //       } else {
+    //     //       res = a[this.sortField] > b[this.sortField] ? 1 :
+    //     //           a[this.sortField] < b[this.sortField] ? -1 : 0
+    //     //       }
+    //     //       if (this.currentSortDir !== 'asc') {
+    //     //       ret = ret * -1;
+    //     //       }
+    //     //       return ret
+    //     //   })
 
-      },
+    //   },
       onChangeMonth(event) {
-          this.month = event.target.value;
-
+          if(event.target.value == 1){
+              this.month = 12;
+          }
+          else{
+              this.month = event.target.value - 1;
+          }
       },
       onChangeYear(event) {
-          this.year = event.target.value;
-
+              this.year = event.target.value;
       },
 
       chooseDt() {
         //   const { dt } = this;
         //   console.log(dt)
         //   var choosenDt = dt.split("-");
+          if(this.month == 12){
+              this.year = this.year - 1;
+          }
+          else{
+              this.year = this.year;
+          }
           this.axios.get("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/").then((response) => {
                 // this.editdtm = choosenDt[1];
                 // this.editdty = choosenDt[0];
@@ -2347,13 +2520,26 @@ export default {
                 else {
                     console.log('No data');
                 }
+                if(this.month < 9) {
+                    this.dt = '01' + '.0' + (this.month + 1) + '.' + this.year;
+                }
+                else if(this.month == 12){
+                    this.dt = '01' + '.01.' + (this.year + 1);
+                }
+                else {
+                    this.dt = '01' + '.' + (this.month+1) + '.' + this.year;
+                }
             });
       },
       chooseField() {
           const { filter, fullWells } = this;
           console.log(filter, fullWells);
-
-          this.wells = fullWells.filter(e => e.field === filter);
+          if(filter == 'Казгермунай'){
+            this.wells = fullWells.filter(undefined);
+          }
+          else{
+            this.wells = fullWells.filter(e => e.field === filter);
+          }
       },
       swap() {
           this.show_first = !this.show_first;

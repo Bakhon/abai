@@ -112,7 +112,7 @@ Vue.component('export-excel', require('./components/reports/excel.vue').default)
 Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
-Vue.component('tredit-table', require('./components/tr/tredit.vue').default);
+Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 
