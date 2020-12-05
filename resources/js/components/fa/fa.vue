@@ -173,7 +173,7 @@
                     <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
                     <td
                         :style="{
-                            background: getColor(Math.round(row.dqn*10)/10),
+                            background: getColorone(Math.round(row.dqn*10)/10),
                         }"
                     >
                         <span> {{Math.round(row.dqn*10)/10}} </span>
@@ -181,24 +181,36 @@
 
                     <!-- <td>{{Math.round(row.Pbh*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.Pbh*10)/10)}`">
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.Pbh*10)/10}} </span>
                     </td>
 
                     <!-- <td>{{Math.round(row.wct*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.wct*10)/10)}`">
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.wct*10)/10}} </span>
                     </td>
 
                     <!-- <td>{{Math.round(row.p_res*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.p_res*10)/10)}`">
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.p_res*10)/10}} </span>
                     </td>
 
                     <td :style="`background :${getColor(
-                    Math.round(row.PI*10)/10)}`">
+                        Math.round(row.PI*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.p_res*10)/10)}`">
                         <span> {{Math.round(row.PI*10)/10}} </span>
                     </td>
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
@@ -517,6 +529,8 @@ export default {
                 if(data) {
                     console.log(data);
                     this.wells = data.data;
+                    this.fullWells = data.data;
+                    this.chartWells = data.data;
                 }
                 else {
                     console.log('No data');
@@ -540,9 +554,13 @@ export default {
           }
           this.$modal.show(bign);
       },
-      getColor(status) {
+      getColor(status, ...values) {
+          if (status < "0" && status === Math.min(status, ...values)) return "#ac3939";
+      },
+      getColorone(status) {
           if (status < "0") return "#ac3939";
       },
+
     },
     beforeCreate: function () {
         var today = new Date();

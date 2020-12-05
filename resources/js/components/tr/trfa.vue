@@ -9,20 +9,38 @@
                     <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
                     </svg></i>Технологический режим</a>
             </div>
+        <div class="row justify-content-between">
+                <form class="form-group but-nav__link">
+                        <label for="inputDate">Введите дату:</label>
+                        <input type="date" class="form-control" v-model="date1">
+                </form>
+                <form class="form-group but-nav__link">
+                        <label for="inputDate">Выбор даты 2:</label>
+                        <input type="date" class="form-control" v-model="date2">
+                </form>
+                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
+        </div>
         </div>
         <div class="col-md-9 row sec_nav">
             <div class="dropdown show">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown link
+                    Выберите чарт
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" >PieChart</a>
-                    <a class="dropdown-item" >BarChart</a>
+                    <a class="dropdown-item"
+                        href="#"
+                        @click=" chartShow ='pie' "
+                    >PieChart</a>
+                    <a
+                        class="dropdown-item"
+                        href="#"
+                        @click=" chartShow ='bar' "
+                    >BarChart</a>
                 </div>
             </div>
             <div class="dropdown show">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown link
+                    Выберите дату
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="#">Action</a>
@@ -45,7 +63,7 @@
                         <option
                             v-for="(f, k) in fieldFilters"
                             :key="k"
-                            :value="f">{{f}}</option>
+                            :value="f">{{f === undefined ? 'Выберите месторождение' : f}}</option>
                     </select>
                 </div>
                 <div>
@@ -56,7 +74,7 @@
                         <option
                             v-for="(f, k) in horizonFilters"
                             :key="k"
-                            :value="f">{{f}}</option>
+                            :value="f">{{f === undefined ? 'Выберите горизонт' : f}}</option>
                     </select>
                 </div>
                 <div>
@@ -68,11 +86,11 @@
                         <option
                             v-for="(f, k) in exp_methFilters"
                             :key="k"
-                            :value="f">{{f}}</option>
+                            :value="f">{{f === undefined ? 'Выберите способ эксплуатации' : f}}</option>
                     </select>
                 </div>
             </div>
-            <div class="col-sm">
+            <div class="col-sm" v-if="chartShow === 'bar'">
                 <div class="second_block">
                     <apexchart
                         v-if="barChartData && pieChartRerender"
@@ -82,7 +100,7 @@
                     ></apexchart>
                 </div>
             </div>
-            <div class="col-sm">
+            <div class="col-sm" v-if="chartShow === 'pie'">
                 <div class="first_block">
                     <apexchart
                         v-if="pieChartData && pieChartRerender"
@@ -129,11 +147,11 @@ export default {
                     }, {})
                     console.log('Pie chart filtered data:',filteredData)
                     return [
-                        filteredData['Pbh'] || 0,
-                        filteredData['wct'] || 0,
+                        filteredData['Недостижение режимного P забойного'] || 0,
+                        filteredData['Рост обводненности'] || 0,
                         // filteredData['p_res'],
-                        filteredData['No problem'] || 0,
-                        filteredData['PI'] || 0,
+                        filteredData['Снижение P пластового'] || 0,
+                        filteredData['Снижение Кпрод'] || 0,
                     ]
                 } catch(err) {
                     console.error(err);
@@ -185,7 +203,11 @@ export default {
             if (this.chartWells && this.chartWells.length > 0){
                 let filters = []
                 this.chartWells.forEach((el) => {
-                    if (filters.indexOf(el.field) === -1){
+                    if (
+                        (filters.indexOf(el.field) === -1)
+                        && (!this.chartFilter_horizon || (el.horizon === this.chartFilter_horizon))
+                        && (!this.chartFilter_exp_meth || (el.exp_meth === this.chartFilter_exp_meth))
+                    ){
                         filters = [ ...filters, el.field]
                     }
                 })
@@ -196,7 +218,11 @@ export default {
             if (this.chartWells && this.chartWells.length > 0){
                 let filters = []
                 this.chartWells.forEach((el) => {
-                    if (filters.indexOf(el.horizon) === -1){
+                    if (
+                        (filters.indexOf(el.horizon) === -1)
+                        && (!this.chartFilter_field || (el.field === this.chartFilter_field))
+                        && (!this.chartFilter_exp_meth || (el.exp_meth === this.chartFilter_exp_meth))
+                    ){
                         filters= [ ...filters, el.horizon]
                     }
                 })
@@ -207,7 +233,11 @@ export default {
             if (this.chartWells && this.chartWells.length > 0){
                 let filters = []
                 this.chartWells.forEach((el) => {
-                    if (filters.indexOf(el.exp_meth) === -1){
+                    if (
+                        (filters.indexOf(el.exp_meth) === -1)
+                        && (!this.chartFilter_field || (el.field === this.chartFilter_field))
+                        && (!this.chartFilter_horizon || (el.horizon === this.chartFilter_horizon))
+                    ){
                         filters = [ ...filters, el.exp_meth]
                     }
                 })
@@ -217,12 +247,15 @@ export default {
   },
   data: function () {
     return {
+        chartShow: 'bar',
         pieChartRerender: true,
         wells: [],
         chartWells: [],
         sortType: 'asc',
         dt: null,
         dt2: null,
+        date1: null,
+        date2: null,
         fullWells: [],
         filter: null,
         editdtm: null,
@@ -348,11 +381,30 @@ export default {
   },
   methods: {
       chooseDt() {
-          const { dt, dt2 } = this;
-          console.log('dt1-', dt, ' dt2-', dt2);
-          var choosenDt = dt.split("-");
-          var choosenSecDt = dt2.split("-");
-          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+choosenDt[0]+"/"+choosenDt[1]+"/"+choosenSecDt[0]+"/"+choosenSecDt[1]+"/").then((response) => {
+          const { date1, date2 } = this;
+          console.log('dt1-', date1, ' dt2-', date2);
+          var choosenDt = date1.split("-");
+          var choosenSecDt = date2.split("-");
+          if(choosenDt[1]==1){
+              var prMm = 12;
+              var prPrMm = 11;
+              var yyyy = choosenDt[0] - 1;
+              var pryyyy = choosenSecDt[0];
+          }
+          else if(choosenSecDt[1] == 1){
+              var prMm = choosenDt[1] - 1;
+              var prPrMm = 12;
+              var yyyy = choosenDt[0];
+              var pryyyy = choosenSecDt[0] - 1;
+          }
+          else{
+              var prMm = choosenDt[1] - 1;
+              var prPrMm = choosenSecDt[1] - 1;
+              var yyyy = choosenDt[0];
+              var pryyyy = choosenSecDt[0];
+          }
+          console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                 let data = response.data;
                 this.editdtm = choosenDt[1];
                 this.editdty = choosenDt[0];
@@ -361,10 +413,15 @@ export default {
                 if(data) {
                     console.log(data);
                     this.wells = data.data;
+                    this.fullWells = data.data;
+                    this.chartWells = data.data;
+
                 }
                 else {
                     console.log('No data');
                 }
+                this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+                this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
 
             });
       },
@@ -385,15 +442,63 @@ export default {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        var prMm = mm-2;
-        var prPrMm = mm-3;
-        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+yyyy+"/"+prPrMm+"/").then((response) => {
+        var pryyyy = today.getFullYear();
+        var prMm = mm;
+        var prPrMm = mm;
+        if(mm==0){
+            var prMm = 12;
+            var prPrMm = 11;
+            var yyyy = yyyy - 1;
+            var pryyyy = pryyyy - 1;
+        }
+        else{
+            var prMm = prMm - 1;
+            var prPrMm = prPrMm -2;
+            var yyyy = yyyy;
+            var pryyyy = pryyyy;
+        }
+        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
+        this.editdtm = prMm;
+        console.log(this.editdtm);
+        this.editdty = yyyy;
+        console.log(this.editdty);
+        this.editdtprevm = prPrMm;
+        console.log(this.editdtprevm);
+        this.editdtprevy = yyyy;
+        console.log(this.editdtprevy);
         if(data) {
             console.log(data);
             this.wells = data.data;
             this.fullWells = data.data;
             this.chartWells = data.data;
+        }
+        else {
+            console.log('No data');
+        }
+        if(this.editdtm < 10 && this.editdtprevm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy ;
+        }
+        else if(this.editdtm <= 10 && this.editdtprevm <=10) {
+            this.dt = '01'+ '.' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
+        }
+        else if(editdtm >= 10 && editdtprevm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
+        }
+        if(this.editdtm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+        }
+        else {
+            this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+        }
+        if(this.editdtprevm < 10) {
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
+        }
+        else {
+            this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
         }
     });
    },
