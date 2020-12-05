@@ -698,7 +698,6 @@ td {
 .tablePgno {
     width: 100%;
     height: 100%;
-    background-color: #0F1430;
 
 }
 
@@ -706,7 +705,7 @@ td {
     height: 100%;
     width: 100%;
     display: flex;
-    background-color: rgba(19, 68, 135, 0.8);
+    background-color: #153e7c;
 }
 
 .image-data {
@@ -716,67 +715,80 @@ td {
     padding-top: 5px;
     padding-bottom: 5px;
     display: flex;
+    background-color: #153e7c;
+}
+
+.podborgnoimg {
+    background-color: #153e7c;
 }
 
 .img-text {
     width: 50px;
     height: 450px;
+    background-color: #153e7c;
 }
 
 .text_img_1 {
     width: 200px;
     height: 27px;
-    margin-left: 110px;
+    margin-left: 120px;
     margin-top: 43px;
     font-size: 13px;
+    background-color: #153e7c;
 }
 
 .text_img_2 {
     width: 150px;
     height: 26px;
-    margin-left: 202px;
+    margin-left: 207px;
     margin-top: 0px;
     font-size: 13px;
+    background-color: #153e7c;
 }
 
 .text_img_3 {
     width: 200px;
     height: 90px;
-    margin-left: 110px;
+    margin-left: 126px;
     margin-top: 0px;
     font-size: 13px;
+    background-color: #153e7c;
 }
 
 .text_img_4 {
     width: 200px;
     height: 83px;
-    margin-left: 90px;
+    margin-left: 108px;
     margin-top: 0px;
     font-size: 13px;
+    background-color: #153e7c;
 }
 
 .text_img_5 {
     width: 200px;
     height: 45px;
-    margin-left: 90px;
+    margin-left: 100px;
     margin-top: 0px;
+    background-color: #153e7c;
     font-size: 13px;
 }
 
 .text_img_6 {
     width: 150px;
-    height: 65px;
-    margin-left: 185px;
+    height: 75px;
+    margin-left: 189px;
     margin-top: 0px;
     font-size: 13px;
+    background-color: #153e7c;
 }
 
 .text_img_7 {
     width: 250px;
-    height: 45px;
+    height: 34px;
     margin-left: 30px;
     margin-top: 0px;
     font-size: 13px;
+    background-color :#153e7c;
 }
 
 .text_img_8 {
@@ -785,13 +797,14 @@ td {
     margin-left: 118px;
     margin-top: 0px;
     font-size: 13px;
+    background-color: #153e7c;
 }
 
 .table-pgno-button {
     font-size: 13px;
     width: 1200px;
     height: 450px;
-    background-color: #20274e;
+    background-color: #153e7c;
     display: flex;
     justify-content: flex-start;
 }
@@ -807,6 +820,7 @@ td {
     display: flex;
     margin-left: 30px;
     margin-top: 100px;
+    background-color: #20274e;
     
 }
 
@@ -816,6 +830,7 @@ td {
     margin-left: 10px;
     margin-top: 100px;
     display: flex;
+    background-color: #20274e;
 }
 
 
@@ -826,6 +841,7 @@ td {
     display: flex;
     margin-top: 100px;
     margin-left: 20px;
+    background-color: #20274e;
 }
 
 .table-pgno {
@@ -835,6 +851,7 @@ td {
 
 .table-pgno { 
     display: table;
+    background-color: #20274e;
 }
 
 /* .tr-pgno { 
@@ -853,19 +870,24 @@ td {
 
 .tr-pgno { 
     display: table-row;
+    background-color: #20274e;
 }
 .td-pgno { 
     display: table-cell;
     text-align: center; 
     height: 10px;
     width: 100px;
+    position: static;
+    background-color: #20274e;
 }
 
 .thead-pgno { 
-    display: table-header-group; 
+    display: table-header-group;
+    background-color: #20274e; 
 }
 .tbody-pgno { 
-    display: table-row-group; 
+    display: table-row-group;
+    background-color: #20274e; 
 }
 
 .th-pgno { 
@@ -873,5 +895,7 @@ td {
     font-weight: bold; 
     text-align: center;
     height: 0px;
+    position: static;
+    background-color: #20274e;
 }
 /* .vm--modal {} */
