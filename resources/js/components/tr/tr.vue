@@ -149,7 +149,7 @@
             <div class='tech'>
                 <h3> Технологический режим на {{dt}}</h3>
             </div>
-            <!-- <div>
+            <div>
                 <select name="Company" class="from-control" id="companySelect"
                     v-model="filter" @change="chooseField">
                     <option value="Казгермунай">КазГерМунай</option>
@@ -160,90 +160,90 @@
                     <option value="Аксай">Аксай</option>
                     <option value="Аксай Южный">Аксай Южный</option>
                 </select>
-            </div> -->
+            </div>
             <button id="bt1"  @click="swap">Версия для отображения</button>
             <div >
-                <TrTable :wells="wells" @onSort="sortField" v-show="show_first"/>
+                <TrTable :wells="wells" @onSort="sortBy" v-show="show_first"/>
                 <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
                 <table v-show="show_second" class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
                     <tr class="headerColumn">
-                        <td rowspan="4" @click="sortField=wells.gu">Раб. Группа</td>
-                        <td rowspan="4" @click="sortField=wells.field">НГДУ/месторождение</td>
-                        <td rowspan="4" @click="sortBy('well')">№ скв</td>
-                        <td rowspan="4" @click="sortBy('well_type')">Тип скважины</td>
-                        <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
-                        <td rowspan="4" @click="sortBy('block')">Блок</td>
-                        <td rowspan="4" @click="sortBy('r_con')">R контура питания</td>
-                        <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
-                        <td rowspan="4" @click="sortBy('cas_ID')">Внутренний диаметр э/к</td>
-                        <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НКТ</td>
-                        <td rowspan="4" @click="sortBy('tub_ID')">Внутренний диаметр НКТ</td>
-                        <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
-                        <td rowspan="4" @click="sortBy('h_up_perf_md')">Нвдп</td>
-                        <td rowspan="4" @click="sortBy('h_up_perf_vd')">Удлинение(Нвдп)</td>
-                        <td rowspan="4" @click="sortBy('exp_meth')">Способ эксплуатации</td>
-                        <td rowspan="4" @click="sortBy('pump_type')">Тип Насоса</td>
-                        <td rowspan="4" @click="sortBy('EMPTY')">Тип СК</td>
-                        <td rowspan="4" @click="sortBy('spm')">Число качаний</td>
-                        <td rowspan="4" @click="sortBy('stroke_len')">Длина хода</td>
-                        <td rowspan="4" @click="sortBy('q_theor')">Q теор</td>
-                        <td rowspan="4" @click="sortBy('freq')">Частота работы насоса или число оборотов</td>
-                        <td rowspan="4" @click="sortBy('h_pump_set')">Н сп насоса</td>
-                        <td rowspan="4" @click="sortBy('whp')">P буф</td>
-                        <td rowspan="4" @click="sortBy('line_p')">P лин</td>
-                        <td rowspan="4" @click="sortBy('p_res')">P пл</td>
-                        <td rowspan="4" @click="sortBy('h_dyn')">Н дин</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Р затр</td>
-                        <td rowspan="4" @click="sortBy('p_intake')">Р на приеме</td>
+                        <td rowspan="4">Раб. Группа</td>
+                        <td rowspan="4">НГДУ/месторождение</td>
+                        <td rowspan="4">№ скв</td>
+                        <td rowspan="4">Тип скважины</td>
+                        <td rowspan="4">Горизонт</td>
+                        <td rowspan="4">Блок</td>
+                        <td rowspan="4">R контура питания</td>
+                        <td rowspan="4">Наружный диаметр э/к</td>
+                        <td rowspan="4">Внутренний диаметр э/к</td>
+                        <td rowspan="4">Наружный диаметр НКТ</td>
+                        <td rowspan="4">Внутренний диаметр НКТ</td>
+                        <td rowspan="4">Диаметр штуцера</td>
+                        <td rowspan="4">Нвдп</td>
+                        <td rowspan="4">Удлинение(Нвдп)</td>
+                        <td rowspan="4">Способ эксплуатации</td>
+                        <td rowspan="4">Тип Насоса</td>
+                        <td rowspan="4">Тип СК</td>
+                        <td rowspan="4">Число качаний</td>
+                        <td rowspan="4">Длина хода</td>
+                        <td rowspan="4">Q теор</td>
+                        <td rowspan="4">Частота работы насоса или число оборотов</td>
+                        <td rowspan="4">Н сп насоса</td>
+                        <td rowspan="4">P буф</td>
+                        <td rowspan="4">P лин</td>
+                        <td rowspan="4">P пл</td>
+                        <td rowspan="4">Н дин</td>
+                        <td rowspan="4">Р затр</td>
+                        <td rowspan="4">Р на приеме</td>
                         <td class="colspan" colspan="5">Данные за предыдущий месяц</td>
                         <td class="colspan" colspan="4">Фактический режим</td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Состояние на конец месяца</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')">P нас</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">ГФ</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Т пл</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Т уст</td>
+                        <td rowspan="4"><span>Состояние на конец месяца</span></td>
+                        <td rowspan="4">P нас</td>
+                        <td rowspan="4">ГФ</td>
+                        <td rowspan="4">Т пл</td>
+                        <td rowspan="4">Т уст</td>
                         <td class="colspan" colspan="4">ГРП</td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Вязкость нефти в пластовых условиях</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Вязкость воды в пластовых условиях</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Вязкость жидкости</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Объемный коэффициент</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Плотность нефти</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Плотность воды</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Н перф</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">k</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">КН</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">К пр</td>
+                        <td rowspan="4"><span>Вязкость нефти в пластовых условиях</span></td>
+                        <td rowspan="4"><span>Вязкость воды в пластовых условиях</span></td>
+                        <td rowspan="4">Вязкость жидкости</td>
+                        <td rowspan="4">Объемный коэффициент</td>
+                        <td rowspan="4">Плотность нефти</td>
+                        <td rowspan="4">Плотность воды</td>
+                        <td rowspan="4">Н перф</td>
+                        <td rowspan="4">k</td>
+                        <td rowspan="4">КН</td>
+                        <td rowspan="4">К пр</td>
                         <td class="colspan" colspan="13">Расчет технологического потенциала от ИДН</td>
                         <td class="colspan" colspan="9">Расчёт геологического потенциала</td>
                         <td class="colspan" colspan="4">Проверка</td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Максимальная глубина спуска насоса при ИДН</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Дата остановки</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Расчлененность</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Зона</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Цех</td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Фонтан через насос</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Нерентабельная</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Неустановившийся режим</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Дата ввода в эксплуатацию</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Назначение по проекту</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Р заб замерное</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Нефтенасыщенная толщина</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Накопленная добыча нефти</td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Максимальный дебит жидкости за всю историю работы</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Расстояние до нагн скважины</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Расстояние до ВНК</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Текущий забой по скважине, м</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Кподачи насоса</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Тип ГЗУ</td>
-                        <td rowspan="4" @click="sortBy('p_annular')">Рпл начальное</td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Qr характеристический дебит жидкости</span></td>
+                        <td rowspan="4"><span>Максимальная глубина спуска насоса при ИДН</span></td>
+                        <td rowspan="4">Дата остановки</td>
+                        <td rowspan="4">Расчлененность</td>
+                        <td rowspan="4">Зона</td>
+                        <td rowspan="4">Цех</td>
+                        <td rowspan="4"><span>Фонтан через насос</span></td>
+                        <td rowspan="4">Нерентабельная</td>
+                        <td rowspan="4">Неустановившийся режим</td>
+                        <td rowspan="4">Дата ввода в эксплуатацию</td>
+                        <td rowspan="4">Назначение по проекту</td>
+                        <td rowspan="4">Р заб замерное</td>
+                        <td rowspan="4">Нефтенасыщенная толщина</td>
+                        <td rowspan="4">Накопленная добыча нефти</td>
+                        <td rowspan="4"><span>Максимальный дебит жидкости за всю историю работы</span></td>
+                        <td rowspan="4">Расстояние до нагн скважины</td>
+                        <td rowspan="4">Расстояние до ВНК</td>
+                        <td rowspan="4">Текущий забой по скважине, м</td>
+                        <td rowspan="4">Кподачи насоса</td>
+                        <td rowspan="4">Тип ГЗУ</td>
+                        <td rowspan="4">Рпл начальное</td>
+                        <td rowspan="4"><span>Qr характеристический дебит жидкости</span></td>
                         <td class="colspan" colspan="2">АПВ</td>
                         <td class="colspan" colspan="3">Планируемые мероприятия</td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Мероприятия</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Сведения о тех.состоянии  экс.колонны</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Комментарии</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Дата последнего ГТМ</span></td>
-                        <td rowspan="4" @click="sortBy('p_annular')"><span>Вид последнего ГТМ</span></td>
+                        <td rowspan="4"><span>Мероприятия</span></td>
+                        <td rowspan="4"><span>Сведения о тех.состоянии  экс.колонны</span></td>
+                        <td rowspan="4"><span>Комментарии</span></td>
+                        <td rowspan="4"><span>Дата последнего ГТМ</span></td>
+                        <td rowspan="4"><span>Вид последнего ГТМ</span></td>
                     </tr>
                     <tr class="headerColumn">
                         <td rowspan="3"><span>P заб</span></td>
@@ -302,119 +302,119 @@
                     </tr>
                     <tr></tr>
                     <tr class="subHeaderColumn">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>м</td>
-                        <td>мм</td>
-                        <td>мм</td>
-                        <td>мм</td>
-                        <td>мм</td>
-                        <td>мм</td>
-                        <td>м</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>м</td>
-                        <td>м3/сут</td>
-                        <td>Гц, об/мин</td>
-                        <td>м</td>
-                        <td>атм</td>
-                        <td>атм</td>
-                        <td>атм</td>
-                        <td>м</td>
-                        <td>атм</td>
-                        <td>атм</td>
-                        <td>атм</td>
-                        <td>м3/сут</td>
-                        <td>%</td>
-                        <td>м</td>
-                        <td>м3/сут/атм</td>
-                        <td>атм</td>
-                        <td>т/сут</td>
-                        <td>м3/сут</td>
-                        <td>%</td>
-                        <td></td>
-                        <td>атм</td>
-                        <td>м3/т</td>
-                        <td>ºC</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>д/м/г</td>
-                        <td></td>
-                        <td>сПз</td>
-                        <td>сПз</td>
-                        <td>сПз</td>
-                        <td>м3/м3</td>
-                        <td>г/см3</td>
-                        <td>г/см3</td>
-                        <td>м</td>
-                        <td>мД</td>
-                        <td>мДм</td>
-                        <td>м3/сут/атм</td>
-                        <td>атм</td>
-                        <td>м3/сут</td>
-                        <td>м3/сут</td>
-                        <td>т/сут</td>
-                        <td>т/сут</td>
-                        <td></td>
-                        <td></td>
-                        <td>м3/сут/атм</td>
-                        <td>м3/сут</td>
-                        <td>м3/сут</td>
-                        <td>т/сут</td>
-                        <td>т/сут</td>
-                        <td>%</td>
-                        <td>атм</td>
-                        <td>м3/сут</td>
-                        <td>м3/сут</td>
-                        <td>т/сут</td>
-                        <td>т/сут</td>
-                        <td>%</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>д/м/г</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>д/м/г</td>
-                        <td></td>
-                        <td>атм</td>
-                        <td>м</td>
-                        <td>тыс.т</td>
-                        <td>м3/сут</td>
-                        <td>м</td>
-                        <td>м</td>
-                        <td></td>
-                        <td>м3/сут</td>
-                        <td></td>
-                        <td>атм</td>
-                        <td>м3/сут</td>
-                        <td>час</td>
-                        <td>час</td>
-                        <td>атм</td>
-                        <td>м3/сут</td>
-                        <td>%</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td @click="sortBy('gu')"></td>
+                        <td @click="sortBy('field')"></td>
+                        <td @click="sortBy('well')"></td>
+                        <td @click="sortBy('well_type')"></td>
+                        <td @click="sortBy('horizon')"></td>
+                        <td @click="sortBy('block')"></td>
+                        <td @click="sortBy('r_con')">м</td>
+                        <td @click="sortBy('cas_OD')">мм</td>
+                        <td @click="sortBy('cas_ID')">мм</td>
+                        <td @click="sortBy('tub_OD')">мм</td>
+                        <td @click="sortBy('tub_ID')">мм</td>
+                        <td @click="sortBy('choke_d')">мм</td>
+                        <td @click="sortBy('h_up_perf_md')">м</td>
+                        <td @click="sortBy('h_up_perf_ext')"></td>
+                        <td @click="sortBy('exp_meth')"></td>
+                        <td @click="sortBy('pump_type')"></td>
+                        <td @click="sortBy('EMPTY')"></td>
+                        <td @click="sortBy('spm')"></td>
+                        <td @click="sortBy('stroke_len')">м</td>
+                        <td @click="sortBy('q_theor')">м3/сут</td>
+                        <td @click="sortBy('freq')">Гц, об/мин</td>
+                        <td @click="sortBy('h_pump_set')">м</td>
+                        <td @click="sortBy('whp')">атм</td>
+                        <td @click="sortBy('line_p')">атм</td>
+                        <td @click="sortBy('p_res')">атм</td>
+                        <td @click="sortBy('h_dyn')">м</td>
+                        <td @click="sortBy('p_annular')">атм</td>
+                        <td @click="sortBy('p_intake')">атм</td>
+                        <td @click="sortBy('bhp_prev_m')">атм</td>
+                        <td @click="sortBy('q_l_prev_m')">м3/сут</td>
+                        <td @click="sortBy('wct_prev_m')">%</td>
+                        <td @click="sortBy('h_dyn_prev_m')">м</td>
+                        <td @click="sortBy('pi_prev_m')">м3/сут/атм</td>
+                        <td @click="sortBy('bhp')">атм</td>
+                        <td @click="sortBy('q_o')">т/сут</td>
+                        <td @click="sortBy('q_l')">м3/сут</td>
+                        <td @click="sortBy('wct')">%</td>
+                        <td @click="sortBy('well_status_last_day')"></td>
+                        <td @click="sortBy('P_bubble_point')">атм</td>
+                        <td @click="sortBy('gor')">м3/т</td>
+                        <td @click="sortBy('t_res')">ºC</td>
+                        <td @click="sortBy('wht')"></td>
+                        <td @click="sortBy('grp_skin')"></td>
+                        <td @click="sortBy('grp_jd')"></td>
+                        <td @click="sortBy('grp_date')">д/м/г</td>
+                        <td @click="sortBy('grp_contractor')"></td>
+                        <td @click="sortBy('visc_oil_rc')">сПз</td>
+                        <td @click="sortBy('visc_wat_rc')">сПз</td>
+                        <td @click="sortBy('visc_liq_rc')">сПз</td>
+                        <td @click="sortBy('bo')">м3/м3</td>
+                        <td @click="sortBy('dens_oil')">г/см3</td>
+                        <td @click="sortBy('dens_liq')">г/см3</td>
+                        <td @click="sortBy('h_perf')">м</td>
+                        <td @click="sortBy('k')">мД</td>
+                        <td @click="sortBy('kh')">мДм</td>
+                        <td @click="sortBy('pi')">м3/сут/атм</td>
+                        <td @click="sortBy('tp_idn_bhp')">атм</td>
+                        <td @click="sortBy('tp_idn_liq')">м3/сут</td>
+                        <td @click="sortBy('tp_idn_liq_cas_d_corr')">м3/сут</td>
+                        <td @click="sortBy('tp_idn_oil')">т/сут</td>
+                        <td @click="sortBy('tp_idn_oil_inc')">т/сут</td>
+                        <td @click="sortBy('tp_idn_jd')"></td>
+                        <td @click="sortBy('tp_idn_skin')"></td>
+                        <td @click="sortBy('tp_idn_pi_after')">м3/сут/атм</td>
+                        <td @click="sortBy('tp_idn_grp_q_liq')">м3/сут</td>
+                        <td @click="sortBy('tp_idn_grp_q_liq_cas_d_corr')">м3/сут</td>
+                        <td @click="sortBy('tp_idn_grp_q_oil')">т/сут</td>
+                        <td @click="sortBy('tp_idn_grp_q_oil_inc')">т/сут</td>
+                        <td @click="sortBy('tp_idn_q_oil_inc_perc')">%</td>
+                        <td @click="sortBy('gp_idn_bhp')">атм</td>
+                        <td @click="sortBy('gp_idn_q_liq')">м3/сут</td>
+                        <td @click="sortBy('gp_idn_q_liq_cas_d_corr')">м3/сут</td>
+                        <td @click="sortBy('gp_idn_q_oil')">т/сут</td>
+                        <td @click="sortBy('gp_idn_q_oil_inc')">т/сут</td>
+                        <td @click="sortBy('gp_grp_q_liq')">%</td>
+                        <td @click="sortBy('gp_grp_q_liq_cas_d_corr')"></td>
+                        <td @click="sortBy('gp_grp_q_oil')"></td>
+                        <td @click="sortBy('gp_grp_q_oil_inc')"></td>
+                        <td @click="sortBy('error_count')"></td>
+                        <td @click="sortBy('error_first')"></td>
+                        <td @click="sortBy('error_warning')"></td>
+                        <td @click="sortBy('error_first_warning')"></td>
+                        <td @click="sortBy('idn_pump_depth_max')"></td>
+                        <td @click="sortBy('stop_date')">д/м/г</td>
+                        <td @click="sortBy('layers_count')"></td>
+                        <td @click="sortBy('zone')"></td>
+                        <td @click="sortBy('tseh')"></td>
+                        <td @click="sortBy('semi_free_flow')"></td>
+                        <td @click="sortBy('non_profit')"></td>
+                        <td @click="sortBy('unsteady_state')"></td>
+                        <td @click="sortBy('start_up_date')">д/м/г</td>
+                        <td @click="sortBy('well_project_purpose')"></td>
+                        <td @click="sortBy('bhp_meter')">атм</td>
+                        <td @click="sortBy('oil_net_pay')">м</td>
+                        <td @click="sortBy('oil_cumulative')">тыс.т</td>
+                        <td @click="sortBy('max_q_liq_hist')">м3/сут</td>
+                        <td @click="sortBy('dist_to_inj_well')">м</td>
+                        <td @click="sortBy('dist_to_woc')">м</td>
+                        <td @click="sortBy('curr_bh')"></td>
+                        <td @click="sortBy('pump_fillage')">м3/сут</td>
+                        <td @click="sortBy('gzu_type')"></td>
+                        <td @click="sortBy('p_res_init')">атм</td>
+                        <td @click="sortBy('q_liq_charac')">м3/сут</td>
+                        <td @click="sortBy('APV_t_rab')">час</td>
+                        <td @click="sortBy('APV_t_nak')">час</td>
+                        <td @click="sortBy('plan_izo_work')">атм</td>
+                        <td @click="sortBy('plan_act_q_l')">м3/сут</td>
+                        <td @click="sortBy('plan_act_wct')">%</td>
+                        <td @click="sortBy('plan_activities')"></td>
+                        <td @click="sortBy('plan_casing_info')"></td>
+                        <td @click="sortBy('plan_comment')"></td>
+                        <td @click="sortBy('EMPTY')"></td>
+                        <td @click="sortBy('EMPTY')"></td>
                     </tr>
                     <tr v-for="(row, row_index) in wells" :key="row_index">
                         <td v-if="!edit">{{row.gu}}</td>
@@ -2372,7 +2372,7 @@ export default {
   data: function () {
     return {
         wells: [],
-        // sortKey: 'name',
+        sortType: 'asc',
         filter: null,
         dt: null,
         fullWells: [],
@@ -2381,9 +2381,10 @@ export default {
         edit: false,
         editdtm: null,
         editdty: null,
-        sortField: null,
-        currentSortDir: 'asc',
+        // sortField: null,
+        // currentSortDir: 'asc',
         year: null,
+        selectYear: null,
         month: null,
     }
   },
@@ -2453,38 +2454,59 @@ export default {
           this.show_second = true;
           this.show_first = false;
       },
-    //   sortBy(sortKey) {
-    //     //   let { wells, sortType } = this;
-    //       this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
-    //       this.sortKey = sortKey;
-
-    //     //   console.log(type, sortType);
-    //     //   if(sortType === 'asc') {
-    //     //     wells.sort((a, b) => a[type].localeCompare(b[type]))
-    //     //     this.sortType = 'desc';
-    //     //   } else {
-    //     //     wells.sort((a, b) => b[type].localeCompare(a[type]))
-    //     //     this.sortType = 'asc';
-    //     //   }
-    //     //   if (this.sortField === null) {
-    //     //       return this.wells;
-    //     //   }
-    //     //   return this.wells.sort((a, b) => {
-    //     //       let res;
-    //     //       if (typeof a[this.sortField] === 'string') {
-    //     //       res = a[this.sortField].localeCompare(b[this.sortField])
-    //     //       } else {
-    //     //       res = a[this.sortField] > b[this.sortField] ? 1 :
-    //     //           a[this.sortField] < b[this.sortField] ? -1 : 0
-    //     //       }
-    //     //       if (this.currentSortDir !== 'asc') {
-    //     //       ret = ret * -1;
-    //     //       }
-    //     //       return ret
-    //     //   })
-
-    //   },
-      onChangeMonth(event) {
+      sortBy(type) {
+        let { wells, sortType } = this;
+        console.log(type, sortType);
+        if(sortType === 'asc') {
+            this.wells = wells.sort((a, b) => {
+                let aVal = a[type];
+                let bVal = b[type];
+                if(Array.isArray(aVal)){
+                    if ( (typeof aVal[0] === 'string') ){
+                        return aVal[0].localeCompare(bVal[0])
+                    } else {
+                        if ( Number(aVal[0]) > Number(bVal[0]) ) return 1;
+                        else if ( Number(aVal[0]) < Number(bVal[0]) ) return -1;
+                        else return 0
+                    }
+                } else{
+                    if (typeof aVal === 'string'){
+                        return aVal.localeCompare(bVal)
+                    } else {
+                        if (Number(aVal) > Number(bVal)) return 1;
+                        else if (Number(aVal) < Number(bVal)) return -1;
+                        else return 0
+                    }
+                }
+            })
+            this.sortType = 'desc';
+        }
+        else {
+            this.wells = wells.sort((a, b) => {
+                let aVal = a[type];
+                let bVal = b[type];
+                if(Array.isArray(aVal)){
+                    if ( (typeof aVal[0] === 'string') && isNaN(Number(aVal[0])) ){
+                        return bVal[0].localeCompare(aVal[0])
+                    } else {
+                        if (Number(aVal[0]) > Number(bVal[0])) return -1;
+                        else if ( Number(aVal[0]) < Number(bVal[0]) ) return 1;
+                        else return 0;
+                    }
+                } else{
+                    if ( (typeof aVal === 'string') && isNaN(Number(aVal)) ){
+                        return aVal.localeCompare(bVal)
+                    } else {
+                        if (Number(aVal) > Number(bVal)) return -1;
+                        else if ( Number(aVal) < Number(bVal) ) return 1;
+                        else return 0
+                    }
+                }
+            })
+            this.sortType = 'asc';
+        }
+    },
+    onChangeMonth(event) {
           if(event.target.value == 1){
               this.month = 12;
           }
@@ -2493,7 +2515,7 @@ export default {
           }
       },
       onChangeYear(event) {
-              this.year = event.target.value;
+              this.selectYear = event.target.value;
       },
 
       chooseDt() {
@@ -2501,10 +2523,10 @@ export default {
         //   console.log(dt)
         //   var choosenDt = dt.split("-");
           if(this.month == 12){
-              this.year = this.year - 1;
+              this.year = this.selectYear - 1;
           }
           else{
-              this.year = this.year;
+              this.year = this.selectYear;
           }
           this.axios.get("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/").then((response) => {
                 // this.editdtm = choosenDt[1];
@@ -2535,7 +2557,7 @@ export default {
           const { filter, fullWells } = this;
           console.log(filter, fullWells);
           if(filter == 'Казгермунай'){
-            this.wells = fullWells.filter(undefined);
+            this.wells = fullWells;
           }
           else{
             this.wells = fullWells.filter(e => e.field === filter);

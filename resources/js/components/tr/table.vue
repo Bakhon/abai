@@ -1,25 +1,25 @@
 <template>
     <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
         <tr class="headerColumn">
-            <td rowspan="4" @click="sortBy('well')">№ скв</td>
-            <td rowspan="4" @click="sortBy('well_type')">Тип скважины</td>
-            <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
-            <td rowspan="4" @click="sortBy('block')">Блок</td>
-            <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
-            <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НКТ</td>
-            <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_md')">Нвдп</td>
-            <td rowspan="4" @click="sortBy('exp_meth')">Способ эксплуатации</td>
-            <td rowspan="4" @click="sortBy('pump_type')">Тип насоса</td>
-            <td rowspan="4" @click="sortBy('freq')">Частота работы насоса или число оборотов</td>
-            <td rowspan="4" @click="sortBy('h_pump_set')">Н сп насоса</td>
-            <td rowspan="4" @click="sortBy('p_res')">Р пл</td>
-            <td rowspan="4" @click="sortBy('h_dyn')">Н дин</td>
-            <td rowspan="4" @click="sortBy('p_annular')">Р затр</td>
+            <td rowspan="4">№ скв</td>
+            <td rowspan="4">Тип скважины</td>
+            <td rowspan="4">Горизонт</td>
+            <td rowspan="4">Блок</td>
+            <td rowspan="4">Наружный диаметр э/к</td>
+            <td rowspan="4">Наружный диаметр НКТ</td>
+            <td rowspan="4">Диаметр штуцера</td>
+            <td rowspan="4">Нвдп</td>
+            <td rowspan="4">Способ эксплуатации</td>
+            <td rowspan="4">Тип насоса</td>
+            <td rowspan="4">Частота работы насоса или число оборотов</td>
+            <td rowspan="4">Н сп насоса</td>
+            <td rowspan="4">Р пл</td>
+            <td rowspan="4">Н дин</td>
+            <td rowspan="4">Р затр</td>
             <td class="colspan" colspan="4">Фактический режим</td>
-            <td rowspan="4" @click="sortBy('well_status_last_day')">Состояние на конец месяца</td>
-            <td rowspan="4" @click="sortBy('')">ГФ</td>
-            <td rowspan="4" @click="sortBy('')">К прод</td>
+            <td rowspan="4">Состояние на конец месяца</td>
+            <td rowspan="4">ГФ</td>
+            <td rowspan="4">К прод</td>
             <td class="colspan" colspan="7">Расчет технологического потенциала от ИДН</td>
         </tr>
         <tr class="headerColumn">
@@ -41,35 +41,35 @@
         </tr>
         <tr></tr>
         <tr class="subHeaderColumn">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>мм</td>
-            <td>мм</td>
-            <td>мм</td>
-            <td>м</td>
-            <td></td>
-            <td></td>
-            <td>Гц, об/мин</td>
-            <td>м</td>
-            <td>атм</td>
-            <td>м</td>
-            <td>атм</td>
-            <td>атм</td>
-            <td>т/сут</td>
-            <td>м3/сут</td>
-            <td>%</td>
-            <td></td>
-            <td>м3/т</td>
-            <td>м3/сут/атм</td>
-            <td>атм</td>
-            <td>м3/сут</td>
-            <td>т/сут</td>
-            <td>м3/сут/атм</td>
-            <td>м3/сут</td>
-            <td>т/сут</td>
-            <td>т/сут</td>
+            <td @click="sortBy('well')"></td>
+            <td @click="sortBy('well_type')"></td>
+            <td @click="sortBy('horizon')"></td>
+            <td @click="sortBy('block')"></td>
+            <td @click="sortBy('cas_OD')">мм</td>
+            <td @click="sortBy('tub_OD')">мм</td>
+            <td @click="sortBy('choke_d')">мм</td>
+            <td @click="sortBy('h_up_perf_md')">м</td>
+            <td @click="sortBy('exp_meth')"></td>
+            <td @click="sortBy('pump_type')"></td>
+            <td @click="sortBy('freq')">Гц, об/мин</td>
+            <td @click="sortBy('h_pump_set')">м</td>
+            <td @click="sortBy('p_res')">атм</td>
+            <td @click="sortBy('h_dyn')">м</td>
+            <td @click="sortBy('p_annular')">атм</td>
+            <td @click="sortBy('bhp')">атм</td>
+            <td @click="sortBy('q_o')">т/сут</td>
+            <td @click="sortBy('q_l')">м3/сут</td>
+            <td @click="sortBy('wct')">%</td>
+            <td @click="sortBy('well_status_last_day')"></td>
+            <td @click="sortBy('gor')">м3/т</td>
+            <td @click="sortBy('pi')">м3/сут/атм</td>
+            <td @click="sortBy('tp_idn_bhp')">атм</td>
+            <td @click="sortBy('tp_idn_liq')">м3/сут</td>
+            <td @click="sortBy('tp_idn_oil_inc')">т/сут</td>
+            <td @click="sortBy('tp_idn_pi_after')">м3/сут/атм</td>
+            <td @click="sortBy('tp_idn_grp_q_liq')">м3/сут</td>
+            <td @click="sortBy('tp_idn_grp_q_oil_inc')">т/сут</td>
+            <td @click="sortBy('EMPTY')">т/сут</td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row_index">
             <td>{{row.well}}</td>
@@ -97,7 +97,17 @@
                 </span>
             </td>
 
-            <td>{{row.block}}</td>
+            <!-- <td>{{row.block}}</td> -->
+            <td :class="{'cell-with-comment': wells && wells[row_index] &&
+            wells[row_index].block[1][0] !== '0'}">
+                <span :class="{'circle-err': wells && wells[row_index] &&
+            wells[row_index].block[1][0] !== '0'}" :style="`background :${getColor(
+            wells[row_index].block[1][0])}`"> </span>
+                <span>{{row.block[0]}}</span>
+                <span v-if="wells && wells[row_index]" class="cell-comment">
+                    {{ wells[row_index].block[1][1]}}
+                </span>
+            </td>
 
             <!-- <td>{{row.cas_OD}}</td> -->
             <td :class="{'cell-with-comment': wells && wells[row_index] &&

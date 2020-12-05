@@ -18,6 +18,8 @@ import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import VueMomentLib from 'vue-moment-lib';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
+import VueApexCharts from "vue-apexcharts";
+
 // import  jquery from 'jquery';
 
 
