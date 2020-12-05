@@ -43,9 +43,13 @@
 <body style="background-color: #0F1430;">
     @include('layouts.navbar')
     <div class="no-row row" id="app">
-    
+    @if (basename(Request::url()) === "visualcenter3")
         @include('layouts.visual-center4-sidebar')
-    
+        @elseif (basename(Request::url()) === "visualcenter4")
+        @include('layouts.visual-center4-sidebar')
+        @else
+        @include('layouts.head-sidebar')
+        @endif
 
        {{-- @if (basename(Request::url()) === "ru")
         @include('layouts.sidebar')
