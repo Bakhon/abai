@@ -1,46 +1,46 @@
 <template>
     <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
         <tr class="headerColumn">
-            <td rowspan="4" @click="sortBy('well')">№ скв</td>
-            <td rowspan="4" @click="sortBy('well_type')">Тип скважины</td>
-            <td rowspan="4" @click="sortBy('horizon')">Горизонт</td>
-            <td rowspan="4" @click="sortBy('block')">Блок</td>
-            <td rowspan="4" @click="sortBy('cas_OD')">Наружный диаметр э/к</td>
-            <td rowspan="4" @click="sortBy('tub_OD')">Наружный диаметр НКТ</td>
-            <td rowspan="4" @click="sortBy('choke_d')">Диаметр штуцера</td>
-            <td rowspan="4" @click="sortBy('h_up_perf_md')">Нвдп</td>
-            <td rowspan="4" @click="sortBy('exp_meth')">Способ эксплуатации</td>
-            <td rowspan="4" @click="sortBy('pump_type')">Тип насоса</td>
-            <td rowspan="4" @click="sortBy('freq')">Частота работы насоса или число оборотов</td>
-            <td rowspan="4" @click="sortBy('h_pump_set')">Н сп насоса</td>
-            <td rowspan="4" @click="sortBy('p_res')">Р пл</td>
-            <td rowspan="4" @click="sortBy('h_dyn')">Н дин</td>
-            <td rowspan="4" @click="sortBy('p_annular')">Р затр</td>
-            <td class="colspan" colspan="4">Фактический режим</td>
-            <td rowspan="4" @click="sortBy('well_status_last_day')">Состояние на конец месяца</td>
-            <td rowspan="4" @click="sortBy('')">ГФ</td>
-            <td rowspan="4" @click="sortBy('')">К прод</td>
-            <td class="colspan" colspan="7">Расчет технологического потенциала от ИДН</td>
+            <td rowspan="4" @click="sortBy('well')" style="background: #333975 ">№ скв</td>
+            <td rowspan="4" @click="sortBy('well_type')" style="background: #333975 ">Тип скважины</td>
+            <td rowspan="4" @click="sortBy('horizon')" style="background: #333975 ">Горизонт</td>
+            <td rowspan="4" @click="sortBy('block')" style="background: #333975 ">Блок</td>
+            <td rowspan="4" @click="sortBy('cas_OD')" style="background: #333975 ">Наружный диаметр э/к</td>
+            <td rowspan="4" @click="sortBy('tub_OD')" style="background: #333975 ">Наружный диаметр НКТ</td>
+            <td rowspan="4" @click="sortBy('choke_d')" style="background: #333975 ">Диаметр штуцера</td>
+            <td rowspan="4" @click="sortBy('h_up_perf_md')" style="background: #333975 ">Нвдп</td>
+            <td rowspan="4" @click="sortBy('exp_meth')" style="background: #333975 ">Способ эксплуатации</td>
+            <td rowspan="4" @click="sortBy('pump_type')" style="background: #333975 ">Тип насоса</td>
+            <td rowspan="4" @click="sortBy('freq')" style="background: #333975 ">Частота работы насоса или число оборотов</td>
+            <td rowspan="4" @click="sortBy('h_pump_set')" style="background: #333975 ">Н сп насоса</td>
+            <td rowspan="4" @click="sortBy('p_res')" style="background: #333975 ">Р пл</td>
+            <td rowspan="4" @click="sortBy('h_dyn')" style="background: #333975 ">Н дин</td>
+            <td rowspan="4" @click="sortBy('p_annular')" style="background: #333975 ">Р затр</td>
+            <td class="colspan" colspan="4" style="background: #333975 ">Фактический режим</td>
+            <td rowspan="4" @click="sortBy('well_status_last_day')" style="background: #333975 ">Состояние на конец месяца</td>
+            <td rowspan="4" @click="sortBy('')" style="background: #333975 "> ГФ</td>
+            <td rowspan="4" @click="sortBy('')" style="background: #333975 ">К прод</td>
+            <td class="colspan" colspan="7" style="background: #333975 ">Расчет технологического потенциала от ИДН</td>
         </tr>
         <tr class="headerColumn">
-            <td rowspan="3">P заб</td>
-            <td rowspan="3">Q н</td>
-            <td rowspan="3">Q ж</td>
-            <td rowspan="3">Обводненность</td>
-            <td rowspan="3">P заб</td>
-            <td class="colspan" colspan="2">ИДН</td>
-            <td rowspan="3">К прод от стимуляции</td>
-            <td class="colspan" colspan="2">ГРП</td>
-            <td rowspan="3">Общий прирост Q н</td>
+            <td rowspan="3" style="background: #333975 ">P заб</td>
+            <td rowspan="3" style="background: #333975 ">Q н</td>
+            <td rowspan="3" style="background: #333975 ">Q ж</td>
+            <td rowspan="3" style="background: #333975 ">Обводненность</td>
+            <td rowspan="3" style="background: #333975 ">P заб</td>
+            <td class="colspan" colspan="2" style="background: #333975 ">ИДН</td>
+            <td rowspan="3" style="background: #333975 ">К прод от стимуляции</td>
+            <td class="colspan" colspan="2" style="background: #333975 ">ГРП</td>
+            <td rowspan="3" style="background: #333975 ">Общий прирост Q н</td>
         </tr>
         <tr class="headerColumn">
-            <td rowspan="2">Q ж</td>
-            <td rowspan="2">Прирост Q н</td>
-            <td rowspan="2">Q ж</td>
-            <td rowspan="2">Прирост Q н</td>
+            <td rowspan="2" style="background: #333975 ">Q ж</td>
+            <td rowspan="2" style="background: #333975 ">Прирост Q н</td>
+            <td rowspan="2" style="background: #333975 ">Q ж</td>
+            <td rowspan="2" style="background: #333975 ">Прирост Q н</td>
         </tr>
         <tr></tr>
-        <tr class="subHeaderColumn">
+        <tr class="subHeaderColumn" style="background: #333975 ">
             <td></td>
             <td></td>
             <td></td>

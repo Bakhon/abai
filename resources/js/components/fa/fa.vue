@@ -109,7 +109,7 @@
         </div> -->
         <div>
             <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
-                <tr class="headerColumn">
+                <tr class="headerColumn" style="background: #333975 ">
                     <td rowspan="3" @click="sortBy('well')"><span>Скважина</span></td>
                     <td rowspan="3" @click="sortBy('field')"><span>Месторождение</span></td>
                     <td rowspan="3" @click="sortBy('horizon')"><span>Горизонт</span></td>
@@ -121,7 +121,7 @@
                     <td class="colspan" colspan="3">Геологические</td>
                     <td rowspan="3" @click="sortBy('Main_problem')"><span>Основное отклонение в ТР</span></td>
                 </tr>
-                <tr class="headerColumn">
+                <tr class="headerColumn" style="background: #333975 ">
                     <td rowspan="2" @click="sortBy('q_l_1')"><span>Qж</span></td>
                     <td rowspan="2" @click="sortBy('q_o_1')"><span>Qн</span></td>
                     <td rowspan="2" @click="sortBy('wct_1')"><span>Обводненность</span></td>
@@ -141,7 +141,7 @@
                     <td rowspan="2" @click="sortBy('PI')"><span>Снижение Kпрод</span></td>
                 </tr>
                 <tr></tr>
-                <tr class="subHeaderColumn">
+                <tr class="subHeaderColumn" style="background: #333975 ">
                     <td></td>
                     <td></td>
                     <td></td>

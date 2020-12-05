@@ -176,7 +176,7 @@
                 <TrTable :wells="wells" @onSort="sortField" v-show="show_first"/>
                 <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
                 <table v-show="show_second" class="table table-bordered table-dark table-responsive ce">
-                    <tr class="headerColumn">
+                    <tr class="headerColumn" style="background: #333975 ">
                         <td rowspan="4" @click="sortField=wells.gu">Раб. Группа</td>
                         <td rowspan="4" @click="sortField=wells.field">НГДУ/месторождение</td>
                         <td rowspan="4" @click="sortBy('well')">№ скв</td>
@@ -255,7 +255,7 @@
                         <td rowspan="4" @click="sortBy('p_annular')"><span>Дата последнего ГТМ</span></td>
                         <td rowspan="4" @click="sortBy('p_annular')"><span>Вид последнего ГТМ</span></td>
                     </tr>
-                    <tr class="headerColumn">
+                    <tr class="headerColumn" style="background: #333975 ">
                         <td rowspan="3"><span>P заб</span></td>
                         <td rowspan="3"><span>Q ж</span></td>
                         <td rowspan="3"><span>Обводненность</span></td>
@@ -285,7 +285,7 @@
                         <td rowspan="3"><span>Тнак</span></td>
                         <td class="colspan" colspan="3">Изоляционные работы</td>
                     </tr>
-                    <tr class="headerColumn">
+                    <tr class="headerColumn" style="background: #333975 ">
                         <td rowspan="2"><span>Q ж</span></td>
                         <td rowspan="2"><span>Q ж  с поправкой на D э/к</span></td>
                         <td rowspan="2"><span>Q н</span></td>
@@ -311,7 +311,7 @@
                         <td rowspan="2"><span>Обводненность</span></td>
                     </tr>
                     <tr></tr>
-                    <tr class="subHeaderColumn" style="color: white">
+                    <tr class="subHeaderColumn" style="color: white; background: #333975;">
                         <td></td>
                         <td></td>
                         <td></td>
