@@ -171,8 +171,12 @@ export default {
             },
             height:500,
             scene: {
-                xaxis: {title: 'dx'},
-                yaxis: {title: 'dy'},
+                xaxis: {title: 'dx',
+                        range: [0, 0]
+                },
+                yaxis: {title: 'dy',
+                        range: [0, 0]
+                },
                 zaxis: {title: 'md'}
             }
         }
@@ -191,7 +195,22 @@ export default {
 
         if (data.data) {
             this.data = data.data
-            this.chart=[{
+            var dxArray = this.data.map((r) => Math.abs(r.dx * 1))
+            var dyArray = this.data.map((r) => Math.abs(r.dy * 1))
+            if(Math.max(...dxArray) < 50 && Math.max(...dyArray) < 50) {
+            this.layout['scene']['xaxis']['range'][0] = 50
+            this.layout['scene']['xaxis']['range'][1] = -50
+            this.layout['scene']['yaxis']['range'][0] = 50
+            this.layout['scene']['yaxis']['range'][1] = -50
+            } else {
+            this.layout['scene']['xaxis']['range'][0] = Math.max(...dxArray) * 1.5
+            this.layout['scene']['xaxis']['range'][1] = Math.max(...dxArray) * -1.5
+            this.layout['scene']['yaxis']['range'][0] = Math.max(...dyArray) * 1.5
+            this.layout['scene']['yaxis']['range'][1] = Math.max(...dyArray) * -1.5
+            }
+            console.log(Math.max(...dxArray));
+            console.log(Math.max(...dyArray));
+            this.chart = [{
                 type: 'scatter3d',
                 mode: 'lines',
                 x: this.data.map((r) => r.dx),
@@ -199,7 +218,8 @@ export default {
                 z: this.data.map((r) => r.md * -1),
                 opacity: 1,
                 line:{
-                    width: 12
+                    width: 12,
+                    color: this.data.map((r) => r.dls_color),
                 }
 
             }]
