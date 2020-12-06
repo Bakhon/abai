@@ -88,7 +88,7 @@
                         </div>
                 </div>
 
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
+                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформироватьь</a>
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
                 <a class="but-nav__link but " @click="pushBign('chart')">Графики</a>
                 <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
@@ -109,87 +109,83 @@
         </div> -->
         <div>
             <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
-                <tr class="headerColumn" style="background: #333975 ">
-                    <td rowspan="3" @click="sortBy('well')"><span>Скважина</span></td>
-                    <td rowspan="3" @click="sortBy('field')"><span>Месторождение</span></td>
-                    <td rowspan="3" @click="sortBy('horizon')"><span>Горизонт</span></td>
-                    <td rowspan="3" @click="sortBy('exp_meth')"><span>Способ Эксплуатации</span></td>
-                    <td class="colspan" colspan="6">ТР на {{dt}}</td>
-                    <td class="colspan" colspan="6">ТР на {{dt2}}</td>
-                    <td class="colspan" colspan="1">Отклон. Qн</td>
-                    <td class="colspan" colspan="1">Технологические</td>
-                    <td class="colspan" colspan="3">Геологические</td>
-                    <td rowspan="3" @click="sortBy('Main_problem')"><span>Основное отклонение в ТР</span></td>
+                <tr class="headerColumn" >
+                    <td rowspan="3" @click="sortBy('well')" style="background: #12135C"><span>Скважина</span></td>
+                    <td rowspan="3" @click="sortBy('field')" style="background: #12135C"><span>Месторождение</span></td>
+                    <td rowspan="3" @click="sortBy('horizon')" style="background: #12135C"><span>Горизонт</span></td>
+                    <td rowspan="3" @click="sortBy('exp_meth')" style="background: #12135C"><span>Способ Эксплуатации</span></td>
+                    <td class="colspan" colspan="6" style="background: #2C3379" >ТР на {{dt}}</td>
+                    <td class="colspan" colspan="6" style="background: #1A2370" >ТР на {{dt2}}</td>
+                    <td class="colspan" colspan="1" style="background: #E50303">Отклон. Qн</td>
+                    <td class="colspan" colspan="1" style="background: #F08143">Технологические</td>
+                    <td class="colspan" colspan="3" style="background: #4FB26A">Геологические</td>
+                    <td rowspan="3" @click="sortBy('Main_problem')" style="background: #272953"><span>Основное отклонение в ТР</span></td>
                 </tr>
                 <tr class="headerColumn" style="background: #333975 ">
-                    <td rowspan="2" @click="sortBy('q_l_1')"><span>Qж</span></td>
-                    <td rowspan="2" @click="sortBy('q_o_1')"><span>Qн</span></td>
-                    <td rowspan="2" @click="sortBy('wct_1')"><span>Обводненность</span></td>
-                    <td rowspan="2" @click="sortBy('bhp_1')"><span>Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('p_res_1')"><span>Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('pi_1')"><span>Кпр</span></td>
-                    <td rowspan="2" @click="sortBy('q_l_2')"><span>Qж</span></td>
-                    <td rowspan="2" @click="sortBy('q_o_2')"><span>Qн</span></td>
-                    <td rowspan="2" @click="sortBy('wct_2')"><span>Обводненность</span></td>
-                    <td rowspan="2" @click="sortBy('bhp_2')"><span>Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('p_res_2')"><span>Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('pi_2')"><span>Кпр</span></td>
-                    <td rowspan="2" @click="sortBy('dqo')"><span>dQн</span></td>
-                    <td rowspan="2" @click="sortBy('Pbh')"><span>Недостижение режимного Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('wct')"><span>Рост обводненности</span></td>
-                    <td rowspan="2" @click="sortBy('p_res')"><span>Снижение Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('PI')"><span>Снижение Kпрод</span></td>
+                    <td rowspan="2" @click="sortBy('q_l_1')" style="background: #2C3379" ><span>Qж</span></td>
+                    <td rowspan="2" @click="sortBy('q_o_1')" style="background: #2C3379" ><span>Qн</span></td>
+                    <td rowspan="2" @click="sortBy('wct_1')" style="background: #2C3379" ><span>Обводненность</span></td>
+                    <td rowspan="2" @click="sortBy('bhp_1')" style="background: #2C3379" ><span>Pзаб</span></td>
+                    <td rowspan="2" @click="sortBy('p_res_1')" style="background: #2C3379" ><span>Pпл</span></td>
+                    <td rowspan="2" @click="sortBy('pi_1')" style="background: #2C3379" ><span>Кпр</span></td>
+                    <td rowspan="2" @click="sortBy('q_l_2')" style="background: #1A2370"><span>Qж</span></td>
+                    <td rowspan="2" @click="sortBy('q_o_2')" style="background: #1A2370"><span>Qн</span></td>
+                    <td rowspan="2" @click="sortBy('wct_2')" style="background: #1A2370"><span>Обводненность</span></td>
+                    <td rowspan="2" @click="sortBy('bhp_2')" style="background: #1A2370"><span>Pзаб</span></td>
+                    <td rowspan="2" @click="sortBy('p_res_2')" style="background: #1A2370"><span>Pпл</span></td>
+                    <td rowspan="2" @click="sortBy('pi_2')" style="background: #1A2370"><span>Кпр</span></td>
+                    <td rowspan="2" @click="sortBy('dqo')" style="background: #E50303"><span>dQн</span></td>
+                    <td rowspan="2" @click="sortBy('Pbh')" style="background: #F08143"><span>Недостижение режимного Pзаб</span></td>
+                    <td rowspan="2" @click="sortBy('wct')" style="background: #4FB26A"><span>Рост обводненности</span></td>
+                    <td rowspan="2" @click="sortBy('p_res')" style="background: #4FB26A"><span>Снижение Pпл</span></td>
+                    <td rowspan="2" @click="sortBy('PI')" style="background: #4FB26A"><span>Снижение Kпрод</span></td>
                 </tr>
                 <tr></tr>
                 <tr class="subHeaderColumn" style="background: #333975 ">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>м3/сут</td>
-                    <td>м3/сут</td>
-                    <td></td>
-                    <td>ат</td>
-                    <td>ат</td>
-                    <td>м3/сут/ат</td>
-                    <td>м3/сут</td>
-                    <td>м3/сут</td>
-                    <td></td>
-                    <td>ат</td>
-                    <td>ат</td>
-                    <td>м3/сут/ат</td>
-                    <td>т/сут</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td style="background: #12135C"></td>
+                    <td style="background: #12135C"></td>
+                    <td style="background: #12135C"></td>
+                    <td style="background: #12135C"></td>
+                    <td style="background: #2C3379">м3/сут</td>
+                    <td style="background: #2C3379">м3/сут</td>
+                    <td style="background: #2C3379"></td>
+                    <td style="background: #2C3379">ат</td>
+                    <td style="background: #2C3379">ат</td>
+                    <td style="background: #2C3379">м3/сут/ат</td>
+                    <td style="background: #1A2370">м3/сут</td>
+                    <td style="background: #1A2370">м3/сут</td>
+                    <td style="background: #1A2370"></td>
+                    <td style="background: #1A2370">ат</td>
+                    <td style="background: #1A2370">ат</td>
+                    <td style="background: #1A2370">м3/сут/ат</td>
+                    <td style="background: #E50303">т/сут</td>
+                    <td style="background: #272953"></td>
+                    <td style="background: #272953"></td>
+                    <td style="background: #272953"></td>
+                    <td style="background: #272953"></td>
+                    <td style="background: #272953"></td>
                 </tr>
                 <tr v-for="(row, row_index) in wells" :key="row_index">
-                    <td> {{row.well}}</td>
-                    <td>{{row.field}}</td>
-                    <td>{{row.horizon}}</td>
-                    <td>{{row.exp_meth}}</td>
-                    <td>{{Math.round(row.q_l_1*10)/10}}</td>
-                    <td>{{Math.round(row.q_o_1*10)/10}}</td>
-                    <td>{{Math.round(row.wct_1*10)/10}}</td>
-                    <td>{{Math.round(row.bhp_1*10)/10}}</td>
-                    <td>{{Math.round(row.p_res_1*10)/10}}</td>
-                    <td>{{Math.round(row.pi_1*10)/10}}</td>
-                    <td>{{Math.round(row.q_l_2*10)/10}}</td>
-                    <td>{{Math.round(row.q_o_2*10)/10}}</td>
-                    <td>{{Math.round(row.wct_2*10)/10}}</td>
-                    <td>{{Math.round(row.bhp_2*10)/10}}</td>
-                    <td>{{Math.round(row.p_res_2*10)/10}}</td>
-                    <td>{{Math.round(row.pi_2*10)/10}}</td>
+                    <td style="background: #12135C"> {{row.well}}</td>
+                    <td style="background: #12135C">{{row.field}}</td>
+                    <td style="background: #12135C">{{row.horizon}}</td>
+                    <td style="background: #12135C">{{row.exp_meth}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.q_l_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.q_o_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.wct_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.bhp_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.p_res_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.pi_1*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.q_l_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.q_o_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.wct_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.bhp_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.p_res_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.pi_2*10)/10}}</td>
 
                     <!-- <td>{{Math.round(row.dqo*10)/10}}</td> -->
                     <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
-                    <td
-                        :style="{
-                            background: getColor(Math.round(row.dqn*10)/10),
-                        }"
-                    >
+                    <td style="background: #E50303">
                         <span> {{Math.round(row.dqn*10)/10}} </span>
                     </td>
 
@@ -216,7 +212,7 @@
                         <span> {{Math.round(row.PI*10)/10}} </span>
                     </td>
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
-                    <td>{{row.Main_problem}}</td>
+                    <td style="background: #272953">{{row.Main_problem}}</td>
                 </tr>
             </table>
         </div>

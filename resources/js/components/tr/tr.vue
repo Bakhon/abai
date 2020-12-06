@@ -167,7 +167,7 @@
                             <option value="Аксай Южный">Аксай Южный</option>
                         </select>
                     </div> -->
-                    <button id="bt1"   @click="swap" style="background: #272953; color: white; margin-left: 1071px; border: none;"><svg width="19" style="margin-right:10px;" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <button id="bt1"   @click="swap" style="background: #272953; color: white; margin-left: 1014px; border: none;"><svg width="19" style="margin-right:10px;" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 
 <path d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
 </svg>Версия для отображения</button>
