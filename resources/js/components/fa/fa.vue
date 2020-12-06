@@ -85,6 +85,7 @@
         <div>
             <select name="Company" class="from-control" id="companySelect"
                 v-model="filter" @change="chooseField">
+                <option value="Казгермунай">КазГерМунай</option>
                 <option value="Акшабулак Центральный">Акшабулак Центральный</option>
                 <option value="Акшабулак Южный">Акшабулак Южный</option>
                 <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -96,63 +97,66 @@
         <div>
             <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
                 <tr class="headerColumn">
-                    <td rowspan="3" @click="sortBy('well')"><span>Скважина</span></td>
-                    <td rowspan="3" @click="sortBy('field')"><span>Месторождение</span></td>
-                    <td rowspan="3" @click="sortBy('horizon')"><span>Горизонт</span></td>
-                    <td rowspan="3" @click="sortBy('exp_meth')"><span>Способ Эксплуатации</span></td>
+                    <td rowspan="3"><span>Скважина</span></td>
+                    <td rowspan="3"><span>Месторождение</span></td>
+                    <td rowspan="3"><span>Горизонт</span></td>
+                    <td rowspan="3"><span>Способ Эксплуатации</span></td>
                     <td class="colspan" colspan="6">ТР на {{dt}}</td>
                     <td class="colspan" colspan="6">ТР на {{dt2}}</td>
                     <td class="colspan" colspan="1">Отклон. Qн</td>
                     <td class="colspan" colspan="1">Технологические</td>
                     <td class="colspan" colspan="3">Геологические</td>
-                    <td rowspan="3" @click="sortBy('Main_problem')"><span>Основное отклонение в ТР</span></td>
+                    <td rowspan="3"><span>Основное отклонение в ТР</span></td>
                 </tr>
                 <tr class="headerColumn">
-                    <td rowspan="2" @click="sortBy('q_l_1')"><span>Qж</span></td>
-                    <td rowspan="2" @click="sortBy('q_o_1')"><span>Qн</span></td>
-                    <td rowspan="2" @click="sortBy('wct_1')"><span>Обводненность</span></td>
-                    <td rowspan="2" @click="sortBy('bhp_1')"><span>Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('p_res_1')"><span>Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('pi_1')"><span>Кпр</span></td>
-                    <td rowspan="2" @click="sortBy('q_l_2')"><span>Qж</span></td>
-                    <td rowspan="2" @click="sortBy('q_o_2')"><span>Qн</span></td>
-                    <td rowspan="2" @click="sortBy('wct_2')"><span>Обводненность</span></td>
-                    <td rowspan="2" @click="sortBy('bhp_2')"><span>Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('p_res_2')"><span>Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('pi_2')"><span>Кпр</span></td>
-                    <td rowspan="2" @click="sortBy('dqo')"><span>dQн</span></td>
-                    <td rowspan="2" @click="sortBy('Pbh')"><span>Недостижение режимного Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('wct')"><span>Рост обводненности</span></td>
-                    <td rowspan="2" @click="sortBy('p_res')"><span>Снижение Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('PI')"><span>Снижение Kпрод</span></td>
+                    <td rowspan="2"><span>Qж</span></td>
+                    <td rowspan="2"><span>Qн</span></td>
+                    <td rowspan="2"><span>Обводненность</span></td>
+                    <td rowspan="2"><span>Pзаб</span></td>
+                    <td rowspan="2"><span>Pпл</span></td>
+                    <td rowspan="2"><span>Кпр</span></td>
+                    <td rowspan="2"><span>Qж</span></td>
+                    <td rowspan="2"><span>Qн</span></td>
+                    <td rowspan="2"><span>Обводненность</span></td>
+                    <td rowspan="2"><span>Pзаб</span></td>
+                    <td rowspan="2"><span>Pпл</span></td>
+                    <td rowspan="2"><span>Кпр</span></td>
+                    <td rowspan="2"><span>dQн</span></td>
+                    <td rowspan="2"><span>Недостижение режимного Pзаб</span></td>
+                    <td rowspan="2"><span>Рост обводненности</span></td>
+                    <td rowspan="2"><span>Снижение Pпл</span></td>
+                    <td rowspan="2"><span>Снижение Kпрод</span></td>
                 </tr>
                 <tr></tr>
                 <tr class="subHeaderColumn">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>м3/сут</td>
-                    <td>м3/сут</td>
-                    <td></td>
-                    <td>ат</td>
-                    <td>ат</td>
-                    <td>м3/сут/ат</td>
-                    <td>м3/сут</td>
-                    <td>м3/сут</td>
-                    <td></td>
-                    <td>ат</td>
-                    <td>ат</td>
-                    <td>м3/сут/ат</td>
-                    <td>т/сут</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td @click="sortBy('well')"></td>
+                    <td @click="sortBy('field')"></td>
+                    <td @click="sortBy('horizon')"></td>
+                    <td @click="sortBy('exp_meth')"></td>
+                    <td @click="sortBy('q_l_1')">м3/сут</td>
+                    <td @click="sortBy('q_o_1')">м3/сут</td>
+                    <td @click="sortBy('wct_1')"></td>
+                    <td @click="sortBy('bhp_1')">ат</td>
+                    <td @click="sortBy('p_res_1')">ат</td>
+                    <td @click="sortBy('pi_1')">м3/сут/ат</td>
+                    <td @click="sortBy('q_l_2')">м3/сут</td>
+                    <td @click="sortBy('q_o_2')">м3/сут</td>
+                    <td @click="sortBy('wct_2')"></td>
+                    <td @click="sortBy('bhp_2')">ат</td>
+                    <td @click="sortBy('p_res_2')">ат</td>
+                    <td @click="sortBy('pi_2')">м3/сут/ат</td>
+                    <td @click="sortBy('dqn')">т/сут</td>
+                    <td @click="sortBy('Pbh')"></td>
+                    <td @click="sortBy('wct')"></td>
+                    <td @click="sortBy('p_res')"></td>
+                    <td @click="sortBy('PI')"></td>
+                    <td @click="sortBy('Main_problem')"></td>
                 </tr>
-                <tr v-for="(row, row_index) in wells" :key="row_index">
-                    <td> {{row.well}}</td>
+                <tr
+                    v-for="(row) in wells"
+                    :key="row.well"
+                >
+                    <td>{{row.well}}</td>
                     <td>{{row.field}}</td>
                     <td>{{row.horizon}}</td>
                     <td>{{row.exp_meth}}</td>
@@ -173,7 +177,7 @@
                     <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
                     <td
                         :style="{
-                            background: getColor(Math.round(row.dqn*10)/10),
+                            background: getColorone(Math.round(row.dqn*10)/10),
                         }"
                     >
                         <span> {{Math.round(row.dqn*10)/10}} </span>
@@ -181,24 +185,36 @@
 
                     <!-- <td>{{Math.round(row.Pbh*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.Pbh*10)/10)}`">
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.Pbh*10)/10}} </span>
                     </td>
 
                     <!-- <td>{{Math.round(row.wct*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.wct*10)/10)}`">
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.wct*10)/10}} </span>
                     </td>
 
                     <!-- <td>{{Math.round(row.p_res*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.p_res*10)/10)}`">
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.p_res*10)/10}} </span>
                     </td>
 
                     <td :style="`background :${getColor(
-                    Math.round(row.PI*10)/10)}`">
+                        Math.round(row.PI*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.p_res*10)/10)}`">
                         <span> {{Math.round(row.PI*10)/10}} </span>
                     </td>
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
@@ -473,16 +489,56 @@ export default {
   },
   methods: {
       sortBy(type) {
-          let { wells, sortType } = this;
-          console.log(type, sortType);
-          if(sortType === 'asc') {
-            wells.sort((a, b) => a[type].localeCompare(b[type]))
+        let { wells, sortType } = this;
+        console.log(type, sortType);
+        if(sortType === 'asc') {
+            this.wells = wells.sort((a, b) => {
+                let aVal = a[type];
+                let bVal = b[type];
+                if(Array.isArray(aVal)){
+                    if ( (typeof aVal[0] === 'string') ){
+                        return aVal[0].localeCompare(bVal[0])
+                    } else {
+                        if ( Number(aVal[0]) > Number(bVal[0]) ) return 1;
+                        else if ( Number(aVal[0]) < Number(bVal[0]) ) return -1;
+                        else return 0
+                    }
+                } else{
+                    if (typeof aVal === 'string'){
+                        return aVal.localeCompare(bVal)
+                    } else {
+                        if (Number(aVal) > Number(bVal)) return 1;
+                        else if (Number(aVal) < Number(bVal)) return -1;
+                        else return 0
+                    }
+                }
+            })
             this.sortType = 'desc';
-          } else {
-            wells.sort((a, b) => b[type].localeCompare(a[type]))
+        }
+        else {
+            this.wells = wells.sort((a, b) => {
+                let aVal = a[type];
+                let bVal = b[type];
+                if(Array.isArray(aVal)){
+                    if ( (typeof aVal[0] === 'string') && isNaN(Number(aVal[0])) ){
+                        return bVal[0].localeCompare(aVal[0])
+                    } else {
+                        if (Number(aVal[0]) > Number(bVal[0])) return -1;
+                        else if ( Number(aVal[0]) < Number(bVal[0]) ) return 1;
+                        else return 0;
+                    }
+                } else{
+                    if ( (typeof aVal === 'string') && isNaN(Number(aVal)) ){
+                        return aVal.localeCompare(bVal)
+                    } else {
+                        if (Number(aVal) > Number(bVal)) return -1;
+                        else if ( Number(aVal) < Number(bVal) ) return 1;
+                        else return 0
+                    }
+                }
+            })
             this.sortType = 'asc';
-          }
-
+        }
       },
       chooseDt() {
           const { date1, date2 } = this;
@@ -517,6 +573,8 @@ export default {
                 if(data) {
                     console.log(data);
                     this.wells = data.data;
+                    this.fullWells = data.data;
+                    this.chartWells = data.data;
                 }
                 else {
                     console.log('No data');
@@ -529,8 +587,12 @@ export default {
       chooseField() {
           const { filter, fullWells } = this;
           console.log(filter, fullWells);
-
-          this.wells = fullWells.filter(e => e.field === filter);
+          if(filter == 'Казгермунай'){
+            this.wells = fullWells;
+          }
+          else{
+            this.wells = fullWells.filter(e => e.field === filter);
+          }
       },
       pushBign(bign){
           switch (bign) {
@@ -540,9 +602,13 @@ export default {
           }
           this.$modal.show(bign);
       },
-      getColor(status) {
+      getColor(status, ...values) {
+          if (status < "0" && status === Math.min(status, ...values)) return "#ac3939";
+      },
+      getColorone(status) {
           if (status < "0") return "#ac3939";
       },
+
     },
     beforeCreate: function () {
         var today = new Date();
