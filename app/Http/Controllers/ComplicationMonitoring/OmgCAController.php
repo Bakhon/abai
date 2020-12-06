@@ -123,4 +123,13 @@ class OmgCAController extends Controller
 
         return redirect()->route('omgca.index')->with('success',__('app.deleted'));
     }
+
+    public function checkDublicate(Request $request){
+        $row = OmgCA::where('date','=',$request->dt)->where('gu_id','=',$request->gu)->first();
+        if ($row) {
+            return response()->json(false);
+        }else{
+            return response()->json(true);
+        }
+    }
 }

@@ -378,7 +378,7 @@
         <div class="head-monitor">Рекомендации</div>
         <div style="min-height: 125px">
           <div class="rek" v-if="dose">Рекомендации дозирования ИК</div>
-          <!-- <monitor-chart-radialbar></monitor-chart-radialbar> -->
+          <monitor-chart-radialbar></monitor-chart-radialbar>
         </div>
         <div style="min-height: 80px">
           <div
