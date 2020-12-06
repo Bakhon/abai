@@ -132,12 +132,6 @@ export default {
                     ));
                     console.log(filteredResult);
                     let filteredData = filteredResult.reduce((acc, res) => {
-                        //acc = {
-                        //    'Pbh': acc['Pbh'] + res['Pbh'],
-                        //    'wct': acc['wct'] + res['wct'],
-                        //    'p_res': acc['p_res'] + res['p_res'],
-                        //    'PI': acc['PI'] + res['PI'],
-                        //}
                         if (acc.hasOwnProperty(res['Main_problem'])) {
                             acc[res['Main_problem']]+=1;
                         } else {
