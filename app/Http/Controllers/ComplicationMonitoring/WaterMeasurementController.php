@@ -23,6 +23,7 @@ use App\Models\Refs\Zu as RefsZu;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class WaterMeasurementController extends Controller
 {
@@ -342,7 +343,7 @@ class WaterMeasurementController extends Controller
     }
 
     public function getAllGu(){
-        $gus = RefsGu::orderBy('name')->get();
+        $gus = RefsGu::orderByRaw('name')->get();
 
         return response()->json([
             'code'=>200,

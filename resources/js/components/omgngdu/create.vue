@@ -46,10 +46,6 @@
         <div class="form-label-group">
             <input type="number" step="0.0001" name="daily_water_production" class="form-control" placeholder="">
         </div>
-        <label>Суточная добыча жидкости в кормассе, м3/сут</label>
-        <div class="form-label-group">
-            <input type="number" step="0.0001" name="daily_fluid_production_kormass" class="form-control" placeholder="">
-        </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>НГДУ</label>
@@ -76,16 +72,6 @@
         <div class="form-label-group">
             <input type="number" step="0.0001" name="daily_oil_production" class="form-control" placeholder="">
         </div>
-        <label>Давление в кормассе, бар</label>
-        <div class="form-label-group">
-            <input type="number" step="0.0001" name="pressure" class="form-control" placeholder="">
-        </div>
-        <label>Кормасс</label>
-        <div class="form-label-group">
-            <select class="form-control"  name="kormass_number" v-model="kormass_id">
-            <option v-for="row in kormass" v-bind:value="row.id">{{ row.name }}</option>
-            </select>
-        </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>ЦДНГ</label>
@@ -111,10 +97,6 @@
         <label>Температура на выходе из печи в ГУ, С</label>
         <div class="form-label-group">
             <input type="number" step="0.0001" name="heater_output_pressure" class="form-control" placeholder="">
-        </div>
-        <label>Температура в кормассе</label>
-        <div class="form-label-group">
-            <input type="number" step="0.0001" name="temperature" class="form-control" placeholder="">
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">

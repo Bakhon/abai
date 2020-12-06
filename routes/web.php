@@ -94,6 +94,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('oilgas','ComplicationMonitoring\OilGasController');
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
+        Route::post('checkdublicateomgddng','ComplicationMonitoring\OmgCAController@checkDublicate');
 
 
         //gno economic

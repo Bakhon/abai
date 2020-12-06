@@ -16,21 +16,17 @@
                 <table class="table table-responsive table-bordered">
                     <tr>
                         <td colspan="6">Узел отбора</td>
-                        <td colspan="14">Фактические данные НГДУ</td>
-                        <td rowspan="3">{{__('app.action')}}</td>
+                        <td colspan="10">Фактические данные НГДУ</td>
+                        <td rowspan="2">{{__('app.action')}}</td>
                     </tr>
                     <tr>
-                        <td rowspan="2">Месторождение</td>
-                        <td rowspan="2">НГДУ</td>
-                        <td rowspan="2">ЦДНГ</td>
-                        <td rowspan="2">ГУ</td>
-                        <td rowspan="2">ЗУ</td>
-                        <td rowspan="2">Скважина</td>
-                        <td rowspan="2">Дата</td>
-                        <td colspan="5">ГУ</td>
-                        <td colspan="4">Кормасс</td>
-                    </tr>
-                    <tr>
+                        <td>Месторождение</td>
+                        <td>НГДУ</td>
+                        <td>ЦДНГ</td>
+                        <td>ГУ</td>
+                        <td>ЗУ</td>
+                        <td>Скважина</td>
+                        <td>Дата</td>
                         <td>Суточная добыча  жидкости, м3/сут</td>
                         <td>Суточная добыча  воды, м3/сут</td>
                         <td>Суточная добыча нефти, т/сут</td>
@@ -40,10 +36,6 @@
                         <td>Давление на выходе насоса, бар</td>
                         <td>Температура на входе в печь, С</td>
                         <td>Температура на выходе из печи, С</td>
-                        <td>Кормасс</td>
-                        <td>Давление, бар</td>
-                        <td>Температура в Кормассе, С</td>
-                        <td>Суточная добыча жидкости, м3/сут</td>
                     </tr>
                     @foreach ($omgngdu as $item)
                         <tr>
@@ -69,10 +61,6 @@
                             <td>{{ $item->pump_discharge_pressure }}</td>
                             <td>{{ $item->heater_inlet_pressure }}</td>
                             <td>{{ $item->heater_output_pressure }}</td>
-                            <td>{{ $item->kormass_number }}</td>
-                            <td>{{ $item->pressure }}</td>
-                            <td>{{ $item->temperature }}</td>
-                            <td>{{ $item->daily_fluid_production_kormass }}</td>
                             <td>
                                 <form action="{{ route('omgngdu.destroy',$item->id) }}" method="POST">
                                     {{-- <a class="btn btn-primary" href="{{ route('omgngdu.edit',$item->id) }}"><i class="fas fa-edit"></i></a> --}}
