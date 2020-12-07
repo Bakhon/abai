@@ -354,32 +354,6 @@
             <monitor-chart-radialbar v-if="dose" :dose="dose"></monitor-chart-radialbar>
             <div>
                 <div
-                    v-if="signalizator > 0 && signalizator != null"
-                    class="text-wrap"
-                >
-                    <div
-                    v-if="signalizatorAbs <= 10"
-                    class="alert alert-success"
-                    role="alert"
-                    >
-                    Плановая превышает фактическую дозировку на {{ signalizatorAbs }}%
-                    </div>
-                    <div
-                    v-if="signalizatorAbs > 10 && signalizatorAbs <= 30"
-                    class="alert alert-warning"
-                    role="alert"
-                    >
-                    Плановая превышает фактическую дозировку на {{ signalizatorAbs }}%
-                    </div>
-                    <div
-                    v-if="signalizatorAbs > 30"
-                    class="alert alert-danger"
-                    role="alert"
-                    >
-                    Плановая превышает фактическую дозировку на {{ signalizatorAbs }}%
-                    </div>
-                </div>
-                <div
                     v-if="signalizator < 0 && signalizator != null"
                     class="text-wrap"
                 >
