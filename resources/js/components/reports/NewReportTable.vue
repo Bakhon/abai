@@ -1,90 +1,99 @@
 <template>
-<div>
-    <div class="container">
-    <div class="row">
- <div class="col-sm">
-        <div class="form-group">
-          <label class="text-wrap" style="color:white;" for="companySelect">Выберите компанию</label>
-          <select
-            style="background-color:#20274e;border-color:#20274e;color:white;"
-            class="form-control"
-            id="companySelect"
-            @change="onChange($event)"
-          >
-           <option value="">Выберите компанию</option>
-            <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
-            <option value="КБМ">АО «Каражанбасмунай»</option>
-            <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-            <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-            <option value="ММГ">АО «Мангистаумунайгаз»</option>
-          </select>
+ <div>
+   <div class="container">
+     <div class="row">
+       <div class="underHeader">
+         <div class="col-sm1">
+           <div class="form-group1">
+                <!--<label class="text-wrap" style="color:white; width:438px;" for="companySelect">Компания</label>-->
+                <!--<select
+                  style="background-color:#20274e;border-color:#20274e;color:white;"
+                  class="form-control"
+                  id="companySelect"
+                  @change="onChange($event)"
+                >-->
+                  <select
+                    style="background-color:#333975; border-color:#20274e; color:white;"
+                    class="form-control"
+                    id="companySelect"
+                     @change="onChange($event)"
+                    >
+                    <option value="">Компания</option>
+                    <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
+                    <option value="КБМ">АО «Каражанбасмунай»</option>
+                    <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+                    <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
+                  </select>
+                 </div>
+                </div>
+
+        <div class="col-sm2">
+          <div class="form-group2">
+            <!--<label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>-->
+            <!-- https://developer.snapappointments.com/bootstrap-select/examples/#basic-examples -->
+            <!-- multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"-->
+            <select data-live-search="true"
+              style="background-color:#333975; border-color:#20274e; color:white;"
+              multiple data-selected-text-format="count > 3" title="Выбрать месяц" lang="ru" class="selectpicker"
+              id="companySelect"
+              @change="onChangeMonth($event)"
+              >
+             <option value="" >Выбрать месяц</option>
+              <option value="1">январь</option>
+              <option value="2">февраль</option>
+              <option value="3">март</option>
+              <option value="4">апрель</option>
+              <option value="5">май</option>
+              <option value="6">июнь</option>
+              <option value="7">июль</option>
+              <option value="8">август</option>
+              <option value="9">сентябрь</option>
+              <option value="10">октябрь</option>
+              <option :disabled='year==2020' value="11">ноябрь</option>
+              <option :disabled='year==2020' value="12">декабрь</option>
+            </select>
+         </div>
         </div>
-    </div>
 
-     <div class="col-sm">
-        <div class="form-group">
-          <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
-          <!-- https://developer.snapappointments.com/bootstrap-select/examples/#basic-examples -->
-          <!-- multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"-->
-          <select data-live-search="true"
-            style="background-color:#20274e;border-color:#20274e;color:white;"
-            multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"
-            id="companySelect"
-            @change="onChangeMonth($event)"
-          >
-           <option value="" >Выберите месяц</option>
-            <option value="1">январь</option>
-            <option value="2">февраль</option>
-            <option value="3">март</option>
-            <option value="4">апрель</option>
-            <option value="5">май</option>
-            <option value="6">июнь</option>
-            <option value="7">июль</option>
-            <option value="8">август</option>
-            <option value="9">сентябрь</option>
-            <option value="10">октябрь</option>
-            <option :disabled='year==2020' value="11">ноябрь</option>
-            <option :disabled='year==2020' value="12">декабрь</option>
-          </select>
+        <div class="col-sm3">
+          <div class="form-group3">
+            <!--<label class="text-wrap" style="color:white;" for="companySelect">Выберите год</label>-->
+            <select
+              style="background-color:#333975; border-color:#20274e; color:white;"
+              class="form-control"
+              id="companySelect"
+              @change="onChangeYear($event)"
+            >
+            <option value=''> Выберите год </option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2017">2017</option>
+              <option value="2016">2016</option>
+              <option value="2015">2015</option>
+              <option value="2014">2014</option>
+            </select>
+          </div>
         </div>
-    </div>
-
-    <div class="col-sm">
-        <div class="form-group">
-          <label class="text-wrap" style="color:white;" for="companySelect">Выберите год</label>
-          <select
-            style="background-color:#20274e;border-color:#20274e;color:white;"
-            class="form-control"
-            id="companySelect"
-            @change="onChangeYear($event)"
-          >
-           <option value=''> Выберите год </option>
-            <option value="2020">2020</option>
-            <option value="2019">2019</option>
-            <option value="2018">2018</option>
-            <option value="2017">2017</option>
-            <option value="2016">2016</option>
-            <option value="2015">2015</option>
-            <option value="2014">2014</option>
-
-          </select>
+        <div class="col-sm4">
+          <div class="form-group4">
+            <button :disabled='org=="" || month=="" || year=="" || year==2020 && month>10' @click="updateData" class="btn report-btn">Сформировать отчет</button>
+          </div>
         </div>
+      </div>
     </div>
-    <button :disabled='org=="" || month=="" || year=="" || year==2020 && month>10' @click="updateData" class="btn report-btn">Сформировать отчет</button>
-    </div>
-
-
   </div>
- <div :hidden='data==""'>
- <BootstrapTable
-    :columns="columns"
-    :data="data"
-    :options="options"
-    :height="100"
+    <div :hidden='data==""'>
+      <BootstrapTable
+      :columns="columns"
+      :data="data"
+      :options="options"
+      :height="100"
+       />
     
-  />
-</div>
-</div>
+  </div>
+  </div>
 
 </template>
 
@@ -349,7 +358,6 @@ export default {
           org: this.org,
           month: this.month,
           year: this.year,
-
         })
         .then((response) => {
           let data = response.data;
@@ -364,16 +372,12 @@ export default {
     },
      onChange(event) {
         this.org = event.target.value;
-
     },
      onChangeMonth(event) {
         this.month = event.target.value;
-
-
     },
     onChangeYear(event) {
         this.year = event.target.value;
-
     },
   },
 }

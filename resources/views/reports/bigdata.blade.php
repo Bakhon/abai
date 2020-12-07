@@ -139,9 +139,9 @@
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn" hidden>Ежедневная динамика показателей закачки по скважинам</button> 
                 </div>
 
-                <div id="geo">No data</div>
-                <div id="bur">No data</div>
-                <div id="dev">No data</div>
+                {{-- <div id="geo" hidden>No data</div>
+                <div id="bur" hidden>No data</div>
+                <div id="dev" hidden>No data</div> --}}
 
                 <div id="dobycha" hidden class="menu-items">
                 <button onclick="document.location='{{url('/')}}/ru/mzdn'" type="button" class="col-md-2 col-lg-2 btn report-btn">Отчёт по месячной замерной добычи нефти</button>
@@ -154,12 +154,12 @@
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ревизия фонда скважин по месторождениям</button> 
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Расшифровка бездействующего фонда скважин</button> 
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Отчет по месячной замерной закаче воды</button> 
-                <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ежедневная динамика показателей добычи по скважинам</button> 
+                <button onclick="document.location='{{url('/')}}/ru/dob'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ежедневная динамика показателей добычи по скважинам</button> 
                 <button disabled onclick="document.location='{{url('/')}}/ru/constructor'" type="button" class="col-md-2 col-lg-2 btn report-btn">Ежедневная динамика показателей закачки по скважинам</button> 
                 </div>
 
-                <div id="ob">No data</div>
-                <div id="eco">No data</div>
+                {{-- <div id="ob" hidden>No data</div>
+                <div id="eco" hidden>No data</div> --}}
 
             </div>
     
@@ -191,14 +191,14 @@
         dobycha.removeAttribute("hidden");
         izbr.setAttribute("hidden", "hidden");
       }
-      else if (clk === "geo"){
+    //   else if (clk === "geo"){
 
-      }
-      else if(clk)
-      {
-        izbr.setAttribute("hidden", "hidden");
-        dobycha.setAttribute("hidden", "hidden");
-      }
+    //   }
+    //   else if(clk)
+    //   {
+    //     izbr.setAttribute("hidden", "hidden");
+    //     dobycha.setAttribute("hidden", "hidden");
+    //   }
     }
 </script>
 

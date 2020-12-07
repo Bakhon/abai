@@ -199,6 +199,7 @@ export default {
         "«Норт Каспиан Оперейтинг Компани н.в.»",
         "(конденсат)(100%)",
         "в т.ч.:газовый конденсат",
+        'АО "Тургай-Петролеум" (50%*33)',
       ],
       date: new Date(),
       selectedDay: undefined,
@@ -312,8 +313,8 @@ export default {
 
         this.buttonHover7 = buttonHover;
         this.range = {
-          start: new Date(),
-          end: new Date(),
+          start: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
+          end: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
           formatInput: true,
         };
 
@@ -949,13 +950,13 @@ export default {
 
 
           //test data
-          if (company === 'ЭМГ') {
+          /*if (company === 'ЭМГ') {
             summForTables.push({ dzo: NameDzoFull[2], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
             this.productionFactPercentOneDzo=0;
-          }
+          }*/
 
-          else if (company === 'ПКИ') {
+         if (company === 'ПКИ') {
             summForTables.push({ dzo: NameDzoFull[9], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
             this.productionFactPercentOneDzo=0;
@@ -1333,7 +1334,7 @@ export default {
           var factMonth = [];
           var planMonth = [];
 
-          if (this.buttonHover11 != '') {
+        /*  if (this.buttonHover11 != '') {
             dzoMonth.push(
               { dzoMonth: "ЭМГ" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" }
               //{ dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] }
@@ -1341,7 +1342,7 @@ export default {
             factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
             planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
             productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
-          }
+          }*/
 
           if (this.buttonHover12 != '') {
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
@@ -1745,6 +1746,10 @@ export default {
       }
       else if (String(dzo) === "ЭМГ") {
         name = NameDzoFull[2];
+      }
+
+      else if (String(dzo) === "ТП") {
+        name = NameDzoFull[15];
       }
       else if (String(dzo) === "ПКИ") {
         name = NameDzoFull[9];

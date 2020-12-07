@@ -68,11 +68,11 @@
                 <a href="tr" class="but-nav__link but">Технологический режим</a>
                 <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
-                        <input type="date" class="form-control" v-model="dt">
+                        <input type="date" class="form-control" v-model="date1">
                 </form>
                 <form class="form-group but-nav__link">
                         <label for="inputDate">Выбор даты 2:</label>
-                        <input type="date" class="form-control" v-model="dt2">
+                        <input type="date" class="form-control" v-model="date2">
                 </form>
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
@@ -85,6 +85,7 @@
         <div>
             <select name="Company" class="from-control" id="companySelect"
                 v-model="filter" @change="chooseField">
+                <option value="Казгермунай">КазГерМунай</option>
                 <option value="Акшабулак Центральный">Акшабулак Центральный</option>
                 <option value="Акшабулак Южный">Акшабулак Южный</option>
                 <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -96,63 +97,66 @@
         <div>
             <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
                 <tr class="headerColumn">
-                    <td rowspan="3" @click="sortBy('well')"><span>Скважина</span></td>
-                    <td rowspan="3" @click="sortBy('field')"><span>Месторождение</span></td>
-                    <td rowspan="3" @click="sortBy('horizon')"><span>Горизонт</span></td>
-                    <td rowspan="3" @click="sortBy('exp_meth')"><span>Способ Эксплуатации</span></td>
+                    <td rowspan="3"><span>Скважина</span></td>
+                    <td rowspan="3"><span>Месторождение</span></td>
+                    <td rowspan="3"><span>Горизонт</span></td>
+                    <td rowspan="3"><span>Способ Эксплуатации</span></td>
                     <td class="colspan" colspan="6">ТР на {{dt}}</td>
                     <td class="colspan" colspan="6">ТР на {{dt2}}</td>
                     <td class="colspan" colspan="1">Отклон. Qн</td>
                     <td class="colspan" colspan="1">Технологические</td>
                     <td class="colspan" colspan="3">Геологические</td>
-                    <td rowspan="3" @click="sortBy('Main_problem')"><span>Основное отклонение в ТР</span></td>
+                    <td rowspan="3"><span>Основное отклонение в ТР</span></td>
                 </tr>
                 <tr class="headerColumn">
-                    <td rowspan="2" @click="sortBy('q_l_1')"><span>Qж</span></td>
-                    <td rowspan="2" @click="sortBy('q_o_1')"><span>Qн</span></td>
-                    <td rowspan="2" @click="sortBy('wct_1')"><span>Обводненность</span></td>
-                    <td rowspan="2" @click="sortBy('bhp_1')"><span>Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('p_res_1')"><span>Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('pi_1')"><span>Кпр</span></td>
-                    <td rowspan="2" @click="sortBy('q_l_2')"><span>Qж</span></td>
-                    <td rowspan="2" @click="sortBy('q_o_2')"><span>Qн</span></td>
-                    <td rowspan="2" @click="sortBy('wct_2')"><span>Обводненность</span></td>
-                    <td rowspan="2" @click="sortBy('bhp_2')"><span>Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('p_res_2')"><span>Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('pi_2')"><span>Кпр</span></td>
-                    <td rowspan="2" @click="sortBy('dqo')"><span>dQн</span></td>
-                    <td rowspan="2" @click="sortBy('Pbh')"><span>Недостижение режимного Pзаб</span></td>
-                    <td rowspan="2" @click="sortBy('wct')"><span>Рост обводненности</span></td>
-                    <td rowspan="2" @click="sortBy('p_res')"><span>Снижение Pпл</span></td>
-                    <td rowspan="2" @click="sortBy('PI')"><span>Снижение Kпрод</span></td>
+                    <td rowspan="2"><span>Qж</span></td>
+                    <td rowspan="2"><span>Qн</span></td>
+                    <td rowspan="2"><span>Обводненность</span></td>
+                    <td rowspan="2"><span>Pзаб</span></td>
+                    <td rowspan="2"><span>Pпл</span></td>
+                    <td rowspan="2"><span>Кпр</span></td>
+                    <td rowspan="2"><span>Qж</span></td>
+                    <td rowspan="2"><span>Qн</span></td>
+                    <td rowspan="2"><span>Обводненность</span></td>
+                    <td rowspan="2"><span>Pзаб</span></td>
+                    <td rowspan="2"><span>Pпл</span></td>
+                    <td rowspan="2"><span>Кпр</span></td>
+                    <td rowspan="2"><span>dQн</span></td>
+                    <td rowspan="2"><span>Недостижение режимного Pзаб</span></td>
+                    <td rowspan="2"><span>Рост обводненности</span></td>
+                    <td rowspan="2"><span>Снижение Pпл</span></td>
+                    <td rowspan="2"><span>Снижение Kпрод</span></td>
                 </tr>
                 <tr></tr>
                 <tr class="subHeaderColumn">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>м3/сут</td>
-                    <td>м3/сут</td>
-                    <td></td>
-                    <td>ат</td>
-                    <td>ат</td>
-                    <td>м3/сут/ат</td>
-                    <td>м3/сут</td>
-                    <td>м3/сут</td>
-                    <td></td>
-                    <td>ат</td>
-                    <td>ат</td>
-                    <td>м3/сут/ат</td>
-                    <td>т/сут</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td @click="sortBy('well')"></td>
+                    <td @click="sortBy('field')"></td>
+                    <td @click="sortBy('horizon')"></td>
+                    <td @click="sortBy('exp_meth')"></td>
+                    <td @click="sortBy('q_l_1')">м3/сут</td>
+                    <td @click="sortBy('q_o_1')">м3/сут</td>
+                    <td @click="sortBy('wct_1')"></td>
+                    <td @click="sortBy('bhp_1')">ат</td>
+                    <td @click="sortBy('p_res_1')">ат</td>
+                    <td @click="sortBy('pi_1')">м3/сут/ат</td>
+                    <td @click="sortBy('q_l_2')">м3/сут</td>
+                    <td @click="sortBy('q_o_2')">м3/сут</td>
+                    <td @click="sortBy('wct_2')"></td>
+                    <td @click="sortBy('bhp_2')">ат</td>
+                    <td @click="sortBy('p_res_2')">ат</td>
+                    <td @click="sortBy('pi_2')">м3/сут/ат</td>
+                    <td @click="sortBy('dqn')">т/сут</td>
+                    <td @click="sortBy('Pbh')"></td>
+                    <td @click="sortBy('wct')"></td>
+                    <td @click="sortBy('p_res')"></td>
+                    <td @click="sortBy('PI')"></td>
+                    <td @click="sortBy('Main_problem')"></td>
                 </tr>
-                <tr v-for="(row, row_index) in wells" :key="row_index">
-                    <td> {{row.well}}</td>
+                <tr
+                    v-for="(row) in wells"
+                    :key="row.well"
+                >
+                    <td>{{row.well}}</td>
                     <td>{{row.field}}</td>
                     <td>{{row.horizon}}</td>
                     <td>{{row.exp_meth}}</td>
@@ -173,7 +177,7 @@
                     <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
                     <td
                         :style="{
-                            background: getColor(Math.round(row.dqn*10)/10),
+                            background: getColorone(Math.round(row.dqn*10)/10),
                         }"
                     >
                         <span> {{Math.round(row.dqn*10)/10}} </span>
@@ -181,24 +185,36 @@
 
                     <!-- <td>{{Math.round(row.Pbh*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.Pbh*10)/10)}`">
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.Pbh*10)/10}} </span>
                     </td>
 
                     <!-- <td>{{Math.round(row.wct*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.wct*10)/10)}`">
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.wct*10)/10}} </span>
                     </td>
 
                     <!-- <td>{{Math.round(row.p_res*10)/10}}</td> -->
                     <td :style="`background :${getColor(
-                    Math.round(row.p_res*10)/10)}`">
+                        Math.round(row.p_res*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.p_res*10)/10}} </span>
                     </td>
 
                     <td :style="`background :${getColor(
-                    Math.round(row.PI*10)/10)}`">
+                        Math.round(row.PI*10)/10,
+                        Math.round(row.Pbh*10)/10,
+                        Math.round(row.wct*10)/10,
+                        Math.round(row.p_res*10)/10)}`">
                         <span> {{Math.round(row.PI*10)/10}} </span>
                     </td>
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
@@ -337,6 +353,8 @@ export default {
         sortType: 'asc',
         dt: null,
         dt2: null,
+        date1: null,
+        date2: null,
         fullWells: [],
         filter: null,
         editdtm: null,
@@ -471,23 +489,82 @@ export default {
   },
   methods: {
       sortBy(type) {
-          let { wells, sortType } = this;
-          console.log(type, sortType);
-          if(sortType === 'asc') {
-            wells.sort((a, b) => a[type].localeCompare(b[type]))
+        let { wells, sortType } = this;
+        console.log(type, sortType);
+        if(sortType === 'asc') {
+            this.wells = wells.sort((a, b) => {
+                let aVal = a[type];
+                let bVal = b[type];
+                if(Array.isArray(aVal)){
+                    if ( (typeof aVal[0] === 'string') ){
+                        return aVal[0].localeCompare(bVal[0])
+                    } else {
+                        if ( Number(aVal[0]) > Number(bVal[0]) ) return 1;
+                        else if ( Number(aVal[0]) < Number(bVal[0]) ) return -1;
+                        else return 0
+                    }
+                } else{
+                    if (typeof aVal === 'string'){
+                        return aVal.localeCompare(bVal)
+                    } else {
+                        if (Number(aVal) > Number(bVal)) return 1;
+                        else if (Number(aVal) < Number(bVal)) return -1;
+                        else return 0
+                    }
+                }
+            })
             this.sortType = 'desc';
-          } else {
-            wells.sort((a, b) => b[type].localeCompare(a[type]))
+        }
+        else {
+            this.wells = wells.sort((a, b) => {
+                let aVal = a[type];
+                let bVal = b[type];
+                if(Array.isArray(aVal)){
+                    if ( (typeof aVal[0] === 'string') && isNaN(Number(aVal[0])) ){
+                        return bVal[0].localeCompare(aVal[0])
+                    } else {
+                        if (Number(aVal[0]) > Number(bVal[0])) return -1;
+                        else if ( Number(aVal[0]) < Number(bVal[0]) ) return 1;
+                        else return 0;
+                    }
+                } else{
+                    if ( (typeof aVal === 'string') && isNaN(Number(aVal)) ){
+                        return aVal.localeCompare(bVal)
+                    } else {
+                        if (Number(aVal) > Number(bVal)) return -1;
+                        else if ( Number(aVal) < Number(bVal) ) return 1;
+                        else return 0
+                    }
+                }
+            })
             this.sortType = 'asc';
-          }
-
+        }
       },
       chooseDt() {
-          const { dt, dt2 } = this;
-          console.log('dt1-', dt, ' dt2-', dt2);
-          var choosenDt = dt.split("-");
-          var choosenSecDt = dt2.split("-");
-          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+choosenDt[0]+"/"+choosenDt[1]+"/"+choosenSecDt[0]+"/"+choosenSecDt[1]+"/").then((response) => {
+          const { date1, date2 } = this;
+          console.log('dt1-', date1, ' dt2-', date2);
+          var choosenDt = date1.split("-");
+          var choosenSecDt = date2.split("-");
+          if(choosenDt[1]==1){
+              var prMm = 12;
+              var prPrMm = 11;
+              var yyyy = choosenDt[0] - 1;
+              var pryyyy = choosenSecDt[0];
+          }
+          else if(choosenSecDt[1] == 1){
+              var prMm = choosenDt[1] - 1;
+              var prPrMm = 12;
+              var yyyy = choosenDt[0];
+              var pryyyy = choosenSecDt[0] - 1;
+          }
+          else{
+              var prMm = choosenDt[1] - 1;
+              var prPrMm = choosenSecDt[1] - 1;
+              var yyyy = choosenDt[0];
+              var pryyyy = choosenSecDt[0];
+          }
+          console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                 let data = response.data;
                 this.editdtm = choosenDt[1];
                 this.editdty = choosenDt[0];
@@ -496,18 +573,26 @@ export default {
                 if(data) {
                     console.log(data);
                     this.wells = data.data;
+                    this.fullWells = data.data;
+                    this.chartWells = data.data;
                 }
                 else {
                     console.log('No data');
                 }
+                this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+                this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
 
             });
       },
       chooseField() {
           const { filter, fullWells } = this;
           console.log(filter, fullWells);
-
-          this.wells = fullWells.filter(e => e.field === filter);
+          if(filter == 'Казгермунай'){
+            this.wells = fullWells;
+          }
+          else{
+            this.wells = fullWells.filter(e => e.field === filter);
+          }
       },
       pushBign(bign){
           switch (bign) {
@@ -517,18 +602,35 @@ export default {
           }
           this.$modal.show(bign);
       },
-      getColor(status) {
+      getColor(status, ...values) {
+          if (status < "0" && status === Math.min(status, ...values)) return "#ac3939";
+      },
+      getColorone(status) {
           if (status < "0") return "#ac3939";
       },
+
     },
     beforeCreate: function () {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        var prMm = mm-2;
-        var prPrMm = mm-3;
-        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+yyyy+"/"+prPrMm+"/").then((response) => {
+        var pryyyy = today.getFullYear();
+        var prMm = mm;
+        var prPrMm = mm;
+        if(mm==0){
+            var prMm = 12;
+            var prPrMm = 11;
+            var yyyy = yyyy - 1;
+            var pryyyy = pryyyy - 1;
+        }
+        else{
+            var prMm = prMm - 1;
+            var prPrMm = prPrMm -2;
+            var yyyy = yyyy;
+            var pryyyy = pryyyy;
+        }
+        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
         console.log(this.editdtm);
@@ -547,29 +649,29 @@ export default {
         else {
             console.log('No data');
         }
-        if(prMm < 10 && prPrMm < 10) {
-            this.dt = '01' + '.0' + prMm + '.' + yyyy;
-            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy ;
+        if(this.editdtm < 10 && this.editdtprevm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy ;
         }
-        else if(prMm <= 10 && prPrMM <=10) {
-            this.dt = '01'+ '.' + prMm + '.' + yyyy;
-            this.dt2 = '01' + '.' + prPrMm + '.' + yyyy;
+        else if(this.editdtm <= 10 && this.editdtprevm <=10) {
+            this.dt = '01'+ '.' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
         }
-        else if(prMm >= 10 && prPrMM < 10) {
-            this.dt = '01' + '.0' + prMm + '.' + yyyy;
-            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy;
+        else if(editdtm >= 10 && editdtprevm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
         }
-        if(prMm < 10) {
-            this.dt = '01' + '.0' + prMm + '.' + yyyy;
-        }
-        else {
-            this.dt = '01' + '.' + prMm + '.' + yyyy;
-        }
-        if(prPrMm < 10) {
-            this.dt2 = '01' + '.0' + prPrMm + '.' + yyyy;
+        if(this.editdtm < 10) {
+            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
         }
         else {
-            this.dt2 = '01' + '.' + prPrMm + '.' + yyyy;
+            this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+        }
+        if(this.editdtprevm < 10) {
+            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
+        }
+        else {
+            this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
         }
     });
    },

@@ -1,9 +1,10 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
+    <notifications></notifications>
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label >Год</label>
         <div class="form-label-group">
-            <select class="form-control"  name="year" v-model="year" v-show="years.length > 0">
+            <select class="form-control"  name="year" v-model="year" @change="checkDublicate" v-show="years.length > 0">
             <option v-for="row in years" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -15,7 +16,7 @@
     <div class="col-xs-12 col-sm-4 col-md-4">
         <label>ГУ</label>
         <div class="form-label-group">
-            <select class="form-control"  name="gu_id" v-model="gu" @change="chooseGu($event)">
+            <select class="form-control"  name="gu_id" v-model="gu" @change="checkDublicate">
             <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
             </select>
         </div>
@@ -27,7 +28,7 @@
         </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-        <button type="submit" :disabled="!year" class="btn btn-success">Сохранить</button>
+        <button type="submit" v-if="year && gu && !dublicate" class="btn btn-success">Сохранить</button>
     </div>
   </div>
 </template>
@@ -38,10 +39,12 @@ import { Datetime } from 'vue-datetime'
 // You need a specific loader for CSS files
 import 'vue-datetime/dist/vue-datetime.css'
 import { Settings } from 'luxon'
+import NotifyPlugin from "vue-easy-notify";
 
 Settings.defaultLocale = 'ru'
 
-Vue.use(Datetime)
+
+Vue.use(NotifyPlugin)
 
 export default {
     name: "wm-create",
@@ -112,6 +115,23 @@ export default {
                 }
             });
         },
+        checkDublicate(){
+            if(this.gu != null && this.year != null){
+                this.axios.post("/ru/checkdublicateomgddng", {
+                    gu: this.gu,
+                    dt: this.year,
+                }).then((response) => {
+                    let data = response.data;
+                    if(data) {
+                        this.dublicate = false;
+                    }
+                    else {
+                        this.$notifyInfo("На эту дату по этому ГУ уже есть информация!");
+                        this.dublicate = true;
+                    }
+                });
+            }
+        }
   },
   data: function () {
     return {
@@ -144,7 +164,8 @@ export default {
         wbsmodel: null,
         srbmodel: null,
         hobmodel: null,
-        hbmodel: null
+        hbmodel: null,
+        dublicate: false
     }
   },
   beforeCreate: function () {
