@@ -377,8 +377,8 @@
       <div class="tables-string-gno4">
         <div class="head-monitor">Рекомендации</div>
         <div style="min-height: 125px">
-          <div class="rek" v-if="dose">Рекомендации дозирования ИК</div>
-          <monitor-chart-radialbar></monitor-chart-radialbar>
+          <div class="rek">Рекомендации дозирования ИК</div>
+          <monitor-chart-radialbar :dose="dose"></monitor-chart-radialbar>
         </div>
         <div style="min-height: 80px">
           <div
@@ -556,38 +556,38 @@ export default {
               this.$emit("chart2", data.chart2),
               this.$emit("chart3", data.chart3),
               this.$emit("chart4", data.chart4),
-              (this.kormass = data.kormass),
-              (this.pipe = data.pipe),
-              (this.pipeab = data.pipeab),
-              (this.lastCorrosion = data.lastCorrosion),
-              (this.constantsValues = data.constantsValues);
+              this.kormass = data.kormass,
+              this.pipe = data.pipe,
+              this.pipeab = data.pipeab,
+              this.lastCorrosion = data.lastCorrosion,
+              this.constantsValues = data.constantsValues;
           } else {
             console.log("No data");
           }
         });
     },
     dayClicked(day) {
-      this.date = day.id;
-      (this.ngdu = null),
-        (this.uhe = null),
-        (this.plan_dosage = null),
-        (this.current_dosage = null),
-        (this.daily_fluid_production_kormass = null),
-        (this.pressure = null),
-        (this.temperature = null),
-        (this.pump_discharge_pressure = null),
-        (this.surge_tank_pressure = null),
-        (this.heater_inlet_pressure = null),
-        (this.heater_output_pressure = null),
-        (this.daily_fluid_production = null),
-        (this.signalizator = null),
-        (this.signalizatorAbs = null),
-        (this.corrosionRateInMm = null),
-        (this.doseMgPerL = null),
-        (this.corrosionRateInMmAB = null),
-        (this.doseMgPerLAB = null),
-        (this.corrosionVelocityWithInhibitor = null),
-        (this.dose = 0),
+        this.date = day.id;
+        this.ngdu = null,
+        this.uhe = null,
+        this.plan_dosage = null,
+        this.current_dosage = null,
+        this.daily_fluid_production_kormass = null,
+        this.pressure = null,
+        this.temperature = null,
+        this.pump_discharge_pressure = null,
+        this.surge_tank_pressure = null,
+        this.heater_inlet_pressure = null,
+        this.heater_output_pressure = null,
+        this.daily_fluid_production = null,
+        this.signalizator = null,
+        this.signalizatorAbs = null,
+        this.corrosionRateInMm = null,
+        this.doseMgPerL = null,
+        this.corrosionRateInMmAB = null,
+        this.doseMgPerLAB = null,
+        this.corrosionVelocityWithInhibitor = null,
+        this.dose = 0,
         this.$emit("chart5", this.dose);
       this.axios
         .post("/ru/getgudatabyday", {
@@ -597,39 +597,29 @@ export default {
         .then((response) => {
           let data = response.data;
           if (data) {
-            (this.ngdu = data.ngdu),
-              (this.uhe = data.uhe),
-              (this.plan_dosage = response.data.ca.plan_dosage),
-              (this.current_dosage = response.data.uhe.current_dosage),
-              (this.daily_fluid_production_kormass =
-                response.data.ngdu.daily_fluid_production_kormass),
-              (this.pressure = response.data.ngdu.pressure),
-              (this.temperature = response.data.ngdu.temperature),
-              (this.pump_discharge_pressure =
-                response.data.ngdu.pump_discharge_pressure),
-              (this.surge_tank_pressure =
-                response.data.ngdu.surge_tank_pressure),
-              (this.heater_inlet_pressure =
-                response.data.ngdu.heater_inlet_pressure),
-              (this.heater_output_pressure =
-                response.data.ngdu.heater_output_pressure),
-              (this.daily_fluid_production =
-                response.data.ngdu.daily_fluid_production),
-              (this.signalizator =
-                ((response.data.ca.plan_dosage -
-                  response.data.uhe.current_dosage) *
-                  response.data.ca.plan_dosage) /
-                100),
-              (this.signalizatorAbs = Math.abs(this.signalizator)),
-              (this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor),
-              (this.wmLast = data.wmLast),
-              (this.wmLastH2S = data.wmLastH2S),
-              (this.wmLastCO2 = data.wmLastCO2),
-              (this.wmLastH2O = data.wmLastH2O),
-              (this.wmLastHCO3 = data.wmLastHCO3),
-              (this.wmLastCl = data.wmLastCl),
-              (this.wmLastSO4 = data.wmLastSO4),
-              (this.oilGas = data.oilGas);
+              this.ngdu = data.ngdu,
+              this.uhe = data.uhe,
+              this.plan_dosage = response.data.ca.plan_dosage,
+              this.current_dosage = response.data.uhe.current_dosage,
+              this.daily_fluid_production_kormass = response.data.ngdu.daily_fluid_production_kormass,
+              this.pressure = response.data.ngdu.pressure,
+              this.temperature = response.data.ngdu.temperature,
+              this.pump_discharge_pressure = response.data.ngdu.pump_discharge_pressure,
+              this.surge_tank_pressure = response.data.ngdu.surge_tank_pressure,
+              this.heater_inlet_pressure = response.data.ngdu.heater_inlet_pressure,
+              this.heater_output_pressure = response.data.ngdu.heater_output_pressure,
+              this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
+              this.signalizator = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
+              this.signalizatorAbs = Math.abs(this.signalizator),
+              this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor,
+              this.wmLast = data.wmLast,
+              this.wmLastH2S = data.wmLastH2S,
+              this.wmLastCO2 = data.wmLastCO2,
+              this.wmLastH2O = data.wmLastH2O,
+              this.wmLastHCO3 = data.wmLastHCO3,
+              this.wmLastCl = data.wmLastCl,
+              this.wmLastSO4 = data.wmLastSO4,
+              this.oilGas = data.oilGas;
             this.calc();
           } else {
             console.log("No data");
@@ -657,7 +647,8 @@ export default {
           SO4: this.wmLastSO4.sulphate_ion,
           q_g_sib: this.ngdu.daily_gas_production_in_sib,
           P_bufer: this.ngdu.surge_tank_pressure,
-          rhol: this.oilGas.water_density_at_20,
+          rhol: this.wmLastH2S.density,
+          rho_o: this.oilGas.water_density_at_20,
           rhog: this.oilGas.gas_density_at_20,
           mul: this.oilGas.oil_viscosity_at_20,
           mug: this.oilGas.gas_viscosity_at_20,
