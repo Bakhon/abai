@@ -8,6 +8,7 @@ class Vis2Form extends Model
 {
     protected $fillable = [
         "date",
+        "__time",
         "dobycha_nefti_fact",
         'dobycha_nefti_condensat_fact',
         'sdacha_nefti_fact',
