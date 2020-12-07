@@ -1,5 +1,5 @@
 body{
-    font-family: Harmonia sans;
+    font-family: Harmonia-sans;
 }
 .padding {
     padding-left: 0px!important;
@@ -16,7 +16,7 @@ body{
 }
 
 .left-panel {
-    background-color: #20274e;
+    background-color: #272953;
     height: 97%;
 }
 
@@ -36,7 +36,7 @@ div#sidebar-container2 {
 }
 
 .dropright .dropdown-menu {
-    background-color: #20274e;
+    background-color: #272953;
     color: white;
 }
 
@@ -938,7 +938,7 @@ ul.dropdown-child2 {
 }
 
 .child2 {
-    background-color: #20274e;
+    background-color: #272953!important;
     display: none;
     width: 60px;
     height: 24px;
@@ -962,7 +962,7 @@ ul.dropdown-child {
 }
 
 .child {
-    background-color: #20274e;
+    background-color: #272953;
     /* display: block; */
     display: none;
     min-width: 180px;
@@ -1491,4 +1491,9 @@ h2.subtitle {
 li.left-menu-li {
     width: 15vw;
     margin-left: 10px;
+}
+
+.bg-dark{
+ background: #272953!important;
+ z-index: 9999;
 }
