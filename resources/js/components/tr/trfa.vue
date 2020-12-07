@@ -1,66 +1,30 @@
 <template>
     <div class="container-fluid">
         <div class="col-md-12 row">
-
-
-
-
-            <div class="row justify-content-between" style="margin-left: 32px;width: 1649px;">
-                <a href="tr" class="col but-nav__link but" style=" margin-right: 24px"><i  style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
-                    </svg>
-                    </i>Технологический режим</a>
-
+            <div class="col-md-9 row justify-content-between">
                 <a href="fa" class="col but-nav__link but"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
-                    </svg>
-                    </i>Факторный анализ</a>
-           
-
-            
-
+                    </svg></i>Факторный анализ отклонений ТР</a>
+                <a href="tr" class="col but-nav__link but"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
+                    </svg></i>Технологический режим</a>
             </div>
-
-
-
-
-        <div class="row justify-content-between" style="width: 1644; margin-top: 29px; margin-left: 34px; background: #272953; margin-bottom: 30px;">
-
-
-                <div class="dropdown show" style="    margin-left: 23px; margin-top: 28px;">
-                    <a class="btn btn-secondary dropdown-toggle" style="background: #656A8A" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Выбор графика
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item"
-                            href="#"
-                            @click=" chartShow ='pie' "
-                        >PieChart</a>
-                        <a
-                            class="dropdown-item"
-                            href="#"
-                            @click=" chartShow ='bar' "
-                        >BarChart</a>
-                    </div>
-                </div>
-
-
-
-                <form class="form-group but-nav__link" style="margin-top: 15px;">
+        <div class="row justify-content-between">
+                <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="date1">
                 </form>
-                <form class="form-group but-nav__link" style="margin-top: 15px;">
+                <form class="form-group but-nav__link">
                         <label for="inputDate">Выбор даты 2:</label>
                         <input type="date" class="form-control" v-model="date2">
                 </form>
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt" style="margin-right: 33px; margin-top: 27px;">Сформировать</a>
+                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
         </div>
         </div>
-        <!-- <div class="col-md-9 row sec_nav"> -->
-            <!-- <div class="dropdown show">
+        <div class="col-md-9 row sec_nav">
+            <div class="dropdown show">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Выбор графика
+                    Выберите чарт
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item"
@@ -73,8 +37,8 @@
                         @click=" chartShow ='bar' "
                     >BarChart</a>
                 </div>
-            </div> -->
-            <!-- <div class="dropdown show">
+            </div>
+            <div class="dropdown show">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Выберите дату
                 </a>
@@ -83,11 +47,11 @@
                     <a class="dropdown-item" href="#">Another action</a>
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
-            </div> -->
-        <!-- </div> -->
-        <div class="col-md-9 sec_nav" style="max-width: 94%; margin-left: 36px;">
+            </div>
+        </div>
+        <div class="col-md-9 sec_nav">
             <div>
-                <h3 style="color: white; margin-left: 723px;"> Фильтр по </h3>
+                <h1> Фильтр по </h1>
             </div>
             <div class="filter_chart row">
                 <div>
@@ -95,7 +59,6 @@
                         class="form-control"
                         v-model="chartFilter_field"
                         value="Месторождение"
-                        style="width: 350px;margin-left: 26px;margin-right: 161px;margin-bottom: 10px;"
                     >
                         <option
                             v-for="(f, k) in fieldFilters"
@@ -107,8 +70,6 @@
                     <select
                         class="form-control"
                         v-model="chartFilter_horizon"
-                        style="   width: 350px; margin-left: 104px;
-"
                     >
                         <option
                             v-for="(f, k) in horizonFilters"
@@ -121,7 +82,6 @@
                         v-if="exp_methFilters"
                         class="form-control"
                         v-model="chartFilter_exp_meth"
-                        style="width: 350px; margin-left: 262px;"
                     >
                         <option
                             v-for="(f, k) in exp_methFilters"
