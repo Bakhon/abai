@@ -1,5 +1,5 @@
 body{
-    font-family: Harmonia-sans;
+    font-family: "Harmonia-sans";
 }
 .padding {
     padding-left: 0px!important;
@@ -927,6 +927,7 @@ span.logout {
 ul.dropdown-child2 {
     position: absolute;
     margin-left: -54px;
+    
 }
 
 .dropdown2 {
@@ -954,6 +955,8 @@ ul.dropdown-child2 {
 ul.dropdown-child {
     position: absolute;
     margin-left: 44px;
+    padding-left: 0px!important;
+    padding-right: 0px!important;
 }
 
 .dropdown {
@@ -966,6 +969,7 @@ ul.dropdown-child {
     /* display: block; */
     display: none;
     min-width: 180px;
+    
 }
 
 .child a {
@@ -974,6 +978,8 @@ ul.dropdown-child {
     padding: 5px 15px;
     /* text-decoration: none; */
     display: block;
+    white-space: nowrap;
+    
 }
 
 .dropdown:hover .child {
@@ -1497,3 +1503,4 @@ li.left-menu-li {
  background: #272953!important;
  z-index: 9999;
 }
+
