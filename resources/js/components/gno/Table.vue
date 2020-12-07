@@ -984,6 +984,8 @@ export default {
             shgnNpv:null,
             npvTable1:{},
             npvTable2:{},
+            nno1:null,
+            nno2:null,
         },
 
         qZhExpEcn:null,
@@ -1230,8 +1232,15 @@ export default {
       }
     },
 
-    ExpAnalysisMenu(){
-        this.NnoCalc()
+    async ExpAnalysisMenu(){
+        await this.NnoCalc()
+
+        if (this.qlCelValue<40){
+            Vue.prototype.$notifyError("Не рекомендуется применение ЭЦН");
+        }
+        if (this.qlCelValue>106) {
+            Vue.prototype.$notifyError("Не рекомендуется применение ШГН");
+        }
         this.qZhExpEcn=this.qlCelValue
         this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
 
@@ -1248,12 +1257,12 @@ export default {
         this.expAnalysisData.qoilEcn=this.qOilExpEcn
 
         if(this.expAnalysisData.NNO1!=null) {
-            this.EconomParam();
+            await this.EconomParam();
         }
 
 
     },
-    EconomParam(){
+    async EconomParam(){
         var prs1 = this.expAnalysisData.prs1;
         var prs2 = this.expAnalysisData.prs2;
 
@@ -1270,36 +1279,42 @@ export default {
 
         if (prs1!=0 && prs2!=0){
             this.param_eco=1;
-            this.EconomCalc();
+            await this.EconomCalc();
         } else if (prs1==0 && prs2==0){
             if(this.age){
                 this.param_eco=1;
-                this.EconomCalc();
+                await this.EconomCalc();
             } else {
                 if(this.expChoose=="ШГН"){
                     this.expAnalysisData.NNO1=date_diff;
                     this.param_eco=1;
-                    this.EconomCalc();
+                    await this.EconomCalc();
                 }else{
                     this.expAnalysisData.NNO2=date_diff;
                     this.param_eco=1;
-                    this.EconomCalc();
+                    await this.EconomCalc();
                 }
             }
         } else if (prs1==0 && prs2!=0){
             this.param_eco=2;
-            this.EconomCalc();
+            await this.EconomCalc();
         } else {
             this.param_eco=3;
-            this.EconomCalc();
+            await this.EconomCalc();
         }
     },
-    EconomCalc(){
+    async EconomCalc(){
         console.log('Nno',typeof this.expAnalysisData.NNO1,typeof this.expAnalysisData.NNO2);
 
+
+
         let uri2="/ru/nnoeco?equip=1&org=5&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-        this.axios.get(uri2).then((response) => {
-            let data = response.data;
+        let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+
+        const responses = await Promise.all([ this.axios.get(uri2), this.axios.get(uri3) ]);
+
+
+            let data = responses[0].data;
             if(data) {
 
                 this.expAnalysisData.shgnParam=data[12].godovoiShgnParam;
@@ -1309,11 +1324,10 @@ export default {
             else {
                 console.log('No data');
             }
-        });
 
-        let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-        this.axios.get(uri3).then((response) => {
-            let data2 = response.data;
+
+
+            let data2 = responses[1].data;
             if(data2) {
 
                 this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam;
@@ -1328,12 +1342,11 @@ export default {
             else {
                 console.log('No data');
             }
-        });
 
-        console.log('Nno',this.expAnalysisData.NNO1,this.expAnalysisData.NNO2);
+
 
     },
-    NnoCalc(){
+    async NnoCalc(){
         let uri = "http://172.20.103.187:7575/api/nno/";
 
         this.eco_param=null;
@@ -1364,10 +1377,11 @@ export default {
             )
 
 
-
+            const responses = await Promise.all([ this.axios.post(uri, jsonData), this.axios.post(uri, jsonData2) ]);
             //microservise na SHGN NNO
-            this.axios.post(uri, jsonData).then((response) => {
-            var data = JSON.parse(response.data.Result)
+
+
+            var data = JSON.parse(responses[0].data.Result)
             if (data) {
                 this.expAnalysisData.NNO1=data.NNO
                 this.expAnalysisData.qoilShgn=this.qOilExpShgn
@@ -1375,11 +1389,11 @@ export default {
             } else {
             console.log("No data");
             }
-            });
+
 
             //microservise na ECN NNO
-            this.axios.post(uri, jsonData2).then((response2) => {
-            var data2 = JSON.parse(response2.data.Result)
+
+            var data2 = JSON.parse(responses[1].data.Result)
             if (data2) {
                 this.expAnalysisData.NNO2=data2.NNO
                 this.expAnalysisData.qoilEcn=this.qOilExpEcn
@@ -1387,7 +1401,7 @@ export default {
             } else {
                 console.log("No data");
             }
-            });
+
 
 
         }
@@ -1556,7 +1570,7 @@ export default {
         }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-          this.NnoCalc();
+          //this.NnoCalc();
         }
       );
 
@@ -1844,7 +1858,7 @@ export default {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-          this.NnoCalc();
+          //this.NnoCalc();
           this.qOil = this.curvePointsData[0]["q_oil"].toFixed(0)
         } else {
           console.log("No data");
