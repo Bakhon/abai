@@ -354,7 +354,7 @@
             <div class="radial">
                 <monitor-chart-radialbar></monitor-chart-radialbar>
             </div>
-            <div>
+            <div class="signalizator">
                 <div
                     v-if="signalizator < 0 && signalizator != null"
                     class="text-wrap"
@@ -642,11 +642,11 @@ export default {
   border: 1px solid #0d2b4d;
 }
 .radial {
-    max-height: 250px;
-    min-height: 250px;
+    max-height: 200px;
+    min-height: 200px;
 }
 .signalizator{
-    max-height: 125px;
-    min-height: 125px;
+    max-height: 100px;
+    min-height: 100px;
 }
 </style>
