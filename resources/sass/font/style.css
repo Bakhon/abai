@@ -1,9 +1,6 @@
-@font-face {
-    font-family: 'Harmonia Sans Light';
-    src: local('Harmonia Sans Light'), local('Harmonia-Sans-Light'),
-        url('HarmoniaSansProCyr-Light.woff2') format('woff2'),
-        url('HarmoniaSansProCyr-Light.woff') format('woff'),
-        url('HarmoniaSansProCyr-Light.ttf') format('truetype');
-    font-weight: 300;
-    font-style: normal;
-  }
+
+  @font-face {
+    font-family: Harmonia sans light;
+    src: url('{{ public_path('fonts/HarmoniaSansProCyr-Light.ttf') }}');
+        
+}
