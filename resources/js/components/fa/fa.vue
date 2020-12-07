@@ -104,6 +104,7 @@
 <path d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
 </svg>Показать Графики</a>
         </div>
+
         <!-- <div>
             <select name="Company" class="from-control" id="companySelect"
                 v-model="filter" @change="chooseField">
@@ -116,6 +117,7 @@
                 <option value="Аксай Южный">Аксай Южный</option>
             </select>
         </div> -->
+        
         <div>
             <table class="table table-bordered table-dark table-responsive ce" style="width: 1638px; margin-left: 31px; position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
                 <tr class="headerColumn">
