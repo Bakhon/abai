@@ -9,7 +9,6 @@
     <div class="radial-bar-style" v-if="series[0] != 0">{{series[0]}} г/м3</div>
   </div>
 </template>
-
 <script>
 export default {
   data: function () {
