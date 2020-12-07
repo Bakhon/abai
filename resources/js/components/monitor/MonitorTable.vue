@@ -456,7 +456,7 @@ export default {
 	  corA: null,
 	  corE: null,
 	  corF: null,
-	  dose: null,
+	  dose: 0,
 	  result: {},
 	  params: {
 		data: [],
