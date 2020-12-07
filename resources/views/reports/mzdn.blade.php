@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 
-
+<div class="background-table">
     <div  id="app">
         <a href="{{url('/')}}/ru/export" class="float-right">
             <!-- <button type="button" class="btn btn-success">в Excel</button> -->
@@ -18,7 +18,7 @@
                               
         </div>
     </div>
-
+</div>
 @endsection
 <script>
 $('select').selectpicker();
@@ -26,6 +26,14 @@ $('select').selectpicker();
 
 <style>
 
+.background-table {
+    Width: 1822px;
+    Height: 960px;
+    Top: 100px;
+    right: 20px;
+    left: 8px;
+    background-color: #272953;
+}
 .fixed-columns {
     left: 0;
     background: #20274e!important;
