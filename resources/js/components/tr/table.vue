@@ -41,35 +41,35 @@
         </tr>
         <tr></tr>
         <tr class="subHeaderColumn" style="background: #333975">
-            <td @click="sortBy('well')"></td>
-            <td @click="sortBy('well_type')"></td>
-            <td @click="sortBy('horizon')"></td>
-            <td @click="sortBy('block')"></td>
-            <td @click="sortBy('cas_OD')">мм</td>
-            <td @click="sortBy('tub_OD')">мм</td>
-            <td @click="sortBy('choke_d')">мм</td>
-            <td @click="sortBy('h_up_perf_md')">м</td>
-            <td @click="sortBy('exp_meth')"></td>
-            <td @click="sortBy('pump_type')"></td>
-            <td @click="sortBy('freq')">Гц, об/мин</td>
-            <td @click="sortBy('h_pump_set')">м</td>
-            <td @click="sortBy('p_res')">атм</td>
-            <td @click="sortBy('h_dyn')">м</td>
-            <td @click="sortBy('p_annular')">атм</td>
-            <td @click="sortBy('bhp')">атм</td>
-            <td @click="sortBy('q_o')">т/сут</td>
-            <td @click="sortBy('q_l')">м3/сут</td>
-            <td @click="sortBy('wct')">%</td>
-            <td @click="sortBy('well_status_last_day')"></td>
-            <td @click="sortBy('gor')">м3/т</td>
-            <td @click="sortBy('pi')">м3/сут/атм</td>
-            <td @click="sortBy('tp_idn_bhp')">атм</td>
-            <td @click="sortBy('tp_idn_liq')">м3/сут</td>
-            <td @click="sortBy('tp_idn_oil_inc')">т/сут</td>
-            <td @click="sortBy('tp_idn_pi_after')">м3/сут/атм</td>
-            <td @click="sortBy('tp_idn_grp_q_liq')">м3/сут</td>
-            <td @click="sortBy('tp_idn_grp_q_oil_inc')">т/сут</td>
-            <td @click="sortBy('EMPTY')">т/сут</td>
+            <td @click="sortBy('well')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('well_type')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('horizon')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('block')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('cas_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
+            <td @click="sortBy('tub_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
+            <td @click="sortBy('choke_d')"><i class="fa fa-fw fa-sort"></i>мм</td>
+            <td @click="sortBy('h_up_perf_md')"><i class="fa fa-fw fa-sort"></i>м</td>
+            <td @click="sortBy('exp_meth')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('pump_type')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('freq')"><i class="fa fa-fw fa-sort"></i>Гц, об/мин</td>
+            <td @click="sortBy('h_pump_set')"><i class="fa fa-fw fa-sort"></i>м</td>
+            <td @click="sortBy('p_res')"><i class="fa fa-fw fa-sort"></i>атм</td>
+            <td @click="sortBy('h_dyn')"><i class="fa fa-fw fa-sort"></i>м</td>
+            <td @click="sortBy('p_annular')"><i class="fa fa-fw fa-sort"></i>атм</td>
+            <td @click="sortBy('bhp')"><i class="fa fa-fw fa-sort"></i>атм</td>
+            <td @click="sortBy('q_o')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('q_l')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+            <td @click="sortBy('wct')"><i class="fa fa-fw fa-sort"></i>%</td>
+            <td @click="sortBy('well_status_last_day')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('gor')"><i class="fa fa-fw fa-sort"></i>м3/т</td>
+            <td @click="sortBy('pi')"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
+            <td @click="sortBy('tp_idn_bhp')"><i class="fa fa-fw fa-sort"></i>атм</td>
+            <td @click="sortBy('tp_idn_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+            <td @click="sortBy('tp_idn_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('tp_idn_pi_after')"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
+            <td @click="sortBy('tp_idn_grp_q_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+            <td @click="sortBy('tp_idn_grp_q_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('EMPTY')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row_index">
             <td>{{row.well}}</td>

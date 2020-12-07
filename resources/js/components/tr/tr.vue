@@ -469,20 +469,20 @@
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975">
-              <td @click="sortBy('gu')"></td>
-              <td @click="sortBy('field')"></td>
-              <td @click="sortBy('well')"></td>
-              <td @click="sortBy('well_type')"></td>
-              <td @click="sortBy('horizon')"></td>
-              <td @click="sortBy('block')"></td>
-              <td @click="sortBy('r_con')">м</td>
-              <td @click="sortBy('cas_OD')">мм</td>
-              <td @click="sortBy('cas_ID')">мм</td>
-              <td @click="sortBy('tub_OD')">мм</td>
-              <td @click="sortBy('tub_ID')">мм</td>
-              <td @click="sortBy('choke_d')">мм</td>
-              <td @click="sortBy('h_up_perf_md')">м</td>
-              <td @click="sortBy('h_up_perf_ext')"></td>
+              <td @click="sortBy('gu')"><i class="fa fa-fw fa-sort"></i></td>
+              <td @click="sortBy('field')"><i class="fa fa-fw fa-sort"></i></td>
+              <td @click="sortBy('well')"><i class="fa fa-fw fa-sort"></i></td>
+              <td @click="sortBy('well_type')"><i class="fa fa-fw fa-sort"></i></td>
+              <td @click="sortBy('horizon')"><i class="fa fa-fw fa-sort"></i></td>
+              <td @click="sortBy('block')"><i class="fa fa-fw fa-sort"></i></td>
+              <td @click="sortBy('r_con')"><i class="fa fa-fw fa-sort">м</td>
+              <td @click="sortBy('cas_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
+              <td @click="sortBy('cas_ID')"><i class="fa fa-fw fa-sort">мм</td>
+              <td @click="sortBy('tub_OD')"><i class="fa fa-fw fa-sort">мм</td>
+              <td @click="sortBy('tub_ID')"><i class="fa fa-fw fa-sort">мм</td>
+              <td @click="sortBy('choke_d')"><i class="fa fa-fw fa-sort">мм</td>
+              <td @click="sortBy('h_up_perf_md')"><i class="fa fa-fw fa-sort">м</td>
+              <td @click="sortBy('h_up_perf_ext')"><i class="fa fa-fw fa-sort"></td>
               <td @click="sortBy('exp_meth')"></td>
               <td @click="sortBy('pump_type')"></td>
               <td @click="sortBy('EMPTY')"></td>
