@@ -22,7 +22,7 @@ class CreateVis2FormsTable extends Migration
             $table->float('gk_fact',8,4)->nullable();
             $table->float('oil_dlv_fact',8,4)->nullable();
             $table->float('sdacha_nefti_condensat_fact',8,4)->nullable();
-            $table->float('gas_fact',8,4)->nullable();
+            $table->float('gas_fact',16,4)->nullable();
             $table->float('dobycha_gaza_total_prirodnyi_fact',8,4)->nullable();
             $table->float('dobycha_gaza_gazovyie_mest_dzo_fact',8,4)->nullable();
             $table->float('dobycha_gaza_gsp_dzo_fact',8,4)->nullable();
