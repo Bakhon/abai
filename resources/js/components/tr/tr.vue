@@ -475,14 +475,14 @@
               <td @click="sortBy('well_type')"><i class="fa fa-fw fa-sort"></i></td>
               <td @click="sortBy('horizon')"><i class="fa fa-fw fa-sort"></i></td>
               <td @click="sortBy('block')"><i class="fa fa-fw fa-sort"></i></td>
-              <td @click="sortBy('r_con')"><i class="fa fa-fw fa-sort">м</td>
+              <td @click="sortBy('r_con')"><i class="fa fa-fw fa-sort"></i>м</td>
               <td @click="sortBy('cas_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
-              <td @click="sortBy('cas_ID')"><i class="fa fa-fw fa-sort">мм</td>
-              <td @click="sortBy('tub_OD')"><i class="fa fa-fw fa-sort">мм</td>
-              <td @click="sortBy('tub_ID')"><i class="fa fa-fw fa-sort">мм</td>
-              <td @click="sortBy('choke_d')"><i class="fa fa-fw fa-sort">мм</td>
-              <td @click="sortBy('h_up_perf_md')"><i class="fa fa-fw fa-sort">м</td>
-              <td @click="sortBy('h_up_perf_ext')"><i class="fa fa-fw fa-sort"></td>
+              <td @click="sortBy('cas_ID')"><i class="fa fa-fw fa-sort"></i>мм</td>
+              <td @click="sortBy('tub_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
+              <td @click="sortBy('tub_ID')"><i class="fa fa-fw fa-sort"></i>мм</td>
+              <td @click="sortBy('choke_d')"><i class="fa fa-fw fa-sort"></i>мм</td>
+              <td @click="sortBy('h_up_perf_md')"><i class="fa fa-fw fa-sort"></i>м</td>
+              <td @click="sortBy('h_up_perf_ext')"><i class="fa fa-fw fa-sort"></i></td>
               <td @click="sortBy('exp_meth')"></td>
               <td @click="sortBy('pump_type')"></td>
               <td @click="sortBy('EMPTY')"></td>
