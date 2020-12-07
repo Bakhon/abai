@@ -351,7 +351,7 @@
         </div>
         <div class="col-2">
             <h6>Рекомендации дозирования ИК</h6>
-            <monitor-chart-radialbar v-if="dose" :dose="dose"></monitor-chart-radialbar>
+            <monitor-chart-radialbar :dose="dose"></monitor-chart-radialbar>
             <div>
                 <div
                     v-if="signalizator < 0 && signalizator != null"
@@ -548,7 +548,7 @@ export default {
 			  this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
 			  this.signalizator = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
 			  this.signalizatorAbs = Math.abs(this.signalizator),
-			  this.corrosionVelocityWithInhibitor = Math.round(this.lastCorrosion.corrosion_velocity_with_inhibitor,1),
+			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor.toFixed(1),
 			  this.wmLast = data.wmLast,
 			  this.wmLastH2S = data.wmLastH2S,
 			  this.wmLastCO2 = data.wmLastCO2,
