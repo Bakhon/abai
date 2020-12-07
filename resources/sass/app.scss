@@ -1,6 +1,13 @@
 // Fonts
-@import url('./font/style.css');
-
+@font-face {
+    font-family: Harmonia Sans;
+    src: url('/fonts/HarmoniaSansProCyr-Light.ttf');
+   
+}
+@font-face {
+font-family: "Bold";
+src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
+}
 // Variables
 @import "variables";
 

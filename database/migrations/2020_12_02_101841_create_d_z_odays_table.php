@@ -26,7 +26,7 @@ class CreateDZOdaysTable extends Migration
             $table->float("gk_plan",32,8)->nullable();	
             $table->float("gk_fact",32,8)->nullable();	
             $table->float("liq_plan",32,8)->nullable();
-            $table->float("liq_fact",32,8)->nullable();
+            $table->float("liq_fact",64,8)->nullable();
             $table->float("sdacha_nefti_kuun",32,8)->nullable();						
             $table->float("oil_dlv_plan",32,8)->nullable(); 
             $table->float("oil_dlv_fact",32,8)->nullable();

@@ -1,12 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@import url(https://fonts.googleapis.com/css?family=Roboto:400,500);@font-face {
-    font-family: 'Harmonia Sans Light';
-    src: local('Harmonia Sans Light'), local('Harmonia-Sans-Light'),
-        url(/fonts/HarmoniaSansProCyr-Light.woff2?99e3b68c4d5fbcf2022fbba1b466792a) format('woff2'),
-        url(/fonts/HarmoniaSansProCyr-Light.woff?5b38b598316bcb19e97c4b56dcdc6bfc) format('woff'),
-        url(/fonts/HarmoniaSansProCyr-Light.ttf?ac4e0d31e316a036cac38e49c7d3d642) format('truetype');
-    font-weight: 300;
-    font-style: normal;
-  }@font-face {
   font-family: "e-icons";
   font-style: normal;
   font-weight: normal;
@@ -52368,6 +52360,16 @@ li.e-separator.e-menu-item.e-excel-separator {
   padding-right: 4px;
 }
 @charset "UTF-8";
+
+@font-face {
+  font-family: Harmonia Sans;
+  src: url("/fonts/HarmoniaSansProCyr-Light.ttf");
+}
+
+@font-face {
+  font-family: "Bold";
+  src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
+}
 
 /*!
  * Bootstrap v4.5.3 (https://getbootstrap.com/)
