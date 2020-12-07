@@ -351,7 +351,9 @@
         </div>
         <div class="col-2">
             <h6>Рекомендации дозирования ИК</h6>
-            <monitor-chart-radialbar :dose="dose"></monitor-chart-radialbar>
+            <div class="radial">
+                <monitor-chart-radialbar></monitor-chart-radialbar>
+            </div>
             <div>
                 <div
                     v-if="signalizator < 0 && signalizator != null"
@@ -538,7 +540,6 @@ export default {
 			  this.uhe = data.uhe,
 			  this.plan_dosage = response.data.ca.plan_dosage,
 			  this.current_dosage = response.data.uhe.current_dosage,
-			  this.daily_fluid_production_kormass = response.data.ngdu.daily_fluid_production_kormass,
 			  this.pressure = response.data.ngdu.pressure,
 			  this.temperature = response.data.ngdu.temperature,
 			  this.pump_discharge_pressure = response.data.ngdu.pump_discharge_pressure,
@@ -557,7 +558,7 @@ export default {
 			  this.wmLastCl = data.wmLastCl,
 			  this.wmLastSO4 = data.wmLastSO4,
 			  this.oilGas = data.oilGas;
-			this.calc();
+			  this.calc();
 		  } else {
 			console.log("No data");
 		  }
@@ -601,6 +602,7 @@ export default {
             this.result = data,
             this.daily_fluid_production_kormass = data.t_final_celsius_point_F,
             this.pressure = data.final_pressure_bar_point_F
+		    this.$emit("chart5", data.max_dose);
 		  } else {
 			console.log("No data");
 		  }
@@ -638,5 +640,13 @@ export default {
 .economicModal {
   background-color: #0f1430;
   border: 1px solid #0d2b4d;
+}
+.radial {
+    max-height: 250px;
+    min-height: 250px;
+}
+.signalizator{
+    max-height: 125px;
+    min-height: 125px;
 }
 </style>
