@@ -12,13 +12,18 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
+import { eventBus } from "../../event-bus.js";
 
 Vue.component("apexchart", VueApexCharts);
+Vue.prototype.$eventBus = new Vue();
+
 export default {
   name: "mix-chart",
   props:["data"],
   data: function () {
     return {
+      nno1:null,
+      nno2:null,
       chartOptions: {
         tooltip: {
           theme: "dark",
@@ -61,7 +66,7 @@ export default {
         },
 
         dataLabels: {
-          enabled: false /*вывод значений из раздела data*/,
+          enabled: true /*вывод значений из раздела data*/,
           formatter: function (val) {
             return val /*+"%"*/;
           },
@@ -125,6 +130,9 @@ export default {
       ]
     };
   },
+
+
+
 
 
 
