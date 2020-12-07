@@ -4,7 +4,7 @@ namespace App\Http\Controllers\DZO;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Import\DZOyearImport;
+use App\Imports\DZOyearImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DZOyearController extends Controller
