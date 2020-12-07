@@ -1,44 +1,39 @@
 <template>
 <div class="container-fluid">
-    <modal name="economicmodal" :width="1000" :height="430" :adaptive="true">
-      <div class="container economicModal">
+    <modal name="economicmodal" :width="1000" :height="400" :adaptive="true">
+      <div class="container economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
         <div class="row">
-          <div class="col-9">
+          <div class="col-12">
             <h3 class="economicHeader">Экономический эффект 2021</h3>
-          </div>
-          <div class="col-3">
-            <!-- <button type="button" class="btn btn-success">
-              Скачать отчет в excel
-            </button> -->
           </div>
         </div>
         <div class="row">
           <div class="col-12">
-            <vue-table-dynamic
-            :params="params"
-            ref="table"
-            >
-            </vue-table-dynamic>
-          </div>
-        </div>
-        <!-- <div class="row">
-          <div class="col-6">
-            <monitor-chart1></monitor-chart1>
-          </div>
-          <div class="col-6">
-            <monitor-chart1></monitor-chart1>
+                <table class="table table-bordered economicModalTable">
+                    <tbody>
+                        <tr v-for="row in economicNextYear">
+                            <td>{{row[0]}}</td>
+                            <td>{{row[1]}}</td>
+                            <td>{{row[2]}}</td>
+                            <td>{{row[3]}}</td>
+                            <td>{{row[4]}}</td>
+                            <td>{{row[5]}}</td>
+                            <td>{{row[6]}}</td>
+                            <td>{{row[7]}}</td>
+                            <td>{{row[8]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
           </div>
         </div>
         <div class="row">
-          <div class="col-6">
-            <monitor-chart-tide></monitor-chart-tide>
+          <div class="col-12">
+            <h3 class="economicHeader">Экономический эффект 2020</h3>
           </div>
-          <div class="col-6">
-            <monitor-chart-tide></monitor-chart-tide>
-          </div>
-        </div> -->
+        </div>
       </div>
-    </modal><modal name="corrosion" :width="1000" :height="430" :adaptive="true">
+    </modal>
+    <modal name="corrosion" :width="1000" :height="430" :adaptive="true">
       <div class="container economicModal" style="min-height: 430px">
         <br />
         <div class="row">
@@ -382,7 +377,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-info" @click="pushBtn" :disabled="!gu">
+            <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicNextYear.length < 2">
             Экономический эффект</button
             ><br />
             <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">
@@ -469,7 +464,8 @@ export default {
 		pageSize: 10,
 		height: 430,
 		wordWrap: "break-word"
-	  },
+      },
+      economicNextYear: []
 	};
   },
   beforeCreate: function () {
@@ -499,7 +495,8 @@ export default {
 			  this.pipe = data.pipe,
 			  this.pipeab = data.pipeab,
 			  this.lastCorrosion = data.lastCorrosion,
-			  this.constantsValues = data.constantsValues;
+              this.constantsValues = data.constantsValues;
+              this.getEconomicData(event.target.value);
 		  } else {
 			console.log("No data");
 		  }
@@ -609,24 +606,26 @@ export default {
 		});
 	},
 	pushBtn() {
+		this.$modal.show("economicmodal");
+	},
+	pushBtn2() {
+	  this.$modal.show("corrosion");
+    },
+    getEconomicData(gu){
 	  this.axios
 		.post("/ru/vcoreconomic", {
-		  gu: this.gu,
+		  gu: gu,
 		})
 		.then((response) => {
 		  let data = response.data;
 		  if (data) {
 			console.log(data);
-			this.params.data = data;
-			this.$modal.show("economicmodal");
+			this.economicNextYear = data;
 		  } else {
 			console.log("No data");
 		  }
 		});
-	},
-	pushBtn2() {
-	  this.$modal.show("corrosion");
-	},
+    }
   },
   components: { VueTableDynamic }
 };
@@ -639,7 +638,7 @@ export default {
 
 .economicModal {
   background-color: #0f1430;
-  border: 1px solid #0d2b4d;
+  /* border: 1px solid #0d2b4d; */
 }
 .radial {
     max-height: 200px;
@@ -648,5 +647,9 @@ export default {
 .signalizator{
     max-height: 100px;
     min-height: 100px;
+}
+.economicModalTable{
+    color: #fff;
+    border: #fff solid 2px;
 }
 </style>
