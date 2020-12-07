@@ -159,7 +159,7 @@ class OmgNGDUController extends Controller
     public function getGuDataByDay(Request $request){
         $ngdu = ComplicationMonitoringOmgNGDU::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
         $uhe = ComplicationMonitoringOmgUHE::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
-        $ca = ComplicationMonitoringOmgCA::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
+        $ca = ComplicationMonitoringOmgCA::where('date', '=', "".date("Y")."-01-01")->where('gu_id', '=', $request->gu_id)->first();
         $wmLast = WaterMeasurement::where('gu_id','=',$request->gu_id)->latest()->first();
         $wmLastCO2 = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('carbon_dioxide')->latest()->first();
         $wmLastH2S = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('hydrogen_sulfide')->latest()->first();

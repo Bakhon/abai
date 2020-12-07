@@ -18,6 +18,8 @@ import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import VueMomentLib from 'vue-moment-lib';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
+import VueApexCharts from "vue-apexcharts";
+
 // import  jquery from 'jquery';
 
 
@@ -114,7 +116,11 @@ Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oil
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('oilgastable-create', require('./components/сomplicationMonitoring/oilGas/table.vue').default);
+<<<<<<< HEAD
 Vue.component('tredit-table', require('./components/tr/tredit.vue').default);
+=======
+Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
+>>>>>>> 8513b29eebca91f4134c33b96d1756fcbb9d54eb
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 

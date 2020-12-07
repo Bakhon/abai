@@ -83,22 +83,6 @@
                         <td>Температура на выходе из печи, С</td>
                         <td>{{$omgngdu->heater_output_pressure}}</td>
                     </tr>
-                    <tr>
-                        <td>Кормасс</td>
-                        <td>{{$omgngdu->kormass_number}}</td>
-                    </tr>
-                    <tr>
-                        <td>Давление, бар</td>
-                        <td>{{$omgngdu->pressure}}</td>
-                    </tr>
-                    <tr>
-                        <td>Температура</td>
-                        <td>{{$omgngdu->temperature}}</td>
-                    </tr>
-                    <tr>
-                        <td>Суточная добыча жидкости, м3/сут</td>
-                        <td>{{$omgngdu->daily_fluid_production_kormass}}</td>
-                    </tr>
                 </table>
                 {{-- <a class="btn btn-warning" href="{{ route('watermeasurement.edit',$omgngdu->id) }}">{{__('app.edit')}}</a> --}}
                 <a class="btn btn-primary" href="{{ route('omgngdu.index') }}">{{__('app.back')}}</a>
