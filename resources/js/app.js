@@ -18,8 +18,9 @@ import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import VueMomentLib from 'vue-moment-lib';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
+import Antd from 'ant-design-vue';
 import VueApexCharts from "vue-apexcharts";
-
+import 'ant-design-vue/dist/antd.css';
 // import  jquery from 'jquery';
 
 
@@ -30,7 +31,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.Jquery = require('jquery');
-
+Vue.use(Antd);
 Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib);
 
 

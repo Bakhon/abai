@@ -64,8 +64,11 @@
                 </div>
             </div>
         </modal>
-        <div class="row justify-content-between">
-                <a href="tr" class="but-nav__link but">Технологический режим</a>
+        <div class="row justify-content-between" style="margin-left: 32px;width: 1649px;">
+                <a href="tr" class="col but-nav__link but"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
+                    </svg>
+                    </i>Технологическиий режим</a>
                 <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="date1">
@@ -74,15 +77,35 @@
                         <label for="inputDate">Выбор даты 2:</label>
                         <input type="date" class="form-control" v-model="date2">
                 </form>
+
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
+
+
+               
+                <div class="col">
+                       
+                        <div class="input-group input-group-sm">
+                            <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
+                            <div class="input-group-prepend">
+                                <button class="input-group-text" style="font-size: 14px;">Поиск</button>
+                            </div>
+                        </div>
+                </div>
+
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
-                <a class="but-nav__link but " @click="pushBign('chart')">Графики</a>
-                <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a>
+                
+                <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
         </div>
-        <div class="tech">
-            <td> Факторный анализ</td>
+        <div class="maintable-level2" style="display: flex; width: 1636px; margin-left: 31px; margin-top: 25px;">
+            <div class="tech" >
+                <h3 style="color:white; margin-left: 7px;"> Факторный анализ</h3>
+            </div>
+            <a href='trfa' class="but-nav__link but " @click="pushBign('chart')" style="background: #272953; margin-left: 1180px; border: none; font-size: inherit;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>Показать Графики</a>
         </div>
-        <div>
+
+        <!-- <div>
             <select name="Company" class="from-control" id="companySelect"
                 v-model="filter" @change="chooseField">
                 <option value="Казгермунай">КазГерМунай</option>
@@ -93,85 +116,86 @@
                 <option value="Аксай">Аксай</option>
                 <option value="Аксай Южный">Аксай Южный</option>
             </select>
-        </div>
+        </div> -->
+        
         <div>
-            <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
+            <table class="table table-bordered table-dark table-responsive ce" style="width: 1638px; margin-left: 31px; position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
                 <tr class="headerColumn">
-                    <td rowspan="3"><span>Скважина</span></td>
-                    <td rowspan="3"><span>Месторождение</span></td>
-                    <td rowspan="3"><span>Горизонт</span></td>
-                    <td rowspan="3"><span>Способ Эксплуатации</span></td>
-                    <td class="colspan" colspan="6">ТР на {{dt}}</td>
-                    <td class="colspan" colspan="6">ТР на {{dt2}}</td>
-                    <td class="colspan" colspan="1">Отклон. Qн</td>
-                    <td class="colspan" colspan="1">Технологические</td>
-                    <td class="colspan" colspan="3">Геологические</td>
-                    <td rowspan="3"><span>Основное отклонение в ТР</span></td>
+                    <td rowspan="3" style="background: #12135C"><span>Скважина</span></td>
+                    <td rowspan="3" style="background: #12135C"><span>Месторождение</span></td>
+                    <td rowspan="3" style="background: #12135C"><span>Горизонт</span></td>
+                    <td rowspan="3" style="background: #12135C"><span>Способ Эксплуатации</span></td>
+                    <td class="colspan" colspan="6" style="background: #2C3379">ТР на {{dt}}</td>
+                    <td class="colspan" colspan="6" style="background: #1A2370">ТР на {{dt2}}</td>
+                    <td class="colspan" colspan="1" style="background: #E50303">Отклон. Qн</td>
+                    <td class="colspan" colspan="1" style="background: #F08143">Технологические</td>
+                    <td class="colspan" colspan="3" style="background: #4FB26A">Геологические</td>
+                    <td rowspan="3" style="background: #272953"><span>Основное отклонение в ТР</span></td>
                 </tr>
                 <tr class="headerColumn">
-                    <td rowspan="2"><span>Qж</span></td>
-                    <td rowspan="2"><span>Qн</span></td>
-                    <td rowspan="2"><span>Обводненность</span></td>
-                    <td rowspan="2"><span>Pзаб</span></td>
-                    <td rowspan="2"><span>Pпл</span></td>
-                    <td rowspan="2"><span>Кпр</span></td>
-                    <td rowspan="2"><span>Qж</span></td>
-                    <td rowspan="2"><span>Qн</span></td>
-                    <td rowspan="2"><span>Обводненность</span></td>
-                    <td rowspan="2"><span>Pзаб</span></td>
-                    <td rowspan="2"><span>Pпл</span></td>
-                    <td rowspan="2"><span>Кпр</span></td>
-                    <td rowspan="2"><span>dQн</span></td>
-                    <td rowspan="2"><span>Недостижение режимного Pзаб</span></td>
-                    <td rowspan="2"><span>Рост обводненности</span></td>
-                    <td rowspan="2"><span>Снижение Pпл</span></td>
-                    <td rowspan="2"><span>Снижение Kпрод</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Qж</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Qн</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Обводненность</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Pзаб</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Pпл</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Кпр</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Qж</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Qн</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Обводненность</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Pзаб</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Pпл</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Кпр</span></td>
+                    <td rowspan="2" style="background: #E50303"><span>dQн</span></td>
+                    <td rowspan="2" style="background: #F08143"><span>Недостижение режимного Pзаб</span></td>
+                    <td rowspan="2" style="background: #4FB26A"><span>Рост обводненности</span></td>
+                    <td rowspan="2" style="background: #4FB26A"><span>Снижение Pпл</span></td>
+                    <td rowspan="2" style="background: #4FB26A"><span>Снижение Kпрод</span></td>
                 </tr>
                 <tr></tr>
                 <tr class="subHeaderColumn">
-                    <td @click="sortBy('well')"></td>
-                    <td @click="sortBy('field')"></td>
-                    <td @click="sortBy('horizon')"></td>
-                    <td @click="sortBy('exp_meth')"></td>
-                    <td @click="sortBy('q_l_1')">м3/сут</td>
-                    <td @click="sortBy('q_o_1')">м3/сут</td>
-                    <td @click="sortBy('wct_1')"></td>
-                    <td @click="sortBy('bhp_1')">ат</td>
-                    <td @click="sortBy('p_res_1')">ат</td>
-                    <td @click="sortBy('pi_1')">м3/сут/ат</td>
-                    <td @click="sortBy('q_l_2')">м3/сут</td>
-                    <td @click="sortBy('q_o_2')">м3/сут</td>
-                    <td @click="sortBy('wct_2')"></td>
-                    <td @click="sortBy('bhp_2')">ат</td>
-                    <td @click="sortBy('p_res_2')">ат</td>
-                    <td @click="sortBy('pi_2')">м3/сут/ат</td>
-                    <td @click="sortBy('dqn')">т/сут</td>
-                    <td @click="sortBy('Pbh')"></td>
-                    <td @click="sortBy('wct')"></td>
-                    <td @click="sortBy('p_res')"></td>
-                    <td @click="sortBy('PI')"></td>
-                    <td @click="sortBy('Main_problem')"></td>
+                    <td @click="sortBy('well')" style="background: #12135C"></td>
+                    <td @click="sortBy('field')" style="background: #12135C"></td>
+                    <td @click="sortBy('horizon')" style="background: #12135C"></td>
+                    <td @click="sortBy('exp_meth')" style="background: #12135C"></td>
+                    <td @click="sortBy('q_l_1')" style="background: #2C3379">м3/сут</td>
+                    <td @click="sortBy('q_o_1')" style="background: #2C3379">м3/сут</td>
+                    <td @click="sortBy('wct_1')" style="background: #2C3379"></td>
+                    <td @click="sortBy('bhp_1')" style="background: #2C3379">ат</td>
+                    <td @click="sortBy('p_res_1')" style="background: #2C3379">ат</td>
+                    <td @click="sortBy('pi_1')" style="background: #2C3379">м3/сут/ат</td>
+                    <td @click="sortBy('q_l_2')" style="background: #1A2370">м3/сут</td>
+                    <td @click="sortBy('q_o_2')" style="background: #1A2370">м3/сут</td>
+                    <td @click="sortBy('wct_2')" style="background: #1A2370"></td>
+                    <td @click="sortBy('bhp_2')" style="background: #1A2370">ат</td>
+                    <td @click="sortBy('p_res_2')" style="background: #1A2370">ат</td>
+                    <td @click="sortBy('pi_2')" style="background: #1A2370">м3/сут/ат</td>
+                    <td @click="sortBy('dqn')" style="background: #E50303">т/сут</td>
+                    <td @click="sortBy('Pbh')" style="background: #F08143"></td>
+                    <td @click="sortBy('wct')" style="background: #4FB26A"></td>
+                    <td @click="sortBy('p_res')" style="background: #4FB26A"></td>
+                    <td @click="sortBy('PI')" style="background: #4FB26A"></td>
+                    <td @click="sortBy('Main_problem')" style="background: #272953"></td>
                 </tr>
                 <tr
                     v-for="(row) in wells"
                     :key="row.well"
                 >
-                    <td>{{row.well}}</td>
-                    <td>{{row.field}}</td>
-                    <td>{{row.horizon}}</td>
-                    <td>{{row.exp_meth}}</td>
-                    <td>{{Math.round(row.q_l_1*10)/10}}</td>
-                    <td>{{Math.round(row.q_o_1*10)/10}}</td>
-                    <td>{{Math.round(row.wct_1*10)/10}}</td>
-                    <td>{{Math.round(row.bhp_1*10)/10}}</td>
-                    <td>{{Math.round(row.p_res_1*10)/10}}</td>
-                    <td>{{Math.round(row.pi_1*10)/10}}</td>
-                    <td>{{Math.round(row.q_l_2*10)/10}}</td>
-                    <td>{{Math.round(row.q_o_2*10)/10}}</td>
-                    <td>{{Math.round(row.wct_2*10)/10}}</td>
-                    <td>{{Math.round(row.bhp_2*10)/10}}</td>
-                    <td>{{Math.round(row.p_res_2*10)/10}}</td>
-                    <td>{{Math.round(row.pi_2*10)/10}}</td>
+                    <td style="background: #12135C">{{row.well}}</td>
+                    <td style="background: #12135C">{{row.field}}</td>
+                    <td style="background: #12135C">{{row.horizon}}</td>
+                    <td style="background: #12135C">{{row.exp_meth}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.q_l_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.q_o_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.wct_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.bhp_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.p_res_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.pi_1*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.q_l_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.q_o_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.wct_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.bhp_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.p_res_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.pi_2*10)/10}}</td>
 
                     <!-- <td>{{Math.round(row.dqo*10)/10}}</td> -->
                     <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
@@ -218,7 +242,7 @@
                         <span> {{Math.round(row.PI*10)/10}} </span>
                     </td>
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
-                    <td>{{row.Main_problem}}</td>
+                    <td style="background: #272953">{{row.Main_problem}}</td>
                 </tr>
             </table>
         </div>
@@ -604,9 +628,15 @@ export default {
       },
       getColor(status, ...values) {
           if (status < "0" && status === Math.min(status, ...values)) return "#ac3939";
+          else {
+              return "#272953";
+          }
       },
       getColorone(status) {
           if (status < "0") return "#ac3939";
+          else {
+              return "#272953";
+          }
       },
 
     },
@@ -646,9 +676,6 @@ export default {
             this.fullWells = data.data;
             this.chartWells = data.data;
         }
-        else {
-            console.log('No data');
-        }
         if(this.editdtm < 10 && this.editdtprevm < 10) {
             this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
             this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy ;
@@ -681,4 +708,58 @@ export default {
 body {
   color: white !important;
 }
+
+input, .form-control, .fix-rounded-right{
+    background: #272953!important;
+    border: 1px solid #656A8A!important;
+    height: 35px!important;
+    color: white!important;
+}
+.input-group-text
+{
+    background: #656A8A!important;
+    color: white!important;
+    border-radius: 6px!important;
+    border: none!important;
+    position: absolute!important;
+    right: 0!important;
+    z-index: 9999;
+    
+}
+.input-group-prepend{
+    
+    padding-top: 3px!important;
+    margin-right: -3px!important;
+    
+}
+a:hover{
+    color: white!important;
+    text-decoration: none!important;
+}
+.maintable{
+    
+    padding-top: 35px;
+
+}
+.maintable-level2{
+    background: #272953;
+}
+.table th, .table td {
+    padding: 5px !important; 
+    /* vertical-align: top;
+    border-top: 1px solid #dee2e6; */
+}
+table.table.table-bordered.table-dark.table-responsive.ce {
+    position: sticky;
+    inset: 48.21% 2.4% 66.58% 5.31%;
+    background: rgb(13, 30, 99);
+    font-size: 9px;
+    padding: unset;
+}
+.dropdown-menu {
+  background-color: #656a8a;
+} 
+
+tr:nth-child(odd) {background-color:#454d7d;}
+tr:nth-child(even) {background-color:#454d7d73;}
 </style>

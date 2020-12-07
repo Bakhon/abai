@@ -1,6 +1,6 @@
 <template>
     <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
-        <tr class="headerColumn">
+        <tr class="headerColumn" style="background: #333975 ">
             <td rowspan="4">№ скв</td>
             <td rowspan="4">Тип скважины</td>
             <td rowspan="4">Горизонт</td>
@@ -23,24 +23,24 @@
             <td class="colspan" colspan="7">Расчет технологического потенциала от ИДН</td>
         </tr>
         <tr class="headerColumn">
-            <td rowspan="3">P заб</td>
-            <td rowspan="3">Q н</td>
-            <td rowspan="3">Q ж</td>
-            <td rowspan="3">Обводненность</td>
-            <td rowspan="3">P заб</td>
-            <td class="colspan" colspan="2">ИДН</td>
-            <td rowspan="3">К прод от стимуляции</td>
-            <td class="colspan" colspan="2">ГРП</td>
-            <td rowspan="3">Общий прирост Q н</td>
+            <td rowspan="3" style="background: #333975 ">P заб</td>
+            <td rowspan="3" style="background: #333975 ">Q н</td>
+            <td rowspan="3" style="background: #333975 ">Q ж</td>
+            <td rowspan="3" style="background: #333975 ">Обводненность</td>
+            <td rowspan="3" style="background: #333975 ">P заб</td>
+            <td class="colspan" colspan="2" style="background: #333975 ">ИДН</td>
+            <td rowspan="3" style="background: #333975 ">К прод от стимуляции</td>
+            <td class="colspan" colspan="2" style="background: #333975 ">ГРП</td>
+            <td rowspan="3" style="background: #333975 ">Общий прирост Q н</td>
         </tr>
         <tr class="headerColumn">
-            <td rowspan="2">Q ж</td>
-            <td rowspan="2">Прирост Q н</td>
-            <td rowspan="2">Q ж</td>
-            <td rowspan="2">Прирост Q н</td>
+            <td rowspan="2" style="background: #333975 ">Q ж</td>
+            <td rowspan="2" style="background: #333975 ">Прирост Q н</td>
+            <td rowspan="2" style="background: #333975 ">Q ж</td>
+            <td rowspan="2" style="background: #333975 ">Прирост Q н</td>
         </tr>
         <tr></tr>
-        <tr class="subHeaderColumn">
+        <tr class="subHeaderColumn" style="background: #333975">
             <td @click="sortBy('well')"></td>
             <td @click="sortBy('well_type')"></td>
             <td @click="sortBy('horizon')"></td>
