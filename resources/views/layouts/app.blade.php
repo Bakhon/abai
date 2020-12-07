@@ -1,3 +1,26 @@
+<?php
+    $user = Auth::user()->username;
+    if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru/bigdata') { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/bigdata');
+        
+    }
+    elseif(strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visualcenter3') { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/visualcenter3');
+        
+    }
+    elseif(strpos($user, 'gnouser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/podborgno') { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/podborgno');
+        
+    }
+    elseif(strpos($user, 'truser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/tr') { 
+        header('HTTP/1.1 200 OK');
+        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/tr');
+        
+    }
+        ?>
 </html>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -20,9 +43,13 @@
 <body style="background-color: #0F1430;">
     @include('layouts.navbar')
     <div class="no-row row" id="app">
-    
+    @if (basename(Request::url()) === "visualcenter3")
         @include('layouts.visual-center4-sidebar')
-    
+        @elseif (basename(Request::url()) === "visualcenter4")
+        @include('layouts.visual-center4-sidebar')
+        @else
+        @include('layouts.head-sidebar')
+        @endif
 
        {{-- @if (basename(Request::url()) === "ru")
         @include('layouts.sidebar')
