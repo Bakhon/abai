@@ -4,8 +4,9 @@ namespace App\Http\Controllers\DZO;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Import\DZOdayImport;
+use App\Imports\DZOdayImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\DZOday;
 
 class DZOdayController extends Controller
 {
