@@ -16,6 +16,7 @@ class DZOdayImport implements ToModel
     {
         return new DZOday([
             "date" => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]),
+            "__time" => (\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]))->getTimestamp()*1000,
             "dzo_name" => $row[ 1 ],
             "mestorozhdenie" => $row[ 2 ],
             "ngdu" => $row[ 3 ],

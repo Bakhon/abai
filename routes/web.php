@@ -140,8 +140,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
         Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
 
-        Route::get('importdzoday','DZOdayController@importExcel');
-        Route::get('importdzoyear','DZOyearController@importExcel');
+        Route::get('importdzoday','DZO\DZOdayController@importExcel');
+        Route::get('importdzoyear','DZO\DZOyearController@importExcel');
+        Route::get('importdzocalc','DZO\DZOcalcController@importExcel');
 
     });
     Auth::routes([

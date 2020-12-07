@@ -17,11 +17,12 @@ class Vis2FormController extends Controller
         $alldata = new Vis2Form;
 
         $alldata->date = Carbon::yesterday();
-        $alldata->dobycha_nefti_fact = $request->input('dobycha_nefti_fact');
-        $alldata->dobycha_nefti_condensat_fact = $request->input('dobycha_nefti_condensat_fact');
-        $alldata->sdacha_nefti_fact = $request->input('sdacha_nefti_fact');
+        $alldata->__time =  (Carbon::yesterday())->getTimestamp()*1000;
+        $alldata->oil_fact = $request->input('dobycha_nefti_fact');
+        $alldata->gk_fact = $request->input('dobycha_nefti_condensat_fact');
+        $alldata->oil_dlv_fact = $request->input('sdacha_nefti_fact');
         $alldata->sdacha_nefti_condensat_fact = $request->input('sdacha_nefti_condensat_fact');
-        $alldata->dobycha_gaza_total_tch_fact = $request->input('dobycha_gaza_total_tch_fact');
+        $alldata->gas_fact = $request->input('dobycha_gaza_total_tch_fact');
         $alldata->dobycha_gaza_total_prirodnyi_fact = $request->input('dobycha_gaza_total_prirodnyi_fact');
         $alldata->dobycha_gaza_gazovyie_mest_dzo_fact = $request->input('dobycha_gaza_gazovyie_mest_dzo_fact');
         $alldata->dobycha_gaza_gsp_dzo_fact = $request->input('dobycha_gaza_gsp_dzo_fact');
@@ -54,8 +55,8 @@ class Vis2FormController extends Controller
         $alldata->others = $request->input('others');
 
         $alldata->expl = $request->input('expl');
-        $alldata->deistv = $request->input('deistv');
-        $alldata->prostoy = $request->input('prostoy');
+        $alldata->prod_wells_work = $request->input('deistv');
+        $alldata->prod_wells_idle = $request->input('prostoy');
         $alldata->b_d = $request->input('b_d');
         $alldata->osvoenie = $request->input('osvoenie');
         $alldata->ozhidanie_likvidacii = $request->input('ozhidanie_likvidacii');
@@ -63,8 +64,8 @@ class Vis2FormController extends Controller
         
 
         $alldata->expl2 = $request->input('expl2');
-        $alldata->deistv2 = $request->input('deistv2');
-        $alldata->prostoy2 = $request->input('prostoy2');
+        $alldata->inj_wells_work = $request->input('deistv2');
+        $alldata->inj_wells_idle = $request->input('prostoy2');
         $alldata->b_d2 = $request->input('b_d2');
         $alldata->obustroystvo = $request->input('obustroystvo');
         $alldata->ozhidanie_likvidacii2 = $request->input('ozhidanie_likvidacii2');
