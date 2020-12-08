@@ -386,7 +386,7 @@ return $response;
             //Fluid viscosity in Pa.s  x 1000 to cP
             $viscosity = $mul;
             //Length of the pipe in m
-            $l = 1000.0;
+            //$l = 1000.0;
             //thermal conductivity of piping material in W/(m*K)
             $k = 45;
             //thermal conductivity of fluid in W/(m*k)
@@ -875,6 +875,7 @@ return $response;
             //'mdotl' => round($m_dotl,4),
             //'mdotg' => round($m_dotg,4),
             't_final_celsius_point_F' => round($t_final,1),
+            't_final_celsius_point_E' => round($t_heater,1),
             //'corrosion_mm_per_year' => round($r,4),
             'pCO2_kPa' => round($pCO2,4),
             'pH2S_kPa' => round($pH2S,4),
