@@ -266,7 +266,9 @@ return $response;
             $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim m3/day
             $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
             //oil density
-            $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+            $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil g/cm3
+            $rhol = $rhol * 1000;   // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+
             //$q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
             $q_l = $q_l / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
             //flowrate of gas
@@ -386,7 +388,7 @@ return $response;
             //Fluid viscosity in Pa.s  x 1000 to cP
             $viscosity = $mul;
             //Length of the pipe in m
-            $l = 1000.0;
+            //$l = 1000.0;
             //thermal conductivity of piping material in W/(m*K)
             $k = 45;
             //thermal conductivity of fluid in W/(m*k)
@@ -875,6 +877,7 @@ return $response;
             //'mdotl' => round($m_dotl,4),
             //'mdotg' => round($m_dotg,4),
             't_final_celsius_point_F' => round($t_final,1),
+            't_final_celsius_point_E' => round($t_heater,1),
             //'corrosion_mm_per_year' => round($r,4),
             'pCO2_kPa' => round($pCO2,4),
             'pH2S_kPa' => round($pH2S,4),
