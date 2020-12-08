@@ -1,5 +1,5 @@
 body{
-    font-family: Harmonia sans;
+    font-family: "Harmonia-sans";
 }
 .padding {
     padding-left: 0px!important;
@@ -16,7 +16,7 @@ body{
 }
 
 .left-panel {
-    background-color: #20274e;
+    background-color: #272953;
     height: 97%;
 }
 
@@ -36,7 +36,7 @@ div#sidebar-container2 {
 }
 
 .dropright .dropdown-menu {
-    background-color: #20274e;
+    background-color: #272953;
     color: white;
 }
 
@@ -927,6 +927,7 @@ span.logout {
 ul.dropdown-child2 {
     position: absolute;
     margin-left: -54px;
+    
 }
 
 .dropdown2 {
@@ -938,7 +939,7 @@ ul.dropdown-child2 {
 }
 
 .child2 {
-    background-color: #20274e;
+    background-color: #272953!important;
     display: none;
     width: 60px;
     height: 24px;
@@ -954,6 +955,8 @@ ul.dropdown-child2 {
 ul.dropdown-child {
     position: absolute;
     margin-left: 44px;
+    padding-left: 0px!important;
+    padding-right: 0px!important;
 }
 
 .dropdown {
@@ -962,10 +965,11 @@ ul.dropdown-child {
 }
 
 .child {
-    background-color: #20274e;
+    background-color: #272953;
     /* display: block; */
     display: none;
     min-width: 180px;
+    
 }
 
 .child a {
@@ -974,6 +978,8 @@ ul.dropdown-child {
     padding: 5px 15px;
     /* text-decoration: none; */
     display: block;
+    white-space: nowrap;
+    
 }
 
 .dropdown:hover .child {
@@ -1492,3 +1498,9 @@ li.left-menu-li {
     width: 15vw;
     margin-left: 10px;
 }
+
+.bg-dark{
+ background: #272953!important;
+ z-index: 9999;
+}
+

@@ -52362,8 +52362,8 @@ li.e-separator.e-menu-item.e-excel-separator {
 @charset "UTF-8";
 
 @font-face {
-  font-family: Harmonia Sans;
-  src: url("/fonts/HarmoniaSansProCyr-Light.ttf");
+  font-family: "Harmonia-Sans";
+  src: url("/fonts/HarmoniaSansProCyr-Regular.ttf");
 }
 
 @font-face {
