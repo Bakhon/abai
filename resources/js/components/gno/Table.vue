@@ -1406,9 +1406,6 @@ export default {
             console.log("No data");
             }
 
-
-            //microservise na ECN NNO
-
             var data2 = JSON.parse(responses[1].data.Result)
             if (data2) {
                 this.expAnalysisData.NNO2=data2.NNO
@@ -1422,9 +1419,7 @@ export default {
 
         }
     },
-    // PgnoMenu() {
 
-    // },
     InclMenu() {
         if (this.age === true) {
         Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
