@@ -17,6 +17,7 @@ export default {
     return {
       flag: false,
       layout: {
+        height:500,
         //      showlegend: false,
         xaxis: {
           title: "Дебит, Qж, м³/сут.",
