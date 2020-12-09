@@ -239,15 +239,12 @@
     </div>
 </template>
 <script>
-import { eventBus } from "../../event-bus.js";
+import { EventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
 import 'vue-easy-notify/dist/vue-easy-notify.css';
 import { VueMomentLib }from "vue-moment-lib";
 import moment from "moment";
 import Vue from 'vue';
-
-Vue.prototype.$eventBus = new Vue();
-
 
 Vue.use(NotifyPlugin,VueMomentLib);
 
@@ -660,16 +657,22 @@ export default {
             var yyyy = yyyy;
             var pryyyy = pryyyy;
         }
+        EventBus.$on('halu', (data) => {
+            this.emmit = data;
+            // console.log(`Oh, that's nice. It's gotten ${this.editdtm} clicks! :)`)
+        });
         this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
-        this.editdtm = prMm;
-        console.log(this.editdtm);
+        // this.editdtm = prMm;
+        console.log(this.emmit);
         this.editdty = yyyy;
         console.log(this.editdty);
         this.editdtprevm = prPrMm;
         console.log(this.editdtprevm);
         this.editdtprevy = yyyy;
         console.log(this.editdtprevy);
+        console.log(this.good);
+
         if(data) {
             console.log(data);
             this.wells = data.data;

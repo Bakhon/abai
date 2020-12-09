@@ -76,6 +76,11 @@
             <td @click="sortBy('tp_idn_grp_q_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
             <td @click="sortBy('tp_idn_grp_q_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
             <td @click="sortBy('EMPTY')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('planned_choke')"><i class="fa fa-fw fa-sort"></i>мм</td>
+            <td @click="sortBy('planned_oil')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('planned_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+            <td @click="sortBy('planned_wct')"><i class="fa fa-fw fa-sort"></i>%</td>
+
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row_index">
             <td>{{row.well}}</td>
@@ -442,7 +447,7 @@
                 <span :class="{'circle-err': wells && wells[row_index] &&
             wells[row_index].planned_wct[1][0] !== '0'}" :style="`background :${getColor(
             wells[row_index].planned_wct[1][0])}`"> </span>
-                <span>{{row.planned_wct[0]}}</span>
+                <span>{{Math.round(row.planned_wct[0]*10)/10}}</span>
                 <span v-if="wells && wells[row_index]" class="cell-comment">
                     {{ wells[row_index].planned_wct[1][1]}}
                 </span>

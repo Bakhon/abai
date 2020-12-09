@@ -258,7 +258,7 @@
                         <td rowspan="4"><span>Комментарии</span></td>
                         <td rowspan="4"><span>Дата последнего ГТМ</span></td>
                         <td rowspan="4"><span>Вид последнего ГТМ</span></td>
-                        <td class="colspan" colspan="12">Планируемые мероприятия</td>
+                        <!-- <td class="colspan" colspan="12">Планируемые мероприятия</td> -->
                     </tr>
                     <tr class="headerColumn trheadercolumn" style="background: #333975;">
                         <td rowspan="3"><span>P заб</span></td>
@@ -290,7 +290,7 @@
                         <td rowspan="3"><span>Тнак</span></td>
                         <td class="colspan" colspan="3">Изоляционные работы</td>
 
-                        <td rowspan="3"><span>Диаметр штуцера</span></td>
+                        <!-- <td rowspan="3"><span>Диаметр штуцера</span></td>
                         <td rowspan="3"><span>Qн</span></td>
                         <td rowspan="3"><span>Qж</span></td>
                         <td rowspan="3"><span>Обводненность</span></td>
@@ -300,7 +300,7 @@
                         <td rowspan="3"><span>Добыча жидкость за месяц</span></td>
                         <td rowspan="3"><span>Добыча воды за месяц</span></td>
                         <td class="colspan" colspan="2"><span>Изменения k</span></td>
-                        <td rowspan="3"><span>Мероприятия по обеспечению техрежима</span></td>
+                        <td rowspan="3"><span>Мероприятия по обеспечению техрежима</span></td> -->
 
                     </tr>
                     <tr class="headerColumn trheadercolumn" style="background: #333975;">
@@ -328,8 +328,8 @@
                         <td rowspan="2"><span>Дебит жидкости</span></td>
                         <td rowspan="2"><span>Обводненность</span></td>
 
-                        <td rowspan="2"><span>Q н</span></td>
-                        <td rowspan="2"><span>Q ж</span></td>
+                        <!-- <td rowspan="2"><span>Q н</span></td>
+                        <td rowspan="2"><span>Q ж</span></td> -->
 
                     </tr>
                     <tr></tr>
@@ -732,7 +732,7 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].q_theor[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].q_theor[1][0])}`"> </span>
-                            <span>{{Math.round(row.q_theor[0]*10)/10}}</span>
+                            <span v-if="Math.round(row.q_theor[0]*10)/10 != 0">{{Math.round(row.q_theor[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].q_theor[1][1]}}
                             </span>
@@ -2354,7 +2354,7 @@
 
 
 
-                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        <!-- <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
                         wells[row_index].planned_choke[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].planned_choke[1][0] !== '0'}" :style="`background :${getColor(
@@ -2370,7 +2370,6 @@
                         wells[row_index].planned_choke[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_choke[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_choke[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_choke[1][1]}}
                             </span>
@@ -2392,7 +2391,6 @@
                         wells[row_index].planned_oil[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_oil[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_oil[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_oil[1][1]}}
                             </span>
@@ -2414,7 +2412,6 @@
                         wells[row_index].planned_liq[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_liq[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_liq[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_liq[1][1]}}
                             </span>
@@ -2436,7 +2433,6 @@
                         wells[row_index].planned_wct[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_wct[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_wct[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_wct[1][1]}}
                             </span>
@@ -2458,7 +2454,6 @@
                         wells[row_index].planned_month_days[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_month_days[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_month_days[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_month_days[1][1]}}
                             </span>
@@ -2480,7 +2475,6 @@
                         wells[row_index].planned_monthly_oil[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_monthly_oil[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_monthly_oil[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_monthly_oil[1][1]}}
                             </span>
@@ -2502,7 +2496,6 @@
                         wells[row_index].planned_monthly_gas[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_monthly_gas[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_monthly_gas[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_monthly_gas[1][1]}}
                             </span>
@@ -2524,7 +2517,6 @@
                         wells[row_index].planned_monthly_liq[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_monthly_liq[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_monthly_liq[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_monthly_liq[1][1]}}
                             </span>
@@ -2546,7 +2538,6 @@
                         wells[row_index].planned_monthly_water[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_monthly_water[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_monthly_water[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_monthly_water[1][1]}}
                             </span>
@@ -2569,7 +2560,6 @@
                         wells[row_index].planned_diff_oil[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_diff_oil[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_diff_oil[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_diff_oil[1][1]}}
                             </span>
@@ -2592,7 +2582,6 @@
                         wells[row_index].planned_diff_liq[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_diff_liq[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_diff_liq[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_diff_liq[1][1]}}
                             </span>
@@ -2615,13 +2604,12 @@
                         wells[row_index].planned_events[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].planned_events[1][0])}`"> </span>
                             <input @change="editrow(row, row_index)" v-model="row.planned_events[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.APV_t_rab[0]*10)/10}}</span> -->
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].planned_events[1][1]}}
                             </span>
                         </td>
 
-
+ -->
 
 
 
@@ -2641,8 +2629,10 @@
     </div>
 </template>
 <script>
-import TrTable from './table'
-import TrFullTable from './tablefull'
+import TrTable from './table';
+import TrFullTable from './tablefull';
+import { EventBus } from "../../event-bus.js";
+Vue.prototype.$EventBus = new Vue();
 
 export default {
   name: "TrPage",
@@ -2841,6 +2831,7 @@ export default {
           else{
               this.year = this.selectYear;
           }
+          this.$EventBus.$emit('halu', this.year);
           this.axios.get("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/").then((response) => {
                 // this.editdtm = choosenDt[1];
                 // this.editdty = choosenDt[0];
@@ -2883,7 +2874,7 @@ export default {
       getColor(status) {
           if (status === "1") return "#ffff00";
           return "#ff0000";
-      }
+      },
 
   }
 }
