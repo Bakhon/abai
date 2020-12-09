@@ -1,0 +1,18 @@
+<<<<<<< HEAD
+@font-face {
+    font-family: 'Harmonia Sans Light';
+    src: local('Harmonia Sans Light'), local('Harmonia-Sans-Light'),
+        url('HarmoniaSansProCyr-Light.woff2') format('woff2'),
+        url('HarmoniaSansProCyr-Light.woff') format('woff'),
+        url('HarmoniaSansProCyr-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+  }
+=======
+
+  @font-face {
+    font-family: Harmonia sans light;
+    src: url('{{ public_path('fonts/HarmoniaSansProCyr-Light.ttf') }}');
+        
+}
+>>>>>>> 27de017d03e3a33ace8ba7a5cbaa09f6d91f9a9f

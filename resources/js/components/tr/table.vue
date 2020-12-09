@@ -1,6 +1,6 @@
 <template>
-    <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
-        <tr class="headerColumn" style="background: #333975 ">
+    <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
+        <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
             <td rowspan="4">№ скв</td>
             <td rowspan="4">Тип скважины</td>
             <td rowspan="4">Горизонт</td>
@@ -22,25 +22,29 @@
             <td rowspan="4">К прод</td>
             <td class="colspan" colspan="7">Расчет технологического потенциала от ИДН</td>
         </tr>
-        <tr class="headerColumn">
-            <td rowspan="3" style="background: #333975 ">P заб</td>
-            <td rowspan="3" style="background: #333975 ">Q н</td>
-            <td rowspan="3" style="background: #333975 ">Q ж</td>
-            <td rowspan="3" style="background: #333975 ">Обводненность</td>
-            <td rowspan="3" style="background: #333975 ">P заб</td>
-            <td class="colspan" colspan="2" style="background: #333975 ">ИДН</td>
-            <td rowspan="3" style="background: #333975 ">К прод от стимуляции</td>
-            <td class="colspan" colspan="2" style="background: #333975 ">ГРП</td>
-            <td rowspan="3" style="background: #333975 ">Общий прирост Q н</td>
+        <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
+            <td rowspan="3">P заб</td>
+            <td rowspan="3">Q н</td>
+            <td rowspan="3">Q ж</td>
+            <td rowspan="3">Обводненность</td>
+            <td rowspan="3">P заб</td>
+            <td class="colspan" colspan="2">ИДН</td>
+            <td rowspan="3">К прод от стимуляции</td>
+            <td class="colspan" colspan="2">ГРП</td>
+            <td rowspan="3">Общий прирост Q н</td>
         </tr>
-        <tr class="headerColumn">
-            <td rowspan="2" style="background: #333975 ">Q ж</td>
-            <td rowspan="2" style="background: #333975 ">Прирост Q н</td>
-            <td rowspan="2" style="background: #333975 ">Q ж</td>
-            <td rowspan="2" style="background: #333975 ">Прирост Q н</td>
+        <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
+            <td rowspan="2">Q ж</td>
+            <td rowspan="2">Прирост Q н</td>
+            <td rowspan="2">Q ж</td>
+            <td rowspan="2">Прирост Q н</td>
         </tr>
         <tr></tr>
+<<<<<<< HEAD
         <tr class="subHeaderColumn" style="background: #333975">
+=======
+        <tr class="subHeaderColumn trkrsubheadercolumn" style="background: #333975;">
+>>>>>>> 27de017d03e3a33ace8ba7a5cbaa09f6d91f9a9f
             <td @click="sortBy('well')"><i class="fa fa-fw fa-sort"></i></td>
             <td @click="sortBy('well_type')"><i class="fa fa-fw fa-sort"></i></td>
             <td @click="sortBy('horizon')"><i class="fa fa-fw fa-sort"></i></td>
@@ -425,3 +429,24 @@ export default {
     }
 }
 </script>
+<style scoped>
+.trkrheadercolumn {
+    background: #333975;
+}
+.trkrsubheadercolumn {
+    background: #333975;
+}
+tr:nth-child(odd) {
+  background-color: #454d7d;
+}
+tr:nth-child(even) {
+  background-color: #454d7d73;
+}
+.table th, .table td {
+    padding: 5px !important;
+}
+.trkrtableborderedtabledarktableresponsive {
+    font-size: 9px;
+    padding: unset;
+}
+</style>

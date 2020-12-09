@@ -36,7 +36,7 @@ class CreateDZOyearsTable extends Migration
             $table->float("dobycha_gaza_prirod_fact",32,8)->nullable();	
             $table->float("sdacha_gaza_prirod_plan",32,8)->nullable();	
             $table->float("sdacha_gaza_prirod_fact",32,8)->nullable();
-            $table->float("raskhod_prirod_plan",32,8)->nullable();
+            $table->float("raskhod_prirod_plan",64,8)->nullable();
             $table->float("raskhod_prirod_fact",32,8)->nullable();						
             $table->float("pererabotka_gaza_prirod_plan",32,8)->nullable(); 
             $table->float("pererabotka_gaza_prirod_fact",32,8)->nullable();

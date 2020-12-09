@@ -153,11 +153,9 @@
     }
 </script>
 <style>
-    .bg-dark {
-        background-color: #20274e !important;
-       /* height: 80px;*/
-        z-index: 99999;
-    }
+    /*.bg-dark {
+        background-color: #20274e !important;     
+    }*/
 
     .fas {
         color: white;

@@ -24,7 +24,7 @@ td.fitwidth {
 .but-nav__link {
 
     font-weight: inherit;
-    padding: 3px 46px;
+    padding: 5px 15px;
     border-radius: 5px;
     font-family: Roboto;
     font-style: normal;
@@ -89,9 +89,7 @@ td.fitwidth {
 table {
     text-align:center;
     table-layout : fixed;
-    width:150px;
-    height: 100vh;
-    /* background : #333975 */
+    width:150px
 }
 
 .ce {
@@ -173,6 +171,3 @@ table {
     color: #ffffff;
     text-align: left;
 }
-
-
-

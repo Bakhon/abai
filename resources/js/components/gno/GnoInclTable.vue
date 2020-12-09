@@ -208,8 +208,6 @@ export default {
             this.layout['scene']['yaxis']['range'][0] = Math.max(...dyArray) * 1.5
             this.layout['scene']['yaxis']['range'][1] = Math.max(...dyArray) * -1.5
             }
-            console.log(Math.max(...dxArray));
-            console.log(Math.max(...dyArray));
             this.chart = [{
                 type: 'scatter3d',
                 mode: 'lines',
@@ -220,6 +218,8 @@ export default {
                 line:{
                     width: 12,
                     color: this.data.map((r) => r.dls_color),
+                    colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
+                    type: 'heatmap'
                 }
 
             }]
