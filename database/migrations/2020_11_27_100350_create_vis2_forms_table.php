@@ -17,11 +17,12 @@ class CreateVis2FormsTable extends Migration
             $table->bigIncrements('id');
 
             $table->date('date');
-            $table->float('dobycha_nefti_fact',8,4)->nullable();
-            $table->float('dobycha_nefti_condensat_fact',8,4)->nullable();
-            $table->float('sdacha_nefti_fact',8,4)->nullable();
+            $table->text('__time');
+            $table->float('oil_fact',8,4)->nullable();
+            $table->float('gk_fact',8,4)->nullable();
+            $table->float('oil_dlv_fact',8,4)->nullable();
             $table->float('sdacha_nefti_condensat_fact',8,4)->nullable();
-            $table->float('dobycha_gaza_total_tch_fact',8,4)->nullable();
+            $table->float('gas_fact',16,4)->nullable();
             $table->float('dobycha_gaza_total_prirodnyi_fact',8,4)->nullable();
             $table->float('dobycha_gaza_gazovyie_mest_dzo_fact',8,4)->nullable();
             $table->float('dobycha_gaza_gsp_dzo_fact',8,4)->nullable();
@@ -35,16 +36,16 @@ class CreateVis2FormsTable extends Migration
             $table->integer('dzo');
 
             $table->integer('expl')->nullable();
-            $table->integer('deistv')->nullable();
-            $table->integer('prostoy')->nullable();
+            $table->integer('prod_wells_work')->nullable();
+            $table->integer('prod_wells_idle')->nullable();
             $table->integer('b_d')->nullable();
             $table->integer('obustroystvo')->nullable();
             $table->integer('ozhidanie_likvidacii')->nullable();
             $table->integer('v_konservacii')->nullable();
 
             $table->integer('expl2')->nullable();
-            $table->integer('deistv2')->nullable();
-            $table->integer('prostoy2')->nullable();
+            $table->integer('inj_wells_work')->nullable();
+            $table->integer('inj_wells_idle')->nullable();
             $table->integer('b_d2')->nullable();
             $table->integer('osvoenie')->nullable();
             $table->integer('ozhidanie_likvidacii2')->nullable();

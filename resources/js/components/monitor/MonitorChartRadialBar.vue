@@ -6,20 +6,14 @@
       :options="chartOptions"
       :series="series"
     ></apexchart>
-    <div class="radial-bar-style">{{series[0]}} г/м3</div>
+    <div class="radial-bar-style" v-if="series[0] != 0">{{series[0]}} г/м3</div>
   </div>
 </template>
-
 <script>
-import VueApexCharts from "vue-apexcharts";
-
-Vue.component("apexchart", VueApexCharts);
 export default {
-  props:["dose"],
-  name: "mix-chart",
   data: function () {
     return {
-      series: [this.dose],
+      series: [0],
       chartOptions: {
         chart: {
           type: "radialBar",
@@ -73,19 +67,20 @@ export default {
             stops: [0, 50, 53, 91],
           },
         },
-
         labels: ["Average Results"],
+
       },
     };
   },
-//   methods: {
-//     setValue: function(value) {
-//         console.log(value);
-//         this.series[0] = value;
-//     }
-//   },
-//   mounted: function() {
-//     this.$parent.$on('chart5', this.setValue);
-//   }
+  methods: {
+    setValue: function(value) {
+        this.series = [
+            value
+            ];
+    }
+  },
+  created: function() {
+    this.$parent.$on('chart5', this.setValue);
+  }
 };
 </script>

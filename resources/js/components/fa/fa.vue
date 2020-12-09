@@ -76,13 +76,26 @@
                 </form>
                 <a href="#" class="but-nav__link but" @click="chooseDt">Сформировать</a>
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
-                <a class="but-nav__link but " @click="pushBign('chart')">Графики</a>
-                <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a>
+                <!-- <a class="but-nav__link but " @click="pushBign('chart')">Графики</a> -->
+                <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
+                <div class="col">
+
+                        <div class="input-group input-group-sm">
+                            <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
+                            <div class="input-group-prepend fainputgr">
+                                <button class="input-group-text" style="font-size: 14px;">Поиск</button>
+                            </div>
+                        </div>
+                </div>
+
+
+
+
         </div>
         <div class="tech">
             <td> Факторный анализ</td>
         </div>
-        <div>
+        <!-- <div>
             <select name="Company" class="from-control" id="companySelect"
                 v-model="filter" @change="chooseField">
                 <option value="Казгермунай">КазГерМунай</option>
@@ -93,64 +106,64 @@
                 <option value="Аксай">Аксай</option>
                 <option value="Аксай Южный">Аксай Южный</option>
             </select>
-        </div>
+        </div> -->
         <div>
             <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
                 <tr class="headerColumn">
-                    <td rowspan="3"><span>Скважина</span></td>
-                    <td rowspan="3"><span>Месторождение</span></td>
-                    <td rowspan="3"><span>Горизонт</span></td>
-                    <td rowspan="3"><span>Способ Эксплуатации</span></td>
-                    <td class="colspan" colspan="6">ТР на {{dt}}</td>
-                    <td class="colspan" colspan="6">ТР на {{dt2}}</td>
-                    <td class="colspan" colspan="1">Отклон. Qн</td>
-                    <td class="colspan" colspan="1">Технологические</td>
-                    <td class="colspan" colspan="3">Геологические</td>
-                    <td rowspan="3"><span>Основное отклонение в ТР</span></td>
+                    <td rowspan="3" style="background: #12135C"><span>Скважина</span></td>
+                    <td rowspan="3" style="background: #12135C"><span>Месторождение</span></td>
+                    <td rowspan="3" style="background: #12135C"><span>Горизонт</span></td>
+                    <td rowspan="3" style="background: #12135C"><span>Способ Эксплуатации</span></td>
+                    <td class="colspan" colspan="6" style="background: #2C3379">ТР на {{dt}}</td>
+                    <td class="colspan" colspan="6" style="background: #1A2370">ТР на {{dt2}}</td>
+                    <td class="colspan" colspan="1" style="background: #E50303">Отклон. Qн</td>
+                    <td class="colspan" colspan="1" style="background: #F08143">Технологические</td>
+                    <td class="colspan" colspan="3" style="background: #4FB26A">Геологические</td>
+                    <td rowspan="3" style="background: #272953"><span>Основное отклонение в ТР</span></td>
                 </tr>
                 <tr class="headerColumn">
-                    <td rowspan="2"><span>Qж</span></td>
-                    <td rowspan="2"><span>Qн</span></td>
-                    <td rowspan="2"><span>Обводненность</span></td>
-                    <td rowspan="2"><span>Pзаб</span></td>
-                    <td rowspan="2"><span>Pпл</span></td>
-                    <td rowspan="2"><span>Кпр</span></td>
-                    <td rowspan="2"><span>Qж</span></td>
-                    <td rowspan="2"><span>Qн</span></td>
-                    <td rowspan="2"><span>Обводненность</span></td>
-                    <td rowspan="2"><span>Pзаб</span></td>
-                    <td rowspan="2"><span>Pпл</span></td>
-                    <td rowspan="2"><span>Кпр</span></td>
-                    <td rowspan="2"><span>dQн</span></td>
-                    <td rowspan="2"><span>Недостижение режимного Pзаб</span></td>
-                    <td rowspan="2"><span>Рост обводненности</span></td>
-                    <td rowspan="2"><span>Снижение Pпл</span></td>
-                    <td rowspan="2"><span>Снижение Kпрод</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Qж</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Qн</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Обводненность</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Pзаб</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Pпл</span></td>
+                    <td rowspan="2" style="background: #2C3379"><span>Кпр</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Qж</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Qн</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Обводненность</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Pзаб</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Pпл</span></td>
+                    <td rowspan="2" style="background: #1A2370"><span>Кпр</span></td>
+                    <td rowspan="2" style="background: #E50303"><span>dQн</span></td>
+                    <td rowspan="2" style="background: #F08143"><span>Недостижение режимного Pзаб</span></td>
+                    <td rowspan="2" style="background: #4FB26A"><span>Рост обводненности</span></td>
+                    <td rowspan="2" style="background: #4FB26A"><span>Снижение Pпл</span></td>
+                    <td rowspan="2" style="background: #4FB26A"><span>Снижение Kпрод</span></td>
                 </tr>
                 <tr></tr>
                 <tr class="subHeaderColumn">
-                    <td @click="sortBy('well')"></td>
-                    <td @click="sortBy('field')"></td>
-                    <td @click="sortBy('horizon')"></td>
-                    <td @click="sortBy('exp_meth')"></td>
-                    <td @click="sortBy('q_l_1')">м3/сут</td>
-                    <td @click="sortBy('q_o_1')">м3/сут</td>
-                    <td @click="sortBy('wct_1')"></td>
-                    <td @click="sortBy('bhp_1')">ат</td>
-                    <td @click="sortBy('p_res_1')">ат</td>
-                    <td @click="sortBy('pi_1')">м3/сут/ат</td>
-                    <td @click="sortBy('q_l_2')">м3/сут</td>
-                    <td @click="sortBy('q_o_2')">м3/сут</td>
-                    <td @click="sortBy('wct_2')"></td>
-                    <td @click="sortBy('bhp_2')">ат</td>
-                    <td @click="sortBy('p_res_2')">ат</td>
-                    <td @click="sortBy('pi_2')">м3/сут/ат</td>
-                    <td @click="sortBy('dqn')">т/сут</td>
-                    <td @click="sortBy('Pbh')"></td>
-                    <td @click="sortBy('wct')"></td>
-                    <td @click="sortBy('p_res')"></td>
-                    <td @click="sortBy('PI')"></td>
-                    <td @click="sortBy('Main_problem')"></td>
+                    <td @click="sortBy('well')" style="background: #12135C"></td>
+                    <td @click="sortBy('field')" style="background: #12135C"></td>
+                    <td @click="sortBy('horizon')" style="background: #12135C"></td>
+                    <td @click="sortBy('exp_meth')" style="background: #12135C"></td>
+                    <td @click="sortBy('q_l_1')" style="background: #2C3379">м3/сут</td>
+                    <td @click="sortBy('q_o_1')" style="background: #2C3379">м3/сут</td>
+                    <td @click="sortBy('wct_1')" style="background: #2C3379"></td>
+                    <td @click="sortBy('bhp_1')" style="background: #2C3379">ат</td>
+                    <td @click="sortBy('p_res_1')" style="background: #2C3379">ат</td>
+                    <td @click="sortBy('pi_1')" style="background: #2C3379">м3/сут/ат</td>
+                    <td @click="sortBy('q_l_2')" style="background: #1A2370">м3/сут</td>
+                    <td @click="sortBy('q_o_2')" style="background: #1A2370">м3/сут</td>
+                    <td @click="sortBy('wct_2')" style="background: #1A2370"></td>
+                    <td @click="sortBy('bhp_2')" style="background: #1A2370">ат</td>
+                    <td @click="sortBy('p_res_2')" style="background: #1A2370">ат</td>
+                    <td @click="sortBy('pi_2')" style="background: #1A2370">м3/сут/ат</td>
+                    <td @click="sortBy('dqn')" style="background: #E50303">т/сут</td>
+                    <td @click="sortBy('Pbh')" style="background: #F08143"></td>
+                    <td @click="sortBy('wct')" style="background: #4FB26A"></td>
+                    <td @click="sortBy('p_res')" style="background: #4FB26A"></td>
+                    <td @click="sortBy('PI')" style="background: #4FB26A"></td>
+                    <td @click="sortBy('Main_problem')" style="background: #272953"></td>
                 </tr>
                 <tr
                     v-for="(row) in wells"
@@ -694,8 +707,49 @@ export default {
    },
 }
 </script>
-<style>
+<style  scoped>
 body {
   color: white !important;
 }
+.but-nav__link {
+
+    font-weight: inherit;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-family: Roboto;
+    font-style: normal;
+    font-size: 17px;
+    color: #FFFFFF;
+    background: #656A8A;
+    border: none!important;
+    text-align: left!important;
+    cursor: pointer;
+}
+.form-control, .fix-rounded-right{
+    background: #272953!important;
+    border: 1px solid #656A8A!important;
+    height: 35px!important;
+    color: white!important;
+}
+.input-group-text
+{
+    background: #656A8A!important;
+    color: white!important;
+    border-radius: 6px!important;
+    border: none!important;
+    position: absolute!important;
+    right: 0!important;
+    z-index: 9999;
+
+}
+.input-group-prepend{
+
+    padding-top: 3px!important;
+    margin-right: -3px!important;
+}
+.table th, .table td {
+    padding: 5px !important;
+}
+
+
 </style>

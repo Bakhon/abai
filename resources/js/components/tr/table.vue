@@ -1,6 +1,6 @@
 <template>
-    <table class="table table-bordered table-dark table-responsive ce" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
-        <tr class="headerColumn">
+    <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
+        <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
             <td rowspan="4">№ скв</td>
             <td rowspan="4">Тип скважины</td>
             <td rowspan="4">Горизонт</td>
@@ -24,7 +24,7 @@
             <td class="colspan" colspan="4">Намечаемый режим</td>
 
         </tr>
-        <tr class="headerColumn">
+        <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
             <td rowspan="3">P заб</td>
             <td rowspan="3">Q н</td>
             <td rowspan="3">Q ж</td>
@@ -39,47 +39,43 @@
             <td rowspan="3">Q ж</td>
             <td rowspan="3">Обводненность</td>
         </tr>
-        <tr class="headerColumn">
+        <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
             <td rowspan="2">Q ж</td>
             <td rowspan="2">Прирост Q н</td>
             <td rowspan="2">Q ж</td>
             <td rowspan="2">Прирост Q н</td>
         </tr>
         <tr></tr>
-        <tr class="subHeaderColumn">
-            <td @click="sortBy('well')"></td>
-            <td @click="sortBy('well_type')"></td>
-            <td @click="sortBy('horizon')"></td>
-            <td @click="sortBy('block')"></td>
-            <td @click="sortBy('cas_OD')">мм</td>
-            <td @click="sortBy('tub_OD')">мм</td>
-            <td @click="sortBy('choke_d')">мм</td>
-            <td @click="sortBy('h_up_perf_md')">м</td>
-            <td @click="sortBy('exp_meth')"></td>
-            <td @click="sortBy('pump_type')"></td>
-            <td @click="sortBy('freq')">Гц, об/мин</td>
-            <td @click="sortBy('h_pump_set')">м</td>
-            <td @click="sortBy('p_res')">атм</td>
-            <td @click="sortBy('h_dyn')">м</td>
-            <td @click="sortBy('p_annular')">атм</td>
-            <td @click="sortBy('bhp')">атм</td>
-            <td @click="sortBy('q_o')">т/сут</td>
-            <td @click="sortBy('q_l')">м3/сут</td>
-            <td @click="sortBy('wct')">%</td>
-            <td @click="sortBy('well_status_last_day')"></td>
-            <td @click="sortBy('gor')">м3/т</td>
-            <td @click="sortBy('pi')">м3/сут/атм</td>
-            <td @click="sortBy('tp_idn_bhp')">атм</td>
-            <td @click="sortBy('tp_idn_liq')">м3/сут</td>
-            <td @click="sortBy('tp_idn_oil_inc')">т/сут</td>
-            <td @click="sortBy('tp_idn_pi_after')">м3/сут/атм</td>
-            <td @click="sortBy('tp_idn_grp_q_liq')">м3/сут</td>
-            <td @click="sortBy('tp_idn_grp_q_oil_inc')">т/сут</td>
-            <td @click="sortBy('EMPTY')">т/сут</td>
-            <td @click="sortBy('planned_choke')">мм</td>
-            <td @click="sortBy('planned_oil')">т/сут</td>
-            <td @click="sortBy('planned_liq')">м3/сут</td>
-            <td @click="sortBy('planned_wct')">%</td>
+        <tr class="subHeaderColumn trkrsubheadercolumn" style="background: #333975;">
+            <td @click="sortBy('well')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('well_type')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('horizon')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('block')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('cas_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
+            <td @click="sortBy('tub_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
+            <td @click="sortBy('choke_d')"><i class="fa fa-fw fa-sort"></i>мм</td>
+            <td @click="sortBy('h_up_perf_md')"><i class="fa fa-fw fa-sort"></i>м</td>
+            <td @click="sortBy('exp_meth')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('pump_type')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('freq')"><i class="fa fa-fw fa-sort"></i>Гц, об/мин</td>
+            <td @click="sortBy('h_pump_set')"><i class="fa fa-fw fa-sort"></i>м</td>
+            <td @click="sortBy('p_res')"><i class="fa fa-fw fa-sort"></i>атм</td>
+            <td @click="sortBy('h_dyn')"><i class="fa fa-fw fa-sort"></i>м</td>
+            <td @click="sortBy('p_annular')"><i class="fa fa-fw fa-sort"></i>атм</td>
+            <td @click="sortBy('bhp')"><i class="fa fa-fw fa-sort"></i>атм</td>
+            <td @click="sortBy('q_o')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('q_l')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+            <td @click="sortBy('wct')"><i class="fa fa-fw fa-sort"></i>%</td>
+            <td @click="sortBy('well_status_last_day')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('gor')"><i class="fa fa-fw fa-sort"></i>м3/т</td>
+            <td @click="sortBy('pi')"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
+            <td @click="sortBy('tp_idn_bhp')"><i class="fa fa-fw fa-sort"></i>атм</td>
+            <td @click="sortBy('tp_idn_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+            <td @click="sortBy('tp_idn_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('tp_idn_pi_after')"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
+            <td @click="sortBy('tp_idn_grp_q_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+            <td @click="sortBy('tp_idn_grp_q_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('EMPTY')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row_index">
             <td>{{row.well}}</td>
@@ -480,3 +476,24 @@ export default {
     }
 }
 </script>
+<style scoped>
+.trkrheadercolumn {
+    background: #333975;
+}
+.trkrsubheadercolumn {
+    background: #333975;
+}
+tr:nth-child(odd) {
+  background-color: #454d7d;
+}
+tr:nth-child(even) {
+  background-color: #454d7d73;
+}
+.table th, .table td {
+    padding: 5px !important;
+}
+.trkrtableborderedtabledarktableresponsive {
+    font-size: 9px;
+    padding: unset;
+}
+</style>
