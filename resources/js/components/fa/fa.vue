@@ -74,7 +74,7 @@
                         <label for="inputDate">Выбор даты 2:</label>
                         <input type="date" class="form-control" v-model="date2">
                 </form>
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
+                <a href="#" class="but-nav__link but" @click="chooseDt">Сформировать</a>
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
                 <a class="but-nav__link but " @click="pushBign('chart')">Графики</a>
                 <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a>
@@ -222,9 +222,21 @@
                 </tr>
             </table>
         </div>
+        <notifications position="top"></notifications>
     </div>
 </template>
 <script>
+import { eventBus } from "../../event-bus.js";
+import NotifyPlugin from "vue-easy-notify";
+import 'vue-easy-notify/dist/vue-easy-notify.css';
+import { VueMomentLib }from "vue-moment-lib";
+import moment from "moment";
+import Vue from 'vue';
+
+Vue.prototype.$eventBus = new Vue();
+
+
+Vue.use(NotifyPlugin,VueMomentLib);
 
 import VueApexCharts from "vue-apexcharts";
 export default {
@@ -563,26 +575,31 @@ export default {
               var yyyy = choosenDt[0];
               var pryyyy = choosenSecDt[0];
           }
-          console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
-          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
-                let data = response.data;
-                this.editdtm = choosenDt[1];
-                this.editdty = choosenDt[0];
-                this.editdtprevm = choosenSecDt[1];
-                this.editdtprevy = choosenSecDt[0];
-                if(data) {
-                    console.log(data);
-                    this.wells = data.data;
-                    this.fullWells = data.data;
-                    this.chartWells = data.data;
-                }
-                else {
-                    console.log('No data');
-                }
-                this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
-                this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
+          if(choosenDt[1] < choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]){
+              Vue.prototype.$notifyError("Дата 2 должна быть меньше, чем Дата 1");
+          }
+          else{
+              console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+              this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+                      let data = response.data;
+                      this.editdtm = choosenDt[1];
+                      this.editdty = choosenDt[0];
+                      this.editdtprevm = choosenSecDt[1];
+                      this.editdtprevy = choosenSecDt[0];
+                      if(data) {
+                          console.log(data);
+                          this.wells = data.data;
+                          this.fullWells = data.data;
+                          this.chartWells = data.data;
+                      }
+                      else {
+                          console.log('No data');
+                      }
+                      this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+                      this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
 
-            });
+                });
+          }
       },
       chooseField() {
           const { filter, fullWells } = this;
