@@ -2631,8 +2631,8 @@
 <script>
 import TrTable from './table';
 import TrFullTable from './tablefull';
-import { EventBus } from "../../event-bus.js";
-Vue.prototype.$EventBus = new Vue();
+import { eventBus } from "../../event-bus.js";
+Vue.prototype.$eventBus = new Vue();
 
 export default {
   name: "TrPage",
@@ -2875,6 +2875,14 @@ export default {
           if (status === "1") return "#ffff00";
           return "#ff0000";
       },
+      updated: function() {
+          this.$eventBus.$on("newCurveLineData", this.setLine);
+          this.$eventBus.$on("newPointsData", this.setPoints);
+
+
+
+
+  }
 
   }
 }

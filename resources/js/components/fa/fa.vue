@@ -239,7 +239,7 @@
     </div>
 </template>
 <script>
-import { EventBus } from "../../event-bus.js";
+import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
 import 'vue-easy-notify/dist/vue-easy-notify.css';
 import { VueMomentLib }from "vue-moment-lib";
