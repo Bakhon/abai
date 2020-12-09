@@ -5,7 +5,4 @@
     <new-reports-table></new-reports-table>
 </div>
 @endsection
-<script>
-    $('select').selectpicker();
-</script>
 <link href="{{ asset('css/mzdn.css')}}" rel="stylesheet">

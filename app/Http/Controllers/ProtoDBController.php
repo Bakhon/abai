@@ -17,9 +17,12 @@ public function getProtoOtchet1(Request $request)
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
 
         $builder = $client->query('month_meter_prod_oil_v03', Granularity::MONTH);
-        if ($request->has('month')) {
+        if ($request->has('org') && $request->has('start_date') && $request->has('end_date')) {
             $builder
-                ->interval('2014-01-01T00:00:00+00:00/2020-10-31T00:00:00+00:00')
+                ->interval(''.$request->start_date.'T00:00:00+00:00/'.$request->end_date.'T00:00:00+00:00')
+                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                    $extractionBuilder->timeFormat('yyyy-MM');
+                })
                 ->select('field')
                 ->select('ngdu')
                 ->select('cndg')
@@ -57,69 +60,16 @@ public function getProtoOtchet1(Request $request)
                 ->sum("oil_cumm")
                 ->sum("liq_cumm")
                 ->select('dzo')
-                ->where('month', '=', $request->month)
-                ->where('year', '=', $request->year)
-                ->where('dzo_short', '=', $request->org);
-        } 
-        else {
-            $builder
-                ->interval('2014-01-01T00:00:00+00:00/2020-10-31T00:00:00+00:00')
-                ->select('uwi')
-                ->sum("oil");
+                ->where('dzo_short','=',$request->org);
         }
         $result = $builder->groupBy();
         $array = $result->data();
-        $data['wellsList'] =  [];
-        foreach ($array as $item) {
-            $well = [];
-            array_push($well, $item['field']);
-            array_push($well, $item['ngdu']);
-            array_push($well, $item['cndg']);
-            array_push($well, $item['gu']);
-            array_push($well, $item['tap']);
-            array_push($well, $item['zu']);
-            array_push($well, $item['uwi']);
-            array_push($well, date("m.Y", strtotime($item['drill_year'])));
-            array_push($well, $item['grzs']);
-            array_push($well, $item['block2']);
-            array_push($well, $item['perf_intr']);
-            array_push($well, $item['tm_liquid']);
-            array_push($well, $item['tm_bsw']);
-            array_push($well, $item['tm_oil']);
-            array_push($well, $item['liq_avg']);
-            array_push($well, $item['oil_avg']);
-            array_push($well, $item['bsw_avg']);
-            array_push($well,date("d.m.Y", strtotime($item['gdis_date'])));
-            array_push($well, $item['gdis_conclusion']);
-            array_push($well, $item['gdis_hdyn']);
-            array_push($well, $item['gdis_pzatr']);
-            array_push($well, $item['gdis_pzab']);
-            array_push($well, $item['gdis_pbuf']);
-            array_push($well, $item['gdis_pmaxload']);
-            array_push($well, $item['work_day']);
-            array_push($well, $item['oil']);
-            array_push($well, $item['liquid_val']);
-            array_push($well, $item['bsws']);
-            array_push($well, $item['repairs_text']);
-            array_push($well, $item['prs_count']);
-            array_push($well, $item['liq_cumm_avg']);
-            array_push($well, $item['oil_cumm_avg']);
-            array_push($well, $item['bsw_cumm_avg']);
-            array_push($well, $item['work_day_cumm']);
-            array_push($well, $item['oil_cumm']);
-            array_push($well, $item['liq_cumm']);
-            array_push($well, $item['dzo']);
-            array_push($data['wellsList'], $well);
-            
+
+        $result = array();
+        foreach($array as $row){
+            $result[$row['uwi']][] = $row;
         }
-        $vdata = [
 
-            'wellsList' => $data['wellsList'],
-            'excel' => $data['wellsList'],
-
-        ];
-
-
-        return response()->json($vdata);
+        return response()->json($result);
     }
 }
