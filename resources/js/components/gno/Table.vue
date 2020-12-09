@@ -2,7 +2,7 @@
   <div class="main col-md-12 col-lg-12 row">
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
-        
+
 
         <modal name="modalIncl" :width="1150" :height="500" style="background:transparent">
           <div class="modal-bign">
@@ -241,10 +241,7 @@
         </modal>
 
 
-        <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
-          <div class="modal-bign3">
 
-          </div>
         </modal>
         <div class="gno-line-chart" v-if="visibleChart">
           <gno-line-points-chart></gno-line-points-chart>
@@ -252,7 +249,7 @@
 
         <div class="podbor-gno" v-if="!visibleChart">
           <div class="img-text">
-            <div class="text_img_1">Экс.колонна {{this.casID}}мм</div>
+            <div class="text_img_1">Экс.колонка {{this.casID}}мм</div>
             <div class="text_img_2">НКТ {{this.tubOD}}мм</div>
             <div class="text_img_3">Штанги {{this.shgnS1D}}мм 0-{{this.shgnS1L}}м</div>
             <div class="text_img_4">Штанги {{this.shgnS2D}}мм {{this.shgnS1L}}-{{this.shgnS1L * 1 + this.shgnS2L * 1}}м</div>
@@ -264,7 +261,7 @@
           <div class="image-data">
             <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px" >
           </div>
-          
+
           <div class="table-pgno-button">
 
 
@@ -280,23 +277,23 @@
                 <tbody>
                     <tr>
                         <td class="td-pgno" rowspan="1">Qж</td>
-                        <td class="td-pgno" rowspan="1">{{qlCelValue}} м³/сут</td>
+                        <td class="td-pgno" rowspan="1">{{qlCelValue}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Qн</td>
-                        <td class="td-pgno" rowspan="1">{{qOil}} т/сут</td>
+                        <td class="td-pgno" rowspan="1">{{qOil}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Обв</td>
-                        <td class="td-pgno" rowspan="1">{{wctInput}} %</td>
+                        <td class="td-pgno" rowspan="1">{{wctInput}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Рзаб</td>
-                        <td class="td-pgno" rowspan="1">{{bhpCelValue}} ат</td>
+                        <td class="td-pgno" rowspan="1">{{bhpCelValue}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Рпр</td>
-                        <td class="td-pgno" rowspan="1">{{piCelValue}} ат</td>
+                        <td class="td-pgno" rowspan="1">{{piCelValue}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -313,15 +310,15 @@
                 <tbody>
                     <tr>
                         <td class="td-pgno" rowspan="1">Ø насоса</td>
-                        <td class="td-pgno" rowspan="1">{{shgnPumpType}} мм</td>
+                        <td class="td-pgno" rowspan="1">{{shgnPumpType}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Число качаний</td>
-                        <td class="td-pgno" rowspan="1">{{shgnSPM}} мин-1</td>
+                        <td class="td-pgno" rowspan="1">{{shgnSPM}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Длина хода</td>
-                        <td class="td-pgno" rowspan="1">{{shgnLen}} м</td>
+                        <td class="td-pgno" rowspan="1">{{shgnLen}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Тип СК</td>
@@ -329,19 +326,19 @@
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Ø НКТ</td>
-                        <td class="td-pgno" rowspan="1">{{tubOD}} мм</td>
+                        <td class="td-pgno" rowspan="1">{{tubOD}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Нсп насоса</td>
-                        <td class="td-pgno" rowspan="1">{{hPumpValue}} м</td>
+                        <td class="td-pgno" rowspan="1">{{hPumpValue}}</td>
                     </tr>
                 </tbody>
                 </table>
  </div>
 
 
- 
- 
+
+
 
   <div class="table-pgno-four">
     <table class="table-pgno" >
@@ -351,11 +348,11 @@
                     Штанги
                 </td>
                 <td class="td-pgno" rowspan="1">
-                    Ø, мм
+                    Ø
                 </td>
 
                 <td class="td-pgno" rowspan="1">
-                    Длина, м
+                    Длина
                 </td>
 
 
@@ -578,7 +575,7 @@
     </div>
     <div class="tables-one col-xs-12 col-sm-5 col-md-5 col-lg-3 col-xl-3">
       <div class="tables-string-gno col-12">
-        <div class="select-well col-12"><b>Выбор скважины</b></div>
+        <div class="select-well col-12">Выбор скважины</div>
         <div class="cell4-gno col-7">Месторождение</div>
         <div class="cell4-gno table-border-gno cell4-gno-second col-5">
           <select class="select-gno2" v-model="field">
@@ -627,7 +624,7 @@
         </div>
       </div>
       <div class="tables-string-gno1-1">
-        <div class="select-well col-12"><b>Конструкция</b></div>
+        <div class="select-well col-12">Конструкция</div>
         <div class="cell4-gno col-7">Наружн. ØЭК</div>
         <div class="cell4-gno table-border-gno cell4-gno-second col-5">
           {{casOD}} мм
@@ -660,7 +657,7 @@
         <input style="width: 845px; height: 35px;" type="checkbox" tabindex="-1" />
         <div class="box">
           <div class="select-well col-12">
-            <div class="select-gno-title"><b>Оборудование</b></div>
+            <div class="select-gno">Оборудование</div>
           </div>
      <span class="closer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
          xmlns="http://www.w3.org/2000/svg">
@@ -686,7 +683,7 @@
               Диаметр насоса
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{pumpType}} м
+              {{pumpType}}м
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Нсп</div>
@@ -696,7 +693,7 @@
 
             <div class="cell4-gno table-border-gno-top col-7">Наружн. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{tubOD}} мм
+              {{tubOD}}мм
             </div>
             <div class="cell4-gno table-border-gno-top col-7">Внутр. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
@@ -736,7 +733,7 @@
 
             <div class="cell4-gno table-border-gno-top col-7">ГФ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{gor}} м³/т
+              {{gor}}
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Т пл</div>
@@ -976,11 +973,11 @@ export default {
         analysisBox5: true,
         analysisBox6: true,
         analysisBox7: true,
-        
+
         analysisBox8: true,
         menu: "MainMenu",
-        ngdu: 0,
-        sk: 0 ,
+        ngdu: null,
+        sk: null,
         grp_skin: false,
         newData: null,
         expAnalysisData:{
@@ -996,7 +993,10 @@ export default {
             shgnNpv:null,
             npvTable1:{},
             npvTable2:{},
+            nno1:null,
+            nno2:null,
         },
+
         qZhExpEcn:null,
         qOilExpEcn:null,
         qZhExpShgn:null,
@@ -1090,8 +1090,8 @@ export default {
         this.qlCelButton = true
         this.qlCelValue = this.qLInput*1
         this.hPumpValue = this.hPumpSet
-        
-        
+
+
 
         if (this.expMeth == "ШГН") {
               this.expChoose = "ШГН"
@@ -1122,7 +1122,7 @@ export default {
       var qo_points2 = [];
       var q_oil = [];
       var q_oil2 = [];
-      
+
 
       _.forEach(value, function (values) {
         ipr_points = values.ipr_points;
@@ -1141,7 +1141,7 @@ export default {
           text: q_oil2,
           hovertemplate:  "<b>IPR (кривая притока)</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
 
           marker: {
@@ -1157,7 +1157,7 @@ export default {
           mode: "markers",
           hovertemplate:  "<b>Текущий режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
@@ -1173,7 +1173,7 @@ export default {
           mode: "markers",
           hovertemplate:  "<b>Потенциальный режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
@@ -1187,7 +1187,7 @@ export default {
           text: [],
           hovertemplate:  "<b>New Line</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
 
           marker: {
@@ -1233,7 +1233,7 @@ export default {
       this.data[2]['x'][0] = value[1]["q_l"]
       this.data[2]['y'][0] = value[1]["p"]
       this.data[2]['text'][0] = value[1]["q_oil"]
-      
+
     },
     PotAnalysisMenu() {
       this.postCurveData()
@@ -1248,11 +1248,15 @@ export default {
       }
     },
 
-    ExpAnalysisMenu(){
-        if(this.casID == 114) {
-          Vue.prototype.$notifyError('В ЭК 114мм применение УЭЦН с габаритами 5 и 5А невозможно')
+    async ExpAnalysisMenu(){
+        await this.NnoCalc()
+
+        if (this.qlCelValue<40){
+            Vue.prototype.$notifyError("Не рекомендуется применение ЭЦН");
         }
-        this.NnoCalc()
+        if (this.qlCelValue>106) {
+            Vue.prototype.$notifyError("Не рекомендуется применение ШГН");
+        }
         this.qZhExpEcn=this.qlCelValue
         this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
 
@@ -1269,75 +1273,82 @@ export default {
         this.expAnalysisData.qoilEcn=this.qOilExpEcn
 
         if(this.expAnalysisData.NNO1!=null) {
-            this.EconomParam();
+            await this.EconomParam();
         }
 
 
     },
-    EconomParam(){
-        var prs1 = this.expAnalysisData.prs1
-        var prs2 = this.expAnalysisData.prs2
+    async EconomParam(){
+        var prs1 = this.expAnalysisData.prs1;
+        var prs2 = this.expAnalysisData.prs2;
 
-        var nnoDayUp=moment(this.dataNNO, 'YYYY-MM-DD').toDate()
-        var nnoDayFrom=moment(this.stopDate, 'YYYY-MM-DD').toDate()
+        var nnoDayUp=moment(this.dataNNO, 'YYYY-MM-DD').toDate();
+        var nnoDayFrom=moment(this.stopDate, 'YYYY-MM-DD').toDate();
 
-        var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24)
+        var date_diff=(nnoDayUp-nnoDayFrom)/(1000*3600*24);
 
-        if (date_diff>365){
-            date_diff=date_diff-365
+        if (date_diff<365){
+            date_diff=365;
         }
 
-        console.log('data', date_diff)
+
 
         if (prs1!=0 && prs2!=0){
             this.param_eco=1;
-            this.EconomCalc();
+            await this.EconomCalc();
         } else if (prs1==0 && prs2==0){
             if(this.age){
                 this.param_eco=1;
-                this.EconomCalc()
+                await this.EconomCalc();
             } else {
                 if(this.expChoose=="ШГН"){
-                    this.expAnalysisData.NNO1=date_diff
+                    this.expAnalysisData.NNO1=date_diff;
                     this.param_eco=1;
-                    this.EconomCalc()
+                    await this.EconomCalc();
                 }else{
-                    this.expAnalysisData.NNO2=date_diff
+                    this.expAnalysisData.NNO2=date_diff;
                     this.param_eco=1;
-                    this.EconomCalc()
+                    await this.EconomCalc();
                 }
             }
         } else if (prs1==0 && prs2!=0){
             this.param_eco=2;
-            this.EconomCalc();
+            await this.EconomCalc();
         } else {
             this.param_eco=3;
-            this.EconomCalc();
+            await this.EconomCalc();
         }
     },
-    EconomCalc(){
+    async EconomCalc(){
+        console.log('Nno',typeof this.expAnalysisData.NNO1,typeof this.expAnalysisData.NNO2);
+
+
+
         let uri2="/ru/nnoeco?equip=1&org=5&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-        this.axios.get(uri2).then((response) => {
-            let data = response.data;
+        let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+
+        const responses = await Promise.all([ this.axios.get(uri2), this.axios.get(uri3) ]);
+
+
+            let data = responses[0].data;
             if(data) {
 
-                this.expAnalysisData.shgnParam=data[12].godovoiShgnParam
-                this.expAnalysisData.shgnNpv=data[12].npv
-                this.expAnalysisData.npvTable1=data[12]
+                this.expAnalysisData.shgnParam=data[12].godovoiShgnParam;
+                this.expAnalysisData.shgnNpv=data[12].npv;
+                this.expAnalysisData.npvTable1=data[12];
             }
             else {
                 console.log('No data');
             }
-        });
 
-        let uri3="/ru/nnoeco?equip=2&org=5&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-        this.axios.get(uri3).then((response) => {
-            let data2 = response.data;
+
+
+            let data2 = responses[1].data;
             if(data2) {
 
-                this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam
-                this.expAnalysisData.ecnNpv=data2[12].npv
-                this.expAnalysisData.npvTable2=data2[12]
+                this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam;
+                this.expAnalysisData.ecnNpv=data2[12].npv;
+                this.expAnalysisData.npvTable2=data2[12];
 
                 if(this.qOilExpShgn!=null && this.qOilExpEcn!=null && this.expAnalysisData.NNO1!=null && this.expAnalysisData.NNO2!=null && this.expAnalysisData.shgnParam!=null && this.expAnalysisData.shgnNpv!=null && this.expAnalysisData.ecnParam!=null && this.expAnalysisData.ecnNpv!=null ){
                     this.$modal.show("modalExpAnalysis");
@@ -1347,9 +1358,11 @@ export default {
             else {
                 console.log('No data');
             }
-        });
+
+
+
     },
-    NnoCalc(){
+    async NnoCalc(){
         let uri = "http://172.20.103.187:7575/api/nno/";
 
         this.eco_param=null;
@@ -1366,52 +1379,47 @@ export default {
             this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil
         }
 
-        let jsonData = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": "ШГН",
+        if(this.wellNumber!=null){
+            let jsonData = JSON.stringify(
+                {"well_number": this.wellNumber,
+                "exp_meth": "ШГН",
+                }
+            )
+
+            let jsonData2 = JSON.stringify(
+                {"well_number": this.wellNumber,
+                "exp_meth": "ЭЦН",
+                }
+            )
+
+
+            const responses = await Promise.all([ this.axios.post(uri, jsonData), this.axios.post(uri, jsonData2) ]);
+            //microservise na SHGN NNO
+
+
+            var data = JSON.parse(responses[0].data.Result)
+            if (data) {
+                this.expAnalysisData.NNO1=data.NNO
+                this.expAnalysisData.qoilShgn=this.qOilExpShgn
+                this.expAnalysisData.prs1=data.prs
+            } else {
+            console.log("No data");
             }
-        )
 
-        let jsonData2 = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": "ЭЦН",
+            var data2 = JSON.parse(responses[1].data.Result)
+            if (data2) {
+                this.expAnalysisData.NNO2=data2.NNO
+                this.expAnalysisData.qoilEcn=this.qOilExpEcn
+                this.expAnalysisData.prs2=data2.prs
+            } else {
+                console.log("No data");
             }
-        )
 
-         let jsonData3 = JSON.stringify(
-            {"well_number": this.wellNumber,
-            "exp_meth": "УЭЦН",
 
-            }
-        )
 
-        //microservise na SHGN NNO
-        this.axios.post(uri, jsonData).then((response) => {
-        var data = JSON.parse(response.data.Result)
-        if (data) {
-          this.expAnalysisData.NNO1=data.NNO
-          this.expAnalysisData.qoilShgn=this.qOilExpShgn
-          this.expAnalysisData.prs1=data.prs
-        } else {
-          console.log("No data");
         }
-        });
-
-        //microservise na ECN NNO
-        this.axios.post(uri, jsonData2).then((response) => {
-        var data = JSON.parse(response.data.Result)
-        if (data) {
-          this.expAnalysisData.NNO2=data.NNO
-          this.expAnalysisData.qoilEcn=this.qOilExpEcn
-          this.expAnalysisData.prs2=data.prs
-        } else {
-          console.log("No data");
-        }
-        });
     },
-    // PgnoMenu() {
-      
-    // },
+
     InclMenu() {
         if (this.age === true) {
         Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
@@ -1497,8 +1505,6 @@ export default {
 
         } else if(data["Age"] === true) {
 
-          
-
 
           this.curveLineData = JSON.parse(data.LineData)["data"]
           this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -1514,13 +1520,10 @@ export default {
           this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
           this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
-          this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(1)
 
 
 
           Vue.prototype.$notifyWarning("Новая скважина");
-
-          Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
 
         this.ngdu = 0
         this.sk = 0
@@ -1568,6 +1571,7 @@ export default {
         this.whpInput = 0;
 
         //Параметры подбора
+        this.hPumpValue = 0
         this.qlCelValue = 0;
         this.bhpCelValue = 0;
         this.piCelValue = 0;
@@ -1577,7 +1581,7 @@ export default {
         }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-          this.NnoCalc();
+          //this.NnoCalc();
         }
       );
 
@@ -1631,16 +1635,17 @@ export default {
                    }
       )
 
-        if(this.pResInput * 1 <= this.bhpInput * 1 || (this.pResInput * 1 < this.bhpCelValue * 1 && this.CelButton == 'bhp')) {
+        if(this.pResInput * 1 <= this.bhpInput * 1 || this.pResInput * 1 <= this.bhpCelValue * 1) {
           Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
           } else if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          } else if(this.pinPot > this.piCelValue && this.CelButton == 'pin'){
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          } else if(this.hPumpValue > this.hPerf){
-          Vue.prototype.$notifyError("Обычно насос устанавливается выше интервала перфорации")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else {
             this.axios.post(uri, jsonData).then((response) => {
               var data = response.data;
@@ -1653,7 +1658,7 @@ export default {
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
           }
-          
+
           } else {
         }
       });
@@ -1873,9 +1878,30 @@ export default {
         } else {
           Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
         }
-        
+
     }
     },
+  beforeCreate: function() {
+    let uri = "http://172.20.103.187:7575/api/pgno/UZN/0046/";
+      this.axios.get(uri).then((response) => {
+        var data = response.data;
+
+        if (data) {
+          this.setData(data)
+          this.$emit('LineData', this.curveLineData)
+          this.$emit('PointsData', this.curvePointsData)
+          //this.NnoCalc();
+          this.qOil = this.curvePointsData[0]["q_oil"].toFixed(0)
+          this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
+          console.log(this.bhpPot);
+        } else {
+          console.log("No data");
+        }
+
+
+      });
+
+  },
 };
 </script>
 
