@@ -9,6 +9,7 @@ use Level23\Druid\Context\GroupByV2QueryContext;
 use Level23\Druid\Filters\FilterBuilder;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Adldap\Laravel\Facades\Adldap;
+use App\Models\VisCenter2\Vis2Form;
 use Spatie\Permission\Contracts\Permission;
 use Spatie\Permission\Models\Permission as ModelsPermission;
 use Spatie\Permission\Models\Role;
@@ -72,6 +73,12 @@ return $response;
 //$permission = Permission::create(['name'=>'writer post']);
 //auth()->user()->givePermissionTo('edit post');
         return view('visualcenter.visualcenter3');
+    }
+
+    public function visualcenter3GetData()
+    {
+
+        return response()->json(Vis2Form::all());//response()->json($array);
     }
 
     public function visualcenter4()

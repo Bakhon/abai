@@ -19,8 +19,11 @@ export default {
       quantityGetProductionOilandGas: "",
       /*calendar*/
       range: {
-        start: "2020-01-06T06:00:00+06:00",
-        end: "2020-01-10T06:00:00+06:00",
+        //start: "2020-01-06T06:00:00+06:00",
+        //end: "2020-01-10T06:00:00+06:00",
+
+        start: "2020-12-08T06:00:00+06:00",
+        end: "2020-12-10T09:00:00+06:00",
       },
       modelConfig: {
         start: {
@@ -103,11 +106,11 @@ export default {
       buttonHover4: "",
       buttonHover5: "",
       buttonHover6: "",
-      buttonHover7: "",
+      buttonHover7: "border: none; background: #2E50E9;color:white",
       buttonHover8: "",
       buttonHover9: "",
       buttonHover10: "",
-      buttonHover11: "",//this.changeMenuButton,
+      buttonHover11: "color: #fff;",//this.changeMenuButton,
       buttonHover12: "",//this.changeMenuButton,
       buttonHover13: "",
 
@@ -312,9 +315,14 @@ export default {
       if (change == 1) {
 
         this.buttonHover7 = buttonHover;
+        console.log(this.date.getDate() - 1);
         this.range = {
-          start: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
-          end: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
+          start: new Date(this.year + '-' + this.month + '-'+this.pad(this.date.getDate() - 1)+'T06:00:00+06:00'),
+          //start: (this.date.setDate(this.date.getDate() - 1)),//.toISOString(),
+          end: new Date().toISOString(),//"F j, Y", time() - 60 * 60 * 24
+
+        //  start: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
+         // end: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
           formatInput: true,
         };
 
@@ -530,7 +538,7 @@ export default {
           datesNow = dates.split(".");
           var day = datesNow[0];
           var month = datesNow[1].replace(/^0+/, "");
-          var year = datesNow[2]; 
+          var year = datesNow[2];
 
           var dateInOil = [];
 
@@ -680,7 +688,7 @@ export default {
 
     getProductionOilandGas() {
       //data from the day
-      let uri = "/js/json/getnkkmg.json";
+      let uri = "/ru/visualcenter3GetData";
       //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
@@ -791,17 +799,9 @@ export default {
 
         }
       });
-
-
-
-
-
     },
-
-
-
     getProductionOilandGasPercent() {     //data from the day
-      let uri = "/js/json/getnkkmg.json";
+      let uri = "/ru/visualcenter3GetData";
       //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
@@ -939,7 +939,7 @@ export default {
       });
 
       //data from the day
-      let uri = "/js/json/getnkkmg.json";
+      let uri = "/ru/visualcenter3GetData";
       //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
@@ -956,35 +956,35 @@ export default {
             this.productionFactPercentOneDzo=0;
           }*/
 
-         if (company === 'ПКИ') {
+          if (company === 'ПКИ') {
             summForTables.push({ dzo: NameDzoFull[9], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
-            this.productionFactPercentOneDzo=0;
+            this.productionFactPercentOneDzo = 0;
           }
 
           else if (company === 'АМГ') {
             summForTables.push({ dzo: NameDzoFull[10], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
-            this.productionFactPercentOneDzo=0;
+            this.productionFactPercentOneDzo = 0;
           }
 
           else if (company === 'ТШ') {
             summForTables.push({ dzo: NameDzoFull[5], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
-            this.productionFactPercentOneDzo=0;
+            this.productionFactPercentOneDzo = 0;
           }
 
 
           else if (company === 'НКО') {
             summForTables.push({ dzo: NameDzoFull[12], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
-            this.productionFactPercentOneDzo=0;
+            this.productionFactPercentOneDzo = 0;
           }
 
           else if (company === 'КПО') {
             summForTables.push({ dzo: NameDzoFull[11], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
-            this.productionFactPercentOneDzo=0;
+            this.productionFactPercentOneDzo = 0;
           }
 
           else if (company != "all") {
@@ -1334,15 +1334,15 @@ export default {
           var factMonth = [];
           var planMonth = [];
 
-        /*  if (this.buttonHover11 != '') {
-            dzoMonth.push(
-              { dzoMonth: "ЭМГ" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" }
-              //{ dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] }
-            );
-            factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
-            planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
-          }*/
+          /*  if (this.buttonHover11 != '') {
+              dzoMonth.push(
+                { dzoMonth: "ЭМГ" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" }
+                //{ dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] }
+              );
+              factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+              planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+              productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+            }*/
 
           if (this.buttonHover12 != '') {
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));

@@ -348,7 +348,7 @@
                 <tr>
                     <td>
                         <select class="form-control"  name="dzo" v-model="dzo" v-show="dzos.length > 0">
-                        <option v-for="row in dzos" v-bind:value="row.id">{{ row.name }}</option>
+                        <option v-for="row in dzos" v-bind:value="row.name">{{ row.name }}</option>
                         </select>
                     </td>
                 </tr>
