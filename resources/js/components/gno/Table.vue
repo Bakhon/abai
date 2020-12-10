@@ -395,23 +395,23 @@
                 <tbody>
                     <tr>
                         <td class="td-pgno" rowspan="1">Qж</td>
-                        <td class="td-pgno" rowspan="1">{{qlCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">{{qlCelValue}} м³/сут</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Qн</td>
-                        <td class="td-pgno" rowspan="1">{{qOil}}</td>
+                        <td class="td-pgno" rowspan="1">{{qOil}} т/сут</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Обв</td>
-                        <td class="td-pgno" rowspan="1">{{wctInput}}</td>
+                        <td class="td-pgno" rowspan="1">{{wctInput}} %</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Рзаб</td>
-                        <td class="td-pgno" rowspan="1">{{bhpCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">{{bhpCelValue}} ат</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Рпр</td>
-                        <td class="td-pgno" rowspan="1">{{piCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">{{piCelValue}} ат</td>
                     </tr>
                 </tbody>
                 </table>
@@ -428,15 +428,15 @@
                 <tbody>
                     <tr>
                         <td class="td-pgno" rowspan="1">Ø насоса</td>
-                        <td class="td-pgno" rowspan="1">{{shgnPumpType}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnPumpType}} мм</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Число качаний</td>
-                        <td class="td-pgno" rowspan="1">{{shgnSPM}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnSPM}} мин-1</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Длина хода</td>
-                        <td class="td-pgno" rowspan="1">{{shgnLen}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnLen}} м</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Тип СК</td>
@@ -444,11 +444,11 @@
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Ø НКТ</td>
-                        <td class="td-pgno" rowspan="1">{{tubOD}}</td>
+                        <td class="td-pgno" rowspan="1">{{tubOD}} мм</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Нсп насоса</td>
-                        <td class="td-pgno" rowspan="1">{{hPumpValue}}</td>
+                        <td class="td-pgno" rowspan="1">{{hPumpValue}} м</td>
                     </tr>
                 </tbody>
                 </table>
@@ -466,11 +466,11 @@
                     Штанги
                 </td>
                 <td class="td-pgno" rowspan="1">
-                    Ø
+                    Ø, мм
                 </td>
 
                 <td class="td-pgno" rowspan="1">
-                    Длина
+                    Длина, м
                 </td>
 
 
@@ -799,14 +799,14 @@
               Длина хода
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{strokeLenDev}}
+              {{strokeLenDev}} м
             </div>
             
             <div class="cell4-gno table-border-gno-top col-7">
               Число качаний
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{spmDev}}
+              {{spmDev}} м-1
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
@@ -1389,6 +1389,10 @@ export default {
     async ExpAnalysisMenu(){
         await this.NnoCalc()
 
+         if(this.casOD < 128) {
+          Vue.prototype.$notifyError('В ЭК 128 мм применение УЭЦН с габаритами 5 и 5А невозможно')
+         }
+
         if (this.qlCelValue<40){
             Vue.prototype.$notifyError("Не рекомендуется применение ЭЦН");
         }
@@ -1658,6 +1662,10 @@ export default {
           this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
           this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
+          this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0)
+          
+          Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
+
 
 
 
@@ -1709,7 +1717,6 @@ export default {
         this.whpInput = 0;
 
         //Параметры подбора
-        this.hPumpValue = 0
         this.qlCelValue = 0;
         this.bhpCelValue = 0;
         this.piCelValue = 0;
@@ -1775,15 +1782,6 @@ export default {
 
         if(this.pResInput * 1 <= this.bhpInput * 1 || this.pResInput * 1 <= this.bhpCelValue * 1) {
           Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
-          } else if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
-          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
-          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
-          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else {
             this.axios.post(uri, jsonData).then((response) => {
               var data = response.data;
@@ -1795,7 +1793,18 @@ export default {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          
+          if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           }
+          } 
 
           } else {
         }
@@ -1971,6 +1980,16 @@ export default {
     },
 
     onPgnoClick() {
+        if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else {
         if(this.expChoose == 'ШГН'){
           if(this.visibleChart) {
         let uri = "http://172.20.103.187:7575/api/pgno/shgn";
@@ -2016,7 +2035,7 @@ export default {
         }
 
     }
-    },
+  }},
 };
 </script>
 
