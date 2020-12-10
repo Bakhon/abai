@@ -123,19 +123,19 @@ body {
     background-color: #20274e;
     padding: 15px 15px;
     text-align: left;
-    height: 230px;
-    margin-bottom: 15px;
+    height: 240px;
+    margin-bottom: 5px;
 }
 
 .tables-string-gno1-1 {
-    font-size: 12.5px;
+    font-size: 14px;
     /* position: relative; */
     /* width: 220px; */
     background-color: #20274e;
     padding: 15px 15px;
     text-align: left;
-    height: 170px;
-    margin-bottom: 15px;
+    height: 180px;
+    margin-bottom: 5px;
 }
 
 .tables-string-gno1 {
@@ -190,7 +190,7 @@ body {
     /* padding: 15px 15px; */
     text-align: left;
     height: 220px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     /* margin-left: 15px; */
     border-right-style: solid;
     border-color: #0F1430;
@@ -207,19 +207,20 @@ body {
     /* background-color: #20274e; */
     text-align: left;
     height: 280px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     padding-right: 0px!important;
     padding-left: 0px!important;
 }
 
 .tables-string-gno5 {
+    margin-top: 10px;
     padding-right:10px!important;
     float: left;
-    font-size: 15px;
+    font-size: 16px;
     position: relative;
     /* max-width: 745px!important; */
-    background-color: #15509D;
-    padding: 15px 15px;
+    background-color: #293688;;
+    padding: 10px 0px;
     text-align: left;
     margin-bottom: 15px;
     /* margin-left: 15px; */
@@ -229,10 +230,16 @@ body {
     /* border-right-style: solid; */
     /* border-color: #0F1430; */
     /* border-right-width: 20px; */
-    border-radius: 8px;
+    border-radius: 9px;
     text-align: center;
     margin-bottom: 15px;
     font-weight: bold;
+    width: 674px;
+    align-items: center;
+    height: 30px;
+    max-width: 99.9%;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    
 }
 
 .tables-string-gno5:active {
@@ -247,22 +254,27 @@ body {
 }
 
 .tables-string-gno55 {
+    max-width: 100%;
     float: left;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
     position: relative;
     /* width: 738px; */
-    background-color: #15509D;
-    padding: 15px 15px;
+    background-color: #293688;;
+    padding: 10px 0px;
     text-align: left;
-    margin-bottom: 15px;
+    margin-top: 10px;
     /* margin-left: 15px; */
     min-height: 45px;
+    max-width: 100%;
     text-align: center;
     /* font-weight:bold; */
-    border-radius: 8px;
+    border-radius: 9px;
     text-align: center;
     margin-bottom: 15px;
+    width: 680px;
+    height: 30px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .tables-string-gno55:active {
@@ -278,7 +290,7 @@ body {
 
 .tables-string-gno6 {
     float: left;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
     position: relative;
     background-color: #15509D;
@@ -294,6 +306,7 @@ body {
     border-radius: 8px;
     text-align: center;
     margin-bottom: 15px;
+    wid
 }
 
 .tables-string-gno6:active {
@@ -331,13 +344,13 @@ body {
 }*/
 
 .table-border-gno {
-    border-left-color: #1b6bb0;
+    border-left-color: #3b4172;
     border-left-style: solid;
     border-left-width: 1px;
 }
 
 .table-border-gno-top {
-    border-top-color: #1b6bb0;
+    border-top-color: #3b4172;
     border-top-style: solid;
     border-top-width: 1px;
 }
@@ -368,7 +381,7 @@ body {
 .select-gno2 {
     width: 95px;
     /* text-align: center; */
-    background: rgba(76, 190, 237, 0.278431);
+    background-color: #494aa5;
     color: white;
     /* border: 1px solid #00CCFF; */
     outline: none;
@@ -379,6 +392,7 @@ body {
     /* padding: 0px 10px 4px 0px; */
     height: 24px;
     margin-top: -1px;
+    background: ;
 }
 
 .select-gno2:invalid:focus {
@@ -469,19 +483,18 @@ blockquote {
 }
 
 span.open, span.closer {
-    position: absolute;
     margin-left: -50px;
-    margin-top: 1px;
+    margin-top: 10px;
     font-size: 12px;
 }
 
 .spoiler {
-    font-size: 12px;
+    font-size: 14px;
     position: relative;
     background-color: #20274e;
     padding: 8px 14px 0px 23px;
     text-align: left;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .spoiler-device {
@@ -495,13 +508,6 @@ span.open, span.closer {
 
 .left-center {
     margin-left: 15px;
-}
-
-input.checkbox {
-    float: left;
-    margin-left: -16px;
-    outline: none;
-    border: 0px;
 }
 
 .text1 {
@@ -519,11 +525,12 @@ input.checkbox2 {
     border: 0px;
 }
 
-.inclinom {
+.inclinom-button {
     float: left;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
-    background-color: #15509D;
+    background-color: rgba(41, 54, 136, 1);
+    ;
     padding: 8px 30px;
     height: 38px;
     width: 100%;
@@ -532,7 +539,7 @@ input.checkbox2 {
     box-shadow: 0px 8px 15px rgba(58, 55, 55, 0.1);
     /* box-shadow: inset 0 0 4px 0px rgba(0, 0, 0, .8), inset rgb(0 0 0 / 21%) -5px -5px 8px 5px, inset rgb(255 255 255 / 14%) 5px 5px 8px 5px, 1px 1px 1px rgba(255, 255, 255, .1), -2px -2px 5px rgba(0, 0, 0, .5); */
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 /* .inclinom:hover {
@@ -542,24 +549,22 @@ input.checkbox2 {
     transform: translateY(-7px);
   } */
 
-.inclinom:active {
+.inclinom-button:active {
     background-color: #144079;
     box-shadow: 0 2px #666;
     transform: translateY(0.02px);
     filter: blur(0.3px);
 }
 
-.inclinom:hover {
+.inclinom-button:hover {
     background-color: #484749;
 }
 
 .text3 {
-    float: right;
     /* width: 20px; */
 }
 
 input.checkbox3 {
-    float: right;
     margin-right: 12px;
 }
 
@@ -603,7 +608,7 @@ input[type="radio"]:checked {
 }
 
 input[type="text"]:disabled.square2 {
-    background: #353e70;
+    background:rgba(50, 51, 112, 1);
     color: #928f8f;
     outline: none;
     border: 0px;
@@ -611,7 +616,7 @@ input[type="text"]:disabled.square2 {
 }
 
 input[type="text"]:enabled.square2 {
-    background: #15509D;
+    background: #494AA5;
     outline: none;
     border: 0px;
 }
@@ -624,15 +629,15 @@ iframe.iframe {
 .tables-string-gno44-inner {
     padding: 15px 0px;
     height: 100%;
-    background-color: #20274e;
-    margin-bottom: 15px;
+    background-color: #2b2e5e;
+    margin-bottom: 5px;
 }
 
 .tables-string-gno4-inner {
     padding: 15px 0px;
     height: 100%;
     background-color: #20274e;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .modal-bign {
@@ -991,6 +996,155 @@ td {
     position: static;
     background-color: #20274e;
 }
+
+.choosing-well-title {
+    font-size: 20px;
+    font-weight: bold;
+    bottom: 4%;
+}
+
+.choosing-well-data {
+    float: left;
+    background-color: #2b2e5e;
+    height: 24px;
+}
+
+.construction {
+    font-size: 20px;
+    font-weight: bold;
+    bottom: 5%;
+}
+
+.construction-data {
+    height: 24px;
+    width: 120px;
+    background-color: #2b2e5e;
+    float: left;
+}
+
+.devices-title {
+    font-size: 16px;
+    left: 10%;
+}
+
+.devices-data {
+    float: left;
+    font-size: 14px;
+    background-color: #2b2e5e;
+    height: 24px;
+}
+
+.pvt-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.pvt-data {
+    float: left;
+    font-size: 14px;
+    background-color: #2b2e5e;
+    height: 24px;
+}
+
+.tech-title {
+    font-size: 20px;
+    font-weight: bold;
+    bottom: 4%;
+}
+
+.tech-data {
+    float: left;
+    font-size: 14px;
+    background-color: #2b2e5e;
+    height: 24px;
+}
+
+.podbor-gno-title-2 {
+    background-color: #2b2e5e;
+    height: 30px;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.podbor-gno-title-1 {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.podbor-gno-title-3 {
+    font-size: 16px;
+    font-weight: bold;
+    float: left;
+    height: 50px;
+    top: 10%;
+    background-color: #2b2e5e;
+}
+
+.label-for-celevoi {
+    font-size: 16px;
+}
+
+.celevoi-options {
+    background-color: red;
+}
+
+.input-podbor-gno {
+    outline: none;
+    width: 60px;
+    height: 20px;
+    position: relative;
+    color: white;
+    top: 0px;
+}
+
+.option-inflow-curve {
+    left: 25px;
+}
+
+.option-q-inflow-curve {
+
+}
+
+.q-liquid-input-podbor-gno {
+    outline: none;
+    width: 70px;
+    height: 20px;
+    position: relative;
+    color: white;
+    top: 0px;
+    float: left;
+}
+
+.podbor-gno-params {
+    float: left;
+    top: 15px;
+    background-color: #2b2e5e;
+}
+
+/* настройки кривой притока, классы чекбоксов */
+
+input.checkbox-k-prod {
+    margin-left: 0px;
+    outline: none;
+    border: 0px;
+    width: 0px;
+}
+
+input.checkbox-q-liquid {
+    margin-left: -0px;
+    outline: none;
+    border: 0px;
+    width: 0px;
+}
+
+.option-curve-line-1 {
+    height: 30px;
+}
+
+
+/* Параметры подбора */
+
 
 
 
