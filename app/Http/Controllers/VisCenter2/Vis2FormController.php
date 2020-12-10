@@ -9,7 +9,8 @@ use Carbon\Carbon;
 
 class Vis2FormController extends Controller
 {
-    public function create(){
+    public function create()
+    {
         return 'created';
     }
     public function store(Request $request)
@@ -17,7 +18,7 @@ class Vis2FormController extends Controller
         $alldata = new Vis2Form;
 
         $alldata->date = Carbon::yesterday();
-        $alldata->__time =  (Carbon::yesterday())->getTimestamp()*1000;
+        $alldata->__time =  (Carbon::now())->getTimestamp() * 1000 - 86400000;
         $alldata->oil_fact = $request->input('dobycha_nefti_fact');
         $alldata->gk_fact = $request->input('dobycha_nefti_condensat_fact');
         $alldata->oil_dlv_fact = $request->input('sdacha_nefti_fact');
@@ -27,7 +28,7 @@ class Vis2FormController extends Controller
         $alldata->dobycha_gaza_gazovyie_mest_dzo_fact = $request->input('dobycha_gaza_gazovyie_mest_dzo_fact');
         $alldata->dobycha_gaza_gsp_dzo_fact = $request->input('dobycha_gaza_gsp_dzo_fact');
         $alldata->dobycha_gaza_poputnyi_fact = $request->input('dobycha_gaza_poputnyi_fact');
-        $alldata->zakachka_vody_total_fact = $request->input('zakachka_vody_total_fact');
+        $alldata->inj_fact = $request->input('zakachka_vody_total_fact');
         $alldata->zakachka_vody_tch_morskaya_fact = $request->input('zakachka_vody_tch_morskaya_fact');
         $alldata->zakachka_vody_stochnaya_fact = $request->input('zakachka_vody_stochnaya_fact');
         $alldata->burenie_skvajin_prohodka_fact = $request->input('burenie_skvajin_prohodka_fact');
@@ -61,7 +62,7 @@ class Vis2FormController extends Controller
         $alldata->osvoenie = $request->input('osvoenie');
         $alldata->ozhidanie_likvidacii = $request->input('ozhidanie_likvidacii');
         $alldata->v_konservacii = $request->input('v_konservacii');
-        
+
 
         $alldata->expl2 = $request->input('expl2');
         $alldata->inj_wells_work = $request->input('deistv2');
@@ -71,8 +72,19 @@ class Vis2FormController extends Controller
         $alldata->ozhidanie_likvidacii2 = $request->input('ozhidanie_likvidacii2');
         $alldata->v_konservacii2 = $request->input('v_konservacii2');
 
+
+        $alldata->oil_plan = '38640';
+        $alldata->oil_dlv_plan = '5873';
+        $alldata->gk_plan = '15';
+        $alldata->gas_plan = '1462';
+        $alldata->inj_plan = '168258';
+
+
+
+        //$alldata->liq_plan = '20';
+
         $alldata->save();
 
-        return redirect('ru/visualcenter2')->with('success',__('app.created'));
+        return redirect('ru/visualcenter2')->with('success', __('app.created'));
     }
 }
