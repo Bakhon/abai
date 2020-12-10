@@ -2778,7 +2778,6 @@ a:hover{
 .trsubheadercolumn {
     background: #333975;
 }
-
 tr:nth-child(odd) {
   background-color: #454d7d;
 }
@@ -2792,6 +2791,5 @@ tr:nth-child(even) {
     font-size: 9px;
     padding: unset;
 }
-
 
 </style>
