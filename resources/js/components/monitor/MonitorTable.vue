@@ -31,6 +31,25 @@
             <h3 class="economicHeader">Экономический эффект {{currentYear}}</h3>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12">
+                <table class="table table-bordered economicModalTable">
+                    <tbody>
+                        <tr v-for="row in economicCurrentYear">
+                            <td>{{row[0]}}</td>
+                            <td>{{row[1]}}</td>
+                            <td>{{row[2]}}</td>
+                            <td>{{row[3]}}</td>
+                            <td>{{row[4]}}</td>
+                            <td>{{row[5]}}</td>
+                            <td>{{row[6]}}</td>
+                            <td>{{row[7]}}</td>
+                            <td>{{row[8]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+          </div>
+        </div>
       </div>
     </modal>
     <modal name="corrosion" :width="1100" :height="750" :adaptive="true">
@@ -496,7 +515,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicNextYear.length < 2">
+            <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicCurrentYear.length < 2">
                 Экономический эффект
             </button
             ><br />
@@ -577,6 +596,7 @@ export default {
 	  dose: 0,
 	  result: {},
     economicNextYear: [],
+    economicCurrentYear: [],
     currentYear: new Date().getFullYear(),
     nextYear: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear()
 	};
@@ -593,6 +613,7 @@ export default {
   },
   methods: {
 	chooseGu(event) {
+        this.dose = 0;
 	  this.axios
 		.post("/ru/getgudata", {
 		  gu_id: event.target.value,
@@ -659,7 +680,7 @@ export default {
 			  this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
 			  this.signalizator = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
 			  this.signalizatorAbs = Math.abs(this.signalizator),
-			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor.toFixed(1),
+			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor,
 			  this.wmLast = data.wmLast,
 			  this.wmLastH2S = data.wmLastH2S,
 			  this.wmLastCO2 = data.wmLastCO2,
@@ -733,6 +754,20 @@ export default {
 		  let data = response.data;
 		  if (data) {
 			this.economicNextYear = data;
+		  } else {
+			console.log("No data");
+		  }
+        });
+
+	  this.axios
+		.post("/ru/vcoreconomiccurrent", {
+		  gu: gu,
+		})
+		.then((response) => {
+		  let data = response.data;
+		  if (data) {
+              console.log(data);
+              this.economicCurrentYear = data;
 		  } else {
 			console.log("No data");
 		  }
