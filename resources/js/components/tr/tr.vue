@@ -490,7 +490,7 @@
               <td @click="sortBy('planned_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
               <td @click="sortBy('planned_wct')"><i class="fa fa-fw fa-sort"></i>%</td>
               <td @click="sortBy('planned_month_days')"><i class="fa fa-fw fa-sort"></i>сут</td>
-              <td @click="sortBy('planned_monthly_oil')"><i class="fa fa-fw fa-sort"></i>тонн</td><i class="fa fa-fw fa-sort"></i>
+              <td @click="sortBy('planned_monthly_oil')"><i class="fa fa-fw fa-sort"></i>тонн</td>
               <td @click="sortBy('planned_monthly_gas')"><i class="fa fa-fw fa-sort"></i>тыс.м3</td>
               <td @click="sortBy('planned_monthly_liq')"><i class="fa fa-fw fa-sort"></i>м3</td>
               <td @click="sortBy('planned_monthly_water')"><i class="fa fa-fw fa-sort"></i>м3</td>
@@ -1078,7 +1078,7 @@
                         <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.wct_prev_m" :disabled="!edit"></td>
 
                         <td v-if="!edit">{{Math.round(row.h_dyn_prev_m*10)/10}}</td>
-                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.h_dyn_prev_m" :disabled="!edit"></td>
+                        <td v-if="edit">{{Math.round(row.h_dyn_prev_m*10)/10}}</td>
 
                         <td v-if="!edit">{{Math.round(row.pi_prev_m*10)/10}}</td>
                         <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.pi_prev_m" :disabled="!edit"></td>
