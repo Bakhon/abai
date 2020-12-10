@@ -78,8 +78,8 @@ return $response;
 
     public function visualcenter3GetData()
     {
-        return response()->json(DZOday::all());
-        //return response()->json(Vis2Form::all());//response()->json($array);
+       // return response()->json(DZOday::all()->where('__time', '>', '1601424000000')->where('__time', '<', '1602028800000'));
+        return response()->json(Vis2Form::all());//response()->json($array);
     }
 
     public function visualcenter4()
