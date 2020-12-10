@@ -9,6 +9,8 @@ use Level23\Druid\Context\GroupByV2QueryContext;
 use Level23\Druid\Filters\FilterBuilder;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Adldap\Laravel\Facades\Adldap;
+use App\Models\DZO\DZOday;
+use App\Models\VisCenter2\Vis2Form;
 use Spatie\Permission\Contracts\Permission;
 use Spatie\Permission\Models\Permission as ModelsPermission;
 use Spatie\Permission\Models\Role;
@@ -72,6 +74,12 @@ return $response;
 //$permission = Permission::create(['name'=>'writer post']);
 //auth()->user()->givePermissionTo('edit post');
         return view('visualcenter.visualcenter3');
+    }
+
+    public function visualcenter3GetData()
+    {
+       // return response()->json(DZOday::all()->where('__time', '>', '1601424000000')->where('__time', '<', '1602028800000'));
+        return response()->json(Vis2Form::all());//response()->json($array);
     }
 
     public function visualcenter4()
