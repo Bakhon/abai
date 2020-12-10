@@ -6,7 +6,7 @@
       :options="chartOptions"
       :series="series"
     ></apexchart>
-    <div class="radial-bar-style" v-if="series[0] != 0">{{series[0]}} г/м3</div>
+    <div class="radial-bar-style" v-if="series[0] != 0">{{series[0]}} мг/л</div>
   </div>
 </template>
 <script>
