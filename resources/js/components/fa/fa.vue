@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <modal name="chart" :width="2000" :height="1000" :adaptive="true">
+        <!-- <modal name="chart" :width="2000" :height="1000" :adaptive="true">
             <div class="main_modals">
                 <div class="row">
                     <div class="col-sm">
@@ -63,10 +63,38 @@
                     </div>
                 </div>
             </div>
-        </modal>
-        <div class="row justify-content-between">
-                <a href="tr" class="but-nav__link but">Технологический режим</a>
-                <form class="form-group but-nav__link">
+        </modal> -->
+        <div class="row justify-content-between farowjustcontbet">
+                <a href="tr" class="but-nav__link but fabutnavlinkbut"><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
+</svg>
+Технологический режим</a>
+
+
+
+                <div class="dropdown show" style="padding: 0px;">
+                    <a class="but-nav__link but btn btn-secondary dropdown-toggle fabutdata " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i style=" margin-right: 10px; ">
+                   <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z" fill="white"/>
+</svg>
+
+               </i>
+                        Выберите даты
+                    </a>
+
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <!-- <form class="form-group but-nav__link"> -->
+                            <label for="inputDate">Введите опорную дату:</label>
+                            <input type="date" class="form-control" v-model="date1">
+                        <!-- <form class="form-group but-nav__link"> -->
+                            <label for="inputDate">Введите дату для сравнения:</label>
+                            <input type="date" class="form-control" v-model="date2">
+                            <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> 
+                    </div>
+                </div>
+
+
+                <!-- <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="date1">
                 </form>
@@ -74,13 +102,13 @@
                         <label for="inputDate">Выбор даты 2:</label>
                         <input type="date" class="form-control" v-model="date2">
                 </form>
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
+                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> -->
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
                 <!-- <a class="but-nav__link but " @click="pushBign('chart')">Графики</a> -->
                 <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
                 <div class="col">
 
-                        <div class="input-group input-group-sm">
+                        <div class="input-group input-group-sm fasearch">
                             <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
                             <div class="input-group-prepend fainputgr">
                                 <button class="input-group-text" style="font-size: 14px;">Поиск</button>
@@ -92,8 +120,12 @@
 
 
         </div>
-        <div class="tech">
-            <td> Факторный анализ</td>
+        <div class="tech" style="display:flex; background: #272953">
+            <h3> Факторный анализ</h3>
+            <a class="but-nav__link but " href="trfa" @click="pushBign('chart')" style="margin-left: 1264px; background: #272953"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
+Показать графики</a>
         </div>
         <!-- <div>
             <select name="Company" class="from-control" id="companySelect"
@@ -169,22 +201,22 @@
                     v-for="(row) in wells"
                     :key="row.well"
                 >
-                    <td>{{row.well}}</td>
-                    <td>{{row.field}}</td>
-                    <td>{{row.horizon}}</td>
-                    <td>{{row.exp_meth}}</td>
-                    <td>{{Math.round(row.q_l_1*10)/10}}</td>
-                    <td>{{Math.round(row.q_o_1*10)/10}}</td>
-                    <td>{{Math.round(row.wct_1*10)/10}}</td>
-                    <td>{{Math.round(row.bhp_1*10)/10}}</td>
-                    <td>{{Math.round(row.p_res_1*10)/10}}</td>
-                    <td>{{Math.round(row.pi_1*10)/10}}</td>
-                    <td>{{Math.round(row.q_l_2*10)/10}}</td>
-                    <td>{{Math.round(row.q_o_2*10)/10}}</td>
-                    <td>{{Math.round(row.wct_2*10)/10}}</td>
-                    <td>{{Math.round(row.bhp_2*10)/10}}</td>
-                    <td>{{Math.round(row.p_res_2*10)/10}}</td>
-                    <td>{{Math.round(row.pi_2*10)/10}}</td>
+                    <td style="background: #12135C">{{row.well}}</td>
+                    <td style="background: #12135C">{{row.field}}</td>
+                    <td style="background: #12135C">{{row.horizon}}</td>
+                    <td style="background: #12135C">{{row.exp_meth}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.q_l_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.q_o_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.wct_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.bhp_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.p_res_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.pi_1*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.q_l_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.q_o_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.wct_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.bhp_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.p_res_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.pi_2*10)/10}}</td>
 
                     <!-- <td>{{Math.round(row.dqo*10)/10}}</td> -->
                     <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
@@ -231,7 +263,7 @@
                         <span> {{Math.round(row.PI*10)/10}} </span>
                     </td>
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
-                    <td>{{row.Main_problem}}</td>
+                    <td style="background: #272953">{{row.Main_problem}}</td>
                 </tr>
             </table>
         </div>
@@ -617,9 +649,15 @@ export default {
       },
       getColor(status, ...values) {
           if (status < "0" && status === Math.min(status, ...values)) return "#ac3939";
+          else {
+              return "#272953";
+          }
       },
       getColorone(status) {
           if (status < "0") return "#ac3939";
+          else {
+              return "#272953";
+          }
       },
 
     },
@@ -734,5 +772,20 @@ body {
     padding: 5px !important;
 }
 
-
+.fabutnavlinkbut {
+    width: 430;
+    margin-left: 15px;
+    display: flex;
+}
+.farowjustcontbet {
+    margin-bottom: 11px;
+}
+.fabutdata {
+    margin-left: 156px;
+    width: 470;
+}
+.fasearch {
+    width: 470;
+    margin-left: 160px;
+} 
 </style>

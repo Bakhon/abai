@@ -187,7 +187,7 @@
             >Версия для отображения
           </button>
         </div>
-        <a-spin :spinning="isloading">
+        <!-- <a-spin :spinning="isloading"> -->
         <div>
           <TrTable :wells="wells" @onSort="sortBy" v-show="show_first" />
           <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
@@ -470,8 +470,8 @@
               <td @click="sortBy('EMPTY')"></td>
             </tr>
             <tr v-for="(row, row_index) in wells" :key="row_index">
-              <td v-if="!edit">{{ row.gu }}</td>
-              <td v-if="edit">{{ row.gu }}</td>
+              <td v-if="!edit">{{ row_index + 1 }}</td>
+              <td v-if="edit">{{ row_index + 1 }}</td>
 
               <td v-if="!edit">{{ row.field }}</td>
               <td v-if="edit" contenteditable="true">
