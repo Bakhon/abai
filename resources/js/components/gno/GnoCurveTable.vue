@@ -15,24 +15,23 @@ export default {
   props: ["postTitle"],
   data: function () {
     return {
-      flag: false,
       layout: {
         // width:  1200,
-        // height: 470,
-        autosize: true,
-        //      showlegend: false,
+        height: 490,
+        // autosize: true,
+        // showlegend: false,
         xaxis: {
           title: "Дебит, Qж, м³/сут.",
           hoverformat: ".1f",
-           showline: true,
+          // showline: true,
           // autorange: false,
           //
           //
-          showgrid: true,
-          showline: true,
+          // showgrid: true,
+          // showline: true,
           mirror: 'ticks',
           // range: [0,100],
-          zeroline: false,
+          // zeroline: false,
           // showgrid: true,
           // mirror:true,
           // ticklen: 4,
@@ -44,12 +43,10 @@ export default {
         yaxis: {
           title: "Давление, атм",
           hoverformat: ".1f",
-          showline: true,
+          // showline: true,
           // range: [0,100],
-          zeroline: false,
+          // zeroline: false,
           // showgrid: true,
-          showgrid: true,
-          showline: true,
           mirror: 'ticks',
           // mirror:true,
           // ticklen: 4,

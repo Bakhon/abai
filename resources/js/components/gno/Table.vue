@@ -361,6 +361,7 @@
         </div> -->
 
         </modal>
+        
         <div class="gno-line-chart"  v-if="visibleChart">
           <gno-line-points-chart></gno-line-points-chart>
         </div>
@@ -813,7 +814,7 @@
               Диаметр насоса
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{pumpType}}м
+              {{pumpType}} мм
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Нсп</div>
@@ -823,7 +824,7 @@
 
             <div class="cell4-gno table-border-gno-top col-7">Наружн. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{tubOD}}мм
+              {{tubOD}} мм
             </div>
             <div class="cell4-gno table-border-gno-top col-7">Внутр. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
@@ -863,7 +864,7 @@
 
             <div class="cell4-gno table-border-gno-top col-7">ГФ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{gor}}
+              {{gor}} куб/т
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Т пл</div>
@@ -1245,7 +1246,7 @@ export default {
         this.piButton = true
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
-        this.qOil = this.curvePointsData[2]["q_oil"]
+        this.qOil = this.curvePointsData[2]["q_oil"].toFixed(0)
         this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
         this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
         this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
