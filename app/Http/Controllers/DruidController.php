@@ -9,6 +9,7 @@ use Level23\Druid\Context\GroupByV2QueryContext;
 use Level23\Druid\Filters\FilterBuilder;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Adldap\Laravel\Facades\Adldap;
+use App\Models\DZO\DZOday;
 use App\Models\VisCenter2\Vis2Form;
 use Spatie\Permission\Contracts\Permission;
 use Spatie\Permission\Models\Permission as ModelsPermission;
@@ -77,8 +78,8 @@ return $response;
 
     public function visualcenter3GetData()
     {
-
-        return response()->json(Vis2Form::all());//response()->json($array);
+        return response()->json(DZOday::all());
+        //return response()->json(Vis2Form::all());//response()->json($array);
     }
 
     public function visualcenter4()
