@@ -680,7 +680,7 @@ export default {
 			  this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
 			  this.signalizator = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
 			  this.signalizatorAbs = Math.abs(this.signalizator),
-			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor.toFixed(1),
+			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor,
 			  this.wmLast = data.wmLast,
 			  this.wmLastH2S = data.wmLastH2S,
 			  this.wmLastCO2 = data.wmLastCO2,
