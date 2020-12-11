@@ -21,6 +21,8 @@
             <td rowspan="4">ГФ</td>
             <td rowspan="4">К прод</td>
             <td class="colspan" colspan="7">Расчет технологического потенциала от ИДН</td>
+            <td class="colspan" colspan="4">Намечаемый режим</td>
+
         </tr>
         <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
             <td rowspan="3">P заб</td>
@@ -32,6 +34,11 @@
             <td rowspan="3">К прод от стимуляции</td>
             <td class="colspan" colspan="2">ГРП</td>
             <td rowspan="3">Общий прирост Q н</td>
+
+            <td rowspan="3">Диаметр штуцера</td>
+            <td rowspan="3">Q н</td>
+            <td rowspan="3">Q ж</td>
+            <td rowspan="3">Обводненность</td>
         </tr>
         <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
             <td rowspan="2">Q ж</td>
@@ -70,6 +77,11 @@
             <td @click="sortBy('tp_idn_grp_q_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
             <td @click="sortBy('tp_idn_grp_q_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
             <td @click="sortBy('EMPTY')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('planned_choke')"><i class="fa fa-fw fa-sort"></i>мм</td>
+            <td @click="sortBy('planned_oil')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            <td @click="sortBy('planned_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+            <td @click="sortBy('planned_wct')"><i class="fa fa-fw fa-sort"></i>%</td>
+
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row_index">
             <td>{{row.well}}</td>
@@ -397,6 +409,51 @@
             </td>
 
             <td>{{Math.round(row.EMPTY*10)/10}}</td>
+
+            <td :class="{'cell-with-comment': wells && wells[row_index] &&
+            wells[row_index].planned_choke[1][0] !== '0'}">
+                <span :class="{'circle-err': wells && wells[row_index] &&
+            wells[row_index].planned_choke[1][0] !== '0'}" :style="`background :${getColor(
+            wells[row_index].planned_choke[1][0])}`"> </span>
+                <span>{{Math.round(row.planned_choke[0]*10)/10}}</span>
+                <span v-if="wells && wells[row_index]" class="cell-comment">
+                    {{ wells[row_index].planned_choke[1][1]}}
+                </span>
+            </td>
+
+            <td :class="{'cell-with-comment': wells && wells[row_index] &&
+            wells[row_index].planned_oil[1][0] !== '0'}">
+                <span :class="{'circle-err': wells && wells[row_index] &&
+            wells[row_index].planned_oil[1][0] !== '0'}" :style="`background :${getColor(
+            wells[row_index].planned_oil[1][0])}`"> </span>
+                <span>{{Math.round(row.planned_oil[0]*10)/10}}</span>
+                <span v-if="wells && wells[row_index]" class="cell-comment">
+                    {{ wells[row_index].planned_oil[1][1]}}
+                </span>
+            </td>
+
+            <td :class="{'cell-with-comment': wells && wells[row_index] &&
+            wells[row_index].planned_liq[1][0] !== '0'}">
+                <span :class="{'circle-err': wells && wells[row_index] &&
+            wells[row_index].planned_liq[1][0] !== '0'}" :style="`background :${getColor(
+            wells[row_index].planned_liq[1][0])}`"> </span>
+                <span>{{Math.round(row.planned_liq[0]*10)/10}}</span>
+                <span v-if="wells && wells[row_index]" class="cell-comment">
+                    {{ wells[row_index].planned_liq[1][1]}}
+                </span>
+            </td>
+
+            <td :class="{'cell-with-comment': wells && wells[row_index] &&
+            wells[row_index].planned_wct[1][0] !== '0'}">
+                <span :class="{'circle-err': wells && wells[row_index] &&
+            wells[row_index].planned_wct[1][0] !== '0'}" :style="`background :${getColor(
+            wells[row_index].planned_wct[1][0])}`"> </span>
+                <span>{{Math.round(row.planned_wct[0]*10)/10}}</span>
+                <span v-if="wells && wells[row_index]" class="cell-comment">
+                    {{ wells[row_index].planned_wct[1][1]}}
+                </span>
+            </td>
+
         </tr>
     </table>
 </template>
