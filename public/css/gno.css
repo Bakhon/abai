@@ -49,7 +49,7 @@
 .col-md-12.col-lg-6.no-gutter.container-fluid.test1 {
     float: left;
     /* padding-left: 0px; */
-    padding-left: 10px;
+    padding-left: 0px;
 	padding-right:5px;
 }
 

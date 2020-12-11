@@ -13,6 +13,11 @@ Vue.use(NotifyPlugin, VueMomentLib);
 Vue.component("Plotly", Plotly);
 
 export default {
+  watch: {
+    activeRightTabName: function (val) {
+      console.log(val)
+    }
+  },
   data: function () {
     return {
       activeRightTabName: 'technological-mode',
@@ -754,7 +759,6 @@ export default {
 
 
     },
-
     postCurveData(value) {
       this.visibleChart = true;
       console.log(value)
@@ -1044,12 +1048,14 @@ export default {
       }
 
     },
+
     setActiveRightTabName: function (e, val) {
       if (val === this.activeRightTabName) {
-        this.activeRightTabName = null;
+        this.activeRightTabName = 'technological-mode';
       } else {
         this.activeRightTabName = val;
       }
-    }
+    },
+
   },
 };
