@@ -2,8 +2,6 @@
   <div class="main col-md-12 col-lg-12 row">
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
-
-
         <modal name="modalIncl" :width="1150" :height="500" style="background:transparent">
           <div class="modal-bign">
             <div class="Table" align="center" x:publishsource="Excel">
@@ -101,22 +99,146 @@
           </div>
         </modal>
 
-        <modal name="tablePGNO"  :width="500" :height="550" :adaptive="true" class="chart">
+        <modal name="tablePGNO"  :width="550" :height="550" :adaptive="true" class="chart">
 
-        <div class="tablePgno col-13" style="width: 100%; height: 100%; overflow-y: auto;">
-            <table class="table" >
+          <div id="table-wrapper">
+  <div id="table-scroll">
+    <table>
+        <thead>
+            <tr>
+                <th><span class="text">Наименование</span></th>
+                <th><span class="text">ШГН (покупка)</span></th>
+                <th><span class="text">ЭЦН (аренда)</span></th>
+            </tr>
+        </thead>
+        <tbody>
+<tr> 
+  <td>Доп. добыча жидкости, тыс.т</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.liquid)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.liquid)}}</td> 
+</tr>
+<tr> 
+  <td>Доп. добыча нефти, тыс.т</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.oil)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.oil)}}</td>
+</tr>
+<tr> 
+  <td>Количество отработанных дней, сут</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.workday)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.workday)}}</td>
+</tr>
+<tr>
+  <td>Количество ПРС</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.kolichestvoPrs)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.kolichestvoPrs)}}</td>
+</tr>
+<tr>
+  <td>Среднее продолжительность 1 ПРС, сут</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.sredniiPrs)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.sredniiPrs)}}</td>
+</tr>
+<tr>
+  <td>Определение доходной части, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiDohod/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiDohod/1000)}}</td>
+</tr>
+<tr>
+  <td>Расчет НДПИ, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdpi/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdpi/1000)}}</td>
+</tr>
+<tr>
+  <td>Расчет Рентного налога, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiRent/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiRent/1)}}</td>
+</tr>
+<tr>
+  <td>Расчет ЭТП, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiEtp/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiEtp/1)}}</td>
+</tr>
+<tr>
+  <td>Расчет Расходов по транспортировке нефти, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiTrans/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiTrans/1000)}}</td>
+</tr>
+<tr>
+  <td>Затраты на электроэнергию, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrElectShgn/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrElectEcn/1000)}}</td>
+</tr>
+<tr>
+  <td>Затраты на подготовку, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrPrep/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrPrep/1000)}}</td>
+</tr>
+<tr>
+  <td>Затраты на ПРС, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrPrs/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrPrs/1000)}}</td>
+</tr>
+<tr>
+  <td>Затраты за суточное обслуживание, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrSutObs/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrSutObs/1000)}}</td>
+</tr>
+<tr>
+  <td>Стоимость аренды оборудования, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiArenda/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiArenda/1000)}}</td>
+</tr>
+<tr>
+  <td>Амортизация, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiAmortizacia/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiAmortizacia/1000)}}</td>
+</tr>
+<tr>
+  <td>Операционная прибыль, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiOperPryb/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiOperPryb/1000)}}</td>
+</tr>
+<tr>
+  <td>КПН, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiKpn/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiKpn/1000)}}</td>
+</tr>
+<tr>
+  <td>Чистая прибыль, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiChistPryb/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiChistPryb/1000)}}</td>
+</tr>
+<tr>
+  <td>КВЛ, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiKvl/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiKvl/1000)}}</td>
+</tr>
+<tr>
+  <td>Свободный денежный поток, тыс.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.godovoiSvobPot/1000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiSvobPot/1000)}}</td>
+</tr>
+<tr>
+  <td>NPV, млн.тг</td>
+  <td>{{Math.round(expAnalysisData.npvTable1.npv/1000000)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.npv/1000000)}}</td>
+</tr>
 
-                <tr height="60" style="height: 60pt;">
-                <td>
-                    Наименование
-                </td>
-                <td>
-                    ШГН (покупка)
-                </td>
-                <td>
-                    ЭЦН (аренда)
-                </td>
+
+        </tbody>
+    </table>
+  </div>
+</div>
+
+        <!-- <div class="table-fixed-head col-13" style="width: 100%; height: 100%; overflow-y: auto;">
+            <table border="1" class="table-fixed-head" >
+                <thead>
+                   <tr height="60" style="height: 60pt;">
+                    <th>Наименование</th>
+                    <th>ШГН (покупка)</th>
+                    <th>ЭЦН (аренда)</th>
                 </tr>
+                </thead>
+               
                 <tbody>
                     <tr>
                         <td>Доп. добыча жидкости, м³</td>
@@ -236,14 +358,11 @@
 
                 </tbody>
             </table>
-        </div>
+        </div> -->
 
         </modal>
-
-
-
-        </modal>
-        <div class="gno-line-chart" v-if="visibleChart">
+        
+        <div class="gno-line-chart"  v-if="visibleChart">
           <gno-line-points-chart></gno-line-points-chart>
         </div>
 
@@ -277,23 +396,23 @@
                 <tbody>
                     <tr>
                         <td class="td-pgno" rowspan="1">Qж</td>
-                        <td class="td-pgno" rowspan="1">{{qlCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">{{qlCelValue}} м³/сут</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Qн</td>
-                        <td class="td-pgno" rowspan="1">{{qOil}}</td>
+                        <td class="td-pgno" rowspan="1">{{qOil}} т/сут</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Обв</td>
-                        <td class="td-pgno" rowspan="1">{{wctInput}}</td>
+                        <td class="td-pgno" rowspan="1">{{wctInput}} %</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Рзаб</td>
-                        <td class="td-pgno" rowspan="1">{{bhpCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">{{bhpCelValue}} ат</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Рпр</td>
-                        <td class="td-pgno" rowspan="1">{{piCelValue}}</td>
+                        <td class="td-pgno" rowspan="1">{{piCelValue}} ат</td>
                     </tr>
                 </tbody>
                 </table>
@@ -310,15 +429,15 @@
                 <tbody>
                     <tr>
                         <td class="td-pgno" rowspan="1">Ø насоса</td>
-                        <td class="td-pgno" rowspan="1">{{shgnPumpType}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnPumpType}} мм</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Число качаний</td>
-                        <td class="td-pgno" rowspan="1">{{shgnSPM}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnSPM}} мин-1</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Длина хода</td>
-                        <td class="td-pgno" rowspan="1">{{shgnLen}}</td>
+                        <td class="td-pgno" rowspan="1">{{shgnLen}} м</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Тип СК</td>
@@ -326,11 +445,11 @@
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Ø НКТ</td>
-                        <td class="td-pgno" rowspan="1">{{tubOD}}</td>
+                        <td class="td-pgno" rowspan="1">{{tubOD}} мм</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Нсп насоса</td>
-                        <td class="td-pgno" rowspan="1">{{hPumpValue}}</td>
+                        <td class="td-pgno" rowspan="1">{{hPumpValue}} м</td>
                     </tr>
                 </tbody>
                 </table>
@@ -348,11 +467,11 @@
                     Штанги
                 </td>
                 <td class="td-pgno" rowspan="1">
-                    Ø
+                    Ø, мм
                 </td>
 
                 <td class="td-pgno" rowspan="1">
-                    Длина
+                    Длина, м
                 </td>
 
 
@@ -392,7 +511,6 @@
                 <span>Рпл</span>
               </div>
               <div class="cell4-gno table-border-gno cell4-gno-second col-5">
-                <!-- <input v-model="pResInput" type="text" class="square2" /> -->
                 <input v-model="pResInput" @change="postCurveData()" type="text" class="square2" />
               </div>
 
@@ -402,7 +520,6 @@
 
                 </div>
                 <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-                  <!-- <input :disabled="curveSelect != 'pi'" v-model="piInput" @ type="string" class="square1" /> -->
                   <input v-model="piInput" :disabled="curveSelect != 'pi'" @change="postCurveData()" type="text" class="square2" />
                 </div>
 
@@ -420,14 +537,14 @@
 
           <div class="col-4 relative">
             <div class="cell4-gno col-4">
-              <span>Обв.</span>
+              <span>Обв</span>
             </div>
             <div class="cell4-gno table-border-gno cell4-gno-second col-5">
               <input v-model="wctInput" @change="postCurveData()" type="text" class="square2" />
             </div>
 
             <div class="cell4-gno table-border-gno-top col-4">
-              <span>ГФ.</span>
+              <span>ГФ</span>
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               <input v-model="gorInput" @change="postCurveData()" type="text" class="square2" />
@@ -680,10 +797,24 @@
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">
+              Длина хода
+            </div>
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+              {{strokeLenDev}} м
+            </div>
+            
+            <div class="cell4-gno table-border-gno-top col-7">
+              Число качаний
+            </div>
+            <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
+              {{spmDev}} м-1
+            </div>
+
+            <div class="cell4-gno table-border-gno-top col-7">
               Диаметр насоса
             </div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{pumpType}}м
+              {{pumpType}} мм
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Нсп</div>
@@ -693,7 +824,7 @@
 
             <div class="cell4-gno table-border-gno-top col-7">Наружн. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{tubOD}}мм
+              {{tubOD}} мм
             </div>
             <div class="cell4-gno table-border-gno-top col-7">Внутр. ØНКТ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
@@ -712,7 +843,7 @@
         <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" />
         <div class="box">
           <div class="select-well col-12">
-            <div class="select-gno">PVT</div>
+            <div class="select-gno"><b>PVT</b></div>
           </div>
           <span class="closer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -733,7 +864,7 @@
 
             <div class="cell4-gno table-border-gno-top col-7">ГФ</div>
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
-              {{gor}}
+              {{gor}} куб/т
             </div>
 
             <div class="cell4-gno table-border-gno-top col-7">Т пл</div>
@@ -772,7 +903,7 @@
       </div>
 
       <div class="tables-string-gno2">
-        <div class="select-well col-12">Технологический режим</div>
+        <div class="select-well col-12"><b>Технологический режим</b></div>
         <div class="cell4-gno col-7">Qж</div>
         <div class="cell4-gno table-border-gno cell4-gno-second col-5">
           {{qL}} м3/сут
@@ -843,7 +974,7 @@ export default {
         height: 450,
         showlegend: true,
         xaxis: {
-          title: "Дебит, Qж, м³/сут.",
+          // title: "Дебит, Qж, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           zeroline: false,
@@ -854,7 +985,9 @@ export default {
           //tickfont: {size: 10},
         },
         yaxis: {
+          title: "Давление, Pзаб, атм.",
           hoverformat: ".1f",
+          showlegend: true,
           // showline: true,
           zeroline: false,
           //showgrid: true,
@@ -980,6 +1113,8 @@ export default {
         sk: null,
         grp_skin: false,
         newData: null,
+        strokeLenDev: null,
+        spmDev: null,
         expAnalysisData:{
             NNO1:null,
             NNO2:null,
@@ -1074,6 +1209,8 @@ export default {
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0)
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
+        this.strokeLenDev = data["Well Data"]["stroke_len"][0]
+        this.spmDev = data["Well Data"]["spm"][0]
 
 
         this.stopDate = this.stopDate.substring(0, 10)
@@ -1090,9 +1227,11 @@ export default {
         this.qlCelButton = true
         this.qlCelValue = this.qLInput*1
         this.hPumpValue = this.hPumpSet
-
-
-
+        
+        
+        if (this.sk == "ПШГН") {
+          Vue.prototype.$notifyWarning('Тип СК на скважине не определен')
+        } else
         if (this.expMeth == "ШГН") {
               this.expChoose = "ШГН"
         } else {
@@ -1107,7 +1246,7 @@ export default {
         this.piButton = true
         this.curveLineData = JSON.parse(data.LineData)["data"]
         this.curvePointsData = JSON.parse(data.PointsData)["data"]
-        this.qOil = this.curvePointsData[2]["q_oil"]
+        this.qOil = this.curvePointsData[2]["q_oil"].toFixed(0)
         this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
         this.qlPot = this.curvePointsData[1]["q_l"].toFixed(0)
         this.pinPot = this.curvePointsData[1]["pin"].toFixed(0)
@@ -1250,6 +1389,10 @@ export default {
 
     async ExpAnalysisMenu(){
         await this.NnoCalc()
+
+         if(this.casOD < 128) {
+          Vue.prototype.$notifyError('В ЭК 128 мм применение УЭЦН с габаритами 5 и 5А невозможно')
+         }
 
         if (this.qlCelValue<40){
             Vue.prototype.$notifyError("Не рекомендуется применение ЭЦН");
@@ -1520,6 +1663,10 @@ export default {
           this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
           this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
+          this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0)
+          
+          Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
+
 
 
 
@@ -1571,7 +1718,6 @@ export default {
         this.whpInput = 0;
 
         //Параметры подбора
-        this.hPumpValue = 0
         this.qlCelValue = 0;
         this.bhpCelValue = 0;
         this.piCelValue = 0;
@@ -1637,15 +1783,6 @@ export default {
 
         if(this.pResInput * 1 <= this.bhpInput * 1 || this.pResInput * 1 <= this.bhpCelValue * 1) {
           Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
-          } else if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
-          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
-          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
-          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else {
             this.axios.post(uri, jsonData).then((response) => {
               var data = response.data;
@@ -1657,7 +1794,18 @@ export default {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          
+          if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           }
+          } 
 
           } else {
         }
@@ -1818,12 +1966,10 @@ export default {
     },
 
     onCompareNpv() {
-      console.log(this.expAnalysisData.ecnNpv);
-      console.log(this.expAnalysisData.shgnNpv);
       if(this.expAnalysisData.ecnNpv > this.expAnalysisData.shgnNpv) {
-        this.expChoose == "ЭЦН"
+        this.expChoose = "ЭЦН"
       } else {
-        this.expChoose == "ШГН"
+        this.expChoose = "ШГН"
       }
       this.$modal.hide("modalExpAnalysis");
     },
@@ -1835,6 +1981,16 @@ export default {
     },
 
     onPgnoClick() {
+        if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
+          Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
+          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else {
         if(this.expChoose == 'ШГН'){
           if(this.visibleChart) {
         let uri = "http://172.20.103.187:7575/api/pgno/shgn";
@@ -1880,28 +2036,7 @@ export default {
         }
 
     }
-    },
-  beforeCreate: function() {
-    let uri = "http://172.20.103.187:7575/api/pgno/UZN/0046/";
-      this.axios.get(uri).then((response) => {
-        var data = response.data;
-
-        if (data) {
-          this.setData(data)
-          this.$emit('LineData', this.curveLineData)
-          this.$emit('PointsData', this.curvePointsData)
-          //this.NnoCalc();
-          this.qOil = this.curvePointsData[0]["q_oil"].toFixed(0)
-          this.bhpPot = this.curvePointsData[1]["p"].toFixed(0)
-          console.log(this.bhpPot);
-        } else {
-          console.log("No data");
-        }
-
-
-      });
-
-  },
+  }},
 };
 </script>
 

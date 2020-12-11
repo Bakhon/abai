@@ -15,31 +15,45 @@ export default {
   props: ["postTitle"],
   data: function () {
     return {
-      flag: false,
       layout: {
-        //      showlegend: false,
+        // width:  1200,
+        height: 490,
+        // autosize: true,
+        // showlegend: false,
         xaxis: {
           title: "Дебит, Qж, м³/сут.",
           hoverformat: ".1f",
-          //  showline: true,
+          // showline: true,
           // autorange: false,
-          // range: [0,150],
-          zeroline: false,
+          //
+          //
+          // showgrid: true,
+          // showline: true,
+          mirror: 'ticks',
+          // range: [0,100],
+          // zeroline: false,
           // showgrid: true,
           // mirror:true,
           // ticklen: 4,
-          gridcolor: "#123E73",
-          //tickfont: {size: 10},
+          gridcolor: "#454D7D",
+          // tickfont: {size: 10},
+          linewidth: 1,
+          linecolor: "#454D7D"
         },
         yaxis: {
+          title: "Давление, атм",
           hoverformat: ".1f",
           // showline: true,
-          zeroline: false,
-          //showgrid: true,
+          // range: [0,100],
+          // zeroline: false,
+          // showgrid: true,
+          mirror: 'ticks',
           // mirror:true,
           // ticklen: 4,
-          gridcolor: "#123E73",
-          //tickfont: {size: 10},
+          gridcolor: "#454D7D",
+          // tickfont: {size: 10},
+          linewidth: 1,
+          linecolor: "#454D7D"
         },
 
         //   scene:{ gridcolor: '#ffffff',},

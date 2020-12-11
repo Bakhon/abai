@@ -4,7 +4,7 @@
       <div class="container economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
         <div class="row">
           <div class="col-12">
-            <h3 class="economicHeader">Экономический эффект 2021</h3>
+            <h3 class="economicHeader">Экономический эффект {{nextYear}}</h3>
           </div>
         </div>
         <div class="row">
@@ -28,146 +28,284 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <h3 class="economicHeader">Экономический эффект 2020</h3>
+            <h3 class="economicHeader">Экономический эффект {{currentYear}}</h3>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+                <table class="table table-bordered economicModalTable">
+                    <tbody>
+                        <tr v-for="row in economicCurrentYear">
+                            <td>{{row[0]}}</td>
+                            <td>{{row[1]}}</td>
+                            <td>{{row[2]}}</td>
+                            <td>{{row[3]}}</td>
+                            <td>{{row[4]}}</td>
+                            <td>{{row[5]}}</td>
+                            <td>{{row[6]}}</td>
+                            <td>{{row[7]}}</td>
+                            <td>{{row[8]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
           </div>
         </div>
       </div>
     </modal>
-    <modal name="corrosion" :width="1000" :height="430" :adaptive="true">
-      <div class="container economicModal" style="min-height: 430px">
-        <br />
-        <div class="row">
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Cкорость потока, м/сек: {{ result.flow_velocity_meter_per_sec }}
-            </h6>
+    <modal name="corrosion" :width="1100" :height="750" :adaptive="true">
+      <div class="container economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
+        <h1>Гидравлический симулятор коррозии</h1>
+        <div class="row corrosion">
+          <div class="col-12">
+            <h4>Условия среды</h4>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Массовый расход, кг/сек: {{ result.m_dot }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td>H2S в воде</td>
+                          <td v-if="wmLastH2S">{{wmLastH2S.hydrogen_sulfide}} мг/л</td>
+                      </tr>
+                      <tr>
+                          <td>CO2 в воде</td>
+                          <td v-if="wmLastCO2">{{wmLastCO2.carbon_dioxide}} мг/л</td>
+                      </tr>
+                      <tr>
+                          <td>H2S в газе</td>
+                          <td v-if="oilGas">{{oilGas.hydrogen_sulfide_in_gas}} ppm</td>
+                      </tr>
+                      <tr>
+                          <td>H2S в газе</td>
+                          <td v-if="oilGas">{{oilGas.carbon_dioxide_in_gas}} %</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Конечное давление, бар: {{ result.final_pressure_bar_point_F }}
-            </h6>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Cкорость коррзоии в точке А, мм/год:
-              {{ result.corrosion_rate_mm_per_y_point_A }}
-            </h6>
-          </div>
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Cкорость коррзоии в точке Е, мм/год:
-              {{ result.corrosion_rate_mm_per_y_point_E }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td>Парциальное давление рH2S</td>
+                          <td>{{result.pH2S_kPa}} кПа</td>
+                      </tr>
+                      <tr>
+                          <td>Парциальное давление рCO2</td>
+                          <td>{{result.pCO2_kPa}} кПа</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Cкорость коррзоии в точке F, мм/год:
-              {{ result.corrosion_rate_mm_per_y_point_F }}
-            </h6>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Дозировка в точке А, г/м3: {{ result.dose_mg_per_l_point_A }}
-            </h6>
-          </div>
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Дозировка в точке E, г/м3: {{ result.dose_mg_per_l_point_E }}
-            </h6>
-          </div>
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Дозировка в точке F, г/м3: {{ result.dose_mg_per_l_point_F }}
-            </h6>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Cреда в точке А: {{ result.environment_point_A }}
-            </h6>
-          </div>
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Cреда в точке E: {{ result.environment_point_E }}
-            </h6>
-          </div>
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Cреда в точке F: {{ result.environment_point_F }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td>Среда в коммуникации ГУ, точка А</td>
+                          <td>{{ result.environment_point_A }}</td>
+                      </tr>
+                      <tr>
+                          <td>Среда в коллекторе, точка E</td>
+                          <td>{{ result.environment_point_E }}</td>
+                      </tr>
+                      <tr>
+                          <td>Среда в коллекторе, точка F</td>
+                          <td>{{ result.environment_point_F }}</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
         </div>
-        <div class="row">
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Папавинасам скорость коррзоии в точке А, мм/год:
-              {{ result.papavinasam_corrosion_mm_per_y_point_A }}
-            </h6>
+        <br>
+        <div class="row corrosion">
+          <div class="col-12">
+            <h4>Гидравлические параметры</h4>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Папавинасам скорость коррзоии в точке E, мм/год:
-              {{ result.papavinasam_corrosion_mm_per_y_point_E }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>ГУ, точка А</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Давление</td>
+                          <td v-if="ngdu">{{ngdu.surge_tank_pressure}} бар</td>
+                      </tr>
+                      <tr>
+                          <td>Температура</td>
+                          <td>25 С</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Папавинасам скорость коррзоии в точке F, мм/год:
-              {{ result.papavinasam_corrosion_mm_per_y_point_F }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>Коллектор, точка Е</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Давление</td>
+                          <td v-if="ngdu">{{ngdu.pump_discharge_pressure}} бар</td>
+                      </tr>
+                      <tr>
+                          <td>Температура</td>
+                          <td>{{result.t_final_celsius_point_E}} С</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+          <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>Коллектор, точка F</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Давление</td>
+                          <td>{{result.final_pressure_bar_point_F}} бар</td>
+                      </tr>
+                      <tr>
+                          <td>Температура</td>
+                          <td>{{result.t_final_celsius_point_F}} C</td>
+                      </tr>
+                      <tr>
+                          <td>Скорость потока</td>
+                          <td>{{result.flow_velocity_meter_per_sec}} м/с</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
         </div>
-        <div class="row">
-          <div class="col-4">
-            <h6 class="economicHeader">Падение давления: {{ result.dP }}</h6>
+        <br>
+        <div class="row corrosion">
+          <div class="col-12">
+            <h4>Коррозия</h4>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Конечная температура в точке F:
-              {{ result.t_final_celsius_point_F }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>ГУ, точка A</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Фактическая общая скорость коррозии (тест купоны), V кор (факт)</td>
+                          <td v-if="lastCorrosion">{{lastCorrosion.background_corrosion_velocity.toFixed(2)}} мм/год</td>
+                      </tr>
+                      <tr>
+                          <td>Расчетная общая скорость коррозии, V кор (А)</td>
+                          <td>{{ result.corrosion_rate_mm_per_y_point_A }} мм/год</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Скорость коррзоии,мм/год: {{ result.corrosion_mm_per_year }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>Коллектор, точка E</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Расчетная общая скорость коррозии, V кор (Е)</td>
+                          <td>{{result.corrosion_rate_mm_per_y_point_E}} мм/год</td>
+                      </tr>
+                      <tr>
+                          <td>Расчетная локальная скорость коррозии (тест купоны), V кор (Е)</td>
+                          <td>{{ result.papavinasam_corrosion_mm_per_y_point_E }} мм/год</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+          <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>Коллектор, точка F</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Расчетная общая скорость коррозии, V кор (F)</td>
+                          <td>{{result.corrosion_rate_mm_per_y_point_F}} мм/год</td>
+                      </tr>
+                      <tr>
+                          <td>Расчетная локальная скорость коррозии (тест купоны), V кор (F)</td>
+                          <td>{{ result.papavinasam_corrosion_mm_per_y_point_F }} мм/год</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
         </div>
-        <div class="row">
-          <div class="col-4">
-            <h6 class="economicHeader">
-              Парциальное давление pCO2, кПа: {{ result.pCO2_kPa }}
-            </h6>
+        <br>
+        <div class="row corrosion">
+          <div class="col-12">
+            <h4>Ингибитор коррозии</h4>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Парциальное давление pH2S, кПа: {{ result.pH2S_kPa }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>ГУ, точка A</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Рекомендуемая дозировка</td>
+                          <td v-if="result">{{result.dose_mg_per_l_point_A}} мг/л</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">H2S, мг/л: {{ result.H2S_mg_per_l }}</h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>Коллектор, точка E</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Рекомендуемая дозировка</td>
+                          <td v-if="result">{{result.dose_mg_per_l_point_E}} мг/л</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
-        </div>
-        <div class="row">
           <div class="col-4">
-            <h6 class="economicHeader">CO2, мг/л: {{ result.CO2_mg_perl }}</h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td colspan="2"><h5>Коллектор, точка F</h5></td>
+                      </tr>
+                      <tr>
+                          <td>Рекомендуемая дозировка</td>
+                          <td v-if="result">{{result.dose_mg_per_l_point_F}} мг/л</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
           <div class="col-4">
-            <h6 class="economicHeader">
-              Пропорция pCO2 к pH2S: {{ result.pCO2_per_pH2S }}
-            </h6>
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td>Максимальная рекомендуемая дозировка</td>
+                          <td v-if="result">{{result.max_dose}} мг/л</td>
+                      </tr>
+                  </tbody>
+              </table>
           </div>
-          <div class="col-4"></div>
+          <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td>Фактическая дозировка</td>
+                          <td v-if="current_dosage">{{current_dosage}} мг/л</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+          <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                  <tbody>
+                      <tr>
+                          <td>Плановая дозировка</td>
+                          <td v-if="plan_dosage">{{plan_dosage}} мг/л</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
         </div>
       </div>
     </modal>
@@ -377,11 +515,12 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicNextYear.length < 2">
-            Экономический эффект</button
+            <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicCurrentYear.length < 2">
+                Экономический эффект
+            </button
             ><br />
             <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">
-            Коррозия
+                Гидравлический симулятор коррозии
             </button>
             <br>
             <div class="media">
@@ -408,6 +547,7 @@ import VueTableDynamic from 'vue-table-dynamic';
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
+
 export default {
   components: {
 	Calendar,
@@ -455,17 +595,10 @@ export default {
 	  corF: null,
 	  dose: 0,
 	  result: {},
-	  params: {
-		data: [],
-		enableSearch: false,
-		header: "row",
-		border: true,
-		stripe: true,
-		pageSize: 10,
-		height: 430,
-		wordWrap: "break-word"
-      },
-      economicNextYear: []
+    economicNextYear: [],
+    economicCurrentYear: [],
+    currentYear: new Date().getFullYear(),
+    nextYear: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).getFullYear()
 	};
   },
   beforeCreate: function () {
@@ -480,6 +613,7 @@ export default {
   },
   methods: {
 	chooseGu(event) {
+        this.dose = 0;
 	  this.axios
 		.post("/ru/getgudata", {
 		  gu_id: event.target.value,
@@ -546,7 +680,7 @@ export default {
 			  this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
 			  this.signalizator = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
 			  this.signalizatorAbs = Math.abs(this.signalizator),
-			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor.toFixed(1),
+			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor,
 			  this.wmLast = data.wmLast,
 			  this.wmLastH2S = data.wmLastH2S,
 			  this.wmLastCO2 = data.wmLastCO2,
@@ -619,8 +753,21 @@ export default {
 		.then((response) => {
 		  let data = response.data;
 		  if (data) {
-			console.log(data);
 			this.economicNextYear = data;
+		  } else {
+			console.log("No data");
+		  }
+        });
+
+	  this.axios
+		.post("/ru/vcoreconomiccurrent", {
+		  gu: gu,
+		})
+		.then((response) => {
+		  let data = response.data;
+		  if (data) {
+              console.log(data);
+              this.economicCurrentYear = data;
 		  } else {
 			console.log("No data");
 		  }
@@ -637,7 +784,7 @@ export default {
 }
 
 .economicModal {
-  background-color: #0f1430;
+  background-color: #0F1430;
   /* border: 1px solid #0d2b4d; */
 }
 .radial {
@@ -651,5 +798,9 @@ export default {
 .economicModalTable{
     color: #fff;
     border: #fff solid 2px;
+}
+.corrosion {
+    background-color: #20274F;
+    margin: 2px;
 }
 </style>
