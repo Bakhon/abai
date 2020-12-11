@@ -359,7 +359,7 @@ class WaterMeasurementController extends Controller
         $kormass = ComplicationMonitoringGuKormass::where('gu_id','=',$request->gu_id)->with('kormass')->first();
         $pipe = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','eg')->first();
         $pipeAB = Pipe::where('gu_id','=',$request->gu_id)->where('plot','=','ab')->first();
-        $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->latest()->first();
+        $lastCorrosion = ComplicationMonitoringCorrosion::where('gu_id','=',$request->gu_id)->whereNotNull('corrosion_velocity_with_inhibitor')->latest()->first();
         $constantsValues = ConstantsValue::get();
         $chartDtCarbonDioxide['dt']  = [];
         $chartDtHydrogenSulfide['dt']  = [];

@@ -1,7 +1,7 @@
 <template>
 <div class="container-fluid">
-    <modal name="economicmodal" :width="1000" :height="400" :adaptive="true">
-      <div class="container economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
+    <modal name="economicmodal" :width="1200" :height="600" :adaptive="true">
+      <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
         <div class="row">
           <div class="col-12">
             <h3 class="economicHeader">Экономический эффект {{nextYear}}</h3>
@@ -44,7 +44,6 @@
                             <td>{{row[5]}}</td>
                             <td>{{row[6]}}</td>
                             <td>{{row[7]}}</td>
-                            <td>{{row[8]}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,8 +51,8 @@
         </div>
       </div>
     </modal>
-    <modal name="corrosion" :width="1100" :height="750" :adaptive="true">
-      <div class="container economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
+    <modal name="corrosion" :width="1200" :height="800" :adaptive="true">
+      <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
         <h1>Гидравлический симулятор коррозии</h1>
         <div class="row corrosion">
           <div class="col-12">
@@ -488,26 +487,23 @@
                 <monitor-chart-radialbar></monitor-chart-radialbar>
             </div>
             <div class="signalizator">
-                <div
-                    v-if="signalizator < 0 && signalizator != null"
-                    class="text-wrap"
-                >
+                <div v-if="signalizatorAbs > 0 && signalizatorAbs != null" class="text-wrap">
                     <div
-                    v-if="signalizatorAbs <= 10"
+                    v-if="signalizatorAbs <= 5"
                     class="alert alert-success"
                     role="alert"
                     >
                     Фактическая превышает плановую дозировку на {{ signalizatorAbs }}%
                     </div>
                     <div
-                    v-if="signalizatorAbs > 10 && signalizatorAbs <= 30"
+                    v-if="signalizatorAbs > 5 && signalizatorAbs <= 10"
                     class="alert alert-warning"
                     role="alert"
                     >
                     Фактическая превышает плановую дозировку на {{ signalizatorAbs }}%
                     </div>
                     <div
-                    v-if="signalizatorAbs > 30"
+                    v-if="signalizatorAbs > 10"
                     class="alert alert-danger"
                     role="alert"
                     >
@@ -678,8 +674,8 @@ export default {
 			  this.heater_inlet_pressure = response.data.ngdu.heater_inlet_pressure,
 			  this.heater_output_pressure = response.data.ngdu.heater_output_pressure,
 			  this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
-			  this.signalizator = ((response.data.ca.plan_dosage - response.data.uhe.current_dosage) * response.data.ca.plan_dosage) / 100,
-			  this.signalizatorAbs = Math.abs(this.signalizator),
+			  this.signalizator = response.data.uhe.current_dosage * 100 / response.data.ca.plan_dosage,
+			  this.signalizatorAbs = Math.round(this.signalizator),
 			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor,
 			  this.wmLast = data.wmLast,
 			  this.wmLastH2S = data.wmLastH2S,
