@@ -119,12 +119,12 @@
                 </tr>
                 <tbody>
                     <tr>
-                        <td>Доп. добыча жидкости, тыс.т</td>
+                        <td>Доп. добыча жидкости, м³</td>
                         <td>{{Math.round(expAnalysisData.npvTable1.liquid)}}</td>
                         <td>{{Math.round(expAnalysisData.npvTable2.liquid)}}</td>
                     </tr>
                     <tr>
-                        <td>Доп. добыча нефти, тыс.т</td>
+                        <td>Доп. добыча нефти, м³</td>
                         <td>{{Math.round(expAnalysisData.npvTable1.oil)}}</td>
                         <td>{{Math.round(expAnalysisData.npvTable2.oil)}}</td>
                     </tr>
@@ -1301,7 +1301,7 @@ export default {
                 this.param_eco=1;
                 await this.EconomCalc();
             } else {
-                if(this.expChoose=="ШГН"){
+                if(this.expMeth=="ШГН"){
                     this.expAnalysisData.NNO1=date_diff;
                     this.param_eco=1;
                     await this.EconomCalc();
