@@ -22,8 +22,8 @@ export default {
         //start: "2020-01-06T06:00:00+06:00",
         //end: "2020-01-10T06:00:00+06:00",
 
-        start: "2020-12-08T06:00:00+06:00",
-        end: "2020-12-10T09:00:00+06:00",
+        start: "2020-10-08T06:00:00+06:00",
+        end: "2020-10-10T09:00:00+06:00",
       },
       modelConfig: {
         start: {
@@ -315,7 +315,7 @@ export default {
       if (change == 1) {
 
         this.buttonHover7 = buttonHover;
-        console.log(this.date.getDate() - 1);
+        //console.log(this.date.getDate() - 1);
         this.range = {
           start: new Date(this.year + '-' + this.month + '-'+this.pad(this.date.getDate() - 1)+'T06:00:00+06:00'),
           //start: (this.date.setDate(this.date.getDate() - 1)),//.toISOString(),
@@ -551,7 +551,7 @@ export default {
               ),
             ]);
           });
-          console.log(dateInOil);
+          //console.log(dateInOil);
           this.$emit("oilChart", dateInOil);
         } else {
           console.log("No data");
@@ -686,14 +686,13 @@ export default {
 
 
 
-    getProductionOilandGas() {
-      //data from the day
-      let uri = "/ru/visualcenter3GetData";
+    getProductionOilandGas(data) {
+     /* //data from the day
+      let uri = "/ru/visualcenter3GetData?timestampToday=" + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
       //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
-        if (data) {
-
+        if (data) {*/         
           var timestampToday = this.timestampToday;
           var timestampEnd = this.timestampEnd;
           var company = this.company;
@@ -797,16 +796,15 @@ export default {
           this.gas_planDay = gas_planSumm;
           this.gas_factDayProgressBar = (gas_factSumm / gas_planSumm) * 100;
 
-        }
-      });
+       // }
+      //});
     },
-    getProductionOilandGasPercent() {     //data from the day
-      let uri = "/ru/visualcenter3GetData";
+    getProductionOilandGasPercent(data) {     //data from the day
+     /* let uri = "/ru/visualcenter3GetData?timestampToday=" + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
       //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
-        if (data) {
-
+        if (data) {*/
           var timestampToday = this.timestampToday;
           var timestampEnd = this.timestampEnd;
           var company = this.company;
@@ -903,8 +901,8 @@ export default {
           this.gas_factDayPercent = gas_factSumm;
           this.oil_dlv_factDayPercent = oil_dlv_factSumm;
 
-        }
-      });
+//}
+     // });
     },
 
     getProduction(item, item2, item3, item4) {
@@ -931,19 +929,21 @@ export default {
         alert("Сначала выберите название компании");
       }
 
-      //data from the year
+   /*   //data from the year
       var data2;
       let uri2 = "/js/json/getnkkmgyear.json";
       this.axios.get(uri2).then((response) => {
         data2 = response.data;
-      });
+      });*/
 
       //data from the day
-      let uri = "/ru/visualcenter3GetData";
+      let uri = "/ru/visualcenter3GetData?timestampToday=" + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
+    
       //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
+          console.log(data);
           var NameDzoFull = this.NameDzoFull;
           var company = this.company;
           var summForTables = [];
@@ -991,7 +991,7 @@ export default {
             var arrdata = new Array();
             arrdata = _.filter(data, _.iteratee({ dzo: company }));
 
-            this.getProductionPercentOneDzo(arrdata);
+            //this.getProductionPercentOneDzo(arrdata);
 
             var dataDay = [];
             dataDay = _.filter(arrdata, _.iteratee({ __time: timestampToday }));
@@ -1115,17 +1115,17 @@ export default {
           var dataYear = [];
           var dzo = [];
           dataDay = data;
-          dataYear = data2;
+          //dataYear = data2;
           var factYear = [];
           var planYear = [];
           var dataMonth = [];
           var dzoYear = [];
-          dataMonth = _.filter(
+          /*dataMonth = _.filter(
             data2,
             _.iteratee({ period: "2020 (с начала года)" })
-          );
+          );*/
 
-          dataMonth = _.orderBy(dataMonth, ["dzo"], ["desc"]);
+        /*  dataMonth = _.orderBy(dataMonth, ["dzo"], ["desc"]);
 
           _.forEach(dataMonth, function (item) {
             var e = [];
@@ -1138,7 +1138,7 @@ export default {
             var p = [];
             p = { planYear: Math.ceil(item[productionPlan]) };
             planYear.push(p);
-          });
+          });*/
 
           var dataWithMay = new Array();
           dataWithMay = _.filter(data, function (item) {
@@ -1398,7 +1398,7 @@ export default {
 
 
 
-
+          /*
           //changed data reject
           var getProductionPercent = this.getProductionPercent(data);
           getProductionPercent = _.orderBy(getProductionPercent, ["dzoPercent"], ["desc"]);
@@ -1408,6 +1408,7 @@ export default {
             // dzoPercent.push({ dzoPercent: item.dzoPercent });
             productionFactPercent.push({ productionFactPercent: item.productionFactPercent });
           });
+          */
 
 
 
@@ -1481,7 +1482,7 @@ export default {
 
 
 
-          var productionFactPercentSumm = _.reduce(
+       /*   var productionFactPercentSumm = _.reduce(
             productionFactPercent,
             function (memo, item) {
               return memo + item.productionFactPercent;
@@ -1490,7 +1491,7 @@ export default {
           );
 
 
-          this.productionFactPercentSumm = productionFactPercentSumm;
+          this.productionFactPercentSumm = productionFactPercentSumm;*/
 
           var bigTable = _.zipWith(
             productionFactPercent,
@@ -1586,8 +1587,12 @@ export default {
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
         }
+        this.getProductionOilandGas(data);
+        this.getProductionOilandGasPercent(data);
       });
       this.showTable(localStorage.getItem("changeButton"));
+
+     
     },
 
 
@@ -1723,10 +1728,10 @@ export default {
       var nowDate = new Date(this.range.start).toLocaleDateString();
       this.timeSelect = nowDate;
       this.getProduction(this.item, this.item2, this.item3, this.item4);
-      this.getProductionOilandGas();
+      //this.getProductionOilandGas();
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
-      this.getProductionOilandGasPercent();
+     // this.getProductionOilandGasPercent();
     },
 
     getNameDzoFull: function (dzo) {
