@@ -674,7 +674,7 @@ export default {
 			  this.heater_inlet_pressure = response.data.ngdu.heater_inlet_pressure,
 			  this.heater_output_pressure = response.data.ngdu.heater_output_pressure,
 			  this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
-			  this.signalizator = response.data.uhe.current_dosage * 100 / response.data.ca.plan_dosage,
+			  this.signalizator = (response.data.uhe.current_dosage - response.data.ca.plan_dosage) * 100 / response.data.ca.plan_dosage,
 			  this.signalizatorAbs = Math.round(this.signalizator),
 			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor,
 			  this.wmLast = data.wmLast,
