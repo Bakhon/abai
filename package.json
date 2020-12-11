@@ -28,6 +28,7 @@
         "@fortawesome/fontawesome-free": "^5.15.1",
         "@marketconnect/vue-pivot-table": "^1.0.0",
         "@syncfusion/ej2-vue-pivotview": "^18.3.44",
+        "ant-design-vue": "^1.7.2",
         "apexcharts": "^3.22.3",
         "beegridtable": "^1.1.5",
         "bootstrap-select": "^1.13.18",

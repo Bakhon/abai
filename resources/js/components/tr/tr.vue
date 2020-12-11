@@ -145,8 +145,8 @@
        <div class="col-md-12 maintable" >
            <div class="maintable-level2">
                <div class="techbt1">
-                    <div class='tech' style="margin-left: 4px;">
-                        <h3> Технологический режим на {{dt}}</h3>
+                    <div class='tech' style="margin-left: 4px; color: white;">
+                        <h3 style="color: white"> Технологический режим на {{dt}}</h3>
                     </div>
                     <!-- <div>
                         <select name="Company" class="from-control" id="companySelect"
@@ -166,7 +166,7 @@
             style="
               background: #272953;
               color: white;
-              margin-left: 1000px;
+              margin-left: 1165px;
               border: none;
             "
           >
@@ -184,11 +184,13 @@
                 stroke-width="1.4"
                 stroke-linecap="round"
               /></svg
-            >Версия для отображения
+            >
           </button>
         </div>
         <!-- <a-spin :spinning="isloading"> -->
+        <!-- <a-spin :spinning="isloading"> -->
         <div>
+            
           <TrTable :wells="wells" @onSort="sortBy" v-show="show_first" />
           <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
           <table
@@ -2766,6 +2768,7 @@
                 </table>
 
             </div>
+        <!-- </a-spin> -->
         </div>
         </div>
     </div>
@@ -2773,6 +2776,8 @@
 <script>
 import TrTable from './table'
 import TrFullTable from './tablefull'
+// import Antd from 'ant-design-vue'
+// import 'ant-design-vue/dist/antd.css'
 
 export default {
   name: "TrPage",
@@ -2790,7 +2795,7 @@ export default {
         else{
             var prMm = mm - 1
         }
-        this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+10+"/").then((response) => {
+        this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
         console.log(this.editdtm);
@@ -2804,12 +2809,13 @@ export default {
         else {
             console.log('No data');
         }
-        if(prMm < 10) {
+        if(prMm < 9) {
             this.dt = '01' + '.0' + prMm + '.' + yyyy;
         }
         else {
             this.dt = '01' + '.' + prMm + '.' + yyyy;
         }
+        this.isloading = false;
     });
   },
   data: function () {
@@ -2829,6 +2835,7 @@ export default {
         year: null,
         selectYear: null,
         month: null,
+        isloading: true,
     }
   },
   methods: {
