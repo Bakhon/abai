@@ -422,7 +422,7 @@
 
                 <td>
                   <div>
-                    <visual-center-speedometer1></visual-center-speedometer1>
+                    <visual-center-speedometer1 v-bind:sliderValue="15"></visual-center-speedometer1>
                   </div>
                   <div class="report-execution">
                     Текущее исполнение КПД
@@ -470,7 +470,7 @@
                 </td>
 
                 <td>
-                  <visual-center-speedometer2></visual-center-speedometer2>
+                    <visual-center-speedometer1 v-bind:sliderValue="42"></visual-center-speedometer1>
                   <div class="report-execution">
                     Текущее исполнение КПД
                   </div>
@@ -517,7 +517,7 @@
                 </td>
 
                 <td>
-                  <visual-center-speedometer3></visual-center-speedometer3>
+                    <visual-center-speedometer1 v-bind:sliderValue="12"></visual-center-speedometer1>
                   <div class="report-execution">
                     Текущее исполнение КПД
                   </div>
@@ -564,7 +564,7 @@
                 </td>
 
                 <td>
-                  <visual-center-speedometer4></visual-center-speedometer4>
+                    <visual-center-speedometer1 v-bind:sliderValue="85"></visual-center-speedometer1>
                   <div class="report-execution">
                     Текущее исполнение КПД
                   </div>
@@ -611,7 +611,7 @@
                 </td>
 
                 <td>
-                  <visual-center-speedometer5></visual-center-speedometer5>
+                    <visual-center-speedometer1 v-bind:sliderValue="27"></visual-center-speedometer1>
                   <div class="report-execution">
                     Текущее исполнение КПД
                   </div>
@@ -658,7 +658,7 @@
                 </td>
 
                 <td>
-                  <visual-center-speedometer6></visual-center-speedometer6>
+                    <visual-center-speedometer1 v-bind:sliderValue="58"></visual-center-speedometer1>
                   <div class="report-execution">
                     Текущее исполнение КПД
                   </div>
@@ -1042,7 +1042,7 @@
               </div></td>
 
               <td class="w-65">
-                  
+
                 <!--  <div class="column-1">
                   <div class="arrow"></div>
                   <div class="txt2">1</div>
