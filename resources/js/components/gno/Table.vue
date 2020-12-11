@@ -239,14 +239,14 @@
 
         <div class="podbor-gno" v-if="!visibleChart">
           <div class="img-text">
-            <div class="text_img_1">Экс.колонка {{this.casID}}мм</div>
-            <div class="text_img_2">НКТ {{this.tubOD}}мм</div>
-            <div class="text_img_3">Штанги {{this.shgnS1D}}мм 0-{{this.shgnS1L}}м</div>
-            <div class="text_img_4">Штанги {{this.shgnS2D}}мм {{this.shgnS1L}}-{{this.shgnS1L * 1 + this.shgnS2L * 1}}м</div>
-            <div class="text_img_5">Штанги {{this.shgnS1D}}мм {{this.shgnS1L * 1 + this.shgnS2L * 1}}-{{this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1}}м</div>
-            <div class="text_img_6">Насос {{this.shgnPumpType}}мм </div>
-            <div class="text_img_7">Интервал перфорации {{this.hPerf}}-{{this.hPerf * 1 + this.hPerfND * 1}}м</div>
-            <div class="text_img_8">Текущий забой {{this.curr}}м</div>
+            <div class="text_img_1">Экс.колонка {{this.casID}} мм</div>
+            <div class="text_img_2">НКТ {{this.tubOD}} мм</div>
+            <div class="text_img_3">Штанги {{this.shgnS1D}} мм 0-{{this.shgnS1L}} м</div>
+            <div class="text_img_4">Штанги {{this.shgnS2D}} мм {{this.shgnS1L}}-{{this.shgnS1L * 1 + this.shgnS2L * 1}} м</div>
+            <div class="text_img_5">Штанги {{this.shgnS1D}} мм {{this.shgnS1L * 1 + this.shgnS2L * 1}}-{{this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1}} м</div>
+            <div class="text_img_6">Насос {{this.shgnPumpType}} мм </div>
+            <div class="text_img_7">Интервал перфорации {{this.hPerf}}-{{this.hPerf * 1 + this.hPerfND * 1}} м</div>
+            <div class="text_img_8">Текущий забой {{this.curr}} м</div>
           </div>
           <div class="image-data">
             <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px" >
@@ -267,7 +267,7 @@
                 <tbody>
                     <tr>
                         <td class="td-pgno" rowspan="1">Qж</td>
-                        <td class="td-pgno" rowspan="1">{{qlCelValue}} м³/сут</td>
+                        <td class="td-pgno" rowspan="1">{{qlCelValue}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Qн</td>
@@ -275,15 +275,15 @@
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Обв</td>
-                        <td class="td-pgno" rowspan="1">{{wctInput}} %</td>
+                        <td class="td-pgno" rowspan="1">{{wctInput}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Рзаб</td>
-                        <td class="td-pgno" rowspan="1">{{bhpCelValue}} ат</td>
+                        <td class="td-pgno" rowspan="1">{{bhpCelValue}}</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Рпр</td>
-                        <td class="td-pgno" rowspan="1">{{piCelValue}} ат</td>
+                        <td class="td-pgno" rowspan="1">{{piCelValue}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -320,7 +320,7 @@
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Нсп насоса</td>
-                        <td class="td-pgno" rowspan="1">{{hPumpValue}} м</td>
+                        <td class="td-pgno" rowspan="1">{{hPumpValue}}</td>
                     </tr>
                 </tbody>
                 </table>
@@ -1264,7 +1264,7 @@ export default {
         await this.NnoCalc()
 
          if(this.casOD < 127) {
-          Vue.prototype.$notifyError('В ЭК 127 мм применение УЭЦН с габаритами 5 и 5А невозможно')
+          Vue.prototype.$notifyError('В ЭК Ø127 мм ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
          }
 
         if (this.qlCelValue < 40){
@@ -1887,7 +1887,6 @@ export default {
         )
         this.axios.post(uri, jsonData).then((response) => {
           var data = JSON.parse(response.data);
-          console.log(data);
           if(data) {
             if (data["error"] == "NoIntersection") {
               Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать невозможно, попробуйте изменить глубину спуска или ожидаемый дебит");
@@ -1912,7 +1911,8 @@ export default {
           })
     } else {
       this.visibleChart = !this.visibleChart
-      this.postCurveData()
+      console.log('error');
+
     }
         } else {
           Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
