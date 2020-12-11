@@ -13,13 +13,9 @@ Vue.use(NotifyPlugin, VueMomentLib);
 Vue.component("Plotly", Plotly);
 
 export default {
-  watch: {
-    activeRightTabName: function (val) {
-      console.log(val)
-    }
-  },
   data: function () {
     return {
+
       activeRightTabName: 'technological-mode',
       layout: {
         width: 950,
