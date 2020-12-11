@@ -112,17 +112,17 @@
             </tr>
         </thead>
         <tbody>
-<tr> 
-  <td>Доп. добыча жидкости, тыс.т</td>
+<tr>
+  <td>Доп. добыча жидкости, м³/сут</td>
   <td>{{Math.round(expAnalysisData.npvTable1.liquid)}}</td>
-  <td>{{Math.round(expAnalysisData.npvTable2.liquid)}}</td> 
+  <td>{{Math.round(expAnalysisData.npvTable2.liquid)}}</td>
 </tr>
-<tr> 
-  <td>Доп. добыча нефти, тыс.т</td>
+<tr>
+  <td>Доп. добыча нефти, т/сут</td>
   <td>{{Math.round(expAnalysisData.npvTable1.oil)}}</td>
   <td>{{Math.round(expAnalysisData.npvTable2.oil)}}</td>
 </tr>
-<tr> 
+<tr>
   <td>Количество отработанных дней, сут</td>
   <td>{{Math.round(expAnalysisData.npvTable1.workday)}}</td>
   <td>{{Math.round(expAnalysisData.npvTable2.workday)}}</td>
@@ -150,12 +150,12 @@
 <tr>
   <td>Расчет Рентного налога, тыс.тг</td>
   <td>{{Math.round(expAnalysisData.npvTable1.godovoiRent/1000)}}</td>
-  <td>{{Math.round(expAnalysisData.npvTable2.godovoiRent/1)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiRent/1000)}}</td>
 </tr>
 <tr>
   <td>Расчет ЭТП, тыс.тг</td>
   <td>{{Math.round(expAnalysisData.npvTable1.godovoiEtp/1000)}}</td>
-  <td>{{Math.round(expAnalysisData.npvTable2.godovoiEtp/1)}}</td>
+  <td>{{Math.round(expAnalysisData.npvTable2.godovoiEtp/1000)}}</td>
 </tr>
 <tr>
   <td>Расчет Расходов по транспортировке нефти, тыс.тг</td>
@@ -229,139 +229,10 @@
   </div>
 </div>
 
-        <!-- <div class="table-fixed-head col-13" style="width: 100%; height: 100%; overflow-y: auto;">
-            <table border="1" class="table-fixed-head" >
-                <thead>
-                   <tr height="60" style="height: 60pt;">
-                    <th>Наименование</th>
-                    <th>ШГН (покупка)</th>
-                    <th>ЭЦН (аренда)</th>
-                </tr>
-                </thead>
-               
-                <tbody>
-                    <tr>
-                        <td>Доп. добыча жидкости, м³</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.liquid)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.liquid)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Доп. добыча нефти, м³</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.oil)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.oil)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Количество отработанных дней, сут</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.workday)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.workday)}}</td>
-                    </tr>
-                     <tr>
-                        <td>Количество ПРС</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.kolichestvoPrs)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.kolichestvoPrs)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Среднее продолжительность 1 ПРС, сут</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.sredniiPrs)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.sredniiPrs)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Распределение по направлениям реализации НДО, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdo/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdo/1000)}}</td>
-                    </tr>
-                      <tr>
-                        <td>Определение доходной части, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiDohod/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiDohod/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Расчет НДПИ, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiNdpi/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiNdpi/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Расчет Рентного налога, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiRent/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiRent/1000)}}</td>
-                    </tr>
-                        <tr>
-                        <td>Расчет ЭТП, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiEtp/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiEtp/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Расчет Расходов по транспортировке нефти, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiTrans/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiTrans/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Затраты на электроэнергию, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrElectShgn/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrElectEcn/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Затраты на подготовку, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrPrep/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrPrep/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Затраты на ПРС, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrPrs/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrPrs/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Затраты за суточное обслуживание, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiZatrSutObs/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiZatrSutObs/1000)}}</td>
-                    </tr>
-                      <tr>
-                        <td>Стоимость аренды оборудования, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiArenda/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiArenda/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Амортизация, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiAmortizacia/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiAmortizacia/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Операционная прибыль, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiOperPryb/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiOperPryb/1000)}}</td>
-                    </tr>
-                     <tr>
-                        <td>КПН, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiKpn/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiKpn/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Чистая прибыль, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiChistPryb/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiChistPryb/1000)}}</td>
-                    </tr>
-                     <tr>
-                        <td>КВЛ, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiKvl/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiKvl/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>Свободный денежный поток, тыс.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.godovoiSvobPot/1000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.godovoiSvobPot/1000)}}</td>
-                    </tr>
-                    <tr>
-                        <td>NPV, млн.тг</td>
-                        <td>{{Math.round(expAnalysisData.npvTable1.npv/1000000)}}</td>
-                        <td>{{Math.round(expAnalysisData.npvTable2.npv/1000000)}}</td>
-                    </tr>
 
-                </tbody>
-            </table>
-        </div> -->
 
         </modal>
-        
+
         <div class="gno-line-chart"  v-if="visibleChart">
           <gno-line-points-chart></gno-line-points-chart>
         </div>
@@ -802,7 +673,7 @@
             <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second col-5">
               {{strokeLenDev}} м
             </div>
-            
+
             <div class="cell4-gno table-border-gno-top col-7">
               Число качаний
             </div>
@@ -1227,8 +1098,8 @@ export default {
         this.qlCelButton = true
         this.qlCelValue = this.qLInput*1
         this.hPumpValue = this.hPumpSet
-        
-        
+
+
         if (this.sk == "ПШГН") {
           Vue.prototype.$notifyWarning('Тип СК на скважине не определен')
         } else
@@ -1664,7 +1535,7 @@ export default {
           this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
           this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0)
-          
+
           Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
 
 
@@ -1794,7 +1665,7 @@ export default {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-          
+
           if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
           console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
@@ -1805,7 +1676,7 @@ export default {
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
           console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           }
-          } 
+          }
 
           } else {
         }
