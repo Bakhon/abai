@@ -128,4 +128,22 @@ class OmgUHEController extends Controller
 
         return redirect()->route('omguhe.index')->with('success',__('app.deleted'));
     }
+
+    public function getPrevDayLevel(Request $request){
+        $result = ComplicationMonitoringOmgUHE::where('gu_id', '=', $request->gu_id)
+                                        ->where('date', '<', $request->date)
+                                        ->where('out_of_service_оf_dosing', '<>', '1')
+                                        ->latest()
+                                        ->first();
+
+        if($result){
+            if($result->fill){
+                return $result->fill;
+            }else{
+                return $result->level;
+            }
+        }else{
+            return false;
+        }
+    }
 }

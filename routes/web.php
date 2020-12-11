@@ -14,7 +14,7 @@ Route::get('/', function () {
     return redirect('/'. App\Http\Middleware\LocaleMiddleware::$mainLanguage);
 });
 
-
+Route::get("/ecoeco", "ComplicationMonitoring\OilGasController@ecoData");
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
     Route::group(['middleware' => 'auth'], function () {
@@ -95,6 +95,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
         Route::post('checkdublicateomgddng','ComplicationMonitoring\OmgCAController@checkDublicate');
+        Route::post('getprevdaylevel','ComplicationMonitoring\OmgUHEController@getPrevDayLevel');
+        Route::resource('corrosioncrud','ComplicationMonitoring\CorrosionController');
 
 
         //gno economic
@@ -114,7 +116,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefselectprsbrigcost','EcoRefsPrepElectPrsBrigCostController');
         Route::resource('ecorefstarifytn','EcoRefsTarifyTnController');
         Route::resource('ecorefsmacro','EcoRefsMacroController');
-        Route::post('/getkormass', 'OmgNGDUController@getKormass');
+        Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
         Route::resource('ecorefsempper','Refs\EcoRefsEmpPerController');
         Route::resource('ecorefsscfa','Refs\EcoRefsScFaController');
         Route::get('ecorefslist','Refs\EcoRefsScFaController@refsList');

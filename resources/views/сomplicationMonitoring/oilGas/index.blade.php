@@ -5,7 +5,7 @@
             <div class="card-header float-right">
                 <a class="btn btn-success" href="{{ route('oilgas.create') }}">+</a>
             </div>
-            <h1 style="color:#fff">Форма ввода данных по нефти и газу</h1>
+            <h1 style="color:#fff">База данных по нефти и газу</h1>
             <div class="card-body">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success">
