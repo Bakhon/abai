@@ -1,6 +1,6 @@
 <template>
 <div class="container-fluid">
-    <modal name="economicmodal" :width="1000" :height="400" :adaptive="true">
+    <modal name="economicmodal" :width="1200" :height="600" :adaptive="true">
       <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
         <div class="row">
           <div class="col-12">
@@ -44,7 +44,6 @@
                             <td>{{row[5]}}</td>
                             <td>{{row[6]}}</td>
                             <td>{{row[7]}}</td>
-                            <td>{{row[8]}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -52,7 +51,7 @@
         </div>
       </div>
     </modal>
-    <modal name="corrosion" :width="1100" :height="750" :adaptive="true">
+    <modal name="corrosion" :width="1200" :height="800" :adaptive="true">
       <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
         <h1>Гидравлический симулятор коррозии</h1>
         <div class="row corrosion">
@@ -676,7 +675,7 @@ export default {
 			  this.heater_output_pressure = response.data.ngdu.heater_output_pressure,
 			  this.daily_fluid_production = response.data.ngdu.daily_fluid_production,
 			  this.signalizator = response.data.uhe.current_dosage * 100 / response.data.ca.plan_dosage,
-			  this.signalizatorAbs = Math.abs(this.signalizator),
+			  this.signalizatorAbs = Math.round(this.signalizator),
 			  this.corrosionVelocityWithInhibitor = this.lastCorrosion.corrosion_velocity_with_inhibitor,
 			  this.wmLast = data.wmLast,
 			  this.wmLastH2S = data.wmLastH2S,
