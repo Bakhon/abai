@@ -38,9 +38,9 @@
                 Способ эксплуатации
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
-               
+
                   {{ expMeth }}
-             
+
               </div>
 
               <div class="choosing-well-data table-border-gno-top  col-7">
@@ -102,7 +102,7 @@
             <!-- Кнопка инклонометрии end-->
 
             <div class="spoiler">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" />
+              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" :checked="activeRightTabName === 'devices'" @change="setActiveRightTabName($event, 'devices')"/>
               <div class="box">
                 <div class="select-well no-gutter col-12">
                   <div class="devices-title"><b>Оборудование</b></div>
@@ -112,12 +112,12 @@
                   <path d="M11.8083 6.4147L11.4156 6.80558C11.2917 6.92697 11.1271 6.99486 10.951 6.99486C10.775 6.99486 10.6104 6.92697 10.4864 6.80558L6.003 2.37722L1.51331 6.81073C1.38935 6.93211 1.22477 7 1.04872 7C0.873717 7 0.708088 6.93211 0.585169 6.81073L0.19141 6.4219C-0.0638035 6.16885 -0.0638035 5.75738 0.19141 5.50536L5.53632 0.207788C5.66028 0.0853782 5.82487 0 6.00195 0H6.00404C6.18008 0 6.34467 0.0853782 6.46863 0.207788L11.8083 5.49096C11.9323 5.61234 12 5.78001 12 5.95386C12 6.1277 11.9323 6.29229 11.8083 6.4147Z" fill="#FEFEFE"/>
                   </svg>
                 </span>
-
                 <span class="open">
                       <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path d="M11.8083 0.585305L11.4156 0.194416C11.2917 0.0730345 11.1271 0.00514328 10.951 0.00514328C10.775 0.00514328 10.6104 0.0730345 10.4864 0.194416L6.003 4.62278L1.51331 0.189273C1.38935 0.0678913 1.22477 0 1.04872 0C0.873717 0 0.708088 0.0678913 0.585169 0.189273L0.19141 0.578104C-0.0638035 0.831154 -0.0638035 1.24262 0.19141 1.49464L5.53632 6.79221C5.66028 6.91462 5.82487 7 6.00195 7H6.00404C6.18008 7 6.34467 6.91462 6.46863 6.79221L11.8083 1.50904C11.9323 1.38766 12 1.21999 12 1.04614C12 0.8723 11.9323 0.707715 11.8083 0.585305Z" fill="#FEFEFE"/>
                       </svg>
                 </span>
+
 
                 <blockquote>
                   <div class="devices-data no-gutter col-7">
@@ -162,7 +162,7 @@
             </div>
 
             <div class="spoiler">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" />
+              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" :checked="activeRightTabName === 'pvt'" @change="setActiveRightTabName($event, 'pvt')" />
               <div class="box">
                 <div class="select-well no-gutter col-12">
                   <div class="pvt-title">PVT</div>
@@ -225,50 +225,68 @@
               </div>
             </div>
 
-            <div class="tables-string-gno2">
-              <div class="tech-title no-gutter col-12">Технологический режим</div>
-              <div class="tech-data no-gutter col-7">Qж</div>
-              <div class="tech-data table-border-gno no-gutter col-5">
-                {{ qL }} м3/сут
-              </div>
+<!--        <div class="tables-string-gno2">-->
+            <div class="spoiler">
+              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" :checked="activeRightTabName === 'technological-mode'" @change="setActiveRightTabName($event, 'technological-mode')" />
+              <div class="box">
+                  <div class="select-well no-gutter col-12">
+                      <div class="technological-mode-title">Технологический режим</div>
+                  </div>
+              <span class="closer">
+                                <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11.8083 6.4147L11.4156 6.80558C11.2917 6.92697 11.1271 6.99486 10.951 6.99486C10.775 6.99486 10.6104 6.92697 10.4864 6.80558L6.003 2.37722L1.51331 6.81073C1.38935 6.93211 1.22477 7 1.04872 7C0.873717 7 0.708088 6.93211 0.585169 6.81073L0.19141 6.4219C-0.0638035 6.16885 -0.0638035 5.75738 0.19141 5.50536L5.53632 0.207788C5.66028 0.0853782 5.82487 0 6.00195 0H6.00404C6.18008 0 6.34467 0.0853782 6.46863 0.207788L11.8083 5.49096C11.9323 5.61234 12 5.78001 12 5.95386C12 6.1277 11.9323 6.29229 11.8083 6.4147Z" fill="#FEFEFE"/>
+                                </svg>
+                                </span>
+              <span class="open">
+                              <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M11.8083 0.585305L11.4156 0.194416C11.2917 0.0730345 11.1271 0.00514328 10.951 0.00514328C10.775 0.00514328 10.6104 0.0730345 10.4864 0.194416L6.003 4.62278L1.51331 0.189273C1.38935 0.0678913 1.22477 0 1.04872 0C0.873717 0 0.708088 0.0678913 0.585169 0.189273L0.19141 0.578104C-0.0638035 0.831154 -0.0638035 1.24262 0.19141 1.49464L5.53632 6.79221C5.66028 6.91462 5.82487 7 6.00195 7H6.00404C6.18008 7 6.34467 6.91462 6.46863 6.79221L11.8083 1.50904C11.9323 1.38766 12 1.21999 12 1.04614C12 0.8723 11.9323 0.707715 11.8083 0.585305Z" fill="#FEFEFE"/>
+                              </svg>
+                              </span>
+              <blockquote>
+                  <div class="tech-data no-gutter col-7">Qж</div>
+                <div class="tech-data table-border-gno no-gutter col-5">
+                  {{ qL }} м3/сут
+                </div>
 
-              <div class="tech-data table-border-gno-top no-gutter col-7">Qн</div>
-              <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
-                {{ qO }} т/сут
-              </div>
+                <div class="tech-data table-border-gno-top no-gutter col-7">Qн</div>
+                <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  {{ qO }} т/сут
+                </div>
 
-              <div class="tech-data table-border-gno-top no-gutter col-7">Обвод</div>
-              <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
-                {{ wct }} %
-              </div>
+                <div class="tech-data table-border-gno-top no-gutter col-7">Обвод</div>
+                <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  {{ wct }} %
+                </div>
 
-              <div class="tech-data table-border-gno-top no-gutter col-7">Рзаб</div>
-              <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
-                {{ bhp }} атм
-              </div>
+                <div class="tech-data table-border-gno-top no-gutter col-7">Рзаб</div>
+                <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  {{ bhp }} атм
+                </div>
 
-              <div class="tech-data table-border-gno-top no-gutter col-7">Рпл</div>
-              <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
-                {{ pRes }} ат
-              </div>
+                <div class="tech-data table-border-gno-top no-gutter col-7">Рпл</div>
+                <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  {{ pRes }} ат
+                </div>
 
-              <div class="tech-data table-border-gno-top no-gutter col-7">Ндин</div>
-              <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
-                {{ hDyn }} м
-              </div>
-              <div class="tech-data table-border-gno-top no-gutter col-7">Рзат</div>
-              <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ pAnnular }} атм
-              </div>
-              <div class="tech-data table-border-gno-top no-gutter col-7">Рбуф</div>
-              <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ whp }} атм
-              </div>
-              <div class="tech-data table-border-gno-top no-gutter col-7">Рлин</div>
-              <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                {{ lineP }} атм
-              </div>
+                <div class="tech-data table-border-gno-top no-gutter col-7">Ндин</div>
+                <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  {{ hDyn }} м
+                </div>
+                <div class="tech-data table-border-gno-top no-gutter col-7">Рзат</div>
+                <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  {{ pAnnular }} атм
+                </div>
+                <div class="tech-data table-border-gno-top no-gutter col-7">Рбуф</div>
+                <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  {{ whp }} атм
+                </div>
+                <div class="tech-data table-border-gno-top no-gutter col-7">Рлин</div>
+                <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                  {{ lineP }} атм
+                </div>
+              </blockquote>
             </div>
+          </div>
           </div>
         </div>
 
@@ -921,7 +939,7 @@
                         </div>
                         </div>
                         <div class="no-gutter col-xs-12 no-gutter col-sm-12 no-gutter col-md-12 no-gutter col-lg-12 no-gutter col-xl-6">
-                          
+
                         </div>
                         <div class="tables-string-gno6 no-gutter col-12" @click="onPgnoClick()">
                           {{ visibleChart ? "Подбор ГНО" : "Кривая притока" }}
@@ -954,7 +972,7 @@
                       <label for="">Qж</label>
                       <input v-model="curveSelect" class="checkbox" value="ql" type="radio" name="set"
                       />
-                      
+
                     </div>
                     <div class="cell4-gno table-border-gno table-border-gno-top cell4-gno-second no-gutter col-4">
                       <input :disabled="curveSelect == 'pi'" v-model="qLInput" @change="postCurveData()" type="text"
@@ -1050,20 +1068,20 @@
               </div>
             </div>
 
-            
+
             <div class="no-gutter no-gutter col-md-12 no-gutter col-lg-6 container-fluid test2">
               <div class="tables-string-gno44-inner">
                 <div class="podbor-gno-title-1 no-gutter col-12">Параметры подбора</div>
                 <div class="podbor-gno-title-2 no-gutter col-12 container-fluid">ГНО</div>
                 <div class="no-gutter col-12">
                   <div class="podbor-gno-params no-gutter col-5">
-                   
+
                     <label class="label-for-celevoi"><input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()"
                         :checked="expChoose === 'ШГН'" type="radio" name="gno10" />ШГН</label>
                   </div>
 
                   <div class="podbor-gno-params col-4">
-                   
+
                     <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН" v-model="expChoose" @change="postCurveData()"
                         :checked="expChoose === 'ЭЦН'" type="radio" name="gno10" />ЭЦН</label>
                   </div>
@@ -1082,7 +1100,7 @@
                   <div class="cell4-gno no-gutter col-2">
                     <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square2" />
                   </div>
-                  
+
                     <div class="cell4-gno no-gutter col-3">
                     <div class="q-liquid-option-podbor-gno">
                       <label><input v-model="CelButton" class="checkbox3" value="ql" type="radio" name="gno11" />Qж</label>
@@ -1091,9 +1109,9 @@
                       </div>
                       </div>
                   <div class="cell4-gno table-border-gno cell4-gno-second no-gutter col-2">
-                   
 
-                  
+
+
                 </div>
 
                 <div class="podbor-gno-title-3 no-gutter col-12">Целевой параметр</div>
@@ -1170,7 +1188,7 @@
               </div>
 
               <div class="row">
-                
+
                 <div class="option-curve-line-1 col-lg-3" style="background-color: red">
                   <label for="">
                     <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio" name="set" />Кпрод</label>
@@ -1187,7 +1205,7 @@
                 <div class="option-curve-line-1 col-lg-3" style="background-color: black">
                   input
                 </div>
-              
+
               </div>
 
               <div class="row">
@@ -1214,12 +1232,12 @@
                 <div class="col-8" style="background-color: orange">
                   input
                 </div>
-                
-                
+
+
               </div>
 
               <div class="row">
-                
+
                 <div class="col-2" style="background-color: green">
                    empty
                 </div>
@@ -1249,7 +1267,7 @@
 
 
               <div class="row">
-                
+
                 <div class="col-2" style="background-color: green">
                    empty
                 </div>
@@ -1279,7 +1297,7 @@
 
 
               <div class="row">
-                
+
                  <div class="col-2" style="background-color: blue">
                    empty
                 </div>
@@ -1294,7 +1312,7 @@
                 </div>
 
               </div>
-							
+
 						</div>
 
 
@@ -1308,55 +1326,55 @@
               <div class="row">
                 <div class="col-lg-12" style="background-color: blue">ГНО</div>
               </div>
-              
+
 							<div class="row">
-                
+
                 <div class="col-lg-4" style="background-color: blue">
                   <label class="label-for-celevoi"><input class="checkbox3x" value="ШГН" v-model="expChoose" @change="postCurveData()"
                   :checked="expChoose === 'ШГН'" type="radio" name="gno10" />ШГН</label>
                 </div>
-                
+
                 <div class="col-lg-4" style="background-color: black">
                   <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН" v-model="expChoose" @change="postCurveData()"
                         :checked="expChoose === 'ЭЦН'" type="radio" name="gno10" />ЭЦН</label>
                 </div>
-                
+
                 <div class="col-lg-4" style="background-color: green">
                   <label class="label-for-celevoi">НСП</label>
                   <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square2" />
                 </div>
-                
-                
+
+
               </div>
 
                 <div class="row">
 
                 <div class="col-lg-12" style="background-color: orange">Целевой параметр</div>
 
-                
+
               </div>
 
               	<div class="row">
-                
+
                 <div class="col-lg-4" style="background-color: blue">
                   <label class="label-for-celevoi"><input class="checkbox3x" value="ШГН" v-model="expChoose" @change="postCurveData()"
                   :checked="expChoose === 'ШГН'" type="radio" name="gno10" />Qж</label>
                 </div>
-                
+
                 <div class="col-lg-4" style="background-color: black">
                   <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН" v-model="expChoose" @change="postCurveData()"
                         :checked="expChoose === 'ЭЦН'" type="radio" name="gno10" />Рзаб</label>
                 </div>
-                
+
                 <div class="col-lg-4" style="background-color: green">
                   <label class="label-for-celevoi">Рпр</label>
                   <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square2" />
                 </div>
-                
-                
+
+
               </div>
 
-              
+
 						</div>
 					</div>
 				</div>

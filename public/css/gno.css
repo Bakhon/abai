@@ -49,12 +49,12 @@
 .col-md-12.col-lg-6.no-gutter.container-fluid.test1 {
     float: left;
     /* padding-left: 0px; */
-    padding-left: 0px;
+    padding-left: 10px;
 	padding-right:5px;
 }
-  
-  
-  
+
+
+
 .no-gutter.col-md-12.col-lg-6.container-fluid.test2 {
     float: left;
 	 padding-left: 0px;
@@ -86,7 +86,7 @@
 }
 
 .test2 {
-    /* background: green;  
+    /* background: green;
     float: left;
     overflow: hidden;
     flex: 0 0 50%;
@@ -239,7 +239,7 @@ body {
     height: 30px;
     max-width: 99.9%;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
-    
+
 }
 
 .tables-string-gno5:active {
@@ -950,18 +950,18 @@ td {
     background-color: #20274e;
 }
 
-/* .tr-pgno { 
+/* .tr-pgno {
     display: table-row; }
-.td-pgno { 
+.td-pgno {
     width: 20px;
     display: table-cell;
     border: 5px #134487;
  }
 .tbody-pgno { display: table-row-group; }
 .thead-pgno { display: table-row-group; }
-.th-pgno { display: table-cell; 
-    vertical-align: inherit; 
-    font-weight: bold; 
+.th-pgno { display: table-cell;
+    vertical-align: inherit;
+    font-weight: bold;
     text-align: center; } */
 
 .tr-pgno {
@@ -1035,6 +1035,11 @@ td {
 }
 
 .pvt-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.technological-mode-title {
     font-size: 16px;
     font-weight: bold;
 }
