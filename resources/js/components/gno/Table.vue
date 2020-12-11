@@ -1101,20 +1101,10 @@ export default {
         this.hPumpManomInput = data["Well Data"]["h_pump_set"][0] + ' м'
         this.whpInput = this.whp + ' атм'
         this.qlCelButton = true
-<<<<<<< HEAD
-        this.qlCelValue = this.qLInput*1
-        this.hPumpValue = this.hPumpSet
-
-
-        if (this.sk == "ПШГН") {
-          Vue.prototype.$notifyWarning('Тип СК на скважине не определен')
-        } else
-=======
         this.qlCelValue = this.qLInput + ' м³/сут'
         this.hPumpValue = this.hPumpSet + ' м'
         
         
->>>>>>> a805fb9... update pgno options
         if (this.expMeth == "ШГН") {
               this.expChoose = "ШГН"
         } else {
@@ -1546,13 +1536,8 @@ export default {
           this.viscWaterRc = data["Well Data"]["visc_wat_rc"][0].toFixed(1)
           this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
           this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
-<<<<<<< HEAD
-          this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0)
-
-=======
           this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + ' м'
           
->>>>>>> a805fb9... update pgno options
           Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
 
 
@@ -1687,12 +1672,8 @@ export default {
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-<<<<<<< HEAD
-
-=======
       
           
->>>>>>> a805fb9... update pgno options
           if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
           console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
