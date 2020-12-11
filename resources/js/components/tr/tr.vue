@@ -127,7 +127,7 @@
 
         <div class="col">
 
-                        <div class="input-group input-group-sm">
+                        <div class="input-group input-group-sm" style="width: 422px !important;">
                             <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
                             <div class="input-group-prepend">
                                 <button class="input-group-text" style="font-size: 14px;">Поиск</button>
@@ -169,7 +169,11 @@
               margin-left: 1165px;
               border: none;
             "
-          >
+          ><svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" v-if="isfulltable">
+<path d="M9.23235 6H6.18359C5.63131 6 5.18359 6.44772 5.18359 7V18C5.18359 18.5523 5.63131 19 6.18359 19H17.342C17.8943 19 18.342 18.5523 18.342 18V15" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M18 6L12 12M12 12V7.6M12 12H16.4" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
+
             <svg
               width="19"
               style="margin-right: 10px"
@@ -177,6 +181,7 @@
               viewBox="0 0 19 19"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              v-if="!isfulltable"
             >
               <path
                 d="M9 6H6C5.44772 6 5 6.44772 5 7V18C5 18.5523 5.44772 19 6 19H17C17.5523 19 18 18.5523 18 18V15M11.5 12.5L19 5M19 5V10.5M19 5H13.5"
@@ -187,15 +192,15 @@
             >
           </button>
         </div>
-        <!-- <a-spin :spinning="isloading"> -->
-        <!-- <a-spin :spinning="isloading"> -->
-        <div>
-            
+        <div class="fadee" >
+            <fade-loader :loading="isloading"></fade-loader>
+        </div>
+
           <TrTable :wells="wells" @onSort="sortBy" v-show="show_first" />
           <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
           <table
             v-show="show_second"
-            class="table table-bordered table-dark table-responsive ce"
+            class="table table-bordered table-dark table-responsive ce trtable"
             style="
               position: sticky;
               left: 5.31%;
@@ -2766,9 +2771,7 @@
 
                     </tr>
                 </table>
-
-            </div>
-        <!-- </a-spin> -->
+        
         </div>
         </div>
     </div>
@@ -2776,16 +2779,18 @@
 <script>
 import TrTable from './table'
 import TrFullTable from './tablefull'
-// import Antd from 'ant-design-vue'
-// import 'ant-design-vue/dist/antd.css'
+import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
 
 export default {
   name: "TrPage",
   components: {
-      TrTable, TrFullTable,
+      TrTable, TrFullTable, FadeLoader,
+      
   },
   beforeCreate: function () {
-        var today = new Date();
+        
+  },
+  created() {var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
@@ -2797,6 +2802,7 @@ export default {
         }
         this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
         let data = response.data;
+        this.isloading = false;
         this.editdtm = prMm;
         console.log(this.editdtm);
         this.editdty = yyyy;
@@ -2815,8 +2821,10 @@ export default {
         else {
             this.dt = '01' + '.' + prMm + '.' + yyyy;
         }
-        this.isloading = false;
+        
     });
+      console.log('isloading', this.isloading);
+    //   this.isloading = false;
   },
   data: function () {
     return {
@@ -2836,6 +2844,7 @@ export default {
         selectYear: null,
         month: null,
         isloading: true,
+        isfulltable: false,
     }
   },
   methods: {
@@ -2856,6 +2865,7 @@ export default {
                 else {
                     console.log('No data');
                 }
+                
             });
       },
       savetable(){
@@ -2983,6 +2993,7 @@ export default {
       swap() {
           this.show_first = !this.show_first;
           this.show_second = !this.show_second;
+          this.isfulltable = !this.isfulltable;
       },
       getColor(status) {
           if (status === "1") return "#ffff00";
@@ -2994,6 +3005,8 @@ export default {
 
 </script>
 <style scoped>
+/* @import "element-variables"; */
+
 body {
   color: white !important;
 }
@@ -3073,6 +3086,21 @@ tr:nth-child(even) {
 }
 .trcolmd12 {
     margin-left: 2px;
+}
+.fadee 
+    {
+    flex: 0 1 auto;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    width: 100%;
+    align-items: center;
+
+    justify-content: center;
+    display: flex;
+
+}
+.trtable {
+    height: 100;
 }
 
 </style>
