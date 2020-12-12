@@ -239,8 +239,8 @@
 
         <div class="podbor-gno" v-if="!visibleChart">
           <div class="img-text">
-            <div class="text_img_1">Экс.колонка {{this.casID}} мм</div>
-            <div class="text_img_2">НКТ {{this.tubOD}} мм</div>
+            <div class="text_img_1">Экс.колонна {{this.casID}} мм</div>
+            <div class="text_img_2">НКТ {{this.shgnTubOD}} мм</div>
             <div class="text_img_3">Штанги {{this.shgnS1D}} мм 0-{{this.shgnS1L}} м</div>
             <div class="text_img_4">Штанги {{this.shgnS2D}} мм {{this.shgnS1L}}-{{this.shgnS1L * 1 + this.shgnS2L * 1}} м</div>
             <div class="text_img_5">Штанги {{this.shgnS1D}} мм {{this.shgnS1L * 1 + this.shgnS2L * 1}}-{{this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1}} м</div>
@@ -316,7 +316,7 @@
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Ø НКТ</td>
-                        <td class="td-pgno" rowspan="1">{{tubOD}} мм</td>
+                        <td class="td-pgno" rowspan="1">{{shgnTubOD}} мм</td>
                     </tr>
                     <tr>
                         <td class="td-pgno" rowspan="1">Нсп насоса</td>
@@ -979,6 +979,7 @@ export default {
         analysisBox7: true,
 
         analysisBox8: true,
+        shgnTubOD: null,
         menu: "MainMenu",
         ngdu: null,
         sk: null,
@@ -1021,11 +1022,11 @@ export default {
 
     setData: function(data) {
       if (this.method == "CurveSetting") {
-        console.log('1');
         this.pResInput = data["Well Data"]["p_res"][0] + ' атм'
         this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/ат'
         this.qLInput = data["Well Data"]["q_l"][0].toFixed(0) + ' м³/сут'
         this.wctInput = data["Well Data"]["wct"][0] + ' %'
+        this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + ' м'
         this.gorInput = data["Well Data"]["gor"][0] + ' м³/т'
         this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0) + ' атм'
         this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0) + ' м'
@@ -1147,11 +1148,11 @@ export default {
 
       this.data = [
         {
-          name: "IPR (кривая притока)",
+          name: "Кривая притока (пользователь)",
           x: qo_points2,
           y: ipr_points2,
           text: q_oil2,
-          hovertemplate:  "<b>IPR (кривая притока)</b><br>" +
+          hovertemplate:  "<b>Кривая притока (пользователь)</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
@@ -1193,11 +1194,11 @@ export default {
           },
         },
         {
-          name: "New Line",
+          name: "Кривая притока (анализ)",
           x: [],
           y: [],
           text: [],
-          hovertemplate:  "<b>New Line</b><br>" +
+          hovertemplate:  "<b>Кривая притока (анализ)</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
@@ -1264,21 +1265,21 @@ export default {
         await this.NnoCalc()
 
          if(this.casOD < 127) {
-          Vue.prototype.$notifyError('В ЭК Ø127 мм ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
+          Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
          }
 
-        if (this.qlCelValue < 40){
+        if (this.qlCelValue.split(' ')[0] < 40){
             Vue.prototype.$notifyError("Не рекомендуется применение ЭЦН");
         }
-        if (this.qlCelValue > 106) {
+        if (this.qlCelValue.split(' ')[0] > 106) {
             Vue.prototype.$notifyError("Не рекомендуется применение ШГН");
         }
-        this.qZhExpEcn=this.qlCelValue
-        this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
+        this.qZhExpEcn=this.qlCelValue.split(' ')[0]
+        this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput/100))*this.densOil
 
-        if (this.qlCelValue<106){
-            this.qZhExpShgn=this.qlCelValue
-            this.qOilExpShgn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
+        if (this.qlCelValue.split(' ')[0] < 106){
+            this.qZhExpShgn=this.qlCelValue.split(' ')[0]
+            this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput/100))*this.densOil
 
         } else {
             this.qZhExpShgn=106
@@ -1383,12 +1384,12 @@ export default {
 
         this.eco_param=null;
 
-        this.qZhExpEcn=this.qlCelValue
-        this.qOilExpEcn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
+        this.qZhExpEcn=this.qlCelValue.split(' ')[0]
+        this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput/100))*this.densOil
 
-        if (this.qlCelValue<106){
-            this.qZhExpShgn=this.qlCelValue
-            this.qOilExpShgn=this.qlCelValue*(1-(this.wctInput/100))*this.densOil
+        if (this.qlCelValue.split(' ')[0]<106){
+            this.qZhExpShgn=this.qlCelValue.split(' ')[0]
+            this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput/100))*this.densOil
 
         } else {
             this.qZhExpShgn=106
@@ -1599,6 +1600,12 @@ export default {
 
         } else if (data["Age"] === false){
         this.setData(data)
+        if(data["sk_check"] == "error_len") {
+          Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущей длине хода")
+        }
+        if(data["sk_check"] == "error_spm") {
+          Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущему числу качании")
+        }
         }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
@@ -1656,7 +1663,7 @@ export default {
                    }
       )
 
-        if(this.pResInput * 1 <= this.bhpInput * 1 || this.pResInput * 1 <= this.bhpCelValue * 1) {
+        if(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1) {
           Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
           } else {
             this.axios.post(uri, jsonData).then((response) => {
@@ -1666,23 +1673,23 @@ export default {
           if(data["Well Data"]["pi"][0] * 1 < 0) {
             Vue.prototype.$notifyWarning("Pзаб не должно быть больше чем Рпл")
           } else {
-          if(this.hPumpValue > this.hPerf){
+          if(this.hPumpValue.split(' ')[0] > this.hPerf){
           Vue.prototype.$notifyWarning("Насос установлен ниже перфорации")
           }
           this.setData(data)
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
       
-          
-          if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
+          console.log(this.qlPot, this.qlCelValue.split(' ')[0], this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+
+          if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
+          } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
+          // console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.pinPot * 1  > this.piCelValue.split(' ')[0] * 1  && this.CelButton == 'pin'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          // console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           }
           }
 
@@ -1850,8 +1857,8 @@ export default {
       } else {
         this.expChoose = "ШГН"
       }
-      this.postCurveData();
       this.$modal.hide("modalExpAnalysis");
+      this.postCurveData();
     },
 
     onShowTable() {
@@ -1861,15 +1868,14 @@ export default {
     },
 
     onPgnoClick() {
-        if(this.qlPot < this.qlCelValue && this.CelButton == 'ql'){
+        if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-          } else if(this.bhpPot > this.bhpCelValue && this.CelButton == 'bhp'){
+          } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-          } else if(this.pinPot < this.piCelValue && this.CelButton == 'pin'){
+          // console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          } else if(this.pinPot * 1  > this.piCelValue.split(' ')[0] * 1  && this.CelButton == 'pin'){
           Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-          console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
+          // console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
           } else {
         if(this.expChoose == 'ШГН'){
           if(this.visibleChart) {
@@ -1882,7 +1888,8 @@ export default {
         "dens_oil": this.densOil,
         "dens_water": this.densWater,
         "wct": this.wctInput.split(' ')[0],
-        "stroke_len": this.stroke_len
+        "stroke_len": this.stroke_len,
+        "pin_cel_value": this.piCelValue.split(' ')[0]
         }
         )
         this.axios.post(uri, jsonData).then((response) => {
@@ -1896,6 +1903,11 @@ export default {
             } 
           Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
           this.shgnPumpType = data["pump_type"]
+          if(this.shgnPumpType == 70) {
+            this.shgnTubOD = 89
+          } else {
+            this.shgnTubOD = this.tubOD
+          }
           this.shgnSPM = data["spm"].toFixed(0)
           this.shgnLen = data["stroke_len"]
           this.shgnS1D = data["s1d"].toFixed(0)
@@ -1911,7 +1923,7 @@ export default {
           })
     } else {
       this.visibleChart = !this.visibleChart
-      console.log('error');
+      this.postCurveData()
 
     }
         } else {
