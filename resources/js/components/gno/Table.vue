@@ -1275,15 +1275,15 @@ export default {
             Vue.prototype.$notifyError("Не рекомендуется применение ШГН");
         }
         this.qZhExpEcn=this.qlCelValue.split(' ')[0]
-        this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput/100))*this.densOil
+        this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
 
         if (this.qlCelValue.split(' ')[0] < 106){
             this.qZhExpShgn=this.qlCelValue.split(' ')[0]
-            this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput/100))*this.densOil
+            this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
 
         } else {
             this.qZhExpShgn=106
-            this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil
+            this.qOilExpShgn=106*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
         }
 
         this.expAnalysisData.qoilShgn=this.qOilExpShgn
@@ -1385,15 +1385,15 @@ export default {
         this.eco_param=null;
 
         this.qZhExpEcn=this.qlCelValue.split(' ')[0]
-        this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput/100))*this.densOil
+        this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
 
         if (this.qlCelValue.split(' ')[0]<106){
             this.qZhExpShgn=this.qlCelValue.split(' ')[0]
-            this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput/100))*this.densOil
+            this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
 
         } else {
             this.qZhExpShgn=106
-            this.qOilExpShgn=106*(1-(this.wctInput/100))*this.densOil
+            this.qOilExpShgn=106*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
         }
 
         if(this.wellNumber!=null){
