@@ -21,6 +21,7 @@ import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 import VueApexCharts from "vue-apexcharts";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import store from './store';
 // import  jquery from 'jquery';
 
 
@@ -129,5 +130,6 @@ Vue.component('viscenter2-create', require('./components/viscenter2/create.vue')
  */
 
 const app = new Vue({
+    store,
     el: '#app',
 });
