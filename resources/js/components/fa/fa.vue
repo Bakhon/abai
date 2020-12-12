@@ -556,6 +556,8 @@ export default {
               Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
           }
           else{
+              this.$store.commit('tr/SET_MONTH', prMm);
+              this.$store.commit('tr/SET_YEAR', yyyy);
               console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
               this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                     let data = response.data;
@@ -611,11 +613,19 @@ export default {
 
     },
     beforeCreate: function () {
+        console.log('dt1-month', this.$store.getters['tr/month']);
+        console.log('dt1-year', this.$store.getters['tr/year']);
         var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        var pryyyy = today.getFullYear();
+        // var dd = String(today.getDate()).padStart(2, '0');
+        var dd = 1;
+        // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var mm = this.$store.getters['tr/month'] == 11 ? 0 : this.$store.getters['tr/month'] + 1
+        console.log('dd = ', dd )
+        console.log('mm = ', mm )
+        // var yyyy = today.getFullYear();
+        var yyyy = this.$store.getters['tr/year'];
+        // var pryyyy = today.getFullYear();
+        var pryyyy = yyyy;
         var prMm = mm;
         var prPrMm = mm;
         if(mm==0){

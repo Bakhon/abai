@@ -11,17 +11,10 @@ export default new Vuex.Store({
   },
 
   state: {
-    test: 'test',
   },
   getters: {
-    test(state) {
-      return state.test;
-    },
   },
   mutations: {
-    SET_TEST(state, value) {
-      state.test = 'no test';
-    },
   },
   actions: {
   },
