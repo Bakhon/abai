@@ -1,6 +1,13 @@
 body{
     font-family: "Harmonia-sans";
 }
+
+.checkered-bg {
+    background: #0F1430;
+    background-image: linear-gradient(#0D2B4D 1px, transparent 0), linear-gradient(90deg, #0D2B4D 1px, transparent 0);
+    background-size: 38.4px 38.4px;
+}
+
 .padding {
     padding-left: 0px!important;
 }
@@ -927,7 +934,7 @@ span.logout {
 ul.dropdown-child2 {
     position: absolute;
     margin-left: -54px;
-    
+
 }
 
 .dropdown2 {
@@ -969,7 +976,7 @@ ul.dropdown-child {
     /* display: block; */
     display: none;
     min-width: 180px;
-    
+
 }
 
 .child a {
@@ -979,7 +986,7 @@ ul.dropdown-child {
     /* text-decoration: none; */
     display: block;
     white-space: nowrap;
-    
+
 }
 
 .dropdown:hover .child {

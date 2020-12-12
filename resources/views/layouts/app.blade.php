@@ -1,24 +1,24 @@
 <?php
     $user = Auth::user()->username;
-    if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru/bigdata') { 
+    if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru/bigdata') {
         header('HTTP/1.1 200 OK');
         header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/bigdata');
-        
+
     }
-    elseif(strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visualcenter3') { 
+    elseif(strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visualcenter3') {
         header('HTTP/1.1 200 OK');
         header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/visualcenter3');
-        
+
     }
-    elseif(strpos($user, 'gnouser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/podborgno') { 
+    elseif(strpos($user, 'gnouser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/podborgno') {
         header('HTTP/1.1 200 OK');
         header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/podborgno');
-        
+
     }
-    elseif(strpos($user, 'truser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/tr') { 
+    elseif(strpos($user, 'truser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/tr') {
         header('HTTP/1.1 200 OK');
         header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/tr');
-        
+
     }
         ?>
 </html>
@@ -40,7 +40,7 @@
     <script src="{{ asset('js/jquery.js') }}"></script>
 </head>
 
-<body style="background-color: #0F1430;">
+<body class="checkered-bg">
     @include('layouts.navbar')
     <div class="no-row row" id="app">
     @if (basename(Request::url()) === "visualcenter3")
