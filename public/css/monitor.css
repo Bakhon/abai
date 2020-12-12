@@ -18,10 +18,11 @@ body {
 .monitor__charts-item {
   background: #20274f;
   margin-bottom: 15px;
-  padding: 14px 12px 10px;
+  padding: 14px 12px 0;
 }
 .monitor__charts-item-title {
   font-size: 16px;
+  margin-bottom: 0;
 }
 .monitor__schema {
   padding: 0 17px !important;

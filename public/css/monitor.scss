@@ -17,10 +17,11 @@ body {
         &-item {
             background: #20274f;
             margin-bottom: 15px;
-            padding: 14px 12px 10px;
+            padding: 14px 12px 0;
 
             &-title {
                 font-size: 16px;
+                margin-bottom: 0;
             }
         }
     }
