@@ -49,18 +49,6 @@ body {
   right: 0;
   text-align: center;
 }
-.monitor__right-block_radial .legend span {
-  background: #323370;
-  border: 1px solid #2E50E9;
-  display: inline-block;
-  height: 19px;
-  line-height: 19px;
-  margin: 0 5px;
-  padding: 0 5px;
-  position: relative;
-  top: 6px;
-  width: 52px;
-}
 .monitor__right-block_radial .signalizator {
   background: rgba(69, 77, 125, 0.329412);
   height: 251px;

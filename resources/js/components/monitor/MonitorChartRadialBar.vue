@@ -6,14 +6,14 @@
             :options="chartOptions"
             :series="series"
         ></apexchart>
-        <div class="legend">с <span>{{ series[0] || '' }}</span> мг.м3</div>
+        <div class="legend">с <input class="square2" v-model="series[0]"> мг.м3</div>
     </div>
 </template>
 <script>
 export default {
     data: function () {
         return {
-            series: [0],
+            series: [''],
             chartOptions: {
                 chart: {
                     type: "radialBar",
