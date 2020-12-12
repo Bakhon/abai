@@ -1600,10 +1600,10 @@ export default {
 
         } else if (data["Age"] === false){
         this.setData(data)
-        if(data["sk_check"] == "error_len") {
+        if(data["error_len"] == "error_len") {
           Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущей длине хода")
         }
-        if(data["sk_check"] == "error_spm") {
+        if(data["error_spm"] == "error_spm") {
           Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущему числу качании")
         }
         }
