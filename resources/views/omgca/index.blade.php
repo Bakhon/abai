@@ -33,8 +33,9 @@
                             <td>{{ $item->q_v }}</td>
                             <td>
                                 <form action="{{ route('omgca.destroy',$item->id) }}" method="POST">
-                                     <a class="btn btn-primary" href="{{ route('omgca.edit',$item->id) }}"><i class="fas fa-edit"></i></a>
+                                    <a class="btn btn-primary" href="{{ route('omgca.edit',$item->id) }}"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-primary" href="{{ route('omgca.show',$item->id) }}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-primary" href="{{ route('omgca.history',$item->id) }}"><i class="fas fa-history"></i></a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">

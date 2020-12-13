@@ -51,6 +51,7 @@ Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Pl
 // Vue.component('pie', require('./components/PieChart.vue').default);
 //Vue.component('chartbar', require('./components/ChartBar.vue').default);
 
+Vue.component('edit-history', require('./components/common/EditHistory.vue').default);
 Vue.component('charttide', require('./components/ChartTide.vue').default);
 Vue.component('visual-center-chart-area-oil', require('./components/visualcenter/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd', require('./components/visualcenter/VisualCenterChartAreaUSD.vue').default);

@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \App\Models\ComplicationMonitoring\OmgCA::observe([
+            \App\Observers\OmgCAHistoryObserver::class
+        ]);
     }
 }

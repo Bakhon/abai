@@ -88,7 +88,10 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('/getgudata', 'ComplicationMonitoring\WaterMeasurementController@getGuData');
         Route::post('/getgudatabyday', 'ComplicationMonitoring\OmgNGDUController@getGuDataByDay');
         Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
+
         Route::resource('omgca','ComplicationMonitoring\OmgCAController');
+        Route::get('omgca/history/{omgca}', 'ComplicationMonitoring\OmgCAController@history')->name('omgca.history');
+
         Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
         Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');

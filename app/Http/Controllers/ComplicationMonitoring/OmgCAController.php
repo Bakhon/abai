@@ -89,6 +89,18 @@ class OmgCAController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(OmgCA $omgca)
+    {
+        $omgca->load('history');
+        return view('omgca.history', compact('omgca'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
