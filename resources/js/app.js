@@ -100,12 +100,10 @@ Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').
 Vue.component('monitor-chart', require('./components/monitor/chart.vue').default);
 Vue.component('monitor-chart-tide', require('./components/monitor/chartTide.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
-Vue.component('omgca-create', require('./components/omgca/create.vue').default);
-Vue.component('omgca-edit', require('./components/omgca/edit.vue').default);
+Vue.component('omgca-form', require('./components/omgca/form.vue').default);
 Vue.component('omguhe-create', require('./components/omguhe/create.vue').default);
 Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
-Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
-Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
+Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
