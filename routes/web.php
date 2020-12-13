@@ -108,7 +108,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
         Route::post('checkdublicateomgddng','ComplicationMonitoring\OmgCAController@checkDublicate');
         Route::post('getprevdaylevel','ComplicationMonitoring\OmgUHEController@getPrevDayLevel');
+
         Route::resource('corrosioncrud','ComplicationMonitoring\CorrosionController');
+        Route::get('corrosioncrud/history/{corrosion}', 'ComplicationMonitoring\CorrosionController@history')->name('corrosioncrud.history');
 
 
         //gno economic

@@ -28,15 +28,15 @@ class OilGasHistoryObserver extends EditHistoryObserver
             'well_id' => 'Скважина',
             'date' => 'Дата и время',
             'water_density_at_20' => 'Плотность нефти при 20°С, кг/м3',
-            'oil_viscosity_at_20' => 'Вязкость нефти при 20С, мм2/с',
-            'oil_viscosity_at_40' => 'Вязкость нефти при 40С, мм2/с',
-            'oil_viscosity_at_50' => 'Вязкость нефти при 50С, мм2/с',
-            'oil_viscosity_at_60' => 'Вязкость нефти при 60С, мм2/с',
+            'oil_viscosity_at_20' => 'Вязкость нефти при 20°С, мм2/с',
+            'oil_viscosity_at_40' => 'Вязкость нефти при 40°С, мм2/с',
+            'oil_viscosity_at_50' => 'Вязкость нефти при 50°С, мм2/с',
+            'oil_viscosity_at_60' => 'Вязкость нефти при 60°С, мм2/с',
             'hydrogen_sulfide_in_gas' => 'H2S в газе, ppm',
             'oxygen_in_gas' => 'О2 в газе, %',
             'carbon_dioxide_in_gas' => 'CO2 в газе, %',
             'gas_density_at_20' => 'Плотность газа при 20°С, кг/м3',
-            'gas_viscosity_at_20' => 'Вязкость газа при 20С, сП',
+            'gas_viscosity_at_20' => 'Вязкость газа при 20°С, сП',
         ];
 
         foreach ($fields as $field => $name) {

@@ -35,5 +35,8 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\ComplicationMonitoring\OilGas::observe([
             \App\Observers\OilGasHistoryObserver::class
         ]);
+        \App\Models\ComplicationMonitoring\Corrosion::observe([
+            \App\Observers\CorrosionHistoryObserver::class
+        ]);
     }
 }
