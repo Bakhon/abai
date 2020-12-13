@@ -82,15 +82,6 @@
           </option>
         </select>
       </div>
-      <div class="form-label-group form-check">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          name="fill_status"
-          v-model="fill_status"
-        />
-        <label class="form-check-label" for="fill_status">Заправка</label>
-      </div>
       <label>Уровень</label>
       <div class="form-label-group">
         <input
@@ -134,6 +125,25 @@
             {{ row.name }}
           </option>
         </select>
+      </div>
+      <div class="form-label-group form-check">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          name="fill_status"
+          v-model="fill_status"
+        />
+        <label class="form-check-label" for="fill_status">Заправка</label>
+      </div>
+      <div class="form-label-group" v-show="fill_status">
+        <input
+          type="number"
+          step="0.0001"
+          name="fill"
+          v-model="fill"
+          class="form-control"
+          placeholder=""
+        />
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -243,12 +253,12 @@ export default {
           }
         });
     },
-    inputLevel(){
-        if(this.prevData != null){
-            this.current_dosage = this.prevData - this.level;
-            console.log(this.current_dosage);
-        }
-    }
+    inputLevel() {
+      if (this.prevData != null) {
+        this.current_dosage = this.prevData - this.level;
+        console.log(this.current_dosage);
+      }
+    },
   },
   data: function () {
     return {
@@ -280,9 +290,9 @@ export default {
       out_of_service_оf_dosing: false,
       fill_status: false,
       current_dosage: null,
-      minDate: new Date().toISOString().split('T')[0],
+      minDate: new Date().toISOString().split("T")[0],
       prevData: null,
-      level:null
+      level: null,
     };
   },
   beforeCreate: function () {
