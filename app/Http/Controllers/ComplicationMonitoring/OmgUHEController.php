@@ -60,6 +60,8 @@ class OmgUHEController extends Controller
         $omgohe->well_id = ($request->well_id) ? $request->well_id : NULL;
         $omgohe->date = date("Y-m-d H:i", strtotime($request->date));
         $omgohe->current_dosage = ($request->current_dosage) ? $request->current_dosage : NULL;
+        $omgohe->level = ($request->level) ? $request->level : NULL;
+        $omgohe->fill = ($request->fill) ? $request->fill : NULL;
         $omgohe->daily_inhibitor_flowrate = ($request->daily_inhibitor_flowrate) ? $request->daily_inhibitor_flowrate : NULL;
         if($request->out_of_service_оf_dosing == true){
             $omgohe->out_of_service_оf_dosing = 1;
