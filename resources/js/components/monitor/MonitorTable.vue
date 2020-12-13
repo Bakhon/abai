@@ -538,7 +538,7 @@
                 </button
                 >
                 <button type="button" class="btn btn-info" @click="pushBtn2" :disabled="!dose">
-                    Коррозия
+                    Гидравлический симулятор коррозии
                 </button>
                 <div class="monitor__right-block monitor__right-block_calendar">
                     <div class="media">

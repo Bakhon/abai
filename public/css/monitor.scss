@@ -58,7 +58,7 @@ body {
 
                 .signalizator {
                     background: rgba(69, 77, 125, 0.329412);
-                    height: 251px;
+                    height: 333px;
                 }
             }
 
@@ -112,14 +112,14 @@ body {
             border-radius: 8px;
             color: #fff;
             display: flex;
-            font-size: 19px;
+            font-size: 14px;
             font-weight: bold;
             height: 52px;
             justify-content: center;
             margin-bottom: 17px;
             width: 100%;
-            @media (max-width: 1500px) {
-                font-size: 1.1vw;
+            @media (max-width: 1680px) {
+                font-size: 0.8vw;
             }
 
             &:disabled {
