@@ -60,7 +60,6 @@ export default {
             otherObjects: {},
             gus: {},
             years: [],
-            year: null,
             gu: null,
             dublicate: false,
             fields: {
@@ -92,9 +91,9 @@ export default {
         }
 
         for(let i = 0; i < 5; i++) {
-            let year = moment().add(i, 'years')
+            let year = moment().startOf('year').add(i, 'years')
             this.years.push(
-                {"id": year.format('YYY-MM-DD'), "name": year.format('YYYY')}
+                {"id": year.format('YYYY-MM-DD'), "name": year.format('YYYY')}
             )
         }
     },
