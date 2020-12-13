@@ -1,37 +1,42 @@
 <template>
     <div class="row history">
-        <div class="col-3 history__list">
-            <div
-                class="history__list-item"
-                :class="{'history__list-item_active': selectedItem && selectedItem.id === historyItem.id}"
-                v-for="(historyItem, index) in history"
-                :key="`history_${index}`"
-                @click="showHistoryItem(index)"
-            >
-                <p><b>{{ historyItem.user }}</b></p>
-                <p>{{ historyItem.updated_at }}</p>
+        <template v-if="history && history.length">
+            <div class="col-3 history__list">
+                <div
+                    class="history__list-item"
+                    :class="{'history__list-item_active': selectedItem && selectedItem.id === historyItem.id}"
+                    v-for="(historyItem, index) in history"
+                    :key="`history_${index}`"
+                    @click="showHistoryItem(index)"
+                >
+                    <p><b>{{ historyItem.user }}</b></p>
+                    <p>{{ historyItem.updated_at }}</p>
+                </div>
             </div>
-        </div>
-        <div class="col-9">
-            <table class="table table-bordered history__fields" v-if="selectedItem">
-                <tr>
-                    <th><b>Наименование</b></th>
-                    <th>
-                        <p><b>{{ previousUser }}</b></p>
-                        <span>{{ previousDate }}</span>
-                    </th>
-                    <th>
-                        <p><b>{{ selectedItem.user }}</b></p>
-                        <span>{{ selectedItem.created_at }}</span>
-                    </th>
-                </tr>
-                <tr v-for="(row, index) in selectedItem.payload" :key="index" :class="{'changed': row.changed}">
-                    <td>{{ row.name }}</td>
-                    <td>{{ row.old }}</td>
-                    <td>{{ row.new }}</td>
-                </tr>
-            </table>
-        </div>
+            <div class="col-9">
+                <table class="table table-bordered history__fields" v-if="selectedItem">
+                    <tr>
+                        <th><b>Наименование</b></th>
+                        <th>
+                            <p><b>{{ previousUser }}</b></p>
+                            <span>{{ previousDate }}</span>
+                        </th>
+                        <th>
+                            <p><b>{{ selectedItem.user }}</b></p>
+                            <span>{{ selectedItem.created_at }}</span>
+                        </th>
+                    </tr>
+                    <tr v-for="(row, index) in selectedItem.payload" :key="index" :class="{'changed': row.changed}">
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.old }}</td>
+                        <td>{{ row.new }}</td>
+                    </tr>
+                </table>
+            </div>
+        </template>
+        <template v-else>
+            <p class="w-100 text-center mb-0">Запись не редактировалась</p>
+        </template>
     </div>
 </template>
 
