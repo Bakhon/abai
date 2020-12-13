@@ -57,6 +57,7 @@
                                 <form action="{{ route('oilgas.destroy',$item->id) }}" method="POST">
                                     <a class="btn btn-primary" href="{{ route('oilgas.edit',['oilgas' => $item->id]) }}"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-primary" href="{{ route('oilgas.show',$item->id) }}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-primary" href="{{ route('oilgas.history',$item->id) }}"><i class="fas fa-history"></i></a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">

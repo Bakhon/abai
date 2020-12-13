@@ -2,43 +2,46 @@
 
 namespace App\Observers;
 
-use App\Models\ComplicationMonitoring\OmgNGDU;
+use App\Models\ComplicationMonitoring\OilGas;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
 
-class OmgNGDUHistoryObserver extends EditHistoryObserver
+class OilGasHistoryObserver extends EditHistoryObserver
 {
-    public function updated(OmgNGDU $omgNGDU)
+    public function updated(OilGas $oilGas)
     {
-        $payload = $this->generatePayload($omgNGDU);
-        $this->save($omgNGDU, $payload);
+        $payload = $this->generatePayload($oilGas);
+        $this->save($oilGas, $payload);
     }
 
-    private function generatePayload(OmgNGDU $omgNGDU): array
+    private function generatePayload(OilGas $oilGas): array
     {
-        $original = $omgNGDU->getOriginal();
-        $changes = $omgNGDU->getChanges();
+        $original = $oilGas->getOriginal();
+        $changes = $oilGas->getChanges();
 
         $history = [];
         $fields = [
-            'field' => 'Месторождение',
+            'other_objects_id' => 'Прочие объекты',
             'ngdu_id' => 'НГДУ',
             'cdng_id' => 'ЦДНГ',
             'gu_id' => 'ГУ',
             'zu_id' => 'ЗУ',
             'well_id' => 'Скважина',
             'date' => 'Дата и время',
-            'daily_fluid_production' => 'Суточная добыча жидкости в ГУ, м3/сут',
-            'surge_tank_pressure' => 'Давление в буферной емкости в ГУ, бар',
-            'pump_discharge_pressure' => 'Давление на выходе насоса в ГУ, бар',
-            'heater_inlet_pressure' => 'Температура на входе в печь в ГУ, С',
-            'daily_gas_production_in_sib' => 'Количество газа в СИБ, ст.м3/сут',
-            'bsw' => 'Обводненность в ГУ, %',
-            'daily_oil_production' => 'Суточная добыча нефти, т/сут',
-            'heater_output_pressure' => 'Температура на выходе из печи в ГУ, С',
-            'daily_water_production' => 'Суточная добыча воды, м3/сут',
+            'water_density_at_20' => 'Плотность нефти при 20°С, кг/м3',
+            'oil_viscosity_at_20' => 'Вязкость нефти при 20С, мм2/с',
+            'oil_viscosity_at_40' => 'Вязкость нефти при 40С, мм2/с',
+            'oil_viscosity_at_50' => 'Вязкость нефти при 50С, мм2/с',
+            'oil_viscosity_at_60' => 'Вязкость нефти при 60С, мм2/с',
+            'hydrogen_sulfide_in_gas' => 'H2S в газе, ppm',
+            'oxygen_in_gas' => 'О2 в газе, %',
+            'carbon_dioxide_in_gas' => 'CO2 в газе, %',
+            'gas_density_at_20' => 'Плотность газа при 20°С, кг/м3',
+            'gas_viscosity_at_20' => 'Вязкость газа при 20С, сП',
         ];
 
         foreach ($fields as $field => $name) {
             switch ($field) {
+                case 'other_objects_id':
                 case 'ngdu_id':
                 case 'cdng_id':
                 case 'gu_id':

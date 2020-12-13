@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class OilGas extends Model
 {
+    use \App\Models\Traits\WithHistory;
+
     protected $guarded = ['id'];
 
     public function other_objects()

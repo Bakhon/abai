@@ -107,6 +107,18 @@ class OilGasController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(OilGas $oilgas)
+    {
+        $oilgas->load('history');
+        return view('сomplicationMonitoring.oilGas.history', compact('oilgas'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
