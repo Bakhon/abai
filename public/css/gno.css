@@ -121,10 +121,15 @@ body {
     /* position: relative; */
     /* width: 220px; */
     background-color: #20274e;
-    padding: 15px 15px;
     text-align: left;
-    height: 240px;
+    /*height: 240px;*/
+    height: 220px;
     margin-bottom: 5px;
+}
+
+[class*='tables-string-gno'][class*='col-']
+{
+    padding: 15px 8px 8px;
 }
 
 .tables-string-gno1-1 {
@@ -132,9 +137,9 @@ body {
     /* position: relative; */
     /* width: 220px; */
     background-color: #20274e;
-    padding: 15px 15px;
+    padding: 15px 8px 8px;
     text-align: left;
-    height: 180px;
+    height: 172px;
     margin-bottom: 5px;
 }
 
@@ -355,6 +360,12 @@ body {
     border-top-width: 1px;
 }
 
+.table-border-gno-right {
+    border-right-color: #3b4172;
+    border-right-style: solid;
+    border-right-width: 1px;
+}
+
 .select-well {
     float: left;
     /*font-weight: bold;*/
@@ -492,7 +503,7 @@ span.open, span.closer {
     font-size: 14px;
     position: relative;
     background-color: #20274e;
-    padding: 8px 14px 0px 23px;
+    padding: 8px;
     text-align: left;
     margin-bottom: 5px;
 }
@@ -1132,25 +1143,55 @@ td {
 input.checkbox-k-prod {
     margin-left: 0px;
     outline: none;
-    border: 0px;
-    width: 0px;
+    /*width: 0px;*/
+    width: 14px;
+    height: 14px;
+    background: #237DEB;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
 }
 
 input.checkbox-q-liquid {
     margin-left: -0px;
     outline: none;
     border: 0px;
-    width: 0px;
+    /*width: 0px;*/
 }
 
 .option-curve-line-1 {
     height: 30px;
 }
 
+.right-block-details {
+    margin: 0px;
+}
 
 /* Параметры подбора */
 
 
+.bottom-configuration {
+    background: #272953;
+    padding: 15px 30px 14px;
+}
 
+.inflow-configuration
+{
+    background-color: #2B2E5E;
+}
+
+.select-params
+{
+    background-color: #2B2E5E;
+}
+
+.ic-top-row
+{
+    padding-top: 4px;
+}
+
+.ic-bottom-row
+{
+    padding-bottom: 4px;
+}
 
 /* .vm--modal {} */
