@@ -400,6 +400,10 @@ export default {
               var pryyyy = choosenSecDt[0];
           }
           console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+          this.$store.commit('fa/SET_MONTH', prMm);
+          this.$store.commit('fa/SET_YEAR', yyyy);
+          this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+          this.$store.commit('fa/SET_PR_YEAR', pryyyy);
           this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                 let data = response.data;
                 this.editdtm = choosenDt[1];
@@ -435,23 +439,32 @@ export default {
     },
     beforeCreate: function () {
         var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        var pryyyy = today.getFullYear();
-        var prMm = mm;
-        var prPrMm = mm;
-        if(mm==0){
-            var prMm = 12;
-            var prPrMm = 11;
-            var yyyy = yyyy - 1;
-            var pryyyy = pryyyy - 1;
-        }
-        else{
-            var prMm = prMm - 1;
-            var prPrMm = prPrMm -2;
-            var yyyy = yyyy;
-            var pryyyy = pryyyy;
+        // var dd = String(today.getDate()).padStart(2, '0');
+        var dd = 1;
+
+        if (this.$store.getters['fa/month'] && this.$store.getters['fa/year'] && this.$store.getters['fa/prmonth'] && this.$store.getters['fa/pryear']) {
+            var prMm = this.$store.getters['fa/month'];
+            var prPrMm = this.$store.getters['fa/prmonth'];
+            var yyyy = this.$store.getters['fa/year'];
+            var pryyyy = this.$store.getters['fa/pryear'];
+        } else {
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var pryyyy = today.getFullYear();
+            var prMm = mm;
+            var prPrMm = mm;
+            if(mm==0){
+                var prMm = 12;
+                var prPrMm = 11;
+                var yyyy = yyyy - 1;
+                var pryyyy = pryyyy - 1;
+            }
+            else{
+                var prMm = prMm - 1;
+                var prPrMm = prPrMm -2;
+                var yyyy = yyyy;
+                var pryyyy = pryyyy;
+            }
         }
         this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
@@ -498,7 +511,14 @@ export default {
         }
     });
    },
-
+   mounted: function () {
+        const mm = `${this.$store.getters['fa/month'] + 1}`.length < 2 ? `0${this.$store.getters['fa/month'] + 1}` : `${this.$store.getters['fa/month'] + 1}`
+        const prmm = `${this.$store.getters['fa/prmonth'] + 1}`.length < 2 ? `0${this.$store.getters['fa/prmonth'] + 1}` : `${this.$store.getters['fa/prmonth'] + 1}`
+        this.date1 = `${this.$store.getters['fa/year']}-${mm}-01`
+        this.date2 = `${this.$store.getters['fa/pryear']}-${prmm}-01`
+        this.dt = `01.${mm}.${this.$store.getters['fa/year']}`
+        this.dt2 = `01.${prmm}.${this.$store.getters['fa/pryear']}`
+   }
 }
 </script>
 <style  scoped>

@@ -556,8 +556,10 @@ export default {
               Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
           }
           else{
-              this.$store.commit('tr/SET_MONTH', prMm);
-              this.$store.commit('tr/SET_YEAR', yyyy);
+              this.$store.commit('fa/SET_MONTH', prMm);
+              this.$store.commit('fa/SET_YEAR', yyyy);
+              this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+              this.$store.commit('fa/SET_PR_YEAR', pryyyy);
               console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
               this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                     let data = response.data;
@@ -619,11 +621,12 @@ export default {
         // var dd = String(today.getDate()).padStart(2, '0');
         var dd = 1;
         // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var mm = this.$store.getters['tr/month'] == 11 ? 0 : this.$store.getters['tr/month'] + 1
+        const preMm = this.$store.getters['tr/month'] ? this.$store.getters['tr/month'] : String(today.getMonth() + 1).padStart(2, '0');
+        var mm = preMm == 11 ? 0 : preMm + 1;
         console.log('dd = ', dd )
         console.log('mm = ', mm )
         // var yyyy = today.getFullYear();
-        var yyyy = this.$store.getters['tr/year'];
+        var yyyy = this.$store.getters['tr/year'] ? this.$store.getters['tr/year'] : today.getFullYear();
         // var pryyyy = today.getFullYear();
         var pryyyy = yyyy;
         var prMm = mm;
@@ -640,6 +643,10 @@ export default {
             var yyyy = yyyy;
             var pryyyy = pryyyy;
         }
+        this.$store.commit('fa/SET_MONTH', prMm);
+        this.$store.commit('fa/SET_YEAR', yyyy);
+        this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+        this.$store.commit('fa/SET_PR_YEAR', pryyyy);
         this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
@@ -685,6 +692,14 @@ export default {
         }
     });
    },
+   mounted: function () {
+        const mm = `${this.$store.getters['fa/month'] + 1}`.length < 2 ? `0${this.$store.getters['fa/month'] + 1}` : `${this.$store.getters['fa/month'] + 1}`
+        const prmm = `${this.$store.getters['fa/prmonth'] + 1}`.length < 2 ? `0${this.$store.getters['fa/prmonth'] + 1}` : `${this.$store.getters['fa/prmonth'] + 1}`
+        this.date1 = `${this.$store.getters['fa/year']}-${mm}-01`
+        this.date2 = `${this.$store.getters['fa/pryear']}-${prmm}-01`
+        this.dt = `01.${mm}.${this.$store.getters['fa/year']}`
+        this.dt2 = `01.${prmm}.${this.$store.getters['fa/pryear']}`
+   }
 }
 </script>
 <style  scoped>
