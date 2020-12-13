@@ -31,7 +31,7 @@
                     auto
                 >
                 </datetime>
-                <input type="hidden" name="date" v-model="formatedDate" class="form-control" placeholder="">
+                <input type="hidden" name="date" v-model="formFields.date" class="form-control" placeholder="">
 
             </div>
             <label>SO42-</label>
