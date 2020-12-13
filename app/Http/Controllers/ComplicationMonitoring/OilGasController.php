@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OilGasUpdateRequest;
 use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\OilGas;
@@ -111,9 +112,9 @@ class OilGasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(OilGas $oilgas)
     {
-        //
+        return view('сomplicationMonitoring.oilGas.edit', compact('oilgas'));
     }
 
     /**
@@ -121,11 +122,12 @@ class OilGasController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(OilGasUpdateRequest $request, OilGas $oilgas)
     {
-        //
+        $oilgas->update($request->validated());
+        return redirect()->route('oilgas.index')->with('success', __('app.updated'));
     }
 
     /**

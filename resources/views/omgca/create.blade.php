@@ -15,7 +15,7 @@
                 <form action="{{ route('omgca.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <omgca-create></omgca-create>
+                        <omgca-form></omgca-form>
                     </div>
                 </form>
             </div>

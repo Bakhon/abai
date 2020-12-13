@@ -92,7 +92,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
         Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
-        Route::resource('oilgas','ComplicationMonitoring\OilGasController');
+        Route::resource('oilgas','ComplicationMonitoring\OilGasController')->parameters(['oilgas' => 'oilgas']);
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
         Route::post('checkdublicateomgddng','ComplicationMonitoring\OmgCAController@checkDublicate');

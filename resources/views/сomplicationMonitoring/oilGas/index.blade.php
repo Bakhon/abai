@@ -55,6 +55,7 @@
                             <td>{{ $item->gas_viscosity_at_20 }}</td>
                             <td>
                                 <form action="{{ route('oilgas.destroy',$item->id) }}" method="POST">
+                                    <a class="btn btn-primary" href="{{ route('oilgas.edit',['oilgas' => $item->id]) }}"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-primary" href="{{ route('oilgas.show',$item->id) }}"><i class="fas fa-eye"></i></a>
                                     @csrf
                                     @method('DELETE')

@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class OmgCA extends Model
 {
+
+    protected $guarded = ['id'];
+
     public function ngdu()
     {
         return $this->hasOne('App\Models\Refs\Ngdu','id','ngdu_id')->withDefault();

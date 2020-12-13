@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class OilGas extends Model
 {
+    protected $guarded = ['id'];
+
     public function other_objects()
     {
         return $this->hasOne('App\Models\Refs\OtherObjects','id','other_objects_id')->withDefault();
