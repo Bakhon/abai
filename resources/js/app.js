@@ -86,8 +86,7 @@ Vue.component('chart1-component', require('./components/Economic/chart1.vue').de
 Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);
 Vue.component('chart3-component', require('./components/Economic/chart3.vue').default);
 Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
-Vue.component('wm-create', require('./components/wm/create.vue').default);
-Vue.component('wm-edit', require('./components/wm/edit.vue').default);
+Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
 Vue.component('gno-incl-table', require('./components/gno/GnoInclTable.vue').default);
 Vue.component('gno-line-points-chart', require('./components/gno/GnoCurveTable.vue').default);
