@@ -26,5 +26,11 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\ComplicationMonitoring\OmgCA::observe([
             \App\Observers\OmgCAHistoryObserver::class
         ]);
+        \App\Models\ComplicationMonitoring\OmgNGDU::observe([
+            \App\Observers\OmgNGDUHistoryObserver::class
+        ]);
+        \App\Models\ComplicationMonitoring\WaterMeasurement::observe([
+            \App\Observers\WaterMeasurementHistoryObserver::class
+        ]);
     }
 }

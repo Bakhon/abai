@@ -65,6 +65,7 @@
                                 <form action="{{ route('omgngdu.destroy',$item->id) }}" method="POST">
                                     <a class="btn btn-primary" href="{{ route('omgngdu.edit',$item->id) }}"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-primary" href="{{ route('omgngdu.show',$item->id) }}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-primary" href="{{ route('omgngdu.history',$item->id) }}"><i class="fas fa-history"></i></a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">

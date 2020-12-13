@@ -37,7 +37,7 @@ class OmgCAHistoryObserver extends EditHistoryObserver
                     break;
                 default:
                     $oldValue = $original[$field];
-                    $newValue = isset($changes[$field]) ? $changes[$field] : $oldValue;
+                    $newValue = array_key_exists($field, $changes) ? $changes[$field] : $oldValue;
             }
 
             $history[] = [

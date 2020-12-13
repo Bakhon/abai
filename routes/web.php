@@ -72,6 +72,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
         //wm
         Route::resource('watermeasurement','ComplicationMonitoring\WaterMeasurementController');
+        Route::get('watermeasurement/history/{watermeasurement}','ComplicationMonitoring\WaterMeasurementController@history')->name('watermeasurement.history');
         Route::get('/getotherobjects', 'ComplicationMonitoring\WaterMeasurementController@getOtherObjects');
         Route::get('/getngdu', 'ComplicationMonitoring\WaterMeasurementController@getNgdu');
         Route::get('/getcdng', 'ComplicationMonitoring\WaterMeasurementController@getCdng');
@@ -93,7 +94,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('omgca/history/{omgca}', 'ComplicationMonitoring\OmgCAController@history')->name('omgca.history');
 
         Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
+
         Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');
+        Route::get('omgngdu/history/{omgngdu}', 'ComplicationMonitoring\OmgNGDUController@history')->name('omgngdu.history');
+
+
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
         Route::resource('oilgas','ComplicationMonitoring\OilGasController')->parameters(['oilgas' => 'oilgas']);
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');

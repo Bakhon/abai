@@ -6,6 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class EditHistoryObserver
 {
+
+    static protected $classNames = [
+        'ngdu_id' => \App\Models\Refs\Ngdu::class,
+        'cdng_id' => \App\Models\Refs\Cdng::class,
+        'gu_id' => \App\Models\Refs\Gu::class,
+        'zu_id' => \App\Models\Refs\Zu::class,
+        'well_id' => \App\Models\Refs\Well::class,
+        'water_type_by_sulin_id' => \App\Models\Refs\WaterTypeBySulin::class,
+        'sulphate_reducing_bacteria_id' => \App\Models\Refs\SulphateReducingBacteria::class,
+        'hydrocarbon_oxidizing_bacteria_id' => \App\Models\Refs\HydrocarbonOxidizingBacteria::class,
+        'thionic_bacteria_id' => \App\Models\Refs\ThionicBacteria::class,
+    ];
+
     protected function save(Model $model, array $payload)
     {
         $historyItem = new \App\EditHistory([
