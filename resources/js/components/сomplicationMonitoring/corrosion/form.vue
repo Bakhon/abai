@@ -115,7 +115,7 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-success">Сохранить</button>
+            <button type="submit" :disabled="!formFields.start_date_of_background_corrosion" class="btn btn-success">Сохранить</button>
         </div>
     </div>
 </template>

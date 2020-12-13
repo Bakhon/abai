@@ -21,7 +21,7 @@ class CorrosionCreateRequest extends FormRequest
             'final_date_of_corrosion_velocity_with_inhibitor_measure' => 'nullable|date',
             'gu_id'                                                   => 'nullable|numeric',
             'ngdu_id'                                                 => 'nullable|numeric',
-            'start_date_of_background_corrosion'                      => 'nullable|date',
+            'start_date_of_background_corrosion'                      => 'date',
             'start_date_of_corrosion_velocity_with_inhibitor_measure' => 'nullable|date',
         ];
     }
