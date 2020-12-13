@@ -2,10 +2,12 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
 
 class OmgCA extends Model
 {
+    use WithHistory;
 
     protected $guarded = ['id'];
 

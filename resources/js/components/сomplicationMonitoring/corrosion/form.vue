@@ -184,14 +184,6 @@ export default {
             }
         });
     },
-    computed: {
-        formatedDate() {
-            if (this.formFields.date) {
-                return moment(this.formFields.date).format('YYYY-MM-DD HH:mm')
-            }
-            return null
-        }
-    },
     mounted() {
 
         if (this.corrosion) {
@@ -212,7 +204,7 @@ export default {
     methods: {
         formatDate(date) {
             if (date) {
-                return moment(date).format('YYYY-MM-DD HH:mm')
+                return moment(date).format('YYYY-MM-DD')
             }
             return null
         }

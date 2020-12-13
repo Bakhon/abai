@@ -138,6 +138,18 @@ class WaterMeasurementController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(ComplicationMonitoringWaterMeasurement $watermeasurement)
+    {
+        $watermeasurement->load('history');
+        return view('watermeasurement.history', compact('watermeasurement'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -167,7 +179,7 @@ class WaterMeasurementController extends Controller
         $watermeasurement->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
         $watermeasurement->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
         $watermeasurement->well_id = ($request->well_id) ? $request->well_id : NULL;
-        $watermeasurement->date = date("Y-m-d H:i", strtotime($request->date));
+        $watermeasurement->date = date("Y-m-d H:i:s", strtotime($request->date));
         $watermeasurement->hydrocarbonate_ion = ($request->hydrocarbonate_ion) ? $request->hydrocarbonate_ion : NULL;
         $watermeasurement->carbonate_ion = ($request->carbonate_ion) ? $request->carbonate_ion : NULL;
         $watermeasurement->sulphate_ion = ($request->sulphate_ion) ? $request->sulphate_ion : NULL;

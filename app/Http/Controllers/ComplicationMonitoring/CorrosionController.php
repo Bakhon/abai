@@ -61,6 +61,18 @@ class CorrosionController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(Corrosion $corrosion)
+    {
+        $corrosion->load('history');
+        return view('сomplicationMonitoring.corrosion.history', compact('corrosion'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
