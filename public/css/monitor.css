@@ -52,7 +52,7 @@ body {
 }
 .monitor__right-block_radial .signalizator {
   background: rgba(69, 77, 125, 0.329412);
-  height: 251px;
+  height: 333px;
 }
 .monitor__right-block_calendar {
   padding-left: 4px;
@@ -95,16 +95,16 @@ body {
   border-radius: 8px;
   color: #fff;
   display: flex;
-  font-size: 19px;
+  font-size: 14px;
   font-weight: bold;
   height: 52px;
   justify-content: center;
   margin-bottom: 17px;
   width: 100%;
 }
-@media (max-width: 1500px) {
+@media (max-width: 1680px) {
   .monitor__right .btn.btn-info {
-    font-size: 1.1vw;
+    font-size: 0.8vw;
   }
 }
 .monitor__right .btn.btn-info:disabled {
