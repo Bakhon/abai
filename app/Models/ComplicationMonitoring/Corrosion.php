@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Corrosion extends Model
 {
+
+    protected $guarded = ['id'];
+
     public function other_objects()
     {
         return $this->hasOne('App\Models\Refs\OtherObjects','id','other_objects_id')->withDefault();

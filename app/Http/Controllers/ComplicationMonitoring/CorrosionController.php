@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CorrosionCreateRequest;
+use App\Http\Requests\CorrosionUpdateRequest;
 use App\Models\ComplicationMonitoring\Corrosion;
 use Illuminate\Http\Request;
 
@@ -32,7 +34,7 @@ class CorrosionController extends Controller
      */
     public function create()
     {
-        //
+        return view('сomplicationMonitoring.corrosion.create');
     }
 
     /**
@@ -41,9 +43,10 @@ class CorrosionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CorrosionCreateRequest $request)
     {
-        //
+        $corrosion = Corrosion::create($request->validated());
+        return redirect()->route('corrosioncrud.index')->with('success', __('app.created'));
     }
 
     /**
@@ -52,9 +55,9 @@ class CorrosionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Corrosion $corrosioncrud)
     {
-        //
+        return view('сomplicationMonitoring.corrosion.show', ['corrosion' => $corrosioncrud]);
     }
 
     /**
@@ -63,9 +66,9 @@ class CorrosionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Corrosion $corrosioncrud)
     {
-        //
+        return view('сomplicationMonitoring.corrosion.edit', ['corrosion' => $corrosioncrud]);
     }
 
     /**
@@ -75,9 +78,10 @@ class CorrosionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CorrosionUpdateRequest $request, Corrosion $corrosioncrud)
     {
-        //
+        $corrosioncrud->update($request->validated());
+        return redirect()->route('corrosioncrud.index')->with('success', __('app.updated'));
     }
 
     /**
@@ -86,8 +90,9 @@ class CorrosionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Corrosion $corrosioncrud)
     {
-        //
+        $corrosioncrud->delete();
+        return redirect()->route('corrosioncrud.index')->with('success', __('app.deleted'));
     }
 }
