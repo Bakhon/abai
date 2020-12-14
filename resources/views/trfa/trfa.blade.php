@@ -6,7 +6,7 @@
         </a>
         <div class="level1-content row">
             <div class="main col-md-12 col-lg-12 row">
-            <tr-charts-table></tr-charts-table>
+            <trfa-table></trfa-table>
 
             </div>
         </div>
