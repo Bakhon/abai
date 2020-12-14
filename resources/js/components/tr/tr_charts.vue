@@ -284,8 +284,10 @@ export default {
                 }
                 return 0;
           });
-          const filtered30 = filteredResult.slice(29);
+          const filtered30 = filteredResult.slice(0, 29);
+          // const filtered30 = filteredResult
           console.log("filteredResult = ", filteredResult);
+          console.log("filteredResult = ", filtered30);
           const categories = filtered30.map(item => this.getStringOrFirstItem(item, 'well'))
           const xaxis = { ...this.chartBarOptions.xaxis, categories }
           this.chartBarOptions = { ...this.chartBarOptions, xaxis }
