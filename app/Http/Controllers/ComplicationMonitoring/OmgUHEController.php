@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OmgUHEUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -95,14 +96,26 @@ class OmgUHEController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(ComplicationMonitoringOmgUHE $omguhe)
+    {
+        $omguhe->load('history');
+        return view('omguhe.history', compact('omguhe'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ComplicationMonitoringOmgUHE $omguhe)
     {
-        //
+        return view('omguhe.edit', compact('omguhe'));
     }
 
     /**
@@ -112,9 +125,10 @@ class OmgUHEController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OmgUHEUpdateRequest $request, ComplicationMonitoringOmgUHE $omguhe)
     {
-        //
+        $omguhe->update($request->validated());
+        return redirect()->route('omguhe.index')->with('success',__('app.updated'));
     }
 
     /**

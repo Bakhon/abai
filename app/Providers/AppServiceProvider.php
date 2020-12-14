@@ -38,5 +38,8 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\ComplicationMonitoring\Corrosion::observe([
             \App\Observers\CorrosionHistoryObserver::class
         ]);
+        \App\Models\ComplicationMonitoring\OmgUHE::observe([
+            \App\Observers\OmgUHEHistoryObserver::class
+        ]);
     }
 }
