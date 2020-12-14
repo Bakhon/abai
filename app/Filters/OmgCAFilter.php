@@ -6,11 +6,6 @@ namespace App\Filters;
 class OmgCAFilter extends BaseFilter
 {
 
-    public function filterSubjectId($subjectId)
-    {
-        $this->query->where('subject_id', $subjectId);
-    }
-
     protected function sort(string $field, bool $desc)
     {
         switch($field) {
@@ -22,6 +17,11 @@ class OmgCAFilter extends BaseFilter
             default:
                 $this->query->orderBy($field, $desc === true ? 'desc' : 'asc');
         }
+    }
+
+    protected function filterDate($date)
+    {
+        $this->query->where('date', 'LIKE', $date.'%');
     }
 
 }

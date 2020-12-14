@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OilGasController extends Controller
 {
@@ -38,6 +39,20 @@ class OilGasController extends Controller
 
 
         return view('сomplicationMonitoring.oilGas.index', compact('oilgas'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function export()
+    {
+        $oilgas = OilGas::orderByDesc('date')
+            ->with('other_objects')
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->with('zu')
+            ->with('well')
+            ->get();
+
+        return Excel::download(new \App\Exports\OilGasExport($oilgas), 'oilgas.xls');
     }
 
     /**
