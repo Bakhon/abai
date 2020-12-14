@@ -1268,11 +1268,19 @@ export default {
           Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
          }
 
+<<<<<<< HEAD
+        if (this.qlCelValue<28){
+            Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
+        }
+        if (this.qlCelValue>106) {
+            Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
+=======
         if (this.qlCelValue.split(' ')[0] < 40){
             Vue.prototype.$notifyError("Не рекомендуется применение ЭЦН");
         }
         if (this.qlCelValue.split(' ')[0] > 106) {
             Vue.prototype.$notifyError("Не рекомендуется применение ШГН");
+>>>>>>> 903791815829e6b517033006caa8976f307d1a25
         }
         this.qZhExpEcn=this.qlCelValue.split(' ')[0]
         this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
