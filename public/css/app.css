@@ -10274,9 +10274,9 @@ label.e-float-text,
   background: #ffca1c;
 }
 
-.e-float-input:not(.e-input-focus):not(.e-disabled) input:not(:focus):not(:valid) ~ label.e-float-text:not(.e-label-top),
-.e-float-input:not(.e-input-focus) textarea:not(:focus):not(:valid) ~ label.e-float-text:not(.e-label-top),
-.e-float-input.e-control-wrapper:not(.e-input-focus):not(.e-disabled) input:not(:focus):not(:valid) ~ label.e-float-text:not(.e-label-top) {
+.e-float-input:not(.e-error):not(.e-input-focus):not(.e-disabled) input:not(:focus):not(:valid) ~ label.e-float-text:not(.e-label-top),
+.e-float-input:not(.e-error):not(.e-input-focus) textarea:not(:focus):not(:valid) ~ label.e-float-text:not(.e-label-top),
+.e-float-input.e-control-wrapper:not(.e-error):not(.e-input-focus):not(.e-disabled) input:not(:focus):not(:valid) ~ label.e-float-text:not(.e-label-top) {
   color: rgba(0, 0, 0, 0.42);
 }
 
@@ -40620,6 +40620,10 @@ li.e-separator.e-menu-item.e-excel-separator {
   float: right;
 }
 
+.e-grid.e-rtl .e-frozenfootercontent {
+  float: right;
+}
+
 .e-grid .e-movableheader {
   overflow: hidden;
 }
@@ -41506,6 +41510,11 @@ li.e-separator.e-menu-item.e-excel-separator {
 
 .e-grid td.e-active {
   background: #e0e0e0;
+  color: #000;
+}
+
+.e-grid .e-columnselection {
+  background-color: #e0e0e0;
   color: #000;
 }
 
