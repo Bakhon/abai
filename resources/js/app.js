@@ -115,6 +115,7 @@ Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('oilgastable-create', require('./components/сomplicationMonitoring/oilGas/table.vue').default);
 Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
+Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 
