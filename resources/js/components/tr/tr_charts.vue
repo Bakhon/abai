@@ -262,18 +262,18 @@ export default {
         let field = this.chartFilter_field;
         let horizon = this.chartFilter_horizon;
         let exp_meth = this.chartFilter_exp_meth;
-          console.log('chartWells = ', this.chartWells);
-          console.log('field = ', field);
-          console.log('horizon = ', horizon);
-          console.log('exp_meth = ', exp_meth);
+        console.log("chartWells = ", this.chartWells);
+        console.log("field = ", field);
+        console.log("horizon = ", horizon);
+        console.log("exp_meth = ", exp_meth);
         try {
           let filteredResult = this.chartWells.filter(
             (row) =>
               (!field || row.field === field) &&
-              (!horizon || row.horizon === horizon) &&
-              (!exp_meth || row.exp_meth === exp_meth)
+              (!horizon || this.getStringOrFirstItem(row, 'horizon') === horizon) &&
+              (!exp_meth || this.getStringOrFirstItem(row, 'exp_meth') === exp_meth)
           );
-          console.log('filteredResult = ', filteredResult);
+          console.log("filteredResult = ", filteredResult);
           let filteredData = filteredResult.reduce(
             (acc, res) => {
               acc = {
@@ -309,12 +309,14 @@ export default {
       if (this.chartWells && this.chartWells.length > 0) {
         let filters = [];
         this.chartWells.forEach((el) => {
+          const el_horizon = this.getStringOrFirstItem(el, 'horizon')
+          const el_exp_meth = this.getStringOrFirstItem(el, 'exp_meth')
           if (
             filters.indexOf(el.field) === -1 &&
             (!this.chartFilter_horizon ||
-              el.horizon === this.chartFilter_horizon) &&
+              el_horizon === this.chartFilter_horizon) &&
             (!this.chartFilter_exp_meth ||
-              el.exp_meth === this.chartFilter_exp_meth)
+              el_exp_meth === this.chartFilter_exp_meth)
           ) {
             filters = [...filters, el.field];
           }
@@ -326,14 +328,15 @@ export default {
       if (this.chartWells && this.chartWells.length > 0) {
         let filters = [];
         this.chartWells.forEach((el) => {
-          const el_exp_meth = Array.isArray(this.chartFilter_exp_meth) ? this.chartFilter_exp_meth[0] : this.chartFilter_exp_meth
+          const el_horizon = this.getStringOrFirstItem(el, 'horizon')
+          const el_exp_meth = this.getStringOrFirstItem(el, 'exp_meth')
           if (
-            filters.indexOf(el.horizon) === -1 &&
+            filters.indexOf(el_horizon) === -1 &&
             (!this.chartFilter_field || el.field === this.chartFilter_field) &&
             (!this.chartFilter_exp_meth ||
-              el.exp_meth === this.chartFilter_exp_meth)
+              el_exp_meth === this.chartFilter_exp_meth)
           ) {
-            filters = [...filters, el.horizon];
+            filters = [...filters, el_horizon];
           }
         });
         return [undefined, ...filters];
@@ -342,14 +345,17 @@ export default {
     exp_methFilters() {
       if (this.chartWells && this.chartWells.length > 0) {
         let filters = [];
+
         this.chartWells.forEach((el) => {
+          const el_horizon = this.getStringOrFirstItem(el, 'horizon')
+          const el_exp_meth = this.getStringOrFirstItem(el, 'exp_meth')
           if (
-            filters.indexOf(el.exp_meth) === -1 &&
+            filters.indexOf(el_exp_meth) === -1 &&
             (!this.chartFilter_field || el.field === this.chartFilter_field) &&
             (!this.chartFilter_horizon ||
-              el.horizon === this.chartFilter_horizon)
+              el_horizon === this.chartFilter_horizon)
           ) {
-            filters = [...filters, el.exp_meth];
+            filters = [...filters, el_exp_meth];
           }
         });
         return [undefined, ...filters];
@@ -503,6 +509,9 @@ export default {
     },
   },
   methods: {
+    getStringOrFirstItem(el, param) {
+      return Array.isArray(el[param]) ? el[param][0] : el[param];
+    },
     onChangeMonth(event) {
       if (event.target.value == 1) {
         this.month = 12;
@@ -586,10 +595,10 @@ export default {
         this.editdty = yyyy;
         console.log(this.editdty);
         if (data) {
-            console.log(data);
-            this.wells = data.data;
-            this.fullWells = data.data;
-            this.chartWells = data.data;
+          console.log(data);
+          this.wells = data.data;
+          this.fullWells = data.data;
+          this.chartWells = data.data;
         } else {
           console.log("No data");
         }
