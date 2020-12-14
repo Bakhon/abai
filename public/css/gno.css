@@ -632,6 +632,21 @@ input[type="text"]:enabled.square2 {
     border: 0px;
 }
 
+.square3 {
+    background: #323370;
+    border: 1px solid #272953;
+    outline: none;
+    width: 100px;
+    height: 22px;
+    color: white;
+    /*top: 0px;*/
+    box-sizing: border-box;
+    border-radius: 2px;
+}
+
+input[type="text"]:enabled.square3 {
+}
+
 iframe.iframe {
     width: 1300px;
     height: 500px;
@@ -1155,6 +1170,11 @@ input.checkbox-q-liquid {
     margin-left: -0px;
     outline: none;
     border: 0px;
+    width: 14px;
+    height: 14px;
+    background: #237DEB;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
     /*width: 0px;*/
 }
 
@@ -1177,6 +1197,8 @@ input.checkbox-q-liquid {
 .inflow-configuration
 {
     background-color: #2B2E5E;
+    padding-right: 41px;
+    padding-left: 36px;
 }
 
 .select-params
@@ -1192,6 +1214,17 @@ input.checkbox-q-liquid {
 .ic-bottom-row
 {
     padding-bottom: 4px;
+}
+
+.ic-min-block
+{
+    min-width: 70px;
+}
+
+.ic-ar
+{
+    text-align: right;
+    padding-right: 5px;
 }
 
 /* .vm--modal {} */
