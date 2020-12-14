@@ -1,5 +1,6 @@
 <template>
-  <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+  <Plotly :data="data" :layout="layout" :display-mode-bar="true">
+  </Plotly>
 </template>
 
 <script>
@@ -11,28 +12,28 @@ import { eventBus } from "../../event-bus.js";
 Vue.prototype.$eventBus = new Vue();
 Vue.component("Plotly", Plotly);
 export default {
+  
   name: "mix-chart",
   props: ["postTitle"],
   data: function () {
     return {
-      flag: false,
+      
       layout: {
         // width:  1200,
-        // height: 470,
-        autosize: true,
-        //      showlegend: false,
+        // height: 450,
+        // autosize: true,
+        // showlegend: true,
         xaxis: {
           title: "Дебит, Qж, м³/сут.",
           hoverformat: ".1f",
-           showline: true,
+          // showline: true,
           // autorange: false,
-          //
-          //
-          showgrid: true,
-          showline: true,
-          mirror: 'ticks',
+          // showgrid: true,
+          // showline: true,
+          // mirror: 'ticks',
           // range: [0,100],
-          zeroline: false,
+          // zeroline: false,
+          rangemode: 'nonnegative',
           // showgrid: true,
           // mirror:true,
           // ticklen: 4,
@@ -44,19 +45,37 @@ export default {
         yaxis: {
           title: "Давление, атм",
           hoverformat: ".1f",
-          showline: true,
+          rangemode: 'nonnegative',
+          // showline: true,
           // range: [0,100],
-          zeroline: false,
+          // zeroline: false,
           // showgrid: true,
-          showgrid: true,
-          showline: true,
-          mirror: 'ticks',
+          // mirror: 'ticks',
           // mirror:true,
           // ticklen: 4,
           gridcolor: "#454D7D",
           // tickfont: {size: 10},
           linewidth: 1,
           linecolor: "#454D7D"
+        },
+
+         yaxis2: {
+          title: "Газосодержание, %",
+          hoverformat: ".1f",
+          rangemode: 'nonnegative',
+          // showline: true,
+          // range: [0,100],
+          // zeroline: false,
+          // showgrid: true,
+          // mirror: 'ticks',
+          // mirror:true,
+          // ticklen: 4,
+          // gridcolor: "#454D7D",
+          // tickfont: {size: 10},
+          overlaying: 'y',
+          side: 'right',
+          // linewidth: 1,
+          // linecolor: "#454D7D"
         },
 
         //   scene:{ gridcolor: '#ffffff',},
@@ -68,7 +87,7 @@ export default {
           orientation: "h",
           y: -0.3,
           font: {
-            size: 12,
+            size: 11.4,
             color: "#fff",
           },
         },
@@ -78,6 +97,7 @@ export default {
     };
   },
   methods: {
+    
     setLine: function (value) {
       console.log(value)
       var ipr_points = [];
@@ -115,23 +135,12 @@ export default {
 
       this.data = [
         {
-          name: "Давление на приёме насоса",
-          x: qo_points2,
-          y: pintake_points2,
-          hovertemplate: '<b>Pnp = %{y:.1f} атм</b><extra></extra>',
-
-          marker: {
-            size: "15",
-            color: "#CC6F3C",
-          },
-        },
-
-        {
-          name: "IPR (кривая притока)",
+          name: "Кривая притока",
+          legendgroup: "group1",
           x: qo_points2,
           y: ipr_points2,
           text: q_oil2,
-          hovertemplate: "<b>IPR (кривая притока)</b><br>" + 
+          hovertemplate: "<b>Кривая притока</b><br>" + 
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
                           "Pзаб = %{y:.1f} атм<extra></extra>",
@@ -144,9 +153,24 @@ export default {
         },
 
         {
+          name: "Давление на приёме насоса",
+          legendgroup: "group2",
+          x: qo_points2,
+          y: pintake_points2,
+          hovertemplate: '<b>Pnp = %{y:.1f} атм</b><extra></extra>',
+
+          marker: {
+            size: "15",
+            color: "#CC6F3C",
+          },
+        },
+
+        {
           name: "Газосодержание в насосе",
+          legendgroup: "group3",
           x: qo_points2,
           y: freegas_points2,
+          yaxis: 'y2',
           hovertemplate: '<b>Газосодержание в насосе = %{y:.1f}%</b><extra></extra>',
           marker: {
             size: "15",
@@ -156,6 +180,7 @@ export default {
 
         {
           name: "Текущий режим",
+          legendgroup: "group4",
           x: [],
           y: [],
           text: [],
@@ -171,12 +196,13 @@ export default {
         },
 
         {
-          name: "Целевой (расчётный) режим",
+          name: "Целевой режим",
+          legendgroup: "group5",
           x: [],
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Целевой (расчётный) режим</b><br>" +
+          hovertemplate:  "<b>Целевой режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
                           "Qн = %{text:.1f} т/сут<br>" + 
                           "Pзаб = %{y:.1f} атм<extra></extra>",
@@ -188,6 +214,7 @@ export default {
 
         {
           name: "Потенциальный режим",
+          legendgroup: "group6",
           x: [],
           y: [],
           text: [],
@@ -206,6 +233,9 @@ export default {
         // ["10", "20", "3", "4", "5", "6", "7", "8", "9", "10"],
         labels: qo_points2,
       };
+     ///////// 
+
+     /////////
     },
     setPoints: function (value) {
       this.data[3]['x'][0] = value[0]["q_l"]

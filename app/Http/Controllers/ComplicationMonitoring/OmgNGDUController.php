@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OmgNGDUUpdateRequest;
 use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
 use App\Models\ComplicationMonitoring\Kormass as ComplicationMonitoringKormass;
 use App\Models\ComplicationMonitoring\OilGas;
@@ -29,8 +30,6 @@ class OmgNGDUController extends Controller
                                 ->with('zu')
                                 ->with('well')
                                 ->paginate(10);
-
-
 
         return view('omgngdu.index',compact('omgngdu'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
@@ -104,14 +103,26 @@ class OmgNGDUController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(ComplicationMonitoringOmgNGDU $omgngdu)
+    {
+        $omgngdu->load('history');
+        return view('omgngdu.history', compact('omgngdu'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ComplicationMonitoringOmgNGDU $omgngdu)
     {
-        //
+        return view('omgngdu.edit', compact('omgngdu'));
     }
 
     /**
@@ -121,9 +132,10 @@ class OmgNGDUController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OmgNGDUUpdateRequest $request, ComplicationMonitoringOmgNGDU $omgngdu)
     {
-        //
+        $omgngdu->update($request->validated());
+        return redirect()->route('omgngdu.index')->with('success',__('app.updated'));
     }
 
     /**

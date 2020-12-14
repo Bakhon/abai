@@ -1,69 +1,6 @@
 <template>
     <div class="container-fluid">
-        <!-- <modal name="chart" :width="2000" :height="1000" :adaptive="true">
-            <div class="main_modals">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="first_block">
-                            <apexchart
-                                v-if="barChartData && pieChartRerender"
-                                type="bar"
-                                :options="chartBarOptions"
-                                :series="[{ name:'', data: barChartData}]"
-                            ></apexchart>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="first_block">
-                            <apexchart
-                                v-if="pieChartData && pieChartRerender"
-                                type="pie"
-                                :options="chartOptions"
-                                :series="pieChartData"
-                            ></apexchart>
-                        </div>
-                    </div>
-                    <div class="filter_chart">
-                        <td class="filter_font"> Фильтр по: </td>
-                        <div>
-                            <select
-                                class="form-control"
-                                v-model="chartFilter_field"
-                                value="Месторождение"
-                            >
-                                <option
-                                    v-for="(f, k) in fieldFilters"
-                                    :key="k"
-                                    :value="f">{{f}}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select
-                                class="form-control"
-                                v-model="chartFilter_horizon"
-                            >
-                                <option
-                                    v-for="(f, k) in horizonFilters"
-                                    :key="k"
-                                    :value="f">{{f}}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select
-                                v-if="exp_methFilters"
-                                class="form-control"
-                                v-model="chartFilter_exp_meth"
-                            >
-                                <option
-                                    v-for="(f, k) in exp_methFilters"
-                                    :key="k"
-                                    :value="f">{{f}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </modal> -->
+
         <div class="row justify-content-between farowjustcontbet">
                 <a href="tr" class="but-nav__link but fabutnavlinkbut"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
@@ -89,7 +26,7 @@
                         <!-- <form class="form-group but-nav__link"> -->
                             <label for="inputDate">Введите дату для сравнения:</label>
                             <input type="date" class="form-control" v-model="date2">
-                            <a href="#" class="btn btn-primary" @click.prevent="chooseDt">Сформироватьь</a> 
+                            <a href="#" class="btn btn-primary" @click.prevent="chooseDt">Сформировать</a> 
                     </div>
                 </div>
 <!-- <button type="button" class="btn btn-primary">Главный</button> -->
@@ -121,7 +58,7 @@
 
         </div>
         <div class="tech" style="display:flex; background: #272953; margin-left: 13px;">
-            <h3> Факторный анализ</h3>
+            <h3 style="color: white;"> Факторный анализ</h3>
             <a class="but-nav__link but " href="trfa" @click="pushBign('chart')" style="margin-left: 1264px; background: #272953"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
 </svg>

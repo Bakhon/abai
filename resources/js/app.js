@@ -19,7 +19,8 @@ import VueMomentLib from 'vue-moment-lib';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 import VueApexCharts from "vue-apexcharts";
-
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 // import  jquery from 'jquery';
 
 
@@ -31,7 +32,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
 
-Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib);
+Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib, ElementUI);
 
 
 /**
@@ -50,6 +51,7 @@ Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Pl
 // Vue.component('pie', require('./components/PieChart.vue').default);
 //Vue.component('chartbar', require('./components/ChartBar.vue').default);
 
+Vue.component('edit-history', require('./components/common/EditHistory.vue').default);
 Vue.component('charttide', require('./components/ChartTide.vue').default);
 Vue.component('visual-center-chart-area-oil', require('./components/visualcenter/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd', require('./components/visualcenter/VisualCenterChartAreaUSD.vue').default);
@@ -85,8 +87,7 @@ Vue.component('chart1-component', require('./components/Economic/chart1.vue').de
 Vue.component('chart2-component', require('./components/Economic/chart2.vue').default);
 Vue.component('chart3-component', require('./components/Economic/chart3.vue').default);
 Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
-Vue.component('wm-create', require('./components/wm/create.vue').default);
-Vue.component('wm-edit', require('./components/wm/edit.vue').default);
+Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
 Vue.component('gno-incl-table', require('./components/gno/GnoInclTable.vue').default);
 Vue.component('gno-line-points-chart', require('./components/gno/GnoCurveTable.vue').default);
@@ -96,23 +97,20 @@ Vue.component('gno-iframe', require('./components/FriendlyIframe/components/Frie
 //Vue.component('gno-test-chart', require('./components/gno/Test.vue').default);
 Vue.component('syncfusion-pivot', require('./components/pivot.vue').default);
 Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
-Vue.component('monitor-chart1', require('./components/monitor/chart1.vue').default);
-Vue.component('monitor-chart2', require('./components/monitor/chart2.vue').default);
-Vue.component('monitor-chart3', require('./components/monitor/chart3.vue').default);
-Vue.component('monitor-chart-tide', require('./components/monitor/chart4.vue').default);
+Vue.component('monitor-chart', require('./components/monitor/chart.vue').default);
+Vue.component('monitor-chart-tide', require('./components/monitor/chartTide.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
-Vue.component('omgca-create', require('./components/omgca/create.vue').default);
-Vue.component('omgca-edit', require('./components/omgca/edit.vue').default);
+Vue.component('omgca-form', require('./components/omgca/form.vue').default);
 Vue.component('omguhe-create', require('./components/omguhe/create.vue').default);
 Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
-Vue.component('omgngdu-create', require('./components/omgngdu/create.vue').default);
-Vue.component('omgngdu-edit', require('./components/omgngdu/edit.vue').default);
+Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
 Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
-Vue.component('oilgas-create', require('./components/сomplicationMonitoring/oilGas/create.vue').default);
+Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
+Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('oilgastable-create', require('./components/сomplicationMonitoring/oilGas/table.vue').default);
