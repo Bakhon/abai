@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Exports\OmgNGDUExport;
+use App\Filters\OmgNGDUFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUUpdateRequest;
 use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
 use App\Models\ComplicationMonitoring\Kormass as ComplicationMonitoringKormass;
@@ -13,7 +15,9 @@ use App\Models\ComplicationMonitoring\OmgNGDU as ComplicationMonitoringOmgNGDU;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OmgNGDUController extends Controller
@@ -21,29 +25,157 @@ class OmgNGDUController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        $omgngdu = ComplicationMonitoringOmgNGDU::orderByDesc('date')
-                                ->with('ngdu')
-                                ->with('cdng')
-                                ->with('gu')
-                                ->with('zu')
-                                ->with('well')
-                                ->paginate(10);
 
-        return view('omgngdu.index',compact('omgngdu'))->with('i', (request()->input('page', 1) - 1) * 5);
+        $params = [
+            'success' => Session::get('success'),
+            'links' => [
+                'create' => route('omgngdu.create'),
+                'list' => route('omgngdu.list'),
+                'export' => route('omgngdu.export'),
+            ],
+            'title' => 'Форма ввода данных ОМГ НГДУ',
+            'table_header' => [
+                'Узел отбора' => 6,
+                'Фактические данные ОМГ ЦА' => 10,
+            ],
+            'fields' => [
+                'field' => [
+                    'title' => 'Месторождение',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => [
+                            1 => 'Узень',
+                            2 => 'Карамандыбас'
+                        ]
+                    ]
+                ],
+                'ngdu' => [
+                    'title' => 'НГДУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Ngdu::whereHas('omgngdu')
+                            ->orderBy('name', 'asc')
+                            ->pluck('name', 'id')
+                            ->toArray()
+                    ]
+                ],
+                'cdng' => [
+                    'title' => 'ЦДНГ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Cdng::whereHas('omgngdu')
+                            ->orderBy('name', 'asc')
+                            ->pluck('name', 'id')
+                            ->toArray()
+                    ]
+                ],
+                'gu' => [
+                    'title' => 'ГУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Gu::whereHas('omgngdu')
+                            ->orderBy('name', 'asc')
+                            ->pluck('name', 'id')
+                            ->toArray()
+                    ]
+                ],
+                'zu' => [
+                    'title' => 'ЗУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Zu::whereHas('omgngdu')
+                            ->orderBy('name', 'asc')
+                            ->pluck('name', 'id')
+                            ->toArray()
+                    ]
+                ],
+                'well' => [
+                    'title' => 'Скважина',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Well::whereHas('omgngdu')
+                            ->orderBy('name', 'asc')
+                            ->pluck('name', 'id')
+                            ->toArray()
+                    ]
+                ],
+                'date' => [
+                    'title' => 'Дата',
+                    'type' => 'date',
+                ],
+                'daily_fluid_production' => [
+                    'title' => 'Суточная добыча жидкости, м3/сут',
+                    'type' => 'numeric',
+                ],
+                'daily_water_production' => [
+                    'title' => 'Суточная добыча воды, м3/сут',
+                    'type' => 'numeric',
+                ],
+                'daily_oil_production' => [
+                    'title' => 'Суточная добыча нефти, т/сут',
+                    'type' => 'numeric',
+                ],
+                'daily_gas_production_in_sib' => [
+                    'title' => 'Количество газа в СИБ, ст.м3/сут',
+                    'type' => 'numeric',
+                ],
+                'bsw' => [
+                    'title' => 'Обводненность, %',
+                    'type' => 'numeric',
+                ],
+                'surge_tank_pressure' => [
+                    'title' => 'Давление в буферной емкости, бар',
+                    'type' => 'numeric',
+                ],
+                'pump_discharge_pressure' => [
+                    'title' => 'Давление на выходе насоса, бар',
+                    'type' => 'numeric',
+                ],
+                'heater_inlet_pressure' => [
+                    'title' => 'Температура на входе в печь, С',
+                    'type' => 'numeric',
+                ],
+                'heater_output_pressure' => [
+                    'title' => 'Температура на выходе из печи, С',
+                    'type' => 'numeric',
+                ],
+            ]
+        ];
+
+        return view('omgngdu.index', compact('params'));
     }
 
-    public function export()
+    public function list(IndexTableRequest $request)
     {
-        $omgngdu = ComplicationMonitoringOmgNGDU::orderByDesc('date')
+        $query = ComplicationMonitoringOmgNGDU::query()
             ->with('ngdu')
             ->with('cdng')
             ->with('gu')
             ->with('zu')
-            ->with('well')
+            ->with('well');
+
+        $omgngdu = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->paginate(10);
+
+        return response()->json(json_decode(\App\Http\Resources\OmgNGDUListResource::collection($omgngdu)->toJson()));
+    }
+
+    public function export(IndexTableRequest $request)
+    {
+        $query = ComplicationMonitoringOmgNGDU::query()
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->with('zu')
+            ->with('well');
+
+        $omgngdu = $this
+            ->getFilteredQuery($request->validated(), $query)
             ->get();
 
         return Excel::download(new OmgNGDUExport($omgngdu), 'omgngdu.xls');
@@ -209,5 +341,10 @@ class OmgNGDUController extends Controller
             'wmLastSO4' => $wmLastSO4,
             'oilGas' => $oilGas
         ]);
+    }
+
+    protected function getFilteredQuery($filter, $query = null)
+    {
+        return (new OmgNGDUFilter($query, $filter))->filter();
     }
 }

@@ -100,6 +100,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
         Route::get('omguhe/history/{omguhe}', 'ComplicationMonitoring\OmgUHEController@history')->name('omguhe.history');
 
+        Route::get('omgngdu/list', 'ComplicationMonitoring\OmgNGDUController@list')->name('omgngdu.list');
         Route::get('omgngdu/export', 'ComplicationMonitoring\OmgNGDUController@export')->name('omgngdu.export');
         Route::get('omgngdu/history/{omgngdu}', 'ComplicationMonitoring\OmgNGDUController@history')->name('omgngdu.history');
         Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');

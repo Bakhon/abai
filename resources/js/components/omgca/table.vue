@@ -1,7 +1,7 @@
 <template>
     <div class="table-page">
         <div class="float-right table-page__links">
-            <a class="table-page__links-item table-page__links-item_add" :href="params.header_links.create">
+            <a class="table-page__links-item table-page__links-item_add" :href="params.links.create">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9.6H9.6V16H6.4V9.6H0V6.4H6.4V0H9.6V6.4H16V9.6Z" fill="white"/>
                 </svg>
@@ -37,11 +37,18 @@
                     <th v-for="(field, code) in params.fields" class="sort">
                         <i @click="filters[code].show = !filters[code].show" class="fa fa-filter" aria-hidden="true"></i>
                         <div v-if="filters[code].show">
-                            <select v-if="params.fields[code].type === 'select'" v-model="filters[code].value">
-                                <option></option>
-                                <option v-for="(value, id) in params.fields[code].filter.values" :value="id">{{value}}</option>
-                            </select>
+                            <template v-if="params.fields[code].type === 'select'">
+                                <select v-model="filters[code].value">
+                                    <option></option>
+                                    <option v-for="(value, id) in params.fields[code].filter.values" :value="id">{{value}}</option>
+                                </select>
+                            </template>
+                            <template v-else-if="params.fields[code].type === 'date'">
+                                <input type="text" v-model="filters[code].value['from']" placeholder="С">
+                                <input type="text" v-model="filters[code].value['to']" placeholder="По">
+                            </template>
                             <input v-else type="text" v-model="filters[code].value">
+
                             <button @click="loadData()">V</button>
                         </div>
                         <span
@@ -77,7 +84,7 @@
                 </tr>
                 </tbody>
             </table>
-            <pagination v-if="omgca" :data="omgca" @pagination-change-page="loadData"></pagination>
+            <pagination :limit="5" v-if="omgca" :data="omgca" @pagination-change-page="loadData"></pagination>
         </div>
     </div>
 </template>
@@ -104,10 +111,11 @@ export default {
 
         if(this.params) {
             Object.entries(this.params.fields).forEach(([code, field]) => {
-                Vue.set(this.filters, code, {
+                let filter = {
                     show: false,
-                    value: null
-                })
+                    value: field.type === 'date' ? {from: null, to: null} : null
+                }
+                Vue.set(this.filters, code, filter)
             })
         }
 
@@ -125,9 +133,11 @@ export default {
 
             if(this.filters) {
                 Object.entries(this.filters).forEach(([code, filter]) => {
-                    if (filter.value) {
-                        queryParams['filter['+code+']'] = filter.value
-                    }
+                    if(!filter.value) return
+                    if(typeof filter.value == 'object' && !filter.value.from && !filter.value.to) return
+
+                    queryParams['filter['+code+']'] = filter.value
+
                 })
             }
             return queryParams
@@ -140,7 +150,7 @@ export default {
 
             this.loading = true
 
-            this.axios.get('/ru/omgca/list', {params: this.prepareQueryParams()}).then(response => {
+            this.axios.get(this.params.links.list, {params: this.prepareQueryParams()}).then(response => {
                 this.omgca = response.data
             }).catch(e => {
 
@@ -170,7 +180,7 @@ export default {
                 .map(k => esc(k) + '=' + esc(queryParams[k]))
                 .join('&');
 
-            document.location.href = this.params.header_links.export+'?'+query
+            document.location.href = this.params.links.export+'?'+query
         }
     },
 };

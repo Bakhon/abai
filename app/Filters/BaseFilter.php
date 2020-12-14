@@ -53,9 +53,48 @@ abstract class BaseFilter
 
     abstract protected function sort(string $field, bool $desc);
 
-    public function filterGu($guId)
+    protected function filterGu($guId)
     {
         $this->query->where('gu_id', $guId);
+    }
+
+    protected function filterZu($guId)
+    {
+        $this->query->where('zu_id', $guId);
+    }
+
+    protected function filterCdng($guId)
+    {
+        $this->query->where('cdng_id', $guId);
+    }
+
+    protected function filterNgdu($guId)
+    {
+        $this->query->where('ngdu_id', $guId);
+    }
+
+    protected function filterWell($guId)
+    {
+        $this->query->where('well_id', $guId);
+    }
+
+    protected function filterDate($dates)
+    {
+        $dates = json_decode($dates);
+        try{
+            $dateFrom = $dates->from ? \Carbon\Carbon::parse($dates->from) : null;
+            $dateTo = $dates->to ? \Carbon\Carbon::parse($dates->to) : null;
+        }
+        catch(\Exception $e) {
+            return;
+        }
+
+        if(!empty($dateFrom)) {
+            $this->query->where('date', '>=', $dateFrom);
+        }
+        if(!empty($dateTo)) {
+            $this->query->where('date', '<=', $dateTo);
+        }
     }
 
 }

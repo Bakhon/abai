@@ -26,8 +26,9 @@ class OmgCAController extends Controller
 
         $params = [
             'success' => Session::get('success'),
-            'header_links' => [
+            'links' => [
                 'create' => route('omgca.create'),
+                'list' => route('omgca.list'),
                 'export' => route('omgca.export'),
             ],
             'title' => 'База данных ОМГ ДДНГ',

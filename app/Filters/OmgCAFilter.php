@@ -19,4 +19,9 @@ class OmgCAFilter extends BaseFilter
         }
     }
 
+    protected function filterDate($date)
+    {
+        $this->query->where('date', 'LIKE', $date.'%');
+    }
+
 }
