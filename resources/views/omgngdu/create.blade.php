@@ -15,7 +15,7 @@
                 <form action="{{ route('omgngdu.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <omgngdu-create></omgngdu-create>
+                        <omgngdu-form></omgngdu-form>
                     </div>
                 </form>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OilGasUpdateRequest;
 use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\OilGas;
@@ -106,14 +107,26 @@ class OilGasController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(OilGas $oilgas)
+    {
+        $oilgas->load('history');
+        return view('сomplicationMonitoring.oilGas.history', compact('oilgas'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(OilGas $oilgas)
     {
-        //
+        return view('сomplicationMonitoring.oilGas.edit', compact('oilgas'));
     }
 
     /**
@@ -121,11 +134,12 @@ class OilGasController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(OilGasUpdateRequest $request, OilGas $oilgas)
     {
-        //
+        $oilgas->update($request->validated());
+        return redirect()->route('oilgas.index')->with('success', __('app.updated'));
     }
 
     /**
@@ -209,7 +223,7 @@ class OilGasController extends Controller
                 'План, техрежим Qв, тыс.м³/год',
                 'Плановый расход реагента Qп (ТС-3011), т/год',
                 'Плановый расход реагента Qп (ТС-3011), кг/сут',
-                'Фоновая скорость коррозии, мм/г',
+                // 'Фоновая скорость коррозии, мм/г',
                 'Рекомендуемая дозировка (ТС-3011), г/м3',
                 'Расход реагента при рекомендуемой дозировке Qр (ТС-3011), т/год',
                 'Экономия при внедрении рекомендации, млн.тенге'
@@ -218,15 +232,30 @@ class OilGasController extends Controller
 
         foreach ($economicCurrentYear as $item) {
             $array = [];
+            //ГУ
             array_push($array, $item->gu->name);
-            array_push($array, round($item->plan_dosage,2));
-            array_push($array, round($item->q_v,2));
-            $cg = $item->plan_dosage * $item->q_v / 1000;
-            array_push($array, round(($cg / 365) * $difference->d,2));
-            $ch = $cg * 2.74;
+
+            //Плановая дозировка (ТС-3011), г/м³ (год)
+            array_push($array, round($item->plan_dosage,2)); // тех режим дднг
+
+            //План, техрежим Qв, тыс.м³/год
+            array_push($array, round($item->q_v,2)); // тех режим дднг
+
+
+            //Плановый расход реагента Qп (ТС-3011), т/год
+            $cg = $item->plan_dosage * $item->q_v / 1000; //перевод с кг/год на т/год
+            array_push($array, round($cg,2));
+            // array_push($array, round($cg * $difference->d,2));
+
+            //Плановый расход реагента Qп (ТС-3011), кг/сут
+            $ch = $cg * 2.74; // прервод тонны в год на кг/с
             array_push($array, round($ch,2));
+
+            //Фоновая скорость коррозии, мм/г
             $ck = self::getCorrosion($item->gu->id);
-            array_push($array, round($ck,2));
+            // array_push($array, round($ck,2));
+
+            //Рекомендуемая дозировка (ТС-3011), г/м3
             if ($ck > 0.1) {
                 $ci = 14.177 * log($ck) + 35.222;
                 array_push($array, round($ci,2));
@@ -234,10 +263,16 @@ class OilGasController extends Controller
                 $ci = 0;
                 array_push($array, round($ci,2));
             }
+
+            //Расход реагента при рекомендуемой дозировке Qр (ТС-3011), т/год
             $cj = self::getCalcData($request->gu);
             array_push($array, round($cj,2));
+
+            //Экономия при внедрении рекомендации, млн.тенге
             $co = ($cg - $cj) * 690000 / 1000000;
             array_push($array, round($co,2));
+
+
             array_push($data2, $array);
         }
 
@@ -317,6 +352,56 @@ class OilGasController extends Controller
 
         return $data;
     }
+
+    public function ecoData($gu = 44)
+    {
+        $ngduUheData = DB::table('omg_n_g_d_u_s')
+                    ->leftJoin('omg_u_h_e_s', function ($join) {
+                        $join->on('omg_n_g_d_u_s.gu_id', '=', 'omg_u_h_e_s.gu_id')
+                            ->on('omg_u_h_e_s.date', '=', 'omg_n_g_d_u_s.date');
+                    })
+                    ->leftJoin('pipes', 'omg_n_g_d_u_s.gu_id', '=', 'pipes.gu_id')
+                    ->where('omg_n_g_d_u_s.gu_id','=',$gu)
+                    ->whereNotNull('omg_n_g_d_u_s.date')
+                    ->whereNotNull('omg_n_g_d_u_s.pump_discharge_pressure')
+                    ->whereNotNull('omg_n_g_d_u_s.heater_output_pressure')
+                    ->whereNotNull('omg_n_g_d_u_s.daily_fluid_production')
+                    ->whereNotNull('omg_n_g_d_u_s.bsw')
+                    ->whereNotNull('omg_n_g_d_u_s.daily_oil_production')
+                    ->whereNotNull('omg_u_h_e_s.date')
+                    ->whereNotNull('omg_u_h_e_s.current_dosage')
+                    ->select('omg_n_g_d_u_s.date',
+                            'pipes.outside_diameter',
+                             'pipes.roughness',
+                             'pipes.length',
+                             'omg_n_g_d_u_s.pump_discharge_pressure',
+                             'omg_n_g_d_u_s.heater_output_pressure',
+                            //  'water_measurements.hydrogen_sulfide',
+                            //  'water_measurements.carbon_dioxide',
+                             'omg_n_g_d_u_s.daily_fluid_production',
+                             'omg_n_g_d_u_s.bsw',
+                            //  'water_measurements.hydrocarbonate_ion',
+                            //  'water_measurements.sulphate_ion',
+                             'omg_n_g_d_u_s.daily_gas_production_in_sib',
+                             'omg_n_g_d_u_s.surge_tank_pressure',
+                            //  'water_measurements.density',
+                            //  'oil_gases.water_density_at_20',
+                            //  'oil_gases.gas_density_at_20',
+                            //  'oil_gases.oil_viscosity_at_20',
+                            //  'oil_gases.gas_viscosity_at_20',
+                             'omg_n_g_d_u_s.daily_oil_production',
+                             'omg_u_h_e_s.current_dosage',
+                             )
+                    ->get();
+                    // json_encode($data, JSON_PRETTY_PRINT);
+
+        // foreach(){
+
+        // }
+
+        return $ngduUheData->count();
+    }
+
     static function corrosion(
         $WC,
         $GOR1,

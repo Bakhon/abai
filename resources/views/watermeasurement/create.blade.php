@@ -15,7 +15,7 @@
                 <form action="{{ route('watermeasurement.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <wm-create></wm-create>
+                        <wm-form></wm-form>
                     </div>
                 </form>
             </div>

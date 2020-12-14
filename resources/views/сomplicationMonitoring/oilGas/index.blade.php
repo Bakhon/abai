@@ -5,7 +5,7 @@
             <div class="card-header float-right">
                 <a class="btn btn-success" href="{{ route('oilgas.create') }}">+</a>
             </div>
-            <h1 style="color:#fff">Форма ввода данных по нефти и газу</h1>
+            <h1 style="color:#fff">База данных по нефти и газу</h1>
             <div class="card-body">
                 @if ($message = Session::get('success'))
                     <div class="alert alert-success">
@@ -55,7 +55,9 @@
                             <td>{{ $item->gas_viscosity_at_20 }}</td>
                             <td>
                                 <form action="{{ route('oilgas.destroy',$item->id) }}" method="POST">
+                                    <a class="btn btn-primary" href="{{ route('oilgas.edit',['oilgas' => $item->id]) }}"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-primary" href="{{ route('oilgas.show',$item->id) }}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-primary" href="{{ route('oilgas.history',$item->id) }}"><i class="fas fa-history"></i></a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">
