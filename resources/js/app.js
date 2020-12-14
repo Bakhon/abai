@@ -16,6 +16,7 @@ import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import VueMomentLib from 'vue-moment-lib';
+import moment from 'moment';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 import VueApexCharts from "vue-apexcharts";
@@ -32,6 +33,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.Jquery = require('jquery');
+Vue.prototype.$moment = moment
 
 Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib, ElementUI);
 
@@ -102,6 +104,7 @@ Vue.component('monitor-chart', require('./components/monitor/chart.vue').default
 Vue.component('monitor-chart-tide', require('./components/monitor/chartTide.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
+Vue.component('omgca-table', require('./components/omgca/table.vue').default);
 Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
@@ -116,6 +119,8 @@ Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('oilgastable-create', require('./components/сomplicationMonitoring/oilGas/table.vue').default);
 Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
+Vue.component('table-editor', require('./components/TableEditor.vue').default);
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 

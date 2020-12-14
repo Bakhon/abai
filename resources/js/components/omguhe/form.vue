@@ -84,18 +84,6 @@
                     </option>
                 </select>
             </div>
-            <div class="form-label-group form-check">
-                <input type="hidden" name="fill" value="0">
-                <input
-                    type="checkbox"
-                    class="form-check-input"
-                    name="fill"
-                    value="1"
-                    id="fill"
-                    v-model="formFields.fill"
-                />
-                <label class="form-check-label" for="fill">Заправка</label>
-            </div>
             <label>Уровень</label>
             <div class="form-label-group">
                 <input
@@ -139,6 +127,25 @@
                         {{ row.name }}
                     </option>
                 </select>
+            </div>
+            <div class="form-label-group form-check">
+                <input
+                type="checkbox"
+                class="form-check-input"
+                name="fill_status"
+                v-model="formFields.fill_status"
+                />
+                <label class="form-check-label" for="fill_status">Заправка</label>
+            </div>
+            <div class="form-label-group" v-show="formFields.fill_status">
+                <input
+                type="number"
+                step="0.0001"
+                name="fill"
+                v-model="fill"
+                class="form-control"
+                placeholder=""
+                />
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -189,7 +196,8 @@ export default {
                 level: null,
                 out_of_service_оf_dosing: null,
                 current_dosage: null,
-                reason: null
+                reason: null,
+                fill_status: null
             }
         };
     },

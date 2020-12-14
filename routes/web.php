@@ -91,8 +91,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('/getgudatabyday', 'ComplicationMonitoring\OmgNGDUController@getGuDataByDay');
         Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
 
-        Route::resource('omgca','ComplicationMonitoring\OmgCAController');
+        Route::get('omgca/list', 'ComplicationMonitoring\OmgCAController@list')->name('omgca.list');
         Route::get('omgca/history/{omgca}', 'ComplicationMonitoring\OmgCAController@history')->name('omgca.history');
+        Route::resource('omgca','ComplicationMonitoring\OmgCAController');
 
         Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
         Route::get('omguhe/history/{omguhe}', 'ComplicationMonitoring\OmgUHEController@history')->name('omguhe.history');
