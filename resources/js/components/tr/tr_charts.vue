@@ -60,8 +60,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
-            >PieChart Все скважины. Потенциал снижения динамического уровня,
-            спуска гно</a
+            >ТОП-30 скважин. Потенциал прироста дебита нефти</a
           >
           <a class="dropdown-item" href="#" @click="chartShow = 'bar'"
             >BarChart</a
@@ -198,7 +197,7 @@
             v-if="barChartData && pieChartRerender"
             type="bar"
             :options="chartBarOptions"
-            :series="[{ name: '', data: barChartData }]"
+            :series="barChartData"
           ></apexchart>
         </div>
       </div>
@@ -273,30 +272,49 @@ export default {
               (!horizon || this.getStringOrFirstItem(row, 'horizon') === horizon) &&
               (!exp_meth || this.getStringOrFirstItem(row, 'exp_meth') === exp_meth)
           );
+          const self = this
+          filteredResult.sort(function (a, b) {
+                const grow1 = self.getStringOrFirstItem(a, 'tp_idn_oil_inc') + self.getStringOrFirstItem(a, 'tp_idn_grp_q_oil')
+                const grow2 = self.getStringOrFirstItem(b, 'tp_idn_oil_inc') + self.getStringOrFirstItem(b, 'tp_idn_grp_q_oil')
+                if (grow2 > grow1) {
+                    return 1;
+                }
+                if (grow2 < grow1) {
+                    return -1;
+                }
+                return 0;
+          });
+          const filtered30 = filteredResult.slice(29);
           console.log("filteredResult = ", filteredResult);
-          let filteredData = filteredResult.reduce(
-            (acc, res) => {
-              acc = {
-                Pbh: acc["Pbh"] + res["Pbh"],
-                wct: acc["wct"] + res["wct"],
-                p_res: acc["p_res"] + res["p_res"],
-                PI: acc["PI"] + res["PI"],
-              };
-              return acc;
-            },
-            {
-              Pbh: 0,
-              wct: 0,
-              p_res: 0,
-              PI: 0,
-            }
-          );
-          return [
-            filteredData["Pbh"],
-            filteredData["wct"],
-            filteredData["p_res"],
-            filteredData["PI"],
-          ];
+          const categories = filtered30.map(item => this.getStringOrFirstItem(item, 'well'))
+          const xaxis = { ...this.chartBarOptions.xaxis, categories }
+          this.chartBarOptions = { ...this.chartBarOptions, xaxis }
+          console.log('categories = ', categories)
+          console.log('xaxis = ', xaxis)
+          console.log('chartBarOptions = ', this.chartBarOptions)
+          const series= [{
+            name: 'Q нефти',
+            type: 'bar',
+            data: filtered30.map(item => this.getStringOrFirstItem(item, 'q_o'))
+          },{
+            name: 'Прирост Qн идн',
+            type: 'bar',
+            data: filtered30.map(item => this.getStringOrFirstItem(item, 'tp_idn_oil_inc'))
+          },{
+            name: 'Прирост Qн грп',
+            type: 'bar',
+            data: filtered30.map(item => this.getStringOrFirstItem(item, 'tp_idn_grp_q_oil'))
+          },{
+            name: 'Рзаб идн',
+            type: 'scatter',
+            data: filtered30.map(item => this.getStringOrFirstItem(item, 'tp_idn_bhp'))
+          }, {
+            name: 'Рзаб идн',
+            type: 'scatter',
+            data: filtered30.map(item => this.getStringOrFirstItem(item, 'bhp'))
+          }]
+          console.log('series = ', series)
+          return series;
         } catch (err) {
           console.error(err);
           return false;
@@ -526,6 +544,8 @@ export default {
       //   const { dt } = this;
       //   console.log(dt)
       //   var choosenDt = dt.split("-");
+      this.$store.commit("tr/SET_MONTH", this.month);
+      this.$store.commit("tr/SET_YEAR", this.selectYear);
       if (this.month == 12) {
         this.year = this.selectYear - 1;
       } else {
@@ -533,7 +553,7 @@ export default {
       }
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.51:7576/api/techregime/graph1/" +
             this.year +
             "/" +
             this.month +
@@ -575,18 +595,26 @@ export default {
     },
   },
   created() {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-    var yyyy = today.getFullYear();
-    if (mm == 0) {
-      var prMm = 12;
+    let prMm, yyyy;
+    if (this.$store.getters["tr/month"] && this.$store.getters["tr/year"]) {
+      prMm = this.$store.getters["tr/month"];
+      yyyy = this.$store.getters["tr/year"];
     } else {
-      var prMm = mm - 1;
+      const today = new Date();
+      const dd = String(today.getDate()).padStart(2, "0");
+      const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      yyyy = today.getFullYear();
+      if (mm == 0) {
+        prMm = 12;
+      } else {
+        prMm = mm - 1;
+      }
+      this.$store.commit("tr/SET_MONTH", prMm);
+      this.$store.commit("tr/SET_YEAR", yyyy);
     }
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/" + yyyy + "/" + prMm + "/"
+        "http://172.20.103.51:7576/api/techregime/graph1/" + yyyy + "/" + prMm + "/"
       )
       .then((response) => {
         let data = response.data;
