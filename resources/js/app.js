@@ -16,6 +16,7 @@ import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import VueMomentLib from 'vue-moment-lib';
+import moment from 'moment';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 import VueApexCharts from "vue-apexcharts";
@@ -32,6 +33,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.Jquery = require('jquery');
+Vue.prototype.$moment = moment
 
 Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib, ElementUI);
 
