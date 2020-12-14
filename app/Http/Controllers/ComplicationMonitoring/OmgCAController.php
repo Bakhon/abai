@@ -9,7 +9,9 @@ use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgCAUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgCA;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OmgCAController extends Controller
@@ -17,11 +19,49 @@ class OmgCAController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        return view('omgca.index');
+
+        $params = [
+            'success' => Session::get('success'),
+            'header_links' => [
+                'create' => route('omgca.create'),
+                'export' => route('omgca.export'),
+            ],
+            'title' => 'База данных ОМГ ДДНГ',
+            'table_header' => [
+                'Узел отбора' => 1,
+                'Фактические данные ОМГ ЦА' => 3,
+            ],
+            'fields' => [
+                'gu' => [
+                    'title' => 'ГУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Gu::whereHas('omgca')
+                            ->orderBy('name', 'asc')
+                            ->pluck('name', 'id')
+                            ->toArray()
+                    ]
+                ],
+                'date' => [
+                    'title' => 'Год',
+                    'type' => 'number',
+                ],
+                'plan_dosage' => [
+                    'title' => 'Планируемая дозировка, г/м³',
+                    'type' => 'number',
+                ],
+                'q_v' => [
+                    'title' => 'Техрежим Qв, тыс.м³/год',
+                    'type' => 'number',
+                ],
+            ]
+        ];
+
+        return view('omgca.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -33,37 +73,7 @@ class OmgCAController extends Controller
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(10);
 
-        $params = [
-            'fields' => [
-                'gu' => [
-                    'title' => '',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Gu::whereHas('omgca')
-                            ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
-                            ->toArray()
-                    ]
-                ],
-                'date' => [
-                    'title' => '',
-                    'type' => 'number',
-                ],
-                'plan_dosage' => [
-                    'title' => 'г/м³',
-                    'type' => 'number',
-                ],
-                'q_v' => [
-                    'title' => 'тыс.м³/год',
-                    'type' => 'number',
-                ],
-            ]
-        ];
-
-        return response()->json([
-            'omgca' => json_decode(\App\Http\Resources\OmgCAListResource::collection($omgca)->toJson()),
-            'params' => $params
-        ]);
+        return response()->json(json_decode(\App\Http\Resources\OmgCAListResource::collection($omgca)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
@@ -81,7 +91,7 @@ class OmgCAController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -92,7 +102,7 @@ class OmgCAController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -123,7 +133,7 @@ class OmgCAController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -142,7 +152,7 @@ class OmgCAController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function history(OmgCA $omgca)
     {
@@ -154,7 +164,7 @@ class OmgCAController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(OmgCA $omgca)
     {
@@ -166,7 +176,7 @@ class OmgCAController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(OmgCAUpdateRequest $request, OmgCA $omgca)
     {
@@ -178,14 +188,19 @@ class OmgCAController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $omgca = OmgCA::find($id);
         $omgca->delete();
 
-        return redirect()->route('omgca.index')->with('success', __('app.deleted'));
+        if($request->ajax()) {
+            return response()->json([], Response::HTTP_NO_CONTENT);
+        }
+        else {
+            return redirect()->route('omgca.index')->with('success', __('app.deleted'));
+        }
     }
 
     public function checkDublicate(Request $request)

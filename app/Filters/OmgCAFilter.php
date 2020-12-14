@@ -6,11 +6,6 @@ namespace App\Filters;
 class OmgCAFilter extends BaseFilter
 {
 
-    public function filterSubjectId($subjectId)
-    {
-        $this->query->where('subject_id', $subjectId);
-    }
-
     protected function sort(string $field, bool $desc)
     {
         switch($field) {
