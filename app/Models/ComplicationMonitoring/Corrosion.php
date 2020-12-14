@@ -2,10 +2,15 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
 
 class Corrosion extends Model
 {
+    use WithHistory;
+
+    protected $guarded = ['id'];
+
     public function other_objects()
     {
         return $this->hasOne('App\Models\Refs\OtherObjects','id','other_objects_id')->withDefault();
