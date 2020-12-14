@@ -21,6 +21,7 @@ import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 import VueApexCharts from "vue-apexcharts";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import store from './store';
 // import  jquery from 'jquery';
 
 
@@ -101,8 +102,7 @@ Vue.component('monitor-chart', require('./components/monitor/chart.vue').default
 Vue.component('monitor-chart-tide', require('./components/monitor/chartTide.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
-Vue.component('omguhe-create', require('./components/omguhe/create.vue').default);
-Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
+Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
@@ -127,5 +127,6 @@ Vue.component('viscenter2-create', require('./components/viscenter2/create.vue')
  */
 
 const app = new Vue({
+    store,
     el: '#app',
 });

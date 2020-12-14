@@ -15,7 +15,7 @@
                 <form action="{{ route('omguhe.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <omguhe-create></omguhe-create>
+                        <omguhe-form></omguhe-form>
                     </div>
                 </form>
             </div>
