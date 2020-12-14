@@ -3,6 +3,7 @@
 @section('content')
 <div class="col p-4" id="app">
             <div class="card-header float-right">
+                <a class="btn btn-success" href="{{ route('omgngdu.export') }}"><i class="fas fa-file-export"></i></a>
                 <a class="btn btn-success" href="{{ route('omgngdu.create') }}">+</a>
             </div>
             <h1 style="color:#fff">Форма ввода данных ОМГ НГДУ</h1>

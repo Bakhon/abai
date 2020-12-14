@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Exports\OmgNGDUExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OmgNGDUUpdateRequest;
 use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
@@ -13,6 +14,7 @@ use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OmgNGDUController extends Controller
 {
@@ -32,6 +34,19 @@ class OmgNGDUController extends Controller
                                 ->paginate(10);
 
         return view('omgngdu.index',compact('omgngdu'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function export()
+    {
+        $omgngdu = ComplicationMonitoringOmgNGDU::orderByDesc('date')
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->with('zu')
+            ->with('well')
+            ->get();
+
+        return Excel::download(new OmgNGDUExport($omgngdu), 'omgngdu.xls');
     }
 
     /**

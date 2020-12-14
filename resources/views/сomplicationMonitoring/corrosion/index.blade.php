@@ -3,6 +3,7 @@
 @section('content')
 <div class="col p-4" id="app">
             <div class="card-header float-right">
+                <a class="btn btn-success" href="{{ route('corrosioncrud.export') }}"><i class="fas fa-file-export"></i></a>
                 <a class="btn btn-success" href="{{ route('corrosioncrud.create') }}">+</a>
             </div>
             <h1 style="color:#fff">База данных по скорости коррозии</h1>

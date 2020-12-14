@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Exports\OmgCAExport;
 use App\Filters\OmgCAFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexTableRequest;
@@ -9,6 +10,7 @@ use App\Http\Requests\OmgCAUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgCA;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OmgCAController extends Controller
 {
@@ -62,6 +64,18 @@ class OmgCAController extends Controller
             'omgca' => json_decode(\App\Http\Resources\OmgCAListResource::collection($omgca)->toJson()),
             'params' => $params
         ]);
+    }
+
+    public function export(IndexTableRequest $request)
+    {
+        $query = OmgCA::query()
+            ->with('gu');
+
+        $omgca = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->get();
+
+        return Excel::download(new OmgCAExport($omgca), 'omgca.xls');
     }
 
     /**
