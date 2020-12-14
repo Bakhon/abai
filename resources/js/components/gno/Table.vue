@@ -1904,18 +1904,22 @@ export default {
           var data = JSON.parse(response.data);
           if(data) {
             if (data["error"] == "NoIntersection") {
-              Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать невозможно, попробуйте изменить глубину спуска или ожидаемый дебит");
+              Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать не удалось, попробуйте изменить глубину спуска или ожидаемый дебит");
             } else {
             if(this.sk == "ПШГН" || this.sk == "0") {
               Vue.prototype.$notifyWarning("Тип СК на скважине не определен")
             } 
-          Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
           this.shgnPumpType = data["pump_type"]
           if(this.shgnPumpType == 70) {
             this.shgnTubOD = 89
           } else {
             this.shgnTubOD = this.tubOD
           }
+          if(this.shgnPumpType == 70 && this.casOD * 1 < 115) {
+            Vue.prototype.$notifyWarning('Применение НСН-70 на НКТ 89 мм ограничено в ЭК 114мм')
+            Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать не удалось, попробуйте изменить глубину спуска или ожидаемый дебит");
+          } else {
+          Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
           this.shgnSPM = data["spm"].toFixed(0)
           this.shgnLen = data["stroke_len"]
           this.shgnS1D = data["s1d"].toFixed(0)
@@ -1925,6 +1929,8 @@ export default {
           this.shgnTN = data["tn"]
           this.shgnTNL = data["tn_l"]
           this.visibleChart = !this.visibleChart
+          }
+          
             }
           } else {
           }
