@@ -37,7 +37,7 @@
                             <td>
                                 @if ($item->field === 1)
                                     Узень
-                                @else
+                                @elseif ($item->field === 2)
                                     Карамандыбас
                                 @endif
                             </td>
@@ -59,8 +59,9 @@
                             <td>{{ $item->reason }}</td>
                             <td>
                                 <form action="{{ route('omguhe.destroy',$item->id) }}" method="POST">
-                                    {{-- <a class="btn btn-primary" href="{{ route('omguhe.edit',$item->id) }}"><i class="fas fa-edit"></i></a> --}}
+                                    <a class="btn btn-primary" href="{{ route('omguhe.edit',$item->id) }}"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-primary" href="{{ route('omguhe.show',$item->id) }}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-primary" href="{{ route('omguhe.history',$item->id) }}"><i class="fas fa-history"></i></a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">
