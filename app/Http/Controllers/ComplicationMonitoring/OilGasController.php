@@ -38,6 +38,7 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\OtherObjects::whereHas('oilgas')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
@@ -55,6 +56,7 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
@@ -72,6 +74,7 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('oilgas')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
@@ -89,6 +92,7 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
@@ -106,6 +110,7 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
@@ -123,6 +128,7 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('oilgas')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
