@@ -32,6 +32,7 @@ class CorrosionController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Field::whereHas('corrosion')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
@@ -49,6 +50,7 @@ class CorrosionController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('corrosion')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
@@ -66,6 +68,7 @@ class CorrosionController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('corrosion')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
@@ -83,6 +86,7 @@ class CorrosionController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('corrosion')
                             ->orderBy('name', 'asc')
+                            ->get()
                             ->map(
                                 function ($item) {
                                     return [
