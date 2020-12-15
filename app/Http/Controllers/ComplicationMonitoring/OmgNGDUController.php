@@ -48,7 +48,15 @@ class OmgNGDUController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Field::whereHas('omgngdu')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -58,7 +66,15 @@ class OmgNGDUController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('omgngdu')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -68,7 +84,15 @@ class OmgNGDUController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('omgngdu')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -78,7 +102,15 @@ class OmgNGDUController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omgngdu')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -88,7 +120,15 @@ class OmgNGDUController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('omgngdu')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -98,7 +138,15 @@ class OmgNGDUController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('omgngdu')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],

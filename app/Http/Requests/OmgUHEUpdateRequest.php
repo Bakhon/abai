@@ -14,7 +14,7 @@ class OmgUHEUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'field' => 'nullable|numeric',
+            'field_id' => 'nullable|numeric',
             'gu_id' => 'nullable|numeric',
             'date' => 'nullable|date',
             'out_of_service_оf_dosing' => 'nullable|numeric',

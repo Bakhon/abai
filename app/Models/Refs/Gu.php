@@ -30,4 +30,9 @@ class Gu extends Model
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\Corrosion::class);
     }
+
+    public function omguhe()
+    {
+        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgUHE::class);
+    }
 }

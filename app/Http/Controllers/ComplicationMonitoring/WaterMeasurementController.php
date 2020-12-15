@@ -60,7 +60,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\OtherObjects::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -70,7 +77,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -80,7 +94,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -90,7 +111,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -100,7 +128,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -110,7 +145,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -164,7 +206,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\WaterTypeBySulin::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -214,7 +263,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\SulphateReducingBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -224,7 +280,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\HydrocarbonOxidizingBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -234,7 +297,14 @@ class WaterMeasurementController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\ThionicBacteria::whereHas('watermeasurement')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
