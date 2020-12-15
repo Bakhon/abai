@@ -26,13 +26,7 @@
     <tbody>
         @foreach($data as $item)
             <tr>
-                <td style="border: 1px solid black; height: 15px; width: 15px">
-                    @if ($item->field === 1)
-                        Узень
-                    @elseif ($item->field === 2)
-                        Карамандыбас
-                    @endif
-                </td>
+                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->field->name }}</td>
                 <td style="border: 1px solid black; height: 15px">{{ $item->ngdu->name }}</td>
                 <td style="border: 1px solid black; height: 15px">{{ $item->cdng->name }}</td>
                 <td style="border: 1px solid black; height: 15px">{{ $item->gu->name }}</td>
