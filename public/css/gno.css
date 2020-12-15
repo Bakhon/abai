@@ -666,6 +666,7 @@ iframe.iframe {
     margin-bottom: 5px;
 }
 
+
 .modal-bign {
     color: black;
     background: #20274e;
@@ -1216,9 +1217,19 @@ input.checkbox-q-liquid {
     padding-bottom: 4px;
 }
 
-.ic-min-block
+.ic-min-block1
 {
     min-width: 70px;
+}
+
+.ic-min-block2
+{
+    min-width: 125px;
+}
+
+.ic-min-block3
+{
+    min-width: 110px;
 }
 
 .ic-ar
@@ -1228,3 +1239,11 @@ input.checkbox-q-liquid {
 }
 
 /* .vm--modal {} */
+.table-border-gno-left-right {
+    border-right-color: #3b4172;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-left-color: #3b4172;
+    border-left-style: solid;
+    border-left-width: 1px;
+}

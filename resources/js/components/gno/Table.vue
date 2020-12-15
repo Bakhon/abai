@@ -1173,7 +1173,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="row bottom-configuration">
-                      <div class="col-6">
+                      <div class="col-6 px-2">
                         <h3>
                           Настройки кривой притока
                         </h3>
@@ -1181,7 +1181,7 @@
                           <div class="row pl-3">
                             <div class="col-7">
                               <div class="row">
-                                <div class="col-2 px-0  ic-min-block">
+                                <div class="col-2 px-0 pt-1 ic-min-block1">
                                   <div class="table-border-gno-right py-1 ml-3">
                                     Pпл
 
@@ -1194,13 +1194,15 @@
                                 </div>
                               </div>
                             </div>
-                            <div class="col-2 px-0">
-                              <div class="table-border-gno-right ic-ar">
+                            <div class="col-2 px-0 pt-2 pb-0">
+                              <div class="table-border-gno-right ic-ar pt-1">
                                 Обв.
                               </div>
                             </div>
-                            <div class="col-2 py-1 pl-2 pr-0">
-                              <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                            <div class="col-2 pt-1 pl-2 pr-0">
+                              <div class="py-1">
+                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                              </div>
                             </div>
 
                           </div>
@@ -1208,7 +1210,7 @@
                             <div class="row pl-3">
                               <div class="col-7">
                                 <div class="row">
-                                  <div class="col-2 px-0 ic-min-block">
+                                  <div class="col-2 px-0 ic-min-block1">
                                     <div class="table-border-gno-right">
                                       <label for="">
                                         <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
@@ -1225,7 +1227,7 @@
                                 </div>
                               </div>
                               <div class="col-2 px-0">
-                                <div class="table-border-gno-right ic-ar">
+                                <div class="table-border-gno-right ic-ar pt-1">
                                   ГФ.
                                 </div>
                               </div>
@@ -1243,11 +1245,11 @@
                             <div class="row ic-bottom-row  pl-3">
                               <div class="col-7">
                                 <div class="row">
-                                  <div class="col-2 px-0 ic-min-block">
+                                  <div class="col-2 px-0 ic-min-block1">
                                     <div class="table-border-gno-right">
                                       <label for="">
                                         <input v-model="curveSelect" class="checkbox-q-liquid" value="ql" type="radio"
-                                               name="set"/>Qж</label>
+                                               name="set"/> Qж</label>
                                     </div>
                                   </div>
                                   <div class="col-5 py-1 px-1">
@@ -1262,16 +1264,14 @@
                             <div class="row">
 
                               <div class="col-1"></div>
-
-                              <div class="col-2 ml-3 pl-4 pr-0 ic-min-block">
-                                <div class="table-border-gno-right">
+                              <div class="col-2 ml-3 pl-4 pr-3 ic-min-block2 pt-1">
+                                <div class="table-border-gno-right pt-1">
                                   <label for="">
                                     <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                           name="set"/>Рзаб</label>
+                                           name="set"/> Рзаб</label>
                                 </div>
                               </div>
-
-                              <div class="col-7 px-0">
+                              <div class="col-7 px-0 pt-2">
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
 
                               </div>
@@ -1282,31 +1282,28 @@
                           <div class="table-border-gno-top">
                             <div class="row">
 
-                              <div class="col-3">
+                              <div class="col-1">
                               </div>
 
-                              <div class="tech-data col-2">
+                              <div class="tech-data ml-3 pl-4 pr-3  col-2  ic-min-block2">
                                 <div class="table-border-gno-right">
                                   <label for="">
                                     <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                           name="set"/>Ндин</label>
+                                           name="set"/> Ндин</label>
                                 </div>
                               </div>
 
-                              <div class="col-2">
-
-                                i
+                              <div class="col-2 px-0 pt-1 mr-2">
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
                               </div>
 
-                              <div class="tech-data col-2">
+                              <div class="pt-1">
+                              <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
                                 Рзат
                               </div>
-
-                              <div class="col-2">
-                                i
+                              </div>
+                              <div class="col-2 pt-1">
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
-
                               </div>
 
                               <div class="col-1">
@@ -1317,31 +1314,30 @@
                           <div class="table-border-gno-top">
                             <div class="row">
 
-                              <div class="col-3">
+                              <div class="col-1">
                               </div>
 
-                              <div class="tech-data col-2">
+                              <div class="tech-data  ml-3 pl-4 pr-3 col-2 ic-min-block2">
 
                                 <div class="table-border-gno-right">
                                   <label for="">
                                     <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                           name="set"/>Рманом</label>
+                                           name="set"/> Рманом</label>
                                 </div>
                               </div>
 
-                              <div class="col-1">
-                                i
+                              <div class="col-2 px-0 pt-1 mr-2">
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
                               </div>
 
-                              <div class="tech-data col-2">
+                              <div class="pb-1">
+                              <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
                                 Нсп маном
                               </div>
+                              </div>
 
-                              <div class="col-2">
-                                i
+                              <div class="col-2 pt-1">
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
-
                               </div>
 
                               <div class="col-2">
@@ -1352,29 +1348,26 @@
                           <div class="table-border-gno-top">
                             <div class="row">
 
-                              <div class="col-3">
+                              <div class="col-1">
                               </div>
 
-                              <div class="tech-data col-2">
+                              <div class="tech-data ml-3 pl-4 pr-3 col-2 ic-min-block2 mb-2">
 
                                 <div class="table-border-gno-right">
                                   <label for="">
                                     <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                           name="set"/>Рбуф(ФЭ)</label>
+                                           name="set"/> Рбуф(ФЭ)</label>
                                 </div>
                               </div>
-
-                              <div class="col-7">
-                                i
+                              <div class="col-7 px-0 pt-1">
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
-
                               </div>
 
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="col-6">
+                      <div class="col-5">
                         <h3>
                           Параметры подбора
                         </h3>
@@ -1385,10 +1378,11 @@
                           <div class="row">
 
                             <div class="col-4">
-                              <label class="label-for-celevoi"><input class="checkbox3x" value="ШГН" v-model="expChoose"
-                                                                      @change="postCurveData()"
-                                                                      :checked="expChoose === 'ШГН'" type="radio"
-                                                                      name="gno10"/>ШГН</label>
+                              <label class="label-for-celevoi">
+                                <input class="checkbox3x" value="ШГН" v-model="expChoose"
+                                       @change="postCurveData()"
+                                       :checked="expChoose === 'ШГН'" type="radio"
+                                       name="gno10"/>ШГН</label>
                             </div>
 
                             <div class="col-4">
