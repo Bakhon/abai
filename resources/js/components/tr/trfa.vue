@@ -2,14 +2,14 @@
     <div class="container-fluid">
         <div class="col-md-12 row">
             <div class="col-md-9 row justify-content-between">
-                <a href="fa" class="col but-nav__link but"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <a href="fa" class="col but-nav__link but trfacolbutnavlinkbut"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
                     </svg></i>Факторный анализ отклонений ТР</a>
-                <a href="tr" class="col but-nav__link but"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <a href="tr" class="col but-nav__link but trfabuttech"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
                     </svg></i>Технологический режим</a>
             </div>
-        <div class="row justify-content-between">
+        <!-- <div class="row justify-content-between">
                 <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="date1">
@@ -19,12 +19,12 @@
                         <input type="date" class="form-control" v-model="date2">
                 </form>
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
+        </div> -->
         </div>
-        </div>
-        <div class="col-md-9 row sec_nav">
+        <div class="col-md-9 row sec_nav trfacolmdrowsecnav">
             <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Выберите чарт
+                <a class="btn btn-secondary dropdown-toggle trfabtgraph" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Выберите график
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item"
@@ -39,22 +39,24 @@
                 </div>
             </div>
             <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="btn btn-secondary dropdown-toggle trfabtdata" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Выберите дату
                 </a>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                           <label for="inputDate">Введите опорную дату:</label>
+                            <input type="date" class="form-control" v-model="date1">
+                            <label for="inputDate">Введите дату для сравнения:</label>
+                            <input type="date" class="form-control" v-model="date2">
+                            <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> 
                 </div>
             </div>
         </div>
         <div class="col-md-9 sec_nav">
-            <div>
-                <h1> Фильтр по </h1>
+            <div class="namefilter" style="color:white; margin-left: 556px;">
+                <h3> Фильтр по </h3>
             </div>
             <div class="filter_chart row">
-                <div>
+                <div class="filterplaceone" style="margin-left: 211px; width: 300px;">
                     <select
                         class="form-control"
                         v-model="chartFilter_field"
@@ -66,7 +68,7 @@
                             :value="f">{{f === undefined ? 'Выберите месторождение' : f}}</option>
                     </select>
                 </div>
-                <div>
+                <div class="filterplacetwo" style=" width: 300; margin-left: 7px;">
                     <select
                         class="form-control"
                         v-model="chartFilter_horizon"
@@ -77,7 +79,7 @@
                             :value="f">{{f === undefined ? 'Выберите горизонт' : f}}</option>
                     </select>
                 </div>
-                <div>
+                <div class="filterplacethree" style="margin-left: 7;width: 300;">
                     <select
                         v-if="exp_methFilters"
                         class="form-control"
@@ -398,6 +400,13 @@ export default {
               var pryyyy = choosenSecDt[0];
           }
           console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+<<<<<<< HEAD
+=======
+          this.$store.commit('fa/SET_MONTH', prMm);
+          this.$store.commit('fa/SET_YEAR', yyyy);
+          this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+          this.$store.commit('fa/SET_PR_YEAR', pryyyy);
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
           this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                 let data = response.data;
                 this.editdtm = choosenDt[1];
@@ -433,23 +442,32 @@ export default {
     },
     beforeCreate: function () {
         var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        var pryyyy = today.getFullYear();
-        var prMm = mm;
-        var prPrMm = mm;
-        if(mm==0){
-            var prMm = 12;
-            var prPrMm = 11;
-            var yyyy = yyyy - 1;
-            var pryyyy = pryyyy - 1;
-        }
-        else{
-            var prMm = prMm - 1;
-            var prPrMm = prPrMm -2;
-            var yyyy = yyyy;
-            var pryyyy = pryyyy;
+        // var dd = String(today.getDate()).padStart(2, '0');
+        var dd = 1;
+
+        if (this.$store.getters['fa/month'] && this.$store.getters['fa/year'] && this.$store.getters['fa/prmonth'] && this.$store.getters['fa/pryear']) {
+            var prMm = this.$store.getters['fa/month'];
+            var prPrMm = this.$store.getters['fa/prmonth'];
+            var yyyy = this.$store.getters['fa/year'];
+            var pryyyy = this.$store.getters['fa/pryear'];
+        } else {
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var pryyyy = today.getFullYear();
+            var prMm = mm;
+            var prPrMm = mm;
+            if(mm==0){
+                var prMm = 12;
+                var prPrMm = 11;
+                var yyyy = yyyy - 1;
+                var pryyyy = pryyyy - 1;
+            }
+            else{
+                var prMm = prMm - 1;
+                var prPrMm = prPrMm -2;
+                var yyyy = yyyy;
+                var pryyyy = pryyyy;
+            }
         }
         this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
@@ -496,12 +514,40 @@ export default {
         }
     });
    },
-
+   mounted: function () {
+        const mm = `${this.$store.getters['fa/month'] + 1}`.length < 2 ? `0${this.$store.getters['fa/month'] + 1}` : `${this.$store.getters['fa/month'] + 1}`
+        const prmm = `${this.$store.getters['fa/prmonth'] + 1}`.length < 2 ? `0${this.$store.getters['fa/prmonth'] + 1}` : `${this.$store.getters['fa/prmonth'] + 1}`
+        this.date1 = `${this.$store.getters['fa/year']}-${mm}-01`
+        this.date2 = `${this.$store.getters['fa/pryear']}-${prmm}-01`
+        this.dt = `01.${mm}.${this.$store.getters['fa/year']}`
+        this.dt2 = `01.${prmm}.${this.$store.getters['fa/pryear']}`
+   }
 }
 </script>
-<style>
+<style  scoped>
+
+
 body {
   color: white !important;
+}
+.trfabuttech {
+    margin-left: 57px;
+}
+.trfacolmdrowsecnav {
+    margin-bottom: 7px;
+    margin-top: 7px;
+    margin-left: 1px;
+}
+.trfacolbutnavlinkbut {
+    margin-left: 28px;
+}
+.trfabtdata {
+    margin-left: 864px;
+    background: #5973CC !important;
+}
+.trfabtgraph {
+    margin-left: 45px;
+    background: #5973CC !important;
 }
 </style>
 

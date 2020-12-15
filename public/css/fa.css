@@ -173,6 +173,23 @@ table {
     color: #ffffff;
     text-align: left;
 }
+<<<<<<< HEAD
+=======
+.CellWithComment{
+    position:relative;
+}
+
+.cell-with-comment {
+    /* display: flex; */
+    align-items: center;
+    text-align: center;
+    position: relative;
+    /* border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important; */
+}
+
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
 .circle-err {
     display: block;
     background: #0d092a;
@@ -182,6 +199,10 @@ table {
     margin-right: 20px;
     cursor: pointer;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
 .cell-comment{
     display: none;
     width: auto;
@@ -198,6 +219,7 @@ table {
 .cell-with-comment:hover .cell-comment {
     display: flex;
     opacity: 1;
+<<<<<<< HEAD
 }
 .CellWithComment{
     position:relative;
@@ -212,3 +234,6 @@ table {
     border-left: none !important;
     border-right: none !important; */
 }
+=======
+}
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1

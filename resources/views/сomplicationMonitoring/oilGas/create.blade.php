@@ -15,7 +15,7 @@
                 <form action="{{ route('oilgas.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <oilgas-create></oilgas-create>
+                        <oilgas-form></oilgas-form>
                     </div>
                 </form>
             </div>

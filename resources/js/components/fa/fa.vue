@@ -1,72 +1,37 @@
 <template>
     <div class="container-fluid">
-        <modal name="chart" :width="2000" :height="1000" :adaptive="true">
-            <div class="main_modals">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="first_block">
-                            <apexchart
-                                v-if="barChartData && pieChartRerender"
-                                type="bar"
-                                :options="chartBarOptions"
-                                :series="[{ name:'', data: barChartData}]"
-                            ></apexchart>
-                        </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="first_block">
-                            <apexchart
-                                v-if="pieChartData && pieChartRerender"
-                                type="pie"
-                                :options="chartOptions"
-                                :series="pieChartData"
-                            ></apexchart>
-                        </div>
-                    </div>
-                    <div class="filter_chart">
-                        <td class="filter_font"> Фильтр по: </td>
-                        <div>
-                            <select
-                                class="form-control"
-                                v-model="chartFilter_field"
-                                value="Месторождение"
-                            >
-                                <option
-                                    v-for="(f, k) in fieldFilters"
-                                    :key="k"
-                                    :value="f">{{f}}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select
-                                class="form-control"
-                                v-model="chartFilter_horizon"
-                            >
-                                <option
-                                    v-for="(f, k) in horizonFilters"
-                                    :key="k"
-                                    :value="f">{{f}}</option>
-                            </select>
-                        </div>
-                        <div>
-                            <select
-                                v-if="exp_methFilters"
-                                class="form-control"
-                                v-model="chartFilter_exp_meth"
-                            >
-                                <option
-                                    v-for="(f, k) in exp_methFilters"
-                                    :key="k"
-                                    :value="f">{{f}}</option>
-                            </select>
-                        </div>
+
+        <div class="row justify-content-between farowjustcontbet">
+                <a href="tr" class="but-nav__link but fabutnavlinkbut"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
+</svg></i>
+Технологический режим</a>
+
+
+
+                <div class="dropdown show" style="padding: 0px;">
+                    <a class="but-nav__link but btn btn-secondary dropdown-toggle fabutdata " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i style=" margin-right: 10px; ">
+                   <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z" fill="white"/>
+</svg>
+
+               </i>
+                        Выберите даты
+                    </a>
+
+                    <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink">
+                        <!-- <form class="form-group but-nav__link"> -->
+                            <label for="inputDate">Введите опорную дату:</label>
+                            <input type="date" class="form-control" v-model="date1">
+                        <!-- <form class="form-group but-nav__link"> -->
+                            <label for="inputDate">Введите дату для сравнения:</label>
+                            <input type="date" class="form-control" v-model="date2">
+                            <a href="#" class="btn btn-primary" @click.prevent="chooseDt">Сформировать</a> 
                     </div>
                 </div>
-            </div>
-        </modal>
-        <div class="row justify-content-between">
-                <a href="tr" class="but-nav__link but">Технологический режим</a>
-                <form class="form-group but-nav__link">
+<!-- <button type="button" class="btn btn-primary">Главный</button> -->
+
+                <!-- <form class="form-group but-nav__link">
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="date1">
                 </form>
@@ -74,13 +39,17 @@
                         <label for="inputDate">Выбор даты 2:</label>
                         <input type="date" class="form-control" v-model="date2">
                 </form>
+<<<<<<< HEAD
                 <a href="#" class="but-nav__link but" @click="chooseDt">Сформировать</a>
+=======
+                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> -->
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
                 <!-- <a class="but-nav__link but " @click="pushBign('chart')">Графики</a> -->
                 <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
                 <div class="col">
 
-                        <div class="input-group input-group-sm">
+                        <div class="input-group input-group-sm fasearch">
                             <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
                             <div class="input-group-prepend fainputgr">
                                 <button class="input-group-text" style="font-size: 14px;">Поиск</button>
@@ -92,8 +61,12 @@
 
 
         </div>
-        <div class="tech">
-            <td> Факторный анализ</td>
+        <div class="tech" style="display:flex; background: #272953; margin-left: 0px !important;">
+            <h3 style="color: white; margin-left: 3px;"> Факторный анализ</h3>
+            <a class="but-nav__link but " href="trfa" @click="pushBign('chart')" style="margin-left: 1264px; background: #272953"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
+Показать графики</a>
         </div>
         <!-- <div>
             <select name="Company" class="from-control" id="companySelect"
@@ -142,39 +115,61 @@
                 </tr>
                 <tr></tr>
                 <tr class="subHeaderColumn">
-                    <td @click="sortBy('well')" style="background: #12135C"></td>
-                    <td @click="sortBy('field')" style="background: #12135C"></td>
-                    <td @click="sortBy('horizon')" style="background: #12135C"></td>
-                    <td @click="sortBy('exp_meth')" style="background: #12135C"></td>
-                    <td @click="sortBy('q_l_1')" style="background: #2C3379">м3/сут</td>
-                    <td @click="sortBy('q_o_1')" style="background: #2C3379">м3/сут</td>
-                    <td @click="sortBy('wct_1')" style="background: #2C3379"></td>
-                    <td @click="sortBy('bhp_1')" style="background: #2C3379">ат</td>
-                    <td @click="sortBy('p_res_1')" style="background: #2C3379">ат</td>
-                    <td @click="sortBy('pi_1')" style="background: #2C3379">м3/сут/ат</td>
-                    <td @click="sortBy('q_l_2')" style="background: #1A2370">м3/сут</td>
-                    <td @click="sortBy('q_o_2')" style="background: #1A2370">м3/сут</td>
-                    <td @click="sortBy('wct_2')" style="background: #1A2370"></td>
-                    <td @click="sortBy('bhp_2')" style="background: #1A2370">ат</td>
-                    <td @click="sortBy('p_res_2')" style="background: #1A2370">ат</td>
-                    <td @click="sortBy('pi_2')" style="background: #1A2370">м3/сут/ат</td>
-                    <td @click="sortBy('dqn')" style="background: #E50303">т/сут</td>
-                    <td @click="sortBy('Pbh')" style="background: #F08143"></td>
-                    <td @click="sortBy('wct')" style="background: #4FB26A"></td>
-                    <td @click="sortBy('p_res')" style="background: #4FB26A"></td>
-                    <td @click="sortBy('PI')" style="background: #4FB26A"></td>
-                    <td @click="sortBy('Main_problem')" style="background: #272953"></td>
+                    <td @click="sortBy('well')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('field')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('horizon')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('exp_meth')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                    <td @click="sortBy('q_o_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                    <td @click="sortBy('wct_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('bhp_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>ат</td>
+                    <td @click="sortBy('p_res_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>ат</td>
+                    <td @click="sortBy('pi_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут/ат</td>
+                    <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                    <td @click="sortBy('q_o_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                    <td @click="sortBy('wct_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('bhp_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>ат</td>
+                    <td @click="sortBy('p_res_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>ат</td>
+                    <td @click="sortBy('pi_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут/ат</td>
+                    <td @click="sortBy('dqn')" style="background: #E50303"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+                    <td @click="sortBy('Pbh')" style="background: #F08143"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('wct')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('p_res')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('PI')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i></td>
+                    <td @click="sortBy('Main_problem')" style="background: #272953"><i class="fa fa-fw fa-sort"></i></td>
                 </tr>
                 <tr
                     v-for="(row, row_index) in wells"
                     :key="row.well"
                 >
+<<<<<<< HEAD
                     <td>{{row.well}}</td>
                     <td>{{row.field}}</td>
                     <td>{{row.horizon}}</td>
                     <td>{{row.exp_meth}}</td>
                     <!-- <td>{{Math.round(row.q_l_1*10)/10}}</td> -->
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #12135C">{{row.well}}</td>
+                    <td style="background: #12135C">{{row.field}}</td>
+                    <td style="background: #12135C">{{row.horizon}}</td>
+                    <td style="background: #12135C">{{row.exp_meth}}</td>
+                    <!-- <td style="background: #2C3379">{{Math.round(row.q_l_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.q_o_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.wct_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.bhp_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.p_res_1*10)/10}}</td>
+                    <td style="background: #2C3379">{{Math.round(row.pi_1*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.q_l_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.q_o_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.wct_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.bhp_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.p_res_2*10)/10}}</td>
+                    <td style="background: #1A2370">{{Math.round(row.pi_2*10)/10}}</td> -->
+
+
+                    <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].q_l_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].q_l_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -186,7 +181,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.q_o_1*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].q_o_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].q_o_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -198,7 +197,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.wct_1*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].wct_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].wct_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -210,7 +213,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.bhp_1*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].bhp_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].bhp_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -222,7 +229,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.p_res_1*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].p_res_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].p_res_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -234,7 +245,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.pi_1*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].pi_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].pi_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -246,7 +261,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.q_l_2*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].q_l_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].q_l_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -258,7 +277,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.q_o_2*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].q_o_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].q_o_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -270,7 +293,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.wct_2*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].wct_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].wct_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -282,7 +309,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.bhp_2*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].bhp_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].bhp_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -294,7 +325,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.p_res_2*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].p_res_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].p_res_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -306,7 +341,11 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.pi_2*10)/10}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].pi_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].pi_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -438,7 +477,11 @@
 
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
                     <!-- <td>{{row.Main_problem}}</td> -->
+<<<<<<< HEAD
                     <td :class="{'cell-with-comment': wells && wells[row_index] &&
+=======
+                    <td style="background: #272953" :class="{'cell-with-comment': wells && wells[row_index] &&
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].Main_problem[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].Main_problem[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -456,6 +499,7 @@
     </div>
 </template>
 <script>
+<<<<<<< HEAD
 import { EventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
 import 'vue-easy-notify/dist/vue-easy-notify.css';
@@ -464,7 +508,15 @@ import moment from "moment";
 import Vue from 'vue';
 
 Vue.use(NotifyPlugin,VueMomentLib);
+=======
+import NotifyPlugin from "vue-easy-notify";
+import 'vue-easy-notify/dist/vue-easy-notify.css';
+import { VueMomentLib } from "vue-moment-lib";
+import moment from "moment";
+import Vue from "vue";
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
 
+Vue.use(NotifyPlugin, VueMomentLib);
 import VueApexCharts from "vue-apexcharts";
 export default {
     computed: {
@@ -807,6 +859,7 @@ export default {
               var pryyyy = choosenSecDt[0];
           }
           if(choosenDt[1] < choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]){
+<<<<<<< HEAD
               Vue.prototype.$notifyError("Дата 2 должна быть меньше, чем Дата 1");
           }
           else{
@@ -829,6 +882,34 @@ export default {
                       this.dt = '01' + '.' + this.PrMm + '.' + this.editdty;
                       this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
 
+=======
+              Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+          }
+          else{
+              this.$store.commit('fa/SET_MONTH', prMm);
+              this.$store.commit('fa/SET_YEAR', yyyy);
+              this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+              this.$store.commit('fa/SET_PR_YEAR', pryyyy);
+              console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+              this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+                    let data = response.data;
+                    this.editdtm = choosenDt[1];
+                    this.editdty = choosenDt[0];
+                    this.editdtprevm = choosenSecDt[1];
+                    this.editdtprevy = choosenSecDt[0];
+                    if(data) {
+                        console.log(data);
+                        this.wells = data.data;
+                        this.fullWells = data.data;
+                        this.chartWells = data.data;
+                    }
+                    else {
+                        console.log('No data');
+                    }
+                    this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+                    this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
+    
+>>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                 });
           }
       },
@@ -852,9 +933,15 @@ export default {
       },
       getColor(status, ...values) {
           if (status < "0" && status === Math.min(status, ...values)) return "#ac3939";
+          else {
+              return "#272953";
+          }
       },
       getColorone(status) {
           if (status < "0") return "#ac3939";
+          else {
+              return "#272953";
+          }
       },
 
     },
@@ -865,11 +952,20 @@ export default {
 
     // },
     beforeCreate: function () {
+        console.log('dt1-month', this.$store.getters['tr/month']);
+        console.log('dt1-year', this.$store.getters['tr/year']);
         var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        var pryyyy = today.getFullYear();
+        // var dd = String(today.getDate()).padStart(2, '0');
+        var dd = 1;
+        // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        const preMm = this.$store.getters['tr/month'] ? this.$store.getters['tr/month'] : String(today.getMonth() + 1).padStart(2, '0');
+        var mm = preMm == 11 ? 0 : preMm + 1;
+        console.log('dd = ', dd )
+        console.log('mm = ', mm )
+        // var yyyy = today.getFullYear();
+        var yyyy = this.$store.getters['tr/year'] ? this.$store.getters['tr/year'] : today.getFullYear();
+        // var pryyyy = today.getFullYear();
+        var pryyyy = yyyy;
         var prMm = mm;
         var prPrMm = mm;
         if(mm==0){
@@ -884,6 +980,10 @@ export default {
             var yyyy = yyyy;
             var pryyyy = pryyyy;
         }
+        this.$store.commit('fa/SET_MONTH', prMm);
+        this.$store.commit('fa/SET_YEAR', yyyy);
+        this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+        this.$store.commit('fa/SET_PR_YEAR', pryyyy);
         this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
             let data = response.data;
             this.editdtm = prMm;
@@ -924,6 +1024,14 @@ export default {
             });
     });
    },
+   mounted: function () {
+        const mm = `${this.$store.getters['fa/month'] + 1}`.length < 2 ? `0${this.$store.getters['fa/month'] + 1}` : `${this.$store.getters['fa/month'] + 1}`
+        const prmm = `${this.$store.getters['fa/prmonth'] + 1}`.length < 2 ? `0${this.$store.getters['fa/prmonth'] + 1}` : `${this.$store.getters['fa/prmonth'] + 1}`
+        this.date1 = `${this.$store.getters['fa/year']}-${mm}-01`
+        this.date2 = `${this.$store.getters['fa/pryear']}-${prmm}-01`
+        this.dt = `01.${mm}.${this.$store.getters['fa/year']}`
+        this.dt2 = `01.${prmm}.${this.$store.getters['fa/pryear']}`
+   }
 }
 </script>
 <style  scoped>
@@ -970,5 +1078,25 @@ body {
     padding: 5px !important;
 }
 
-
+.fabutnavlinkbut {
+    width: 430;
+    margin-left: 15px;
+    display: flex;
+}
+.farowjustcontbet {
+    margin-bottom: 11px;
+}
+.fabutdata {
+    margin-left: 156px;
+    width: 470;
+}
+.fasearch {
+    width: 470;
+    margin-left: 160px;
+}
+.fadropmenu {
+    background:  #656A8A;
+    color: #FFFFFF;
+    width: 246px;
+}
 </style>

@@ -3,6 +3,7 @@
 @section('content')
 <div class="col p-4" id="app">
             <div class="card-header float-right">
+                <a class="btn btn-success" href="{{ route('watermeasurement.export') }}"><i class="fas fa-file-export"></i></a>
                 <a class="btn btn-success" href="{{ route('watermeasurement.create') }}">+</a>
             </div>
             <h1 style="color:#fff">Лабораторные данные по промысловой жидкости</h1>
@@ -85,8 +86,9 @@
                             <td>{{ $item->thionicBacteria->name}}</td>
                             <td>
                                 <form action="{{ route('watermeasurement.destroy',$item->id) }}" method="POST">
-                                    {{-- <a class="btn btn-primary" href="{{ route('watermeasurement.edit',$item->id) }}"><i class="fas fa-edit"></i></a> --}}
+                                    <a class="btn btn-primary" href="{{ route('watermeasurement.edit',$item->id) }}"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-primary" href="{{ route('watermeasurement.show',$item->id) }}"><i class="fas fa-eye"></i></a>
+                                    <a class="btn btn-primary" href="{{ route('watermeasurement.history',$item->id) }}"><i class="fas fa-history"></i></a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">

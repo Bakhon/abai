@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OmgUHEUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +61,8 @@ class OmgUHEController extends Controller
         $omgohe->well_id = ($request->well_id) ? $request->well_id : NULL;
         $omgohe->date = date("Y-m-d H:i", strtotime($request->date));
         $omgohe->current_dosage = ($request->current_dosage) ? $request->current_dosage : NULL;
+        $omgohe->level = ($request->level) ? $request->level : NULL;
+        $omgohe->fill = ($request->fill) ? $request->fill : NULL;
         $omgohe->daily_inhibitor_flowrate = ($request->daily_inhibitor_flowrate) ? $request->daily_inhibitor_flowrate : NULL;
         if($request->out_of_service_оf_dosing == true){
             $omgohe->out_of_service_оf_dosing = 1;
@@ -93,14 +96,26 @@ class OmgUHEController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(ComplicationMonitoringOmgUHE $omguhe)
+    {
+        $omguhe->load('history');
+        return view('omguhe.history', compact('omguhe'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ComplicationMonitoringOmgUHE $omguhe)
     {
-        //
+        return view('omguhe.edit', compact('omguhe'));
     }
 
     /**
@@ -110,9 +125,10 @@ class OmgUHEController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OmgUHEUpdateRequest $request, ComplicationMonitoringOmgUHE $omguhe)
     {
-        //
+        $omguhe->update($request->validated());
+        return redirect()->route('omguhe.index')->with('success',__('app.updated'));
     }
 
     /**
@@ -127,5 +143,23 @@ class OmgUHEController extends Controller
         $omguhe->delete();
 
         return redirect()->route('omguhe.index')->with('success',__('app.deleted'));
+    }
+
+    public function getPrevDayLevel(Request $request){
+        $result = ComplicationMonitoringOmgUHE::where('gu_id', '=', $request->gu_id)
+                                        ->where('date', '<', $request->date)
+                                        ->where('out_of_service_оf_dosing', '<>', '1')
+                                        ->latest()
+                                        ->first();
+
+        if($result){
+            if($result->fill){
+                return $result->fill;
+            }else{
+                return $result->level;
+            }
+        }else{
+            return false;
+        }
     }
 }
