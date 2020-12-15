@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Exports\WaterMeasurementExport;
 use App\Http\Controllers\Controller;
 use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion as ComplicationMonitoringCorrosion;
@@ -24,6 +25,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WaterMeasurementController extends Controller
 {
@@ -50,6 +52,24 @@ class WaterMeasurementController extends Controller
 
 
         return view('watermeasurement.index',compact('wm'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function export()
+    {
+        $wm = ComplicationMonitoringWaterMeasurement::orderByDesc('date')
+            ->with('other_objects')
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->with('zu')
+            ->with('well')
+            ->with('waterTypeBySulin')
+            ->with('sulphateReducingBacteria')
+            ->with('hydrocarbonOxidizingBacteria')
+            ->with('thionicBacteria')
+            ->get();
+
+        return Excel::download(new WaterMeasurementExport($wm), 'watermeasurement.xls');
     }
 
     /**

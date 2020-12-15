@@ -7,6 +7,7 @@ use App\Http\Requests\CorrosionCreateRequest;
 use App\Http\Requests\CorrosionUpdateRequest;
 use App\Models\ComplicationMonitoring\Corrosion;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CorrosionController extends Controller
 {
@@ -25,6 +26,18 @@ class CorrosionController extends Controller
             ->paginate(10);
 
         return view('сomplicationMonitoring.corrosion.index', compact('corrosion'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function export()
+    {
+        $corrosion = Corrosion::orderByDesc('final_date_of_background_corrosion')
+            ->with('other_objects')
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->get();
+
+        return Excel::download(new \App\Exports\CorrosionExport($corrosion), 'corrosion.xls');
     }
 
     /**

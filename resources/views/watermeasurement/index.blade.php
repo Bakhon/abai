@@ -3,6 +3,7 @@
 @section('content')
 <div class="col p-4" id="app">
             <div class="card-header float-right">
+                <a class="btn btn-success" href="{{ route('watermeasurement.export') }}"><i class="fas fa-file-export"></i></a>
                 <a class="btn btn-success" href="{{ route('watermeasurement.create') }}">+</a>
             </div>
             <h1 style="color:#fff">Лабораторные данные по промысловой жидкости</h1>

@@ -2,7 +2,7 @@
     <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4">№ скв</td>
+                <td rowspan="4">№ сквВ</td>
                 <td rowspan="4">Тип скважины</td>
                 <td rowspan="4">Горизонт</td>
                 <td rowspan="4">Блок</td>
@@ -450,7 +450,7 @@
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].planned_wct[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].planned_wct[1][0])}`"> </span>
-                    <span>{{Math.round(row.planned_liq[0]*10)/10}}</span>
+                    <span>{{Math.round(row.planned_wct[0]*10)/10}}</span>
                     <span v-if="wells && wells[row_index]" class="cell-comment">
                         {{ wells[row_index].planned_wct[1][1]}}
                     </span>
@@ -505,8 +505,7 @@ tr:nth-child(even) {
     font-size: 9px;
     padding: unset;
 }
-table thead,
-table tbody {
+/* table thead {
   display: block;
 }
 
@@ -517,5 +516,5 @@ table tbody {
 
 table td {
   width: 150px;
-}
+} */
 </style>
