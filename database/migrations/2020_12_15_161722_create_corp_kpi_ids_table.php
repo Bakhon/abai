@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMarab6sTable extends Migration
+class CreateCorpKpiIdsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateMarab6sTable extends Migration
      */
     public function up()
     {
-        Schema::create('marab6s', function (Blueprint $table) {
+        Schema::create('corp_kpi_ids', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('type_id');	
-            $table->date('aim_dates')->nullable();
-            $table->integer('remained_days')->nullable();
-            $table->float('completion_probability',8,4)->nullable();
+            $table->text('name');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ class CreateMarab6sTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marab6s');
+        Schema::dropIfExists('corp_kpi_ids');
     }
 }

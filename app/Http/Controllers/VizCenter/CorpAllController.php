@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\VizCenter;
 
-use Illuminate\Http\Request;
-use App\Models\EcoRefsCompaniesId;
-use App\Models\VizCenter\TypeId;
-use App\Models\VizCenter\Marab1;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\VizCenter\CorpAll;
+use App\Models\VizCenter\TypeId;
+use App\Models\EcoRefsCompaniesId;
+use App\Models\VizCenter\CorpKpiId;
 
-class Marab1Controller extends Controller
+class CorpAllController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,12 +18,12 @@ class Marab1Controller extends Controller
      */
     public function index()
     {
-        $marab1 = Marab1::latest()->with('type')->paginate(5); 
-        $marab1 = Marab1::latest()->with('company')->paginate(5); 
+        $corpall = CorpAll::latest()->with('company')->paginate(5); 
+        $corpall = CorpAll::latest()->with('corpkpi')->paginate(5);
+        $corpall = CorpAll::latest()->with('type')->paginate(5);
 
-        return view('marab1.index',compact('marab1'))
+        return view('corpall.index',compact('corpall'))
             ->with('i', (request()->input('page', 1) - 1) * 5); 
-       //
     }
 
     /**
@@ -34,7 +35,8 @@ class Marab1Controller extends Controller
     {
         $company = EcoRefsCompaniesId::get();
         $type = TypeId::get();
-        return view('marab1.create',compact('company', 'type'));
+        $corpkpi = CorpKpiId::get();
+        return view('corpall.create',compact('company','corpkpi','type'));
     }
 
     /**
@@ -48,16 +50,16 @@ class Marab1Controller extends Controller
         $request->validate([
             'company_id' => 'required',
             'type_id' => 'required',
+            'corpkpi_id' => 'required',
             'date' => 'required',
-            // 'A_category' => 'required',
-            // 'B_category' => 'required',
-            // 'C1_category' => 'required',
+            // 'aim_dates'=> 'required',
+            // 'remained_days' => 'required',
+            // 'completion_probability' => 'required',
             ]);
 
-            Marab1::create($request->all());
+        CorpAll::create($request->all());
 
-
-        return redirect()->route('marab1.index')->with('success',__('app.created'));
+        return redirect()->route('corpall.index')->with('success',__('app.created'));
     }
 
     /**
@@ -79,10 +81,11 @@ class Marab1Controller extends Controller
      */
     public function edit($id)
     {
-        $row = Marab1::find($id);
+        $row = CorpAll::find($id);
         $company = EcoRefsCompaniesId::get();
+        $corpkpi = CorpKpiId::get();
         $type = TypeId::get();
-        return view('marab1.edit',compact('row', 'company', 'type'));
+        return view('corpall.edit',compact('row', 'company', 'corpkpi', 'type'));
     }
 
     /**
@@ -94,19 +97,20 @@ class Marab1Controller extends Controller
      */
     public function update(Request $request, $id)
     {
-        $marab1=Marab1::find($id);
+        $corpall=CorpAll::find($id);
         $request->validate([
             'company_id' => 'required',
             'type_id' => 'required',
+            'corpkpi_id' => 'required',
             'date' => 'required',
-            // 'A_category' => 'required',
-            // 'B_category' => 'required',
-            // 'C1_category' => 'required',
+            // 'aim_dates'=> 'required',
+            // 'remained_days' => 'required',
+            // 'completion_probability' => 'required',
         ]);
 
-        $marab1->update($request->all());
+        $corpall->update($request->all());
 
-        return redirect()->route('marab1.index')->with('success',__('app.updated'));
+        return redirect()->route('corpall.index')->with('success',__('app.updated'));
     }
 
     /**
@@ -117,9 +121,9 @@ class Marab1Controller extends Controller
      */
     public function destroy($id)
     {
-        $row = Marab1::find($id);
+        $row = CorpAll::find($id);
         $row->delete();
 
-        return redirect()->route('marab1.index')->with('success',__('app.deleted'));
+        return redirect()->route('corpall.index')->with('success',__('app.deleted'));
     }
 }

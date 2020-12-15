@@ -4,20 +4,23 @@ namespace App\Models\VizCenter;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Marab1 extends Model
+class CorpAll extends Model
 {
     protected $fillable = [
         'company_id',
         'type_id',
+        'corpkpi_id',
         'date',
-        'A_category',
-        'B_category',
-        'C1_category'
+        'value',
     ];
     
     public function company()
     {
         return $this->hasOne('App\Models\EcoRefsCompaniesId','id','company_id')->withDefault();
+    }
+    public function corpkpi()
+    {
+        return $this->hasOne('App\Models\VizCenter\CorpKpiId','id','corpkpi_id')->withDefault();
     }
     public function type()
     {
