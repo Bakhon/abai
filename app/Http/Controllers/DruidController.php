@@ -91,6 +91,11 @@ return $response;
         return view('visualcenter.visualcenter4');
     }
 
+    public function visualcenter5()
+    {
+        return view('visualcenter.visualcenter5');
+    }
+
     public function production()
     {
         return view('production.main');
