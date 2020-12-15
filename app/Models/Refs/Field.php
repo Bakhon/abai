@@ -4,7 +4,7 @@ namespace App\Models\Refs;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Cdng extends Model
+class Field extends Model
 {
     public function omgngdu()
     {
@@ -14,11 +14,6 @@ class Cdng extends Model
     public function watermeasurement()
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\WaterMeasurement::class);
-    }
-
-    public function oilgas()
-    {
-        return $this->hasMany(\App\Models\ComplicationMonitoring\OilGas::class);
     }
 
     public function corrosion()

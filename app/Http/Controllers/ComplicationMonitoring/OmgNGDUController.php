@@ -29,7 +29,6 @@ class OmgNGDUController extends Controller
      */
     public function index()
     {
-
         $params = [
             'success' => Session::get('success'),
             'links' => [
@@ -47,10 +46,10 @@ class OmgNGDUController extends Controller
                     'title' => 'Месторождение',
                     'type' => 'select',
                     'filter' => [
-                        'values' => [
-                            1 => 'Узень',
-                            2 => 'Карамандыбас'
-                        ]
+                        'values' => \App\Models\Refs\Field::whereHas('omgngdu')
+                            ->orderBy('name', 'asc')
+                            ->pluck('name', 'id')
+                            ->toArray()
                     ]
                 ],
                 'ngdu' => [
@@ -152,6 +151,7 @@ class OmgNGDUController extends Controller
     public function list(IndexTableRequest $request)
     {
         $query = ComplicationMonitoringOmgNGDU::query()
+            ->with('field')
             ->with('ngdu')
             ->with('cdng')
             ->with('gu')
@@ -160,7 +160,7 @@ class OmgNGDUController extends Controller
 
         $omgngdu = $this
             ->getFilteredQuery($request->validated(), $query)
-            ->paginate(10);
+            ->paginate(25);
 
         return response()->json(json_decode(\App\Http\Resources\OmgNGDUListResource::collection($omgngdu)->toJson()));
     }
@@ -168,6 +168,7 @@ class OmgNGDUController extends Controller
     public function export(IndexTableRequest $request)
     {
         $query = ComplicationMonitoringOmgNGDU::query()
+            ->with('field')
             ->with('ngdu')
             ->with('cdng')
             ->with('gu')
@@ -194,57 +195,59 @@ class OmgNGDUController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'date' => 'required',
-        ]);
+        $request->validate(
+            [
+                'date' => 'required',
+            ]
+        );
 
         $omgngdu = new ComplicationMonitoringOmgNGDU;
-        $omgngdu->field = ($request->field) ? $request->field : NULL;
-        $omgngdu->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : NULL;
-        $omgngdu->cdng_id = ($request->cdng_id) ? $request->cdng_id : NULL;
-        $omgngdu->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
-        $omgngdu->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
-        $omgngdu->well_id = ($request->well_id) ? $request->well_id : NULL;
+        $omgngdu->field_id = $request->field_id ?? null;
+        $omgngdu->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : null;
+        $omgngdu->cdng_id = ($request->cdng_id) ? $request->cdng_id : null;
+        $omgngdu->gu_id = ($request->gu_id) ? $request->gu_id : null;
+        $omgngdu->zu_id = ($request->zu_id) ? $request->zu_id : null;
+        $omgngdu->well_id = ($request->well_id) ? $request->well_id : null;
         $omgngdu->date = date("Y-m-d H:i", strtotime($request->date));
-        $omgngdu->daily_fluid_production = ($request->daily_fluid_production) ? $request->daily_fluid_production : NULL;
-        $omgngdu->daily_water_production = ($request->daily_water_production) ? $request->daily_water_production : NULL;
-        $omgngdu->daily_oil_production = ($request->daily_oil_production) ? $request->daily_oil_production : NULL;
-        $omgngdu->daily_gas_production_in_sib = ($request->daily_gas_production_in_sib) ? $request->daily_gas_production_in_sib : NULL;
-        $omgngdu->bsw = ($request->bsw) ? $request->bsw : NULL;
-        $omgngdu->surge_tank_pressure = ($request->surge_tank_pressure) ? $request->surge_tank_pressure : NULL;
-        $omgngdu->pump_discharge_pressure = ($request->pump_discharge_pressure) ? $request->pump_discharge_pressure : NULL;
-        $omgngdu->heater_inlet_pressure = ($request->heater_inlet_pressure) ? $request->heater_inlet_pressure : NULL;
-        $omgngdu->heater_output_pressure = ($request->heater_output_pressure) ? $request->heater_output_pressure : NULL;
-        $omgngdu->kormass_number = ($request->kormass_number) ? $request->kormass_number : NULL;
-        $omgngdu->pressure = ($request->pressure) ? $request->pressure : NULL;
-        $omgngdu->temperature = ($request->temperature) ? $request->temperature : NULL;
-        $omgngdu->daily_fluid_production_kormass = ($request->daily_fluid_production_kormass) ? $request->daily_fluid_production_kormass : NULL;
+        $omgngdu->daily_fluid_production = ($request->daily_fluid_production) ? $request->daily_fluid_production : null;
+        $omgngdu->daily_water_production = ($request->daily_water_production) ? $request->daily_water_production : null;
+        $omgngdu->daily_oil_production = ($request->daily_oil_production) ? $request->daily_oil_production : null;
+        $omgngdu->daily_gas_production_in_sib = ($request->daily_gas_production_in_sib) ? $request->daily_gas_production_in_sib : null;
+        $omgngdu->bsw = ($request->bsw) ? $request->bsw : null;
+        $omgngdu->surge_tank_pressure = ($request->surge_tank_pressure) ? $request->surge_tank_pressure : null;
+        $omgngdu->pump_discharge_pressure = ($request->pump_discharge_pressure) ? $request->pump_discharge_pressure : null;
+        $omgngdu->heater_inlet_pressure = ($request->heater_inlet_pressure) ? $request->heater_inlet_pressure : null;
+        $omgngdu->heater_output_pressure = ($request->heater_output_pressure) ? $request->heater_output_pressure : null;
+        $omgngdu->kormass_number = ($request->kormass_number) ? $request->kormass_number : null;
+        $omgngdu->pressure = ($request->pressure) ? $request->pressure : null;
+        $omgngdu->temperature = ($request->temperature) ? $request->temperature : null;
+        $omgngdu->daily_fluid_production_kormass = ($request->daily_fluid_production_kormass) ? $request->daily_fluid_production_kormass : null;
         $omgngdu->cruser_id = Auth::user()->id;
         $omgngdu->save();
 
-        return redirect()->route('omgngdu.index')->with('success',__('app.created'));
+        return redirect()->route('omgngdu.index')->with('success', __('app.created'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $omgngdu = ComplicationMonitoringOmgNGDU::where('id', '=', $id)
-                            ->with('ngdu')
-                            ->with('cdng')
-                            ->with('gu')
-                            ->with('zu')
-                            ->with('well')
-                            ->first();
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->with('zu')
+            ->with('well')
+            ->first();
 
         return view('omgngdu.show', compact('omgngdu'));
     }
@@ -252,7 +255,7 @@ class OmgNGDUController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function history(ComplicationMonitoringOmgNGDU $omgngdu)
@@ -264,7 +267,7 @@ class OmgNGDUController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit(ComplicationMonitoringOmgNGDU $omgngdu)
@@ -275,72 +278,100 @@ class OmgNGDUController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(OmgNGDUUpdateRequest $request, ComplicationMonitoringOmgNGDU $omgngdu)
     {
         $omgngdu->update($request->validated());
-        return redirect()->route('omgngdu.index')->with('success',__('app.updated'));
+        return redirect()->route('omgngdu.index')->with('success', __('app.updated'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $omgngdu = ComplicationMonitoringOmgNGDU::find($id);
         $omgngdu->delete();
 
-        return redirect()->route('omgngdu.index')->with('success',__('app.deleted'));
+        if ($request->ajax()) {
+            return response()->json([], Response::HTTP_NO_CONTENT);
+        } else {
+            return redirect()->route('omgngdu.index')->with('success', __('app.deleted'));
+        }
     }
 
-    public function getKormass(Request $request){
+    public function getKormass(Request $request)
+    {
         $guKormass = ComplicationMonitoringGuKormass::where('gu_id', '=', $request->gu_id)->get();
         $guKormassArray = [];
-        foreach($guKormass as $row){
+        foreach ($guKormass as $row) {
             array_push($guKormassArray, $row->kormass_id);
         }
         $kormass = ComplicationMonitoringKormass::wherein('id', $guKormassArray)->get();
 
 
-        return response()->json([
-            'code'=>200,
-            'message' => 'success',
-            'data' => $kormass
-        ]);
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'data' => $kormass
+            ]
+        );
     }
 
-    public function getGuDataByDay(Request $request){
-        $ngdu = ComplicationMonitoringOmgNGDU::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
-        $uhe = ComplicationMonitoringOmgUHE::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
-        $ca = ComplicationMonitoringOmgCA::where('date', '=', "".date("Y")."-01-01")->where('gu_id', '=', $request->gu_id)->first();
-        $wmLast = WaterMeasurement::where('gu_id','=',$request->gu_id)->latest()->first();
-        $wmLastCO2 = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('carbon_dioxide')->latest()->first();
-        $wmLastH2S = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('hydrogen_sulfide')->latest()->first();
-        $wmLastHCO3 = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('hydrocarbonate_ion')->latest()->first();
-        $wmLastCl = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('chlorum_ion')->latest()->first();
-        $wmLastSO4 = WaterMeasurement::where('gu_id','=',$request->gu_id)->whereNotNull('sulphate_ion')->latest()->first();
+    public function getGuDataByDay(Request $request)
+    {
+        $ngdu = ComplicationMonitoringOmgNGDU::where('date', '=', $request->dt)->where(
+            'gu_id',
+            '=',
+            $request->gu_id
+        )->first();
+        $uhe = ComplicationMonitoringOmgUHE::where('date', '=', $request->dt)->where(
+            'gu_id',
+            '=',
+            $request->gu_id
+        )->first();
+        $ca = ComplicationMonitoringOmgCA::where('date', '=', "" . date("Y") . "-01-01")->where(
+            'gu_id',
+            '=',
+            $request->gu_id
+        )->first();
+        $wmLast = WaterMeasurement::where('gu_id', '=', $request->gu_id)->latest()->first();
+        $wmLastCO2 = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull('carbon_dioxide')->latest(
+        )->first();
+        $wmLastH2S = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull('hydrogen_sulfide')->latest(
+        )->first();
+        $wmLastHCO3 = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull(
+            'hydrocarbonate_ion'
+        )->latest()->first();
+        $wmLastCl = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull('chlorum_ion')->latest(
+        )->first();
+        $wmLastSO4 = WaterMeasurement::where('gu_id', '=', $request->gu_id)->whereNotNull('sulphate_ion')->latest(
+        )->first();
         $oilGas = OilGas::where('date', '=', $request->dt)->where('gu_id', '=', $request->gu_id)->first();
 
-        return response()->json([
-            'code'=>200,
-            'message' => 'success',
-            'ngdu' => $ngdu,
-            'uhe' => $uhe,
-            'ca' => $ca,
-            'wmLastH2S' => $wmLastH2S,
-            'wmLastCO2' => $wmLastCO2,
-            'wmLastHCO3' => $wmLastHCO3,
-            'wmLastCl' => $wmLastCl,
-            'wmLast' => $wmLast,
-            'wmLastSO4' => $wmLastSO4,
-            'oilGas' => $oilGas
-        ]);
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'ngdu' => $ngdu,
+                'uhe' => $uhe,
+                'ca' => $ca,
+                'wmLastH2S' => $wmLastH2S,
+                'wmLastCO2' => $wmLastCO2,
+                'wmLastHCO3' => $wmLastHCO3,
+                'wmLastCl' => $wmLastCl,
+                'wmLast' => $wmLast,
+                'wmLastSO4' => $wmLastSO4,
+                'oilGas' => $oilGas
+            ]
+        );
     }
 
     protected function getFilteredQuery($filter, $query = null)
