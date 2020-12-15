@@ -122,6 +122,8 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 
+Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
