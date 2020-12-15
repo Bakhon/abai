@@ -1258,3 +1258,10 @@ input.checkbox-q-liquid {
     border-left-width: 1px;
 }
 
+
+.bottom-configuration-header
+{
+    font-size: 20px;
+    font-width: bold;
+    padding-bottom: 18px;
+}

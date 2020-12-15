@@ -1174,9 +1174,9 @@
                   <div class="col-md-12">
                     <div class="row  bottom-configuration">
                       <div class="col-6 px-2 inflow-configuration-min-width">
-                        <h3>
+                        <div class="bottom-configuration-header">
                           Настройки кривой притока
-                        </h3>
+                        </div>
                         <div class="inflow-configuration">
                           <div class="row pl-3">
                             <div class="col-7">
@@ -1368,9 +1368,9 @@
                         </div>
                       </div>
                       <div class="col-6 px-2">
-                        <h3>
+                        <div class="bottom-configuration-header">
                           Параметры подбора
-                        </h3>
+                        </div>
                         <div class="select-params">
                           <div class="row">
                             <div class="col-11 pt-3 pb-3">ГНО</div>
