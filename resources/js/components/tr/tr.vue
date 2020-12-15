@@ -2785,7 +2785,6 @@ export default {
   name: "TrPage",
   components: {
       TrTable, TrFullTable, FadeLoader,
-      
   },
   beforeCreate: function () {
         

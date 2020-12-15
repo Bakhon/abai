@@ -59,11 +59,13 @@
           Выберите график
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
-            >ТОП-30 скважин. Потенциал прироста дебита нефти</a
-          >
-          <a class="dropdown-item" href="#" @click="chartShow = 'bar'"
-            >BarChart</a
+          <a
+            class="dropdown-item"
+            v-for="(item, index) in chartNames"
+            :key="item"
+            href="#"
+            @click="chartShow = index"
+            >{{ item }}</a
           >
         </div>
       </div>
@@ -157,11 +159,13 @@
       </div>
     </div>
     <div class="col-md-9 sec_nav">
-      <div class="namefilter" style="color: white; margin-left: 556px">
-        <h3>Фильтр по</h3>
-      </div>
+      <h3 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h3>
+
       <div class="filter_chart row">
-        <div class="filterplaceone" style="margin-left: 211px; width: 300px">
+        <div class="namefilter" style="color: white">
+          <h3>Фильтр по</h3>
+        </div>
+        <div class="filterplaceone" style="margin-left: 15px">
           <select
             class="form-control"
             v-model="chartFilter_field"
@@ -172,14 +176,14 @@
             </option>
           </select>
         </div>
-        <div class="filterplacetwo" style="width: 300; margin-left: 7px">
+        <div class="filterplacetwo" style="margin-left: 15px">
           <select class="form-control" v-model="chartFilter_horizon">
             <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
               {{ f === undefined ? "Выберите горизонт" : f }}
             </option>
           </select>
         </div>
-        <div class="filterplacethree" style="margin-left: 7; width: 300">
+        <div class="filterplacethree" style="margin-left: 15px">
           <select
             v-if="exp_methFilters"
             class="form-control"
@@ -191,23 +195,15 @@
           </select>
         </div>
       </div>
-      <div class="col-sm" v-if="chartShow === 'bar'">
+      <div class="fadee tr-chart__loader" v-if="isLoading">
+        <fade-loader :loading="isLoading"></fade-loader>
+      </div>
+      <div class="col-sm" v-else>
         <div class="second_block">
           <apexchart
-            v-if="barChartData && pieChartRerender"
-            type="bar"
+            v-if="chartData"
             :options="chartBarOptions"
-            :series="barChartData"
-          ></apexchart>
-        </div>
-      </div>
-      <div class="col-sm" v-if="chartShow === 'pie'">
-        <div class="first_block">
-          <apexchart
-            v-if="pieChartData && pieChartRerender"
-            type="pie"
-            :options="chartOptions"
-            :series="pieChartData"
+            :series="chartData"
           ></apexchart>
         </div>
       </div>
@@ -216,121 +212,20 @@
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
-export default {
-  computed: {
-    // field horizon exp_meth
-    // Pbh wct p_res PI
-    pieChartData() {
-      if (this.chartWells && this.chartWells.length > 0) {
-        let field = this.chartFilter_field;
-        let horizon = this.chartFilter_horizon;
-        let exp_meth = this.chartFilter_exp_meth;
-        try {
-          let filteredResult = this.chartWells.filter(
-            (row) =>
-              (!field || row.field === field) &&
-              (!horizon || row.horizon === horizon) &&
-              (!exp_meth || row.exp_meth === exp_meth)
-          );
-          console.log(filteredResult);
-          let filteredData = filteredResult.reduce((acc, res) => {
-            if (acc.hasOwnProperty(res["Main_problem"])) {
-              acc[res["Main_problem"]] += 1;
-            } else {
-              acc[res["Main_problem"]] = 1;
-            }
-            return acc;
-          }, {});
-          console.log("Pie chart filtered data:", filteredData);
-          return [
-            filteredData["Недостижение режимного P забойного"] || 0,
-            filteredData["Рост обводненности"] || 0,
-            // filteredData['p_res'],
-            filteredData["Снижение P пластового"] || 0,
-            filteredData["Снижение Кпрод"] || 0,
-          ];
-        } catch (err) {
-          console.error(err);
-          return false;
-        }
-        return false;
-      } else return false;
-    },
-    barChartData() {
-      if (this.chartWells && this.chartWells.length > 0) {
-        let field = this.chartFilter_field;
-        let horizon = this.chartFilter_horizon;
-        let exp_meth = this.chartFilter_exp_meth;
-        console.log("chartWells = ", this.chartWells);
-        console.log("field = ", field);
-        console.log("horizon = ", horizon);
-        console.log("exp_meth = ", exp_meth);
-        try {
-          let filteredResult = this.chartWells.filter(
-            (row) =>
-              (!field || row.field === field) &&
-              (!horizon || this.getStringOrFirstItem(row, 'horizon') === horizon) &&
-              (!exp_meth || this.getStringOrFirstItem(row, 'exp_meth') === exp_meth)
-          );
-          const self = this
-          filteredResult.sort(function (a, b) {
-                const grow1 = self.getStringOrFirstItem(a, 'tp_idn_oil_inc') + self.getStringOrFirstItem(a, 'tp_idn_grp_q_oil')
-                const grow2 = self.getStringOrFirstItem(b, 'tp_idn_oil_inc') + self.getStringOrFirstItem(b, 'tp_idn_grp_q_oil')
-                if (grow2 > grow1) {
-                    return 1;
-                }
-                if (grow2 < grow1) {
-                    return -1;
-                }
-                return 0;
-          });
-          const filtered30 = filteredResult.slice(0, 29);
-          // const filtered30 = filteredResult
-          console.log("filteredResult = ", filteredResult);
-          console.log("filteredResult = ", filtered30);
-          const categories = filtered30.map(item => this.getStringOrFirstItem(item, 'well'))
-          const xaxis = { ...this.chartBarOptions.xaxis, categories }
-          this.chartBarOptions = { ...this.chartBarOptions, xaxis }
-          console.log('categories = ', categories)
-          console.log('xaxis = ', xaxis)
-          console.log('chartBarOptions = ', this.chartBarOptions)
-          const series= [{
-            name: 'Q нефти',
-            type: 'bar',
-            data: filtered30.map(item => this.getStringOrFirstItem(item, 'q_o'))
-          },{
-            name: 'Прирост Qн идн',
-            type: 'bar',
-            data: filtered30.map(item => this.getStringOrFirstItem(item, 'tp_idn_oil_inc'))
-          },{
-            name: 'Прирост Qн грп',
-            type: 'bar',
-            data: filtered30.map(item => this.getStringOrFirstItem(item, 'tp_idn_grp_q_oil'))
-          },{
-            name: 'Рзаб идн',
-            type: 'scatter',
-            data: filtered30.map(item => this.getStringOrFirstItem(item, 'tp_idn_bhp'))
-          }, {
-            name: 'Рзаб идн',
-            type: 'scatter',
-            data: filtered30.map(item => this.getStringOrFirstItem(item, 'bhp'))
-          }]
-          console.log('series = ', series)
-          return series;
-        } catch (err) {
-          console.error(err);
-          return false;
-        }
-        //return false;
-      } else return false;
-    },
+import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 
+export default {
+  name: "TrCharts",
+  components: {
+    FadeLoader,
+  },
+  computed: {
     fieldFilters() {
       if (this.chartWells && this.chartWells.length > 0) {
         let filters = [];
         this.chartWells.forEach((el) => {
-          const el_horizon = this.getStringOrFirstItem(el, 'horizon')
-          const el_exp_meth = this.getStringOrFirstItem(el, 'exp_meth')
+          const el_horizon = this.getStringOrFirstItem(el, "horizon");
+          const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
           if (
             filters.indexOf(el.field) === -1 &&
             (!this.chartFilter_horizon ||
@@ -348,8 +243,8 @@ export default {
       if (this.chartWells && this.chartWells.length > 0) {
         let filters = [];
         this.chartWells.forEach((el) => {
-          const el_horizon = this.getStringOrFirstItem(el, 'horizon')
-          const el_exp_meth = this.getStringOrFirstItem(el, 'exp_meth')
+          const el_horizon = this.getStringOrFirstItem(el, "horizon");
+          const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
           if (
             filters.indexOf(el_horizon) === -1 &&
             (!this.chartFilter_field || el.field === this.chartFilter_field) &&
@@ -367,8 +262,8 @@ export default {
         let filters = [];
 
         this.chartWells.forEach((el) => {
-          const el_horizon = this.getStringOrFirstItem(el, 'horizon')
-          const el_exp_meth = this.getStringOrFirstItem(el, 'exp_meth')
+          const el_horizon = this.getStringOrFirstItem(el, "horizon");
+          const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
           if (
             filters.indexOf(el_exp_meth) === -1 &&
             (!this.chartFilter_field || el.field === this.chartFilter_field) &&
@@ -384,7 +279,8 @@ export default {
   },
   data: function () {
     return {
-      chartShow: "bar",
+      chartShow: 1,
+      isLoading: true,
       pieChartRerender: true,
       wells: [],
       chartWells: [],
@@ -405,10 +301,30 @@ export default {
       year: null,
       selectYear: null,
       month: null,
+      chartData: false,
+      chartNames: [
+        "Все скважины. Потенциал снижения динамического уровня, спуска ГНО",
+        "ТОП-30 скважин. Потенциал прироста дебита нефти",
+        "ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность",
+        "ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор",
+        "ТОП-30 скважин. Потенциал прироста дебита жидкости",
+        "Суммарный дебит нефти и жидкости",
+        "Распределение коэффициента продуктивности",
+        "Распределение скважин по дебиту нефти",
+        "Распределение скважин по обводненности",
+        "Распределение скважин по дебиту жидкости",
+      ],
       chartBarOptions: {
         chart: {
           height: 350,
           type: "bar",
+          // stacked: true,
+          toolbar: {
+            show: true,
+          },
+          zoom: {
+            enabled: true,
+          },
         },
         plotOptions: {
           bar: {
@@ -416,6 +332,9 @@ export default {
               position: "bottom", // top, center, bottom
             },
           },
+        },
+        legend: {
+          position: "top",
         },
         dataLabels: {
           enabled: true,
@@ -430,12 +349,11 @@ export default {
         },
 
         xaxis: {
-          categories: [
-            "Недостижение режимного Pзаб",
-            "Рост обводненности",
-            "Снижение Pпл",
-            "Снижение Kпрод",
-          ],
+          labels: {
+            rotate: -90,
+          },
+          categories: [],
+          tickPlacement: "on",
           position: "bottom",
           axisBorder: {
             show: false,
@@ -473,62 +391,216 @@ export default {
             },
           },
         },
-      },
-      chartOptions: {
-        labels: [
-          "Недостижение режимного Pзаб",
-          "Рост обводненности",
-          "Снижение Pпл",
-          "Снижение Kпрод",
-        ],
-        chart: {
-          type: "pie",
-        },
         dataLabels: {
           enabled: false,
-        } /*убирается подсветка процентов на круге*/,
-        /*tooltip: {
-        enabled: false},*/
-        legend: {
-          show: false,
-        } /*убирается навигация рядом с кругом*/,
-        colors: ["#330000", "#804d00", "#00004d", "#999900"],
-        plotOptions: {
-          pie: {
-            expandOnClick: true,
-          },
+          enabledOnSeries: undefined,
         },
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200,
-              },
-              legend: {
-                position: "bottom",
-              },
+      },
+      yaxisSecond: [
+        {
+          seriesName: ["Q нефти", "Прирост Qн идн", "Прирост Qн грп"],
+          axisBorder: {
+            show: true,
+          },
+          labels: {
+            style: {
+              colors: "#008FFB",
             },
           },
-        ],
-      },
+          title: {
+            text: "Дебит нефти [т/сут]",
+            style: {
+              color: "#008FFB",
+            },
+          },
+          tooltip: {
+            enabled: true,
+          },
+          decimalsInFloat: 2,
+        },
+        {
+          seriesName: ["Рзаб идн", "Рзаб факт"],
+          opposite: true,
+          axisBorder: {
+            show: true,
+          },
+          labels: {
+            style: {
+              colors: "#00E396",
+            },
+          },
+          title: {
+            rotate: 90,
+            text: "Давление [атм]",
+            style: {
+              color: "#00E396",
+            },
+          },
+          decimalsInFloat: 2,
+        },
+      ],
     };
   },
   watch: {
-    pieChartData() {
-      this.pieChartRerender = false;
-      this.$nextTick(() => {
-        this.pieChartRerender = true;
-      });
+    chartShow() {
+      this.calcChartData();
     },
-    barChartData() {
-      this.pieChartRerender = false;
-      this.$nextTick(() => {
-        this.pieChartRerender = true;
-      });
+    chartWells() {
+      this.calcChartData();
+    },
+    fieldFilters() {
+      this.calcChartData();
+    },
+    horizonFilters() {
+      this.calcChartData();
+    },
+    exp_methFilters() {
+      this.calcChartData();
     },
   },
   methods: {
+    async calcChartData() {
+      console.log("chartShow = ", this.chartShow);
+      console.log("chartNames = ", this.chartNames);
+      this.isLoading = true;
+      if (this.chartWells && this.chartWells.length > 0) {
+        let field = this.chartFilter_field;
+        let horizon = this.chartFilter_horizon;
+        let exp_meth = this.chartFilter_exp_meth;
+        console.log("chartWells = ", this.chartWells);
+        console.log("field = ", field);
+        console.log("horizon = ", horizon);
+        console.log("exp_meth = ", exp_meth);
+        try {
+          const filteredResult = this.chartWells.filter(
+            (row) =>
+              (!field || row.field === field) &&
+              (!horizon ||
+                this.getStringOrFirstItem(row, "horizon") === horizon) &&
+              (!exp_meth ||
+                this.getStringOrFirstItem(row, "exp_meth") === exp_meth)
+          );
+
+          this.chartData = await this[`setDataChart${this.chartShow}`](
+            filteredResult
+          );
+          this.isLoading = false;
+        } catch (err) {
+          console.error(err);
+          this.chartData = false;
+          this.isLoading = false;
+        }
+        //return false;
+      } else {
+        this.chartData = false;
+        this.isLoading = false;
+      }
+    },
+    setDataChart0(filteredResult) {
+      // Все скважины. Потенциал снижения динамического уровня, спуска ГНО
+    },
+    setDataChart1(filteredResult) {
+      // ТОП-30 скважин. Потенциал прироста дебита нефти
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        const grow1 =
+          self.getStringOrFirstItem(a, "tp_idn_oil_inc") +
+          self.getStringOrFirstItem(a, "tp_idn_grp_q_oil");
+        const grow2 =
+          self.getStringOrFirstItem(b, "tp_idn_oil_inc") +
+          self.getStringOrFirstItem(b, "tp_idn_grp_q_oil");
+        if (grow2 > grow1) {
+          return 1;
+        }
+        if (grow2 < grow1) {
+          return -1;
+        }
+        return 0;
+      });
+      let filtered30;
+      filtered30 = filteredResult.slice(0, 30);
+      console.log("filteredResult = ", filteredResult);
+      console.log("filteredResult = ", filtered30);
+      const categories = filtered30.map((item) =>
+        this.getStringOrFirstItem(item, "well")
+      );
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const stacked = true;
+      const chart = { ...this.chartBarOptions.chart, stacked };
+      const yaxis = this.yaxisSecond;
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+        chart,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Q нефти",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "q_o")
+          ),
+        },
+        {
+          name: "Прирост Qн идн",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
+          ),
+        },
+        {
+          name: "Прирост Qн грп",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
+          ),
+        },
+        {
+          name: "Рзаб идн",
+          type: "bar",
+          data: filtered30.map((item, index) =>
+            this.getStringOrFirstItem(item, "tp_idn_bhp")
+          ),
+        },
+        {
+          name: "Рзаб факт",
+          type: "bar",
+          data: filtered30.map((item, inde) =>
+            this.getStringOrFirstItem(item, "bhp")
+          ),
+        },
+      ];
+      console.log("series 2 = ", series);
+      return series;
+    },
+    setDataChart2(filteredResult) {
+      // ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность
+    },
+    setDataChart3(filteredResult) {
+      // ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор
+    },
+    setDataChart4(filteredResult) {
+      // ТОП-30 скважин. Потенциал прироста дебита жидкости
+    },
+    setDataChart5(filteredResult) {
+      // Суммарный дебит нефти и жидкости
+    },
+    setDataChart6(filteredResult) {
+      // Распределение коэффициента продуктивности
+    },
+    setDataChart7(filteredResult) {
+      // Распределение коэффициента продуктивности
+    },
+    setDataChart8(filteredResult) {
+      // Распределение скважин по обводненности
+    },
+    setDataChart9(filteredResult) {
+      // Распределение скважин по обводненности
+    },
     getStringOrFirstItem(el, param) {
       return Array.isArray(el[param]) ? el[param][0] : el[param];
     },
@@ -546,12 +618,20 @@ export default {
       //   const { dt } = this;
       //   console.log(dt)
       //   var choosenDt = dt.split("-");
+      this.isLoading = true;
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
       if (this.month == 12) {
         this.year = this.selectYear - 1;
       } else {
         this.year = this.selectYear;
+      }
+      if (this.month < 9) {
+        this.dt = "01" + ".0" + (this.month + 1) + "." + this.year;
+      } else if (this.month == 12) {
+        this.dt = "01" + ".01." + (this.year + 1);
+      } else {
+        this.dt = "01" + "." + (this.month + 1) + "." + this.year;
       }
       this.axios
         .get(
@@ -574,13 +654,6 @@ export default {
             this.chartWells = data.data;
           } else {
             console.log("No data");
-          }
-          if (this.month < 9) {
-            this.dt = "01" + ".0" + (this.month + 1) + "." + this.year;
-          } else if (this.month == 12) {
-            this.dt = "01" + ".01." + (this.year + 1);
-          } else {
-            this.dt = "01" + "." + (this.month + 1) + "." + this.year;
           }
         });
     },
@@ -616,7 +689,11 @@ export default {
     }
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/graph1/" + yyyy + "/" + prMm + "/"
+        "http://172.20.103.51:7576/api/techregime/graph1/" +
+          yyyy +
+          "/" +
+          prMm +
+          "/"
       )
       .then((response) => {
         let data = response.data;
@@ -642,6 +719,11 @@ export default {
 };
 </script>
 <style  scoped>
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
 body {
   color: white !important;
 }
