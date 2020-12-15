@@ -113,9 +113,17 @@
                 </div>
             </div>
         </div>
+        <notifications position="top"></notifications>
     </div>
 </template>
 <script>
+import NotifyPlugin from "vue-easy-notify";
+import 'vue-easy-notify/dist/vue-easy-notify.css';
+import { VueMomentLib } from "vue-moment-lib";
+import moment from "moment";
+import Vue from "vue";
+
+Vue.use(NotifyPlugin, VueMomentLib);
 import VueApexCharts from "vue-apexcharts";
 export default {
     computed: {
@@ -399,31 +407,37 @@ export default {
               var yyyy = choosenDt[0];
               var pryyyy = choosenSecDt[0];
           }
-          console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
-          this.$store.commit('fa/SET_MONTH', prMm);
-          this.$store.commit('fa/SET_YEAR', yyyy);
-          this.$store.commit('fa/SET_PR_MONTH', prPrMm);
-          this.$store.commit('fa/SET_PR_YEAR', pryyyy);
-          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
-                let data = response.data;
-                this.editdtm = choosenDt[1];
-                this.editdty = choosenDt[0];
-                this.editdtprevm = choosenSecDt[1];
-                this.editdtprevy = choosenSecDt[0];
-                if(data) {
-                    console.log(data);
-                    this.wells = data.data;
-                    this.fullWells = data.data;
-                    this.chartWells = data.data;
 
-                }
-                else {
-                    console.log('No data');
-                }
-                this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
-                this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
-
-            });
+          if(choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]){
+              Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+          }
+          else{          
+              this.$store.commit('fa/SET_MONTH', prMm);
+              this.$store.commit('fa/SET_YEAR', yyyy);
+              this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+              this.$store.commit('fa/SET_PR_YEAR', pryyyy);
+              console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+              this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+                      let data = response.data;
+                      this.editdtm = choosenDt[1];
+                      this.editdty = choosenDt[0];
+                      this.editdtprevm = choosenSecDt[1];
+                      this.editdtprevy = choosenSecDt[0];
+                      if(data) {
+                          console.log(data);
+                          this.wells = data.data;
+                          this.fullWells = data.data;
+                          this.chartWells = data.data;
+  
+                      }
+                      else {
+                          console.log('No data');
+                      }
+                      this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+                      this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
+  
+                  });
+          }
       },
       pushBign(bign){
           switch (bign) {

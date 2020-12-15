@@ -125,12 +125,12 @@
 
             <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a> -->
 
-        <div class="col">
+        <div class="col trcol">
 
                         <div class="input-group input-group-sm" style="width: 422px !important;">
                             <input type="text" placeholder="Поиск" class="form-control fix-rounded-right" required>
                             <div class="input-group-prepend">
-                                <button class="input-group-text" style="font-size: 14px;">Поиск</button>
+                                <button class="input-group-text">Поиск</button>
                             </div>
                         </div>
         </div>
@@ -143,7 +143,10 @@
             <!-- <input type="text" placeholder="Enter Name" v-model="searchText"> -->
         </div>
        <div class="col-md-12 maintable" >
-           <div class="maintable-level2">
+           <div class="maintable-level2" style="position: relative;">
+                            <div class="fadee" v-if="isloading" >
+                                <fade-loader :loading="isloading"></fade-loader>
+                            </div>
                <div class="techbt1">
                     <div class='tech' style="margin-left: 4px; color: white;">
                         <h3 style="color: white"> Технологический режим на {{dt}}</h3>
@@ -160,13 +163,30 @@
                             <option value="Аксай Южный">Аксай Южный</option>
                         </select>
                     </div> -->
+                
+
+
+                    <a class="but-nav__link but " href="trfa" @click="pushBign('chart')" style="margin-left: 1264px; background: #272953"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15 5H5C4.44771 5 4 5.44772 4 6V18C4 18.5523 4.44772 19 5 19H17C17.5523 19 18 18.5523 18 18V11.6923M18 5V7M18 7H20M18 7V9M18 7H16M7.5 16V12.7692M11 16V8.46154M14.5 16V11.6923" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                        </svg>
+                     </a>
+
+
+
+
+
+
+
+
+
+
           <button
             id="bt1"
             @click="swap"
             style="
               background: #272953;
               color: white;
-              margin-left: 1165px;
+              margin-left: 105px;
               border: none;
             "
           ><svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" v-if="isfulltable">
@@ -192,9 +212,7 @@
             >
           </button>
         </div>
-        <div class="fadee" >
-            <fade-loader :loading="isloading"></fade-loader>
-        </div>
+
 
           <TrTable :wells="wells" @onSort="sortBy" v-show="show_first" />
           <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
@@ -2845,6 +2863,7 @@ export default {
         selectYear: null,
         month: null,
         isloading: true,
+        isloading1: true,
         isfulltable: false,
     }
   },
@@ -2871,10 +2890,15 @@ export default {
       },
       savetable(){
           this.edit = false;
+          this.isloading = true;
           this.axios.post("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/",{
               well: this.wells
           }).then((response) => {
               console.log(response.data)
+              this.isloading = false;
+          }).catch((error) => {
+              console.log(error.data)
+              this.isloading = false;
           })
       },
       editable(){
@@ -3030,12 +3054,14 @@ body {
     position: absolute!important;
     right: 0!important;
     z-index: 9999;
+    font-size: 14px; 
+    margin-right: 2px;
 
 }
 .input-group-prepend{
 
     padding-top: 3px!important;
-    margin-right: 0px!important;
+    /* margin-right: 0px!important; */
 
 }
 a:hover{
@@ -3090,22 +3116,29 @@ tr:nth-child(even) {
     padding: unset;
 }
 .trcolmd12 {
-    margin-left: 2px;
+    margin-left: 0px;
+
 }
 .fadee 
     {
     flex: 0 1 auto;
-    -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
     width: 100%;
     align-items: center;
-
+    position: absolute;
+    height: 100%;
     justify-content: center;
     display: flex;
+    z-index: 5000;
+    background: rgba(59, 46, 247, 0.1);
+
 
 }
 .trtable {
     height: 600;
+}
+.trcol {
+    padding-right: 0;
 }
 
 </style>
