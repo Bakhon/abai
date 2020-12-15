@@ -1,7 +1,7 @@
 <template>
-  <div class="container-fluid">
+  <div class="tr-chart">
     <div class="col-md-12 row">
-      <div class="col-md-9 row justify-content-between">
+      <div class="row justify-content-between">
         <a href="fa" class="col but-nav__link but trfacolbutnavlinkbut"
           ><i style="margin-right: 10px"
             ><svg
@@ -33,19 +33,8 @@
           >Технологический режим</a
         >
       </div>
-      <!-- <div class="row justify-content-between">
-                <form class="form-group but-nav__link">
-                        <label for="inputDate">Введите дату:</label>
-                        <input type="date" class="form-control" v-model="date1">
-                </form>
-                <form class="form-group but-nav__link">
-                        <label for="inputDate">Выбор даты 2:</label>
-                        <input type="date" class="form-control" v-model="date2">
-                </form>
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
-        </div> -->
     </div>
-    <div class="col-md-9 row sec_nav trfacolmdrowsecnav">
+    <div class="row sec_nav trfacolmdrowsecnav">
       <div class="dropdown show">
         <a
           class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -72,7 +61,7 @@
 
       <div class="col dropdown">
         <button
-          class="col-md-12 but-nav__link but"
+          class="but-nav__link but mt-3 mb-3"
           type="button"
           id="dropdownMenuButton"
           data-toggle="dropdown"
@@ -158,7 +147,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-9 sec_nav">
+    <div class="sec_nav">
       <h3 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h3>
 
       <div class="filter_chart row">
@@ -279,7 +268,7 @@ export default {
   },
   data: function () {
     return {
-      chartShow: 1,
+      chartShow: 9,
       isLoading: true,
       pieChartRerender: true,
       wells: [],
@@ -317,8 +306,7 @@ export default {
       chartBarOptions: {
         chart: {
           height: 350,
-          type: "bar",
-          // stacked: true,
+          stacked: true,
           toolbar: {
             show: true,
           },
@@ -333,8 +321,18 @@ export default {
             },
           },
         },
+        stroke: {
+          show: false,
+        },
+        markers: {
+          size: [0, 0, 0, 8, 8],
+          offsetX: -2,
+        },
         legend: {
           position: "top",
+          labels: {
+            useSeriesColors: true,
+          },
         },
         dataLabels: {
           enabled: true,
@@ -347,10 +345,12 @@ export default {
             colors: ["#304758"],
           },
         },
-
         xaxis: {
           labels: {
             rotate: -90,
+            style: {
+              colors: "#008FFB",
+            },
           },
           categories: [],
           tickPlacement: "on",
@@ -377,68 +377,31 @@ export default {
             enabled: true,
           },
         },
-        yaxis: {
-          axisBorder: {
-            show: false,
-          },
-          axisTicks: {
-            show: false,
-          },
-          labels: {
-            show: true,
-            formatter: function (val) {
-              return val;
-            },
-          },
-        },
         dataLabels: {
           enabled: false,
           enabledOnSeries: undefined,
         },
       },
-      yaxisSecond: [
-        {
-          seriesName: ["Q нефти", "Прирост Qн идн", "Прирост Qн грп"],
-          axisBorder: {
-            show: true,
-          },
-          labels: {
-            style: {
-              colors: "#008FFB",
-            },
-          },
-          title: {
-            text: "Дебит нефти [т/сут]",
-            style: {
-              color: "#008FFB",
-            },
-          },
-          tooltip: {
-            enabled: true,
-          },
-          decimalsInFloat: 2,
+      yaxisBase: {
+        axisBorder: {
+          show: true,
         },
-        {
-          seriesName: ["Рзаб идн", "Рзаб факт"],
-          opposite: true,
-          axisBorder: {
-            show: true,
+        labels: {
+          style: {
+            colors: "#008FFB",
           },
-          labels: {
-            style: {
-              colors: "#00E396",
-            },
-          },
-          title: {
-            rotate: 90,
-            text: "Давление [атм]",
-            style: {
-              color: "#00E396",
-            },
-          },
-          decimalsInFloat: 2,
         },
-      ],
+        axisTicks: {
+          show: false,
+        },
+        title: {
+          text: "Дебит нефти [т/сут]",
+          style: {
+            color: "#008FFB",
+          },
+        },
+        decimalsInFloat: 2,
+      },
     };
   },
   watch: {
@@ -461,16 +424,11 @@ export default {
   methods: {
     async calcChartData() {
       console.log("chartShow = ", this.chartShow);
-      console.log("chartNames = ", this.chartNames);
       this.isLoading = true;
       if (this.chartWells && this.chartWells.length > 0) {
         let field = this.chartFilter_field;
         let horizon = this.chartFilter_horizon;
         let exp_meth = this.chartFilter_exp_meth;
-        console.log("chartWells = ", this.chartWells);
-        console.log("field = ", field);
-        console.log("horizon = ", horizon);
-        console.log("exp_meth = ", exp_meth);
         try {
           const filteredResult = this.chartWells.filter(
             (row) =>
@@ -498,6 +456,78 @@ export default {
     },
     setDataChart0(filteredResult) {
       // Все скважины. Потенциал снижения динамического уровня, спуска ГНО
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        if (b.h_dyn > a.h_dyn) return 1;
+        if (b.h_dyn < a.h_dyn) return -1;
+        return 0;
+      });
+      let filtered30;
+      console.log("filteredResult = ", filteredResult);
+      let maxY1 = 0,
+        minY1 = 0,
+        maxY2 = 0,
+        minY2 = 0;
+      const categories = filteredResult.map((item) => {
+        const newY1 = item.h_dyn + item.h_up_perf_md;
+        if (newY1 < minY1) minY1 = newY1;
+        if (newY1 > maxY1) maxY1 = newY1;
+        return this.getStringOrFirstItem(item, "well");
+      });
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const stacked = true;
+      const chart = { ...this.chartBarOptions.chart, stacked };
+      const yaxis = {
+        ...this.yaxisBase,
+        title: {
+          text: "Измеренная глубина [м]",
+          style: {
+            color: "#008FFB",
+          },
+        },
+        max: maxY1,
+        min: minY1,
+      };
+
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+        chart,
+        markers: {
+          size: [0, 0, 5, 5],
+          offsetX: -2,
+        },
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Н д",
+          type: "bar",
+          data: filteredResult.map((item) =>
+            this.getStringOrFirstItem(item, "h_dyn")
+          ),
+        },
+        {
+          name: "Н вд",
+          type: "bar",
+          data: filteredResult.map((item) =>
+            this.getStringOrFirstItem(item, "h_up_perf_md")
+          ),
+        },
+        {
+          name: "Н сп насоса",
+          type: "line",
+          data: filteredResult.map((item, index) =>
+            this.getStringOrFirstItem(item, "h_pump_set")
+          ),
+        },
+      ];
+      console.log("series 1 = ", series);
+      return series;
     },
     setDataChart1(filteredResult) {
       // ТОП-30 скважин. Потенциал прироста дебита нефти
@@ -509,25 +539,67 @@ export default {
         const grow2 =
           self.getStringOrFirstItem(b, "tp_idn_oil_inc") +
           self.getStringOrFirstItem(b, "tp_idn_grp_q_oil");
-        if (grow2 > grow1) {
-          return 1;
-        }
-        if (grow2 < grow1) {
-          return -1;
-        }
+        if (grow2 > grow1) return 1;
+        if (grow2 < grow1) return -1;
         return 0;
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
       console.log("filteredResult = ", filteredResult);
       console.log("filteredResult = ", filtered30);
-      const categories = filtered30.map((item) =>
-        this.getStringOrFirstItem(item, "well")
-      );
+      let maxY1 = 0,
+        minY1 = 0,
+        maxY2 = 0,
+        minY2 = 0;
+      const categories = filtered30.map((item) => {
+        const newY1 = item.q_o + item.tp_idn_oil_inc + item.tp_idn_grp_q_oil;
+        const newY2Max =
+          item.tp_idn_bhp > item.bhp ? item.tp_idn_bhp : item.bhp;
+        const newY2Min =
+          item.tp_idn_bhp < item.bhp ? item.tp_idn_bhp : item.bhp;
+        if (newY1 < minY1) minY1 = newY1;
+        if (newY1 > maxY1) maxY1 = newY1;
+        if (newY2Min < minY2) minY1 = newY2Min;
+        if (newY2Max > maxY2) maxY2 = newY2Max;
+        return this.getStringOrFirstItem(item, "well");
+      });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
       const chart = { ...this.chartBarOptions.chart, stacked };
-      const yaxis = this.yaxisSecond;
+      const yaxis = [
+        {
+          // seriesName: "Q нефти",
+          ...this.yaxisBase,
+          tooltip: {
+            enabled: true,
+          },
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          show: false,
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          show: false,
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          ...this.yaxisBase,
+          opposite: true,
+          title: {
+            rotate: 90,
+            text: "Давление [атм]",
+            style: {
+              color: "#008FFB",
+            },
+          },
+          max: maxY2,
+          min: minY2,
+        },
+      ];
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
@@ -536,6 +608,7 @@ export default {
       };
       console.log("categories = ", categories);
       console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
       console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
@@ -561,14 +634,14 @@ export default {
         },
         {
           name: "Рзаб идн",
-          type: "bar",
+          type: "line",
           data: filtered30.map((item, index) =>
             this.getStringOrFirstItem(item, "tp_idn_bhp")
           ),
         },
         {
           name: "Рзаб факт",
-          type: "bar",
+          type: "bubble",
           data: filtered30.map((item, inde) =>
             this.getStringOrFirstItem(item, "bhp")
           ),
@@ -579,27 +652,588 @@ export default {
     },
     setDataChart2(filteredResult) {
       // ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        const grow1 =
+          self.getStringOrFirstItem(a, "tp_idn_oil_inc") +
+          self.getStringOrFirstItem(a, "tp_idn_grp_q_oil");
+        const grow2 =
+          self.getStringOrFirstItem(b, "tp_idn_oil_inc") +
+          self.getStringOrFirstItem(b, "tp_idn_grp_q_oil");
+        if (grow2 > grow1) return 1;
+        if (grow2 < grow1) return -1;
+        return 0;
+      });
+      let filtered30;
+      filtered30 = filteredResult.slice(0, 30);
+      console.log("filteredResult = ", filteredResult);
+      console.log("filteredResult = ", filtered30);
+      let maxY1 = 0,
+        minY1 = 0,
+        maxY2 = 0,
+        minY2 = 0;
+      const categories = filtered30.map((item) => {
+        const newY1 = item.q_o + item.tp_idn_oil_inc + item.tp_idn_grp_q_oil;
+        const newY2 = item.wct;
+        if (newY1 < minY1) minY1 = newY1;
+        if (newY1 > maxY1) maxY1 = newY1;
+        if (newY2 < minY2) minY1 = newY2;
+        if (newY2 > maxY2) maxY2 = newY2;
+        return this.getStringOrFirstItem(item, "well");
+      });
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const stacked = true;
+      const chart = { ...this.chartBarOptions.chart, stacked };
+      const yaxis = [
+        {
+          ...this.yaxisBase,
+          tooltip: {
+            enabled: true,
+          },
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          show: false,
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          show: false,
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          ...this.yaxisBase,
+          opposite: true,
+          title: {
+            rotate: 90,
+            text: "Обводненность [%]",
+            style: {
+              color: "#008FFB",
+            },
+          },
+          max: maxY2,
+          min: minY2,
+        },
+      ];
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+        chart,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Q нефти",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "q_o")
+          ),
+        },
+        {
+          name: "Прирост Qн идн",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
+          ),
+        },
+        {
+          name: "Прирост Qн грп",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
+          ),
+        },
+        {
+          name: "Обводненность",
+          type: "line",
+          data: filtered30.map((item, index) =>
+            this.getStringOrFirstItem(item, "wct")
+          ),
+        },
+      ];
+      console.log("series 3 = ", series);
+      return series;
     },
     setDataChart3(filteredResult) {
       // ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        const grow1 =
+          self.getStringOrFirstItem(a, "tp_idn_oil_inc") +
+          self.getStringOrFirstItem(a, "tp_idn_grp_q_oil");
+        const grow2 =
+          self.getStringOrFirstItem(b, "tp_idn_oil_inc") +
+          self.getStringOrFirstItem(b, "tp_idn_grp_q_oil");
+        if (grow2 > grow1) return 1;
+        if (grow2 < grow1) return -1;
+        return 0;
+      });
+      let filtered30;
+      filtered30 = filteredResult.slice(0, 30);
+      console.log("filteredResult = ", filteredResult);
+      console.log("filteredResult = ", filtered30);
+      let maxY1 = 0,
+        minY1 = 0,
+        maxY2 = 0,
+        minY2 = 0;
+      const categories = filtered30.map((item) => {
+        const newY1 = item.q_o + item.tp_idn_oil_inc + item.tp_idn_grp_q_oil;
+        const newY2 = item.gor;
+        if (newY1 < minY1) minY1 = newY1;
+        if (newY1 > maxY1) maxY1 = newY1;
+        if (newY2 < minY2) minY1 = newY2;
+        if (newY2 > maxY2) maxY2 = newY2;
+        return this.getStringOrFirstItem(item, "well");
+      });
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const stacked = true;
+      const chart = { ...this.chartBarOptions.chart, stacked };
+      const yaxis = [
+        {
+          ...this.yaxisBase,
+          tooltip: {
+            enabled: true,
+          },
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          show: false,
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          show: false,
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          ...this.yaxisBase,
+          opposite: true,
+          title: {
+            rotate: 90,
+            text: "ГФ [м3/т]",
+            style: {
+              color: "#008FFB",
+            },
+          },
+          max: maxY2,
+          min: minY2,
+        },
+      ];
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+        chart,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Q нефти",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "q_o")
+          ),
+        },
+        {
+          name: "Прирост Qн идн",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
+          ),
+        },
+        {
+          name: "Прирост Qн грп",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
+          ),
+        },
+        {
+          name: "Газовый фактор",
+          type: "line",
+          data: filtered30.map((item, index) =>
+            this.getStringOrFirstItem(item, "gor")
+          ),
+        },
+      ];
+      console.log("series 4 = ", series);
+      return series;
     },
     setDataChart4(filteredResult) {
       // ТОП-30 скважин. Потенциал прироста дебита жидкости
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        const grow1 =
+          self.getStringOrFirstItem(a, "tp_idn_oil_inc") +
+          self.getStringOrFirstItem(a, "tp_idn_grp_q_oil");
+        const grow2 =
+          self.getStringOrFirstItem(b, "tp_idn_oil_inc") +
+          self.getStringOrFirstItem(b, "tp_idn_grp_q_oil");
+        if (grow2 > grow1) return 1;
+        if (grow2 < grow1) return -1;
+        return 0;
+      });
+      let filtered30;
+      filtered30 = filteredResult.slice(0, 30);
+      console.log("filteredResult = ", filteredResult);
+      console.log("filteredResult = ", filtered30);
+      let maxY1 = 0,
+        minY1 = 0,
+        maxY2 = 0,
+        minY2 = 0;
+      const categories = filtered30.map((item) => {
+        const newY1 = item.q_l + item.tp_idn_oil_inc + item.tp_idn_grp_q_oil;
+        const newY2Max =
+          item.tp_idn_bhp > item.bhp ? item.tp_idn_bhp : item.bhp;
+        const newY2Min =
+          item.tp_idn_bhp < item.bhp ? item.tp_idn_bhp : item.bhp;
+        if (newY1 < minY1) minY1 = newY1;
+        if (newY1 > maxY1) maxY1 = newY1;
+        if (newY2Min < minY2) minY1 = newY2Min;
+        if (newY2Max > maxY2) maxY2 = newY2Max;
+        return this.getStringOrFirstItem(item, "well");
+      });
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const stacked = true;
+      const chart = { ...this.chartBarOptions.chart, stacked };
+      const yaxis = [
+        {
+          // seriesName: "Q нефти",
+          ...this.yaxisBase,
+          title: {
+            text: "Дебит жидкости [м3/сут]",
+            style: {
+              color: "#008FFB",
+            },
+          },
+          tooltip: {
+            enabled: true,
+          },
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          show: false,
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          show: false,
+          max: maxY1,
+          min: minY1,
+        },
+        {
+          ...this.yaxisBase,
+          opposite: true,
+          title: {
+            rotate: 90,
+            text: "Давление [атм]",
+            style: {
+              color: "#008FFB",
+            },
+          },
+          max: maxY2,
+          min: minY2,
+        },
+      ];
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+        chart,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Q жидкости",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "q_l")
+          ),
+        },
+        {
+          name: "Прирост Qж идн",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "tp_idn_liq_inc")
+          ),
+        },
+        {
+          name: "Прирост Qж грп",
+          type: "bar",
+          data: filtered30.map((item) =>
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_liq")
+          ),
+        },
+        {
+          name: "Рзаб идн",
+          type: "line",
+          data: filtered30.map((item, index) =>
+            this.getStringOrFirstItem(item, "tp_idn_bhp")
+          ),
+        },
+        {
+          name: "Рзаб факт",
+          type: "bubble",
+          data: filtered30.map((item, inde) =>
+            this.getStringOrFirstItem(item, "bhp")
+          ),
+        },
+      ];
+      console.log("series 5 = ", series);
+      return series;
     },
     setDataChart5(filteredResult) {
+      const categories = ["Факт", "ИДН", "ИДН+ГРП"];
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const stacked = false;
+      const chart = { ...this.chartBarOptions.chart, stacked };
+      const yaxis = {
+        ...this.yaxisBase,
+        title: {
+          text: "Дебит нефти [т.сут] | Дебит жидкости [м3/сут]",
+          style: {
+            color: "#008FFB",
+          },
+        },
+        // max: maxY2,
+        // min: minY2,
+      };
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+        chart,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      let filteredData = filteredResult.reduce(
+        (acc, res) => {
+          acc = {
+            oil: acc["oil"] + res["q_o"],
+            q_l: acc["q_l"] + res["q_l"],
+            tp_idn_oil: acc["tp_idn_oil"] + res["tp_idn_oil"],
+            tp_idn_liq_cas_d_corr:
+              acc["tp_idn_liq_cas_d_corr"] + res["tp_idn_liq_cas_d_corr"],
+            tp_idn_grp_q_oil: acc["tp_idn_grp_q_oil"] + res["tp_idn_grp_q_oil"],
+            tp_idn_grp_q_liq_cas_d_corr:
+              acc["tp_idn_grp_q_liq_cas_d_corr"] +
+              res["tp_idn_grp_q_liq_cas_d_corr"],
+          };
+          return acc;
+        },
+        {
+          oil: 0,
+          q_l: 0,
+          tp_idn_oil: 0,
+          tp_idn_liq_cas_d_corr: 0,
+          tp_idn_grp_q_oil: 0,
+          tp_idn_grp_q_liq_cas_d_corr: 0,
+        }
+      );
+      const series = [
+        {
+          name: "Q нефти суммарный по фонду",
+          type: "bar",
+          data: [
+            filteredData.oil,
+            filteredData.tp_idn_oil,
+            filteredData.tp_idn_grp_q_oil,
+          ],
+        },
+        {
+          name: "Q жидкости суммарный по фонду",
+          type: "bar",
+          data: [
+            filteredData.q_l,
+            filteredData.tp_idn_liq_cas_d_corr,
+            filteredData.tp_idn_grp_q_liq_cas_d_corr,
+          ],
+        },
+      ];
+      console.log("series 6 = ", series);
+      return series;
       // Суммарный дебит нефти и жидкости
     },
     setDataChart6(filteredResult) {
       // Распределение коэффициента продуктивности
+      console.log("filteredResult = ", filteredResult);
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        if (b.pi > a.pi) return 1;
+        if (b.pi < a.pi) return -1;
+        return 0;
+      });
+      const categories = filteredResult.map((item) =>
+        this.getStringOrFirstItem(item, "well")
+      );
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const yaxis = {
+        ...this.yaxisBase,
+        title: {
+          text: "Коэффициент продуктивности [м3/сут/атм]",
+          style: {
+            color: "#008FFB",
+          },
+        },
+      };
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Кпрод",
+          type: "bar",
+          data: filteredResult.map((item) =>
+            this.getStringOrFirstItem(item, "pi")
+          ),
+        },
+      ];
+      console.log("series 7 = ", series);
+      return series;
     },
     setDataChart7(filteredResult) {
-      // Распределение коэффициента продуктивности
+      // Распределение скважин по дебиту нефти
+      console.log("filteredResult = ", filteredResult);
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        if (b.q_o > a.q_o) return 1;
+        if (b.q_o < a.q_o) return -1;
+        return 0;
+      });
+      const categories = filteredResult.map((item) =>
+        this.getStringOrFirstItem(item, "well")
+      );
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const yaxis = { ...this.yaxisBase };
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Q нефти",
+          type: "bar",
+          data: filteredResult.map((item) =>
+            this.getStringOrFirstItem(item, "q_o")
+          ),
+        },
+      ];
+      console.log("series 8 = ", series);
+      return series;
     },
     setDataChart8(filteredResult) {
       // Распределение скважин по обводненности
+      console.log("filteredResult = ", filteredResult);
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        if (b.wct > a.wct) return 1;
+        if (b.wct < a.wct) return -1;
+        return 0;
+      });
+      const categories = filteredResult.map((item) =>
+        this.getStringOrFirstItem(item, "well")
+      );
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const yaxis = {
+        ...this.yaxisBase,
+        title: {
+          text: "Обводненность [%]",
+          style: {
+            color: "#008FFB",
+          },
+        },
+      };
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Обводненность",
+          type: "bar",
+          data: filteredResult.map((item) =>
+            this.getStringOrFirstItem(item, "wct")
+          ),
+        },
+      ];
+      console.log("series 9 = ", series);
+      return series;
     },
     setDataChart9(filteredResult) {
-      // Распределение скважин по обводненности
+      // Распределение скважин по дебиту жидкости
+      console.log("filteredResult = ", filteredResult);
+      const self = this;
+      filteredResult.sort(function (a, b) {
+        if (b.q_l > a.q_l) return 1;
+        if (b.q_l < a.q_l) return -1;
+        return 0;
+      });
+      const categories = filteredResult.map((item) =>
+        this.getStringOrFirstItem(item, "well")
+      );
+      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const yaxis = {
+        ...this.yaxisBase,
+        title: {
+          text: "Дебит жидкости [м3/сут]",
+          style: {
+            color: "#008FFB",
+          },
+        },
+      };
+      this.chartBarOptions = {
+        ...this.chartBarOptions,
+        xaxis,
+        yaxis,
+      };
+      console.log("categories = ", categories);
+      console.log("xaxis = ", xaxis);
+      console.log("yaxis = ", yaxis);
+      console.log("chartBarOptions = ", this.chartBarOptions);
+      const series = [
+        {
+          name: "Дебит жидкости",
+          type: "bar",
+          data: filteredResult.map((item) =>
+            this.getStringOrFirstItem(item, "q_l")
+          ),
+        },
+      ];
+      console.log("series 10 = ", series);
+      return series;
     },
     getStringOrFirstItem(el, param) {
       return Array.isArray(el[param]) ? el[param][0] : el[param];
@@ -719,6 +1353,15 @@ export default {
 };
 </script>
 <style  scoped>
+.tr-chart {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+.tr-chart .row {
+  margin-left: 0;
+  margin-right: 0;
+}
 .tr-chart__loader {
   margin: 50px auto;
   width: 1px;
