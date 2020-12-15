@@ -404,7 +404,7 @@ export default {
           this.$store.commit('fa/SET_YEAR', yyyy);
           this.$store.commit('fa/SET_PR_MONTH', prPrMm);
           this.$store.commit('fa/SET_PR_YEAR', pryyyy);
-          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                 let data = response.data;
                 this.editdtm = choosenDt[1];
                 this.editdty = choosenDt[0];
@@ -466,7 +466,7 @@ export default {
                 var pryyyy = pryyyy;
             }
         }
-        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
         console.log(this.editdtm);

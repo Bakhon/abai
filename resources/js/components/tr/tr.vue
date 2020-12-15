@@ -1,8 +1,8 @@
 <template>
     <div class="container-fluid">
         <div class="col-md-12 row trcolmd12">
-        <div class="col-md-12 row justify-content-between">
-            <a href="fa" class="col but-nav__link but"><i style=" margin-right: 10px; "><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="col-md-12 row justify-content-between" style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0;">
+            <a href="fa" class="col but-nav__link but" style="margin-left: -17px"><i style=" margin-right: 10px;"><svg width="24" height="14" viewBox="0 0 24 14" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z" fill="white"/>
 </svg>
 </i>Факторный анализ отклонений ТР</a>
@@ -400,7 +400,6 @@
               <td @click="sortBy('freq')"><i class="fa fa-fw fa-sort"></i>Гц, об/мин</td>
               <td @click="sortBy('h_pump_set')"><i class="fa fa-fw fa-sort"></i>м</td>
               <td @click="sortBy('whp')"><i class="fa fa-fw fa-sort"></i>атм</td>
-              <td @click="sortBy('line_p')"><i class="fa fa-fw fa-sort"></i>атм</td>
               <td @click="sortBy('line_p')"><i class="fa fa-fw fa-sort"></i>атм</td>
               <td @click="sortBy('p_res')"><i class="fa fa-fw fa-sort"></i>атм</td>
               <td @click="sortBy('h_dyn')"><i class="fa fa-fw fa-sort"></i>м</td>
@@ -2817,11 +2816,11 @@ export default {
         else {
             console.log('No data');
         }
-        if(prMm < 9) {
-            this.dt = '01' + '.0' + prMm + '.' + yyyy;
+        if(mm < 10) {
+            this.dt = '01' + '.0' + mm + '.' + yyyy;
         }
         else {
-            this.dt = '01' + '.' + prMm + '.' + yyyy;
+            this.dt = '01' + '.' + mm + '.' + yyyy;
         }
         
     });
@@ -2976,7 +2975,7 @@ export default {
                     console.log('No data');
                 }
                 if(this.month < 9) {
-                    this.dt = '01' + '.0' + (this.month + 1) + '.' + this.year;
+                    this.dt = '01' + '.0' + (this.month+1) + '.' + this.year;
                 }
                 else if(this.month == 12){
                     this.dt = '01' + '.01.' + (this.year + 1);
@@ -3036,7 +3035,7 @@ body {
 .input-group-prepend{
 
     padding-top: 3px!important;
-    margin-right: -3px!important;
+    margin-right: 0px!important;
 
 }
 a:hover{
@@ -3106,7 +3105,7 @@ tr:nth-child(even) {
 
 }
 .trtable {
-    height: 100;
+    height: 600;
 }
 
 </style>
