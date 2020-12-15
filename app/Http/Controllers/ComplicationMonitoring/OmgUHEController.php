@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OmgUHEUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class OmgUHEController extends Controller
@@ -137,12 +138,17 @@ class OmgUHEController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $omguhe = ComplicationMonitoringOmgUHE::find($id);
         $omguhe->delete();
 
-        return redirect()->route('omguhe.index')->with('success',__('app.deleted'));
+        if($request->ajax()) {
+            return response()->json([], Response::HTTP_NO_CONTENT);
+        }
+        else {
+            return redirect()->route('omguhe.index')->with('success',__('app.deleted'));
+        }
     }
 
     public function getPrevDayLevel(Request $request){

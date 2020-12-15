@@ -19,7 +19,7 @@ class OmgNGDUHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'field' => 'Месторождение',
+            'field_id' => 'Месторождение',
             'ngdu_id' => 'НГДУ',
             'cdng_id' => 'ЦДНГ',
             'gu_id' => 'ГУ',
@@ -39,6 +39,7 @@ class OmgNGDUHistoryObserver extends EditHistoryObserver
 
         foreach ($fields as $field => $name) {
             switch ($field) {
+                case 'field_id':
                 case 'ngdu_id':
                 case 'cdng_id':
                 case 'gu_id':
