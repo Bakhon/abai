@@ -337,7 +337,7 @@ export default {
         chartOptions: {
             labels: ["Недостижение режимного Pзаб", "Рост обводненности","Снижение Pпл","Снижение Kпрод"],
             chart: {
-            type: "pie",
+            type: "donut",
             },
             dataLabels: {
             enabled: false,
