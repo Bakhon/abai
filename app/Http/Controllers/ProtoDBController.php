@@ -77,6 +77,8 @@ class ProtoDBController extends Controller
         $monthsList = [];
         $newData = [];
 
+        unset($result);
+
         foreach ($array as $item) {
             $date = Carbon::parse($request->start_date);
             $currentMonthKey = $item['year'] . '-' . $item['month'];
@@ -158,13 +160,22 @@ class ProtoDBController extends Controller
                     }
                 }
             }
+
+            unset($date);
+            unset($currentMonthKey);
         }
+
+        unset($array);
 
         $data = [
             'list' => $newData,
             'months_count' => $monthCount,
             'months_list' => $monthsList
         ];
+
+        unset($newData);
+        unset($monthCount);
+        unset($monthsList);
 
         return Excel::download(new ProtoDBExport($data), 'tableExport.xls');
     }

@@ -17,13 +17,14 @@ class OmgNGDUListResource extends JsonResource
         return [
             'id' => $this->id,
             'fields' => [
-                'field' => $this->field === 1 ? 'Узень' : ($this->field === 2 ? 'Карамандыбас' : ''),
+                'field' => $this->field->name,
                 'ngdu' => $this->ngdu->name,
                 'cdng' => $this->cdng->name,
                 'gu' => $this->gu->name,
                 'zu' => $this->zu->name,
                 'well' => $this->well->name,
                 'date' => $this->date,
+                'bsw' => $this->bsw,
                 'daily_fluid_production' => $this->daily_fluid_production,
                 'daily_water_production' => $this->daily_water_production,
                 'daily_oil_production' => $this->daily_oil_production,
@@ -34,10 +35,10 @@ class OmgNGDUListResource extends JsonResource
                 'heater_output_pressure' => $this->heater_output_pressure,
             ],
             'links' => [
-                'show' => route('omgca.show',$this->id),
-                'edit' => route('omgca.edit',$this->id),
-                'history' => route('omgca.history',$this->id),
-                'delete' => route('omgca.destroy',$this->id),
+                'show' => route('omgngdu.show',$this->id),
+                'edit' => route('omgngdu.edit',$this->id),
+                'history' => route('omgngdu.history',$this->id),
+                'delete' => route('omgngdu.destroy',$this->id),
             ]
         ];
 

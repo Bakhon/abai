@@ -30,4 +30,9 @@ class Corrosion extends Model
     {
         return $this->hasOne('App\Models\Refs\Gu','id','gu_id')->withDefault();
     }
+
+    public function field()
+    {
+        return $this->hasOne('App\Models\Refs\Field','id','field_id')->withDefault();
+    }
 }

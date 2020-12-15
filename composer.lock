@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd95aa591aabf6be17f819cdacb53950",
+    "content-hash": "64881a27790311fd44b40e7e8b89a16e",
     "packages": [
         {
             "name": "adldap2/adldap2",
@@ -175,61 +175,6 @@
             "time": "2020-02-25T20:51:03+00:00"
         },
         {
-            "name": "composer/package-versions-deprecated",
-            "version": "1.11.99.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/composer/package-versions-deprecated.git",
-                "reference": "7413f0b55a051e89485c5cb9f765fe24bb02a7b6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/7413f0b55a051e89485c5cb9f765fe24bb02a7b6",
-                "reference": "7413f0b55a051e89485c5cb9f765fe24bb02a7b6",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1.0 || ^2.0",
-                "php": "^7 || ^8"
-            },
-            "replace": {
-                "ocramius/package-versions": "1.11.99"
-            },
-            "require-dev": {
-                "composer/composer": "^1.9.3 || ^2.0@dev",
-                "ext-zip": "^1.13",
-                "phpunit/phpunit": "^6.5 || ^7"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "PackageVersions\\Installer",
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PackageVersions\\": "src/PackageVersions"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marco Pivetta",
-                    "email": "ocramius@gmail.com"
-                },
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be"
-                }
-            ],
-            "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2020-11-11T10:22:58+00:00"
-        },
-        {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "v0.1.1",
             "source": {
@@ -346,29 +291,28 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.0.0",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "ee6d1260d5cc20ec506455a585945d7bdb98662c"
+                "reference": "adce7a954a1c2f14f85e94aed90c8489af204086"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/ee6d1260d5cc20ec506455a585945d7bdb98662c",
-                "reference": "ee6d1260d5cc20ec506455a585945d7bdb98662c",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/adce7a954a1c2f14f85e94aed90c8489af204086",
+                "reference": "adce7a954a1c2f14f85e94aed90c8489af204086",
                 "shasum": ""
             },
             "require": {
-                "composer/package-versions-deprecated": "^1.11.99",
                 "doctrine/cache": "^1.0",
                 "doctrine/event-manager": "^1.0",
-                "php": "^7.3 || ^8.0"
+                "ext-pdo": "*",
+                "php": "^7.3 || ^8"
             },
             "require-dev": {
                 "doctrine/coding-standard": "^8.1",
                 "jetbrains/phpstorm-stubs": "^2019.1",
                 "phpstan/phpstan": "^0.12.40",
-                "phpstan/phpstan-strict-rules": "^0.12.2",
                 "phpunit/phpunit": "^9.4",
                 "psalm/plugin-phpunit": "^0.10.0",
                 "symfony/console": "^2.0.5|^3.0|^4.0|^5.0",
@@ -388,7 +332,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Doctrine\\DBAL\\": "src"
+                    "Doctrine\\DBAL\\": "lib/Doctrine/DBAL"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -431,11 +375,12 @@
                 "queryobject",
                 "sasql",
                 "sql",
+                "sqlanywhere",
                 "sqlite",
                 "sqlserver",
                 "sqlsrv"
             ],
-            "time": "2020-11-15T18:20:41+00:00"
+            "time": "2020-11-14T20:26:58+00:00"
         },
         {
             "name": "doctrine/event-manager",
@@ -2043,134 +1988,6 @@
                 "php"
             ],
             "time": "2020-06-03T07:24:19+00:00"
-        },
-        {
-            "name": "okipa/laravel-html-helper",
-            "version": "1.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Okipa/laravel-html-helper.git",
-                "reference": "fb9ac83ac908e8348dfa1784200b98a0a559c06a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Okipa/laravel-html-helper/zipball/fb9ac83ac908e8348dfa1784200b98a0a559c06a",
-                "reference": "fb9ac83ac908e8348dfa1784200b98a0a559c06a",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~5.8.0||^6.0||^7.0",
-                "php": "^7.2"
-            },
-            "require-dev": {
-                "nunomaduro/larastan": "^0.4.3||^0.5",
-                "orchestra/testbench": "~3.8.0||^4.0||^5.0",
-                "phpmd/phpmd": "^2.8",
-                "squizlabs/php_codesniffer": "^3.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Okipa\\LaravelHtmlHelper\\": "src/"
-                },
-                "files": [
-                    "src/helpers.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Arthur LORENT",
-                    "email": "arthur.lorent@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Useful helpers to dynamically generate clean HTML with Laravel.",
-            "homepage": "https://github.com/Okipa/laravel-html-helper",
-            "keywords": [
-                "generate",
-                "generation",
-                "generator",
-                "helper",
-                "html",
-                "laravel",
-                "okipa",
-                "package",
-                "php"
-            ],
-            "time": "2020-03-03T09:45:32+00:00"
-        },
-        {
-            "name": "okipa/laravel-table",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Okipa/laravel-table.git",
-                "reference": "b493585392108a04715c1afb9ff47618875214b1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Okipa/laravel-table/zipball/b493585392108a04715c1afb9ff47618875214b1",
-                "reference": "b493585392108a04715c1afb9ff47618875214b1",
-                "shasum": ""
-            },
-            "require": {
-                "ext-pdo": "*",
-                "illuminate/support": "^6.0||^7.0",
-                "okipa/laravel-html-helper": "^1.3",
-                "php": "^7.4"
-            },
-            "require-dev": {
-                "nunomaduro/larastan": "^0.5",
-                "orchestra/testbench": "^4.0||^5.0",
-                "phpmd/phpmd": "^2.8",
-                "squizlabs/php_codesniffer": "^3.5"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Okipa\\LaravelTable\\LaravelTableServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Okipa\\LaravelTable\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Arthur LORENT",
-                    "email": "arthur.lorent@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Generate tables from Eloquent models.",
-            "homepage": "https://github.com/Okipa/laravel-table",
-            "keywords": [
-                "Lists",
-                "eloquent",
-                "generate",
-                "generation",
-                "generator",
-                "html",
-                "laravel",
-                "list",
-                "okipa",
-                "package",
-                "php",
-                "table",
-                "tables"
-            ],
-            "time": "2020-05-02T19:36:02+00:00"
         },
         {
             "name": "opis/closure",
@@ -5051,7 +4868,6 @@
                 "faker",
                 "fixtures"
             ],
-            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
