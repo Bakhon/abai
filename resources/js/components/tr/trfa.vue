@@ -157,7 +157,7 @@ export default {
         barChartData(){
             if (this.chartWells && this.chartWells.length > 0){
                 let field = this.chartFilter_field;
-                let horizon = this.chartFilter_horizon;
+                let horizon = this.chartFilter_horizon0;
                 let exp_meth = this.chartFilter_exp_meth;
                 try {
                     let filteredResult = this.chartWells.filter((row) => (
@@ -398,7 +398,7 @@ export default {
               var pryyyy = choosenSecDt[0];
           }
           console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
-          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                 let data = response.data;
                 this.editdtm = choosenDt[1];
                 this.editdty = choosenDt[0];
@@ -451,7 +451,7 @@ export default {
             var yyyy = yyyy;
             var pryyyy = pryyyy;
         }
-        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
         console.log(this.editdtm);

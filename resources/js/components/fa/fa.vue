@@ -166,72 +166,289 @@
                     <td @click="sortBy('Main_problem')" style="background: #272953"></td>
                 </tr>
                 <tr
-                    v-for="(row) in wells"
+                    v-for="(row, row_index) in wells"
                     :key="row.well"
                 >
                     <td>{{row.well}}</td>
                     <td>{{row.field}}</td>
                     <td>{{row.horizon}}</td>
                     <td>{{row.exp_meth}}</td>
-                    <td>{{Math.round(row.q_l_1*10)/10}}</td>
-                    <td>{{Math.round(row.q_o_1*10)/10}}</td>
-                    <td>{{Math.round(row.wct_1*10)/10}}</td>
-                    <td>{{Math.round(row.bhp_1*10)/10}}</td>
-                    <td>{{Math.round(row.p_res_1*10)/10}}</td>
-                    <td>{{Math.round(row.pi_1*10)/10}}</td>
-                    <td>{{Math.round(row.q_l_2*10)/10}}</td>
-                    <td>{{Math.round(row.q_o_2*10)/10}}</td>
-                    <td>{{Math.round(row.wct_2*10)/10}}</td>
-                    <td>{{Math.round(row.bhp_2*10)/10}}</td>
-                    <td>{{Math.round(row.p_res_2*10)/10}}</td>
-                    <td>{{Math.round(row.pi_2*10)/10}}</td>
+                    <!-- <td>{{Math.round(row.q_l_1*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].q_l_1[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].q_l_1[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].q_l_1[1][0])}`"> </span>
+                        <span>{{Math.round(row.q_l_1[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].q_l_1[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.q_o_1*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].q_o_1[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].q_o_1[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].q_o_1[1][0])}`"> </span>
+                        <span>{{Math.round(row.q_o_1[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].q_o_1[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.wct_1*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].wct_1[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].wct_1[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].wct_1[1][0])}`"> </span>
+                        <span>{{Math.round(row.wct_1[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].wct_1[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.bhp_1*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].bhp_1[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].bhp_1[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].bhp_1[1][0])}`"> </span>
+                        <span>{{Math.round(row.bhp_1[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].bhp_1[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.p_res_1*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].p_res_1[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].p_res_1[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].p_res_1[1][0])}`"> </span>
+                        <span>{{Math.round(row.p_res_1[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].p_res_1[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.pi_1*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].pi_1[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].pi_1[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].pi_1[1][0])}`"> </span>
+                        <span>{{Math.round(row.pi_1[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].pi_1[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.q_l_2*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].q_l_2[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].q_l_2[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].q_l_2[1][0])}`"> </span>
+                        <span>{{Math.round(row.q_l_2[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].q_l_2[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.q_o_2*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].q_o_2[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].q_o_2[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].q_o_2[1][0])}`"> </span>
+                        <span>{{Math.round(row.q_o_2[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].q_o_2[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.wct_2*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].wct_2[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].wct_2[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].wct_2[1][0])}`"> </span>
+                        <span>{{Math.round(row.wct_2[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].wct_2[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.bhp_2*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].bhp_2[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].bhp_2[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].bhp_2[1][0])}`"> </span>
+                        <span>{{Math.round(row.bhp_2[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].bhp_2[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.p_res_2*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].p_res_2[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].p_res_2[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].p_res_2[1][0])}`"> </span>
+                        <span>{{Math.round(row.p_res_2[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].p_res_2[1][1]}}
+                        </span>
+                    </td>
+
+                    <!-- <td>{{Math.round(row.pi_2*10)/10}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].pi_2[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].pi_2[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].pi_2[1][0])}`"> </span>
+                        <span>{{Math.round(row.pi_2[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].pi_2[1][1]}}
+                        </span>
+                    </td>
+
 
                     <!-- <td>{{Math.round(row.dqo*10)/10}}</td> -->
-                    <!-- :style="`background :${getColor(Math.round(row.dqo*10)/10)}`" -->
-                    <td
+                    <!-- :style="`background :${Two(Math.round(row.dqo*10)/10)}`" -->
+                    <!-- <td
                         :style="{
                             background: getColorone(Math.round(row.dqn*10)/10),
                         }"
                     >
                         <span> {{Math.round(row.dqn*10)/10}} </span>
+                    </td> -->
+
+                    <td :style="{
+                            background: getColorone(Math.round(row.dqn[0]*10)/10),
+                        }" :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].dqn[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].dqn[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].dqn[1][0])}`"> </span>
+                        <span>{{Math.round(row.dqn[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].dqn[1][1]}}
+                        </span>
                     </td>
 
+
                     <!-- <td>{{Math.round(row.Pbh*10)/10}}</td> -->
-                    <td :style="`background :${getColor(
+                    <!-- <td :style="`background :${getColor(
                         Math.round(row.Pbh*10)/10,
                         Math.round(row.wct*10)/10,
                         Math.round(row.p_res*10)/10,
                         Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.Pbh*10)/10}} </span>
+                    </td> -->
+                    <td :style="`background :${getColor(
+                        Math.round(row.Pbh[0]*10)/10,
+                        Math.round(row.wct[0]*10)/10,
+                        Math.round(row.p_res[0]*10)/10,
+                        Math.round(row.PI[0]*10)/10)}`" :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].Pbh[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].Pbh[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].Pbh[1][0])}`"> </span>
+                        <span>{{Math.round(row.Pbh[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].Pbh[1][1]}}
+                        </span>
                     </td>
 
                     <!-- <td>{{Math.round(row.wct*10)/10}}</td> -->
-                    <td :style="`background :${getColor(
+                    <!-- <td :style="`background :${getColor(
                         Math.round(row.wct*10)/10,
                         Math.round(row.Pbh*10)/10,
                         Math.round(row.p_res*10)/10,
                         Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.wct*10)/10}} </span>
+                    </td> -->
+                    <td :style="`background :${getColor(
+                        Math.round(row.wct[0]*10)/10,
+                        Math.round(row.Pbh[0]*10)/10,
+                        Math.round(row.p_res[0]*10)/10,
+                        Math.round(row.PI[0]*10)/10)}`" :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].wct[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].wct[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].wct[1][0])}`"> </span>
+                        <span>{{Math.round(row.wct[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].wct[1][1]}}
+                        </span>
                     </td>
 
+
                     <!-- <td>{{Math.round(row.p_res*10)/10}}</td> -->
-                    <td :style="`background :${getColor(
+                    <!-- <td :style="`background :${getColor(
                         Math.round(row.p_res*10)/10,
                         Math.round(row.Pbh*10)/10,
                         Math.round(row.wct*10)/10,
                         Math.round(row.PI*10)/10)}`">
                         <span> {{Math.round(row.p_res*10)/10}} </span>
+                    </td> -->
+                    <td :style="`background :${getColor(
+                        Math.round(row.p_res[0]*10)/10,
+                        Math.round(row.Pbh[0]*10)/10,
+                        Math.round(row.wct[0]*10)/10,
+                        Math.round(row.PI[0]*10)/10)}`" :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].p_res[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].p_res[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].p_res[1][0])}`"> </span>
+                        <span>{{Math.round(row.p_res[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].p_res[1][1]}}
+                        </span>
                     </td>
 
-                    <td :style="`background :${getColor(
+
+                    <!-- <td :style="`background :${getColor(
                         Math.round(row.PI*10)/10,
                         Math.round(row.Pbh*10)/10,
                         Math.round(row.wct*10)/10,
                         Math.round(row.p_res*10)/10)}`">
                         <span> {{Math.round(row.PI*10)/10}} </span>
+                    </td> -->
+                    <td :style="`background :${getColor(
+                        Math.round(row.PI[0]*10)/10,
+                        Math.round(row.Pbh[0]*10)/10,
+                        Math.round(row.wct[0]*10)/10,
+                        Math.round(row.p_res[0]*10)/10)}`" :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].PI[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].PI[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].PI[1][0])}`"> </span>
+                        <span>{{Math.round(row.PI[0]*10)/10}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].PI[1][1]}}
+                        </span>
                     </td>
+
+
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
-                    <td>{{row.Main_problem}}</td>
+                    <!-- <td>{{row.Main_problem}}</td> -->
+                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                    wells[row_index].Main_problem[1][0] !== '0'}">
+                        <span :class="{'circle-err': wells && wells[row_index] &&
+                    wells[row_index].Main_problem[1][0] !== '0'}" :style="`background :${getColorTwo(
+                    wells[row_index].Main_problem[1][0])}`"> </span>
+                        <span>{{row.Main_problem[0]}}</span>
+                        <span v-if="wells && wells[row_index]" class="cell-comment">
+                            {{ wells[row_index].Main_problem[1][1]}}
+                        </span>
+                    </td>
+
                 </tr>
             </table>
         </div>
@@ -239,7 +456,7 @@
     </div>
 </template>
 <script>
-import { eventBus } from "../../event-bus.js";
+import { EventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
 import 'vue-easy-notify/dist/vue-easy-notify.css';
 import { VueMomentLib }from "vue-moment-lib";
@@ -562,6 +779,10 @@ export default {
             this.sortType = 'asc';
         }
       },
+      getColorTwo(status) {
+          if (status === "1") return "#5e1d1d";
+          return "#ff0000";
+      },
       chooseDt() {
           const { date1, date2 } = this;
           console.log('dt1-', date1, ' dt2-', date2);
@@ -605,7 +826,7 @@ export default {
                       else {
                           console.log('No data');
                       }
-                      this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+                      this.dt = '01' + '.' + this.PrMm + '.' + this.editdty;
                       this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
 
                 });
@@ -637,6 +858,12 @@ export default {
       },
 
     },
+    // mounted() {},
+    // update: function (){
+    //     EventBus.$on("halu", this.google);
+    //     console.log(this.google)
+
+    // },
     beforeCreate: function () {
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -657,55 +884,44 @@ export default {
             var yyyy = yyyy;
             var pryyyy = pryyyy;
         }
-        EventBus.$on('halu', (data) => {
-            this.emmit = data;
-            // console.log(`Oh, that's nice. It's gotten ${this.editdtm} clicks! :)`)
-        });
         this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
-        let data = response.data;
-        // this.editdtm = prMm;
-        console.log(this.emmit);
-        this.editdty = yyyy;
-        console.log(this.editdty);
-        this.editdtprevm = prPrMm;
-        console.log(this.editdtprevm);
-        this.editdtprevy = yyyy;
-        console.log(this.editdtprevy);
-        console.log(this.good);
+            let data = response.data;
+            this.editdtm = prMm;
+            console.log(this.editdtm);
+            this.editdty = yyyy;
+            console.log(this.editdty);
+            this.editdtprevm = prPrMm;
+            console.log(this.editdtprevm);
+            this.editdtprevy = yyyy;
+            console.log(this.editdtprevy);
 
-        if(data) {
-            console.log(data);
-            this.wells = data.data;
-            this.fullWells = data.data;
-            this.chartWells = data.data;
-        }
-        else {
-            console.log('No data');
-        }
-        if(this.editdtm < 10 && this.editdtprevm < 10) {
-            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
-            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy ;
-        }
-        else if(this.editdtm <= 10 && this.editdtprevm <=10) {
-            this.dt = '01'+ '.' + this.editdtm + '.' + this.editdty;
-            this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
-        }
-        else if(editdtm >= 10 && editdtprevm < 10) {
-            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
-            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
-        }
-        if(this.editdtm < 10) {
-            this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
-        }
-        else {
-            this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
-        }
-        if(this.editdtprevm < 10) {
-            this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
-        }
-        else {
-            this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
-        }
+            if(data) {
+                console.log(data);
+                this.wells = data.data;
+                this.fullWells = data.data;
+                this.chartWells = data.data;
+            }
+            else {
+                console.log('No data');
+            }
+            if(this.editdtm < 10 && this.editdtprevm < 10) {
+                this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+                this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy ;
+            }
+            else if(this.editdtm <= 10 && this.editdtprevm <=10) {
+                this.dt = '01'+ '.' + this.editdtm + '.' + this.editdty;
+                this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
+            }
+            else if(editdtm >= 10 && editdtprevm < 10) {
+                this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
+                this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
+            }
+
+            console.log(this.dt);
+            console.log(this.dt2);
+            EventBus.$on('halu', this.google = clickCount => {
+                console.log(`Oh, that's nice. It's gotten ${clickCount} clicks! :)`)
+            });
     });
    },
 }

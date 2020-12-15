@@ -2,17 +2,8 @@
   <div>
     <div>
       <div class="row margin-top">
-        <!--<div class="underHeader">-->
         <div class="col-3">
           <div class="form-group1">
-            <!--<label class="text-wrap" style="color:white; width:438px;" for="companySelect">Компания</label>-->
-            <!--<select
-                  style="background-color:#20274e;border-color:#20274e;color:white;"
-                  class="form-control"
-                  id="companySelect"
-                  @change="onChange($event)"
-                >-->
-
             <select
               style="
                 background-color: #333975;
@@ -58,9 +49,7 @@
                     />
                   </svg>
                 </div>
-
-                <div class="float">Компания</div></option
-              >
+                <div class="float">Компания</div></option>
               <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
               <option value="КБМ">АО «Каражанбасмунай»</option>
               <option value="КазГерМунай">ТОО «КазГерМунай»</option>
@@ -72,78 +61,20 @@
 
         <div class="col-3">
           <div class="form-group2">
-            <!--<label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>-->
-            <!-- https://developer.snapappointments.com/bootstrap-select/examples/#basic-examples -->
-            <!-- multiple data-selected-text-format="count > 3" title="Выберите месяц" lang="ru" class="selectpicker"-->
-            <select
-              data-live-search="true"
-              style="
-                background-color: #333975;
-                border-color: #20274e;
-                color: white;
-              "
-              multiple
-              data-selected-text-format="count > 3"
-              title="Выбрать месяц"
-              lang="ru"
-              class="selectpicker select-month"
-              id="companySelect"
-              @change="onChangeMonth($event)"
-            >
-              <option value="">Выбрать месяц</option>
-              <option value="1">январь</option>
-              <option value="2">февраль</option>
-              <option value="3">март</option>
-              <option value="4">апрель</option>
-              <option value="5">май</option>
-              <option value="6">июнь</option>
-              <option value="7">июль</option>
-              <option value="8">август</option>
-              <option value="9">сентябрь</option>
-              <option value="10">октябрь</option>
-              <option :disabled="year == 2020" value="11">ноябрь</option>
-              <option :disabled="year == 2020" value="12">декабрь</option>
-            </select>
+            <input class="form-control datepicker" type="date" v-model="start_date">
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group3">
-            <!--<label class="text-wrap" style="color:white;" for="companySelect">Выберите год</label>-->
-            <select
-              style="
-                background-color: #333975;
-                border-color: #20274e;
-                color: white;
-              "
-              class="form-control"
-              id="companySelect"
-              @change="onChangeYear($event)"
-            >
-              <option value=""> Выберите год </option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="2015">2015</option>
-              <option value="2014">2014</option>
-            </select>
+            <input class="form-control datepicker" type="date" v-model="end_date">
           </div>
         </div>
         <div class="col-3">
           <div class="form-group4">
-            <button
+            <button v-if="org && start_date && end_date"
              class="report-btn2"
-              :disabled="
-                org == '' ||
-                month == '' ||
-                year == '' ||
-                (year == 2020 && month > 10)
-              "
-              @click="updateData"
-             
-            >
+              @click="updateData">
               Сформировать отчет
             </button>
           </div>
@@ -151,7 +82,7 @@
         <!-- </div>-->
       </div>
     </div>
-    <div :hidden="data == ''">
+    <div class="table">
       <BootstrapTable
         :columns="columns"
         :data="data"
@@ -163,3 +94,13 @@
 </template>
 
 <script src="./NewReportTable.js"></script>
+<style scoped>
+.datepicker {
+    background-color: rgb(51, 57, 117);
+    color: #fff;
+    border: none;
+}
+.table {
+    padding: 15px;
+}
+</style>

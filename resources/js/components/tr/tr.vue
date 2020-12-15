@@ -2354,7 +2354,7 @@
 
 
 
-                        <!-- <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
                         wells[row_index].planned_choke[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].planned_choke[1][0] !== '0'}" :style="`background :${getColor(
@@ -2609,7 +2609,7 @@
                             </span>
                         </td>
 
- -->
+
 
 
 
@@ -2631,7 +2631,7 @@
 <script>
 import TrTable from './table';
 import TrFullTable from './tablefull';
-import { eventBus } from "../../event-bus.js";
+import { EventBus } from "../../event-bus.js";
 Vue.prototype.$eventBus = new Vue();
 
 export default {
@@ -2650,7 +2650,7 @@ export default {
         else{
             var prMm = mm - 1
         }
-        this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+10+"/").then((response) => {
+        this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
         console.log(this.editdtm);
@@ -2664,11 +2664,11 @@ export default {
         else {
             console.log('No data');
         }
-        if(prMm < 10) {
-            this.dt = '01' + '.0' + prMm + '.' + yyyy;
+        if(mm < 9) {
+            this.dt = '01' + '.0' + mm + '.' + yyyy;
         }
         else {
-            this.dt = '01' + '.' + prMm + '.' + yyyy;
+            this.dt = '01' + '.' + mm + '.' + yyyy;
         }
     });
   },
@@ -2689,41 +2689,11 @@ export default {
         year: null,
         selectYear: null,
         month: null,
+        return: {
+            dt: null
+        },
     }
   },
-//   computed:{
-//       sortedData() {
-//         // //   let { wells, sortType } = this;
-//         //   this.reverse = (this.sortKey == sortKey) ? !this.reverse : false;
-//         //   this.sortKey = sortKey;
-
-//         //   console.log(type, sortType);
-//         //   if(sortType === 'asc') {
-//         //     wells.sort((a, b) => a[type].localeCompare(b[type]))
-//         //     this.sortType = 'desc';
-//         //   } else {
-//         //     wells.sort((a, b) => b[type].localeCompare(a[type]))
-//         //     this.sortType = 'asc';
-//         //   }
-//           if (this.sortField === null) {
-//               return this.wells;
-//           }
-//           return this.wells.sort((a, b) => {
-//               let res;
-//               if (typeof a[this.sortField] === 'string') {
-//               res = a[this.sortField].localeCompare(b[this.sortField])
-//               } else {
-//               res = a[this.sortField] > b[this.sortField] ? 1 :
-//                   a[this.sortField] < b[this.sortField] ? -1 : 0
-//               }
-//               if (this.currentSortDir !== 'asc') {
-//               ret = ret * -1;
-//               }
-//               return ret
-//           })
-//       },
-
-//   },
   methods: {
       editrow(row, rowId) {
           // console.log(row);
@@ -2831,7 +2801,6 @@ export default {
           else{
               this.year = this.selectYear;
           }
-          this.$EventBus.$emit('halu', this.year);
           this.axios.get("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/").then((response) => {
                 // this.editdtm = choosenDt[1];
                 // this.editdty = choosenDt[0];
@@ -2855,6 +2824,7 @@ export default {
                 else {
                     this.dt = '01' + '.' + (this.month+1) + '.' + this.year;
                 }
+                this.$EventBus.$emit('halu', this.dt);
             });
       },
       chooseField() {
@@ -2875,15 +2845,6 @@ export default {
           if (status === "1") return "#ffff00";
           return "#ff0000";
       },
-      updated: function() {
-          this.$eventBus.$on("newCurveLineData", this.setLine);
-          this.$eventBus.$on("newPointsData", this.setPoints);
-
-
-
-
-  }
-
   }
 }
 
