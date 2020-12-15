@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\OilGasUpdateRequest;
 use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\OilGas;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OilGasController extends Controller
 {
@@ -37,6 +39,20 @@ class OilGasController extends Controller
 
 
         return view('сomplicationMonitoring.oilGas.index', compact('oilgas'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function export()
+    {
+        $oilgas = OilGas::orderByDesc('date')
+            ->with('other_objects')
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->with('zu')
+            ->with('well')
+            ->get();
+
+        return Excel::download(new \App\Exports\OilGasExport($oilgas), 'oilgas.xls');
     }
 
     /**
@@ -106,14 +122,26 @@ class OilGasController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(OilGas $oilgas)
+    {
+        $oilgas->load('history');
+        return view('сomplicationMonitoring.oilGas.history', compact('oilgas'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(OilGas $oilgas)
     {
-        //
+        return view('сomplicationMonitoring.oilGas.edit', compact('oilgas'));
     }
 
     /**
@@ -121,11 +149,12 @@ class OilGasController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(OilGasUpdateRequest $request, OilGas $oilgas)
     {
-        //
+        $oilgas->update($request->validated());
+        return redirect()->route('oilgas.index')->with('success', __('app.updated'));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Exports\WaterMeasurementExport;
 use App\Http\Controllers\Controller;
 use App\Models\ComplicationMonitoring\ConstantsValue;
 use App\Models\ComplicationMonitoring\Corrosion as ComplicationMonitoringCorrosion;
@@ -24,6 +25,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WaterMeasurementController extends Controller
 {
@@ -50,6 +52,24 @@ class WaterMeasurementController extends Controller
 
 
         return view('watermeasurement.index',compact('wm'))->with('i', (request()->input('page', 1) - 1) * 5);
+    }
+
+    public function export()
+    {
+        $wm = ComplicationMonitoringWaterMeasurement::orderByDesc('date')
+            ->with('other_objects')
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->with('zu')
+            ->with('well')
+            ->with('waterTypeBySulin')
+            ->with('sulphateReducingBacteria')
+            ->with('hydrocarbonOxidizingBacteria')
+            ->with('thionicBacteria')
+            ->get();
+
+        return Excel::download(new WaterMeasurementExport($wm), 'watermeasurement.xls');
     }
 
     /**
@@ -138,27 +158,26 @@ class WaterMeasurementController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(ComplicationMonitoringWaterMeasurement $watermeasurement)
+    {
+        $watermeasurement->load('history');
+        return view('watermeasurement.history', compact('watermeasurement'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ComplicationMonitoringWaterMeasurement $watermeasurement)
     {
-        $wm = ComplicationMonitoringWaterMeasurement::where('id', '=', $id)
-                            ->with('other_objects')
-                            ->with('ngdu')
-                            ->with('cdng')
-                            ->with('gu')
-                            ->with('zu')
-                            ->with('well')
-                            ->with('waterTypeBySulin')
-                            ->with('sulphateReducingBacteria')
-                            ->with('hydrocarbonOxidizingBacteria')
-                            ->with('thionicBacteria')
-                            ->first();
-
-        return view('watermeasurement.edit', compact('wm'));
+        return view('watermeasurement.edit', compact('watermeasurement'));
     }
 
     /**
@@ -168,47 +187,46 @@ class WaterMeasurementController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, ComplicationMonitoringWaterMeasurement $watermeasurement)
     {
         $request->validate([
             'date' => 'required',
         ]);
 
-        $wm = ComplicationMonitoringWaterMeasurement::find($request->id);
-        $wm->other_objects_id = ($request->other_objects_id) ? $request->other_objects_id : NULL;
-        $wm->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : NULL;
-        $wm->cdng_id = ($request->cdng_id) ? $request->cdng_id : NULL;
-        $wm->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
-        $wm->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
-        $wm->well_id = ($request->well_id) ? $request->well_id : NULL;
-        $wm->date = date("Y-m-d H:i", strtotime($request->date));
-        $wm->hydrocarbonate_ion = ($request->hydrocarbonate_ion) ? $request->hydrocarbonate_ion : NULL;
-        $wm->carbonate_ion = ($request->carbonate_ion) ? $request->carbonate_ion : NULL;
-        $wm->sulphate_ion = ($request->sulphate_ion) ? $request->sulphate_ion : NULL;
-        $wm->chlorum_ion = ($request->chlorum_ion) ? $request->chlorum_ion : NULL;
-        $wm->calcium_ion = ($request->calcium_ion) ? $request->calcium_ion : NULL;
-        $wm->magnesium_ion = ($request->magnesium_ion) ? $request->magnesium_ion : NULL;
-        $wm->potassium_ion_sodium_ion = ($request->potassium_ion_sodium_ion) ? $request->potassium_ion_sodium_ion : NULL;
-        $wm->density = ($request->density) ? $request->density : NULL;
-        $wm->ph = ($request->ph) ? $request->ph : NULL;
-        $wm->mineralization = ($request->mineralization) ? $request->mineralization : NULL;
-        $wm->total_hardness = ($request->total_hardness) ? $request->total_hardness : NULL;
-        $wm->water_type_by_sulin_id = ($request->water_type_by_sulin_id) ? $request->water_type_by_sulin_id : NULL;
-        $wm->content_of_petrolium_products = ($request->content_of_petrolium_products) ? $request->content_of_petrolium_products : NULL;
-        $wm->mechanical_impurities = ($request->mechanical_impurities) ? $request->mechanical_impurities : NULL;
-        $wm->strontium_content = ($request->strontium_content) ? $request->strontium_content : NULL;
-        $wm->barium_content = ($request->barium_content) ? $request->barium_content : NULL;
-        $wm->total_iron_content = ($request->total_iron_content) ? $request->total_iron_content : NULL;
-        $wm->ferric_iron_content = ($request->ferric_iron_content) ? $request->ferric_iron_content : NULL;
-        $wm->ferrous_iron_content = ($request->ferrous_iron_content) ? $request->ferrous_iron_content : NULL;
-        $wm->hydrogen_sulfide = ($request->hydrogen_sulfide) ? $request->hydrogen_sulfide : NULL;
-        $wm->oxygen = ($request->oxygen) ? $request->oxygen : NULL;
-        $wm->carbon_dioxide = ($request->carbon_dioxide) ? $request->carbon_dioxide : NULL;
-        $wm->sulphate_reducing_bacteria_id = ($request->sulphate_reducing_bacteria_id) ? $request->sulphate_reducing_bacteria_id : NULL;
-        $wm->hydrocarbon_oxidizing_bacteria_id = ($request->hydrocarbon_oxidizing_bacteria_id) ? $request->hydrocarbon_oxidizing_bacteria_id : NULL;
-        $wm->thionic_bacteria_id = ($request->thionic_bacteria_id) ? $request->thionic_bacteria_id : NULL;
-        $wm->cruser_id = Auth::user()->id;
-        $wm->save();
+        $watermeasurement->other_objects_id = ($request->other_objects_id) ? $request->other_objects_id : NULL;
+        $watermeasurement->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : NULL;
+        $watermeasurement->cdng_id = ($request->cdng_id) ? $request->cdng_id : NULL;
+        $watermeasurement->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
+        $watermeasurement->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
+        $watermeasurement->well_id = ($request->well_id) ? $request->well_id : NULL;
+        $watermeasurement->date = date("Y-m-d H:i:s", strtotime($request->date));
+        $watermeasurement->hydrocarbonate_ion = ($request->hydrocarbonate_ion) ? $request->hydrocarbonate_ion : NULL;
+        $watermeasurement->carbonate_ion = ($request->carbonate_ion) ? $request->carbonate_ion : NULL;
+        $watermeasurement->sulphate_ion = ($request->sulphate_ion) ? $request->sulphate_ion : NULL;
+        $watermeasurement->chlorum_ion = ($request->chlorum_ion) ? $request->chlorum_ion : NULL;
+        $watermeasurement->calcium_ion = ($request->calcium_ion) ? $request->calcium_ion : NULL;
+        $watermeasurement->magnesium_ion = ($request->magnesium_ion) ? $request->magnesium_ion : NULL;
+        $watermeasurement->potassium_ion_sodium_ion = ($request->potassium_ion_sodium_ion) ? $request->potassium_ion_sodium_ion : NULL;
+        $watermeasurement->density = ($request->density) ? $request->density : NULL;
+        $watermeasurement->ph = ($request->ph) ? $request->ph : NULL;
+        $watermeasurement->mineralization = ($request->mineralization) ? $request->mineralization : NULL;
+        $watermeasurement->total_hardness = ($request->total_hardness) ? $request->total_hardness : NULL;
+        $watermeasurement->water_type_by_sulin_id = ($request->water_type_by_sulin_id) ? $request->water_type_by_sulin_id : NULL;
+        $watermeasurement->content_of_petrolium_products = ($request->content_of_petrolium_products) ? $request->content_of_petrolium_products : NULL;
+        $watermeasurement->mechanical_impurities = ($request->mechanical_impurities) ? $request->mechanical_impurities : NULL;
+        $watermeasurement->strontium_content = ($request->strontium_content) ? $request->strontium_content : NULL;
+        $watermeasurement->barium_content = ($request->barium_content) ? $request->barium_content : NULL;
+        $watermeasurement->total_iron_content = ($request->total_iron_content) ? $request->total_iron_content : NULL;
+        $watermeasurement->ferric_iron_content = ($request->ferric_iron_content) ? $request->ferric_iron_content : NULL;
+        $watermeasurement->ferrous_iron_content = ($request->ferrous_iron_content) ? $request->ferrous_iron_content : NULL;
+        $watermeasurement->hydrogen_sulfide = ($request->hydrogen_sulfide) ? $request->hydrogen_sulfide : NULL;
+        $watermeasurement->oxygen = ($request->oxygen) ? $request->oxygen : NULL;
+        $watermeasurement->carbon_dioxide = ($request->carbon_dioxide) ? $request->carbon_dioxide : NULL;
+        $watermeasurement->sulphate_reducing_bacteria_id = ($request->sulphate_reducing_bacteria_id) ? $request->sulphate_reducing_bacteria_id : NULL;
+        $watermeasurement->hydrocarbon_oxidizing_bacteria_id = ($request->hydrocarbon_oxidizing_bacteria_id) ? $request->hydrocarbon_oxidizing_bacteria_id : NULL;
+        $watermeasurement->thionic_bacteria_id = ($request->thionic_bacteria_id) ? $request->thionic_bacteria_id : NULL;
+        $watermeasurement->cruser_id = Auth::user()->id;
+        $watermeasurement->save();
 
         return redirect()->route('watermeasurement.index')->with('success',__('app.updated'));
     }

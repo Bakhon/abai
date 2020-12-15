@@ -9,13 +9,14 @@
                     <p>{{ $message }}</p>
                 </div>
             @endif
-            <div class="x_panel">
-            <h1>Редактирование данных</h1>
-            <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('updatewm') }}" method="POST">
+            <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a><hr>
+            <div class="container">
+                <h1>Редактирование данных по воде</h1>
+                <form action="{{ route('watermeasurement.update', ['watermeasurement' => $watermeasurement->id]) }}" method="POST">
+                    @method('patch')
                     @csrf
                     <div class="row">
-                        <wm-edit :id={{ $wm->id }}></wm-edit>
+                        <wm-form :wm='@json($watermeasurement)'></wm-form>
                     </div>
                 </form>
             </div>

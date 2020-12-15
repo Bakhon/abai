@@ -2799,6 +2799,8 @@ export default {
         else{
             var prMm = mm - 1
         }
+        this.$store.commit('tr/SET_MONTH', prMm);
+        this.$store.commit('tr/SET_YEAR', yyyy);
         this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
         let data = response.data;
         this.isloading = false;
@@ -2933,15 +2935,19 @@ export default {
         }
     },
     onChangeMonth(event) {
+          let newVal
           if(event.target.value == 1){
-              this.month = 12;
+              newVal = 12;
           }
           else{
-              this.month = event.target.value - 1;
+              newVal = event.target.value - 1;
           }
+          this.month = newVal
+          this.$store.commit('tr/SET_MONTH', newVal);
       },
       onChangeYear(event) {
               this.selectYear = event.target.value;
+              this.$store.commit('tr/SET_YEAR', event.target.value);
       },
 
       chooseDt() {

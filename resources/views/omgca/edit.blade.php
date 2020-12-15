@@ -10,12 +10,13 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>Редактирование данных</h1>
-            <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
-                <form action="{{ route('updatewm') }}" method="POST">
+                <h1>Редактирование данных ОМГ ДДНГ</h1>
+                <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
+                <form action="{{ route('omgca.update', ['omgca' => $omgca->id]) }}" method="POST">
+                    @method('patch')
                     @csrf
                     <div class="row">
-                        <wm-edit :id={{ $wm->id }}></wm-edit>
+                        <omgca-form :omgca='@json($omgca)'></omgca-form>
                     </div>
                 </form>
             </div>
