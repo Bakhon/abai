@@ -19,6 +19,7 @@ class IndexTableRequest extends FormRequest
             'order_desc' => 'nullable|boolean',
             'date_from' => 'nullable|date',
             'date_to' => 'nullable|date',
+            'filter' => 'nullable|array'
         ];
     }
 }

@@ -104,7 +104,7 @@ Vue.component('monitor-chart', require('./components/monitor/chart.vue').default
 Vue.component('monitor-chart-tide', require('./components/monitor/chartTide.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
-Vue.component('omgca-table', require('./components/omgca/table.vue').default);
+Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
@@ -123,6 +123,8 @@ Vue.component('table-editor', require('./components/TableEditor.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
+
+Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 
 
 /**

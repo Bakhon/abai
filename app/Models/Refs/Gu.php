@@ -10,4 +10,9 @@ class Gu extends Model
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgCA::class);
     }
+
+    public function omgngdu()
+    {
+        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);
+    }
 }

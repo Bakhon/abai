@@ -3,6 +3,7 @@
 @section('content')
 <div class="col p-4" id="app">
             <div class="card-header float-right">
+                <a class="btn btn-success" href="{{ route('oilgas.export') }}"><i class="fas fa-file-export"></i></a>
                 <a class="btn btn-success" href="{{ route('oilgas.create') }}">+</a>
             </div>
             <h1 style="color:#fff">База данных по нефти и газу</h1>

@@ -51,10 +51,19 @@ span.r-txt2 {
     padding: 18px 22px 16px 20px;
 
 }
+
 .input-group-F {
     width:91%;
-
 }
+
+.input-group-F input {
+    color: white;
+}
+
+.input-group-F input:focus {
+    color: white !important;
+}
+
 .form-control, .fix-rounded-right {
     border-top-left-radius: 20px!important;
     border-bottom-left-radius: 20px!important;
@@ -103,6 +112,7 @@ margin-left: 50px;
     text-align: center;
     height: 180px;
     border-radius: 20px;
+    color: white;
 }
 .btn-blocks:hover{
     background: #334296;
