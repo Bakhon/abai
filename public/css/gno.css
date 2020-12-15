@@ -576,7 +576,7 @@ input.checkbox2 {
 }
 
 input.checkbox3 {
-    margin-right: 12px;
+    margin-right: 8px;
 }
 
 .target {
@@ -1193,18 +1193,28 @@ input.checkbox-q-liquid {
 .bottom-configuration {
     background: #272953;
     padding: 15px 30px 14px;
+    font-weight: bold;
+}
+.inflow-configuration-min-width
+{
+    min-width: 520px;
+    min-height: 229px;
 }
 
 .inflow-configuration
 {
     background-color: #2B2E5E;
-    padding-right: 41px;
     padding-left: 36px;
+    padding-right: 41px;
 }
 
 .select-params
 {
     background-color: #2B2E5E;
+    min-height: 229px;
+    min-width: 520px;
+    padding-left: 28px;
+    padding-right: 39px;
 }
 
 .ic-top-row
@@ -1247,3 +1257,4 @@ input.checkbox-q-liquid {
     border-left-style: solid;
     border-left-width: 1px;
 }
+

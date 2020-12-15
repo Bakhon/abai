@@ -1172,8 +1172,8 @@
               <div class="col-md-12">
                 <div class="row">
                   <div class="col-md-12">
-                    <div class="row bottom-configuration">
-                      <div class="col-6 px-2">
+                    <div class="row  bottom-configuration">
+                      <div class="col-6 px-2 inflow-configuration-min-width">
                         <h3>
                           Настройки кривой притока
                         </h3>
@@ -1298,9 +1298,9 @@
                               </div>
 
                               <div class="pt-1">
-                              <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
-                                Рзат
-                              </div>
+                                <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
+                                  Рзат
+                                </div>
                               </div>
                               <div class="col-2 pt-1">
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
@@ -1331,9 +1331,9 @@
                               </div>
 
                               <div class="pb-1">
-                              <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
-                                Нсп маном
-                              </div>
+                                <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
+                                  Нсп маном
+                                </div>
                               </div>
 
                               <div class="col-2 pt-1">
@@ -1367,33 +1367,40 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-5">
+                      <div class="col-6 px-2">
                         <h3>
                           Параметры подбора
                         </h3>
                         <div class="select-params">
                           <div class="row">
-                            <div class="col-12">ГНО</div>
+                            <div class="col-11 pt-3 pb-3">ГНО</div>
                           </div>
-                          <div class="row">
-
-                            <div class="col-4">
-                              <label class="label-for-celevoi">
-                                <input class="checkbox3x" value="ШГН" v-model="expChoose"
-                                       @change="postCurveData()"
-                                       :checked="expChoose === 'ШГН'" type="radio"
-                                       name="gno10"/>ШГН</label>
+                          <div class="row pt-2">
+                            <div class="col-4 pr-0">
+                              <div class="table-border-gno-right">
+                                <label class="label-for-celevoi">
+                                  <input class="checkbox3" value="ШГН" v-model="expChoose"
+                                         @change="postCurveData()"
+                                         :checked="expChoose === 'ШГН'" type="radio"
+                                         name="gno10"/>ШГН</label>
+                              </div>
                             </div>
 
+                            <div class="col-4  pr-0">
+                              <div class="table-border-gno-right">
+                                <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
+                                                                        v-model="expChoose"
+                                                                        @change="postCurveData()"
+                                                                        :checked="expChoose === 'ЭЦН'" type="radio"
+                                                                        name="gno10"/>ЭЦН</label>
+                              </div>
+                            </div>
                             <div class="col-4">
-                              <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН" v-model="expChoose"
+                              <label class="label-for-celevoi"><input class="checkbox3" value="Нсп"
+                                                                      v-model="expChoose"
                                                                       @change="postCurveData()"
-                                                                      :checked="expChoose === 'ЭЦН'" type="radio"
-                                                                      name="gno10"/>ЭЦН</label>
-                            </div>
-
-                            <div class="col-4">
-                              <label class="label-for-celevoi">НСП</label>
+                                                                      :checked="expChoose === 'Нсп'" type="radio"
+                                                                      name="gno10"/>Нсп</label>
                               <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
                             </div>
 
@@ -1401,29 +1408,71 @@
                           </div>
                           <div class="row">
 
-                            <div class="col-12">Целевой параметр</div>
+                            <div class="col-4 pr-0">
 
+                              <div class="table-border-gno-right pt-3">
+                                &nbsp;
+                              </div>
+                            </div>
+                            <div class="col-4 pr-0">
+
+                              <div class="table-border-gno-right pt-3">
+                                &nbsp;
+                              </div>
+                            </div>
+                          </div>
+                          <div class="table-border-gno-top">
+                            <div class="row">
+
+                              <div class="col-4 pr-0">
+
+                                <div class="table-border-gno-right pt-2 pb-3">
+                                  Целевой параметр
+                                </div>
+
+                              </div>
+                              <div class="col-4 pr-0">
+
+                                <div class="table-border-gno-right  pt-2 pb-3">
+                                  &nbsp;
+                                </div>
+                              </div>
+                            </div>
 
                           </div>
                           <div class="row">
 
-                            <div class="col-4">
-                              <label class="label-for-celevoi"><input class="checkbox3x" value="ШГН" v-model="expChoose"
-                                                                      @change="postCurveData()"
-                                                                      :checked="expChoose === 'ШГН'" type="radio"
-                                                                      name="gno10"/>Qж</label>
+                            <div class="col-4 pr-0">
+
+                              <div class="table-border-gno-right">
+                                <label class="label-for-celevoi"><input class="checkbox3" value="ШГН"
+                                                                        v-model="expChoose"
+                                                                        @change="postCurveData()"
+                                                                        :checked="expChoose === 'ШГН'" type="radio"
+                                                                        name="gno10"/>Qж</label>
+                              </div>
                             </div>
 
-                            <div class="col-4">
-                              <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН" v-model="expChoose"
-                                                                      @change="postCurveData()"
-                                                                      :checked="expChoose === 'ЭЦН'" type="radio"
-                                                                      name="gno10"/>Рзаб</label>
-                            </div>
+                            <div class="col-4 pr-0">
 
+                              <div class="table-border-gno-right">
+                                <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
+                                                                        v-model="expChoose"
+                                                                        @change="postCurveData()"
+                                                                        :checked="expChoose === 'ЭЦН'" type="radio"
+                                                                        name="gno10"/>Рзаб</label>
+
+                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                              </div>
+                            </div>
                             <div class="col-4">
-                              <label class="label-for-celevoi">Рпр</label>
+                              <label class="label-for-celevoi"><input class="checkbox3" value="Рпр"
+                                                                      v-model="expChoose"
+                                                                      @change="postCurveData()"
+                                                                      :checked="expChoose === 'Рпр'" type="radio"
+                                                                      name="gno10"/>Рпр</label>
                               <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+
                             </div>
 
 
