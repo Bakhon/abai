@@ -786,7 +786,12 @@ export default {
               var yyyy = choosenDt[0];
               var pryyyy = choosenSecDt[0];
           }
-          if(choosenDt[1] < choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]){
+        //   this.$store.commit('fa/SET_MONTH', prMm);
+        //   this.$store.commit('fa/SET_YEAR', yyyy);
+        //   this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+        //   this.$store.commit('fa/SET_PR_YEAR', pryyyy);
+        //   console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+          if(choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]){
               Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
           }
           else{

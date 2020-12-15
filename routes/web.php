@@ -72,10 +72,12 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
 
         //wm
+        Route::get('watermeasurement/list','ComplicationMonitoring\WaterMeasurementController@list')->name('watermeasurement.list');
         Route::get('watermeasurement/export','ComplicationMonitoring\WaterMeasurementController@export')->name('watermeasurement.export');
         Route::get('watermeasurement/history/{watermeasurement}','ComplicationMonitoring\WaterMeasurementController@history')->name('watermeasurement.history');
         Route::resource('watermeasurement','ComplicationMonitoring\WaterMeasurementController');
 
+        Route::get('/getfields', 'ComplicationMonitoring\WaterMeasurementController@getFields');
         Route::get('/getotherobjects', 'ComplicationMonitoring\WaterMeasurementController@getOtherObjects');
         Route::get('/getngdu', 'ComplicationMonitoring\WaterMeasurementController@getNgdu');
         Route::get('/getcdng', 'ComplicationMonitoring\WaterMeasurementController@getCdng');
@@ -98,8 +100,10 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('omgca/history/{omgca}', 'ComplicationMonitoring\OmgCAController@history')->name('omgca.history');
         Route::resource('omgca','ComplicationMonitoring\OmgCAController');
 
-        Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
+        Route::get('omguhe/list', 'ComplicationMonitoring\OmgUHEController@list')->name('omguhe.list');
+        Route::get('omguhe/export', 'ComplicationMonitoring\OmgUHEController@export')->name('omguhe.export');
         Route::get('omguhe/history/{omguhe}', 'ComplicationMonitoring\OmgUHEController@history')->name('omguhe.history');
+        Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
 
         Route::get('omgngdu/list', 'ComplicationMonitoring\OmgNGDUController@list')->name('omgngdu.list');
         Route::get('omgngdu/export', 'ComplicationMonitoring\OmgNGDUController@export')->name('omgngdu.export');
@@ -109,6 +113,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
 
+        Route::get('oilgas/list', 'ComplicationMonitoring\OilGasController@list')->name('oilgas.list');
         Route::get('oilgas/export', 'ComplicationMonitoring\OilGasController@export')->name('oilgas.export');
         Route::get('oilgas/history/{oilgas}', 'ComplicationMonitoring\OilGasController@history')->name('oilgas.history');
         Route::resource('oilgas','ComplicationMonitoring\OilGasController')->parameters(['oilgas' => 'oilgas']);
@@ -118,6 +123,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('checkdublicateomgddng','ComplicationMonitoring\OmgCAController@checkDublicate');
         Route::post('getprevdaylevel','ComplicationMonitoring\OmgUHEController@getPrevDayLevel');
 
+        Route::get('corrosioncrud/list', 'ComplicationMonitoring\CorrosionController@list')->name('corrosioncrud.list');
         Route::get('corrosioncrud/export', 'ComplicationMonitoring\CorrosionController@export')->name('corrosioncrud.export');
         Route::get('corrosioncrud/history/{corrosion}', 'ComplicationMonitoring\CorrosionController@history')->name('corrosioncrud.history');
         Route::resource('corrosioncrud','ComplicationMonitoring\CorrosionController');
