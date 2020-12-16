@@ -113,9 +113,17 @@
                 </div>
             </div>
         </div>
+        <notifications position="top"></notifications>
     </div>
 </template>
 <script>
+import NotifyPlugin from "vue-easy-notify";
+import 'vue-easy-notify/dist/vue-easy-notify.css';
+import { VueMomentLib } from "vue-moment-lib";
+import moment from "moment";
+import Vue from "vue";
+
+Vue.use(NotifyPlugin, VueMomentLib);
 import VueApexCharts from "vue-apexcharts";
 export default {
     computed: {
@@ -329,7 +337,7 @@ export default {
         chartOptions: {
             labels: ["Недостижение режимного Pзаб", "Рост обводненности","Снижение Pпл","Снижение Kпрод"],
             chart: {
-            type: "pie",
+            type: "donut",
             },
             dataLabels: {
             enabled: false,
@@ -399,27 +407,37 @@ export default {
               var yyyy = choosenDt[0];
               var pryyyy = choosenSecDt[0];
           }
-          console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
-          this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
-                let data = response.data;
-                this.editdtm = choosenDt[1];
-                this.editdty = choosenDt[0];
-                this.editdtprevm = choosenSecDt[1];
-                this.editdtprevy = choosenSecDt[0];
-                if(data) {
-                    console.log(data);
-                    this.wells = data.data;
-                    this.fullWells = data.data;
-                    this.chartWells = data.data;
 
-                }
-                else {
-                    console.log('No data');
-                }
-                this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
-                this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
-
-            });
+          if(choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]){
+              Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+          }
+          else{          
+              this.$store.commit('fa/SET_MONTH', prMm);
+              this.$store.commit('fa/SET_YEAR', yyyy);
+              this.$store.commit('fa/SET_PR_MONTH', prPrMm);
+              this.$store.commit('fa/SET_PR_YEAR', pryyyy);
+              console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
+              this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+                      let data = response.data;
+                      this.editdtm = choosenDt[1];
+                      this.editdty = choosenDt[0];
+                      this.editdtprevm = choosenSecDt[1];
+                      this.editdtprevy = choosenSecDt[0];
+                      if(data) {
+                          console.log(data);
+                          this.wells = data.data;
+                          this.fullWells = data.data;
+                          this.chartWells = data.data;
+  
+                      }
+                      else {
+                          console.log('No data');
+                      }
+                      this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
+                      this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
+  
+                  });
+          }
       },
       pushBign(bign){
           switch (bign) {
@@ -435,25 +453,34 @@ export default {
     },
     beforeCreate: function () {
         var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
-        var pryyyy = today.getFullYear();
-        var prMm = mm;
-        var prPrMm = mm;
-        if(mm==0){
-            var prMm = 12;
-            var prPrMm = 11;
-            var yyyy = yyyy - 1;
-            var pryyyy = pryyyy - 1;
+        // var dd = String(today.getDate()).padStart(2, '0');
+        var dd = 1;
+
+        if (this.$store.getters['fa/month'] && this.$store.getters['fa/year'] && this.$store.getters['fa/prmonth'] && this.$store.getters['fa/pryear']) {
+            var prMm = this.$store.getters['fa/month'];
+            var prPrMm = this.$store.getters['fa/prmonth'];
+            var yyyy = this.$store.getters['fa/year'];
+            var pryyyy = this.$store.getters['fa/pryear'];
+        } else {
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = today.getFullYear();
+            var pryyyy = today.getFullYear();
+            var prMm = mm;
+            var prPrMm = mm;
+            if(mm==0){
+                var prMm = 12;
+                var prPrMm = 11;
+                var yyyy = yyyy - 1;
+                var pryyyy = pryyyy - 1;
+            }
+            else{
+                var prMm = prMm - 1;
+                var prPrMm = prPrMm -2;
+                var yyyy = yyyy;
+                var pryyyy = pryyyy;
+            }
         }
-        else{
-            var prMm = prMm - 1;
-            var prPrMm = prPrMm -2;
-            var yyyy = yyyy;
-            var pryyyy = pryyyy;
-        }
-        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
+        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
         let data = response.data;
         this.editdtm = prMm;
         console.log(this.editdtm);
@@ -498,7 +525,14 @@ export default {
         }
     });
    },
-
+   mounted: function () {
+        const mm = `${this.$store.getters['fa/month'] + 1}`.length < 2 ? `0${this.$store.getters['fa/month'] + 1}` : `${this.$store.getters['fa/month'] + 1}`
+        const prmm = `${this.$store.getters['fa/prmonth'] + 1}`.length < 2 ? `0${this.$store.getters['fa/prmonth'] + 1}` : `${this.$store.getters['fa/prmonth'] + 1}`
+        this.date1 = `${this.$store.getters['fa/year']}-${mm}-01`
+        this.date2 = `${this.$store.getters['fa/pryear']}-${prmm}-01`
+        this.dt = `01.${mm}.${this.$store.getters['fa/year']}`
+        this.dt2 = `01.${prmm}.${this.$store.getters['fa/pryear']}`
+   }
 }
 </script>
 <style  scoped>

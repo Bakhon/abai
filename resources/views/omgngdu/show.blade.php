@@ -19,13 +19,7 @@
                     </tr>
                     <tr>
                         <td>Месторождение</td>
-                        <td>
-                            @if ($omgngdu->field === 1)
-                                Узень
-                            @else
-                                Карамандыбас
-                            @endif
-                        </td>
+                        <td>{{$omgngdu->field->name}}</td>
                     </tr>
                     <tr>
                         <td>НГДУ</td>
