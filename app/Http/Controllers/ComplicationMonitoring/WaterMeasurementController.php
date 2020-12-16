@@ -363,7 +363,7 @@ class WaterMeasurementController extends Controller
             ->getFilteredQuery($request->validated(), $query)
             ->get();
 
-        return Excel::download(new WaterMeasurementExport($wm), 'watermeasurement.xls');
+        return Excel::download(new WaterMeasurementExport($watermeasurement), 'watermeasurement.xls');
     }
 
     /**
