@@ -16,9 +16,9 @@
                         <option :value="0" :selected="'selected'">Выбор ДЗО</option>
                     </select>
                 </div>
-                <div class="w-25 align-right">
+                <div class="w-25">
                     <div class="w-25 float-right m-3">
-                        <div class=" align-right close2 d-none d-sm-block">Закрыть</div>
+                        <div class="close2 d-none d-sm-block">Закрыть</div>
                     </div>
                 </div>
             </div>
@@ -107,6 +107,8 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <tr v-for="item in data">
+                            </tr>
                             <tr>
                                 <td>Обменный курс</td>
                                 <td>Тенге/$</td>

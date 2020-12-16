@@ -1,5 +1,5 @@
 <template>
-    <div class="first-string flex-grow-1 mb-1 mb-sm-0 mr-0 mr-sm-2 ml-0 ml-sm-2" @click="$emit('changeTable', tableToChange)">
+    <div class="first-string flex-grow-1 mb-1 mb-sm-0 mr-0 mr-sm-2 ml-0 ml-sm-2">
         <div class="d-flex flex-row justify-sm-content-center text-sm-left text-center">
             <div class="mt-0 mt-sm-4 ml-1 ml-sm-3 w-50 mr-0 mr-sm-0">
                 <p class="txt7 display-4 display-sm-3 m-0">
