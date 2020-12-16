@@ -26,7 +26,7 @@
                         <!-- <form class="form-group but-nav__link"> -->
                             <label for="inputDate">Введите дату для сравнения:</label>
                             <input type="date" class="form-control" v-model="date2">
-                            <a href="#" class="btn btn-primary" @click.prevent="chooseDt">Сформировать</a> 
+                            <a href="#" class="btn btn-primary" @click.prevent="chooseDt">Сформировать</a>
                     </div>
                 </div>
 <!-- <button type="button" class="btn btn-primary">Главный</button> -->
@@ -39,11 +39,7 @@
                         <label for="inputDate">Выбор даты 2:</label>
                         <input type="date" class="form-control" v-model="date2">
                 </form>
-<<<<<<< HEAD
-                <a href="#" class="but-nav__link but" @click="chooseDt">Сформировать</a>
-=======
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> -->
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                 <!-- <a href="#" class="but-nav__link but">Редактировать</a> -->
                 <!-- <a class="but-nav__link but " @click="pushBign('chart')">Графики</a> -->
                 <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Факторный анализ.xlsx" class="but-nav__link but">Экспорт</a> -->
@@ -142,14 +138,6 @@
                     v-for="(row, row_index) in wells"
                     :key="row.well"
                 >
-<<<<<<< HEAD
-                    <td>{{row.well}}</td>
-                    <td>{{row.field}}</td>
-                    <td>{{row.horizon}}</td>
-                    <td>{{row.exp_meth}}</td>
-                    <!-- <td>{{Math.round(row.q_l_1*10)/10}}</td> -->
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #12135C">{{row.well}}</td>
                     <td style="background: #12135C">{{row.field}}</td>
                     <td style="background: #12135C">{{row.horizon}}</td>
@@ -169,7 +157,6 @@
 
 
                     <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].q_l_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].q_l_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -181,11 +168,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.q_o_1*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].q_o_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].q_o_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -197,11 +180,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.wct_1*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].wct_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].wct_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -213,11 +192,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.bhp_1*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].bhp_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].bhp_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -229,11 +204,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.p_res_1*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].p_res_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].p_res_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -245,11 +216,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.pi_1*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #2C3379" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].pi_1[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].pi_1[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -261,11 +228,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.q_l_2*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].q_l_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].q_l_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -277,11 +240,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.q_o_2*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].q_o_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].q_o_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -293,11 +252,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.wct_2*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].wct_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].wct_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -309,11 +264,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.bhp_2*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].bhp_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].bhp_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -325,11 +276,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.p_res_2*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].p_res_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].p_res_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -341,11 +288,7 @@
                     </td>
 
                     <!-- <td>{{Math.round(row.pi_2*10)/10}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #1A2370" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].pi_2[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].pi_2[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -477,11 +420,7 @@
 
                     <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
                     <!-- <td>{{row.Main_problem}}</td> -->
-<<<<<<< HEAD
-                    <td :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                     <td style="background: #272953" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
                     wells[row_index].Main_problem[1][0] !== '0'}">
                         <span :class="{'circle-err': wells && wells[row_index] &&
                     wells[row_index].Main_problem[1][0] !== '0'}" :style="`background :${getColorTwo(
@@ -499,22 +438,11 @@
     </div>
 </template>
 <script>
-<<<<<<< HEAD
-import { EventBus } from "../../event-bus.js";
-import NotifyPlugin from "vue-easy-notify";
-import 'vue-easy-notify/dist/vue-easy-notify.css';
-import { VueMomentLib }from "vue-moment-lib";
-import moment from "moment";
-import Vue from 'vue';
-
-Vue.use(NotifyPlugin,VueMomentLib);
-=======
 import NotifyPlugin from "vue-easy-notify";
 import 'vue-easy-notify/dist/vue-easy-notify.css';
 import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
 
 Vue.use(NotifyPlugin, VueMomentLib);
 import VueApexCharts from "vue-apexcharts";
@@ -859,30 +787,6 @@ export default {
               var pryyyy = choosenSecDt[0];
           }
           if(choosenDt[1] < choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]){
-<<<<<<< HEAD
-              Vue.prototype.$notifyError("Дата 2 должна быть меньше, чем Дата 1");
-          }
-          else{
-              console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
-              this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
-                      let data = response.data;
-                      this.editdtm = choosenDt[1];
-                      this.editdty = choosenDt[0];
-                      this.editdtprevm = choosenSecDt[1];
-                      this.editdtprevy = choosenSecDt[0];
-                      if(data) {
-                          console.log(data);
-                          this.wells = data.data;
-                          this.fullWells = data.data;
-                          this.chartWells = data.data;
-                      }
-                      else {
-                          console.log('No data');
-                      }
-                      this.dt = '01' + '.' + this.PrMm + '.' + this.editdty;
-                      this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
-
-=======
               Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
           }
           else{
@@ -908,8 +812,7 @@ export default {
                     }
                     this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
                     this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
-    
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
+
                 });
           }
       },

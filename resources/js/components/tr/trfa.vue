@@ -47,7 +47,7 @@
                             <input type="date" class="form-control" v-model="date1">
                             <label for="inputDate">Введите дату для сравнения:</label>
                             <input type="date" class="form-control" v-model="date2">
-                            <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a> 
+                            <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
                 </div>
             </div>
         </div>
@@ -400,13 +400,10 @@ export default {
               var pryyyy = choosenSecDt[0];
           }
           console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
-<<<<<<< HEAD
-=======
           this.$store.commit('fa/SET_MONTH', prMm);
           this.$store.commit('fa/SET_YEAR', yyyy);
           this.$store.commit('fa/SET_PR_MONTH', prPrMm);
           this.$store.commit('fa/SET_PR_YEAR', pryyyy);
->>>>>>> 165ef3e66adfe99f5a6c55ef2088a3660a5884a1
           this.axios.get("http://172.20.103.51:7576/api/techregime/factor/graph1/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
                 let data = response.data;
                 this.editdtm = choosenDt[1];
