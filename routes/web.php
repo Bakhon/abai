@@ -176,6 +176,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('importdzoyear','DZO\DZOyearController@importExcel');
         Route::get('importdzocalc','DZO\DZOcalcController@importExcel');
 
+        Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
+        Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
+
     });
     Auth::routes([
         'reset' => false,

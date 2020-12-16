@@ -403,44 +403,7 @@ export default {
             top: 36px;
             z-index: 1000;
 
-            .v-select {
-                background: #41488B;
-                border-radius: 5px;
-                height: 40px;
-                min-width: 300px;
 
-                .vs {
-                    &__search, &__selected {
-                        color: #fff;
-                        font-size: 16px;
-                        font-weight: bold;
-                        height: 40px;
-                        line-height: 40px;
-                        margin: 0;
-                    }
-
-                    &__actions {
-                        svg {
-                            path {
-                                fill: #fff;
-                            }
-                        }
-                    }
-
-                    &__dropdown-menu {
-                        background: #40467E;
-                        border: 0.4px solid #2E50E9;
-                        top: 44px;
-
-                        li {
-                            color: #fff;
-                            font-size: 12px;
-                            font-weight: 600;
-                            padding: 7px 16px;
-                        }
-                    }
-                }
-            }
         }
 
         &-item {

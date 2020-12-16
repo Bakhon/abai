@@ -69427,3 +69427,37 @@ readers do not read off random characters that represent icons */
   font-weight: 400;
 }
 
+.v-select {
+  background: #41488B;
+  border-radius: 5px;
+  height: 40px;
+  min-width: 300px;
+}
+
+.v-select .vs__search,
+.v-select .vs__selected {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  height: 40px;
+  line-height: 40px;
+  margin: 0;
+}
+
+.v-select .vs__actions svg path {
+  fill: #fff;
+}
+
+.v-select .vs__dropdown-menu {
+  background: #40467E;
+  border: 0.4px solid #2E50E9;
+  top: 44px;
+}
+
+.v-select .vs__dropdown-menu li {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 16px;
+}
+
