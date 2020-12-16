@@ -1,7 +1,9 @@
 <template>
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
         <div class="flex-grow-1">
-            <horizontal-indicators></horizontal-indicators>
+            <horizontal-indicators
+                @changeTable="tableToChange => changeTable(tableToChange)"
+            ></horizontal-indicators>
             <div :style="`${Table1}`">
                 <div class="mr-sm-2 vc-central-block">
                     <div class="d-flex flex-row mb-2">
@@ -30,38 +32,50 @@
                             v-bind:mainValue="t1"
                             v-bind:units="'млрд. тенге'"
                             v-bind:speedometerValue="17"
+                            v-bind:tableToChange="4"
+                            @changeTable="changeTable"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Долг/EBIDTA'"
                             v-bind:mainValue="t2"
                             v-bind:units="'млрд. тенге'"
                             v-bind:speedometerValue="42"
+                            v-bind:tableToChange="4"
+                            @changeTable="changeTable"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'ROACE'"
                             v-bind:mainValue="t3"
                             v-bind:units="'%'"
                             v-bind:speedometerValue="12"
+                            v-bind:tableToChange="4"
+                            @changeTable="changeTable"
                         ></vc-speedometer-block>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2">
+                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2">
                         <vc-speedometer-block
                             v-bind:title="'Запасы (A+B+C1)'"
                             v-bind:mainValue="t4"
                             v-bind:units="'млрд. тенге'"
                             v-bind:speedometerValue="85"
+                            v-bind:tableToChange="4"
+                            @changeTable="changeTable"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'ESG рейтинг'"
                             v-bind:mainValue="t5"
                             v-bind:units="'млрд. тенге'"
                             v-bind:speedometerValue="27"
+                            v-bind:tableToChange="4"
+                            @changeTable="changeTable"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Местное содержание'"
                             v-bind:mainValue="t6"
                             v-bind:units="'%'"
                             v-bind:speedometerValue="58"
+                            v-bind:tableToChange="4"
+                            @changeTable="changeTable"
                         ></vc-speedometer-block>
                     </div>
                 </div>

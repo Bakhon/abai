@@ -8,6 +8,11 @@ export default {
     Calendar,
     DatePicker,
   },
+  props: {
+    tableToChange: {
+      default: '1'
+    }
+  },
   data: function () {
     return {
       lastMonth:'',
@@ -136,21 +141,6 @@ export default {
           console.log("No data");
         }
       });
-    },
-    changeTable(change) {
-      let buttonHover2 = " background: #0d2792";
-      this.Table2 = "display:none";
-      this.Table3 = "display:none";
-      this.tableHover2 = "";
-      this.tableHover3 = "";
-
-      if (change === "2") {
-        this.Table2 = "display:block";
-        this.tableHover2 = buttonHover2;
-      } else if (change === "3") {
-        this.Table3 = "display:block";
-        this.tableHover3 = buttonHover2;
-      }
     },
     getCurrencyNow(dates) {
       let uri = "/ru/getcurrencyperiod?dates=" + dates + "&period=2";

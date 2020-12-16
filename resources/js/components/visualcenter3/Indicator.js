@@ -27,6 +27,9 @@ export default {
     prevPeriodValue: {
       default: 0,
     },
+    tableToChange: {
+      default: 1,
+    },
   },
   data: function () {
     return {};

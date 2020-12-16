@@ -12,6 +12,9 @@ export default {
     speedometerValue: {
       default: '23',
     },
+    tableToChange: {
+      default: 1,
+    },
   },
   data: function () {
     return {}

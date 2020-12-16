@@ -134,114 +134,6 @@ export default {
     };
   },
   methods: {
-    getNameDzoFull: function (dzo) {
-      var NameDzoFull = this.NameDzoFull;
-      if (String(dzo) === "ОМГ") {
-        name = NameDzoFull[1];
-      } else if (String(dzo) === "ММГ") {
-        name = NameDzoFull[6];
-      } else if (String(dzo) === "КТМ") {
-        name = NameDzoFull[7];
-      } else if (String(dzo) === "КОА") {
-        name = NameDzoFull[8];
-      } else if (String(dzo) === "КГМ") {
-        name = NameDzoFull[4];
-      } else if (String(dzo) === "КБМ") {
-        name = NameDzoFull[3];
-      }
-      else if (String(dzo) === "ЭМГ") {
-        name = NameDzoFull[2];
-      }
-      else if (String(dzo) === "ПКИ") {
-        name = NameDzoFull[9];
-      } else if (String(dzo) === "АМГ") {
-        name = NameDzoFull[10];
-      }
-      else if (String(dzo) === "ТШ") {
-        name = NameDzoFull[5];
-      }
-      else if (String(dzo) === "НКО") {
-        name = NameDzoFull[12];
-      }
-      else if (String(dzo) === "КПО") {
-        name = NameDzoFull[11];
-      }
-      else { name = dzo }
-      return name;
-    },
-    changeAssets(change) {
-      var changeMenuButton = this.changeMenuButton;
-      this.buttonHover11 = "";
-      this.buttonHover12 = "";
-      this.buttonHover13 = "";
-
-      if (change == "b11") {
-        this.buttonHover11 = changeMenuButton;
-        this.NameDzoFull[0] = 'Итого по операционным активам:';
-        this.changeDate();
-      }
-
-      if (change == "b12") {
-        this.buttonHover12 = changeMenuButton;
-        this.NameDzoFull[0] = 'Итого по неоперационным активам:';
-        this.changeDate();
-      }
-
-      if (change == "b13") {
-        this.buttonHover13 = changeMenuButton;
-        this.NameDzoFull[0] = 'Итого по всем активам:';
-        this.changeDate();
-      }
-    },
-
-    changeMenu(change) {
-      var changeMenuButton = this.changeMenuButton;
-      this.changeMenuButton1 = "color: ##237deb";
-      this.changeMenuButton2 = "color: ##237deb";
-      this.changeMenuButton3 = "color: ##237deb";
-      this.changeMenuButton4 = "color: ##237deb";
-      this.changeMenuButton5 = "color: ##237deb";
-
-
-      if (change == "101") {
-        this.changeMenuButton1 = changeMenuButton;
-      }
-
-      if (change == "102") {
-        this.changeMenuButton2 = changeMenuButton;
-      }
-
-      if (change == "103") {
-        this.changeMenuButton3 = changeMenuButton;
-      }
-
-      if (change == "104") {
-        this.changeMenuButton4 = changeMenuButton;
-      }
-
-      if (change == "105") {
-        this.changeMenuButton5 = changeMenuButton;
-      }
-    },
-
-    periodSelect(event) {
-      if (this.selectedDMY == 0) {
-        this.period = 7;
-      }
-      if (this.selectedDMY == 1) {
-        this.period = 30;
-      }
-      if (this.selectedDMY == 2) {
-        this.period = 183;
-      }
-      if (this.selectedDMY == 3) {
-        this.period = 365;
-      }
-      if (this.selectedDMY == 4) {
-        this.period = 1825;
-      }
-      return this.getOilNow(this.timeSelect, this.period);
-    },
 
     periodSelectUSD(event) {
       if (this.selectedDMY2 == 0) {
@@ -464,16 +356,42 @@ export default {
     changeTable(change) {
       let buttonHover2 = " background: #0d2792";
       this.Table1 = "display:none";
+      this.Table2 = "display:none";
+      this.Table3 = "display:none";
       this.Table4 = "display:none";
+      this.Table5 = "display:none";
+      this.Table6 = "display:none";
+      this.Table7 = "display:none";
+
       this.tableHover1 = "";
+      this.tableHover2 = "";
+      this.tableHover3 = "";
       this.tableHover4 = "";
+      this.tableHover5 = "";
+      this.tableHover6 = "";
+      this.tableHover7 = "";
 
       if (change === "1") {
         this.Table1 = "display:block";
         this.tableHover1 = buttonHover2;
+      } else if (change === "2") {
+        this.Table2 = "display:block";
+        this.tableHover2 = buttonHover2;
+      } else if (change === "3") {
+        this.Table3 = "display:block";
+        this.tableHover3 = buttonHover2;
       } else if (change === "4") {
         this.Table4 = "display:block";
         this.tableHover4 = buttonHover2;
+      } else if (change === "5") {
+        this.Table5 = "display:block";
+        this.tableHover5 = buttonHover2;
+      } else if (change === "6") {
+        this.Table6 = "display:block";
+        this.tableHover6 = buttonHover2;
+      } else if (change === "7") {
+        this.Table7 = "display:block";
+        this.tableHover7 = buttonHover2;
       }
     },
 
@@ -1108,7 +1026,7 @@ export default {
       this.timestampToday = new Date(this.range.start).getTime();
       this.timestampEnd = new Date(this.range.end).getTime();
       this.quantityRange = ((this.timestampEnd - this.timestampToday) / 86400000) + 1;
-      var nowDate = new Date(this.range.start).toLocaleDateString();
+      let nowDate = new Date(this.range.start).toLocaleDateString();
       this.timeSelect = nowDate;
       this.getProduction(this.item, this.item2, this.item3, this.item4);
       this.getCurrencyNow(this.timeSelect);
@@ -1133,8 +1051,5 @@ export default {
     this.getDefaultData();
     this.timeSelect = new Date().toLocaleDateString();
     localStorage.setItem("selectedDMY", "undefined");
-    // var productionPlan = localStorage.getItem("production-plan");
-    // var productionFact = localStorage.getItem("production-fact");
-    // this.changeAssets('b11');
   }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="indicatorCell flex-grow-1 mr-xs-0 mr-xl-2 mb-1 mb-md-0">
+    <div class="indicatorCell flex-grow-1 mr-xs-0 mr-xl-2 mb-1 mb-md-0"  @click="$emit('changeTable', tableToChange)">
         <div class="text-right text-sm-left">
             <div>
                 <div class="number">

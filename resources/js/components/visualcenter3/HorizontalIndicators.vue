@@ -74,6 +74,8 @@
         v-bind:progressValue="oilNow"
         v-bind:lastPeriod="'vs пр. пер.'"
         v-bind:prevPeriodValue="'40'"
+        v-bind:tableToChange="'2'"
+        @changeTable="tableToChange => $emit('changeTable', tableToChange)"
     ></indicator>
     <indicator
         v-bind:title="'Курс доллара'"
@@ -83,6 +85,8 @@
         v-bind:progressValue="currencyNow"
         v-bind:lastPeriod="'vs вчера'"
         v-bind:prevPeriodValue="currencyPrevPeriod"
+        v-bind:tableToChange="'3'"
+        @changeTable="tableToChange => $emit('changeTable', tableToChange)"
     ></indicator>
   </div>
 </template>
