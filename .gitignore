@@ -33,4 +33,5 @@ public/test1.php
 public/test.php
 public/js/json/gno/line_points — копия.json
 
-.idea
+/public/js/app.js
+/public/css/app.css
