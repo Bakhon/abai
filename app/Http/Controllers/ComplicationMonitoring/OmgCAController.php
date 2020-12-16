@@ -23,7 +23,6 @@ class OmgCAController extends Controller
      */
     public function index()
     {
-
         $params = [
             'success' => Session::get('success'),
             'links' => [
@@ -43,7 +42,15 @@ class OmgCAController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omgca')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -196,10 +203,9 @@ class OmgCAController extends Controller
         $omgca = OmgCA::find($id);
         $omgca->delete();
 
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
-        }
-        else {
+        } else {
             return redirect()->route('omgca.index')->with('success', __('app.deleted'));
         }
     }

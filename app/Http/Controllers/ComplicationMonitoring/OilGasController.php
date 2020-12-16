@@ -38,7 +38,15 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\OtherObjects::whereHas('oilgas')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -48,7 +56,15 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -58,7 +74,15 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('oilgas')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -68,7 +92,15 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -78,7 +110,15 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('oilgas')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -88,7 +128,15 @@ class OilGasController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('oilgas')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],

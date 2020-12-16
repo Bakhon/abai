@@ -19,13 +19,7 @@
                     </tr>
                     <tr>
                         <td>Месторождение</td>
-                        <td>
-                            @if ($omguhe->field === 1)
-                                Узень
-                            @else
-                                Карамандыбас
-                            @endif
-                        </td>
+                        <td>{{$omguhe->field->name}}</td>
                     </tr>
                     <tr>
                         <td>НГДУ</td>

@@ -32,7 +32,15 @@ class CorrosionController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Field::whereHas('corrosion')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -42,7 +50,15 @@ class CorrosionController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('corrosion')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -52,7 +68,15 @@ class CorrosionController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('corrosion')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
@@ -62,7 +86,15 @@ class CorrosionController extends Controller
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('corrosion')
                             ->orderBy('name', 'asc')
-                            ->pluck('name', 'id')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
                             ->toArray()
                     ]
                 ],
