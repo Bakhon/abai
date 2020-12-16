@@ -34,8 +34,6 @@ export default {
       gas_factDay: "",
       oil_dlv_factDayProgressBar: "",
       oil_factDayProgressBar: "",
-      tableHover2: "",
-      tableHover3: "",
       //oil and currency down
       currencyNow: "",
       currencyPrevPeriod: "",

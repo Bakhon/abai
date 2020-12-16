@@ -354,7 +354,6 @@ export default {
       }
     },
     changeTable(change) {
-      let buttonHover2 = " background: #0d2792";
       this.Table1 = "display:none";
       this.Table2 = "display:none";
       this.Table3 = "display:none";
@@ -363,35 +362,20 @@ export default {
       this.Table6 = "display:none";
       this.Table7 = "display:none";
 
-      this.tableHover1 = "";
-      this.tableHover2 = "";
-      this.tableHover3 = "";
-      this.tableHover4 = "";
-      this.tableHover5 = "";
-      this.tableHover6 = "";
-      this.tableHover7 = "";
-
       if (change === "1") {
         this.Table1 = "display:block";
-        this.tableHover1 = buttonHover2;
       } else if (change === "2") {
         this.Table2 = "display:block";
-        this.tableHover2 = buttonHover2;
       } else if (change === "3") {
         this.Table3 = "display:block";
-        this.tableHover3 = buttonHover2;
       } else if (change === "4") {
         this.Table4 = "display:block";
-        this.tableHover4 = buttonHover2;
       } else if (change === "5") {
         this.Table5 = "display:block";
-        this.tableHover5 = buttonHover2;
       } else if (change === "6") {
         this.Table6 = "display:block";
-        this.tableHover6 = buttonHover2;
       } else if (change === "7") {
         this.Table7 = "display:block";
-        this.tableHover7 = buttonHover2;
       }
     },
 

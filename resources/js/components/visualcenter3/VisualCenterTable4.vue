@@ -4,7 +4,7 @@
             <horizontal-indicators
                 @changeTable="tableToChange => changeTable(tableToChange)"
             ></horizontal-indicators>
-            <div :style="`${Table1}`">
+            <div class="vc-tables" :style="`${Table1}`">
                 <div class="mr-sm-2 vc-central-block">
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">
@@ -81,9 +81,9 @@
                 </div>
             </div>
 
-            <div class="second-table" :style="`${Table2}`"></div>
+            <div class="second-table vc-tables" :style="`${Table2}`"></div>
 
-            <div class="third-table" :style="`${Table3}`">
+            <div class="third-table vc-tables" :style="`${Table3}`">
                 <div class="first-string mb-2">
                     <div class="close2" @click="changeTable('1')">Закрыть</div>
                     <div class="big-area">
@@ -102,28 +102,28 @@
                 </div>
             </div>
 
-            <div class="third-table" :style="`${Table4}`">
+            <div class="third-table vc-tables" :style="`${Table4}`">
                 <div class="first-string mb-2">
                     <div class="close2" @click="changeTable('1')">Закрыть</div>
                     <div class="big-area">Удельные доходы</div>
                 </div>
             </div>
 
-            <div class="third-table" :style="`${Table5}`">
+            <div class="third-table vc-tables" :style="`${Table5}`">
                 <div class="first-string mb-2">
                     <div class="close2" @click="changeTable('1')">Закрыть</div>
                     <div class="big-area">Удельные расходы</div>
                 </div>
             </div>
 
-            <div class="third-table" :style="`${Table6}`">
+            <div class="third-table vc-tables" :style="`${Table6}`">
                 <div class="first-string mb-2">
                     <div class="close2" @click="changeTable('1')">Закрыть</div>
                     <div class="big-area">ОТМ</div>
                 </div>
             </div>
 
-            <div class="third-table" :style="`${Table7}`">
+            <div class="third-table vc-tables" :style="`${Table7}`">
                 <div class="first-string mb-2">
                     <div class="close2" @click="changeTable('1')">Закрыть</div>
                     <div class="big-area">Химизация</div>
