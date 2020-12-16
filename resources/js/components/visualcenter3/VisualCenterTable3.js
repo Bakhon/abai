@@ -1620,8 +1620,8 @@ export default {
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
         }
-       // this.getProductionOilandGas(data);
-       // this.getProductionOilandGasPercent(data);
+        this.getProductionOilandGas(data);
+        this.getProductionOilandGasPercent(data);
       });
       this.showTable(localStorage.getItem("changeButton"));
 
