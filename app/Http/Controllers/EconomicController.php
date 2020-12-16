@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DZO\DZOcalc;
+use Faker\Provider\DateTime;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 use Level23\Druid\Context\GroupByV2QueryContext;
@@ -567,5 +569,18 @@ class EconomicController extends Controller
             ->execute();
 
         return response()->json($response->data());
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function getDZOcalcs(Request $request) {
+        $date = $request->get('date');
+        $dateTimeNow = new \DateTime($date);
+
+        return response()->json(DZOcalc::all('*')
+            ->where('date', '>', $dateTimeNow->format('Y-m-d H:i:s')));
     }
 }

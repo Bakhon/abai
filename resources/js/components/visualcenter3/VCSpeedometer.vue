@@ -1,79 +1,60 @@
 <template>
-  <div id="chart">
-    <apexchart
-      type="radialBar"
-      height="250"
-      :options="chartOptions"
-      :series="series"
-    ></apexchart>
-  </div>
+    <div>
+        <div class="position-absolute">
+            <round-slider
+                v-model="slider1Value"
+                start-angle="0"
+                end-angle="+180"
+                line-cap="round"
+                radius="80"
+                :rangeColor="rangeColor"
+                readOnly="true"
+                sliderType="range"
+                pathColor="#323370"
+                width="15"
+                handle-size="0"
+                showTooltip	="false"
+            />
+        </div>
+        <div class="position-absolute">
+            <round-slider
+                v-model="slider2Value"
+                start-angle="0"
+                end-angle="+180"
+                line-cap="round"
+                radius="80"
+                readOnly="true"
+                sliderType="default"
+                pathColor="transparent"
+                width="15"
+            />
+        </div>
+    </div>
 </template>
 
 <script>
-import VueApexCharts from "vue-apexcharts";
+import RoundSlider from 'vue-round-slider';
 
-Vue.component("apexchart", VueApexCharts);
+Vue.component("round-slider", RoundSlider);
 export default {
-  name: "mix-chart",
-  data: function () {
-    return {
-      series: [76],
-      chartOptions: {
-        chart: {
-          type: "radialBar",
-          offsetY: -20,
-          sparkline: {
-            enabled: true,
-          },
-        },
-        plotOptions: {
-          radialBar: {
-            startAngle: -90,
-            endAngle: 90,
-            track: {
-              background: "#e7e7e7",
-              strokeWidth: "97%",
-              margin: 5, // margin is in pixels
-              dropShadow: {
-                enabled: true,
-                top: 2,
-                left: 0,
-                color: "#999",
-                opacity: 1,
-                blur: 2,
-              },
-            },
-            dataLabels: {
-              name: {
-                show: false,
-              },
-              value: {
-                offsetY: -2,
-                fontSize: "22px",
-              },
-            },
-          },
-        },
-        grid: {
-          padding: {
-            top: -10,
-          },
-        },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shade: "light",
-            shadeIntensity: 0.4,
-            inverseColors: false,
-            opacityFrom: 1,
-            opacityTo: 1,
-            stops: [0, 50, 53, 91],
-          },
-        },
-        
-        labels: ["Average Results"],
-      },
-    };
-  },
+    props: ['sliderValue'],
+    data: function () {
+        let slider1Value = '[0, 33]';
+        let slider2Value = this.sliderValue ?? 0
+        let rangeColor = '#fe5c5c';
+        if (slider2Value > 33) {
+            slider1Value = '[34, 66]'
+            rangeColor = '#237deb';
+        }
+        if (slider2Value > 66) {
+            slider1Value = '[66, 100]'
+            rangeColor = '#009846';
+        }
+        return {
+            slider1Value: slider1Value,
+            slider2Value: slider2Value,
+            rangeColor: rangeColor,
+        };
+    },
 };
 </script>

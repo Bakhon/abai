@@ -34,7 +34,7 @@
                                     <td>{{ $item->id}}</td>
                                     <td>{{ $item->company->name}}</td>
                                     <td>{{ $item->type->name}}</td>
-                                    <td>{{ $item->date_col }}</td>
+                                    <td>{{ $item->date }}</td>
                                     <td>{{ $item->dividends }}</td>
                                     <td>{{ $item->vklad_v_ustavnoy_kapital }}</td>
                                     <td>{{ $item->vydacha_zaimov }}</td>
