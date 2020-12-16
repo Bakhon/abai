@@ -100,33 +100,16 @@ ol, ul, dl {
 }
 
 .close2 {
-    float: right;
-    margin-right: 10px;
     font-size: 15px;
     color: #fff;
     background: #656A8A;
-    margin-top: 7px;
-    margin-bottom: -20px;
     border-radius: 10px;
     padding: 1px 12px;
 }
 
-
 .txt7 {
     font-family: "Bold";
-    font-size: 70px;
-    font-weight: 550;
-    margin-top: 25px;
 }
-
-.txt8 {
-    font-family: Bold;
-    float: left;
-    font-size: 21px;
-    margin-top: 10px;
-    margin-bottom: 37px;
-}
-
 
 .report-execution {
     font-size: 14px;
@@ -144,11 +127,6 @@ ol, ul, dl {
 
 .table-responsive{
 overflow: hidden;
-}
-
-.round-slider {
-    margin-top: 30px;
-    height: 110px;
 }
 
 .in-idle2 {
@@ -209,15 +187,9 @@ body {
     font-family: Bold;
 }
 
-
-
 .txt3 {
-    /* display: inline-block; */
     color: #82BAFF;
     font-size: 12px;
-    margin-left: 10px;
-    float: left;
-    margin-top: 5px;
 }
 
 .arrow {
@@ -749,8 +721,7 @@ li.center-li {
 .percent-header {
     color: #82BAFF;
     font-size: 12px;
-    margin-top: 5px;
-    margin-bottom: -5px;
+    text-align: center;
 }
 
 .plan-header {
@@ -770,19 +741,6 @@ li.center-li {
 .second-td-header {
     float: left;
 }
-
-.vert-line {
-    /*width: 2px;
-    height: 165px;*/
-    background: url(/img/visualcenter3/line.png) no-repeat;
-    /* margin-left: 3%; */
-    position: absolute;
-    width: 1px;
-    height: 12vh;
-    margin-top: 1vh;
-    margin-left: 20px;
-}
-
 
 .vert-line2 {
     /*width: 2px;
@@ -808,4 +766,32 @@ li.center-li {
 
 .right-side-bottom {
     margin-top: -5px;
+}
+
+.margin-left-5-pc {
+    margin-left: 5%;
+}
+
+.progressBarFontSize {
+    font-size: 0.8rem;
+}
+
+.indicatorCell {
+    background: #272953;
+    padding: 0.2rem 0.5rem 0.5rem 0.5rem;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.speedometer-border {
+    border-right: 1px solid;
+    border-color: #454D7D !important;
+}
+
+.vc-central-block {
+    background: rgba(39, 41, 83, 0.4)
+}
+
+.economics-table-color {
+    background: #323370;
 }

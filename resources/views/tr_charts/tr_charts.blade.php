@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="col p-4" id="app">
+    <div class="col px-4" id="app">
         <a href="{{url('/')}}/ru/export" class="float-right">
             <!-- <button type="button" class="btn btn-success">в Excel</button> -->
         </a>

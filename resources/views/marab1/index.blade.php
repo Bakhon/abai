@@ -31,7 +31,7 @@
                                     <td>{{ $item->id}}</td>
                                     <td>{{ $item->company->name}}</td>
                                     <td>{{ $item->type->name}}</td>
-                                    <td>{{ $item->date_col}}</td>
+                                    <td>{{ $item->date}}</td>
                                     <td>{{ $item->A_category }}</td>
                                     <td>{{ $item->B_category }}</td>
                                     <td>{{ $item->C1_category }}</td>

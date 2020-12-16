@@ -31,6 +31,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
+        Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
         Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
@@ -40,6 +41,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
         Route::get('/visualcenter3GetData', 'DruidController@visualcenter3GetData');
         Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
+        Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
@@ -167,14 +169,21 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('abd12','VizCenter\Abd12Controller');
         Route::resource('abd35','VizCenter\Abd35Controller');
         Route::resource('abd46','VizCenter\Abd46Controller');
+        Route::resource('corpkpiid','VizCenter\CorpKpiIdController');
+        Route::resource('corpall','VizCenter\CorpAllController');
+
         Route::get('kpicalc','VizCenter\Marab2Controller@kpicalculation');
         Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
 
         Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
 
-        Route::get('importdzoday','DZO\DZOdayController@importExcel');
+        Route::get('/importdzoday','DZO\DZOdayController@importExcel');
         Route::get('importdzoyear','DZO\DZOyearController@importExcel');
         Route::get('importdzocalc','DZO\DZOcalcController@importExcel');
+
+        Route::get('/import_excel', 'DZO\DZOdailyController@importExcel');
+        // Route::post('excelSubmit', 'DZO\DZOdailyController@importexcel')->name('excel');
+        Route::post('/import', 'DZO\DZOdailyController@import')->name('import');
 
     });
     Auth::routes([

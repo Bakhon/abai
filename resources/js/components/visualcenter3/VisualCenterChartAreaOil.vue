@@ -123,7 +123,7 @@ export default {
   methods: {
     oilChart: function (data) {
       // var data = this.postTitle;
-      console.log(data);
+     // console.log(data);
       var dates = [];
       var value = [];
       _.forEach(data, function (item) {

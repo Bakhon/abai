@@ -10,7 +10,8 @@ class Marab345 extends Model
         'company_id',
         'marabkpi_id',
         'type_id',
-        'date_col',
+        'date',
+        // '__time',
         'fact_zatraty_na_sebestoimost_dobychi_nefti',
         'fact_zatraty_kapitalnogo_vlozhenia',
         'opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov'
