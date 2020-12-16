@@ -96,12 +96,62 @@
             </div>
 
 
-            <a href="#" class="bg-dark list-group-item list-group-item-action">
+            <a href="http://172.20.103.51:7576/api/techregime/download/2020/11/" class="bg-dark list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-start align-items-center"><img src="/img/gno/download.png" width="25" height="25" class="companyLogo"> <span class="menu-collapsed companyName d-none"></span></div>
             </a>
 
 
-           
+            <!-- <a href="#" class="bg-dark list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-start align-items-center"><svg width="27" height="23" viewBox="0 0 27 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.14269 8.93182H7.71417V17.8761H5.14269V8.93182ZM15.4286 12.7647H17.9998V17.8761H15.4286V12.7647ZM10.2854 5.09812H12.8571V17.8761H10.2854V5.09812ZM23.143 5.11115V1.27771H20.5713V5.11115H16.7143V7.66659H20.5713V11.5H23.143V7.66659H27V5.11115H23.143ZM20.5713 20.4446H2.57095V2.55544H17.9998V0H2.57095C1.15709 0 0 1.15022 0 2.55544V20.4446C0 21.8498 1.15709 23 2.57095 23H20.5713C21.986 23 23.143 21.8498 23.143 20.4446V14.0557H20.5713V20.4446Z" fill="#FEFEFE"/>
+</svg>
+<span class="menu-collapsed companyName d-none"></span></div>
+            </a> -->
+
+            <div class="dropright">
+                <div data-toggle="dropdown">
+                    <a href="#" class="bg-dark list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-start align-items-center"><svg width="27" height="23" viewBox="0 0 27 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.14269 8.93182H7.71417V17.8761H5.14269V8.93182ZM15.4286 12.7647H17.9998V17.8761H15.4286V12.7647ZM10.2854 5.09812H12.8571V17.8761H10.2854V5.09812ZM23.143 5.11115V1.27771H20.5713V5.11115H16.7143V7.66659H20.5713V11.5H23.143V7.66659H27V5.11115H23.143ZM20.5713 20.4446H2.57095V2.55544H17.9998V0H2.57095C1.15709 0 0 1.15022 0 2.55544V20.4446C0 21.8498 1.15709 23 2.57095 23H20.5713C21.986 23 23.143 21.8498 23.143 20.4446V14.0557H20.5713V20.4446Z" fill="#FEFEFE"/>
+</svg> <span class="menu-collapsed companyName d-none"></span></div>
+                    </a>
+                </div>
+                <div class="dropdown-menu graphdropmenu" style="width: 511px;">
+                    <div class="move-menu">
+                        <!-- <div class="dropdown-divider"></div> -->
+                        <li class="left-menu-li graphleftmenuli" style="width: 457px; background: #7B68EE;"> <a href="#">Факторный анализ</a></li>
+                        <!-- <div class="dropdown-divider"></div> -->
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/trfa">Суммарный дебит жидкости и нефти</a></li>
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/trfa">Распределение суммарных отклонений</a></li>
+                        <!-- <div class="dropdown-divider"></div> -->
+                        <li class="left-menu-li graphleftmenuli" style="width: 457px; background: #7B68EE;"> <a href="#">Тех.режим</a></li>
+                        <!-- <div class="dropdown-divider"></div> -->
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/tr_charts">Все скважины</a></li>
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/tr_charts">ТОП-30 скважин. Потенциал прироста дебита нефти</a></li>
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/tr_charts">ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность</a></li>
+
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/tr_charts">ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор</a></li>
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/tr_charts">ТОП-30 скважин. Потенциал прироста дебита жидкости</a></li>
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/tr_charts">Распределение скважин по коэффициенту продуктивности</a></li>
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/tr_charts">Распределение скважин по дебиту нефти</a></li>
+                        <li class="left-menu-li graphleftmenuli" style="width: 43vw;"> <a href="{{url('/')}}/ru/tr_charts">Распределение скважин по обводненности</a></li>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

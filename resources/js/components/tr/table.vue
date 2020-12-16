@@ -2,7 +2,7 @@
     <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4">№ сквВ</td>
+                <td rowspan="4">№ скв</td>
                 <td rowspan="4">Тип скважины</td>
                 <td rowspan="4">Горизонт</td>
                 <td rowspan="4">Блок</td>
@@ -517,4 +517,31 @@ table tbody {
 table td {
   width: 150px;
 } */
+/* 
+table thead {
+     width: 1000px;
+    height: 60px;
+    position: fixed;
+    background: #fff;
+    z-index: 1000;
+    display: block;
+}
+table tbody {
+    margin-top: 60px;
+} */
+
+table thead,
+table tbody {
+  display: block;
+}
+
+table tbody {
+  overflow: auto;
+  height: 600px;
+}
+
+table td {
+  width: 150px;
+}
+
 </style>
