@@ -1,6 +1,6 @@
 <template>
-    <div class="round-slider">
-        <div class="fixedSlider">
+    <div>
+        <div class="position-absolute">
             <round-slider
                 v-model="slider1Value"
                 start-angle="0"
@@ -16,17 +16,17 @@
                 showTooltip	="false"
             />
         </div>
-        <div class="fixedSlider">
+        <div class="position-absolute">
             <round-slider
-              v-model="slider2Value"
-              start-angle="0"
-              end-angle="+180"
-              line-cap="round"
-              radius="80"
-              readOnly="true"
-              sliderType="default"
-              pathColor="transparent"
-              width="15"
+                v-model="slider2Value"
+                start-angle="0"
+                end-angle="+180"
+                line-cap="round"
+                radius="80"
+                readOnly="true"
+                sliderType="default"
+                pathColor="transparent"
+                width="15"
             />
         </div>
     </div>
@@ -58,8 +58,3 @@ export default {
     },
 };
 </script>
-<style>
-    .fixedSlider {
-        position: absolute;
-    }
-</style>
