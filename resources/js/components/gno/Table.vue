@@ -1447,11 +1447,8 @@
                           <div class="row">
                             <div class="col-4 pr-0">
                               <div class="table-border-gno-right">
-                                <label class="label-for-celevoi"><input class="checkbox3" value="ШГН"
-                                                                        v-model="expChoose"
-                                                                        @change="postCurveData()"
-                                                                        :checked="expChoose === 'ШГН'" type="radio"
-                                                                        name="gno10"/>Qж</label>
+                                <label class="label-for-celevoi">
+                                  <input v-model="CelButton" class="checkbox3" value="ql" type="radio" name="gno11" />Qж</label>
                                 <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'" onfocus="this.value=''"
                                        type="text"
                                        class="square3"/>

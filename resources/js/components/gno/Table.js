@@ -13,6 +13,12 @@ Vue.use(NotifyPlugin, VueMomentLib);
 Vue.component("Plotly", Plotly);
 
 export default {
+  watch: {
+    expChoose: function(val)
+    {
+      console.log(val);
+    }
+  },
   data: function () {
     return {
 
