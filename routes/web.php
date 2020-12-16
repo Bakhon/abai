@@ -95,6 +95,10 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getallkormasses', 'ComplicationMonitoring\WaterMeasurementController@getAllKormasses');
         Route::post('/getgudata', 'ComplicationMonitoring\WaterMeasurementController@getGuData');
         Route::post('/getgudatabyday', 'ComplicationMonitoring\OmgNGDUController@getGuDataByDay');
+
+        Route::get('/getmaterials', 'RefsController@getMaterials');
+
+
         Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
 
         Route::get('omgca/list', 'ComplicationMonitoring\OmgCAController@list')->name('omgca.list');
@@ -119,6 +123,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('oilgas/export', 'ComplicationMonitoring\OilGasController@export')->name('oilgas.export');
         Route::get('oilgas/history/{oilgas}', 'ComplicationMonitoring\OilGasController@history')->name('oilgas.history');
         Route::resource('oilgas','ComplicationMonitoring\OilGasController')->parameters(['oilgas' => 'oilgas']);
+
+        Route::get('pipes/list', 'PipeController@list')->name('pipes.list');
+        Route::get('pipes/export', 'PipeController@export')->name('pipes.export');
+        Route::get('pipes/history/{pipes}', 'PipeController@history')->name('pipes.history');
+        Route::resource('pipes','PipeController');
 
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');

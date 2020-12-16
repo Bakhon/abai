@@ -49,7 +49,6 @@ class OmgUHEHistoryObserver extends EditHistoryObserver
                         $changes[$field]
                     )->name : $oldValue;
                     break;
-                case 'fill':
                 case 'out_of_service_оf_dosing':
                     $oldValue = $original[$field] ? 'да' : 'нет';
                     $newValue = array_key_exists($field, $changes) ? ($original[$field] != $changes[$field] ? ($changes[$field] ? 'да' : 'нет') : null) : $oldValue;
