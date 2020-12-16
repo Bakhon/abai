@@ -1299,15 +1299,6 @@ export default {
 };
 </script>
 <style  scoped>
-.tr-chart {
-  display: flex;
-  width: 100%;
-}
-.tr-chart__content {
-  flex-basis: 0;
-  flex-grow: 1;
-  flex-shrink: 0;
-}
 .tr-chart .row {
   margin-left: 0;
   margin-right: 0;
@@ -1355,10 +1346,19 @@ body {
 }
 </style>
 <style >
+.tr-chart {
+  display: flex;
+  width: 100%;
+}
 .tr-chart__loader {
   margin: 50px auto;
   width: 1px;
   height: 78px;
+}
+.tr-chart__content {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
 }
 </style>
 
