@@ -47,8 +47,11 @@
         @include('layouts.visual-center4-sidebar')
         @elseif (basename(Request::url()) === "visualcenter4")
         @include('layouts.visual-center4-sidebar')
+        @elseif (basename(Request::url()) === "tr")
+        @include('layouts.tr-side')
         @else
         @include('layouts.head-sidebar')
+        
         @endif
 
        {{-- @if (basename(Request::url()) === "ru")
@@ -67,6 +70,10 @@
         @include('layouts.gno-sidebar')
         @elseif (basename(Request::url()) === "fa")
         @include('layouts.gno-sidebar')
+
+        @elseif (basename(Request::url()) === "tr")
+        @include('layouts.tr-side')
+
         @endif--}}
 
 
