@@ -8,7 +8,6 @@ export default {
     Calendar,
     DatePicker,
   },
-  template: "#vue-status-overview-template",
   data: function () {
     return {
       prod_wells_workAll: [
@@ -88,7 +87,6 @@ export default {
       currencyChart: "",
       currencyNowUsd: "",
       selectedDMY2: "",
-      selectedDMY: "",
       periodSelectOil: "",
       oilPeriod: "",
       period: "7",
@@ -125,7 +123,6 @@ export default {
       buttonHover12: "",//this.changeMenuButton,
       buttonHover13: "",
 
-      tableHover7: "",
       tableHover8: "",
       tableHover9: "",
       tableHover10: "",
@@ -290,7 +287,6 @@ export default {
         this.tableHover7 = buttonHover2;
       }
     },
-
     changeMenu(change) {
       var changeMenuButton = this.changeMenuButton;
       this.changeMenuButton1 = "color: ##237deb";
@@ -320,66 +316,47 @@ export default {
         this.changeMenuButton5 = changeMenuButton;
       }
     },
-
-
     changeMenu2(change) {
-
       var buttonHover = this.buttonHover;
-      if (change == 1) {
-
+      if (change === 1) {
         this.buttonHover7 = buttonHover;
-        //console.log(this.date.getDate() - 1);
         this.range = {
           start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
-          //start: (this.date.setDate(this.date.getDate() - 1)),//.toISOString(),
           end: new Date().toISOString(),//"F j, Y", time() - 60 * 60 * 24
-
-          //  start: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
-          // end: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
           formatInput: true,
         };
-
         this.changeDate();
-
       } else {
         this.buttonHover7 = "";
       }
-
-      if (change == 2) {
+      if (change === 2) {
         this.buttonHover8 = buttonHover;
         this.range = {
           start: new Date(this.year + '-' + this.month + '-01T06:00:00+06:00'),
           end: new Date(),
           formatInput: true,
         };
-
-
         this.changeDate();
       } else {
         this.buttonHover8 = "";
       }
-
-      if (change == 3) {
+      if (change === 3) {
         this.buttonHover9 = buttonHover;
         this.range = {
           start: new Date(this.year + '-' + '01' + '-01T06:00:00+06:00'),
           end: new Date(),
           formatInput: true,
         };
-
         this.changeDate();
       } else {
         this.buttonHover9 = "";
       }
-
-      if (change == 4) {
+      if (change === 4) {
         this.buttonHover10 = buttonHover;
       } else {
         this.buttonHover10 = "";
       }
     },
-
-
     changeAssets(change) {
       var changeMenuButton = this.changeMenuButton;
       this.buttonHover11 = "";
@@ -1058,12 +1035,6 @@ export default {
               .value();
 
             if (this.buttonHover12 != '') {
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ММГ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КТМ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КБМ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КОА" }));
 
               data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
               data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
@@ -1620,8 +1591,8 @@ export default {
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
         }
-       // this.getProductionOilandGas(data);
-       // this.getProductionOilandGasPercent(data);
+        this.getProductionOilandGas(data);
+        this.getProductionOilandGasPercent(data);
       });
       this.showTable(localStorage.getItem("changeButton"));
 
