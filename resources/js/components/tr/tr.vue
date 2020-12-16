@@ -3148,7 +3148,7 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-    margin-left: 1095px !important;
+    margin-left: 1087px !important;
     margin-top: 4px;
 }
 
