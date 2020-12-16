@@ -577,10 +577,27 @@ class EconomicController extends Controller
      * @throws \Exception
      */
     public function getDZOcalcs(Request $request) {
-        $date = $request->get('date');
-        $dateTimeNow = new \DateTime($date);
+        $dateStart = $request->get('dateStart');
+        $dateEnd = $request->get('dateEnd');
+        if (!$dateEnd) {
+            $dateEnd = new \DateTime($dateStart);
+            $dateStart = clone $dateEnd;
+            $dateStart->sub(new \DateInterval('P3M'));
+            $dateStart = $dateStart->format('Y-m-d H:i:s');
+            $dateEnd = $dateEnd->format('Y-m-d H:i:s');
+        }
+        $dateTimeStart = new \DateTime($dateStart);
+        $dateTimeEnd = new \DateTime($dateEnd);
+        $dzoDataActual = DZOcalc::all('*')
+            ->where('date', '>=', $dateTimeStart->format('Y-m-d H:i:s'))
+            ->where('date', '<', $dateTimeEnd->format('Y-m-d H:i:s'));
 
-        return response()->json(DZOcalc::all('*')
-            ->where('date', '>', $dateTimeNow->format('Y-m-d H:i:s')));
+        $dateTimeStart->sub(new \DateInterval('P1Y'));
+        $dateTimeEnd->sub(new \DateInterval('P1Y'));
+        $dzoDataPrevYear = DZOcalc::all('*')
+            ->where('date', '>=', $dateTimeStart->format('Y-m-d H:i:s'))
+            ->where('date', '<', $dateTimeEnd->format('Y-m-d H:i:s'));
+
+        return response()->json(['dzoDataActual' => $dzoDataActual, 'dzoDataPrevYear' => $dzoDataPrevYear]);
     }
 }

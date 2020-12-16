@@ -89,8 +89,8 @@
                         </table>
                     </div>
                 </div>
-                <h5 class="text-center mr-2 mt-3"><strong>Финансовые показатели</strong></h5>
-                <div class="ml-0 ml-sm-3 mr-0 mr-sm-3">
+                <h5 class="text-center mr-2 mt-3" v-if="data.length > 0"><strong>Финансовые показатели</strong></h5>
+                <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 mb-0 mb-sm-3" v-if="data.length > 0">
                     <div class="w-100">
                         <table class="table pl-2 table-striped table-borderless">
                             <thead class="economics-table-color">
@@ -108,28 +108,23 @@
                             </thead>
                             <tbody>
                             <tr v-for="item in data">
-                            </tr>
-                            <tr>
-                                <td>Обменный курс</td>
-                                <td>Тенге/$</td>
-                                <td>450</td>
-                                <td>405</td>
-                                <td><span class="arrow2"></span>45</td>
-                                <td>379</td>
-                                <td><span class="arrow3"></span>45</td>
-                                <td>450</td>
-                                <td>План Факт</td>
-                            </tr>
-                            <tr>
-                                <td>Обменный курс</td>
-                                <td>Тенге/$</td>
-                                <td>450</td>
-                                <td>405</td>
-                                <td><span class="arrow2"></span>45</td>
-                                <td>379</td>
-                                <td><span class="arrow3"></span>45</td>
-                                <td>450</td>
-                                <td>План Факт</td>
+                                <td>{{ item.title }}</td>
+                                <td>{{ item.units }}</td>
+                                <td>{{ (item.dataPlan / 1000000).toFixed(2) }}</td>
+                                <td>{{ (item.dataFact / 1000000).toFixed(2) }}</td>
+                                <td>
+                                    <span v-if="item.dataPlan - item.dataFact > 0" class="arrow2"></span>
+                                    <span v-else class="arrow3"></span>
+                                    {{ (Math.abs(item.dataPlan - item.dataFact) / 1000000).toFixed(2) }}
+                                </td>
+                                <td>{{ (item.dataFactPrevYear / 1000000).toFixed(2) }}</td>
+                                <td>
+                                    <span v-if="item.dataFact - item.dataFactPrevYear > 0" class="arrow2"></span>
+                                    <span v-else class="arrow3"></span>
+                                    {{ (Math.abs(item.dataFact - item.dataFactPrevYear) / 1000000).toFixed(2) }}
+                                </td>
+                                <td>{{ (item.plan2020 / 1000000).toFixed(2) }}</td>
+                                <td>{{ item.progress }}</td>
                             </tr>
                             </tbody>
                         </table>
