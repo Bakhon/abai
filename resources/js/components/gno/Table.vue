@@ -1184,12 +1184,11 @@
                                 <div class="col-2 px-0 pt-1 ic-min-block1">
                                   <div class="table-border-gno-right py-1 ml-3">
                                     Pпл
-
                                   </div>
                                 </div>
                                 <div class="col-5  px-1">
                                   <div class="py-1">
-                                    <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                    <input v-model="pResInput" @change="postCurveData()" onfocus="this.value=''" type="text" class="square3"/>
                                   </div>
                                 </div>
                               </div>
@@ -1201,7 +1200,7 @@
                             </div>
                             <div class="col-2 pt-1 pl-2 pr-0">
                               <div class="py-1">
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                <input v-model="wctInput" @change="postCurveData()" type="text" onfocus="this.value=''" class="square3"/>
                               </div>
                             </div>
 
@@ -1213,15 +1212,18 @@
                                   <div class="col-2 px-0 ic-min-block1">
                                     <div class="table-border-gno-right">
                                       <label for="">
-                                        <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                               name="set"/>
+                                        <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio" name="set"
+                                               @change="postCurveData()"/>
                                         Кпрод
                                       </label>
+
+
                                     </div>
                                   </div>
 
                                   <div class="col-5 py-1 px-1">
-                                    <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                    <input v-model="piInput" :disabled="curveSelect != 'pi'" @change="postCurveData()" onfocus="this.value=''"
+                                           type="text" class="square3"/>
 
                                   </div>
                                 </div>
@@ -1231,11 +1233,8 @@
                                   ГФ.
                                 </div>
                               </div>
-
-
                               <div class="col-2  py-1 pl-2 pr-0">
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
-
+                                <input v-model="gorInput" @change="postCurveData()" type="text" onfocus="this.value=''" class="square3"/>
                               </div>
 
                             </div>
@@ -1248,12 +1247,15 @@
                                   <div class="col-2 px-0 ic-min-block1">
                                     <div class="table-border-gno-right">
                                       <label for="">
-                                        <input v-model="curveSelect" class="checkbox-q-liquid" value="ql" type="radio"
+
+                                        <input v-model="curveSelect" class="checkbox-q-liquid" value="hdyn" type="radio" @change="postCurveData()"
                                                name="set"/> Qж</label>
                                     </div>
                                   </div>
                                   <div class="col-5 py-1 px-1">
-                                    <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                    <input :disabled="curveSelect == 'pi'" v-model="qLInput" @change="postCurveData()" onfocus="this.value=''"
+                                           type="text"
+                                           class="square3"/>
                                   </div>
                                 </div>
                               </div>
@@ -1267,13 +1269,15 @@
                               <div class="col-2 ml-3 pl-4 pr-3 ic-min-block2 pt-1">
                                 <div class="table-border-gno-right pt-1">
                                   <label for="">
-                                    <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                           name="set"/> Рзаб</label>
+                                    <input v-model="curveSelect" value="bhp" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Рзаб</label>
                                 </div>
                               </div>
                               <div class="col-7 px-0 pt-2">
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
-
+                                <input :disabled="curveSelect != 'bhp'" v-model="bhpInput" @change="postCurveData()" onfocus="this.value=''"
+                                       type="text"
+                                       class="square3"/>
                               </div>
 
 
@@ -1288,13 +1292,16 @@
                               <div class="tech-data ml-3 pl-4 pr-3  col-2  ic-min-block2">
                                 <div class="table-border-gno-right">
                                   <label for="">
-                                    <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                           name="set"/> Ндин</label>
+                                    <input v-model="curveSelect" value="hdyn" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Ндин</label>
                                 </div>
                               </div>
 
                               <div class="col-2 px-0 pt-1 mr-2">
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                <input :disabled="curveSelect != 'hdyn'" v-model="hDynInput" @change="postCurveData()" type="text"
+                                       onfocus="this.value=''"
+                                       class="square3"/>
                               </div>
 
                               <div class="pt-1">
@@ -1303,7 +1310,9 @@
                                 </div>
                               </div>
                               <div class="col-2 pt-1">
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                <input :disabled="curveSelect != 'hdyn'" v-model="pAnnularInput" @change="postCurveData()" type="text"
+                                       onfocus="this.value=''"
+                                       class="square3"/>
                               </div>
 
                               <div class="col-1">
@@ -1321,13 +1330,17 @@
 
                                 <div class="table-border-gno-right">
                                   <label for="">
-                                    <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                           name="set"/> Рманом</label>
+                                    <input v-model="curveSelect" value="pmanom" :disabled="curveSelect == 'pi'" class="checkbox-k-prod"" type="radio"
+                                    @change="postCurveData()"
+                                    name="set2" /> Рманом</label>
                                 </div>
                               </div>
 
                               <div class="col-2 px-0 pt-1 mr-2">
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+
+                                <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput" @change="postCurveData()" type="text"
+                                       onfocus="this.value=''"
+                                       class="square3"/>
                               </div>
 
                               <div class="pb-1">
@@ -1337,7 +1350,9 @@
                               </div>
 
                               <div class="col-2 pt-1">
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                <input :disabled="curveSelect != 'pmanom'" v-model="hPumpManomInput" @change="postCurveData()" type="text"
+                                       onfocus="this.value=''"
+                                       class="square3"/>
                               </div>
 
                               <div class="col-2">
@@ -1355,12 +1370,15 @@
 
                                 <div class="table-border-gno-right">
                                   <label for="">
-                                    <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio"
-                                           name="set"/> Рбуф(ФЭ)</label>
+                                    <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Рбуф(ФЭ)</label>
                                 </div>
                               </div>
                               <div class="col-7 px-0 pt-1">
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                <input :disabled="curveSelect != 'whp'" v-model="whpInput" @change="postCurveData()" type="text"
+                                       onfocus="this.value=''"
+                                       class="square3"/>
                               </div>
 
                             </div>
@@ -1396,26 +1414,17 @@
                               </div>
                             </div>
                             <div class="col-4">
-                              <label class="label-for-celevoi"><input class="checkbox3" value="Нсп"
-                                                                      v-model="expChoose"
-                                                                      @change="postCurveData()"
-                                                                      :checked="expChoose === 'Нсп'" type="radio"
-                                                                      name="gno10"/>Нсп</label>
+                              <label class="label-for-celevoi pl-3">Нсп</label>
                               <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
                             </div>
-
-
                           </div>
                           <div class="row">
-
                             <div class="col-4 pr-0">
-
                               <div class="table-border-gno-right pt-3">
                                 &nbsp;
                               </div>
                             </div>
                             <div class="col-4 pr-0">
-
                               <div class="table-border-gno-right pt-3">
                                 &nbsp;
                               </div>
@@ -1423,59 +1432,47 @@
                           </div>
                           <div class="table-border-gno-top">
                             <div class="row">
-
                               <div class="col-4 pr-0">
-
                                 <div class="table-border-gno-right pt-2 pb-3">
                                   Целевой параметр
                                 </div>
-
                               </div>
                               <div class="col-4 pr-0">
-
                                 <div class="table-border-gno-right  pt-2 pb-3">
                                   &nbsp;
                                 </div>
                               </div>
                             </div>
-
                           </div>
                           <div class="row">
-
                             <div class="col-4 pr-0">
-
                               <div class="table-border-gno-right">
                                 <label class="label-for-celevoi"><input class="checkbox3" value="ШГН"
                                                                         v-model="expChoose"
                                                                         @change="postCurveData()"
                                                                         :checked="expChoose === 'ШГН'" type="radio"
                                                                         name="gno10"/>Qж</label>
+                                <input v-model="qlCelValue" @change="postCurveData()" :disabled="CelButton != 'ql'" onfocus="this.value=''"
+                                       type="text"
+                                       class="square3"/>
                               </div>
                             </div>
-
                             <div class="col-4 pr-0">
-
                               <div class="table-border-gno-right">
-                                <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
-                                                                        v-model="expChoose"
-                                                                        @change="postCurveData()"
-                                                                        :checked="expChoose === 'ЭЦН'" type="radio"
-                                                                        name="gno10"/>Рзаб</label>
+                                <label class="label-for-celevoi"><input v-model="CelButton" class="checkbox3" value="bhp" type="radio" name="gno11"/>Рзаб</label>
 
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
+                                <input v-model="bhpCelValue" @change="postCurveData()" :disabled="CelButton != 'bhp'" type="text"
+                                       onfocus="this.value=''"
+                                       class="square3"/>
                               </div>
                             </div>
                             <div class="col-4">
-                              <label class="label-for-celevoi"><input class="checkbox3" value="Рпр"
-                                                                      v-model="expChoose"
-                                                                      @change="postCurveData()"
-                                                                      :checked="expChoose === 'Рпр'" type="radio"
-                                                                      name="gno10"/>Рпр</label>
-                              <input v-model="hPumpValue" @change="postCurveData()" type="text" class="square3"/>
-
+                              <label class="label-for-celevoi">
+                                <input v-model="CelButton" class="checkbox3" value="pin" type="radio" name="gno11"/>Pnp
+                              </label>
+                              <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin'" type="text" onfocus="this.value=''"
+                                     class="square3"/>
                             </div>
-
-
                           </div>
                         </div>
                       </div>
