@@ -40,7 +40,7 @@
     <script src="{{ asset('js/jquery.js') }}"></script>
 </head>
 
-<body style="background-color: #0F1430;">
+<body>
     @include('layouts.navbar')
     <div class="no-row row" id="app">
     @if (basename(Request::url()) === "visualcenter3")
@@ -75,7 +75,7 @@
             @yield('content')
         </div>
         @else
-        <div class="container-fluid col spacing">
+        <div class="container-fluid col m-lg-3 m-1 p-0">
             @yield('content')
         </div>
         @endif

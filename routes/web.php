@@ -31,6 +31,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
+        Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
         Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
@@ -40,6 +41,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
         Route::get('/visualcenter3GetData', 'DruidController@visualcenter3GetData');
         Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
+        Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
