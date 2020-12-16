@@ -10,7 +10,6 @@ class DZOday extends Model
 
     protected $fillable = [
         'date',
-        "__time",
         'dzo',
         'mestorozhdenie',
         'ngdu',
@@ -125,6 +124,7 @@ class DZOday extends Model
         'tb_accident_death',
         'tb_covid_prev_day',
         'tb_covid_total',
-        'tb_covid_recover'
+        'tb_covid_recover',
+        "__time"
     ];
 }

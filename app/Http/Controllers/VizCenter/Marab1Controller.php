@@ -48,10 +48,10 @@ class Marab1Controller extends Controller
         $request->validate([
             'company_id' => 'required',
             'type_id' => 'required',
-            'date_col' => 'required',
-            'A_category' => 'required',
-            'B_category' => 'required',
-            'C1_category' => 'required',
+            'date' => 'required',
+            // 'A_category' => 'required',
+            // 'B_category' => 'required',
+            // 'C1_category' => 'required',
             ]);
 
             Marab1::create($request->all());
@@ -98,10 +98,10 @@ class Marab1Controller extends Controller
         $request->validate([
             'company_id' => 'required',
             'type_id' => 'required',
-            'date_col' => 'required',
-            'A_category' => 'required',
-            'B_category' => 'required',
-            'C1_category' => 'required',
+            'date' => 'required',
+            // 'A_category' => 'required',
+            // 'B_category' => 'required',
+            // 'C1_category' => 'required',
         ]);
 
         $marab1->update($request->all());
