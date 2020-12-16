@@ -35,6 +35,7 @@
       </div>
     </div>
     <div class="row sec_nav trfacolmdrowsecnav">
+      git a
       <div class="dropdown show">
         <a
           class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -382,6 +383,10 @@ export default {
           enabledOnSeries: undefined,
         },
       },
+      markersBase: {
+        size: [0, 0, 0, 8, 8],
+        offsetX: -2,
+      },
       yaxisBase: {
         axisBorder: {
           show: true,
@@ -596,6 +601,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        markers: this.markersBase,
       };
       const series = [
         {
@@ -706,6 +712,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        markers: this.markersBase,
       };
       const series = [
         {
@@ -809,6 +816,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        markers: this.markersBase,
       };
       const series = [
         {
@@ -922,6 +930,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        markers: this.markersBase,
       };
       const series = [
         {
