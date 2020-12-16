@@ -17,10 +17,10 @@ class CreateMarab1sTable extends Migration
             $table->bigIncrements('id');
             $table->integer('company_id');
             $table->integer('type_id');
-            $table->date('date_col');
-            $table->float('A_category',8,4);
-            $table->float('B_category',8,4);
-            $table->float('C1_category',8,4);
+            $table->date('date');
+            $table->float('A_category',8,4)->nullable();
+            $table->float('B_category',8,4)->nullable();
+            $table->float('C1_category',8,4)->nullable();
             $table->timestamps();
         });
     }

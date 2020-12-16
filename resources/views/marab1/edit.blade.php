@@ -54,7 +54,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Дата:</strong>
-                                        <input type="date" name="date_col" value={{$row->date_col}} class="form-control">
+                                        <input type="date" name="date" value={{$row->date}} class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">

@@ -17,7 +17,7 @@ class CreateDZOyearsTable extends Migration
             $table->bigIncrements('id');
 
             $table->integer("date");
-            $table->text("dzo")->nullable();
+            $table->text("dzo");
             $table->text("mestorozhdenie")->nullable();	
             $table->text("ngdu")->nullable();
             
