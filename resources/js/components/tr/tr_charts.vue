@@ -268,7 +268,7 @@ export default {
   },
   data: function () {
     return {
-      chartShow: 9,
+      chartShow: 0,
       isLoading: true,
       pieChartRerender: true,
       wells: [],
@@ -423,7 +423,6 @@ export default {
   },
   methods: {
     async calcChartData() {
-      console.log("chartShow = ", this.chartShow);
       this.isLoading = true;
       if (this.chartWells && this.chartWells.length > 0) {
         let field = this.chartFilter_field;
@@ -463,7 +462,6 @@ export default {
         return 0;
       });
       let filtered30;
-      console.log("filteredResult = ", filteredResult);
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
@@ -499,10 +497,6 @@ export default {
           offsetX: -2,
         },
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Н д",
@@ -526,7 +520,6 @@ export default {
           ),
         },
       ];
-      console.log("series 1 = ", series);
       return series;
     },
     setDataChart1(filteredResult) {
@@ -545,8 +538,6 @@ export default {
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
-      console.log("filteredResult = ", filteredResult);
-      console.log("filteredResult = ", filtered30);
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
@@ -606,10 +597,6 @@ export default {
         yaxis,
         chart,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Q нефти",
@@ -647,7 +634,6 @@ export default {
           ),
         },
       ];
-      console.log("series 2 = ", series);
       return series;
     },
     setDataChart2(filteredResult) {
@@ -666,8 +652,6 @@ export default {
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
-      console.log("filteredResult = ", filteredResult);
-      console.log("filteredResult = ", filtered30);
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
@@ -723,10 +707,6 @@ export default {
         yaxis,
         chart,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Q нефти",
@@ -757,7 +737,6 @@ export default {
           ),
         },
       ];
-      console.log("series 3 = ", series);
       return series;
     },
     setDataChart3(filteredResult) {
@@ -776,8 +755,6 @@ export default {
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
-      console.log("filteredResult = ", filteredResult);
-      console.log("filteredResult = ", filtered30);
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
@@ -833,10 +810,6 @@ export default {
         yaxis,
         chart,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Q нефти",
@@ -867,7 +840,6 @@ export default {
           ),
         },
       ];
-      console.log("series 4 = ", series);
       return series;
     },
     setDataChart4(filteredResult) {
@@ -886,8 +858,6 @@ export default {
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
-      console.log("filteredResult = ", filteredResult);
-      console.log("filteredResult = ", filtered30);
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
@@ -953,10 +923,6 @@ export default {
         yaxis,
         chart,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Q жидкости",
@@ -994,7 +960,6 @@ export default {
           ),
         },
       ];
-      console.log("series 5 = ", series);
       return series;
     },
     setDataChart5(filteredResult) {
@@ -1019,10 +984,6 @@ export default {
         yaxis,
         chart,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       let filteredData = filteredResult.reduce(
         (acc, res) => {
           acc = {
@@ -1067,13 +1028,11 @@ export default {
           ],
         },
       ];
-      console.log("series 6 = ", series);
       return series;
       // Суммарный дебит нефти и жидкости
     },
     setDataChart6(filteredResult) {
       // Распределение коэффициента продуктивности
-      console.log("filteredResult = ", filteredResult);
       const self = this;
       filteredResult.sort(function (a, b) {
         if (b.pi > a.pi) return 1;
@@ -1098,10 +1057,6 @@ export default {
         xaxis,
         yaxis,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Кпрод",
@@ -1111,12 +1066,10 @@ export default {
           ),
         },
       ];
-      console.log("series 7 = ", series);
       return series;
     },
     setDataChart7(filteredResult) {
       // Распределение скважин по дебиту нефти
-      console.log("filteredResult = ", filteredResult);
       const self = this;
       filteredResult.sort(function (a, b) {
         if (b.q_o > a.q_o) return 1;
@@ -1133,10 +1086,6 @@ export default {
         xaxis,
         yaxis,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Q нефти",
@@ -1146,12 +1095,10 @@ export default {
           ),
         },
       ];
-      console.log("series 8 = ", series);
       return series;
     },
     setDataChart8(filteredResult) {
       // Распределение скважин по обводненности
-      console.log("filteredResult = ", filteredResult);
       const self = this;
       filteredResult.sort(function (a, b) {
         if (b.wct > a.wct) return 1;
@@ -1176,10 +1123,6 @@ export default {
         xaxis,
         yaxis,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Обводненность",
@@ -1189,12 +1132,10 @@ export default {
           ),
         },
       ];
-      console.log("series 9 = ", series);
       return series;
     },
     setDataChart9(filteredResult) {
       // Распределение скважин по дебиту жидкости
-      console.log("filteredResult = ", filteredResult);
       const self = this;
       filteredResult.sort(function (a, b) {
         if (b.q_l > a.q_l) return 1;
@@ -1219,10 +1160,6 @@ export default {
         xaxis,
         yaxis,
       };
-      console.log("categories = ", categories);
-      console.log("xaxis = ", xaxis);
-      console.log("yaxis = ", yaxis);
-      console.log("chartBarOptions = ", this.chartBarOptions);
       const series = [
         {
           name: "Дебит жидкости",
@@ -1232,7 +1169,6 @@ export default {
           ),
         },
       ];
-      console.log("series 10 = ", series);
       return series;
     },
     getStringOrFirstItem(el, param) {
@@ -1278,11 +1214,8 @@ export default {
         .then((response) => {
           // this.editdtm = choosenDt[1];
           // this.editdty = choosenDt[0];
-          console.log(this.year);
-          console.log(this.month);
           let data = response.data;
           if (data) {
-            console.log(data);
             this.wells = data.data;
             this.fullWells = data.data;
             this.chartWells = data.data;
