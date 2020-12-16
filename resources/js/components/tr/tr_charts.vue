@@ -35,7 +35,6 @@
       </div>
     </div>
     <div class="row sec_nav trfacolmdrowsecnav">
-      git a
       <div class="dropdown show">
         <a
           class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -992,6 +991,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        markers: this.markersBase,
       };
       let filteredData = filteredResult.reduce(
         (acc, res) => {
