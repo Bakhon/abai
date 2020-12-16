@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Zu extends Model
 {
+    public function wells()
+    {
+        return $this->hasMany(\App\Models\Refs\Well::class);
+    }
+
     public function omgngdu()
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);
