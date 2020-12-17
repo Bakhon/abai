@@ -3,4 +3,4 @@ deploy_prod:
   only:
     - ci
   script:
-    - echo "pwd"
+    - ls -la
