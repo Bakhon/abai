@@ -30,6 +30,7 @@
 
 @task('run_scripts')
     echo "Run migrations"
+    cd {{ $new_release_dir }}
     php artisan migrate
 @endtask
 
