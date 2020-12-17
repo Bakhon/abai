@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class OmgCAUpdateRequest extends FormRequest
+class OmgCACreateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -19,10 +19,11 @@ class OmgCAUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'date',
+            'date' => 'required|date',
             'q_v' => 'nullable|numeric',
-            'gu_id' => 'numeric',
+            'gu_id' => 'nullable|numeric',
             'plan_dosage' => 'nullable|numeric',
+            'all_gus' => 'nullable|boolean'
         ];
     }
 }

@@ -54,6 +54,15 @@ body {
   background: rgba(69, 77, 125, 0.329412);
   height: 333px;
 }
+.monitor__right-block_radial .signalizator-gus {
+  padding: 10px 10px 5px;
+}
+.monitor__right-block_radial .signalizator-gus p {
+  margin: 0 0 5px;
+}
+.monitor__right-block_radial .signalizator-gus .badge {
+  margin: 0 5px 5px 0;
+}
 .monitor__right-block_calendar {
   padding-left: 4px;
   padding-right: 4px;

@@ -17,9 +17,12 @@
         <div class="col-xs-12 col-sm-4 col-md-4">
             <label>ГУ</label>
             <div class="form-label-group">
-                <select class="form-control" name="gu_id" v-model="fields.gu" @change="checkDublicate">
+                <select class="form-control" v-model="gu" @change="checkDublicate">
+                    <option v-if="type && type === 'create'" value="all">Все ГУ</option>
                     <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
                 </select>
+                <input type="hidden" name="gu_id" v-bind:value="fields.gu">
+                <input type="hidden" name="all_gus" v-bind:value="fields.all_gus ? 1 : 0">
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
@@ -30,7 +33,7 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" :disabled="!fields.year || !fields.gu || dublicate" class="btn btn-success">
+            <button type="submit" :disabled="!fields.year || (!fields.gu && !fields.all_gus) || dublicate" class="btn btn-success">
                 Сохранить
             </button>
         </div>
@@ -53,7 +56,8 @@ Vue.use(NotifyPlugin)
 export default {
     name: "omgca-form",
     props: [
-        'omgca'
+        'omgca',
+        'type'
     ],
     data: function () {
         return {
@@ -66,7 +70,20 @@ export default {
                 year: null,
                 q_v: null,
                 gu: null,
-                plan_dosage: null
+                plan_dosage: null,
+                all_gus: false
+            }
+        }
+    },
+    watch: {
+        gu(value) {
+            if(value === 'all') {
+                this.fields.gu = null
+                this.fields.all_gus = true
+            }
+            else {
+                this.fields.gu = value
+                this.fields.all_gus = false
             }
         }
     },
@@ -84,10 +101,11 @@ export default {
         if (this.omgca) {
             this.fields = {
                 year: this.omgca.date,
-                q_v: this.omgca.q_v,
                 gu: this.omgca.gu_id,
+                q_v: this.omgca.q_v,
                 plan_dosage: this.omgca.plan_dosage
             }
+            this.gu = this.omgca.gu_id
         }
 
         for(let i = 0; i < 5; i++) {
@@ -99,10 +117,15 @@ export default {
     },
     methods: {
         checkDublicate() {
-            if (this.fields.gu != null && this.fields.year != null) {
+            if(this.gu === 'all') {
+                this.dublicate = false
+                return
+            }
+
+            if (this.gu != null && this.fields.year != null) {
                 this.axios.post("/ru/checkdublicateomgddng", {
-                    id: this.omgca.id || null,
-                    gu: this.fields.gu,
+                    id: this.omgca ? this.omgca.id : null,
+                    gu: this.gu,
                     dt: this.fields.year,
                 }).then((response) => {
                     let data = response.data;

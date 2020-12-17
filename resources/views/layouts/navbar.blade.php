@@ -74,7 +74,7 @@
                         <ul>
                             <li class="nav-item child">
                                 <a href="{{url('/')}}/ru/watermeasurement">
-                                    <span class="workTypeText">Лабораторные данные по промысловой жидкости и газу</span>
+                                    <span class="workTypeText">База данных по промысловой жидкости и газу</span>
                                 </a>
                             </li>
                             <li class="nav-item child">
