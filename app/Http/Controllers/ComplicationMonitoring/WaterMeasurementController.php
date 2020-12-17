@@ -734,7 +734,11 @@ class WaterMeasurementController extends Controller
 
     public function getGuData(Request $request)
     {
-        $wm = ComplicationMonitoringWaterMeasurement::where('gu_id', '=', $request->gu_id)->get();
+        $wm = ComplicationMonitoringWaterMeasurement::query()
+            ->where('gu_id', '=', $request->gu_id)
+            ->where('date', '>=', \Carbon\Carbon::now()->subMonths(3))
+            ->where('date', '<=', \Carbon\Carbon::now())
+            ->get();
         $uhe = ComplicationMonitoringOmgUHE::where('gu_id', '=', $request->gu_id)->get();
         $corrosion = ComplicationMonitoringCorrosion::where('gu_id', '=', $request->gu_id)->get();
         $kormass = ComplicationMonitoringGuKormass::where('gu_id', '=', $request->gu_id)->with('kormass')->first();
