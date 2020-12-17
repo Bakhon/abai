@@ -5982,29 +5982,17 @@ export default {
   beforeCreate: function () {},
   created() {
     var today = new Date();
-    var dd = String(today.getDate()).padStart(2, "0");
-    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
-    if (mm == 0) {
-      var prMm = 12;
-    } else {
-      var prMm = mm - 1;
-    }
-    this.year = yyyy;
-    this.month = prMm;
-    this.$store.commit("tr/SET_MONTH", prMm);
+    this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/" + yyyy + "/" + prMm + "/"
+        "http://172.20.103.51:7576/api/techregime/" + yyyy + "/" + mm + "/"
       )
       .then((response) => {
         let data = response.data;
         this.isloading = false;
-        this.editdtm = prMm;
-        console.log(this.editdtm);
-        this.editdty = yyyy;
-        console.log(this.editdty);
         if (data) {
           console.log(data);
           this.wells = data.data;
@@ -6047,9 +6035,6 @@ export default {
   watch: {
     wells() {
       console.log('wells changed = ', this.wells)
-    },
-    fullWells() {
-      console.log('fullWells changed = ', this.fullWells)
     },
     searchString() {
       console.log('searchString changed = ', new Date())
@@ -6162,14 +6147,8 @@ export default {
       }
     },
     onChangeMonth(event) {
-      let newVal;
-      if (event.target.value == 1) {
-        newVal = 12;
-      } else {
-        newVal = event.target.value - 1;
-      }
-      this.month = newVal;
-      this.$store.commit("tr/SET_MONTH", newVal);
+      this.month = event.target.value;
+      this.$store.commit("tr/SET_MONTH", event.target.value);
     },
     onChangeYear(event) {
       this.selectYear = event.target.value;
@@ -6177,41 +6156,27 @@ export default {
     },
 
     chooseDt() {
-      //   const { dt } = this;
-      //   console.log(dt)
-      //   var choosenDt = dt.split("-");
-      if (this.month == 12) {
-        this.year = this.selectYear - 1;
-      } else {
-        this.year = this.selectYear;
-      }
       this.axios
         .get(
           "http://172.20.103.51:7576/api/techregime/" +
-            this.year +
+            this.selectYear +
             "/" +
             this.month +
             "/"
         )
         .then((response) => {
-          // this.editdtm = choosenDt[1];
-          // this.editdty = choosenDt[0];
-          console.log(this.year);
-          console.log(this.month);
           let data = response.data;
           if (data) {
-            console.log(data);
+            console.log(data)
             this.wells = data.data;
             this.fullWells = data.data;
           } else {
             console.log("No data");
           }
-          if (this.month < 9) {
-            this.dt = "01" + ".0" + (this.month + 1) + "." + this.year;
-          } else if (this.month == 12) {
-            this.dt = "01" + ".01." + (this.year + 1);
+          if (this.month < 10) {
+            this.dt = "01" + ".0" + (this.month) + "." + this.selectYear;
           } else {
-            this.dt = "01" + "." + (this.month + 1) + "." + this.year;
+            this.dt = "01" + "." + (this.month) + "." + this.selectYear;
           }
         });
     },
@@ -6241,14 +6206,13 @@ export default {
       this.axios
         .get(
           "http://172.20.103.51:7576/api/techregime/" +
-            this.year +
+            this.selectYear +
             "/" +
             this.month +
             "/" +
             searchParam
         )
         .then((response) => {
-          console.log("search resp = ", response.data);
           let data = response.data;
           if (data) {
             console.log(data);
