@@ -90,7 +90,8 @@ export default {
       shgnS1L: null,
       shgnS2L: null,
       shgnTNL: null,
-      shgnTNL: null,
+      qL: null,
+      // shgnTNL: null,
       hPerfND: null,
       type: String,
       required: true,
@@ -427,10 +428,9 @@ export default {
         this.$modal.show('modalOldWell');
       }
     },
-
     ExpAnalysisMenu() {
       if (this.casID == 114) {
-        Vue.prototype.$notifyError('В ЭК 114мм применение УЭЦН с габаритами 5 и 5А невозможно')
+        Vue.prototype.$notifyError('В ЭК 114мм применение УЭЦН с габаритами 5 и 5А невозможно')
       }
       this.NnoCalc()
       this.qZhExpEcn = this.qlCelValue
@@ -526,6 +526,8 @@ export default {
           console.log('No data');
         }
       });
+
+      // this.$modal.show("modalExpAnalysis");
     },
     NnoCalc() {
       let uri = "http://172.20.103.187:7575/api/nno/";
@@ -1048,7 +1050,6 @@ export default {
       } else {
         Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
       }
-
     },
 
     setActiveRightTabName: function (e, val) {
