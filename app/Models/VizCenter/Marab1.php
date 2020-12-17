@@ -9,7 +9,7 @@ class Marab1 extends Model
     protected $fillable = [
         'company_id',
         'type_id',
-        'date_col',
+        'date',
         'A_category',
         'B_category',
         'C1_category'

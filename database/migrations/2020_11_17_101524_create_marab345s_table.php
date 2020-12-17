@@ -18,10 +18,11 @@ class CreateMarab345sTable extends Migration
             $table->integer('company_id');
             $table->integer('marabkpi_id');
             $table->integer('type_id');
-            $table->date('date_col');
-            $table->integer('fact_zatraty_na_sebestoimost_dobychi_nefti');
-            $table->integer('fact_zatraty_kapitalnogo_vlozhenia');
-            $table->integer('opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov');
+            $table->date('date');
+            // $table->text('__time');
+            $table->integer('fact_zatraty_na_sebestoimost_dobychi_nefti')->nullable();
+            $table->integer('fact_zatraty_kapitalnogo_vlozhenia')->nullable();
+            $table->integer('opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov')->nullable();
             $table->timestamps();
         });
     }
