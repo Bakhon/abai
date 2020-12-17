@@ -879,7 +879,7 @@ export default {
         maxY2 = 0,
         minY2 = 0;
       const categories = filtered30.map((item) => {
-        const newY1 = item.q_l + item.tp_idn_oil_inc + item.tp_idn_grp_q_oil;
+        const newY1 = item.q_l + item.tp_idn_liq_inc + item.tp_idn_grp_q_liq;
         const newY2Max =
           item.tp_idn_bhp > item.bhp ? item.tp_idn_bhp : item.bhp;
         const newY2Min =
