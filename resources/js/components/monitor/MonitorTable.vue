@@ -366,7 +366,7 @@
                                 class="form-control form-control-sm"
                                 name="gu_id"
                                 v-model="gu"
-                                @change="chooseGu($event)"
+                                @change="chooseGu()"
                             >
                                 <option v-for="row in gus" v-bind:value="row.id">
                                     {{ row.name }}
@@ -508,24 +508,31 @@
                         <monitor-chart-radialbar></monitor-chart-radialbar>
                     </div>
                     <div class="signalizator">
+                        <div class="signalizator-gus" v-if="problemGus.length > 0">
+                            <p>Список проблемных ГУ:</p>
+                            <a
+                                href="#"
+                                v-for="gu in problemGus"
+                                @click.prevent="chooseProblemGu(gu.id)"
+                                class="badge"
+                                :class="{
+                                        'badge-success': gu.diff <= 5,
+                                        'badge-warning': gu.diff > 5 && gu.diff <= 10,
+                                        'badge-danger': gu.diff > 10
+                                    }"
+                            >
+                                    {{gu.name}}
+                                </a>
+                        </div>
                         <div v-if="signalizatorAbs > 0 && signalizatorAbs != null" class="text-wrap">
                             <div
-                                v-if="signalizatorAbs <= 5"
-                                class="alert alert-success"
-                                role="alert"
-                            >
-                                Фактическая превышает плановую дозировку на {{ signalizatorAbs }}%
-                            </div>
-                            <div
-                                v-if="signalizatorAbs > 5 && signalizatorAbs <= 10"
-                                class="alert alert-warning"
-                                role="alert"
-                            >
-                                Фактическая превышает плановую дозировку на {{ signalizatorAbs }}%
-                            </div>
-                            <div
-                                v-if="signalizatorAbs > 10"
-                                class="alert alert-danger"
+                                v-if=""
+                                class="alert"
+                                :class="{
+                                    'alert-success': signalizatorAbs <= 5,
+                                    'alert-warning': signalizatorAbs > 5 && signalizatorAbs <= 10,
+                                    'alert-danger': signalizatorAbs > 10
+                                }"
                                 role="alert"
                             >
                                 Фактическая превышает плановую дозировку на {{ signalizatorAbs }}%
@@ -558,10 +565,11 @@
 </template>
 
 <script>
-import Calendar from "v-calendar/lib/components/calendar.umd";
-import DatePicker from "v-calendar/lib/components/date-picker.umd";
-import VModal from "vue-js-modal";
-import VueTableDynamic from 'vue-table-dynamic';
+import Calendar from "v-calendar/lib/components/calendar.umd"
+import DatePicker from "v-calendar/lib/components/date-picker.umd"
+import VModal from "vue-js-modal"
+import VueTableDynamic from 'vue-table-dynamic'
+import moment from 'moment'
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -570,6 +578,7 @@ export default {
     components: {
         Calendar,
         DatePicker,
+        VueTableDynamic
     },
     data: function () {
         return {
@@ -620,7 +629,8 @@ export default {
             chart1Data: null,
             chart2Data: null,
             chart3Data: null,
-            chart4Data: null
+            chart4Data: null,
+            problemGus: [],
         };
     },
     beforeCreate: function () {
@@ -632,13 +642,28 @@ export default {
                 console.log("No data");
             }
         });
+        this.axios.get("/ru/getguproblems").then((response) => {
+            let data = response.data;
+            if (data) {
+                this.problemGus = data.problemGus;
+            } else {
+                console.log("No data");
+            }
+        });
     },
     methods: {
-        chooseGu(event) {
+        chooseProblemGu(gu_id) {
+            this.gu = gu_id
+            this.chooseGu()
+            this.dayClicked({
+                id: moment().format('YYYY-MM-DD')
+            })
+        },
+        chooseGu() {
             this.dose = 0;
             this.axios
                 .post("/ru/getgudata", {
-                    gu_id: event.target.value,
+                    gu_id: this.gu
                 })
                 .then((response) => {
                     let data = response.data;
@@ -796,8 +821,7 @@ export default {
                     }
                 });
         }
-    },
-    components: {VueTableDynamic}
+    }
 };
 </script>
 <style scoped>

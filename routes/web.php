@@ -95,6 +95,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getallkormasses', 'ComplicationMonitoring\WaterMeasurementController@getAllKormasses');
         Route::post('/getgudata', 'ComplicationMonitoring\WaterMeasurementController@getGuData');
         Route::post('/getgudatabyday', 'ComplicationMonitoring\OmgNGDUController@getGuDataByDay');
+        Route::get('/getguproblems', 'ComplicationMonitoring\OmgNGDUController@getProblemGuToday');
 
         Route::get('/getmaterials', 'RefsController@getMaterials');
 
