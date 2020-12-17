@@ -319,10 +319,10 @@
           </button>
         </div>
 
-        <TrTable :wells="wells" @onSort="sortBy" v-show="show_first" />
+        <TrTable :wells="wells" @onSort="sortBy" v-if="show_first" />
         <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
         <table
-          v-show="show_second"
+          v-if="show_second"
           class="table table-bordered table-dark table-responsive ce trtable"
           style="
             position: sticky;
@@ -6043,17 +6043,6 @@ export default {
       isloading1: true,
       isfulltable: false,
     };
-  },
-  watch: {
-    wells() {
-      console.log('wells changed = ', this.wells)
-    },
-    fullWells() {
-      console.log('fullWells changed = ', this.fullWells)
-    },
-    searchString() {
-      console.log('searchString changed = ', this.searchString)
-    },
   },
   methods: {
     editrow(row, rowId) {
