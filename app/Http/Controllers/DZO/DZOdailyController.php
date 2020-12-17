@@ -5,17 +5,17 @@ namespace App\Http\Controllers\DZO;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
-use App\Imports\DZOdayImport;
+use App\Imports\DZOdailyImport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DZOdailyController extends Controller
 {
     public function importExcel(){
         $data = DB::table('d_z_odays')->orderBy('created_at','desc')->paginate(50);
-        return view('import_excel', compact('data'));
+        return view('viscenterDailyDZO.import_excel', compact('data'));
     }
     public function import(Request $request){
-        Excel::import(new DZOdayImport, $request->select_file);
+        Excel::import(new DZOdailyImport, $request->select_file);
         return back()->with('success', 'Загрузка прошла успешно.');
     }
     // public function importExcel(Request $request)
