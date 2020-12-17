@@ -112,6 +112,7 @@ Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue'
 Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
+Vue.component('pipe-form', require('./components/pipes/form.vue').default);
 Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
