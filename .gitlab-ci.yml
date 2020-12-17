@@ -1,0 +1,8 @@
+deploy_prod:
+  image: alpine
+  stage: deploy
+  only:
+    - ci
+  script:
+    - cd /var/www/dashboard_test
+    - envoy run deploy
