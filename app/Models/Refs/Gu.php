@@ -35,4 +35,9 @@ class Gu extends Model
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgUHE::class);
     }
+
+    public function pipe()
+    {
+        return $this->hasMany(\App\Models\ComplicationMonitoring\Pipe::class);
+    }
 }
