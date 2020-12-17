@@ -1,11 +1,6 @@
 deploy_prod:
-  image: alpine:edge
   stage: deploy
   only:
     - ci
   script:
-    - apk add php
-    - apk --no-cache add curl
-    - curl --silent --show-error "https://getcomposer.org/installer" | php -- --install-dir=/usr/local/bin --filename=composer
-    - composer global require "laravel/envoy=~1.0"
-    - envoy run deploy
+    - echo "pwd"
