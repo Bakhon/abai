@@ -31,7 +31,7 @@
 @task('run_scripts')
     echo "Run migrations"
     cd {{ $new_release_dir }}
-    php artisan migrate
+    php artisan migrate --force --no-interaction
 @endtask
 
 @task('build_static')
