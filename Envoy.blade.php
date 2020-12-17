@@ -1,7 +1,6 @@
 @servers(['localhost' => '127.0.0.1'])
 
 @setup
-    $repository = 'git@172.20.103.31:almukhan/dashboard.git';
     $releases_dir = '/var/www/dashboard_test/releases';
     $app_dir = '/var/www/dashboard_test';
     $release = date('YmdHis');
@@ -9,7 +8,7 @@
 @endsetup
 
 @story('deploy')
-    clone_repository
+    copy_repository
     run_composer
     build_static
     update_symlinks
@@ -17,7 +16,7 @@
     clean_old_releases
 @endstory
 
-@task('clone_repository')
+@task('copy_repository')
     echo "Starting deployment ({{ $release }})"
     cp -r ./ {{ $new_release_dir }}
 @endtask

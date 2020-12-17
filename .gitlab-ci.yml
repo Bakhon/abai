@@ -1,6 +1,6 @@
 deploy_prod:
   stage: deploy
   only:
-    - ci
+    - master
   script:
     - /home/dash/.composer/vendor/bin/envoy run deploy
