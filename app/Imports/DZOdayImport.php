@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\DZO\DZOday;
+use App\Models\DZO\DZOdaily;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,7 +17,7 @@ class DZOdayImport implements ToModel
     */
     public function model(array $row)
     {
-        return new DZOday([
+        return new DZOdaily([
             "date" => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]),
             "dzo" => $row[ 1 ],
             "mestorozhdenie" => $row[ 2 ],
