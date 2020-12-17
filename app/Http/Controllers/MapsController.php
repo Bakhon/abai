@@ -32,18 +32,26 @@ class MapsController extends Controller
 
         $coordinates = [];
         $zuPipes = $gu->zuPipes->map(function($pipe) use(&$coordinates) {
-            $coordinates = array_merge($coordinates, $pipe->coordinates);
+            $coordinates = array_merge($coordinates, array_map(function($coord){
+                return array_reverse($coord);
+            }, $pipe->coordinates));
             return [
                 'id' => $pipe->id,
-                'coordinates' => $pipe->coordinates
+                'coordinates' => array_map(function($coord){
+                    return array_reverse($coord);
+                }, $pipe->coordinates)
             ];
         });
 
         $wellPipes = $gu->wellPipes->map(function($pipe) use(&$coordinates) {
-            $coordinates = array_merge($coordinates, $pipe->coordinates);
+            $coordinates = array_merge($coordinates, array_map(function($coord){
+                return array_reverse($coord);
+            }, $pipe->coordinates));
             return [
                 'id' => $pipe->id,
-                'coordinates' => $pipe->coordinates
+                'coordinates' => array_map(function($coord){
+                    return array_reverse($coord);
+                }, $pipe->coordinates)
             ];
         });
 
@@ -56,7 +64,7 @@ class MapsController extends Controller
             ->map(function($well){
                 return [
                     'name' => $well->name,
-                    'coords' => [$well->lat, $well->lon],
+                    'coords' => [$well->lon, $well->lat],
                 ];
             });
 
@@ -67,7 +75,7 @@ class MapsController extends Controller
             ->map(function($zu){
                 return [
                     'name' => $zu->name,
-                    'coords' => [$zu->lat, $zu->lon],
+                    'coords' => [$zu->lon, $zu->lat],
                 ];
             });
 
@@ -75,7 +83,7 @@ class MapsController extends Controller
         if($gu->lat && $gu->lon) {
             $guPoint = [
                 'name' => $gu->name,
-                'coords' => [$gu->lat, $gu->lon]
+                'coords' => [$gu->lon, $gu->lat]
             ];
         }
 
