@@ -24,8 +24,8 @@ export default {
 
       activeRightTabName: 'technological-mode',
       layout: {
-        width: 950,
-        height: 450,
+        width: 800,
+        height: 360,
         showlegend: true,
         xaxis: {
           title: "Дебит, Qж, м³/сут.",
@@ -35,7 +35,7 @@ export default {
           // showgrid: true,
           // mirror:true,
           // ticklen: 4,
-          gridcolor: "#123E73",
+          gridcolor: "#454D7D",
           //tickfont: {size: 10},
         },
         yaxis: {
@@ -45,13 +45,13 @@ export default {
           //showgrid: true,
           // mirror:true,
           // ticklen: 4,
-          gridcolor: "#123E73",
+          gridcolor: "#454D7D",
           //tickfont: {size: 10},
         },
 
         //   scene:{ gridcolor: '#ffffff',},
-        paper_bgcolor: "#20274e",
-        plot_bgcolor: "#20274e",
+        paper_bgcolor: "#2B2E5E",
+        plot_bgcolor: "#2B2E5E",
         font: {color: "#fff"},
 
         legend: {
@@ -452,7 +452,8 @@ export default {
         this.EconomParam();
       }
 
-
+      // test code
+      // this.EconomParam();
     },
     EconomParam() {
       var prs1 = this.expAnalysisData.prs1

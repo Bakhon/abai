@@ -723,13 +723,10 @@ td {
 
 .modal-analysis-menu {
     color: white;
-    overflow-y: auto;
-    max-height: 500px;
-    margin-right: 400px;
-    left: 80%;
-    top: 20%;
-    background: #20274e;
-    position: absolute;
+    position: relative;
+    height: 100%;
+    width: calc(100% - 800px);
+    padding-left: 15px;
 }
 
 .modal_analysis_menu_new {
@@ -744,38 +741,32 @@ td {
 }
 
 .old_well_button {
-    width: 220px;
-    height: 47px;
-    background: linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);
-    background-color: #237DEB;
-    border-radius: 21px;
-    margin-right: 200px;
-    white-space: pre-wrap;
-    margin-top: 140px;
-    border: 1px solid #337fed;
+    width: 200px;
+    height: 60px;
+    background: #293688;
+    border-radius: 8px;
     display: block;
     cursor: pointer;
     color: #ffffff;
-    font-weight: lighter;
+    font-weight: bold;
     font-size: 14px;
     text-align: center;
-    padding: 0px;
-    text-decoration: none;
-    text-shadow: 0px 0px 0px #1570cd;
-    letter-spacing: 0.08em;
     outline: none !important;
+    box-shadow: none;
+    border: none;
+    margin-top: 155px;
+    margin-left: 10px;
+    line-height: 14px;
+    vertical-align: middle;
 }
 
 .old_well_button:hover {
-    background: linear-gradient(to bottom, #1e62d0 5%, #3d94f6 100%);
-    background-color: #1e62d0;
+    background: #222d74;
 }
 
 .old_well_button:active {
-    position: relative;
-    transform: translateY(1px);
     outline: none !important;
-    box-shadow: 0 2px #666;
+    background: #1a225e;
 }
 
 .checkbox1 {
@@ -1425,4 +1416,14 @@ input.checkbox-q-liquid {
 
 .ps__rail-y {
     right: 10px !important;
+}
+
+.modal-old-well-plotly-container {
+    background: #2B2E5E;
+    width: 800px;
+    height: 360px;
+}
+
+.modal-old-well-content-container {
+    display: flex;
 }

@@ -310,39 +310,58 @@
               </div>
             </modal>
 
-            <modal name="modalOldWell" :width="1150" :height="450" :adaptive="true">
-              <div class="modal-bign">
-                <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
-              </div>
-              <div class="modal-analysis-menu">
-                <div class="form-check">
-                  <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
-                         type="checkbox"/>
-                  <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
+            <modal class="modal-bign-wrapper" name="modalOldWell" :width="1080" :height="450" :adaptive="true">
+              <div class="modal-bign modal-bign-container">
+                <div class="modal-bign-header">
+                  <div class="modal-bign-title">
+                    Анализ потенциала
+                  </div>
+
+                  <button type="button"
+                          class="modal-bign-button"
+                          @click="closeModal('modalOldWell')">
+                    Закрыть
+                  </button>
                 </div>
-                <div class="form-check">
-                  <input v-model="analysisBox2" class="checkbox-modal-analysnauryzbekis-menu"
-                         @change="postAnalysisOld()" type="checkbox"/>
-                  <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
+
+                <div class="modal-old-well-content-container">
+                  <div class="modal-old-well-plotly-container">
+                    <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+                  </div>
+
+                  <div class="modal-analysis-menu">
+                    <div class="form-check">
+                      <input v-model="analysisBox1" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                             type="checkbox"/>
+                      <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рпл = Рнач</label>
+                    </div>
+                    <div class="form-check">
+                      <input v-model="analysisBox2" class="checkbox-modal-analysnauryzbekis-menu"
+                             @change="postAnalysisOld()" type="checkbox"/>
+                      <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Н дин = Ндин мин</label>
+                    </div>
+                    <div class="form-check">
+                      <input v-model="analysisBox3" class="checkbox-modal-analysnauryzbekis-menu"
+                             @change="postAnalysisOld()" type="checkbox"/>
+                      <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот >= 0,75 * Рнас</label>
+                    </div>
+                    <div class="form-check">
+                      <input v-model="analysisBox4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                             type="checkbox"/>
+                      <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Qж = Qж АСМА</label>
+                    </div>
+                    <div class="form-check">
+                      <input v-model="analysisBox5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
+                             type="checkbox"/>
+                      <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
+                    </div>
+                    <button type="button"
+                            class="old_well_button"
+                            @click="setGraphOld()">
+                      Применить&nbsp;выполненные корректировки
+                    </button>
+                  </div>
                 </div>
-                <div class="form-check">
-                  <input v-model="analysisBox3" class="checkbox-modal-analysnauryzbekis-menu"
-                         @change="postAnalysisOld()" type="checkbox"/>
-                  <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Рзаб пот >= 0,75 * Рнас</label>
-                </div>
-                <div class="form-check">
-                  <input v-model="analysisBox4" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
-                         type="checkbox"/>
-                  <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Qж = Qж АСМА</label>
-                </div>
-                <div class="form-check">
-                  <input v-model="analysisBox5" class="checkbox-modal-analysis-menu" @change="postAnalysisOld()"
-                         type="checkbox"/>
-                  <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
-                </div>
-                <button type="button" class="old_well_button" @click="setGraphOld()">
-                  Применить&nbsp;выполненные корректировки
-                </button>
               </div>
             </modal>
 
