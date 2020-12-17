@@ -10,6 +10,7 @@
 @story('deploy')
     copy_repository
     run_composer
+    run_scripts
     build_static
     update_symlinks
     update_permissions
@@ -25,6 +26,11 @@
     echo "Run composer"
     cd {{ $new_release_dir }}
     composer install --prefer-dist -q -o
+@endtask
+
+@task('run_scripts')
+    echo "Run migrations"
+    php artisan migrate
 @endtask
 
 @task('build_static')
