@@ -528,7 +528,8 @@ input.checkbox2 {
     font-size: 16px;
     font-weight: bold;
     background-color: rgba(41, 54, 136, 1);
-    ;
+    cursor: pointer;
+    user-select: none;
     padding: 8px 30px;
     height: 38px;
     width: 100%;
@@ -653,7 +654,6 @@ iframe.iframe {
     margin-bottom: 5px;
 }
 
-
 .modal-bign {
     color: black;
     background: #20274e;
@@ -695,19 +695,19 @@ table {
 } */
 
 td {
-    border: solid 1px #000;
+    border: none !important;
     text-align: center;
     width: 80px;
-    border-color: #1b6bb0;
-    border-style: solid;
-    border-width: 1px;
+    /*border-color: #1b6bb0;*/
+    /*border-style: solid;*/
+    /*border-width: 1px;*/
     background: #0F1430;
     color: white;
 }
 
-.table th, .table td {
-    border-top: 1px solid #1b6bb0!important;
-}
+/*.table th, .table td {*/
+/*    border-top: 1px solid #1b6bb0!important;*/
+/*}*/
 
 .layers {
     transform: scale(0.8) translate(-0px, 0);
@@ -1300,3 +1300,125 @@ input.checkbox-q-liquid {
     color: #1570cd;
     border: 1px solid #1b6bb0;
   }
+
+.gno-curve-table-title {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 20px 30px 0 30px;
+}
+
+.modal-bign-container {
+    padding: 20px;
+    color: white;
+    border: 2px solid #656A8A;
+    border-radius: 8px;
+    background: #272953;
+    height: 100%;
+}
+
+.modal-bign-header {
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+}
+
+.modal-bign-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.vm--modal {
+    border-radius: 9px !important;
+}
+
+.gno-modal-loading-label {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: white;
+}
+
+.gno-incl-content-wrapper {
+    height: calc(100% - 42px);
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.modal-bign-button {
+    border: none;
+    outline: none;
+    background: #656A8A;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    width: 100px;
+    border-radius: 8px;
+}
+
+.modal-bign-button:hover {
+    background: #4e516c;
+}
+
+.gno-plotly-graph {
+    padding-top: 8px;
+}
+
+.gno-incl-table-with-header {
+    border-collapse: collapse;
+    table-layout: fixed;
+    position: relative;
+    width: 401pt;
+    margin: 0 !important;
+    font-family: "Harmonia Sans Pro Cyr", sans-serif;
+    font-size: 12px;
+}
+
+.gno-incl-table-with-header thead td {
+    position: sticky;
+    top: 0;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.gno-incl-table-with-header thead td:nth-child(odd) {
+    background: #313e8a;
+}
+
+.gno-incl-table-with-header thead td:nth-child(even) {
+    background: #2c3a8e;
+}
+
+.gno-incl-table-with-header tbody tr:nth-child(odd) td:nth-child(odd) {
+    background: #383d6d;
+}
+
+.gno-incl-table-with-header tbody tr:nth-child(odd) td:nth-child(even) {
+    background: #343868;
+}
+
+.gno-incl-table-with-header tbody tr:nth-child(even) td:nth-child(odd) {
+    background: #313666;
+}
+
+.gno-incl-table-with-header tbody tr:nth-child(even) td:nth-child(even) {
+    background: #2b2e5e;
+}
+
+.gno-incl-table-with-header tbody td {
+    vertical-align: middle;
+}
+
+.ps {
+    height: 100% !important;
+}
+
+.ps__rail-y {
+    right: 10px !important;
+}

@@ -603,7 +603,9 @@ export default {
         this.$modal.show('modalIncl')
       }
     },
-
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
+    },
     getWellNumber(wellnumber) {
       this.visibleChart = true;
       let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + wellnumber + "/";

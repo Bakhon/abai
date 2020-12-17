@@ -23,6 +23,8 @@ import VueApexCharts from "vue-apexcharts";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store';
+import PerfectScrollbar from "vue2-perfect-scrollbar";
+import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 // import  jquery from 'jquery';
 
 
@@ -35,8 +37,7 @@ window.Vue = require('vue');
 window.Jquery = require('jquery');
 Vue.prototype.$moment = moment
 
-Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib, ElementUI);
-
+Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib, ElementUI, PerfectScrollbar);
 
 /**
  * The following block of code may be used to automatically register your

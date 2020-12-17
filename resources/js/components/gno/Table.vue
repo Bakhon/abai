@@ -292,8 +292,18 @@
 
         <div class="no-gutter col-sm-9 order-sm-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 background">
-            <modal name="modalIncl" :width="1150" :height="500" style="background: transparent;">
-              <div class="modal-bign">
+            <modal class="modal-bign-wrapper" name="modalIncl" :width="1150" :height="600" style="background: transparent;">
+              <div class="modal-bign modal-bign-container">
+                <div class="modal-bign-header">
+                  <div class="modal-bign-title">Инклинометрия</div>
+
+                  <button type="button"
+                          class="modal-bign-button"
+                          @click="closeModal('modalIncl')">
+                    Закрыть
+                  </button>
+                </div>
+
                 <div class="Table" align="center" x:publishsource="Excel">
                   <gno-incl-table :wellNumber="wellNumber" :wellIncl="wellIncl"></gno-incl-table>
                 </div>
