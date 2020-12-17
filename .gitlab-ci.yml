@@ -4,4 +4,4 @@ deploy_prod:
     - ci
   script:
     - cd /var/www/dashboard_test
-    - envoy run deploy
+    - /home/dash/.composer/vendor/bin/envoy run deploy
