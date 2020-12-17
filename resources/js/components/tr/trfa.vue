@@ -304,6 +304,7 @@ export default {
   data: function () {
     return {
       chartShow: "bar",
+      chartArr: ["bar", "pie"],
       pieChartRerender: true,
       wells: [],
       chartWells: [],
@@ -507,7 +508,9 @@ export default {
       if (status < "0") return "#ac3939";
     },
   },
-  beforeCreate: function () {
+  created: function () {
+    if (this.$store.getters["fa/chart"])
+      this.chartShow = this.chartArr[this.$store.getters["fa/chart"]];
     var today = new Date();
     // var dd = String(today.getDate()).padStart(2, '0');
     var dd = 1;
@@ -573,7 +576,7 @@ export default {
         } else if (this.editdtm <= 10 && this.editdtprevm <= 10) {
           this.dt = "01" + "." + this.editdtm + "." + this.editdty;
           this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
-        } else if (editdtm >= 10 && editdtprevm < 10) {
+        } else if (this.editdtm >= 10 && this.editdtprevm < 10) {
           this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
           this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
         }
