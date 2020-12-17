@@ -1,5 +1,62 @@
-@servers(['localhost' => ['127.0.0.1']])
+@servers(['localhost' => '127.0.0.1'])
 
-@task('deploy', ['on' => 'localhost'])
-    ls -la
+@setup
+    $repository = 'git@172.20.103.31:almukhan/dashboard.git';
+    $releases_dir = '/var/www/dashboard_test/releases';
+    $app_dir = '/var/www/dashboard_test';
+    $release = date('YmdHis');
+    $new_release_dir = $releases_dir .'/'. $release;
+@endsetup
+
+@story('deploy')
+    clone_repository
+    run_composer
+    build_static
+    update_symlinks
+    clean_old_releases
+@endstory
+
+@task('clone_repository')
+    echo 'Cloning repository'
+    [ -d {{ $releases_dir }} ] || mkdir {{ $releases_dir }}
+    git clone --depth 1 {{ $repository }} {{ $new_release_dir }}
+    cd {{ $new_release_dir }}
+    git reset --hard {{ $commit }}
+@endtask
+
+@task('run_composer')
+    echo "Starting deployment ({{ $release }})"
+    cd {{ $new_release_dir }}
+    composer install --prefer-dist
+@endtask
+
+@task('build_static')
+    echo "Starting deployment ({{ $release }})"
+    cd {{ $new_release_dir }}
+    npm install
+    npm run --silent dev
+@endtask
+
+@task('update_symlinks')
+    echo "Linking storage directory"
+    rm -rf {{ $new_release_dir }}/storage
+    ln -nfs {{ $app_dir }}/storage {{ $new_release_dir }}/storage
+
+    echo 'Linking .env file'
+    ln -nfs {{ $app_dir }}/.env {{ $new_release_dir }}/.env
+
+    echo 'Linking current release'
+    ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current
+@endtask
+
+@task('clean_old_releases')
+    purging=$(ls -dt {{ $releases_dir }}/* | tail -n +3);
+
+    if [ "$purging" != "" ]; then
+        echo Purging old releases: $purging;
+        ls -la releases;
+        #rm -rf $purging;
+    else
+        echo "No releases found for purging at this time";
+    fi
 @endtask
