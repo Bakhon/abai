@@ -1,9 +1,9 @@
 <template>
-  <div class="container-fluid tr-chart">
+  <div class="tr-chart">
     <div class="tr-chart__content">
       <div class="col-md-12 row">
-        <div class="col-md-9 row justify-content-between">
-          <a href="fa" class="col but-nav__link but trfacolbutnavlinkbut"
+        <div class="row justify-content-between">
+          <a href="fa" class="col but-nav__link but"
             ><i style="margin-right: 10px"
               ><svg
                 width="24"
@@ -20,17 +20,10 @@
           >
           <a href="tr" class="col but-nav__link but trfabuttech"
             ><i style="margin-right: 10px"
-              ><svg
-                width="24"
-                height="14"
-                viewBox="0 0 24 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
-                  fill="white"
-                /></svg></i
+              ><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
+</svg>
+</i
             >Технологический режим</a
           >
         </div>
@@ -46,7 +39,7 @@
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
         </div> -->
       </div>
-      <div class="col-md-9 row sec_nav trfacolmdrowsecnav">
+      <div class="row sec_nav trfacolmdrowsecnav">
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -68,18 +61,18 @@
             >
           </div>
         </div>
-        <div class="dropdown show">
-          <a
-            class="btn btn-secondary dropdown-toggle trfabtdata"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle trfabtgraph"
+            type="button"
+            id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
+
             Выберите дату
-          </a>
+          </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <label for="inputDate">Введите опорную дату:</label>
             <input type="date" class="form-control" v-model="date1" />
@@ -91,14 +84,14 @@
           </div>
         </div>
       </div>
-      <div class="col-md-9 sec_nav">
-        <div class="namefilter" style="color: white; margin-left: 556px">
-          <h3>Фильтр по</h3>
-        </div>
-        <div class="filter_chart row">
-          <div class="filterplaceone" style="margin-left: 211px; width: 300px">
+      <div class="sec_nav">
+                                    <div class="filter_chart row">
+          <div class="namefilter mb-2" style="color: white">
+            <h4>Фильтр по</h4>
+          </div>
+          <div class="filterplaceone" style="margin-left: 15px">
             <select
-              class="form-control"
+              class="form-control mb-2"
               v-model="chartFilter_field"
               value="Месторождение"
             >
@@ -107,17 +100,17 @@
               </option>
             </select>
           </div>
-          <div class="filterplacetwo" style="width: 300; margin-left: 7px">
-            <select class="form-control" v-model="chartFilter_horizon">
+          <div class="filterplacetwo" style="margin-left: 15px">
+            <select class="form-control mb-2" v-model="chartFilter_horizon">
               <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
                 {{ f === undefined ? "Выберите горизонт" : f }}
               </option>
             </select>
           </div>
-          <div class="filterplacethree" style="margin-left: 7; width: 300">
+          <div class="filterplacethree" style="margin-left: 15px">
             <select
               v-if="exp_methFilters"
-              class="form-control"
+              class="form-control mb-2"
               v-model="chartFilter_exp_meth"
             >
               <option v-for="(f, k) in exp_methFilters" :key="k" :value="f">
@@ -452,29 +445,41 @@ export default {
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
       var choosenSecDt = date2.split("-");
-      const mm = choosenDt[1];
-      const prMm = choosenSecDt[1];
-      const yyyy = choosenDt[0];
-      const pryyyy = choosenSecDt[0];
+      if (choosenDt[1] == 1) {
+        var prMm = 12;
+        var prPrMm = 11;
+        var yyyy = choosenDt[0] - 1;
+        var pryyyy = choosenSecDt[0];
+      } else if (choosenSecDt[1] == 1) {
+        var prMm = choosenDt[1] - 1;
+        var prPrMm = 12;
+        var yyyy = choosenDt[0];
+        var pryyyy = choosenSecDt[0] - 1;
+      } else {
+        var prMm = choosenDt[1] - 1;
+        var prPrMm = choosenSecDt[1] - 1;
+        var yyyy = choosenDt[0];
+        var pryyyy = choosenSecDt[0];
+      }
 
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
-        this.$store.commit("fa/SET_MONTH", mm);
+        this.$store.commit("fa/SET_MONTH", prMm);
         this.$store.commit("fa/SET_YEAR", yyyy);
-        this.$store.commit("fa/SET_PR_MONTH", prMm);
+        this.$store.commit("fa/SET_PR_MONTH", prPrMm);
         this.$store.commit("fa/SET_PR_YEAR", pryyyy);
-        console.log("date1", mm, yyyy, "date2", prMm, pryyyy);
+        console.log("date1", prMm, yyyy, "date2", prPrMm, pryyyy);
         this.axios
           .get(
             "http://172.20.103.51:7576/api/techregime/factor/graph1/" +
               yyyy +
               "/" +
-              mm +
+              prMm +
               "/" +
               pryyyy +
               "/" +
-              prMm +
+              prPrMm +
               "/"
           )
           .then((response) => {
@@ -521,44 +526,47 @@ export default {
       this.$store.getters["fa/prmonth"] &&
       this.$store.getters["fa/pryear"]
     ) {
-      var mm = this.$store.getters["fa/month"];
-      var prMm = this.$store.getters["fa/prmonth"];
+      var prMm = this.$store.getters["fa/month"];
+      var prPrMm = this.$store.getters["fa/prmonth"];
       var yyyy = this.$store.getters["fa/year"];
       var pryyyy = this.$store.getters["fa/pryear"];
     } else {
-      var mm = today.getMonth() + 1;
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
       var yyyy = today.getFullYear();
-      if (mm == 1) {
+      var pryyyy = today.getFullYear();
+      var prMm = mm;
+      var prPrMm = mm;
+      if (mm == 0) {
         var prMm = 12;
-        var pryyyy = yyyy - 1;
+        var prPrMm = 11;
+        var yyyy = yyyy - 1;
+        var pryyyy = pryyyy - 1;
       } else {
-        var prMm = mm - 1;
-        var pryyyy = yyyy;
+        var prMm = prMm - 1;
+        var prPrMm = prPrMm - 2;
+        var yyyy = yyyy;
+        var pryyyy = pryyyy;
       }
-      this.$store.commit("fa/SET_MONTH", mm);
-      this.$store.commit("fa/SET_YEAR", yyyy);
-      this.$store.commit("fa/SET_PR_MONTH", prMm);
-      this.$store.commit("fa/SET_PR_YEAR", pryyyy);
     }
     this.axios
       .get(
         "http://172.20.103.51:7576/api/techregime/factor/graph1/" +
           yyyy +
           "/" +
-          mm +
+          prMm +
           "/" +
           pryyyy +
           "/" +
-          prMm +
+          prPrMm +
           "/"
       )
       .then((response) => {
         let data = response.data;
-        this.editdtm = mm;
+        this.editdtm = prMm;
         console.log(this.editdtm);
         this.editdty = yyyy;
         console.log(this.editdty);
-        this.editdtprevm = prMm;
+        this.editdtprevm = prPrMm;
         console.log(this.editdtprevm);
         this.editdtprevy = yyyy;
         console.log(this.editdtprevy);
@@ -594,13 +602,13 @@ export default {
   },
   mounted: function () {
     const mm =
-      `${this.$store.getters["fa/month"]}`.length < 2
-        ? `0${this.$store.getters["fa/month"]}`
-        : `${this.$store.getters["fa/month"]}`;
+      `${this.$store.getters["fa/month"] + 1}`.length < 2
+        ? `0${this.$store.getters["fa/month"] + 1}`
+        : `${this.$store.getters["fa/month"] + 1}`;
     const prmm =
-      `${this.$store.getters["fa/prmonth"]}`.length < 2
-        ? `0${this.$store.getters["fa/prmonth"]}`
-        : `${this.$store.getters["fa/prmonth"]}`;
+      `${this.$store.getters["fa/prmonth"] + 1}`.length < 2
+        ? `0${this.$store.getters["fa/prmonth"] + 1}`
+        : `${this.$store.getters["fa/prmonth"] + 1}`;
     this.date1 = `${this.$store.getters["fa/year"]}-${mm}-01`;
     this.date2 = `${this.$store.getters["fa/pryear"]}-${prmm}-01`;
     this.dt = `01.${mm}.${this.$store.getters["fa/year"]}`;
@@ -609,6 +617,29 @@ export default {
 };
 </script>
 <style  scoped>
+.tr-chart .row {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 100%;
+}
+.tr-chart .sec_nav {
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: space-between;
+}
+.tr-chart .dropdown {
+  display: flex;
+  height: 35px;
+  margin: 0 20px;
+  width: 195px;
+}
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
 body {
   color: white !important;
 }
@@ -628,10 +659,23 @@ body {
   background: #5973cc !important;
 }
 .trfabtgraph {
-  margin-left: 45px;
+  width: 195px;
   background: #5973cc !important;
 }
 </style>
-
-
-
+<style >
+.tr-chart {
+  display: flex;
+  width: 100%;
+}
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
+.tr-chart__content {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+</style>

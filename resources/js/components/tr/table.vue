@@ -2,86 +2,86 @@
     <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4">№ сквВ</td>
-                <td rowspan="4">Тип скважины</td>
-                <td rowspan="4">Горизонт</td>
-                <td rowspan="4">Блок</td>
-                <td rowspan="4">Наружный диаметр э/к</td>
-                <td rowspan="4">Наружный диаметр НКТ</td>
-                <td rowspan="4">Диаметр штуцера</td>
-                <td rowspan="4">Нвдп</td>
-                <td rowspan="4">Способ эксплуатации</td>
-                <td rowspan="4">Тип насоса</td>
-                <td rowspan="4">Частота работы насоса или число оборотов</td>
-                <td rowspan="4">Н сп насоса</td>
-                <td rowspan="4">Р пл</td>
-                <td rowspan="4">Н дин</td>
-                <td rowspan="4">Р затр</td>
-                <td class="colspan" colspan="4">Фактический режим</td>
-                <td rowspan="4">Состояние на конец месяца</td>
-                <td rowspan="4">ГФ</td>
-                <td rowspan="4">К прод</td>
-                <td class="colspan" colspan="7">Расчет технологического потенциала от ИДН</td>
-                <td class="colspan" colspan="4">Намечаемый режим</td>
+                <td rowspan="4" class="th">№ скв</td>
+                <td rowspan="4" class="th">Тип скважины</td>
+                <td rowspan="4" class="th">Горизонт</td>
+                <td rowspan="4" class="th">Блок</td>
+                <td rowspan="4" class="th">Наружный диаметр э/к</td>
+                <td rowspan="4" class="th">Наружный диаметр НКТ</td>
+                <td rowspan="4" class="th">Диаметр штуцера</td>
+                <td rowspan="4" class="th">Нвдп</td>
+                <td rowspan="4" class="th">Способ эксплуатации</td>
+                <td rowspan="4" class="th">Тип насоса</td>
+                <td rowspan="4" class="th">Частота работы насоса или число оборотов</td>
+                <td rowspan="4" class="th">Н сп насоса</td>
+                <td rowspan="4" class="th">Р пл</td>
+                <td rowspan="4" class="th">Н дин</td>
+                <td rowspan="4" class="th">Р затр</td>
+                <td class="colspan th" colspan="4">Фактический режим</td>
+                <td rowspan="4" class="th">Состояние на конец месяца</td>
+                <td rowspan="4" class="th">ГФ</td>
+                <td rowspan="4" class="th">К прод</td>
+                <td class="colspan th" colspan="7">Расчет технологического потенциала от ИДН</td>
+                <td class="colspan th" colspan="4">Намечаемый режим</td>
 
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="3">P заб</td>
-                <td rowspan="3">Q н</td>
-                <td rowspan="3">Q ж</td>
-                <td rowspan="3">Обводненность</td>
-                <td rowspan="3">P заб</td>
-                <td class="colspan" colspan="2">ИДН</td>
-                <td rowspan="3">К прод от стимуляции</td>
-                <td class="colspan" colspan="2">ГРП</td>
-                <td rowspan="3">Общий прирост Q н</td>
+                <td rowspan="3" class="th">P заб</td>
+                <td rowspan="3" class="th">Q н</td>
+                <td rowspan="3" class="th">Q ж</td>
+                <td rowspan="3" class="th">Обводненность</td>
+                <td rowspan="3" class="th">P заб</td>
+                <td class="colspan th" colspan="2">ИДН</td>
+                <td rowspan="3" class="th">К прод от стимуляции</td>
+                <td class="colspan th" colspan="2">ГРП</td>
+                <td rowspan="3" class="th">Общий прирост Q н</td>
 
-                <td rowspan="3">Диаметр штуцера</td>
-                <td rowspan="3">Q н</td>
-                <td rowspan="3">Q ж</td>
-                <td rowspan="3">Обводненность</td>
+                <td rowspan="3" class="th">Диаметр штуцера</td>
+                <td rowspan="3" class="th">Q н</td>
+                <td rowspan="3" class="th">Q ж</td>
+                <td rowspan="3" class="th">Обводненность</td>
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="2">Q ж</td>
-                <td rowspan="2">Прирост Q н</td>
-                <td rowspan="2">Q ж</td>
-                <td rowspan="2">Прирост Q н</td>
+                <td rowspan="2" class="th">Q ж</td>
+                <td rowspan="2" class="th">Прирост Q н</td>
+                <td rowspan="2" class="th">Q ж</td>
+                <td rowspan="2" class="th">Прирост Q н</td>
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975">
-                <td @click="sortBy('well')"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('well_type')"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('horizon')"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('block')"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('cas_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('tub_OD')"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('choke_d')"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('h_up_perf_md')"><i class="fa fa-fw fa-sort"></i>м</td>
-                <td @click="sortBy('exp_meth')"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('pump_type')"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('freq')"><i class="fa fa-fw fa-sort"></i>Гц, об/мин</td>
-                <td @click="sortBy('h_pump_set')"><i class="fa fa-fw fa-sort"></i>м</td>
-                <td @click="sortBy('p_res')"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('h_dyn')"><i class="fa fa-fw fa-sort"></i>м</td>
-                <td @click="sortBy('p_annular')"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('bhp')"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('q_o')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('q_l')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-                <td @click="sortBy('wct')"><i class="fa fa-fw fa-sort"></i>%</td>
-                <td @click="sortBy('well_status_last_day')"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('gor')"><i class="fa fa-fw fa-sort"></i>м3/т</td>
-                <td @click="sortBy('pi')"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
-                <td @click="sortBy('tp_idn_bhp')"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('tp_idn_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-                <td @click="sortBy('tp_idn_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('tp_idn_pi_after')"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
-                <td @click="sortBy('tp_idn_grp_q_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-                <td @click="sortBy('tp_idn_grp_q_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('EMPTY')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('planned_choke')"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('planned_oil')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('planned_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-                <td @click="sortBy('planned_wct')"><i class="fa fa-fw fa-sort"></i>%</td>
+                <td @click="sortBy('well')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('well_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('block')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('cas_OD')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
+                <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
+                <td @click="sortBy('choke_d')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
+                <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
+                <td @click="sortBy('exp_meth')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('pump_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>Гц, об/мин</td>
+                <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
+                <td @click="sortBy('p_res')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
+                <td @click="sortBy('h_dyn')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
+                <td @click="sortBy('p_annular')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
+                <td @click="sortBy('bhp')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
+                <td @click="sortBy('q_o')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+                <td @click="sortBy('q_l')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                <td @click="sortBy('wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
+                <td @click="sortBy('well_status_last_day')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('gor')" class="th"><i class="fa fa-fw fa-sort"></i>м3/т</td>
+                <td @click="sortBy('pi')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
+                <td @click="sortBy('tp_idn_bhp')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
+                <td @click="sortBy('tp_idn_liq')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                <td @click="sortBy('tp_idn_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+                <td @click="sortBy('tp_idn_pi_after')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
+                <td @click="sortBy('tp_idn_grp_q_liq')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                <td @click="sortBy('tp_idn_grp_q_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+                <td @click="sortBy('gt_total_inc')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+                <td @click="sortBy('planned_choke')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
+                <td @click="sortBy('planned_oil')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+                <td @click="sortBy('planned_liq')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                <td @click="sortBy('planned_wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
             </tr>
         </thead>
         <tbody>
@@ -410,7 +410,7 @@
                     </span>
                 </td>
 
-                <td>{{Math.round(row.EMPTY*10)/10}}</td>
+                <td>{{Math.round(row.gt_total_inc*10)/10}}</td>
 
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].planned_choke[1][0] !== '0'}">
@@ -505,16 +505,29 @@ tr:nth-child(even) {
     font-size: 9px;
     padding: unset;
 }
-/* table thead {
-  display: block;
+
+.table {
+    overflow: scroll;
+    height: 100vh;
+}
+.table .th {
+    position: sticky;
+    background: rgb(51, 57, 117);
+}
+.table tr:first-child .th {
+    top: 0;
+}
+.table tr:nth-child(2) .th {
+    top: 25px;
+}
+.table tr:nth-child(3) .th {
+    top: 50px;
+}
+.table tr:nth-child(4) .th {
+    top: 81px;
+}
+.table tr:nth-child(5) .th {
+    top: 98px;
 }
 
-table tbody {
-  overflow: auto;
-  height: 1000px;
-}
-
-table td {
-  width: 150px;
-} */
 </style>

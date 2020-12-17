@@ -166,7 +166,7 @@
             </div> -->
         <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
         <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a @click="editable()" v-if="!edit" class="col but-nav__link but"
+        <a @click="editable()" v-if="!edit" class="col but-nav__link but" style="margin-right: 11px;"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -384,10 +384,10 @@
             <td rowspan="4">k</td>
             <td rowspan="4">КН</td>
             <td rowspan="4">К пр</td>
-            <td class="colspan" colspan="13">
+            <td class="colspan" colspan="14">
               Расчет технологического потенциала от ИДН
             </td>
-            <td class="colspan" colspan="9">
+            <td class="colspan" colspan="11">
               Расчёт геологического потенциала
             </td>
             <td class="colspan" colspan="4">Проверка</td>
@@ -450,9 +450,12 @@
             <td rowspan="3"><span>К пр от стимуляции</span></td>
             <td class="colspan" colspan="4">ГРП</td>
             <td rowspan="3"><span>% прироста Q н</span></td>
+            <td rowspan="3"><span>Общий прирост Q н</span></td>
             <td rowspan="3"><span>Р заб</span></td>
             <td class="colspan" colspan="4">ИДН</td>
             <td class="colspan" colspan="4">ГРП</td>
+            <td rowspan="3"><span>% прироста Q н</span></td>
+            <td rowspan="3"><span>Общий прирост Q н</span></td>
             <td class="colspan" colspan="2">Ошибки</td>
             <td class="colspan" colspan="2">Предупреждения</td>
             <td rowspan="3"><span>Траб</span></td>
@@ -668,6 +671,8 @@
             <td @click="sortBy('tp_idn_q_oil_inc_perc')">
               <i class="fa fa-fw fa-sort"></i>%
             </td>
+            <td @click="sortBy('gt_total_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            
             <td @click="sortBy('gp_idn_bhp')">
               <i class="fa fa-fw fa-sort"></i>атм
             </td>
@@ -695,6 +700,8 @@
             <td @click="sortBy('gp_grp_q_oil_inc')">
               <i class="fa fa-fw fa-sort"></i>
             </td>
+            <td @click="sortBy('gp_total_inc_perc')"><i class="fa fa-fw fa-sort"></i>%</td>
+            <td @click="sortBy('gp_total_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
             <td @click="sortBy('error_count')">
               <i class="fa fa-fw fa-sort"></i>
             </td>
@@ -3775,6 +3782,9 @@
               {{ Math.round(row.tp_idn_q_oil_inc_perc * 10) / 10 }}
             </td>
 
+            <td v-if="!edit">{{Math.round(row.gt_total_inc*10)/10}}</td>
+            <td v-if="edit">{{Math.round(row.gt_total_inc*10)/10}}</td>
+
             <!-- <td>{{Math.round(row.gp_idn_bhp*10)/10}}</td> -->
             <td
               v-if="!edit"
@@ -4277,6 +4287,14 @@
                 {{ wells[row_index].gp_grp_q_oil_inc[1][1] }}
               </span>
             </td>
+
+
+            <td v-if="!edit">{{Math.round(row.gp_total_inc_perc*10)/10}}</td>
+            <td v-if="edit">{{Math.round(row.gp_total_inc_perc*10)/10}}</td>
+
+            <td v-if="!edit">{{Math.round(row.gp_total_inc*10)/10}}</td>
+            <td v-if="edit">{{Math.round(row.gp_total_inc*10)/10}}</td>
+
 
             <td v-if="!edit">{{ row.error_count }}</td>
             <td v-if="edit">{{ row.error_count }}</td>
@@ -6337,7 +6355,7 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-  margin-left: 1087px !important;
+  margin-left: 659px !important;
   margin-top: 4px;
 }
 
