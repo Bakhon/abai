@@ -503,7 +503,7 @@
             </div>
             <div class="col-2 monitor__right">
                 <div class="monitor__right-block monitor__right-block_radial">
-                    <p class="monitor__right-block-title">Рекомендации дозирования ИК</p>
+                    <p class="monitor__right-block-title">Рекомендованная дозировка ИК</p>
                     <div class="radial">
                         <monitor-chart-radialbar></monitor-chart-radialbar>
                     </div>

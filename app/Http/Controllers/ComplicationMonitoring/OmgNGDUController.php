@@ -36,7 +36,7 @@ class OmgNGDUController extends Controller
                 'list' => route('omgngdu.list'),
                 'export' => route('omgngdu.export'),
             ],
-            'title' => 'Форма ввода данных ОМГ НГДУ',
+            'title' => 'База данных ОМГ НГДУ',
             'table_header' => [
                 'Узел отбора' => 6,
                 'Фактические данные ОМГ ЦА' => 10,
