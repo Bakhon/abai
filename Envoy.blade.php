@@ -1,8 +1,8 @@
 @servers(['localhost' => '127.0.0.1'])
 
 @setup
-    $releases_dir = '/var/www/dashboard_test/releases';
-    $app_dir = '/var/www/dashboard_test';
+    $releases_dir = '/var/www/dashboard/releases';
+    $app_dir = '/var/www/dashboard';
     $release = date('YmdHis');
     $new_release_dir = $releases_dir .'/'. $release;
 @endsetup
