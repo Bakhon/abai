@@ -632,6 +632,10 @@ input[type="text"]:enabled.square2 {
     border-radius: 2px;
 }
 
+.square3:focus {
+    background: #494AA5;
+}
+
 input[type="text"]:enabled.square3 {
 }
 
