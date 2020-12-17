@@ -2727,8 +2727,6 @@
             "time": "2020-12-03T17:45:45+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "okipa/laravel-html-helper",
             "version": "1.3.1",
             "source": {
@@ -2865,7 +2863,6 @@
             "time": "2020-05-02T19:36:02+00:00"
         },
         {
->>>>>>> 489e698 (ExcelForm -v1)
             "name": "opis/closure",
             "version": "3.6.1",
             "source": {
@@ -7803,10 +7800,6 @@
             "keywords": [
                 "tokenizer"
             ],
-<<<<<<< HEAD
-            "abandoned": true,
-            "time": "2019-09-17T06:23:10+00:00"
-=======
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-token-stream/issues",
                 "source": "https://github.com/sebastianbergmann/php-token-stream/tree/master"
@@ -7819,7 +7812,6 @@
             ],
             "abandoned": true,
             "time": "2020-08-04T08:28:15+00:00"
->>>>>>> 489e698 (ExcelForm -v1)
         },
         {
             "name": "phpunit/phpunit",

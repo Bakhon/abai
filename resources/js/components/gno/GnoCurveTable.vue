@@ -24,7 +24,7 @@ export default {
         // autosize: true,
         // showlegend: true,
         xaxis: {
-          title: "Дебит, Qж, м³/сут.",
+          title: "Дебит жидкости, м³/сут.",
           hoverformat: ".1f",
           // showline: true,
           // autorange: false,
@@ -43,7 +43,7 @@ export default {
           linecolor: "#454D7D"
         },
         yaxis: {
-          title: "Давление, атм",
+          title: "Давление, атм / Газосодержание, % ",
           hoverformat: ".1f",
           rangemode: 'nonnegative',
           // showline: true,
@@ -60,7 +60,7 @@ export default {
         },
 
          yaxis2: {
-          title: "Газосодержание, %",
+          title: "",
           hoverformat: ".1f",
           rangemode: 'nonnegative',
           // showline: true,
