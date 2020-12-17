@@ -9,6 +9,8 @@ use Level23\Druid\Context\GroupByV2QueryContext;
 use Level23\Druid\Filters\FilterBuilder;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Adldap\Laravel\Facades\Adldap;
+use App\Models\DZO\DZOday;
+use App\Models\VisCenter2\Vis2Form;
 use Spatie\Permission\Contracts\Permission;
 use Spatie\Permission\Models\Permission as ModelsPermission;
 use Spatie\Permission\Models\Role;
@@ -74,9 +76,24 @@ return $response;
         return view('visualcenter.visualcenter3');
     }
 
+    public function visualcenter3GetData(Request $request)  
+    {
+
+        //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
+        $period = ($request->timestampEnd-$request->timestampToday)-86400000;        
+        return response()->json(DZOday::all('oil_plan','oil_fact','__time','dzo','oil_dlv_plan','oil_dlv_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
+        //return response()->json(Vis2Form::all());//response()->json($array);
+        //return  response()->json($request);
+    }
+
     public function visualcenter4()
     {
         return view('visualcenter.visualcenter4');
+    }
+
+    public function visualcenter5()
+    {
+        return view('visualcenter.visualcenter5');
     }
 
     public function production()
@@ -266,7 +283,9 @@ return $response;
             $q_l = $request->q_l; // БД ОМГ НГДУ  input in pipesim m3/day
             $WC = $request->WC; // БД ОМГ НГДУ input in pipesim Watercut
             //oil density
-            $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+            $rhol = $request->rhol; // БД Лабараторная НЕФТИ input in pipesim density dead oil g/cm3
+            $rhol = $rhol * 1000;   // БД Лабараторная НЕФТИ input in pipesim density dead oil kg/m3
+
             //$q_l = $q_l * 1000 / $rhol; // перевод массового расхода (т/сут) в объемный (м3/сут)
             $q_l = $q_l / 24.0 / 60.0 / 60.0; // input in pipesim convert from m3/d to m3/sec
             //flowrate of gas
@@ -877,8 +896,8 @@ return $response;
             't_final_celsius_point_F' => round($t_final,1),
             't_final_celsius_point_E' => round($t_heater,1),
             //'corrosion_mm_per_year' => round($r,4),
-            'pCO2_kPa' => round($pCO2,4),
-            'pH2S_kPa' => round($pH2S,4),
+            'pCO2_kPa' => round($pCO2,2),
+            'pH2S_kPa' => round($pH2S,2),
             //'dose_mg_per_l' => round($dose,4),
             //'H2S_mg_per_l' => round($H2S,4),
             //'CO2_mg_perl' => round($CO2,4),
@@ -911,5 +930,9 @@ return $response;
     public function trfa()
     {
         return view('trfa.trfa');
+    }    ///
+    public function tr_charts()
+    {
+        return view('tr_charts.tr_charts');
     }    ///
 }

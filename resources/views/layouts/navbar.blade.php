@@ -79,7 +79,12 @@
                             </li>
                             <li class="nav-item child">
                                 <a href="{{url('/')}}/ru/oilgas">
-                                    <span class="workTypeText">Данных по нефти и газу</span>
+                                    <span class="workTypeText">База данных по нефти и газу</span>
+                                </a>
+                            </li>
+                            <li class="nav-item child">
+                                <a href="{{url('/')}}/ru/corrosioncrud">
+                                    <span class="workTypeText">База данных по скорости коррозии</span>
                                 </a>
                             </li>
                         </ul>
@@ -154,7 +159,7 @@
 </script>
 <style>
     /*.bg-dark {
-        background-color: #20274e !important;     
+        background-color: #20274e !important;
     }*/
 
     .fas {

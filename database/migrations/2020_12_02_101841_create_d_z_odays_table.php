@@ -17,8 +17,7 @@ class CreateDZOdaysTable extends Migration
             $table->bigIncrements('id');
             
             $table->dateTime('date', 0);	
-            $table->text('__time');
-            $table->text("dzo")->nullable();
+            $table->text("dzo");
             $table->text("mestorozhdenie")->nullable();	
             $table->text("ngdu")->nullable();
             $table->float("oil_plan",32,8)->nullable();
@@ -133,7 +132,7 @@ class CreateDZOdaysTable extends Migration
             $table->integer("tb_covid_prev_day")->nullable();
             $table->integer("tb_covid_total")->nullable();
             $table->integer("tb_covid_recover")->nullable();
-            
+            $table->text('__time');
             $table->timestamps();
         });
     }

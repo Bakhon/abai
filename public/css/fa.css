@@ -22,7 +22,7 @@ td.fitwidth {
   }
 
 
-.but-nav__link {
+/* .but-nav__link {
 
     font-weight: inherit;
     line-height: 3;
@@ -36,7 +36,7 @@ td.fitwidth {
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
-}
+} */
 
 .headerColumn {
     background:#0D1E63;
@@ -172,4 +172,45 @@ table {
     line-height: 1.6;
     color: #ffffff;
     text-align: left;
+}
+.CellWithComment{
+    position:relative;
+}
+
+.cell-with-comment {
+    /* display: flex; */
+    align-items: center;
+    text-align: center;
+    position: relative;
+    /* border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important; */
+}
+
+.circle-err {
+    display: block;
+    background: #0d092a;
+    height: 10px;
+    border-radius: 50px;
+    width: 10px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.cell-comment{
+    display: none;
+    width: auto;
+    position:absolute;
+    z-index:100;
+    text-align: Left;
+    opacity: 0.4;
+    transition: opacity 2s;
+    border-radius: 6px;
+    background-color: #555;
+    padding:3px;
+    top:-80px;
+}
+.cell-with-comment:hover .cell-comment {
+    display: flex;
+    opacity: 1;
 }

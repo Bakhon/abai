@@ -2,10 +2,15 @@
 
 namespace App\Models\ComplicationMonitoring;
 
+use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
 
 class OmgNGDU extends Model
 {
+    use WithHistory;
+
+    protected $guarded = ['id'];
+
     public function ngdu()
     {
         return $this->hasOne('App\Models\Refs\Ngdu','id','ngdu_id')->withDefault();
@@ -29,5 +34,10 @@ class OmgNGDU extends Model
     public function well()
     {
         return $this->hasOne('App\Models\Refs\Well','id','well_id')->withDefault();
+    }
+
+    public function field()
+    {
+        return $this->hasOne('App\Models\Refs\Field','id','field_id')->withDefault();
     }
 }

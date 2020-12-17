@@ -162,6 +162,8 @@ export default {
         data:null,
         chart:null,
         layout:{
+          plot_bgcolor: "#20274e",
+          paper_bgcolor: "#20274e",
             margin: {
                 l: 0,
                 r: 0,
@@ -170,17 +172,55 @@ export default {
                 pad: 0
             },
             height:500,
+            gridcolor: "white",
+            font: { color: "white" },
+            // xaxis: {
+            //   tickcolor: "white",
+            //   gridcolor: "white",
+            //   linewidth: 1,
+            // },
+            // yaxis: {
+            //   tickcolor: "white",
+            //   gridcolor: "white",
+            //   linewidth: 1,
+            // },
+            // zaxis: {
+            //   tickcolor: "white",
+            //   gridcolor: "white",
+            //   linewidth: 1,
+            // },
+            
             scene: {
                 xaxis: {title: 'dx',
-                        range: [0, 0]
+                        range: [0, 0],
+                        gridcolor: "white",
+                        zerolinecolor: "white",
+                        hovertemplate: "<b>Кривая притока</b><br>" + 
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
                 },
                 yaxis: {title: 'dy',
-                        range: [0, 0]
+                        range: [0, 0],
+                        gridcolor: "white",
+                        zerolinecolor: "white",
+                        hovertemplate: "<b>Кривая притока</b><br>" + 
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
                 },
-                zaxis: {title: 'md'}
+                zaxis: {title: 'md',
+                        gridcolor: "white",
+                        zerolinecolor: "white",
+                        hovertemplate: "<b>Кривая притока</b><br>" + 
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+                }
             }
         }
     }
+    Plotly.newPlot( data, layout, {modeBarButtonsToRemove: ['toImage']})
   },
 
   mounted(){
@@ -214,6 +254,10 @@ export default {
                 x: this.data.map((r) => r.dx),
                 y: this.data.map((r) => r.dy),
                 z: this.data.map((r) => r.md * -1),
+                text: this.data.map((r) => r.dls),
+                hovertemplate:
+                          "MD = %{z:.1f} м<br>" +
+                          "DLS = %{text:.1f} гр/10м<extra></extra>",
                 opacity: 1,
                 line:{
                     width: 12,

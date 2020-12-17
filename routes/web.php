@@ -14,7 +14,7 @@ Route::get('/', function () {
     return redirect('/'. App\Http\Middleware\LocaleMiddleware::$mainLanguage);
 });
 
-
+Route::get("/ecoeco", "ComplicationMonitoring\OilGasController@ecoData");
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], function() {
     Route::group(['middleware' => 'auth'], function () {
@@ -31,6 +31,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
+        Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
         Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
@@ -38,7 +39,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
         Route::get('/visualcenter2', 'DruidController@visualcenter2')->name('visualcenter2');
         Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
+        Route::get('/visualcenter3GetData', 'DruidController@visualcenter3GetData');
         Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
+        Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
@@ -67,10 +70,16 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/export', 'HomeController@export');
         Route::get('/fa', 'DruidController@fa')->name('fa');
         Route::get('/trfa', 'DruidController@trfa')->name('trfa');
+        Route::get('/tr_charts', 'DruidController@tr_charts')->name('tr_charts');
 
 
         //wm
+        Route::get('watermeasurement/list','ComplicationMonitoring\WaterMeasurementController@list')->name('watermeasurement.list');
+        Route::get('watermeasurement/export','ComplicationMonitoring\WaterMeasurementController@export')->name('watermeasurement.export');
+        Route::get('watermeasurement/history/{watermeasurement}','ComplicationMonitoring\WaterMeasurementController@history')->name('watermeasurement.history');
         Route::resource('watermeasurement','ComplicationMonitoring\WaterMeasurementController');
+
+        Route::get('/getfields', 'ComplicationMonitoring\WaterMeasurementController@getFields');
         Route::get('/getotherobjects', 'ComplicationMonitoring\WaterMeasurementController@getOtherObjects');
         Route::get('/getngdu', 'ComplicationMonitoring\WaterMeasurementController@getNgdu');
         Route::get('/getcdng', 'ComplicationMonitoring\WaterMeasurementController@getCdng');
@@ -87,14 +96,39 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('/getgudata', 'ComplicationMonitoring\WaterMeasurementController@getGuData');
         Route::post('/getgudatabyday', 'ComplicationMonitoring\OmgNGDUController@getGuDataByDay');
         Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
+
+        Route::get('omgca/list', 'ComplicationMonitoring\OmgCAController@list')->name('omgca.list');
+        Route::get('omgca/export', 'ComplicationMonitoring\OmgCAController@export')->name('omgca.export');
+        Route::get('omgca/history/{omgca}', 'ComplicationMonitoring\OmgCAController@history')->name('omgca.history');
         Route::resource('omgca','ComplicationMonitoring\OmgCAController');
+
+        Route::get('omguhe/list', 'ComplicationMonitoring\OmgUHEController@list')->name('omguhe.list');
+        Route::get('omguhe/export', 'ComplicationMonitoring\OmgUHEController@export')->name('omguhe.export');
+        Route::get('omguhe/history/{omguhe}', 'ComplicationMonitoring\OmgUHEController@history')->name('omguhe.history');
         Route::resource('omguhe','ComplicationMonitoring\OmgUHEController');
+
+        Route::get('omgngdu/list', 'ComplicationMonitoring\OmgNGDUController@list')->name('omgngdu.list');
+        Route::get('omgngdu/export', 'ComplicationMonitoring\OmgNGDUController@export')->name('omgngdu.export');
+        Route::get('omgngdu/history/{omgngdu}', 'ComplicationMonitoring\OmgNGDUController@history')->name('omgngdu.history');
         Route::resource('omgngdu','ComplicationMonitoring\OmgNGDUController');
+
+
         Route::post('/getgucdngngdufield', 'ComplicationMonitoring\WaterMeasurementController@getGuNgduCdngField');
-        Route::resource('oilgas','ComplicationMonitoring\OilGasController');
+
+        Route::get('oilgas/list', 'ComplicationMonitoring\OilGasController@list')->name('oilgas.list');
+        Route::get('oilgas/export', 'ComplicationMonitoring\OilGasController@export')->name('oilgas.export');
+        Route::get('oilgas/history/{oilgas}', 'ComplicationMonitoring\OilGasController@history')->name('oilgas.history');
+        Route::resource('oilgas','ComplicationMonitoring\OilGasController')->parameters(['oilgas' => 'oilgas']);
+
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
         Route::post('checkdublicateomgddng','ComplicationMonitoring\OmgCAController@checkDublicate');
+        Route::post('getprevdaylevel','ComplicationMonitoring\OmgUHEController@getPrevDayLevel');
+
+        Route::get('corrosioncrud/list', 'ComplicationMonitoring\CorrosionController@list')->name('corrosioncrud.list');
+        Route::get('corrosioncrud/export', 'ComplicationMonitoring\CorrosionController@export')->name('corrosioncrud.export');
+        Route::get('corrosioncrud/history/{corrosion}', 'ComplicationMonitoring\CorrosionController@history')->name('corrosioncrud.history');
+        Route::resource('corrosioncrud','ComplicationMonitoring\CorrosionController');
 
 
         //gno economic
@@ -114,7 +148,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('ecorefselectprsbrigcost','EcoRefsPrepElectPrsBrigCostController');
         Route::resource('ecorefstarifytn','EcoRefsTarifyTnController');
         Route::resource('ecorefsmacro','EcoRefsMacroController');
-        Route::post('/getkormass', 'OmgNGDUController@getKormass');
+        Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
         Route::resource('ecorefsempper','Refs\EcoRefsEmpPerController');
         Route::resource('ecorefsscfa','Refs\EcoRefsScFaController');
         Route::get('ecorefslist','Refs\EcoRefsScFaController@refsList');
@@ -135,14 +169,21 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::resource('abd12','VizCenter\Abd12Controller');
         Route::resource('abd35','VizCenter\Abd35Controller');
         Route::resource('abd46','VizCenter\Abd46Controller');
+        Route::resource('corpkpiid','VizCenter\CorpKpiIdController');
+        Route::resource('corpall','VizCenter\CorpAllController');
+
         Route::get('kpicalc','VizCenter\Marab2Controller@kpicalculation');
         Route::get('kpiList','VizCenter\Marab2Controller@kpiList');
 
         Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
 
-        Route::get('importdzoday','DZO\DZOdayController@importExcel');
+        Route::get('/importdzoday','DZO\DZOdayController@importExcel');
         Route::get('importdzoyear','DZO\DZOyearController@importExcel');
         Route::get('importdzocalc','DZO\DZOcalcController@importExcel');
+
+        Route::get('/import_excel', 'DZO\DZOdailyController@importExcel');
+        // Route::post('excelSubmit', 'DZO\DZOdailyController@importexcel')->name('excel');
+        Route::post('/import', 'DZO\DZOdailyController@import')->name('import');
 
     });
     Auth::routes([

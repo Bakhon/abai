@@ -33,7 +33,7 @@
                                     <td>{{ $item->company->name}}</td>
                                     <td>{{ $item->marabkpi->name}}</td>
                                     <td>{{ $item->type->name}}</td>
-                                    <td>{{ $item->date_col}}</td>
+                                    <td>{{ $item->date}}</td>
                                     <td>{{ $item->fact_zatraty_na_sebestoimost_dobychi_nefti }}</td>
                                     <td>{{ $item->fact_zatraty_kapitalnogo_vlozhenia }}</td>
                                     <td>{{ $item->opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov }}</td>
