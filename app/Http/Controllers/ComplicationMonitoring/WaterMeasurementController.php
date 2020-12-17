@@ -48,7 +48,7 @@ class WaterMeasurementController extends Controller
                 'list' => route('watermeasurement.list'),
                 'export' => route('watermeasurement.export'),
             ],
-            'title' => 'Лабораторные данные по промысловой жидкости',
+            'title' => 'База данных по промысловой жидкости',
             'fields' => [
                 'date' => [
                     'title' => 'Дата отбора',

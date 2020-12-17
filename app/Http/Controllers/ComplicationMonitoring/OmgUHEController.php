@@ -25,7 +25,7 @@ class OmgUHEController extends Controller
                 'list' => route('omguhe.list'),
                 'export' => route('omguhe.export'),
             ],
-            'title' => 'Форма ввода данных ОМГ УХЭ',
+            'title' => '<База данных ОМГ УХЭ',
             'table_header' => [
                 'Узел отбора' => 6,
                 'Фактические данные от УХЭ' => 5,
