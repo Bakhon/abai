@@ -44,5 +44,8 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\ComplicationMonitoring\OmgUHE::observe([
             \App\Observers\OmgUHEHistoryObserver::class
         ]);
+        \App\Models\ComplicationMonitoring\Pipe::observe([
+            \App\Observers\PipeHistoryObserver::class
+        ]);
     }
 }

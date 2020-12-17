@@ -83,6 +83,11 @@ abstract class BaseFilter
         $this->query->where('well_id', $guId);
     }
 
+    protected function filter_material($guId)
+    {
+        $this->query->where('material_id', $guId);
+    }
+
     protected function filter_other_objects($guId)
     {
         $this->query->where('other_objects_id', $guId);

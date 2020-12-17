@@ -128,14 +128,24 @@
                 </select>
             </div>
             <div class="form-label-group form-check">
-                <input type="hidden" name="fill" value="0">
                 <input
-                    type="checkbox"
-                    class="form-check-input"
-                    name="fill"
-                    id="fill"
-                    value="1"
-                    v-model="formFields.fill"
+                type="checkbox"
+                class="form-check-input"
+                name="fill_status"
+                id="fill_status"
+                v-model="formFields.fill_status"
+                />
+                <label class="form-check-label" for="fill_status">Заправка</label>
+            </div>
+            <div class="form-label-group" v-show="formFields.fill_status">
+                <input
+                type="number"
+                step="0.0001"
+                name="fill"
+                v-model="formFields.fill"
+                class="form-control"
+                id="fill"
+                placeholder=""
                 />
                 <label class="form-check-label" for="fill">Заправка</label>
             </div>
@@ -185,7 +195,8 @@ export default {
                 level: null,
                 out_of_service_оf_dosing: null,
                 current_dosage: null,
-                reason: null
+                reason: null,
+                fill_status: null
             }
         };
     },
@@ -203,7 +214,8 @@ export default {
                 level: this.omguhe.level,
                 out_of_service_оf_dosing: this.omguhe.out_of_service_оf_dosing,
                 current_dosage: this.omguhe.current_dosage,
-                reason: this.omguhe.reason
+                reason: this.omguhe.reason,
+                fill_status: !!this.omguhe.fill,
             }
             if (this.formFields.ngdu_id) {
                 this.chooseNgdu()
