@@ -17,17 +17,18 @@
 @endstory
 
 @task('clone_repository')
+    echo "Starting deployment ({{ $release }})"
     cp -r ./ {{ $new_release_dir }}
 @endtask
 
 @task('run_composer')
-    echo "Starting deployment ({{ $release }})"
+    echo "Run composer"
     cd {{ $new_release_dir }}
     composer install --prefer-dist --no-scripts -q -o
 @endtask
 
 @task('build_static')
-    echo "Starting deployment ({{ $release }})"
+    echo "Build static"
     cd {{ $new_release_dir }}
     npm install --prefer-offline --no-audit
     npm run --silent dev
@@ -50,7 +51,7 @@
 
     if [ "$purging" != "" ]; then
         echo Purging old releases: $purging;
-        ls -la releases;
+        ls -la $purging;
         #rm -rf $purging;
     else
         echo "No releases found for purging at this time";
