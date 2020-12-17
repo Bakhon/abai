@@ -10,4 +10,19 @@ class Well extends Model
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);
     }
+
+    public function watermeasurement()
+    {
+        return $this->hasMany(\App\Models\ComplicationMonitoring\WaterMeasurement::class);
+    }
+
+    public function oilgas()
+    {
+        return $this->hasMany(\App\Models\ComplicationMonitoring\OilGas::class);
+    }
+
+    public function omguhe()
+    {
+        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgUHE::class);
+    }
 }

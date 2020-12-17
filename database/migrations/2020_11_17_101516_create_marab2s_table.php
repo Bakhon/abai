@@ -17,13 +17,13 @@ class CreateMarab2sTable extends Migration
             $table->bigIncrements('id');
             $table->integer('company_id');
             $table->integer('type_id');
-            $table->date('date_col');
-            $table->integer('dividends');
-            $table->integer('vklad_v_ustavnoy_kapital');
-            $table->integer('vydacha_zaimov');
-            $table->integer('vozvrat_zaimov');
-            $table->integer('vozvrat_ustavnogo_kapitala');
-            $table->integer('others');
+            $table->date('date');
+            $table->integer('dividends')->nullable();
+            $table->integer('vklad_v_ustavnoy_kapital')->nullable();
+            $table->integer('vydacha_zaimov')->nullable();
+            $table->integer('vozvrat_zaimov')->nullable();
+            $table->integer('vozvrat_ustavnogo_kapitala')->nullable();
+            $table->integer('others')->nullable();
             $table->timestamps();
         });
     }

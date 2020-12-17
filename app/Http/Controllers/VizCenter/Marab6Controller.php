@@ -44,10 +44,9 @@ class Marab6Controller extends Controller
     {
         $request->validate([
             'type_id' => 'required',
-            // 'date_col'=> 'required',
-            'aim_dates'=> 'required',
-            'remained_days' => 'required',
-            'completion_probability' => 'required',
+            // 'aim_dates'=> 'required',
+            // 'remained_days' => 'required',
+            // 'completion_probability' => 'required',
             ]);
 
         Marab6::create($request->all());
@@ -91,10 +90,9 @@ class Marab6Controller extends Controller
         $Marab6=Marab6::find($id);
         $request->validate([
             'type_id' => 'required',
-            // 'date_col'=> 'required',
-            'aim_dates'=> 'required',
-            'remained_days' => 'required',
-            'completion_probability' => 'required',
+            // 'aim_dates'=> 'required',
+            // 'remained_days' => 'required',
+            // 'completion_probability' => 'required',
         ]);
 
         $Marab6->update($request->all());

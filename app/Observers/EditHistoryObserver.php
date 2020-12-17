@@ -8,6 +8,7 @@ class EditHistoryObserver
 {
 
     static protected $classNames = [
+        'field_id' => \App\Models\Refs\Field::class,
         'ngdu_id' => \App\Models\Refs\Ngdu::class,
         'cdng_id' => \App\Models\Refs\Cdng::class,
         'gu_id' => \App\Models\Refs\Gu::class,

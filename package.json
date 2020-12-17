@@ -30,7 +30,7 @@
         "@marketconnect/vue-pivot-table": "^1.0.0",
         "@syncfusion/ej2-vue-pivotview": "^18.3.44",
         "apexcharts": "^3.22.3",
-        "beegridtable": "^1.1.5",
+        "beegridtable": "^1.1.6",
         "bootstrap-select": "^1.13.18",
         "bootstrap-table": "^1.18.1",
         "chart.js": "^2.9.4",
@@ -42,7 +42,12 @@
         "laravel-vue-pagination": "^2.3.1",
         "luxon": "^1.25.0",
         "moment": "^2.29.1",
+<<<<<<< HEAD
         "plotly.js-locales": "^1.58.2",
+=======
+        "ol": "^6.4.3",
+        "plotly.js-locales": "^1.58.0",
+>>>>>>> b42133696ec2d2e3ce4169bd0cb67bdb7e2bde9b
         "tableexport.jquery.plugin": "^1.10.21",
         "v-calendar": "^1.1.1",
         "vue-apexcharts": "^1.6.0",

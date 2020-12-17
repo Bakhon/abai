@@ -76,15 +76,24 @@ return $response;
         return view('visualcenter.visualcenter3');
     }
 
-    public function visualcenter3GetData()
+    public function visualcenter3GetData(Request $request)  
     {
-       // return response()->json(DZOday::all()->where('__time', '>', '1601424000000')->where('__time', '<', '1602028800000'));
-        return response()->json(Vis2Form::all());//response()->json($array);
+
+        //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
+        $period = ($request->timestampEnd-$request->timestampToday)-86400000;        
+        return response()->json(DZOday::all('oil_plan','oil_fact','__time','dzo','oil_dlv_plan','oil_dlv_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
+        //return response()->json(Vis2Form::all());//response()->json($array);
+        //return  response()->json($request);
     }
 
     public function visualcenter4()
     {
         return view('visualcenter.visualcenter4');
+    }
+
+    public function visualcenter5()
+    {
+        return view('visualcenter.visualcenter5');
     }
 
     public function production()
@@ -921,5 +930,9 @@ return $response;
     public function trfa()
     {
         return view('trfa.trfa');
+    }    ///
+    public function tr_charts()
+    {
+        return view('tr_charts.tr_charts');
     }    ///
 }

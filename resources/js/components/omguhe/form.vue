@@ -5,9 +5,8 @@
             <div class="form-label-group">
                 <select
                     class="form-control"
-                    name="field"
-                    v-model="formFields.field"
-                    v-show="fields.length > 0"
+                    name="field_id"
+                    v-model="formFields.field_id"
                 >
                     <option v-for="row in fields" v-bind:value="row.id">
                         {{ row.name }}
@@ -129,23 +128,16 @@
                 </select>
             </div>
             <div class="form-label-group form-check">
+                <input type="hidden" name="fill" value="0">
                 <input
-                type="checkbox"
-                class="form-check-input"
-                name="fill_status"
-                v-model="formFields.fill_status"
+                    type="checkbox"
+                    class="form-check-input"
+                    name="fill"
+                    id="fill"
+                    value="1"
+                    v-model="formFields.fill"
                 />
-                <label class="form-check-label" for="fill_status">Заправка</label>
-            </div>
-            <div class="form-label-group" v-show="formFields.fill_status">
-                <input
-                type="number"
-                step="0.0001"
-                name="fill"
-                v-model="fill"
-                class="form-control"
-                placeholder=""
-                />
+                <label class="form-check-label" for="fill">Заправка</label>
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -178,14 +170,11 @@ export default {
             gus: {},
             zus: {},
             wells: {},
-            fields: [
-                {id: "1", name: "Узень"},
-                {id: "2", name: "Карамандыбас"},
-            ],
+            fields: {},
             out_of_service_оf_dosing: false,
             prevData: null,
             formFields: {
-                field: null,
+                field_id: null,
                 ngdu_id: null,
                 cdng_id: null,
                 gu_id: null,
@@ -196,15 +185,14 @@ export default {
                 level: null,
                 out_of_service_оf_dosing: null,
                 current_dosage: null,
-                reason: null,
-                fill_status: null
+                reason: null
             }
         };
     },
     mounted() {
         if (this.omguhe) {
             this.formFields = {
-                field: this.omguhe.field,
+                field_id: this.omguhe.field_id,
                 ngdu_id: this.omguhe.ngdu_id,
                 cdng_id: this.omguhe.cdng_id,
                 gu_id: this.omguhe.gu_id,
@@ -217,16 +205,16 @@ export default {
                 current_dosage: this.omguhe.current_dosage,
                 reason: this.omguhe.reason
             }
-            if(this.formFields.ngdu_id) {
+            if (this.formFields.ngdu_id) {
                 this.chooseNgdu()
             }
-            if(this.formFields.cdng_id) {
+            if (this.formFields.cdng_id) {
                 this.chooseCdng()
             }
-            if(this.formFields.gu_id) {
+            if (this.formFields.gu_id) {
                 this.chooseGu()
             }
-            if(this.formFields.zu_id) {
+            if (this.formFields.zu_id) {
                 this.chooseZu()
             }
         }
@@ -325,6 +313,15 @@ export default {
         }
     },
     beforeCreate: function () {
+        this.axios.get("/ru/getfields").then((response) => {
+            let data = response.data;
+            if (data) {
+                this.fields = data.data;
+            } else {
+                console.log('No data');
+            }
+        });
+
         this.axios.get("/ru/getngdu").then((response) => {
             let data = response.data;
             if (data) {

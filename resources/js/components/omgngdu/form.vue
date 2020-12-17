@@ -3,7 +3,7 @@
         <div class="col-xs-12 col-sm-4 col-md-4">
             <label>Месторождение</label>
             <div class="form-label-group">
-                <select class="form-control" name="field" v-model="formFields.field" v-show="fields.length > 0">
+                <select class="form-control" name="field_id" v-model="formFields.field_id">
                     <option v-for="row in fields" v-bind:value="row.id">{{ row.name }}</option>
                 </select>
             </div>
@@ -134,7 +134,7 @@ export default {
     data: function () {
         return {
             formFields: {
-                field: null,
+                field_id: null,
                 gu_id: null,
                 date: null,
                 pump_discharge_pressure: null,
@@ -156,10 +156,7 @@ export default {
             gus: {},
             zus: {},
             wells: {},
-            fields: [
-                {"id": "1", "name": "Узень"},
-                {"id": "2", "name": "Карамандыбас"}
-            ],
+            fields: {},
             kormass: null,
             kormass_id: null,
             field: null,
@@ -174,6 +171,15 @@ export default {
         }
     },
     beforeCreate: function () {
+
+        this.axios.get("/ru/getfields").then((response) => {
+            let data = response.data;
+            if (data) {
+                this.fields = data.data;
+            } else {
+                console.log('No data');
+            }
+        });
 
         this.axios.get("/ru/getngdu").then((response) => {
             let data = response.data;
@@ -215,7 +221,7 @@ export default {
     mounted() {
         if (this.omgngdu) {
             this.formFields = {
-                field: this.omgngdu.field,
+                field_id: this.omgngdu.field_id,
                 gu_id: this.omgngdu.gu_id,
                 date: this.omgngdu.date,
                 pump_discharge_pressure: this.omgngdu.pump_discharge_pressure,
