@@ -17,7 +17,7 @@ class AbdKpiIdController extends Controller
     {
         $abdkpiid = AbdKpiId::latest()->paginate(5);
 
-        return view('abdkpiid.index',compact('abdkpiid'))
+        return view('viscenterKPI.abdkpiid.index',compact('abdkpiid'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -28,7 +28,7 @@ class AbdKpiIdController extends Controller
      */
     public function create()
     {
-        return view('abdkpiid.create');
+        return view('viscenterKPI.abdkpiid.create');
     }
 
     /**
@@ -68,7 +68,7 @@ class AbdKpiIdController extends Controller
     public function edit($id)
     {
         $abdkpiid = AbdKpiId::find($id);
-        return view('abdkpiid.edit',compact('abdkpiid'));
+        return view('viscenterKPI.abdkpiid.edit',compact('abdkpiid'));
     }
 
     /**

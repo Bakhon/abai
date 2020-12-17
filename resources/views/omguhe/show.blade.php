@@ -17,26 +17,26 @@
                         <th><b>Наименование</b></th>
                         <th><b>Значение</b></th>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>Месторождение</td>
                         <td>{{$omguhe->field->name}}</td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td>НГДУ</td>
                         <td>{{$omguhe->ngdu->name}}</td>
-                    </tr>
-                    <tr>
+                    </tr> -->
+                    <!-- <tr>
                         <td>ЦДНГ</td>
                         <td>{{$omguhe->cdng->name}}</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td>ГУ</td>
                         <td>{{$omguhe->gu->name}}</td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>ЗУ</td>
                         <td>{{$omguhe->zu->name}}</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td>Скважина</td>
                         <td>{{$omguhe->well->name}}</td>
@@ -45,10 +45,10 @@
                         <td>Фактическая дозировка, г/м3</td>
                         <td>{{$omguhe->current_dosage}}</td>
                     </tr>
-                    <tr>
+                    <!-- <tr>
                         <td>Суточный расход ингибитора, кг/сут</td>
                         <td>{{$omguhe->daily_inhibitor_flowrate}}</td>
-                    </tr>
+                    </tr> -->
                     <tr>
                         <td>Простой дозатора, сутки</td>
                         <td>
