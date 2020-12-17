@@ -206,8 +206,8 @@
           </div>
         </div> -->
         <div class="big-data-input-container">
-          <search-form
-            :search-string.sync="searchString"
+          <search-form-refresh
+            @input="handlerSearch"
             @start-search="searchWell()"
           />
         </div>
@@ -5968,7 +5968,7 @@
 <script>
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
-import SearchForm from "../ui-kit/SearchForm.vue";
+import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 
 export default {
@@ -5976,7 +5976,7 @@ export default {
   components: {
     TrTable,
     TrFullTable,
-    SearchForm,
+    SearchFormRefresh,
     FadeLoader,
   },
   beforeCreate: function () {},
@@ -6043,6 +6043,17 @@ export default {
       isloading1: true,
       isfulltable: false,
     };
+  },
+  watch: {
+    wells() {
+      console.log('wells changed = ', this.wells)
+    },
+    fullWells() {
+      console.log('fullWells changed = ', this.fullWells)
+    },
+    searchString() {
+      console.log('searchString changed = ', new Date())
+    },
   },
   methods: {
     editrow(row, rowId) {
@@ -6222,7 +6233,11 @@ export default {
       if (status === "1") return "#ffff00";
       return "#ff0000";
     },
+    handlerSearch(search) {
+      this.searchString = search;
+    },
     searchWell() {
+      const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
           "http://172.20.103.51:7576/api/techregime/" +
@@ -6230,9 +6245,7 @@ export default {
             "/" +
             this.month +
             "/" +
-            "search/" +
-            this.searchString +
-            "/"
+            searchParam
         )
         .then((response) => {
           console.log("search resp = ", response.data);

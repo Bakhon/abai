@@ -89,8 +89,8 @@
         </div>
       </div> -->
       <div class="big-data-input-container">
-        <search-form
-          :search-string.sync="searchString"
+        <search-form-refresh
+          @input="handlerSearch"
           @start-search="searchWell()"
         />
       </div>
@@ -845,13 +845,13 @@ import "vue-easy-notify/dist/vue-easy-notify.css";
 import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
-import SearchForm from "../ui-kit/SearchForm.vue";
+import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
-    SearchForm,
+    SearchFormRefresh,
   },
   data: function () {
     return {
@@ -1128,11 +1128,15 @@ export default {
         return "#272953";
       }
     },
+    handlerSearch(search) {
+      this.searchString = search;
+    },
     searchWell() {
       const prMm = this.$store.getters["fa/month"];
       const prPrMm = this.$store.getters["fa/prmonth"];
       const yyyy = this.$store.getters["fa/year"];
       const pryyyy = this.$store.getters["fa/pryear"];
+      const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
           "http://172.20.103.51:7576/api/techregime/factor/" +
@@ -1143,9 +1147,8 @@ export default {
             pryyyy +
             "/" +
             prPrMm +
-            "/search/" +
-            this.searchString +
-            "/"
+            "/" +
+            searchParam
         )
         .then((response) => {
           console.log("search resp = ", response.data);
