@@ -5992,6 +5992,8 @@ export default {
       )
       .then((response) => {
         let data = response.data;
+        this.year = yyyy;
+        this.month = mm;
         this.isloading = false;
         if (data) {
           console.log(data);
@@ -6152,6 +6154,7 @@ export default {
     },
     onChangeYear(event) {
       this.selectYear = event.target.value;
+      this.year = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
 
