@@ -46,16 +46,6 @@ class Pipes extends Command
     private function calculateCoordinates(): void
     {
 
-        $builder = $druidClient->query('economic_2020v4', Granularity::DAY);
-            $result = $builder
-                ->interval('2020-01-01T00:00:00+00:00/2020-01-02T00:00:00+00:00')
-                ->select('*')
-                ->get()
-                ->data();
-
-            dd($result);
-
-
         $gus = \App\Models\Refs\Gu::query()
             ->whereHas('zuPipes')
             ->orWhereHas('wellPipes')
