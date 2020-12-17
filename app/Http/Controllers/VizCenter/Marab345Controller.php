@@ -24,7 +24,7 @@ class Marab345Controller extends Controller
         $marab345 = Marab345::latest()->with('company')->paginate(5); 
         $marab345 = Marab345::latest()->with('type')->paginate(5); 
 
-        return view('marab345.index',compact('marab345'))
+        return view('viscenterKPI.marab345.index',compact('marab345'))
             ->with('i', (request()->input('page', 1) - 1) * 5); 
     }
 
@@ -38,7 +38,7 @@ class Marab345Controller extends Controller
         $company = EcoRefsCompaniesId::get();
         $marabkpi = MarabKpiId::get();
         $type = TypeId::get();
-        return view('marab345.create',compact('company', 'marabkpi', 'type'));
+        return view('viscenterKPI.marab345.create',compact('company', 'marabkpi', 'type'));
     }
 
     /**
@@ -91,7 +91,7 @@ class Marab345Controller extends Controller
         $company = EcoRefsCompaniesId::get();
         $marabkpi = MarabKpiId::get();
         $type = TypeId::get();
-        return view('marab345.edit',compact('row', 'company', 'marabkpi', 'type'));
+        return view('viscenterKPI.marab345.edit',compact('row', 'company', 'marabkpi', 'type'));
     }
 
     /**

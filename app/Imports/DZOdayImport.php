@@ -2,8 +2,11 @@
 
 namespace App\Imports;
 
-use App\Models\DZO\DZOday;
+use App\Models\DZO\DZOdaily;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithStartRow;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class DZOdayImport implements ToModel
 {
@@ -14,7 +17,7 @@ class DZOdayImport implements ToModel
     */
     public function model(array $row)
     {
-        return new DZOday([
+        return new DZOdaily([
             "date" => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]),
             "dzo" => $row[ 1 ],
             "mestorozhdenie" => $row[ 2 ],
@@ -23,8 +26,8 @@ class DZOdayImport implements ToModel
             "oil_fact" => $row[ 5 ],
             "gk_plan" => $row[ 6 ],
             "gk_fact" => $row[ 7 ],
-            "liq_plan" => $row[ 8 ],
-            "liq_fact" => $row[ 9 ],
+            "dobycha_zhidkosti_plan" => $row[ 8 ],
+            "dobycha_zhidkosti_fact" => $row[ 9 ],
             "sdacha_nefti_kuun" => $row[ 10 ],
             "oil_dlv_plan" => $row[ 11 ],
             "oil_dlv_fact" => $row[ 12 ],
@@ -91,7 +94,7 @@ class DZOdayImport implements ToModel
             "fond_neftedob_osvoenie" => $row[ 73 ],
             "fond_neftedob_ofls" => $row[ 74 ],
             "fond_neftedob_nrs" => $row[ 75 ],
-            "prod_wells_idle" => $row[ 76 ],
+            "fond_neftedob_prostoy" => $row[ 76 ],
             "fond_neftedob_prostoy_el" => $row[ 77 ],
             "fond_neftedob_svabirovanie" => $row[ 78 ],
             "fond_neftedob_period" => $row[ 79 ],
@@ -130,8 +133,15 @@ class DZOdayImport implements ToModel
             "tb_accident_death" => $row[ 112 ],
             "tb_covid_prev_day" => $row[ 113 ],
             "tb_covid_total" => $row[ 114 ],
-            "tb_covid_recover" => $row[ 115 ],
-            "__time" => (\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]))->getTimestamp()*1000
+            "gas_plan" => $row[ 115 ],
+            "gas_fact" => $row[ 116 ],
+            "liq_plan" => $row[ 117 ],
+            "liq_fact" => $row[ 118 ],
+            "inj_wells_idle" => $row[ 119 ],
+            "prod_wells_idle"=> $row[ 120 ],
+            "tb_covid_recover" => $row[ 121 ],
+            "__time" => (\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]))->getTimestamp()*1000,
+            
         ]);
     }
 }
