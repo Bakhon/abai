@@ -24,25 +24,25 @@
     <div class="dropdown-menu tr-sidebar__chart-menu">
       <div>
         <li class="tr-sidebar__page">
-          <a href="/ru/fa">Факторный анализ</a>
+          <a class="tr-sidebar__link" href="/ru/fa">Факторный анализ</a>
         </li>
         <li
           v-for="(item, index) in chartNamesFA"
           :key="item"
           class="tr-sidebar__graph"
         >
-          <a href="/ru/trfa" @click="() => setChartFa(index)">{{ item }}</a>
+          <a class="tr-sidebar__link" href="/ru/trfa" @click="() => setChartFa(index)">{{ item }}</a>
         </li>
 
         <li class="tr-sidebar__page">
-          <a href="/ru/tr">Тех.режим</a>
+          <a class="tr-sidebar__link" href="/ru/tr">Тех.режим</a>
         </li>
         <li
           v-for="(item, index) in chartNames"
           :key="item"
           class="tr-sidebar__graph"
         >
-          <a href="/ru/tr_charts" @click="() => setChart(index)">{{ item }}</a>
+          <a class="tr-sidebar__link" href="/ru/tr_charts" @click="() => setChart(index)">{{ item }}</a>
         </li>
       </div>
     </div>
@@ -92,6 +92,8 @@ export default {
   padding: 0;
   width: 520px;
   max-width: 80vw;
+}
+.tr-sidebar__link {
   color: #FFF;
 }
 .tr-sidebar__page {
