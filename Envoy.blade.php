@@ -10,6 +10,8 @@
 
 @story('deploy')
     clone_repository
+    run_composer
+    build_static
     update_symlinks
     update_permissions
     clean_old_releases
