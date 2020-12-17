@@ -10,9 +10,10 @@
 
 @story('deploy')
     clone_repository
-    run_composer
-    build_static
+    //run_composer
+    //build_static
     update_symlinks
+    update_permissions
     clean_old_releases
 @endstory
 
@@ -24,7 +25,7 @@
 @task('run_composer')
     echo "Run composer"
     cd {{ $new_release_dir }}
-    composer install --prefer-dist --no-scripts -q -o
+    composer install --prefer-dist -q -o
 @endtask
 
 @task('build_static')
@@ -46,13 +47,19 @@
     ln -nfs {{ $new_release_dir }} {{ $app_dir }}/current
 @endtask
 
+@task('update_permissions')
+    echo "Updating permissions"
+    sudo chown -R dash:dash {{ $new_release_dir }}
+    sudo chgrp -R www-data {{ $new_release_dir }}/storage {{ $new_release_dir }}/bootstrap/cache
+    sudo chmod -R ug+rwx {{ $new_release_dir }}/storage {{ $new_release_dir }}/bootstrap/cache
+@endtask
+
 @task('clean_old_releases')
     purging=$(ls -dt {{ $releases_dir }}/* | tail -n +3);
 
     if [ "$purging" != "" ]; then
         echo Purging old releases: $purging;
-        ls -la $purging;
-        #rm -rf $purging;
+        sudo rm -rf $purging;
     else
         echo "No releases found for purging at this time";
     fi
