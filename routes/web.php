@@ -194,6 +194,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         // Route::post('excelSubmit', 'DZO\DZOdailyController@importexcel')->name('excel');
         Route::post('/import', 'DZO\DZOdailyController@import')->name('import');
 
+        Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
+        Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
+
     });
     Auth::routes([
         'reset' => false,

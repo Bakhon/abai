@@ -121,6 +121,7 @@ Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
 // Vue.component('table-editor', require('./components/TableEditor.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('gu-map', require('./components/map.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 

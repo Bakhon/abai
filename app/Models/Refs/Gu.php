@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gu extends Model
 {
+    public function zus()
+    {
+        return $this->hasMany(\App\Models\Refs\Zu::class);
+    }
+
+    public function wells()
+    {
+        return $this->hasManyThrough(\App\Models\Refs\Well::class, \App\Models\Refs\Zu::class);
+    }
+
     public function omgca()
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgCA::class);
@@ -39,5 +49,15 @@ class Gu extends Model
     public function pipe()
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\Pipe::class);
+    }
+
+    public function zuPipes()
+    {
+        return $this->hasMany(\App\Models\Pipes\GuZuPipe::class);
+    }
+
+    public function wellPipes()
+    {
+        return $this->hasMany(\App\Models\Pipes\ZuWellPipe::class);
     }
 }
