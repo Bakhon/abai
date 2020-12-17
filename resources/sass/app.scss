@@ -2,7 +2,7 @@
 @font-face {
     font-family: "Harmonia-Sans";
     src: url('/fonts/HarmoniaSansProCyr-Regular.ttf');
-   
+
 }
 @font-face {
 font-family: "Bold";
@@ -30,3 +30,4 @@ src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 @import "~@syncfusion/ej2-grids/styles/material.css";
 @import "~@syncfusion/ej2-pivotview/styles/material.css";
 
+@import 'components/vSelect';

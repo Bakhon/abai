@@ -22,7 +22,7 @@ class CorpAllController extends Controller
         $corpall = CorpAll::latest()->with('corpkpi')->paginate(5);
         $corpall = CorpAll::latest()->with('type')->paginate(5);
 
-        return view('corpall.index',compact('corpall'))
+        return view('viscenterKPI.corpall.index',compact('corpall'))
             ->with('i', (request()->input('page', 1) - 1) * 5); 
     }
 
@@ -36,7 +36,7 @@ class CorpAllController extends Controller
         $company = EcoRefsCompaniesId::get();
         $type = TypeId::get();
         $corpkpi = CorpKpiId::get();
-        return view('corpall.create',compact('company','corpkpi','type'));
+        return view('viscenterKPI.corpall.create',compact('company','corpkpi','type'));
     }
 
     /**
@@ -85,7 +85,7 @@ class CorpAllController extends Controller
         $company = EcoRefsCompaniesId::get();
         $corpkpi = CorpKpiId::get();
         $type = TypeId::get();
-        return view('corpall.edit',compact('row', 'company', 'corpkpi', 'type'));
+        return view('viscenterKPI.corpall.edit',compact('row', 'company', 'corpkpi', 'type'));
     }
 
     /**

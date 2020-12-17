@@ -95,6 +95,10 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getallkormasses', 'ComplicationMonitoring\WaterMeasurementController@getAllKormasses');
         Route::post('/getgudata', 'ComplicationMonitoring\WaterMeasurementController@getGuData');
         Route::post('/getgudatabyday', 'ComplicationMonitoring\OmgNGDUController@getGuDataByDay');
+
+        Route::get('/getmaterials', 'RefsController@getMaterials');
+
+
         Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
 
         Route::get('omgca/list', 'ComplicationMonitoring\OmgCAController@list')->name('omgca.list');
@@ -119,6 +123,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('oilgas/export', 'ComplicationMonitoring\OilGasController@export')->name('oilgas.export');
         Route::get('oilgas/history/{oilgas}', 'ComplicationMonitoring\OilGasController@history')->name('oilgas.history');
         Route::resource('oilgas','ComplicationMonitoring\OilGasController')->parameters(['oilgas' => 'oilgas']);
+
+        Route::get('pipes/list', 'PipeController@list')->name('pipes.list');
+        Route::get('pipes/export', 'PipeController@export')->name('pipes.export');
+        Route::get('pipes/history/{pipes}', 'PipeController@history')->name('pipes.history');
+        Route::resource('pipes','PipeController');
 
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
@@ -177,13 +186,18 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
         Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
 
-        Route::get('/importdzoday','DZO\DZOdayController@importExcel');
+        Route::get('/import_hist','DZO\DZOdayController@importExcel');
+        Route::post('/import_h', 'DZO\DZOdayController@import')->name('import_h');
+
         Route::get('importdzoyear','DZO\DZOyearController@importExcel');
         Route::get('importdzocalc','DZO\DZOcalcController@importExcel');
 
         Route::get('/import_excel', 'DZO\DZOdailyController@importExcel');
         // Route::post('excelSubmit', 'DZO\DZOdailyController@importexcel')->name('excel');
         Route::post('/import', 'DZO\DZOdailyController@import')->name('import');
+
+        Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
+        Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
 
     });
     Auth::routes([

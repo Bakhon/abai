@@ -20,7 +20,7 @@ class Abd46Controller extends Controller
         $abd46 = Abd46::latest()->with('type')->paginate(5); 
         $abd46 = Abd46::latest()->with('abdkpi')->paginate(5); 
 
-        return view('abd46.index',compact('abd46'))
+        return view('viscenterKPI.abd46.index',compact('abd46'))
             ->with('i', (request()->input('page', 1) - 1) * 5); 
     }
 
@@ -33,7 +33,7 @@ class Abd46Controller extends Controller
     {
         $type = TypeId::get();
         $abdkpi = AbdKpiId::get();
-        return view('abd46.create',compact('type','abdkpi'));
+        return view('viscenterKPI.abd46.create',compact('type','abdkpi'));
     }
 
     /**
@@ -81,7 +81,7 @@ class Abd46Controller extends Controller
         $row = Abd46::find($id);
         $abdkpi = AbdKpiId::get();
         $type = TypeId::get();
-        return view('abd46.edit',compact('row', 'abdkpi', 'type'));
+        return view('viscenterKPI.abd46.edit',compact('row', 'abdkpi', 'type'));
     }
 
     /**

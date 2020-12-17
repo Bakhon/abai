@@ -17,8 +17,8 @@ class DZOday extends Model
         'oil_fact',
         'gk_plan',
         'gk_fact',
-        'liq_plan',
-        'liq_fact',
+        'dobycha_zhidkosti_plan',
+        'dobycha_zhidkosti_fact',
         'sdacha_nefti_kuun',
         'oil_dlv_plan',
         'oil_dlv_fact',
@@ -85,7 +85,7 @@ class DZOday extends Model
         'fond_neftedob_osvoenie',
         'fond_neftedob_ofls',
         'fond_neftedob_nrs',
-        'prod_wells_idle',
+        'fond_neftedob_prostoy',
         'fond_neftedob_prostoy_el',
         'fond_neftedob_svabirovanie',
         'fond_neftedob_period',
@@ -125,6 +125,12 @@ class DZOday extends Model
         'tb_covid_prev_day',
         'tb_covid_total',
         'tb_covid_recover',
-        "__time"
+        "__time",
+        "gas_plan",
+        "gas_fact",
+        "liq_plan",
+        "liq_fact",
+        "inj_wells_idle",
+        "prod_wells_idle",
     ];
 }

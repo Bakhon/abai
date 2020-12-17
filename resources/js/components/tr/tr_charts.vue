@@ -879,7 +879,7 @@ export default {
         maxY2 = 0,
         minY2 = 0;
       const categories = filtered30.map((item) => {
-        const newY1 = item.q_l + item.tp_idn_oil_inc + item.tp_idn_grp_q_oil;
+        const newY1 = item.q_l + item.tp_idn_liq_inc + item.tp_idn_grp_q_liq;
         const newY2Max =
           item.tp_idn_bhp > item.bhp ? item.tp_idn_bhp : item.bhp;
         const newY2Min =
@@ -1198,38 +1198,26 @@ export default {
       return Array.isArray(el[param]) ? el[param][0] : el[param];
     },
     onChangeMonth(event) {
-      if (event.target.value == 1) {
-        this.month = 12;
-      } else {
-        this.month = event.target.value - 1;
-      }
+      this.month = event.target.value;
+      this.$store.commit("tr/SET_MONTH", event.target.value);
     },
     onChangeYear(event) {
       this.selectYear = event.target.value;
+      this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt() {
-      //   const { dt } = this;
-      //   console.log(dt)
-      //   var choosenDt = dt.split("-");
       this.isLoading = true;
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
-      if (this.month == 12) {
-        this.year = this.selectYear - 1;
+      if (this.month < 10) {
+        this.dt = "01" + ".0" + (this.month) + "." + this.selectYear;
       } else {
-        this.year = this.selectYear;
-      }
-      if (this.month < 9) {
-        this.dt = "01" + ".0" + (this.month + 1) + "." + this.year;
-      } else if (this.month == 12) {
-        this.dt = "01" + ".01." + (this.year + 1);
-      } else {
-        this.dt = "01" + "." + (this.month + 1) + "." + this.year;
+        this.dt = "01" + "." + (this.month) + "." + this.selectYear;
       }
       this.axios
         .get(
           "http://172.20.103.51:7576/api/techregime/graph1/" +
-            this.year +
+            this.selectYear +
             "/" +
             this.month +
             "/"
@@ -1251,21 +1239,16 @@ export default {
     },
   },
   created() {
-    let prMm, yyyy;
+    let mm, yyyy;
     if (this.$store.getters["tr/month"] && this.$store.getters["tr/year"]) {
-      prMm = this.$store.getters["tr/month"];
+      mm = this.$store.getters["tr/month"];
       yyyy = this.$store.getters["tr/year"];
     } else {
       const today = new Date();
-      const dd = String(today.getDate()).padStart(2, "0");
-      const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      const dd = today.getDate();
+      mm = today.getMonth() + 1;
       yyyy = today.getFullYear();
-      if (mm == 0) {
-        prMm = 12;
-      } else {
-        prMm = mm - 1;
-      }
-      this.$store.commit("tr/SET_MONTH", prMm);
+      this.$store.commit("tr/SET_MONTH", mm);
       this.$store.commit("tr/SET_YEAR", yyyy);
     }
     this.axios
@@ -1273,12 +1256,12 @@ export default {
         "http://172.20.103.51:7576/api/techregime/graph1/" +
           yyyy +
           "/" +
-          prMm +
+          mm +
           "/"
       )
       .then((response) => {
         let data = response.data;
-        this.editdtm = prMm;
+        this.editdtm = mm;
         console.log(this.editdtm);
         this.editdty = yyyy;
         console.log(this.editdty);
@@ -1289,10 +1272,10 @@ export default {
         } else {
           console.log("No data");
         }
-        if (prMm < 10) {
-          this.dt = "01" + ".0" + prMm + "." + yyyy;
+        if (mm < 10) {
+          this.dt = "01" + ".0" + mm + "." + yyyy;
         } else {
-          this.dt = "01" + "." + prMm + "." + yyyy;
+          this.dt = "01" + "." + mm + "." + yyyy;
         }
       });
   },
