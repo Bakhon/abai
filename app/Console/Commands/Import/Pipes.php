@@ -39,7 +39,7 @@ class Pipes extends Command
      */
     public function handle(): void
     {
-        //Excel::import(new \App\Imports\PipesImport(), base_path($this->argument('path')));
+        Excel::import(new \App\Imports\PipesImport(), base_path($this->argument('path')));
         $this->calculateCoordinates();
     }
 
