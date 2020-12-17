@@ -845,7 +845,7 @@ export default {
         height: 450,
         showlegend: true,
         xaxis: {
-          // title: "Дебит, Qж, м³/сут.",
+          title: "Дебит жидкости, м³/сут.",
           hoverformat: ".1f",
           //  showline: true,
           zeroline: false,

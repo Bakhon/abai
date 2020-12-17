@@ -342,7 +342,9 @@ class WaterMeasurementController extends Controller
             ->getFilteredQuery($request->validated(), $query)
             ->paginate(25);
 
-        return response()->json(json_decode(\App\Http\Resources\WaterMeasurementListResource::collection($watermeasurement)->toJson()));
+        return response()->json(
+            json_decode(\App\Http\Resources\WaterMeasurementListResource::collection($watermeasurement)->toJson())
+        );
     }
 
     public function export(IndexTableRequest $request)
@@ -363,7 +365,7 @@ class WaterMeasurementController extends Controller
             ->getFilteredQuery($request->validated(), $query)
             ->get();
 
-        return Excel::download(new WaterMeasurementExport($wm), 'watermeasurement.xls');
+        return Excel::download(new WaterMeasurementExport($watermeasurement), 'watermeasurement.xls');
     }
 
     /**
@@ -540,13 +542,11 @@ class WaterMeasurementController extends Controller
         $wm = ComplicationMonitoringWaterMeasurement::find($id);
         $wm->delete();
 
-        if($request->ajax()) {
+        if ($request->ajax()) {
             return response()->json([], Response::HTTP_NO_CONTENT);
-        }
-        else {
+        } else {
             return redirect()->route('watermeasurement.index')->with('success', __('app.deleted'));
         }
-
     }
 
     public function getFields()
@@ -736,11 +736,37 @@ class WaterMeasurementController extends Controller
     {
         $wm = ComplicationMonitoringWaterMeasurement::query()
             ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subMonths(3))
+            ->where('date', '>=', \Carbon\Carbon::now()->subMonths(3)->startOfMonth())
             ->where('date', '<=', \Carbon\Carbon::now())
-            ->get();
-        $uhe = ComplicationMonitoringOmgUHE::where('gu_id', '=', $request->gu_id)->get();
-        $corrosion = ComplicationMonitoringCorrosion::where('gu_id', '=', $request->gu_id)->get();
+            ->get()
+            ->groupBy(
+                function ($item) {
+                    return \Carbon\Carbon::parse($item->date)->format('M');
+                }
+            );
+
+        $uhe = ComplicationMonitoringOmgUHE::query()
+            ->where('gu_id', '=', $request->gu_id)
+            ->where('date', '>=', \Carbon\Carbon::now()->subMonths(3)->startOfMonth())
+            ->where('date', '<=', \Carbon\Carbon::now())
+            ->get()
+            ->groupBy(
+                function ($item) {
+                    return \Carbon\Carbon::parse($item->date)->format('M');
+                }
+            );
+
+        $corrosion = ComplicationMonitoringCorrosion::query()
+            ->where('gu_id', '=', $request->gu_id)
+            ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '>=', \Carbon\Carbon::now()->subMonths(3)->startOfMonth())
+            ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '<=', \Carbon\Carbon::now())
+            ->get()
+            ->groupBy(
+                function ($item) {
+                    return \Carbon\Carbon::parse($item->date)->format('M');
+                }
+            );
+
         $kormass = ComplicationMonitoringGuKormass::where('gu_id', '=', $request->gu_id)->with('kormass')->first();
         $pipe = Pipe::where('gu_id', '=', $request->gu_id)->where('plot', '=', 'eg')->first();
         $pipeAB = Pipe::where('gu_id', '=', $request->gu_id)->where('plot', '=', 'ab')->first();
@@ -748,36 +774,30 @@ class WaterMeasurementController extends Controller
             'corrosion_velocity_with_inhibitor'
         )->latest()->first();
         $constantsValues = ConstantsValue::get();
-        $chartDtCarbonDioxide['dt'] = [];
-        $chartDtHydrogenSulfide['dt'] = [];
-        $chartDtCarbonDioxide['value'] = [];
-        $chartDtHydrogenSulfide['value'] = [];
+        $chartDtCarbonDioxide = $chartDtHydrogenSulfide = $chartIngibitor = $chartCorrosion = [
+            'dt' => [],
+            'value' => []
+        ];
 
-        foreach ($wm as $row) {
-            $date = new DateTime($row->date);
-            array_push($chartDtCarbonDioxide['dt'], $date->format('Y-m-d'));
-            array_push($chartDtHydrogenSulfide['dt'], $date->format('Y-m-d'));
-            array_push($chartDtCarbonDioxide['value'], $row->carbon_dioxide);
-            array_push($chartDtHydrogenSulfide['value'], $row->hydrogen_sulfide);
+        foreach($wm as $key => $wmMonth) {
+            $chartDtCarbonDioxide['dt'][] = $key;
+            $chartDtCarbonDioxide['value'][] = $wmMonth->avg('carbon_dioxide');
+
+            $chartDtHydrogenSulfide['dt'][] = $key;
+            $chartDtHydrogenSulfide['value'][] = $wmMonth->avg('hydrogen_sulfide');
         }
 
-        $chartIngibitor['dt'] = [];
-        $chartIngibitor['value'] = [];
-        foreach ($uhe as $row) {
-            $date = new DateTime($row->date);
-            array_push($chartIngibitor['dt'], $date->format('Y-m-d'));
-            array_push($chartIngibitor['value'], $row->current_dosage);
+        foreach ($uhe as $key => $uheMonth) {
+            $chartIngibitor['dt'][] = $key;
+            $chartIngibitor['value'][] = $uheMonth->avg('current_dosage');
         }
 
-        $chartCorrosion['dt'] = [];
-        $chartCorrosion['value'] = [];
-        foreach ($corrosion as $row) {
-            $date = new DateTime($row->final_date_of_corrosion_velocity_with_inhibitor_measure);
-            array_push($chartCorrosion['dt'], $date->format('Y-m-d'));
-            array_push($chartCorrosion['value'], $row->corrosion_velocity_with_inhibitor);
+        foreach ($corrosion as $key => $corrosionMonth) {
+            $chartCorrosion['dt'][] = $key;
+            $chartCorrosion['value'][] = $corrosionMonth->avg('corrosion_velocity_with_inhibitor');
         }
 
-        if ($kormass->kormass->name != 'Прямой УПСВ') {
+        if ($kormass && $kormass->kormass->name != 'Прямой УПСВ') {
             $kn = explode("-", $kormass->kormass->name);
             $kormass = $kn[1];
         } else {
