@@ -467,22 +467,38 @@ export default {
       this.filteredWells = filteredResult;
       const self = this;
       filteredResult.sort(function (a, b) {
-        if (b.h_dyn > a.h_dyn) return 1;
-        if (b.h_dyn < a.h_dyn) return -1;
+        if (b.h_up_perf_md < a.h_up_perf_md) return 1;
+        if (b.h_up_perf_md > a.h_up_perf_md) return -1;
         return 0;
       });
       let maxY1 = 0,
-        minY1 = 0,
-        maxY2 = 0,
-        minY2 = 0;
+        minY1 = 0;
       const categories = filteredResult.map((item) => {
-        const newY1 = item.h_dyn + item.h_up_perf_md;
-        if (newY1 < minY1) minY1 = newY1;
-        if (newY1 > maxY1) maxY1 = newY1;
+        let newMaxY1, newMinY1;
+        if (item.h_dyn > item.h_up_perf_md) {
+          if (item.h_dyn > item.h_pump_set) newMaxY1 = item.h_dyn;
+          else newMaxY1 = item.h_pump_set;
+        } else {
+          if (item.h_up_perf_md > item.h_pump_set) newMaxY1 = item.h_up_perf_md;
+          else newMaxY1 = item.h_pump_set;
+        }
+        if (item.h_dyn < item.h_up_perf_md) {
+          if (item.h_dyn < item.h_pump_set) newMinY1 = item.h_dyn;
+          else newMinY1 = item.h_pump_set;
+        } else {
+          if (item.h_up_perf_md < item.h_pump_set) newMinY1 = item.h_up_perf_md;
+          else newMinY1 = item.h_pump_set;
+        }
+        if (newMinY1 < minY1) minY1 = newMinY1;
+        if (newMaxY1 > maxY1) maxY1 = newMaxY1;
         return this.getStringOrFirstItem(item, "well");
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
-      const stacked = true;
+      const stacked = false;
+      const stroke = { 
+        show: true,
+        width: [5, 0, 0],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
         ...this.yaxisBase,
@@ -494,6 +510,7 @@ export default {
         },
         max: maxY1,
         min: minY1,
+        reversed: true,
       };
 
       this.chartBarOptions = {
@@ -501,24 +518,25 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: {
-          size: [0, 0, 5, 5],
+          size: [0, 5, 5],
           offsetX: -2,
         },
       };
       const series = [
         {
-          name: "Н д",
-          type: "bar",
+          name: "Н вд",
+          type: "line",
           data: filteredResult.map((item) =>
-            this.getStringOrFirstItem(item, "h_dyn")
+            this.getStringOrFirstItem(item, "h_up_perf_md")
           ),
         },
         {
-          name: "Н вд",
-          type: "bar",
+          name: "Н д",
+          type: "line",
           data: filteredResult.map((item) =>
-            this.getStringOrFirstItem(item, "h_up_perf_md")
+            this.getStringOrFirstItem(item, "h_dyn")
           ),
         },
         {
@@ -566,6 +584,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -606,6 +625,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
       };
       const series = [
@@ -679,6 +699,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -718,6 +739,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
       };
       const series = [
@@ -784,6 +806,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -823,6 +846,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
       };
       const series = [
@@ -892,6 +916,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -938,6 +963,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
       };
       const series = [
