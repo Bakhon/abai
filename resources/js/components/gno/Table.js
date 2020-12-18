@@ -1055,7 +1055,8 @@ export default {
               "dens_oil": this.densOil,
               "dens_water": this.densWater,
               "wct": this.wctInput,
-              "stroke_len": this.stroke_len
+              "stroke_len": this.stroke_len,
+              "pin_cel_value": this.piCelValue.split(' ')[0]
             }
           )
           this.axios.post(uri, jsonData).then((response) => {
