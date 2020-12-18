@@ -850,7 +850,9 @@ td {
 
 .tablePgno {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 50px);
+    position: relative;
+    overflow-y: auto;
 }
 
 .podbor-gno {
@@ -1311,6 +1313,11 @@ input.checkbox-q-liquid {
     display: flex;
     justify-content: space-between;
     height: 40px;
+}
+
+.modal-bign-header.with-padding {
+    padding: 10px 15px;
+    height: 50px;
 }
 
 .modal-bign-title {

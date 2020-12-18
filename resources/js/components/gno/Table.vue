@@ -462,8 +462,19 @@
 
             <modal class="modal-bign-wrapper chart" name="tablePGNO" :width="500" :height="550" :adaptive="true">
               <div class="modal-bign modal-bign-container no-padding">
-                <div class="tablePgno no-gutter"
-                     style="position: relative; width: 100%; height: 100%; overflow-y: auto;">
+                <div class="modal-bign-header with-padding">
+                  <div class="modal-bign-title">
+                    Информация
+                  </div>
+
+                  <button type="button"
+                          class="modal-bign-button"
+                          @click="closeEconomicModal()">
+                    Закрыть
+                  </button>
+                </div>
+
+                <div class="tablePgno no-gutter">
                   <perfect-scrollbar>
                     <table class="gno-table-with-header pgno">
                       <thead>
