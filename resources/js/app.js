@@ -64,7 +64,6 @@ Vue.component('visual-center-chart-donut-right1', require('./components/visualce
 Vue.component('visual-center-chart-donut-right2', require('./components/visualcenter/VisualCenterChartDonutRight2.vue').default);
 Vue.component('visual-center-table', require('./components/visualcenter/VisualCenterTable.vue').default);
 Vue.component('visual-center-table3', require('./components/visualcenter3/VisualCenterTable3.vue').default);
-Vue.component('visual-center3-wells', require('./components/visualcenter3/Vc3Wells.vue').default);
 Vue.component('visual-center-table4', require('./components/visualcenter3/VisualCenterTable4.vue').default);
 Vue.component('visual-center-table5', require('./components/visualcenter3/VisualCenterTable5.vue').default);
 Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
