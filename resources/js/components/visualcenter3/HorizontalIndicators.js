@@ -311,7 +311,6 @@ export default {
               });
               this.oil_fact = Math.round(oilFact, 0);
               this.oil_plan = Math.round(oilPlan, 0);
-              console.log(Math.round(oilFact, 0));
             }
         });
       queryParams = {params: {'dateStart': prevPeriodDateStart, 'dateEnd': dateStart}};
@@ -324,7 +323,6 @@ export default {
                 prevPeriodOilFact += item.oil_val_fact;
               });
               this.prev_oil_fact = Math.round(prevPeriodOilFact, 0);
-              console.log(Math.round(prevPeriodOilFact, 0));
             }
         });
     },

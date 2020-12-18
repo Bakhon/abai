@@ -14,7 +14,7 @@
                 width="15"
                 handle-size="0"
                 showTooltip="false"
-                max="125"
+                step="0.1"
             />
         </div>
         <div class="position-absolute">
@@ -28,7 +28,9 @@
                 sliderType="default"
                 pathColor="transparent"
                 width="15"
-                max="125"
+                :min="min"
+                :max="max"
+                step="0.1"
             />
         </div>
     </div>
@@ -39,25 +41,40 @@ import RoundSlider from 'vue-round-slider';
 
 Vue.component("round-slider", RoundSlider);
 export default {
-    props: ['sliderValue'],
+    props: {
+        sliderValue: {
+            default: function () {
+                return [1, 0, 50, 100, 48]
+            }
+        }
+    },
     data: function () {
-        let slider1Value = [0, 49];
-        let slider2Value = this.sliderValue ?? 0
-        let rangeColor = '#fe5c5c';
-        if (slider2Value > 49) {
-            slider1Value = [50, 99]
-            rangeColor = '#237deb';
-        }
-        if (slider2Value > 100) {
-            slider1Value = [100, 125]
-            rangeColor = '#009846';
-        }
         return {
-            slider1Value: slider1Value,
-            slider2Value: slider2Value,
-            mainText: this.sliderValue,
-            rangeColor: rangeColor,
+            slider1Value: [0, 100],
+            slider2Value: 50,
+            rangeColor: '#fe5c5c',
+            min: 0,
+            max: 100,
         };
     },
+    mounted() {
+        let item = this.sliderValue;
+        let rangeColor = '#fe5c5c';
+        let slider1Value = [0, 33];
+        let slider2Value = item[4];
+        if (slider2Value >= item[2]) {
+            slider1Value = [33, 74]
+            rangeColor = '#237deb';
+        }
+        if (slider2Value >= item[3]) {
+            slider1Value = [75, 100]
+            rangeColor = '#009846';
+        }
+        this.slider1Value = slider1Value;
+        this.slider2Value = slider2Value;
+        this.rangeColor = rangeColor;
+        this.min = item[1];
+        this.max = item[3];
+    }
 };
 </script>

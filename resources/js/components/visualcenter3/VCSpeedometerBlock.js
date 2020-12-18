@@ -9,14 +9,14 @@ export default {
     units: {
       default: 'млрд. тенге',
     },
-    speedometerValue: {
-      default: '23',
-    },
     tableToChange: {
       default: 1,
     },
   },
   data: function () {
     return {}
+  },
+  mounted() {
+    console.log(this.mainValue)
   }
 }

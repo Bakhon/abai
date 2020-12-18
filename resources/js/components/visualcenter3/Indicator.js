@@ -19,7 +19,7 @@ export default {
       default: 0,
     },
     lastPeriod: {
-      default: "прошл. период",
+      default: "vs пред. период",
     },
     prevPeriodValue: {
       default: 0,

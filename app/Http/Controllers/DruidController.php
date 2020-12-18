@@ -96,6 +96,16 @@ return $response;
         return view('visualcenter.visualcenter5');
     }
 
+    public function visualcenter6()
+    {
+        return view('visualcenter.visualcenter6');
+    }
+
+    public function visualcenter7()
+    {
+        return view('visualcenter.visualcenter7');
+    }
+
     public function production()
     {
         return view('production.main');

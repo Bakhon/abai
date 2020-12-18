@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-100 text-nowrap pr-3 mt-2" v-if="prevPeriodValue && progressValue">
+        <div class="w-100 text-nowrap mt-2 d-flex d-flex-row align-items-center" v-if="prevPeriodValue && progressValue">
             <div v-if="(progressValue - prevPeriodValue ) / progressValue * 100 < 0" class="arrow2"></div>
             <div v-if="(progressValue - prevPeriodValue ) / progressValue * 100 > 0" class="arrow3"></div>
             <div>
