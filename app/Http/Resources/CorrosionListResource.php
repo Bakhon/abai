@@ -27,6 +27,11 @@ class CorrosionListResource extends JsonResource
                 'start_date_of_corrosion_velocity_with_inhibitor_measure' => $this->start_date_of_corrosion_velocity_with_inhibitor_measure,
                 'final_date_of_corrosion_velocity_with_inhibitor_measure' => $this->final_date_of_corrosion_velocity_with_inhibitor_measure,
                 'corrosion_velocity_with_inhibitor' => $this->corrosion_velocity_with_inhibitor,
+                'sample_number' => $this->sample_number,
+                'weight_before' => $this->weight_before,
+                'days' => $this->days,
+                'weight_after' => $this->weight_after,
+                'avg_speed' => $this->avg_speed,
             ],
             'links' => [
                 'show' => route('corrosioncrud.show', $this->id),

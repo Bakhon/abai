@@ -30,6 +30,11 @@ class CorrosionHistoryObserver extends EditHistoryObserver
             'start_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата начало замера скорости коррозии с реагентом',
             'final_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата окончания замера скорости коррозии с реагентом',
             'corrosion_velocity_with_inhibitor' => 'Скорость коррозии',
+            'sample_number' => 'Номер образца-свидетеля',
+            'weight_before' => 'Масса до установки, гр',
+            'days' => 'Количество дней экспозиции',
+            'weight_after' => 'Масса после извлечения, гр',
+            'avg_speed' => 'Средняя скорость коррозии, мм/г',
         ];
 
         foreach ($fields as $field => $name) {
