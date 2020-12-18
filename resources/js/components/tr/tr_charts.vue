@@ -1210,9 +1210,9 @@ export default {
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
       if (this.month < 10) {
-        this.dt = "01" + ".0" + (this.month) + "." + this.selectYear;
+        this.dt = "01" + ".0" + this.month + "." + this.selectYear;
       } else {
-        this.dt = "01" + "." + (this.month) + "." + this.selectYear;
+        this.dt = "01" + "." + this.month + "." + this.selectYear;
       }
       this.axios
         .get(
@@ -1237,8 +1237,13 @@ export default {
     getColor(status) {
       if (status < "0") return "#ac3939";
     },
+    setChart(status) {
+      if (status < "0") return "#ac3939";
+    },
   },
   created() {
+    if (this.$store.getters["tr/chart"])
+      this.chartShow = this.$store.getters["tr/chart"];
     let mm, yyyy;
     if (this.$store.getters["tr/month"] && this.$store.getters["tr/year"]) {
       mm = this.$store.getters["tr/month"];

@@ -59,6 +59,15 @@ body {
                 .signalizator {
                     background: rgba(69, 77, 125, 0.329412);
                     height: 333px;
+                    &-gus{
+                        padding: 10px 10px 5px;
+                        p{
+                            margin: 0 0 5px;
+                        }
+                        .badge{
+                            margin: 0 5px 5px 0;
+                        }
+                    }
                 }
             }
 
