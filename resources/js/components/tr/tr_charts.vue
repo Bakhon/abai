@@ -297,7 +297,7 @@ export default {
       month: null,
       chartData: false,
       chartNames: [
-        "Все скважины. Потенциал снижения динамического уровня, спуска ГНО",
+        "Потенциал снижения динамического уровня, спуска ГНО",
         "ТОП-30 скважин. Потенциал прироста дебита нефти",
         "ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность",
         "ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор",
@@ -390,6 +390,9 @@ export default {
       markersBase: {
         size: [0, 0, 0, 8, 8],
         offsetX: -2,
+      },
+      fillBase: {
+        opacity: 1,
       },
       yaxisBase: {
         axisBorder: {
@@ -495,14 +498,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = false;
-      const stroke = { 
+      const stroke = {
         show: true,
         width: [5, 1, 1],
-        colors: [
-          '#008ffb',
-          '#27295300',
-          '#27295300',
-        ]
+        colors: ["#008ffb", "#27295300", "#27295300"],
       };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -528,17 +527,20 @@ export default {
           size: [0, 5, 5],
           offsetX: -2,
         },
+        fill: {
+          opacity: 0.3,
+        },
       };
       const series = [
         {
-          name: "Н вд",
-          type: "line",
+          name: "Н вдп",
+          type: "area",
           data: filteredResult.map((item) =>
             this.getStringOrFirstItem(item, "h_up_perf_md")
           ),
         },
         {
-          name: "Н д",
+          name: "Н дин",
           type: "line",
           data: filteredResult.map((item) =>
             this.getStringOrFirstItem(item, "h_dyn")
@@ -632,6 +634,7 @@ export default {
         chart,
         stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -746,6 +749,7 @@ export default {
         chart,
         stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -853,6 +857,7 @@ export default {
         chart,
         stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -970,6 +975,7 @@ export default {
         chart,
         stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1033,6 +1039,7 @@ export default {
         yaxis,
         chart,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       let filteredData = filteredResult.reduce(
         (acc, res) => {
@@ -1107,6 +1114,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1137,6 +1145,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1175,6 +1184,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1213,6 +1223,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
