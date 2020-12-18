@@ -452,7 +452,7 @@ class OmgNGDUController extends Controller
 
         $problemGus = [];
         foreach($gus as $guId => $gu) {
-            if($gu['current_dosage'] && $gu['plan_dosage'] && $gu['current_dosage'] > $gu['plan_dosage']) {
+            if(isset($gu['current_dosage']) && isset($gu['plan_dosage']) && $gu['current_dosage'] > $gu['plan_dosage']) {
                 $problemGus[] = [
                     'id' => $guId,
                     'name' => $gu['name'],
