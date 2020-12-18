@@ -18,6 +18,10 @@ class CreateDZOcalcsTable extends Migration
             $table->text('dzo')->nullable();
             $table->dateTime('date',0);
             $table->text('__time');
+            $table->float("oil_price_plan",30,4)->nullable();
+            $table->float("oil_price_fact",30,4)->nullable();
+            $table->float("kurs_plan",30,4)->nullable();
+            $table->float("kurs_fact",30,4)->nullable();
             $table->float('main_prc_val_plan',30,4)->nullable();
             $table->float('spending_val_plan',30,4)->nullable();
             $table->float('cost_val_plan',30,4)->nullable();
@@ -66,6 +70,8 @@ class CreateDZOcalcsTable extends Migration
             $table->float('ud_spending_bbl_plan_2020',30,4)->nullable();
             $table->float('kvl_plan_2020',30,4)->nullable();
             $table->float('oil_plan_2020',30,4)->nullable();
+            $table->float("oil_price_plan_2020",30,4)->nullable();
+            $table->float("kurs_plan_2020",30,4)->nullable();
             $table->timestamps();
         });
     }
