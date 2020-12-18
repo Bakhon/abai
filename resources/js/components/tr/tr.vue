@@ -222,24 +222,22 @@
         <div class="fadee" v-if="isloading">
           <fade-loader :loading="isloading"></fade-loader>
         </div>
-        <div class="techbt1">
+        <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 4px; color: white">
             <h3 style="color: white; width: 475px">
               Технологический режим на {{ dt }}
             </h3>
           </div>
-          <!-- <div>
-                        <select name="Company" class="from-control" id="companySelect"
-                            v-model="filter" @change="chooseField">
-                            <option value="Казгермунай">КазГерМунай</option>
-                            <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-                            <option value="Акшабулак Южный">Акшабулак Южный</option>
-                            <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-                            <option value="Нуралы">Нуралы</option>
-                            <option value="Аксай">Аксай</option>
-                            <option value="Аксай Южный">Аксай Южный</option>
-                        </select>
-                    </div> -->
+          <select name="Company" class="form-control tr-field-filter" id="companySelect"
+              v-model="filter" @change="chooseField">
+              <option value="Выберите месторождение">Выберите месторождение</option>
+              <option value="Акшабулак Центральный">Акшабулак Центральный</option>
+              <option value="Акшабулак Южный">Акшабулак Южный</option>
+              <option value="Акшабулак Восточный">Акшабулак Восточный</option>
+              <option value="Нуралы">Нуралы</option>
+              <option value="Аксай">Аксай</option>
+              <option value="Аксай Южный">Аксай Южный</option>
+          </select>
 
           <a
             class="but-nav__link but trgraph"
@@ -248,7 +246,6 @@
             data-placement="top"
             href="tr_charts"
             @click="pushBign('chart')"
-            style="margin-left: 1264px; background: #272953"
             ><svg
               width="24"
               height="24"
@@ -6035,7 +6032,7 @@ export default {
       wells: [],
       searchString: "",
       sortType: "asc",
-      filter: null,
+      filter: "Выберите месторождение",
       dt: null,
       fullWells: [],
       show_first: true,
@@ -6049,16 +6046,12 @@ export default {
       selectYear: null,
       month: null,
       isloading: true,
-      isloading1: true,
       isfulltable: false,
     };
   },
   watch: {
-    wells() {
-      console.log('wells changed = ', this.wells)
-    },
-    searchString() {
-      console.log('searchString changed = ', new Date())
+    fullWells() {
+      this.chooseField();
     },
   },
   methods: {
@@ -6190,7 +6183,7 @@ export default {
           let data = response.data;
           if (data) {
             console.log(data)
-            this.wells = data.data;
+            // this.wells = data.data;
             this.fullWells = data.data;
           } else {
             console.log("No data");
@@ -6204,8 +6197,10 @@ export default {
     },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter, fullWells);
-      if (filter == "Казгермунай") {
+      console.log(filter);
+      console.log(fullWells);
+      // if (!filter || filter == "Казгермунай") {
+      if (!filter || filter == "Выберите месторождение") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
@@ -6238,16 +6233,16 @@ export default {
           let data = response.data;
           if (data) {
             console.log(data);
-            this.wells = data.data;
+            // this.wells = data.data;
             this.fullWells = data.data;
           } else {
-            this.wells = [];
+            // this.wells = [];
             this.fullWells = [];
             console.log("No data");
           }
         })
         .catch((error) => {
-          this.wells = [];
+          // this.wells = [];
           this.fullWells = [];
           console.log("search error = ", error);
         });
@@ -6356,8 +6351,8 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-  margin-left: 1100px !important;
   margin-top: 4px;
+  background: #272953;
 }
 
 .sticky {
@@ -6365,5 +6360,16 @@ tr:nth-child(even) {
   top: 0;
   min-height: 2em;
   background: lightpink;
+}
+</style>
+<style>
+.tr-field-filter.tr-field-filter {
+  margin: 0 0 0 auto;
+  width: 210px;
+}
+.tr-table-header {
+  justify-content: space-between;
+  height: 48px;
+  align-items: center;
 }
 </style>

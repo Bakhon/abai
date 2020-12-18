@@ -84,15 +84,25 @@
       </div>
     </div>
     <div
-      class="tech"
+      class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
       <h3 style="color: white; margin-left: 3px">Факторный анализ</h3>
+      <select name="Company" class="form-control tr-field-filter" id="companySelect"
+        v-model="filter" @change="chooseField">
+        <option value="Выберите месторождение">Выберите месторождение</option>
+        <option value="Акшабулак Центральный">Акшабулак Центральный</option>
+        <option value="Акшабулак Южный">Акшабулак Южный</option>
+        <option value="Акшабулак Восточный">Акшабулак Восточный</option>
+        <option value="Нуралы">Нуралы</option>
+        <option value="Аксай">Аксай</option>
+        <option value="Аксай Южный">Аксай Южный</option>
+    </select>
       <a
         class="but-nav__link but"
         href="trfa"
         @click="pushBign('chart')"
-        style="margin-left: 1295px; background: #272953"
+        style="background: #272953"
         ><svg
           width="24"
           height="24"
@@ -110,18 +120,6 @@
         Показать графики</a
       >
     </div>
-    <!-- <div>
-            <select name="Company" class="from-control" id="companySelect"
-                v-model="filter" @change="chooseField">
-                <option value="Казгермунай">КазГерМунай</option>
-                <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-                <option value="Акшабулак Южный">Акшабулак Южный</option>
-                <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-                <option value="Нуралы">Нуралы</option>
-                <option value="Аксай">Аксай</option>
-                <option value="Аксай Южный">Аксай Южный</option>
-            </select>
-        </div> -->
     <div>
       <table
         class="table table-bordered table-dark table-responsive ce"
@@ -875,7 +873,7 @@ export default {
       date1: null,
       date2: null,
       fullWells: [],
-      filter: null,
+      filter: "Выберите месторождение",
       editdtm: null,
       editdty: null,
       editdtprevm: null,
@@ -989,6 +987,11 @@ export default {
       },
     };
   },
+  watch: {
+    fullWells() {
+      this.chooseField();
+    },
+  },
   methods: {
     sortBy(type) {
       let { wells, sortType } = this;
@@ -1099,8 +1102,10 @@ export default {
     },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter, fullWells);
-      if (filter == "Казгермунай") {
+      console.log(filter);
+      console.log(fullWells);
+      // if (!filter || filter == "Казгермунай") {
+      if (!filter || filter == "Выберите месторождение") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
