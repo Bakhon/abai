@@ -6011,6 +6011,7 @@ export default {
       .then((response) => {
         let data = response.data;
         this.year = yyyy;
+        this.selectYear = yyyy;
         this.month = mm;
         this.isloading = false;
         if (data) {
