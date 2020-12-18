@@ -13,12 +13,6 @@ Vue.use(NotifyPlugin, VueMomentLib);
 Vue.component("Plotly", Plotly);
 
 export default {
-  watch: {
-    expChoose: function(val)
-    {
-      console.log(val);
-    }
-  },
   data: function () {
     return {
 
@@ -142,6 +136,7 @@ export default {
       whpInput: null,
       hPumpValue: null,
       curveSelect: 'pi',
+      QhydCurveSelect: null,
       curveValue: '',
       curr: null,
       expChoose: null,
@@ -193,7 +188,24 @@ export default {
     };
 
   },
-
+  watch: {
+    expChoose: function(val)
+    {
+      console.log(val);
+    },
+    curveSelect(newVal) {
+      if (newVal === 'pi') {
+        this.QhydCurveSelect = null;
+      } else {
+        this.QhydCurveSelect = 'hdyn';
+      }
+    },
+    QhydCurveSelect(newVal) {
+      if (newVal === 'hdyn') {
+        this.curveSelect = 'hdyn';
+      }
+    }
+  },
   methods: {
     setData: function (data) {
       if (this.method == "CurveSetting") {
@@ -839,7 +851,6 @@ export default {
           }
         });
       }
-
     },
 
     postAnalysisOld() {

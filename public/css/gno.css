@@ -610,14 +610,14 @@ input[type="text"]:disabled.square2 {
     background:rgba(50, 51, 112, 1);
     color: #928f8f;
     outline: none;
-    border: 0px;
+    border: 0;
     /* background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzhhYWGMYAEYB8RmROaABADeOQ8CXl/xfgAAAABJRU5ErkJggg==) repeat; */
 }
 
 input[type="text"]:enabled.square2 {
     background: #494AA5;
     outline: none;
-    border: 0px;
+    border: 0;
 }
 
 .square3 {

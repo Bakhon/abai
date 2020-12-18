@@ -1284,7 +1284,11 @@
                                 </div>
                               </div>
                               <div class="col-2  py-1 pl-2 pr-0">
-                                <input v-model="gorInput" @change="postCurveData()" type="text" onfocus="this.value=''" class="square3"/>
+                                <input v-model="gorInput"
+                                       @change="postCurveData()"
+                                       type="text"
+                                       onfocus="this.value=''"
+                                       class="square3"/>
                               </div>
 
                             </div>
@@ -1297,13 +1301,19 @@
                                   <div class="col-2 px-0 ic-min-block1">
                                     <div class="table-border-gno-right">
                                       <label for="">
-
-                                        <input v-model="curveSelect" class="checkbox-q-liquid" value="hdyn" type="radio" @change="postCurveData()"
+                                        <input v-model="QhydCurveSelect"
+                                               class="checkbox-q-liquid"
+                                               value="hdyn"
+                                               type="radio"
+                                               @change="postCurveData()"
                                                name="set"/> Qж</label>
                                     </div>
                                   </div>
                                   <div class="col-5 py-1 px-1">
-                                    <input :disabled="curveSelect == 'pi'" v-model="qLInput" @change="postCurveData()" onfocus="this.value=''"
+                                    <input :disabled="curveSelect == 'pi'"
+                                           v-model="qLInput"
+                                           @change="postCurveData()"
+                                           onfocus="this.value=''"
                                            type="text"
                                            class="square3"/>
                                   </div>
@@ -1342,14 +1352,21 @@
                               <div class="tech-data ml-3 pl-4 pr-3  col-2  ic-min-block2">
                                 <div class="table-border-gno-right">
                                   <label for="">
-                                    <input v-model="curveSelect" value="hdyn" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
+                                    <input v-model="curveSelect"
+                                           value="hdyn"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
                                            @change="postCurveData()"
                                            name="set2"/> Ндин</label>
                                 </div>
                               </div>
 
                               <div class="col-2 px-0 pt-1 mr-2">
-                                <input :disabled="curveSelect != 'hdyn'" v-model="hDynInput" @change="postCurveData()" type="text"
+                                <input :disabled="curveSelect != 'hdyn'"
+                                       v-model="hDynInput"
+                                       @change="postCurveData()"
+                                       type="text"
                                        onfocus="this.value=''"
                                        class="square3"/>
                               </div>
