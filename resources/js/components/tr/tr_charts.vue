@@ -297,7 +297,7 @@ export default {
       month: null,
       chartData: false,
       chartNames: [
-        "Все скважины. Потенциал снижения динамического уровня, спуска ГНО",
+        "Потенциал снижения динамического уровня, спуска ГНО",
         "ТОП-30 скважин. Потенциал прироста дебита нефти",
         "ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность",
         "ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор",
@@ -391,6 +391,9 @@ export default {
         size: [0, 0, 0, 8, 8],
         offsetX: -2,
       },
+      fillBase: {
+        opacity: 1,
+      },
       yaxisBase: {
         axisBorder: {
           show: true,
@@ -467,22 +470,39 @@ export default {
       this.filteredWells = filteredResult;
       const self = this;
       filteredResult.sort(function (a, b) {
-        if (b.h_dyn > a.h_dyn) return 1;
-        if (b.h_dyn < a.h_dyn) return -1;
+        if (b.h_up_perf_md < a.h_up_perf_md) return 1;
+        if (b.h_up_perf_md > a.h_up_perf_md) return -1;
         return 0;
       });
       let maxY1 = 0,
-        minY1 = 0,
-        maxY2 = 0,
-        minY2 = 0;
+        minY1 = 0;
       const categories = filteredResult.map((item) => {
-        const newY1 = item.h_dyn + item.h_up_perf_md;
-        if (newY1 < minY1) minY1 = newY1;
-        if (newY1 > maxY1) maxY1 = newY1;
+        let newMaxY1, newMinY1;
+        if (item.h_dyn > item.h_up_perf_md) {
+          if (item.h_dyn > item.h_pump_set) newMaxY1 = item.h_dyn;
+          else newMaxY1 = item.h_pump_set;
+        } else {
+          if (item.h_up_perf_md > item.h_pump_set) newMaxY1 = item.h_up_perf_md;
+          else newMaxY1 = item.h_pump_set;
+        }
+        if (item.h_dyn < item.h_up_perf_md) {
+          if (item.h_dyn < item.h_pump_set) newMinY1 = item.h_dyn;
+          else newMinY1 = item.h_pump_set;
+        } else {
+          if (item.h_up_perf_md < item.h_pump_set) newMinY1 = item.h_up_perf_md;
+          else newMinY1 = item.h_pump_set;
+        }
+        if (newMinY1 < minY1) minY1 = newMinY1;
+        if (newMaxY1 > maxY1) maxY1 = newMaxY1;
         return this.getStringOrFirstItem(item, "well");
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
-      const stacked = true;
+      const stacked = false;
+      const stroke = {
+        show: true,
+        width: [5, 1, 1],
+        colors: ["#008ffb", "#27295300", "#27295300"],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
         ...this.yaxisBase,
@@ -494,6 +514,7 @@ export default {
         },
         max: maxY1,
         min: minY1,
+        reversed: true,
       };
 
       this.chartBarOptions = {
@@ -501,24 +522,28 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: {
-          size: [0, 0, 5, 5],
+          size: [0, 5, 5],
           offsetX: -2,
+        },
+        fill: {
+          opacity: 0.3,
         },
       };
       const series = [
         {
-          name: "Н д",
-          type: "bar",
+          name: "Н вдп",
+          type: "area",
           data: filteredResult.map((item) =>
-            this.getStringOrFirstItem(item, "h_dyn")
+            this.getStringOrFirstItem(item, "h_up_perf_md")
           ),
         },
         {
-          name: "Н вд",
-          type: "bar",
+          name: "Н дин",
+          type: "line",
           data: filteredResult.map((item) =>
-            this.getStringOrFirstItem(item, "h_up_perf_md")
+            this.getStringOrFirstItem(item, "h_dyn")
           ),
         },
         {
@@ -566,6 +591,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -606,7 +632,9 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -679,6 +707,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -718,7 +747,9 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -784,6 +815,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -823,7 +855,9 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -892,6 +926,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -938,7 +973,9 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1002,6 +1039,7 @@ export default {
         yaxis,
         chart,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       let filteredData = filteredResult.reduce(
         (acc, res) => {
@@ -1076,6 +1114,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1106,6 +1145,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1144,6 +1184,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1182,6 +1223,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1242,6 +1284,7 @@ export default {
     },
   },
   created() {
+    this.isLoading = true;
     if (this.$store.getters["tr/chart"])
       this.chartShow = this.$store.getters["tr/chart"];
     let mm, yyyy;
@@ -1265,6 +1308,7 @@ export default {
           "/"
       )
       .then((response) => {
+        this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
         console.log(this.editdtm);
@@ -1282,6 +1326,9 @@ export default {
         } else {
           this.dt = "01" + "." + mm + "." + yyyy;
         }
+      })
+      .catch((e) => {
+        this.isLoading = false;
       });
   },
 };
@@ -1332,6 +1379,20 @@ body {
   width: 195px;
   background: #5973cc !important;
 }
+.trfa_page.trfa_page {
+    padding: 0 !important;
+    width: calc(100vw - 65px);
+    display: flex;
+    margin-left: 44px;
+}
+.trfa_page .level1-content  {
+    margin: 0;
+    width: 100%;
+}
+.trfa_page .main {
+    padding: 0;
+    margin: 0;
+}  
 </style>
 <style >
 .tr-chart {

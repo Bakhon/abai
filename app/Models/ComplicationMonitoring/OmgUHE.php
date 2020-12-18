@@ -11,33 +11,47 @@ class OmgUHE extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'date' => 'datetime'
+    ];
+
+    public function getCurrentDosageAttribute($value)
+    {
+        return $value ? round($value, 1) : $value;
+    }
+
     public function ngdu()
     {
-        return $this->hasOne('App\Models\Refs\Ngdu','id','ngdu_id')->withDefault();
+        return $this->belongsTo(\App\Models\Refs\Ngdu::class)->withDefault();
     }
 
     public function cdng()
     {
-        return $this->hasOne('App\Models\Refs\Cdng','id','cdng_id')->withDefault();
+        return $this->belongsTo(\App\Models\Refs\Cdng::class)->withDefault();
     }
 
     public function gu()
     {
-        return $this->hasOne('App\Models\Refs\Gu','id','gu_id')->withDefault();
+        return $this->belongsTo(\App\Models\Refs\Gu::class)->withDefault();
     }
 
     public function zu()
     {
-        return $this->hasOne('App\Models\Refs\Zu','id','zu_id')->withDefault();
+        return $this->belongsTo(\App\Models\Refs\Zu::class)->withDefault();
     }
 
     public function well()
     {
-        return $this->hasOne('App\Models\Refs\Well','id','well_id')->withDefault();
+        return $this->belongsTo(\App\Models\Refs\Well::class)->withDefault();
     }
 
     public function field()
     {
-        return $this->hasOne('App\Models\Refs\Field','id','field_id')->withDefault();
+        return $this->belongsTo(\App\Models\Refs\Field::class)->withDefault();
+    }
+
+    public function inhibitor()
+    {
+        return $this->belongsTo(\App\Models\Inhibitor::class)->withDefault();
     }
 }

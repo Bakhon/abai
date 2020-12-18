@@ -27,14 +27,24 @@
                 </select>
             </div>
             <label> Дата и время </label>
-            <div class="form-label-group2">
-                <input
-                    @change="pick"
-                    type="date"
-                    name="date"
+            <div class="form-label-group">
+                <datetime
+                    type="datetime"
                     v-model="formFields.date"
-                    class="form-control"
-                />
+                    input-class="form-control date"
+                    value-zone="Asia/Almaty"
+                    zone="Asia/Almaty"
+                    :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }"
+                    :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+                    :hour-step="1"
+                    :minute-step="5"
+                    :week-start="1"
+                    use24-hour
+                    auto
+                    @close="pick"
+                >
+                </datetime>
+                <input type="hidden" name="date" v-bind:value="formatDate(formFields.date)">
             </div>
             <div class="form-label-group form-check">
                 <input type="hidden" name="out_of_service_оf_dosing" value="0">
@@ -127,6 +137,18 @@
                     </option>
                 </select>
             </div>
+            <label>Ингибитор</label>
+            <div class="form-label-group">
+                <select
+                    class="form-control"
+                    name="inhibitor_id"
+                    v-model="formFields.inhibitor_id"
+                >
+                    <option v-for="row in inhibitors" v-bind:value="row.id">
+                        {{ row.name }}
+                    </option>
+                </select>
+            </div>
             <div class="form-label-group form-check">
                 <input
                 type="checkbox"
@@ -163,6 +185,7 @@ import Vue from "vue";
 import {Datetime} from "vue-datetime";
 import "vue-datetime/dist/vue-datetime.css";
 import {Settings} from "luxon";
+import moment from "moment";
 
 Settings.defaultLocale = "ru";
 
@@ -173,6 +196,9 @@ export default {
     props: [
         'omguhe'
     ],
+    components: {
+        Datetime
+    },
     data: function () {
         return {
             ngdus: {},
@@ -181,6 +207,7 @@ export default {
             zus: {},
             wells: {},
             fields: {},
+            inhibitors: {},
             out_of_service_оf_dosing: false,
             prevData: null,
             formFields: {
@@ -191,6 +218,7 @@ export default {
                 zu_id: null,
                 well_id: null,
                 date: null,
+                inhibitor_id: null,
                 fill: null,
                 level: null,
                 out_of_service_оf_dosing: null,
@@ -209,7 +237,8 @@ export default {
                 gu_id: this.omguhe.gu_id,
                 zu_id: this.omguhe.zu_id,
                 well_id: this.omguhe.well_id,
-                date: this.omguhe.date,
+                date: moment(new Date(this.omguhe.date)).toISOString(),
+                inhibitor_id: this.omguhe.inhibitor_id,
                 fill: this.omguhe.fill,
                 level: this.omguhe.level,
                 out_of_service_оf_dosing: this.omguhe.out_of_service_оf_dosing,
@@ -303,7 +332,6 @@ export default {
                 });
         },
         pick() {
-            console.log("pickDate");
             this.axios
                 .post("/ru/getprevdaylevel", {
                     gu_id: this.formFields.gu_id,
@@ -322,6 +350,9 @@ export default {
             if (this.prevData != null) {
                 this.formFields.current_dosage = this.prevData - this.formFields.level;
             }
+        },
+        formatDate(date) {
+            return moment(date).format('YYYY-MM-DD HH:MM:SS')
         }
     },
     beforeCreate: function () {
@@ -360,15 +391,20 @@ export default {
                 console.log("No data");
             }
         });
+
+        this.axios.get("/ru/getinhibitors").then((response) => {
+            let data = response.data;
+            if (data) {
+                this.inhibitors = data.data;
+            } else {
+                console.log("No data");
+            }
+        });
     },
 };
 </script>
 <style scoped>
 .form-label-group {
     padding-bottom: 30px;
-}
-
-.form-label-group2 {
-    padding-bottom: 39px;
 }
 </style>

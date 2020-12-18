@@ -166,7 +166,7 @@
             </div> -->
         <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
         <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a @click="editable()" v-if="!edit" class="col but-nav__link but"
+        <a @click="editable()" v-if="!edit" class="col but-nav__link but" style="margin-right: 11px;"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -222,33 +222,34 @@
         <div class="fadee" v-if="isloading">
           <fade-loader :loading="isloading"></fade-loader>
         </div>
-        <div class="techbt1">
+        <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 4px; color: white">
             <h3 style="color: white; width: 475px">
               Технологический режим на {{ dt }}
             </h3>
           </div>
-          <!-- <div>
-                        <select name="Company" class="from-control" id="companySelect"
-                            v-model="filter" @change="chooseField">
-                            <option value="Казгермунай">КазГерМунай</option>
-                            <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-                            <option value="Акшабулак Южный">Акшабулак Южный</option>
-                            <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-                            <option value="Нуралы">Нуралы</option>
-                            <option value="Аксай">Аксай</option>
-                            <option value="Аксай Южный">Аксай Южный</option>
-                        </select>
-                    </div> -->
+          <select name="Company" class="form-control tr-field-filter" id="companySelect"
+              v-model="filter" @change="chooseField">
+              <option value="Выберите месторождение">Выберите месторождение</option>
+              <option value="Акшабулак Центральный">Акшабулак Центральный</option>
+              <option value="Акшабулак Южный">Акшабулак Южный</option>
+              <option value="Акшабулак Восточный">Акшабулак Восточный</option>
+              <option value="Нуралы">Нуралы</option>
+              <option value="Аксай">Аксай</option>
+              <option value="Аксай Южный">Аксай Южный</option>
+          </select>
 
+          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2">
+            Отмена
+          </div>
           <a
+            v-if="!edit"
             class="but-nav__link but trgraph"
             title="Показать графики"
             data-toggle="tooltip"
             data-placement="top"
             href="tr_charts"
             @click="pushBign('chart')"
-            style="margin-left: 1264px; background: #272953"
             ><svg
               width="24"
               height="24"
@@ -266,6 +267,7 @@
           </a>
 
           <button
+            v-if="!edit"
             id="bt1"
             @click="swap"
             style="
@@ -384,10 +386,10 @@
             <td rowspan="4">k</td>
             <td rowspan="4">КН</td>
             <td rowspan="4">К пр</td>
-            <td class="colspan" colspan="13">
+            <td class="colspan" colspan="14">
               Расчет технологического потенциала от ИДН
             </td>
-            <td class="colspan" colspan="9">
+            <td class="colspan" colspan="11">
               Расчёт геологического потенциала
             </td>
             <td class="colspan" colspan="4">Проверка</td>
@@ -427,7 +429,7 @@
             <td rowspan="4"><span>Комментарии</span></td>
             <td rowspan="4"><span>Дата последнего ГТМ</span></td>
             <td rowspan="4"><span>Вид последнего ГТМ</span></td>
-            <td class="colspan" colspan="12">Планируемые мероприятия</td>
+            <td class="colspan" colspan="12">Намечаемый режим</td>
           </tr>
           <tr class="headerColumn" style="background: #333975">
             <td rowspan="3"><span>P заб</span></td>
@@ -450,9 +452,12 @@
             <td rowspan="3"><span>К пр от стимуляции</span></td>
             <td class="colspan" colspan="4">ГРП</td>
             <td rowspan="3"><span>% прироста Q н</span></td>
+            <td rowspan="3"><span>Общий прирост Q н</span></td>
             <td rowspan="3"><span>Р заб</span></td>
             <td class="colspan" colspan="4">ИДН</td>
             <td class="colspan" colspan="4">ГРП</td>
+            <td rowspan="3"><span>% прироста Q н</span></td>
+            <td rowspan="3"><span>Общий прирост Q н</span></td>
             <td class="colspan" colspan="2">Ошибки</td>
             <td class="colspan" colspan="2">Предупреждения</td>
             <td rowspan="3"><span>Траб</span></td>
@@ -467,7 +472,7 @@
             <td rowspan="3"><span>Добыча газа за месяц</span></td>
             <td rowspan="3"><span>Добыча жидкость за месяц</span></td>
             <td rowspan="3"><span>Добыча воды за месяц</span></td>
-            <td class="colspan" colspan="2"><span>Изменения k</span></td>
+            <td class="colspan" colspan="2"><span>Изменения к режиму</span></td>
             <td rowspan="3">
               <span>Мероприятия по обеспечению техрежима</span>
             </td>
@@ -537,7 +542,7 @@
             <td @click="sortBy('pump_type')">
               <i class="fa fa-fw fa-sort"></i>
             </td>
-            <td @click="sortBy('EMPTY')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('type_sr')"><i class="fa fa-fw fa-sort"></i></td>
             <td @click="sortBy('spm')"><i class="fa fa-fw fa-sort"></i></td>
             <td @click="sortBy('stroke_len')">
               <i class="fa fa-fw fa-sort"></i>м
@@ -668,6 +673,8 @@
             <td @click="sortBy('tp_idn_q_oil_inc_perc')">
               <i class="fa fa-fw fa-sort"></i>%
             </td>
+            <td @click="sortBy('gt_total_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+            
             <td @click="sortBy('gp_idn_bhp')">
               <i class="fa fa-fw fa-sort"></i>атм
             </td>
@@ -695,6 +702,8 @@
             <td @click="sortBy('gp_grp_q_oil_inc')">
               <i class="fa fa-fw fa-sort"></i>
             </td>
+            <td @click="sortBy('gp_total_inc_perc')"><i class="fa fa-fw fa-sort"></i>%</td>
+            <td @click="sortBy('gp_total_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
             <td @click="sortBy('error_count')">
               <i class="fa fa-fw fa-sort"></i>
             </td>
@@ -1008,15 +1017,15 @@
               </span>
             </td>
 
-            <td v-if="!edit">{{ Math.round(row.r_con * 10) / 10 }}</td>
+            <!-- <td v-if="!edit">{{ Math.round(row.r_con * 10) / 10 }}</td>
             <td v-if="edit" contenteditable="true">
               <input
                 @change="editrow(row, row_index)"
                 v-model="row.r_con"
                 :disabled="!edit"
               />
-            </td>
-            <!-- <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+            </td> -->
+            <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
                         wells[row_index].r_con[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].r_con[1][0] !== '0'}" :style="`background :${getColor(
@@ -1030,13 +1039,13 @@
                         wells[row_index].r_con[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].r_con[1][0] !== '0'}" :style="`background :${getColor(
-                        wells[row_index].r_con[1][0])}`"> </span> -->
-            <!-- <input @change="editrow(row, row_index)" v-model="row.r_con[0]" :disabled="!edit"> -->
+                        wells[row_index].r_con[1][0])}`"> </span>
+            <input @change="editrow(row, row_index)" v-model="row.r_con[0]" :disabled="!edit">
             <!-- <span>{{Math.round(row.r_con[0]*10)/10}}</span> -->
-            <!-- <span v-if="wells && wells[row_index]" class="cell-comment">
+            <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].r_con[1][1]}}
                             </span>
-                        </td> -->
+                        </td>
 
             <!-- <td>{{Math.round(row.cas_OD*10)/10}}</td> -->
             <td
@@ -1378,8 +1387,9 @@
               </span>
             </td>
 
-            <td v-if="!edit">{{ Math.round(row.EMPTY * 10) / 10 }}</td>
-            <td v-if="edit">{{ Math.round(row.EMPTY * 10) / 10 }}</td>
+
+            <td v-if="!edit">{{ row.type_sr}}</td>
+            <td v-if="edit">{{ row.type_sr}}</td>
 
             <!-- <td>{{Math.round(row.spm*10)/10}}</td> -->
             <td
@@ -2444,15 +2454,55 @@
             <td v-if="!edit">{{ Math.round(row.wht * 10) / 10 }}</td>
             <td v-if="edit">{{ Math.round(row.wht * 10) / 10 }}</td>
 
-            <td v-if="!edit">{{ Math.round(row.grp_skin[0] * 10) / 10 }}</td>
-            <td v-if="edit" contenteditable="true">
-              <input
-                @change="editrow(row, row_index)"
-                v-model="row.grp_skin"
-                :disabled="!edit"
-              />
+            <td
+              v-if="!edit"
+              :class="{
+                'cell-with-comment':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].grp_skin[1][0] !== '0',
+              }"
+            >
+              <span
+                :class="{
+                  'circle-err':
+                    wells &&
+                    wells[row_index] &&
+                    wells[row_index].grp_skin[1][0] !== '0',
+                }"
+                :style="`background :${getColor(wells[row_index].grp_skin[1][0])}`"
+              >
+              </span>
+              <span>{{ Math.round(row.grp_skin[0] * 10) / 10 }}</span>
+              <span v-if="wells && wells[row_index]" class="cell-comment">
+                {{ wells[row_index].grp_skin[1][1] }}
+              </span>
             </td>
-
+            <td
+              v-if="edit"
+              :class="{
+                'cell-with-comment':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].grp_skin[1][0] !== '0',
+              }"
+            >
+              <span
+                :class="{
+                  'circle-err':
+                    wells &&
+                    wells[row_index] &&
+                    wells[row_index].grp_skin[1][0] !== '0',
+                }"
+                :style="`background :${getColor(wells[row_index].grp_skin[1][0])}`"
+              >
+              </span>
+              <input @change="editrow(row, row_index)" v-model="row.grp_skin[0]" :disabled="!edit">
+              <!-- <span>{{ Math.round(row.grp_skin[0] * 10) / 10 }}</span> -->
+              <span v-if="wells && wells[row_index]" class="cell-comment">
+                {{ wells[row_index].grp_skin[1][1] }}
+              </span>
+            </td>
             <td v-if="!edit">{{ Math.round(row.grp_jd * 100) / 100 }}</td>
             <td v-if="edit">{{ Math.round(row.grp_jd * 10) / 10 }}</td>
 
@@ -3775,6 +3825,9 @@
               {{ Math.round(row.tp_idn_q_oil_inc_perc * 10) / 10 }}
             </td>
 
+            <td v-if="!edit">{{Math.round(row.gt_total_inc*10)/10}}</td>
+            <td v-if="edit">{{Math.round(row.gt_total_inc*10)/10}}</td>
+
             <!-- <td>{{Math.round(row.gp_idn_bhp*10)/10}}</td> -->
             <td
               v-if="!edit"
@@ -4277,6 +4330,14 @@
                 {{ wells[row_index].gp_grp_q_oil_inc[1][1] }}
               </span>
             </td>
+
+
+            <td v-if="!edit">{{Math.round(row.gp_total_inc_perc*10)/10}}</td>
+            <td v-if="edit">{{Math.round(row.gp_total_inc_perc*10)/10}}</td>
+
+            <td v-if="!edit">{{Math.round(row.gp_total_inc*10)/10}}</td>
+            <td v-if="edit">{{Math.round(row.gp_total_inc*10)/10}}</td>
+
 
             <td v-if="!edit">{{ row.error_count }}</td>
             <td v-if="edit">{{ row.error_count }}</td>
@@ -5993,6 +6054,7 @@ export default {
       .then((response) => {
         let data = response.data;
         this.year = yyyy;
+        this.selectYear = yyyy;
         this.month = mm;
         this.isloading = false;
         if (data) {
@@ -6016,9 +6078,10 @@ export default {
       wells: [],
       searchString: "",
       sortType: "asc",
-      filter: null,
+      filter: "Выберите месторождение",
       dt: null,
       fullWells: [],
+      editedWells: [],
       show_first: true,
       show_second: false,
       edit: false,
@@ -6030,21 +6093,18 @@ export default {
       selectYear: null,
       month: null,
       isloading: true,
-      isloading1: true,
       isfulltable: false,
     };
   },
   watch: {
-    wells() {
-      console.log('wells changed = ', this.wells)
-    },
-    searchString() {
-      console.log('searchString changed = ', new Date())
+    fullWells() {
+      this.chooseField();
     },
   },
   methods: {
     editrow(row, rowId) {
-      // console.log(row);
+      console.log('row = ', row);
+      console.log('rowId = ', rowId);
       row["index"] = 0;
       this.axios
         .post(
@@ -6060,10 +6120,14 @@ export default {
         .then((response) => {
           if (response.data) {
             // console.log('EDIT_RESPONSE', response.data.data[0])
-            this.wells = this.wells.map((currentRow, index) => {
-              // console.log('norm', index, rowId)
-              return index === rowId ? response.data.data[0] : currentRow;
-            });
+            // this.wells = this.wells.map((currentRow, index) => {
+            //   // console.log('norm', index, rowId)
+            //   return index === rowId ? response.data.data[0] :   currentRow;
+            // });
+
+            // this.wells = [...this.wells.slice(0, rowId), response.data.data[0], ...this.wells.slice(rowId + 1)]
+            this.editedWells = this.editedWells.filter(item => item.well !== response.data.data[0].well);
+            this.editedWells = [...this.editedWells, response.data.data[0]]
           } else {
             console.log("No data");
           }
@@ -6072,25 +6136,35 @@ export default {
     savetable() {
       this.edit = false;
       this.isloading = true;
+      const searchParam = this.searchString ? `${this.searchString}/` : ''
       this.axios
         .post(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.51:7576/api/techregime/save/" +
             this.year +
             "/" +
             this.month +
-            "/",
+            "/" +
+            searchParam,
           {
-            well: this.wells,
+            well: this.editedWells,
           }
         )
         .then((response) => {
           console.log(response.data);
+          this.fullWells = response.data;
+          this.editedWells = [];
           this.isloading = false;
         })
         .catch((error) => {
           console.log(error.data);
-          this.isloading = false;
+          this.editedWells = [];
+          this.searchWell();
         });
+    },
+    cancelEdit() {
+      this.edit = false;
+      this.editedWells = [];
+      this.searchWell();
     },
     editable() {
       this.edit = true;
@@ -6159,6 +6233,7 @@ export default {
     },
 
     chooseDt() {
+      this.isloading = true;
       this.axios
         .get(
           "http://172.20.103.51:7576/api/techregime/" +
@@ -6168,10 +6243,11 @@ export default {
             "/"
         )
         .then((response) => {
+          this.isloading = false;
           let data = response.data;
           if (data) {
             console.log(data)
-            this.wells = data.data;
+            // this.wells = data.data;
             this.fullWells = data.data;
           } else {
             console.log("No data");
@@ -6185,8 +6261,10 @@ export default {
     },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter, fullWells);
-      if (filter == "Казгермунай") {
+      console.log(filter);
+      console.log(fullWells);
+      // if (!filter || filter == "Казгермунай") {
+      if (!filter || filter == "Выберите месторождение") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
@@ -6205,6 +6283,7 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.isloading = true;
       const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
@@ -6216,19 +6295,21 @@ export default {
             searchParam
         )
         .then((response) => {
+          this.isloading = false;
           let data = response.data;
           if (data) {
             console.log(data);
-            this.wells = data.data;
+            // this.wells = data.data;
             this.fullWells = data.data;
           } else {
-            this.wells = [];
+            // this.wells = [];
             this.fullWells = [];
             console.log("No data");
           }
         })
         .catch((error) => {
-          this.wells = [];
+          // this.wells = [];
+          this.isloading = false;
           this.fullWells = [];
           console.log("search error = ", error);
         });
@@ -6310,10 +6391,11 @@ tr:nth-child(even) {
 .table td {
   padding: 5px !important;
 }
-.trtableborderedtabledarktableresponsive {
+.trtable{
   font-size: 9px;
   padding: unset;
 }
+
 .trcolmd12 {
   margin-left: 0px;
 }
@@ -6337,8 +6419,8 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-  margin-left: 1087px !important;
   margin-top: 4px;
+  background: #272953;
 }
 
 .sticky {
@@ -6347,4 +6429,24 @@ tr:nth-child(even) {
   min-height: 2em;
   background: lightpink;
 }
+.table {
+    overflow: scroll;
+    height: calc(100vh - 247px);
+}
+.trkrtableborderedtabledarktableresponsive {
+    font-size: 9px;
+    padding: unset;
+}
+</style>
+<style>
+.tr-field-filter.tr-field-filter {
+  margin: 0 0 0 auto;
+  width: 230px;
+}
+.tr-table-header {
+  justify-content: space-between;
+  height: 48px;
+  align-items: center;
+}
+
 </style>

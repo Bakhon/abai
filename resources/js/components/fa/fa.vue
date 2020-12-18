@@ -1,26 +1,14 @@
 <template>
   <div class="container-fluid">
-    <div class="row justify-content-between farowjustcontbet">
-      <a href="tr" class="but-nav__link but fabutnavlinkbut"
-        ><i style="margin-right: 10px"
-          ><svg
-            width="14"
-            height="17"
-            viewBox="0 0 14 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z"
-              fill="white"
-            /></svg
-        ></i>
-        Технологический режим</a
-      >
+    <div class="row justify-content-between farowjustcontbet" style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px">
+                <a href="tr" class="col but-nav__link but" style="margin-right: 181px !important;"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
+</svg></i>
+Технологический режим</a>
 
-      <div class="dropdown show" style="padding: 0px">
-        <a
-          class="but-nav__link but btn btn-secondary dropdown-toggle fabutdata"
+      <div class="col dropdown" style="padding: 0px; margin-left: 119px; margin-right: 253px;">
+        <button
+          class="col-md-12 but-nav__link but fabutdata"
           href="#"
           role="button"
           id="dropdownMenuLink"
@@ -42,7 +30,7 @@
             </svg>
           </i>
           Выберите даты
-        </a>
+        </button>
 
         <div
           class="dropdown-menu fadropmenu"
@@ -96,15 +84,25 @@
       </div>
     </div>
     <div
-      class="tech"
+      class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
       <h3 style="color: white; margin-left: 3px">Факторный анализ</h3>
+      <select name="Company" class="form-control tr-field-filter" id="companySelect"
+        v-model="filter" @change="chooseField">
+        <option value="Выберите месторождение">Выберите месторождение</option>
+        <option value="Акшабулак Центральный">Акшабулак Центральный</option>
+        <option value="Акшабулак Южный">Акшабулак Южный</option>
+        <option value="Акшабулак Восточный">Акшабулак Восточный</option>
+        <option value="Нуралы">Нуралы</option>
+        <option value="Аксай">Аксай</option>
+        <option value="Аксай Южный">Аксай Южный</option>
+    </select>
       <a
         class="but-nav__link but"
         href="trfa"
         @click="pushBign('chart')"
-        style="margin-left: 1264px; background: #272953"
+        style="background: #272953"
         ><svg
           width="24"
           height="24"
@@ -122,18 +120,6 @@
         Показать графики</a
       >
     </div>
-    <!-- <div>
-            <select name="Company" class="from-control" id="companySelect"
-                v-model="filter" @change="chooseField">
-                <option value="Казгермунай">КазГерМунай</option>
-                <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-                <option value="Акшабулак Южный">Акшабулак Южный</option>
-                <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-                <option value="Нуралы">Нуралы</option>
-                <option value="Аксай">Аксай</option>
-                <option value="Аксай Южный">Аксай Южный</option>
-            </select>
-        </div> -->
     <div>
       <table
         class="table table-bordered table-dark table-responsive ce"
@@ -207,7 +193,7 @@
         </tr>
         <tr></tr>
         <tr class="subHeaderColumn">
-          <td @click="sortBy('well')" style="background: #12135c">
+          <!-- <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('field')" style="background: #12135c">
@@ -272,7 +258,30 @@
           </td>
           <td @click="sortBy('Main_problem')" style="background: #272953">
             <i class="fa fa-fw fa-sort"></i>
-          </td>
+          </td> -->
+          <td @click="sortBy('well')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
+          <td @click="sortBy('field')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
+          <td @click="sortBy('horizon')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
+          <td @click="sortBy('exp_meth')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
+          <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('q_o_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('wct_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>%</td>
+          <td @click="sortBy('bhp_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>ат</td>
+          <td @click="sortBy('p_res_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>ат</td>
+          <td @click="sortBy('pi_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
+          <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('q_o_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('wct_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>%</td>
+          <td @click="sortBy('bhp_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>ат</td>
+          <td @click="sortBy('p_res_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>ат</td>
+          <td @click="sortBy('pi_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
+          <td @click="sortBy('dqn')" style="background: #E50303"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('Pbh')" style="background: #F08143"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('wct')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('p_res')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('PI')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('Main_problem')" style="background: #272953"><i class="fa fa-fw fa-sort"></i></td>
+
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
           <td style="background: #12135c">{{ row.well }}</td>
@@ -864,7 +873,7 @@ export default {
       date1: null,
       date2: null,
       fullWells: [],
-      filter: null,
+      filter: "Выберите месторождение",
       editdtm: null,
       editdty: null,
       editdtprevm: null,
@@ -978,6 +987,11 @@ export default {
       },
     };
   },
+  watch: {
+    fullWells() {
+      this.chooseField();
+    },
+  },
   methods: {
     sortBy(type) {
       let { wells, sortType } = this;
@@ -1088,8 +1102,10 @@ export default {
     },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter, fullWells);
-      if (filter == "Казгермунай") {
+      console.log(filter);
+      console.log(fullWells);
+      // if (!filter || filter == "Казгермунай") {
+      if (!filter || filter == "Выберите месторождение") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
@@ -1296,19 +1312,36 @@ body {
   display: flex;
 }
 .farowjustcontbet {
-  margin-bottom: 11px;
+    /* margin-bottom: 11px; */
+    box-sizing: border box; 
+    flex-grow: 1; 
+    padding-right: 0; 
+    margin-right: 0; 
+    margin-left: 0; 
+    padding-left: 0;
 }
-.fabutdata {
+/* .fabutdata {
   margin-left: 156px;
   width: 470;
-}
+} */
 .fasearch {
-  width: 470;
-  margin-left: 160px;
+  width: 367;
+  margin-left: 1px;
 }
 .fadropmenu {
   background: #656a8a;
   color: #ffffff;
   width: 246px;
+}
+.trcol {
+    padding-right: 0;
+}
+.fabutdata {
+    margin-left: -6px;
+    width: 420;
+}
+.table {
+    overflow: scroll;
+    height: calc(100vh - 247px);
 }
 </style>

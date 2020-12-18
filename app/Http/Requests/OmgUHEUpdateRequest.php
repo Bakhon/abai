@@ -21,6 +21,7 @@ class OmgUHEUpdateRequest extends FormRequest
             'reason' => 'nullable|string',
             'ngdu_id' => 'nullable|numeric',
             'zu_id' => 'nullable|numeric',
+            'inhibitor_id' => 'nullable|numeric',
             'fill' => 'nullable|numeric',
             'level' => 'nullable|numeric',
             'current_dosage' => 'nullable|numeric',

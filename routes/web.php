@@ -98,6 +98,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getguproblems', 'ComplicationMonitoring\OmgNGDUController@getProblemGuToday');
 
         Route::get('/getmaterials', 'RefsController@getMaterials');
+        Route::get('/getinhibitors', 'RefsController@getInhibitors');
 
 
         Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
@@ -129,6 +130,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('pipes/export', 'PipeController@export')->name('pipes.export');
         Route::get('pipes/history/{pipes}', 'PipeController@history')->name('pipes.history');
         Route::resource('pipes','PipeController');
+
+        Route::get('inhibitors/list', 'InhibitorsController@list')->name('inhibitors.list');
+        Route::resource('inhibitors','InhibitorsController');
 
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');

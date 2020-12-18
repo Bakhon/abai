@@ -1,9 +1,9 @@
 <template>
-  <div class="container-fluid tr-chart">
+  <div class="tr-chart">
     <div class="tr-chart__content">
       <div class="col-md-12 row">
-        <div class="col-md-9 row justify-content-between">
-          <a href="fa" class="col but-nav__link but trfacolbutnavlinkbut"
+        <div class="row justify-content-between">
+          <a href="fa" class="col but-nav__link but"
             ><i style="margin-right: 10px"
               ><svg
                 width="24"
@@ -20,17 +20,10 @@
           >
           <a href="tr" class="col but-nav__link but trfabuttech"
             ><i style="margin-right: 10px"
-              ><svg
-                width="24"
-                height="14"
-                viewBox="0 0 24 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
-                  fill="white"
-                /></svg></i
+              ><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
+</svg>
+</i
             >Технологический режим</a
           >
         </div>
@@ -46,7 +39,7 @@
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
         </div> -->
       </div>
-      <div class="col-md-9 row sec_nav trfacolmdrowsecnav">
+      <div class="row sec_nav trfacolmdrowsecnav">
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -61,25 +54,25 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
-              >PieChart</a
+              >Распределение фонда скважин по основной причине снижения дебита нефти</a
             >
             <a class="dropdown-item" href="#" @click="chartShow = 'bar'"
-              >BarChart</a
+              >Распределение суммарных отклонений TP по факторам, т/сут</a
             >
           </div>
         </div>
-        <div class="dropdown show">
-          <a
-            class="btn btn-secondary dropdown-toggle trfabtdata"
-            href="#"
-            role="button"
-            id="dropdownMenuLink"
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle trfabtgraph"
+            type="button"
+            id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
+
             Выберите дату
-          </a>
+          </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <label for="inputDate">Введите опорную дату:</label>
             <input type="date" class="form-control" v-model="date1" />
@@ -91,14 +84,14 @@
           </div>
         </div>
       </div>
-      <div class="col-md-9 sec_nav">
-        <div class="namefilter" style="color: white; margin-left: 556px">
-          <h3>Фильтр по</h3>
-        </div>
-        <div class="filter_chart row">
-          <div class="filterplaceone" style="margin-left: 211px; width: 300px">
+      <div class="sec_nav">
+                                    <div class="filter_chart row">
+          <div class="namefilter mb-2" style="color: white">
+            <h4>Фильтр по</h4>
+          </div>
+          <div class="filterplaceone" style="margin-left: 15px">
             <select
-              class="form-control"
+              class="form-control mb-2"
               v-model="chartFilter_field"
               value="Месторождение"
             >
@@ -107,17 +100,17 @@
               </option>
             </select>
           </div>
-          <div class="filterplacetwo" style="width: 300; margin-left: 7px">
-            <select class="form-control" v-model="chartFilter_horizon">
+          <div class="filterplacetwo" style="margin-left: 15px">
+            <select class="form-control mb-2" v-model="chartFilter_horizon">
               <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
                 {{ f === undefined ? "Выберите горизонт" : f }}
               </option>
             </select>
           </div>
-          <div class="filterplacethree" style="margin-left: 7; width: 300">
+          <div class="filterplacethree" style="margin-left: 15px">
             <select
               v-if="exp_methFilters"
-              class="form-control"
+              class="form-control mb-2"
               v-model="chartFilter_exp_meth"
             >
               <option v-for="(f, k) in exp_methFilters" :key="k" :value="f">
@@ -137,10 +130,12 @@
           </div>
         </div>
         <div class="col-sm" v-if="chartShow === 'pie'">
-          <div class="first_block">
+          <div class="first_block" style="margin-left: 144px;">
             <apexchart
               v-if="pieChartData && pieChartRerender"
-              type="pie"
+              type="donut"
+              width="650"
+              
               :options="chartOptions"
               :series="pieChartData"
             ></apexchart>
@@ -238,10 +233,10 @@ export default {
             }
           );
           return [
-            filteredData["Pbh"],
-            filteredData["wct"],
-            filteredData["p_res"],
-            filteredData["PI"],
+            filteredData["Pbh"].toFixed(1),
+            filteredData["wct"].toFixed(1),
+            filteredData["p_res"].toFixed(1),
+            filteredData["PI"].toFixed(1),
           ];
         } catch (err) {
           console.error(err);
@@ -303,8 +298,8 @@ export default {
   },
   data: function () {
     return {
-      chartShow: "bar",
-      chartArr: ["bar", "pie"],
+      chartShow: "pie",
+      chartArr: ["pie", "bar"],
       pieChartRerender: true,
       wells: [],
       chartWells: [],
@@ -403,14 +398,17 @@ export default {
           type: "donut",
         },
         dataLabels: {
-          enabled: false,
+          enabled: true,
         } /*убирается подсветка процентов на круге*/,
         /*tooltip: {
         enabled: false},*/
         legend: {
-          show: false,
-        } /*убирается навигация рядом с кругом*/,
-        colors: ["#330000", "#804d00", "#00004d", "#999900"],
+          position: "top",
+          labels: {
+            useSeriesColors: true,
+          },
+        }, 
+        colors: ["#ff382c", "#b051df", "#59c9fa", "#007bff"],
         plotOptions: {
           pie: {
             expandOnClick: true,
@@ -609,6 +607,29 @@ export default {
 };
 </script>
 <style  scoped>
+.tr-chart .row {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 100%;
+}
+.tr-chart .sec_nav {
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: space-between;
+}
+.tr-chart .dropdown {
+  display: flex;
+  height: 35px;
+  margin: 0 20px;
+  width: 195px;
+}
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
 body {
   color: white !important;
 }
@@ -628,10 +649,23 @@ body {
   background: #5973cc !important;
 }
 .trfabtgraph {
-  margin-left: 45px;
+  width: 195px;
   background: #5973cc !important;
 }
 </style>
-
-
-
+<style >
+.tr-chart {
+  display: flex;
+  width: 100%;
+}
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
+.tr-chart__content {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+</style>
