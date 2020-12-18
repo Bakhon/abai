@@ -215,6 +215,15 @@ export default {
       }
     }
   },
+  computed: {
+    getOnPgnoButtonTitle() {
+      if (this.visibleChart) {
+        return 'Подбор ГНО'
+      } else {
+        return 'Кривая притока'
+      }
+    }
+  },
   methods: {
     setData: function (data) {
       if (this.method == "CurveSetting") {
@@ -1080,7 +1089,13 @@ export default {
       // }
 
       // test
-      this.visibleChart = !this.visibleChart
+
+      if (this.visibleChart) {
+        this.visibleChart = !this.visibleChart
+      } else {
+        this.visibleChart = !this.visibleChart
+        this.postCurveData()
+      }
     },
 
     setActiveRightTabName: function (e, val) {

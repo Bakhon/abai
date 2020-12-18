@@ -1596,7 +1596,7 @@
                       <div class="col-12 px-2">
                         <div class="tables-string-gno6 col-12"
                              @click="onPgnoClick()">
-                          Подбор ГНО
+                          {{ getOnPgnoButtonTitle }}
                         </div>
                       </div>
                     </div>
