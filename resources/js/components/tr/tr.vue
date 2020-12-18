@@ -424,7 +424,7 @@
             <td rowspan="4"><span>Комментарии</span></td>
             <td rowspan="4"><span>Дата последнего ГТМ</span></td>
             <td rowspan="4"><span>Вид последнего ГТМ</span></td>
-            <td class="colspan" colspan="12">Планируемые мероприятия</td>
+            <td class="colspan" colspan="12">Намечаемый режим</td>
           </tr>
           <tr class="headerColumn" style="background: #333975">
             <td rowspan="3"><span>P заб</span></td>
@@ -467,7 +467,7 @@
             <td rowspan="3"><span>Добыча газа за месяц</span></td>
             <td rowspan="3"><span>Добыча жидкость за месяц</span></td>
             <td rowspan="3"><span>Добыча воды за месяц</span></td>
-            <td class="colspan" colspan="2"><span>Изменения k</span></td>
+            <td class="colspan" colspan="2"><span>Изменения к режиму</span></td>
             <td rowspan="3">
               <span>Мероприятия по обеспечению техрежима</span>
             </td>
@@ -6325,10 +6325,11 @@ tr:nth-child(even) {
 .table td {
   padding: 5px !important;
 }
-.trtableborderedtabledarktableresponsive {
+.trtable{
   font-size: 9px;
   padding: unset;
 }
+
 .trcolmd12 {
   margin-left: 0px;
 }
@@ -6362,6 +6363,14 @@ tr:nth-child(even) {
   min-height: 2em;
   background: lightpink;
 }
+.table {
+    overflow: scroll;
+    height: calc(100vh - 247px);
+}
+.trkrtableborderedtabledarktableresponsive {
+    font-size: 9px;
+    padding: unset;
+}
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
@@ -6373,4 +6382,5 @@ tr:nth-child(even) {
   height: 48px;
   align-items: center;
 }
+
 </style>
