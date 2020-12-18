@@ -5,14 +5,14 @@
 
     <div v-else
          class="row no-margin col-12 no-padding relative gno-incl-content-wrapper">
-      <div class="col-6 no-padding no-scrollbar" style="height: 100%; overflow-y: auto;">
+      <div class="col-6 no-padding no-scrollbar incl-modal-table" style="height: 100%; overflow-y: auto;">
         <perfect-scrollbar>
           <table
             border="1"
             cellpadding="0"
             cellspacing="0"
             width="525"
-            class="gno-incl-table-with-header"
+            class="gno-table-with-header incl"
           >
             <thead>
             <tr height="80" style="height: 60pt;">

@@ -4,6 +4,8 @@ import NotifyPlugin from "vue-easy-notify";
 import 'vue-easy-notify/dist/vue-easy-notify.css';
 import {VueMomentLib} from "vue-moment-lib";
 import moment from "moment";
+import {PerfectScrollbar} from "vue2-perfect-scrollbar";
+import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from 'vue';
 
 Vue.prototype.$eventBus = new Vue();
@@ -13,6 +15,7 @@ Vue.use(NotifyPlugin, VueMomentLib);
 Vue.component("Plotly", Plotly);
 
 export default {
+  components: { PerfectScrollbar },
   data: function () {
     return {
 

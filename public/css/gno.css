@@ -785,19 +785,38 @@ td {
 }
 
 .button-nno {
-    width: 750px;
-    height: 50px;
-    margin-left: 260px;
-    margin-bottom: 30px;
-    border-radius: 23px;
-    font-size: 18px;
-    background-color: #237DEB;
-    font-weight: 300;
+    width: 500px;
+    height: 44px;
+    background: #293688;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none !important;
+    outline: none !important;
+    color: white;
+}
+
+.button-nno:hover {
+    background: #222d74;
+}
+
+.button-nno:active {
+    outline: none !important;
+    background: #1a225e;
+}
+
+.nno-modal-button-wrapper {
+    display: flex;
+    justify-content: center;
 }
 
 .nno-icon {
-    margin-left: 999px;
+    margin-left: 880px;
     margin-bottom: 48px;
+}
+
+.nno-icon svg {
+    cursor: pointer;
 }
 
 .nno-info-button {
@@ -1341,57 +1360,69 @@ input.checkbox-q-liquid {
     padding-top: 8px;
 }
 
-.gno-incl-table-with-header {
+.ps {
+    height: 100% !important;
+}
+
+.incl-modal-table .ps__rail-y {
+    right: 10px !important;
+}
+
+.gno-table-with-header {
     border-collapse: collapse;
     table-layout: fixed;
     position: relative;
-    width: 401pt;
     margin: 0 !important;
     font-family: "Harmonia Sans Pro Cyr", sans-serif;
+}
+
+.gno-table-with-header.incl {
+    width: 401pt;
     font-size: 12px;
 }
 
-.gno-incl-table-with-header thead td {
+.gno-table-with-header.pgno {
+    width: 100%;
+    font-size: 12px;
+}
+
+.gno-table-with-header.pgno td {
+    padding: 10px;
+}
+
+.gno-table-with-header thead td {
     position: sticky;
     top: 0;
     font-weight: bold;
     vertical-align: middle;
 }
 
-.gno-incl-table-with-header thead td:nth-child(odd) {
+.gno-table-with-header thead td:nth-child(odd) {
     background: #313e8a;
 }
 
-.gno-incl-table-with-header thead td:nth-child(even) {
+.gno-table-with-header thead td:nth-child(even) {
     background: #2c3a8e;
 }
 
-.gno-incl-table-with-header tbody tr:nth-child(odd) td:nth-child(odd) {
+.gno-table-with-header tbody tr:nth-child(odd) td:nth-child(odd) {
     background: #383d6d;
 }
 
-.gno-incl-table-with-header tbody tr:nth-child(odd) td:nth-child(even) {
+.gno-table-with-header tbody tr:nth-child(odd) td:nth-child(even) {
     background: #343868;
 }
 
-.gno-incl-table-with-header tbody tr:nth-child(even) td:nth-child(odd) {
+.gno-table-with-header tbody tr:nth-child(even) td:nth-child(odd) {
     background: #313666;
 }
 
-.gno-incl-table-with-header tbody tr:nth-child(even) td:nth-child(even) {
+.gno-table-with-header tbody tr:nth-child(even) td:nth-child(even) {
     background: #2b2e5e;
 }
 
-.gno-incl-table-with-header tbody td {
+.gno-table-with-header tbody td {
     vertical-align: middle;
-}
-
-.ps {
-    height: 100% !important;
-}
-
-.ps__rail-y {
-    right: 10px !important;
 }
 
 .modal-old-well-plotly-container {

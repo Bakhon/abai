@@ -419,397 +419,421 @@
               </div>
             </modal>
 
-            <modal name="modalExpAnalysis" :width="1300" :height="550" :adaptive="true" class="chart">
-              <div class="nno-modal">
-                <h4 class="nno-title">
-                  Сравнение технико-экономических показателей за 1 год эксплуатации
-                </h4>
-                <div class="nno-graph">
-                  <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
-                </div>
-                <div class="nno-info-button">
-                  <div class="nno-icon" @click="onShowTable()">
-                    <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M15.131 0.290039C6.83973 0.290039 0.117188 6.77814 0.117188 14.7803C0.117188 19.0149 2.00031 22.8253 5.00172 25.4754L3.66936 34.3624L11.2537 28.7829C12.4906 29.1013 13.7903 29.2719 15.131 29.2719C23.4223 29.2719 30.1463 22.7824 30.1463 14.7803C30.1463 6.77814 23.4223 0.290039 15.131 0.290039ZM18.2567 22.7482C17.4838 23.0426 16.8686 23.2656 16.4071 23.4202C15.9471 23.5749 15.4118 23.6521 14.8033 23.6521C13.8676 23.6521 13.1392 23.4316 12.6208 22.9909C12.102 22.5506 11.8441 21.9925 11.8441 21.3142C11.8441 21.0504 11.863 20.7804 11.9015 20.5057C11.9407 20.2306 12.0029 19.9217 12.0881 19.5746L13.0555 16.2768C13.1403 15.9606 13.2141 15.6601 13.2726 15.3803C13.331 15.0979 13.3593 14.8392 13.3593 14.6038C13.3593 14.1843 13.2689 13.8899 13.0898 13.7244C12.9077 13.5584 12.5661 13.4776 12.0564 13.4776C11.8072 13.4776 11.5504 13.5133 11.2872 13.5879C11.0267 13.6654 10.8006 13.7352 10.6151 13.804L10.8703 12.7881C11.5033 12.5392 12.1096 12.3256 12.6879 12.1491C13.2663 11.9698 13.8129 11.8817 14.3279 11.8817C15.2569 11.8817 15.9736 12.1 16.4784 12.5316C16.9806 12.9649 17.2336 13.5278 17.2336 14.2199C17.2336 14.3633 17.2154 14.6162 17.1814 14.9768C17.1468 15.3385 17.082 15.6685 16.9881 15.9716L16.026 19.2594C15.9472 19.5229 15.8771 19.8249 15.8137 20.1622C15.7512 20.4995 15.721 20.7571 15.721 20.93C15.721 21.3666 15.8212 21.665 16.0248 21.8233C16.2254 21.9816 16.5775 22.0612 17.0756 22.0612C17.3108 22.0612 17.5739 22.0205 17.8714 21.9422C18.1662 21.8636 18.3801 21.7938 18.5147 21.7337L18.2567 22.7482ZM18.0863 9.40345C17.6376 9.80588 17.0974 10.0071 16.4656 10.0071C15.8352 10.0071 15.2912 9.80588 14.8388 9.40345C14.3887 9.00138 14.1612 8.51159 14.1612 7.93996C14.1612 7.36978 14.3902 6.87891 14.8388 6.47284C15.2912 6.06567 15.8352 5.86336 16.4656 5.86336C17.0974 5.86336 17.6388 6.06567 18.0863 6.47284C18.5349 6.87891 18.76 7.36978 18.76 7.93996C18.76 8.51304 18.5349 9.00138 18.0863 9.40345Z"
-                            fill="#FEFEFE"/>
-                    </svg>
+            <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :width="1300" :height="550" :adaptive="true">
+              <div class="modal-bign modal-bign-container">
+                <div class="modal-bign-header">
+                  <div class="modal-bign-title">
+                    Сравнение технико-экономических показателей за 1 год эксплуатации
                   </div>
+
+                  <button type="button"
+                          class="modal-bign-button"
+                          @click="closeModal('modalExpAnalysis')">
+                    Закрыть
+                  </button>
                 </div>
 
-                <button class="button-nno btn-primary" @click="onCompareNpv()">
-                  Выбрать способ эксплуатации с более высоким NPV
-                </button>
+                <div>
+                  <div class="nno-graph">
+                    <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
+                  </div>
+
+                  <div class="nno-info-button">
+                    <div class="nno-icon" @click="onShowTable()">
+                      <svg width="31" height="35"
+                           viewBox="0 0 31 35"
+                           fill="none"
+                           xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                              d="M15.131 0.290039C6.83973 0.290039 0.117188 6.77814 0.117188 14.7803C0.117188 19.0149 2.00031 22.8253 5.00172 25.4754L3.66936 34.3624L11.2537 28.7829C12.4906 29.1013 13.7903 29.2719 15.131 29.2719C23.4223 29.2719 30.1463 22.7824 30.1463 14.7803C30.1463 6.77814 23.4223 0.290039 15.131 0.290039ZM18.2567 22.7482C17.4838 23.0426 16.8686 23.2656 16.4071 23.4202C15.9471 23.5749 15.4118 23.6521 14.8033 23.6521C13.8676 23.6521 13.1392 23.4316 12.6208 22.9909C12.102 22.5506 11.8441 21.9925 11.8441 21.3142C11.8441 21.0504 11.863 20.7804 11.9015 20.5057C11.9407 20.2306 12.0029 19.9217 12.0881 19.5746L13.0555 16.2768C13.1403 15.9606 13.2141 15.6601 13.2726 15.3803C13.331 15.0979 13.3593 14.8392 13.3593 14.6038C13.3593 14.1843 13.2689 13.8899 13.0898 13.7244C12.9077 13.5584 12.5661 13.4776 12.0564 13.4776C11.8072 13.4776 11.5504 13.5133 11.2872 13.5879C11.0267 13.6654 10.8006 13.7352 10.6151 13.804L10.8703 12.7881C11.5033 12.5392 12.1096 12.3256 12.6879 12.1491C13.2663 11.9698 13.8129 11.8817 14.3279 11.8817C15.2569 11.8817 15.9736 12.1 16.4784 12.5316C16.9806 12.9649 17.2336 13.5278 17.2336 14.2199C17.2336 14.3633 17.2154 14.6162 17.1814 14.9768C17.1468 15.3385 17.082 15.6685 16.9881 15.9716L16.026 19.2594C15.9472 19.5229 15.8771 19.8249 15.8137 20.1622C15.7512 20.4995 15.721 20.7571 15.721 20.93C15.721 21.3666 15.8212 21.665 16.0248 21.8233C16.2254 21.9816 16.5775 22.0612 17.0756 22.0612C17.3108 22.0612 17.5739 22.0205 17.8714 21.9422C18.1662 21.8636 18.3801 21.7938 18.5147 21.7337L18.2567 22.7482ZM18.0863 9.40345C17.6376 9.80588 17.0974 10.0071 16.4656 10.0071C15.8352 10.0071 15.2912 9.80588 14.8388 9.40345C14.3887 9.00138 14.1612 8.51159 14.1612 7.93996C14.1612 7.36978 14.3902 6.87891 14.8388 6.47284C15.2912 6.06567 15.8352 5.86336 16.4656 5.86336C17.0974 5.86336 17.6388 6.06567 18.0863 6.47284C18.5349 6.87891 18.76 7.36978 18.76 7.93996C18.76 8.51304 18.5349 9.00138 18.0863 9.40345Z"
+                              fill="#FEFEFE"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  <div class="nno-modal-button-wrapper">
+                    <button class="button-nno" @click="onCompareNpv()">
+                      Выбрать способ эксплуатации с более высоким NPV
+                    </button>
+                  </div>
+                </div>
               </div>
             </modal>
 
-            <modal name="tablePGNO" :width="500" :height="550" :adaptive="true" class="chart">
-              <div class="tablePgno no-gutter col-13" style="width: 100%; height: 100%; overflow-y: auto;">
-                <table class="table">
-                  <tr height="60" style="height: 60pt;">
-                    <td>
-                      Наименование
-                    </td>
-                    <td>
-                      ШГН (покупка)
-                    </td>
-                    <td>
-                      ЭЦН (аренда)
-                    </td>
-                  </tr>
-                  <tbody>
-                  <tr>
-                    <td>Доп. добыча жидкости, тыс.т</td>
-                    <td>
-                      {{ Math.round(expAnalysisData.npvTable1.liquid) }}
-                    </td>
-                    <td>
-                      {{ Math.round(expAnalysisData.npvTable2.liquid) }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Доп. добыча нефти, тыс.т</td>
-                    <td>{{ Math.round(expAnalysisData.npvTable1.oil) }}</td>
-                    <td>{{ Math.round(expAnalysisData.npvTable2.oil) }}</td>
-                  </tr>
-                  <tr>
-                    <td>Количество отработанных дней, сут</td>
-                    <td>
-                      {{ Math.round(expAnalysisData.npvTable1.workday) }}
-                    </td>
-                    <td>
-                      {{ Math.round(expAnalysisData.npvTable2.workday) }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Количество ПРС</td>
-                    <td>
-                      {{
-                        Math.round(expAnalysisData.npvTable1.kolichestvoPrs)
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(expAnalysisData.npvTable2.kolichestvoPrs)
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Среднее продолжительность 1 ПРС, сут</td>
-                    <td>
-                      {{ Math.round(expAnalysisData.npvTable1.sredniiPrs) }}
-                    </td>
-                    <td>
-                      {{ Math.round(expAnalysisData.npvTable2.sredniiPrs) }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Распределение по направлениям реализации НДО, тыс.тг
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiNdo / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiNdo / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Определение доходной части, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiDohod / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiDohod / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Расчет НДПИ, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiNdpi / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiNdpi / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Расчет Рентного налога, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiRent / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiRent / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Расчет ЭТП, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiEtp / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiEtp / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Расчет Расходов по транспортировке нефти, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiTrans / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiTrans / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Затраты на электроэнергию, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiZatrElectShgn /
-                          1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiZatrElectEcn / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Затраты на подготовку, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiZatrPrep / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiZatrPrep / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Затраты на ПРС, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiZatrPrs / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiZatrPrs / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Затраты за суточное обслуживание, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiZatrSutObs / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiZatrSutObs / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Стоимость аренды оборудования, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiArenda / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiArenda / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Амортизация, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiAmortizacia / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiAmortizacia / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Операционная прибыль, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiOperPryb / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiOperPryb / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>КПН, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiKpn / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiKpn / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Чистая прибыль, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiChistPryb / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiChistPryb / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>КВЛ, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiKvl / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiKvl / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Свободный денежный поток, тыс.тг</td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable1.godovoiSvobPot / 1000
-                        )
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(
-                          expAnalysisData.npvTable2.godovoiSvobPot / 1000
-                        )
-                      }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>NPV, млн.тг</td>
-                    <td>
-                      {{
-                        Math.round(expAnalysisData.npvTable1.npv / 1000000)
-                      }}
-                    </td>
-                    <td>
-                      {{
-                        Math.round(expAnalysisData.npvTable2.npv / 1000000)
-                      }}
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
+            <modal class="modal-bign-wrapper chart" name="tablePGNO" :width="500" :height="550" :adaptive="true">
+              <div class="modal-bign modal-bign-container no-padding">
+                <div class="tablePgno no-gutter"
+                     style="position: relative; width: 100%; height: 100%; overflow-y: auto;">
+                  <perfect-scrollbar>
+                    <table class="gno-table-with-header pgno">
+                      <thead>
+                      <tr height="60" style="height: 60pt;">
+                        <td>
+                          Наименование
+                        </td>
+                        <td>
+                          ШГН (покупка)
+                        </td>
+                        <td>
+                          ЭЦН (аренда)
+                        </td>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td>Доп. добыча жидкости, тыс.т</td>
+                        <td>
+                          {{ Math.round(expAnalysisData.npvTable1.liquid) }}
+                        </td>
+                        <td>
+                          {{ Math.round(expAnalysisData.npvTable2.liquid) }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Доп. добыча нефти, тыс.т</td>
+                        <td>{{ Math.round(expAnalysisData.npvTable1.oil) }}</td>
+                        <td>{{ Math.round(expAnalysisData.npvTable2.oil) }}</td>
+                      </tr>
+                      <tr>
+                        <td>Количество отработанных дней, сут</td>
+                        <td>
+                          {{ Math.round(expAnalysisData.npvTable1.workday) }}
+                        </td>
+                        <td>
+                          {{ Math.round(expAnalysisData.npvTable2.workday) }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Количество ПРС</td>
+                        <td>
+                          {{
+                            Math.round(expAnalysisData.npvTable1.kolichestvoPrs)
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(expAnalysisData.npvTable2.kolichestvoPrs)
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Среднее продолжительность 1 ПРС, сут</td>
+                        <td>
+                          {{ Math.round(expAnalysisData.npvTable1.sredniiPrs) }}
+                        </td>
+                        <td>
+                          {{ Math.round(expAnalysisData.npvTable2.sredniiPrs) }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          Распределение по направлениям реализации НДО, тыс.тг
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiNdo / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiNdo / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Определение доходной части, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiDohod / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiDohod / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Расчет НДПИ, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiNdpi / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiNdpi / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Расчет Рентного налога, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiRent / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiRent / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Расчет ЭТП, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiEtp / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiEtp / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Расчет Расходов по транспортировке нефти, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiTrans / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiTrans / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Затраты на электроэнергию, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiZatrElectShgn /
+                              1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiZatrElectEcn / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Затраты на подготовку, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiZatrPrep / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiZatrPrep / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Затраты на ПРС, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiZatrPrs / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiZatrPrs / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Затраты за суточное обслуживание, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiZatrSutObs / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiZatrSutObs / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Стоимость аренды оборудования, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiArenda / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiArenda / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Амортизация, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiAmortizacia / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiAmortizacia / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Операционная прибыль, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiOperPryb / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiOperPryb / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>КПН, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiKpn / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiKpn / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Чистая прибыль, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiChistPryb / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiChistPryb / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>КВЛ, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiKvl / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiKvl / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Свободный денежный поток, тыс.тг</td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable1.godovoiSvobPot / 1000
+                            )
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(
+                              expAnalysisData.npvTable2.godovoiSvobPot / 1000
+                            )
+                          }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>NPV, млн.тг</td>
+                        <td>
+                          {{
+                            Math.round(expAnalysisData.npvTable1.npv / 1000000)
+                          }}
+                        </td>
+                        <td>
+                          {{
+                            Math.round(expAnalysisData.npvTable2.npv / 1000000)
+                          }}
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </perfect-scrollbar>
+                </div>
               </div>
             </modal>
 
