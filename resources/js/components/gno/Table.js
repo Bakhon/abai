@@ -1067,7 +1067,7 @@ export default {
       // }
 
       // test
-      // this.visibleChart = !this.visibleChart
+      this.visibleChart = !this.visibleChart
     },
 
     setActiveRightTabName: function (e, val) {

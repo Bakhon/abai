@@ -816,147 +816,154 @@
             <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
               <div class="modal-bign3"></div>
             </modal>
+
             <div class="gno-line-chart" v-if="visibleChart">
               <gno-line-points-chart></gno-line-points-chart>
             </div>
 
-            <div class="podbor-gno" v-if="!visibleChart">
-              <div class="img-text">
-                <div class="text_img_1">Экс.колонна {{ this.casID }}мм</div>
-                <div class="text_img_2">НКТ {{ this.tubOD }}мм</div>
-                <div class="text_img_3">
-                  Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м
-                </div>
-                <div class="text_img_4">
-                  Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
-                    this.shgnS1L * 1 + this.shgnS2L * 1
-                  }}м
-                </div>
-                <div class="text_img_5">
-                  Штанги {{ this.shgnS1D }}мм
-                  {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
-                    this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
-                  }}м
-                </div>
-                <div class="text_img_6">Насос {{ this.shgnPumpType }}мм</div>
-                <div class="text_img_7">
-                  Интервал перфорации {{ this.hPerf }}-{{
-                    this.hPerf * 1 + this.hPerfND * 1
-                  }}м
-                </div>
-                <div class="text_img_8">Текущий забой {{ this.curr }}м</div>
-              </div>
-              <div class="image-data">
-                <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px"/>
+            <div class="gno-shgn-wrapper"
+                 v-if="!visibleChart">
+              <div class="gno-shgn-block-title">
+                Компоновка ШГН
               </div>
 
-              <div class="table-pgno-button">
-                <div class="table-pgno-one">
-                  <table class="table-pgno">
-                    <tr class="tr-pgno" height="10" style="height: 10pt;">
-                      <td class="td-pgno" rowspan="1" no-gutter colspan="2">
-                        Расчетный режим:
-                      </td>
-                    </tr>
-                    <tbody>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Qж</td>
-                      <td class="td-pgno" rowspan="1">
-                        {{ qlCelValue }} м³/сут
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Qн</td>
-                      <td class="td-pgno" rowspan="1">{{ qOil }} т/сут</td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Обв</td>
-                      <td class="td-pgno" rowspan="1">{{ wctInput }} %</td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Рзаб</td>
-                      <td class="td-pgno" rowspan="1">
-                        {{ bhpCelValue }} ат
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Рпр</td>
-                      <td class="td-pgno" rowspan="1">{{ piCelValue }} ат</td>
-                    </tr>
-                    </tbody>
-                  </table>
+              <div class="podbor-gno">
+                <div class="img-text col-2">
+                  <div class="text_img_1">Экс.колонна {{ this.casID }}мм</div>
+                  <div class="text_img_2">НКТ {{ this.tubOD }}мм</div>
+                  <div class="text_img_3">
+                    Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м
+                  </div>
+                  <div class="text_img_4">
+                    Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
+                      this.shgnS1L * 1 + this.shgnS2L * 1
+                    }}м
+                  </div>
+                  <div class="text_img_5">
+                    Штанги {{ this.shgnS1D }}мм
+                    {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
+                      this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
+                    }}м
+                  </div>
+                  <div class="text_img_6">Насос {{ this.shgnPumpType }}мм</div>
+                  <div class="text_img_7">
+                    Интервал перфорации {{ this.hPerf }}-{{
+                      this.hPerf * 1 + this.hPerfND * 1
+                    }}м
+                  </div>
+                  <div class="text_img_8">Текущий забой {{ this.curr }}м</div>
                 </div>
-
-                <div class="table-pgno-two">
-                  <table class="table-pgno">
-                    <tr class="tr-pgno" height="5px" style="height: 10pt;">
-                      <td class="td-pgno" rowspan="1" no-gutter colspan="2">
-                        Компоновка:
-                      </td>
-                    </tr>
-                    <tbody>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Ø насоса</td>
-                      <td class="td-pgno" rowspan="1">
-                        {{ shgnPumpType }} мм
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Число качаний</td>
-                      <td class="td-pgno" rowspan="1">{{ shgnSPM }} мин-1</td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Длина хода</td>
-                      <td class="td-pgno" rowspan="1">{{ shgnLen }} м</td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Тип СК</td>
-                      <td class="td-pgno" rowspan="1">{{ sk }}</td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Ø НКТ</td>
-                      <td class="td-pgno" rowspan="1">{{ tubOD }} мм</td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Нсп насоса</td>
-                      <td class="td-pgno" rowspan="1">{{ hPumpValue }} м</td>
-                    </tr>
-                    </tbody>
-                  </table>
+                <div class="image-data col-2">
+                  <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px"/>
                 </div>
+                <div class="table-pgno-button col-8">
+                  <div class="table-pgno-one">
+                    <table class="table-pgno">
+                      <tr class="tr-pgno" height="10" style="height: 10pt;">
+                        <td class="td-pgno" rowspan="1" no-gutter colspan="2">
+                          Расчетный режим:
+                        </td>
+                      </tr>
+                      <tbody>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Qж</td>
+                        <td class="td-pgno" rowspan="1">
+                          {{ qlCelValue }} м³/сут
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Qн</td>
+                        <td class="td-pgno" rowspan="1">{{ qOil }} т/сут</td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Обв</td>
+                        <td class="td-pgno" rowspan="1">{{ wctInput }} %</td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Рзаб</td>
+                        <td class="td-pgno" rowspan="1">
+                          {{ bhpCelValue }} ат
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Рпр</td>
+                        <td class="td-pgno" rowspan="1">{{ piCelValue }} ат</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
-                <div class="table-pgno-four">
-                  <table class="table-pgno">
-                    <tr class="tr-pgno" height="5px" style="height: 10pt;">
-                      <td class="td-pgno" rowspan="1">
-                        Штанги
-                      </td>
-                      <td class="td-pgno" rowspan="1">
-                        Ø, мм
-                      </td>
+                  <div class="table-pgno-two">
+                    <table class="table-pgno">
+                      <tr class="tr-pgno" height="5px" style="height: 10pt;">
+                        <td class="td-pgno" rowspan="1" no-gutter colspan="2">
+                          Компоновка:
+                        </td>
+                      </tr>
+                      <tbody>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Ø насоса</td>
+                        <td class="td-pgno" rowspan="1">
+                          {{ shgnPumpType }} мм
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Число качаний</td>
+                        <td class="td-pgno" rowspan="1">{{ shgnSPM }} мин-1</td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Длина хода</td>
+                        <td class="td-pgno" rowspan="1">{{ shgnLen }} м</td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Тип СК</td>
+                        <td class="td-pgno" rowspan="1">{{ sk }}</td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Ø НКТ</td>
+                        <td class="td-pgno" rowspan="1">{{ tubOD }} мм</td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Нсп насоса</td>
+                        <td class="td-pgno" rowspan="1">{{ hPumpValue }} м</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
-                      <td class="td-pgno" rowspan="1">
-                        Длина, м
-                      </td>
-                    </tr>
-                    <tbody>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">Секция 1</td>
-                      <td class="td-pgno" rowspan="1">{{ shgnS1D }}</td>
-                      <td class="td-pgno" rowspan="1">{{ shgnS1L }}</td>
-                    </tr>
-                    <tr class="tr-pgno">
-                      <td class="td-pgno" rowspan="1">Секция 2</td>
-                      <td class="td-pgno" rowspan="1">{{ shgnS2D }}</td>
-                      <td class="td-pgno" rowspan="1">{{ shgnS2L }}</td>
-                    </tr>
-                    <tr>
-                      <td class="td-pgno" rowspan="1">ТН</td>
-                      <td class="td-pgno" rowspan="1">{{ shgnS1D }}</td>
-                      <td class="td-pgno" rowspan="1">{{ shgnTNL }}</td>
-                    </tr>
-                    </tbody>
-                  </table>
+                  <div class="table-pgno-four">
+                    <table class="table-pgno">
+                      <tr class="tr-pgno" height="5px" style="height: 10pt;">
+                        <td class="td-pgno" rowspan="1">
+                          Штанги
+                        </td>
+                        <td class="td-pgno" rowspan="1">
+                          Ø, мм
+                        </td>
+
+                        <td class="td-pgno" rowspan="1">
+                          Длина, м
+                        </td>
+                      </tr>
+                      <tbody>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">Секция 1</td>
+                        <td class="td-pgno" rowspan="1">{{ shgnS1D }}</td>
+                        <td class="td-pgno" rowspan="1">{{ shgnS1L }}</td>
+                      </tr>
+                      <tr class="tr-pgno">
+                        <td class="td-pgno" rowspan="1">Секция 2</td>
+                        <td class="td-pgno" rowspan="1">{{ shgnS2D }}</td>
+                        <td class="td-pgno" rowspan="1">{{ shgnS2L }}</td>
+                      </tr>
+                      <tr>
+                        <td class="td-pgno" rowspan="1">ТН</td>
+                        <td class="td-pgno" rowspan="1">{{ shgnS1D }}</td>
+                        <td class="td-pgno" rowspan="1">{{ shgnTNL }}</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
