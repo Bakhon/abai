@@ -54,10 +54,10 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
-              >PieChart</a
+              >Распределение фонда скважин по основной причине снижения дебита нефти</a
             >
             <a class="dropdown-item" href="#" @click="chartShow = 'bar'"
-              >BarChart</a
+              >Распределение суммарных отклонений TP по факторам, т/сут</a
             >
           </div>
         </div>
@@ -130,10 +130,12 @@
           </div>
         </div>
         <div class="col-sm" v-if="chartShow === 'pie'">
-          <div class="first_block">
+          <div class="first_block" style="margin-left: 144px;">
             <apexchart
               v-if="pieChartData && pieChartRerender"
-              type="pie"
+              type="donut"
+              width="650"
+              
               :options="chartOptions"
               :series="pieChartData"
             ></apexchart>
@@ -396,14 +398,17 @@ export default {
           type: "donut",
         },
         dataLabels: {
-          enabled: false,
+          enabled: true,
         } /*убирается подсветка процентов на круге*/,
         /*tooltip: {
         enabled: false},*/
         legend: {
-          show: false,
-        } /*убирается навигация рядом с кругом*/,
-        colors: ["#330000", "#804d00", "#00004d", "#999900"],
+          position: "top",
+          labels: {
+            useSeriesColors: true,
+          },
+        }, 
+        colors: ["#ff382c", "#b051df", "#59c9fa", "#007bff"],
         plotOptions: {
           pie: {
             expandOnClick: true,
