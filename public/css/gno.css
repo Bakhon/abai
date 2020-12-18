@@ -621,19 +621,23 @@ input[type="text"]:enabled.square2 {
 }
 
 .square3 {
-    background: #323370;
+    background: #494AA5;
     border: 1px solid #272953;
     outline: none;
     width: 100px;
     height: 22px;
     color: white;
-    /*top: 0px;*/
     box-sizing: border-box;
     border-radius: 2px;
 }
 
 .square3:focus {
-    background: #494AA5;
+    background: #5657c7;
+}
+
+.square3:disabled {
+    color: #928f8f;
+    background: #353e70;
 }
 
 input[type="text"]:enabled.square3 {

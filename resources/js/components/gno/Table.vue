@@ -365,47 +365,64 @@
               </div>
             </modal>
 
-            <modal name="modalNewWell" :width="1150" :height="450" :adaptive="true">
-              <div class="modal-bign">
-                <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
-              </div>
-              <div class="modal-analysis-menu">
-                <div class="form-check-new">
-                  <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
-                         type="checkbox"/>
-                  <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = P по окр.</label>
+            <modal class="modal-bign-wrapper"  name="modalNewWell" :width="1150" :height="450" :adaptive="true">
+              <div class="modal-bign modal-bign-container">
+                <div class="modal-bign-header">
+                  <div class="modal-bign-title">
+                    Анализ потенциала
+                  </div>
+
+                  <button type="button"
+                          class="modal-bign-button"
+                          @click="closeModal('modalNewWell')">
+                    Закрыть
+                  </button>
                 </div>
-                <div class="form-check-new">
-                  <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
-                         type="checkbox"/>
-                  <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
+
+                <div class="modal-old-well-content-container">
+                  <div class="modal-old-well-plotly-container">
+                    <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+                  </div>
+                  <div class="modal-analysis-menu">
+                    <div class="form-check-new">
+                      <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
+                             type="checkbox"/>
+                      <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = P по окр.</label>
+                    </div>
+                    <div class="form-check-new">
+                      <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
+                             type="checkbox"/>
+                      <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">К пр = К по окр.</label>
+                    </div>
+                    <div class="form-check-new">
+                      <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Обв по окр. =
+                      </label>
+                      <label for="checkbox1">{{ wctOkr }}%</label>
+                    </div>
+                    <div class="form-check-new">
+                      <input v-model="analysisBox8" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
+                             type="checkbox"/>
+                      <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 * Рнас</label>
+                    </div>
+                    <div class="form-check-new">
+                      <input v-model="grp_skin" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
+                             type="checkbox"/>
+                      <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
+                    </div>
+                    <button type="button"
+                            class="old_well_button"
+                            @click="setGraphNew()">
+                      Применить&nbsp;выполненные корректировки
+                    </button>
+                  </div>
                 </div>
-                <div class="form-check-new">
-                  <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Обв по окр. =
-                  </label>
-                  <label for="checkbox1">{{ wctOkr }}%</label>
-                </div>
-                <div class="form-check-new">
-                  <input v-model="analysisBox8" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
-                         type="checkbox"/>
-                  <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Рзаб пот = 0.75 * Рнас</label>
-                </div>
-                <div class="form-check-new">
-                  <input v-model="grp_skin" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
-                         type="checkbox"/>
-                  <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
-                </div>
-                <button type="button" class="old_well_button" @click="setGraphNew()">
-                  Применить&nbsp;выполненные корректировки
-                </button>
               </div>
             </modal>
 
             <modal name="modalExpAnalysis" :width="1300" :height="550" :adaptive="true" class="chart">
               <div class="nno-modal">
                 <h4 class="nno-title">
-                  Сравнение технико-экономических показателей за 1 год
-                  эксплуатации
+                  Сравнение технико-экономических показателей за 1 год эксплуатации
                 </h4>
                 <div class="nno-graph">
                   <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
@@ -1241,7 +1258,11 @@
                                   <div class="col-2 px-0 ic-min-block1">
                                     <div class="table-border-gno-right">
                                       <label for="">
-                                        <input v-model="curveSelect" class="checkbox-k-prod" value="pi" type="radio" name="set"
+                                        <input v-model="curveSelect"
+                                               class="checkbox-k-prod"
+                                               value="pi"
+                                               type="radio"
+                                               name="set"
                                                @change="postCurveData()"/>
                                         Кпрод
                                       </label>

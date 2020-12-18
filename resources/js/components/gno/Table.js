@@ -420,6 +420,9 @@ export default {
       this.postCurveData()
       this.setLine(this.curveLineData)
       this.setPoints(this.curvePointsData)
+
+      // this.age = true;
+
       if (this.age) {
         this.postAnalysisNew();
         this.$modal.show('modalNewWell');
@@ -451,9 +454,6 @@ export default {
       if (this.expAnalysisData.NNO1 != null) {
         this.EconomParam();
       }
-
-      // test code
-      // this.EconomParam();
     },
     EconomParam() {
       var prs1 = this.expAnalysisData.prs1
@@ -528,6 +528,7 @@ export default {
         }
       });
 
+      // test
       // this.$modal.show("modalExpAnalysis");
     },
     NnoCalc() {
@@ -1010,49 +1011,52 @@ export default {
     },
 
     onPgnoClick() {
-      if (this.expChoose == 'ШГН') {
-        if (this.visibleChart) {
-          let uri = "http://172.20.103.187:7575/api/pgno/shgn";
-          let jsonData = JSON.stringify(
-            {
-              "ql_cel": this.qlCelValue,
-              "h_pump_set": this.hPumpValue,
-              "sk_type": this.sk,
-              "dens_oil": this.densOil,
-              "dens_water": this.densWater,
-              "wct": this.wctInput,
-              "stroke_len": this.stroke_len
-            }
-          )
-          this.axios.post(uri, jsonData).then((response) => {
-            var data = JSON.parse(response.data);
-            console.log(data);
-            if (data) {
-              if (data["error"] == "NoIntersection") {
-                Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать невозможно, попробуйте изменить глубину спуска или ожидаемый дебит");
-              } else {
-                Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
-                this.shgnPumpType = data["pump_type"]
-                this.shgnSPM = data["spm"].toFixed(0)
-                this.shgnLen = data["stroke_len"]
-                this.shgnS1D = data["s1d"].toFixed(0)
-                this.shgnS2D = data["s2d"].toFixed(0)
-                this.shgnS1L = data["s1l"].toFixed(0)
-                this.shgnS2L = data["s2l"].toFixed(0)
-                this.shgnTN = data["tn"]
-                this.shgnTNL = data["tn_l"]
-                this.visibleChart = !this.visibleChart
-              }
-            } else {
-            }
-          })
-        } else {
-          this.visibleChart = !this.visibleChart
-          this.postCurveData()
-        }
-      } else {
-        Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
-      }
+      // if (this.expChoose == 'ШГН') {
+      //   if (this.visibleChart) {
+      //     let uri = "http://172.20.103.187:7575/api/pgno/shgn";
+      //     let jsonData = JSON.stringify(
+      //       {
+      //         "ql_cel": this.qlCelValue,
+      //         "h_pump_set": this.hPumpValue,
+      //         "sk_type": this.sk,
+      //         "dens_oil": this.densOil,
+      //         "dens_water": this.densWater,
+      //         "wct": this.wctInput,
+      //         "stroke_len": this.stroke_len
+      //       }
+      //     )
+      //     this.axios.post(uri, jsonData).then((response) => {
+      //       var data = JSON.parse(response.data);
+      //       console.log(data);
+      //       if (data) {
+      //         if (data["error"] == "NoIntersection") {
+      //           Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать невозможно, попробуйте изменить глубину спуска или ожидаемый дебит");
+      //         } else {
+      //           Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
+      //           this.shgnPumpType = data["pump_type"]
+      //           this.shgnSPM = data["spm"].toFixed(0)
+      //           this.shgnLen = data["stroke_len"]
+      //           this.shgnS1D = data["s1d"].toFixed(0)
+      //           this.shgnS2D = data["s2d"].toFixed(0)
+      //           this.shgnS1L = data["s1l"].toFixed(0)
+      //           this.shgnS2L = data["s2l"].toFixed(0)
+      //           this.shgnTN = data["tn"]
+      //           this.shgnTNL = data["tn_l"]
+      //           this.visibleChart = !this.visibleChart
+      //         }
+      //       } else {
+      //       }
+      //     })
+      //   } else {
+      //     this.visibleChart = !this.visibleChart
+      //     this.postCurveData()
+      //   }
+      // } else {
+      //   Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
+      // }
+
+      // test
+      // this.visibleChart = !this.visibleChart
     },
 
     setActiveRightTabName: function (e, val) {
