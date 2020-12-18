@@ -12,7 +12,7 @@
           paddng-left: 0;
         "
       >
-        <a href="fa" class="col but-nav__link but" style="margin-left: -17px"
+        <a href="fa" class="col but-nav__link but trheadhight" style="margin-left: -17px"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -34,7 +34,7 @@
             </form> -->
         <div class="col dropdown">
           <button
-            class="col-md-12 but-nav__link but"
+            class="col-md-12 but-nav__link but trheadhight"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
@@ -166,7 +166,7 @@
             </div> -->
         <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
         <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a @click="editable()" v-if="!edit" class="col but-nav__link but" style="margin-right: 11px;"
+        <a @click="editable()" v-if="!edit" class="col but-nav__link but trheadhight" style="margin-right: 11px;"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -183,7 +183,7 @@
           </i>
           Редактировать</a
         >
-        <a @click="savetable()" v-if="edit" class="col but-nav__link but"
+        <a @click="savetable()" v-if="edit" class="col but-nav__link but trheadhight"
           >Сохранить</a
         >
 
@@ -336,7 +336,7 @@
           "
         >
           <tr class="headerColumn sticky" style="background: #333975">
-            <td rowspan="4">Раб. Группа</td>
+            <td rowspan="4">№</td>
             <td rowspan="4">НГДУ/месторождение</td>
             <td rowspan="4">№ скв</td>
             <td rowspan="4">Тип скважины</td>
@@ -6447,6 +6447,9 @@ tr:nth-child(even) {
   justify-content: space-between;
   height: 48px;
   align-items: center;
+}
+.trheadhight  {
+  height: 40px;
 }
 
 </style>
