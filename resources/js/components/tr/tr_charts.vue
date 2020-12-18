@@ -497,7 +497,12 @@ export default {
       const stacked = false;
       const stroke = { 
         show: true,
-        width: [5, 0, 0],
+        width: [5, 1, 1],
+        colors: [
+          '#008ffb',
+          '#27295300',
+          '#27295300',
+        ]
       };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
