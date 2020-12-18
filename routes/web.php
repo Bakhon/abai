@@ -204,6 +204,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
         Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
 
+        Route::get('/reports', 'ReportsController@index')->name('reports');
+        Route::get('/reports/monitoring', 'ReportsController@monitoringReport')->name('reports.monitoring');
+
     });
     Auth::routes([
         'reset' => false,
