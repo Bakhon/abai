@@ -6355,7 +6355,7 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-  margin-left: 659px !important;
+  margin-left: 1100px !important;
   margin-top: 4px;
 }
 

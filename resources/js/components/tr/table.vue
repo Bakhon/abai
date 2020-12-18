@@ -516,18 +516,23 @@ tr:nth-child(even) {
 }
 .table tr:first-child .th {
     top: 0;
+    z-index: 3000;
 }
 .table tr:nth-child(2) .th {
     top: 25px;
+    z-index: 3000;
 }
 .table tr:nth-child(3) .th {
     top: 50px;
+    z-index: 3000;
 }
 .table tr:nth-child(4) .th {
     top: 81px;
+    z-index: 3000;
 }
 .table tr:nth-child(5) .th {
     top: 98px;
+    z-index: 3000;
 }
 
 </style>

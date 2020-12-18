@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-between farowjustcontbet" style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px">
-                <a href="tr" class="col but-nav__link but" style="margin-right: 13px !important;"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <a href="tr" class="col but-nav__link but" style="margin-right: 181px !important;"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
 </svg></i>
 Технологический режим</a>
 
-      <div class="col dropdown" style="padding: 0px;">
+      <div class="col dropdown" style="padding: 0px; margin-left: 119px; margin-right: 253px;">
         <button
           class="col-md-12 but-nav__link but fabutdata"
           href="#"
@@ -92,7 +92,7 @@
         class="but-nav__link but"
         href="trfa"
         @click="pushBign('chart')"
-        style="margin-left: 833px; background: #272953"
+        style="margin-left: 1295px; background: #272953"
         ><svg
           width="24"
           height="24"
