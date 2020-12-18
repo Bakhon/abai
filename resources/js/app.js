@@ -112,18 +112,26 @@ Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue'
 Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
+Vue.component('pipe-form', require('./components/pipes/form.vue').default);
+Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
+Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('oilgastable-create', require('./components/сomplicationMonitoring/oilGas/table.vue').default);
 Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
+Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue').default);
+Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
 // Vue.component('table-editor', require('./components/TableEditor.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('gu-map', require('./components/map.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
+Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
+Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 
 
 /**

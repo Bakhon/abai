@@ -17,16 +17,15 @@ class CreateDZOdaysTable extends Migration
             $table->bigIncrements('id');
             
             $table->dateTime('date', 0);	
-            $table->text('__time');
-            $table->text("dzo")->nullable();
+            $table->text("dzo");
             $table->text("mestorozhdenie")->nullable();	
             $table->text("ngdu")->nullable();
             $table->float("oil_plan",32,8)->nullable();
             $table->float("oil_fact",32,8)->nullable();
             $table->float("gk_plan",32,8)->nullable();	
             $table->float("gk_fact",32,8)->nullable();	
-            $table->float("liq_plan",32,8)->nullable();
-            $table->float("liq_fact",64,8)->nullable();
+            $table->float("dobycha_zhidkosti_plan",32,8)->nullable();
+            $table->float("dobycha_zhidkosti_fact",64,8)->nullable();
             $table->float("sdacha_nefti_kuun",32,8)->nullable();						
             $table->float("oil_dlv_plan",32,8)->nullable(); 
             $table->float("oil_dlv_fact",32,8)->nullable();
@@ -93,7 +92,7 @@ class CreateDZOdaysTable extends Migration
             $table->float("fond_neftedob_osvoenie",32,8)->nullable();
             $table->float("fond_neftedob_ofls",32,8)->nullable();
             $table->float("fond_neftedob_nrs",32,8)->nullable();
-            $table->float("prod_wells_idle",32,8)->nullable();
+            $table->float("fond_neftedob_prostoy",32,8)->nullable();
             $table->float("fond_neftedob_prostoy_el",32,8)->nullable();
             $table->float("fond_neftedob_svabirovanie",32,8)->nullable();
             $table->float("fond_neftedob_period",32,8)->nullable();
@@ -133,7 +132,13 @@ class CreateDZOdaysTable extends Migration
             $table->integer("tb_covid_prev_day")->nullable();
             $table->integer("tb_covid_total")->nullable();
             $table->integer("tb_covid_recover")->nullable();
-            
+            $table->text('__time');
+            $table->float("gas_plan",32,8)->nullable();
+            $table->float("gas_fact",32,8)->nullable();
+            $table->float("liq_plan",32,8)->nullable();
+            $table->float("liq_fact",32,8)->nullable();
+            $table->float("inj_wells_idle",32,8)->nullable();
+            $table->float("prod_wells_idle",32,8)->nullable();  
             $table->timestamps();
         });
     }

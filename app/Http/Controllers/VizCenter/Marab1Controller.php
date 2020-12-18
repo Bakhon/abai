@@ -20,7 +20,7 @@ class Marab1Controller extends Controller
         $marab1 = Marab1::latest()->with('type')->paginate(5); 
         $marab1 = Marab1::latest()->with('company')->paginate(5); 
 
-        return view('marab1.index',compact('marab1'))
+        return view('viscenterKPI.marab1.index',compact('marab1'))
             ->with('i', (request()->input('page', 1) - 1) * 5); 
        //
     }
@@ -34,7 +34,7 @@ class Marab1Controller extends Controller
     {
         $company = EcoRefsCompaniesId::get();
         $type = TypeId::get();
-        return view('marab1.create',compact('company', 'type'));
+        return view('viscenterKPI.marab1.create',compact('company', 'type'));
     }
 
     /**
@@ -48,10 +48,10 @@ class Marab1Controller extends Controller
         $request->validate([
             'company_id' => 'required',
             'type_id' => 'required',
-            'date_col' => 'required',
-            'A_category' => 'required',
-            'B_category' => 'required',
-            'C1_category' => 'required',
+            'date' => 'required',
+            // 'A_category' => 'required',
+            // 'B_category' => 'required',
+            // 'C1_category' => 'required',
             ]);
 
             Marab1::create($request->all());
@@ -82,7 +82,7 @@ class Marab1Controller extends Controller
         $row = Marab1::find($id);
         $company = EcoRefsCompaniesId::get();
         $type = TypeId::get();
-        return view('marab1.edit',compact('row', 'company', 'type'));
+        return view('viscenterKPI.marab1.edit',compact('row', 'company', 'type'));
     }
 
     /**
@@ -98,10 +98,10 @@ class Marab1Controller extends Controller
         $request->validate([
             'company_id' => 'required',
             'type_id' => 'required',
-            'date_col' => 'required',
-            'A_category' => 'required',
-            'B_category' => 'required',
-            'C1_category' => 'required',
+            'date' => 'required',
+            // 'A_category' => 'required',
+            // 'B_category' => 'required',
+            // 'C1_category' => 'required',
         ]);
 
         $marab1->update($request->all());

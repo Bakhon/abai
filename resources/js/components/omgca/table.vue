@@ -8,7 +8,7 @@
                           fill="white"/>
                 </svg>
             </a>
-            <a class="table-page__links-item table-page__links-item_excel" @click.prevent="exportExcel" href="#">
+            <a v-if="params.links.export" class="table-page__links-item table-page__links-item_excel" @click.prevent="exportExcel" href="#">
                 <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M14.7071 5.70711L10.293 1.2929C10.1055 1.10536 9.8511 1 9.58588 1L2.00028 1.00002C1.448 1.00002 1.00029 1.44774 1.00029 2.00002L1.00029 18C1.00029 18.5523 1.448 19 2.00029 19L14 19C14.5523 19 15 18.5523 15 18L15 6.41421C15 6.14899 14.8946 5.89464 14.7071 5.70711Z"
@@ -145,9 +145,9 @@
                     </td>
                     <td class="row__links">
                         <div class="links">
-                            <a class="links__item links__item_edit" :href="row.links.edit"></a>
-                            <a class="links__item links__item_view" :href="row.links.show"></a>
-                            <a class="links__item links__item_history" :href="row.links.history"></a>
+                            <a v-if="row.links.edit" class="links__item links__item_edit" :href="row.links.edit"></a>
+                            <a v-if="row.links.show" class="links__item links__item_view" :href="row.links.show"></a>
+                            <a v-if="row.links.history" class="links__item links__item_history" :href="row.links.history"></a>
                             <a class="links__item links__item_delete" @click="deleteItem(row)"></a>
                         </div>
                     </td>
@@ -403,44 +403,7 @@ export default {
             top: 36px;
             z-index: 1000;
 
-            .v-select {
-                background: #41488B;
-                border-radius: 5px;
-                height: 40px;
-                min-width: 300px;
 
-                .vs {
-                    &__search, &__selected {
-                        color: #fff;
-                        font-size: 16px;
-                        font-weight: bold;
-                        height: 40px;
-                        line-height: 40px;
-                        margin: 0;
-                    }
-
-                    &__actions {
-                        svg {
-                            path {
-                                fill: #fff;
-                            }
-                        }
-                    }
-
-                    &__dropdown-menu {
-                        background: #40467E;
-                        border: 0.4px solid #2E50E9;
-                        top: 44px;
-
-                        li {
-                            color: #fff;
-                            font-size: 12px;
-                            font-weight: 600;
-                            padding: 7px 16px;
-                        }
-                    }
-                }
-            }
         }
 
         &-item {

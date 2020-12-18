@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Well extends Model
 {
+    public function zu()
+    {
+        return $this->belongsTo(Zu::class);
+    }
+
     public function omgngdu()
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);

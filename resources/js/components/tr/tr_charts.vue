@@ -1,212 +1,217 @@
 <template>
   <div class="tr-chart">
-    <div class="col-md-12 row">
-      <div class="row justify-content-between">
-        <a href="fa" class="col but-nav__link but trfacolbutnavlinkbut"
-          ><i style="margin-right: 10px"
-            ><svg
-              width="24"
-              height="14"
-              viewBox="0 0 24 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
-                fill="white"
-              /></svg></i
-          >Факторный анализ отклонений ТР</a
-        >
-        <a href="tr" class="col but-nav__link but trfabuttech"
-          ><i style="margin-right: 10px"
-            ><svg
-              width="24"
-              height="14"
-              viewBox="0 0 24 14"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
-                fill="white"
-              /></svg></i
-          >Технологический режим</a
-        >
-      </div>
-    </div>
-    <div class="row sec_nav trfacolmdrowsecnav">
-      <div class="dropdown show">
-        <a
-          class="btn btn-secondary dropdown-toggle trfabtgraph"
-          href="#"
-          role="button"
-          id="dropdownMenuLink"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          Выберите график
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a
-            class="dropdown-item"
-            v-for="(item, index) in chartNames"
-            :key="item"
-            href="#"
-            @click="chartShow = index"
-            >{{ item }}</a
+    <div class="tr-chart__content">
+      <div class="col-md-12 row">
+        <div class="row justify-content-between">
+          <a href="fa" class="col but-nav__link but"
+            ><i style="margin-right: 10px"
+              ><svg
+                width="24"
+                height="14"
+                viewBox="0 0 24 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
+                  fill="white"
+                /></svg></i
+            >Факторный анализ отклонений ТР</a
+          >
+          <a href="tr" class="col but-nav__link but ml-3"
+            ><i style="margin-right: 10px"
+              ><svg
+                width="24"
+                height="14"
+                viewBox="0 0 24 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
+                  fill="white"
+                /></svg></i
+            >Технологический режим</a
           >
         </div>
       </div>
-
-      <div class="col dropdown">
-        <button
-          class="but-nav__link but mt-3 mb-3"
-          type="button"
-          id="dropdownMenuButton"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
-          <i style="margin-right: 10px">
-            <svg
-              width="18"
-              height="20"
-              viewBox="0 0 18 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+      <div class="row sec_nav trfacolmdrowsecnav">
+        <div class="dropdown show">
+          <a
+            class="btn btn-secondary dropdown-toggle trfabtgraph"
+            href="#"
+            role="button"
+            id="dropdownMenuLink"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Выберите график
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a
+              class="dropdown-item"
+              v-for="(item, index) in chartNames"
+              :key="item"
+              href="#"
+              @click="chartShow = index"
+              >{{ item }}</a
             >
-              <path
-                d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z"
-                fill="white"
-              />
-            </svg>
-          </i>
-          Выберите месяц
-        </button>
+          </div>
+        </div>
 
-        <div
-          class="dropdown-menu trdropdown"
-          aria-labelledby="dropdownMenuButton"
-          data-toggle="dropdown"
-          @click.prevent.stop="() => {}"
-        >
-          <div>
+        <div class="dropdown">
+          <button
+            class="but-nav__link but"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <i style="margin-right: 10px">
+              <svg
+                width="18"
+                height="20"
+                viewBox="0 0 18 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z"
+                  fill="white"
+                />
+              </svg>
+            </i>
+            Выберите месяц
+          </button>
+
+          <div
+            class="dropdown-menu trdropdown"
+            aria-labelledby="dropdownMenuButton"
+            data-toggle="dropdown"
+            @click.prevent.stop="() => {}"
+          >
+            <div>
+              <select
+                style="
+                  background-color: #20274e;
+                  border-color: #20274e;
+                  color: white;
+                "
+                class="form-control"
+                id="companySelect"
+                @change="onChangeMonth($event)"
+              >
+                <option>Выберите месяц</option>
+                <option value="1">январь</option>
+                <option value="2">февраль</option>
+                <option value="3">март</option>
+                <option value="4">апрель</option>
+                <option value="5">май</option>
+                <option value="6">июнь</option>
+                <option value="7">июль</option>
+                <option value="8">август</option>
+                <option value="9">сентябрь</option>
+                <option value="10">октябрь</option>
+                <option value="11">ноябрь</option>
+                <option value="12">декабрь</option>
+              </select>
+            </div>
+            <div>
+              <select
+                style="
+                  background-color: #20274e;
+                  border-color: #20274e;
+                  color: white;
+                "
+                class="form-control"
+                id="companySelect"
+                @change="onChangeYear($event)"
+              >
+                <option value="">Выберите год</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
+              </select>
+            </div>
+            <a
+              href="#"
+              @click.prevent="chooseDt"
+              class="but-nav__link but trbutnav"
+              >Сформировать</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="sec_nav">
+        <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4>
+
+        <div class="filter_chart row">
+          <div class="namefilter mb-2" style="color: white">
+            <h4>Фильтр по</h4>
+          </div>
+          <div class="filterplaceone" style="margin-left: 15px">
             <select
-              style="
-                background-color: #20274e;
-                border-color: #20274e;
-                color: white;
-              "
-              class="form-control"
-              id="companySelect"
-              @change="onChangeMonth($event)"
+              class="form-control mb-2"
+              v-model="chartFilter_field"
+              value="Месторождение"
             >
-              <option>Выберите месяц</option>
-              <option value="1">январь</option>
-              <option value="2">февраль</option>
-              <option value="3">март</option>
-              <option value="4">апрель</option>
-              <option value="5">май</option>
-              <option value="6">июнь</option>
-              <option value="7">июль</option>
-              <option value="8">август</option>
-              <option value="9">сентябрь</option>
-              <option value="10">октябрь</option>
-              <option value="11">ноябрь</option>
-              <option value="12">декабрь</option>
+              <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
+                {{ f === undefined ? "Выберите месторождение" : f }}
+              </option>
             </select>
           </div>
-          <div>
-            <select
-              style="
-                background-color: #20274e;
-                border-color: #20274e;
-                color: white;
-              "
-              class="form-control"
-              id="companySelect"
-              @change="onChangeYear($event)"
-            >
-              <option value="">Выберите год</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="2015">2015</option>
-              <option value="2014">2014</option>
+          <div class="filterplacetwo" style="margin-left: 15px">
+            <select class="form-control mb-2" v-model="chartFilter_horizon">
+              <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
+                {{ f === undefined ? "Выберите горизонт" : f }}
+              </option>
             </select>
           </div>
-          <a
-            href="#"
-            @click.prevent="chooseDt"
-            class="but-nav__link but trbutnav"
-            >Сформировать</a
-          >
+          <div class="filterplacethree" style="margin-left: 15px">
+            <select
+              v-if="exp_methFilters"
+              class="form-control mb-2"
+              v-model="chartFilter_exp_meth"
+            >
+              <option v-for="(f, k) in exp_methFilters" :key="k" :value="f">
+                {{ f === undefined ? "Выберите способ эксплуатации" : f }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="fadee tr-chart__loader" v-if="isLoading">
+          <fade-loader :loading="isLoading"></fade-loader>
+        </div>
+        <div class="" v-else>
+          <div class="second_block">
+            <apexchart
+              v-if="chartData"
+              :options="chartBarOptions"
+              :series="chartData"
+            ></apexchart>
+          </div>
         </div>
       </div>
     </div>
-    <div class="sec_nav">
-      <h3 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h3>
-
-      <div class="filter_chart row">
-        <div class="namefilter" style="color: white">
-          <h3>Фильтр по</h3>
-        </div>
-        <div class="filterplaceone" style="margin-left: 15px">
-          <select
-            class="form-control"
-            v-model="chartFilter_field"
-            value="Месторождение"
-          >
-            <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-              {{ f === undefined ? "Выберите месторождение" : f }}
-            </option>
-          </select>
-        </div>
-        <div class="filterplacetwo" style="margin-left: 15px">
-          <select class="form-control" v-model="chartFilter_horizon">
-            <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
-              {{ f === undefined ? "Выберите горизонт" : f }}
-            </option>
-          </select>
-        </div>
-        <div class="filterplacethree" style="margin-left: 15px">
-          <select
-            v-if="exp_methFilters"
-            class="form-control"
-            v-model="chartFilter_exp_meth"
-          >
-            <option v-for="(f, k) in exp_methFilters" :key="k" :value="f">
-              {{ f === undefined ? "Выберите способ эксплуатации" : f }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div class="fadee tr-chart__loader" v-if="isLoading">
-        <fade-loader :loading="isLoading"></fade-loader>
-      </div>
-      <div class="col-sm" v-else>
-        <div class="second_block">
-          <apexchart
-            v-if="chartData"
-            :options="chartBarOptions"
-            :series="chartData"
-          ></apexchart>
-        </div>
-      </div>
-    </div>
+    <big-numbers :list="filteredWells" :isLoading="isLoading" />
   </div>
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
 import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+import BigNumbers from "./BigNumbers.vue";
 
 export default {
   name: "TrCharts",
   components: {
     FadeLoader,
+    BigNumbers,
   },
   computed: {
     fieldFilters() {
@@ -271,8 +276,8 @@ export default {
       chartShow: 0,
       isLoading: true,
       pieChartRerender: true,
-      wells: [],
       chartWells: [],
+      filteredWells: [],
       sortType: "asc",
       dt: null,
       date1: null,
@@ -292,7 +297,7 @@ export default {
       month: null,
       chartData: false,
       chartNames: [
-        "Все скважины. Потенциал снижения динамического уровня, спуска ГНО",
+        "Потенциал снижения динамического уровня, спуска ГНО",
         "ТОП-30 скважин. Потенциал прироста дебита нефти",
         "ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность",
         "ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор",
@@ -386,6 +391,9 @@ export default {
         size: [0, 0, 0, 8, 8],
         offsetX: -2,
       },
+      fillBase: {
+        opacity: 1,
+      },
       yaxisBase: {
         axisBorder: {
           show: true,
@@ -459,25 +467,42 @@ export default {
     },
     setDataChart0(filteredResult) {
       // Все скважины. Потенциал снижения динамического уровня, спуска ГНО
+      this.filteredWells = filteredResult;
       const self = this;
       filteredResult.sort(function (a, b) {
-        if (b.h_dyn > a.h_dyn) return 1;
-        if (b.h_dyn < a.h_dyn) return -1;
+        if (b.h_up_perf_md < a.h_up_perf_md) return 1;
+        if (b.h_up_perf_md > a.h_up_perf_md) return -1;
         return 0;
       });
-      let filtered30;
       let maxY1 = 0,
-        minY1 = 0,
-        maxY2 = 0,
-        minY2 = 0;
+        minY1 = 0;
       const categories = filteredResult.map((item) => {
-        const newY1 = item.h_dyn + item.h_up_perf_md;
-        if (newY1 < minY1) minY1 = newY1;
-        if (newY1 > maxY1) maxY1 = newY1;
+        let newMaxY1, newMinY1;
+        if (item.h_dyn > item.h_up_perf_md) {
+          if (item.h_dyn > item.h_pump_set) newMaxY1 = item.h_dyn;
+          else newMaxY1 = item.h_pump_set;
+        } else {
+          if (item.h_up_perf_md > item.h_pump_set) newMaxY1 = item.h_up_perf_md;
+          else newMaxY1 = item.h_pump_set;
+        }
+        if (item.h_dyn < item.h_up_perf_md) {
+          if (item.h_dyn < item.h_pump_set) newMinY1 = item.h_dyn;
+          else newMinY1 = item.h_pump_set;
+        } else {
+          if (item.h_up_perf_md < item.h_pump_set) newMinY1 = item.h_up_perf_md;
+          else newMinY1 = item.h_pump_set;
+        }
+        if (newMinY1 < minY1) minY1 = newMinY1;
+        if (newMaxY1 > maxY1) maxY1 = newMaxY1;
         return this.getStringOrFirstItem(item, "well");
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
-      const stacked = true;
+      const stacked = false;
+      const stroke = {
+        show: true,
+        width: [5, 1, 1],
+        colors: ["#008ffb", "#27295300", "#27295300"],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
         ...this.yaxisBase,
@@ -489,6 +514,7 @@ export default {
         },
         max: maxY1,
         min: minY1,
+        reversed: true,
       };
 
       this.chartBarOptions = {
@@ -496,24 +522,28 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: {
-          size: [0, 0, 5, 5],
+          size: [0, 5, 5],
           offsetX: -2,
+        },
+        fill: {
+          opacity: 0.3,
         },
       };
       const series = [
         {
-          name: "Н д",
-          type: "bar",
+          name: "Н вдп",
+          type: "area",
           data: filteredResult.map((item) =>
-            this.getStringOrFirstItem(item, "h_dyn")
+            this.getStringOrFirstItem(item, "h_up_perf_md")
           ),
         },
         {
-          name: "Н вд",
-          type: "bar",
+          name: "Н дин",
+          type: "line",
           data: filteredResult.map((item) =>
-            this.getStringOrFirstItem(item, "h_up_perf_md")
+            this.getStringOrFirstItem(item, "h_dyn")
           ),
         },
         {
@@ -542,6 +572,7 @@ export default {
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
+      this.filteredWells = filtered30;
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
@@ -560,6 +591,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -600,7 +632,9 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -657,6 +691,7 @@ export default {
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
+      this.filteredWells = filtered30;
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
@@ -672,6 +707,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -711,7 +747,9 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -761,6 +799,7 @@ export default {
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
+      this.filteredWells = filtered30;
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
@@ -776,6 +815,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -815,7 +855,9 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -865,12 +907,13 @@ export default {
       });
       let filtered30;
       filtered30 = filteredResult.slice(0, 30);
+      this.filteredWells = filtered30;
       let maxY1 = 0,
         minY1 = 0,
         maxY2 = 0,
         minY2 = 0;
       const categories = filtered30.map((item) => {
-        const newY1 = item.q_l + item.tp_idn_oil_inc + item.tp_idn_grp_q_oil;
+        const newY1 = item.q_l + item.tp_idn_liq_inc + item.tp_idn_grp_q_liq;
         const newY2Max =
           item.tp_idn_bhp > item.bhp ? item.tp_idn_bhp : item.bhp;
         const newY2Min =
@@ -883,6 +926,7 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
+      const stroke = { show: false };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -929,7 +973,9 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -971,6 +1017,7 @@ export default {
       return series;
     },
     setDataChart5(filteredResult) {
+      this.filteredWells = filteredResult;
       const categories = ["Факт", "ИДН", "ИДН+ГРП"];
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = false;
@@ -992,6 +1039,7 @@ export default {
         yaxis,
         chart,
         markers: this.markersBase,
+        fill: this.fillBase,
       };
       let filteredData = filteredResult.reduce(
         (acc, res) => {
@@ -1042,6 +1090,7 @@ export default {
     },
     setDataChart6(filteredResult) {
       // Распределение коэффициента продуктивности
+      this.filteredWells = filteredResult;
       const self = this;
       filteredResult.sort(function (a, b) {
         if (b.pi > a.pi) return 1;
@@ -1065,6 +1114,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1079,6 +1129,7 @@ export default {
     },
     setDataChart7(filteredResult) {
       // Распределение скважин по дебиту нефти
+      this.filteredWells = filteredResult;
       const self = this;
       filteredResult.sort(function (a, b) {
         if (b.q_o > a.q_o) return 1;
@@ -1094,6 +1145,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1108,6 +1160,7 @@ export default {
     },
     setDataChart8(filteredResult) {
       // Распределение скважин по обводненности
+      this.filteredWells = filteredResult;
       const self = this;
       filteredResult.sort(function (a, b) {
         if (b.wct > a.wct) return 1;
@@ -1131,6 +1184,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1145,6 +1199,7 @@ export default {
     },
     setDataChart9(filteredResult) {
       // Распределение скважин по дебиту жидкости
+      this.filteredWells = filteredResult;
       const self = this;
       filteredResult.sort(function (a, b) {
         if (b.q_l > a.q_l) return 1;
@@ -1168,6 +1223,7 @@ export default {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        fill: this.fillBase,
       };
       const series = [
         {
@@ -1184,38 +1240,26 @@ export default {
       return Array.isArray(el[param]) ? el[param][0] : el[param];
     },
     onChangeMonth(event) {
-      if (event.target.value == 1) {
-        this.month = 12;
-      } else {
-        this.month = event.target.value - 1;
-      }
+      this.month = event.target.value;
+      this.$store.commit("tr/SET_MONTH", event.target.value);
     },
     onChangeYear(event) {
       this.selectYear = event.target.value;
+      this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt() {
-      //   const { dt } = this;
-      //   console.log(dt)
-      //   var choosenDt = dt.split("-");
       this.isLoading = true;
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
-      if (this.month == 12) {
-        this.year = this.selectYear - 1;
+      if (this.month < 10) {
+        this.dt = "01" + ".0" + this.month + "." + this.selectYear;
       } else {
-        this.year = this.selectYear;
-      }
-      if (this.month < 9) {
-        this.dt = "01" + ".0" + (this.month + 1) + "." + this.year;
-      } else if (this.month == 12) {
-        this.dt = "01" + ".01." + (this.year + 1);
-      } else {
-        this.dt = "01" + "." + (this.month + 1) + "." + this.year;
+        this.dt = "01" + "." + this.month + "." + this.selectYear;
       }
       this.axios
         .get(
           "http://172.20.103.51:7576/api/techregime/graph1/" +
-            this.year +
+            this.selectYear +
             "/" +
             this.month +
             "/"
@@ -1225,7 +1269,6 @@ export default {
           // this.editdty = choosenDt[0];
           let data = response.data;
           if (data) {
-            this.wells = data.data;
             this.fullWells = data.data;
             this.chartWells = data.data;
           } else {
@@ -1233,34 +1276,26 @@ export default {
           }
         });
     },
-    pushBign(bign) {
-      switch (bign) {
-        case "bign1":
-          this.params.data = this.wellsList;
-          break;
-      }
-      this.$modal.show(bign);
-    },
     getColor(status) {
+      if (status < "0") return "#ac3939";
+    },
+    setChart(status) {
       if (status < "0") return "#ac3939";
     },
   },
   created() {
-    let prMm, yyyy;
+    if (this.$store.getters["tr/chart"])
+      this.chartShow = this.$store.getters["tr/chart"];
+    let mm, yyyy;
     if (this.$store.getters["tr/month"] && this.$store.getters["tr/year"]) {
-      prMm = this.$store.getters["tr/month"];
+      mm = this.$store.getters["tr/month"];
       yyyy = this.$store.getters["tr/year"];
     } else {
       const today = new Date();
-      const dd = String(today.getDate()).padStart(2, "0");
-      const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      const dd = today.getDate();
+      mm = today.getMonth() + 1;
       yyyy = today.getFullYear();
-      if (mm == 0) {
-        prMm = 12;
-      } else {
-        prMm = mm - 1;
-      }
-      this.$store.commit("tr/SET_MONTH", prMm);
+      this.$store.commit("tr/SET_MONTH", mm);
       this.$store.commit("tr/SET_YEAR", yyyy);
     }
     this.axios
@@ -1268,41 +1303,49 @@ export default {
         "http://172.20.103.51:7576/api/techregime/graph1/" +
           yyyy +
           "/" +
-          prMm +
+          mm +
           "/"
       )
       .then((response) => {
         let data = response.data;
-        this.editdtm = prMm;
+        this.editdtm = mm;
         console.log(this.editdtm);
         this.editdty = yyyy;
         console.log(this.editdty);
         if (data) {
           console.log(data);
-          this.wells = data.data;
           this.fullWells = data.data;
           this.chartWells = data.data;
         } else {
           console.log("No data");
         }
-        if (prMm < 9) {
-          this.dt = "01" + ".0" + prMm + "." + yyyy;
+        if (mm < 10) {
+          this.dt = "01" + ".0" + mm + "." + yyyy;
         } else {
-          this.dt = "01" + "." + prMm + "." + yyyy;
+          this.dt = "01" + "." + mm + "." + yyyy;
         }
       });
   },
 };
 </script>
 <style  scoped>
-.tr-chart {
-  flex-basis: 0;
-  flex-grow: 1;
-  flex-shrink: 0;
-}
 .tr-chart .row {
   margin-left: 0;
   margin-right: 0;
+  padding: 0;
+  width: 100%;
+}
+.tr-chart .sec_nav {
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: space-between;
+}
+.tr-chart .dropdown {
+  display: flex;
+  height: 35px;
+  margin: 0 20px;
+  width: 195px;
 }
 .tr-chart__loader {
   margin: 50px auto;
@@ -1328,8 +1371,38 @@ body {
   background: #5973cc !important;
 }
 .trfabtgraph {
-  margin-left: 45px;
+  width: 195px;
   background: #5973cc !important;
+}
+.trfa_page.trfa_page {
+    padding: 0 !important;
+    width: calc(100vw - 65px);
+    display: flex;
+    margin-left: 44px;
+}
+.trfa_page .level1-content  {
+    margin: 0;
+    width: 100%;
+}
+.trfa_page .main {
+    padding: 0;
+    margin: 0;
+}  
+</style>
+<style >
+.tr-chart {
+  display: flex;
+  width: 100%;
+}
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
+.tr-chart__content {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
 }
 </style>
 

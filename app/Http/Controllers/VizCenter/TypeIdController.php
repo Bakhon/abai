@@ -17,7 +17,7 @@ class TypeIdController extends Controller
     {
         $typeid = TypeId::latest()->paginate(5);
 
-        return view('typeid.index',compact('typeid'))
+        return view('viscenterKPI.typeid.index',compact('typeid'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -28,7 +28,7 @@ class TypeIdController extends Controller
      */
     public function create()
     {
-        return view('typeid.create');
+        return view('viscenterKPI.typeid.create');
     }
 
     /**
@@ -68,7 +68,7 @@ class TypeIdController extends Controller
     public function edit($id)
     {
         $typeid= TypeId::find($id);
-        return view('typeid.edit',compact('typeid'));
+        return view('viscenterKPI.typeid.edit',compact('typeid'));
     }
 
     /**

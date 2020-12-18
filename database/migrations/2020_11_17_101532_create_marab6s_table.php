@@ -16,9 +16,9 @@ class CreateMarab6sTable extends Migration
         Schema::create('marab6s', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('type_id');	
-            $table->date('aim_dates');
-            $table->integer('remained_days');
-            $table->float('completion_probability',8,4);
+            $table->date('aim_dates')->nullable();
+            $table->integer('remained_days')->nullable();
+            $table->float('completion_probability',8,4)->nullable();
             $table->timestamps();
         });
     }

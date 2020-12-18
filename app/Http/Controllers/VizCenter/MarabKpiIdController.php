@@ -17,7 +17,7 @@ class MarabKpiIdController extends Controller
     {
         $marabkpiid = MarabKpiId::latest()->paginate(5);
 
-        return view('marabkpiid.index',compact('marabkpiid'))
+        return view('viscenterKPI.marabkpiid.index',compact('marabkpiid'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -28,7 +28,7 @@ class MarabKpiIdController extends Controller
      */
     public function create()
     {
-        return view('marabkpiid.create');
+        return view('viscenterKPI.marabkpiid.create');
     }
 
     /**
@@ -68,7 +68,7 @@ class MarabKpiIdController extends Controller
     public function edit($id)
     {
         $marabkpiid = MarabKpiId::find($id);
-        return view('marabkpiid.edit',compact('marabkpiid'));
+        return view('viscenterKPI.marabkpiid.edit',compact('marabkpiid'));
     }
 
     /**

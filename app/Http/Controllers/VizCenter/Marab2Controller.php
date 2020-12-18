@@ -11,6 +11,7 @@ use App\Models\VizCenter\Abd12;
 use App\Models\VizCenter\Abd35;
 use App\Models\VizCenter\Abd46;
 use App\Models\VizCenter\TypeId;
+use App\Models\VizCenter\CorpAll;
 use App\Models\EcoRefsCompaniesId;
 use App\Http\Controllers\Controller;
 
@@ -26,7 +27,7 @@ class Marab2Controller extends Controller
         $marab2 = Marab2::latest()->with('type')->paginate(5); 
         $marab2 = Marab2::latest()->with('company')->paginate(5); 
 
-        return view('marab2.index',compact('marab2'))
+        return view('viscenterKPI.marab2.index',compact('marab2'))
             ->with('i', (request()->input('page', 1) - 1) * 5); 
        //
     }
@@ -40,7 +41,7 @@ class Marab2Controller extends Controller
     {
         $company = EcoRefsCompaniesId::get();
         $type = TypeId::get();
-        return view('marab2.create',compact('company', 'type'));
+        return view('viscenterKPI.marab2.create',compact('company', 'type'));
     }
 
     /**
@@ -54,13 +55,13 @@ class Marab2Controller extends Controller
         $request->validate([
             'company_id' => 'required',
             'type_id' => 'required',
-            'date_col' => 'required',
-            'dividends' => 'required',
-            'vklad_v_ustavnoy_kapital' => 'required',
-            'vydacha_zaimov' => 'required',
-            'vozvrat_zaimov' => 'required',
-            'vozvrat_ustavnogo_kapitala' => 'required',
-            'others' => 'required',
+            'date' => 'required',
+            // 'dividends' => 'required',
+            // 'vklad_v_ustavnoy_kapital' => 'required',
+            // 'vydacha_zaimov' => 'required',
+            // 'vozvrat_zaimov' => 'required',
+            // 'vozvrat_ustavnogo_kapitala' => 'required',
+            // 'others' => 'required',
             ]);
 
             Marab2::create($request->all());
@@ -91,7 +92,7 @@ class Marab2Controller extends Controller
         $row = Marab2::find($id);
         $company = EcoRefsCompaniesId::get();
         $type = TypeId::get();
-        return view('marab2.edit',compact('row', 'company', 'type'));
+        return view('viscenterKPI.marab2.edit',compact('row', 'company', 'type'));
     }
 
     /**
@@ -107,13 +108,13 @@ class Marab2Controller extends Controller
         $request->validate([
             'company_id' => 'required',
             'type_id' => 'required',
-            'date_col' => 'required',
-            'dividends' => 'required',
-            'vklad_v_ustavnoy_kapital' => 'required',
-            'vydacha_zaimov' => 'required',
-            'vozvrat_zaimov' => 'required',
-            'vozvrat_ustavnogo_kapitala' => 'required',
-            'others' => 'required',
+            'date' => 'required',
+            // 'dividends' => 'required',
+            // 'vklad_v_ustavnoy_kapital' => 'required',
+            // 'vydacha_zaimov' => 'required',
+            // 'vozvrat_zaimov' => 'required',
+            // 'vozvrat_ustavnogo_kapitala' => 'required',
+            // 'others' => 'required',
         ]);
 
         $marab2->update($request->all());
@@ -136,7 +137,7 @@ class Marab2Controller extends Controller
     }
 
     public function kpiList(){
-        return view('marab2.list');
+        return view('viscenterKPI.marab2.list');
     }
 
     public function kpicalculation(Request $request)
@@ -225,7 +226,7 @@ class Marab2Controller extends Controller
         // foreach($marab1 as $item){
         //     $marab1Total[$item->company_id]= $item->dividends + $item->vklad_v_ustavnoy_kapital + $item->vydacha_zaimov + $item->vozvrat_zaimov + $item->vozvrat_ustavnogo_kapitala + $item->others;
         //     // $factorTotal = array_push($factorTotal[$item->company_id]
-        //     array_push($factorTempArr, $item->company_id, $item->date_col, $item->type_id, $factorTotal[$item->company_id]); #Сумма: $TempArr[3]
+        //     array_push($factorTempArr, $item->company_id, $item->date, $item->type_id, $factorTotal[$item->company_id]); #Сумма: $TempArr[3]
         //     array_push($factorTotalArray, $factorTempArr);
         //     $factorTempArr = [];
         // }
@@ -237,7 +238,7 @@ class Marab2Controller extends Controller
         $marabayev_1 = Marab1::whereIn('company_id',$company)->get();
         foreach($marabayev_1 as $item){
             $Marab1Total[$item->company_id] = $item->A_category + $item->B_category + $item->C1_category;
-            array_push($Marab1TempArr, $item->type_id, $item->company_id, $item->date_col, $Marab1Total[$item->company_id]);
+            array_push($Marab1TempArr, $item->type_id, $item->company_id, $item->date, $Marab1Total[$item->company_id]);
             array_push($Marab1TotalArray, $Marab1TempArr);
             $Marab1TempArr = [];
         }
@@ -269,7 +270,7 @@ class Marab2Controller extends Controller
         foreach($factoranalysis as $item){
             $factorTotal[$item->company_id]= $item->dividends + $item->vklad_v_ustavnoy_kapital + $item->vydacha_zaimov + $item->vozvrat_zaimov + $item->vozvrat_ustavnogo_kapitala + $item->others;
             // $factorTotal = array_push($factorTotal[$item->company_id]
-            array_push($factorTempArr,  $item->type_id, $item->company_id, $item->date_col, $factorTotal[$item->company_id]); #Сумма: $TempArr[3]
+            array_push($factorTempArr,  $item->type_id, $item->company_id, $item->date, $factorTotal[$item->company_id]); #Сумма: $TempArr[3]
             array_push($factorTotalArray, $factorTempArr);
             $factorTempArr = [];
         }
@@ -306,19 +307,19 @@ class Marab2Controller extends Controller
         foreach($marabayev_345 as $item){
             if($item->marabkpi_id == 1){
                 $Marab3Total[$item->company_id] = $item->fact_zatraty_na_sebestoimost_dobychi_nefti;
-                array_push($Marab3TempArr, $item->type_id, $item->company_id, $item->date_col, $Marab3Total[$item->company_id]);
+                array_push($Marab3TempArr, $item->type_id, $item->company_id, $item->date, $Marab3Total[$item->company_id]);
                 array_push($Marab3TotalArray, $Marab3TempArr);
                 $Marab3TempArr = [];
             }
             else if($item->marabkpi_id == 2){
                 $Marab4Total[$item->company_id] = $item->fact_zatraty_kapitalnogo_vlozhenia;
-                array_push($Marab4TempArr, $item->type_id, $item->company_id, $item->date_col, $Marab4Total[$item->company_id]);
+                array_push($Marab4TempArr, $item->type_id, $item->company_id, $item->date, $Marab4Total[$item->company_id]);
                 array_push($Marab4TotalArray, $Marab4TempArr);
                 $Marab4TempArr = [];
             }
             else if($item->marabkpi_id == 3){
                 $Marab5Total[$item->company_id] = $item->fact_zatraty_na_sebestoimost_dobychi_nefti + $item->fact_zatraty_kapitalnogo_vlozhenia + $item->opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov;
-                array_push($Marab5TempArr, $item->type_id, $item->company_id, $item->date_col, $Marab5Total[$item->company_id]);
+                array_push($Marab5TempArr, $item->type_id, $item->company_id, $item->date, $Marab5Total[$item->company_id]);
                 array_push($Marab5TotalArray, $Marab5TempArr);
                 $Marab5TempArr = [];
             }
@@ -391,7 +392,7 @@ class Marab2Controller extends Controller
         $marabayev_1 = Marab1::whereIn('company_id',$company)->get();
         foreach($marabayev_1 as $item){
             $Marab1Total[$item->company_id] = $item->A_category + $item->B_category + $item->C1_category;
-            array_push($Marab1TempArr, $item->type_id, $item->date_col, $Marab1Total[$item->company_id]);
+            array_push($Marab1TempArr, $item->type_id, $item->date, $Marab1Total[$item->company_id]);
             array_push($Marab1TotalArray, $Marab1TempArr);
             $Marab1TempArr = [];
         }
@@ -470,7 +471,7 @@ class Marab2Controller extends Controller
         $marabayev_2 = Marab2::whereIn('company_id',$company)->get();
         foreach($marabayev_2 as $item){
             $Marab2Total[$item->company_id] = $item->dividends + $item->vklad_v_ustavnoy_kapital + $item->vydacha_zaimov + $item->vozvrat_zaimov + $item->vozvrat_ustavnogo_kapitala + $item->others;
-            array_push($Marab2TempArr, $item->type_id, $item->date_col, $Marab2Total[$item->company_id]);
+            array_push($Marab2TempArr, $item->type_id, $item->date, $Marab2Total[$item->company_id]);
             array_push($Marab2TotalArray, $Marab2TempArr);
             $Marab2TempArr = [];
         }
@@ -556,19 +557,19 @@ class Marab2Controller extends Controller
         foreach($marabayev_345 as $item){
             if($item->marabkpi_id == 1){
                 $Marab3Total[$item->company_id] = $item->fact_zatraty_na_sebestoimost_dobychi_nefti;
-                array_push($Marab3TempArr, $item->type_id, $item->date_col, $Marab3Total[$item->company_id]);
+                array_push($Marab3TempArr, $item->type_id, $item->date, $Marab3Total[$item->company_id]);
                 array_push($Marab3TotalArray, $Marab3TempArr);
                 $Marab3TempArr = [];
             }
             else if($item->marabkpi_id == 2){
                 $Marab4Total[$item->company_id] = $item->fact_zatraty_kapitalnogo_vlozhenia;
-                array_push($Marab4TempArr, $item->type_id, $item->date_col, $Marab4Total[$item->company_id]);
+                array_push($Marab4TempArr, $item->type_id, $item->date, $Marab4Total[$item->company_id]);
                 array_push($Marab4TotalArray, $Marab4TempArr);
                 $Marab4TempArr = [];
             }
             else if($item->marabkpi_id == 3){
                 $Marab5Total[$item->company_id] = $item->fact_zatraty_na_sebestoimost_dobychi_nefti + $item->fact_zatraty_kapitalnogo_vlozhenia + $item->opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov;
-                array_push($Marab5TempArr, $item->type_id, $item->date_col, $Marab5Total[$item->company_id]);
+                array_push($Marab5TempArr, $item->type_id, $item->date, $Marab5Total[$item->company_id]);
                 array_push($Marab5TotalArray, $Marab5TempArr);
                 $Marab5TempArr = [];
             }
@@ -1109,6 +1110,482 @@ class Marab2Controller extends Controller
                 }
             }
         }
+        
+        #Corp1 KPI
+        $CorpAll1Array = [];
+        $CorpAll1Arr = [];
+        $corpall = CorpAll::whereIn('company_id',$company)->get();
+        foreach($corpall as $item){
+            if($item->corpkpi_id == 1){
+                array_push($CorpAll1Arr, $item->type_id, $item->date, $item->value);
+                array_push($CorpAll1Array, $CorpAll1Arr);
+                $CorpAll1Arr = [];
+            }
+        } 
+
+        $porogArray = divideToType($CorpAll1Array)[0];
+        $aimArray = divideToType($CorpAll1Array)[1];
+        $vyzovArray = divideToType($CorpAll1Array)[2];
+        $factArray = divideToType($CorpAll1Array)[3];
+
+        $porogSum = TypeSum($porogArray);
+        $aimSum = TypeSum($aimArray);
+        $vyzovSum = TypeSum($vyzovArray);
+        $factSum = TypeSum($factArray);
+        
+        $CorpAll1Formula = [];
+        foreach($porogSum as $key=>$value){
+            foreach($aimSum as $key2=>$value2){
+                foreach($vyzovSum as $key3=>$value3){
+                    foreach($factSum as $key4=>$value4){
+                        if ($key==$key2 && $key2==$key3 && $key3==$key4){
+                            if (gettype($value) == "array"){
+                                $porog = array_sum($value);
+                            }
+                            else{
+                                $porog = $value;
+                            }
+                            if (gettype($value2) == "array"){
+                                $aim = array_sum($value2);
+                            }
+                            else{
+                                $aim = $value2;
+                            }
+                            if (gettype($value3) == "array"){
+                                $vyzov = array_sum($value3);
+                            }
+                            else{
+                                $vyzov = $value3;
+                            }
+                            if (gettype($value4) == "array"){
+                                $fact = array_sum($value4);
+                            }
+                            else{
+                                $fact = $value4;
+                            }
+
+                            if($fact<$porog){
+                                array_push($CorpAll1Formula, [$key, $porog, $aim, $vyzov, $fact, 0, $corp1weight*0]);
+                            }
+                            else if($fact == $porog){
+                                array_push($CorpAll1Formula, [$key, $porog, $aim, $vyzov, $fact, 50, 50*$corp1weight]);
+                            }
+                            else if($fact < $aim){
+                                $calc = ($fact-$porog)/($aim-$porog)*50+50; 
+                                array_push($CorpAll1Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp1weight]);
+                            }
+                            else if($fact == $aim){
+                                array_push($CorpAll1Formula, [$key, $porog, $aim, $vyzov, $fact, 100, 100*$corp1weight]);
+                            }
+                            else if($fact < $vyzov){
+                                $calc = ($fact-$aim)/($vyzov-$aim)*25+100; 
+                                array_push($CorpAll1Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp1weight]);
+                            }
+                            else{
+                                array_push($CorpAll1Formula, [$key, $porog, $aim, $vyzov, $fact, 125, 125*$corp1weight]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #Corp2 KPI
+        $CorpAll2Array = [];
+        $CorpAll2Arr = [];
+        $corpall = CorpAll::whereIn('company_id',$company)->get();
+        foreach($corpall as $item){
+            if($item->corpkpi_id == 2){
+                array_push($CorpAll2Arr, $item->type_id, $item->date, $item->value);
+                array_push($CorpAll2Array, $CorpAll2Arr);
+                $CorpAll2Arr = [];
+            }
+        } 
+
+        $porogArray = divideToType($CorpAll2Array)[0];
+        $aimArray = divideToType($CorpAll2Array)[1];
+        $vyzovArray = divideToType($CorpAll2Array)[2];
+        $factArray = divideToType($CorpAll2Array)[3];
+
+        $porogSum = TypeSum($porogArray);
+        $aimSum = TypeSum($aimArray);
+        $vyzovSum = TypeSum($vyzovArray);
+        $factSum = TypeSum($factArray);
+        
+        $CorpAll2Formula = [];
+        foreach($porogSum as $key=>$value){
+            foreach($aimSum as $key2=>$value2){
+                foreach($vyzovSum as $key3=>$value3){
+                    foreach($factSum as $key4=>$value4){
+                        if ($key==$key2 && $key2==$key3 && $key3==$key4){
+                            if (gettype($value) == "array"){
+                                $porog = array_sum($value);
+                            }
+                            else{
+                                $porog = $value;
+                            }
+                            if (gettype($value2) == "array"){
+                                $aim = array_sum($value2);
+                            }
+                            else{
+                                $aim = $value2;
+                            }
+                            if (gettype($value3) == "array"){
+                                $vyzov = array_sum($value3);
+                            }
+                            else{
+                                $vyzov = $value3;
+                            }
+                            if (gettype($value4) == "array"){
+                                $fact = array_sum($value4);
+                            }
+                            else{
+                                $fact = $value4;
+                            }
+
+                            if($fact>$porog){
+                                array_push($CorpAll2Formula, [$key, $porog, $aim, $vyzov, $fact, 0, $corp2weight*0]);
+                            }
+                            else if($fact == $porog){
+                                array_push($CorpAll2Formula, [$key, $porog, $aim, $vyzov, $fact, 50, 50*$corp2weight]);
+                            }
+                            else if($fact > $aim){
+                                $calc = ($fact-$porog)/($aim-$porog)*50+50; 
+                                array_push($CorpAll2Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp2weight]);
+                            }
+                            else if($fact == $aim){
+                                array_push($CorpAll2Formula, [$key, $porog, $aim, $vyzov, $fact, 100, 100*$corp2weight]);
+                            }
+                            else if($fact > $vyzov){
+                                $calc = ($fact-$aim)/($vyzov-$aim)*25+100; 
+                                array_push($CorpAll2Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp2weight]);
+                            }
+                            else{
+                                array_push($CorpAll2Formula, [$key, $porog, $aim, $vyzov, $fact, 125, 125*$corp2weight]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #Corp3 KPI
+        $CorpAll3Array = [];
+        $CorpAll3Arr = [];
+        $corpall = CorpAll::whereIn('company_id',$company)->get();
+        foreach($corpall as $item){
+            if($item->corpkpi_id == 3){
+                array_push($CorpAll3Arr, $item->type_id, $item->date, $item->value);
+                array_push($CorpAll3Array, $CorpAll3Arr);
+                $CorpAll3Arr = [];
+            }
+        } 
+
+        $porogArray = divideToType($CorpAll3Array)[0];
+        $aimArray = divideToType($CorpAll3Array)[1];
+        $vyzovArray = divideToType($CorpAll3Array)[2];
+        $factArray = divideToType($CorpAll3Array)[3];
+
+        $porogSum = TypeSum($porogArray);
+        $aimSum = TypeSum($aimArray);
+        $vyzovSum = TypeSum($vyzovArray);
+        $factSum = TypeSum($factArray);
+        
+        $CorpAll3Formula = [];
+        foreach($porogSum as $key=>$value){
+            foreach($aimSum as $key2=>$value2){
+                foreach($vyzovSum as $key3=>$value3){
+                    foreach($factSum as $key4=>$value4){
+                        if ($key==$key2 && $key2==$key3 && $key3==$key4){
+                            if (gettype($value) == "array"){
+                                $porog = array_sum($value);
+                            }
+                            else{
+                                $porog = $value;
+                            }
+                            if (gettype($value2) == "array"){
+                                $aim = array_sum($value2);
+                            }
+                            else{
+                                $aim = $value2;
+                            }
+                            if (gettype($value3) == "array"){
+                                $vyzov = array_sum($value3);
+                            }
+                            else{
+                                $vyzov = $value3;
+                            }
+                            if (gettype($value4) == "array"){
+                                $fact = array_sum($value4);
+                            }
+                            else{
+                                $fact = $value4;
+                            }
+
+                            if($fact<$porog){
+                                array_push($CorpAll3Formula, [$key, $porog, $aim, $vyzov, $fact, 0, $corp3weight*0]);
+                            }
+                            else if($fact == $porog){
+                                array_push($CorpAll3Formula, [$key, $porog, $aim, $vyzov, $fact, 50, 50*$corp3weight]);
+                            }
+                            else if($fact < $aim){
+                                $calc = ($fact-$porog)/($aim-$porog)*50+50; 
+                                array_push($CorpAll3Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp3weight]);
+                            }
+                            else if($fact == $aim){
+                                array_push($CorpAll3Formula, [$key, $porog, $aim, $vyzov, $fact, 100, 100*$corp3weight]);
+                            }
+                            else if($fact < $vyzov){
+                                $calc = ($fact-$aim)/($vyzov-$aim)*25+100; 
+                                array_push($CorpAll3Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp3weight]);
+                            }
+                            else{
+                                array_push($CorpAll3Formula, [$key, $porog, $aim, $vyzov, $fact, 125, 125*$corp3weight]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #Corp4 KPI
+        $CorpAll4Array = [];
+        $CorpAll4Arr = [];
+        $corpall = CorpAll::whereIn('company_id',$company)->get();
+        foreach($corpall as $item){
+            if($item->corpkpi_id == 4){
+                array_push($CorpAll4Arr, $item->type_id, $item->date, $item->value);
+                array_push($CorpAll4Array, $CorpAll4Arr);
+                $CorpAll4Arr = [];
+            }
+        } 
+
+        $porogArray = divideToType($CorpAll4Array)[0];
+        $aimArray = divideToType($CorpAll4Array)[1];
+        $vyzovArray = divideToType($CorpAll4Array)[2];
+        $factArray = divideToType($CorpAll4Array)[3];
+
+        $porogSum = TypeSum($porogArray);
+        $aimSum = TypeSum($aimArray);
+        $vyzovSum = TypeSum($vyzovArray);
+        $factSum = TypeSum($factArray);
+        
+        $CorpAll4Formula = [];
+        foreach($porogSum as $key=>$value){
+            foreach($aimSum as $key2=>$value2){
+                foreach($vyzovSum as $key3=>$value3){
+                    foreach($factSum as $key4=>$value4){
+                        if ($key==$key2 && $key2==$key3 && $key3==$key4){
+                            if (gettype($value) == "array"){
+                                $porog = array_sum($value);
+                            }
+                            else{
+                                $porog = $value;
+                            }
+                            if (gettype($value2) == "array"){
+                                $aim = array_sum($value2);
+                            }
+                            else{
+                                $aim = $value2;
+                            }
+                            if (gettype($value3) == "array"){
+                                $vyzov = array_sum($value3);
+                            }
+                            else{
+                                $vyzov = $value3;
+                            }
+                            if (gettype($value4) == "array"){
+                                $fact = array_sum($value4);
+                            }
+                            else{
+                                $fact = $value4;
+                            }
+
+                            if($fact<$porog){
+                                array_push($CorpAll4Formula, [$key, $porog, $aim, $vyzov, $fact, 0, $corp4weight*0]);
+                            }
+                            else if($fact == $porog){
+                                array_push($CorpAll4Formula, [$key, $porog, $aim, $vyzov, $fact, 50, 50*$corp4weight]);
+                            }
+                            else if($fact < $aim){
+                                $calc = ($fact-$porog)/($aim-$porog)*50+50; 
+                                array_push($CorpAll4Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp4weight]);
+                            }
+                            else if($fact == $aim){
+                                array_push($CorpAll4Formula, [$key, $porog, $aim, $vyzov, $fact, 100, 100*$corp4weight]);
+                            }
+                            else if($fact < $vyzov){
+                                $calc = ($fact-$aim)/($vyzov-$aim)*25+100; 
+                                array_push($CorpAll4Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp4weight]);
+                            }
+                            else{
+                                array_push($CorpAll4Formula, [$key, $porog, $aim, $vyzov, $fact, 125, 125*$corp4weight]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #Corp5 KPI
+        $CorpAll5Array = [];
+        $CorpAll5Arr = [];
+        $corpall = CorpAll::whereIn('company_id',$company)->get();
+        foreach($corpall as $item){
+            if($item->corpkpi_id == 5){
+                array_push($CorpAll5Arr, $item->type_id, $item->date, $item->value);
+                array_push($CorpAll5Array, $CorpAll5Arr);
+                $CorpAll5Arr = [];
+            }
+        } 
+
+        $porogArray = divideToType($CorpAll5Array)[0];
+        $aimArray = divideToType($CorpAll5Array)[1];
+        $vyzovArray = divideToType($CorpAll5Array)[2];
+        $factArray = divideToType($CorpAll5Array)[3];
+
+        $porogSum = TypeSum($porogArray);
+        $aimSum = TypeSum($aimArray);
+        $vyzovSum = TypeSum($vyzovArray);
+        $factSum = TypeSum($factArray);
+        
+        $CorpAll5Formula = [];
+        foreach($porogSum as $key=>$value){
+            foreach($aimSum as $key2=>$value2){
+                foreach($vyzovSum as $key3=>$value3){
+                    foreach($factSum as $key4=>$value4){
+                        if ($key==$key2 && $key2==$key3 && $key3==$key4){
+                            if (gettype($value) == "array"){
+                                $porog = array_sum($value);
+                            }
+                            else{
+                                $porog = $value;
+                            }
+                            if (gettype($value2) == "array"){
+                                $aim = array_sum($value2);
+                            }
+                            else{
+                                $aim = $value2;
+                            }
+                            if (gettype($value3) == "array"){
+                                $vyzov = array_sum($value3);
+                            }
+                            else{
+                                $vyzov = $value3;
+                            }
+                            if (gettype($value4) == "array"){
+                                $fact = array_sum($value4);
+                            }
+                            else{
+                                $fact = $value4;
+                            }
+
+                            if($fact<$porog){
+                                array_push($CorpAll5Formula, [$key, $porog, $aim, $vyzov, $fact, 0, $corp5weight*0]);
+                            }
+                            else if($fact == $porog){
+                                array_push($CorpAll5Formula, [$key, $porog, $aim, $vyzov, $fact, 50, 50*$corp5weight]);
+                            }
+                            else if($fact < $aim){
+                                $calc = ($fact-$porog)/($aim-$porog)*50+50; 
+                                array_push($CorpAll5Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp5weight]);
+                            }
+                            else if($fact == $aim){
+                                array_push($CorpAll5Formula, [$key, $porog, $aim, $vyzov, $fact, 100, 100*$corp5weight]);
+                            }
+                            else if($fact < $vyzov){
+                                $calc = ($fact-$aim)/($vyzov-$aim)*25+100; 
+                                array_push($CorpAll5Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp5weight]);
+                            }
+                            else{
+                                array_push($CorpAll5Formula, [$key, $porog, $aim, $vyzov, $fact, 125, 125*$corp5weight]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #Corp4 KPI
+        $CorpAll6Array = [];
+        $CorpAll6Arr = [];
+        $corpall = CorpAll::whereIn('company_id',$company)->get();
+        foreach($corpall as $item){
+            if($item->corpkpi_id == 6){
+                array_push($CorpAll6Arr, $item->type_id, $item->date, $item->value);
+                array_push($CorpAll6Array, $CorpAll6Arr);
+                $CorpAll6Arr = [];
+            }
+        } 
+
+        $porogArray = divideToType($CorpAll6Array)[0];
+        $aimArray = divideToType($CorpAll6Array)[1];
+        $vyzovArray = divideToType($CorpAll6Array)[2];
+        $factArray = divideToType($CorpAll6Array)[3];
+
+        $porogSum = TypeSum($porogArray);
+        $aimSum = TypeSum($aimArray);
+        $vyzovSum = TypeSum($vyzovArray);
+        $factSum = TypeSum($factArray);
+        
+        $CorpAll6Formula = [];
+        foreach($porogSum as $key=>$value){
+            foreach($aimSum as $key2=>$value2){
+                foreach($vyzovSum as $key3=>$value3){
+                    foreach($factSum as $key4=>$value4){
+                        if ($key==$key2 && $key2==$key3 && $key3==$key4){
+                            if (gettype($value) == "array"){
+                                $porog = array_sum($value);
+                            }
+                            else{
+                                $porog = $value;
+                            }
+                            if (gettype($value2) == "array"){
+                                $aim = array_sum($value2);
+                            }
+                            else{
+                                $aim = $value2;
+                            }
+                            if (gettype($value3) == "array"){
+                                $vyzov = array_sum($value3);
+                            }
+                            else{
+                                $vyzov = $value3;
+                            }
+                            if (gettype($value4) == "array"){
+                                $fact = array_sum($value4);
+                            }
+                            else{
+                                $fact = $value4;
+                            }
+
+                            if($fact<$porog){
+                                array_push($CorpAll6Formula, [$key, $porog, $aim, $vyzov, $fact, 0, $corp4weight*0]);
+                            }
+                            else if($fact == $porog){
+                                array_push($CorpAll6Formula, [$key, $porog, $aim, $vyzov, $fact, 50, 50*$corp6weight]);
+                            }
+                            else if($fact < $aim){
+                                $calc = ($fact-$porog)/($aim-$porog)*50+50; 
+                                array_push($CorpAll6Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp6weight]);
+                            }
+                            else if($fact == $aim){
+                                array_push($CorpAll6Formula, [$key, $porog, $aim, $vyzov, $fact, 100, 100*$corp6weight]);
+                            }
+                            else if($fact < $vyzov){
+                                $calc = ($fact-$aim)/($vyzov-$aim)*25+100; 
+                                array_push($CorpAll6Formula, [$key, $porog, $aim, $vyzov, $fact, $calc, $calc*$corp6weight]);
+                            }
+                            else{
+                                array_push($CorpAll6Formula, [$key, $porog, $aim, $vyzov, $fact, 125, 125*$corp6weight]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        
 
         #Results
         $result['Marabayev1(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarabayev1Calculations; #/kpicalc
@@ -1131,6 +1608,13 @@ class Marab2Controller extends Controller
         $result['Abdulgafarov5(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Abd5Formula; #/kpicalc
         $result['Abdulgafarov6(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Abd6Formula; #/kpicalc
 
+        $result['CorpAll1(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll1Formula; #/kpicalc
+        $result['CorpAll2(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll2Formula; #/kpicalc
+        $result['CorpAll3(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll3Formula; #/kpicalc
+        $result['CorpAll4month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll4Formula; #/kpicalc
+        $result['CorpAll5(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll5Formula; #/kpicalc
+        $result['CorpAll6(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll6Formula; #/kpicalc
+
         #Марабаев 1 - /marab1
         #Марабаев 2 - /marab2
         #Марабаев 3 - /marab345
@@ -1144,6 +1628,9 @@ class Marab2Controller extends Controller
         #Абдулгафаров 4 - /abd46
         #Абдулгафаров 5 - /abd35
         #Абдулгафаров 6 - /abd46
+
+        #Корпоративные КПД - /corpall
+
         return $result;
         }
 }
