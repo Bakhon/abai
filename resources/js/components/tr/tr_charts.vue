@@ -1374,6 +1374,20 @@ body {
   width: 195px;
   background: #5973cc !important;
 }
+.trfa_page.trfa_page {
+    padding: 0 !important;
+    width: calc(100vw - 65px);
+    display: flex;
+    margin-left: 44px;
+}
+.trfa_page .level1-content  {
+    margin: 0;
+    width: 100%;
+}
+.trfa_page .main {
+    padding: 0;
+    margin: 0;
+}  
 </style>
 <style >
 .tr-chart {
