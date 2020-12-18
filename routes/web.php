@@ -98,6 +98,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getguproblems', 'ComplicationMonitoring\OmgNGDUController@getProblemGuToday');
 
         Route::get('/getmaterials', 'RefsController@getMaterials');
+        Route::get('/getinhibitors', 'RefsController@getInhibitors');
 
 
         Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
