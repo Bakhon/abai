@@ -239,7 +239,11 @@
               <option value="Аксай Южный">Аксай Южный</option>
           </select>
 
+          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2">
+            Отмена
+          </div>
           <a
+            v-if="!edit"
             class="but-nav__link but trgraph"
             title="Показать графики"
             data-toggle="tooltip"
@@ -263,6 +267,7 @@
           </a>
 
           <button
+            v-if="!edit"
             id="bt1"
             @click="swap"
             style="
@@ -2448,15 +2453,55 @@
             <td v-if="!edit">{{ Math.round(row.wht * 10) / 10 }}</td>
             <td v-if="edit">{{ Math.round(row.wht * 10) / 10 }}</td>
 
-            <td v-if="!edit">{{ Math.round(row.grp_skin[0] * 10) / 10 }}</td>
-            <td v-if="edit" contenteditable="true">
-              <input
-                @change="editrow(row, row_index)"
-                v-model="row.grp_skin"
-                :disabled="!edit"
-              />
+            <td
+              v-if="!edit"
+              :class="{
+                'cell-with-comment':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].grp_skin[1][0] !== '0',
+              }"
+            >
+              <span
+                :class="{
+                  'circle-err':
+                    wells &&
+                    wells[row_index] &&
+                    wells[row_index].grp_skin[1][0] !== '0',
+                }"
+                :style="`background :${getColor(wells[row_index].grp_skin[1][0])}`"
+              >
+              </span>
+              <span>{{ Math.round(row.grp_skin[0] * 10) / 10 }}</span>
+              <span v-if="wells && wells[row_index]" class="cell-comment">
+                {{ wells[row_index].grp_skin[1][1] }}
+              </span>
             </td>
-
+            <td
+              v-if="edit"
+              :class="{
+                'cell-with-comment':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].grp_skin[1][0] !== '0',
+              }"
+            >
+              <span
+                :class="{
+                  'circle-err':
+                    wells &&
+                    wells[row_index] &&
+                    wells[row_index].grp_skin[1][0] !== '0',
+                }"
+                :style="`background :${getColor(wells[row_index].grp_skin[1][0])}`"
+              >
+              </span>
+              <input @change="editrow(row, row_index)" v-model="row.grp_skin[0]" :disabled="!edit">
+              <!-- <span>{{ Math.round(row.grp_skin[0] * 10) / 10 }}</span> -->
+              <span v-if="wells && wells[row_index]" class="cell-comment">
+                {{ wells[row_index].grp_skin[1][1] }}
+              </span>
+            </td>
             <td v-if="!edit">{{ Math.round(row.grp_jd * 100) / 100 }}</td>
             <td v-if="edit">{{ Math.round(row.grp_jd * 10) / 10 }}</td>
 
@@ -6035,6 +6080,7 @@ export default {
       filter: "Выберите месторождение",
       dt: null,
       fullWells: [],
+      editedWells: [],
       show_first: true,
       show_second: false,
       edit: false,
@@ -6056,7 +6102,8 @@ export default {
   },
   methods: {
     editrow(row, rowId) {
-      // console.log(row);
+      console.log('row = ', row);
+      console.log('rowId = ', rowId);
       row["index"] = 0;
       this.axios
         .post(
@@ -6072,10 +6119,14 @@ export default {
         .then((response) => {
           if (response.data) {
             // console.log('EDIT_RESPONSE', response.data.data[0])
-            this.wells = this.wells.map((currentRow, index) => {
-              // console.log('norm', index, rowId)
-              return index === rowId ? response.data.data[0] : currentRow;
-            });
+            // this.wells = this.wells.map((currentRow, index) => {
+            //   // console.log('norm', index, rowId)
+            //   return index === rowId ? response.data.data[0] :   currentRow;
+            // });
+
+            // this.wells = [...this.wells.slice(0, rowId), response.data.data[0], ...this.wells.slice(rowId + 1)]
+            this.editedWells = this.editedWells.filter(item => item.well !== response.data.data[0].well);
+            this.editedWells = [...this.editedWells, response.data.data[0]]
           } else {
             console.log("No data");
           }
@@ -6084,25 +6135,35 @@ export default {
     savetable() {
       this.edit = false;
       this.isloading = true;
+      const searchParam = this.searchString ? `${this.searchString}/` : ''
       this.axios
         .post(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.51:7576/api/techregime/save/" +
             this.year +
             "/" +
             this.month +
-            "/",
+            "/" +
+            searchParam,
           {
-            well: this.wells,
+            well: this.editedWells,
           }
         )
         .then((response) => {
           console.log(response.data);
+          this.fullWells = response.data;
+          this.editedWells = [];
           this.isloading = false;
         })
         .catch((error) => {
           console.log(error.data);
-          this.isloading = false;
+          this.editedWells = [];
+          this.searchWell();
         });
+    },
+    cancelEdit() {
+      this.edit = false;
+      this.editedWells = [];
+      this.searchWell();
     },
     editable() {
       this.edit = true;
@@ -6171,6 +6232,7 @@ export default {
     },
 
     chooseDt() {
+      this.isloading = true;
       this.axios
         .get(
           "http://172.20.103.51:7576/api/techregime/" +
@@ -6180,6 +6242,7 @@ export default {
             "/"
         )
         .then((response) => {
+          this.isloading = false;
           let data = response.data;
           if (data) {
             console.log(data)
@@ -6219,6 +6282,7 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.isloading = true;
       const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
@@ -6230,6 +6294,7 @@ export default {
             searchParam
         )
         .then((response) => {
+          this.isloading = false;
           let data = response.data;
           if (data) {
             console.log(data);
@@ -6243,6 +6308,7 @@ export default {
         })
         .catch((error) => {
           // this.wells = [];
+          this.isloading = false;
           this.fullWells = [];
           console.log("search error = ", error);
         });
