@@ -113,6 +113,11 @@ abstract class BaseFilter
         $this->query->where('thionic_bacteria_id', $guId);
     }
 
+    protected function filter_inhibitor($guId)
+    {
+        $this->query->where('inhibitor_id', $guId);
+    }
+
     protected function filter_date($dates)
     {
         $this->filterByDate($dates, 'date');
