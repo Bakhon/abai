@@ -127,6 +127,7 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 // Vue.component('table-editor', require('./components/TableEditor.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('gu-map', require('./components/map.vue').default);
+Vue.component('report-export', require('./components/reports/export.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 

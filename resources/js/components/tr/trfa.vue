@@ -233,10 +233,10 @@ export default {
             }
           );
           return [
-            filteredData["Pbh"],
-            filteredData["wct"],
-            filteredData["p_res"],
-            filteredData["PI"],
+            filteredData["Pbh"].toFixed(1),
+            filteredData["wct"].toFixed(1),
+            filteredData["p_res"].toFixed(1),
+            filteredData["PI"].toFixed(1),
           ];
         } catch (err) {
           console.error(err);
@@ -298,8 +298,8 @@ export default {
   },
   data: function () {
     return {
-      chartShow: "bar",
-      chartArr: ["bar", "pie"],
+      chartShow: "pie",
+      chartArr: ["pie", "bar"],
       pieChartRerender: true,
       wells: [],
       chartWells: [],

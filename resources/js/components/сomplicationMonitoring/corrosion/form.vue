@@ -47,6 +47,15 @@
                 <input type="hidden" name="start_date_of_corrosion_velocity_with_inhibitor_measure"
                        v-bind:value="formatDate(formFields.start_date_of_corrosion_velocity_with_inhibitor_measure)" class="form-control" placeholder="">
             </div>
+            <label>Номер образца-свидетеля</label>
+            <div class="form-label-group">
+                <input v-model="formFields.sample_number" type="text" name="sample_number" class="form-control" placeholder="">
+            </div>
+            <label>Количество дней экспозиции</label>
+            <div class="form-label-group">
+                <input v-model="formFields.days" type="number" step="1"
+                       name="days" class="form-control" placeholder="">
+            </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
             <label>НГДУ</label>
@@ -95,6 +104,16 @@
                 <input type="hidden" name="final_date_of_corrosion_velocity_with_inhibitor_measure"
                        v-bind:value="formatDate(formFields.final_date_of_corrosion_velocity_with_inhibitor_measure)" class="form-control" placeholder="">
             </div>
+            <label>Масса до установки, гр</label>
+            <div class="form-label-group">
+                <input v-model="formFields.weight_before" type="number" step="0.0001"
+                       name="weight_before" class="form-control" placeholder="">
+            </div>
+            <label>Средняя скорость коррозии, мм/г</label>
+            <div class="form-label-group">
+                <input v-model="formFields.avg_speed" type="number" step="0.0001"
+                       name="avg_speed" class="form-control" placeholder="">
+            </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
             <label>ЦДНГ</label>
@@ -112,6 +131,11 @@
             <div class="form-label-group">
                 <input v-model="formFields.corrosion_velocity_with_inhibitor" type="number" step="0.0001"
                        name="corrosion_velocity_with_inhibitor" class="form-control" placeholder="">
+            </div>
+            <label>Масса после извлечения, гр</label>
+            <div class="form-label-group">
+                <input v-model="formFields.weight_after" type="number" step="0.0001"
+                       name="weight_after" class="form-control" placeholder="">
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -152,6 +176,11 @@ export default {
                 cdng_id: null,
                 background_corrosion_velocity: null,
                 corrosion_velocity_with_inhibitor: null,
+                sample_number: null,
+                weight_before: null,
+                days: null,
+                weight_after: null,
+                avg_speed: null,
             }
         }
     },
@@ -197,6 +226,11 @@ export default {
                 cdng_id: this.corrosion.cdng_id,
                 background_corrosion_velocity: this.corrosion.background_corrosion_velocity,
                 corrosion_velocity_with_inhibitor: this.corrosion.corrosion_velocity_with_inhibitor,
+                sample_number: this.corrosion.sample_number,
+                weight_before: this.corrosion.weight_before,
+                days: this.corrosion.days,
+                weight_after: this.corrosion.weight_after,
+                avg_speed: this.corrosion.avg_speed,
             }
         }
 
