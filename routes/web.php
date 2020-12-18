@@ -130,6 +130,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('pipes/history/{pipes}', 'PipeController@history')->name('pipes.history');
         Route::resource('pipes','PipeController');
 
+        Route::get('inhibitors/list', 'InhibitorsController@list')->name('inhibitors.list');
+        Route::resource('inhibitors','InhibitorsController');
+
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
         Route::post('checkdublicateomgddng','ComplicationMonitoring\OmgCAController@checkDublicate');
