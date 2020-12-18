@@ -4,7 +4,11 @@
       Кривая притока
     </div>
 
-    <Plotly :data="data" :layout="layout" :display-mode-bar="true"/>
+    <Plotly :data="data"
+            :layout="layout"
+            :display-mode-bar="true"
+            :displaylogo="false"
+            :mode-bar-buttons-to-remove="buttonsToRemove"/>
   </div>
 </template>
 
@@ -22,7 +26,19 @@ export default {
   props: ["postTitle"],
   data: function () {
     return {
-
+      buttonsToRemove: [
+        'zoom2d',
+        'pan2d',
+        'select2d',
+        'lasso2d',
+        'zoomIn2d',
+        'zoomOut2d',
+        'autoScale2d',
+        'resetScale2d',
+        'hoverClosestCartesian',
+        'hoverCompareCartesian',
+        'toggleSpikelines'
+      ],
       layout: {
         // width:  1200,
         // height: 450,
