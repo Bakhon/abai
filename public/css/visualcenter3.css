@@ -194,11 +194,10 @@ body {
 .table4-2 td {
     /* width: 100px; */
     overflow: hidden;
-    padding: 0px 15px 10px 0px;
+    padding: 0px 30px 10px 0px;
     line-height: 525px;
     min-width: 105px;
     height: 50vh;
-    white-space: nowrap;
 }
 
 .table4 {
@@ -366,7 +365,6 @@ td:last-of-type {
     overflow: hidden;
     font-size: 14px;
     margin-left: 10px;
-    white-space: nowrap;
 }
 
 /* Calendar */
@@ -495,11 +493,6 @@ td.size-td {
     float: left;
 }
 
-.form-vc-3{
-    float: left;
-       width: 50%!important;  
-}
-
 .background-center {
     background-color: #272953!important;
     /* height: 63%; */
@@ -568,7 +561,7 @@ td.small-td {
     height: 10px;
     float: left;
     margin-left: 5px;
-    margin-top: 26vh!important;
+    margin-top: 27vh!important;
 }
 
 .percent {
@@ -579,8 +572,8 @@ td.small-td {
     overflow: hidden;
     width: 100%;
     height: 653px;
-    /* margin-left: 15px; */
-    width: 75vw;
+    margin-left: 15px;
+    width: 94vw;
 }
 
 .end2 {
@@ -714,18 +707,3 @@ li.center-li {
 .percent-currency {
     margin-top: 25px;
 }
-
-canvas#line-chart {
-    height: 535px!important;
-    margin-top: 10px;
-    margin-left: 15px;
-}
-
-.wells-td {
-    line-height: 61px!important;
-}
-
-.bold{
-    font-family: Bold;
-}
-
