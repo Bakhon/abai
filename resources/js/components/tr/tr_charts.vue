@@ -1284,6 +1284,7 @@ export default {
     },
   },
   created() {
+    this.isLoading = true;
     if (this.$store.getters["tr/chart"])
       this.chartShow = this.$store.getters["tr/chart"];
     let mm, yyyy;
@@ -1307,6 +1308,7 @@ export default {
           "/"
       )
       .then((response) => {
+        this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
         console.log(this.editdtm);
@@ -1324,6 +1326,9 @@ export default {
         } else {
           this.dt = "01" + "." + mm + "." + yyyy;
         }
+      })
+      .catch((e) => {
+        this.isLoading = false;
       });
   },
 };
