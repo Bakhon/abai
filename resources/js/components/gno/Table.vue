@@ -888,17 +888,21 @@
                   </div>
                   <div class="text_img_8">Текущий забой {{ this.curr }}м</div>
                 </div>
+
                 <div class="image-data col-2">
                   <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px"/>
                 </div>
+
                 <div class="table-pgno-button col-8">
                   <div class="table-pgno-one">
-                    <table class="table-pgno">
-                      <tr class="tr-pgno" height="10" style="height: 10pt;">
-                        <td class="td-pgno" rowspan="1" no-gutter colspan="2">
-                          Расчетный режим:
-                        </td>
-                      </tr>
+                    <table class="table-pgno gno-table-with-header">
+                      <thead>
+                        <tr class="tr-pgno" height="10" style="height: 30pt;">
+                          <td class="td-pgno" rowspan="1" no-gutter colspan="2">
+                            Расчетный режим:
+                          </td>
+                        </tr>
+                      </thead>
                       <tbody>
                       <tr>
                         <td class="td-pgno" rowspan="1">Qж</td>
@@ -929,12 +933,14 @@
                   </div>
 
                   <div class="table-pgno-two">
-                    <table class="table-pgno">
-                      <tr class="tr-pgno" height="5px" style="height: 10pt;">
-                        <td class="td-pgno" rowspan="1" no-gutter colspan="2">
-                          Компоновка:
-                        </td>
-                      </tr>
+                    <table class="table-pgno gno-table-with-header">
+                      <thead>
+                        <tr class="tr-pgno" height="5px" style="height: 30pt;">
+                          <td class="td-pgno" rowspan="1" no-gutter colspan="2">
+                            Компоновка:
+                          </td>
+                        </tr>
+                      </thead>
                       <tbody>
                       <tr>
                         <td class="td-pgno" rowspan="1">Ø насоса</td>
@@ -967,19 +973,21 @@
                   </div>
 
                   <div class="table-pgno-four">
-                    <table class="table-pgno">
-                      <tr class="tr-pgno" height="5px" style="height: 10pt;">
-                        <td class="td-pgno" rowspan="1">
-                          Штанги
-                        </td>
-                        <td class="td-pgno" rowspan="1">
-                          Ø, мм
-                        </td>
+                    <table class="table-pgno gno-table-with-header">
+                      <thead>
+                        <tr class="tr-pgno" height="5px" style="height: 30pt;">
+                          <td class="td-pgno" rowspan="1">
+                            Штанги
+                          </td>
+                          <td class="td-pgno" rowspan="1">
+                            Ø, мм
+                          </td>
 
-                        <td class="td-pgno" rowspan="1">
-                          Длина, м
-                        </td>
-                      </tr>
+                          <td class="td-pgno" rowspan="1">
+                            Длина, м
+                          </td>
+                        </tr>
+                      </thead>
                       <tbody>
                       <tr>
                         <td class="td-pgno" rowspan="1">Секция 1</td>

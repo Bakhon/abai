@@ -981,7 +981,7 @@ td {
 }
 
 .table-pgno td, .table-pgno th {
-    border: 1px solid #1b6bb0 !important;
+    /*border: 1px solid #1b6bb0 !important;*/
     padding: 4px 5px;
 }
 
@@ -1405,31 +1405,31 @@ input.checkbox-q-liquid {
 }
 
 .gno-table-with-header thead td:nth-child(odd) {
-    background: #313e8a;
+    background: #313e8a !important;
 }
 
 .gno-table-with-header thead td:nth-child(even) {
-    background: #2c3a8e;
+    background: #2c3a8e !important;
 }
 
 .gno-table-with-header tbody tr:nth-child(odd) td:nth-child(odd) {
-    background: #383d6d;
+    background: #383d6d !important;
 }
 
 .gno-table-with-header tbody tr:nth-child(odd) td:nth-child(even) {
-    background: #343868;
+    background: #343868 !important;
 }
 
 .gno-table-with-header tbody tr:nth-child(even) td:nth-child(odd) {
-    background: #313666;
+    background: #313666 !important;
 }
 
 .gno-table-with-header tbody tr:nth-child(even) td:nth-child(even) {
-    background: #2b2e5e;
+    background: #2b2e5e !important;
 }
 
 .gno-table-with-header tbody td {
-    vertical-align: middle;
+    vertical-align: middle !important;
 }
 
 .modal-old-well-plotly-container {
