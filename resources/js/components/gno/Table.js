@@ -509,39 +509,39 @@ export default {
       }
     },
     EconomCalc() {
-      let uri2 = "/ru/nnoeco?equip=1&org=5&param=" + this.param_eco + "&qo=" + this.qOilExpShgn + "&qzh=" + this.qZhExpShgn + "&reqd=" + this.expAnalysisData.NNO1 + "&reqecn=" + this.expAnalysisData.prs1 + "&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-      this.axios.get(uri2).then((response) => {
-        let data = response.data;
-        if (data) {
-
-          this.expAnalysisData.shgnParam = data[12].godovoiShgnParam
-          this.expAnalysisData.shgnNpv = data[12].npv
-          this.expAnalysisData.npvTable1 = data[12]
-        } else {
-          console.log('No data');
-        }
-      });
-
-      let uri3 = "/ru/nnoeco?equip=2&org=5&param=" + this.param_eco + "&qo=" + this.qOilExpEcn + "&qzh=" + this.qZhExpEcn + "&reqd=" + this.expAnalysisData.NNO2 + "&reqecn=" + this.expAnalysisData.prs2 + "&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-      this.axios.get(uri3).then((response) => {
-        let data2 = response.data;
-        if (data2) {
-
-          this.expAnalysisData.ecnParam = data2[12].godovoiEcnParam
-          this.expAnalysisData.ecnNpv = data2[12].npv
-          this.expAnalysisData.npvTable2 = data2[12]
-
-          if (this.qOilExpShgn != null && this.qOilExpEcn != null && this.expAnalysisData.NNO1 != null && this.expAnalysisData.NNO2 != null && this.expAnalysisData.shgnParam != null && this.expAnalysisData.shgnNpv != null && this.expAnalysisData.ecnParam != null && this.expAnalysisData.ecnNpv != null) {
-            this.$modal.show("modalExpAnalysis");
-          }
-
-        } else {
-          console.log('No data');
-        }
-      });
+      // let uri2 = "/ru/nnoeco?equip=1&org=5&param=" + this.param_eco + "&qo=" + this.qOilExpShgn + "&qzh=" + this.qZhExpShgn + "&reqd=" + this.expAnalysisData.NNO1 + "&reqecn=" + this.expAnalysisData.prs1 + "&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+      // this.axios.get(uri2).then((response) => {
+      //   let data = response.data;
+      //   if (data) {
+      //
+      //     this.expAnalysisData.shgnParam = data[12].godovoiShgnParam
+      //     this.expAnalysisData.shgnNpv = data[12].npv
+      //     this.expAnalysisData.npvTable1 = data[12]
+      //   } else {
+      //     console.log('No data');
+      //   }
+      // });
+      //
+      // let uri3 = "/ru/nnoeco?equip=2&org=5&param=" + this.param_eco + "&qo=" + this.qOilExpEcn + "&qzh=" + this.qZhExpEcn + "&reqd=" + this.expAnalysisData.NNO2 + "&reqecn=" + this.expAnalysisData.prs2 + "&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+      // this.axios.get(uri3).then((response) => {
+      //   let data2 = response.data;
+      //   if (data2) {
+      //
+      //     this.expAnalysisData.ecnParam = data2[12].godovoiEcnParam
+      //     this.expAnalysisData.ecnNpv = data2[12].npv
+      //     this.expAnalysisData.npvTable2 = data2[12]
+      //
+      //     if (this.qOilExpShgn != null && this.qOilExpEcn != null && this.expAnalysisData.NNO1 != null && this.expAnalysisData.NNO2 != null && this.expAnalysisData.shgnParam != null && this.expAnalysisData.shgnNpv != null && this.expAnalysisData.ecnParam != null && this.expAnalysisData.ecnNpv != null) {
+      //       this.$modal.show("modalExpAnalysis");
+      //     }
+      //
+      //   } else {
+      //     console.log('No data');
+      //   }
+      // });
 
       // test
-      // this.$modal.show("modalExpAnalysis");
+      this.$modal.show("modalExpAnalysis");
     },
     NnoCalc() {
       let uri = "http://172.20.103.187:7575/api/nno/";
