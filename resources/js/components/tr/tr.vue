@@ -429,7 +429,7 @@
             <td rowspan="4"><span>Комментарии</span></td>
             <td rowspan="4"><span>Дата последнего ГТМ</span></td>
             <td rowspan="4"><span>Вид последнего ГТМ</span></td>
-            <td class="colspan" colspan="12">Планируемые мероприятия</td>
+            <td class="colspan" colspan="12">Намечаемый режим</td>
           </tr>
           <tr class="headerColumn" style="background: #333975">
             <td rowspan="3"><span>P заб</span></td>
@@ -472,7 +472,7 @@
             <td rowspan="3"><span>Добыча газа за месяц</span></td>
             <td rowspan="3"><span>Добыча жидкость за месяц</span></td>
             <td rowspan="3"><span>Добыча воды за месяц</span></td>
-            <td class="colspan" colspan="2"><span>Изменения k</span></td>
+            <td class="colspan" colspan="2"><span>Изменения к режиму</span></td>
             <td rowspan="3">
               <span>Мероприятия по обеспечению техрежима</span>
             </td>
@@ -542,7 +542,7 @@
             <td @click="sortBy('pump_type')">
               <i class="fa fa-fw fa-sort"></i>
             </td>
-            <td @click="sortBy('EMPTY')"><i class="fa fa-fw fa-sort"></i></td>
+            <td @click="sortBy('type_sr')"><i class="fa fa-fw fa-sort"></i></td>
             <td @click="sortBy('spm')"><i class="fa fa-fw fa-sort"></i></td>
             <td @click="sortBy('stroke_len')">
               <i class="fa fa-fw fa-sort"></i>м
@@ -1017,15 +1017,15 @@
               </span>
             </td>
 
-            <td v-if="!edit">{{ Math.round(row.r_con * 10) / 10 }}</td>
+            <!-- <td v-if="!edit">{{ Math.round(row.r_con * 10) / 10 }}</td>
             <td v-if="edit" contenteditable="true">
               <input
                 @change="editrow(row, row_index)"
                 v-model="row.r_con"
                 :disabled="!edit"
               />
-            </td>
-            <!-- <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
+            </td> -->
+            <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
                         wells[row_index].r_con[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].r_con[1][0] !== '0'}" :style="`background :${getColor(
@@ -1039,13 +1039,13 @@
                         wells[row_index].r_con[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].r_con[1][0] !== '0'}" :style="`background :${getColor(
-                        wells[row_index].r_con[1][0])}`"> </span> -->
-            <!-- <input @change="editrow(row, row_index)" v-model="row.r_con[0]" :disabled="!edit"> -->
+                        wells[row_index].r_con[1][0])}`"> </span>
+            <input @change="editrow(row, row_index)" v-model="row.r_con[0]" :disabled="!edit">
             <!-- <span>{{Math.round(row.r_con[0]*10)/10}}</span> -->
-            <!-- <span v-if="wells && wells[row_index]" class="cell-comment">
+            <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].r_con[1][1]}}
                             </span>
-                        </td> -->
+                        </td>
 
             <!-- <td>{{Math.round(row.cas_OD*10)/10}}</td> -->
             <td
@@ -1387,8 +1387,9 @@
               </span>
             </td>
 
-            <td v-if="!edit">{{ Math.round(row.EMPTY * 10) / 10 }}</td>
-            <td v-if="edit">{{ Math.round(row.EMPTY * 10) / 10 }}</td>
+
+            <td v-if="!edit">{{ row.type_sr}}</td>
+            <td v-if="edit">{{ row.type_sr}}</td>
 
             <!-- <td>{{Math.round(row.spm*10)/10}}</td> -->
             <td
@@ -6390,10 +6391,11 @@ tr:nth-child(even) {
 .table td {
   padding: 5px !important;
 }
-.trtableborderedtabledarktableresponsive {
+.trtable{
   font-size: 9px;
   padding: unset;
 }
+
 .trcolmd12 {
   margin-left: 0px;
 }
@@ -6427,15 +6429,24 @@ tr:nth-child(even) {
   min-height: 2em;
   background: lightpink;
 }
+.table {
+    overflow: scroll;
+    height: calc(100vh - 247px);
+}
+.trkrtableborderedtabledarktableresponsive {
+    font-size: 9px;
+    padding: unset;
+}
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
   margin: 0 0 0 auto;
-  width: 210px;
+  width: 230px;
 }
 .tr-table-header {
   justify-content: space-between;
   height: 48px;
   align-items: center;
 }
+
 </style>

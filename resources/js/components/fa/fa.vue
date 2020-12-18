@@ -1340,4 +1340,8 @@ body {
     margin-left: -6px;
     width: 420;
 }
+.table {
+    overflow: scroll;
+    height: calc(100vh - 247px);
+}
 </style>
