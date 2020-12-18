@@ -609,4 +609,10 @@ class EconomicController extends Controller
 
         return response()->json(['dzoDataActual' => $dzoDataActual, 'dzoDataPrevYear' => $dzoDataPrevYear]);
     }
+
+    public function getDZOCalcsActualMonth() {
+        $maxDate = DZOcalc::query()->max('date');
+        $tmpDate = \DateTime::createFromFormat('Y-m-d H:i:s', $maxDate);
+        return $tmpDate->format('m');
+    }
 }

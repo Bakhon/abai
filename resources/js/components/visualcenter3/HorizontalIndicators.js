@@ -1,5 +1,6 @@
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
+import {clone} from "ol/extent";
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -10,14 +11,18 @@ export default {
   },
   props: {
     tableToChange: {
-      default: '1'
-    }
+      default: '1',
+    },
+    dateStart: '',
+    dateEnd: '',
   },
   data: function () {
     return {
       lastMonth:'',
       //kpi
       oil_fact: '',
+      prev_oil_fact: '',
+      oil_plan: '',
       proceeds: '', //выручка/доход
       costs: '',
       net_profit: '', //чистая прибыль
@@ -188,10 +193,10 @@ export default {
               ),
             ]);
           });
-          let plansAndFacts = this.getSumPlanAndFactDzo(plansAndFactsData);
-          this.oil_factDayPercent = plansAndFacts.oil_factSum;
-          this.gas_factDayPercent = plansAndFacts.gas_factSum;
-          this.oil_dlv_factDayPercent = plansAndFacts.oil_dlv_factSum;
+          // let plansAndFacts = this.getSumPlanAndFactDzo(plansAndFactsData);
+          // this.oil_factDayPercent = plansAndFacts.oil_factSum;
+          // this.gas_factDayPercent = plansAndFacts.gas_factSum;
+          // this.oil_dlv_factDayPercent = plansAndFacts.oil_dlv_factSum;
 
           plansAndFactsData = _.filter(data, function (item) {
             return _.every([
@@ -202,7 +207,7 @@ export default {
               ),
             ]);
           });
-          plansAndFacts = this.getSumPlanAndFactDzo(plansAndFactsData);
+          let plansAndFacts = this.getSumPlanAndFactDzo(plansAndFactsData);
           this.quantityGetProductionOilandGas = Object.keys(_.filter(plansAndFactsData, _.iteratee({dzo: plansAndFactsData[0].dzo}))).length;
           this.oil_factDay = plansAndFacts.oil_factSum;
           this.oil_planDay = plansAndFacts.oil_planSum;
@@ -221,8 +226,6 @@ export default {
         .groupBy("dzo")
         .map((dzo, id) => ({
           dzo: id,
-          oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-          oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
           oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
           oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
           gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
@@ -286,14 +289,60 @@ export default {
         gas_planSum: gas_planSum,
       };
     },
+    getIndicatorsData() {
+      let uri = "/ru/getdzocalcs";
+      let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart);
+      let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd);
+      let prevPeriodDateStart = new Date(
+        this.dateStart.getFullYear(),
+        this.dateStart.getMonth() - Math.abs(this.dateStart.getMonth() - this.dateEnd.getMonth()),
+        this.dateStart.getDate()
+      );
+      prevPeriodDateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(prevPeriodDateStart);
+      let queryParams = {params: {'dateStart': dateStart, 'dateEnd': dateEnd}};
+      this.axios
+        .get(uri, queryParams)
+        .then(response => {
+            if (response.data) {
+              let oilPlan = 0.00, oilFact = 0.00;
+              _.forEach(response.data['dzoDataActual'], (item) => {
+                oilPlan += item.oil_val_plan;
+                oilFact += item.oil_val_fact;
+              });
+              this.oil_fact = Math.round(oilFact, 0);
+              this.oil_plan = Math.round(oilPlan, 0);
+              console.log(Math.round(oilFact, 0));
+            }
+        });
+      queryParams = {params: {'dateStart': prevPeriodDateStart, 'dateEnd': dateStart}};
+      this.axios
+        .get(uri, queryParams)
+        .then(response => {
+            if (response.data) {
+              let prevPeriodOilFact = 0.00;
+              _.forEach(response.data['dzoDataActual'], (item) => {
+                prevPeriodOilFact += item.oil_val_fact;
+              });
+              this.prev_oil_fact = Math.round(prevPeriodOilFact, 0);
+              console.log(Math.round(prevPeriodOilFact, 0));
+            }
+        });
+    },
     getDefaultData() {
-      this.oil_fact = '430';
       this.proceeds = '1913'; //выручка/доход
       this.costs = '1788';
       this.net_profit = '114'; //чистая прибыль
       this.capital_investment = '198'; //капиталовложения
       this.cash_flow = '-10';
     },
+  },
+  watch: {
+    dateStart: function () {
+      this.getIndicatorsData();
+    },
+    dateEnd: function () {
+      this.getIndicatorsData();
+    }
   },
   async mounted() {
     this.currentMonth = this.monthes3[this.month];

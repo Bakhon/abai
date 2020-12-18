@@ -131,6 +131,8 @@ export default {
       t6:'',
       t66:'',
       oil_factDayProgressBar: '',
+      dateStart: '',
+      dateEnd: '',
     };
   },
   methods: {
@@ -1017,6 +1019,18 @@ export default {
       this.getOilNow(this.timeSelect, this.period);
     },
     getDefaultData() {
+      this.axios
+        .get('/ru/getdzocalcsactualmonth', {})
+        .then(response => {
+          if (response.data) {
+            let dateStart = new Date(2020, 0, 1);
+            let dateEnd = new Date(2020, response.data - 1, 1);
+            dateEnd.setDate(0);
+            dateEnd.setHours(23,59,59);
+            this.dateStart = dateStart;
+            this.dateEnd = dateEnd;
+          }
+        })
       this.t1 = '780';
       this.t11 = '370';
       this.t2 = '3.637';

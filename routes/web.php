@@ -32,6 +32,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
         Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
+        Route::get('/getdzocalcsactualmonth', 'EconomicController@getDZOCalcsActualMonth')->name('getdzocalcsactualmonth');
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
         Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');

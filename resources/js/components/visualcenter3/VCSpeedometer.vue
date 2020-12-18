@@ -13,7 +13,8 @@
                 pathColor="#323370"
                 width="15"
                 handle-size="0"
-                showTooltip	="false"
+                showTooltip="false"
+                max="125"
             />
         </div>
         <div class="position-absolute">
@@ -27,6 +28,7 @@
                 sliderType="default"
                 pathColor="transparent"
                 width="15"
+                max="125"
             />
         </div>
     </div>
@@ -39,20 +41,21 @@ Vue.component("round-slider", RoundSlider);
 export default {
     props: ['sliderValue'],
     data: function () {
-        let slider1Value = '[0, 33]';
+        let slider1Value = [0, 49];
         let slider2Value = this.sliderValue ?? 0
         let rangeColor = '#fe5c5c';
-        if (slider2Value > 33) {
-            slider1Value = '[34, 66]'
+        if (slider2Value > 49) {
+            slider1Value = [50, 99]
             rangeColor = '#237deb';
         }
-        if (slider2Value > 66) {
-            slider1Value = '[66, 100]'
+        if (slider2Value > 100) {
+            slider1Value = [100, 125]
             rangeColor = '#009846';
         }
         return {
             slider1Value: slider1Value,
             slider2Value: slider2Value,
+            mainText: this.sliderValue,
             rangeColor: rangeColor,
         };
     },

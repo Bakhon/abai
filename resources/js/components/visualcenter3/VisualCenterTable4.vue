@@ -3,6 +3,8 @@
         <div class="flex-grow-1">
             <horizontal-indicators
                 @changeTable="tableToChange => changeTable(tableToChange)"
+                v-bind:dateStart="dateStart"
+                v-bind:dateEnd="dateEnd"
             ></horizontal-indicators>
             <div class="vc-tables" :style="`${Table1}`">
                 <div class="mr-sm-2 vc-central-block">
@@ -37,7 +39,7 @@
                             v-bind:title="'Долг/EBIDTA'"
                             v-bind:mainValue="t2"
                             v-bind:units="'млрд. тенге'"
-                            v-bind:speedometerValue="42"
+                            v-bind:speedometerValue="54"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'ROACE'"
@@ -51,7 +53,7 @@
                             v-bind:title="'Запасы (A+B+C1)'"
                             v-bind:mainValue="t4"
                             v-bind:units="'млрд. тенге'"
-                            v-bind:speedometerValue="85"
+                            v-bind:speedometerValue="114"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'ESG рейтинг'"

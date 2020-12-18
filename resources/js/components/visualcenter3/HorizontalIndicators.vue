@@ -5,11 +5,10 @@
         v-bind:indicatorValue="oil_fact"
         v-bind:units="'тыс. тонн'"
         v-bind:hasProgressBar="true"
-        v-bind:progressPercents="oil_factDayProgressBar"
-        v-bind:progressValue="oil_factDay"
-        v-bind:progressMax="oil_planDay"
+        v-bind:progressValue="oil_fact"
+        v-bind:progressMax="oil_plan"
         v-bind:lastPeriod="'vs ' + lastMonth"
-        v-bind:prevPeriodValue="oil_factDayPercent"
+        v-bind:prevPeriodValue="prev_oil_fact"
     ></indicator>
     <indicator
         v-bind:title="'Выручка/Доход'"

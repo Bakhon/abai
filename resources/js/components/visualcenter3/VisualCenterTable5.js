@@ -32,6 +32,7 @@ export default {
       fromBeginOfYearSelect: 0,
       byMonthSelect: 0,
       quarterSelect: 0,
+      actualMonth: 0,
       actualMonthSelect: 0,
       needToChangeProp: true,
       dateStart: '',
@@ -41,7 +42,9 @@ export default {
   methods: {
     refreshData() {
       let uri = "/ru/getdzocalcs";
-      let queryParams = {params: {'dateStart': this.dateStart, 'dateEnd': this.dateEnd}};
+      let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart)
+      let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd)
+      let queryParams = {params: {'dateStart': dateStart, 'dateEnd': dateEnd}};
       this.dzoData = [];
       if (this.dzoSelect !== 'ALL') {
         queryParams.params.dzo = this.dzoSelect;
@@ -227,69 +230,55 @@ export default {
       this.refreshData()
     },
     fromBeginOfYearSelect: function (newValue, oldValue) {
-      let dateStart = new Date(2020, 1, 1);
-      let dateEnd = new Date(2020, newValue + 1, 1);
-      dateEnd.setDate(0);
-      dateEnd.setHours(23,59,59);
-      this.dateStart = dateStart;
-      this.dateEnd = dateEnd;
-      this.refreshData();
-
       if (newValue !== 0) {
+        let dateStart = new Date(2020, 0, 1);
+        let dateEnd = new Date(2020, newValue, 1);
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.refreshData();
         this.byMonthSelect = this.quarterSelect = this.actualMonthSelect = 0;
       }
     },
     byMonthSelect: function (newValue, oldValue) {
-      let dateStart = new Date(2020, newValue, 1);
-      let dateEnd = new Date(2020, newValue + 1, 1);
-      dateEnd.setDate(0);
-      this.dateStart = dateStart;
-      this.dateEnd = dateEnd;
-      this.refreshData();
-
       if (newValue !== 0) {
+        let dateStart = new Date(2020, newValue - 1, 1);
+        let dateEnd = new Date(2020, newValue, 1);
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.refreshData();
         this.fromBeginOfYearSelect = this.quarterSelect = this.actualMonthSelect = 0;
       }
     },
     quarterSelect: function (newValue, oldValue) {
-      newValue = newValue - 1;
-      let dateStart = new Date(2020, newValue, 1);
-      let dateEnd = new Date();
-      dateEnd.setMonth(dateStart.getMonth() + 3);
-      dateEnd.setDate(0);
-      dateEnd.setHours(23,59,59);
-      this.dateStart = dateStart;
-      this.dateEnd = dateEnd;
-      this.refreshData();
-
       if (newValue !== 0) {
+        let dateStart = new Date(2020, newValue - 1, 1);
+        let dateEnd = new Date(2020, newValue + 2, 1);
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.refreshData();
         this.fromBeginOfYearSelect = this.byMonthSelect = this.actualMonthSelect = 0;
       }
     },
     actualMonthSelect: function (newValue, oldValue) {
-      let dateStart = new Date();
-      dateStart.setDate(1);
-      dateStart.setHours(0,0,0);
-      dateStart.setMonth(dateStart.getMonth() - 1);
-      let dateEnd = new Date();
-      dateEnd.setDate(0);
-      dateEnd.setHours(23,59,59);
-      this.dateStart = dateStart;
-      this.dateEnd = dateEnd;
-      this.refreshData();
-
       if (newValue !== 0) {
+        let dateStart = new Date(2020, this.actualMonth, 1);
+        let dateEnd = new Date(2020, this.actualMonth + 1, 1);
+        this.dateStart = dateStart;
+        this.dateEnd = dateEnd;
+        this.refreshData();
         this.fromBeginOfYearSelect = this.byMonthSelect = this.quarterSelect = 0;
       }
     },
 
   },
-  async mounted() {
-    let dateStart = new Date(2020, 1, 1);
-    let dateEnd = new Date();
-    dateEnd.setHours(23,59,59);
-    this.dateStart = dateStart;
-    this.dateEnd = dateEnd;
-    this.refreshData();
+  created() {
+    this.axios
+      .get('/ru/getdzocalcsactualmonth', {})
+      .then(response => {
+        if (response.data) {
+          this.actualMonth = response.data - 1;
+          this.actualMonthSelect = 1;
+        }
+      })
   }
 }

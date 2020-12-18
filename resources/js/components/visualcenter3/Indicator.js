@@ -12,9 +12,6 @@ export default {
     units: {
       default: 'тыс. тонн',
     },
-    progressPercents: {
-      default: 0,
-    },
     progressValue: {
       default: 0,
     },
@@ -44,6 +41,11 @@ export default {
         tableToChange = "1";
       }
       this.$emit('changeTable', tableToChange);
+    }
+  },
+  computed: {
+    progressPercents: function() {
+      return Math.round(this.progressValue / this.progressMax * 100);
     }
   }
 }
