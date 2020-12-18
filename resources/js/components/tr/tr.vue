@@ -6325,10 +6325,11 @@ tr:nth-child(even) {
 .table td {
   padding: 5px !important;
 }
-.trtableborderedtabledarktableresponsive {
+.trtable{
   font-size: 9px;
   padding: unset;
 }
+
 .trcolmd12 {
   margin-left: 0px;
 }
@@ -6365,6 +6366,10 @@ tr:nth-child(even) {
 .table {
     overflow: scroll;
     height: calc(100vh - 247px);
+}
+.trkrtableborderedtabledarktableresponsive {
+    font-size: 9px;
+    padding: unset;
 }
 </style>
 <style>
