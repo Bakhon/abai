@@ -50,42 +50,42 @@ class OilGasController extends Controller
                             ->toArray()
                     ]
                 ],
-                'ngdu' => [
-                    'title' => 'НГДУ',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Ngdu::whereHas('oilgas')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'cdng' => [
-                    'title' => 'ЦДНГ',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Cdng::whereHas('oilgas')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
+                // 'ngdu' => [
+                //     'title' => 'НГДУ',
+                //     'type' => 'select',
+                //     'filter' => [
+                //         'values' => \App\Models\Refs\Ngdu::whereHas('oilgas')
+                //             ->orderBy('name', 'asc')
+                //             ->get()
+                //             ->map(
+                //                 function ($item) {
+                //                     return [
+                //                         'id' => $item->id,
+                //                         'name' => $item->name,
+                //                     ];
+                //                 }
+                //             )
+                //             ->toArray()
+                //     ]
+                // ],
+                // 'cdng' => [
+                //     'title' => 'ЦДНГ',
+                //     'type' => 'select',
+                //     'filter' => [
+                //         'values' => \App\Models\Refs\Cdng::whereHas('oilgas')
+                //             ->orderBy('name', 'asc')
+                //             ->get()
+                //             ->map(
+                //                 function ($item) {
+                //                     return [
+                //                         'id' => $item->id,
+                //                         'name' => $item->name,
+                //                     ];
+                //                 }
+                //             )
+                //             ->toArray()
+                //     ]
+                // ],
                 'gu' => [
                     'title' => 'ГУ',
                     'type' => 'select',
@@ -104,42 +104,42 @@ class OilGasController extends Controller
                             ->toArray()
                     ]
                 ],
-                'zu' => [
-                    'title' => 'ЗУ',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Zu::whereHas('oilgas')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'well' => [
-                    'title' => 'Скважина',
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Well::whereHas('oilgas')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
+                // 'zu' => [
+                //     'title' => 'ЗУ',
+                //     'type' => 'select',
+                //     'filter' => [
+                //         'values' => \App\Models\Refs\Zu::whereHas('oilgas')
+                //             ->orderBy('name', 'asc')
+                //             ->get()
+                //             ->map(
+                //                 function ($item) {
+                //                     return [
+                //                         'id' => $item->id,
+                //                         'name' => $item->name,
+                //                     ];
+                //                 }
+                //             )
+                //             ->toArray()
+                //     ]
+                // ],
+                // 'well' => [
+                //     'title' => 'Скважина',
+                //     'type' => 'select',
+                //     'filter' => [
+                //         'values' => \App\Models\Refs\Well::whereHas('oilgas')
+                //             ->orderBy('name', 'asc')
+                //             ->get()
+                //             ->map(
+                //                 function ($item) {
+                //                     return [
+                //                         'id' => $item->id,
+                //                         'name' => $item->name,
+                //                     ];
+                //                 }
+                //             )
+                //             ->toArray()
+                //     ]
+                // ],
                 'date' => [
                     'title' => 'Дата',
                     'type' => 'date',
