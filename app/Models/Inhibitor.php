@@ -12,4 +12,9 @@ class Inhibitor extends Model
     {
         return $this->hasMany(InhibitorPrice::class);
     }
+
+    public function omguhe()
+    {
+        return $this->hasMany(\App\Models\ComplicationMonitoring\OmgUHE::class);
+    }
 }
