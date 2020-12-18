@@ -28,63 +28,109 @@ class MapsController extends Controller
 
     public function guPipes(Request $request)
     {
-        $gu = \App\Models\Refs\Gu::find($request->get('gu'));
+        $gus = \App\Models\Refs\Gu::all();
 
         $coordinates = [];
-        $zuPipes = $gu->zuPipes->map(function($pipe) use(&$coordinates) {
-            $coordinates = array_merge($coordinates, array_map(function($coord){
-                return array_reverse($coord);
-            }, $pipe->coordinates));
-            return [
-                'id' => $pipe->id,
-                'coordinates' => array_map(function($coord){
-                    return array_reverse($coord);
-                }, $pipe->coordinates)
-            ];
-        });
+        $zuPipes = \App\Models\Pipes\GuZuPipe::query()
+            ->whereHas('gu')
+            ->get()
+            ->map(
+                function ($pipe) use (&$coordinates) {
+                    if(!isset($coordinates[$pipe->gu_id])) {
+                        $coordinates[$pipe->gu_id] = [];
+                    }
+                    $coordinates[$pipe->gu_id] = array_merge(
+                        $coordinates[$pipe->gu_id],
+                        array_map(
+                            function ($coord) {
+                                return array_reverse($coord);
+                            },
+                            $pipe->coordinates
+                        )
+                    );
+                    return [
+                        'id' => $pipe->id,
+                        'coordinates' => array_map(
+                            function ($coord) {
+                                return array_reverse($coord);
+                            },
+                            $pipe->coordinates
+                        )
+                    ];
+                }
+            );
 
-        $wellPipes = $gu->wellPipes->map(function($pipe) use(&$coordinates) {
-            $coordinates = array_merge($coordinates, array_map(function($coord){
-                return array_reverse($coord);
-            }, $pipe->coordinates));
-            return [
-                'id' => $pipe->id,
-                'coordinates' => array_map(function($coord){
-                    return array_reverse($coord);
-                }, $pipe->coordinates)
-            ];
-        });
+        $wellPipes = \App\Models\Pipes\ZuWellPipe::query()
+            ->whereHas('gu')
+            ->get()
+            ->map(
+                function ($pipe) use (&$coordinates) {
+                    if(!isset($coordinates[$pipe->gu_id])) {
+                        $coordinates[$pipe->gu_id] = [];
+                    }
+                    $coordinates[$pipe->gu_id] = array_merge(
+                        $coordinates[$pipe->gu_id],
+                        array_map(
+                            function ($coord) {
+                                return array_reverse($coord);
+                            },
+                            $pipe->coordinates
+                        )
+                    );
+                    return [
+                        'id' => $pipe->id,
+                        'coordinates' => array_map(
+                            function ($coord) {
+                                return array_reverse($coord);
+                            },
+                            $pipe->coordinates
+                        )
+                    ];
+                }
+            );
 
-        $center = !empty($coordinates) ? $this->mapService->calculateCenterOfCoordinates($coordinates) : null;
+        foreach($coordinates as $guId => $coords) {
+            $guCenters[$guId] = !empty($coords) ? $this->mapService->calculateCenterOfCoordinates($coords) : null;
+        }
 
-        $wellPoints = $gu->wells()
+        $center = $this->mapService->calculateCenterOfCoordinates($guCenters);
+
+        $wellPoints = \App\Models\Refs\Well::query()
+            ->whereHas('zu.gu')
             ->whereNotNull('wells.lat')
             ->whereNotNull('wells.lon')
             ->get()
-            ->map(function($well){
-                return [
-                    'name' => $well->name,
-                    'coords' => [$well->lon, $well->lat],
-                ];
-            });
+            ->map(
+                function ($well) {
+                    return [
+                        'name' => $well->name,
+                        'coords' => [$well->lon, $well->lat],
+                    ];
+                }
+            );
 
-        $zuPoints = $gu->zus()
+        $zuPoints = \App\Models\Refs\Zu::query()
+            ->whereHas('gu')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
             ->get()
-            ->map(function($zu){
-                return [
-                    'name' => $zu->name,
-                    'coords' => [$zu->lon, $zu->lat],
-                ];
-            });
+            ->map(
+                function ($zu) {
+                    return [
+                        'name' => $zu->name,
+                        'coords' => [$zu->lon, $zu->lat],
+                    ];
+                }
+            );
 
-        $guPoint = null;
-        if($gu->lat && $gu->lon) {
-            $guPoint = [
-                'name' => $gu->name,
-                'coords' => [$gu->lon, $gu->lat]
-            ];
+        $guPoints = [];
+        foreach ($gus as $gu) {
+            if ($gu->lat && $gu->lon) {
+                $guPoints[] = [
+                    'name' => $gu->name,
+                    'coords' => [$gu->lon, $gu->lat]
+                ];
+            }
         }
 
 
@@ -93,8 +139,9 @@ class MapsController extends Controller
             'zuPipes' => $zuPipes,
             'wellPoints' => $wellPoints,
             'zuPoints' => $zuPoints,
-            'guPoint' => $guPoint,
-            'center' => $center
+            'guPoints' => $guPoints,
+            'guCenters' => $guCenters,
+            'center' => $center,
         ];
     }
 
