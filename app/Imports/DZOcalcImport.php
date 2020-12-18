@@ -65,7 +65,13 @@ class DZOcalcImport implements ToModel
             'ud_spending_plan_2020' => $row[46],
             'ud_spending_bbl_plan_2020' => $row[47],
             'kvl_plan_2020' => $row[48],
-            'oil_plan_2020' => $row[49]
+            'oil_plan_2020' => $row[49],
+            'oil_price_plan_2020' => $row[50],
+            'kurs_plan_2020' => $row[51],
+            'oil_price_plan' => $row[52],
+            'oil_price_fact' => $row[53],
+            'kurs_plan' => $row[54],
+            'kurs_fact' => $row[55]
         ]);
     }
 }

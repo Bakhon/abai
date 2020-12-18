@@ -12,6 +12,10 @@ class DZOcalc extends Model
         'dzo',
         'date',
         '__time',
+        "oil_price_plan",	
+        "oil_price_fact",
+        "kurs_plan",
+        "kurs_fact",
         'main_prc_val_plan',
         'spending_val_plan',
         'cost_val_plan',
@@ -59,6 +63,8 @@ class DZOcalc extends Model
         'ud_spending_plan_2020',
         'ud_spending_bbl_plan_2020',
         'kvl_plan_2020',
-        'oil_plan_2020'
+        'oil_plan_2020',
+        "oil_price_plan_2020",
+        "kurs_plan_2020"
     ];
 }
