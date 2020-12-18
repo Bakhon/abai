@@ -44,6 +44,12 @@ export default {
         // height: 450,
         // autosize: true,
         // showlegend: true,
+        margin: {
+          l: 100,
+          r: 100,
+          b: 100,
+          t: 30
+        },
         xaxis: {
           title: "Дебит жидкости, м³/сут.",
           hoverformat: ".1f",

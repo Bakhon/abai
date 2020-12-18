@@ -21,6 +21,12 @@ export default {
         width: 800,
         height: 360,
         showlegend: true,
+        margin: {
+          l: 50,
+          r: 50,
+          b: 80,
+          t: 30
+        },
         xaxis: {
           title: "Дебит, Qж, м³/сут.",
           hoverformat: ".1f",
