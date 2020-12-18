@@ -8,6 +8,7 @@ use App\Models\VizCenter\TypeId;
 use App\Models\VizCenter\MarabKpiId;
 use App\Models\VizCenter\Marab345;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 
 class Marab345Controller extends Controller
@@ -23,7 +24,7 @@ class Marab345Controller extends Controller
         $marab345 = Marab345::latest()->with('company')->paginate(5); 
         $marab345 = Marab345::latest()->with('type')->paginate(5); 
 
-        return view('marab345.index',compact('marab345'))
+        return view('viscenterKPI.marab345.index',compact('marab345'))
             ->with('i', (request()->input('page', 1) - 1) * 5); 
     }
 
@@ -37,7 +38,7 @@ class Marab345Controller extends Controller
         $company = EcoRefsCompaniesId::get();
         $marabkpi = MarabKpiId::get();
         $type = TypeId::get();
-        return view('marab345.create',compact('company', 'marabkpi', 'type'));
+        return view('viscenterKPI.marab345.create',compact('company', 'marabkpi', 'type'));
     }
 
     /**
@@ -48,16 +49,20 @@ class Marab345Controller extends Controller
      */
     public function store(Request $request)
     {
+        // $alldata = new Marab345;
+        // $alldata->__time =  (Carbon::parse($request->date))->getTimestamp() * 1000 - 86400000;
+        // $alldata->save();
+
         $request->validate([
             'company_id' => 'required',
             'marabkpi_id' => 'required',
             'type_id' => 'required',
-            'date_col'=> 'required',
-            'fact_zatraty_na_sebestoimost_dobychi_nefti' => 'required',
-            'fact_zatraty_kapitalnogo_vlozhenia' => 'required',
-            'opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov' => 'required',
+            'date'=> 'required',
+            // 'fact_zatraty_na_sebestoimost_dobychi_nefti' => 'required',
+            // 'fact_zatraty_kapitalnogo_vlozhenia' => 'required',
+            // 'opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov' => 'required',
             ]);
-
+        
         Marab345::create($request->all());
 
         return redirect()->route('marab345.index')->with('success',__('app.created'));
@@ -86,7 +91,7 @@ class Marab345Controller extends Controller
         $company = EcoRefsCompaniesId::get();
         $marabkpi = MarabKpiId::get();
         $type = TypeId::get();
-        return view('marab345.edit',compact('row', 'company', 'marabkpi', 'type'));
+        return view('viscenterKPI.marab345.edit',compact('row', 'company', 'marabkpi', 'type'));
     }
 
     /**
@@ -103,10 +108,10 @@ class Marab345Controller extends Controller
             'company_id' => 'required',
             'marabkpi_id' => 'required',
             'type_id' => 'required',
-            'date_col'=> 'required',
-            'fact_zatraty_na_sebestoimost_dobychi_nefti' => 'required',
-            'fact_zatraty_kapitalnogo_vlozhenia' => 'required',
-            'opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov' => 'required',
+            'date'=> 'required',
+            // 'fact_zatraty_na_sebestoimost_dobychi_nefti' => 'required',
+            // 'fact_zatraty_kapitalnogo_vlozhenia' => 'required',
+            // 'opearacionnyie_kapitalnyie_zatraty_krupnyh_proektov' => 'required',
         ]);
 
         $marab345->update($request->all());

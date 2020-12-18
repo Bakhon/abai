@@ -8,6 +8,7 @@ class EditHistoryObserver
 {
 
     static protected $classNames = [
+        'field_id' => \App\Models\Refs\Field::class,
         'ngdu_id' => \App\Models\Refs\Ngdu::class,
         'cdng_id' => \App\Models\Refs\Cdng::class,
         'gu_id' => \App\Models\Refs\Gu::class,
@@ -18,6 +19,7 @@ class EditHistoryObserver
         'hydrocarbon_oxidizing_bacteria_id' => \App\Models\Refs\HydrocarbonOxidizingBacteria::class,
         'thionic_bacteria_id' => \App\Models\Refs\ThionicBacteria::class,
         'other_objects_id' => \App\Models\Refs\OtherObjects::class,
+        'material_id' => \App\Models\ComplicationMonitoring\Material::class,
     ];
 
     protected function save(Model $model, array $payload)

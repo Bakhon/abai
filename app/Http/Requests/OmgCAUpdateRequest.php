@@ -19,9 +19,9 @@ class OmgCAUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'date' => 'nullable|date',
+            'date' => 'date',
             'q_v' => 'nullable|numeric',
-            'gu_id' => 'nullable|numeric',
+            'gu_id' => 'numeric',
             'plan_dosage' => 'nullable|numeric',
         ];
     }

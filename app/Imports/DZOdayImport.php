@@ -2,8 +2,11 @@
 
 namespace App\Imports;
 
-use App\Models\DZO\DZOday;
+use App\Models\DZO\DZOdaily;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithStartRow;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class DZOdayImport implements ToModel
 {
@@ -14,21 +17,20 @@ class DZOdayImport implements ToModel
     */
     public function model(array $row)
     {
-        return new DZOday([
+        return new DZOdaily([
             "date" => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]),
-            "__time" => (\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]))->getTimestamp()*1000,
-            "dzo_name" => $row[ 1 ],
+            "dzo" => $row[ 1 ],
             "mestorozhdenie" => $row[ 2 ],
             "ngdu" => $row[ 3 ],
-            "dobycha_nefti_plan" => $row[ 4 ],
-            "dobycha_nefti_fact" => $row[ 5 ],
-            "dobycha_kondensata_plan" => $row[ 6 ],
-            "dobycha_kondensata_fact" => $row[ 7 ],
+            "oil_plan" => $row[ 4 ],
+            "oil_fact" => $row[ 5 ],
+            "gk_plan" => $row[ 6 ],
+            "gk_fact" => $row[ 7 ],
             "dobycha_zhidkosti_plan" => $row[ 8 ],
             "dobycha_zhidkosti_fact" => $row[ 9 ],
             "sdacha_nefti_kuun" => $row[ 10 ],
-            "sdacha_nefti_plan" => $row[ 11 ],
-            "sdacha_nefti_fact" => $row[ 12 ],
+            "oil_dlv_plan" => $row[ 11 ],
+            "oil_dlv_fact" => $row[ 12 ],
             "tovarnyi_ostatok_nefti_prev_day" => $row[ 13 ],
             "tovarnyi_ostatok_nefti_today" => $row[ 14 ],
             "dobycha_gaza_prirod_plan" => $row[ 15 ],
@@ -81,7 +83,7 @@ class DZOdayImport implements ToModel
             "cpp_zakachka_para_fact" => $row[ 62 ],
             "fond_neftedob_ef" => $row[ 63 ],
             "fond_neftedob_df" => $row[ 64 ],
-            "fond_neftedob_in_work" => $row[ 65 ],
+            "prod_wells_work" => $row[ 65 ],
             "fond_neftedob_prs" => $row[ 66 ],
             "fond_neftedob_oprs" => $row[ 67 ],
             "fond_neftedob_krs" => $row[ 68 ],
@@ -99,7 +101,7 @@ class DZOdayImport implements ToModel
             "fond_neftedob_vysokoobvod" => $row[ 80 ],
             "fond_nagnetat_ef" => $row[ 81 ],
             "fond_nagnetat_df" => $row[ 82 ],
-            "fond_nagnetat_in_work" => $row[ 83 ],
+            "inj_wells_work" => $row[ 83 ],
             "fond_nagnetat_prs" => $row[ 84 ],
             "fond_nagnetat_oprs" => $row[ 85 ],
             "fond_nagnetat_krs" => $row[ 86 ],
@@ -131,7 +133,15 @@ class DZOdayImport implements ToModel
             "tb_accident_death" => $row[ 112 ],
             "tb_covid_prev_day" => $row[ 113 ],
             "tb_covid_total" => $row[ 114 ],
-            "tb_covid_recover" => $row[ 115 ]
+            "gas_plan" => $row[ 115 ],
+            "gas_fact" => $row[ 116 ],
+            "liq_plan" => $row[ 117 ],
+            "liq_fact" => $row[ 118 ],
+            "inj_wells_idle" => $row[ 119 ],
+            "prod_wells_idle"=> $row[ 120 ],
+            "tb_covid_recover" => $row[ 121 ],
+            "__time" => (\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[ 0 ]))->getTimestamp()*1000,
+            
         ]);
     }
 }

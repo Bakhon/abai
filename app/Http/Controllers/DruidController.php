@@ -931,4 +931,8 @@ return $response;
     {
         return view('trfa.trfa');
     }    ///
+    public function tr_charts()
+    {
+        return view('tr_charts.tr_charts');
+    }    ///
 }

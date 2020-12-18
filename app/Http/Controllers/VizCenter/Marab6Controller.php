@@ -19,7 +19,7 @@ class Marab6Controller extends Controller
     {
         $marab6 = Marab6::latest()->with('type')->paginate(5); 
 
-        return view('marab6.index',compact('marab6'))
+        return view('viscenterKPI.marab6.index',compact('marab6'))
             ->with('i', (request()->input('page', 1) - 1) * 5); 
     }
 
@@ -31,7 +31,7 @@ class Marab6Controller extends Controller
     public function create()
     {
         $type = TypeId::get();
-        return view('marab6.create',compact('type'));
+        return view('viscenterKPI.marab6.create',compact('type'));
     }
 
     /**
@@ -44,10 +44,9 @@ class Marab6Controller extends Controller
     {
         $request->validate([
             'type_id' => 'required',
-            // 'date_col'=> 'required',
-            'aim_dates'=> 'required',
-            'remained_days' => 'required',
-            'completion_probability' => 'required',
+            // 'aim_dates'=> 'required',
+            // 'remained_days' => 'required',
+            // 'completion_probability' => 'required',
             ]);
 
         Marab6::create($request->all());
@@ -76,7 +75,7 @@ class Marab6Controller extends Controller
     {
         $row = Marab6::find($id);
         $type = TypeId::get();
-        return view('marab6.edit',compact('row', 'type'));
+        return view('viscenterKPI.marab6.edit',compact('row', 'type'));
     }
 
     /**
@@ -91,10 +90,9 @@ class Marab6Controller extends Controller
         $Marab6=Marab6::find($id);
         $request->validate([
             'type_id' => 'required',
-            // 'date_col'=> 'required',
-            'aim_dates'=> 'required',
-            'remained_days' => 'required',
-            'completion_probability' => 'required',
+            // 'aim_dates'=> 'required',
+            // 'remained_days' => 'required',
+            // 'completion_probability' => 'required',
         ]);
 
         $Marab6->update($request->all());

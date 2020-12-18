@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Level23\Druid\DruidClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(DruidClient::class, function ($app) {
+            return new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
+        });
     }
 
     /**
@@ -37,6 +40,12 @@ class AppServiceProvider extends ServiceProvider
         ]);
         \App\Models\ComplicationMonitoring\Corrosion::observe([
             \App\Observers\CorrosionHistoryObserver::class
+        ]);
+        \App\Models\ComplicationMonitoring\OmgUHE::observe([
+            \App\Observers\OmgUHEHistoryObserver::class
+        ]);
+        \App\Models\ComplicationMonitoring\Pipe::observe([
+            \App\Observers\PipeHistoryObserver::class
         ]);
     }
 }

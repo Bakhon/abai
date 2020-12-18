@@ -9,7 +9,7 @@ class Marab2 extends Model
     protected $fillable = [
         'company_id',
         'type_id',
-        'date_col',
+        'date',
         'dividends',
         'vklad_v_ustavnoy_kapital',
         'vydacha_zaimov',

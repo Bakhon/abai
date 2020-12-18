@@ -16,11 +16,13 @@ import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
 import VueMomentLib from 'vue-moment-lib';
+import moment from 'moment';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 import VueApexCharts from "vue-apexcharts";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import store from './store';
 // import  jquery from 'jquery';
 
 
@@ -31,6 +33,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.Jquery = require('jquery');
+Vue.prototype.$moment = moment
 
 Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib, ElementUI);
 
@@ -67,7 +70,6 @@ Vue.component('visual-center-table5', require('./components/visualcenter3/Visual
 Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
 Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
-Vue.component('visual-center-speedometer1', require('./components/visualcenter3/VCSpeedometer1.vue').default);
 Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
 Vue.component('indicator', require('./components/visualcenter3/Indicator.vue').default);
 Vue.component('vc-speedometer-block', require('./components/visualcenter3/VCSpeedometerBlock.vue').default);
@@ -102,8 +104,8 @@ Vue.component('monitor-chart', require('./components/monitor/chart.vue').default
 Vue.component('monitor-chart-tide', require('./components/monitor/chartTide.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
-Vue.component('omguhe-create', require('./components/omguhe/create.vue').default);
-Vue.component('omguhe-edit', require('./components/omguhe/edit.vue').default);
+Vue.component('view-table', require('./components/omgca/table.vue').default);
+Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
@@ -111,13 +113,24 @@ Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue'
 Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
+Vue.component('pipe-form', require('./components/pipes/form.vue').default);
 Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('oilgastable-create', require('./components/сomplicationMonitoring/oilGas/table.vue').default);
 Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
+Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
+Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue').default);
+Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
+// Vue.component('table-editor', require('./components/TableEditor.vue').default);
+Vue.component('pagination', require('laravel-vue-pagination'));
+Vue.component('gu-map', require('./components/map.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
+
+Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
+Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
+Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 
 
 /**
@@ -127,5 +140,6 @@ Vue.component('viscenter2-create', require('./components/viscenter2/create.vue')
  */
 
 const app = new Vue({
+    store,
     el: '#app',
 });

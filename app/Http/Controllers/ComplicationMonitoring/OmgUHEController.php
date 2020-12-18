@@ -2,31 +2,212 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
+use App\Exports\OmgUHEExport;
+use App\Filters\OmgUHEFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IndexTableRequest;
+use App\Http\Requests\OmgUHEUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OmgUHEController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $omguhe = ComplicationMonitoringOmgUHE::orderByDesc('date')
+        $params = [
+            'success' => Session::get('success'),
+            'links' => [
+                'create' => route('omguhe.create'),
+                'list' => route('omguhe.list'),
+                'export' => route('omguhe.export'),
+            ],
+            'title' => 'База данных ОМГ УХЭ',
+            'table_header' => [
+                'Узел отбора' => 6,
+                'Фактические данные от УХЭ' => 5,
+            ],
+            'fields' => [
+                'field' => [
+                    'title' => 'Месторождение',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Field::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'ngdu' => [
+                    'title' => 'НГДУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Ngdu::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'cdng' => [
+                    'title' => 'ЦДНГ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Cdng::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'gu' => [
+                    'title' => 'ГУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Gu::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'zu' => [
+                    'title' => 'ЗУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Zu::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'well' => [
+                    'title' => 'Скважина',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Well::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'date' => [
+                    'title' => 'Дата',
+                    'type' => 'date',
+                ],
+                'current_dosage' => [
+                    'title' => 'Фактическая дозировка, г/м3',
+                    'type' => 'numeric',
+                ],
+                'daily_inhibitor_flowrate' => [
+                    'title' => 'Суточный расход ингибитора, кг/сут',
+                    'type' => 'numeric',
+                ],
+                'out_of_service_оf_dosing' => [
+                    'title' => 'Простой дозатора',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => [
+                            [
+                                'id' => '',
+                                'name' => 'Простоя не было'
+                            ],
+                            [
+                                'id' => '1',
+                                'name' => 'Был простой'
+                            ],
+                        ]
+                    ]
+                ],
+                'reason' => [
+                    'title' => 'Причина',
+                    'type' => 'numeric',
+                ]
+            ]
+        ];
+
+        return view('omguhe.index', compact('params'));
+    }
+
+    public function list(IndexTableRequest $request)
+    {
+        $query = ComplicationMonitoringOmgUHE::query()
                                 ->with('ngdu')
                                 ->with('cdng')
                                 ->with('gu')
                                 ->with('zu')
-                                ->with('well')
-                                ->paginate(10);
+                                ->with('well');
 
+        $omguhe = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->paginate(25);
 
+        return response()->json(json_decode(\App\Http\Resources\OmgUHEListResource::collection($omguhe)->toJson()));
+    }
 
-        return view('omguhe.index',compact('omguhe'))->with('i', (request()->input('page', 1) - 1) * 5);
+    public function export(IndexTableRequest $request)
+    {
+        $query = ComplicationMonitoringOmgUHE::query()
+            ->with('field')
+            ->with('ngdu')
+            ->with('cdng')
+            ->with('gu')
+            ->with('zu')
+            ->with('well');
+
+        $omguhe = $this
+            ->getFilteredQuery($request->validated(), $query)
+            ->get();
+
+        return Excel::download(new OmgUHEExport($omguhe), 'omguhe.xls');
     }
 
     /**
@@ -52,7 +233,7 @@ class OmgUHEController extends Controller
         ]);
 
         $omgohe = new ComplicationMonitoringOmgUHE;
-        $omgohe->field = ($request->field) ? $request->field : NULL;
+        $omgohe->field_id = $request->field_id ?: NULL;
         $omgohe->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : NULL;
         $omgohe->cdng_id = ($request->cdng_id) ? $request->cdng_id : NULL;
         $omgohe->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
@@ -95,14 +276,26 @@ class OmgUHEController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function history(ComplicationMonitoringOmgUHE $omguhe)
+    {
+        $omguhe->load('history');
+        return view('omguhe.history', compact('omguhe'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ComplicationMonitoringOmgUHE $omguhe)
     {
-        //
+        return view('omguhe.edit', compact('omguhe'));
     }
 
     /**
@@ -112,9 +305,10 @@ class OmgUHEController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(OmgUHEUpdateRequest $request, ComplicationMonitoringOmgUHE $omguhe)
     {
-        //
+        $omguhe->update($request->validated());
+        return redirect()->route('omguhe.index')->with('success',__('app.updated'));
     }
 
     /**
@@ -123,12 +317,17 @@ class OmgUHEController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $omguhe = ComplicationMonitoringOmgUHE::find($id);
         $omguhe->delete();
 
-        return redirect()->route('omguhe.index')->with('success',__('app.deleted'));
+        if($request->ajax()) {
+            return response()->json([], Response::HTTP_NO_CONTENT);
+        }
+        else {
+            return redirect()->route('omguhe.index')->with('success',__('app.deleted'));
+        }
     }
 
     public function getPrevDayLevel(Request $request){
@@ -147,5 +346,10 @@ class OmgUHEController extends Controller
         }else{
             return false;
         }
+    }
+
+    protected function getFilteredQuery($filter, $query = null)
+    {
+        return (new OmgUHEFilter($query, $filter))->filter();
     }
 }

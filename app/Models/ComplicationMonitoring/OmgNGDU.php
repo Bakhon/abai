@@ -35,4 +35,9 @@ class OmgNGDU extends Model
     {
         return $this->hasOne('App\Models\Refs\Well','id','well_id')->withDefault();
     }
+
+    public function field()
+    {
+        return $this->hasOne('App\Models\Refs\Field','id','field_id')->withDefault();
+    }
 }

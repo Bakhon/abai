@@ -27,8 +27,23 @@ export default {
     prevPeriodValue: {
       default: 0,
     },
+    tableToChange: {
+      default: "1",
+    },
   },
   data: function () {
-    return {};
+    return {
+      isActive: false,
+    };
+  },
+  methods: {
+    onClick() {
+      let tableToChange = this.tableToChange
+      this.isActive = !this.isActive;
+      if (!this.isActive) {
+        tableToChange = "1";
+      }
+      this.$emit('changeTable', tableToChange);
+    }
   }
 }

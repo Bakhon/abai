@@ -16,9 +16,9 @@
                         <option :value="0" :selected="'selected'">Выбор ДЗО</option>
                     </select>
                 </div>
-                <div class="w-25 align-right">
+                <div class="w-25">
                     <div class="w-25 float-right m-3">
-                        <div class=" align-right close2 d-none d-sm-block">Закрыть</div>
+                        <div class="close2 d-none d-sm-block">Закрыть</div>
                     </div>
                 </div>
             </div>
@@ -46,36 +46,95 @@
             </div>
             <div class="first-string mr-2">
                 <h5 class="text-center mr-2"><strong>Макропоказатели</strong></h5>
-                <table class="ml-3 mr-3 w-100">
-                    <thead>
-                    <tr class="economics-table-color m-1">
-                        <th>
-                            Наименование
-                        </th>
-                        <th>
-                            Наименование
-                        </th>
-                        <th>
-                            Наименование
-                        </th>
-                        <th>
-                            Наименование
-                        </th>
-                        <th>
-                            Наименование
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>adfgadf</td>
-                        <td>adfgadf</td>
-                        <td>adfgadf</td>
-                        <td>adfgadf</td>
-                        <td>adfgadf</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="ml-0 ml-sm-3 mr-0 mr-sm-3">
+                    <div class="w-100">
+                        <table class="table pl-2 table-striped table-borderless">
+                            <thead class="economics-table-color">
+                            <tr>
+                                <th scope="col">Наименование</th>
+                                <th scope="col">Ед.изм.</th>
+                                <th scope="col">План 2020</th>
+                                <th scope="col">Факт 2020</th>
+                                <th scope="col">Факт-план 2020</th>
+                                <th scope="col">Факт 2019</th>
+                                <th scope="col">Факт 2020-факт 2019</th>
+                                <th scope="col">План на 2020</th>
+                                <th scope="col">План/факт</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Обменный курс</td>
+                                <td>Тенге/$</td>
+                                <td>450</td>
+                                <td>405</td>
+                                <td><span class="arrow2"></span>45</td>
+                                <td>379</td>
+                                <td><span class="arrow3"></span>45</td>
+                                <td>450</td>
+                                <td>План Факт</td>
+                            </tr>
+                            <tr>
+                                <td>Обменный курс</td>
+                                <td>Тенге/$</td>
+                                <td>450</td>
+                                <td>405</td>
+                                <td><span class="arrow2"></span>45</td>
+                                <td>379</td>
+                                <td><span class="arrow3"></span>45</td>
+                                <td>450</td>
+                                <td>План Факт</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <h5 class="text-center mr-2 mt-3"><strong>Финансовые показатели</strong></h5>
+                <div class="ml-0 ml-sm-3 mr-0 mr-sm-3">
+                    <div class="w-100">
+                        <table class="table pl-2 table-striped table-borderless">
+                            <thead class="economics-table-color">
+                            <tr>
+                                <th scope="col">Наименование</th>
+                                <th scope="col">Ед.изм.</th>
+                                <th scope="col">План 2020</th>
+                                <th scope="col">Факт 2020</th>
+                                <th scope="col">Факт-план 2020</th>
+                                <th scope="col">Факт 2019</th>
+                                <th scope="col">Факт 2020-факт 2019</th>
+                                <th scope="col">План на 2020</th>
+                                <th scope="col">План/факт</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in data">
+                            </tr>
+                            <tr>
+                                <td>Обменный курс</td>
+                                <td>Тенге/$</td>
+                                <td>450</td>
+                                <td>405</td>
+                                <td><span class="arrow2"></span>45</td>
+                                <td>379</td>
+                                <td><span class="arrow3"></span>45</td>
+                                <td>450</td>
+                                <td>План Факт</td>
+                            </tr>
+                            <tr>
+                                <td>Обменный курс</td>
+                                <td>Тенге/$</td>
+                                <td>450</td>
+                                <td>405</td>
+                                <td><span class="arrow2"></span>45</td>
+                                <td>379</td>
+                                <td><span class="arrow3"></span>45</td>
+                                <td>450</td>
+                                <td>План Факт</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="flex-grow-1">
