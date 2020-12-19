@@ -47,5 +47,5 @@ export default {
     progressPercents: function() {
       return Math.round(this.progressValue / this.progressMax * 100);
     }
-  }
+  },
 }

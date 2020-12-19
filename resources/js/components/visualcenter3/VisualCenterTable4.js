@@ -124,6 +124,7 @@ export default {
       t4:'',
       t5:'',
       t6:'',
+      t1Sum:'',
       oil_factDayProgressBar: '',
       dateStart: '',
       dateEnd: '',
@@ -1037,6 +1038,9 @@ export default {
             this.t4 = response.data['CorpAll4'][0];
             this.t5 = response.data['CorpAll5'][0];
             this.t6 = response.data['CorpAll6'][0];
+            this.t1Sum = response.data['CorpAll1'][0][6] +
+              response.data['CorpAll2'][0][6] + response.data['CorpAll3'][0][6] +
+              response.data['CorpAll4'][0][6] + response.data['CorpAll5'][0][6] + response.data['CorpAll6'][0][6];
             this.isEnableSpeedometers = true;
           }
         });
