@@ -1077,7 +1077,7 @@ export default {
         console.log("date1", mm, yyyy, "date2", prMm, pryyyy);
         this.axios
           .get(
-            "http://172.20.103.51:7576/api/techregime/factor/" +
+            "http://172.20.103.187:7576/api/techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -1149,7 +1149,7 @@ export default {
       const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/factor/" +
+          "http://172.20.103.187:7576/api/techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -1205,7 +1205,7 @@ export default {
     this.$store.commit("fa/SET_PR_YEAR", pryyyy);
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/factor/" +
+        "http://172.20.103.187:7576/api/techregime/factor/" +
           yyyy +
           "/" +
           mm +
