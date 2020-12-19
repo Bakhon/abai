@@ -52,7 +52,7 @@
           >
             Выберите график
           </a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink" style="   width: 576px;">
             <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
               >Распределение фонда скважин по основной причине снижения дебита нефти</a
             >
@@ -60,6 +60,16 @@
               >Распределение суммарных отклонений TP по факторам, т/сут</a
             >
           </div>
+          <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a
+              class="dropdown-item"
+              v-for="(item, index) in chartNames"
+              :key="item"
+              href="#"
+              @click="chartShow = index"
+              >{{ item }}</a
+            >
+          </div> -->
         </div>
         <div class="dropdown">
           <button
@@ -73,19 +83,20 @@
 
             Выберите дату
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink" style="background: #656A8A;">
             <label for="inputDate">Введите опорную дату:</label>
             <input type="date" class="form-control" v-model="date1" />
             <label for="inputDate">Введите дату для сравнения:</label>
             <input type="date" class="form-control" v-model="date2" />
-            <a href="#" class="but-nav__link but" @click.prevent="chooseDt"
+            <a href="#" class="btn btn-primary" @click.prevent="chooseDt"
               >Сформировать</a
             >
           </div>
         </div>
       </div>
       <div class="sec_nav">
-                                    <div class="filter_chart row">
+        <!-- <h4 style="color: white">{{ chartNames[chartShow] }}</h4> -->
+        <div class="filter_chart row">
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -120,17 +131,18 @@
           </div>
         </div>
         <div class="col-sm" v-if="chartShow === 'bar'">
-          <div class="second_block">
+          <div class="second_block" style="display: flex; justify-content: center;">
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
+              width="800"
               :options="chartBarOptions"
               :series="[{ name: '', data: barChartData }]"
             ></apexchart>
           </div>
         </div>
         <div class="col-sm" v-if="chartShow === 'pie'">
-          <div class="first_block" style="margin-left: 144px;">
+          <div class="first_block" style="display: flex; justify-content: center;">
             <apexchart
               v-if="pieChartData && pieChartRerender"
               type="donut"
@@ -318,6 +330,10 @@ export default {
       chartFilter_field: undefined,
       chartFilter_horizon: undefined,
       chartFilter_exp_meth: undefined,
+      // chartNames: [
+      //   "Распределение фонда скважин по основной причине снижения дебита нефти",
+      //   "Распределение суммарных отклонений TP по факторам, т/сут",
+      // ],
       chartBarOptions: {
         chart: {
           height: 350,
@@ -330,6 +346,12 @@ export default {
             },
           },
         },
+        // legend: {
+        //   position: "top",
+        //   labels: {
+        //     useSeriesColors: true,
+        //   },
+        // }, 
         dataLabels: {
           enabled: true,
           formatter: function (val) {
@@ -338,7 +360,7 @@ export default {
           offsetY: -20,
           style: {
             fontSize: "12px",
-            colors: ["#304758"],
+            colors: ["#008ffb"],
           },
         },
 
@@ -371,6 +393,11 @@ export default {
           tooltip: {
             enabled: true,
           },
+          labels : {
+            style : {
+              colors: "#008ffb"
+            }
+          }
         },
         yaxis: {
           axisBorder: {
@@ -385,6 +412,17 @@ export default {
               return val;
             },
           },
+          title: {
+            style: {
+              color: "#008ffb"
+            }
+
+          },
+          labels : {
+            style : {
+              colors: "#008ffb"
+            }
+          }
         },
       },
       chartOptions: {
@@ -465,7 +503,7 @@ export default {
         console.log("date1", mm, yyyy, "date2", prMm, pryyyy);
         this.axios
           .get(
-            "http://172.20.103.51:7576/api/techregime/factor/graph1/" +
+            "http://172.20.103.187:7576/api/techregime/factor/graph1/" +
               yyyy +
               "/" +
               mm +
@@ -540,7 +578,7 @@ export default {
     }
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/factor/graph1/" +
+        "http://172.20.103.187:7576/api/techregime/factor/graph1/" +
           yyyy +
           "/" +
           mm +
@@ -653,7 +691,7 @@ body {
   background: #5973cc !important;
 }
 </style>
-<style >
+<style scoped >
 .tr-chart {
   display: flex;
   width: 100%;
@@ -668,4 +706,16 @@ body {
   flex-grow: 1;
   flex-shrink: 0;
 }
+.form-control {
+  background: #272953 !important;
+  border: 1px solid #656a8a !important;
+  height: 35px !important;
+  color: white !important;
+}
+.fadropmenu.fadropmenu {
+  background: #656a8a;
+  color: #ffffff;
+  width: 246px;
+}
+
 </style>

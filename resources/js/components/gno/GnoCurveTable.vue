@@ -1,6 +1,15 @@
 <template>
-  <Plotly :data="data" :layout="layout" :display-mode-bar="true">
-  </Plotly>
+  <div>
+    <div class="gno-curve-table-title">
+      Кривая притока
+    </div>
+
+    <Plotly :data="data"
+            :layout="layout"
+            :display-mode-bar="true"
+            :displaylogo="false"
+            :mode-bar-buttons-to-remove="buttonsToRemove"/>
+  </div>
 </template>
 
 <script>
@@ -12,17 +21,35 @@ import { eventBus } from "../../event-bus.js";
 Vue.prototype.$eventBus = new Vue();
 Vue.component("Plotly", Plotly);
 export default {
-  
+
   name: "mix-chart",
   props: ["postTitle"],
   data: function () {
     return {
-      
+      buttonsToRemove: [
+        'zoom2d',
+        'pan2d',
+        'select2d',
+        'lasso2d',
+        'zoomIn2d',
+        'zoomOut2d',
+        'autoScale2d',
+        'resetScale2d',
+        'hoverClosestCartesian',
+        'hoverCompareCartesian',
+        'toggleSpikelines'
+      ],
       layout: {
         // width:  1200,
         // height: 450,
         // autosize: true,
         // showlegend: true,
+        margin: {
+          l: 100,
+          r: 100,
+          b: 100,
+          t: 30
+        },
         xaxis: {
           title: "Дебит жидкости, м³/сут.",
           hoverformat: ".1f",
@@ -97,7 +124,7 @@ export default {
     };
   },
   methods: {
-    
+
     setLine: function (value) {
       console.log(value)
       var ipr_points = [];
@@ -140,9 +167,9 @@ export default {
           x: qo_points2,
           y: ipr_points2,
           text: q_oil2,
-          hovertemplate: "<b>Кривая притока</b><br>" + 
+          hovertemplate: "<b>Кривая притока</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             x: 20,
@@ -187,7 +214,7 @@ export default {
           mode: "markers",
           hovertemplate:  "<b>Текущий режим</b><br><extra></extra>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм",
           marker: {
             size: "15",
@@ -204,7 +231,7 @@ export default {
           mode: "markers",
           hovertemplate:  "<b>Целевой режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
@@ -221,7 +248,7 @@ export default {
           mode: "markers",
           hovertemplate:  "<b>Потенциальный режим</b><br>" +
                           "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" + 
+                          "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
             size: "15",
@@ -233,7 +260,7 @@ export default {
         // ["10", "20", "3", "4", "5", "6", "7", "8", "9", "10"],
         labels: qo_points2,
       };
-     ///////// 
+     /////////
 
      /////////
     },
@@ -248,24 +275,46 @@ export default {
       this.data[4]['y'][0] = value[2]["p"]
       this.data[4]['text'][0] = value[2]["q_oil"]
     },
+    resize() {
+      console.log(window.innerWidth);
+    }
   },
-
   mounted() {},
   created: function () {
     this.$parent.$on("LineData", this.setLine);
     this.$parent.$on("PointsData", this.setPoints);
+    window.addEventListener("resize", this.resize);
+
     // this.$on("LineData", this.setLine);
     // this.$on("PointsData", this.setPoints);
-    
+
+    if (window.innerWidth <= 1300) {
+      this.layout.margin = {
+        l: 60,
+        r: 40,
+        b: 60,
+        t: 20
+      }
+    }
+
+    if (window.innerWidth <= 600) {
+      this.layout.margin = {
+        l: 40,
+        r: 20,
+        b: 60,
+        t: 20
+      }
+    }
+
   },
   updated: function() {
 
 
     this.$eventBus.$on("newCurveLineData", this.setLine);
     this.$eventBus.$on("newPointsData", this.setPoints);
-    
-    
-    
+
+
+
 
   }
 

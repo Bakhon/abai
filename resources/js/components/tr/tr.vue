@@ -12,7 +12,7 @@
           paddng-left: 0;
         "
       >
-        <a href="fa" class="col but-nav__link but" style="margin-left: -17px"
+        <a href="fa" class="col but-nav__link but trheadhight" style="margin-left: -17px"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -34,7 +34,7 @@
             </form> -->
         <div class="col dropdown">
           <button
-            class="col-md-12 but-nav__link but"
+            class="col-md-12 but-nav__link but faheadhight"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
@@ -59,7 +59,8 @@
           </button>
 
           <div
-            class="dropdown-menu trdropdown"
+            class="dropdown-menu fadropmenu "
+            style="background: #656A8A; height: 104px; width: 161px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -67,11 +68,11 @@
             <div>
               <select
                 style="
-                  background-color: #20274e;
-                  border-color: #20274e;
+                  background-color: #656A8A;
+                  border-color: #656A8A;
                   color: white;
                 "
-                class="form-control"
+                class="form-controll"
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
@@ -93,11 +94,17 @@
             <div>
               <select
                 style="
-                  background-color: #20274e;
-                  border-color: #20274e;
+                  background-color: #656A8A ;
+                  border-color: #656A8A;
                   color: white;
+                  width: 131px;
+
+                  
+                  border: 1px solid #656A8A; !important;
+                  height: 35px !important;
+                  color: white !important;
                 "
-                class="form-control"
+                class="form-controll"
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
@@ -114,7 +121,7 @@
             <a
               href="#"
               @click.prevent="chooseDt"
-              class="but-nav__link but trbutnav"
+              class="btn btn-primary"
               >Сформировать</a
             >
           </div>
@@ -166,7 +173,7 @@
             </div> -->
         <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
         <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a @click="editable()" v-if="!edit" class="col but-nav__link but" style="margin-right: 11px;"
+        <a @click="editable()" v-if="!edit" class="col but-nav__link but trheadhight" style="margin-right: 11px;"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -183,7 +190,7 @@
           </i>
           Редактировать</a
         >
-        <a @click="savetable()" v-if="edit" class="col but-nav__link but"
+        <a @click="savetable()" v-if="edit" class="col but-nav__link but trheadhight"
           >Сохранить</a
         >
 
@@ -217,7 +224,7 @@
     <div>
       <!-- <input type="text" placeholder="Enter Name" v-model="searchText"> -->
     </div>
-    <div class="col-md-12 maintable">
+    <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
         <div class="fadee" v-if="isloading">
           <fade-loader :loading="isloading"></fade-loader>
@@ -239,7 +246,7 @@
               <option value="Аксай Южный">Аксай Южный</option>
           </select>
 
-          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2">
+          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2 butcancel">
             Отмена
           </div>
           <a
@@ -336,7 +343,7 @@
           "
         >
           <tr class="headerColumn sticky" style="background: #333975">
-            <td rowspan="4">Раб. Группа</td>
+            <td rowspan="4">№</td>
             <td rowspan="4">НГДУ/месторождение</td>
             <td rowspan="4">№ скв</td>
             <td rowspan="4">Тип скважины</td>
@@ -6049,7 +6056,7 @@ export default {
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/" + yyyy + "/" + mm + "/"
+        "http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/"
       )
       .then((response) => {
         let data = response.data;
@@ -6108,7 +6115,7 @@ export default {
       row["index"] = 0;
       this.axios
         .post(
-          "http://172.20.103.51:7576/api/techregime/edit/" +
+          "http://172.20.103.187:7576/api/techregime/edit/" +
             this.year +
             "/" +
             this.month +
@@ -6139,7 +6146,7 @@ export default {
       const searchParam = this.searchString ? `${this.searchString}/` : ''
       this.axios
         .post(
-          "http://172.20.103.51:7576/api/techregime/save/" +
+          "http://172.20.103.187:7576/api/techregime/save/" +
             this.year +
             "/" +
             this.month +
@@ -6236,7 +6243,7 @@ export default {
       this.isloading = true;
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
             "/" +
             this.month +
@@ -6287,7 +6294,7 @@ export default {
       const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
             "/" +
             this.month +
@@ -6437,16 +6444,35 @@ tr:nth-child(even) {
     font-size: 9px;
     padding: unset;
 }
+.butcancel.butcancel {
+  flex-grow: 0 ;
+  width: 200px;
+}
+.tablecont {
+  margin-top: -38px;
+}
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
   margin: 0 0 0 auto;
+  flex-grow: 0 ;
   width: 230px;
 }
 .tr-table-header {
   justify-content: space-between;
   height: 48px;
   align-items: center;
+}
+.trheadhight  {
+  height: 40px;
+}
+.fadropmenu .fadropmenu {
+  background: #656a8a;
+  /* color: #ffffff; */
+  width: 246px;
+}
+.faheadhight {
+  height: 40px;
 }
 
 </style>

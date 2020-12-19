@@ -50,42 +50,42 @@ class OilGasController extends Controller
                             ->toArray()
                     ]
                 ],
-                // 'ngdu' => [
-                //     'title' => 'НГДУ',
-                //     'type' => 'select',
-                //     'filter' => [
-                //         'values' => \App\Models\Refs\Ngdu::whereHas('oilgas')
-                //             ->orderBy('name', 'asc')
-                //             ->get()
-                //             ->map(
-                //                 function ($item) {
-                //                     return [
-                //                         'id' => $item->id,
-                //                         'name' => $item->name,
-                //                     ];
-                //                 }
-                //             )
-                //             ->toArray()
-                //     ]
-                // ],
-                // 'cdng' => [
-                //     'title' => 'ЦДНГ',
-                //     'type' => 'select',
-                //     'filter' => [
-                //         'values' => \App\Models\Refs\Cdng::whereHas('oilgas')
-                //             ->orderBy('name', 'asc')
-                //             ->get()
-                //             ->map(
-                //                 function ($item) {
-                //                     return [
-                //                         'id' => $item->id,
-                //                         'name' => $item->name,
-                //                     ];
-                //                 }
-                //             )
-                //             ->toArray()
-                //     ]
-                // ],
+                'ngdu' => [
+                    'title' => 'НГДУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Ngdu::whereHas('oilgas')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'cdng' => [
+                    'title' => 'ЦДНГ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Cdng::whereHas('oilgas')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
                 'gu' => [
                     'title' => 'ГУ',
                     'type' => 'select',
@@ -104,42 +104,42 @@ class OilGasController extends Controller
                             ->toArray()
                     ]
                 ],
-                // 'zu' => [
-                //     'title' => 'ЗУ',
-                //     'type' => 'select',
-                //     'filter' => [
-                //         'values' => \App\Models\Refs\Zu::whereHas('oilgas')
-                //             ->orderBy('name', 'asc')
-                //             ->get()
-                //             ->map(
-                //                 function ($item) {
-                //                     return [
-                //                         'id' => $item->id,
-                //                         'name' => $item->name,
-                //                     ];
-                //                 }
-                //             )
-                //             ->toArray()
-                //     ]
-                // ],
-                // 'well' => [
-                //     'title' => 'Скважина',
-                //     'type' => 'select',
-                //     'filter' => [
-                //         'values' => \App\Models\Refs\Well::whereHas('oilgas')
-                //             ->orderBy('name', 'asc')
-                //             ->get()
-                //             ->map(
-                //                 function ($item) {
-                //                     return [
-                //                         'id' => $item->id,
-                //                         'name' => $item->name,
-                //                     ];
-                //                 }
-                //             )
-                //             ->toArray()
-                //     ]
-                // ],
+                'zu' => [
+                    'title' => 'ЗУ',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Zu::whereHas('oilgas')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'well' => [
+                    'title' => 'Скважина',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Well::whereHas('oilgas')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
                 'date' => [
                     'title' => 'Дата',
                     'type' => 'date',
@@ -215,8 +215,7 @@ class OilGasController extends Controller
             ->with('cdng')
             ->with('gu')
             ->with('zu')
-            ->with('well')
-            ->paginate(10);
+            ->with('well');
 
         $oilgas = $this
             ->getFilteredQuery($request->validated(), $query)
@@ -399,178 +398,30 @@ class OilGasController extends Controller
 
     public function economicCurrentYear(Request $request)
     {
-        $economicCurrentYear = OmgCA::with('gu')
-            ->where('date', '=', date('Y') . '-01-01')
-            ->where('gu_id', '=', $request->gu)
-            ->get();
-
-        $datetime1 = new DateTime(date('Y') . "-01-01");
-        $datetime2 = new DateTime();
-        $difference = $datetime1->diff($datetime2);
-
+        $eco = self::ecoData($request->gu);
         $data2 = [
             [
-                'ГУ',
-                'Плановая дозировка (ТС-3011), г/м³ (год)',
-                'План, техрежим Qв, тыс.м³/год',
-                'Плановый расход реагента Qп (ТС-3011), т/год',
-                'Плановый расход реагента Qп (ТС-3011), кг/сут',
-                // 'Фоновая скорость коррозии, мм/г',
+                'Фактическая дозировка (ТС-3011), г/м³',
+                'Ежесуточный расход воды Qв, м³/сут',
                 'Рекомендуемая дозировка (ТС-3011), г/м3',
-                'Расход реагента при рекомендуемой дозировке Qр (ТС-3011), т/год',
-                'Экономия при внедрении рекомендации, млн.тенге'
+                'Экономия при внедрении рекомендации, тыс.тенге'
+            ],
+            [
+                round($eco['uheDose']/$eco['days'],1),
+                round($eco['qv']/$eco['days'],1),
+                round($eco['recDose']/$eco['days'],1),
+                $eco['result']
             ]
         ];
 
-        foreach ($economicCurrentYear as $item) {
-            $array = [];
-            //ГУ
-            array_push($array, $item->gu->name);
-
-            //Плановая дозировка (ТС-3011), г/м³ (год)
-            array_push($array, round($item->plan_dosage, 2)); // тех режим дднг
-
-            //План, техрежим Qв, тыс.м³/год
-            array_push($array, round($item->q_v, 2)); // тех режим дднг
-
-
-            //Плановый расход реагента Qп (ТС-3011), т/год
-            $cg = $item->plan_dosage * $item->q_v / 1000; //перевод с кг/год на т/год
-            array_push($array, round($cg, 2));
-            // array_push($array, round($cg * $difference->d,2));
-
-            //Плановый расход реагента Qп (ТС-3011), кг/сут
-            $ch = $cg * 2.74; // прервод тонны в год на кг/с
-            array_push($array, round($ch, 2));
-
-            //Фоновая скорость коррозии, мм/г
-            $ck = self::getCorrosion($item->gu->id);
-            // array_push($array, round($ck,2));
-
-            //Рекомендуемая дозировка (ТС-3011), г/м3
-            if ($ck > 0.1) {
-                $ci = 14.177 * log($ck) + 35.222;
-                array_push($array, round($ci, 2));
-            } else {
-                $ci = 0;
-                array_push($array, round($ci, 2));
-            }
-
-            //Расход реагента при рекомендуемой дозировке Qр (ТС-3011), т/год
-            $cj = self::getCalcData($request->gu);
-            array_push($array, round($cj, 2));
-
-            //Экономия при внедрении рекомендации, млн.тенге
-            $co = ($cg - $cj) * 690000 / 1000000;
-            array_push($array, round($co, 2));
-
-
-            array_push($data2, $array);
-        }
-
-        return response()->json($data2);
+        $result = [
+            'tableData' => $data2,
+            'daysEcoCurrent' => $eco['days']
+        ];
+        return response()->json($result);
     }
 
-    static function getCorrosion($gu)
-    {
-        $cor = Corrosion::where('gu_id', '=', $gu)->orderBy('created_at', 'desc')->first();
-        return $cor->background_corrosion_velocity;
-    }
-
-    static function getCalcData($gu)
-    {
-        $pipe = Pipe::where('gu_id', '=', $gu)->first();
-        $ngdu = self::getNgduByYear($gu);
-        $oilGas = self::getOilGasByYear($gu);
-        $wm = self::getWMByYear($gu);
-
-        $dose = self::corrosion(
-            $ngdu->bsw_avg,
-            0.0294,
-            87.5,
-            $pipe->outside_diameter,
-            $pipe->roughness,
-            $pipe->length,
-            $pipe->thickness,
-            $ngdu->pump_discharge_pressure_avg,
-            $ngdu->heater_output_pressure_avg,
-            $wm->hydrogen_sulfide_avg,
-            $wm->carbon_dioxide_avg,
-            $ngdu->daily_fluid_production_avg,
-            $ngdu->bsw_avg,
-            $wm->hydrocarbonate_ion_avg,
-            $wm->chlorum_ion_avg,
-            $wm->sulphate_ion_avg,
-            $ngdu->daily_gas_production_in_sib_avg,
-            $ngdu->surge_tank_pressure_avg,
-            $wm->density_avg,
-            $oilGas->water_density_at_20_avg,
-            $oilGas->gas_density_at_20_avg,
-            $oilGas->oil_viscosity_at_20_avg,
-            $oilGas->gas_viscosity_at_20_avg,
-            $ngdu->daily_oil_production_avg
-        );
-
-        return $dose;
-    }
-
-    static function getOilGasByYear($gu = 73)
-    {
-        $data = OilGas::select(
-            DB::raw('avg(water_density_at_20) as `water_density_at_20_avg`'),
-            DB::raw('avg(gas_density_at_20) as `gas_density_at_20_avg`'),
-            DB::raw('avg(oil_viscosity_at_20) as `oil_viscosity_at_20_avg`'),
-            DB::raw('avg(gas_viscosity_at_20) as `gas_viscosity_at_20_avg`'),
-            DB::raw("DATE_FORMAT(date, '%Y') dt")
-        )
-            ->groupby('dt')
-            ->where('gu_id', '=', $gu)
-            ->having('dt', '=', date('Y'))
-            ->first();
-
-        return $data;
-    }
-
-    static function getWMByYear($gu = 73)
-    {
-        $data = WaterMeasurement::select(
-            DB::raw('avg(hydrogen_sulfide) as `hydrogen_sulfide_avg`'),
-            DB::raw('avg(carbon_dioxide) as `carbon_dioxide_avg`'),
-            DB::raw('avg(hydrocarbonate_ion) as `hydrocarbonate_ion_avg`'),
-            DB::raw('avg(chlorum_ion) as `chlorum_ion_avg`'),
-            DB::raw('avg(density) as `density_avg`'),
-            DB::raw('avg(sulphate_ion) as `sulphate_ion_avg`'),
-            DB::raw("DATE_FORMAT(date, '%Y') dt")
-        )
-            ->groupby('dt')
-            ->where('gu_id', '=', $gu)
-            ->having('dt', '=', date('Y'))
-            ->first();
-
-        return $data;
-    }
-
-    static function getNgduByYear($gu = 73)
-    {
-        $data = OmgNGDU::select(
-            DB::raw('avg(bsw) as `bsw_avg`'),
-            DB::raw('avg(pump_discharge_pressure) as `pump_discharge_pressure_avg`'),
-            DB::raw('avg(heater_output_pressure) as `heater_output_pressure_avg`'),
-            DB::raw('avg(daily_fluid_production) as `daily_fluid_production_avg`'),
-            DB::raw('avg(daily_gas_production_in_sib) as `daily_gas_production_in_sib_avg`'),
-            DB::raw('avg(daily_oil_production) as `daily_oil_production_avg`'),
-            DB::raw('avg(surge_tank_pressure) as `surge_tank_pressure_avg`'),
-            DB::raw("DATE_FORMAT(date, '%Y') dt")
-        )
-            ->groupby('dt')
-            ->where('gu_id', '=', $gu)
-            ->having('dt', '=', date('Y'))
-            ->first();
-
-        return $data;
-    }
-
-    public function ecoData($gu = 44)
+    static function ecoData($gu = 38)
     {
         $ngduUheData = DB::table('omg_n_g_d_u_s')
             ->leftJoin(
@@ -580,7 +431,13 @@ class OilGasController extends Controller
                         ->on('omg_u_h_e_s.date', '=', 'omg_n_g_d_u_s.date');
                 }
             )
-            ->leftJoin('pipes', 'omg_n_g_d_u_s.gu_id', '=', 'pipes.gu_id')
+            ->leftJoin(
+                'pipes',
+                function ($join) {
+                    $join->on('omg_n_g_d_u_s.gu_id', '=', 'pipes.gu_id')
+                        ->where('pipes.plot', '=', 'eg');
+                }
+            )
             ->where('omg_n_g_d_u_s.gu_id', '=', $gu)
             ->whereNotNull('omg_n_g_d_u_s.date')
             ->whereNotNull('omg_n_g_d_u_s.pump_discharge_pressure')
@@ -592,35 +449,151 @@ class OilGasController extends Controller
             ->whereNotNull('omg_u_h_e_s.current_dosage')
             ->select(
                 'omg_n_g_d_u_s.date',
+                'omg_n_g_d_u_s.gu_id',
                 'pipes.outside_diameter',
                 'pipes.roughness',
                 'pipes.length',
+                'pipes.thickness',
                 'omg_n_g_d_u_s.pump_discharge_pressure',
                 'omg_n_g_d_u_s.heater_output_pressure',
-                //  'water_measurements.hydrogen_sulfide',
-                //  'water_measurements.carbon_dioxide',
                 'omg_n_g_d_u_s.daily_fluid_production',
+                'omg_n_g_d_u_s.daily_water_production',
                 'omg_n_g_d_u_s.bsw',
-                //  'water_measurements.hydrocarbonate_ion',
-                //  'water_measurements.sulphate_ion',
                 'omg_n_g_d_u_s.daily_gas_production_in_sib',
                 'omg_n_g_d_u_s.surge_tank_pressure',
-                //  'water_measurements.density',
-                //  'oil_gases.water_density_at_20',
-                //  'oil_gases.gas_density_at_20',
-                //  'oil_gases.oil_viscosity_at_20',
-                //  'oil_gases.gas_viscosity_at_20',
                 'omg_n_g_d_u_s.daily_oil_production',
-                'omg_u_h_e_s.current_dosage',
-                             )
+                'omg_u_h_e_s.current_dosage')
             ->get();
-        // json_encode($data, JSON_PRETTY_PRINT);
 
-        // foreach(){
+        $result = 0;
+        $qv = 0;
+        $uheDose = 0;
+        $recDose = 0;
 
-        // }
+        foreach($ngduUheData as $row){
+            $lastOilGasData = self::getLastOilGasData($row->date, $row->gu_id);
+            $lastWMData = self::getLastWMData($row->date, $row->gu_id);
+            $dose = self::corrosion(
+                $row->bsw,
+                40.0000,
+                0.0294,
+                $row->outside_diameter,
+                $row->roughness,
+                $row->length,
+                $row->thickness,
+                $row->pump_discharge_pressure,
+                $row->heater_output_pressure,
+                $lastWMData['hydrogen_sulfide'],
+                $lastWMData['carbon_dioxide'],
+                $row->daily_fluid_production,
+                $row->bsw,
+                $lastWMData['hydrocarbonate_ion'],
+                $lastWMData['chlorum_ion'],
+                $lastWMData['sulphate_ion'],
+                $row->daily_gas_production_in_sib,
+                $row->surge_tank_pressure,
+                $lastWMData['density'],
+                $lastOilGasData['water_density_at_20'],
+                $lastOilGasData['gas_density_at_20'],
+                $lastOilGasData['oil_viscosity_at_20'],
+                $lastOilGasData['gas_viscosity_at_20'],
+                $row->daily_oil_production
+            );
+            $result += ($row->current_dosage/1000 - $dose/1000) * 690 * $row->daily_water_production / 1000;
+            $qv += $row->daily_water_production;
+            $uheDose += $row->current_dosage;
+            $recDose += $dose;
+        }
 
-        return $ngduUheData->count();
+        return [
+            'days' => $ngduUheData->count(),
+            'result' => round($result, 1),
+            'qv' => round($qv, 1),
+            'uheDose' => round($uheDose, 1),
+            'recDose' => round($recDose, 1)
+        ];
+    }
+
+    static function getLastOilGasData($dt, $gu){
+        $oilGas = OilGas::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('gas_viscosity_at_20')
+                        ->first();
+
+        $oilGas2 = OilGas::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('carbon_dioxide_in_gas')
+                        ->first();
+
+        $oilGas3 = OilGas::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('oil_viscosity_at_20')
+                        ->first();
+
+        $oilGas4 = OilGas::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('gas_viscosity_at_20')
+                        ->first();
+
+        $oilGas5 = OilGas::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('water_density_at_20')
+                        ->first();
+
+        $oilGas6 = OilGas::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('gas_density_at_20')
+                        ->first();
+
+        return [
+            'gas_viscosity_at_20' => $oilGas->gas_viscosity_at_20,
+            'carbon_dioxide_in_gas' => $oilGas2->carbon_dioxide_in_gas,
+            'oil_viscosity_at_20' => $oilGas3->oil_viscosity_at_20,
+            'gas_viscosity_at_20' => $oilGas4->gas_viscosity_at_20,
+            'water_density_at_20' => $oilGas5->water_density_at_20,
+            'gas_density_at_20' => $oilGas6->gas_density_at_20,
+        ];
+    }
+
+    static function getLastWMData($dt, $gu){
+        $wm = WaterMeasurement::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('hydrogen_sulfide')
+                        ->first();
+
+        $wm2 = WaterMeasurement::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('carbon_dioxide')
+                        ->first();
+
+        $wm3 = WaterMeasurement::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('hydrocarbonate_ion')
+                        ->first();
+
+        $wm4 = WaterMeasurement::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('sulphate_ion')
+                        ->first();
+
+        $wm5 = WaterMeasurement::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('density')
+                        ->first();
+
+        $wm6 = WaterMeasurement::where('gu_id', '=', $gu)
+                        ->where('date','<=', $dt)
+                        ->whereNotNull('chlorum_ion')
+                        ->first();
+
+        return [
+            'hydrogen_sulfide' => $wm->hydrogen_sulfide,
+            'carbon_dioxide' => $wm2->carbon_dioxide,
+            'hydrocarbonate_ion' => $wm3->hydrocarbonate_ion,
+            'sulphate_ion' => $wm4->sulphate_ion,
+            'density' => $wm5->density,
+            'chlorum_ion' => $wm6->chlorum_ion
+        ];
     }
 
     static function corrosion(
@@ -758,7 +731,6 @@ class OilGasController extends Controller
         $pCO2 = $conCO2_frac / 100 * $p;
         $co2 = $pCO2 / 1000;
         $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
-        $ratio = $pCO2 / $pH2S;
 
         if ($pCO2 / $pH2S >= 20) {
             $x = 7.96 - 2320 / ($t + 273);
@@ -957,4 +929,11 @@ class OilGasController extends Controller
     {
         return (new OilGasFilter($query, $filter))->filter();
     }
+
+    static function getCorrosion($gu)
+    {
+        $cor = Corrosion::where('gu_id', '=', $gu)->orderBy('created_at', 'desc')->first();
+        return $cor->background_corrosion_velocity;
+    }
+
 }

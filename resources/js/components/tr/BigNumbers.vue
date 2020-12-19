@@ -65,44 +65,42 @@ export default {
   computed: {
     numbers() {
       const newNumbers = [];
-      if (this.list && this.list.length > 0) {
-        newNumbers.push({
-          name: this.baseName,
-          count: this.list.length,
-          percent: 100,
-        });
-        const parsedList = this.list.reduce((acc, res) => {
-          const param = this.getStringOrFirstItem(res, this.param);
-          acc[param] = acc[param] ? acc[param] + 1 : 1;
-          return acc;
-        }, {});
-        console.log("parsedList == ", parsedList);
-        for (let key in parsedList) {
-          // Если понадобится выводить все параметры без выбора их из списка нужных, то props paramValues=[]
-          if (
-            this.paramValues.length === 0 ||
-            this.paramValues.indexOf(key) !== -1
-          ) {
-            newNumbers.push({
-              name: `${this.baseName} ${this.nameAlias} ${key}`,
-              count: parsedList[key],
-              percent: ((parsedList[key] / newNumbers[0].count) * 100).toFixed(
-                2
-              ),
-            });
-          }
+      let list;
+      if (this.list && this.list.length > 0) list = this.list;
+      else list = [];
+      newNumbers.push({
+        name: this.baseName,
+        count: list.length,
+        percent: 100,
+      });
+      const parsedList = list.reduce((acc, res) => {
+        const param = this.getStringOrFirstItem(res, this.param);
+        acc[param] = acc[param] ? acc[param] + 1 : 1;
+        return acc;
+      }, {});
+      for (let key in parsedList) {
+        // Если понадобится выводить все параметры без выбора их из списка нужных, то props paramValues=[]
+        if (
+          this.paramValues.length === 0 ||
+          this.paramValues.indexOf(key) !== -1
+        ) {
+          newNumbers.push({
+            name: `${this.baseName} ${this.nameAlias} ${key}`,
+            count: parsedList[key],
+            percent: ((parsedList[key] / newNumbers[0].count) * 100).toFixed(2),
+          });
         }
-        for (let key of this.paramValues) {
-          if (!parsedList[key]) {
-            newNumbers.push({
-              name: `${this.baseName} ${this.nameAlias} ${key}`,
-              count: 0,
-              percent: 0,
-            });
-          }
-        }
-        console.log("newNumbers == ", newNumbers);
       }
+      for (let key of this.paramValues) {
+        if (!parsedList[key]) {
+          newNumbers.push({
+            name: `${this.baseName} ${this.nameAlias} ${key}`,
+            count: 0,
+            percent: 0,
+          });
+        }
+      }
+      console.log("newNumbers == ", newNumbers);
       return newNumbers;
     },
   },

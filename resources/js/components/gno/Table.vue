@@ -2,9 +2,10 @@
   <div class="main col-md-12 col-lg-12 row">
     <div class="tables-two col-xs-12 col-sm-7 col-md-7 col-lg-8 col-xl-9">
       <div class="tables-string-gno3">
-        <modal name="modalIncl" :width="1150" :height="500" style="background:transparent">
+        <modal name="modalIncl" :width="1150" :height="600" style="background:transparent">
           <div class="modal-bign">
             <div class="Table" align="center" x:publishsource="Excel">
+              <h4 class="incl-title" style="color: white">Инклинометрия</h4>
               <gno-incl-table :wellNumber="wellNumber" :wellIncl="wellIncl"></gno-incl-table>
             </div>
           </div>
@@ -232,7 +233,6 @@
 
 
         </modal>
-
         <div class="gno-line-chart"  v-if="visibleChart">
           <gno-line-points-chart></gno-line-points-chart>
         </div>
@@ -714,7 +714,7 @@
         <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1" />
         <div class="box">
           <div class="select-well col-12">
-            <div class="select-gno"><b>PVT</b></div>
+            <div class="select-gno">PVT</div>
           </div>
           <span class="closer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -836,6 +836,7 @@ Vue.prototype.$eventBus = new Vue();
 
 Vue.use(NotifyPlugin,VueMomentLib);
 Vue.component("Plotly", Plotly);
+
 
 export default {
   data: function () {
@@ -1617,9 +1618,9 @@ export default {
 
     },
 
-    postCurveData(value) {
+    postCurveData() {
       this.visibleChart = true;
-      console.log(value)
+      console.log()
         let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
         // api/pgno/UZN/
         // KMB
@@ -1938,6 +1939,20 @@ export default {
 
     }
   }},
+
+  
+
+  downloadImg() {
+    $('#btnExport').click(function(){
+  //var title = $("<p>Image Here</p>");
+  //$("#content").append(title);
+  var divGraph = $('#graph');
+  Plotly.toImage('graph', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+        console.log(dataURL);
+        img_png.attr("src", dataURL);
+    });
+});
+  } 
 };
 </script>
 
