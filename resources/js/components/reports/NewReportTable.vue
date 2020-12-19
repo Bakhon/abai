@@ -35,7 +35,7 @@
     </div>
 
       <div class="form-group3 result-link">
-          <a :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
+          <a v-if="resultLink !== null" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
       </div>
 
     <div class="form-group4">
@@ -66,7 +66,8 @@ export default {
       org: '',
       start_date: null,
       end_date: null,
-      isLoading: false
+      isLoading: false,
+      resultLink: null
     }
 
   },

@@ -9,7 +9,7 @@ use Level23\Druid\Context\GroupByV2QueryContext;
 use Level23\Druid\Filters\FilterBuilder;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use Adldap\Laravel\Facades\Adldap;
-use App\Models\DZO\DZOday;
+use App\Models\DZO\DZOdaily;
 use App\Models\VisCenter2\Vis2Form;
 use Spatie\Permission\Contracts\Permission;
 use Spatie\Permission\Models\Permission as ModelsPermission;
@@ -81,7 +81,7 @@ return $response;
 
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
         $period = ($request->timestampEnd-$request->timestampToday)-86400000;        
-        return response()->json(DZOday::all('oil_plan','oil_fact','__time','dzo','oil_dlv_plan','oil_dlv_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
+        return response()->json(DZOdaily::all('oil_plan','oil_fact','gas_plan','gas_fact','__time','dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle','inj_wells_work')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
         //return  response()->json($request);
     }
@@ -94,6 +94,16 @@ return $response;
     public function visualcenter5()
     {
         return view('visualcenter.visualcenter5');
+    }
+
+    public function visualcenter6()
+    {
+        return view('visualcenter.visualcenter6');
+    }
+
+    public function visualcenter7()
+    {
+        return view('visualcenter.visualcenter7');
     }
 
     public function production()

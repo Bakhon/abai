@@ -10,11 +10,11 @@
             <div class="txt1 mt-2">{{ title }}</div>
             <div class="mt-1" v-if="hasProgressBar">
                 <div class="percent-header">
-                    {{ (100 - (prevPeriodValue / progressValue - 1) * 100).toFixed(2) }}%
+                    {{ progressPercents }}%
                 </div>
-                <div class="progress" v-if="hasProgressBar">
+                <div class="progress">
                     <div class="progress-bar" role="progressbar" :style="{width: progressPercents + '%'}" :aria-valuenow="progressValue"
-                         aria-valuemin="0" :aria-valuemax="progressValue"></div>
+                         aria-valuemin="0" :aria-valuemax="progressMax"></div>
                 </div>
                 <div class="flex-box progressBarFontSize">
                     <div class="col-6 text-left">
@@ -26,12 +26,12 @@
                 </div>
             </div>
         </div>
-        <div class="w-100 text-nowrap pr-3 mt-2" v-if="prevPeriodValue && progressValue">
-            <div v-if="(prevPeriodValue - progressValue ) / prevPeriodValue * 100 > 0" class="arrow2"></div>
-            <div v-if="(prevPeriodValue - progressValue ) / prevPeriodValue * 100 < 0" class="arrow3"></div>
+        <div class="w-100 text-nowrap mt-2 d-flex d-flex-row align-items-center" v-if="prevPeriodValue && progressValue">
+            <div v-if="(progressValue - prevPeriodValue ) / progressValue * 100 < 0" class="arrow2"></div>
+            <div v-if="(progressValue - prevPeriodValue ) / progressValue * 100 > 0" class="arrow3"></div>
             <div>
                     <span class="txt2-2">
-                        {{ new Intl.NumberFormat("ru-RU").format(Math.abs((prevPeriodValue - progressValue ) / prevPeriodValue * 100).toFixed(2)) }}%
+                        {{ Math.round(((progressValue - prevPeriodValue ) / progressValue * 100) * 100) / 100 }}%
                     </span>
                 <span class="txt3 ml-1"> {{ lastPeriod }}</span>
             </div>

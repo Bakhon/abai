@@ -5,11 +5,9 @@
         v-bind:indicatorValue="oil_fact"
         v-bind:units="'тыс. тонн'"
         v-bind:hasProgressBar="true"
-        v-bind:progressPercents="oil_factDayProgressBar"
-        v-bind:progressValue="oil_factDay"
-        v-bind:progressMax="oil_planDay"
-        v-bind:lastPeriod="'vs ' + lastMonth"
-        v-bind:prevPeriodValue="oil_factDayPercent"
+        v-bind:progressValue="oil_fact"
+        v-bind:progressMax="oil_plan"
+        v-bind:prevPeriodValue="prev_oil_fact"
     ></indicator>
     <indicator
         v-bind:title="'Выручка/Доход'"
@@ -19,7 +17,6 @@
         v-bind:progressPercents="oil_factDayProgressBar"
         v-bind:progressValue="oil_factDay"
         v-bind:progressMax="oil_planDay"
-        v-bind:lastPeriod="'от плана'"
         v-bind:prevPeriodValue="oil_factDayPercent"
     ></indicator>
     <indicator
@@ -30,7 +27,6 @@
         v-bind:progressPercents="oil_factDayProgressBar"
         v-bind:progressValue="oil_factDay"
         v-bind:progressMax="oil_planDay"
-        v-bind:lastPeriod="'от плана'"
         v-bind:prevPeriodValue="oil_factDayPercent"
     ></indicator>
     <indicator
@@ -41,7 +37,6 @@
         v-bind:progressPercents="oil_factDayProgressBar"
         v-bind:progressValue="oil_factDay"
         v-bind:progressMax="oil_planDay"
-        v-bind:lastPeriod="'от плана'"
         v-bind:prevPeriodValue="oil_factDayPercent"
     ></indicator>
     <indicator
@@ -52,7 +47,6 @@
         v-bind:progressPercents="oil_factDayProgressBar"
         v-bind:progressValue="oil_factDay"
         v-bind:progressMax="oil_planDay"
-        v-bind:lastPeriod="'от плана'"
         v-bind:prevPeriodValue="oil_factDayPercent"
     ></indicator>
     <indicator
@@ -63,7 +57,6 @@
         v-bind:progressPercents="oil_factDayProgressBar"
         v-bind:progressValue="oil_factDay"
         v-bind:progressMax="oil_planDay"
-        v-bind:lastPeriod="'от плана'"
         v-bind:prevPeriodValue="oil_factDayPercent"
     ></indicator>
     <indicator
@@ -72,7 +65,6 @@
         v-bind:units="'$ / bbl'"
         v-bind:hasProgressBar="false"
         v-bind:progressValue="oilNow"
-        v-bind:lastPeriod="'vs пр. пер.'"
         v-bind:prevPeriodValue="'40'"
         v-bind:tableToChange="'2'"
         @changeTable="tableToChange => $emit('changeTable', tableToChange)"
@@ -83,7 +75,6 @@
         v-bind:units="'kzt / $'"
         v-bind:hasProgressBar="false"
         v-bind:progressValue="currencyNow"
-        v-bind:lastPeriod="'vs вчера'"
         v-bind:prevPeriodValue="currencyPrevPeriod"
         v-bind:tableToChange="'3'"
         @changeTable="tableToChange => $emit('changeTable', tableToChange)"
