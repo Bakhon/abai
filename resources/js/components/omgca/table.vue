@@ -317,7 +317,7 @@ export default {
     },
 };
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 #app > .container-fluid{
     max-width: calc(100% - 120px);
 }
