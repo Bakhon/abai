@@ -14,21 +14,21 @@
     float: left!important;
 }
 
-@media only screen and (max-width:680px) {
-    .square2 {
-      width:35px!important;
-    }
-}
+/*@media only screen and (max-width:680px) {*/
+/*    .square2 {*/
+/*      width:35px!important;*/
+/*    }*/
+/*}*/
 
-@media only screen and (max-width:980px) {
-    .desktop-right, .desktop-left {
-        float: none!important;
-    }
-}
+/*@media only screen and (max-width:980px) {*/
+/*    .desktop-right, .desktop-left {*/
+/*        float: none!important;*/
+/*    }*/
+/*}*/
 
 .second-column {
-    padding-right: 0px!important;
-    padding-left: 0px!important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
 }
 
 .no-gutter>[class*='col-'] {
@@ -269,6 +269,9 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     line-height: 18px;
     cursor: pointer;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .tables-string-gno55:active {
@@ -941,10 +944,10 @@ td {
 .table-pgno-button {
     font-size: 13px;
     height: 450px;
-    /*background-color: #153e7c;*/
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .gno-shgn-wrapper {
@@ -1243,7 +1246,8 @@ input.checkbox-q-liquid {
     padding-right: 5px;
 }
 
-/* .vm--modal {} */
+/*.vm--modal {} */
+
 .table-border-gno-left-right {
     border-right-color: #3b4172;
     border-right-style: solid;
@@ -1327,6 +1331,10 @@ input.checkbox-q-liquid {
 
 .vm--modal {
     border-radius: 9px !important;
+}
+
+.vm--container {
+    z-index: 99999 !important;
 }
 
 .gno-modal-loading-label {
@@ -1441,3 +1449,167 @@ input.checkbox-q-liquid {
 .modal-old-well-content-container {
     display: flex;
 }
+
+/*.modal-bign-wrapper {*/
+/*    z-index: 999;*/
+/*}*/
+
+@media (max-width: 1765px) {
+    .curve-settings, .choice-params {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+@media (max-width: 1620px) {
+    .img-text, .image-data {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+    }
+
+    .table-pgno-button {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        height: fit-content !important;
+    }
+
+    .podbor-gno {
+        flex-wrap: wrap;
+    }
+
+    .first-column {
+        height: fit-content;
+    }
+
+    .table-pgno-one, .table-pgno-two, .table-pgno-four {
+        margin-bottom: 10px !important;
+    }
+}
+
+@media (max-width: 1302px) {
+    .select-gno2 {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .first-column {
+        flex: 0 0 66.666666% !important;
+        max-width: 66.666666% !important;
+    }
+
+    .second-column {
+        flex: 0 0 33.333333% !important;
+        max-width: 33.333333% !important;
+    }
+}
+
+@media (max-width: 1100px) {
+    .square3.podbor {
+        width: calc(100% - 65px) !important;
+    }
+
+    .square3 {
+        max-width: 80% !important;
+    }
+
+    .select-params, .inflow-configuration {
+        padding: 0 10px !important;
+        min-width: 240px !important;
+    }
+
+    .inflow-configuration-min-width {
+        min-width: 240px !important;
+    }
+}
+
+@media (max-width: 1090px) {
+    .gno-incl-content-wrapper {
+        display: flex;
+        /*flex-direction: column;*/
+        align-items: center;
+        justify-content: center;
+    }
+
+    .incl-modal-table, .gno-plotly-graph {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+@media (max-width: 1036px) {
+    .bottom-configuration {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 767px) {
+    .first-column, .second-column {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .no-gutter>[class*='col-'] {
+        padding-right: 15px !important;
+        padding-left: 15px !important;
+    }
+
+    .table-pgno-button {
+        padding: 0 !important;
+    }
+}
+
+@media (max-width: 584px) {
+    .table-border-gno-top .row .col-1 {
+        display: none !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .curve-settings, .choice-params, .gno-main-green-button {
+        padding: 0 !important;
+    }
+
+    .pdo-bottom-cell {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 10px;
+    }
+
+    .square3.podbor {
+        width: 100% !important;
+    }
+}
+
+@media (max-width: 490px) {
+    .table-border-gno-top .row {
+        display: flex;
+        flex-wrap: nowrap !important;
+    }
+}
+
+@media (max-width: 440px) {
+    .ml-3.ic-min-block2 {
+        margin-left: 0 !important;
+    }
+}
+
+
+
+
+
+/*cheat-code*/
+/*@media (max-width: 991px) {*/
+/*    #sidebar-container2 {*/
+/*        display: none !important;*/
+/*    }*/
+
+/*    #app > .container-fluid {*/
+/*        max-width: 100% !important;*/
+/*        padding: 15px !important;*/
+/*    }*/
+
+/*    .container-fluid.col.m-lg-3.m-1.p-0 {*/
+/*        margin: 0 !important;*/
+/*    }*/
+/*}*/

@@ -275,14 +275,36 @@ export default {
       this.data[4]['y'][0] = value[2]["p"]
       this.data[4]['text'][0] = value[2]["q_oil"]
     },
+    resize() {
+      console.log(window.innerWidth);
+    }
   },
-
   mounted() {},
   created: function () {
     this.$parent.$on("LineData", this.setLine);
     this.$parent.$on("PointsData", this.setPoints);
+    window.addEventListener("resize", this.resize);
+
     // this.$on("LineData", this.setLine);
     // this.$on("PointsData", this.setPoints);
+
+    if (window.innerWidth <= 1300) {
+      this.layout.margin = {
+        l: 60,
+        r: 40,
+        b: 60,
+        t: 20
+      }
+    }
+
+    if (window.innerWidth <= 600) {
+      this.layout.margin = {
+        l: 40,
+        r: 20,
+        b: 60,
+        t: 20
+      }
+    }
 
   },
   updated: function() {
