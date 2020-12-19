@@ -214,20 +214,14 @@ class OmgUHEController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringOmgUHE::query()
-            ->with('field')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('inhibitor')
-            ->with('well');
+        $job = new \App\Jobs\ExportOmgUHEToExcel($request->validated());
+        $this->dispatch($job);
 
-        $omguhe = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new OmgUHEExport($omguhe), 'omguhe.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**

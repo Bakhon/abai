@@ -166,18 +166,14 @@ class CorrosionController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = Corrosion::query()
-            ->with('other_objects')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->get();
+        $job = new \App\Jobs\ExportCorrosionToExcel($request->validated());
+        $this->dispatch($job);
 
-        $corrosion = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new \App\Exports\CorrosionExport($corrosion), 'corrosion.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
