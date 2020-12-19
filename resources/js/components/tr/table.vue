@@ -508,7 +508,7 @@ tr:nth-child(even) {
 
 .table {
     overflow: scroll;
-    height: 100vh;
+    height: calc(100vh - 247px);
 }
 .table .th {
     position: sticky;

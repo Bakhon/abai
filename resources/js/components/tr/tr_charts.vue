@@ -20,17 +20,10 @@
           >
           <a href="tr" class="col but-nav__link but ml-3"
             ><i style="margin-right: 10px"
-              ><svg
-                width="24"
-                height="14"
-                viewBox="0 0 24 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
-                  fill="white"
-                /></svg></i
+              ><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
+</svg>
+</i
             >Технологический режим</a
           >
         </div>
@@ -62,32 +55,20 @@
 
         <div class="dropdown">
           <button
-            class="but-nav__link but"
+            class="btn btn-secondary dropdown-toggle trfabtgraph"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <i style="margin-right: 10px">
-              <svg
-                width="18"
-                height="20"
-                viewBox="0 0 18 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z"
-                  fill="white"
-                />
-              </svg>
-            </i>
+
             Выберите месяц
           </button>
 
           <div
-            class="dropdown-menu trdropdown"
+            class="dropdown-menu fadropmenu"
+            style="background: #656A8A; height: 118px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -95,8 +76,9 @@
             <div>
               <select
                 style="
-                  background-color: #20274e;
-                  border-color: #20274e;
+                  background-color: #656A8A !important;
+                  border-color: #656A8A !important;
+
                   color: white;
                 "
                 class="form-control"
@@ -121,8 +103,9 @@
             <div>
               <select
                 style="
-                  background-color: #20274e;
-                  border-color: #20274e;
+                  background-color: #656A8A !important;
+                  border-color: #656A8A !important;
+
                   color: white;
                 "
                 class="form-control"
@@ -142,7 +125,8 @@
             <a
               href="#"
               @click.prevent="chooseDt"
-              class="but-nav__link but trbutnav"
+              class="btn btn-primary"
+              style="  margin-left: 15px;"
               >Сформировать</a
             >
           </div>
@@ -297,7 +281,7 @@ export default {
       month: null,
       chartData: false,
       chartNames: [
-        "Потенциал снижения динамического уровня, спуска ГНО",
+        "Анализ глубин пластов, спуска насосов и динамического уровня",
         "ТОП-30 скважин. Потенциал прироста дебита нефти",
         "ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность",
         "ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор",
@@ -1258,7 +1242,7 @@ export default {
       }
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/graph1/" +
+          "http://172.20.103.187:7576/api/techregime/graph1/" +
             this.selectYear +
             "/" +
             this.month +
@@ -1284,6 +1268,7 @@ export default {
     },
   },
   created() {
+    this.isLoading = true;
     if (this.$store.getters["tr/chart"])
       this.chartShow = this.$store.getters["tr/chart"];
     let mm, yyyy;
@@ -1300,13 +1285,14 @@ export default {
     }
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/graph1/" +
+        "http://172.20.103.187:7576/api/techregime/graph1/" +
           yyyy +
           "/" +
           mm +
           "/"
       )
       .then((response) => {
+        this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
         console.log(this.editdtm);
@@ -1324,6 +1310,9 @@ export default {
         } else {
           this.dt = "01" + "." + mm + "." + yyyy;
         }
+      })
+      .catch((e) => {
+        this.isLoading = false;
       });
   },
 };
@@ -1403,6 +1392,11 @@ body {
   flex-basis: 0;
   flex-grow: 1;
   flex-shrink: 0;
+}
+.fadropmenu .fadropmenu {
+  background: #656a8a;
+  /* color: #ffffff; */
+  width: 246px;
 }
 </style>
 

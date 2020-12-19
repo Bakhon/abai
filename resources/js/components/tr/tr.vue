@@ -12,7 +12,7 @@
           paddng-left: 0;
         "
       >
-        <a href="fa" class="col but-nav__link but" style="margin-left: -17px"
+        <a href="fa" class="col but-nav__link but trheadhight" style="margin-left: -17px"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -34,7 +34,7 @@
             </form> -->
         <div class="col dropdown">
           <button
-            class="col-md-12 but-nav__link but"
+            class="col-md-12 but-nav__link but faheadhight"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
@@ -59,7 +59,8 @@
           </button>
 
           <div
-            class="dropdown-menu trdropdown"
+            class="dropdown-menu fadropmenu "
+            style="background: #656A8A; height: 104px; width: 161px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -67,11 +68,11 @@
             <div>
               <select
                 style="
-                  background-color: #20274e;
-                  border-color: #20274e;
+                  background-color: #656A8A;
+                  border-color: #656A8A;
                   color: white;
                 "
-                class="form-control"
+                class="form-controll"
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
@@ -93,11 +94,17 @@
             <div>
               <select
                 style="
-                  background-color: #20274e;
-                  border-color: #20274e;
+                  background-color: #656A8A ;
+                  border-color: #656A8A;
                   color: white;
+                  width: 131px;
+
+                  
+                  border: 1px solid #656A8A; !important;
+                  height: 35px !important;
+                  color: white !important;
                 "
-                class="form-control"
+                class="form-controll"
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
@@ -114,7 +121,7 @@
             <a
               href="#"
               @click.prevent="chooseDt"
-              class="but-nav__link but trbutnav"
+              class="btn btn-primary"
               >Сформировать</a
             >
           </div>
@@ -166,7 +173,7 @@
             </div> -->
         <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
         <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a @click="editable()" v-if="!edit" class="col but-nav__link but" style="margin-right: 11px;"
+        <a @click="editable()" v-if="!edit" class="col but-nav__link but trheadhight" style="margin-right: 11px;"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -183,7 +190,7 @@
           </i>
           Редактировать</a
         >
-        <a @click="savetable()" v-if="edit" class="col but-nav__link but"
+        <a @click="savetable()" v-if="edit" class="col but-nav__link but trheadhight"
           >Сохранить</a
         >
 
@@ -239,7 +246,11 @@
               <option value="Аксай Южный">Аксай Южный</option>
           </select>
 
+          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2 butcancel">
+            Отмена
+          </div>
           <a
+            v-if="!edit"
             class="but-nav__link but trgraph"
             title="Показать графики"
             data-toggle="tooltip"
@@ -263,6 +274,7 @@
           </a>
 
           <button
+            v-if="!edit"
             id="bt1"
             @click="swap"
             style="
@@ -331,7 +343,7 @@
           "
         >
           <tr class="headerColumn sticky" style="background: #333975">
-            <td rowspan="4">Раб. Группа</td>
+            <td rowspan="4">№</td>
             <td rowspan="4">НГДУ/месторождение</td>
             <td rowspan="4">№ скв</td>
             <td rowspan="4">Тип скважины</td>
@@ -424,7 +436,7 @@
             <td rowspan="4"><span>Комментарии</span></td>
             <td rowspan="4"><span>Дата последнего ГТМ</span></td>
             <td rowspan="4"><span>Вид последнего ГТМ</span></td>
-            <td class="colspan" colspan="12">Планируемые мероприятия</td>
+            <td class="colspan" colspan="12">Намечаемый режим</td>
           </tr>
           <tr class="headerColumn" style="background: #333975">
             <td rowspan="3"><span>P заб</span></td>
@@ -467,7 +479,7 @@
             <td rowspan="3"><span>Добыча газа за месяц</span></td>
             <td rowspan="3"><span>Добыча жидкость за месяц</span></td>
             <td rowspan="3"><span>Добыча воды за месяц</span></td>
-            <td class="colspan" colspan="2"><span>Изменения k</span></td>
+            <td class="colspan" colspan="2"><span>Изменения к режиму</span></td>
             <td rowspan="3">
               <span>Мероприятия по обеспечению техрежима</span>
             </td>
@@ -2449,15 +2461,55 @@
             <td v-if="!edit">{{ Math.round(row.wht * 10) / 10 }}</td>
             <td v-if="edit">{{ Math.round(row.wht * 10) / 10 }}</td>
 
-            <td v-if="!edit">{{ Math.round(row.grp_skin[0] * 10) / 10 }}</td>
-            <td v-if="edit" contenteditable="true">
-              <input
-                @change="editrow(row, row_index)"
-                v-model="row.grp_skin"
-                :disabled="!edit"
-              />
+            <td
+              v-if="!edit"
+              :class="{
+                'cell-with-comment':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].grp_skin[1][0] !== '0',
+              }"
+            >
+              <span
+                :class="{
+                  'circle-err':
+                    wells &&
+                    wells[row_index] &&
+                    wells[row_index].grp_skin[1][0] !== '0',
+                }"
+                :style="`background :${getColor(wells[row_index].grp_skin[1][0])}`"
+              >
+              </span>
+              <span>{{ Math.round(row.grp_skin[0] * 10) / 10 }}</span>
+              <span v-if="wells && wells[row_index]" class="cell-comment">
+                {{ wells[row_index].grp_skin[1][1] }}
+              </span>
             </td>
-
+            <td
+              v-if="edit"
+              :class="{
+                'cell-with-comment':
+                  wells &&
+                  wells[row_index] &&
+                  wells[row_index].grp_skin[1][0] !== '0',
+              }"
+            >
+              <span
+                :class="{
+                  'circle-err':
+                    wells &&
+                    wells[row_index] &&
+                    wells[row_index].grp_skin[1][0] !== '0',
+                }"
+                :style="`background :${getColor(wells[row_index].grp_skin[1][0])}`"
+              >
+              </span>
+              <input @change="editrow(row, row_index)" v-model="row.grp_skin[0]" :disabled="!edit">
+              <!-- <span>{{ Math.round(row.grp_skin[0] * 10) / 10 }}</span> -->
+              <span v-if="wells && wells[row_index]" class="cell-comment">
+                {{ wells[row_index].grp_skin[1][1] }}
+              </span>
+            </td>
             <td v-if="!edit">{{ Math.round(row.grp_jd * 100) / 100 }}</td>
             <td v-if="edit">{{ Math.round(row.grp_jd * 10) / 10 }}</td>
 
@@ -6004,7 +6056,7 @@ export default {
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/" + yyyy + "/" + mm + "/"
+        "http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/"
       )
       .then((response) => {
         let data = response.data;
@@ -6036,6 +6088,7 @@ export default {
       filter: "Выберите месторождение",
       dt: null,
       fullWells: [],
+      editedWells: [],
       show_first: true,
       show_second: false,
       edit: false,
@@ -6057,11 +6110,12 @@ export default {
   },
   methods: {
     editrow(row, rowId) {
-      // console.log(row);
+      console.log('row = ', row);
+      console.log('rowId = ', rowId);
       row["index"] = 0;
       this.axios
         .post(
-          "http://172.20.103.51:7576/api/techregime/edit/" +
+          "http://172.20.103.187:7576/api/techregime/edit/" +
             this.year +
             "/" +
             this.month +
@@ -6073,10 +6127,14 @@ export default {
         .then((response) => {
           if (response.data) {
             // console.log('EDIT_RESPONSE', response.data.data[0])
-            this.wells = this.wells.map((currentRow, index) => {
-              // console.log('norm', index, rowId)
-              return index === rowId ? response.data.data[0] : currentRow;
-            });
+            // this.wells = this.wells.map((currentRow, index) => {
+            //   // console.log('norm', index, rowId)
+            //   return index === rowId ? response.data.data[0] :   currentRow;
+            // });
+
+            // this.wells = [...this.wells.slice(0, rowId), response.data.data[0], ...this.wells.slice(rowId + 1)]
+            this.editedWells = this.editedWells.filter(item => item.well !== response.data.data[0].well);
+            this.editedWells = [...this.editedWells, response.data.data[0]]
           } else {
             console.log("No data");
           }
@@ -6085,25 +6143,35 @@ export default {
     savetable() {
       this.edit = false;
       this.isloading = true;
+      const searchParam = this.searchString ? `${this.searchString}/` : ''
       this.axios
         .post(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.187:7576/api/techregime/save/" +
             this.year +
             "/" +
             this.month +
-            "/",
+            "/" +
+            searchParam,
           {
-            well: this.wells,
+            well: this.editedWells,
           }
         )
         .then((response) => {
           console.log(response.data);
+          this.fullWells = response.data;
+          this.editedWells = [];
           this.isloading = false;
         })
         .catch((error) => {
           console.log(error.data);
-          this.isloading = false;
+          this.editedWells = [];
+          this.searchWell();
         });
+    },
+    cancelEdit() {
+      this.edit = false;
+      this.editedWells = [];
+      this.searchWell();
     },
     editable() {
       this.edit = true;
@@ -6172,15 +6240,17 @@ export default {
     },
 
     chooseDt() {
+      this.isloading = true;
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
             "/" +
             this.month +
             "/"
         )
         .then((response) => {
+          this.isloading = false;
           let data = response.data;
           if (data) {
             console.log(data)
@@ -6220,10 +6290,11 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.isloading = true;
       const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
             "/" +
             this.month +
@@ -6231,6 +6302,7 @@ export default {
             searchParam
         )
         .then((response) => {
+          this.isloading = false;
           let data = response.data;
           if (data) {
             console.log(data);
@@ -6244,6 +6316,7 @@ export default {
         })
         .catch((error) => {
           // this.wells = [];
+          this.isloading = false;
           this.fullWells = [];
           console.log("search error = ", error);
         });
@@ -6325,10 +6398,11 @@ tr:nth-child(even) {
 .table td {
   padding: 5px !important;
 }
-.trtableborderedtabledarktableresponsive {
+.trtable{
   font-size: 9px;
   padding: unset;
 }
+
 .trcolmd12 {
   margin-left: 0px;
 }
@@ -6362,6 +6436,14 @@ tr:nth-child(even) {
   min-height: 2em;
   background: lightpink;
 }
+.table {
+    overflow: scroll;
+    height: calc(100vh - 247px);
+}
+.trkrtableborderedtabledarktableresponsive {
+    font-size: 9px;
+    padding: unset;
+}
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
@@ -6372,5 +6454,20 @@ tr:nth-child(even) {
   justify-content: space-between;
   height: 48px;
   align-items: center;
+}
+.trheadhight  {
+  height: 40px;
+}
+.fadropmenu .fadropmenu {
+  background: #656a8a;
+  /* color: #ffffff; */
+  width: 246px;
+}
+.faheadhight {
+  height: 40px;
+}
+.butcancel.butcancel {
+  flex-grow: 0 ;
+  width: 200px;
 }
 </style>

@@ -1,5 +1,7 @@
 <template>
-  <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+  <Plotly :data="data"
+          :layout="layout"
+          :display-mode-bar="false"></Plotly>
 </template>
 
 <script>
@@ -8,7 +10,7 @@ import { Plotly } from "vue-plotly";
 import { EventBus } from "../../event-bus.js";
 Vue.component("Plotly", Plotly);
 export default {
-  data: function () 
+  data: function ()
   {
     return {
       layout: {

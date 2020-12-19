@@ -29,6 +29,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h3 class="economicHeader">Экономический эффект {{ currentYear }}</h3>
+                        <h4 class="economicHeader" v-if="economicCurrentDays">Количесво дней: {{ economicCurrentDays }}</h4>
                     </div>
                 </div>
                 <div class="row">
@@ -40,10 +41,6 @@
                                 <td>{{ row[1] }}</td>
                                 <td>{{ row[2] }}</td>
                                 <td>{{ row[3] }}</td>
-                                <td>{{ row[4] }}</td>
-                                <td>{{ row[5] }}</td>
-                                <td>{{ row[6] }}</td>
-                                <td>{{ row[7] }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -363,7 +360,6 @@
                         <div class="block-gu">
                             <span>ГУ</span>
                             <select
-                                class="form-control form-control-sm"
                                 name="gu_id"
                                 v-model="gu"
                                 @change="chooseGu()"
@@ -540,7 +536,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicCurrentYear.length < 2">
+                <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicCurrentYear.length < 1">
                     Экономический эффект
                 </button
                 >
@@ -631,6 +627,7 @@ export default {
             chart3Data: null,
             chart4Data: null,
             problemGus: [],
+            economicCurrentDays: null
         };
     },
     beforeCreate: function () {
@@ -796,7 +793,7 @@ export default {
         getEconomicData(gu) {
             this.axios
                 .post("/ru/vcoreconomic", {
-                    gu: gu,
+                    gu: this.gu,
                 })
                 .then((response) => {
                     let data = response.data;
@@ -809,13 +806,14 @@ export default {
 
             this.axios
                 .post("/ru/vcoreconomiccurrent", {
-                    gu: gu,
+                    gu: this.gu,
                 })
                 .then((response) => {
                     let data = response.data;
                     if (data) {
                         console.log(data);
-                        this.economicCurrentYear = data;
+                        this.economicCurrentYear = data.tableData;
+                        this.economicCurrentDays = data.daysEcoCurrent;
                     } else {
                         console.log("No data");
                     }

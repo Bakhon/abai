@@ -1,14 +1,14 @@
 <template>
   <div class="container-fluid">
     <div class="row justify-content-between farowjustcontbet" style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px">
-                <a href="tr" class="col but-nav__link but" style="margin-right: 181px !important;"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <a href="tr" class="col but-nav__link but faheadhight"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
 </svg></i>
 Технологический режим</a>
 
-      <div class="col dropdown" style="padding: 0px; margin-left: 119px; margin-right: 253px;">
+      <div class="col dropdown" style="padding: 0px; margin:0 20px;">
         <button
-          class="col-md-12 but-nav__link but fabutdata"
+          class="col-md-12 but-nav__link but faheadhight"
           href="#"
           role="button"
           id="dropdownMenuLink"
@@ -82,6 +82,9 @@
           @start-search="searchWell()"
         />
       </div>
+    </div>
+    <div class="fadee" v-if="isloading">
+          <fade-loader :loading="isloading"></fade-loader>
     </div>
     <div
       class="tech tr-table-header"
@@ -855,6 +858,7 @@ import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
@@ -878,6 +882,7 @@ export default {
       editdty: null,
       editdtprevm: null,
       editdtprevy: null,
+      isloading: true,
       chartBarOptions: {
         chart: {
           height: 350,
@@ -1072,7 +1077,7 @@ export default {
         console.log("date1", mm, yyyy, "date2", prMm, pryyyy);
         this.axios
           .get(
-            "http://172.20.103.51:7576/api/techregime/factor/" +
+            "http://172.20.103.187:7576/api/techregime/factor/" +
               yyyy +
               "/" +
               mm +
@@ -1088,6 +1093,7 @@ export default {
             this.editdty = choosenDt[0];
             this.editdtprevm = choosenSecDt[1];
             this.editdtprevy = choosenSecDt[0];
+            
             if (data) {
               console.log(data);
               this.wells = data.data;
@@ -1143,7 +1149,7 @@ export default {
       const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/factor/" +
+          "http://172.20.103.187:7576/api/techregime/factor/" +
             yyyy +
             "/" +
             mm +
@@ -1199,7 +1205,7 @@ export default {
     this.$store.commit("fa/SET_PR_YEAR", pryyyy);
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/factor/" +
+        "http://172.20.103.187:7576/api/techregime/factor/" +
           yyyy +
           "/" +
           mm +
@@ -1219,6 +1225,7 @@ export default {
         console.log(this.editdtprevm);
         this.editdtprevy = pryyyy;
         console.log(this.editdtprevy);
+        this.isloading = false;
         if (data) {
           console.log(data);
           this.wells = data.data;
@@ -1306,19 +1313,16 @@ body {
   padding: 5px !important;
 }
 
-.fabutnavlinkbut {
-  width: 430;
-  margin-left: 15px;
-  display: flex;
-}
+
 .farowjustcontbet {
     /* margin-bottom: 11px; */
     box-sizing: border box; 
-    flex-grow: 1; 
+    /* flex-grow: 1;  */
     padding-right: 0; 
     margin-right: 0; 
     margin-left: 0; 
     padding-left: 0;
+    display:flex;
 }
 /* .fabutdata {
   margin-left: 156px;
@@ -1336,8 +1340,27 @@ body {
 .trcol {
     padding-right: 0;
 }
-.fabutdata {
+/* .fabutdata {
     margin-left: -6px;
     width: 420;
+} */
+.table {
+    overflow: scroll;
+    height: calc(100vh - 247px);
+}
+.fadee {
+  flex: 0 1 auto;
+  flex-flow: row wrap;
+  width: 100%;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  z-index: 5000;
+  background: rgba(59, 46, 247, 0.1);
+}
+.faheadhight {
+  height: 40px;
 }
 </style>
