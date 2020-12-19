@@ -15,6 +15,7 @@ export default {
     },
     dateStart: '',
     dateEnd: '',
+    dzo: '',
   },
   data: function () {
     return {
@@ -312,7 +313,10 @@ export default {
         this.dateStart.getDate()
       );
       prevPeriodDateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(prevPeriodDateStart);
-      let queryParams = {params: {'dateStart': dateStart, 'dateEnd': dateEnd}};
+      let queryParams = {params: {dateStart: dateStart, dateEnd: dateEnd, dzo: ''}};
+      if (this.dzo !== '' && this.dzo !== 'ALL') {
+        queryParams.params.dzo = this.dzo;
+      }
       this.axios
         .get(uri, queryParams)
         .then(response => {
@@ -401,7 +405,10 @@ export default {
     },
     dateEnd: function () {
       this.getIndicatorsData();
-    }
+    },
+    dzo: function () {
+      this.getIndicatorsData();
+    },
   },
   async mounted() {
     this.currentMonth = this.monthes3[this.month];
