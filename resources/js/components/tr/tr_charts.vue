@@ -76,8 +76,8 @@
             <div>
               <select
                 style="
-                  background-color: #656A8A;
-                  border-color: #656A8A;
+                  background-color: #656A8A !important;
+                  border-color: #656A8A !important;
 
                   color: white;
                 "
@@ -103,8 +103,8 @@
             <div>
               <select
                 style="
-                  background-color: #656A8A;
-                  border-color: #656A8A;
+                  background-color: #656A8A !important;
+                  border-color: #656A8A !important;
 
                   color: white;
                 "
