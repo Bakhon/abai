@@ -131,7 +131,7 @@
           </div>
         </div>
         <div class="col-sm" v-if="chartShow === 'bar'">
-          <div class="second_block" style="margin-left: 165px;">
+          <div class="second_block" style="display: flex; justify-content: center;">
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
@@ -142,7 +142,7 @@
           </div>
         </div>
         <div class="col-sm" v-if="chartShow === 'pie'">
-          <div class="first_block" style="margin-left: 144px;">
+          <div class="first_block" style="display: flex; justify-content: center;">
             <apexchart
               v-if="pieChartData && pieChartRerender"
               type="donut"
@@ -360,7 +360,7 @@ export default {
           offsetY: -20,
           style: {
             fontSize: "12px",
-            colors: ["#304758"],
+            colors: ["#008ffb"],
           },
         },
 
@@ -393,6 +393,11 @@ export default {
           tooltip: {
             enabled: true,
           },
+          labels : {
+            style : {
+              colors: "#008ffb"
+            }
+          }
         },
         yaxis: {
           axisBorder: {
@@ -407,6 +412,17 @@ export default {
               return val;
             },
           },
+          title: {
+            style: {
+              color: "#008ffb"
+            }
+
+          },
+          labels : {
+            style : {
+              colors: "#008ffb"
+            }
+          }
         },
       },
       chartOptions: {
