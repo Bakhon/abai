@@ -124,6 +124,7 @@ export default {
       t4:'',
       t5:'',
       t6:'',
+      t1Sum:'',
       oil_factDayProgressBar: '',
       dateStart: '',
       dateEnd: '',
@@ -1031,11 +1032,14 @@ export default {
           if (response.data) {
             // console.log((month_number; porog; tsel; vyzov; fact; formula1; formula2))
             // console.log((company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie))
-            this.t1 = [1].concat(response.data['Marabayev1'][0]);
-            this.t2 = [1].concat(response.data['Marabayev2'][0]);
-            this.t3 = [1].concat(response.data['Marabayev3'][0]);
-            this.t4 = [1].concat(response.data['Marabayev4'][0]);
-            this.t5 = [1].concat(response.data['Marabayev5'][0]);
+            this.t1 = response.data['Marabayev1'][0];
+            this.t2 = response.data['Marabayev2'][0];
+            this.t3 = response.data['Marabayev3'][0];
+            this.t4 = response.data['Marabayev4'][0];
+            this.t5 = response.data['Marabayev5'][0];
+            this.t1Sum = response.data['CorpAll1'][0][6] +
+              response.data['CorpAll2'][0][6] + response.data['CorpAll3'][0][6] +
+              response.data['CorpAll4'][0][6] + response.data['CorpAll5'][0][6] + response.data['CorpAll6'][0][6];
             this.t6 = [1, 0, 1, 2, 1];
             this.isEnableSpeedometers = true;
           }

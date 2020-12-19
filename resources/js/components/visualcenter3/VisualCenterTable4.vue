@@ -17,10 +17,10 @@
                                         <div
                                             class="progress-bar"
                                             role="progressbar"
-                                            :style="{width: oil_factDayProgressBar + '%'}"
-                                            :aria-valuenow="oil_planDay"
+                                            :style="{width: t1Sum + '%'}"
+                                            :aria-valuenow="t1Sum"
                                             aria-valuemin="0"
-                                            :aria-valuemax="oil_factDay"
+                                            :aria-valuemax="100"
                                         ></div>
                                     </div>
                                 </div>

@@ -31,6 +31,7 @@
                 :min="min"
                 :max="max"
                 step="0.1"
+                :tooltip-format="tooltipFormat"
             />
         </div>
     </div>
@@ -55,7 +56,13 @@ export default {
             rangeColor: '#fe5c5c',
             min: 0,
             max: 100,
+            tooltipValue: 0,
         };
+    },
+    methods: {
+        tooltipFormat: function () {
+            return this.tooltipValue;
+        }
     },
     mounted() {
         let item = this.sliderValue;
@@ -72,6 +79,7 @@ export default {
         }
         this.slider1Value = slider1Value;
         this.slider2Value = slider2Value;
+        this.tooltipValue = item[2];
         this.rangeColor = rangeColor;
         this.min = item[1];
         this.max = item[3];
