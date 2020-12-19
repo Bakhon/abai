@@ -35,6 +35,7 @@
     echo "Run migrations"
     cd {{ $new_release_dir }}
     php artisan migrate --force --no-interaction
+    php artisan storage:link
 @endtask
 
 @task('build_static')
