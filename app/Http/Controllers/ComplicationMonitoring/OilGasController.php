@@ -215,8 +215,7 @@ class OilGasController extends Controller
             ->with('cdng')
             ->with('gu')
             ->with('zu')
-            ->with('well')
-            ->paginate(10);
+            ->with('well');
 
         $oilgas = $this
             ->getFilteredQuery($request->validated(), $query)
