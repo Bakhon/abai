@@ -408,9 +408,9 @@ class OilGasController extends Controller
                 'Экономия при внедрении рекомендации, тыс.тенге'
             ],
             [
-                $eco['uheDose'],
-                $eco['qv'],
-                $eco['recDose'],
+                round($eco['uheDose']/$eco['days'],1),
+                round($eco['qv']/$eco['days'],1),
+                round($eco['recDose']/$eco['days'],1),
                 $eco['result']
             ]
         ];
