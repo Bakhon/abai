@@ -210,6 +210,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/reports', 'ReportsController@index')->name('reports');
         Route::get('/reports/monitoring', 'ReportsController@monitoringReport')->name('reports.monitoring');
 
+        Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
+
     });
     Auth::routes([
         'reset' => false,
