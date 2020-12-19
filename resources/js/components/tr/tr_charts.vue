@@ -41,9 +41,10 @@
           >
             Выберите график
           </a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
               class="dropdown-item"
+              style="background: #656A8A !important;  color: #FFF"
               v-for="(item, index) in chartNames"
               :key="item"
               href="#"
@@ -67,8 +68,8 @@
           </button>
 
           <div
-            class="dropdown-menu fadropmenu"
-            style="background: #656A8A; height: 118px;"
+            class="dropdown-menu"
+            style="background: #656A8A !important;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -76,8 +77,8 @@
             <div>
               <select
                 style="
-                  background-color: #656A8A;
-                  border-color: #656A8A;
+                  background-color: #656A8A !important;
+                  border-color: #656A8A !important;
 
                   color: white;
                 "
@@ -103,8 +104,8 @@
             <div>
               <select
                 style="
-                  background-color: #656A8A;
-                  border-color: #656A8A;
+                  background-color: #656A8A !important;
+                  border-color: #656A8A !important;
 
                   color: white;
                 "
@@ -1384,8 +1385,11 @@ body {
   max-width: calc(100vw - 440px);
   margin: 0 auto;
 }
+.droptr.droptr {
+  background: #656A8A;
+}
 </style>
-<style >
+<style scoped>
 .tr-chart {
   display: flex;
   width: 100%;

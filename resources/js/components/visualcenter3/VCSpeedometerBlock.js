@@ -15,8 +15,5 @@ export default {
   },
   data: function () {
     return {}
-  },
-  mounted() {
-    console.log(this.mainValue)
   }
 }

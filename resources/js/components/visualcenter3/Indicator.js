@@ -35,12 +35,12 @@ export default {
   },
   methods: {
     onClick() {
-      let tableToChange = this.tableToChange
-      this.isActive = !this.isActive;
-      if (!this.isActive) {
-        tableToChange = "1";
-      }
-      this.$emit('changeTable', tableToChange);
+      // let tableToChange = this.tableToChange
+      // this.isActive = !this.isActive;
+      // if (!this.isActive) {
+      //   tableToChange = "1";
+      // }
+      // this.$emit('changeTable', tableToChange);
     }
   },
   computed: {

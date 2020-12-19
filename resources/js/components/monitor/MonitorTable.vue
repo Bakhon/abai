@@ -184,7 +184,7 @@
                             </tr>
                             <tr>
                                 <td>Фактическая общая скорость коррозии (тест купоны), V кор (факт)</td>
-                                <td v-if="lastCorrosion">{{ lastCorrosion.background_corrosion_velocity.toFixed(2) }}
+                                <td v-if="corrosionVelocityWithInhibitor">{{ corrosionVelocityWithInhibitor.toFixed(2) }}
                                     мм/год
                                 </td>
                             </tr>
@@ -360,7 +360,6 @@
                         <div class="block-gu">
                             <span>ГУ</span>
                             <select
-                                class="form-control form-control-sm"
                                 name="gu_id"
                                 v-model="gu"
                                 @change="chooseGu()"

@@ -60,7 +60,7 @@
 
           <div
             class="dropdown-menu fadropmenu "
-            style="background: #656A8A; height: 104px;"
+            style="background: #656A8A; height: 104px; width: 161px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -70,7 +70,6 @@
                 style="
                   background-color: #656A8A;
                   border-color: #656A8A;
-
                   color: white;
                 "
                 class="form-controll"
@@ -95,7 +94,7 @@
             <div>
               <select
                 style="
-                  background-color: #656A8A;
+                  background-color: #656A8A ;
                   border-color: #656A8A;
                   color: white;
                   width: 131px;
@@ -225,7 +224,7 @@
     <div>
       <!-- <input type="text" placeholder="Enter Name" v-model="searchText"> -->
     </div>
-    <div class="col-md-12 maintable">
+    <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
         <div class="fadee" v-if="isloading">
           <fade-loader :loading="isloading"></fade-loader>
@@ -247,7 +246,7 @@
               <option value="Аксай Южный">Аксай Южный</option>
           </select>
 
-          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2">
+          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2 butcancel">
             Отмена
           </div>
           <a
@@ -6446,7 +6445,7 @@ tr:nth-child(even) {
     padding: unset;
 }
 </style>
-<style>
+<style scoped>
 .tr-field-filter.tr-field-filter {
   margin: 0 0 0 auto;
   width: 230px;
@@ -6466,5 +6465,12 @@ tr:nth-child(even) {
 }
 .faheadhight {
   height: 40px;
+}
+.butcancel.butcancel {
+  flex-grow: 0 ;
+  width: 200px;
+}
+.tablecont {
+  margin-top: -38px;
 }
 </style>
