@@ -224,7 +224,7 @@
     <div>
       <!-- <input type="text" placeholder="Enter Name" v-model="searchText"> -->
     </div>
-    <div class="col-md-12 maintable">
+    <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
         <div class="fadee" v-if="isloading">
           <fade-loader :loading="isloading"></fade-loader>
@@ -6445,7 +6445,7 @@ tr:nth-child(even) {
     padding: unset;
 }
 </style>
-<style>
+<style scoped>
 .tr-field-filter.tr-field-filter {
   margin: 0 0 0 auto;
   width: 230px;
@@ -6469,5 +6469,8 @@ tr:nth-child(even) {
 .butcancel.butcancel {
   flex-grow: 0 ;
   width: 200px;
+}
+.tablecont {
+  margin-top: -38px;
 }
 </style>
