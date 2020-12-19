@@ -16,20 +16,11 @@
       </select>
     </div>
 
-    <div class="form-group2 filter-group">
-      <label for="start_date">Выберите начальную дату</label>
-      <input id="start_date"
-             class="form-control datepicker filter-input"
-             type="month"
-             :disabled="isLoading"
-             v-model="start_date">
-    </div>
-
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
       <input id="end_date"
              class="form-control datepicker filter-input"
-             type="month"
+             type="date"
              :disabled="isLoading"
              v-model="end_date">
     </div>
@@ -39,7 +30,7 @@
       </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !start_date || !end_date || isLoading"
+      <button :disabled="!org || !end_date || isLoading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -64,7 +55,6 @@ export default {
 
     return {
       org: '',
-      start_date: null,
       end_date: null,
       isLoading: false,
       resultLink: null
@@ -83,12 +73,11 @@ export default {
       // link.remove();
     },
     updateData() {
-      let uri = "http://172.20.103.157:8082/monthly/production/";
-        // let uri = "http://0.0.0.0:8090/monthly/production/";
+      let uri = "http://172.20.103.157:8082/daily/production/";
+        // let uri = "http://0.0.0.0:8090/daily/production/";
       let data = {
         dzo: this.org,
-        // TODO: 'input type="month"' в Chrome возвращает год-месяц, а в Firefox: день.месяц.год
-        report_date_start: `${this.start_date}`,
+        report_date_start: `${this.end_date}`.substr(0, 8).concat('01'),
         report_date_end: `${this.end_date}`
       };
 
@@ -122,6 +111,9 @@ export default {
     },
     onChangeYear(event) {
       this.year = event.target.value;
+    },
+    onChangeDay(event) {
+      this.day = event.target.value;
     },
   },
 }

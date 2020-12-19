@@ -174,6 +174,7 @@
         </div>
 
         <new-report-table v-if="selectedReport.tag === 'month-mining'"/>
+        <daily-mining-report v-if="selectedReport.tag === 'daily-mining'"/>
       </div>
     </div>
   </div>
