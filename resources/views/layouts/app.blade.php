@@ -47,6 +47,12 @@
         @include('layouts.visual-center4-sidebar')
         @elseif (basename(Request::url()) === "visualcenter4")
         @include('layouts.visual-center4-sidebar')
+        @elseif (basename(Request::url()) === "visualcenter5")
+        @include('layouts.visual-center4-sidebar')
+        @elseif (basename(Request::url()) === "visualcenter6")
+        @include('layouts.visual-center4-sidebar')
+        @elseif (basename(Request::url()) === "visualcenter7")
+        @include('layouts.visual-center4-sidebar')        
         @elseif (basename(Request::url()) === "tr" || basename(Request::url()) === "fa" || basename(Request::url()) === "trfa" || basename(Request::url()) === "tr_charts")
         @include('layouts.tr-sidebar')
         @else
