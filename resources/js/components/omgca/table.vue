@@ -159,8 +159,8 @@
                 </tr>
                 </tbody>
             </table>
-            <pagination :limit="3" v-if="omgca" :data="omgca" @pagination-change-page="changePage"></pagination>
         </div>
+        <pagination :limit="3" v-if="omgca" :data="omgca" @pagination-change-page="changePage"></pagination>
     </div>
 </template>
 
