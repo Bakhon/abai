@@ -88,8 +88,8 @@ export default {
       let data = {
         dzo: this.org,
         // TODO: 'input type="month"' в Chrome возвращает год-месяц, а в Firefox: день.месяц.год
-        report_date_start: `${this.start_date}`,
-        report_date_end: `${this.end_date}`
+        report_date_start: `${this.start_date}`.concat('-01 00:00:00'),
+        report_date_end: `${this.end_date}`.concat('-01 00:00:00')
       };
 
       let json_data = JSON.stringify(data);

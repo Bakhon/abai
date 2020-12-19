@@ -77,8 +77,8 @@ export default {
         // let uri = "http://0.0.0.0:8090/daily/production/";
       let data = {
         dzo: this.org,
-        report_date_start: `${this.end_date}`.substr(0, 8).concat('01'),
-        report_date_end: `${this.end_date}`
+        report_date_start: `${this.end_date}`.substr(0, 8).concat('01 00:00:00'),
+        report_date_end: `${this.end_date}`.concat(' 00:00:00')
       };
 
       let json_data = JSON.stringify(data);
