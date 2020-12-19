@@ -1383,7 +1383,7 @@ body {
   background: #656A8A;
 }
 </style>
-<style >
+<style scoped>
 .tr-chart {
   display: flex;
   width: 100%;
