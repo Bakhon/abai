@@ -360,7 +360,6 @@
                         <div class="block-gu">
                             <span>ГУ</span>
                             <select
-                                class="form-control form-control-sm"
                                 name="gu_id"
                                 v-model="gu"
                                 @change="chooseGu()"
