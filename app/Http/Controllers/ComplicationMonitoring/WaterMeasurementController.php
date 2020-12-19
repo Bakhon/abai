@@ -349,23 +349,14 @@ class WaterMeasurementController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringWaterMeasurement::query()
-            ->with('other_objects')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well')
-            ->with('waterTypeBySulin')
-            ->with('sulphateReducingBacteria')
-            ->with('hydrocarbonOxidizingBacteria')
-            ->with('thionicBacteria');
+        $job = new \App\Jobs\ExportWaterMeasurementToExcel($request->validated());
+        $this->dispatch($job);
 
-        $watermeasurement = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new WaterMeasurementExport($watermeasurement), 'watermeasurement.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
@@ -758,7 +749,11 @@ class WaterMeasurementController extends Controller
 
         $corrosion = ComplicationMonitoringCorrosion::query()
             ->where('gu_id', '=', $request->gu_id)
-            ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '>=', \Carbon\Carbon::now()->subMonths(3)->startOfMonth())
+            ->where(
+                'final_date_of_corrosion_velocity_with_inhibitor_measure',
+                '>=',
+                \Carbon\Carbon::now()->subMonths(3)->startOfMonth()
+            )
             ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '<=', \Carbon\Carbon::now())
             ->get()
             ->groupBy(
@@ -779,7 +774,7 @@ class WaterMeasurementController extends Controller
             'value' => []
         ];
 
-        foreach($wm as $key => $wmMonth) {
+        foreach ($wm as $key => $wmMonth) {
             $chartDtCarbonDioxide['dt'][] = $key;
             $chartDtCarbonDioxide['value'][] = $wmMonth->avg('carbon_dioxide');
 

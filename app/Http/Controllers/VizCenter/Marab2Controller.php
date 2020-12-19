@@ -193,12 +193,11 @@ class Marab2Controller extends Controller
             $TypeSumArray = [];
             foreach($InputArray as $item){
                 $month = date("m",strtotime($item[1]));
-                if (array_key_exists($month,$TypeSumArray)){
-                    $TypeSumArray[$month] = array($TypeSumArray[$month], $item[2]);
-                }
-                else{
-                    $TypeSumArray[$month] = $item[2];  
-                }
+                $TypeSumArray[$month][] = $item[2];
+                // {"10":[[[[[[[[[[[[6172,7250],3000],10281],3791],-6853],-2390],500],12562],400],-51],-68],-49]}
+                // else{
+                //     $TypeSumArray[$month] = $item[2];  
+                // }
             }
             return $TypeSumArray;
         }
@@ -1588,32 +1587,32 @@ class Marab2Controller extends Controller
         
 
         #Results
-        $result['Marabayev1(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarabayev1Calculations; #/kpicalc
+        $result['Marabayev1'] = $newmarabayev1Calculations; #/kpicalc
         $result['Marabayev2(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newfactoranalysisCalculations; #/kpicalc
         $result['Marabayev3(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarab3Calculations; #/kpicalc
         $result['Marabayev4(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarab4Calculations; #/kpicalc
         $result['Marabayev5(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarab5Calculations; #/kpicalc
         
-        $result['Marabayev1(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Marabayev1Formula; #/kpicalc
-        $result['Marabayev2(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Marabayev2Formula; #/kpicalc
-        $result['Marabayev3(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Marabayev3Formula; #/kpicalc
-        $result['Marabayev4(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Marabayev4Formula; #/kpicalc
-        $result['Marabayev5(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Marabayev5Formula; #/kpicalc
-        $result['Marabayev6(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Marabayev6Formula; #/kpicalc
+        $result['Marabayev1'] = $Marabayev1Formula; #/kpicalc
+        $result['Marabayev2'] = $Marabayev2Formula; #/kpicalc
+        $result['Marabayev3'] = $Marabayev3Formula; #/kpicalc
+        $result['Marabayev4'] = $Marabayev4Formula; #/kpicalc
+        $result['Marabayev5'] = $Marabayev5Formula; #/kpicalc
+        $result['Marabayev6'] = $Marabayev6Formula; #/kpicalc
 
-        $result['Abdulgafarov1(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Abd1Formula; #/kpicalc
-        $result['Abdulgafarov2(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Abd2Formula; #/kpicalc
-        $result['Abdulgafarov3(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Abd3Formula; #/kpicalc
-        $result['Abdulgafarov4(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Abd4Formula; #/kpicalc
-        $result['Abdulgafarov5(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Abd5Formula; #/kpicalc
-        $result['Abdulgafarov6(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $Abd6Formula; #/kpicalc
+        $result['Abdulgafarov1'] = $Abd1Formula; #/kpicalc
+        $result['Abdulgafarov2'] = $Abd2Formula; #/kpicalc
+        $result['Abdulgafarov3'] = $Abd3Formula; #/kpicalc
+        $result['Abdulgafarov4'] = $Abd4Formula; #/kpicalc
+        $result['Abdulgafarov5'] = $Abd5Formula; #/kpicalc
+        $result['Abdulgafarov6'] = $Abd6Formula; #/kpicalc
 
-        $result['CorpAll1(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll1Formula; #/kpicalc
-        $result['CorpAll2(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll2Formula; #/kpicalc
-        $result['CorpAll3(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll3Formula; #/kpicalc
-        $result['CorpAll4month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll4Formula; #/kpicalc
-        $result['CorpAll5(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll5Formula; #/kpicalc
-        $result['CorpAll6(month_number; porog; tsel; vyzov; fact; formula1; formula2)'] = $CorpAll6Formula; #/kpicalc
+        $result['CorpAll1'] = $CorpAll1Formula; #/kpicalc
+        $result['CorpAll2'] = $CorpAll2Formula; #/kpicalc
+        $result['CorpAll3'] = $CorpAll3Formula; #/kpicalc
+        $result['CorpAll4'] = $CorpAll4Formula; #/kpicalc
+        $result['CorpAll5'] = $CorpAll5Formula; #/kpicalc
+        $result['CorpAll6'] = $CorpAll6Formula; #/kpicalc
 
         #Марабаев 1 - /marab1
         #Марабаев 2 - /marab2

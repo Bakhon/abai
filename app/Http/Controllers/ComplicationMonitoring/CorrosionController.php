@@ -122,6 +122,26 @@ class CorrosionController extends Controller
                     'title' => 'Скорость коррозии',
                     'type' => 'numeric',
                 ],
+                'sample_number' => [
+                    'title' => 'Номер образца-свидетеля',
+                    'type' => 'numeric',
+                ],
+                'weight_before' => [
+                    'title' => 'Масса до установки, гр',
+                    'type' => 'numeric',
+                ],
+                'days' => [
+                    'title' => 'Количество дней экспозиции',
+                    'type' => 'numeric',
+                ],
+                'weight_after' => [
+                    'title' => 'Масса после извлечения, гр',
+                    'type' => 'numeric',
+                ],
+                'avg_speed' => [
+                    'title' => 'Средняя скорость коррозии, мм/г',
+                    'type' => 'numeric',
+                ]
             ]
         ];
 
@@ -144,16 +164,16 @@ class CorrosionController extends Controller
         return response()->json(json_decode(\App\Http\Resources\CorrosionListResource::collection($corrosion)->toJson()));
     }
 
-    public function export()
+    public function export(IndexTableRequest $request)
     {
-        $corrosion = Corrosion::orderByDesc('final_date_of_background_corrosion')
-            ->with('other_objects')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->get();
+        $job = new \App\Jobs\ExportCorrosionToExcel($request->validated());
+        $this->dispatch($job);
 
-        return Excel::download(new \App\Exports\CorrosionExport($corrosion), 'corrosion.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**

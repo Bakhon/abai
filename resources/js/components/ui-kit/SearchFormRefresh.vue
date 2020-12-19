@@ -24,7 +24,7 @@
         type="text"
         @input="onInput($event)"
         class="form-control fix-rounded-right"
-        :placeholder="placeholder || 'Поиск'"
+        :placeholder="placeholder || 'Поиск скважины'"
         v-model="searchStringModel"
       />
     </div>

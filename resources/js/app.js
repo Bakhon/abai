@@ -23,6 +23,8 @@ import VueApexCharts from "vue-apexcharts";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store';
+import PerfectScrollbar from "vue2-perfect-scrollbar";
+import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 // import  jquery from 'jquery';
 
 
@@ -35,8 +37,7 @@ window.Vue = require('vue');
 window.Jquery = require('jquery');
 Vue.prototype.$moment = moment
 
-Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib, ElementUI);
-
+Vue.use(VueAxios, axios, VueTableDynamic, PivotViewPlugin, VueFriendlyIframe, Plotly, excel, VueMomentLib, ElementUI, PerfectScrollbar);
 
 /**
  * The following block of code may be used to automatically register your
@@ -64,9 +65,10 @@ Vue.component('visual-center-chart-donut-right1', require('./components/visualce
 Vue.component('visual-center-chart-donut-right2', require('./components/visualcenter/VisualCenterChartDonutRight2.vue').default);
 Vue.component('visual-center-table', require('./components/visualcenter/VisualCenterTable.vue').default);
 Vue.component('visual-center-table3', require('./components/visualcenter3/VisualCenterTable3.vue').default);
-Vue.component('visual-center3-wells', require('./components/visualcenter3/Vc3Wells.vue').default);
 Vue.component('visual-center-table4', require('./components/visualcenter3/VisualCenterTable4.vue').default);
 Vue.component('visual-center-table5', require('./components/visualcenter3/VisualCenterTable5.vue').default);
+Vue.component('visual-center-table6', require('./components/visualcenter3/VisualCenterTable6.vue').default);
+Vue.component('visual-center-table7', require('./components/visualcenter3/VisualCenterTable7.vue').default);
 Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
 Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
@@ -110,10 +112,16 @@ Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
-Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
+
+Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
+Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
+Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
+
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
+Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
+Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
@@ -125,6 +133,7 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 // Vue.component('table-editor', require('./components/TableEditor.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('gu-map', require('./components/map.vue').default);
+Vue.component('report-export', require('./components/reports/export.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 

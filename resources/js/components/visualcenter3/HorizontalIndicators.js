@@ -1,5 +1,6 @@
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
+import {clone} from "ol/extent";
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -10,16 +11,34 @@ export default {
   },
   props: {
     tableToChange: {
-      default: '1'
-    }
+      default: '1',
+    },
+    dateStart: '',
+    dateEnd: '',
+    dzo: '',
   },
   data: function () {
     return {
       lastMonth:'',
       //kpi
       oil_fact: '',
-      proceeds: '', //выручка/доход
-      costs: '',
+      prev_oil_fact: '',
+      oil_plan: '',
+      dataPlan: '',
+      dataFact: '',
+      prevDataFact: '',
+      spendingPlan: '',
+      spendingFact: '',
+      prevSpendingFact: '',
+      netProfitPlan: '',
+      netProfitFact: '',
+      prevNetProfitFact: '',
+      capitalInvPlan: '',
+      capitalInvFact: '',
+      prevCapitalInvFact: '',
+      cashFlowPlan: '',
+      cashFlowFact: '',
+      prevCashFlowFact: '',
       net_profit: '', //чистая прибыль
       capital_investment: '', //капиталовложения
       cash_flow: '',
@@ -188,10 +207,10 @@ export default {
               ),
             ]);
           });
-          let plansAndFacts = this.getSumPlanAndFactDzo(plansAndFactsData);
-          this.oil_factDayPercent = plansAndFacts.oil_factSum;
-          this.gas_factDayPercent = plansAndFacts.gas_factSum;
-          this.oil_dlv_factDayPercent = plansAndFacts.oil_dlv_factSum;
+          // let plansAndFacts = this.getSumPlanAndFactDzo(plansAndFactsData);
+          // this.oil_factDayPercent = plansAndFacts.oil_factSum;
+          // this.gas_factDayPercent = plansAndFacts.gas_factSum;
+          // this.oil_dlv_factDayPercent = plansAndFacts.oil_dlv_factSum;
 
           plansAndFactsData = _.filter(data, function (item) {
             return _.every([
@@ -202,7 +221,7 @@ export default {
               ),
             ]);
           });
-          plansAndFacts = this.getSumPlanAndFactDzo(plansAndFactsData);
+          let plansAndFacts = this.getSumPlanAndFactDzo(plansAndFactsData);
           this.quantityGetProductionOilandGas = Object.keys(_.filter(plansAndFactsData, _.iteratee({dzo: plansAndFactsData[0].dzo}))).length;
           this.oil_factDay = plansAndFacts.oil_factSum;
           this.oil_planDay = plansAndFacts.oil_planSum;
@@ -221,8 +240,6 @@ export default {
         .groupBy("dzo")
         .map((dzo, id) => ({
           dzo: id,
-          oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-          oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
           oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
           oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
           gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
@@ -286,13 +303,111 @@ export default {
         gas_planSum: gas_planSum,
       };
     },
+    getIndicatorsData() {
+      let uri = "/ru/getdzocalcs";
+      let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart);
+      let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd);
+      let prevPeriodDateStart = new Date(
+        this.dateStart.getFullYear(),
+        this.dateStart.getMonth() - Math.abs(this.dateStart.getMonth() - this.dateEnd.getMonth()),
+        this.dateStart.getDate()
+      );
+      prevPeriodDateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(prevPeriodDateStart);
+      let queryParams = {params: {dateStart: dateStart, dateEnd: dateEnd, dzo: ''}};
+      if (this.dzo !== '' && this.dzo !== 'ALL') {
+        queryParams.params.dzo = this.dzo;
+      }
+      this.axios
+        .get(uri, queryParams)
+        .then(response => {
+            if (response.data) {
+              let oilPlan = 0.00, oilFact = 0.00;
+              let dataPlan = 0.00, dataFact = 0.00;
+              let spendingPlan = 0.00, spendingFact = 0.00;
+              let netProfitPlan = 0.00, netProfitFact = 0.00;
+              let capitalInvPlan = 0.00, capitalInvFact = 0.00;
+              let cashFlowPlan = 0.00, cashFlowFact = 0.00;
+              _.forEach(response.data['dzoDataActual'], (item) => {
+                oilPlan += item.oil_val_plan;
+                oilFact += item.oil_val_fact;
+
+                dataPlan += item.main_prc_val_plan;
+                dataFact += item.main_prc_val_fact;
+
+                spendingPlan += item.spending_val_plan;
+                spendingFact += item.spending_val_fact;
+
+                netProfitPlan += item.net_profit_val_plan;
+                netProfitFact += item.net_profit_val_fact;
+
+                capitalInvPlan += item.capital_inv_val_plan;
+                capitalInvFact += item.capital_inv_val_fact;
+
+                cashFlowPlan += item.cash_flow_val_plan;
+                cashFlowFact += item.cash_flow_val_fact;
+              });
+              this.oil_fact = oilFact.toFixed(0);
+              this.oil_plan = oilPlan.toFixed(0);
+
+              this.dataPlan = (dataPlan / 1000000000).toFixed(2);
+              this.dataFact = (dataFact / 1000000000).toFixed(2);
+
+              this.spendingPlan = (spendingPlan / 1000000000).toFixed(2);
+              this.spendingFact = (spendingFact / 1000000000).toFixed(2);
+
+              this.netProfitPlan = (netProfitPlan / 1000000).toFixed(2);
+              this.netProfitFact = (netProfitFact / 1000000).toFixed(2);
+
+              this.capitalInvPlan = (capitalInvPlan / 1000000).toFixed(2);
+              this.capitalInvFact = (capitalInvFact / 1000000).toFixed(2);
+
+              this.cashFlowPlan = (cashFlowPlan / 1000000).toFixed(2);
+              this.cashFlowFact = (cashFlowFact / 1000000).toFixed(2);
+            }
+        });
+      queryParams = {params: {'dateStart': prevPeriodDateStart, 'dateEnd': dateStart}};
+      this.axios
+        .get(uri, queryParams)
+        .then(response => {
+            if (response.data) {
+              let prevPeriodOilFact = 0.00;
+              let prevDataFact = 0.00;
+              let prevSpendingFact = 0.00;
+              let prevNetProfitFact = 0.00;
+              let prevCapitalInvFact = 0.00;
+              let prevCashFlowFact = 0.00;
+              _.forEach(response.data['dzoDataActual'], (item) => {
+                prevPeriodOilFact += item.oil_val_fact;
+                prevDataFact += item.main_prc_val_fact;
+                prevSpendingFact += item.spending_val_fact;
+                prevNetProfitFact += item.net_profit_val_fact;
+                prevCapitalInvFact += item.capital_inv_val_fact;
+                prevCashFlowFact += item.cash_flow_val_fact;
+              });
+              this.prev_oil_fact = prevPeriodOilFact.toFixed(0);
+              this.prevDataFact = (prevDataFact / 1000000000).toFixed(2);
+              this.prevSpendingFact = (prevSpendingFact / 1000000000).toFixed(2);
+              this.prevNetProfitFact = (prevNetProfitFact / 1000000).toFixed(2);
+              this.prevCapitalInvFact = (prevCapitalInvFact / 1000000).toFixed(2);
+              this.prevCashFlowFact = (prevCashFlowFact / 1000000).toFixed(2);
+            }
+        });
+    },
     getDefaultData() {
-      this.oil_fact = '430';
-      this.proceeds = '1913'; //выручка/доход
-      this.costs = '1788';
       this.net_profit = '114'; //чистая прибыль
       this.capital_investment = '198'; //капиталовложения
       this.cash_flow = '-10';
+    },
+  },
+  watch: {
+    dateStart: function () {
+      this.getIndicatorsData();
+    },
+    dateEnd: function () {
+      this.getIndicatorsData();
+    },
+    dzo: function () {
+      this.getIndicatorsData();
     },
   },
   async mounted() {

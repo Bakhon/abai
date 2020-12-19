@@ -216,8 +216,8 @@ body {
 
 .arrow3 {
     background: url(/img/visualcenter3/green-arrow.svg) no-repeat;
-    height: 25px;
-    width: 25px;
+    height: 15px;
+    width: 15px;
     background-size: contain;
     float: left;
     margin-top: 1px;
@@ -794,4 +794,25 @@ li.center-li {
 
 .economics-table-color {
     background: #323370;
+}
+
+.economics-table-border tr td {
+    border-right: 1px solid;
+    border-color: #3B4380 !important;
+}
+
+.economics-table-border tr td:last-of-type {
+    border-right: 1px solid !important;
+    border-color: #3B4380 !important;
+}
+
+.economics-table-border th {
+    border-right: 1px solid !important;
+    border-color: rgba(69, 77, 125, 0.5) !important;
+}
+
+.vc-button {
+    border: 1px solid #333975;
+    background: rgb(42, 46, 92);
+    line-height: normal;
 }

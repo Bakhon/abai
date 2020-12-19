@@ -218,6 +218,9 @@ export default {
 }
 </script>
 <style lang="scss">
+  h1{
+    color: #fff;
+  }
     .mgl-map-wrapper{
         .mapboxgl-canvas{
             cursor: pointer;

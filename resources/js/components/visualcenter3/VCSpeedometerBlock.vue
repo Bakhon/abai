@@ -3,7 +3,7 @@
         <div class="d-flex flex-row justify-sm-content-center text-sm-left text-center">
             <div class="mt-0 mt-sm-4 ml-1 ml-sm-3 w-50 mr-0 mr-sm-0">
                 <p class="txt7 display-4 display-sm-3 m-0">
-                    {{ new Intl.NumberFormat("ru-RU").format(mainValue) }}
+                    {{ new Intl.NumberFormat("ru-RU").format(mainValue[4]) }}
                 </p>
                 <div class="txt7 in-work">{{ units }}</div>
             </div>
@@ -11,7 +11,7 @@
                 <div class="speedometer-border h-100 mt-0 mt-sm-2"></div>
             </div>
             <div class="mt-0 mt-sm-4 ml-2 ml-sm-2 w-75 mt-2 mt-sm-0">
-                <visual-center-speedometer v-bind:sliderValue="speedometerValue"></visual-center-speedometer>
+                <visual-center-speedometer v-bind:sliderValue="mainValue"></visual-center-speedometer>
             </div>
         </div>
         <div class="d-none d-sm-flex flex-column flex-sm-row justify-content-center">

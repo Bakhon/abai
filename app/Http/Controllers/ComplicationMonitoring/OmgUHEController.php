@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgUHEUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,7 @@ class OmgUHEController extends Controller
             'title' => 'База данных ОМГ УХЭ',
             'table_header' => [
                 'Узел отбора' => 6,
-                'Фактические данные от УХЭ' => 5,
+                'Фактические данные от УХЭ' => 6,
             ],
             'fields' => [
                 'field' => [
@@ -143,6 +144,24 @@ class OmgUHEController extends Controller
                     'title' => 'Дата',
                     'type' => 'date',
                 ],
+                'inhibitor' => [
+                    'title' => 'Ингибитор',
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Inhibitor::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
                 'current_dosage' => [
                     'title' => 'Фактическая дозировка, г/м3',
                     'type' => 'numeric',
@@ -195,19 +214,14 @@ class OmgUHEController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringOmgUHE::query()
-            ->with('field')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well');
+        $job = new \App\Jobs\ExportOmgUHEToExcel($request->validated());
+        $this->dispatch($job);
 
-        $omguhe = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new OmgUHEExport($omguhe), 'omguhe.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
@@ -239,7 +253,8 @@ class OmgUHEController extends Controller
         $omgohe->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
         $omgohe->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
         $omgohe->well_id = ($request->well_id) ? $request->well_id : NULL;
-        $omgohe->date = date("Y-m-d H:i", strtotime($request->date));
+        $omgohe->inhibitor_id = $request->inhibitor_id ?: NULL;
+        $omgohe->date = Carbon::parse($request->date);
         $omgohe->current_dosage = ($request->current_dosage) ? $request->current_dosage : NULL;
         $omgohe->level = ($request->level) ? $request->level : NULL;
         $omgohe->fill = ($request->fill) ? $request->fill : NULL;

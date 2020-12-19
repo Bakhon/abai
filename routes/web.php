@@ -32,6 +32,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
         Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
+        Route::get('/getdzocalcsactualmonth', 'EconomicController@getDZOCalcsActualMonth')->name('getdzocalcsactualmonth');
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
         Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
@@ -42,6 +43,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/visualcenter3GetData', 'DruidController@visualcenter3GetData');
         Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
         Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
+        Route::get('/visualcenter6', 'DruidController@visualcenter6')->name('visualcenter6');
+        Route::get('/visualcenter7', 'DruidController@visualcenter7')->name('visualcenter7');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
@@ -98,6 +101,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getguproblems', 'ComplicationMonitoring\OmgNGDUController@getProblemGuToday');
 
         Route::get('/getmaterials', 'RefsController@getMaterials');
+        Route::get('/getinhibitors', 'RefsController@getInhibitors');
 
 
         Route::post('/updatewm', 'ComplicationMonitoring\WaterMeasurementController@update')->name('updatewm');
@@ -129,6 +133,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('pipes/export', 'PipeController@export')->name('pipes.export');
         Route::get('pipes/history/{pipes}', 'PipeController@history')->name('pipes.history');
         Route::resource('pipes','PipeController');
+
+        Route::get('inhibitors/list', 'InhibitorsController@list')->name('inhibitors.list');
+        Route::resource('inhibitors','InhibitorsController');
 
         Route::post('vcoreconomic','ComplicationMonitoring\OilGasController@economic');
         Route::post('vcoreconomiccurrent','ComplicationMonitoring\OilGasController@economicCurrentYear');
@@ -199,6 +206,11 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
         Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
         Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
+
+        Route::get('/reports', 'ReportsController@index')->name('reports');
+        Route::get('/reports/monitoring', 'ReportsController@monitoringReport')->name('reports.monitoring');
+
+        Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
     });
     Auth::routes([

@@ -105,14 +105,14 @@ class PipeController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = Pipe::query()
-            ->with('gu');
+        $job = new \App\Jobs\ExportPipesToExcel($request->validated());
+        $this->dispatch($job);
 
-        $pipes = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new \App\Exports\PipeExport($pipes), 'pipes.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**

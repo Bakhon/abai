@@ -63,6 +63,26 @@
                         <td>Скорость коррозии</td>
                         <td>{{ $corrosion->corrosion_velocity_with_inhibitor }}</td>
                     </tr>
+                    <tr>
+                        <td>Номер образца-свидетеля</td>
+                        <td>{{ $corrosion->sample_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>Масса до установки, гр</td>
+                        <td>{{ $corrosion->weight_before }}</td>
+                    </tr>
+                    <tr>
+                        <td>Количество дней экспозиции</td>
+                        <td>{{ $corrosion->days }}</td>
+                    </tr>
+                    <tr>
+                        <td>Масса после извлечения, гр</td>
+                        <td>{{ $corrosion->weight_after }}</td>
+                    </tr>
+                    <tr>
+                        <td>Средняя скорость коррозии, мм/г</td>
+                        <td>{{ $corrosion->avg_speed }}</td>
+                    </tr>
                 </table>
                 <a class="btn btn-primary" href="{{ route('corrosioncrud.index') }}">{{__('app.back')}}</a>
             </div>

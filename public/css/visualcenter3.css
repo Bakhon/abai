@@ -13,15 +13,12 @@ ol, ul, dl {
     padding-right: 0px!important;
 }
 
-
-
 .left-side {
     float: left;
     overflow: hidden;
     margin-top: -13px;
     flex: 0 0 81%;
     max-width: 81%;
- 
 }
 
 .right-side2 {
@@ -495,11 +492,6 @@ td.size-td {
     float: left;
 }
 
-.form-vc-3{
-    float: left;
-       width: 50%!important;  
-}
-
 .background-center {
     background-color: #272953!important;
     /* height: 63%; */
@@ -708,7 +700,7 @@ li.center-li {
     position: absolute;
     width: 1px;
     height: 15vh;
-    margin-top:1vh;
+    margin-top: 1vh;
 }
 
 .percent-currency {
@@ -720,12 +712,3 @@ canvas#line-chart {
     margin-top: 10px;
     margin-left: 15px;
 }
-
-.wells-td {
-    line-height: 61px!important;
-}
-
-.bold{
-    font-family: Bold;
-}
-

@@ -49,6 +49,12 @@ class OmgUHEFilter extends BaseFilter
                 ->leftJoin('wells', 'wells.id', '=', 'omg_u_h_e_s.well_id')
                 ->orderBy('wells.name', $desc === true ? 'desc' : 'asc');
                 break;
+            case 'inhibitor':
+                $this->query
+                ->select('omg_u_h_e_s.*')
+                ->leftJoin('inhibitors', 'inhibitors.id', '=', 'omg_u_h_e_s.inhibitor_id')
+                ->orderBy('inhibitors.name', $desc === true ? 'desc' : 'asc');
+                break;
             default:
                 $this->query->orderBy($field, $desc === true ? 'desc' : 'asc');
         }
