@@ -3,103 +3,130 @@
         <span class="navbar-toggler-icon"></span>
     </button>-->
     <a href="{{url('/')}}">
-        <div class="logo"> </div>
+        <div class="logo"></div>
         <a href="#top" data-toggle="sidebar-colapse">
             <i class="fas fa-bars fa-lg"></i>
         </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <?php
-    $user = Auth::user()->username;
-    if (strpos($user, 'Almukhan_test') === false || strpos($user, 'vcuser') === false || strpos($user, 'gnouser') === false || strpos($user, 'truser') === false) { ?>
+            <?php
+            $user = Auth::user()->username;
+            if (strpos($user, 'Almukhan_test') === false || strpos($user, 'vcuser') === false || strpos(
+                $user,
+                'gnouser'
+            ) === false || strpos($user, 'truser') === false) { ?>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <img src="{{ asset('img/level1/icon_geology.svg') }}" width="15" height="15" class="workTypeLogo">
                     <a href=""><span class="workTypeText">Геология</span></a>
                 </li>
                 <li class="nav-item active dropdown">
-                    <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15" class="workTypeLogo">
+                    <img src="{{ asset('img/level1/icon_razrabotka.svg') }}" width="15" height="15"
+                         class="workTypeLogo">
                     <a href=""><span class="workTypeText">Разработка</span></a>
                 </li>
-            <li class="nav-item active dropdown">
-                <img src="{{ asset('img/level1/icon_buren.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href=""><span class="workTypeText">Бурение</span></a>
-            </li>
-            <li class="nav-item active dropdown">
-                <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href=""><span class="workTypeText">Добыча</span></a>
-                <ul class="dropdown-child">
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/podborgno">
-                            <span class="workTypeText">Подбор ГНО</span>
-                        </a>
-                    </li>
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/tr">
-                            <span class="workTypeText">Тех режим</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="nav-item active  dropdown">
-                <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href="{{url('/')}}/ru/facilities"><span class="workTypeText">Обустройство</span></a>
-                <ul class="dropdown-child">
-                    <li class="nav-item child">
-                        <a href="{{url('/')}}/ru/monitor">
-                            <span class="workTypeText">Мониторинг коррозии ГУ - Кормасс</span>
-                        </a>
-                        <ul>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/omgca">
-                                    <span class="workTypeText">ОМГ ДДНГ</span>
-                                </a>
-                            </li>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/omguhe">
-                                    <span class="workTypeText">ОМГ УХЭ</span>
-                                </a>
-                            </li>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/omgngdu">
-                                    <span class="workTypeText">ОМГ НГДУ</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                <li class="nav-item active dropdown">
+                    <img src="{{ asset('img/level1/icon_buren.svg') }}" width="15" height="15" class="workTypeLogo">
+                    <a href=""><span class="workTypeText">Бурение</span></a>
+                </li>
+                <li class="nav-item active dropdown">
+                    <img src="{{ asset('img/level1/icon_dobycha.svg') }}" width="15" height="15" class="workTypeLogo">
+                    <a href=""><span class="workTypeText">Добыча</span></a>
+                    <ul class="dropdown-child">
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/podborgno">
+                                <span class="workTypeText">Подбор ГНО</span>
+                            </a>
+                        </li>
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/tr">
+                                <span class="workTypeText">Тех режим</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item active  dropdown">
+                    <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15"
+                         class="workTypeLogo">
+                    <a href="{{url('/')}}/ru/facilities"><span class="workTypeText">Обустройство</span></a>
+                    <ul class="dropdown-child">
+                        <li class="nav-item child">
+                            <a href="{{url('/')}}/ru/monitor">
+                                <span class="workTypeText">Мониторинг коррозии ГУ - Кормасс</span>
+                            </a>
+                            <ul>
+                                <li class="nav-item child">
+                                    <a href="{{url('/')}}/ru/omgca">
+                                        <span class="workTypeText">ОМГ ДДНГ</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item child">
+                                    <a href="{{url('/')}}/ru/omguhe">
+                                        <span class="workTypeText">ОМГ УХЭ</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item child">
+                                    <a href="{{url('/')}}/ru/omgngdu">
+                                        <span class="workTypeText">ОМГ НГДУ</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
-                    <li class="nav-item child">
-                        <a>
-                            <span class="workTypeText">КазНИПИ ЦНЛИ</span>
-                        </a>
-                        <ul>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/watermeasurement">
-                                    <span class="workTypeText">База данных по промысловой жидкости и газу</span>
-                                </a>
-                            </li>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/oilgas">
-                                    <span class="workTypeText">База данных по нефти и газу</span>
-                                </a>
-                            </li>
-                            <li class="nav-item child">
-                                <a href="{{url('/')}}/ru/corrosioncrud">
-                                    <span class="workTypeText">База данных по скорости коррозии</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-            </li>
-            </ul>
-            </li>
-            <li class="nav-item active dropdown">
-                <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
-                <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
-            </li>
+                        <li class="nav-item child">
+                            <a>
+                                <span class="workTypeText">КазНИПИ ЦНЛИ</span>
+                            </a>
+                            <ul>
+                                <li class="nav-item child">
+                                    <a href="{{url('/')}}/ru/watermeasurement">
+                                        <span class="workTypeText">База данных по промысловой жидкости и газу</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item child">
+                                    <a href="{{url('/')}}/ru/oilgas">
+                                        <span class="workTypeText">База данных по нефти и газу</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item child">
+                                    <a href="{{url('/')}}/ru/corrosioncrud">
+                                        <span class="workTypeText">База данных по скорости коррозии</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item child">
+                            <a>
+                                <span class="workTypeText">Справочники</span>
+                            </a>
+                            <ul>
+                                <li class="nav-item child">
+                                    <a href="{{url('/ru/pipes')}}">
+                                        <span class="workTypeText">Трубопроводы</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item child">
+                                    <a href="{{url('/ru/inhibitors')}}">
+                                        <span class="workTypeText">Ингибиторы</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item child">
+                            <a href="{{url('/ru/gu-map')}}">
+                                <span class="workTypeText">Техкарта</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item active dropdown">
+                    <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+                    <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+                </li>
 
-            <li class="nav-item active">
-                <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button" class="btn btn-primary-bigdata"></button>
-            </li>
+                <li class="nav-item active">
+                    <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button"
+                            class="btn btn-primary-bigdata"></button>
+                </li>
             </ul><?php  } ?>
             <div class="form-inline my-2 my-lg-0">
                 <li class="nav-item2">
@@ -107,7 +134,8 @@
                 </li>
                 {{--@if (Auth::guest())--}}
                 <li class="nav-item2 active dropdown2">
-                    <a href="{{ route('login') }}"><img src="{{ asset('img/level1/icon_user.svg') }}" width="30" height="30" alt=""></a>
+                    <a href="{{ route('login') }}"><img src="{{ asset('img/level1/icon_user.svg') }}" width="30"
+                                                        height="30" alt=""></a>
                     <ul class="dropdown-child2">
                         <li class="nav-item child2">
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: one;">
@@ -137,7 +165,7 @@
     // $('#body-row .collapse').collapse('hide');
 
     // Collapse click
-    $('[data-toggle=sidebar-colapse]').click(function() {
+    $('[data-toggle=sidebar-colapse]').click(function () {
         SidebarCollapse();
     });
 
@@ -245,11 +273,11 @@
         /* font-family: "Font Awesome 5 Free"; */
         /* font-weight: 600; */
         background-image: url('img/level1/icon_search.svg');
-    background-repeat: no-repeat;
-    background-size: 25px 25px;
-    background-position: 22px 10px;
-    padding-left: 72px;
-    color:white;
+        background-repeat: no-repeat;
+        background-size: 25px 25px;
+        background-position: 22px 10px;
+        padding-left: 72px;
+        color: white;
     }
 
     .companyLogo {
