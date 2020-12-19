@@ -30,9 +30,9 @@
             <div v-if="(prevPeriodValue - progressValue ) / progressValue * 100 > 0" class="arrow2"></div>
             <div v-if="(prevPeriodValue - progressValue ) / progressValue * 100 < 0" class="arrow3"></div>
             <div>
-                    <span class="txt2-2">
-                        {{ Math.abs(Math.round((prevPeriodValue - progressValue ) / progressValue * 100))}}%
-                    </span>
+                <span class="txt2-2">
+                    {{ Math.abs(Math.round((prevPeriodValue - progressValue ) / progressValue * 100))}}%
+                </span>
                 <span class="txt3 ml-1"> {{ lastPeriod }}</span>
             </div>
         </div>

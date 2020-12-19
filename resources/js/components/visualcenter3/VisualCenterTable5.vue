@@ -4,6 +4,7 @@
             <horizontal-indicators
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
+                v-bind:dzo="dzoSelect"
             ></horizontal-indicators>
             <div class="d-flex flex-column first-string flex-sm-row mr-sm-2">
                 <div class="w-25 m-3">
