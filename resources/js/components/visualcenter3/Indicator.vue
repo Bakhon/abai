@@ -27,11 +27,11 @@
             </div>
         </div>
         <div class="w-100 text-nowrap mt-2 d-flex d-flex-row align-items-center" v-if="prevPeriodValue && progressValue">
-            <div v-if="(prevPeriodValue - progressValue ) / prevPeriodValue * 100 > 0" class="arrow2"></div>
-            <div v-if="(prevPeriodValue - progressValue ) / prevPeriodValue * 100 < 0" class="arrow3"></div>
+            <div v-if="(prevPeriodValue - progressValue ) / progressValue * 100 > 0" class="arrow2"></div>
+            <div v-if="(prevPeriodValue - progressValue ) / progressValue * 100 < 0" class="arrow3"></div>
             <div>
                     <span class="txt2-2">
-                        {{ Math.round(((prevPeriodValue - progressValue ) / prevPeriodValue * 100) * 100) / 100 }}%
+                        {{ Math.abs(Math.round((prevPeriodValue - progressValue ) / progressValue * 100))}}%
                     </span>
                 <span class="txt3 ml-1"> {{ lastPeriod }}</span>
             </div>
