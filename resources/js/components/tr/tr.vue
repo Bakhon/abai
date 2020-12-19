@@ -6444,10 +6444,18 @@ tr:nth-child(even) {
     font-size: 9px;
     padding: unset;
 }
+.butcancel.butcancel {
+  flex-grow: 0 ;
+  width: 200px;
+}
+.tablecont {
+  margin-top: -38px;
+}
 </style>
-<style scoped>
+<style>
 .tr-field-filter.tr-field-filter {
   margin: 0 0 0 auto;
+  flex-grow: 0 ;
   width: 230px;
 }
 .tr-table-header {
@@ -6466,11 +6474,5 @@ tr:nth-child(even) {
 .faheadhight {
   height: 40px;
 }
-.butcancel.butcancel {
-  flex-grow: 0 ;
-  width: 200px;
-}
-.tablecont {
-  margin-top: -38px;
-}
+
 </style>

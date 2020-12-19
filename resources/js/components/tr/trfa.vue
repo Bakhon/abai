@@ -52,7 +52,7 @@
           >
             Выберите график
           </a>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink" style="   width: 576px;">
             <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
               >Распределение фонда скважин по основной причине снижения дебита нефти</a
             >
@@ -712,9 +712,10 @@ body {
   height: 35px !important;
   color: white !important;
 }
-.fadropmenu {
+.fadropmenu.fadropmenu {
   background: #656a8a;
   color: #ffffff;
   width: 246px;
 }
+
 </style>
