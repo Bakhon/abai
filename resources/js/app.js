@@ -66,6 +66,8 @@ Vue.component('visual-center-table', require('./components/visualcenter/VisualCe
 Vue.component('visual-center-table3', require('./components/visualcenter3/VisualCenterTable3.vue').default);
 Vue.component('visual-center-table4', require('./components/visualcenter3/VisualCenterTable4.vue').default);
 Vue.component('visual-center-table5', require('./components/visualcenter3/VisualCenterTable5.vue').default);
+Vue.component('visual-center-table6', require('./components/visualcenter3/VisualCenterTable6.vue').default);
+Vue.component('visual-center-table7', require('./components/visualcenter3/VisualCenterTable7.vue').default);
 Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
 Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
@@ -126,6 +128,7 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 // Vue.component('table-editor', require('./components/TableEditor.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('gu-map', require('./components/map.vue').default);
+Vue.component('report-export', require('./components/reports/export.vue').default);
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 

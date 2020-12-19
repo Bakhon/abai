@@ -32,6 +32,7 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
         Route::get('/economic', 'EconomicController@index')->name('economic');
         Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
+        Route::get('/getdzocalcsactualmonth', 'EconomicController@getDZOCalcsActualMonth')->name('getdzocalcsactualmonth');
         Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
         Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
         Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name('geteconomicpivotdata');
@@ -42,6 +43,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/visualcenter3GetData', 'DruidController@visualcenter3GetData');
         Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
         Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
+        Route::get('/visualcenter6', 'DruidController@visualcenter6')->name('visualcenter6');
+        Route::get('/visualcenter7', 'DruidController@visualcenter7')->name('visualcenter7');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
         Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
@@ -203,6 +206,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
         Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
         Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
+
+        Route::get('/reports', 'ReportsController@index')->name('reports');
+        Route::get('/reports/monitoring', 'ReportsController@monitoringReport')->name('reports.monitoring');
 
     });
     Auth::routes([

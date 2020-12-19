@@ -318,6 +318,10 @@ export default {
 };
 </script>
 <style lang="scss">
+#app > .container-fluid{
+    max-width: calc(100% - 100px);
+}
+
 .table-page {
     background: #272953;
     padding: 16px 24px 20px 19px;
