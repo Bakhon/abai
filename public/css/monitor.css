@@ -7,42 +7,67 @@ body {
   max-width: 100%;
   padding-top: 24px;
 }
-
-.monitor {
+#app .monitor {
   margin-right: 18px !important;
   overflow: hidden;
 }
-.monitor__charts {
+#app .monitor__charts {
   padding: 0 0 0 19px !important;
 }
-.monitor__charts-item {
+#app .monitor__charts-item {
   background: #20274f;
   margin-bottom: 15px;
   padding: 14px 12px 0;
 }
-.monitor__charts-item-title {
+@media (max-width: 1366px) {
+  #app .monitor__charts-item {
+    width: 24%;
+  }
+}
+#app .monitor__charts-item-title {
   font-size: 16px;
   margin-bottom: 0;
 }
-.monitor__schema {
+@media (max-width: 1366px) {
+  #app .monitor__charts {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+#app .monitor__schema {
   padding: 0 17px !important;
 }
-.monitor__right {
+@media (max-width: 1366px) {
+  #app .monitor__schema {
+    flex: 0 0 80%;
+    max-width: 80%;
+  }
+}
+#app .monitor__right {
   padding: 0 !important;
 }
-.monitor__right-block {
+@media (max-width: 1366px) {
+  #app .monitor__right {
+    flex: 0 0 20%;
+    max-width: 20%;
+  }
+}
+#app .monitor__right-block {
   background: #20274f;
   margin-bottom: 20px;
   padding: 14px 12px 10px;
 }
-.monitor__right-block-title {
+#app .monitor__right-block-title {
   font-size: 16px;
   text-align: center;
 }
-.monitor__right-block_radial .radial {
+#app .monitor__right-block_radial .radial {
   position: relative;
 }
-.monitor__right-block_radial .legend {
+#app .monitor__right-block_radial .legend {
   bottom: -20px;
   font-size: 12px;
   left: 0;
@@ -50,54 +75,54 @@ body {
   right: 0;
   text-align: center;
 }
-.monitor__right-block_radial .signalizator {
+#app .monitor__right-block_radial .signalizator {
   background: rgba(69, 77, 125, 0.329412);
   height: 333px;
 }
-.monitor__right-block_radial .signalizator-gus {
+#app .monitor__right-block_radial .signalizator-gus {
   padding: 10px 10px 5px;
 }
-.monitor__right-block_radial .signalizator-gus p {
+#app .monitor__right-block_radial .signalizator-gus p {
   margin: 0 0 5px;
 }
-.monitor__right-block_radial .signalizator-gus .badge {
+#app .monitor__right-block_radial .signalizator-gus .badge {
   margin: 0 5px 5px 0;
 }
-.monitor__right-block_calendar {
+#app .monitor__right-block_calendar {
   padding-left: 4px;
   padding-right: 4px;
 }
-.monitor__right-block_calendar .vc-container {
+#app .monitor__right-block_calendar .vc-container {
   background: none;
   border: none;
 }
-.monitor__right-block_calendar .vc-header {
+#app .monitor__right-block_calendar .vc-header {
   padding-top: 3px !important;
   padding-bottom: 14px !important;
 }
-.monitor__right-block_calendar .vc-title {
+#app .monitor__right-block_calendar .vc-title {
   color: #fff !important;
   font-size: 15px !important;
   font-weight: normal !important;
   text-transform: capitalize !important;
 }
-.monitor__right-block_calendar .vc-weekday {
+#app .monitor__right-block_calendar .vc-weekday {
   background: rgba(51, 57, 117, 0.501961);
   margin-bottom: 15px;
   padding: 8px 0;
 }
-.monitor__right-block_calendar .vc-arrows-container {
+#app .monitor__right-block_calendar .vc-arrows-container {
   padding: 0 30px !important;
 }
-.monitor__right-block_calendar .vc-day-content {
+#app .monitor__right-block_calendar .vc-day-content {
   color: #fff !important;
   font-size: 12px !important;
   opacity: 0.8;
 }
-.monitor__right-block_calendar .vc-day-content.vc-focusable {
+#app .monitor__right-block_calendar .vc-day-content.vc-focusable {
   opacity: 1;
 }
-.monitor__right .btn.btn-info {
+#app .monitor__right .btn.btn-info {
   align-items: center;
   background: #293688;
   border: none;
@@ -112,26 +137,26 @@ body {
   width: 100%;
 }
 @media (max-width: 1680px) {
-  .monitor__right .btn.btn-info {
+  #app .monitor__right .btn.btn-info {
     font-size: 0.8vw;
   }
 }
-.monitor__right .btn.btn-info:disabled {
+#app .monitor__right .btn.btn-info:disabled {
   background: #293688;
   color: #fff;
   opacity: 0.7;
 }
-.monitor .radial-chart {
+#app .monitor .radial-chart {
   --percent: 20;
 }
-.monitor .tables-string-gno {
+#app .monitor .tables-string-gno {
   background-color: #20274e;
   font-size: 12px;
   height: 204px;
   margin-bottom: 10px;
   text-align: left;
 }
-.monitor .tables-string-gno3 {
+#app .monitor .tables-string-gno3 {
   background-color: #20274e;
   font-size: 12px;
   margin-bottom: 15px;
@@ -139,7 +164,7 @@ body {
   position: relative;
   text-align: left;
 }
-.monitor .tables-string-gno4 {
+#app .monitor .tables-string-gno4 {
   background-color: #20274e;
   font-size: 12px;
   height: 360px;
@@ -148,7 +173,7 @@ body {
   position: relative;
   text-align: left;
 }
-.monitor .tables-string-gno5 {
+#app .monitor .tables-string-gno5 {
   background-color: #20274e;
   font-size: 12px;
   height: 477px;
@@ -156,50 +181,50 @@ body {
   position: relative;
   text-align: left;
 }
-.monitor .heading {
+#app .monitor .heading {
   float: left;
   font-size: 14px;
   margin-bottom: 10px;
 }
-.monitor .head-monitor {
+#app .monitor .head-monitor {
   font-size: 13px;
   height: 46px;
   margin-bottom: -15px;
   padding: 15px 0px 0px 18px;
 }
-.monitor .tables-one {
+#app .monitor .tables-one {
   margin-top: -12px;
 }
-.monitor .radialbar {
+#app .monitor .radialbar {
   overflow: hidden;
   position: absolute;
   width: 250px;
 }
-.monitor .center {
+#app .monitor .center {
   margin: 0px auto;
   position: relative;
   width: 1110px;
 }
-.monitor .schema {
+#app .monitor .schema {
   background-size: contain;
   color: #fff;
   position: relative;
 }
-.monitor .schema img {
+#app .monitor .schema img {
   width: 100%;
 }
-.monitor .schema ul {
+#app .monitor .schema ul {
   padding: 0;
 }
-.monitor .nav-string {
+#app .monitor .nav-string {
   display: inline-block;
   list-style-type: none;
   margin-left: 28px;
 }
-.monitor .nav-string:first-child {
+#app .monitor .nav-string:first-child {
   margin-left: 0;
 }
-.monitor .block-gu {
+#app .monitor .block-gu {
   align-items: center;
   display: flex;
   position: absolute;
@@ -207,23 +232,23 @@ body {
   top: -0.7%;
 }
 @media (max-width: 1790px) {
-  .monitor .block-gu {
+  #app .monitor .block-gu {
     left: 0;
     top: -5%;
   }
 }
 @media (max-width: 1490px) {
-  .monitor .block-gu {
+  #app .monitor .block-gu {
     top: -6.5%;
   }
 }
-.monitor .block-gu span {
+#app .monitor .block-gu span {
   font-size: 22px;
   font-weight: 700;
   line-height: 1;
   margin-right: 22px;
 }
-.monitor .block-gu select {
+#app .monitor .block-gu select {
   -webkit-appearance: none;
   -moz-appearance: none;
   background: #656A8A url("/img/monitor/select_arrow.svg") no-repeat calc(100% - 10px) 50%;
@@ -234,12 +259,12 @@ body {
   outline: none;
   width: 110px;
 }
-.monitor .block-gu select option {
+#app .monitor .block-gu select option {
   background: #fff;
   color: #000;
   padding: 2px 0;
 }
-.monitor .square2 {
+#app .monitor .square2 {
   background: #323370;
   border: 1px solid #2E50E9;
   border-radius: 1px;
@@ -249,88 +274,88 @@ body {
   position: relative;
   width: 53px;
 }
-.monitor ul.vertical .nav-string {
+#app .monitor ul.vertical .nav-string {
   display: block;
   margin: 8px 0 0;
   position: relative;
 }
-.monitor ul.vertical .nav-string span {
+#app .monitor ul.vertical .nav-string span {
   position: absolute;
   white-space: nowrap;
 }
-.monitor ul.vertical .nav-string span.before {
+#app .monitor ul.vertical .nav-string span.before {
   left: -5px;
   transform: translateX(-100%);
 }
-.monitor ul.vertical .nav-string span.after {
+#app .monitor ul.vertical .nav-string span.after {
   left: calc(100% + 5px);
 }
-.monitor ul.string1 {
+#app .monitor ul.string1 {
   position: absolute;
   right: 42.4%;
   top: 0;
 }
-.monitor ul.string2.col-12 {
+#app .monitor ul.string2.col-12 {
   left: 72px;
   position: relative;
   top: 34px;
 }
-.monitor ul.string3.col-12 {
+#app .monitor ul.string3.col-12 {
   left: 470px;
   position: relative;
   top: 65px;
 }
-.monitor ul.string4 {
+#app .monitor ul.string4 {
   position: absolute;
   right: 42%;
   top: 16.5%;
 }
-.monitor ul.string5 {
+#app .monitor ul.string5 {
   left: 20%;
   position: absolute;
   top: 10%;
 }
-.monitor ul.string6 {
+#app .monitor ul.string6 {
   bottom: 43%;
   left: 27.1%;
   position: absolute;
 }
-.monitor ul.string7 {
+#app .monitor ul.string7 {
   bottom: 43%;
   position: absolute;
   right: 44.5%;
 }
-.monitor ul.string8 {
+#app .monitor ul.string8 {
   left: 80%;
   position: absolute;
   top: 54.5%;
 }
-.monitor ul.string9 {
+#app .monitor ul.string9 {
   bottom: 32%;
   left: 38%;
   position: absolute;
 }
-.monitor li.nav-string.vkor-fact {
+#app .monitor li.nav-string.vkor-fact {
   left: 157px;
   position: relative;
 }
-.monitor li.nav-string.vkor-ab {
+#app .monitor li.nav-string.vkor-ab {
   left: 20px;
   position: relative;
   top: 20px;
 }
-.monitor .kormas {
+#app .monitor .kormas {
   position: absolute;
   top: 0;
   right: 20.5%;
 }
-.monitor .second {
+#app .monitor .second {
   margin-left: 340px;
 }
-.monitor .trio {
+#app .monitor .trio {
   float: left;
 }
-.monitor .month-day {
+#app .monitor .month-day {
   background: unset !important;
   color: #fff;
   height: 40px;
@@ -338,7 +363,7 @@ body {
   width: 293px;
   width: unset !important;
 }
-.monitor .calendar-tab {
+#app .monitor .calendar-tab {
   background-color: #0F254A;
   color: #fff;
   display: inline-block;
@@ -349,7 +374,7 @@ body {
   text-align: center;
   width: 74px;
 }
-.monitor .calendar-tab:focus {
+#app .monitor .calendar-tab:focus {
   background-color: #15509D;
   color: #fff;
   display: inline-block;
@@ -359,53 +384,53 @@ body {
   text-align: center;
   width: 74px;
 }
-.monitor .gu {
+#app .monitor .gu {
   float: left;
   font-size: 25px;
   left: -10px;
   position: relative;
   top: -8px;
 }
-.monitor .messages {
+#app .monitor .messages {
   background: #2D3170;
   height: 80px;
   margin-top: 10px;
   padding: 10px;
 }
-.monitor .rek {
+#app .monitor .rek {
   position: relative;
   text-align: center;
   top: 25px;
 }
-.monitor .rek2 {
+#app .monitor .rek2 {
   margin-top: 115px;
   position: relative;
   text-align: center;
   top: 25px;
 }
-.monitor .navigation-table {
+#app .monitor .navigation-table {
   float: unset !important;
   margin-left: 70px !important;
 }
-.monitor .calendar-days {
+#app .monitor .calendar-days {
   height: 30px;
   margin-left: 20px;
   width: 300px;
 }
-.monitor .calendar-day {
+#app .monitor .calendar-day {
   margin-left: 20px;
   width: 260px;
 }
-.monitor .day-begin {
+#app .monitor .day-begin {
   width: 14px;
 }
-.monitor .radialbar2 {
+#app .monitor .radialbar2 {
   margin-top: -75px;
 }
-.monitor #chart {
+#app .monitor #chart {
   height: 75px;
 }
-.monitor .week {
+#app .monitor .week {
   float: left;
   padding: 11px 11px 0px 10px !important;
 }
