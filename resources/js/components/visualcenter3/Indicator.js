@@ -12,9 +12,6 @@ export default {
     units: {
       default: 'тыс. тонн',
     },
-    progressPercents: {
-      default: 0,
-    },
     progressValue: {
       default: 0,
     },
@@ -22,7 +19,7 @@ export default {
       default: 0,
     },
     lastPeriod: {
-      default: "прошл. период",
+      default: "vs пред. период",
     },
     prevPeriodValue: {
       default: 0,
@@ -38,12 +35,17 @@ export default {
   },
   methods: {
     onClick() {
-      let tableToChange = this.tableToChange
-      this.isActive = !this.isActive;
-      if (!this.isActive) {
-        tableToChange = "1";
-      }
-      this.$emit('changeTable', tableToChange);
+      // let tableToChange = this.tableToChange
+      // this.isActive = !this.isActive;
+      // if (!this.isActive) {
+      //   tableToChange = "1";
+      // }
+      // this.$emit('changeTable', tableToChange);
+    }
+  },
+  computed: {
+    progressPercents: function() {
+      return Math.round(this.progressValue / this.progressMax * 100);
     }
   }
 }
