@@ -60,7 +60,7 @@
 
           <div
             class="dropdown-menu fadropmenu "
-            style="background: #656A8A; height: 104px;"
+            style="background: #656A8A; height: 104px; width: 161px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -70,7 +70,6 @@
                 style="
                   background-color: #656A8A;
                   border-color: #656A8A;
-
                   color: white;
                 "
                 class="form-controll"
@@ -95,7 +94,7 @@
             <div>
               <select
                 style="
-                  background-color: #656A8A;
+                  background-color: #656A8A ;
                   border-color: #656A8A;
                   color: white;
                   width: 131px;
@@ -247,7 +246,7 @@
               <option value="Аксай Южный">Аксай Южный</option>
           </select>
 
-          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2">
+          <div @click="cancelEdit" v-if="edit" class="col but-nav__link but mx-2 butcancel">
             Отмена
           </div>
           <a
@@ -6466,5 +6465,9 @@ tr:nth-child(even) {
 }
 .faheadhight {
   height: 40px;
+}
+.butcancel.butcancel {
+  flex-grow: 0 ;
+  width: 200px;
 }
 </style>
