@@ -11,6 +11,11 @@ class Corrosion extends Model
 
     protected $guarded = ['id'];
 
+    public function getBackgroundCorrosionVelocityAttribute($value)
+    {
+        return $value ? round($value, 2) : $value;
+    }
+
     public function other_objects()
     {
         return $this->hasOne('App\Models\Refs\OtherObjects','id','other_objects_id')->withDefault();

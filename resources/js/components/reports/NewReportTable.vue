@@ -34,6 +34,10 @@
              v-model="end_date">
     </div>
 
+      <div class="form-group3 result-link">
+          <a :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
+      </div>
+
     <div class="form-group4">
       <button :disabled="!org || !start_date || !end_date || isLoading"
               @click="updateData()"
@@ -68,25 +72,35 @@ export default {
   },
   methods: {
     createDownloadLink(response) {
-      let blob = new Blob([response.data], {type:'application/*'})
-      let link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = `${this.start_date}_${this.end_date}_exportTable.xls`
-      link.click();
-      link.remove();
+        this.resultLink = response.data.report_link
+
+      // let blob = new Blob([response.data], {type:'application/*'})
+      // let link = document.createElement('a')
+      // link.href = window.URL.createObjectURL(blob)
+      // link.download = `${this.start_date}_${this.end_date}_exportTable.xls`
+      // link.click();
+      // link.remove();
     },
     updateData() {
-      let uri = "/ru/protodata";
+      let uri = "http://172.20.103.157:8082/monthly/production/";
+        // let uri = "http://0.0.0.0:8090/monthly/production/";
       let data = {
-        org: this.org,
-        start_date: `${this.start_date}-01`,
-        end_date: `${this.end_date}-${this.$moment(this.end_date, "YYYY-MM").daysInMonth()}`
+        dzo: this.org,
+        report_date_start: `${this.start_date}`,
+        report_date_end: `${this.end_date}`
       };
+
+      let json_data = JSON.stringify(data);
 
       this.isLoading = true;
 
-      this.axios.post(uri, data, {
-        responseType:'arraybuffer'
+      this.axios.post(uri, json_data, {
+        // responseType:'arraybuffer',
+          responseType:'json',
+          headers: {
+            // Overwrite Axios's automatically set Content-Type
+            'Content-Type': 'application/json'
+          }
       })
         .then((response) => {
           if (response.data) {

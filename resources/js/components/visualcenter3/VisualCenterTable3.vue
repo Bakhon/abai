@@ -531,7 +531,7 @@
             </table>
           </div>
 
-          <div :style="`${displayTable}`">
+          <div class="big-area" :style="`${displayTable}`">
             <div
               class="container-fluid w-50 table-near-chart2 table-responsive"
             >
@@ -610,7 +610,7 @@
                         )}`"
                       ></div>
                       <div
-                        class="percent font"
+                        class="percent2 font"
                         v-if="item.productionFactForMonth"
                       >
                         {{
@@ -629,13 +629,11 @@
                         v-if="item.productionFactForMonth"
                         class="triangle2"
                         :style="`${getColor(
-                          (item.productionFactForMonth /
-                            productionFactPercentOneDzo -
-                            1) *
-                            100
-                        )}`"
+                          (item.productionFactForMonth -
+                                item.productionPlanForMonth)/item.productionPlanForMonth*100)}`"
                       ></div>
-                      <div class="percent font">
+                      <div class="percent2 font">
+                       <!--                                       
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
@@ -645,8 +643,11 @@
                                 100
                             ).toFixed(2)
                           )
-                        }}
-                        123
+                        }}-->                   
+                        {{   
+                          new Intl.NumberFormat("ru-RU").format(
+                            Math.abs (item.productionFactForMonth -
+                                item.productionPlanForMonth)/item.productionPlanForMonth*100)}}
                       </div>
                     </td>
                   </tr>
@@ -741,19 +742,18 @@
                         v-if="item.factMonth"
                         class="triangle"
                         :style="`${getColor(
-                          (item.factMonth / item.productionFactPercent - 1) *
-                            100
+                      (item.factMonth -item.planMonth)/item.planMonth *
+                                100
                         )}`"
                       ></div>
                       <div
                         class="percent font"
-                        v-if="item.productionFactPercent"
+                        v-if="item.factMonth"
                       >
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
-                              (item.productionFactPercent / item.factMonth -
-                                1) *
+                              (item.factMonth -item.planMonth)/item.planMonth *
                                 100
                             ).toFixed(2)
                           )
@@ -829,14 +829,16 @@
                         v-if="factMonthSumm"
                         class="triangle"
                         :style="`${getColor(
-                          (factMonthSumm / productionFactPercentSumm - 1) * 100
+                          (factMonthSumm -planMonthSumm)/planMonthSumm *
+                                100
+                            
                         )}`"
                       ></div>
                       <div class="percent font" v-if="factMonthSumm">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
-                              (productionFactPercentSumm / factMonthSumm - 1) *
+                              (factMonthSumm -planMonthSumm)/planMonthSumm *
                                 100
                             ).toFixed(2)
                           )
