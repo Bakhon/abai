@@ -34,7 +34,7 @@
             </form> -->
         <div class="col dropdown">
           <button
-            class="col-md-12 but-nav__link but trheadhight"
+            class="col-md-12 but-nav__link but faheadhight"
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
@@ -59,7 +59,8 @@
           </button>
 
           <div
-            class="dropdown-menu trdropdown"
+            class="dropdown-menu fadropmenu "
+            style="background: #656A8A; height: 104px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -67,11 +68,12 @@
             <div>
               <select
                 style="
-                  background-color: #20274e;
-                  border-color: #20274e;
+                  background-color: #656A8A;
+                  border-color: #656A8A;
+
                   color: white;
                 "
-                class="form-control"
+                class="form-controll"
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
@@ -93,11 +95,17 @@
             <div>
               <select
                 style="
-                  background-color: #20274e;
-                  border-color: #20274e;
+                  background-color: #656A8A;
+                  border-color: #656A8A;
                   color: white;
+                  width: 131px;
+
+                  
+                  border: 1px solid #656A8A; !important;
+                  height: 35px !important;
+                  color: white !important;
                 "
-                class="form-control"
+                class="form-controll"
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
@@ -114,7 +122,7 @@
             <a
               href="#"
               @click.prevent="chooseDt"
-              class="but-nav__link but trbutnav"
+              class="btn btn-primary"
               >Сформировать</a
             >
           </div>
@@ -6049,7 +6057,7 @@ export default {
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.axios
       .get(
-        "http://172.20.103.51:7576/api/techregime/" + yyyy + "/" + mm + "/"
+        "http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/"
       )
       .then((response) => {
         let data = response.data;
@@ -6108,7 +6116,7 @@ export default {
       row["index"] = 0;
       this.axios
         .post(
-          "http://172.20.103.51:7576/api/techregime/edit/" +
+          "http://172.20.103.187:7576/api/techregime/edit/" +
             this.year +
             "/" +
             this.month +
@@ -6139,7 +6147,7 @@ export default {
       const searchParam = this.searchString ? `${this.searchString}/` : ''
       this.axios
         .post(
-          "http://172.20.103.51:7576/api/techregime/save/" +
+          "http://172.20.103.187:7576/api/techregime/save/" +
             this.year +
             "/" +
             this.month +
@@ -6236,7 +6244,7 @@ export default {
       this.isloading = true;
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
             "/" +
             this.month +
@@ -6287,7 +6295,7 @@ export default {
       const searchParam = this.searchString ? `search/${this.searchString}/` : ''
       this.axios
         .get(
-          "http://172.20.103.51:7576/api/techregime/" +
+          "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
             "/" +
             this.month +
@@ -6451,5 +6459,12 @@ tr:nth-child(even) {
 .trheadhight  {
   height: 40px;
 }
-
+.fadropmenu .fadropmenu {
+  background: #656a8a;
+  /* color: #ffffff; */
+  width: 246px;
+}
+.faheadhight {
+  height: 40px;
+}
 </style>

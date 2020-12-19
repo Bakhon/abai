@@ -16,7 +16,7 @@
 </template>
 
 <script>
-const basePath = "http://172.20.103.51:7576/api/";
+const basePath = "http://172.20.103.187:7576/api/";
 export default {
   props: {},
   data() {
