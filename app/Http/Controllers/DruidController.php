@@ -81,7 +81,9 @@ return $response;
 
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
         $period = ($request->timestampEnd-$request->timestampToday)-86400000;        
-        return response()->json(DZOdaily::all('oil_plan','oil_fact','gas_plan','gas_fact','__time','dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle','inj_wells_work')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
+        return response()->json(DZOdaily::all('oil_plan','oil_fact','gas_plan','gas_fact','__time',
+        'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
+        'inj_wells_work','gk_plan','gk_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
         //return  response()->json($request);
     }

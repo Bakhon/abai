@@ -164,13 +164,17 @@ class CorrosionController extends Controller
         return response()->json(json_decode(\App\Http\Resources\CorrosionListResource::collection($corrosion)->toJson()));
     }
 
-    public function export()
+    public function export(IndexTableRequest $request)
     {
-        $corrosion = Corrosion::orderByDesc('final_date_of_background_corrosion')
+        $query = Corrosion::query()
             ->with('other_objects')
             ->with('ngdu')
             ->with('cdng')
             ->with('gu')
+            ->get();
+
+        $corrosion = $this
+            ->getFilteredQuery($request->validated(), $query)
             ->get();
 
         return Excel::download(new \App\Exports\CorrosionExport($corrosion), 'corrosion.xls');
