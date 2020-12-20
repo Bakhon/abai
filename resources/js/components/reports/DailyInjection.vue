@@ -26,7 +26,7 @@
     </div>
 
       <div class="form-group3 result-link">
-          <a v-if="resultLink !== null" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
+          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report text-center">Скачать отчёт</a>
       </div>
 
     <div class="form-group4">
@@ -73,8 +73,8 @@ export default {
       // link.remove();
     },
     updateData() {
-      let uri = "http://172.20.103.157:8082/daily/production/";
-        // let uri = "http://0.0.0.0:8090/daily/production/";
+      let uri = "http://172.20.103.157:8082/daily/injection/";
+        // let uri = "http://0.0.0.0:8090/daily/injection/";
       let data = {
         dzo: this.org,
         report_date_start: `${this.end_date}`.substr(0, 8).concat('01 00:00:00'),
@@ -169,5 +169,11 @@ export default {
 
 .margin-top {
   padding: 15px;
+}
+.download_report {
+  color: white;
+  font-size: 28px;
+  text-decoration: underline;
+  font-weight: bold;
 }
 </style>

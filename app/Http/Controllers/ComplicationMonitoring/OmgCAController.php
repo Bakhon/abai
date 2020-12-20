@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Exports\OmgCAExport;
 use App\Filters\OmgCAFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgCACreateRequest;
 use App\Http\Requests\OmgCAUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgCA;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
 class OmgCAController extends Controller
 {
+    use WithFieldsValidation;
+
     /**
      * Display a listing of the resource.
      *
@@ -104,7 +104,8 @@ class OmgCAController extends Controller
      */
     public function create()
     {
-        return view('omgca.create');
+        $validationParams = $this->getValidationParams('omgca');
+        return view('omgca.create', compact('validationParams'));
     }
 
     /**
@@ -115,8 +116,9 @@ class OmgCAController extends Controller
      */
     public function store(OmgCACreateRequest $request)
     {
-        if($request->get('all_gus')) {
+        $this->validateFields($request, 'omgca');
 
+        if ($request->get('all_gus')) {
             $fields = $request->validated();
             unset($fields['all_gus']);
             unset($fields['gu_id']);
@@ -132,12 +134,10 @@ class OmgCAController extends Controller
                 ->whereNotIn('id', $existedGus)
                 ->get();
 
-            foreach($gus as $gu) {
+            foreach ($gus as $gu) {
                 $gu->omgca()->create($fields);
             }
-
-        }
-        else {
+        } else {
             $omgca = new OmgCA;
             $omgca->fill($request->validated());
             $omgca->cruser_id = auth()->id();
@@ -186,7 +186,9 @@ class OmgCAController extends Controller
      */
     public function edit(OmgCA $omgca)
     {
-        return view('omgca.edit', compact('omgca'));
+        $validationParams = $this->getValidationParams('omgca');
+
+        return view('omgca.edit', compact('omgca', 'validationParams'));
     }
 
     /**
@@ -198,6 +200,8 @@ class OmgCAController extends Controller
      */
     public function update(OmgCAUpdateRequest $request, OmgCA $omgca)
     {
+        $this->validateFields($request, 'omgca');
+
         $omgca->update($request->validated());
         return redirect()->route('omgca.index')->with('success', __('app.updated'));
     }

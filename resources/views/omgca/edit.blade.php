@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <omgca-form :omgca='@json($omgca)'></omgca-form>
+                        <omgca-form :omgca='@json($omgca)' :validation-params='@json($validationParams)'></omgca-form>
                     </div>
                 </form>
             </div>

@@ -441,7 +441,7 @@ export default {
         /*tooltip: {
         enabled: false},*/
         legend: {
-          position: "top",
+          position: "bottom",
           labels: {
             useSeriesColors: true,
           },
