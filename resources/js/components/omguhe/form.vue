@@ -109,6 +109,8 @@
                     v-model="formFields.level"
                     type="number"
                     step="0.0001"
+                    :min="validationParams.level.min"
+                    :max="validationParams.level.max"
                     name="level"
                     class="form-control"
                     placeholder=""
@@ -163,6 +165,8 @@
                 <input
                 type="number"
                 step="0.0001"
+                :min="validationParams.fill.min"
+                :max="validationParams.fill.max"
                 name="fill"
                 v-model="formFields.fill"
                 class="form-control"
@@ -194,7 +198,8 @@ Vue.use(Datetime);
 export default {
     name: "omguhe-form",
     props: [
-        'omguhe'
+        'omguhe',
+        'validationParams'
     ],
     components: {
         Datetime

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class OmgUHEUpdateRequest extends FormRequest
+class OmgUHECreateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -16,7 +16,7 @@ class OmgUHEUpdateRequest extends FormRequest
         return [
             'field_id' => 'nullable|numeric',
             'gu_id' => 'nullable|numeric',
-            'date' => 'date',
+            'date' => 'required|date',
             'out_of_service_оf_dosing' => 'nullable|numeric',
             'reason' => 'nullable|string',
             'ngdu_id' => 'nullable|numeric',

@@ -11,6 +11,7 @@
     copy_repository
     run_composer
     run_scripts
+    restart_supervisor
     build_static
     update_symlinks
     update_permissions
@@ -35,6 +36,14 @@
     echo "Run migrations"
     cd {{ $new_release_dir }}
     php artisan migrate --force --no-interaction
+
+    php artisan storage:link
+    php artisan cache:clear
+@endtask
+
+@task('restart_supervisor')
+    echo "Restart supervisor"
+    sudo supervisorctl restart all
 @endtask
 
 @task('build_static')

@@ -319,7 +319,7 @@ export default {
           offsetX: -2,
         },
         legend: {
-          position: "top",
+          position: "bottom",
           labels: {
             useSeriesColors: true,
           },
@@ -1408,6 +1408,12 @@ body {
   background: #656a8a;
   /* color: #ffffff; */
   width: 246px;
+}
+.form-control {
+  background: #272953 !important;
+  border: 1px solid #656a8a !important;
+  height: 35px !important;
+  color: white !important;
 }
 </style>
 
