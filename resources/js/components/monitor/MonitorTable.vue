@@ -29,6 +29,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h3 class="economicHeader">Экономический эффект {{ currentYear }}</h3>
+                        <h4 class="economicHeader" v-if="economicCurrentDays">Количесво дней: {{ economicCurrentDays }}</h4>
                     </div>
                 </div>
                 <div class="row">
@@ -40,10 +41,6 @@
                                 <td>{{ row[1] }}</td>
                                 <td>{{ row[2] }}</td>
                                 <td>{{ row[3] }}</td>
-                                <td>{{ row[4] }}</td>
-                                <td>{{ row[5] }}</td>
-                                <td>{{ row[6] }}</td>
-                                <td>{{ row[7] }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -187,7 +184,7 @@
                             </tr>
                             <tr>
                                 <td>Фактическая общая скорость коррозии (тест купоны), V кор (факт)</td>
-                                <td v-if="lastCorrosion">{{ lastCorrosion.background_corrosion_velocity.toFixed(2) }}
+                                <td v-if="corrosionVelocityWithInhibitor">{{ corrosionVelocityWithInhibitor.toFixed(2) }}
                                     мм/год
                                 </td>
                             </tr>
@@ -363,10 +360,9 @@
                         <div class="block-gu">
                             <span>ГУ</span>
                             <select
-                                class="form-control form-control-sm"
                                 name="gu_id"
                                 v-model="gu"
-                                @change="chooseGu($event)"
+                                @change="chooseGu()"
                             >
                                 <option v-for="row in gus" v-bind:value="row.id">
                                     {{ row.name }}
@@ -503,29 +499,36 @@
             </div>
             <div class="col-2 monitor__right">
                 <div class="monitor__right-block monitor__right-block_radial">
-                    <p class="monitor__right-block-title">Рекомендации дозирования ИК</p>
+                    <p class="monitor__right-block-title">Рекомендованная дозировка ИК</p>
                     <div class="radial">
                         <monitor-chart-radialbar></monitor-chart-radialbar>
                     </div>
                     <div class="signalizator">
+                        <div class="signalizator-gus" v-if="problemGus.length > 0">
+                            <p>Список проблемных ГУ:</p>
+                            <a
+                                href="#"
+                                v-for="gu in problemGus"
+                                @click.prevent="chooseProblemGu(gu.id)"
+                                class="badge"
+                                :class="{
+                                        'badge-success': gu.diff <= 5,
+                                        'badge-warning': gu.diff > 5 && gu.diff <= 10,
+                                        'badge-danger': gu.diff > 10
+                                    }"
+                            >
+                                    {{gu.name}}
+                                </a>
+                        </div>
                         <div v-if="signalizatorAbs > 0 && signalizatorAbs != null" class="text-wrap">
                             <div
-                                v-if="signalizatorAbs <= 5"
-                                class="alert alert-success"
-                                role="alert"
-                            >
-                                Фактическая превышает плановую дозировку на {{ signalizatorAbs }}%
-                            </div>
-                            <div
-                                v-if="signalizatorAbs > 5 && signalizatorAbs <= 10"
-                                class="alert alert-warning"
-                                role="alert"
-                            >
-                                Фактическая превышает плановую дозировку на {{ signalizatorAbs }}%
-                            </div>
-                            <div
-                                v-if="signalizatorAbs > 10"
-                                class="alert alert-danger"
+                                v-if=""
+                                class="alert"
+                                :class="{
+                                    'alert-success': signalizatorAbs <= 5,
+                                    'alert-warning': signalizatorAbs > 5 && signalizatorAbs <= 10,
+                                    'alert-danger': signalizatorAbs > 10
+                                }"
                                 role="alert"
                             >
                                 Фактическая превышает плановую дозировку на {{ signalizatorAbs }}%
@@ -533,7 +536,7 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicCurrentYear.length < 2">
+                <button type="button" class="btn btn-info" @click="pushBtn" :disabled="economicCurrentYear.length < 1">
                     Экономический эффект
                 </button
                 >
@@ -558,10 +561,11 @@
 </template>
 
 <script>
-import Calendar from "v-calendar/lib/components/calendar.umd";
-import DatePicker from "v-calendar/lib/components/date-picker.umd";
-import VModal from "vue-js-modal";
-import VueTableDynamic from 'vue-table-dynamic';
+import Calendar from "v-calendar/lib/components/calendar.umd"
+import DatePicker from "v-calendar/lib/components/date-picker.umd"
+import VModal from "vue-js-modal"
+import VueTableDynamic from 'vue-table-dynamic'
+import moment from 'moment'
 
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
@@ -570,6 +574,7 @@ export default {
     components: {
         Calendar,
         DatePicker,
+        VueTableDynamic
     },
     data: function () {
         return {
@@ -620,7 +625,9 @@ export default {
             chart1Data: null,
             chart2Data: null,
             chart3Data: null,
-            chart4Data: null
+            chart4Data: null,
+            problemGus: [],
+            economicCurrentDays: null
         };
     },
     beforeCreate: function () {
@@ -632,13 +639,28 @@ export default {
                 console.log("No data");
             }
         });
+        this.axios.get("/ru/getguproblems").then((response) => {
+            let data = response.data;
+            if (data) {
+                this.problemGus = data.problemGus;
+            } else {
+                console.log("No data");
+            }
+        });
     },
     methods: {
-        chooseGu(event) {
+        chooseProblemGu(gu_id) {
+            this.gu = gu_id
+            this.chooseGu()
+            this.dayClicked({
+                id: moment().format('YYYY-MM-DD')
+            })
+        },
+        chooseGu() {
             this.dose = 0;
             this.axios
                 .post("/ru/getgudata", {
-                    gu_id: event.target.value,
+                    gu_id: this.gu
                 })
                 .then((response) => {
                     let data = response.data;
@@ -771,7 +793,7 @@ export default {
         getEconomicData(gu) {
             this.axios
                 .post("/ru/vcoreconomic", {
-                    gu: gu,
+                    gu: this.gu,
                 })
                 .then((response) => {
                     let data = response.data;
@@ -784,20 +806,20 @@ export default {
 
             this.axios
                 .post("/ru/vcoreconomiccurrent", {
-                    gu: gu,
+                    gu: this.gu,
                 })
                 .then((response) => {
                     let data = response.data;
                     if (data) {
                         console.log(data);
-                        this.economicCurrentYear = data;
+                        this.economicCurrentYear = data.tableData;
+                        this.economicCurrentDays = data.daysEcoCurrent;
                     } else {
                         console.log("No data");
                     }
                 });
         }
-    },
-    components: {VueTableDynamic}
+    }
 };
 </script>
 <style scoped>

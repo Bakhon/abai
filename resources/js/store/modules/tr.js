@@ -4,6 +4,7 @@ const tr = {
   state: {
     month: false,
     year: false,
+    chart: 0,
   },
 
   mutations: {
@@ -13,6 +14,9 @@ const tr = {
     SET_YEAR: (state, val) => {
       state.year = val;
     },
+    SET_CHART: (state, val) => {
+      state.chart = val;
+    },
   },
 
   actions: {
@@ -21,6 +25,7 @@ const tr = {
   getters: {
     month: (state) => state.month,
     year: (state) => state.year,
+    chart: (state) => state.chart,
   },
 };
 

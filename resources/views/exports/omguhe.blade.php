@@ -12,6 +12,7 @@
             <th style="border: 1px solid black; height: 20px">ЗУ</th>
             <th style="border: 1px solid black; height: 20px">Скважина</th>
             <th style="border: 1px solid black; height: 20px">Дата</th>
+            <th style="border: 1px solid black; height: 20px">Ингибитор</th>
             <th style="border: 1px solid black; height: 20px">Фактическая дозировка, г/м3</th>
             <th style="border: 1px solid black; height: 20px">Суточный расход ингибитора, кг/сут</th>
             <th style="border: 1px solid black; height: 20px">Простой дозатора, сутки</th>
@@ -27,7 +28,8 @@
                 <td style="border: 1px solid black; height: 15px">{{ $item->gu->name }}</td>
                 <td style="border: 1px solid black; height: 15px">{{ $item->zu->name }}</td>
                 <td style="border: 1px solid black; height: 15px">{{ $item->well->name }}</td>
-                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->date }}</td>
+                <td style="border: 1px solid black; height: 15px; width: 18px">{{ $item->date }}</td>
+                <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->inhibitor->name }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->current_dosage }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">{{ $item->daily_inhibitor_flowrate }}</td>
                 <td style="border: 1px solid black; height: 15px; width: 15px">

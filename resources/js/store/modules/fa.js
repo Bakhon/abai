@@ -6,6 +6,7 @@ const fa = {
     year: false,
     prmonth: false,
     pryear: false,
+    chart: 0,
   },
 
   mutations: {
@@ -21,6 +22,9 @@ const fa = {
     SET_PR_YEAR: (state, val) => {
       state.pryear = val;
     },
+    SET_CHART: (state, val) => {
+      state.chart = val;
+    },
   },
 
   actions: {
@@ -31,6 +35,7 @@ const fa = {
     year: (state) => state.year,
     prmonth: (state) => state.prmonth,
     pryear: (state) => state.pryear,
+    chart: (state) => state.chart,
   },
 };
 

@@ -12,7 +12,7 @@ class CorpKpiIdController extends Controller
     {
         $corpkpiid = CorpKpiId::latest()->paginate(5);
 
-        return view('corpkpiid.index',compact('corpkpiid'))
+        return view('viscenterKPI.corpkpiid.index',compact('corpkpiid'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -23,7 +23,7 @@ class CorpKpiIdController extends Controller
      */
     public function create()
     {
-        return view('corpkpiid.create');
+        return view('viscenterKPI.corpkpiid.create');
     }
 
     /**
@@ -63,7 +63,7 @@ class CorpKpiIdController extends Controller
     public function edit($id)
     {
         $corpkpiid = CorpKpiId::find($id);
-        return view('corpkpiid.edit',compact('corpkpiid'));
+        return view('viscenterKPI.corpkpiid.edit',compact('corpkpiid'));
     }
 
     /**

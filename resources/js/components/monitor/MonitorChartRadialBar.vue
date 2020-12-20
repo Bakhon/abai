@@ -6,7 +6,7 @@
             :options="chartOptions"
             :series="series"
         ></apexchart>
-        <div class="legend">с <input class="square2" v-model="series[0]"> мг.м3</div>
+        <div class="legend"><input class="square2" v-model="series[0]">г/м3</div>
     </div>
 </template>
 <script>

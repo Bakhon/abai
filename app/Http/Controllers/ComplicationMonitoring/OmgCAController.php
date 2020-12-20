@@ -6,6 +6,7 @@ use App\Exports\OmgCAExport;
 use App\Filters\OmgCAFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Requests\OmgCACreateRequest;
 use App\Http\Requests\OmgCAUpdateRequest;
 use App\Models\ComplicationMonitoring\OmgCA;
 use Illuminate\Http\Request;
@@ -79,21 +80,21 @@ class OmgCAController extends Controller
 
         $omgca = $this
             ->getFilteredQuery($request->validated(), $query)
-            ->paginate(10);
+            ->paginate(25);
 
         return response()->json(json_decode(\App\Http\Resources\OmgCAListResource::collection($omgca)->toJson()));
     }
 
     public function export(IndexTableRequest $request)
     {
-        $query = OmgCA::query()
-            ->with('gu');
+        $job = new \App\Jobs\ExportOmgCAToExcel($request->validated());
+        $this->dispatch($job);
 
-        $omgca = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new OmgCAExport($omgca), 'omgca.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
@@ -112,27 +113,36 @@ class OmgCAController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(OmgCACreateRequest $request)
     {
-        // return $request;
-        $request->validate(
-            [
-                'year' => 'required',
-            ]
-        );
+        if($request->get('all_gus')) {
 
-        $omgca = new OmgCA;
-        $omgca->field = ($request->field) ? $request->field : null;
-        $omgca->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : null;
-        $omgca->cdng_id = ($request->cdng_id) ? $request->cdng_id : null;
-        $omgca->gu_id = ($request->gu_id) ? $request->gu_id : null;
-        $omgca->zu_id = ($request->zu_id) ? $request->zu_id : null;
-        $omgca->well_id = ($request->well_id) ? $request->well_id : null;
-        $omgca->date = $request->year . "-01-01";
-        $omgca->plan_dosage = ($request->plan_dosage) ? $request->plan_dosage : null;
-        $omgca->q_v = ($request->q_v) ? $request->q_v : null;
-        $omgca->cruser_id = Auth::user()->id;
-        $omgca->save();
+            $fields = $request->validated();
+            unset($fields['all_gus']);
+            unset($fields['gu_id']);
+            $fields['cruser_id'] = auth()->id();
+
+            $existedGus = OmgCA::query()
+                ->where('date', $request->date)
+                ->get()
+                ->pluck('gu_id')
+                ->toArray();
+
+            $gus = \App\Models\Refs\Gu::query()
+                ->whereNotIn('id', $existedGus)
+                ->get();
+
+            foreach($gus as $gu) {
+                $gu->omgca()->create($fields);
+            }
+
+        }
+        else {
+            $omgca = new OmgCA;
+            $omgca->fill($request->validated());
+            $omgca->cruser_id = auth()->id();
+            $omgca->save();
+        }
 
         return redirect()->route('omgca.index')->with('success', __('app.created'));
     }

@@ -19,6 +19,8 @@ class EditHistoryObserver
         'hydrocarbon_oxidizing_bacteria_id' => \App\Models\Refs\HydrocarbonOxidizingBacteria::class,
         'thionic_bacteria_id' => \App\Models\Refs\ThionicBacteria::class,
         'other_objects_id' => \App\Models\Refs\OtherObjects::class,
+        'material_id' => \App\Models\ComplicationMonitoring\Material::class,
+        'inhibitor_id' => \App\Models\Inhibitor::class,
     ];
 
     protected function save(Model $model, array $payload)

@@ -1,26 +1,20 @@
 <?php
-    $user = Auth::user()->username;
-    if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru/bigdata') { 
-        header('HTTP/1.1 200 OK');
-        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/bigdata');
-        
-    }
-    elseif(strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visualcenter3') { 
-        header('HTTP/1.1 200 OK');
-        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/visualcenter3');
-        
-    }
-    elseif(strpos($user, 'gnouser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/podborgno') { 
-        header('HTTP/1.1 200 OK');
-        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/podborgno');
-        
-    }
-    elseif(strpos($user, 'truser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/tr') { 
-        header('HTTP/1.1 200 OK');
-        header('Refresh: 0; url=http://'.$_SERVER['HTTP_HOST'].'/ru/tr');
-        
-    }
-        ?>
+
+$user = Auth::user()->username;
+if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru/bigdata') {
+    header('HTTP/1.1 200 OK');
+    header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/bigdata');
+} elseif (strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visualcenter3') {
+    header('HTTP/1.1 200 OK');
+    header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/visualcenter3');
+} elseif (strpos($user, 'gnouser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/podborgno') {
+    header('HTTP/1.1 200 OK');
+    header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/podborgno');
+} elseif (strpos($user, 'truser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/tr') {
+    header('HTTP/1.1 200 OK');
+    header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/tr');
+}
+?>
 </html>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -36,50 +30,58 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/css.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/loader.css')}}" rel="stylesheet">
 
     <script src="{{ asset('js/jquery.js') }}"></script>
 </head>
 
 <body>
-    @include('layouts.navbar')
-    <div class="no-row row" id="app">
+@include('layouts.navbar')
+<div class="no-row row" id="app">
     @if (basename(Request::url()) === "visualcenter3")
         @include('layouts.visual-center4-sidebar')
-        @elseif (basename(Request::url()) === "visualcenter4")
+    @elseif (basename(Request::url()) === "visualcenter4")
         @include('layouts.visual-center4-sidebar')
-        @else
+        @elseif (basename(Request::url()) === "visualcenter5")
+        @include('layouts.visual-center4-sidebar')
+        @elseif (basename(Request::url()) === "visualcenter6")
+        @include('layouts.visual-center4-sidebar')
+        @elseif (basename(Request::url()) === "visualcenter7")
+        @include('layouts.visual-center4-sidebar')        
+    @elseif (basename(Request::url()) === "tr" || basename(Request::url()) === "fa" || basename(Request::url()) === "trfa" || basename(Request::url()) === "tr_charts")
+        @include('layouts.tr-sidebar')
+    @elseif (basename(Request::url()) === "monitor")
+        @include('layouts.monitor-sidebar')
+    @else
         @include('layouts.head-sidebar')
-        @endif
+    @endif
 
-       {{-- @if (basename(Request::url()) === "ru")
-        @include('layouts.sidebar')
-        @elseif (basename(Request::url()) === "visualcenter")
-        @include('layouts.visual-center-sidebar')
-        @elseif (basename(Request::url()) === "podborgno")
-        @include('layouts.gno-sidebar')
-        @elseif (basename(Request::url()) === "monitor")
-        @include('layouts.gno-sidebar')
-        @elseif (basename(Request::url()) === "visualcenter3")
-        @include('layouts.visual-center4-sidebar')
-        @elseif (basename(Request::url()) === "visualcenter4")
-        @include('layouts.visual-center4-sidebar')
-        @elseif (basename(Request::url()) === "tr")
-        @include('layouts.gno-sidebar')
-        @elseif (basename(Request::url()) === "fa")
-        @include('layouts.gno-sidebar')
-        @endif--}}
+    {{-- @if (basename(Request::url()) === "ru")
+     @include('layouts.sidebar')
+     @elseif (basename(Request::url()) === "visualcenter")
+     @include('layouts.visual-center-sidebar')
+     @elseif (basename(Request::url()) === "podborgno")
+     @include('layouts.gno-sidebar')
+     @elseif (basename(Request::url()) === "monitor")
+     @include('layouts.gno-sidebar')
+     @elseif (basename(Request::url()) === "visualcenter3")
+     @include('layouts.visual-center4-sidebar')
+     @elseif (basename(Request::url()) === "visualcenter4")
+     @include('layouts.visual-center4-sidebar')
+
+     @endif--}}
 
 
-        @if (basename(Request::url()) === "oilpivot")
+    @if (basename(Request::url()) === "oilpivot")
         <div class="col">
             @yield('content')
         </div>
-        @else
+    @else
         <div class="container-fluid col m-lg-3 m-1 p-0">
             @yield('content')
         </div>
-        @endif
-    </div>
+    @endif
+</div>
 </body>
 
 </html>

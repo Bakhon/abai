@@ -83,6 +83,11 @@ abstract class BaseFilter
         $this->query->where('well_id', $guId);
     }
 
+    protected function filter_material($guId)
+    {
+        $this->query->where('material_id', $guId);
+    }
+
     protected function filter_other_objects($guId)
     {
         $this->query->where('other_objects_id', $guId);
@@ -106,6 +111,11 @@ abstract class BaseFilter
     protected function filter_thionic_bacteria($guId)
     {
         $this->query->where('thionic_bacteria_id', $guId);
+    }
+
+    protected function filter_inhibitor($guId)
+    {
+        $this->query->where('inhibitor_id', $guId);
     }
 
     protected function filter_date($dates)

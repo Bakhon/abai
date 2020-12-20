@@ -4,8 +4,9 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\FromView;
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
-class WaterMeasurementExport implements FromView
+class WaterMeasurementExport implements FromView, ShouldAutoSize
 {
     protected $data;
 

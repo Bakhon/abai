@@ -17,6 +17,7 @@ use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -36,7 +37,7 @@ class OmgNGDUController extends Controller
                 'list' => route('omgngdu.list'),
                 'export' => route('omgngdu.export'),
             ],
-            'title' => 'Форма ввода данных ОМГ НГДУ',
+            'title' => 'База данных ОМГ НГДУ',
             'table_header' => [
                 'Узел отбора' => 6,
                 'Фактические данные ОМГ ЦА' => 10,
@@ -215,19 +216,14 @@ class OmgNGDUController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringOmgNGDU::query()
-            ->with('field')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well');
+        $job = new \App\Jobs\ExportOmgNGDUToExcel($request->validated());
+        $this->dispatch($job);
 
-        $omgngdu = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new OmgNGDUExport($omgngdu), 'omgngdu.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
@@ -418,6 +414,53 @@ class OmgNGDUController extends Controller
                 'wmLast' => $wmLast,
                 'wmLastSO4' => $wmLastSO4,
                 'oilGas' => $oilGas
+            ]
+        );
+    }
+
+    public function getProblemGuToday()
+    {
+        $uhes = ComplicationMonitoringOmgUHE::query()
+            ->select('gu_id', 'current_dosage')
+            ->where('date', '=', \Carbon\Carbon::now()->format('Y-m-d'))
+            ->leftJoin('gus', 'gus.id', '=', 'omg_u_h_e_s.gu_id')
+            ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gus_name'))
+            ->orderBy('gus_name', 'asc')
+            ->get();
+
+        $cas = ComplicationMonitoringOmgCA::query()
+            ->select('gu_id', 'plan_dosage')
+            ->where('date', '=', \Carbon\Carbon::now()->startOfYear()->format('Y-m-d'))
+            ->get();
+
+        $gus = [];
+        foreach($uhes as $uhe) {
+            $gus[$uhe->gu_id] = [
+                'name' => $uhe->gu->name,
+                'current_dosage' => $uhe->current_dosage
+            ];
+        }
+
+        foreach($cas as $ca) {
+            $gus[$ca->gu_id]['plan_dosage'] = $ca->plan_dosage;
+        }
+
+        $problemGus = [];
+        foreach($gus as $guId => $gu) {
+            if(isset($gu['current_dosage']) && isset($gu['plan_dosage']) && $gu['current_dosage'] > $gu['plan_dosage']) {
+                $problemGus[] = [
+                    'id' => $guId,
+                    'name' => $gu['name'],
+                    'diff' => round($gu['current_dosage']/($gu['plan_dosage']/100) - 100, 2)
+                ];
+            }
+        }
+
+        return response()->json(
+            [
+                'code' => 200,
+                'message' => 'success',
+                'problemGus' => $problemGus
             ]
         );
     }

@@ -27,6 +27,7 @@ class OmgUHEHistoryObserver extends EditHistoryObserver
             'zu_id' => 'ЗУ',
             'well_id' => 'Скважина',
             'date' => 'Дата и время',
+            'inhibitor_id' => 'Ингибитор',
             'field_id' => 'Месторождение',
             'fill' => 'Заправка',
             'level' => 'Уровень',
@@ -43,16 +44,20 @@ class OmgUHEHistoryObserver extends EditHistoryObserver
                 case 'zu_id':
                 case 'well_id':
                 case 'field_id':
+                case 'inhibitor_id':
                     $classname = self::$classNames[$field];
                     $oldValue = $original[$field] ? $classname::find($original[$field])->name : null;
                     $newValue = isset($changes[$field]) ? $classname::find(
                         $changes[$field]
                     )->name : $oldValue;
                     break;
-                case 'fill':
                 case 'out_of_service_оf_dosing':
                     $oldValue = $original[$field] ? 'да' : 'нет';
                     $newValue = array_key_exists($field, $changes) ? ($original[$field] != $changes[$field] ? ($changes[$field] ? 'да' : 'нет') : null) : $oldValue;
+                    break;
+                case 'current_dosage':
+                    $oldValue = round($original[$field], 1);
+                    $newValue = array_key_exists($field, $changes) ? round($changes[$field], 1) : $oldValue;
                     break;
                 default:
                     $oldValue = $original[$field];
