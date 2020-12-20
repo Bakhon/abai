@@ -141,6 +141,8 @@ Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 
+Vue.component('field-settings', require('./components/settings/fields.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
