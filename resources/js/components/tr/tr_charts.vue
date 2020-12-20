@@ -319,7 +319,7 @@ export default {
           offsetX: -2,
         },
         legend: {
-          position: "top",
+          position: "bottom",
           labels: {
             useSeriesColors: true,
           },

@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <omguhe-form :omguhe='@json($omguhe)'></omguhe-form>
+                        <omguhe-form :omguhe='@json($omguhe)' :validation-params='@json($validationParams)'></omguhe-form>
                     </div>
                 </form>
             </div>

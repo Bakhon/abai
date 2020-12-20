@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class OmgNGDUUpdateRequest extends FormRequest
+class OmgNGDUCreateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -20,7 +20,7 @@ class OmgNGDUUpdateRequest extends FormRequest
             'daily_gas_production_in_sib' => 'nullable|numeric',
             'daily_oil_production' => 'nullable|numeric',
             'daily_water_production' => 'nullable|numeric',
-            'date' => 'date',
+            'date' => 'required|date',
             'field_id' => 'nullable|numeric',
             'gu_id' => 'nullable|numeric',
             'heater_inlet_pressure' => 'nullable|numeric',
