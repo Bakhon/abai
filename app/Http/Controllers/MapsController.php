@@ -127,6 +127,7 @@ class MapsController extends Controller
         foreach ($gus as $gu) {
             if ($gu->lat && $gu->lon) {
                 $guPoints[] = [
+                    'id' => $gu->id,
                     'name' => $gu->name,
                     'coords' => [$gu->lon, $gu->lat]
                 ];
