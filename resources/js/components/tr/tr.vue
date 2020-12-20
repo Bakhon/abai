@@ -163,7 +163,7 @@
                             <option value="Аксай Южный">Аксай Южный</option>
                         </select>
                     </div> -->
-                
+
 
 
                     <a class="but-nav__link but trgraph" title="Показать графики" data-toggle="tooltip"  data-placement="top" href="tr_charts" @click="pushBign('chart')" style="margin-left: 1264px; background: #272953"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -181,11 +181,11 @@
             style="
               background: #272953;
               color: white;
-              
+
               border: none;
             "
             title="Длинная версия"
-            data-toggle="tooltip" 
+            data-toggle="tooltip"
             data-placement="top"
           ><svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" v-if="isfulltable">
 <path d="M9.23235 6H6.18359C5.63131 6 5.18359 6.44772 5.18359 7V18C5.18359 18.5523 5.63131 19 6.18359 19H17.342C17.8943 19 18.342 18.5523 18.342 18V15" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
@@ -277,10 +277,12 @@
               <td rowspan="4">k</td>
               <td rowspan="4">КН</td>
               <td rowspan="4">К пр</td>
-              <td class="colspan" colspan="13">
+
+              <!-- new -->
+              <td class="colspan" colspan="14">
                 Расчет технологического потенциала от ИДН
               </td>
-              <td class="colspan" colspan="9">
+              <td class="colspan" colspan="11">
                 Расчёт геологического потенциала
               </td>
               <td class="colspan" colspan="4">Проверка</td>
@@ -343,9 +345,16 @@
               <td rowspan="3"><span>К пр от стимуляции</span></td>
               <td class="colspan" colspan="4">ГРП</td>
               <td rowspan="3"><span>% прироста Q н</span></td>
+<!-- new -->
+              <td rowspan="3"><span>Общий прирост Q н</span></td>
+
               <td rowspan="3"><span>Р заб</span></td>
               <td class="colspan" colspan="4">ИДН</td>
               <td class="colspan" colspan="4">ГРП</td>
+<!-- new -->
+              <td rowspan="3"><span>% прироста Q н</span></td>
+              <td rowspan="3"><span>Общий прирост Q н</span></td>
+
               <td class="colspan" colspan="2">Ошибки</td>
               <td class="colspan" colspan="2">Предупреждения</td>
               <td rowspan="3"><span>Траб</span></td>
@@ -462,6 +471,9 @@
               <td @click="sortBy('tp_idn_grp_q_oil')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
               <td @click="sortBy('tp_idn_grp_q_oil_inc')"><i class="fa fa-fw fa-sort"></i>т/сут</td>
               <td @click="sortBy('tp_idn_q_oil_inc_perc')"><i class="fa fa-fw fa-sort"></i>%</td>
+<!-- new -->
+              <td @click="sortBy('gt_total_inc')"><i class="fa fa-fw fa-sort"></i>%</td>
+
               <td @click="sortBy('gp_idn_bhp')"><i class="fa fa-fw fa-sort"></i>атм</td>
               <td @click="sortBy('gp_idn_q_liq')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
               <td @click="sortBy('gp_idn_q_liq_cas_d_corr')"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
@@ -471,6 +483,10 @@
               <td @click="sortBy('gp_grp_q_liq_cas_d_corr')"><i class="fa fa-fw fa-sort"></i></td>
               <td @click="sortBy('gp_grp_q_oil')"><i class="fa fa-fw fa-sort"></i></td>
               <td @click="sortBy('gp_grp_q_oil_inc')"><i class="fa fa-fw fa-sort"></i></td>
+<!-- new -->
+              <td @click="sortBy('gp_total_inc_perc')"><i class="fa fa-fw fa-sort"></i></td>
+              <td @click="sortBy('gp_total_inc')"><i class="fa fa-fw fa-sort"></i></td>
+
               <td @click="sortBy('error_count')"><i class="fa fa-fw fa-sort"></i></td>
               <td @click="sortBy('error_first')"><i class="fa fa-fw fa-sort"></i></td>
               <td @click="sortBy('error_warning')"><i class="fa fa-fw fa-sort"></i></td>
@@ -674,15 +690,9 @@
                             </span>
                         </td>
 
-<<<<<<< HEAD
-                        <!-- <td v-if="!edit">{{Math.round(row.r_con*10)/10}}</td>
-                        <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.r_con" :disabled="!edit"></td> -->
-                        <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
-=======
                         <td v-if="!edit">{{Math.round(row.r_con*10)/10}}</td>
                         <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.r_con" :disabled="!edit"></td>
                         <!-- <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
->>>>>>> b42133696ec2d2e3ce4169bd0cb67bdb7e2bde9b
                         wells[row_index].r_con[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].r_con[1][0] !== '0'}" :style="`background :${getColor(
@@ -696,16 +706,6 @@
                         wells[row_index].r_con[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].r_con[1][0] !== '0'}" :style="`background :${getColor(
-<<<<<<< HEAD
-                        wells[row_index].r_con[1][0])}`"> </span>
-                            <input @change="editrow(row, row_index)" v-model="row.r_con[0]" :disabled="!edit">
-                            <!-- <span>{{Math.round(row.r_con*10)/10}}</span> -->
-                            <span v-if="wells && wells[row_index]" class="cell-comment">
-                                {{ wells[row_index].r_con[1][1]}}
-                            </span>
-                        </td>
-
-=======
                         wells[row_index].r_con[1][0])}`"> </span> -->
                             <!-- <input @change="editrow(row, row_index)" v-model="row.r_con[0]" :disabled="!edit"> -->
                             <!-- <span>{{Math.round(row.r_con[0]*10)/10}}</span> -->
@@ -713,7 +713,6 @@
                                 {{ wells[row_index].r_con[1][1]}}
                             </span>
                         </td> -->
->>>>>>> b42133696ec2d2e3ce4169bd0cb67bdb7e2bde9b
 
                         <!-- <td>{{Math.round(row.cas_OD*10)/10}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -944,7 +943,7 @@
                                 {{ wells[row_index].freq[1][1]}}
                             </span>
                         </td>
-                        <td v-if="edit" contenteditable='true' :class="{'cell-with-comment': wells && wells[row_index] &&
+                        <td v-if="edit" :class="{'cell-with-comment': wells && wells[row_index] &&
                         wells[row_index].freq[1][0] !== '0'}">
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].freq[1][0] !== '0'}" :style="`background :${getColor(
@@ -1099,7 +1098,7 @@
                             <span :class="{'circle-err': wells && wells[row_index] &&
                         wells[row_index].p_intake[1][0] !== '0'}" :style="`background :${getColor(
                         wells[row_index].p_intake[1][0])}`"> </span>
-                            <span>{{Math.round(row.p_intake[0]*10)/10}}</span>
+                            <span v-if="Math.round(row.p_intake[0]*10)/10 != '0'">{{Math.round(row.p_intake[0]*10)/10}}</span>
                             <span v-if="wells && wells[row_index]" class="cell-comment">
                                 {{ wells[row_index].p_intake[1][1]}}
                             </span>
@@ -1879,6 +1878,10 @@
                         <td v-if="!edit">{{Math.round(row.tp_idn_q_oil_inc_perc*10)/10}}</td>
                         <td v-if="edit">{{Math.round(row.tp_idn_q_oil_inc_perc*10)/10}}</td>
 
+                        <!-- new -->
+                        <td v-if="!edit">{{Math.round(row.gt_total_inc*10)/10}}</td>
+                        <td v-if="edit">{{Math.round(row.gt_total_inc*10)/10}}</td>
+
                         <!-- <td>{{Math.round(row.gp_idn_bhp*10)/10}}</td> -->
                         <td v-if="!edit" :class="{'cell-with-comment': wells && wells[row_index] &&
                         wells[row_index].gp_idn_bhp[1][0] !== '0'}">
@@ -2085,6 +2088,13 @@
                                 {{ wells[row_index].gp_grp_q_oil_inc[1][1]}}
                             </span>
                         </td>
+<!-- new -->
+                        <td v-if="!edit">{{Math.round(row.gp_total_inc*10)/10}}</td>
+                        <td v-if="edit">{{Math.round(row.gp_total_inc*10)/10}}</td>
+
+                        <td v-if="!edit">{{Math.round(row.gp_total_inc_perc*10)/10}}</td>
+                        <td v-if="edit">{{Math.round(row.gp_total_inc_perc*10)/10}}</td>
+
 
                         <td v-if="!edit">{{row.error_count}}</td>
                         <td v-if="edit">{{row.error_count}}</td>
@@ -2826,10 +2836,6 @@ export default {
   name: "TrPage",
   components: {
       TrTable, TrFullTable, FadeLoader,
-<<<<<<< HEAD
-
-=======
->>>>>>> b42133696ec2d2e3ce4169bd0cb67bdb7e2bde9b
   },
   beforeCreate: function () {
 
@@ -2838,21 +2844,13 @@ export default {
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         var yyyy = today.getFullYear();
-        if(mm==0){
-            var prMm = 12
-        }
-        else{
-            var prMm = mm - 1
-        }
-        this.$store.commit('tr/SET_MONTH', prMm);
+        this.$store.commit('tr/SET_MONTH', mm);
         this.$store.commit('tr/SET_YEAR', yyyy);
-        this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+prMm+"/").then((response) => {
+        this.axios.get("http://172.20.103.51:7576/api/techregime/"+yyyy+"/"+mm+"/").then((response) => {
         let data = response.data;
+        this.year = yyyy;
+        this.month = mm;
         this.isloading = false;
-        this.editdtm = prMm;
-        console.log(this.editdtm);
-        this.editdty = yyyy;
-        console.log(this.editdty);
         if(data) {
             console.log(data);
             this.wells = data.data;
@@ -2985,16 +2983,9 @@ export default {
             this.sortType = 'asc';
         }
     },
-    onChangeMonth(event) {
-          let newVal
-          if(event.target.value == 1){
-              newVal = 12;
-          }
-          else{
-              newVal = event.target.value - 1;
-          }
-          this.month = newVal
-          this.$store.commit('tr/SET_MONTH', newVal);
+      onChangeMonth(event) {
+            this.month = event.target.value;
+            this.$store.commit('tr/SET_MONTH', event.target.value);
       },
       onChangeYear(event) {
               this.selectYear = event.target.value;
@@ -3002,16 +2993,7 @@ export default {
       },
 
       chooseDt() {
-        //   const { dt } = this;
-        //   console.log(dt)
-        //   var choosenDt = dt.split("-");
-          if(this.month == 12){
-              this.year = this.selectYear - 1;
-          }
-          else{
-              this.year = this.selectYear;
-          }
-          this.axios.get("http://172.20.103.51:7576/api/techregime/"+this.year+"/"+this.month+"/").then((response) => {
+          this.axios.get("http://172.20.103.51:7576/api/techregime/"+this.selectYear+"/"+this.month+"/").then((response) => {
                 // this.editdtm = choosenDt[1];
                 // this.editdty = choosenDt[0];
                 console.log(this.year);
@@ -3025,16 +3007,12 @@ export default {
                 else {
                     console.log('No data');
                 }
-                if(this.month < 9) {
-                    this.dt = '01' + '.0' + (this.month+1) + '.' + this.year;
-                }
-                else if(this.month == 12){
-                    this.dt = '01' + '.01.' + (this.year + 1);
+                if(this.month < 10) {
+                    this.dt = '01' + '.0' + this.month + '.' + this.year;
                 }
                 else {
-                    this.dt = '01' + '.' + (this.month+1) + '.' + this.year;
+                    this.dt = '01' + '.' + this.month + '.' + this.year;
                 }
-                this.$EventBus.$emit('halu', this.dt);
             });
       },
       chooseField() {
@@ -3081,7 +3059,7 @@ body {
     position: absolute!important;
     right: 0!important;
     z-index: 9999;
-    font-size: 14px; 
+    font-size: 14px;
     margin-right: 2px;
 
 }

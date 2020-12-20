@@ -95,37 +95,6 @@
         <div class="namefilter" style="color: white; margin-left: 556px">
           <h3>Фильтр по</h3>
         </div>
-<<<<<<< HEAD
-        <div class="col-md-9 row sec_nav trfacolmdrowsecnav">
-            <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle trfabtgraph" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Выберите график
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item"
-                        href="#"
-                        @click=" chartShow ='pie' "
-                    >PieChart</a>
-                    <a
-                        class="dropdown-item"
-                        href="#"
-                        @click=" chartShow ='bar' "
-                    >BarChart</a>
-                </div>
-            </div>
-            <div class="dropdown show">
-                <a class="btn btn-secondary dropdown-toggle trfabtdata" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Выберите дату
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                           <label for="inputDate">Введите опорную дату:</label>
-                            <input type="date" class="form-control" v-model="date1">
-                            <label for="inputDate">Введите дату для сравнения:</label>
-                            <input type="date" class="form-control" v-model="date2">
-                            <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
-                </div>
-            </div>
-=======
         <div class="filter_chart row">
           <div class="filterplaceone" style="margin-left: 211px; width: 300px">
             <select
@@ -156,7 +125,6 @@
               </option>
             </select>
           </div>
->>>>>>> b42133696ec2d2e3ce4169bd0cb67bdb7e2bde9b
         </div>
         <div class="col-sm" v-if="chartShow === 'bar'">
           <div class="second_block">
@@ -173,6 +141,7 @@
             <apexchart
               v-if="pieChartData && pieChartRerender"
               type="pie"
+              width="380"
               :options="chartOptions"
               :series="pieChartData"
             ></apexchart>
@@ -195,84 +164,6 @@ import BigNumbers from "./BigNumbers.vue";
 Vue.use(NotifyPlugin, VueMomentLib);
 import VueApexCharts from "vue-apexcharts";
 export default {
-<<<<<<< HEAD
-    computed: {
-      // field horizon exp_meth
-      // Pbh wct p_res PI
-        pieChartData(){
-            if (this.chartWells && this.chartWells.length > 0){
-                let field = this.chartFilter_field;
-                let horizon = this.chartFilter_horizon;
-                let exp_meth = this.chartFilter_exp_meth;
-                try {
-                    let filteredResult = this.chartWells.filter((row) => (
-                        (!field || row.field === field)
-                        && (!horizon || row.horizon === horizon)
-                        && (!exp_meth || row.exp_meth === exp_meth)
-                    ));
-                    console.log(filteredResult);
-                    let filteredData = filteredResult.reduce((acc, res) => {
-                        if (acc.hasOwnProperty(res['Main_problem'])) {
-                            acc[res['Main_problem']]+=1;
-                        } else {
-                            acc[res['Main_problem']]=1;
-                        }
-                        return acc;
-                    }, {})
-                    console.log('Pie chart filtered data:',filteredData)
-                    return [
-                        filteredData['Недостижение режимного P забойного'] || 0,
-                        filteredData['Рост обводненности'] || 0,
-                        // filteredData['p_res'],
-                        filteredData['Снижение P пластового'] || 0,
-                        filteredData['Снижение Кпрод'] || 0,
-                    ]
-                } catch(err) {
-                    console.error(err);
-                    return false
-                }
-                return false;
-            } else return false
-        },
-        barChartData(){
-            if (this.chartWells && this.chartWells.length > 0){
-                let field = this.chartFilter_field;
-                let horizon = this.chartFilter_horizon0;
-                let exp_meth = this.chartFilter_exp_meth;
-                try {
-                    let filteredResult = this.chartWells.filter((row) => (
-                        (!field || row.field === field)
-                        && (!horizon || row.horizon === horizon)
-                        && (!exp_meth || row.exp_meth === exp_meth)
-                    ));
-                    console.log(filteredResult);
-                    let filteredData = filteredResult.reduce((acc, res) => {
-                        acc = {
-                            'Pbh': acc['Pbh'] + res['Pbh'],
-                            'wct': acc['wct'] + res['wct'],
-                            'p_res': acc['p_res'] + res['p_res'],
-                            'PI': acc['PI'] + res['PI'],
-                        }
-                        return acc;
-                    }, {
-                        Pbh: 0,
-                        wct: 0,
-                        p_res:0,
-                        PI: 0,
-                    })
-                    return [filteredData['Pbh'],
-                        filteredData['wct'],
-                        filteredData['p_res'],
-                        filteredData['PI']
-                    ]
-                } catch(err) {
-                    console.error(err);
-                    return false
-                }
-                //return false;
-            } else return false
-        },
-=======
   name: "Trfa",
   components: {
     BigNumbers,
@@ -360,7 +251,6 @@ export default {
         //return false;
       } else return false;
     },
->>>>>>> b42133696ec2d2e3ce4169bd0cb67bdb7e2bde9b
 
     fieldFilters() {
       if (this.chartWells && this.chartWells.length > 0) {
@@ -448,7 +338,7 @@ export default {
         dataLabels: {
           enabled: true,
           formatter: function (val) {
-            return val;
+            return round(val);
           },
           offsetY: -20,
           style: {
@@ -513,12 +403,13 @@ export default {
           type: "donut",
         },
         dataLabels: {
-          enabled: false,
+          enabled: true,
+          enabledOnSeries: undefined,
         } /*убирается подсветка процентов на круге*/,
         /*tooltip: {
         enabled: false},*/
         legend: {
-          show: false,
+          show: true,
         } /*убирается навигация рядом с кругом*/,
         colors: ["#330000", "#804d00", "#00004d", "#999900"],
         plotOptions: {
