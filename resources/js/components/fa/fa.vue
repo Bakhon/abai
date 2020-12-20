@@ -93,7 +93,7 @@
       <h3 style="color: white; margin-left: 3px">Факторный анализ</h3>
       <select name="Company" class="form-control tr-field-filter" id="companySelect"
         v-model="filter" @change="chooseField">
-        <option value="Выберите месторождение">Выберите месторождение</option>
+        <option value="Выберите месторождение">Все месторождения</option>
         <option value="Акшабулак Центральный">Акшабулак Центральный</option>
         <option value="Акшабулак Южный">Акшабулак Южный</option>
         <option value="Акшабулак Восточный">Акшабулак Восточный</option>
