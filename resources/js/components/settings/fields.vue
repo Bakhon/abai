@@ -83,7 +83,9 @@ export default {
       this.errors = []
 
       let fieldValues = this.fields[this.selectedSectionCode].map((field, index) => {
-        if (field.min_value >= field.max_value) {
+        if (field.min_value*1 >= field.max_value*1) {
+          console.log(field.min_value);
+          console.log(field.max_value);
           this.errors[index] = 'Минимальное значение не может быть больше или равно максимальному'
         }
 
