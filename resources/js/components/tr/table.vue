@@ -85,7 +85,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(row, row_index) in wells" :key="row_index">
+            <tr v-for="(row, row_index) in wells" :key="row_index" class="tb">
                 <td>{{row.well}}</td>
                 <!-- <td>{{row.well_type}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -534,5 +534,9 @@ tr:nth-child(even) {
     top: 98px;
     z-index: 3000;
 }
+/* .table .tb {
+  width: 10px;
+  white-space: nowrap;
+} */
 
 </style>

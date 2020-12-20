@@ -125,7 +125,7 @@
     </div>
     <div>
       <table
-        class="table table-bordered table-dark table-responsive ce"
+        class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
         style="
           position: sticky;
           left: 5.31%;
@@ -266,17 +266,17 @@
           <td @click="sortBy('field')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
           <td @click="sortBy('horizon')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
           <td @click="sortBy('exp_meth')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
-          <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('q_o_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('wct_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>%</td>
-          <td @click="sortBy('bhp_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>ат</td>
-          <td @click="sortBy('p_res_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>ат</td>
+          <td @click="sortBy('bhp_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>атм</td>
+          <td @click="sortBy('p_res_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>атм</td>
           <td @click="sortBy('pi_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
-          <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('q_o_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('wct_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>%</td>
-          <td @click="sortBy('bhp_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>ат</td>
-          <td @click="sortBy('p_res_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>ат</td>
+          <td @click="sortBy('bhp_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>атм</td>
+          <td @click="sortBy('p_res_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>атм</td>
           <td @click="sortBy('pi_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
           <td @click="sortBy('dqn')" style="background: #E50303"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('Pbh')" style="background: #F08143"><i class="fa fa-fw fa-sort"></i>т/сут</td>
@@ -1362,6 +1362,14 @@ body {
 }
 .faheadhight {
   height: 40px;
+}
+
+/* .table th, .table td {
+    padding: 5px !important;
+} */
+.fakrtableborderedtable {
+    font-size: 9px;
+    padding: unset;
 }
 
 </style>
