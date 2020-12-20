@@ -1127,7 +1127,7 @@ export default {
     },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
-        return "#ac3939";
+        return "#CD5C5C";
       else {
         return "#272953";
       }
