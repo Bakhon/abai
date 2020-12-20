@@ -212,6 +212,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
         Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
+        Route::get('settings/fields', 'Settings\FieldValidationsController@index')->name('settings.fields');
+        Route::post('settings/fields', 'Settings\FieldValidationsController@update')->name('settings.fields.update');
+
     });
     Auth::routes([
         'reset' => false,
