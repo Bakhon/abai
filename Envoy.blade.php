@@ -43,7 +43,7 @@
 
 @task('run_composer')
     echo "Restart supervisor"
-    supervisorctl reload
+    sudo supervisorctl reload
 @endtask
 
 @task('build_static')
