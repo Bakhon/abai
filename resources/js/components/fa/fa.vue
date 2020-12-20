@@ -49,33 +49,7 @@
       </div>
       <!-- <button type="button" class="btn btn-primary">Главный</button> -->
 
-<<<<<<< HEAD
-                <div class="dropdown show" style="padding: 0px;">
-                    <a class="but-nav__link but btn btn-secondary dropdown-toggle fabutdata " href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i style=" margin-right: 10px; ">
-                   <svg width="18" height="20" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M15.6583 19.4286H2.33239C1.281 19.4286 0.42868 18.5843 0.42868 17.5429V4.34285C0.42868 3.3014 1.281 2.45714 2.33239 2.45714H4.23609V0.571426H6.1398V2.45714H11.8509V0.571426H13.7546V2.45714H15.6583C16.7098 2.45714 17.562 3.3014 17.562 4.34285V17.5429C17.562 18.5843 16.7098 19.4286 15.6583 19.4286ZM2.33239 8.11428V17.5429H15.6583V8.11428H2.33239ZM2.33239 4.34285V6.22857H15.6583V4.34285H2.33239ZM8.04351 16.0475L4.51499 12.5523L5.86091 11.2191L8.04351 13.3811L12.1298 9.3334L13.4757 10.6666L8.04351 16.0465V16.0475Z" fill="white"/>
-</svg>
-
-               </i>
-                        Выберите даты
-                    </a>
-
-                    <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink">
-                        <!-- <form class="form-group but-nav__link"> -->
-                            <label for="inputDate">Введите опорную дату:</label>
-                            <input type="date" class="form-control" v-model="date1">
-                        <!-- <form class="form-group but-nav__link"> -->
-                            <label for="inputDate">Введите дату для сравнения:</label>
-                            <input type="date" class="form-control" v-model="date2">
-                            <a href="#" class="btn btn-primary" @click.prevent="chooseDt">Сформировать</a>
-                    </div>
-                </div>
-<!-- <button type="button" class="btn btn-primary">Главный</button> -->
-
-                <!-- <form class="form-group but-nav__link">
-=======
       <!-- <form class="form-group but-nav__link">
->>>>>>> d719ba2a40ddb09e62dd2e827fa2f4e6dc9e2829
                         <label for="inputDate">Введите дату:</label>
                         <input type="date" class="form-control" v-model="date1">
                 </form>
@@ -351,7 +325,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_l_1[0] * 10) / 10 }}</span>
+            <span v-if="row.q_l_1[0] != null">{{ Math.round(row.q_l_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_l_1[1][1] }}
             </span>
@@ -1024,127 +998,6 @@ export default {
     },
   },
   methods: {
-<<<<<<< HEAD
-      sortBy(type) {
-        let { wells, sortType } = this;
-        console.log(type, sortType);
-        if(sortType === 'asc') {
-            this.wells = wells.sort((a, b) => {
-                let aVal = a[type];
-                let bVal = b[type];
-                if(Array.isArray(aVal)){
-                    if ( (typeof aVal[0] === 'string') ){
-                        return aVal[0].localeCompare(bVal[0])
-                    } else {
-                        if ( Number(aVal[0]) > Number(bVal[0]) ) return 1;
-                        else if ( Number(aVal[0]) < Number(bVal[0]) ) return -1;
-                        else return 0
-                    }
-                } else{
-                    if (typeof aVal === 'string'){
-                        return aVal.localeCompare(bVal)
-                    } else {
-                        if (Number(aVal) > Number(bVal)) return 1;
-                        else if (Number(aVal) < Number(bVal)) return -1;
-                        else return 0
-                    }
-                }
-            })
-            this.sortType = 'desc';
-        }
-        else {
-            this.wells = wells.sort((a, b) => {
-                let aVal = a[type];
-                let bVal = b[type];
-                if(Array.isArray(aVal)){
-                    if ( (typeof aVal[0] === 'string') && isNaN(Number(aVal[0])) ){
-                        return bVal[0].localeCompare(aVal[0])
-                    } else {
-                        if (Number(aVal[0]) > Number(bVal[0])) return -1;
-                        else if ( Number(aVal[0]) < Number(bVal[0]) ) return 1;
-                        else return 0;
-                    }
-                } else{
-                    if ( (typeof aVal === 'string') && isNaN(Number(aVal)) ){
-                        return aVal.localeCompare(bVal)
-                    } else {
-                        if (Number(aVal) > Number(bVal)) return -1;
-                        else if ( Number(aVal) < Number(bVal) ) return 1;
-                        else return 0
-                    }
-                }
-            })
-            this.sortType = 'asc';
-        }
-      },
-      getColorTwo(status) {
-          if (status === "1") return "#5e1d1d";
-          return "#ff0000";
-      },
-      chooseDt() {
-          const { date1, date2 } = this;
-          console.log('dt1-', date1, ' dt2-', date2);
-          var choosenDt = date1.split("-");
-          var choosenSecDt = date2.split("-");
-          if(choosenDt[1]==1){
-              var prMm = 12;
-              var prPrMm = 11;
-              var yyyy = choosenDt[0] - 1;
-              var pryyyy = choosenSecDt[0];
-          }
-          else if(choosenSecDt[1] == 1){
-              var prMm = choosenDt[1] - 1;
-              var prPrMm = 12;
-              var yyyy = choosenDt[0];
-              var pryyyy = choosenSecDt[0] - 1;
-          }
-          else{
-              var prMm = choosenDt[1] - 1;
-              var prPrMm = choosenSecDt[1] - 1;
-              var yyyy = choosenDt[0];
-              var pryyyy = choosenSecDt[0];
-          }
-        //   this.$store.commit('fa/SET_MONTH', prMm);
-        //   this.$store.commit('fa/SET_YEAR', yyyy);
-        //   this.$store.commit('fa/SET_PR_MONTH', prPrMm);
-        //   this.$store.commit('fa/SET_PR_YEAR', pryyyy);
-        //   console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
-          if(choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]){
-              Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
-          }
-          else{
-              this.$store.commit('fa/SET_MONTH', prMm);
-              this.$store.commit('fa/SET_YEAR', yyyy);
-              this.$store.commit('fa/SET_PR_MONTH', prPrMm);
-              this.$store.commit('fa/SET_PR_YEAR', pryyyy);
-              console.log('date1', prMm, yyyy, 'date2', prPrMm, pryyyy)
-              this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
-                    let data = response.data;
-                    this.editdtm = choosenDt[1];
-                    this.editdty = choosenDt[0];
-                    this.editdtprevm = choosenSecDt[1];
-                    this.editdtprevy = choosenSecDt[0];
-                    if(data) {
-                        console.log(data);
-                        this.wells = data.data;
-                        this.fullWells = data.data;
-                        this.chartWells = data.data;
-                    }
-                    else {
-                        console.log('No data');
-                    }
-                    this.dt = '01' + '.' + this.editdtm + '.' + this.editdty;
-                    this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy ;
-
-                });
-          }
-      },
-      chooseField() {
-          const { filter, fullWells } = this;
-          console.log(filter, fullWells);
-          if(filter == 'Казгермунай'){
-            this.wells = fullWells;
-=======
     sortBy(type) {
       let { wells, sortType } = this;
       console.log(type, sortType);
@@ -1168,7 +1021,6 @@ export default {
               else if (Number(aVal) < Number(bVal)) return -1;
               else return 0;
             }
->>>>>>> d719ba2a40ddb09e62dd2e827fa2f4e6dc9e2829
           }
         });
         this.sortType = "desc";
@@ -1327,96 +1179,6 @@ export default {
           console.log("search error = ", error);
         });
     },
-<<<<<<< HEAD
-    // mounted() {},
-    // update: function (){
-    //     EventBus.$on("halu", this.google);
-    //     console.log(this.google)
-
-    // },
-    beforeCreate: function () {
-        console.log('dt1-month', this.$store.getters['tr/month']);
-        console.log('dt1-year', this.$store.getters['tr/year']);
-        var today = new Date();
-        // var dd = String(today.getDate()).padStart(2, '0');
-        var dd = 1;
-        // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        const preMm = this.$store.getters['tr/month'] ? this.$store.getters['tr/month'] : String(today.getMonth() + 1).padStart(2, '0');
-        var mm = preMm == 11 ? 0 : preMm + 1;
-        console.log('dd = ', dd )
-        console.log('mm = ', mm )
-        // var yyyy = today.getFullYear();
-        var yyyy = this.$store.getters['tr/year'] ? this.$store.getters['tr/year'] : today.getFullYear();
-        // var pryyyy = today.getFullYear();
-        var pryyyy = yyyy;
-        var prMm = mm;
-        var prPrMm = mm;
-        if(mm==0){
-            var prMm = 12;
-            var prPrMm = 11;
-            var yyyy = yyyy - 1;
-            var pryyyy = pryyyy - 1;
-        }
-        else{
-            var prMm = prMm - 1;
-            var prPrMm = prPrMm -2;
-            var yyyy = yyyy;
-            var pryyyy = pryyyy;
-        }
-        this.$store.commit('fa/SET_MONTH', prMm);
-        this.$store.commit('fa/SET_YEAR', yyyy);
-        this.$store.commit('fa/SET_PR_MONTH', prPrMm);
-        this.$store.commit('fa/SET_PR_YEAR', pryyyy);
-        this.axios.get("http://172.20.103.51:7576/api/techregime/factor/"+yyyy+"/"+prMm+"/"+pryyyy+"/"+prPrMm+"/").then((response) => {
-            let data = response.data;
-            this.editdtm = prMm;
-            console.log(this.editdtm);
-            this.editdty = yyyy;
-            console.log(this.editdty);
-            this.editdtprevm = prPrMm;
-            console.log(this.editdtprevm);
-            this.editdtprevy = yyyy;
-            console.log(this.editdtprevy);
-
-            if(data) {
-                console.log(data);
-                this.wells = data.data;
-                this.fullWells = data.data;
-                this.chartWells = data.data;
-            }
-            else {
-                console.log('No data');
-            }
-            if(this.editdtm < 10 && this.editdtprevm < 10) {
-                this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
-                this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy ;
-            }
-            else if(this.editdtm <= 10 && this.editdtprevm <=10) {
-                this.dt = '01'+ '.' + this.editdtm + '.' + this.editdty;
-                this.dt2 = '01' + '.' + this.editdtprevm + '.' + this.editdtprevy;
-            }
-            else if(editdtm >= 10 && editdtprevm < 10) {
-                this.dt = '01' + '.0' + this.editdtm + '.' + this.editdty;
-                this.dt2 = '01' + '.0' + this.editdtprevm + '.' + this.editdtprevy;
-            }
-
-            console.log(this.dt);
-            console.log(this.dt2);
-            EventBus.$on('halu', this.google = clickCount => {
-                console.log(`Oh, that's nice. It's gotten ${clickCount} clicks! :)`)
-            });
-    });
-   },
-   mounted: function () {
-        const mm = `${this.$store.getters['fa/month'] + 1}`.length < 2 ? `0${this.$store.getters['fa/month'] + 1}` : `${this.$store.getters['fa/month'] + 1}`
-        const prmm = `${this.$store.getters['fa/prmonth'] + 1}`.length < 2 ? `0${this.$store.getters['fa/prmonth'] + 1}` : `${this.$store.getters['fa/prmonth'] + 1}`
-        this.date1 = `${this.$store.getters['fa/year']}-${mm}-01`
-        this.date2 = `${this.$store.getters['fa/pryear']}-${prmm}-01`
-        this.dt = `01.${mm}.${this.$store.getters['fa/year']}`
-        this.dt2 = `01.${prmm}.${this.$store.getters['fa/pryear']}`
-   }
-}
-=======
   },
   beforeCreate: function () {
     console.log("dt1-month", this.$store.getters["tr/month"]);
@@ -1508,7 +1270,6 @@ export default {
     this.dt2 = `01.${prmm}.${this.$store.getters["fa/pryear"]}`;
   },
 };
->>>>>>> d719ba2a40ddb09e62dd2e827fa2f4e6dc9e2829
 </script>
 <style  scoped>
 body {
