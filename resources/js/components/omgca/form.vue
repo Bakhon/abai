@@ -11,7 +11,16 @@
             </div>
             <label>Qв, тыс.м³/год</label>
             <div class="form-label-group">
-                <input type="number" step="0.0001" name="q_v" v-model="fields.q_v" class="form-control" placeholder="">
+                <input
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.q_v.min"
+                    :max="validationParams.q_v.max"
+                    name="q_v"
+                    v-model="fields.q_v"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
@@ -28,8 +37,16 @@
         <div class="col-xs-12 col-sm-4 col-md-4">
             <label>Планируемая дозировка, г/м3</label>
             <div class="form-label-group">
-                <input type="number" step="0.0001" name="plan_dosage" v-model="fields.plan_dosage" class="form-control"
-                       placeholder="">
+                <input
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.plan_dosage.min"
+                    :max="validationParams.plan_dosage.max"
+                    name="plan_dosage"
+                    v-model="fields.plan_dosage"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -57,7 +74,8 @@ export default {
     name: "omgca-form",
     props: [
         'omgca',
-        'type'
+        'type',
+        'validationParams'
     ],
     data: function () {
         return {

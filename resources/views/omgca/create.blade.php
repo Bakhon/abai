@@ -15,7 +15,7 @@
                 <form action="{{ route('omgca.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <omgca-form type="create"></omgca-form>
+                        <omgca-form type="create" :validation-params='@json($validationParams)'></omgca-form>
                     </div>
                 </form>
             </div>
