@@ -41,7 +41,7 @@
     php artisan cache:clear
 @endtask
 
-@task('run_composer')
+@task('restart_supervisor')
     echo "Restart supervisor"
     sudo supervisorctl reload
 @endtask
