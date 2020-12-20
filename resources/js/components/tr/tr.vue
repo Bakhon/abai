@@ -6455,29 +6455,8 @@ tr:nth-child(even) {
 .tablecont {
   margin-top: -38px;
 }
-</style>
-<style>
-.tr-field-filter.tr-field-filter {
-  margin: 0 0 0 auto;
-  flex-grow: 0 ;
-  width: 230px;
-}
-.tr-table-header {
-  justify-content: space-between;
-  height: 48px;
-  align-items: center;
-}
-.trheadhight  {
-  height: 40px;
-}
-.fadropmenu .fadropmenu {
-  background: #656a8a;
-  /* color: #ffffff; */
-  width: 246px;
-}
-.faheadhight {
-  height: 40px;
-}
+
+
 .table {
     overflow: scroll;
     height: calc(100vh - 247px);
@@ -6506,4 +6485,28 @@ tr:nth-child(even) {
     top: 98px;
     z-index: 3000;
 }
+</style>
+<style>
+.tr-field-filter.tr-field-filter {
+  margin: 0 0 0 auto;
+  flex-grow: 0 ;
+  width: 230px;
+}
+.tr-table-header {
+  justify-content: space-between;
+  height: 48px;
+  align-items: center;
+}
+.trheadhight  {
+  height: 40px;
+}
+.fadropmenu .fadropmenu {
+  background: #656a8a;
+  /* color: #ffffff; */
+  width: 246px;
+}
+.faheadhight {
+  height: 40px;
+}
+
 </style>
