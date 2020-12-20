@@ -1409,12 +1409,12 @@ body {
   /* color: #ffffff; */
   width: 246px;
 }
-/* .form-control {
+.form-control {
   background: #272953 !important;
   border: 1px solid #656a8a !important;
   height: 35px !important;
   color: white !important;
-} */
+}
 </style>
 
 
