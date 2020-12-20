@@ -656,7 +656,7 @@
             </div>
 
             <div class="w-50 vc-chart">
-            {{item4}}
+          
               <vc-chart v-if="company != 'all'"> </vc-chart>
             </div>
           </div>
