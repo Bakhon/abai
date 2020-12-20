@@ -34,8 +34,8 @@
              v-model="end_date">
     </div>
 
-      <div class="form-group3 result-link">
-          <a v-if="resultLink !== null" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
+      <div class="form-group3 result-link text-center">
+          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
       </div>
 
     <div class="form-group4">
@@ -59,7 +59,8 @@
 <script>
 
 export default {
-  components: {},
+  components: {
+  },
   data() {
 
     return {
@@ -177,5 +178,11 @@ export default {
 
 .margin-top {
   padding: 15px;
+}
+.download_report {
+  color: white;
+  font-size: 28px;
+  text-decoration: underline;
+  font-weight: bold;
 }
 </style>
