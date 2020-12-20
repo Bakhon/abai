@@ -2,12 +2,12 @@
   <div class="d-flex flex-column flex-sm-row justify-content-between mb-1 mb-sm-2">
     <indicator
         v-bind:title="'Добыча нефти'"
-        v-bind:indicatorValue="oil_fact"
+        v-bind:indicatorValue="oilFact"
         v-bind:units="'тыс. тонн'"
         v-bind:hasProgressBar="true"
-        v-bind:progressValue="oil_fact"
-        v-bind:progressMax="oil_plan"
-        v-bind:prevPeriodValue="prev_oil_fact"
+        v-bind:progressValue="oilFact"
+        v-bind:progressMax="oilPlan"
+        v-bind:prevPeriodValue="prevOilFact"
     ></indicator>
     <indicator
         v-bind:title="'Выручка/Доход'"

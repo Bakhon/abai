@@ -92,10 +92,8 @@ ol, ul, dl {
     display: flex;
     height: 1rem;
     overflow: hidden;
-    line-height: 0;
     font-size: 0.675rem;
     border-radius: 0.25rem;
-    height: 15px!important;
     background-color: #323370!important;
 }
 

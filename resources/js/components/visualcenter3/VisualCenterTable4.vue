@@ -21,7 +21,11 @@
                                             :aria-valuenow="t1Sum"
                                             aria-valuemin="0"
                                             :aria-valuemax="100"
-                                        ></div>
+                                        >
+                                            <div v-if="t1Sum">
+                                                {{ t1Sum.toFixed(1) }}%
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="close2 d-none d-sm-block">Закрыть</div>
