@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\CorrosionFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\CorrosionCreateRequest;
 use App\Http\Requests\CorrosionUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
@@ -15,6 +16,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class CorrosionController extends Controller
 {
+    use WithFieldsValidation;
+
     public function index()
     {
         $params = [
@@ -183,7 +186,8 @@ class CorrosionController extends Controller
      */
     public function create()
     {
-        return view('сomplicationMonitoring.corrosion.create');
+        $validationParams = $this->getValidationParams('corrosioncrud');
+        return view('сomplicationMonitoring.corrosion.create', compact('validationParams'));
     }
 
     /**
@@ -194,7 +198,9 @@ class CorrosionController extends Controller
      */
     public function store(CorrosionCreateRequest $request)
     {
-        $corrosion = Corrosion::create($request->validated());
+        $this->validateFields($request, 'corrosioncrud');
+
+        Corrosion::create($request->validated());
         return redirect()->route('corrosioncrud.index')->with('success', __('app.created'));
     }
 
@@ -229,7 +235,11 @@ class CorrosionController extends Controller
      */
     public function edit(Corrosion $corrosioncrud)
     {
-        return view('сomplicationMonitoring.corrosion.edit', ['corrosion' => $corrosioncrud]);
+        $validationParams = $this->getValidationParams('corrosioncrud');
+        return view('сomplicationMonitoring.corrosion.edit', [
+            'corrosion' => $corrosioncrud,
+            'validationParams' => $validationParams
+        ]);
     }
 
     /**
@@ -241,6 +251,8 @@ class CorrosionController extends Controller
      */
     public function update(CorrosionUpdateRequest $request, Corrosion $corrosioncrud)
     {
+        $this->validateFields($request, 'corrosioncrud');
+
         $corrosioncrud->update($request->validated());
         return redirect()->route('corrosioncrud.index')->with('success', __('app.updated'));
     }

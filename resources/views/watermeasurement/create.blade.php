@@ -15,7 +15,7 @@
                 <form action="{{ route('watermeasurement.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <wm-form></wm-form>
+                        <wm-form :validation-params='@json($validationParams)'></wm-form>
                     </div>
                 </form>
             </div>

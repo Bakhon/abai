@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <pipe-form :pipe='@json($pipe)'></pipe-form>
+                        <pipe-form :pipe='@json($pipe)' :validation-params='@json($validationParams)'></pipe-form>
                     </div>
                 </form>
             </div>
