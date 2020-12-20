@@ -17,7 +17,6 @@ use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -235,7 +234,8 @@ class OmgNGDUController extends Controller
      */
     public function create()
     {
-        return view('omgngdu.create');
+        $validationParams = $this->getValidationParams('omgngdu');
+        return view('omgngdu.create', compact('validationParams'));
     }
 
     /**
@@ -246,7 +246,7 @@ class OmgNGDUController extends Controller
      */
     public function store(OmgNGDUCreateRequest $request)
     {
-        $this->validateFields($request, 'omgca');
+        $this->validateFields($request, 'omgngdu');
 
         $omgngdu = new ComplicationMonitoringOmgNGDU;
         $omgngdu->fill($request->validated());
@@ -295,7 +295,8 @@ class OmgNGDUController extends Controller
      */
     public function edit(ComplicationMonitoringOmgNGDU $omgngdu)
     {
-        return view('omgngdu.edit', compact('omgngdu'));
+        $validationParams = $this->getValidationParams('omgngdu');
+        return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
     }
 
     /**
@@ -307,6 +308,8 @@ class OmgNGDUController extends Controller
      */
     public function update(OmgNGDUUpdateRequest $request, ComplicationMonitoringOmgNGDU $omgngdu)
     {
+        $this->validateFields($request, 'omgngdu');
+
         $omgngdu->update($request->validated());
         return redirect()->route('omgngdu.index')->with('success', __('app.updated'));
     }
