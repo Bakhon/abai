@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\PipeFilter;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\PipeCreateRequest;
 use App\Http\Requests\PipeUpdateRequest;
@@ -14,6 +15,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PipeController extends Controller
 {
+    use WithFieldsValidation;
+
     public function index()
     {
         $params = [
@@ -122,7 +125,8 @@ class PipeController extends Controller
      */
     public function create()
     {
-        return view('pipes.create');
+        $validationParams = $this->getValidationParams('pipes');
+        return view('pipes.create', compact('validationParams'));
     }
 
     /**
@@ -133,8 +137,9 @@ class PipeController extends Controller
      */
     public function store(PipeCreateRequest $request)
     {
+        $this->validateFields($request, 'pipes');
+        
         $pipe = Pipe::create($request->validated());
-
         return redirect()->route('pipes.index')->with('success', __('app.created'));
     }
 
@@ -169,7 +174,8 @@ class PipeController extends Controller
      */
     public function edit(Pipe $pipe)
     {
-        return view('pipes.edit', compact('pipe'));
+        $validationParams = $this->getValidationParams('pipes');
+        return view('pipes.edit', compact('pipe', 'validationParams'));
     }
 
     /**
@@ -181,6 +187,8 @@ class PipeController extends Controller
      */
     public function update(PipeUpdateRequest $request, Pipe $pipe)
     {
+        $this->validateFields($request, 'pipes');
+        
         $pipe->update($request->validated());
         return redirect()->route('pipes.index')->with('success', __('app.updated'));
     }

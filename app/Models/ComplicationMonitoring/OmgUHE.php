@@ -12,7 +12,8 @@ class OmgUHE extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'date' => 'datetime'
+        'date' => 'datetime',
+        'out_of_service_оf_dosing' => 'boolean'
     ];
 
     public function getCurrentDosageAttribute($value)

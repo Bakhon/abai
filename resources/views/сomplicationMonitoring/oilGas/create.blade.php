@@ -15,7 +15,7 @@
                 <form action="{{ route('oilgas.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <oilgas-form></oilgas-form>
+                        <oilgas-form :validation-params='@json($validationParams)'></oilgas-form>
                     </div>
                 </form>
             </div>

@@ -16,7 +16,7 @@
                 <form action="{{ route('corrosioncrud.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <corrosion-form></corrosion-form>
+                        <corrosion-form :validation-params='@json($validationParams)'></corrosion-form>
                     </div>
                 </form>
             </div>

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class OilGasUpdateRequest extends FormRequest
+class OilGasCreateRequest extends FormRequest
 {
     public function authorize()
     {
@@ -16,7 +16,7 @@ class OilGasUpdateRequest extends FormRequest
         return [
             'carbon_dioxide_in_gas'   => 'nullable|numeric',
             'cdng_id'                 => 'nullable|numeric',
-            'date'                    => 'date',
+            'date'                    => 'required|date',
             'gas_density_at_20'       => 'nullable|numeric',
             'gas_viscosity_at_20'     => 'nullable|numeric',
             'gu_id'                   => 'nullable|numeric',

@@ -9,7 +9,15 @@
         <div class="col-xs-12 col-sm-4 col-md-4">
             <label>Цена</label>
             <div class="form-label-group">
-                <input v-model="formFields.price" type="number" step="0.0001" name="price" class="form-control">
+                <input
+                    v-model="formFields.price"
+                    type="number"
+                    step="0.01"
+                    :min="validationParams.price.min"
+                    :max="validationParams.price.max"
+                    name="price"
+                    class="form-control"
+                >
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -25,6 +33,9 @@ Settings.defaultLocale = 'ru'
 
 export default {
     name: "inhibitor-create",
+    props: [
+        'validationParams'
+    ],
     data: function () {
         return {
             formFields: {
