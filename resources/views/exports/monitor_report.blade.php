@@ -15,13 +15,11 @@
     </tr>
     <tr>
         <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center"></th>
-        <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center"></th>
-        <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center"></th>
-        <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center"></th>
-        <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center"></th>
+        <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center" colspan="4">Узел отбора</th>
         <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center" colspan="3">Фактические данные ОМГ ЦА</th>
         <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center" colspan="7">Фактические данные от УХЭ</th>
         <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center" colspan="9">Скорость коррозии</th>
+        <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center" colspan="9">Фактические данные ГУ</th>
         <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center" colspan="7">Ионный состав воды мг/дм3</th>
         <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center" colspan="5">Физико-химические  свойства воды</th>
         <th style="border: 1px solid black; height: 20px; font-weight: bold; text-align: center" colspan="2">Примеси в воде</th>
