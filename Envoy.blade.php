@@ -43,7 +43,7 @@
 
 @task('restart_supervisor')
     echo "Restart supervisor"
-    sudo supervisorctl reload
+    sudo supervisorctl restart all
 @endtask
 
 @task('build_static')
