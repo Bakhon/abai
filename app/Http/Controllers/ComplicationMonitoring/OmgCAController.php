@@ -87,14 +87,14 @@ class OmgCAController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = OmgCA::query()
-            ->with('gu');
+        $job = new \App\Jobs\ExportOmgCAToExcel($request->validated());
+        $this->dispatch($job);
 
-        $omgca = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new OmgCAExport($omgca), 'omgca.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**

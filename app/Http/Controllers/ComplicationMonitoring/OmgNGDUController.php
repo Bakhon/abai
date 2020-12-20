@@ -216,19 +216,14 @@ class OmgNGDUController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringOmgNGDU::query()
-            ->with('field')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well');
+        $job = new \App\Jobs\ExportOmgNGDUToExcel($request->validated());
+        $this->dispatch($job);
 
-        $omgngdu = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new OmgNGDUExport($omgngdu), 'omgngdu.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**

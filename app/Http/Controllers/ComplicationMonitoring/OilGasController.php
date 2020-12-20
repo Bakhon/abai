@@ -209,19 +209,14 @@ class OilGasController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = OilGas::query()
-            ->with('other_objects')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well');
+        $job = new \App\Jobs\ExportOilGasToExcel($request->validated());
+        $this->dispatch($job);
 
-        $oilgas = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new \App\Exports\OilGasExport($oilgas), 'oilgas.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**

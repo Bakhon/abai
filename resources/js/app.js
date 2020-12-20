@@ -112,7 +112,11 @@ Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
-Vue.component('new-reports-table', require('./components/reports/NewReportTable.vue').default);
+
+Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
+Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
+Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
+
 Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
