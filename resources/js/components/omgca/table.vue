@@ -658,7 +658,7 @@ export default {
     flex: 0 1 auto;
     flex-flow: row wrap;
     width: 100%;
-    align-items: center;
+    align-items: flex-start;
     position: absolute;
     height: 100%;
     justify-content: center;
@@ -669,6 +669,9 @@ export default {
     top: 0;
     right: 0;
     bottom: 0;
+    .v-spinner{
+      top: 250px;
+    }
   }
 
   .pagination {
