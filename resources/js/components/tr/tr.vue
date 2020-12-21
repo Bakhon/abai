@@ -6576,6 +6576,10 @@ export default {
   },
   beforeCreate: function () {},
   created() {
+    this.$store.commit("tr/SET_SORTTYPE", this.sortType);
+    this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
+    this.$store.commit("tr/SET_SEARCH", this.searchString);
+    this.$store.commit("tr/SET_FILTER", this.filter);
     var today = new Date();
     var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
@@ -6711,6 +6715,9 @@ export default {
       this.show_first = false;
     },
     sortBy(type) {
+      this.sortParam = type;
+      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
+      this.$store.commit("tr/SET_SORTPARAM", type);
       let { wells, sortType } = this;
       console.log(type, sortType);
       if (sortType === "asc") {
@@ -6760,9 +6767,6 @@ export default {
         });
         this.sortType = "asc";
       }
-      this.sortParam = type;
-      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
-      this.$store.commit("tr/SET_SORTPARAM", type);
     },
     onChangeMonth(event) {
       this.month = event.target.value;
