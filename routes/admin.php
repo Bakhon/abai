@@ -11,14 +11,11 @@ Route::group(['namespace' => 'Admin'], function () {
         Route::get('/', 'HomeController@index');
 
         Route::get('users/list', 'UsersController@list')->name('admin.users.list');
-        Route::resource('users','UsersController')
-            ->only(['index', 'show', 'edit', 'update'])
-            ->names([
-                'index' => 'admin.users.index',
-                'show' => 'admin.users.show',
-                'edit' => 'admin.users.edit',
-                'update' => 'admin.users.update',
-            ]);
+        Route::resource('users','UsersController', ['as' => 'admin'])
+            ->only(['index', 'show', 'edit', 'update']);
+
+        Route::get('roles/list', 'RolesController@list')->name('admin.roles.list');
+        Route::resource('roles','RolesController', ['as' => 'admin']);
 
     });
 

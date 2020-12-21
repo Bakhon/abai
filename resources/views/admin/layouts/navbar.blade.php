@@ -11,7 +11,7 @@
                 <a href="{{route('admin.users.index')}}"><span class="workTypeText">Пользователи</span></a>
             </li>
             <li class="nav-item mr-5">
-                <a href=""><span class="workTypeText">Роли</span></a>
+                <a href="{{route('admin.roles.index')}}"><span class="workTypeText">Роли</span></a>
             </li>
         </ul>
         <div class="form-inline my-2 my-lg-0">

@@ -60,8 +60,12 @@
                             'active': isFilterActive(code)
                         }"
           >
-            <i @click="showFilter(code)" class="fa fa-filter"
-               aria-hidden="true"></i>
+            <i
+                @click="showFilter(code)"
+                class="fa fa-filter"
+                aria-hidden="true"
+                v-if="!params.hide_filter"
+            ></i>
             <div class="filter-wrap" v-if="filters[code] && filters[code].show">
               <template v-if="params.fields[code].type === 'select'">
                 <div class="filter-item">
@@ -151,7 +155,7 @@
               <a v-if="row.links.edit" class="links__item links__item_edit" :href="row.links.edit"></a>
               <a v-if="row.links.show" class="links__item links__item_view" :href="row.links.show"></a>
               <a v-if="row.links.history" class="links__item links__item_history" :href="row.links.history"></a>
-              <a v-if="row.links.delete" class="links__item links__item_delete" @click="deleteItem(row)"></a>
+              <a v-if="!params.hide_delete_link" class="links__item links__item_delete" @click="deleteItem(row)"></a>
             </div>
           </td>
         </tr>
@@ -245,7 +249,7 @@ export default {
         queryParams.order_desc = Number(!!this.sort.desc)
       }
 
-      if (this.filters) {
+      if (!this.params.hide_filter && this.filters) {
         Object.entries(this.filters).forEach(([code, filter]) => {
           if (!filter.value) return
           if (typeof filter.value == 'object' && !filter.value.from && !filter.value.to) return
