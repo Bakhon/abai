@@ -23,7 +23,6 @@
                 <td rowspan="4" class="th">К прод</td>
                 <td class="colspan th" colspan="7">Расчет технологического потенциала от ИДН</td>
                 <td class="colspan th" colspan="4">Намечаемый режим</td>
-
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
                 <td rowspan="3" class="th">P заб</td>
@@ -85,11 +84,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(row, row_index) in wells" :key="row_index" class="tb">
-                <td>{{row.well}}</td>
+            <tr v-for="(row, row_index) in wells" :key="row_index">
+                <td class="tb">{{row.well}}</td>
                 <!-- <td>{{row.well_type}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].well_type[1][0] !== '0'}">
+                wells[row_index].well_type[1][0] !== '0'}" class="tb">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].well_type[1][0])}`"> </span>
@@ -101,7 +100,7 @@
 
                 <!-- <td>{{row.horizon}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].horizon[1][0] !== '0'}">
+                wells[row_index].horizon[1][0] !== '0'}" class="tb">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].horizon[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].horizon[1][0])}`"> </span>
@@ -534,9 +533,15 @@ tr:nth-child(even) {
     top: 98px;
     z-index: 3000;
 }
-/* .table .tb {
-  width: 10px;
-  white-space: nowrap;
+
+
+
+
+/* .tb {
+    position: sticky;
+
+    top: 25px;
+    z-index: 3000;
 } */
 
 </style>

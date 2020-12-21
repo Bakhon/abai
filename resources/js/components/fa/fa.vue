@@ -119,8 +119,7 @@
             stroke-width="1.4"
             stroke-linecap="round"
           />
-        </svg>
-        Показать графики</a
+        </svg></a
       >
     </div>
     <div>
