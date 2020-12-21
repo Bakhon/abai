@@ -395,7 +395,7 @@ export default {
         dataLabels: {
           enabled: true,
           formatter: function (val) {
-            return val;
+            return round(val);
           },
           offsetY: -20,
           style: {
