@@ -9,10 +9,7 @@ class WaterMeasurement extends Model
     use \App\Models\Traits\WithHistory;
 
     protected $table = 'water_measurements';
-
-    protected $fillable = [
-        'date'
-    ];
+    protected $guarded = ['id'];
 
     public function other_objects()
     {

@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Exports\OmgUHEExport;
 use App\Filters\OmgUHEFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Requests\OmgUHECreateRequest;
 use App\Http\Requests\OmgUHEUpdateRequest;
+use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
 class OmgUHEController extends Controller
 {
+    use WithFieldsValidation;
+    
     public function index()
     {
         $params = [
@@ -231,7 +235,8 @@ class OmgUHEController extends Controller
      */
     public function create()
     {
-        return view('omguhe.create');
+        $validationParams = $this->getValidationParams('omguhe');
+        return view('omguhe.create', compact('validationParams'));
     }
 
     /**
@@ -240,32 +245,13 @@ class OmgUHEController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OmgUHECreateRequest $request)
     {
-        $request->validate([
-            'date' => 'required',
-        ]);
+        $this->validateFields($request, 'omguhe');
 
         $omgohe = new ComplicationMonitoringOmgUHE;
-        $omgohe->field_id = $request->field_id ?: NULL;
-        $omgohe->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : NULL;
-        $omgohe->cdng_id = ($request->cdng_id) ? $request->cdng_id : NULL;
-        $omgohe->gu_id = ($request->gu_id) ? $request->gu_id : NULL;
-        $omgohe->zu_id = ($request->zu_id) ? $request->zu_id : NULL;
-        $omgohe->well_id = ($request->well_id) ? $request->well_id : NULL;
-        $omgohe->inhibitor_id = $request->inhibitor_id ?: NULL;
-        $omgohe->date = Carbon::parse($request->date);
-        $omgohe->current_dosage = ($request->current_dosage) ? $request->current_dosage : NULL;
-        $omgohe->level = ($request->level) ? $request->level : NULL;
-        $omgohe->fill = ($request->fill) ? $request->fill : NULL;
-        $omgohe->daily_inhibitor_flowrate = ($request->daily_inhibitor_flowrate) ? $request->daily_inhibitor_flowrate : NULL;
-        if($request->out_of_service_оf_dosing == true){
-            $omgohe->out_of_service_оf_dosing = 1;
-        }else{
-            $omgohe->out_of_service_оf_dosing = 0;
-        }
-        $omgohe->reason = ($request->reason) ? $request->reason : NULL;
-        $omgohe->cruser_id = Auth::user()->id;
+        $omgohe->fill($request->validated());
+        $omgohe->cruser_id = auth()->id();
         $omgohe->save();
 
         return redirect()->route('omguhe.index')->with('success',__('app.created'));
@@ -310,7 +296,8 @@ class OmgUHEController extends Controller
      */
     public function edit(ComplicationMonitoringOmgUHE $omguhe)
     {
-        return view('omguhe.edit', compact('omguhe'));
+        $validationParams = $this->getValidationParams('omguhe');
+        return view('omguhe.edit', compact('omguhe'), compact('validationParams'));
     }
 
     /**
@@ -322,6 +309,7 @@ class OmgUHEController extends Controller
      */
     public function update(OmgUHEUpdateRequest $request, ComplicationMonitoringOmgUHE $omguhe)
     {
+        $this->validateFields($request, 'omguhe');
         $omguhe->update($request->validated());
         return redirect()->route('omguhe.index')->with('success',__('app.updated'));
     }
@@ -351,12 +339,27 @@ class OmgUHEController extends Controller
                                         ->where('out_of_service_оf_dosing', '<>', '1')
                                         ->latest()
                                         ->first();
+        
+        $datetime = new DateTime($request->date);
+        $ddng = OmgCA::where('gu_id', '=', $request->gu_id)
+                        ->where('date', '=', $datetime->format("Y").'-01-01')
+                        ->first();
 
         if($result){
             if($result->fill){
-                return $result->fill;
+                $res = [
+                    'level' => $result->fill,
+                    'qv' => $ddng->q_v
+                ];
+
+                return response()->json($res);
             }else{
-                return $result->level;
+                $res =  [
+                    'level' => $result->level,
+                    'qv' => $ddng->q_v
+                ];
+
+                return response()->json($res);
             }
         }else{
             return false;

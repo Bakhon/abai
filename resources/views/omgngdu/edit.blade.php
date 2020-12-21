@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <omgngdu-form :omgngdu='@json($omgngdu)'></omgngdu-form>
+                        <omgngdu-form :omgngdu='@json($omgngdu)' :validation-params='@json($validationParams)'></omgngdu-form>
                     </div>
                 </form>
             </div>

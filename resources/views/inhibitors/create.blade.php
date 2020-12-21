@@ -15,7 +15,7 @@
                 <form action="{{ route('inhibitors.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <inhibitor-create></inhibitor-create>
+                        <inhibitor-create :validation-params='@json($validationParams)'></inhibitor-create>
                     </div>
                 </form>
             </div>

@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <oilgas-form :oilgas='@json($oilgas)'></oilgas-form>
+                        <oilgas-form :oilgas='@json($oilgas)' :validation-params='@json($validationParams)'></oilgas-form>
                     </div>
                 </form>
             </div>

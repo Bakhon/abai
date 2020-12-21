@@ -109,9 +109,25 @@
                     v-model="formFields.level"
                     type="number"
                     step="0.0001"
+                    :min="validationParams.level.min"
+                    :max="validationParams.level.max"
                     name="level"
                     class="form-control"
                     placeholder=""
+                    v-if="!prevData"
+                />
+                <input
+                    :disabled="!formFields.gu_id && !formFields.date"
+                    @change="inputLevel"
+                    v-model="formFields.level"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.level.min"
+                    :max="prevData"
+                    name="level"
+                    class="form-control"
+                    placeholder=""
+                    v-if="prevData"
                 />
             </div>
         </div>
@@ -163,6 +179,8 @@
                 <input
                 type="number"
                 step="0.0001"
+                :min="validationParams.fill.min"
+                :max="validationParams.fill.max"
                 name="fill"
                 v-model="formFields.fill"
                 class="form-control"
@@ -194,7 +212,8 @@ Vue.use(Datetime);
 export default {
     name: "omguhe-form",
     props: [
-        'omguhe'
+        'omguhe',
+        'validationParams'
     ],
     components: {
         Datetime
@@ -210,6 +229,7 @@ export default {
             inhibitors: {},
             out_of_service_оf_dosing: false,
             prevData: null,
+            qv: null,
             formFields: {
                 field_id: null,
                 ngdu_id: null,
@@ -340,7 +360,8 @@ export default {
                 .then((response) => {
                     let data = response.data;
                     if (data) {
-                        this.prevData = data;
+                        this.prevData = data.level;
+                        this.qv = data.qv;
                     } else {
                         this.prevData = null;
                     }
@@ -348,7 +369,10 @@ export default {
         },
         inputLevel() {
             if (this.prevData != null) {
-                this.formFields.current_dosage = this.prevData - this.formFields.level;
+                console.log(this.prevData - this.formFields.level);
+                console.log((this.prevData - this.formFields.level) / this.qv);
+                console.log(((this.prevData - this.formFields.level) / this.qv) * 946);
+                this.formFields.current_dosage = ((this.prevData - this.formFields.level) / this.qv) * 946;
             }
         },
         formatDate(date) {

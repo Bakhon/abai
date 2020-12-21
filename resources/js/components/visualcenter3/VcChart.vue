@@ -13,7 +13,7 @@ export default {
       ];
       _.forEach(value, function (item, key) {
         let date = new Date(Number(item.time));
-        labels.push(monthNames[date.getMonth()] + " / " + date.getFullYear());
+        labels.push(date.getDate()+' / '+monthNames[date.getMonth()] + " / " + date.getFullYear());
         productionFactForChart.push(item.productionFactForChart);
         productionPlanForChart.push(item.productionPlanForChart);
       });
