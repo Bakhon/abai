@@ -237,7 +237,7 @@
           </div>
           <select name="Company" class="form-control tr-field-filter" id="companySelect"
               v-model="filter" @change="chooseField">
-              <option value="Выберите месторождение">Все месторождения</option>
+              <option value="Все месторождения">Все месторождения</option>
               <option value="Акшабулак Центральный">Акшабулак Центральный</option>
               <option value="Акшабулак Южный">Акшабулак Южный</option>
               <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -6088,8 +6088,9 @@ export default {
     return {
       wells: [],
       searchString: "",
+      sortParam: "",
       sortType: "asc",
-      filter: "Выберите месторождение",
+      filter: "Все месторождения",
       dt: null,
       fullWells: [],
       editedWells: [],
@@ -6113,6 +6114,16 @@ export default {
     },
   },
   methods: {
+    setExport() {
+      const data = {
+        year: this.year,
+        month: this.month,
+        searchString: this.searchString,
+        filter: this.filter,
+        sortType: this.sortType,
+        sortParam: this.sortParam,
+      }
+    },
     editrow(row, rowId) {
       console.log('row = ', row);
       console.log('rowId = ', rowId);
@@ -6184,6 +6195,7 @@ export default {
     },
     sortBy(type) {
       let { wells, sortType } = this;
+      this.sortParam = type;
       console.log(type, sortType);
       if (sortType === "asc") {
         this.wells = wells.sort((a, b) => {
@@ -6275,7 +6287,7 @@ export default {
       console.log(filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
-      if (!filter || filter == "Выберите месторождение") {
+      if (!filter || filter == "Все месторождения") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
