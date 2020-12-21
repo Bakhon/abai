@@ -15,6 +15,7 @@
     <link href="{{ asset('css/loader.css')}}" rel="stylesheet">
 
     <script src="{{ asset('js/jquery.js') }}"></script>
+    @yield('custom_css')
 </head>
 
 <body>

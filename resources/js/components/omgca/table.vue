@@ -5,7 +5,7 @@
     </div>
     <div class="filter-bg" v-if="filterOpened" @click="hideFilters"></div>
     <div class="float-right table-page__links">
-      <a class="table-page__links-item table-page__links-item_add" :href="params.links.create">
+      <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add" :href="params.links.create">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M16 9.6H9.6V16H6.4V9.6H0V6.4H6.4V0H9.6V6.4H16V9.6Z"
                 fill="white"/>
@@ -151,7 +151,7 @@
               <a v-if="row.links.edit" class="links__item links__item_edit" :href="row.links.edit"></a>
               <a v-if="row.links.show" class="links__item links__item_view" :href="row.links.show"></a>
               <a v-if="row.links.history" class="links__item links__item_history" :href="row.links.history"></a>
-              <a class="links__item links__item_delete" @click="deleteItem(row)"></a>
+              <a v-if="row.links.delete" class="links__item links__item_delete" @click="deleteItem(row)"></a>
             </div>
           </td>
         </tr>

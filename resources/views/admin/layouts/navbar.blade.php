@@ -8,7 +8,7 @@
                 <a href=""><span class="workTypeText">Администраторы</span></a>
             </li>
             <li class="nav-item mr-5">
-                <a href=""><span class="workTypeText">Пользователи</span></a>
+                <a href="{{route('admin.users.index')}}"><span class="workTypeText">Пользователи</span></a>
             </li>
             <li class="nav-item mr-5">
                 <a href=""><span class="workTypeText">Роли</span></a>
