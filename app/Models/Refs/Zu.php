@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Zu extends Model
 {
+    public function gu()
+    {
+        return $this->belongsTo(\App\Models\Refs\Gu::class);
+    }
+
     public function wells()
     {
         return $this->hasMany(\App\Models\Refs\Well::class);

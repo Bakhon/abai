@@ -11,9 +11,9 @@
     copy_repository
     run_composer
     run_scripts
-    restart_supervisor
     build_static
     update_symlinks
+    restart_supervisor
     update_permissions
     clean_old_releases
 @endstory
