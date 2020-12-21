@@ -21,6 +21,7 @@ class RoleListResource extends JsonResource
             ],
             'links' => [
                 'edit' => route('admin.roles.edit', $this->id),
+                'delete' => route('admin.roles.destroy', $this->id),
             ]
         ];
     }

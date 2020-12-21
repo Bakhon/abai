@@ -22,7 +22,7 @@ class UserListResource extends JsonResource
                 'created_at' => $this->created_at->format('Y-m-d'),
             ],
             'links' => [
-                'edit' => route('admin.users.edit', $this->id)
+                'edit' => route('admin.users.edit', $this->id),
             ]
         ];
     }

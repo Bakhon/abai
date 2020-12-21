@@ -37,7 +37,6 @@ class UsersController extends Controller
                     'type' => 'string',
                 ],
             ],
-            'hide_delete_link' => true,
         ];
 
         return view('admin.users.index', compact('params'));

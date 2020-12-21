@@ -10,23 +10,21 @@
                 </div>
             @endif
             <div class="x_panel">
-                <h1>Редактирование роли {{$role->name}}</h1>
+                <h1>Создание роли</h1>
                 <a class="btn btn-primary float-left" href="{{ url()->previous() }}">
                     <i class="fas fa-arrow-left"></i>
                 </a>
-                <form action="{{ route('admin.roles.update', ['role' => $role->id]) }}" method="POST">
-                    @method('patch')
+                <form action="{{ route('admin.roles.store') }}" method="POST">
                     @csrf
                     <div class="row col-4">
                         <div class="col-12 mb-4">
                             <label>Название</label>
                             <div class="form-label-group">
                                 <input
-                                        type="text"
-                                        name="name"
-                                        class="form-control"
-                                        placeholder=""
-                                        value="{{$role->name}}"
+                                    type="text"
+                                    name="name"
+                                    class="form-control"
+                                    placeholder=""
                                 >
                             </div>
                         </div>
@@ -40,7 +38,6 @@
                                         type="checkbox"
                                         name="permissions[]"
                                         value="{{$permissions->get('monitoring view main')->id}}"
-                                        {{$role->permissions->where('id', $permissions->get('monitoring view main')->id)->isNotEmpty() ? 'checked' : ''}}
                                 >
                                 <label class="form-check-label"
                                        for="permission_{{$permissions->get('monitoring view main')->id}}">Просмотр главной страницы</label>
@@ -52,7 +49,6 @@
                                         type="checkbox"
                                         name="permissions[]"
                                         value="{{$permissions->get('monitoring view pipes map')->id}}"
-                                        {{$role->permissions->where('id', $permissions->get('monitoring view pipes map')->id)->isNotEmpty() ? 'checked' : ''}}
                                 >
                                 <label class="form-check-label"
                                        for="permission_{{$permissions->get('monitoring view pipes map')->id}}">Просмотр карты</label>
@@ -76,7 +72,6 @@
                                                     type="checkbox"
                                                     name="permissions[]"
                                                     value="{{$permissions->get('monitoring '.$fieldCode.' '.$code)->id}}"
-                                                    {{$role->permissions->where('id', $permissions->get('monitoring '.$fieldCode.' '.$code)->id)->isNotEmpty() ? 'checked' : ''}}
                                             >
                                             <label class="form-check-label"
                                                    for="permission_{{$permissions->get('monitoring '.$fieldCode.' '.$code)->id}}">{{$fieldName}}</label>
