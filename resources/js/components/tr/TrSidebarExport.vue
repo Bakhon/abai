@@ -1,6 +1,7 @@
 <template>
   <a
-    :href="downloadLink"
+    href="#"
+    @click="download"
     class="bg-dark list-group-item list-group-item-action"
   >
     <div class="d-flex w-100 justify-content-start align-items-center">
@@ -29,11 +30,31 @@ export default {
         window.location.pathname === "/ru/trfa"
       ) {
         // FA
-        return `${basePath}techregime/factor/download/${this.$store.getters["fa/year"]}/${this.$store.getters["fa/month"]}/${this.$store.getters["fa/pryear"]}/${this.$store.getters["fa/prmonth"]}/`
+        return `${basePath}techregime/factor/download/${this.$store.getters["fa/year"]}/${this.$store.getters["fa/month"]}/${this.$store.getters["fa/pryear"]}/${this.$store.getters["fa/prmonth"]}/`;
       } else {
         // TR
-        return `${basePath}techregime/download/${this.$store.getters["tr/year"]}/${this.$store.getters["tr/month"]}/`
+        // return `${basePath}techregime/download/${this.$store.getters["tr/year"]}/${this.$store.getters["tr/month"]}/`
+        return `${basePath}techregime/download/`;
       }
+    },
+  },
+  methods: {
+    download() {
+      this.axios
+        .post(this.downloadLink, {
+          year: this.$store.getters["tr/year"],
+          month: this.$store.getters["tr/month"],
+          searchString: this.$store.getters["tr/searchString"],
+          filter: this.$store.getters["tr/filter"],
+          sortType: this.$store.getters["tr/sortType"],
+          sortParam: this.$store.getters["tr/sortParam"],
+        })
+        .then((response) => {
+          console.log("download then = ", response);
+        })
+        .catch((error) => {
+          console.log("download error = ", error);
+        });
     },
   },
 };

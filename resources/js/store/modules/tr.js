@@ -5,6 +5,10 @@ const tr = {
     month: false,
     year: false,
     chart: 0,
+    searchString: "",
+    filter: "Все месторождения",
+    sortType: "asc",
+    sortParam: "",
   },
 
   mutations: {
@@ -17,6 +21,18 @@ const tr = {
     SET_CHART: (state, val) => {
       state.chart = val;
     },
+    SET_SEARCH: (state, val) => {
+      state.searchString = val;
+    },
+    SET_FILTER: (state, val) => {
+      state.filter = val;
+    },
+    SET_SORTTYPE: (state, val) => {
+      state.sortType = val;
+    },
+    SET_SORTPARAM: (state, val) => {
+      state.sortParam = val;
+    },
   },
 
   actions: {
@@ -26,6 +42,10 @@ const tr = {
     month: (state) => state.month,
     year: (state) => state.year,
     chart: (state) => state.chart,
+    searchString: (state) => state.searchString,
+    filter: (state) => state.filter,
+    sortType: (state) => state.sortType,
+    sortParam: (state) => state.sortParam,
   },
 };
 

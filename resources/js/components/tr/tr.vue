@@ -6116,16 +6116,6 @@ export default {
     },
   },
   methods: {
-    setExport() {
-      const data = {
-        year: this.year,
-        month: this.month,
-        searchString: this.searchString,
-        filter: this.filter,
-        sortType: this.sortType,
-        sortParam: this.sortParam,
-      }
-    },
     editrow(row, rowId) {
       console.log('row = ', row);
       console.log('rowId = ', rowId);
@@ -6149,7 +6139,7 @@ export default {
             //   return index === rowId ? response.data.data[0] :   currentRow;
             // });
 
-            // this.wells = [...this.wells.slice(0, rowId), response.data.data[0], ...this.wells.slice(rowId + 1)]
+            this.wells = [...this.wells.slice(0, rowId), response.data.data[0], ...this.wells.slice(rowId + 1)]
             this.editedWells = this.editedWells.filter(item => item.well !== response.data.data[0].well);
             this.editedWells = [...this.editedWells, response.data.data[0]]
           } else {
@@ -6197,7 +6187,6 @@ export default {
     },
     sortBy(type) {
       let { wells, sortType } = this;
-      this.sortParam = type;
       console.log(type, sortType);
       if (sortType === "asc") {
         this.wells = wells.sort((a, b) => {
@@ -6246,6 +6235,9 @@ export default {
         });
         this.sortType = "asc";
       }
+      this.sortParam = type;
+      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
+      this.$store.commit("tr/SET_SORTPARAM", type);
     },
     onChangeMonth(event) {
       this.month = event.target.value;
@@ -6289,6 +6281,7 @@ export default {
       console.log(filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
+      this.$store.commit("tr/SET_FILTER", filter);
       if (!filter || filter == "Все месторождения") {
         this.wells = fullWells;
       } else {
@@ -6321,6 +6314,7 @@ export default {
         )
         .then((response) => {
           this.isloading = false;
+          this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
             console.log(data);
