@@ -15,4 +15,9 @@ class ZuWellPipe extends Model
     {
         return $this->belongsTo(\App\Models\Refs\Well::class);
     }
+
+    public function gu()
+    {
+        return $this->belongsTo(\App\Models\Refs\Gu::class);
+    }
 }

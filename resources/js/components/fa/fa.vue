@@ -324,7 +324,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_l_1[0] * 10) / 10 }}</span>
+            <span v-if="row.q_l_1[0] != null">{{ Math.round(row.q_l_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_l_1[1][1] }}
             </span>
