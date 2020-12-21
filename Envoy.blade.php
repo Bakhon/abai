@@ -47,6 +47,8 @@
     sudo supervisorctl restart all
     echo "Restart php"
     sudo service php7.3-fpm restart
+    echo "Restart nginx"
+    sudo service nginx restart
 @endtask
 
 @task('build_static')
