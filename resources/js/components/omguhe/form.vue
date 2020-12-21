@@ -173,7 +173,7 @@
                 id="fill_status"
                 v-model="formFields.fill_status"
                 />
-                <label class="form-check-label" for="fill_status">Заправка(л)</label>
+                <label class="form-check-label" for="fill_status">Заправка, (л)</label>
             </div>
             <div class="form-label-group" v-show="formFields.fill_status">
                 <input
