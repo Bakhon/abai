@@ -394,9 +394,6 @@ export default {
         // }, 
         dataLabels: {
           enabled: true,
-          formatter: function (val) {
-            return round(val);
-          },
           offsetY: -20,
           style: {
             fontSize: "12px",

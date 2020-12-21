@@ -1,8 +1,8 @@
 <template>
-    <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
+    <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="background: #0D1E63;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4" class="th">№ скв</td>
+                <td rowspan="4" class="th" style="background: #333975;">№ скв</td>
                 <td rowspan="4" class="th">Тип скважины</td>
                 <td rowspan="4" class="th">Горизонт</td>
                 <td rowspan="4" class="th">Блок</td>
@@ -25,9 +25,9 @@
                 <td class="colspan th" colspan="4">Намечаемый режим</td>
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="3" class="th">P заб</td>
+                <td rowspan="3" class="th" style="background: #333975;">P заб</td>
                 <td rowspan="3" class="th">Q н</td>
-                <td rowspan="3" class="th">Q ж</td>
+                <td rowspan="3" class="th" style="background: #333975;">Q ж</td>
                 <td rowspan="3" class="th">Обводненность</td>
                 <td rowspan="3" class="th">P заб</td>
                 <td class="colspan th" colspan="2">ИДН</td>
@@ -37,18 +37,18 @@
 
                 <td rowspan="3" class="th">Диаметр штуцера</td>
                 <td rowspan="3" class="th">Q н</td>
-                <td rowspan="3" class="th">Q ж</td>
+                <td rowspan="3" class="th" style="background: #333975;">Q ж</td>
                 <td rowspan="3" class="th">Обводненность</td>
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="2" class="th">Q ж</td>
-                <td rowspan="2" class="th">Прирост Q н</td>
-                <td rowspan="2" class="th">Q ж</td>
+                <td rowspan="2" class="th" style="background: #333975;">Q ж</td>
+                <td rowspan="2" class="th" style="background: #333975;">Прирост Q н</td>
+                <td rowspan="2" class="th" style="background: #333975;">Q ж</td>
                 <td rowspan="2" class="th">Прирост Q н</td>
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975">
-                <td @click="sortBy('well')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('well')" class="th" style="background: #333975;"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('well_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('block')" class="th"><i class="fa fa-fw fa-sort"></i></td>
@@ -83,12 +83,12 @@
                 <td @click="sortBy('planned_wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
                 <td class="fixcol">{{row.well}} </td>
                 <!-- <td>{{row.well_type}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].well_type[1][0] !== '0'}" class="tb">
+                wells[row_index].well_type[1][0] !== '0'}" td class="fixcol">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].well_type[1][0])}`"> </span>
@@ -544,5 +544,26 @@ tr:nth-child(even) {
 
 .trtablerow {
     position: relative;
+}
+
+tr td:first-child {
+  color: #fff;
+  position: sticky;
+  left: 0;
+  width: 100px;
+}
+
+tr:nth-child(odd) .fixcol:first-child {
+  background-color: #454d7d;
+  z-index: 5000;
+}
+tr:nth-child(even) .fixcol:first-child {
+  background-color: #454d7d73;
+  z-index: 5000;
+}
+
+
+.table_tbody {
+position: static;
 }
 </style>
