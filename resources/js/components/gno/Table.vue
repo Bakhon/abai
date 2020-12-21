@@ -934,7 +934,9 @@
                   </div>
 
                   <div class="image-data col-2">
-                    <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px"/>
+                    <img class="podborgnoimg"
+                         src="./images/podbor-gno.png"
+                         alt="podbor-gno"/>
                   </div>
 
                   <div class="table-pgno-button col-8">
