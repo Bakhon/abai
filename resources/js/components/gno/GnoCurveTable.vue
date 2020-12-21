@@ -73,7 +73,7 @@ export default {
           title: "Давление, атм / Газосодержание, % ",
           hoverformat: ".1f",
           rangemode: 'nonnegative',
-          showline: false,
+          showline: true,
           // range: [0,100],
           // zeroline: false,
           // showgrid: true,
@@ -84,25 +84,6 @@ export default {
           // tickfont: {size: 10},
           linewidth: 1,
           linecolor: "#454D7D"
-        },
-
-         yaxis2: {
-          title: "",
-          hoverformat: ".1f",
-          rangemode: 'nonnegative',
-          // showline: true,
-          // range: [0,100],
-          // zeroline: false,
-          // showgrid: true,
-          // mirror: 'ticks',
-          // mirror:true,
-          // ticklen: 4,
-          // gridcolor: "#454D7D",
-          // tickfont: {size: 10},
-          overlaying: 'y',
-          side: 'right',
-          // linewidth: 1,
-          // linecolor: "#454D7D"
         },
 
         //   scene:{ gridcolor: '#ffffff',},
@@ -126,7 +107,7 @@ export default {
   methods: {
 
     setLine: function (value) {
-      console.log(value)
+      // console.log(value)
       var ipr_points = [];
       var pintake_points = [];
       var freegas_points = [];
@@ -197,7 +178,7 @@ export default {
           legendgroup: "group3",
           x: qo_points2,
           y: freegas_points2,
-          yaxis: 'y2',
+          yaxis: 'y',
           hovertemplate: '<b>Газосодержание в насосе = %{y:.1f}%</b><extra></extra>',
           marker: {
             size: "15",
@@ -263,6 +244,9 @@ export default {
      /////////
 
      /////////
+
+      console.log(this.layout);
+      console.log(this.data);
     },
     setPoints: function (value) {
       this.data[3]['x'][0] = value[0]["q_l"]
@@ -308,15 +292,8 @@ export default {
 
   },
   updated: function() {
-
-
     this.$eventBus.$on("newCurveLineData", this.setLine);
     this.$eventBus.$on("newPointsData", this.setPoints);
-
-
-
-
   }
-
 };
 </script>
