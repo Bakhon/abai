@@ -13,7 +13,6 @@
     run_scripts
     build_static
     update_symlinks
-    restart_supervisor
     update_permissions
     restart_services
     clean_old_releases
