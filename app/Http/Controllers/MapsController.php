@@ -36,23 +36,30 @@ class MapsController extends Controller
             ->get()
             ->map(
                 function ($pipe) use (&$coordinates) {
-                    if(!isset($coordinates[$pipe->gu_id])) {
+                    if (!isset($coordinates[$pipe->gu_id])) {
                         $coordinates[$pipe->gu_id] = [];
                     }
                     $coordinates[$pipe->gu_id] = array_merge(
                         $coordinates[$pipe->gu_id],
                         array_map(
                             function ($coord) {
-                                return array_reverse($coord);
+                                return [
+                                    round($coord[1], 6),
+                                    round($coord[0], 6),
+                                ];
                             },
                             $pipe->coordinates
                         )
                     );
                     return [
-                        'id' => $pipe->id,
-                        'coordinates' => array_map(
+                        'color' => [255, 0, 0],
+                        'name' => (string)$pipe->id,
+                        'path' => array_map(
                             function ($coord) {
-                                return array_reverse($coord);
+                                return [
+                                    round($coord[1], 6),
+                                    round($coord[0], 6),
+                                ];
                             },
                             $pipe->coordinates
                         )
@@ -65,23 +72,30 @@ class MapsController extends Controller
             ->get()
             ->map(
                 function ($pipe) use (&$coordinates) {
-                    if(!isset($coordinates[$pipe->gu_id])) {
+                    if (!isset($coordinates[$pipe->gu_id])) {
                         $coordinates[$pipe->gu_id] = [];
                     }
                     $coordinates[$pipe->gu_id] = array_merge(
                         $coordinates[$pipe->gu_id],
                         array_map(
                             function ($coord) {
-                                return array_reverse($coord);
+                                return [
+                                    round($coord[1], 6),
+                                    round($coord[0], 6),
+                                ];
                             },
                             $pipe->coordinates
                         )
                     );
                     return [
-                        'id' => $pipe->id,
-                        'coordinates' => array_map(
+                        'color' => [0, 255, 0],
+                        'name' => (string)$pipe->id,
+                        'path' => array_map(
                             function ($coord) {
-                                return array_reverse($coord);
+                                return [
+                                    round($coord[1], 6),
+                                    round($coord[0], 6),
+                                ];
                             },
                             $pipe->coordinates
                         )
@@ -89,7 +103,7 @@ class MapsController extends Controller
                 }
             );
 
-        foreach($coordinates as $guId => $coords) {
+        foreach ($coordinates as $guId => $coords) {
             $guCenters[$guId] = !empty($coords) ? $this->mapService->calculateCenterOfCoordinates($coords) : null;
         }
 
@@ -104,7 +118,7 @@ class MapsController extends Controller
                 function ($well) {
                     return [
                         'name' => $well->name,
-                        'coords' => [$well->lon, $well->lat],
+                        'coords' => [(float)$well->lon, (float)$well->lat],
                     ];
                 }
             );
@@ -118,7 +132,7 @@ class MapsController extends Controller
                 function ($zu) {
                     return [
                         'name' => $zu->name,
-                        'coords' => [$zu->lon, $zu->lat],
+                        'coords' => [(float)$zu->lon, (float)$zu->lat],
                     ];
                 }
             );
@@ -129,15 +143,14 @@ class MapsController extends Controller
                 $guPoints[] = [
                     'id' => $gu->id,
                     'name' => $gu->name,
-                    'coords' => [$gu->lon, $gu->lat]
+                    'coords' => [(float)$gu->lon, (float)$gu->lat]
                 ];
             }
         }
 
 
         return [
-            'wellPipes' => $wellPipes,
-            'zuPipes' => $zuPipes,
+            'pipes' => $wellPipes->merge($zuPipes),
             'wellPoints' => $wellPoints,
             'zuPoints' => $zuPoints,
             'guPoints' => $guPoints,
