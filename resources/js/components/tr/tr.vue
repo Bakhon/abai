@@ -6055,6 +6055,10 @@ export default {
   },
   beforeCreate: function () {},
   created() {
+    this.$store.commit("tr/SET_SORTTYPE", this.sortType);
+    this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
+    this.$store.commit("tr/SET_SEARCH", this.searchString);
+    this.$store.commit("tr/SET_FILTER", this.filter);
     var today = new Date();
     var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
