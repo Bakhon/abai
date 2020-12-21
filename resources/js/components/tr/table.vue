@@ -84,8 +84,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(row, row_index) in wells" :key="row_index">
-                <td class="tb">{{row.well}}</td>
+            <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
+                <td class="fixcol">{{row.well}} </td>
                 <!-- <td>{{row.well_type}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" class="tb">
@@ -534,14 +534,15 @@ tr:nth-child(even) {
     z-index: 3000;
 }
 
-
-
-
-/* .tb {
-    position: sticky;
-
-    top: 25px;
-    z-index: 3000;
+/* .fixcol {
+    position: fixed;
+    background: black;
+    z-index: 2000;
 } */
 
+
+
+.trtablerow {
+    position: relative;
+}
 </style>

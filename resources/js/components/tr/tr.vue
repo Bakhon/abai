@@ -6459,10 +6459,10 @@ tr:nth-child(even) {
 }
 
 
-.table {
+/* .table {
     overflow: scroll;
     height: calc(100vh - 247px);
-}
+} */
 .table .th {
     position: sticky;
     background: rgb(51, 57, 117);
@@ -6510,5 +6510,6 @@ tr:nth-child(even) {
 .faheadhight {
   height: 40px;
 }
+
 
 </style>
