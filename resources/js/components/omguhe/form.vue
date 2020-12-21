@@ -93,7 +93,7 @@
                     </option>
                 </select>
             </div>
-            <label>Уровень</label>
+            <label>Уровень, (л)</label>
             <div class="form-label-group">
                 <input
                     type="hidden"
@@ -173,7 +173,7 @@
                 id="fill_status"
                 v-model="formFields.fill_status"
                 />
-                <label class="form-check-label" for="fill_status">Заправка</label>
+                <label class="form-check-label" for="fill_status">Заправка(л)</label>
             </div>
             <div class="form-label-group" v-show="formFields.fill_status">
                 <input
@@ -187,7 +187,7 @@
                 id="fill"
                 placeholder=""
                 />
-                <label class="form-check-label" for="fill">Заправка</label>
+                <label class="form-check-label" for="fill">Заправка, (л)</label>
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
