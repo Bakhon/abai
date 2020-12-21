@@ -243,7 +243,7 @@ export default {
   },
   methods: {
     saveCompany(com) {
-      console.log(com);
+     // console.log(com);
       this.company = com;
       this.getProduction(this.item, this.item2, this.item3, this.item4);
       // this.getProductionOilandGas();
@@ -990,9 +990,9 @@ export default {
 
             //this.getProductionPercentOneDzo(arrdata);      
 
-            var dataDay = [];
+        /*    var dataDay = [];
             dataDay = _.filter(arrdata, _.iteratee({ __time: Number(timestampToday) }));
-            dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
+            dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);*/
 
             /*var dataDay = new Array();
             dataDay = _.filter(arrdata, function (item) {
@@ -1034,6 +1034,7 @@ export default {
               ]);
             });
 
+         
             var productionForChart = _(dataWithMay)
               .groupBy("__time")
               .map((__time, id) => ({
@@ -1043,7 +1044,13 @@ export default {
               }))
               .value();
 
-              console.log(productionForChart);
+              this.inj_wells_idle = dataWithMay[0]['inj_wells_idle'];
+              this.inj_wells_work = dataWithMay[0]['inj_wells_work'];
+              this.prod_wells_work = dataWithMay[0]['prod_wells_work'];
+              this.prod_wells_idle = dataWithMay[0]['prod_wells_idle'];
+
+
+              //console.log(productionForChart);
             if (this.company != "all") {
               this.$emit("data", productionForChart); //k1q new
             }
@@ -1238,9 +1245,21 @@ export default {
           );
 
           var dataDay = [];
+        
+
+          dataDay = _.filter(data, function (item) {
+            return _.every([
+              _.inRange(
+                //item.dateSimple,
+                item.__time,
+                timestampToday - 86400000,// * Number(period),
+                timestampToday + 86400000
+              ),
+            ]);
+          });
 
 
-          dataDay = _.filter(data, _.iteratee({ __time: timestampToday }));
+          //dataDay = _.filter(data, _.iteratee({ __time: timestampToday }));
           dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
 
           var dzoDay = [];
@@ -1258,7 +1277,7 @@ export default {
           var dzoPercent = [];
           var productionFactPercent = [];
 
-
+          console.log(dataDay);
 
 
           _.forEach(dataDay, function (item) {
@@ -1276,9 +1295,9 @@ export default {
             inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
             prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
             prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });
-            starts_krs.push({ starts_krs: item.starts_krs });
+            /*starts_krs.push({ starts_krs: item.starts_krs });
             starts_prs.push({ starts_prs: item.starts_prs });
-            starts_drl.push({ starts_drl: item.starts_drl });
+            starts_drl.push({ starts_drl: item.starts_drl });*/
           });
 
 
@@ -1613,7 +1632,7 @@ export default {
            );
  
            this.starts = starts;*/
-           console.log(productionForChart);
+          // console.log(productionForChart);
 
           this.$emit("data", productionForChart);
 
@@ -1810,6 +1829,11 @@ export default {
   },
 
   async mounted() {
+    this.range = {
+      start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
+      end: new Date().toISOString(),
+      formatInput: true,
+    };
     localStorage.setItem("changeButton","Yes");
     var nowDate = new Date().toLocaleDateString();
     this.timeSelect = nowDate;

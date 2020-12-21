@@ -8,8 +8,10 @@ use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgUHECreateRequest;
 use App\Http\Requests\OmgUHEUpdateRequest;
+use App\Models\ComplicationMonitoring\OmgCA;
 use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -337,12 +339,27 @@ class OmgUHEController extends Controller
                                         ->where('out_of_service_оf_dosing', '<>', '1')
                                         ->latest()
                                         ->first();
+        
+        $datetime = new DateTime($request->date);
+        $ddng = OmgCA::where('gu_id', '=', $request->gu_id)
+                        ->where('date', '=', $datetime->format("Y").'-01-01')
+                        ->first();
 
         if($result){
             if($result->fill){
-                return $result->fill;
+                $res = [
+                    'level' => $result->fill,
+                    'qv' => $ddng->q_v
+                ];
+
+                return response()->json($res);
             }else{
-                return $result->level;
+                $res =  [
+                    'level' => $result->level,
+                    'qv' => $ddng->q_v
+                ];
+
+                return response()->json($res);
             }
         }else{
             return false;
