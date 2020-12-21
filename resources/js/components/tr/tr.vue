@@ -6715,6 +6715,9 @@ export default {
       this.show_first = false;
     },
     sortBy(type) {
+      this.sortParam = type;
+      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
+      this.$store.commit("tr/SET_SORTPARAM", type);
       let { wells, sortType } = this;
       console.log(type, sortType);
       if (sortType === "asc") {
@@ -6764,9 +6767,6 @@ export default {
         });
         this.sortType = "asc";
       }
-      this.sortParam = type;
-      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
-      this.$store.commit("tr/SET_SORTPARAM", type);
     },
     onChangeMonth(event) {
       this.month = event.target.value;

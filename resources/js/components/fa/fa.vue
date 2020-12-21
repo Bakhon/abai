@@ -93,7 +93,7 @@
       <h3 style="color: white; margin-left: 3px">Факторный анализ</h3>
       <select name="Company" class="form-control tr-field-filter" id="companySelect"
         v-model="filter" @change="chooseField">
-        <option value="Выберите месторождение">Все месторождения</option>
+        <option value="Все месторождения">Все месторождения</option>
         <option value="Акшабулак Центральный">Акшабулак Центральный</option>
         <option value="Акшабулак Южный">Акшабулак Южный</option>
         <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -877,7 +877,7 @@ export default {
       date1: null,
       date2: null,
       fullWells: [],
-      filter: "Выберите месторождение",
+      filter: "Все месторождения",
       editdtm: null,
       editdty: null,
       editdtprevm: null,
@@ -999,6 +999,9 @@ export default {
   },
   methods: {
     sortBy(type) {
+      this.sortParam = type;
+      this.$store.commit("fa/SET_SORTTYPE", this.sortType);
+      this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
       let { wells, sortType } = this;
       console.log(type, sortType);
       if (sortType === "asc") {
@@ -1048,9 +1051,6 @@ export default {
         });
         this.sortType = "asc";
       }
-      this.sortParam = type;
-      this.$store.commit("fa/SET_SORTTYPE", this.sortType);
-      this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
     },
     getColorTwo(status) {
       if (status === "1") return "#5e1d1d";
@@ -1115,7 +1115,7 @@ export default {
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("fa/SET_FILTER", filter);
-      if (!filter || filter == "Выберите месторождение") {
+      if (!filter || filter == "Все месторождения") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);

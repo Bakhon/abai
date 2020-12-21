@@ -697,14 +697,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
           ),
         },
         {
@@ -823,14 +823,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
           ),
         },
         {
@@ -942,14 +942,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
           ),
         },
         {
@@ -1071,14 +1071,14 @@ export default {
           name: "Прирост Qж идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_liq_inc")
+            this.getStringOrFirstItem(item, "tp_idn_liq_inc").toFixed(2)
           ),
         },
         {
           name: "Прирост Qж грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_liq")
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_liq").toFixed(2)
           ),
         },
         {
