@@ -354,7 +354,6 @@ export default {
                 });
         },
         pick() {
-            console.log("piiiick");
             this.axios
                 .post("/ru/getprevdaylevel", {
                     gu_id: this.formFields.gu_id,
