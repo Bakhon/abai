@@ -236,6 +236,7 @@ h1 {
   &__wrapper{
     position: relative;
     #deckgl-overlay{
+      background: rgba(255,255,255,0.4);
       left: 0;
       position: absolute;
       top: 0;
