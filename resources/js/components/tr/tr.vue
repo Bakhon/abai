@@ -237,7 +237,7 @@
           </div>
           <select name="Company" class="form-control tr-field-filter" id="companySelect"
               v-model="filter" @change="chooseField">
-              <option value="Выберите месторождение">Все месторождения</option>
+              <option value="Все месторождения">Все месторождения</option>
               <option value="Акшабулак Центральный">Акшабулак Центральный</option>
               <option value="Акшабулак Южный">Акшабулак Южный</option>
               <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -6090,8 +6090,9 @@ export default {
     return {
       wells: [],
       searchString: "",
+      sortParam: "",
       sortType: "asc",
-      filter: "Выберите месторождение",
+      filter: "Все месторождения",
       dt: null,
       fullWells: [],
       editedWells: [],
@@ -6138,7 +6139,7 @@ export default {
             //   return index === rowId ? response.data.data[0] :   currentRow;
             // });
 
-            // this.wells = [...this.wells.slice(0, rowId), response.data.data[0], ...this.wells.slice(rowId + 1)]
+            this.wells = [...this.wells.slice(0, rowId), response.data.data[0], ...this.wells.slice(rowId + 1)]
             this.editedWells = this.editedWells.filter(item => item.well !== response.data.data[0].well);
             this.editedWells = [...this.editedWells, response.data.data[0]]
           } else {
@@ -6234,6 +6235,9 @@ export default {
         });
         this.sortType = "asc";
       }
+      this.sortParam = type;
+      this.$store.commit("tr/SET_SORTTYPE", this.sortType);
+      this.$store.commit("tr/SET_SORTPARAM", type);
     },
     onChangeMonth(event) {
       this.month = event.target.value;
@@ -6277,7 +6281,8 @@ export default {
       console.log(filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
-      if (!filter || filter == "Выберите месторождение") {
+      this.$store.commit("tr/SET_FILTER", filter);
+      if (!filter || filter == "Все месторождения") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
@@ -6309,6 +6314,7 @@ export default {
         )
         .then((response) => {
           this.isloading = false;
+          this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
             console.log(data);
