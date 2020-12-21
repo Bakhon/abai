@@ -1,5 +1,6 @@
 .background {
-    background-color: #20274e;
+    /*background-color: #20274e;*/
+    background: #272953;
 }
 
 .first-column {
@@ -109,7 +110,8 @@ body {
     font-size: 14px;
     /* position: relative; */
     /* width: 220px; */
-    background-color: #20274e;
+    /*background-color: #20274e;*/
+    background: #272953;
     text-align: left;
     /*height: 240px;*/
     height: 220px;
@@ -125,7 +127,8 @@ body {
     font-size: 14px;
     /* position: relative; */
     /* width: 220px; */
-    background-color: #20274e;
+    /*background-color: #20274e;*/
+    background: #272953;
     padding: 15px 8px 8px;
     text-align: left;
     height: 172px;
@@ -207,32 +210,22 @@ body {
 }
 
 .tables-string-gno5 {
-    margin-top: 15px;
-    padding-right: 10px!important;
+    margin-top: 10px;
+    margin-bottom: 10px;
     float: left;
     font-size: 16px;
     position: relative;
-    /* max-width: 745px!important; */
     background-color: #293688;;
-    padding: 10px 0px;
-    text-align: left;
-    margin-bottom: 15px;
-    /* margin-left: 15px; */
+    padding: 10px 0;
     min-height: 45px;
-    text-align: center;
-    /* font-weight:bold; */
-    /* border-right-style: solid; */
-    /* border-color: #0F1430; */
-    /* border-right-width: 20px; */
     border-radius: 9px;
     text-align: center;
-    margin-bottom: 15px;
     font-weight: bold;
     width: 674px;
     align-items: center;
     height: 30px;
     max-width: 99.9%;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     line-height: 18px;
     cursor: pointer;
 }
@@ -254,16 +247,13 @@ body {
     font-size: 16px;
     font-weight: bold;
     position: relative;
-    /* width: 738px; */
     background-color: #293688;;
     padding: 10px 0;
-    margin-top: 15px;
-    /* margin-left: 15px; */
     min-height: 45px;
     text-align: center;
-    /* font-weight:bold; */
     border-radius: 9px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     width: 680px;
     height: 30px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -290,16 +280,12 @@ body {
     font-size: 16px;
     font-weight: bold;
     position: relative;
-    background-color: #15509D;
     padding: 15px 15px;
-    /* margin-left: 15px; */
     height: 44px;
-    /* font-weight:bold; */
     background: rgba(19, 176, 98, 0.8);
-    /* width: 1492px; */
     border-radius: 8px;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     line-height: 18px;
     cursor: pointer;
 }
@@ -492,14 +478,22 @@ span.open, span.closer {
 .spoiler {
     font-size: 14px;
     position: relative;
-    background-color: #20274e;
+    background: #272953;
     padding: 8px;
     text-align: left;
     margin-bottom: 5px;
 }
 
+.spoiler.opened {
+    height: 288px;
+}
+
+.spoiler:last-child {
+    margin-bottom: 0;
+}
+
 .spoiler-device {
-    background-color: #20274e;
+    background: #272953;
 }
 
 .relative {
@@ -1181,7 +1175,7 @@ input.checkbox-q-liquid {
 }
 
 .right-block-details {
-    margin: 0px;
+    margin: 0;
 }
 
 /* Параметры подбора */
@@ -1189,9 +1183,9 @@ input.checkbox-q-liquid {
 
 .bottom-configuration {
     background: #272953;
-    padding: 15px 30px 14px;
+    padding: 10px 15px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 .inflow-configuration-min-width
 {
@@ -1258,11 +1252,11 @@ input.checkbox-q-liquid {
 }
 
 
-.bottom-configuration-header
-{
+.bottom-configuration-header {
     font-size: 20px;
-    font-width: bold;
-    padding-bottom: 18px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    height: 30px;
 }
 
 #table-wrapper {
@@ -1292,9 +1286,10 @@ input.checkbox-q-liquid {
   }
 
 .gno-curve-table-title {
-    font-size: 24px;
+    height: 35px;
+    font-size: 20px;
     font-weight: bold;
-    padding: 20px 30px 0 30px;
+    padding: 10px 15px 0 15px;
 }
 
 .gno-shgn-block-title {
@@ -1453,6 +1448,10 @@ input.checkbox-q-liquid {
 /*.modal-bign-wrapper {*/
 /*    z-index: 999;*/
 /*}*/
+
+.first-column-curve-block {
+    margin-bottom: 10px;
+}
 
 @media (max-width: 1765px) {
     .curve-settings, .choice-params {

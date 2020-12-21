@@ -101,9 +101,12 @@
             <div class="inclinom-button" @click="InclMenu()">Инклинометрия</div>
             <!-- Кнопка инклонометрии end-->
 
-            <div class="spoiler">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1"
-                     :checked="activeRightTabName === 'devices'" @change="setActiveRightTabName($event, 'devices')"/>
+            <div class="spoiler"
+                 :class="{ 'opened': activeRightTabName === 'devices' }">
+              <input style="width: 845px; height: 45px;" type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'devices'"
+                     @change="setActiveRightTabName($event, 'devices')"/>
               <div class="box">
                 <div class="select-well no-gutter col-12">
                   <div class="devices-title"><b>Оборудование</b></div>
@@ -180,9 +183,13 @@
               </div>
             </div>
 
-            <div class="spoiler">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1"
-                     :checked="activeRightTabName === 'pvt'" @change="setActiveRightTabName($event, 'pvt')"/>
+            <div class="spoiler"
+                 :class="{ 'opened': activeRightTabName === 'pvt' }">
+              <input style="width: 845px; height: 45px;"
+                     type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'pvt'"
+                     @change="setActiveRightTabName($event, 'pvt')"/>
               <div class="box">
                 <div class="select-well no-gutter col-12">
                   <div class="pvt-title">PVT</div>
@@ -249,14 +256,36 @@
               </div>
             </div>
 
-            <div class="spoiler">
+            <div class="spoiler"
+                 :class="{ 'opened': activeRightTabName === 'technological-mode' }">
+              <input style="width: 845px; height: 45px;"
+                     type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'technological-mode'"
+                     @change="setActiveRightTabName($event, 'technological-mode')"/>
               <div class="box">
                 <div class="select-well no-gutter col-12">
                   <div class="technological-mode-title">Технологический режим</div>
                 </div>
-                <span class="closer"></span>
-                <span class="open"></span>
-                <blockquote class="right-block-details" v-if="activeRightTabName === 'technological-mode'">
+
+                <span class="closer">
+                  <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M11.8083 6.4147L11.4156 6.80558C11.2917 6.92697 11.1271 6.99486 10.951 6.99486C10.775 6.99486 10.6104 6.92697 10.4864 6.80558L6.003 2.37722L1.51331 6.81073C1.38935 6.93211 1.22477 7 1.04872 7C0.873717 7 0.708088 6.93211 0.585169 6.81073L0.19141 6.4219C-0.0638035 6.16885 -0.0638035 5.75738 0.19141 5.50536L5.53632 0.207788C5.66028 0.0853782 5.82487 0 6.00195 0H6.00404C6.18008 0 6.34467 0.0853782 6.46863 0.207788L11.8083 5.49096C11.9323 5.61234 12 5.78001 12 5.95386C12 6.1277 11.9323 6.29229 11.8083 6.4147Z"
+                        fill="#FEFEFE"/>
+                  </svg>
+                </span>
+
+                <span class="open">
+                  <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M11.8083 0.585305L11.4156 0.194416C11.2917 0.0730345 11.1271 0.00514328 10.951 0.00514328C10.775 0.00514328 10.6104 0.0730345 10.4864 0.194416L6.003 4.62278L1.51331 0.189273C1.38935 0.0678913 1.22477 0 1.04872 0C0.873717 0 0.708088 0.0678913 0.585169 0.189273L0.19141 0.578104C-0.0638035 0.831154 -0.0638035 1.24262 0.19141 1.49464L5.53632 6.79221C5.66028 6.91462 5.82487 7 6.00195 7H6.00404C6.18008 7 6.34467 6.91462 6.46863 6.79221L11.8083 1.50904C11.9323 1.38766 12 1.21999 12 1.04614C12 0.8723 11.9323 0.707715 11.8083 0.585305Z"
+                        fill="#FEFEFE"/>
+                  </svg>
+                </span>
+
+                <blockquote class="right-block-details">
+<!--                            v-if="activeRightTabName === 'technological-mode'">-->
                   <div class="tech-data no-gutter col-7">Qж</div>
                   <div class="tech-data table-border-gno no-gutter col-5">
                     {{ qL }} м3/сут
@@ -305,7 +334,7 @@
         </div>
 
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
-          <div class="no-gutter col-md-12">
+          <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
               <modal class="modal-bign-wrapper" name="modalIncl" :width="1150" :height="600" style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
@@ -1029,7 +1058,6 @@
           </div>
 
           <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
-          <br/>
 
           <div class="no-gutter col-md-12">
             <div class="container-fluid d-sm-block">
@@ -1385,8 +1413,6 @@
           <!-- Конец блока -->
         </div>
       </div>
-      <br/>
-      <br/>
     </div>
 
     <notifications position="top"></notifications>
@@ -2555,27 +2581,27 @@ export default {
         }
 
       }
-    }},
+    },
+    setActiveRightTabName: function (e, val) {
+      if (val === this.activeRightTabName) {
+        this.activeRightTabName = 'technological-mode';
+      } else {
+        this.activeRightTabName = val;
+      }
+    },
 
-  setActiveRightTabName: function (e, val) {
-    if (val === this.activeRightTabName) {
-      this.activeRightTabName = 'technological-mode';
-    } else {
-      this.activeRightTabName = val;
+    downloadImg() {
+      $('#btnExport').click(function(){
+        //var title = $("<p>Image Here</p>");
+        //$("#content").append(title);
+        var divGraph = $('#graph');
+        Plotly.toImage('graph', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+          console.log(dataURL);
+          img_png.attr("src", dataURL);
+        });
+      });
     }
   },
-
-  downloadImg() {
-    $('#btnExport').click(function(){
-      //var title = $("<p>Image Here</p>");
-      //$("#content").append(title);
-      var divGraph = $('#graph');
-      Plotly.toImage('graph', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
-        console.log(dataURL);
-        img_png.attr("src", dataURL);
-      });
-    });
-  }
 };
 </script>
 <style scoped></style>

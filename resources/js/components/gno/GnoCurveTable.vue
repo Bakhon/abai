@@ -41,7 +41,7 @@ export default {
       ],
       layout: {
         // width:  1200,
-        // height: 450,
+        height: 420,
         // autosize: true,
         // showlegend: true,
         margin: {
@@ -73,7 +73,7 @@ export default {
           title: "Давление, атм / Газосодержание, % ",
           hoverformat: ".1f",
           rangemode: 'nonnegative',
-          // showline: true,
+          showline: false,
           // range: [0,100],
           // zeroline: false,
           // showgrid: true,
@@ -106,8 +106,8 @@ export default {
         },
 
         //   scene:{ gridcolor: '#ffffff',},
-        paper_bgcolor: "#20274e",
-        plot_bgcolor: "#20274e",
+        paper_bgcolor: "#272953",
+        plot_bgcolor: "#272953",
         font: { color: "#fff" },
 
         legend: {
@@ -275,15 +275,15 @@ export default {
       this.data[4]['y'][0] = value[2]["p"]
       this.data[4]['text'][0] = value[2]["q_oil"]
     },
-    resize() {
-      console.log(window.innerWidth);
-    }
+    // resize() {
+    //   console.log(window.innerWidth);
+    // }
   },
   mounted() {},
   created: function () {
     this.$parent.$on("LineData", this.setLine);
     this.$parent.$on("PointsData", this.setPoints);
-    window.addEventListener("resize", this.resize);
+    // window.addEventListener("resize", this.resize);
 
     // this.$on("LineData", this.setLine);
     // this.$on("PointsData", this.setPoints);
