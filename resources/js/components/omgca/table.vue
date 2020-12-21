@@ -155,7 +155,7 @@
               <a v-if="row.links.edit" class="links__item links__item_edit" :href="row.links.edit"></a>
               <a v-if="row.links.show" class="links__item links__item_view" :href="row.links.show"></a>
               <a v-if="row.links.history" class="links__item links__item_history" :href="row.links.history"></a>
-              <a v-if="!params.hide_delete_link" class="links__item links__item_delete" @click="deleteItem(row)"></a>
+              <a v-if="row.links.delete" href="#" class="links__item links__item_delete" @click.prevent="deleteItem(row)"></a>
             </div>
           </td>
         </tr>

@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     use AuthenticatesUsers;
 
-    protected $redirectTo = "/admin";
+    protected $redirectTo = "/admin/users";
 
     public function __construct()
     {

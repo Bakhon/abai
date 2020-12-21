@@ -1,12 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a href="{{url('/')}}">
+    <a href="{{url('/admin')}}">
         <div class="logo"></div>
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item mr-5">
-                <a href=""><span class="workTypeText">Администраторы</span></a>
-            </li>
             <li class="nav-item mr-5">
                 <a href="{{route('admin.users.index')}}"><span class="workTypeText">Пользователи</span></a>
             </li>
