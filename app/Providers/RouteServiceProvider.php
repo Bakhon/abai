@@ -46,7 +46,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapRoutesByModules();
     }
 
     /**
@@ -76,5 +76,30 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapRoutesByModules()
+    {
+
+        $modules = [
+            'db_prototype',
+            'visual_center',
+            'gno',
+            'tech',
+            'monitoring'
+        ];
+
+        foreach($modules as $module) {
+            Route::middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path("routes/modules/{$module}.php"));
+        }
     }
 }

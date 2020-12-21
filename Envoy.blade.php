@@ -11,10 +11,10 @@
     copy_repository
     run_composer
     run_scripts
-    restart_supervisor
     build_static
     update_symlinks
     update_permissions
+    restart_services
     clean_old_releases
 @endstory
 
@@ -41,9 +41,13 @@
     php artisan cache:clear
 @endtask
 
-@task('restart_supervisor')
+@task('restart_services')
     echo "Restart supervisor"
     sudo supervisorctl restart all
+    echo "Restart php"
+    sudo service php7.3-fpm restart
+    echo "Restart nginx"
+    sudo service nginx restart
 @endtask
 
 @task('build_static')
