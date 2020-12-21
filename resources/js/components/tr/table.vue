@@ -534,11 +534,6 @@ tr:nth-child(even) {
     z-index: 3000;
 }
 
-/* .fixcol {
-    position: fixed;
-    background: black;
-    z-index: 2000;
-} */
 
 
 
@@ -555,11 +550,11 @@ tr td:first-child {
 
 tr:nth-child(odd) .fixcol:first-child {
   background-color: #454d7d;
-  z-index: 5000;
+  /* z-index: 5000; */
 }
 tr:nth-child(even) .fixcol:first-child {
   background-color: #454d7d73;
-  z-index: 5000;
+  /* z-index: 5000; */
 }
 
 
