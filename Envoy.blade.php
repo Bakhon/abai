@@ -15,6 +15,7 @@
     update_symlinks
     restart_supervisor
     update_permissions
+    restart_services
     clean_old_releases
 @endstory
 
@@ -41,9 +42,11 @@
     php artisan cache:clear
 @endtask
 
-@task('restart_supervisor')
+@task('restart_services')
     echo "Restart supervisor"
     sudo supervisorctl restart all
+    echo "Restart php"
+    sudo service php7.3-fpm restart
 @endtask
 
 @task('build_static')
