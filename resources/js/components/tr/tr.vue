@@ -1981,7 +1981,7 @@
                   )}`"
                 >
                 </span>
-                <span>{{ Math.round(row.p_intake[0] * 10) / 10 }}</span>
+                <span v-if="row.p_intake[0] != isNaN">{{ Math.round(row.p_intake[0] * 10) / 10 }}</span>
                 <span v-if="wells && wells[row_index]" class="cell-comment">
                   {{ wells[row_index].p_intake[1][1] }}
                 </span>
