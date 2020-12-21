@@ -336,6 +336,10 @@ body {
     border-top-width: 1px;
 }
 
+.table-border-gno-top label {
+    margin: 0.25rem 0;
+}
+
 .table-border-gno-right {
     border-right-color: #3b4172;
     border-right-style: solid;
