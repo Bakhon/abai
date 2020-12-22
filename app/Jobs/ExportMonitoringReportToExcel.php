@@ -24,17 +24,19 @@ class ExportMonitoringReportToExcel implements ShouldQueue
 
     protected $dateFrom;
     protected $dateTo;
+    protected $sections;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Carbon $dateFrom, Carbon $dateTo)
+    public function __construct(Carbon $dateFrom, Carbon $dateTo, array $sections)
     {
         $this->prepareStatus();
         $this->dateFrom = $dateFrom;
         $this->dateTo = $dateTo;
+        $this->sections = $sections;
     }
 
     /**
@@ -52,80 +54,92 @@ class ExportMonitoringReportToExcel implements ShouldQueue
             ->get()
             ->keyBy('id');
 
-        $omgCas = \App\Models\ComplicationMonitoring\OmgCA::query()
-            ->where('date', '>=', (clone $this->dateFrom)->startOfYear())
-            ->where('date', '<=', (clone $this->dateTo)->startOfYear())
-            ->select('plan_dosage', 'q_v')
-            ->selectRaw('YEAR(date) as year')
-            ->get()
-            ->keyBy('year');
+        if(in_array('omgca', $this->sections)) {
+            $omgCas = \App\Models\ComplicationMonitoring\OmgCA::query()
+                ->where('date', '>=', (clone $this->dateFrom)->startOfYear())
+                ->where('date', '<=', (clone $this->dateTo)->startOfYear())
+                ->select('plan_dosage', 'q_v')
+                ->selectRaw('YEAR(date) as year')
+                ->get()
+                ->keyBy('year');
+        }
 
-        $omgNgdus = \App\Models\ComplicationMonitoring\OmgNGDU::query()
-            ->whereNotNull('gu_id')
-            ->whereBetween('date', [$this->dateFrom, $this->dateTo])
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return $item->gu_id . '_' . Carbon::parse($item->date)->format('Y-m-d');
-                }
-            )
-            ->map(
-                function ($item) {
-                    return $item[0];
-                }
-            );
+        if(in_array('omgngdu', $this->sections)) {
+            $omgNgdus = \App\Models\ComplicationMonitoring\OmgNGDU::query()
+                ->whereNotNull('gu_id')
+                ->whereBetween('date', [$this->dateFrom, $this->dateTo])
+                ->get()
+                ->groupBy(
+                    function ($item) {
+                        return $item->gu_id . '_' . Carbon::parse($item->date)->format('Y-m-d');
+                    }
+                )
+                ->map(
+                    function ($item) {
+                        return $item[0];
+                    }
+                );
+        }
 
-        $omgUhes = \App\Models\ComplicationMonitoring\OmgUHE::query()
-            ->whereNotNull('gu_id')
-            ->whereBetween('date', [$this->dateFrom, $this->dateTo])
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return $item->gu_id . '_' . Carbon::parse($item->date)->format('Y-m-d');
-                }
-            )
-            ->map(
-                function ($item) {
-                    return $item[0];
-                }
-            );
+        if(in_array('omguhe', $this->sections)) {
+            $omgUhes = \App\Models\ComplicationMonitoring\OmgUHE::query()
+                ->whereNotNull('gu_id')
+                ->whereBetween('date', [$this->dateFrom, $this->dateTo])
+                ->get()
+                ->groupBy(
+                    function ($item) {
+                        return $item->gu_id . '_' . Carbon::parse($item->date)->format('Y-m-d');
+                    }
+                )
+                ->map(
+                    function ($item) {
+                        return $item[0];
+                    }
+                );
+        }
 
-        $watermeasurements = \App\Models\ComplicationMonitoring\WaterMeasurement::query()
-            ->whereNotNull('gu_id')
-            ->whereBetween('date', [$this->dateFrom, $this->dateTo])
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return $item->gu_id . '_' . Carbon::parse($item->date)->format('Y-m-d');
-                }
-            )
-            ->map(
-                function ($item) {
-                    return $item[0];
-                }
-            );
+        if(in_array('watermeasurement', $this->sections)) {
+            $watermeasurements = \App\Models\ComplicationMonitoring\WaterMeasurement::query()
+                ->whereNotNull('gu_id')
+                ->whereBetween('date', [$this->dateFrom, $this->dateTo])
+                ->get()
+                ->groupBy(
+                    function ($item) {
+                        return $item->gu_id . '_' . Carbon::parse($item->date)->format('Y-m-d');
+                    }
+                )
+                ->map(
+                    function ($item) {
+                        return $item[0];
+                    }
+                );
+        }
 
-        $oilgases = \App\Models\ComplicationMonitoring\OilGas::query()
-            ->whereNotNull('gu_id')
-            ->whereBetween('date', [$this->dateFrom, $this->dateTo])
-            ->get()
-            ->groupBy(
-                function ($item) {
-                    return $item->gu_id . '_' . Carbon::parse($item->date)->format('Y-m-d');
-                }
-            )
-            ->map(
-                function ($item) {
-                    return $item[0];
-                }
-            );
+        if(in_array('oilgas', $this->sections)) {
+            $oilgases = \App\Models\ComplicationMonitoring\OilGas::query()
+                ->whereNotNull('gu_id')
+                ->whereBetween('date', [$this->dateFrom, $this->dateTo])
+                ->get()
+                ->groupBy(
+                    function ($item) {
+                        return $item->gu_id . '_' . Carbon::parse($item->date)->format('Y-m-d');
+                    }
+                )
+                ->map(
+                    function ($item) {
+                        return $item[0];
+                    }
+                );
+        }
 
-        $corrosions = \App\Models\ComplicationMonitoring\Corrosion::query()
-            ->whereNotNull('gu_id')
-            ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $this->dateTo)
-            ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '>=', $this->dateFrom)
-            ->get()
-            ->groupBy('gu_id');
+        if(in_array('corrosions', $this->sections)) {
+            $corrosions = \App\Models\ComplicationMonitoring\Corrosion::query()
+                ->whereNotNull('gu_id')
+                ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $this->dateTo)
+                ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '>=', $this->dateFrom)
+                ->get()
+                ->groupBy('gu_id');
+        }
 
         $reportData = [];
         $date = clone $this->dateFrom;
@@ -133,17 +147,33 @@ class ExportMonitoringReportToExcel implements ShouldQueue
             foreach ($gus as $gu) {
                 $key = $gu->id . '_' . $date->format('Y-m-d');
 
-                $omgNgdu = $omgNgdus->get($key);
-                $omgUhe = $omgUhes->get($key);
-                $wm = $watermeasurements->get($key);
-                $oilgas = $oilgases->get($key);
-                $omgCa = $omgCas->get($date->format('Y'));
-                $corrosion = $corrosions->get($gu->id)
-                    ? $corrosions->get($gu->id)
-                        ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $date)
-                        ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '>=', $date)
-                        ->first()
-                    : null;
+                $omgNgdu = $omgUhe = $wm = $oilgas = $omgCa = $corrosion = null;
+
+                if(!empty($omgNgdus)) {
+                    $omgNgdu = $omgNgdus->get($key);
+                }
+                if(!empty($omgUhes)) {
+                    $omgUhe = $omgUhes->get($key);
+                }
+                if(!empty($watermeasurements)) {
+                    $wm = $watermeasurements->get($key);
+                }
+                if(!empty($oilgases)) {
+                    $oilgas = $oilgases->get($key);
+                }
+
+                if(!empty($omgCas)) {
+                    $omgCa = $omgCas->get($date->format('Y'));
+                }
+
+                if(!empty($corrosions)) {
+                    $corrosion = $corrosions->get($gu->id)
+                        ? $corrosions->get($gu->id)
+                            ->where('start_date_of_corrosion_velocity_with_inhibitor_measure', '<=', $date)
+                            ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '>=', $date)
+                            ->first()
+                        : null;
+                }
 
                 if(
                     empty($omgNgdu)
@@ -231,7 +261,7 @@ class ExportMonitoringReportToExcel implements ShouldQueue
         }
 
         $fileName = '/export/monitoring_report_' . Carbon::now()->format('YmdHis') . '.xlsx';
-        Excel::store(new \App\Exports\MonitoringReportExport($reportData), 'public'.$fileName);
+        Excel::store(new \App\Exports\MonitoringReportExport($reportData, $this->sections), 'public'.$fileName);
 
         $this->setOutput(
             [
