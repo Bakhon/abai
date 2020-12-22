@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #656a8a; height: 104px; width: 161px"
+            style="background: #656a8a; height: 104px; width: 161px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -7052,10 +7052,11 @@ tr td:first-child {
 .trheadhight {
   height: 40px;
 }
-.fadropmenu .fadropmenu {
+.fadropmenu.fadropmenu {
   background: #656a8a;
   /* color: #ffffff; */
   width: 246px;
+  z-index: 3001 !important;
 }
 .faheadhight {
   height: 40px;
