@@ -1204,6 +1204,7 @@
                     </span>
                     <input
                       @change="editrow(row, row_index)"
+                      class="input_edit"
                       v-model="row.r_con[0]"
                       :disabled="!edit"
                     />
@@ -1860,6 +1861,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.h_pump_set[0]"
                       :disabled="!edit"
@@ -1921,6 +1923,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.whp[0]"
                       :disabled="!edit"
@@ -1982,6 +1985,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.line_p[0]"
                       :disabled="!edit"
@@ -2042,6 +2046,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_res[0]"
                       :disabled="!edit"
@@ -2103,6 +2108,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.h_dyn[0]"
                       :disabled="!edit"
@@ -2164,6 +2170,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_annular[0]"
                       :disabled="!edit"
@@ -2225,6 +2232,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_intake[0]"
                       :disabled="!edit"
@@ -2443,6 +2451,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.q_l[0]"
                       :disabled="!edit"
@@ -2504,6 +2513,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.wct[0]"
                       :disabled="!edit"
@@ -2679,6 +2689,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.gor[0]"
                       :disabled="!edit"
@@ -2803,6 +2814,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.grp_skin[0]"
                       :disabled="!edit"
@@ -4835,6 +4847,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.idn_pump_depth_max[0]"
                       :disabled="!edit"
@@ -5358,6 +5371,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.bhp_meter[0]"
                       :disabled="!edit"
@@ -5900,6 +5914,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_choke[0]"
                       :disabled="!edit"
@@ -6016,6 +6031,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_liq[0]"
                       :disabled="!edit"
@@ -6076,6 +6092,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_wct[0]"
                       :disabled="!edit"
@@ -6134,6 +6151,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_month_days[0]"
                       :disabled="!edit"
@@ -6542,6 +6560,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_events[0]"
                       :disabled="!edit"
@@ -6995,10 +7014,6 @@ tr:nth-child(even) {
   margin-top: -38px;
 }
 
-/* .table {
-    overflow: scroll;
-    height: calc(100vh - 247px);
-} */
 .table .th {
   position: sticky;
   background: rgb(51, 57, 117);
@@ -7024,7 +7039,7 @@ tr:nth-child(even) {
   z-index: 3000;
 }
 tr td:first-child {
-  /* background-color: #0074d9; */
+
   color: #fff;
   position: sticky;
   left: 0;
@@ -7045,6 +7060,9 @@ tr:nth-child(even) .fixcol:first-child {
   background-color: #454d7d73;
   /* z-index: 5000; */
 }
+.input_edit {
+  background: #FFFACD;
+}
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
@@ -7062,11 +7080,11 @@ tr:nth-child(even) .fixcol:first-child {
 }
 .fadropmenu.fadropmenu {
   background: #656a8a;
-  /* color: #ffffff; */
   width: 246px;
   z-index: 3001 !important;
 }
 .faheadhight {
   height: 40px;
 }
+
 </style>
