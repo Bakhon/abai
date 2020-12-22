@@ -91,7 +91,7 @@ class RolesController extends Controller
             'name' => $request->name
         ]);
 
-        $role->permissions()->sync($request->permissions);
+        $role->syncPermissions($request->permissions);
 
         return redirect()->route('admin.roles.index')->with('success', __('app.updated'));
     }
@@ -122,7 +122,7 @@ class RolesController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        $role->permissions()->sync($request->permissions);
+        $role->syncPermissions($request->permissions);
         return redirect()->route('admin.roles.index')->with('success', __('app.updated'));
     }
 

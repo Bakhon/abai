@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OmgCAFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgCACreateRequest;
@@ -13,9 +14,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 
-class OmgCAController extends Controller
+class OmgCAController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'omgca';
 
     /**
      * Display a listing of the resource.
@@ -27,9 +30,7 @@ class OmgCAController extends Controller
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('omgca.create'),
                 'list' => route('omgca.list'),
-                'export' => route('omgca.export'),
             ],
             'title' => 'База данных ОМГ ДДНГ',
             'table_header' => [
@@ -69,6 +70,13 @@ class OmgCAController extends Controller
                 ],
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
 
         return view('omgca.index', compact('params'));
     }

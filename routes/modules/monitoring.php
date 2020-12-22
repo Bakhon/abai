@@ -6,6 +6,9 @@ Route::group(
         Route::group(
             ['middleware' => 'auth'],
             function () {
+
+                Route::get('/monitor', 'DruidController@monitor')->name('monitor');
+
                 Route::get('watermeasurement/list', 'ComplicationMonitoring\WaterMeasurementController@list')->name(
                     'watermeasurement.list'
                 );
@@ -94,8 +97,8 @@ Route::group(
                 Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
                 Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
 
-                Route::get('/reports', 'ReportsController@index')->name('reports');
-                Route::get('/reports/monitoring', 'ReportsController@monitoringReport')->name('reports.monitoring');
+                Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
+                Route::get('/monitor/reports/generate', 'ReportsController@generateReport');
 
 
                 Route::get('/settings/fields', 'Settings\FieldValidationsController@index')->name('settings.fields');
