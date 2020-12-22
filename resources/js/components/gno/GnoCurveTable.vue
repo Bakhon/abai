@@ -54,7 +54,7 @@ export default {
           }
         }],
         // width:  1200,
-        height: 420,
+        height: 410,
         // autosize: true,
         // showlegend: true,
         margin: {
