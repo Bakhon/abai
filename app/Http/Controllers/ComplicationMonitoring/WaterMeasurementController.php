@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\WaterMeasurementFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\WaterMeasurementCreateRequest;
@@ -34,9 +35,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
-class WaterMeasurementController extends Controller
+class WaterMeasurementController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'watermeasurement';
 
     /**
      * Display a listing of the resource.
@@ -48,9 +51,7 @@ class WaterMeasurementController extends Controller
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('watermeasurement.create'),
                 'list' => route('watermeasurement.list'),
-                'export' => route('watermeasurement.export'),
             ],
             'title' => 'База данных по промысловой жидкости',
             'fields' => [
@@ -324,6 +325,13 @@ class WaterMeasurementController extends Controller
                 ],
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
 
         return view('watermeasurement.index', compact('params'));
     }

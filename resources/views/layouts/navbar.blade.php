@@ -50,9 +50,11 @@
                     <a href="{{url('/')}}/ru/facilities"><span class="workTypeText">Обустройство</span></a>
                     <ul class="dropdown-child">
                         <li class="nav-item child">
-                            <a href="{{url('/')}}/ru/monitor">
-                                <span class="workTypeText">Мониторинг коррозии ГУ - Кормасс</span>
-                            </a>
+                            @if(auth()->user()->can('monitoring view main'))
+                                <a href="{{url('/')}}/ru/monitor">
+                                    <span class="workTypeText">Мониторинг коррозии ГУ - Кормасс</span>
+                                </a>
+                            @endif
                             <ul>
                                 <li class="nav-item child">
                                     <a href="{{url('/')}}/ru/omgca">

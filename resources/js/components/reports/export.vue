@@ -74,7 +74,7 @@ export default {
   methods: {
     exportExcel() {
       this.loading = true
-      this.axios.get('/ru/reports/monitoring', {
+      this.axios.get('/ru/monitor/reports/generate', {
         params: {
           start_date: this.formatDate(this.start_date),
           end_date: this.formatDate(this.end_date)
