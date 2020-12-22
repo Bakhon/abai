@@ -814,3 +814,12 @@ li.center-li {
     background: rgb(42, 46, 92);
     line-height: normal;
 }
+
+.vc-wide-indicator-tooltip-text {
+    font-size: 1rem;
+    color: #9FA5C7;
+}
+
+.wide-indicator-border {
+    border-left: 1px solid #454D7D
+}

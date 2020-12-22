@@ -8,6 +8,7 @@
         v-bind:progressValue="oilFact"
         v-bind:progressMax="oilPlan"
         v-bind:prevPeriodValue="prevOilFact"
+        v-bind:percents="oilPercents"
     ></indicator>
     <indicator
         v-bind:title="'Выручка/Доход'"
@@ -17,6 +18,7 @@
         v-bind:progressValue="dataFact"
         v-bind:progressMax="dataPlan"
         v-bind:prevPeriodValue="prevDataFact"
+        v-bind:percents="dataPercents"
     ></indicator>
     <indicator
         v-bind:title="'Расходы'"
@@ -26,6 +28,7 @@
         v-bind:progressValue="spendingFact"
         v-bind:progressMax="spendingPlan"
         v-bind:prevPeriodValue="prevSpendingFact"
+        v-bind:percents="spendingPercents"
     ></indicator>
     <indicator
         v-bind:title="'Чистая прибыль'"
@@ -35,6 +38,7 @@
         v-bind:progressValue="netProfitFact"
         v-bind:progressMax="netProfitPlan"
         v-bind:prevPeriodValue="prevNetProfitFact"
+        v-bind:percents="netProfitPercents"
     ></indicator>
     <indicator
         v-bind:title="'Капиталовложения'"
@@ -44,6 +48,7 @@
         v-bind:progressValue="capitalInvFact"
         v-bind:progressMax="capitalInvPlan"
         v-bind:prevPeriodValue="prevCapitalInvFact"
+        v-bind:percents="capitalInvPercents"
     ></indicator>
     <indicator
         v-bind:title="'Свободный денежный поток'"
@@ -53,6 +58,7 @@
         v-bind:progressValue="cashFlowFact"
         v-bind:progressMax="cashFlowPlan"
         v-bind:prevPeriodValue="prevCashFlowFact"
+        v-bind:percents="cashFlowPercents"
     ></indicator>
     <indicator
         v-bind:title="'Цена на нефть'"
@@ -63,6 +69,7 @@
         v-bind:prevPeriodValue="'40'"
         v-bind:tableToChange="'2'"
         @changeTable="tableToChange => $emit('changeTable', tableToChange)"
+        v-bind:percents="oilPercents"
     ></indicator>
     <indicator
         v-bind:title="'Курс доллара'"
@@ -73,6 +80,7 @@
         v-bind:prevPeriodValue="currencyPrevPeriod"
         v-bind:tableToChange="'3'"
         @changeTable="tableToChange => $emit('changeTable', tableToChange)"
+        v-bind:percents="oilPercents"
     ></indicator>
   </div>
 </template>

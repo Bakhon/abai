@@ -121,8 +121,11 @@
                 </div>
             </div>
         </div>
-        <div class="flex-grow-1">
-            <vertical-indicators></vertical-indicators>
+        <div class="flex-grow-1" v-if="dateStart">
+            <vertical-indicators
+                v-bind:dateStart="dateStart"
+                v-bind:dateEnd="dateEnd"
+            ></vertical-indicators>
         </div>
     </div>
 </template>

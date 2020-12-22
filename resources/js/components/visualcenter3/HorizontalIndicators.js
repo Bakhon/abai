@@ -1,14 +1,4 @@
-import Calendar from "v-calendar/lib/components/calendar.umd";
-import DatePicker from "v-calendar/lib/components/date-picker.umd";
-import {clone} from "ol/extent";
-
-Vue.component("calendar", Calendar);
-Vue.component("date-picker", DatePicker);
 export default {
-  components: {
-    Calendar,
-    DatePicker,
-  },
   props: {
     tableToChange: {
       default: '1',
@@ -173,74 +163,6 @@ export default {
           }
         });
     },
-    getSumPlanAndFactDzo(plansAndFactsData) {
-      let SumFromRange = _(plansAndFactsData)
-        .groupBy("dzo")
-        .map((dzo, id) => ({
-          dzo: id,
-          oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
-          oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
-          gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
-          gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
-        })).value();
-
-      let oil_planSum = _.reduce(
-        SumFromRange,
-        function (memo, item) {
-          return memo + item.oil_plan;
-        },
-        0
-      );
-
-      let oil_factSum = _.reduce(
-        SumFromRange,
-        function (memo, item) {
-          return memo + item.oil_fact;
-        },
-        0
-      );
-
-      let oil_dlv_planSum = _.reduce(
-        SumFromRange,
-        function (memo, item) {
-          return memo + item.oil_dlv_plan;
-        },
-        0
-      );
-
-      let oil_dlv_factSum = _.reduce(
-        SumFromRange,
-        function (memo, item) {
-          return memo + item.oil_dlv_fact;
-        },
-        0
-      );
-
-      let gas_planSum = _.reduce(
-        SumFromRange,
-        function (memo, item) {
-          return memo + item.gas_plan;
-        },
-        0
-      );
-
-      let gas_factSum = _.reduce(
-        SumFromRange,
-        function (memo, item) {
-          return memo + item.gas_fact;
-        },
-        0
-      );
-
-      return {
-        oil_factSum: oil_factSum,
-        oil_planSum: oil_planSum,
-        oil_dlv_factSum: oil_dlv_factSum,
-        oil_dlv_planSum: oil_dlv_planSum,
-        gas_factSum: gas_factSum,
-        gas_planSum: gas_planSum,
-      };
-    },
     getIndicatorsData() {
       let uri = "/ru/getdzocalcs";
       let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart);
@@ -344,6 +266,32 @@ export default {
     },
     dzo: function () {
       this.getIndicatorsData();
+    },
+  },
+  computed: {
+    oilPercents: function () {
+      return Math.abs(Math.round((this.prevOilFact - this.oilFact ) / this.oilFact * 100))
+    },
+    dataPercents: function () {
+      return Math.abs(Math.round((this.prevDataFact - this.dataFact ) / this.dataFact * 100))
+    },
+    spendingPercents: function () {
+      return Math.abs(Math.round((this.prevSpendingFact - this.spendingFact ) / this.spendingFact * 100))
+    },
+    netProfitPercents: function () {
+      return Math.abs(Math.round((this.prevNetProfitFact - this.netProfitFact ) / this.netProfitFact * 100))
+    },
+    capitalInvPercents: function () {
+      return Math.abs(Math.round((this.prevCapitalInvFact - this.capitalInvFact ) / this.capitalInvFact * 100))
+    },
+    cashFlowPercents: function () {
+      return Math.abs(Math.round((this.prevCashFlowFact - this.cashFlowFact ) / this.cashFlowFact * 100))
+    },
+    oilNowPercents: function () {
+      return Math.abs(Math.round((40 - this.oilNow ) / this.oilNow * 100))
+    },
+    currencyPercents: function () {
+      return Math.abs(Math.round((this.currencyPrevPeriod - this.currencyNow ) / this.currencyNow * 100))
     },
   },
   async mounted() {
