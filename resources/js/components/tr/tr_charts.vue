@@ -83,6 +83,7 @@
           >
             <div>
               <select
+                v-model="month"
                 style="
                   background-color: #656a8a !important;
                   border-color: #656a8a !important;
@@ -93,7 +94,7 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option>Выберите месяц</option>
+                <option disabled>Выберите месяц</option>
                 <option value="1">январь</option>
                 <option value="2">февраль</option>
                 <option value="3">март</option>
@@ -110,6 +111,7 @@
             </div>
             <div>
               <select
+                v-model="selectYear"
                 style="
                   background-color: #656a8a !important;
                   border-color: #656a8a !important;
@@ -120,7 +122,7 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option value="">Выберите год</option>
+                <option disabled value="">Выберите год</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -1377,11 +1379,9 @@ export default {
       return Array.isArray(el[param]) ? el[param][0] : el[param];
     },
     onChangeMonth(event) {
-      this.month = event.target.value;
       this.$store.commit("tr/SET_MONTH", event.target.value);
     },
     onChangeYear(event) {
-      this.selectYear = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt() {
@@ -1436,6 +1436,8 @@ export default {
       this.$store.commit("tr/SET_MONTH", mm);
       this.$store.commit("tr/SET_YEAR", yyyy);
     }
+    this.selectYear = yyyy;
+    this.month = mm;
     this.axios
       .get(
         "http://172.20.103.187:7576/api/techregime/graph1/" +

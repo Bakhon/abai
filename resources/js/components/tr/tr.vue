@@ -70,6 +70,7 @@
           >
             <div>
               <select
+                v-model="month"
                 style="
                   background-color: #656a8a;
                   border-color: #656a8a;
@@ -79,7 +80,7 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option>Выберите месяц</option>
+                <option disabled>Выберите месяц</option>
                 <option value="1">январь</option>
                 <option value="2">февраль</option>
                 <option value="3">март</option>
@@ -96,6 +97,7 @@
             </div>
             <div>
               <select
+                v-model="selectYear"
                 style="
                   background-color: #656A8A ;
                   border-color: #656A8A;
@@ -111,7 +113,7 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option value="">Выберите год</option>
+                <option disabled value="">Выберите год</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -6768,11 +6770,9 @@ export default {
       }
     },
     onChangeMonth(event) {
-      this.month = event.target.value;
       this.$store.commit("tr/SET_MONTH", event.target.value);
     },
     onChangeYear(event) {
-      this.selectYear = event.target.value;
       this.year = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
