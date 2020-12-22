@@ -286,7 +286,6 @@ export default {
     return {
       chartShow: 0,
       isLoading: true,
-      pieChartRerender: true,
       chartWells: [],
       filteredWells: [],
       sortType: "asc",
@@ -410,7 +409,7 @@ export default {
         align: "center",
         offsetY: 18,
         style: {
-          fontSize: '14px',
+          fontSize: "14px",
           color: "#008FFB",
         },
       },
@@ -418,7 +417,7 @@ export default {
         align: "center",
         offsetY: 36,
         style: {
-          fontSize: '14px',
+          fontSize: "14px",
           color: "#008FFB",
           fontWeight: 900,
         },
@@ -570,7 +569,7 @@ export default {
         title,
         subtitle,
       };
-      console.log(this.chartBarOptions);
+
       const series = [
         {
           name: "Н вдп",
@@ -644,11 +643,13 @@ export default {
           min: minY1,
         },
         {
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -699,14 +700,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
@@ -770,11 +771,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -825,14 +828,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
@@ -889,11 +892,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -944,14 +949,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
@@ -1018,11 +1023,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -1073,14 +1080,14 @@ export default {
           name: "Прирост Qж идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_liq_inc").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_liq_inc")
           ),
         },
         {
           name: "Прирост Qж грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_liq").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_liq")
           ),
         },
         {
@@ -1450,11 +1457,8 @@ export default {
         this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
-        console.log(this.editdtm);
         this.editdty = yyyy;
-        console.log(this.editdty);
         if (data) {
-          console.log(data);
           this.fullWells = data.data;
           this.chartWells = data.data;
         } else {
