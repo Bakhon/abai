@@ -40,6 +40,19 @@ export default {
         'toggleSpikelines'
       ],
       layout: {
+        shapes: [{
+          type: 'line',
+          yref: 'paper',
+          x0: 20,
+          y0: 0,
+          x1: 20,
+          y1: 1,
+          line: {
+            color: 'orange',
+            width: 1,
+            dash: 'dot'
+          }
+        }],
         // width:  1200,
         // height: 450,
         // autosize: true,
@@ -251,7 +264,7 @@ export default {
                           "Qн = %{text:.1f} т/сут<br>" +
                           "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
-            size: "15",
+            size: "6",
             color: "#FBA409",
           },
         },
@@ -271,6 +284,8 @@ export default {
       this.data[5]['x'][0] = value[1]["q_l"]
       this.data[5]['y'][0] = value[1]["p"]
       this.data[5]['text'][0] = value[1]["q_oil"]
+      this.layout['shapes'][0]['x0'] = value[1]['q_l']
+      this.layout['shapes'][0]['x1'] = value[1]['q_l']
       this.data[4]['x'][0] = value[2]["q_l"]
       this.data[4]['y'][0] = value[2]["p"]
       this.data[4]['text'][0] = value[2]["q_oil"]

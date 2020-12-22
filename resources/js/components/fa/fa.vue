@@ -93,7 +93,7 @@
       <h3 style="color: white; margin-left: 3px">Факторный анализ</h3>
       <select name="Company" class="form-control tr-field-filter" id="companySelect"
         v-model="filter" @change="chooseField">
-        <option value="Выберите месторождение">Все месторождения</option>
+        <option value="Все месторождения">Все месторождения</option>
         <option value="Акшабулак Центральный">Акшабулак Центральный</option>
         <option value="Акшабулак Южный">Акшабулак Южный</option>
         <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -265,14 +265,14 @@
           <td @click="sortBy('field')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
           <td @click="sortBy('horizon')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
           <td @click="sortBy('exp_meth')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
-          <td @click="sortBy('q_o_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-          <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('q_o_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('wct_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>%</td>
           <td @click="sortBy('bhp_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>атм</td>
           <td @click="sortBy('p_res_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>атм</td>
           <td @click="sortBy('pi_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
-          <td @click="sortBy('q_o_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-          <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+          <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('q_o_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('wct_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>%</td>
           <td @click="sortBy('bhp_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>атм</td>
           <td @click="sortBy('p_res_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>атм</td>
@@ -870,13 +870,14 @@ export default {
       pieChartRerender: true,
       wells: [],
       searchString: "",
+      sortParam: "",
       sortType: "asc",
       dt: null,
       dt2: null,
       date1: null,
       date2: null,
       fullWells: [],
-      filter: "Выберите месторождение",
+      filter: "Все месторождения",
       editdtm: null,
       editdty: null,
       editdtprevm: null,
@@ -998,6 +999,9 @@ export default {
   },
   methods: {
     sortBy(type) {
+      this.sortParam = type;
+      this.$store.commit("fa/SET_SORTTYPE", this.sortType);
+      this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
       let { wells, sortType } = this;
       console.log(type, sortType);
       if (sortType === "asc") {
@@ -1110,7 +1114,8 @@ export default {
       console.log(filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
-      if (!filter || filter == "Выберите месторождение") {
+      this.$store.commit("fa/SET_FILTER", filter);
+      if (!filter || filter == "Все месторождения") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
@@ -1161,6 +1166,7 @@ export default {
         )
         .then((response) => {
           console.log("search resp = ", response.data);
+          this.$store.commit("fa/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
             console.log(data);
@@ -1179,7 +1185,11 @@ export default {
         });
     },
   },
-  beforeCreate: function () {
+  created: function () {
+    this.$store.commit("fa/SET_SORTTYPE", this.sortType);
+    this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
+    this.$store.commit("fa/SET_SEARCH", this.searchString);
+    this.$store.commit("fa/SET_FILTER", this.filter);
     console.log("dt1-month", this.$store.getters["tr/month"]);
     console.log("dt1-year", this.$store.getters["tr/year"]);
     var today = new Date();
