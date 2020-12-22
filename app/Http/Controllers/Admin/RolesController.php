@@ -88,7 +88,8 @@ class RolesController extends Controller
     public function store(RoleCreateRequest $request)
     {
         $role = Role::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'guard_name' => 'web'
         ]);
 
         $role->syncPermissions($request->permissions);
