@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\InhibitorFilter;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\InhibitorCreateRequest;
 use App\Http\Requests\InhibitorUpdateRequest;
@@ -11,14 +12,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 
-class InhibitorsController extends Controller
+class InhibitorsController extends CrudController
 {
+    use WithFieldsValidation;
+
+    protected $modelName = 'inhibitors';
+
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('inhibitors.create'),
                 'list' => route('inhibitors.list'),
             ],
             'title' => 'Справочник ингибиторов',
@@ -37,6 +41,10 @@ class InhibitorsController extends Controller
                 ],
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
 
         return view('inhibitors.index', compact('params'));
     }
@@ -57,11 +65,14 @@ class InhibitorsController extends Controller
 
     public function create()
     {
-        return view('inhibitors.create');
+        $validationParams = $this->getValidationParams('pipes');
+        return view('inhibitors.create', compact('validationParams'));
     }
 
     public function store(InhibitorCreateRequest $request)
     {
+        $this->validateFields($request, 'pipes');
+
         $inhibitor = Inhibitor::create($request->only(['name']));
         $inhibitor->prices()->create(
             [
@@ -86,16 +97,20 @@ class InhibitorsController extends Controller
 
     public function edit(Inhibitor $inhibitor)
     {
+        $validationParams = $this->getValidationParams('pipes');
         return view(
             'inhibitors.edit',
             [
-                'inhibitor' => new \App\Http\Resources\InhibitorResource($inhibitor)
+                'inhibitor' => new \App\Http\Resources\InhibitorResource($inhibitor),
+                'validationParams' => $validationParams
             ]
         );
     }
 
     public function update(InhibitorUpdateRequest $request, Inhibitor $inhibitor)
     {
+        $this->validateFields($request, 'pipes');
+
         if ($request->name) {
             $inhibitor->update($request->only('name'));
         }

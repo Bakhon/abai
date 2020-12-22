@@ -4,6 +4,8 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\CorrosionFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\CorrosionCreateRequest;
 use App\Http\Requests\CorrosionUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
@@ -13,16 +15,18 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
-class CorrosionController extends Controller
+class CorrosionController extends CrudController
 {
+    use WithFieldsValidation;
+
+    protected $modelName = 'corrosion';
+
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('corrosioncrud.create'),
                 'list' => route('corrosioncrud.list'),
-                'export' => route('corrosioncrud.export'),
             ],
             'title' => 'База данных по скорости коррозии',
             'fields' => [
@@ -145,6 +149,13 @@ class CorrosionController extends Controller
             ]
         ];
 
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route('corrosioncrud.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route('corrosioncrud.export');
+        }
+
         return view('сomplicationMonitoring.corrosion.index', compact('params'));
     }
 
@@ -166,18 +177,14 @@ class CorrosionController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = Corrosion::query()
-            ->with('other_objects')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->get();
+        $job = new \App\Jobs\ExportCorrosionToExcel($request->validated());
+        $this->dispatch($job);
 
-        $corrosion = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new \App\Exports\CorrosionExport($corrosion), 'corrosion.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
@@ -187,7 +194,8 @@ class CorrosionController extends Controller
      */
     public function create()
     {
-        return view('сomplicationMonitoring.corrosion.create');
+        $validationParams = $this->getValidationParams('corrosioncrud');
+        return view('сomplicationMonitoring.corrosion.create', compact('validationParams'));
     }
 
     /**
@@ -198,7 +206,9 @@ class CorrosionController extends Controller
      */
     public function store(CorrosionCreateRequest $request)
     {
-        $corrosion = Corrosion::create($request->validated());
+        $this->validateFields($request, 'corrosioncrud');
+
+        Corrosion::create($request->validated());
         return redirect()->route('corrosioncrud.index')->with('success', __('app.created'));
     }
 
@@ -233,7 +243,11 @@ class CorrosionController extends Controller
      */
     public function edit(Corrosion $corrosioncrud)
     {
-        return view('сomplicationMonitoring.corrosion.edit', ['corrosion' => $corrosioncrud]);
+        $validationParams = $this->getValidationParams('corrosioncrud');
+        return view('сomplicationMonitoring.corrosion.edit', [
+            'corrosion' => $corrosioncrud,
+            'validationParams' => $validationParams
+        ]);
     }
 
     /**
@@ -245,6 +259,8 @@ class CorrosionController extends Controller
      */
     public function update(CorrosionUpdateRequest $request, Corrosion $corrosioncrud)
     {
+        $this->validateFields($request, 'corrosioncrud');
+
         $corrosioncrud->update($request->validated());
         return redirect()->route('corrosioncrud.index')->with('success', __('app.updated'));
     }

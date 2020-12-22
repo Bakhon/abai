@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class OmgCAListResource extends JsonResource
+class OmgCAListResource extends CrudListResource
 {
+
+    protected $modelName = 'omgca';
+
     /**
      * Transform the resource into an array.
      *
@@ -14,20 +15,18 @@ class OmgCAListResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $result = [
             'id' => $this->id,
             'fields' => [
                 'gu' => $this->gu ? $this->gu->name : null,
                 'date' => \Carbon\Carbon::parse($this->date)->format('Y'),
                 'plan_dosage' => $this->plan_dosage,
                 'q_v' => $this->q_v,
-            ],
-            'links' => [
-                'show' => route('omgca.show',$this->id),
-                'edit' => route('omgca.edit',$this->id),
-                'history' => route('omgca.history',$this->id),
-                'delete' => route('omgca.destroy',$this->id),
             ]
         ];
+
+        $result['links'] = $this->getLinks();
+
+        return $result;
     }
 }

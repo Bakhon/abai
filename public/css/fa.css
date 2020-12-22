@@ -47,7 +47,7 @@ td.fitwidth {
     vertical-align: middle !important;
     font-size: 12px;
     width: 64px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .headerColumn td span {
@@ -196,7 +196,6 @@ table {
     margin-right: 20px;
     cursor: pointer;
 }
-
 .cell-comment{
     display: none;
     width: auto;

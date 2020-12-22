@@ -20,10 +20,18 @@
           >
           <a href="tr" class="col but-nav__link but ml-3"
             ><i style="margin-right: 10px"
-              ><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
-</svg>
-</i
+              ><svg
+                width="14"
+                height="17"
+                viewBox="0 0 14 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z"
+                  fill="white"
+                />
+              </svg> </i
             >Технологический режим</a
           >
         </div>
@@ -44,7 +52,7 @@
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
               class="dropdown-item"
-              style="background: #656A8A !important;  color: #FFF"
+              style="background: #656a8a !important; color: #fff"
               v-for="(item, index) in chartNames"
               :key="item"
               href="#"
@@ -63,22 +71,22 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-
             Выберите месяц
           </button>
 
           <div
             class="dropdown-menu"
-            style="background: #656A8A !important;"
+            style="background: #656a8a !important"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
           >
             <div>
               <select
+                v-model="month"
                 style="
-                  background-color: #656A8A !important;
-                  border-color: #656A8A !important;
+                  background-color: #656a8a !important;
+                  border-color: #656a8a !important;
 
                   color: white;
                 "
@@ -86,7 +94,7 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option>Выберите месяц</option>
+                <option disabled>Выберите месяц</option>
                 <option value="1">январь</option>
                 <option value="2">февраль</option>
                 <option value="3">март</option>
@@ -103,9 +111,10 @@
             </div>
             <div>
               <select
+                v-model="selectYear"
                 style="
-                  background-color: #656A8A !important;
-                  border-color: #656A8A !important;
+                  background-color: #656a8a !important;
+                  border-color: #656a8a !important;
 
                   color: white;
                 "
@@ -113,7 +122,7 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option value="">Выберите год</option>
+                <option disabled value="">Выберите год</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -127,16 +136,15 @@
               href="#"
               @click.prevent="chooseDt"
               class="btn btn-primary"
-              style="  margin-left: 15px;"
+              style="margin-left: 15px"
               >Сформировать</a
             >
           </div>
         </div>
       </div>
       <div class="sec_nav">
-        <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4>
-
-        <div class="filter_chart row">
+        <!-- <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4> -->
+        <div class="filter_chart row" style=" display: flex;justify-content: center;">
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -147,14 +155,14 @@
               value="Месторождение"
             >
               <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                {{ f === undefined ? "Выберите месторождение" : f }}
+                {{ f === undefined ? "Все месторождения" : f }}
               </option>
             </select>
           </div>
           <div class="filterplacetwo" style="margin-left: 15px">
             <select class="form-control mb-2" v-model="chartFilter_horizon">
               <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
-                {{ f === undefined ? "Выберите горизонт" : f }}
+                {{ f === undefined ? "Все горизонты" : f }}
               </option>
             </select>
           </div>
@@ -165,7 +173,7 @@
               v-model="chartFilter_exp_meth"
             >
               <option v-for="(f, k) in exp_methFilters" :key="k" :value="f">
-                {{ f === undefined ? "Выберите способ эксплуатации" : f }}
+                {{ f === undefined ? "Все способы эксплуатации" : f }}
               </option>
             </select>
           </div>
@@ -199,6 +207,24 @@ export default {
     BigNumbers,
   },
   computed: {
+    titleText() {
+      return `${this.chartNames[this.chartShow]} на ${this.dt}`;
+    },
+    subtitleText() {
+      let filtersText = "";
+      if (this.chartFilter_field) filtersText = this.chartFilter_field;
+      if (this.chartFilter_horizon)
+        filtersText = filtersText
+          ? `${filtersText}, ${this.chartFilter_horizon}`
+          : this.chartFilter_horizon;
+      if (this.chartFilter_exp_meth)
+        filtersText = filtersText
+          ? `${filtersText}, ${this.chartFilter_exp_meth}`
+          : this.chartFilter_exp_meth;
+      if (filtersText) filtersText = `по ${filtersText}`;
+
+      return filtersText;
+    },
     fieldFilters() {
       if (this.chartWells && this.chartWells.length > 0) {
         let filters = [];
@@ -260,7 +286,6 @@ export default {
     return {
       chartShow: 0,
       isLoading: true,
-      pieChartRerender: true,
       chartWells: [],
       filteredWells: [],
       sortType: "asc",
@@ -295,7 +320,7 @@ export default {
       ],
       chartBarOptions: {
         chart: {
-          height: '100%',
+          height: "100%",
           stacked: true,
           toolbar: {
             show: true,
@@ -319,7 +344,7 @@ export default {
           offsetX: -2,
         },
         legend: {
-          position: "top",
+          position: "bottom",
           labels: {
             useSeriesColors: true,
           },
@@ -337,7 +362,8 @@ export default {
         },
         xaxis: {
           labels: {
-            rotate: -90,
+            hideOverlappingLabels: true,
+            rotate: -45,
             style: {
               colors: "#008FFB",
             },
@@ -378,6 +404,23 @@ export default {
       },
       fillBase: {
         opacity: 1,
+      },
+      titleBase: {
+        align: "center",
+        offsetY: 18,
+        style: {
+          fontSize: "14px",
+          color: "#008FFB",
+        },
+      },
+      subtitleBase: {
+        align: "center",
+        offsetY: 36,
+        style: {
+          fontSize: "14px",
+          color: "#008FFB",
+          fontWeight: 900,
+        },
       },
       yaxisBase: {
         axisBorder: {
@@ -501,6 +544,14 @@ export default {
         min: minY1,
         reversed: true,
       };
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
 
       this.chartBarOptions = {
         ...this.chartBarOptions,
@@ -515,8 +566,10 @@ export default {
         fill: {
           opacity: 0.3,
         },
+        title,
+        subtitle,
       };
-      console.log(this.chartBarOptions)
+
       const series = [
         {
           name: "Н вдп",
@@ -590,11 +643,13 @@ export default {
           min: minY1,
         },
         {
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -613,6 +668,15 @@ export default {
           min: minY2,
         },
       ];
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
@@ -621,6 +685,8 @@ export default {
         stroke,
         markers: this.markersBase,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       const series = [
         {
@@ -705,11 +771,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -728,6 +796,15 @@ export default {
           min: minY2,
         },
       ];
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
@@ -736,6 +813,8 @@ export default {
         stroke,
         markers: this.markersBase,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       const series = [
         {
@@ -813,11 +892,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -836,6 +917,15 @@ export default {
           min: minY2,
         },
       ];
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
@@ -844,6 +934,8 @@ export default {
         stroke,
         markers: this.markersBase,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       const series = [
         {
@@ -931,11 +1023,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -954,6 +1048,15 @@ export default {
           min: minY2,
         },
       ];
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
@@ -962,6 +1065,8 @@ export default {
         stroke,
         markers: this.markersBase,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       const series = [
         {
@@ -1019,6 +1124,15 @@ export default {
         // max: maxY2,
         // min: minY2,
       };
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
@@ -1026,6 +1140,8 @@ export default {
         chart,
         markers: this.markersBase,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       let filteredData = filteredResult.reduce(
         (acc, res) => {
@@ -1096,11 +1212,22 @@ export default {
           },
         },
       };
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       const series = [
         {
@@ -1127,11 +1254,22 @@ export default {
       );
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const yaxis = { ...this.yaxisBase };
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       const series = [
         {
@@ -1166,11 +1304,22 @@ export default {
           },
         },
       };
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       const series = [
         {
@@ -1205,11 +1354,22 @@ export default {
           },
         },
       };
+      const title = {
+        ...this.titleBase,
+        text: this.titleText,
+      };
+      const subtitle = {
+        ...this.subtitleBase,
+        text: this.subtitleText,
+      };
+
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
         fill: this.fillBase,
+        title,
+        subtitle,
       };
       const series = [
         {
@@ -1226,11 +1386,9 @@ export default {
       return Array.isArray(el[param]) ? el[param][0] : el[param];
     },
     onChangeMonth(event) {
-      this.month = event.target.value;
       this.$store.commit("tr/SET_MONTH", event.target.value);
     },
     onChangeYear(event) {
-      this.selectYear = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt() {
@@ -1285,6 +1443,8 @@ export default {
       this.$store.commit("tr/SET_MONTH", mm);
       this.$store.commit("tr/SET_YEAR", yyyy);
     }
+    this.selectYear = yyyy;
+    this.month = mm;
     this.axios
       .get(
         "http://172.20.103.187:7576/api/techregime/graph1/" +
@@ -1297,11 +1457,8 @@ export default {
         this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
-        console.log(this.editdtm);
         this.editdty = yyyy;
-        console.log(this.editdty);
         if (data) {
-          console.log(data);
           this.fullWells = data.data;
           this.chartWells = data.data;
         } else {
@@ -1366,27 +1523,27 @@ body {
   background: #5973cc !important;
 }
 .trfa_page.trfa_page {
-    padding: 0 !important;
-    width: calc(100vw - 65px);
-    display: flex;
-    margin-left: 44px;
+  padding: 0 !important;
+  width: calc(100vw - 65px);
+  display: flex;
+  margin-left: 44px;
 }
-.trfa_page .level1-content  {
-    margin: 0;
-    width: 100%;
+.trfa_page .level1-content {
+  margin: 0;
+  width: 100%;
 }
 .trfa_page .main {
-    padding: 0;
-    margin: 0;
-}  
+  padding: 0;
+  margin: 0;
+}
 .second_block {
   height: calc(100vh - 355px);
-  width: calc(1.6*(100vh - 355px));
+  width: calc(1.6 * (100vh - 355px));
   max-width: calc(100vw - 440px);
   margin: 0 auto;
 }
 .droptr.droptr {
-  background: #656A8A;
+  background: #656a8a;
 }
 </style>
 <style scoped>
@@ -1408,6 +1565,12 @@ body {
   background: #656a8a;
   /* color: #ffffff; */
   width: 246px;
+}
+.form-control {
+  background: #272953 !important;
+  border: 1px solid #656a8a !important;
+  height: 35px !important;
+  color: white !important;
 }
 </style>
 

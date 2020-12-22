@@ -4,31 +4,31 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OilGasFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Requests\OilGasCreateRequest;
 use App\Http\Requests\OilGasUpdateRequest;
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\ComplicationMonitoring\OilGas;
 use App\Models\ComplicationMonitoring\OmgCA;
-use App\Models\ComplicationMonitoring\OmgNGDU;
-use App\Models\ComplicationMonitoring\Pipe;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
-class OilGasController extends Controller
+class OilGasController extends CrudController
 {
+    use WithFieldsValidation;
+
+    protected $modelName = 'oilgas';
 
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('oilgas.create'),
                 'list' => route('oilgas.list'),
-                'export' => route('oilgas.export'),
             ],
             'title' => 'База данных по нефти и газу',
             'fields' => [
@@ -187,6 +187,13 @@ class OilGasController extends Controller
             ]
         ];
 
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
+
         return view('сomplicationMonitoring.oilGas.index', compact('params'));
     }
 
@@ -209,19 +216,14 @@ class OilGasController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = OilGas::query()
-            ->with('other_objects')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well');
+        $job = new \App\Jobs\ExportOilGasToExcel($request->validated());
+        $this->dispatch($job);
 
-        $oilgas = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new \App\Exports\OilGasExport($oilgas), 'oilgas.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
@@ -231,7 +233,8 @@ class OilGasController extends Controller
      */
     public function create()
     {
-        return view('сomplicationMonitoring.oilGas.create');
+        $validationParams = $this->getValidationParams('oilgas');
+        return view('сomplicationMonitoring.oilGas.create', compact('validationParams'));
     }
 
     /**
@@ -240,32 +243,12 @@ class OilGasController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OilGasCreateRequest $request)
     {
-        $request->validate(
-            [
-                'date' => 'required',
-            ]
-        );
+        $this->validateFields($request, 'oilgas');
 
         $omgngdu = new OilGas;
-        $omgngdu->other_objects_id = ($request->other_objects_id) ? $request->other_objects_id : null;
-        $omgngdu->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : null;
-        $omgngdu->cdng_id = ($request->cdng_id) ? $request->cdng_id : null;
-        $omgngdu->gu_id = ($request->gu_id) ? $request->gu_id : null;
-        $omgngdu->zu_id = ($request->zu_id) ? $request->zu_id : null;
-        $omgngdu->well_id = ($request->well_id) ? $request->well_id : null;
-        $omgngdu->date = date("Y-m-d H:i", strtotime($request->date));
-        $omgngdu->water_density_at_20 = ($request->water_density_at_20) ? $request->water_density_at_20 : null;
-        $omgngdu->oil_viscosity_at_20 = ($request->oil_viscosity_at_20) ? $request->oil_viscosity_at_20 : null;
-        $omgngdu->oil_viscosity_at_40 = ($request->oil_viscosity_at_40) ? $request->oil_viscosity_at_40 : null;
-        $omgngdu->oil_viscosity_at_50 = ($request->oil_viscosity_at_50) ? $request->oil_viscosity_at_50 : null;
-        $omgngdu->oil_viscosity_at_60 = ($request->oil_viscosity_at_60) ? $request->oil_viscosity_at_60 : null;
-        $omgngdu->hydrogen_sulfide_in_gas = ($request->hydrogen_sulfide_in_gas) ? $request->hydrogen_sulfide_in_gas : null;
-        $omgngdu->oxygen_in_gas = ($request->oxygen_in_gas) ? $request->oxygen_in_gas : null;
-        $omgngdu->carbon_dioxide_in_gas = ($request->carbon_dioxide_in_gas) ? $request->carbon_dioxide_in_gas : null;
-        $omgngdu->gas_density_at_20 = ($request->gas_density_at_20) ? $request->gas_density_at_20 : null;
-        $omgngdu->gas_viscosity_at_20 = ($request->gas_viscosity_at_20) ? $request->gas_viscosity_at_20 : null;
+        $omgngdu->fill($request->all());
         $omgngdu->save();
 
         return redirect()->route('oilgas.index')->with('success', __('app.created'));
@@ -312,7 +295,8 @@ class OilGasController extends Controller
      */
     public function edit(OilGas $oilgas)
     {
-        return view('сomplicationMonitoring.oilGas.edit', compact('oilgas'));
+        $validationParams = $this->getValidationParams('oilgas');
+        return view('сomplicationMonitoring.oilGas.edit', compact('oilgas', 'validationParams'));
     }
 
     /**
@@ -324,6 +308,7 @@ class OilGasController extends Controller
      */
     public function update(OilGasUpdateRequest $request, OilGas $oilgas)
     {
+        $this->validateFields($request, 'oilgas');
         $oilgas->update($request->validated());
         return redirect()->route('oilgas.index')->with('success', __('app.updated'));
     }

@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div class="gno-page-wrapper">
     <div>
       <div class="row">
         <div class="second-column col-lg-3 order-md-2">
@@ -62,13 +62,13 @@
             <!-- Конструкция start-->
             <div class="tables-string-gno1-1">
               <div class="construction no-gutter col-12"><b>Конструкция</b></div>
-              <div class="construction-data no-gutter col-7">Наружн. ØЭК</div>
+              <div class="construction-data no-gutter col-7">Наружный ØЭК</div>
               <div class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
                 {{ casOD }} мм
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
-                Внутрен. ØЭК
+                Внутренний ØЭК
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ casID }} мм
@@ -101,9 +101,12 @@
             <div class="inclinom-button" @click="InclMenu()">Инклинометрия</div>
             <!-- Кнопка инклонометрии end-->
 
-            <div class="spoiler">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1"
-                     :checked="activeRightTabName === 'devices'" @change="setActiveRightTabName($event, 'devices')"/>
+            <div class="spoiler"
+                 :class="{ 'opened': activeRightTabName === 'devices' }">
+              <input style="width: 845px; height: 45px;" type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'devices'"
+                     @change="setActiveRightTabName($event, 'devices')"/>
               <div class="box">
                 <div class="select-well no-gutter col-12">
                   <div class="devices-title"><b>Оборудование</b></div>
@@ -124,7 +127,8 @@
                 </span>
 
 
-                <blockquote class="right-block-details">
+                <div class="right-block-details"
+                     v-show="activeRightTabName === 'devices'">
                   <div class="devices-data no-gutter col-7">
                     Станок-качалка
                   </div>
@@ -159,13 +163,13 @@
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Наружн. ØНКТ
+                    Наружный ØНКТ
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubOD }} мм
                   </div>
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Внутр. ØНКТ
+                    Внутренний ØНКТ
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubID }} мм
@@ -176,13 +180,17 @@
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ stopDate }}
                   </div>
-                </blockquote>
+                </div>
               </div>
             </div>
 
-            <div class="spoiler">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1"
-                     :checked="activeRightTabName === 'pvt'" @change="setActiveRightTabName($event, 'pvt')"/>
+            <div class="spoiler"
+                 :class="{ 'opened': activeRightTabName === 'pvt' }">
+              <input style="width: 845px; height: 45px;"
+                     type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'pvt'"
+                     @change="setActiveRightTabName($event, 'pvt')"/>
               <div class="box">
                 <div class="select-well no-gutter col-12">
                   <div class="pvt-title">PVT</div>
@@ -203,7 +211,8 @@
                       </svg>
                 </span>
 
-                <blockquote class="right-block-details">
+                <div class="right-block-details"
+                     v-show="activeRightTabName === 'pvt'">
                   <div class="pvt-data no-gutter col-7">Рнас</div>
                   <div class="pvt-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ PBubblePoint }} атм
@@ -245,18 +254,25 @@
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ densWater }} г/cм³
                   </div>
-                </blockquote>
+                </div>
               </div>
             </div>
 
-            <div class="spoiler">
+            <div class="spoiler"
+                 :class="{ 'opened': activeRightTabName === 'technological-mode' }">
+              <input style="width: 845px; height: 45px;"
+                     type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'technological-mode'"
+                     @click="setActiveRightTabName($event, 'technological-mode')"/>
               <div class="box">
                 <div class="select-well no-gutter col-12">
+
                   <div class="technological-mode-title">Технологический режим</div>
                 </div>
-                <span class="closer"></span>
-                <span class="open"></span>
-                <blockquote class="right-block-details" v-if="activeRightTabName === 'technological-mode'">
+
+                <div class="right-block-details"
+                     v-show="activeRightTabName === 'technological-mode'">
                   <div class="tech-data no-gutter col-7">Qж</div>
                   <div class="tech-data table-border-gno no-gutter col-5">
                     {{ qL }} м3/сут
@@ -298,14 +314,14 @@
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ lineP }} атм
                   </div>
-                </blockquote>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
-          <div class="no-gutter col-md-12">
+          <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
               <modal class="modal-bign-wrapper" name="modalIncl" :width="1150" :height="600" style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
@@ -402,7 +418,7 @@
                       <div class="form-check-new">
                         <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
                                type="checkbox"/>
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = P по окр.</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = Р изобар</label>
                       </div>
                       <div class="form-check-new">
                         <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
@@ -905,7 +921,9 @@
                   </div>
 
                   <div class="image-data col-2">
-                    <img class="podborgnoimg" src="./images/podbor-gno.png" alt="podbor-gno" width="150px" height="435px"/>
+                    <img class="podborgnoimg"
+                         src="./images/podbor-gno.png"
+                         alt="podbor-gno"/>
                   </div>
 
                   <div class="table-pgno-button col-8">
@@ -1022,6 +1040,8 @@
                         </tbody>
                       </table>
                     </div>
+
+                    <!-- <button class="button-pdf col-12" @click="createPDF()">Скачать данные</button> -->
                   </div>
                 </div>
               </div>
@@ -1029,7 +1049,6 @@
           </div>
 
           <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
-          <br/>
 
           <div class="no-gutter col-md-12">
             <div class="container-fluid d-sm-block">
@@ -1385,8 +1404,6 @@
           <!-- Конец блока -->
         </div>
       </div>
-      <br/>
-      <br/>
     </div>
 
     <notifications position="top"></notifications>
@@ -1406,6 +1423,7 @@ import moment from "moment";
 import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from 'vue';
+import jsPDF from 'jspdf'
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -1420,6 +1438,19 @@ export default {
     return {
       activeRightTabName: 'technological-mode',
       layout: {
+        shapes: [{
+          type: 'line',
+          yref: 'paper',
+          x0: 20,
+          y0: 0,
+          x1: 20,
+          y1: 1,
+          line: {
+            color: 'orange',
+            width: 1,
+            dash: 'dot'
+          }
+        }],
         width: 800,
         height: 360,
         showlegend: true,
@@ -1550,6 +1581,7 @@ export default {
       expChoose: null,
       CelButton: 'ql',
       bhpCurveButton: '',
+      qL: null,
       qlCelValue: null,
       bhpCelValue: null,
       piCelValue: null,
@@ -1629,6 +1661,13 @@ export default {
   },
 
   methods: {
+
+    createPDF () {
+      let pdfName = 'Результат';
+      var doc = new jsPDF();
+      doc.text("Тут будут значения", 10, 10);
+      doc.save(pdfName + '.pdf');
+    },
     closeModal(modalName) {
       this.$modal.hide(modalName)
     },
@@ -1805,7 +1844,7 @@ export default {
             "Qн = %{text:.1f} т/сут<br>" +
             "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
-            size: "15",
+            size: "8",
             color: "#FBA409",
           },
         },
@@ -1862,6 +1901,8 @@ export default {
       this.data[2]['x'][0] = value[1]["q_l"]
       this.data[2]['y'][0] = value[1]["p"]
       this.data[2]['text'][0] = value[1]["q_oil"]
+      this.layout['shapes'][0]['x0'] = value[1]['q_l']
+      this.layout['shapes'][0]['x1'] = value[1]['q_l']
 
     },
     PotAnalysisMenu() {
@@ -2555,27 +2596,28 @@ export default {
         }
 
       }
-    }},
+    },
+    setActiveRightTabName: function (e, val) {
+      if (val === this.activeRightTabName) {
+        this.activeRightTabName = 'technological-mode';
+        return;
+      }
 
-  setActiveRightTabName: function (e, val) {
-    if (val === this.activeRightTabName) {
-      this.activeRightTabName = 'technological-mode';
-    } else {
       this.activeRightTabName = val;
+    },
+
+    downloadImg() {
+      $('#btnExport').click(function(){
+        //var title = $("<p>Image Here</p>");
+        //$("#content").append(title);
+        var divGraph = $('#graph');
+        Plotly.toImage('graph', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
+          console.log(dataURL);
+          img_png.attr("src", dataURL);
+        });
+      });
     }
   },
-
-  downloadImg() {
-    $('#btnExport').click(function(){
-      //var title = $("<p>Image Here</p>");
-      //$("#content").append(title);
-      var divGraph = $('#graph');
-      Plotly.toImage('graph', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
-        console.log(dataURL);
-        img_png.attr("src", dataURL);
-      });
-    });
-  }
 };
 </script>
 <style scoped></style>
