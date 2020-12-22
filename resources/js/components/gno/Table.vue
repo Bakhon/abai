@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div class="gno-page-wrapper">
     <div>
       <div class="row">
         <div class="second-column col-lg-3 order-md-2">
@@ -127,7 +127,8 @@
                 </span>
 
 
-                <blockquote class="right-block-details">
+                <div class="right-block-details"
+                     v-show="activeRightTabName === 'devices'">
                   <div class="devices-data no-gutter col-7">
                     Станок-качалка
                   </div>
@@ -179,7 +180,7 @@
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ stopDate }}
                   </div>
-                </blockquote>
+                </div>
               </div>
             </div>
 
@@ -210,7 +211,8 @@
                       </svg>
                 </span>
 
-                <blockquote class="right-block-details">
+                <div class="right-block-details"
+                     v-show="activeRightTabName === 'pvt'">
                   <div class="pvt-data no-gutter col-7">Рнас</div>
                   <div class="pvt-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ PBubblePoint }} атм
@@ -252,7 +254,7 @@
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ densWater }} г/cм³
                   </div>
-                </blockquote>
+                </div>
               </div>
             </div>
 
@@ -262,7 +264,7 @@
                      type="checkbox"
                      tabindex="-1"
                      :checked="activeRightTabName === 'technological-mode'"
-                     @change="setActiveRightTabName($event, 'technological-mode')"/>
+                     @click="setActiveRightTabName($event, 'technological-mode')"/>
               <div class="box">
                 <div class="select-well no-gutter col-12">
 
@@ -285,7 +287,8 @@
                   </svg>
                 </span>
 
-                <blockquote class="right-block-details">
+                <div class="right-block-details"
+                     v-show="activeRightTabName === 'technological-mode'">
                   <div class="tech-data no-gutter col-7">Qж</div>
                   <div class="tech-data table-border-gno no-gutter col-5">
                     {{ qL }} м3/сут
@@ -327,7 +330,7 @@
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ lineP }} атм
                   </div>
-                </blockquote>
+                </div>
               </div>
             </div>
           </div>
@@ -2613,9 +2616,10 @@ export default {
     setActiveRightTabName: function (e, val) {
       if (val === this.activeRightTabName) {
         this.activeRightTabName = 'technological-mode';
-      } else {
-        this.activeRightTabName = val;
+        return;
       }
+
+      this.activeRightTabName = val;
     },
 
     downloadImg() {
