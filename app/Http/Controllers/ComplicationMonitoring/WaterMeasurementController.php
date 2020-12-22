@@ -447,8 +447,10 @@ class WaterMeasurementController extends Controller
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(WaterMeasurementUpdateRequest $request, ComplicationMonitoringWaterMeasurement $watermeasurement)
-    {
+    public function update(
+        WaterMeasurementUpdateRequest $request,
+        ComplicationMonitoringWaterMeasurement $watermeasurement
+    ) {
         $this->validateFields($request, 'watermeasurement');
         $watermeasurement->update($request->validated());
         return redirect()->route('watermeasurement.index')->with('success', __('app.updated'));
@@ -659,23 +661,27 @@ class WaterMeasurementController extends Controller
     {
         $wm = ComplicationMonitoringWaterMeasurement::query()
             ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subMonths(3)->startOfMonth())
-            ->where('date', '<=', \Carbon\Carbon::now())
+            ->where('date', '>=', \Carbon\Carbon::now()->subYear()->startOfMonth())
+            ->where('date', '<=', \Carbon\Carbon::now()->startOfMonth())
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->format('M');
+                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                        ? '1 полугодие'
+                        : '2 полугодие';
                 }
             );
 
         $uhe = ComplicationMonitoringOmgUHE::query()
             ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subMonths(3)->startOfMonth())
-            ->where('date', '<=', \Carbon\Carbon::now())
+            ->where('date', '>=', \Carbon\Carbon::now()->subYear()->startOfMonth())
+            ->where('date', '<=', \Carbon\Carbon::now()->startOfMonth())
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->format('M');
+                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                        ? '1 полугодие'
+                        : '2 полугодие';
                 }
             );
 
@@ -684,13 +690,19 @@ class WaterMeasurementController extends Controller
             ->where(
                 'final_date_of_corrosion_velocity_with_inhibitor_measure',
                 '>=',
-                \Carbon\Carbon::now()->subMonths(3)->startOfMonth()
+                \Carbon\Carbon::now()->subYear()->startOfMonth()
             )
-            ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '<=', \Carbon\Carbon::now())
+            ->where(
+                'final_date_of_corrosion_velocity_with_inhibitor_measure',
+                '<=',
+                \Carbon\Carbon::now()->startOfMonth()
+            )
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->format('M');
+                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                        ? '1 полугодие'
+                        : '2 полугодие';
                 }
             );
 
