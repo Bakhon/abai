@@ -47,7 +47,7 @@
                 <td rowspan="2" class="th">Прирост Q н</td>
             </tr>
             <tr></tr>
-            <tr class="subHeaderColumn" style="background: #333975">
+            <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
                 <td @click="sortBy('well')" class="th" style="background: #333975;"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('well_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>

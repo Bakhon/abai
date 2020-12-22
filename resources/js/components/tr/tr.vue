@@ -6924,7 +6924,7 @@ a:hover {
   text-decoration: none !important;
 }
 .maintable {
-  padding-top: 35px;
+  padding-top: 0px;
 }
 .maintable-level2 {
   background: #272953;
@@ -7015,9 +7015,9 @@ tr:nth-child(even) {
   flex-grow: 0;
   width: 200px;
 }
-.tablecont {
+/* .tablecont {
   margin-top: -38px;
-}
+} */
 
 .table .th {
   position: sticky;
