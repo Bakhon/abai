@@ -420,13 +420,13 @@ input.checkbox0 {
 }
 */
 
-.spoiler>input+.box>blockquote {
-    display: none;
-}
+/*.spoiler>input+.box>.right-block-details {*/
+/*    display: none;*/
+/*}*/
 
-.spoiler>input:checked+.box>blockquote {
-    display: block;
-}
+/*.spoiler>input:checked+.box>.right-block-details {*/
+/*    display: block;*/
+/*}*/
 
 .spoiler>input[type="checkbox"] {
     cursor: pointer;
@@ -449,28 +449,25 @@ input.checkbox0 {
     text-decoration: underline;
 }
 
-.spoiler>input+.box>span.closer {
+.spoiler .box>span.closer {
     display: none;
 }
 
-.spoiler>input:checked+.box>span.closer {
+.spoiler.opened .box>span.closer {
     display: inline;
 }
 
-.spoiler>input:checked+.box>span.open {
+.spoiler.opened .box>span.open {
     display: none;
 }
 
-.spoiler>input+.box>span.open {
+.spoiler .box>span.open {
     display: inline;
 }
 
-.spoiler blockquote, .spoiler {
-    overflow-x: hidden;
-}
-
-blockquote {
+.right-block-details {
     width: 100%;
+    margin: 0;
 }
 
 span.open, span.closer {
@@ -486,10 +483,12 @@ span.open, span.closer {
     padding: 8px;
     text-align: left;
     margin-bottom: 5px;
+    overflow: hidden;
+    height: 55px;
 }
 
 .spoiler.opened {
-    height: 288px;
+    height: 278px;
 }
 
 .spoiler:last-child {
@@ -963,7 +962,7 @@ td {
 }
 
 .gno-line-chart, .gno-shgn-wrapper {
-    height: 455px;
+    height: 445px;
     overflow: hidden;
 }
 
@@ -1198,10 +1197,6 @@ input.checkbox-q-liquid {
 
 .option-curve-line-1 {
     height: 30px;
-}
-
-.right-block-details {
-    margin: 0;
 }
 
 /* Параметры подбора */
@@ -1498,6 +1493,10 @@ input.checkbox-q-liquid {
 
 .first-column-curve-block {
     margin-bottom: 10px;
+}
+
+.gno-page-wrapper {
+    position: relative;
 }
 
 @media (max-width: 1765px) {
