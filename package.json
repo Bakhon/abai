@@ -48,7 +48,7 @@
         "mapbox-gl": "^1.0.0",
         "moment": "^2.29.1",
         "ol": "^6.4.3",
-        "plotly.js-locales": "^1.58.3",
+        "plotly.js-locales": "^1.58.4",
         "tableexport.jquery.plugin": "^1.10.21",
         "v-calendar": "^1.1.1",
         "vue-apexcharts": "^1.6.0",

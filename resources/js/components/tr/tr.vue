@@ -7024,7 +7024,7 @@ tr:nth-child(even) {
   z-index: 3000;
 }
 tr td:first-child {
-  background-color: #0074d9;
+  /* background-color: #0074d9; */
   color: #fff;
   position: sticky;
   left: 0;
@@ -7036,6 +7036,14 @@ tr td:first-child {
 .table-inner {
 
   overflow-y: visible;
+}
+tr:nth-child(odd) .fixcol:first-child {
+  background-color: #454d7d;
+  /* z-index: 5000; */
+}
+tr:nth-child(even) .fixcol:first-child {
+  background-color: #454d7d73;
+  /* z-index: 5000; */
 }
 </style>
 <style>
