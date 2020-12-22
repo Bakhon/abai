@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #656a8a; height: 104px; width: 161px;"
+            style="background: #656a8a; height: 104px; width: 161px"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -6576,7 +6576,6 @@ export default {
   },
   beforeCreate: function () {},
   created() {
-    this.$store.commit("tr/SET_SORTTYPE", this.sortType);
     this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
     this.$store.commit("tr/SET_SEARCH", this.searchString);
     this.$store.commit("tr/SET_FILTER", this.filter);
@@ -6792,6 +6791,10 @@ export default {
           this.isloading = false;
           let data = response.data;
           if (data) {
+            this.$store.commit("tr/SET_SORTPARAM", "");
+            this.$store.commit("tr/SET_SEARCH", "");
+            this.sortParam = "";
+            this.searchString = "";
             console.log(data);
             // this.wells = data.data;
             this.fullWells = data.data;
@@ -6830,6 +6833,8 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.$store.commit("tr/SET_SORTPARAM", "");
+      this.sortParam = "";
       this.isloading = true;
       const searchParam = this.searchString
         ? `search/${this.searchString}/`
@@ -7031,10 +7036,9 @@ tr td:first-child {
   width: 100px;
 }
 .table-outer {
-  position: relative
+  position: relative;
 }
 .table-inner {
-
   overflow-y: visible;
 }
 </style>
