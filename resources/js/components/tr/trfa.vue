@@ -135,7 +135,8 @@
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
-              width="800"
+              width="1200"
+              height='500'
               :options="chartBarOptions"
               :series="[{ name: '', data: barChartData }]"
             ></apexchart>
@@ -147,7 +148,6 @@
               v-if="pieChartData && pieChartRerender"
               type="donut"
               width="650"
-              
               :options="chartOptions"
               :series="pieChartData"
             ></apexchart>
@@ -394,9 +394,6 @@ export default {
         // }, 
         dataLabels: {
           enabled: true,
-          formatter: function (val) {
-            return round(val);
-          },
           offsetY: -20,
           style: {
             fontSize: "12px",

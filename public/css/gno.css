@@ -1471,6 +1471,27 @@ input.checkbox-q-liquid {
     display: flex;
 }
 
+.button-pdf {
+    background-color: #293688;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    height: 38px;
+}
+
+.button-pdf:hover {
+    background: #4e516c;
+}
+
+.button-pdf:active {
+    background-color: #144079;
+    box-shadow: 0 2px #666;
+    transform: translateY(0.02px);
+    filter: blur(0.3px);
+}
+
 /*.modal-bign-wrapper {*/
 /*    z-index: 999;*/
 /*}*/

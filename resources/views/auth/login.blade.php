@@ -18,15 +18,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    
+
 </head>
     <body>
         <div class="row">
             <div id="app"></div>
-            <!-- <div class="col-md-6">
-               <div id="logo"></div>
-               <div id="logo2"></div>
-            </div> -->
             <div class="container">
             <div class=" align-items-center">
             <div class="align-items-sm-center" style="
@@ -86,7 +82,7 @@
 ">
             <h5>Техническая поддержка</h5>
             </a>
-            
+
             <a href="#" type="button"  data-toggle="modal" data-target="#faqModal" style="
     color: #e8f0fe;
     padding-right: 20px;
@@ -94,7 +90,7 @@
             <h5>F.A.Q.</h5>
             </a>
             </div>
-           
+
         </div>
  <!-- Тех поддержка-->
  <div class="modal fade" id="techModal" tabindex="-1" aria-labelledby="techModalLabel" aria-hidden="true">
@@ -112,7 +108,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-        
+
       </div>
     </div>
   </div>
@@ -134,7 +130,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-        
+
       </div>
     </div>
   </div>
@@ -183,7 +179,7 @@
     margin-top: 107px;
     margin-bottom: -120px;
     }
-    
+
     h2  {
         padding-bottom: 40px;
     }
