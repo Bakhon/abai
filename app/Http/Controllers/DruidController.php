@@ -26,7 +26,6 @@ class DruidController extends Controller
             ->count('totalNrRecords')
             ->execute();
 return $response;
-     //   return view('druid');
     }
 
     public function getOilPrice(Request $request)
