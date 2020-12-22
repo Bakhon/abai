@@ -42,6 +42,17 @@
                                 <label class="form-check-label"
                                        for="permission_{{$permissions->get('monitoring view main')->id}}">Просмотр главной страницы</label>
                             </div>
+                            <div class="form-check">
+                                <input
+                                        class="form-check-input"
+                                        id="permission_{{$permissions->get('monitoring make report')->id}}"
+                                        type="checkbox"
+                                        name="permissions[]"
+                                        value="{{$permissions->get('monitoring make report')->id}}"
+                                >
+                                <label class="form-check-label"
+                                       for="permission_{{$permissions->get('monitoring make report')->id}}">Создание сводного отчета</label>
+                            </div>
                             <div class="form-check mb-4">
                                 <input
                                         class="form-check-input"

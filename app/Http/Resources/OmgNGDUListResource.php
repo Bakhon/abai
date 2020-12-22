@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class OmgNGDUListResource extends JsonResource
+class OmgNGDUListResource extends CrudListResource
 {
+
+    protected $modelName = 'omgngdu';
+
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +15,7 @@ class OmgNGDUListResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $result = [
             'id' => $this->id,
             'fields' => [
                 'field' => $this->field->name,
@@ -34,13 +35,11 @@ class OmgNGDUListResource extends JsonResource
                 'heater_inlet_pressure' => $this->heater_inlet_pressure,
                 'heater_output_pressure' => $this->heater_output_pressure,
             ],
-            'links' => [
-                'show' => route('omgngdu.show',$this->id),
-                'edit' => route('omgngdu.edit',$this->id),
-                'history' => route('omgngdu.history',$this->id),
-                'delete' => route('omgngdu.destroy',$this->id),
-            ]
         ];
+
+        $result['links'] = $this->getLinks();
+
+        return $result;
 
     }
 }

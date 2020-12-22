@@ -12,16 +12,17 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 
-class InhibitorsController extends Controller
+class InhibitorsController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'inhibitors';
 
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('inhibitors.create'),
                 'list' => route('inhibitors.list'),
             ],
             'title' => 'Справочник ингибиторов',
@@ -40,6 +41,10 @@ class InhibitorsController extends Controller
                 ],
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
 
         return view('inhibitors.index', compact('params'));
     }

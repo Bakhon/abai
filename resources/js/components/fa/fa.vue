@@ -1098,6 +1098,10 @@ export default {
             this.editdtprevy = choosenSecDt[0];
             
             if (data) {
+              this.$store.commit("fa/SET_SORTPARAM", "");
+              this.$store.commit("fa/SET_SEARCH", "");
+              this.sortParam = "";
+              this.searchString = "";
               console.log(data);
               this.wells = data.data;
               this.fullWells = data.data;
@@ -1146,6 +1150,8 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.$store.commit("fa/SET_SORTPARAM", "");
+      this.sortParam = "";
       const mm = this.$store.getters["fa/month"];
       const prMm = this.$store.getters["fa/prmonth"];
       const yyyy = this.$store.getters["fa/year"];
