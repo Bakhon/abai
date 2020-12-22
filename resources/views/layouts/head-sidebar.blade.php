@@ -42,12 +42,12 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
                             <label class="form-check-label" for="inlineRadio3">ЭмбаМунайГаз</label>
-                        </div> 
+                        </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
                             <label class="form-check-label" for="inlineRadio3">УзенМунайГаз</label>
-                        </div>   
-                        <button type="button" class="btn btn-secondary btn-sm companylist" style="margin-left: 30px;">Выбрать</button>                      
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm companylist" style="margin-left: 30px;">Выбрать</button>
 
                     </div>
                 </div>

@@ -8,7 +8,6 @@ export default {
     Calendar,
     DatePicker,
   },
-  template: "#vue-status-overview-template",
   data: function () {
     return {
       oilChartHeadName:'Динамика добычи нефти',
@@ -68,7 +67,6 @@ export default {
       tableHover4: "",
       tableHover5: "",
       tableHover6: "",
-      tableHover7: "",
       changeMenuButton: "color: #fff;",
       changeMenuButton1: "",
       changeMenuButton2: "",
@@ -87,7 +85,6 @@ export default {
       currencyChart: "",
       currencyNowUsd: "",
       selectedDMY2: "",
-      selectedDMY: "",
       periodSelectOil: "",
       oilPeriod: "",
       period: "7",
@@ -1069,12 +1066,12 @@ export default {
               .value();
 
             if (this.buttonHover12 != '') {
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ММГ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КТМ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КБМ" }));
-              productionFactForMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КОА" }));
+              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
+              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
+              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ММГ" }));
+              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КТМ" }));
+              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КБМ" }));
+              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КОА" }));
 
               data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
               data = _.reject(data, _.iteratee({ dzo: "КГМ" }));

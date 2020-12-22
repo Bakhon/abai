@@ -62,13 +62,13 @@
             <!-- Конструкция start-->
             <div class="tables-string-gno1-1">
               <div class="construction no-gutter col-12"><b>Конструкция</b></div>
-              <div class="construction-data no-gutter col-7">Наружн. ØЭК</div>
+              <div class="construction-data no-gutter col-7">Наружный ØЭК</div>
               <div class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
                 {{ casOD }} мм
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
-                Внутрен. ØЭК
+                Внутренний ØЭК
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ casID }} мм
@@ -159,13 +159,13 @@
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Наружн. ØНКТ
+                    Наружный ØНКТ
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubOD }} мм
                   </div>
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Внутр. ØНКТ
+                    Внутренний ØНКТ
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubID }} мм
@@ -249,9 +249,12 @@
               </div>
             </div>
 
+            
+
             <div class="spoiler">
               <div class="box">
                 <div class="select-well no-gutter col-12">
+                  
                   <div class="technological-mode-title">Технологический режим</div>
                 </div>
                 <span class="closer"></span>
@@ -303,6 +306,8 @@
             </div>
           </div>
         </div>
+
+        
 
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12">
@@ -402,7 +407,7 @@
                       <div class="form-check-new">
                         <input v-model="analysisBox6" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
                                type="checkbox"/>
-                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = P по окр.</label>
+                        <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">Pпл = Р изобар</label>
                       </div>
                       <div class="form-check-new">
                         <input v-model="analysisBox7" class="new-checkbox-modal-analysis-menu" @change="postAnalysisNew()"
@@ -1022,6 +1027,8 @@
                         </tbody>
                       </table>
                     </div>
+
+                    <!-- <button class="button-pdf col-12" @click="createPDF()">Скачать данные</button> -->
                   </div>
                 </div>
               </div>
@@ -1420,6 +1427,19 @@ export default {
     return {
       activeRightTabName: 'technological-mode',
       layout: {
+        shapes: [{
+          type: 'line',
+          yref: 'paper',
+          x0: 20,
+          y0: 0,
+          x1: 20,
+          y1: 1,
+          line: {
+            color: 'orange',
+            width: 1,
+            dash: 'dot'
+          }
+        }],
         width: 800,
         height: 360,
         showlegend: true,
@@ -1805,7 +1825,7 @@ export default {
             "Qн = %{text:.1f} т/сут<br>" +
             "Pзаб = %{y:.1f} атм<extra></extra>",
           marker: {
-            size: "15",
+            size: "8",
             color: "#FBA409",
           },
         },
@@ -1862,6 +1882,8 @@ export default {
       this.data[2]['x'][0] = value[1]["q_l"]
       this.data[2]['y'][0] = value[1]["p"]
       this.data[2]['text'][0] = value[1]["q_oil"]
+      this.layout['shapes'][0]['x0'] = value[1]['q_l']
+      this.layout['shapes'][0]['x1'] = value[1]['q_l']
 
     },
     PotAnalysisMenu() {
