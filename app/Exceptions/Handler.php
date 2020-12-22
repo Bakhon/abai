@@ -42,10 +42,14 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
     {
+        if($exception instanceof \Adldap\Auth\BindException) {
+            return redirect()->back()->withErrors([$exception->getMessage()]);
+        }
+
         return parent::render($request, $exception);
     }
 }
