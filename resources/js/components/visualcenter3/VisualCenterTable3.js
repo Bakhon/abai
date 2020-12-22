@@ -11,13 +11,15 @@ export default {
   template: "#vue-status-overview-template",
   data: function () {
     return {
+      oilChartHeadName:'Динамика добычи нефти',
       prod_wells_workAll: [
-        { name: "ЭФ" }, { name: "ДФ" },
-        { name: "В работе добывающие скважины" },
-        { name: "БД" },
-        { name: "Освоение" },
-        { name: "ОФЛС" },
-        { name: "Простой добывающих скважин" }
+        { name: "ЭФ", value: 603,value2: 101 }, 
+        { name: "ДФ", value: 98,value2: 56  },
+        { name: "В работе добывающие скважины", value: 45,value2: 31  },
+        { name: "БД", value: 121,value2: 108  },
+        { name: "Освоение", value: 143,value2: 114  },
+        { name: "ОФЛС", value: 98,value2: 36  },
+        { name: "Простой добывающих скважин", value: 86,value2: 54  }
       ],
       prod_wells_work: 0,
       prod_wells_idle: 0,
@@ -31,9 +33,6 @@ export default {
       quantityGetProductionOilandGas: "",
       /*calendar*/
       range: {
-        //start: "2020-01-06T06:00:00+06:00",
-        //end: "2020-01-10T06:00:00+06:00",
-
         start: "2020-12-18T06:00:00+06:00",
         end: "2020-12-18T09:00:00+06:00",
       },
@@ -1044,10 +1043,15 @@ export default {
               }))
               .value();
 
-              this.inj_wells_idle = dataWithMay[0]['inj_wells_idle'];
-              this.inj_wells_work = dataWithMay[0]['inj_wells_work'];
-              this.prod_wells_work = dataWithMay[0]['prod_wells_work'];
-              this.prod_wells_idle = dataWithMay[0]['prod_wells_idle'];
+              var  dataWithMayLast=[];
+             dataWithMayLast=_.last(dataWithMay);//.slice(-1);
+         
+        
+
+              this.inj_wells_idle = dataWithMayLast['inj_wells_idle'];
+              this.inj_wells_work = dataWithMayLast['inj_wells_work'];
+              this.prod_wells_work = dataWithMayLast['prod_wells_work'];
+              this.prod_wells_idle = dataWithMayLast['prod_wells_idle'];
 
 
               //console.log(productionForChart);
@@ -1252,8 +1256,8 @@ export default {
               _.inRange(
                 //item.dateSimple,
                 item.__time,
-                timestampToday - 86400000,// * Number(period),
-                timestampToday + 86400000
+                timestampEnd - 86400000,// * Number(period),
+                timestampEnd// + 86400000
               ),
             ]);
           });
@@ -1276,8 +1280,8 @@ export default {
           var dzoBriefly = [];
           var dzoPercent = [];
           var productionFactPercent = [];
-
-          console.log(dataDay);
+          var dataDayLast=[];
+                 
 
 
           _.forEach(dataDay, function (item) {
@@ -1326,9 +1330,10 @@ export default {
              },
              0
            );*/
-
+        
+            
           if (inj_wells_idle) {
-            var inj_wells_idle = _.reduce(
+            inj_wells_idle = _.reduce(
               inj_wells_idle,
               function (memo, item) {
                 return memo + item.inj_wells_idle;
@@ -1339,7 +1344,7 @@ export default {
           }
 
           if (inj_wells_work) {
-            var inj_wells_work = _.reduce(
+            inj_wells_work = _.reduce(
               inj_wells_work,
               function (memo, item) {
                 return memo + item.inj_wells_work;
@@ -1361,7 +1366,7 @@ export default {
           }
 
           if (prod_wells_idle) {
-            var prod_wells_idle = _.reduce(
+            prod_wells_idle = _.reduce(
               prod_wells_idle,
               function (memo, item) {
                 return memo + item.prod_wells_idle;
@@ -1829,23 +1834,33 @@ export default {
   },
 
   async mounted() {
+   
+    this.item3=this.oilChartHeadName;
+
+    if (window.location.host==='localhost')
+  {
+    this.Table1="display:none";  
+    this.Table3="display:block";  
+    this.range = {
+      start: "2020-12-17T06:00:00+06:00",
+      end: "2020-12-18T09:00:00+06:00",
+      formatInput: true,
+    };} else{
     this.range = {
       start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
       end: new Date().toISOString(),
       formatInput: true,
-    };
+    };}
     localStorage.setItem("changeButton","Yes");
     var nowDate = new Date().toLocaleDateString();
     this.timeSelect = nowDate;
     this.timestampToday = new Date(this.range.start).getTime();
     this.timestampEnd = new Date(this.range.end).getTime();
     if (this.company == "all") {
-      // this.getProduction("oil_plan", "oil_fact", "Добыча нефти", "тн");
-      //this.changeButton("No");
     }
     this.selectedYear = this.year;
-    var productionPlan = localStorage.getItem("production-plan");
-    var productionFact = localStorage.getItem("production-fact");
+    //var productionPlan = localStorage.getItem("production-plan");
+    //var productionFact = localStorage.getItem("production-fact");
 
     localStorage.setItem("selectedDMY", "undefined");
     this.getCurrencyNow(this.timeSelect);

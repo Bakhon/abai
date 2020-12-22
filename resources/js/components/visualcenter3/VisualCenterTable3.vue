@@ -249,7 +249,7 @@
                       getProduction(
                         'oil_plan',
                         'oil_fact',
-                        ' Добыча нефти',
+                       `${oilChartHeadName}`,
                         'тн'
                       )
                     "
@@ -284,7 +284,7 @@
                       getProduction(
                         'oil_dlv_plan',
                         'oil_dlv_fact',
-                        'Сдача нефти',
+                        'Динамика сдачи нефти',
                         'тн'
                       )
                     "
@@ -324,14 +324,14 @@
                       getProduction(
                         'gas_plan',
                         'gas_fact',
-                        'Добыча газа',
+                        'Динамика добычи газа',
                         'тыс м³'
                       )
                     "
                   >
                     <div class="icon-all icons3"></div>
                     <div class="txt5">Добыча газа</div>
-                    <div class="txt6">млрд. м³</div>
+                    <div class="txt6">тыс м³</div>
                   </div>
                   <ul>
                     <li class="center-li">
@@ -360,7 +360,7 @@
                       getProduction(
                         'gk_plan',
                         'gk_fact',
-                        'Добыча конденсата',
+                        'Динамика добычи конденсата',
                         'тн'
                       )
                     "
@@ -383,7 +383,7 @@
                       getProduction(
                         'inj_plan',
                         'inj_fact',
-                        'Объём закачки',
+                        'Динамика объёма закачки воды',
                         'м³'
                       )
                     "
@@ -655,8 +655,8 @@
               </table>
             </div>
 
-            <div class="w-50 vc-chart">
-          
+            <div class="w-50 vc-chart">     
+              <div class="name-chart-head">{{item3}}</div>
               <vc-chart v-if="company != 'all'"> </vc-chart>
             </div>
           </div>
@@ -853,6 +853,7 @@
             </div>
 
             <div class="w-50 vc-chart">
+                 <div class="name-chart-head">{{item3}}</div>
               <vc-chart v-if="company == 'all'"> </vc-chart>
             </div>
           </div>
@@ -906,9 +907,155 @@
       <div class="third-table" :style="`${Table4}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area">Фонд добывающих скважин</div>
+          <div class="big-area">
+            <div class="area-6-name"> <div class="ml-4 bold">Фонд добывающих скважин</div></div>
+
+            <div class="container-fluid no-gutter">
+              <table class="table table2">
+                <tr>
+                  <td>
+                    <div
+                      class="button2"
+                      :style="`${buttonHover7}`"
+                      @click="changeMenu2(1)"
+                    >
+                      Суточная
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="button2"
+                      :style="`${buttonHover8}`"
+                      @click="changeMenu2(2)"
+                    >
+                      С начала месяца
+                    </div>
+                  </td>
+                  <td>
+                    <div
+                      class="button2"
+                      :style="`${buttonHover9}`"
+                      @click="changeMenu2(3)"
+                    >
+                      С начала года
+                    </div>
+                  </td>
+                  <td class="dropdown3">
+                    <div
+                      class="button2"
+                      :style="`${buttonHover10}`"
+                      @click="changeMenu2(4)"
+                    >
+                      Календарь
+                    </div>
+                    <ul class="center-menu2">
+                      <li class="center-li">
+                        <br /><br />
+
+                        <div class="month-day">
+                          <div class="calendar-day">
+                            <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                            />
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <br>
+ <div class="container-fluid">
+   <div class="row container-fluid">
+     <div class="w-50">
+            <select 
+              style="
+                background-color: #333975;
+                border-color: #20274e;
+                color: white;
+              "
+              class="form-control w-100 ml-1"
+              id="companySelect"
+              @change="onChange($event)"
+            >
+              <option value="">               
+              <div class="float">Компания</div></option>
+              <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
+              <option value="КБМ">АО «Каражанбасмунай»</option>
+              <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+              <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+              <option value="ММГ">АО «Мангистаумунайгаз»</option>
+            </select></div>
+
+<div class="w-50">
+            <select
+              style="
+                background-color: #333975;
+                border-color: #20274e;
+                color: white;
+              "
+              class="form-control w-100 ml-3"
+              id="companySelect"
+              @change="onChange($event)"
+            >
+              <option value="work">               
+              <div class="float">В работе</div></option>
+              <option value="notWork">В простое</option>              
+            </select></div></div>
+            </div>
+            <br>
+            <div class="row container-fluid">
+              <div class="col-5">
+                
+                <table class="table4">
+                  <tr v-for="(item, index) in prod_wells_workAll">
+                    <!-- @click="saveCompany('all')"-->
+                    <td
+                      :class="index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'"
+                    >
+                      <div class="wells-td"></div>
+                      {{item.name}}
+                      <!--{{ getNameDzoFull(item.name) }}-->
+                    </td>
+                            <td
+                      :class="index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'"
+                    >
+                      <div class="wells-td"></div>
+                      {{item.value}}                  
+                    </td>   
+
+                          <td
+                      :class="index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'"
+                    >
+                      <div class="wells-td"></div>
+                      {{item.value2}}                  
+                    </td>                        
+                  </tr>
+                </table>
+              </div>
+               <div class="col-7 container-fluid"><visual-center3-wells></visual-center3-wells></div>
+             
+             
+            </div>
+          </div>
         </div>
       </div>
+
+
+<!--
+      <div class="third-table" :style="`${Table4}`">
+        <div class="first-string first-string2">
+          <div class="close2" @click="changeTable('1')">Закрыть</div>
+          <div class="big-area">Фонд добывающих скважин</div>
+        </div>
+      </div>-->
 
       <div class="third-table" :style="`${Table5}`">
         <div class="first-string first-string2">
