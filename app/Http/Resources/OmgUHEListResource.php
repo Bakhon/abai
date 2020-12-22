@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class OmgUHEListResource extends JsonResource
+class OmgUHEListResource extends CrudListResource
 {
+
+    protected $modelName = 'omguhe';
+
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +15,7 @@ class OmgUHEListResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $result = [
             'id' => $this->id,
             'fields' => [
                 'field' => $this->field->name,
@@ -30,13 +31,11 @@ class OmgUHEListResource extends JsonResource
                 'out_of_service_оf_dosing' => $this->out_of_service_оf_dosing ? 'Был простой' : 'Не было простоя',
                 'reason' => $this->reason,
             ],
-            'links' => [
-                'show' => route('omguhe.show',$this->id),
-                'edit' => route('omguhe.edit',$this->id),
-                'history' => route('omguhe.history',$this->id),
-                'delete' => route('omguhe.destroy',$this->id),
-            ]
         ];
+
+        $result['links'] = $this->getLinks();
+
+        return $result;
 
     }
 }
