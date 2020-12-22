@@ -47,7 +47,7 @@
                 <td rowspan="2" class="th">Прирост Q н</td>
             </tr>
             <tr></tr>
-            <tr class="subHeaderColumn" style="background: #333975">
+            <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
                 <td @click="sortBy('well')" class="th" style="background: #333975;"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('well_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>
@@ -561,4 +561,27 @@ tr:nth-child(even) .fixcol:first-child {
 .table_tbody {
 position: static;
 }
+
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+}
+
 </style>
