@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         'Barryvdh\TranslationManager\ManagerServiceProvider',
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
     ],
