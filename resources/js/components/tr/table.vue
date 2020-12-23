@@ -514,15 +514,18 @@ tr:nth-child(even) {
     background: rgb(51, 57, 117);
 }
 .table tr:first-child .th {
-    top: 0;
+    top: -1px;
     z-index: 3000;
 }
+.table.table tr .th:first-child {
+    z-index: 3010;
+}
 .table tr:nth-child(2) .th {
-    top: 25px;
+    top: 24px;
     z-index: 3000;
 }
 .table tr:nth-child(3) .th {
-    top: 50px;
+    top: 49px;
     z-index: 3000;
 }
 .table tr:nth-child(4) .th {
@@ -542,19 +545,16 @@ tr:nth-child(even) {
 }
 
 tr td:first-child {
-  color: #fff;
   position: sticky;
-  left: 0;
+  left: -1px;
   width: 100px;
 }
 
 tr:nth-child(odd) .fixcol:first-child {
   background-color: #454d7d;
-  /* z-index: 5000; */
 }
 tr:nth-child(even) .fixcol:first-child {
-  background-color: #454d7d73;
-  /* z-index: 5000; */
+  background-color: #26336f;
 }
 
 
