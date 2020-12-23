@@ -9,13 +9,13 @@
           padding-right: 0;
           margin-right: 0;
           margin-left: 0;
-          paddng-left: 0;
+          padding-left: 0;
         "
       >
         <a
           href="fa"
           class="col but-nav__link but trheadhight"
-          style="margin-left: -17px"
+          style="min-width:330px;"
           ><i style="margin-right: 10px"
             ><svg
               width="24"

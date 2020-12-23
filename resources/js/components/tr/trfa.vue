@@ -741,7 +741,7 @@ body {
   color: white !important;
 }
 .trfabuttech {
-  margin-left: 57px;
+  margin-left: 15px;
 }
 .trfacolmdrowsecnav {
   margin-bottom: 7px;

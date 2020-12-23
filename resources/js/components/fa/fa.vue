@@ -1045,9 +1045,6 @@ export default {
     fullWells() {
       this.chooseField();
     },
-    isloading() {
-      console.log("load = ", this.isloading);
-    },
   },
   methods: {
     sortBy(type) {
