@@ -1,9 +1,9 @@
 <template>
   <div class="gno-page-wrapper">
     <div>
-      <div class="row">
+      <div class="row gno-page-container">
         <div class="second-column col-lg-3 order-md-2">
-          <div class=" col-md-12">
+          <div class="col-md-12 second-column-container">
             <!-- Выбор скважины start -->
             <div class="tables-string-gno col-12">
               <div class="choosing-well-title col-12">Выбор скважины</div>
@@ -469,23 +469,23 @@
                       <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
                     </div>
 
-                    <div class="nno-info-button">
-                      <div class="nno-icon" @click="onShowTable()">
-                        <svg width="31" height="35"
-                             viewBox="0 0 31 35"
-                             fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M15.131 0.290039C6.83973 0.290039 0.117188 6.77814 0.117188 14.7803C0.117188 19.0149 2.00031 22.8253 5.00172 25.4754L3.66936 34.3624L11.2537 28.7829C12.4906 29.1013 13.7903 29.2719 15.131 29.2719C23.4223 29.2719 30.1463 22.7824 30.1463 14.7803C30.1463 6.77814 23.4223 0.290039 15.131 0.290039ZM18.2567 22.7482C17.4838 23.0426 16.8686 23.2656 16.4071 23.4202C15.9471 23.5749 15.4118 23.6521 14.8033 23.6521C13.8676 23.6521 13.1392 23.4316 12.6208 22.9909C12.102 22.5506 11.8441 21.9925 11.8441 21.3142C11.8441 21.0504 11.863 20.7804 11.9015 20.5057C11.9407 20.2306 12.0029 19.9217 12.0881 19.5746L13.0555 16.2768C13.1403 15.9606 13.2141 15.6601 13.2726 15.3803C13.331 15.0979 13.3593 14.8392 13.3593 14.6038C13.3593 14.1843 13.2689 13.8899 13.0898 13.7244C12.9077 13.5584 12.5661 13.4776 12.0564 13.4776C11.8072 13.4776 11.5504 13.5133 11.2872 13.5879C11.0267 13.6654 10.8006 13.7352 10.6151 13.804L10.8703 12.7881C11.5033 12.5392 12.1096 12.3256 12.6879 12.1491C13.2663 11.9698 13.8129 11.8817 14.3279 11.8817C15.2569 11.8817 15.9736 12.1 16.4784 12.5316C16.9806 12.9649 17.2336 13.5278 17.2336 14.2199C17.2336 14.3633 17.2154 14.6162 17.1814 14.9768C17.1468 15.3385 17.082 15.6685 16.9881 15.9716L16.026 19.2594C15.9472 19.5229 15.8771 19.8249 15.8137 20.1622C15.7512 20.4995 15.721 20.7571 15.721 20.93C15.721 21.3666 15.8212 21.665 16.0248 21.8233C16.2254 21.9816 16.5775 22.0612 17.0756 22.0612C17.3108 22.0612 17.5739 22.0205 17.8714 21.9422C18.1662 21.8636 18.3801 21.7938 18.5147 21.7337L18.2567 22.7482ZM18.0863 9.40345C17.6376 9.80588 17.0974 10.0071 16.4656 10.0071C15.8352 10.0071 15.2912 9.80588 14.8388 9.40345C14.3887 9.00138 14.1612 8.51159 14.1612 7.93996C14.1612 7.36978 14.3902 6.87891 14.8388 6.47284C15.2912 6.06567 15.8352 5.86336 16.4656 5.86336C17.0974 5.86336 17.6388 6.06567 18.0863 6.47284C18.5349 6.87891 18.76 7.36978 18.76 7.93996C18.76 8.51304 18.5349 9.00138 18.0863 9.40345Z"
-                                fill="#FEFEFE"/>
-                        </svg>
-                      </div>
-                    </div>
-
                     <div class="nno-modal-button-wrapper">
-                      <button class="button-nno" @click="onCompareNpv()">
-                        Выбрать способ эксплуатации с более высоким NPV
-                      </button>
+                      <div class="nno-modal-buttons-container">
+                        <div class="nno-icon" @click="onShowTable()">
+                          <svg width="31" height="35"
+                               viewBox="0 0 31 35"
+                               fill="none"
+                               xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M15.131 0.290039C6.83973 0.290039 0.117188 6.77814 0.117188 14.7803C0.117188 19.0149 2.00031 22.8253 5.00172 25.4754L3.66936 34.3624L11.2537 28.7829C12.4906 29.1013 13.7903 29.2719 15.131 29.2719C23.4223 29.2719 30.1463 22.7824 30.1463 14.7803C30.1463 6.77814 23.4223 0.290039 15.131 0.290039ZM18.2567 22.7482C17.4838 23.0426 16.8686 23.2656 16.4071 23.4202C15.9471 23.5749 15.4118 23.6521 14.8033 23.6521C13.8676 23.6521 13.1392 23.4316 12.6208 22.9909C12.102 22.5506 11.8441 21.9925 11.8441 21.3142C11.8441 21.0504 11.863 20.7804 11.9015 20.5057C11.9407 20.2306 12.0029 19.9217 12.0881 19.5746L13.0555 16.2768C13.1403 15.9606 13.2141 15.6601 13.2726 15.3803C13.331 15.0979 13.3593 14.8392 13.3593 14.6038C13.3593 14.1843 13.2689 13.8899 13.0898 13.7244C12.9077 13.5584 12.5661 13.4776 12.0564 13.4776C11.8072 13.4776 11.5504 13.5133 11.2872 13.5879C11.0267 13.6654 10.8006 13.7352 10.6151 13.804L10.8703 12.7881C11.5033 12.5392 12.1096 12.3256 12.6879 12.1491C13.2663 11.9698 13.8129 11.8817 14.3279 11.8817C15.2569 11.8817 15.9736 12.1 16.4784 12.5316C16.9806 12.9649 17.2336 13.5278 17.2336 14.2199C17.2336 14.3633 17.2154 14.6162 17.1814 14.9768C17.1468 15.3385 17.082 15.6685 16.9881 15.9716L16.026 19.2594C15.9472 19.5229 15.8771 19.8249 15.8137 20.1622C15.7512 20.4995 15.721 20.7571 15.721 20.93C15.721 21.3666 15.8212 21.665 16.0248 21.8233C16.2254 21.9816 16.5775 22.0612 17.0756 22.0612C17.3108 22.0612 17.5739 22.0205 17.8714 21.9422C18.1662 21.8636 18.3801 21.7938 18.5147 21.7337L18.2567 22.7482ZM18.0863 9.40345C17.6376 9.80588 17.0974 10.0071 16.4656 10.0071C15.8352 10.0071 15.2912 9.80588 14.8388 9.40345C14.3887 9.00138 14.1612 8.51159 14.1612 7.93996C14.1612 7.36978 14.3902 6.87891 14.8388 6.47284C15.2912 6.06567 15.8352 5.86336 16.4656 5.86336C17.0974 5.86336 17.6388 6.06567 18.0863 6.47284C18.5349 6.87891 18.76 7.36978 18.76 7.93996C18.76 8.51304 18.5349 9.00138 18.0863 9.40345Z"
+                                  fill="#FEFEFE"/>
+                          </svg>
+                        </div>
+
+                        <button class="button-nno" @click="onCompareNpv()">
+                          Выбрать способ эксплуатации с более высоким NPV
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -926,7 +926,7 @@
                          alt="podbor-gno"/>
                   </div>
 
-                  <div class="table-pgno-button col-8">
+                  <div class="table-pgno-button gno-shgn-table-section col-8">
                     <div class="table-pgno-one">
                       <table class="table-pgno gno-table-with-header">
                         <thead>
@@ -1041,7 +1041,10 @@
                       </table>
                     </div>
 
-                    <!-- <button class="button-pdf col-12" @click="createPDF()">Скачать данные</button> -->
+                     <button class="button-pdf col-12"
+                             @click="createPDF()">
+                       Создание отчета
+                     </button>
                   </div>
                 </div>
               </div>
@@ -1050,7 +1053,7 @@
 
           <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
 
-          <div class="no-gutter col-md-12">
+          <div class="no-gutter col-md-12 first-column-params-block">
             <div class="container-fluid d-sm-block">
               <div class="row">
                 <div class="col-md-12">
@@ -1110,7 +1113,10 @@
                                     </div>
 
                                     <div class="col-5 py-1 px-1">
-                                      <input v-model="piInput" :disabled="curveSelect != 'pi'" @change="postCurveData()" onfocus="this.value=''"
+                                      <input v-model="piInput"
+                                             :disabled="curveSelect != 'pi'"
+                                             @change="postCurveData()"
+                                             onfocus="this.value=''"
                                              type="text" class="square3"/>
 
                                     </div>
@@ -1160,47 +1166,43 @@
                                 <div class="col-5"></div>
                               </div>
                             </div>
-                            <div class="table-border-gno-top">
-                              <div class="row">
 
-                                <div class="col-1"></div>
-                                <div class="col-2 ml-3 pl-4 pr-3 ic-min-block2 pt-1">
-                                  <div class="table-border-gno-right pt-1">
-                                    <label for="">
-                                      <input v-model="curveSelect" value="bhp" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
-                                             @change="postCurveData()"
-                                             name="set2"/> Рзаб</label>
-                                  </div>
+                            <div class="table-border-gno-top no-margin row">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <label for="">
+                                    <input v-model="curveSelect"
+                                           value="bhp"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Рзаб</label>
                                 </div>
-                                <div class="col-7 px-0 pt-2">
-                                  <input :disabled="curveSelect != 'bhp'" v-model="bhpInput" @change="postCurveData()" onfocus="this.value=''"
+                                <div class="col-6 pt-1 pb-1">
+                                  <input :disabled="curveSelect != 'bhp'"
+                                         v-model="bhpInput"
+                                         @change="postCurveData()"
+                                         onfocus="this.value=''"
                                          type="text"
                                          class="square3"/>
                                 </div>
-
-
                               </div>
                             </div>
-                            <div class="table-border-gno-top">
-                              <div class="row">
 
-                                <div class="col-1">
+                            <div class="table-border-gno-top no-margin row">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <label for="">
+                                    <input v-model="curveSelect"
+                                           value="hdyn"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Ндин</label>
                                 </div>
-
-                                <div class="tech-data ml-3 pl-4 pr-3  col-2  ic-min-block2">
-                                  <div class="table-border-gno-right">
-                                    <label for="">
-                                      <input v-model="curveSelect"
-                                             value="hdyn"
-                                             :disabled="curveSelect == 'pi'"
-                                             class="checkbox-k-prod"
-                                             type="radio"
-                                             @change="postCurveData()"
-                                             name="set2"/> Ндин</label>
-                                  </div>
-                                </div>
-
-                                <div class="col-2 px-0 pt-1 mr-2">
+                                <div class="col-6 table-border-gno-right table-border-gno-right-second pt-1 pb-1">
                                   <input :disabled="curveSelect != 'hdyn'"
                                          v-model="hDynInput"
                                          @change="postCurveData()"
@@ -1208,84 +1210,81 @@
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
+                              </div>
 
-                                <div class="pt-1">
-                                  <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <div class="tech-data curve">
                                     Рзат
                                   </div>
                                 </div>
-                                <div class="col-2 pt-1">
-                                  <input :disabled="curveSelect != 'hdyn'" v-model="pAnnularInput" @change="postCurveData()" type="text"
+                                <div class="col-6 pt-1 pb-1">
+                                  <input :disabled="curveSelect != 'hdyn'"
+                                         v-model="pAnnularInput"
+                                         @change="postCurveData()"
+                                         type="text"
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
-
-                                <div class="col-1">
-                                </div>
-
                               </div>
                             </div>
-                            <div class="table-border-gno-top">
-                              <div class="row">
 
-                                <div class="col-1">
+                            <div class="table-border-gno-top no-margin row">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <label for="">
+                                    <input v-model="curveSelect"
+                                           value="pmanom"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
+                                           @change="postCurveData()"
+                                           name="set2" /> Рманом</label>
                                 </div>
-
-                                <div class="tech-data  ml-3 pl-4 pr-3 col-2 ic-min-block2">
-
-                                  <div class="table-border-gno-right">
-                                    <label for="">
-                                      <input v-model="curveSelect" value="pmanom" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
-                                      @change="postCurveData()"
-                                      name="set2" /> Рманом</label>
-                                  </div>
-                                </div>
-
-                                <div class="col-2 px-0 pt-1 mr-2">
-
-                                  <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput" @change="postCurveData()" type="text"
+                                <div class="col-6 table-border-gno-right table-border-gno-right-second pt-1 pb-1">
+                                  <input :disabled="curveSelect != 'pmanom'"
+                                         v-model="pManomInput"
+                                         @change="postCurveData()"
+                                         type="text"
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
+                              </div>
 
-                                <div class="pb-1">
-                                  <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <div class="tech-data curve">
                                     Нсп маном
                                   </div>
                                 </div>
-
-                                <div class="col-2 pt-1">
-                                  <input :disabled="curveSelect != 'pmanom'" v-model="hPumpManomInput" @change="postCurveData()" type="text"
+                                <div class="col-6 pt-1 pb-1">
+                                  <input :disabled="curveSelect != 'pmanom'"
+                                         v-model="hPumpManomInput"
+                                         @change="postCurveData()"
+                                         type="text"
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
-
-                                <div class="col-2">
-                                </div>
-
                               </div>
                             </div>
-                            <div class="table-border-gno-top">
-                              <div class="row">
 
-                                <div class="col-1">
+                            <div class="table-border-gno-top no-margin row">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <label for="">
+                                    <input v-model="curveSelect"
+                                           value="whp"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Рбуф(ФЭ)</label>
                                 </div>
-
-                                <div class="tech-data ml-3 pl-4 pr-3 col-2 ic-min-block2 mb-2">
-
-                                  <div class="table-border-gno-right">
-                                    <label for="">
-                                      <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
-                                             @change="postCurveData()"
-                                             name="set2"/> Рбуф(ФЭ)</label>
-                                  </div>
-                                </div>
-                                <div class="col-7 px-0 pt-1">
+                                <div class="col-6 pt-1 pb-1">
                                   <input :disabled="curveSelect != 'whp'" v-model="whpInput" @change="postCurveData()" type="text"
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
-
                               </div>
                             </div>
                           </div>
@@ -1450,7 +1449,7 @@ export default {
             dash: 'dot'
           }
         }],
-        width: 800,
+        // width: 800,
         height: 360,
         showlegend: true,
         margin: {
@@ -2024,9 +2023,6 @@ export default {
       else {
         console.log('No data');
       }
-
-
-
     },
     async NnoCalc(){
       let uri = "http://172.20.103.187:7575/api/nno/";
