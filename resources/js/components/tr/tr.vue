@@ -7010,9 +7010,6 @@ tr:nth-child(even) {
   flex-grow: 0;
   width: 200px;
 }
-/* .tablecont {
-  margin-top: -38px;
-} */
 
 .table .th {
   position: sticky;
@@ -7048,6 +7045,7 @@ tr:not(.notsticky) td:nth-child(-n+3) {
   position: sticky;
   left: -1px;
   width: 27px;
+  z-index: 3010;
 }
 tr:not(.notsticky) td:nth-child(2) {
   left: 23px;
@@ -7094,6 +7092,31 @@ tr:nth-child(even) td {
 }
 .faheadhight {
   height: 40px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+
+}
+
+::-webkit-scrollbar-corner  {
+  background: #333975;
 }
 
 </style>
