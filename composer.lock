@@ -7436,8 +7436,6 @@
             },
             "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
-<<<<<<< HEAD
-=======
         },
         {
             "name": "justinrainbow/json-schema",
@@ -7508,7 +7506,6 @@
                 "source": "https://github.com/justinrainbow/json-schema/tree/5.2.10"
             },
             "time": "2020-05-27T16:41:55+00:00"
->>>>>>> 1beeeccdc5e6f7743e0162de011647b2807f8610
         },
         {
             "name": "maximebf/debugbar",
