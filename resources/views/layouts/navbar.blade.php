@@ -148,10 +148,12 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item active dropdown">
-                    <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
-                    <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
-                </li>
+                @if(auth()->user()->can('economic view main'))
+                    <li class="nav-item active dropdown">
+                        <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+                        <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+                    </li>
+                @endif
 
                 <li class="nav-item active">
                     <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button"

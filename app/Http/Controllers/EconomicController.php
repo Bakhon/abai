@@ -15,6 +15,12 @@ use Illuminate\Http\Request;
 
 class EconomicController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:economic view main');
+    }
+
     public function index(Request $request)
     {
         return view('economic.main');
