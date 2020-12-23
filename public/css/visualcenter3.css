@@ -13,6 +13,7 @@ ol, ul, dl {
     padding-right: 0px!important;
 }
 
+/*
 .left-side {
     float: left;
     overflow: hidden;
@@ -28,7 +29,7 @@ ol, ul, dl {
     flex: 0 0 19%;
     max-width: 19%;
     padding-left: 10px!important;
-}
+}*/
 
 .txt2 {
     font-family: Bold;
@@ -84,7 +85,7 @@ body {
 }
 
 .nu {
-    height: 60px;
+    /* height: 60px; */
 }
 
 .number {
@@ -172,7 +173,7 @@ body {
 }
 
 .table2 td {
-    padding: 10px!important;
+    padding: 10px 15px 0px 0px!important;
 }
 
 .table3 td {
@@ -185,7 +186,7 @@ body {
     /* padding: 0px 30px 10px 0px; */
     line-height: 44px;
     min-width: 115px;
-    padding: 0px 10px 10px 0px;
+    padding: 0px 10px 10px 15px;
 }
 
 .table4-2 td {
@@ -199,7 +200,7 @@ body {
 }
 
 .table4 {
-    margin-left: 10px;
+    margin-left: 5px;
     max-width: 1510px!important;
     overflow: hidden;
     overflow-x: auto;
@@ -243,7 +244,8 @@ td:last-of-type {
 .button1 {
     background: #656A8A;
     width: 100%;
-    height: 48px;
+    /* height: 48px; */
+    overflow: hidden;
     border-radius: 10px;
 }
 
@@ -278,11 +280,13 @@ td:last-of-type {
 }
 
 .txt5 {
-    position: relative;
-    left: 25px;
+    /* position: relative; */
+    margin-left: 53px;
     top: 7px;
     overflow: hidden;
 }
+
+
 
 .button2 {
     position: relative;
@@ -301,7 +305,7 @@ td:last-of-type {
 
 .txt6 {
     margin-left: 55px;
-    margin-top: 6px;
+    margin-bottom: 6px;
     font-size: 13px;
 }
 
@@ -460,7 +464,7 @@ td.size-td {
 }
 
 .table th, .table td {
-    padding: 0.5rem!important;
+    /* padding: 0.5rem!important; */
 }
 
 .column-1 {
@@ -513,12 +517,12 @@ td.size-td {
 
 .close2 {
     float: right;
-    margin-right: 10px;
+    /* margin-right: 10px; */
     font-size: 15px;
     color: #fff;
     background: #656A8A;
-    margin-top: 15px;
-    margin-bottom: -20px;
+    /* margin-top: 15px; */
+    /* margin-bottom: -20px; */
     border-radius: 10px;
     padding: 1px 12px;
 }
@@ -568,11 +572,11 @@ td.small-td {
 }
 
 .big-area {
-    overflow: hidden;
+    /* overflow: hidden; */
     width: 100%;
-    height: 653px;
+    min-height: 653px;
     /* margin-left: 15px; */
-    width: 75vw;
+    /* width: 75vw; */
 }
 
 .end2 {
@@ -712,3 +716,12 @@ canvas#line-chart {
     margin-top: 10px;
     margin-left: 15px;
 }
+
+.name-chart-head {
+    margin-top: 7px;
+    text-align: center;
+    font-size: 15px;
+    color: #8489af;
+}
+
+

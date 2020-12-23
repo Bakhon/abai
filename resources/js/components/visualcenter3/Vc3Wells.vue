@@ -16,6 +16,7 @@ export default {
   data: function() {
     return {
       chartOptions: {
+        
         chart: {
             stacked: true,
             foreColor: '#FFFFFF',
@@ -23,9 +24,18 @@ export default {
             defaultLocale: 'ru'
         },
         tooltip: {
-          theme: 'dark',
-          shared: false,
+               enabled: true,
+          enabledOnSeries: undefined,
+          shared: true,
+          followCursor: false,
           intersect: false,
+          inverseOrder: false,
+          custom: undefined,
+          fillSeriesColor: false,
+          theme: false,
+         // theme: 'dark',
+         /// shared: false,
+         // intersect: false,
           y: {
             formatter: function(y) {
               if (typeof y !== "undefined") {
@@ -35,7 +45,7 @@ export default {
             }
           }
         },
-		colors:['#00B8FF','#0080FF','#F5FCFF'],
+		colors:['#4A90E2','#0080FF','#F5FCFF'],
         chart: {
           toolbar: {
             show: false,

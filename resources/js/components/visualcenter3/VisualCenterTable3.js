@@ -1829,15 +1829,23 @@ export default {
     },
 
   },
+  created() {
+    if (window.location.host==='dashboard')
+    {
+      this.Table1="display:none";  
+    this.Table4="display:block"; 
+  }
+
+  },
 
   async mounted() {
    
     this.item3=this.oilChartHeadName;
 
-    if (window.location.host==='localhost')
+    if (window.location.host==='dashboard')
   {
-    this.Table1="display:none";  
-    this.Table3="display:block";  
+ 
+    
     this.range = {
       start: "2020-12-17T06:00:00+06:00",
       end: "2020-12-18T09:00:00+06:00",
