@@ -2,17 +2,17 @@
 
 namespace App\Imports;
 
-use App\Models\Cdng;
-use App\Models\Gu;
-use App\Models\HydrocarbonOxidizingBacteria;
-use App\Models\Ngdu;
-use App\Models\OtherObjects;
-use App\Models\SulphateReducingBacteria;
-use App\Models\ThionicBacteria;
-use App\Models\WaterMeasurement;
-use App\Models\WaterTypeBySulin;
-use App\Models\Well;
-use App\Models\Zu;
+use App\Models\Refs\Cdng;
+use App\Models\Refs\Gu;
+use App\Models\Refs\HydrocarbonOxidizingBacteria;
+use App\Models\Refs\Ngdu;
+use App\Models\Refs\OtherObjects;
+use App\Models\Refs\SulphateReducingBacteria;
+use App\Models\Refs\ThionicBacteria;
+use App\Models\ComplicationMonitoring\WaterMeasurement;
+use App\Models\Refs\WaterTypeBySulin;
+use App\Models\Refs\Well;
+use App\Models\Refs\Zu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class WaterMeasurementsImport implements ToModel

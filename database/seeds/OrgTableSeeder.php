@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Refs\Org;
 use Illuminate\Database\Seeder;
 
 class OrgTableSeeder extends Seeder
@@ -11,7 +12,7 @@ class OrgTableSeeder extends Seeder
      */
     public function run()
     {
-        App\Models\Org::create([
+        Org::create([
             'name' => 'AО Озенмунайгаз'
         ]);
     }
