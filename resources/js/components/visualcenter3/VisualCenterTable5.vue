@@ -128,7 +128,7 @@
                     <h5 class="text-center mr-2"><strong>Финансовые показатели</strong></h5>
                     <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3">
                         <div class="w-100">
-                            <table class="table pl-2 table-striped table-borderless text-right economics-table-border">
+                            <table class="table pl-2 table-striped table-borderless text-right economics-table-border table-responsive">
                                 <thead class="economics-table-color">
                                 <tr>
                                     <th class="text-left" scope="col">Наименование</th>
@@ -184,8 +184,12 @@
                 </div>
             </div>
         </div>
-        <div class="flex-grow-1">
-            <vertical-indicators></vertical-indicators>
+        <div class="flex-grow-1" v-if="dateStart">
+            <vertical-indicators
+                v-bind:dateStart="dateStart"
+                v-bind:dateEnd="dateEnd"
+                v-bind:dzo="dzoSelect"
+            ></vertical-indicators>
         </div>
     </div>
 </template>

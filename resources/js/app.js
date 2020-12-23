@@ -56,6 +56,8 @@ Vue.component('visual-center-chart-area-usd3', require('./components/visualcente
 Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
 Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
 Vue.component('indicator', require('./components/visualcenter3/Indicator.vue').default);
+Vue.component('wide-indicator', require('./components/visualcenter3/WideIndicator.vue').default);
+Vue.component('simple-indicator', require('./components/visualcenter3/SimpleIndicator.vue').default);
 Vue.component('vc-speedometer-block', require('./components/visualcenter3/VCSpeedometerBlock.vue').default);
 Vue.component('horizontal-indicators', require('./components/visualcenter3/HorizontalIndicators.vue').default);
 Vue.component('vertical-indicators', require('./components/visualcenter3/VerticalIndicators.vue').default);

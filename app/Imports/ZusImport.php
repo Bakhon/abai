@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Gu;
-use App\Models\Zu;
+use App\Models\Refs\Gu;
+use App\Models\Refs\Zu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class ZusImport implements ToModel

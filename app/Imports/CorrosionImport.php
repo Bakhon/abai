@@ -2,10 +2,10 @@
 
 namespace App\Imports;
 
-use App\Models\Cdng;
-use App\Models\Corrosion;
-use App\Models\Gu;
-use App\Models\Ngdu;
+use App\Models\ComplicationMonitoring\Corrosion;
+use App\Models\Refs\Cdng;
+use App\Models\Refs\Gu;
+use App\Models\Refs\Ngdu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class CorrosionImport implements ToModel
