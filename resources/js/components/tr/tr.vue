@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #656a8a; height: 104px; width: 161px"
+            style="background: #333975; height: 104px; width: 161px; "
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -72,9 +72,10 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #656a8a;
-                  border-color: #656a8a;
+                  background-color: #333975;
+                  border-color: #333975;
                   color: white;
+                  width: 100%;
                 "
                 class="form-controll"
                 id="companySelect"
@@ -99,13 +100,13 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #656A8A ;
-                  border-color: #656A8A;
+                  background-color: #333975 ;
+                  border-color: #333975;
                   color: white;
-                  width: 131px;
+                  width: 100%;
 
                   
-                  border: 1px solid #656A8A; !important;
+                  border: 1px solid #333975; !important;
                   height: 35px !important;
                   color: white !important;
                 "
@@ -7009,9 +7010,6 @@ tr:nth-child(even) {
   flex-grow: 0;
   width: 200px;
 }
-/* .tablecont {
-  margin-top: -38px;
-} */
 
 .table .th {
   position: sticky;
@@ -7053,6 +7051,7 @@ tr:not(.notsticky) td:nth-child(-n+3) {
   position: sticky;
   left: -1px;
   width: 27px;
+  z-index: 3010;
 }
 tr:not(.notsticky) td:nth-child(2) {
   left: 23px;
@@ -7093,11 +7092,37 @@ tr:nth-child(even) td {
   height: 40px;
 }
 .fadropmenu.fadropmenu {
-  background: #656a8a;
+  background: #333975;
   width: 246px;
   z-index: 3001 !important;
 }
 .faheadhight {
   height: 40px;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+
+}
+
+::-webkit-scrollbar-corner  {
+  background: #333975;
+}
+
 </style>
