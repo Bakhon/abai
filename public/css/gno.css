@@ -1,5 +1,6 @@
 .background {
-    background-color: #20274e;
+    /*background-color: #20274e;*/
+    background: #272953;
 }
 
 .first-column {
@@ -109,7 +110,8 @@ body {
     font-size: 14px;
     /* position: relative; */
     /* width: 220px; */
-    background-color: #20274e;
+    /*background-color: #20274e;*/
+    background: #272953;
     text-align: left;
     /*height: 240px;*/
     height: 220px;
@@ -125,7 +127,8 @@ body {
     font-size: 14px;
     /* position: relative; */
     /* width: 220px; */
-    background-color: #20274e;
+    /*background-color: #20274e;*/
+    background: #272953;
     padding: 15px 8px 8px;
     text-align: left;
     height: 172px;
@@ -207,32 +210,22 @@ body {
 }
 
 .tables-string-gno5 {
-    margin-top: 15px;
-    padding-right: 10px!important;
+    margin-top: 10px;
+    margin-bottom: 10px;
     float: left;
     font-size: 16px;
     position: relative;
-    /* max-width: 745px!important; */
     background-color: #293688;;
-    padding: 10px 0px;
-    text-align: left;
-    margin-bottom: 15px;
-    /* margin-left: 15px; */
+    padding: 10px 0;
     min-height: 45px;
-    text-align: center;
-    /* font-weight:bold; */
-    /* border-right-style: solid; */
-    /* border-color: #0F1430; */
-    /* border-right-width: 20px; */
     border-radius: 9px;
     text-align: center;
-    margin-bottom: 15px;
     font-weight: bold;
     width: 674px;
     align-items: center;
     height: 30px;
     max-width: 99.9%;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     line-height: 18px;
     cursor: pointer;
 }
@@ -254,16 +247,13 @@ body {
     font-size: 16px;
     font-weight: bold;
     position: relative;
-    /* width: 738px; */
     background-color: #293688;;
     padding: 10px 0;
-    margin-top: 15px;
-    /* margin-left: 15px; */
     min-height: 45px;
     text-align: center;
-    /* font-weight:bold; */
     border-radius: 9px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
     width: 680px;
     height: 30px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -290,16 +280,12 @@ body {
     font-size: 16px;
     font-weight: bold;
     position: relative;
-    background-color: #15509D;
     padding: 15px 15px;
-    /* margin-left: 15px; */
     height: 44px;
-    /* font-weight:bold; */
     background: rgba(19, 176, 98, 0.8);
-    /* width: 1492px; */
     border-radius: 8px;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     line-height: 18px;
     cursor: pointer;
 }
@@ -348,6 +334,10 @@ body {
     border-top-color: #3b4172;
     border-top-style: solid;
     border-top-width: 1px;
+}
+
+.table-border-gno-top label {
+    margin: 0.25rem 0;
 }
 
 .table-border-gno-right {
@@ -430,13 +420,13 @@ input.checkbox0 {
 }
 */
 
-.spoiler>input+.box>blockquote {
-    display: none;
-}
+/*.spoiler>input+.box>.right-block-details {*/
+/*    display: none;*/
+/*}*/
 
-.spoiler>input:checked+.box>blockquote {
-    display: block;
-}
+/*.spoiler>input:checked+.box>.right-block-details {*/
+/*    display: block;*/
+/*}*/
 
 .spoiler>input[type="checkbox"] {
     cursor: pointer;
@@ -459,28 +449,25 @@ input.checkbox0 {
     text-decoration: underline;
 }
 
-.spoiler>input+.box>span.closer {
+.spoiler .box>span.closer {
     display: none;
 }
 
-.spoiler>input:checked+.box>span.closer {
+.spoiler.opened .box>span.closer {
     display: inline;
 }
 
-.spoiler>input:checked+.box>span.open {
+.spoiler.opened .box>span.open {
     display: none;
 }
 
-.spoiler>input+.box>span.open {
+.spoiler .box>span.open {
     display: inline;
 }
 
-.spoiler blockquote, .spoiler {
-    overflow-x: hidden;
-}
-
-blockquote {
+.right-block-details {
     width: 100%;
+    margin: 0;
 }
 
 span.open, span.closer {
@@ -492,14 +479,24 @@ span.open, span.closer {
 .spoiler {
     font-size: 14px;
     position: relative;
-    background-color: #20274e;
+    background: #272953;
     padding: 8px;
     text-align: left;
     margin-bottom: 5px;
+    overflow: hidden;
+    height: 55px;
+}
+
+.spoiler.opened {
+    height: 278px;
+}
+
+.spoiler:last-child {
+    margin-bottom: 0;
 }
 
 .spoiler-device {
-    background-color: #20274e;
+    background: #272953;
 }
 
 .relative {
@@ -582,9 +579,10 @@ input.checkbox3 {
     height: 20px;
     position: relative;
     color: white;
-    top: 0px;
-    /* left: -15px; */
-    /* text-align: center; */
+    top: 0;
+    padding-right: 5px;
+    padding-left: 5px;
+    line-height: 25px !important;
 }
 
 .center {
@@ -632,6 +630,9 @@ input[type="text"]:enabled.square2 {
     color: white;
     box-sizing: border-box;
     border-radius: 2px;
+    line-height: 25px !important;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 .square3:focus {
@@ -875,75 +876,80 @@ td {
 }
 
 .podborgnoimg {
-    /*background-color: #153e7c;*/
+    /*width: 125px;*/
+    height: 380px;
 }
 
 .img-text {
     width: 260px;
-    height: 450px;
     text-align: right;
     /*background-color: #153e7c;*/
 }
 
 .text_img_1 {
     width: 100%;
-    height: 27px;
-    margin-top: 43px;
+    height: 24px;
+    margin-top: 36px;
     font-size: 13px;
 }
 
 .text_img_2 {
     width: 100%;
-    height: 26px;
+    height: 23px;
     margin-top: 0;
     font-size: 13px;
 }
 
 .text_img_3 {
     width: 100%;
-    height: 90px;
+    height: 78px;
     margin-top: 0;
     font-size: 13px;
 }
 
 .text_img_4 {
     width: 100%;
-    height: 83px;
+    height: 70px;
     margin-top: 0;
     font-size: 13px;
 }
 
 .text_img_5 {
     width: 100%;
-    height: 45px;
+    height: 40px;
     margin-top: 0;
     font-size: 13px;
 }
 
 .text_img_6 {
     width: 100%;
-    height: 75px;
+    height: 68px;
     margin-top: 0;
     font-size: 13px;
 }
 
 .text_img_7 {
     width: 100%;
-    height: 34px;
+    height: 40px;
     margin-top: 0;
     font-size: 13px;
+    line-height: 12px;
 }
 
 .text_img_8 {
     width: 100%;
-    height: 26px;
+    height: 18px;
     margin-top: 0;
     font-size: 13px;
 }
 
+.table-pgno-button, .img-text, .image-data {
+    height: 415px;
+    overflow: hidden;
+}
+
 .table-pgno-button {
     font-size: 13px;
-    height: 450px;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -952,7 +958,12 @@ td {
 
 .gno-shgn-wrapper {
     width: 100%;
-    padding: 15px;
+    padding: 0 15px;
+}
+
+.gno-line-chart, .gno-shgn-wrapper {
+    height: 445px;
+    overflow: hidden;
 }
 
 .table-title-pgno {
@@ -1110,6 +1121,14 @@ td {
     background-color: #2b2e5e;
 }
 
+.choosing-well-data,
+.construction-data,
+.devices-data,
+.pvt-data,
+.tech-data {
+    line-height: 26px;
+}
+
 .label-for-celevoi {
     font-size: 16px;
 }
@@ -1180,18 +1199,14 @@ input.checkbox-q-liquid {
     height: 30px;
 }
 
-.right-block-details {
-    margin: 0px;
-}
-
 /* Параметры подбора */
 
 
 .bottom-configuration {
     background: #272953;
-    padding: 15px 30px 14px;
+    padding: 10px 15px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
 .inflow-configuration-min-width
 {
@@ -1258,11 +1273,11 @@ input.checkbox-q-liquid {
 }
 
 
-.bottom-configuration-header
-{
+.bottom-configuration-header {
     font-size: 20px;
-    font-width: bold;
-    padding-bottom: 18px;
+    font-weight: bold;
+    padding-bottom: 5px;
+    height: 30px;
 }
 
 #table-wrapper {
@@ -1292,15 +1307,16 @@ input.checkbox-q-liquid {
   }
 
 .gno-curve-table-title {
-    font-size: 24px;
+    height: 35px;
+    font-size: 20px;
     font-weight: bold;
-    padding: 20px 30px 0 30px;
+    padding: 10px 15px 0 15px;
 }
 
 .gno-shgn-block-title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
-    padding: 5px 15px 0 15px ;
+    padding: 10px 0 0 0;
 }
 
 .modal-bign-container {
@@ -1475,6 +1491,14 @@ input.checkbox-q-liquid {
 /*    z-index: 999;*/
 /*}*/
 
+.first-column-curve-block {
+    margin-bottom: 10px;
+}
+
+.gno-page-wrapper {
+    position: relative;
+}
+
 @media (max-width: 1765px) {
     .curve-settings, .choice-params {
         flex: 0 0 100% !important;
@@ -1619,18 +1643,16 @@ input.checkbox-q-liquid {
 
 
 
-/*cheat-code*/
-/*@media (max-width: 991px) {*/
-/*    #sidebar-container2 {*/
-/*        display: none !important;*/
-/*    }*/
+/*cheat-code потом эти проблемы необходимо будет решить глобально*/
+#app #sidebar-container2 {
+    padding-right: 15px !important;
+}
 
-/*    #app > .container-fluid {*/
-/*        max-width: 100% !important;*/
-/*        padding: 15px !important;*/
-/*    }*/
+#app > .container-fluid {
+    max-width: 100% !important;
+    padding: 15px !important;
+}
 
-/*    .container-fluid.col.m-lg-3.m-1.p-0 {*/
-/*        margin: 0 !important;*/
-/*    }*/
-/*}*/
+.container-fluid.col.m-lg-3.m-1.p-0 {
+    margin: 0 !important;
+}

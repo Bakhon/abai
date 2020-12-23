@@ -17,18 +17,26 @@ class InhibitorListResource extends JsonResource
 
         $price = $this->prices->whereNull('date_to')->last();
 
-        return [
+        $result = [
             'id' => $this->id,
             'fields' => [
                 'name' => $this->name,
                 'price' => $price->price,
                 'date_from' => $price->date_from->format('Y-m-d'),
             ],
-            'links' => [
-                'show' => route('inhibitors.show', $this->id),
-                'edit' => route('inhibitors.edit', $this->id),
-                'delete' => route('inhibitors.destroy', $this->id),
-            ]
+            'links' => []
         ];
+
+        if (auth()->user()->can('monitoring read inhibitors')) {
+            $result['links']['show'] = route('inhibitors.show', $this->id);
+        }
+        if (auth()->user()->can('monitoring update inhibitors')) {
+            $result['links']['edit'] = route('inhibitors.edit', $this->id);
+        }
+        if (auth()->user()->can('monitoring delete inhibitors')) {
+            $result['links']['delete'] = route('inhibitors.destroy', $this->id);
+        }
+
+        return $result;
     }
 }

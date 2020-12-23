@@ -194,7 +194,7 @@
           </td>
         </tr>
         <tr></tr>
-        <tr class="subHeaderColumn">
+        <tr class="subHeaderColumn" style="cursor: pointer;">
           <!-- <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
@@ -1053,7 +1053,7 @@ export default {
       }
     },
     getColorTwo(status) {
-      if (status === "1") return "#5e1d1d";
+      if (status === "1") return "#ff0000";
       return "#ff0000";
     },
     chooseDt() {
@@ -1385,6 +1385,26 @@ body {
 .fakrtableborderedtable {
     font-size: 9px;
     padding: unset;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
 }
 
 </style>

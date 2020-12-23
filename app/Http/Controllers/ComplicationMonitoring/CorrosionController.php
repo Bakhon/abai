@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\CorrosionFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\CorrosionCreateRequest;
 use App\Http\Requests\CorrosionUpdateRequest;
@@ -14,18 +15,18 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
-class CorrosionController extends Controller
+class CorrosionController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'corrosion';
 
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('corrosioncrud.create'),
                 'list' => route('corrosioncrud.list'),
-                'export' => route('corrosioncrud.export'),
             ],
             'title' => 'База данных по скорости коррозии',
             'fields' => [
@@ -147,6 +148,13 @@ class CorrosionController extends Controller
                 ]
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route('corrosioncrud.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route('corrosioncrud.export');
+        }
 
         return view('сomplicationMonitoring.corrosion.index', compact('params'));
     }

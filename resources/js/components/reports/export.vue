@@ -1,9 +1,36 @@
 <template>
-  <div>
+  <div class="export-wrapper">
     <div class="export-loader" v-if="loading">
       <fade-loader :loading="loading"></fade-loader>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12 row export-wrapper">
+    <div class="col-xs-12 col-sm-12 col-md-12 row">
+      <div class="col-xs-12 col-sm-4 col-md-4 mb-4">
+        <label>Выберите разделы</label>
+        <div class="form-label-group form-check">
+          <input
+              type="checkbox"
+              class="form-check-input"
+              id="check_all"
+              v-model="allSelected"
+          />
+          <label class="form-check-label" for="check_all">Все</label>
+        </div>
+        <div class="form-label-group form-check" v-for="section in sections">
+          <input
+              type="checkbox"
+              class="form-check-input"
+              name="sections[]"
+              :id="`section_${section.code}`"
+              v-model="selectedSections"
+              :value="section.code"
+          />
+          <label class="form-check-label" :for="`section_${section.code}`">
+            {{ section.name }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 row">
       <div class="col-xs-12 col-sm-4 col-md-4">
         <label>Дата начала</label>
         <div class="form-label-group">
@@ -48,7 +75,7 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 mt-2">
-        <button class="btn btn-primary" @click="exportExcel">Экспорт</button>
+        <button class="btn btn-primary" :disabled="!selectedSections.length" @click="exportExcel">Экспорт</button>
       </div>
     </div>
   </div>
@@ -67,17 +94,62 @@ export default {
       start_date: moment().subtract(1, 'month').format('YYYY-MM-DD'),
       end_date: moment().format('YYYY-MM-DD'),
       today: moment().format('YYYY-MM-DD'),
-      loading: false
+      loading: false,
+      sections: [
+        {
+          name: 'ОМГ ДДНГ',
+          code: 'omgca'
+        },
+        {
+          name: 'ОМГ УХЭ',
+          code: 'omguhe'
+        },
+        {
+          name: 'База данных по скорости коррозии',
+          code: 'corrosion'
+        },
+        {
+          name: 'ОМГ НГДУ',
+          code: 'omgngdu'
+        },
+        {
+          name: 'База данных по промысловой жидкости и газу',
+          code: 'watermeasurement'
+        },
+        {
+          name: 'База данных по нефти и газу',
+          code: 'oilgas'
+        }
+      ],
+      selectedSections: [
+          'omgca',
+          'omguhe',
+          'corrosion',
+          'omgngdu',
+          'watermeasurement',
+          'oilgas',
+      ],
+      allSelected: true
     }
   },
-  computed: {},
+  watch: {
+    allSelected(val) {
+      if(val) {
+        this.selectedSections = this.sections.map(section => section.code)
+      }
+      else {
+        this.selectedSections = []
+      }
+    }
+  },
   methods: {
     exportExcel() {
       this.loading = true
-      this.axios.get('/ru/reports/monitoring', {
+      this.axios.get('/ru/monitor/reports/generate', {
         params: {
           start_date: this.formatDate(this.start_date),
-          end_date: this.formatDate(this.end_date)
+          end_date: this.formatDate(this.end_date),
+          sections: this.selectedSections
         }
       }).then((response) => {
         let interval = setInterval(() => {
