@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Cdng;
-use App\Models\Gu;
+use App\Models\Refs\Cdng;
+use App\Models\Refs\Gu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class GusImport implements ToModel

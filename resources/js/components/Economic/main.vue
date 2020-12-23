@@ -48,12 +48,12 @@
             id="companySelect"
             @change="onChange($event)"
           >
-            <option value>АО «НК «КазМунайГаз»</option>
-            <option value="?org=2.0">АО «ОзенМунайГаз»</option>
-            <option value="?org=5.000001017E9">АО «Каражанбасмунай»</option>
-            <option value="?org=5.00000202E9">ТОО «КазГерМунай»</option>
-            <option value="?org=3.0">АО «ЭмбаМунайГаз»</option>
-            <option value="?org=2.000000000004E12">АО «Мангистаумунайгаз»</option>
+            <option
+                v-for="org in organizations" :value="org.id"
+                :key="`org_${org.id}`"
+            >
+              {{org.name}}
+            </option>
           </select>
         </div>
     </div>
@@ -132,60 +132,69 @@ Vue.use(VModal, { dynamicDefault: { draggable: true, resizable: true } });
 
 export default {
   name: "economic-component",
+  data: function () {
+    return {
+      averageProfitlessCat1MonthCount: null,
+      month: null,
+      persent: null,
+      persentCount: null,
+      prs: null,
+      year: null,
+      wellsList: null,
+      OperatingProfitMonth: null,
+      OperatingProfitYear: null,
+      prs1: null,
+      params: {
+        data: [
+        ],
+        enableSearch: true,
+        header: 'row',
+        border: true,
+        stripe: true,
+        pagination: true,
+        pageSize: 10,
+        pageSizes: [10, 20, 50],
+        height: 300
+      },
+      organizations: []
+    }
+  },
   beforeCreate: function () {
-    let uri = '/ru/geteconimicdata';
-    this.axios.get(uri).then((response) => {
-        let data = response.data;
-        if(data) {
-            this.averageProfitlessCat1MonthCount = data.averageProfitlessCat1MonthCount,
-            this.month = data.month,
-            this.persent = data.persent,
-            this.persentCount = data.persentCount,
-            this.prs = data.prs,
-            this.year = data.year,
-            this.wellsList = data.wellsList,
-            this.OperatingProfitMonth = data.OperatingProfitMonth,
-            this.OperatingProfitYear = data.OperatingProfitYear,
-            this.prs1 = data.prs1,
-            this.is_data_fetched = true,
-            this.params.data = data.wellsList,
-            this.$emit('chart1', data.chart1),
-            this.$emit('chart2', data.chart2),
-            this.$emit('chart3', data.chart3),
-            this.$emit('chart4', data.chart4)
-        }
-        else {
-            console.log('No data');
-        }
-    });
+    this.axios.get('/ru/organizations').then(({data}) => {
+      this.organizations = data.organizations
+
+      this.getEconomicData(this.organizations[0].id)
+    })
   },
   methods: {
     onChange(event) {
-        let uri = '/ru/geteconimicdata' + event.target.value;
-        this.axios.get(uri).then((response) => {
-            let data = response.data;
-            if(data) {
-                this.averageProfitlessCat1MonthCount = data.averageProfitlessCat1MonthCount,
-                this.month = data.month,
-                this.persent = data.persent,
-                this.persentCount = data.persentCount,
-                this.prs = data.prs,
-                this.year = data.year,
-                this.wellsList = data.wellsList,
-                this.OperatingProfitMonth = data.OperatingProfitMonth,
-                this.OperatingProfitYear = data.OperatingProfitYear,
-                this.prs1 = data.prs1,
-                this.is_data_fetched = true,
-                this.params.data = data.wellsList,
-                this.$emit('chart1', data.chart1),
-                this.$emit('chart2', data.chart2),
-                this.$emit('chart3', data.chart3),
-                this.$emit('chart4', data.chart4)
-            }
-            else {
-                console.log('No data');
-            }
-        });
+      this.getEconomicData(event.target.value)
+    },
+    getEconomicData(org) {
+      this.axios.get('/ru/geteconimicdata', {params: {org: org}}).then((response) => {
+        let data = response.data;
+        if(data) {
+          this.averageProfitlessCat1MonthCount = data.averageProfitlessCat1MonthCount
+          this.month = data.month
+          this.persent = data.persent
+          this.persentCount = data.persentCount
+          this.prs = data.prs
+          this.year = data.year
+          this.wellsList = data.wellsList
+          this.OperatingProfitMonth = data.OperatingProfitMonth
+          this.OperatingProfitYear = data.OperatingProfitYear
+          this.prs1 = data.prs1
+          this.is_data_fetched = true
+          this.params.data = data.wellsList
+          this.$emit('chart1', data.chart1)
+          this.$emit('chart2', data.chart2)
+          this.$emit('chart3', data.chart3)
+          this.$emit('chart4', data.chart4)
+        }
+        else {
+          console.log('No data');
+        }
+      });
     },
     pushBign(bign){
         switch (bign) {
@@ -203,32 +212,6 @@ export default {
                 break;
         }
         this.$modal.show(bign);
-    }
-  },
-  data: function () {
-    return {
-        averageProfitlessCat1MonthCount: null,
-        month: null,
-        persent: null,
-        persentCount: null,
-        prs: null,
-        year: null,
-        wellsList: null,
-        OperatingProfitMonth: null,
-        OperatingProfitYear: null,
-        prs1: null,
-        params: {
-            data: [
-            ],
-            enableSearch: true,
-            header: 'row',
-            border: true,
-            stripe: true,
-            pagination: true,
-            pageSize: 10,
-            pageSizes: [10, 20, 50],
-            height: 300
-        }
     }
   },
   components: { VueTableDynamic }

@@ -1,8 +1,8 @@
 <template>
-    <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="position: sticky;left: 5.31%;right: 2.4%;top: 48.21%;bottom: 66.58%;background: #0D1E63;">
+    <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="background: #0D1E63;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4" class="th">№ скв</td>
+                <td rowspan="4" class="th" style="background: #333975;">№ скв</td>
                 <td rowspan="4" class="th">Тип скважины</td>
                 <td rowspan="4" class="th">Горизонт</td>
                 <td rowspan="4" class="th">Блок</td>
@@ -23,12 +23,11 @@
                 <td rowspan="4" class="th">К прод</td>
                 <td class="colspan th" colspan="7">Расчет технологического потенциала от ИДН</td>
                 <td class="colspan th" colspan="4">Намечаемый режим</td>
-
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="3" class="th">P заб</td>
+                <td rowspan="3" class="th" style="background: #333975;">P заб</td>
                 <td rowspan="3" class="th">Q н</td>
-                <td rowspan="3" class="th">Q ж</td>
+                <td rowspan="3" class="th" style="background: #333975;">Q ж</td>
                 <td rowspan="3" class="th">Обводненность</td>
                 <td rowspan="3" class="th">P заб</td>
                 <td class="colspan th" colspan="2">ИДН</td>
@@ -38,18 +37,18 @@
 
                 <td rowspan="3" class="th">Диаметр штуцера</td>
                 <td rowspan="3" class="th">Q н</td>
-                <td rowspan="3" class="th">Q ж</td>
+                <td rowspan="3" class="th" style="background: #333975;">Q ж</td>
                 <td rowspan="3" class="th">Обводненность</td>
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="2" class="th">Q ж</td>
-                <td rowspan="2" class="th">Прирост Q н</td>
-                <td rowspan="2" class="th">Q ж</td>
+                <td rowspan="2" class="th" style="background: #333975;">Q ж</td>
+                <td rowspan="2" class="th" style="background: #333975;">Прирост Q н</td>
+                <td rowspan="2" class="th" style="background: #333975;">Q ж</td>
                 <td rowspan="2" class="th">Прирост Q н</td>
             </tr>
             <tr></tr>
-            <tr class="subHeaderColumn" style="background: #333975">
-                <td @click="sortBy('well')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+            <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
+                <td @click="sortBy('well')" class="th" style="background: #333975;"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('well_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('block')" class="th"><i class="fa fa-fw fa-sort"></i></td>
@@ -84,12 +83,12 @@
                 <td @click="sortBy('planned_wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
             </tr>
         </thead>
-        <tbody>
-            <tr v-for="(row, row_index) in wells" :key="row_index" class="tb">
-                <td>{{row.well}}</td>
+        <tbody class="table_tbody">
+            <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
+                <td class="fixcol">{{row.well}} </td>
                 <!-- <td>{{row.well_type}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].well_type[1][0] !== '0'}">
+                wells[row_index].well_type[1][0] !== '0'}" td class="fixcol">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].well_type[1][0])}`"> </span>
@@ -101,7 +100,7 @@
 
                 <!-- <td>{{row.horizon}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].horizon[1][0] !== '0'}">
+                wells[row_index].horizon[1][0] !== '0'}" class="tb">
                     <span :class="{'circle-err': wells && wells[row_index] &&
                 wells[row_index].horizon[1][0] !== '0'}" :style="`background :${getColor(
                 wells[row_index].horizon[1][0])}`"> </span>
@@ -515,15 +514,18 @@ tr:nth-child(even) {
     background: rgb(51, 57, 117);
 }
 .table tr:first-child .th {
-    top: 0;
+    top: -1px;
     z-index: 3000;
 }
+.table.table tr .th:first-child {
+    z-index: 3010;
+}
 .table tr:nth-child(2) .th {
-    top: 25px;
+    top: 24px;
     z-index: 3000;
 }
 .table tr:nth-child(3) .th {
-    top: 50px;
+    top: 49px;
     z-index: 3000;
 }
 .table tr:nth-child(4) .th {
@@ -534,9 +536,52 @@ tr:nth-child(even) {
     top: 98px;
     z-index: 3000;
 }
-/* .table .tb {
+
+
+
+
+.trtablerow {
+    position: relative;
+}
+
+tr td:first-child {
+  position: sticky;
+  left: -1px;
+  width: 100px;
+}
+
+tr:nth-child(odd) .fixcol:first-child {
+  background-color: #454d7d;
+}
+tr:nth-child(even) .fixcol:first-child {
+  background-color: #26336f;
+}
+
+
+.table_tbody {
+position: static;
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
   width: 10px;
-  white-space: nowrap;
-} */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+}
 
 </style>

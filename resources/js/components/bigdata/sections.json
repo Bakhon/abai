@@ -20,6 +20,14 @@
           "is_active": true,
           "tag": "daily-production",
           "in_favor": true
+        },
+        {
+          "title": "Отчет по месячной замерной закаче воды",
+          "description": "Тестовое описание отчета10",
+          "svg_icon": "<svg width=\"18\" height=\"20\" viewBox=\"0 0 18 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M5.88428 6.00439V0.000976562L0.359375 6.00439H5.88428Z\"></path> <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M7.98369 0.000976562V8.28585H0.359375V19.2118H17.4868V0.000976562H7.98369ZM6.3263 16.9303H4.22687V12.2479H6.3263V16.9303ZM9.97278 16.9303H7.76269V9.84652H9.97278V16.9303ZM13.5089 16.9303H11.4092V7.56544H13.5089V16.9303Z\"></path></svg>",
+          "is_active": true,
+          "tag": "monthly-injection",
+          "in_favor": true
         }
       ]
     },
@@ -122,9 +130,9 @@
           "title": "Отчет по месячной замерной закаче воды",
           "description": "Тестовое описание отчета10",
           "svg_icon": "<svg width=\"18\" height=\"20\" viewBox=\"0 0 18 20\" xmlns=\"http://www.w3.org/2000/svg\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M5.88428 6.00439V0.000976562L0.359375 6.00439H5.88428Z\"></path> <path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M7.98369 0.000976562V8.28585H0.359375V19.2118H17.4868V0.000976562H7.98369ZM6.3263 16.9303H4.22687V12.2479H6.3263V16.9303ZM9.97278 16.9303H7.76269V9.84652H9.97278V16.9303ZM13.5089 16.9303H11.4092V7.56544H13.5089V16.9303Z\"></path></svg>",
-          "is_active": false,
-          "tag": "month-water-upload",
-          "in_favor": false
+          "is_active": true,
+          "tag": "monthly-injection",
+          "in_favor": true
         },
         {
           "title": "Ежедневная динамика показателей добычи по скважинам",

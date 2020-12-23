@@ -96,7 +96,7 @@
       </div>
       <div class="sec_nav">
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }}</h4> -->
-        <div class="filter_chart row">
+        <div class="filter_chart row" style=" display: flex;justify-content: center;">
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -135,7 +135,8 @@
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
-              width="800"
+              width="1200"
+              height='500'
               :options="chartBarOptions"
               :series="[{ name: '', data: barChartData }]"
             ></apexchart>
@@ -147,7 +148,6 @@
               v-if="pieChartData && pieChartRerender"
               type="donut"
               width="650"
-              
               :options="chartOptions"
               :series="pieChartData"
             ></apexchart>
@@ -177,6 +177,21 @@ export default {
   computed: {
     // field horizon exp_meth
     // Pbh wct p_res PI
+    subtitleText() {
+      let filtersText = "";
+      if (this.chartFilter_field) filtersText = this.chartFilter_field;
+      if (this.chartFilter_horizon)
+        filtersText = filtersText
+          ? `${filtersText}, ${this.chartFilter_horizon}`
+          : this.chartFilter_horizon;
+      if (this.chartFilter_exp_meth)
+        filtersText = filtersText
+          ? `${filtersText}, ${this.chartFilter_exp_meth}`
+          : this.chartFilter_exp_meth;
+      if (filtersText) filtersText = `${filtersText}`;
+
+      return filtersText;
+    },
     pieChartData() {
       if (this.chartWells && this.chartWells.length > 0) {
         let field = this.chartFilter_field;
@@ -190,6 +205,8 @@ export default {
               (!exp_meth || row.exp_meth === exp_meth)
           );
           console.log("filteredResult pie = ", filteredResult);
+          this.chartOptions.title.text = `Распределение фонда скважин по основной причине снижения дебита нефти`;
+          this.chartOptions.subtitle.text = `на ${this.dt}/${this.dt2} ${this.subtitleText}`;
           let filteredData = filteredResult.reduce((acc, res) => {
             if (acc.hasOwnProperty(res["Main_problem"])) {
               acc[res["Main_problem"]] += 1;
@@ -227,6 +244,8 @@ export default {
           );
           this.filteredWellsBar = filteredResult;
           console.log("filteredResult bat = ", filteredResult);
+          this.chartBarOptions.title.text = `Распределение суммарных отклонений TP по факторам, т/сут на ${this.dt}/${this.dt2}`;
+          this.chartBarOptions.subtitle.text = this.subtitleText;
           let filteredData = filteredResult.reduce(
             (acc, res) => {
               acc = {
@@ -338,7 +357,28 @@ export default {
         chart: {
           height: 350,
           type: "bar",
+          toolbar: {
+            show: true,
+          },
         },
+        title: {
+          align: "center",
+          offsetY: 18,
+          style: {
+            fontSize: '14px',
+            color: "#008FFB",
+          },
+        },
+        subtitle: {
+        align: "center",
+        offsetY: 36,
+        margin: 10,
+        style: {
+          fontSize: '14px',
+          color: "#008FFB",
+          fontWeight: 900,
+        },
+      },
         plotOptions: {
           bar: {
             dataLabels: {
@@ -354,9 +394,6 @@ export default {
         // }, 
         dataLabels: {
           enabled: true,
-          formatter: function (val) {
-            return round(val);
-          },
           offsetY: -20,
           style: {
             fontSize: "12px",
@@ -432,8 +469,29 @@ export default {
           "Снижение Pпл",
           "Снижение Kпрод",
         ],
+        title: {
+          align: "center",
+          offsetY: 18,
+          style: {
+            fontSize: '14px',
+            color: "#008FFB",
+          },
+        },
+        subtitle: {
+          align: "center",
+          offsetY: 36,
+          margin: 10,
+          style: {
+            fontSize: '14px',
+            color: "#008FFB",
+            fontWeight: 900,
+          },
+        },
         chart: {
           type: "donut",
+          toolbar: {
+            show: true,
+          },
         },
         dataLabels: {
           enabled: true,

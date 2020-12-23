@@ -11,47 +11,47 @@ class HydrocarbonOxidizingBacteriaTableSeeder extends Seeder
      */
     public function run()
     {
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '<10'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^2'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^3'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^4'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^5'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^6'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^7'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^8'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^9'
         ]);
 
-        App\Models\HydrocarbonOxidizingBacteria::create([
+        \App\Models\Refs\HydrocarbonOxidizingBacteria::create([
             'name' => '10^10'
         ]);
     }

@@ -17,6 +17,12 @@ use Spatie\Permission\Models\Role;
 
 class DruidController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:monitoring view main', ['only' => ['monitor']]);
+    }
+
     public function index()
     {
 
@@ -26,7 +32,6 @@ class DruidController extends Controller
             ->count('totalNrRecords')
             ->execute();
 return $response;
-     //   return view('druid');
     }
 
     public function getOilPrice(Request $request)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OmgNGDUFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgNGDUCreateRequest;
@@ -20,9 +21,11 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class OmgNGDUController extends Controller
+class OmgNGDUController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'omgngdu';
 
     /**
      * Display a listing of the resource.
@@ -34,9 +37,7 @@ class OmgNGDUController extends Controller
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('omgngdu.create'),
                 'list' => route('omgngdu.list'),
-                'export' => route('omgngdu.export'),
             ],
             'title' => 'База данных ОМГ НГДУ',
             'table_header' => [
@@ -194,6 +195,13 @@ class OmgNGDUController extends Controller
                 ],
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
 
         return view('omgngdu.index', compact('params'));
     }

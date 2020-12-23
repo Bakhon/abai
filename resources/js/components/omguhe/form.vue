@@ -278,6 +278,8 @@ export default {
             if (this.formFields.zu_id) {
                 this.chooseZu()
             }
+
+            this.pick();
         }
     },
     methods: {
@@ -361,7 +363,7 @@ export default {
                     let data = response.data;
                     if (data) {
                         this.prevData = data.level;
-                        this.qv = data.qv;
+                        this.qv = (data.qv * 1000) / 365;
                     } else {
                         this.prevData = null;
                     }
@@ -369,10 +371,7 @@ export default {
         },
         inputLevel() {
             if (this.prevData != null) {
-                console.log(this.prevData - this.formFields.level);
-                console.log((this.prevData - this.formFields.level) / this.qv);
-                console.log(((this.prevData - this.formFields.level) / this.qv) * 946);
-                this.formFields.current_dosage = ((this.prevData - this.formFields.level) / this.qv) * 946;
+                this.formFields.current_dosage = ((this.prevData - this.formFields.level) / this.qv) * 953;
             }
         },
         formatDate(date) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\WaterMeasurementFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\WaterMeasurementCreateRequest;
@@ -34,9 +35,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
-class WaterMeasurementController extends Controller
+class WaterMeasurementController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'watermeasurement';
 
     /**
      * Display a listing of the resource.
@@ -48,9 +51,7 @@ class WaterMeasurementController extends Controller
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('watermeasurement.create'),
                 'list' => route('watermeasurement.list'),
-                'export' => route('watermeasurement.export'),
             ],
             'title' => 'База данных по промысловой жидкости',
             'fields' => [
@@ -325,6 +326,13 @@ class WaterMeasurementController extends Controller
             ]
         ];
 
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
+
         return view('watermeasurement.index', compact('params'));
     }
 
@@ -447,8 +455,10 @@ class WaterMeasurementController extends Controller
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(WaterMeasurementUpdateRequest $request, ComplicationMonitoringWaterMeasurement $watermeasurement)
-    {
+    public function update(
+        WaterMeasurementUpdateRequest $request,
+        ComplicationMonitoringWaterMeasurement $watermeasurement
+    ) {
         $this->validateFields($request, 'watermeasurement');
         $watermeasurement->update($request->validated());
         return redirect()->route('watermeasurement.index')->with('success', __('app.updated'));
@@ -659,23 +669,27 @@ class WaterMeasurementController extends Controller
     {
         $wm = ComplicationMonitoringWaterMeasurement::query()
             ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subMonths(3)->startOfMonth())
-            ->where('date', '<=', \Carbon\Carbon::now())
+            ->where('date', '>=', \Carbon\Carbon::now()->subYear()->startOfMonth())
+            ->where('date', '<=', \Carbon\Carbon::now()->startOfMonth())
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->format('M');
+                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                        ? '1 полугодие'
+                        : '2 полугодие';
                 }
             );
 
         $uhe = ComplicationMonitoringOmgUHE::query()
             ->where('gu_id', '=', $request->gu_id)
-            ->where('date', '>=', \Carbon\Carbon::now()->subMonths(3)->startOfMonth())
-            ->where('date', '<=', \Carbon\Carbon::now())
+            ->where('date', '>=', \Carbon\Carbon::now()->subYear()->startOfMonth())
+            ->where('date', '<=', \Carbon\Carbon::now()->startOfMonth())
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->format('M');
+                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                        ? '1 полугодие'
+                        : '2 полугодие';
                 }
             );
 
@@ -684,13 +698,19 @@ class WaterMeasurementController extends Controller
             ->where(
                 'final_date_of_corrosion_velocity_with_inhibitor_measure',
                 '>=',
-                \Carbon\Carbon::now()->subMonths(3)->startOfMonth()
+                \Carbon\Carbon::now()->subYear()->startOfMonth()
             )
-            ->where('final_date_of_corrosion_velocity_with_inhibitor_measure', '<=', \Carbon\Carbon::now())
+            ->where(
+                'final_date_of_corrosion_velocity_with_inhibitor_measure',
+                '<=',
+                \Carbon\Carbon::now()->startOfMonth()
+            )
             ->get()
             ->groupBy(
                 function ($item) {
-                    return \Carbon\Carbon::parse($item->date)->format('M');
+                    return \Carbon\Carbon::parse($item->date)->diffInMonths(\Carbon\Carbon::now()->startOfMonth()) > 6
+                        ? '1 полугодие'
+                        : '2 полугодие';
                 }
             );
 

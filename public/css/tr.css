@@ -30,7 +30,7 @@ td.fitwidth {
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
-    background: #656A8A;
+    background: #333975;
     border: none!important;
     text-align: left!important;
     cursor: pointer;
@@ -45,7 +45,7 @@ td.fitwidth {
     vertical-align: middle !important;
     font-size: 12px;
     width: 64px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .headerColumn td span {
@@ -93,9 +93,9 @@ table {
 }
 
 .ce {
-    position: relative;
-    top: 54.7901% !important;
-    bottom: 66.58%;
+    /* position: relative; */
+    /* top: 54.7901% !important; */
+    /* bottom: 66.58%; */
     background: rgb(13, 30, 99) none repeat scroll 0% 0%;
     left: 14px !important;
     right: 20px;
@@ -142,7 +142,7 @@ table {
     border-radius: 50px;
     width: 10px;
     margin-right: 20px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .cell-comment{

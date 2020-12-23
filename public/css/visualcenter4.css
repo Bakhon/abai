@@ -92,10 +92,8 @@ ol, ul, dl {
     display: flex;
     height: 1rem;
     overflow: hidden;
-    line-height: 0;
     font-size: 0.675rem;
     border-radius: 0.25rem;
-    height: 15px!important;
     background-color: #323370!important;
 }
 
@@ -815,4 +813,13 @@ li.center-li {
     border: 1px solid #333975;
     background: rgb(42, 46, 92);
     line-height: normal;
+}
+
+.vc-wide-indicator-tooltip-text {
+    font-size: 1rem;
+    color: #9FA5C7;
+}
+
+.wide-indicator-border {
+    border-left: 1px solid #454D7D
 }
