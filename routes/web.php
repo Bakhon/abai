@@ -133,6 +133,8 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
 
         Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
+        Route::get('organizations', 'OrganizationsController@index')->name('organizations');
+
     });
     Auth::routes([
         'reset' => false,
