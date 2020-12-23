@@ -157,6 +157,7 @@
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
+              width="800"
               :options="chartBarOptions"
               :series="[{ name: '', data: barChartData }]"
             ></apexchart>
@@ -378,7 +379,7 @@ export default {
       // ],
       chartBarOptions: {
         chart: {
-          height: 350,
+          height: "100%",
           type: "bar",
           toolbar: {
             show: true,
@@ -734,6 +735,14 @@ export default {
   height: 35px;
   margin: 0 20px;
   width: 195px;
+}
+.second_block {
+  height: calc(100vh - 386px);
+  width: calc(1.6 * (100vh - 365px));
+  max-width: calc(100vw - 440px);
+  min-width: 800px;
+  min-height: 500px;
+  margin: 0 auto;
 }
 body {
   color: white !important;

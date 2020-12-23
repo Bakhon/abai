@@ -797,7 +797,7 @@
                     <i class="fa fa-fw fa-sort"></i>т/сут
                   </td>
                   <td @click="sortBy('gp_grp_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>%
+                    <i class="fa fa-fw fa-sort"></i>м3/сут
                   </td>
                   <td @click="sortBy('gp_grp_q_liq_cas_d_corr')" class="th">
                     <i class="fa fa-fw fa-sort"></i>

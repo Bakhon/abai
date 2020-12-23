@@ -1533,6 +1533,8 @@ body {
   height: calc(100vh - 386px);
   width: calc(1.6 * (100vh - 365px));
   max-width: calc(100vw - 440px);
+  min-width: 800px;
+  min-height: 500px;
   margin: 0 auto;
 }
 .droptr.droptr {
