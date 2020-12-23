@@ -11,19 +11,19 @@ class WaterTypeBySulinTableSeeder extends Seeder
      */
     public function run()
     {
-        App\Models\WaterTypeBySulin::create([
+        \App\Models\Refs\WaterTypeBySulin::create([
             'name' => 'Cl-Ca'
         ]);
 
-        App\Models\WaterTypeBySulin::create([
+        \App\Models\Refs\WaterTypeBySulin::create([
             'name' => 'Cl-Mg'
         ]);
 
-        App\Models\WaterTypeBySulin::create([
+        \App\Models\Refs\WaterTypeBySulin::create([
             'name' => 'SO4-Na'
         ]);
 
-        App\Models\WaterTypeBySulin::create([
+        \App\Models\Refs\WaterTypeBySulin::create([
             'name' => 'HCO₃-Na'
         ]);
     }
