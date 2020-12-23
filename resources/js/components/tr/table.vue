@@ -538,8 +538,6 @@ tr:nth-child(even) {
 }
 
 
-
-
 .trtablerow {
     position: relative;
 }
@@ -548,6 +546,7 @@ tr td:first-child {
   position: sticky;
   left: -1px;
   width: 100px;
+  z-index: 3010;
 }
 
 tr:nth-child(odd) .fixcol:first-child {

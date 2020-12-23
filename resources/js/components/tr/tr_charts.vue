@@ -36,7 +36,7 @@
           >
         </div>
       </div>
-      <div class="row sec_nav trfacolmdrowsecnav">
+      <div class="row sec_nav trfacolmdrowsecnav" style=" display: flex;justify-content: center;">
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
