@@ -146,11 +146,6 @@
       <table
         class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
         style="
-          position: sticky;
-          left: 5.31%;
-          right: 2.4%;
-          top: 48.21%;
-          bottom: 66.58%;
           background: #0d1e63;
         "
       >
@@ -1364,7 +1359,7 @@ body {
   font-style: normal;
   font-size: 17px;
   color: #ffffff;
-  background: #656a8a;
+  background: #333975;
   border: none !important;
   text-align: left !important;
   cursor: pointer;
@@ -1428,6 +1423,22 @@ body {
   overflow: scroll;
   height: calc(100vh - 215px);
 }
+.table tr:nth-child(-n+4) td {
+  position: sticky;
+  background: rgb(51, 57, 117);
+  top: 80px;
+  z-index: 3000;
+}
+.table tr:first-child td {
+  top: 0;
+}
+.table tr:nth-child(2) td {
+  top: 40px;
+}
+.table tr:nth-child(3) td {
+  top: 40px;
+}
+
 .fadee {
   flex: 0 1 auto;
   flex-flow: row wrap;

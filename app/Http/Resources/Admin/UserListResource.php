@@ -19,6 +19,7 @@ class UserListResource extends JsonResource
             'fields' => [
                 'name' => $this->name,
                 'username' => $this->username,
+                'org' => $this->org ? $this->org->name : null,
                 'created_at' => $this->created_at->format('Y-m-d'),
             ],
             'links' => [

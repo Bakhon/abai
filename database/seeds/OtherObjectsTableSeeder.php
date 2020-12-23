@@ -2,6 +2,7 @@
 
 use App\Imports\OtherObjectsImport;
 use Illuminate\Database\Seeder;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OtherObjectsTableSeeder extends Seeder
 {

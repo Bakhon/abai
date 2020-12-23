@@ -1538,6 +1538,10 @@ body {
 .droptr.droptr {
   background: #656a8a;
 }
+
+a:hover {
+    color: #FFFFFF;
+}
 </style>
 <style scoped>
 .tr-chart {

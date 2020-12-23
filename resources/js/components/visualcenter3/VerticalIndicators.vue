@@ -1,259 +1,59 @@
 <template>
     <div>
-        <div class="first-string">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td class="w-50">
-                            <div class="first-td-header">
-                                <div class="in-work">план</div>
-                                <div class="txt4" v-if="specificIncomePlanTG">
-                                    {{
-                                        new Intl.NumberFormat("ru-RU").format(
-                                            specificIncomePlanTG
-                                        )
-                                    }}
-                                </div>
-                                <div class="in-work">факт</div>
-                                <div class="txt4" v-if="specificIncomeFactTG">
-                                    {{
-                                        new Intl.NumberFormat("ru-RU").format(
-                                            specificIncomeFactTG
-                                        )
-                                    }}
-                                </div>
-                                <div class="in-idle">тенге/тонна</div>
-                            </div>
-                            <div class="second-td-header">
-                                <div class="vert-line"></div>
-                            </div>
-                        </td>
-
-                        <td class="w-50">
-                            <div class="in-work">план</div>
-                            <div class="txt4" v-if="specificIncomePlanUSD">
-                                {{
-                                    new Intl.NumberFormat("ru-RU").format(specificIncomePlanUSD)
-                                }}
-                            </div>
-                            <div class="in-work">факт</div>
-                            <div class="txt4" v-if="specificIncomeFactUSD">
-                                {{
-                                    new Intl.NumberFormat("ru-RU").format(specificIncomeFactUSD)
-                                }}
-                            </div>
-                            <div class="in-idle">$/bbl</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="right-side-bottom">
-                                <div class="txt2">Удельные доходы</div>
-                                <div class="percent-arrow">
-                                    <div class="arrow"></div>
-                                    <div class="txt2-2">48%</div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="first-string first-string2">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td class="w-50">
-                            <div class="first-td-header">
-                                <div class="in-work">план</div>
-                                <div class="txt4" v-if="unitCostsPlanTG">
-                                    {{ new Intl.NumberFormat("ru-RU").format(unitCostsPlanTG) }}
-                                </div>
-                                <div class="in-work">факт</div>
-                                <div class="txt4" v-if="unitCostsFactTG">
-                                    {{ new Intl.NumberFormat("ru-RU").format(unitCostsFactTG) }}
-                                </div>
-                                <div class="in-idle">тенге/тонна</div>
-                            </div>
-                            <div class="second-td-header">
-                                <div class="vert-line"></div>
-                            </div>
-                        </td>
-
-                        <td class="w-50">
-                            <div class="in-work">план</div>
-                            <div class="txt4" v-if="unitCostsPlanUSD">
-                                {{ new Intl.NumberFormat("ru-RU").format(unitCostsPlanUSD) }}
-                            </div>
-                            <div class="in-work">факт</div>
-                            <div class="txt4" v-if="unitCostsFactUSD">
-                                {{ new Intl.NumberFormat("ru-RU").format(unitCostsFactUSD) }}
-                            </div>
-                            <div class="in-idle">$/bbl</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="right-side-bottom">
-                                <div class="txt2">Удельные расходы</div>
-                                <div class="percent-arrow">
-                                    <div class="arrow"></div>
-                                    <div class="txt2-2">48%</div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="first-string first-string2">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td class="w-50">
-                            <div class="first-td-header">
-                                <div class="in-work">план</div>
-                                <div class="txt4" v-if="kvlPerTonPlan">
-                                    {{ new Intl.NumberFormat("ru-RU").format(kvlPerTonPlan) }}
-                                </div>
-                                <div class="in-idle">тенге/тонна</div>
-                            </div>
-                            <div class="second-td-header">
-                                <div class="vert-line2"></div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="in-work">факт</div>
-                            <div class="txt4" v-if="kvlPerTonFact">
-                                {{ new Intl.NumberFormat("ru-RU").format(kvlPerTonFact) }}
-                            </div>
-                            <div class="in-idle">тенге/тонна</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="right-side-bottom">
-                                <div class="txt2">КВЛ на тонну</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="right-side-bottom">
-                                <div class="arrow"></div>
-                                <div class="txt2-2">48%</div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="first-string first-string2">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td class="w-50">
-                            <div class="first-td-header">
-                                <div class="in-work">рентабельные</div>
-                                <div class="txt4" v-if="actualEfficiencyGTMP">
-                                    {{
-                                        new Intl.NumberFormat("ru-RU").format(
-                                            actualEfficiencyGTMP
-                                        )
-                                    }}
-                                </div>
-                                <div class="in-idle">тенге/тонна</div>
-                            </div>
-                            <div class="second-td-header">
-                                <div class="vert-line2"></div>
-                            </div>
-                        </td>
-                        <td class="w-50">
-                            <div class="in-work">нерентабельные</div>
-                            <div class="txt4" v-if="actualEfficiencyGTMUN">
-                                {{
-                                    new Intl.NumberFormat("ru-RU").format(actualEfficiencyGTMUN)
-                                }}
-                            </div>
-
-                            <div class="in-idle">$/bbl</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="right-side-bottom">
-                                <div class="txt2">Фактическая эффективность ГТМ</div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="first-string first-string2">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td class="w-50">
-                            <div class="first-td-header">
-                                <div class="in-work">рентабельные</div>
-                                <div class="txt4" v-if="actualDrillingEfficiencyP">
-                                    {{
-                                        new Intl.NumberFormat("ru-RU").format(
-                                            actualDrillingEfficiencyP
-                                        )
-                                    }}
-                                </div>
-                                <div class="in-idle">тенге/тонна</div>
-                            </div>
-                            <div class="second-td-header">
-                                <div class="vert-line2"></div>
-                            </div>
-                        </td>
-
-                        <td class="w-50">
-                            <div class="in-work">нерентабельные</div>
-                            <div class="txt4" v-if="actualDrillingEfficiencyUN">
-                                {{
-                                    new Intl.NumberFormat("ru-RU").format(
-                                        actualDrillingEfficiencyUN
-                                    )
-                                }}
-                            </div>
-                            <div class="in-idle">$/bbl</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="right-side-bottom">
-                                <div class="txt2">Фактическая эффективность бурения</div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <div class="first-string first-string2">
-            <div class="table-responsive">
-                <table class="table">
-                    <tr>
-                        <td class="size-td">
-                            <div class="margin-left-5-pc">
-                                <div class="number">24</div>
-                                <div class="in-idle2">млн. тенге</div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <div class="txt2">Штрафы и пени</div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+        <wide-indicator
+            v-if="udIncomePlan > 0 && udIncomeBblPlan > 0"
+            v-bind:leftNumbers="[{title: 'план', value: udIncomePlan}, {title: 'факт', value: udIncomeFact}]"
+            v-bind:rightNumbers="[{title: 'план', value: udIncomeBblPlan}, {title: 'факт', value: udIncomeBblFact}]"
+            v-bind:leftUnits="leftUnits"
+            v-bind:rightUnits="rightUnits"
+            v-bind:title="'Удельные доходы'"
+            v-bind:isUpArrow="udIncomeFact > udIncomePlan"
+            v-bind:progressPercents="Math.abs((udIncomePlan - udIncomeFact) / udIncomePlan * 100).toFixed(0)"
+        ></wide-indicator>
+        <wide-indicator
+            v-if="udSpendingPlan > 0 && udSpendingBblPlan > 0"
+            v-bind:leftNumbers="[{title: 'план', value: udSpendingPlan}, {title: 'факт', value: udSpendingFact}]"
+            v-bind:rightNumbers="[{title: 'план', value: udSpendingBblPlan}, {title: 'факт', value: udSpendingBblFact}]"
+            v-bind:leftUnits="leftUnits"
+            v-bind:rightUnits="rightUnits"
+            v-bind:title="'Удельные расходы'"
+            v-bind:isUpArrow="udSpendingFact > udSpendingPlan"
+            v-bind:progressPercents="Math.abs((udSpendingPlan - udSpendingFact) / udIncomePlan * 100).toFixed(0)"
+        ></wide-indicator>
+        <wide-indicator
+            v-if="kvlPlan > 0 && kvlFact > 0"
+            v-bind:leftNumbers="[{title: 'план', value: kvlPlan}]"
+            v-bind:rightNumbers="[{title: 'факт', value: kvlFact}]"
+            v-bind:leftUnits="leftUnits"
+            v-bind:rightUnits="'тыс.тенге/тонна'"
+            v-bind:title="'КВЛ на тонну'"
+            v-bind:isUpArrow="kvlFact > kvlPlan"
+            v-bind:progressPercents="Math.abs((kvlPlan - kvlFact) / udIncomePlan * 100).toFixed(0)"
+        ></wide-indicator>
+        <wide-indicator
+            v-if="rentGtm > 0 && neRentGtm > 0"
+            v-bind:leftNumbers="[{title: 'рентабельные', value: rentGtm}]"
+            v-bind:rightNumbers="[{title: 'нерентабельные', value: neRentGtm}]"
+            v-bind:leftUnits="'скважины'"
+            v-bind:rightUnits="'скважины'"
+            v-bind:title="'Фактическая эффективность ГТМ'"
+            v-bind:hidePercents="true"
+        ></wide-indicator>
+        <wide-indicator
+            v-if="rentBurenie > 0 && neRentBurenie > 0"
+            v-bind:leftNumbers="[{title: 'рентабельные', value: rentBurenie}]"
+            v-bind:rightNumbers="[{title: 'нерентабельные', value: neRentBurenie}]"
+            v-bind:leftUnits="'скважины'"
+            v-bind:rightUnits="'скважины'"
+            v-bind:title="'Фактическая эффективность бурения'"
+            v-bind:hidePercents="true"
+        ></wide-indicator>
+        <simple-indicator
+            v-if="fines"
+            v-bind:title="'Штрафы и пени'"
+            v-bind:units="'млн.тенге'"
+            v-bind:value="fines"
+        ></simple-indicator>
     </div>
 </template>
 <script src="./VerticalIndicators.js"></script>

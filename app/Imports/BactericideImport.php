@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Bactericide;
-use App\Models\OtherObjects;
+use App\Models\ComplicationMonitoring\Bactericide;
+use App\Models\Refs\OtherObjects;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class BactericideImport implements ToModel
