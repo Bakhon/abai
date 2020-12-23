@@ -1531,7 +1531,7 @@ body {
 }
 .second_block {
   height: calc(100vh - 386px);
-  width: calc(1.6 * (100vh - 355px));
+  width: calc(1.6 * (100vh - 365px));
   max-width: calc(100vw - 440px);
   margin: 0 auto;
 }
