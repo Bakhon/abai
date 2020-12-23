@@ -17,13 +17,13 @@
                                         <div
                                             class="progress-bar"
                                             role="progressbar"
-                                            :style="{width: t1Sum + '%'}"
-                                            :aria-valuenow="t1Sum"
+                                            :style="{width: tSum + '%'}"
+                                            :aria-valuenow="tSum"
                                             aria-valuemin="0"
                                             :aria-valuemax="100"
                                         >
-                                            <div v-if="t1Sum">
-                                                {{ t1Sum.toFixed(1) }}%
+                                            <div v-if="tSum">
+                                                {{ tSum.toFixed(1) }}%
                                             </div>
                                         </div>
                                     </div>
@@ -52,6 +52,7 @@
                     <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Оптимизированный Инвестиционный портфель'"
+                            v-bind:mainTitle="'Октябрь'"
                             v-bind:mainValue="t4"
                             v-bind:units="'дата'"
                         ></vc-speedometer-block>
