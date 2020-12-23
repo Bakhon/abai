@@ -49,6 +49,7 @@
             v-bind:hidePercents="true"
         ></wide-indicator>
         <simple-indicator
+            v-if="fines"
             v-bind:title="'Штрафы и пени'"
             v-bind:units="'млн.тенге'"
             v-bind:value="fines"
