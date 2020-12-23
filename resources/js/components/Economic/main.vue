@@ -1,5 +1,8 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid economic-wrap">
+    <div class="loader" v-if="loading">
+      <fade-loader :loading="loading"></fade-loader>
+    </div>
     <div class="row justify-content-between">
       <modal name="bign1" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign">
@@ -125,13 +128,18 @@
 </template>
 
 <script>
-import VModal from 'vue-js-modal';
-import VueTableDynamic from 'vue-table-dynamic';
+import VModal from 'vue-js-modal'
+import VueTableDynamic from 'vue-table-dynamic'
+import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
 
 Vue.use(VModal, { dynamicDefault: { draggable: true, resizable: true } });
 
 export default {
   name: "economic-component",
+  components: {
+    VueTableDynamic,
+    FadeLoader
+  },
   data: function () {
     return {
       averageProfitlessCat1MonthCount: null,
@@ -156,7 +164,8 @@ export default {
         pageSizes: [10, 20, 50],
         height: 300
       },
-      organizations: []
+      organizations: [],
+      loading: false
     }
   },
   beforeCreate: function () {
@@ -171,6 +180,7 @@ export default {
       this.getEconomicData(event.target.value)
     },
     getEconomicData(org) {
+      this.loading = true
       this.axios.get('/ru/geteconimicdata', {params: {org: org}}).then((response) => {
         let data = response.data;
         if(data) {
@@ -194,6 +204,8 @@ export default {
         else {
           console.log('No data');
         }
+      }).finally(() => {
+        this.loading = false
       });
     },
     pushBign(bign){
@@ -213,11 +225,10 @@ export default {
         }
         this.$modal.show(bign);
     }
-  },
-  components: { VueTableDynamic }
+  }
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .title,
 .subtitle,
 .drag-area-title {
@@ -231,18 +242,33 @@ export default {
   border-radius: 15px;
   flex: 0 0 24%;
   margin-bottom: 5px;
+  &-number {
+    color: #fff;
+    font-size: 40px;
+  }
+  &-title {
+    color: #fff;
+    font-size: 20px;
+    word-wrap: break-word;
+  }
 }
-.bignumber-number {
-  color: #fff;
-  font-size: 40px;
-}
-.bignumber-title {
-  color: #fff;
-  font-size: 20px;
-  word-wrap: break-word;
-}
-.modal-bign{
-  /* background-color: #0F1430;
-  border: 1px solid #0D2B4D; */
+.economic-wrap {
+  position: relative;
+  .loader {
+    flex: 0 1 auto;
+    flex-flow: row wrap;
+    width: 100%;
+    align-items: flex-start;
+    position: absolute;
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    z-index: 5000;
+    background: rgba(0, 0, 0, 0.4);
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
 }
 </style>

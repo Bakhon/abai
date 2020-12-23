@@ -107,6 +107,6 @@ export default {
   padding: 3px 20px;
 }
 .droprightt.droprightt {
-  z-index: 3002;
+  z-index: 3012;
 }
 </style>
