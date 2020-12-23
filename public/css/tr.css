@@ -187,3 +187,6 @@ table {
     margin: 0;
 }  
 
+#app#app > .container-fluid {
+    max-width: unset;
+}
