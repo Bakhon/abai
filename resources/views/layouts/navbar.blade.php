@@ -56,74 +56,104 @@
                                 </a>
                             @endif
                             <ul>
-                                <li class="nav-item child">
-                                    <a href="{{url('/')}}/ru/omgca">
-                                        <span class="workTypeText">ОМГ ДДНГ</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item child">
-                                    <a href="{{url('/')}}/ru/omguhe">
-                                        <span class="workTypeText">ОМГ УХЭ</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item child">
-                                    <a href="{{url('/')}}/ru/omgngdu">
-                                        <span class="workTypeText">ОМГ НГДУ</span>
-                                    </a>
-                                </li>
+                                @if(auth()->user()->can('monitoring view main'))
+                                    <li class="nav-item child">
+                                        <a href="{{url('/')}}/ru/omgca">
+                                            <span class="workTypeText">ОМГ ДДНГ</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring view main'))
+                                    <li class="nav-item child">
+                                        <a href="{{url('/')}}/ru/omguhe">
+                                            <span class="workTypeText">ОМГ УХЭ</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring view main'))
+                                    <li class="nav-item child">
+                                        <a href="{{url('/')}}/ru/omgngdu">
+                                            <span class="workTypeText">ОМГ НГДУ</span>
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </li>
-
+                        @if(
+                            auth()->user()->can('monitoring list watermeasurement')
+                            || auth()->user()->can('monitoring list oilgas')
+                            || auth()->user()->can('monitoring list corrosion')
+                        )
                         <li class="nav-item child">
                             <a>
                                 <span class="workTypeText">КазНИПИ ЦНЛИ</span>
                             </a>
                             <ul>
-                                <li class="nav-item child">
-                                    <a href="{{url('/')}}/ru/watermeasurement">
-                                        <span class="workTypeText">База данных по промысловой жидкости и газу</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item child">
-                                    <a href="{{url('/')}}/ru/oilgas">
-                                        <span class="workTypeText">База данных по нефти и газу</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item child">
-                                    <a href="{{url('/')}}/ru/corrosioncrud">
-                                        <span class="workTypeText">База данных по скорости коррозии</span>
-                                    </a>
-                                </li>
+                                @if(auth()->user()->can('monitoring list watermeasurement'))
+                                    <li class="nav-item child">
+                                        <a href="{{url('/')}}/ru/watermeasurement">
+                                            <span class="workTypeText">База данных по промысловой жидкости и газу</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list oilgas'))
+                                    <li class="nav-item child">
+                                        <a href="{{url('/')}}/ru/oilgas">
+                                            <span class="workTypeText">База данных по нефти и газу</span>
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring list corrosion'))
+                                    <li class="nav-item child">
+                                        <a href="{{url('/')}}/ru/corrosioncrud">
+                                            <span class="workTypeText">База данных по скорости коррозии</span>
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </li>
+                        @endif
+                        @if(
+                            auth()->user()->can('monitoring list pipes')
+                            || auth()->user()->can('monitoring list inhibitors')
+                        )
+                            <li class="nav-item child">
+                                <a>
+                                    <span class="workTypeText">Справочники</span>
+                                </a>
+                                <ul>
+                                    @if(auth()->user()->can('monitoring list pipes'))
+                                        <li class="nav-item child">
+                                            <a href="{{url('/ru/pipes')}}">
+                                                <span class="workTypeText">Трубопроводы</span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if(auth()->user()->can('monitoring list inhibitors'))
+                                        <li class="nav-item child">
+                                            <a href="{{url('/ru/inhibitors')}}">
+                                                <span class="workTypeText">Ингибиторы</span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </li>
+                        @endif
                         <li class="nav-item child">
-                            <a>
-                                <span class="workTypeText">Справочники</span>
-                            </a>
-                            <ul>
-                                <li class="nav-item child">
-                                    <a href="{{url('/ru/pipes')}}">
-                                        <span class="workTypeText">Трубопроводы</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item child">
-                                    <a href="{{url('/ru/inhibitors')}}">
-                                        <span class="workTypeText">Ингибиторы</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item child">
-                            <a href="{{url('/ru/gu-map')}}">
-                                <span class="workTypeText">Техкарта</span>
-                            </a>
+                            @if(auth()->user()->can('monitoring view pipes map'))
+                                <a href="{{url('/ru/gu-map')}}">
+                                    <span class="workTypeText">Техкарта</span>
+                                </a>
+                            @endif
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item active dropdown">
-                    <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
-                    <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
-                </li>
+                @if(auth()->user()->can('economic view main'))
+                    <li class="nav-item active dropdown">
+                        <img src="{{ asset('img/level1/economic.svg') }}" width="15" height="15" class="workTypeLogo">
+                        <a href="{{url('/')}}/ru/economic"><span class="workTypeText">Экономика</span></a>
+                    </li>
+                @endif
 
                 <li class="nav-item active">
                     <button onclick="document.location='{{url('/')}}/ru/bigdata'" type="button"

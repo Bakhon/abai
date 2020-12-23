@@ -1,5 +1,8 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid economic-wrap">
+    <div class="loader" v-if="loading">
+      <fade-loader :loading="loading"></fade-loader>
+    </div>
     <div class="row justify-content-between">
       <modal name="bign1" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign">
@@ -48,12 +51,12 @@
             id="companySelect"
             @change="onChange($event)"
           >
-            <option value>АО «НК «КазМунайГаз»</option>
-            <option value="?org=2.0">АО «ОзенМунайГаз»</option>
-            <option value="?org=5.000001017E9">АО «Каражанбасмунай»</option>
-            <option value="?org=5.00000202E9">ТОО «КазГерМунай»</option>
-            <option value="?org=3.0">АО «ЭмбаМунайГаз»</option>
-            <option value="?org=2.000000000004E12">АО «Мангистаумунайгаз»</option>
+            <option
+                v-for="org in organizations" :value="org.id"
+                :key="`org_${org.id}`"
+            >
+              {{org.name}}
+            </option>
           </select>
         </div>
     </div>
@@ -125,67 +128,85 @@
 </template>
 
 <script>
-import VModal from 'vue-js-modal';
-import VueTableDynamic from 'vue-table-dynamic';
+import VModal from 'vue-js-modal'
+import VueTableDynamic from 'vue-table-dynamic'
+import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
 
 Vue.use(VModal, { dynamicDefault: { draggable: true, resizable: true } });
 
 export default {
   name: "economic-component",
+  components: {
+    VueTableDynamic,
+    FadeLoader
+  },
+  data: function () {
+    return {
+      averageProfitlessCat1MonthCount: null,
+      month: null,
+      persent: null,
+      persentCount: null,
+      prs: null,
+      year: null,
+      wellsList: null,
+      OperatingProfitMonth: null,
+      OperatingProfitYear: null,
+      prs1: null,
+      params: {
+        data: [
+        ],
+        enableSearch: true,
+        header: 'row',
+        border: true,
+        stripe: true,
+        pagination: true,
+        pageSize: 10,
+        pageSizes: [10, 20, 50],
+        height: 300
+      },
+      organizations: [],
+      loading: false
+    }
+  },
   beforeCreate: function () {
-    let uri = '/ru/geteconimicdata';
-    this.axios.get(uri).then((response) => {
-        let data = response.data;
-        if(data) {
-            this.averageProfitlessCat1MonthCount = data.averageProfitlessCat1MonthCount,
-            this.month = data.month,
-            this.persent = data.persent,
-            this.persentCount = data.persentCount,
-            this.prs = data.prs,
-            this.year = data.year,
-            this.wellsList = data.wellsList,
-            this.OperatingProfitMonth = data.OperatingProfitMonth,
-            this.OperatingProfitYear = data.OperatingProfitYear,
-            this.prs1 = data.prs1,
-            this.is_data_fetched = true,
-            this.params.data = data.wellsList,
-            this.$emit('chart1', data.chart1),
-            this.$emit('chart2', data.chart2),
-            this.$emit('chart3', data.chart3),
-            this.$emit('chart4', data.chart4)
-        }
-        else {
-            console.log('No data');
-        }
-    });
+    this.axios.get('/ru/organizations').then(({data}) => {
+      this.organizations = data.organizations
+
+      this.getEconomicData(this.organizations[0].id)
+    })
   },
   methods: {
     onChange(event) {
-        let uri = '/ru/geteconimicdata' + event.target.value;
-        this.axios.get(uri).then((response) => {
-            let data = response.data;
-            if(data) {
-                this.averageProfitlessCat1MonthCount = data.averageProfitlessCat1MonthCount,
-                this.month = data.month,
-                this.persent = data.persent,
-                this.persentCount = data.persentCount,
-                this.prs = data.prs,
-                this.year = data.year,
-                this.wellsList = data.wellsList,
-                this.OperatingProfitMonth = data.OperatingProfitMonth,
-                this.OperatingProfitYear = data.OperatingProfitYear,
-                this.prs1 = data.prs1,
-                this.is_data_fetched = true,
-                this.params.data = data.wellsList,
-                this.$emit('chart1', data.chart1),
-                this.$emit('chart2', data.chart2),
-                this.$emit('chart3', data.chart3),
-                this.$emit('chart4', data.chart4)
-            }
-            else {
-                console.log('No data');
-            }
-        });
+      this.getEconomicData(event.target.value)
+    },
+    getEconomicData(org) {
+      this.loading = true
+      this.axios.get('/ru/geteconimicdata', {params: {org: org}}).then((response) => {
+        let data = response.data;
+        if(data) {
+          this.averageProfitlessCat1MonthCount = data.averageProfitlessCat1MonthCount
+          this.month = data.month
+          this.persent = data.persent
+          this.persentCount = data.persentCount
+          this.prs = data.prs
+          this.year = data.year
+          this.wellsList = data.wellsList
+          this.OperatingProfitMonth = data.OperatingProfitMonth
+          this.OperatingProfitYear = data.OperatingProfitYear
+          this.prs1 = data.prs1
+          this.is_data_fetched = true
+          this.params.data = data.wellsList
+          this.$emit('chart1', data.chart1)
+          this.$emit('chart2', data.chart2)
+          this.$emit('chart3', data.chart3)
+          this.$emit('chart4', data.chart4)
+        }
+        else {
+          console.log('No data');
+        }
+      }).finally(() => {
+        this.loading = false
+      });
     },
     pushBign(bign){
         switch (bign) {
@@ -204,37 +225,10 @@ export default {
         }
         this.$modal.show(bign);
     }
-  },
-  data: function () {
-    return {
-        averageProfitlessCat1MonthCount: null,
-        month: null,
-        persent: null,
-        persentCount: null,
-        prs: null,
-        year: null,
-        wellsList: null,
-        OperatingProfitMonth: null,
-        OperatingProfitYear: null,
-        prs1: null,
-        params: {
-            data: [
-            ],
-            enableSearch: true,
-            header: 'row',
-            border: true,
-            stripe: true,
-            pagination: true,
-            pageSize: 10,
-            pageSizes: [10, 20, 50],
-            height: 300
-        }
-    }
-  },
-  components: { VueTableDynamic }
+  }
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .title,
 .subtitle,
 .drag-area-title {
@@ -248,18 +242,33 @@ export default {
   border-radius: 15px;
   flex: 0 0 24%;
   margin-bottom: 5px;
+  &-number {
+    color: #fff;
+    font-size: 40px;
+  }
+  &-title {
+    color: #fff;
+    font-size: 20px;
+    word-wrap: break-word;
+  }
 }
-.bignumber-number {
-  color: #fff;
-  font-size: 40px;
-}
-.bignumber-title {
-  color: #fff;
-  font-size: 20px;
-  word-wrap: break-word;
-}
-.modal-bign{
-  /* background-color: #0F1430;
-  border: 1px solid #0D2B4D; */
+.economic-wrap {
+  position: relative;
+  .loader {
+    flex: 0 1 auto;
+    flex-flow: row wrap;
+    width: 100%;
+    align-items: flex-start;
+    position: absolute;
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    z-index: 5000;
+    background: rgba(0, 0, 0, 0.4);
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
 }
 </style>

@@ -2,8 +2,8 @@
 
 namespace App\Imports;
 
-use App\Models\Well;
-use App\Models\Zu;
+use App\Models\Refs\Well;
+use App\Models\Refs\Zu;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class WellsImport implements ToModel
