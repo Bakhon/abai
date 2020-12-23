@@ -54,7 +54,7 @@ export default {
           }
         }],
         // width:  1200,
-        // height: 450,
+        height: 410,
         // autosize: true,
         // showlegend: true,
         margin: {
@@ -86,7 +86,7 @@ export default {
           title: "Давление, атм / Газосодержание, % ",
           hoverformat: ".1f",
           rangemode: 'nonnegative',
-          // showline: true,
+          showline: true,
           // range: [0,100],
           // zeroline: false,
           // showgrid: true,
@@ -99,28 +99,9 @@ export default {
           linecolor: "#454D7D"
         },
 
-         yaxis2: {
-          title: "",
-          hoverformat: ".1f",
-          rangemode: 'nonnegative',
-          // showline: true,
-          // range: [0,100],
-          // zeroline: false,
-          // showgrid: true,
-          // mirror: 'ticks',
-          // mirror:true,
-          // ticklen: 4,
-          // gridcolor: "#454D7D",
-          // tickfont: {size: 10},
-          overlaying: 'y',
-          side: 'right',
-          // linewidth: 1,
-          // linecolor: "#454D7D"
-        },
-
         //   scene:{ gridcolor: '#ffffff',},
-        paper_bgcolor: "#20274e",
-        plot_bgcolor: "#20274e",
+        paper_bgcolor: "#272953",
+        plot_bgcolor: "#272953",
         font: { color: "#fff" },
 
         legend: {
@@ -139,7 +120,7 @@ export default {
   methods: {
 
     setLine: function (value) {
-      console.log(value)
+      // console.log(value)
       var ipr_points = [];
       var pintake_points = [];
       var freegas_points = [];
@@ -210,7 +191,7 @@ export default {
           legendgroup: "group3",
           x: qo_points2,
           y: freegas_points2,
-          yaxis: 'y2',
+          yaxis: 'y',
           hovertemplate: '<b>Газосодержание в насосе = %{y:.1f}%</b><extra></extra>',
           marker: {
             size: "15",
@@ -290,15 +271,15 @@ export default {
       this.data[4]['y'][0] = value[2]["p"]
       this.data[4]['text'][0] = value[2]["q_oil"]
     },
-    resize() {
-      console.log(window.innerWidth);
-    }
+    // resize() {
+    //   console.log(window.innerWidth);
+    // }
   },
   mounted() {},
   created: function () {
     this.$parent.$on("LineData", this.setLine);
     this.$parent.$on("PointsData", this.setPoints);
-    window.addEventListener("resize", this.resize);
+    // window.addEventListener("resize", this.resize);
 
     // this.$on("LineData", this.setLine);
     // this.$on("PointsData", this.setPoints);
@@ -323,15 +304,8 @@ export default {
 
   },
   updated: function() {
-
-
     this.$eventBus.$on("newCurveLineData", this.setLine);
     this.$eventBus.$on("newPointsData", this.setPoints);
-
-
-
-
   }
-
 };
 </script>

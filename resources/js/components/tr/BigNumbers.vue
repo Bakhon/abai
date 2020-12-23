@@ -100,7 +100,6 @@ export default {
           });
         }
       }
-      console.log("newNumbers == ", newNumbers);
       return newNumbers;
     },
   },

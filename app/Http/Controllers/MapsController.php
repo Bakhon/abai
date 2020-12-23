@@ -10,6 +10,8 @@ class MapsController extends Controller
 
     public function __construct(\App\Services\MapService $mapService)
     {
+        $this->middleware('can:monitoring view pipes map');
+
         $this->mapService = $mapService;
     }
 

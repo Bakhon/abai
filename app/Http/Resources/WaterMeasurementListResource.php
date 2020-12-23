@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class WaterMeasurementListResource extends JsonResource
+class WaterMeasurementListResource extends CrudListResource
 {
+
+    protected $modelName = 'watermeasurement';
+
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +15,7 @@ class WaterMeasurementListResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $result = [
             'id' => $this->id,
             'fields' => [
                 'date' => $this->date,
@@ -49,14 +50,12 @@ class WaterMeasurementListResource extends JsonResource
                 'sulphate_reducing_bacteria' => $this->sulphateReducingBacteria->name,
                 'hydrocarbon_oxidizing_bacteria' => $this->hydrocarbonOxidizingBacteria->name,
                 'thionic_bacteria' => $this->thionicBacteria->name,
-            ],
-            'links' => [
-                'show' => route('watermeasurement.show',$this->id),
-                'edit' => route('watermeasurement.edit',$this->id),
-                'history' => route('watermeasurement.history',$this->id),
-                'delete' => route('watermeasurement.destroy',$this->id),
             ]
         ];
+
+        $result['links'] = $this->getLinks();
+
+        return $result;
 
     }
 }

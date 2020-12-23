@@ -2,10 +2,12 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class CorrosionListResource extends JsonResource
+class CorrosionListResource extends CrudListResource
 {
+
+    protected $modelName = 'corrosion';
+    protected $routeParentName = 'corrosioncrud';
+
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +16,7 @@ class CorrosionListResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $result = [
             'id' => $this->id,
             'fields' => [
                 'field' => $this->field->name,
@@ -32,13 +34,11 @@ class CorrosionListResource extends JsonResource
                 'days' => $this->days,
                 'weight_after' => $this->weight_after,
                 'avg_speed' => $this->avg_speed,
-            ],
-            'links' => [
-                'show' => route('corrosioncrud.show', $this->id),
-                'edit' => route('corrosioncrud.edit', $this->id),
-                'history' => route('corrosioncrud.history', $this->id),
-                'delete' => route('corrosioncrud.destroy', $this->id),
             ]
         ];
+
+        $result['links'] = $this->getLinks();
+
+        return $result;
     }
 }

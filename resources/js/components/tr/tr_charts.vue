@@ -83,6 +83,7 @@
           >
             <div>
               <select
+                v-model="month"
                 style="
                   background-color: #656a8a !important;
                   border-color: #656a8a !important;
@@ -93,7 +94,7 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option>Выберите месяц</option>
+                <option disabled>Выберите месяц</option>
                 <option value="1">январь</option>
                 <option value="2">февраль</option>
                 <option value="3">март</option>
@@ -110,6 +111,7 @@
             </div>
             <div>
               <select
+                v-model="selectYear"
                 style="
                   background-color: #656a8a !important;
                   border-color: #656a8a !important;
@@ -120,7 +122,7 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option value="">Выберите год</option>
+                <option disabled value="">Выберите год</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -142,7 +144,7 @@
       </div>
       <div class="sec_nav">
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4> -->
-        <div class="filter_chart row">
+        <div class="filter_chart row" style=" display: flex;justify-content: center;">
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -219,7 +221,7 @@ export default {
         filtersText = filtersText
           ? `${filtersText}, ${this.chartFilter_exp_meth}`
           : this.chartFilter_exp_meth;
-      if (filtersText) filtersText = `по ${filtersText}`;
+      if (filtersText) filtersText = `${filtersText}`;
 
       return filtersText;
     },
@@ -284,7 +286,6 @@ export default {
     return {
       chartShow: 0,
       isLoading: true,
-      pieChartRerender: true,
       chartWells: [],
       filteredWells: [],
       sortType: "asc",
@@ -408,7 +409,7 @@ export default {
         align: "center",
         offsetY: 18,
         style: {
-          fontSize: '14px',
+          fontSize: "14px",
           color: "#008FFB",
         },
       },
@@ -416,7 +417,7 @@ export default {
         align: "center",
         offsetY: 36,
         style: {
-          fontSize: '14px',
+          fontSize: "14px",
           color: "#008FFB",
           fontWeight: 900,
         },
@@ -568,7 +569,7 @@ export default {
         title,
         subtitle,
       };
-      console.log(this.chartBarOptions);
+
       const series = [
         {
           name: "Н вдп",
@@ -642,11 +643,13 @@ export default {
           min: minY1,
         },
         {
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -697,14 +700,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
@@ -768,11 +771,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -823,14 +828,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
@@ -887,11 +892,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -942,14 +949,14 @@ export default {
           name: "Прирост Qн идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_oil_inc").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_oil_inc")
           ),
         },
         {
           name: "Прирост Qн грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_oil")
           ),
         },
         {
@@ -1016,11 +1023,13 @@ export default {
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
+        ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -1071,14 +1080,14 @@ export default {
           name: "Прирост Qж идн",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_liq_inc").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_liq_inc")
           ),
         },
         {
           name: "Прирост Qж грп",
           type: "bar",
           data: filtered30.map((item) =>
-            this.getStringOrFirstItem(item, "tp_idn_grp_q_liq").toFixed(2)
+            this.getStringOrFirstItem(item, "tp_idn_grp_q_liq")
           ),
         },
         {
@@ -1377,11 +1386,9 @@ export default {
       return Array.isArray(el[param]) ? el[param][0] : el[param];
     },
     onChangeMonth(event) {
-      this.month = event.target.value;
       this.$store.commit("tr/SET_MONTH", event.target.value);
     },
     onChangeYear(event) {
-      this.selectYear = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt() {
@@ -1436,6 +1443,8 @@ export default {
       this.$store.commit("tr/SET_MONTH", mm);
       this.$store.commit("tr/SET_YEAR", yyyy);
     }
+    this.selectYear = yyyy;
+    this.month = mm;
     this.axios
       .get(
         "http://172.20.103.187:7576/api/techregime/graph1/" +
@@ -1448,11 +1457,8 @@ export default {
         this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
-        console.log(this.editdtm);
         this.editdty = yyyy;
-        console.log(this.editdty);
         if (data) {
-          console.log(data);
           this.fullWells = data.data;
           this.chartWells = data.data;
         } else {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OilGasFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OilGasCreateRequest;
@@ -16,18 +17,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
-class OilGasController extends Controller
+class OilGasController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'oilgas';
 
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('oilgas.create'),
                 'list' => route('oilgas.list'),
-                'export' => route('oilgas.export'),
             ],
             'title' => 'База данных по нефти и газу',
             'fields' => [
@@ -185,6 +186,13 @@ class OilGasController extends Controller
                 ],
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
 
         return view('сomplicationMonitoring.oilGas.index', compact('params'));
     }

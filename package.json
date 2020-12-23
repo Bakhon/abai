@@ -41,7 +41,7 @@
         "luxon": "^1.25.0",
         "mapbox-gl": "^1.0.0",
         "moment": "^2.29.1",
-        "plotly.js-locales": "^1.58.3",
+        "plotly.js-locales": "^1.58.4",
         "v-calendar": "^1.1.1",
         "vue-apexcharts": "^1.6.0",
         "vue-chartjs": "^3.5.1",

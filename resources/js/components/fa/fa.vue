@@ -194,7 +194,7 @@
           </td>
         </tr>
         <tr></tr>
-        <tr class="subHeaderColumn">
+        <tr class="subHeaderColumn" style="cursor: pointer;">
           <!-- <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
@@ -1053,7 +1053,7 @@ export default {
       }
     },
     getColorTwo(status) {
-      if (status === "1") return "#5e1d1d";
+      if (status === "1") return "#ff0000";
       return "#ff0000";
     },
     chooseDt() {
@@ -1098,6 +1098,10 @@ export default {
             this.editdtprevy = choosenSecDt[0];
             
             if (data) {
+              this.$store.commit("fa/SET_SORTPARAM", "");
+              this.$store.commit("fa/SET_SEARCH", "");
+              this.sortParam = "";
+              this.searchString = "";
               console.log(data);
               this.wells = data.data;
               this.fullWells = data.data;
@@ -1146,6 +1150,8 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.$store.commit("fa/SET_SORTPARAM", "");
+      this.sortParam = "";
       const mm = this.$store.getters["fa/month"];
       const prMm = this.$store.getters["fa/prmonth"];
       const yyyy = this.$store.getters["fa/year"];
@@ -1379,6 +1385,26 @@ body {
 .fakrtableborderedtable {
     font-size: 9px;
     padding: unset;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
 }
 
 </style>

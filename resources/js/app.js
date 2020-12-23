@@ -76,6 +76,14 @@ Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
+Vue.component('reports-table', require('./components/reports/ReportsTable.vue').default);
+Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
+Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
+Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
+Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
+Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
+Vue.component('monthly-injection', require('./components/reports/MonthlyInjection.vue').default);
+Vue.component('export-excel', require('./components/reports/excel.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
@@ -84,13 +92,6 @@ Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').defau
 Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
 Vue.component('gu-map', require('./components/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
-
-Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
-Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
-
-Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
-Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
-Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
 
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);

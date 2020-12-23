@@ -86,7 +86,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $user->roles()->sync($request->roles);
+        $user->syncRoles($request->roles);
         return redirect()->route('admin.users.index')->with('success', __('app.updated'));
     }
 
