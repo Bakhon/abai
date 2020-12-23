@@ -15,6 +15,12 @@ use Illuminate\Http\Request;
 
 class EconomicController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:economic view main');
+    }
+
     public function index(Request $request)
     {
         return view('economic.main');
@@ -23,6 +29,13 @@ class EconomicController extends Controller
 
     public function getEconomicData(Request $request)
     {
+
+        if(!in_array($request->org, auth()->user()->getOrganizationIds())) {
+            abort(403);
+        }
+
+        $org = \App\Models\Refs\Org::find($request->org);
+
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
 
         $builder = $client->query('economic_2020v4', Granularity::YEAR);
@@ -41,261 +54,176 @@ class EconomicController extends Controller
         $builder14 = $client->query('economic_2020v4', Granularity::YEAR);
         $builder15 = $client->query('economic_2020v4', Granularity::DAY);
 
-        if ($request->has('org')) {
+        $builder
+            ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
+            ->select('profitability')
+            ->sum("Operating_profit")
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder2
+            ->interval('2020-06-01T00:00:00+00:00/2028-08-31T00:00:00+00:00')
+            ->select('profitability')
+            ->sum("Operating_profit")
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder3
+            ->interval('2020-06-01T00:00:00+00:00/2020-07-01T00:00:00+00:00')
+            ->select("uwi")
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder4
+            ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->select("uwi")
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder5
+            ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
+            ->longSum("prs1")
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder6
+            ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->select("uwi")
+            ->sum("oil")
+            ->sum("liquid")
+            ->sum("Revenue_total")
+            ->sum("NetBack_bf_pr_exp")
+            ->sum("Operating_profit")
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder7
+            ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->sum("oil")
+            ->sum("liquid")
+            ->sum("Operating_profit")
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder8
+            ->interval('2019-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->sum("oil")
+            ->sum("liquid")
+            ->sum("Operating_profit")
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder9
+            ->interval('2019-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->select("uwi")
+            ->sum("prs1")
+            ->orderBy('prs1', 'desc')
+            ->where('prs1', '>', '0')
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder10
+            ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy-MM-dd');
+            })
+            ->select('profitability')
+            ->count('uwi')
+            ->where('status', '=', 'В работе')
+            ->where('profitability', '=', 'profitable');
+
+        $builder11
+            ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy-MM-dd');
+            })
+            ->select('profitability')
+            ->count('uwi')
+            ->where('status', '=', 'В работе')
+            ->where('profitability', '=', 'profitless_cat_1');
+
+        $builder12
+            ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy-MM-dd');
+            })
+            ->select('profitability')
+            ->count('uwi')
+            ->where('status', '=', 'В работе')
+            ->where('profitability', '=', 'profitless_cat_2');
+
+        $builder13
+            ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy-MM-dd');
+            })
+            ->select('profitability')
+            ->where('status', '=', 'В работе')
+            ->sum('oil');
+
+        $builder14
+            ->interval('2020-07-30T00:00:00+00:00/2020-07-31T00:00:00+00:00')
+            ->select("uwi")
+            ->sum("Operating_profit")
+            ->where('Operating_profit', '!=', '0')
+            ->where('status', '=', 'В работе')
+            ->orderBy('Operating_profit', 'desc');
+
+        $builder15
+            ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy-MM-dd');
+            })
+            ->select('profitability')
+            ->sum('liquid')
+            ->where('status', '=', 'В работе');
+
+        if ($org->druid_id) {
             $builder
-                ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
-                ->select('profitability')
-                ->sum("Operating_profit")
-                ->where('org_id2', '=', $request->org)
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder2
-                ->interval('2020-06-01T00:00:00+00:00/2028-08-31T00:00:00+00:00')
-                ->select('profitability')
-                ->sum("Operating_profit")
-                ->where('org_id2', '=', $request->org)
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder3
-                ->interval('2020-06-01T00:00:00+00:00/2020-07-01T00:00:00+00:00')
-                ->select("uwi")
-                ->where('org_id2', '=', $request->org)
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder4
-                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select("uwi")
-                ->where('org_id2', '=', $request->org)
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder5
-                ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
-                ->longSum("prs1")
                 ->count("*")
-                ->where('profitability', '=', 'profitless_cat_1')
-                ->where('org_id2', '=', $request->org)
+                ->where('org_id2', '=', $org->druid_id)
                 ->divide('prs', ['prs1', '*']);
 
             $builder6
-                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select("uwi")
-                ->sum("oil")
-                ->sum("liquid")
-                ->sum("Revenue_total")
-                ->sum("NetBack_bf_pr_exp")
-                ->sum("Operating_profit")
-                ->where('org_id2', '=', $request->org)
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder7
-                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->sum("oil")
-                ->sum("liquid")
-                ->sum("Operating_profit")
-                ->where('org_id2', '=', $request->org)
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder8
-                ->interval('2019-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->sum("oil")
-                ->sum("liquid")
-                ->sum("Operating_profit")
-                ->where('org_id2', '=', $request->org)
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder9
-                ->interval('2019-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select("uwi")
-                ->sum("prs1")
-                ->where('org_id2', '=', $request->org)
-                ->where('prs1', '>', '0')
-                ->orderBy('prs1', 'desc')
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder10
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
                 ->select('org_id2')
-                ->count('uwi')
-                ->where('org_id2', '=', $request->org)
-                ->where('status', '=', 'В работе')
-                ->where('profitability', '=', 'profitable');
+                ->where('org_id2', '=', $org->druid_id);
 
 
             $builder11
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
                 ->select('org_id2')
-                ->count('uwi')
-                ->where('org_id2', '=', $request->org)
-                ->where('status', '=', 'В работе')
-                ->where('profitability', '=', 'profitless_cat_1');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder12
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
                 ->select('org_id2')
-                ->count('uwi')
-                ->where('org_id2', '=', $request->org)
-                ->where('status', '=', 'В работе')
-                ->where('profitability', '=', 'profitless_cat_2');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder13
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
                 ->select('price_export_1')
                 ->select('org_id2')
-                ->sum('oil')
-                ->where('status', '=', 'В работе')
-                ->where('org_id2', '=', $request->org);
-
-            $builder14
-                ->interval('2020-07-30T00:00:00+00:00/2020-07-31T00:00:00+00:00')
-                ->select("uwi")
-                ->sum("Operating_profit")
-                ->where('org_id2', '=', $request->org)
-                ->where('Operating_profit', '!=', '0')
-                ->where('status', '=', 'В работе')
-                ->orderBy('Operating_profit', 'desc');
-
-            $builder15
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
-                ->select('price_export_1')
-                ->select('org_id2')
-                ->sum('liquid')
-                ->where('status', '=', 'В работе')
-                ->where('org_id2', '=', $request->org);
-        } else {
-            $builder
-                ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
-                ->select('profitability')
-                ->sum("Operating_profit")
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder2
-                ->interval('2020-06-01T00:00:00+00:00/2028-08-31T00:00:00+00:00')
-                ->select('profitability')
-                ->sum("Operating_profit")
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder3
-                ->interval('2020-06-01T00:00:00+00:00/2020-07-01T00:00:00+00:00')
-                ->select("uwi")
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder4
-                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select("uwi")
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder5
-                ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
-                ->sum("prs1")
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder6
-                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select("uwi")
-                ->sum("oil")
-                ->sum("liquid")
-                ->sum("Revenue_total")
-                ->sum("NetBack_bf_pr_exp")
-                ->sum("Operating_profit")
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder7
-                ->interval('2020-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->sum("oil")
-                ->sum("liquid")
-                ->sum("Operating_profit")
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder8
-                ->interval('2019-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->sum("oil")
-                ->sum("liquid")
-                ->sum("Operating_profit")
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder9
-                ->interval('2019-07-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select("uwi")
-                ->sum("prs1")
-                ->orderBy('prs1', 'desc')
-                ->where('prs1', '>', '0')
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder10
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
-                ->count('uwi')
-                ->where('status', '=', 'В работе')
-                ->where('profitability', '=', 'profitable');
-
-            $builder11
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
-                ->count('uwi')
-                ->where('status', '=', 'В работе')
-                ->where('profitability', '=', 'profitless_cat_1');
-
-            $builder12
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
-                ->count('uwi')
-                ->where('status', '=', 'В работе')
-                ->where('profitability', '=', 'profitless_cat_2');
-
-            $builder13
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
-                ->where('status', '=', 'В работе')
                 ->sum('oil');
 
             $builder14
-                ->interval('2020-07-30T00:00:00+00:00/2020-07-31T00:00:00+00:00')
-                ->select("uwi")
-                ->sum("Operating_profit")
-                ->where('Operating_profit', '!=', '0')
-                ->where('status', '=', 'В работе')
-                ->orderBy('Operating_profit', 'desc');
+                ->where('org_id2', '=', $org->druid_id);
 
             $builder15
-                ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-                ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-                    $extractionBuilder->timeFormat('yyyy-MM-dd');
-                })
-                ->select('profitability')
-                ->sum('liquid')
-                ->where('status', '=', 'В работе');
+                ->select('price_export_1')
+                ->select('org_id2')
+                ->where('org_id2', '=', $org->druid_id);
         }
 
 

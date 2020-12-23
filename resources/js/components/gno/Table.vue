@@ -1422,7 +1422,6 @@ import moment from "moment";
 import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from 'vue';
-import jsPDF from 'jspdf'
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -1660,13 +1659,6 @@ export default {
   },
 
   methods: {
-
-    createPDF () {
-      let pdfName = 'Результат';
-      var doc = new jsPDF();
-      doc.text("Тут будут значения", 10, 10);
-      doc.save(pdfName + '.pdf');
-    },
     closeModal(modalName) {
       this.$modal.hide(modalName)
     },

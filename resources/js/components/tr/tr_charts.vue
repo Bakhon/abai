@@ -36,7 +36,7 @@
           >
         </div>
       </div>
-      <div class="row sec_nav trfacolmdrowsecnav">
+      <div class="row sec_nav trfacolmdrowsecnav" style=" display: flex;justify-content: center;">
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -144,7 +144,7 @@
       </div>
       <div class="sec_nav">
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4> -->
-        <div class="filter_chart row">
+        <div class="filter_chart row" style=" display: flex;justify-content: center;">
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -221,7 +221,7 @@ export default {
         filtersText = filtersText
           ? `${filtersText}, ${this.chartFilter_exp_meth}`
           : this.chartFilter_exp_meth;
-      if (filtersText) filtersText = `по ${filtersText}`;
+      if (filtersText) filtersText = `${filtersText}`;
 
       return filtersText;
     },
@@ -1544,6 +1544,10 @@ body {
 }
 .droptr.droptr {
   background: #656a8a;
+}
+
+a:hover {
+    color: #FFFFFF;
 }
 </style>
 <style scoped>
