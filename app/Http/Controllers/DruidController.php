@@ -17,6 +17,12 @@ use Spatie\Permission\Models\Role;
 
 class DruidController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:monitoring view main', ['only' => ['monitor']]);
+    }
+
     public function index()
     {
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OmgUHEFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\OmgUHECreateRequest;
@@ -17,18 +18,18 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class OmgUHEController extends Controller
+class OmgUHEController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'omguhe';
     
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('omguhe.create'),
                 'list' => route('omguhe.list'),
-                'export' => route('omguhe.export'),
             ],
             'title' => 'База данных ОМГ УХЭ',
             'table_header' => [
@@ -196,6 +197,13 @@ class OmgUHEController extends Controller
                 ]
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
 
         return view('omguhe.index', compact('params'));
     }

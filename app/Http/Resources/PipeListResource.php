@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class PipeListResource extends JsonResource
+class PipeListResource extends CrudListResource
 {
+
+    protected $modelName = 'pipes';
+
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +15,7 @@ class PipeListResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $result = [
             'id' => $this->id,
             'fields' => [
                 'gu' => $this->gu->name,
@@ -26,12 +27,10 @@ class PipeListResource extends JsonResource
                 'material' => $this->material->name,
                 'plot' => $this->plot,
             ],
-            'links' => [
-                'show' => route('pipes.show', $this->id),
-                'edit' => route('pipes.edit', $this->id),
-                'history' => route('pipes.history', $this->id),
-                'delete' => route('pipes.destroy', $this->id),
-            ]
         ];
+
+        $result['links'] = $this->getLinks();
+
+        return $result;
     }
 }

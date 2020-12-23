@@ -63,13 +63,14 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #656a8a; height: 104px; width: 161px;"
+            style="background: #656a8a; height: 104px; width: 161px"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
           >
             <div>
               <select
+                v-model="month"
                 style="
                   background-color: #656a8a;
                   border-color: #656a8a;
@@ -79,7 +80,7 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option>Выберите месяц</option>
+                <option disabled>Выберите месяц</option>
                 <option value="1">январь</option>
                 <option value="2">февраль</option>
                 <option value="3">март</option>
@@ -96,6 +97,7 @@
             </div>
             <div>
               <select
+                v-model="selectYear"
                 style="
                   background-color: #656A8A ;
                   border-color: #656A8A;
@@ -111,7 +113,7 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option value="">Выберите год</option>
+                <option disabled value="">Выберите год</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -352,11 +354,6 @@
               v-if="show_second"
               class="table table-bordered table-dark table-responsive ce trtable"
               style="
-                position: sticky;
-                left: 5.31%;
-                right: 2.4%;
-                top: 48.21%;
-                bottom: 66.58%;
                 background: #0d1e63;
               "
             >
@@ -473,7 +470,7 @@
                   </td>
                   <td class="colspan th" colspan="12">Намечаемый режим</td>
                 </tr>
-                <tr class="headerColumn" style="background: #333975">
+                <tr class="headerColumn notsticky" style="background: #333975">
                   <td rowspan="3" class="th"><span>P заб</span></td>
                   <td rowspan="3" class="th"><span>Q ж</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
@@ -531,7 +528,7 @@
                     <span>Мероприятия по обеспечению техрежима</span>
                   </td>
                 </tr>
-                <tr class="headerColumn" style="background: #333975">
+                <tr class="headerColumn notsticky" style="background: #333975">
                   <td rowspan="2" class="th"><span>Q ж</span></td>
                   <td rowspan="2" class="th">
                     <span>Q ж с поправкой на D э/к</span>
@@ -1204,6 +1201,7 @@
                     </span>
                     <input
                       @change="editrow(row, row_index)"
+                      class="input_edit"
                       v-model="row.r_con[0]"
                       :disabled="!edit"
                     />
@@ -1860,6 +1858,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.h_pump_set[0]"
                       :disabled="!edit"
@@ -1921,6 +1920,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.whp[0]"
                       :disabled="!edit"
@@ -1982,6 +1982,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.line_p[0]"
                       :disabled="!edit"
@@ -2042,6 +2043,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_res[0]"
                       :disabled="!edit"
@@ -2103,6 +2105,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.h_dyn[0]"
                       :disabled="!edit"
@@ -2164,6 +2167,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_annular[0]"
                       :disabled="!edit"
@@ -2225,6 +2229,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.p_intake[0]"
                       :disabled="!edit"
@@ -2443,6 +2448,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.q_l[0]"
                       :disabled="!edit"
@@ -2504,6 +2510,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.wct[0]"
                       :disabled="!edit"
@@ -2679,6 +2686,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.gor[0]"
                       :disabled="!edit"
@@ -2803,6 +2811,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.grp_skin[0]"
                       :disabled="!edit"
@@ -4835,6 +4844,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.idn_pump_depth_max[0]"
                       :disabled="!edit"
@@ -5358,6 +5368,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.bhp_meter[0]"
                       :disabled="!edit"
@@ -5900,6 +5911,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_choke[0]"
                       :disabled="!edit"
@@ -6016,6 +6028,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_liq[0]"
                       :disabled="!edit"
@@ -6076,6 +6089,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_wct[0]"
                       :disabled="!edit"
@@ -6134,6 +6148,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_month_days[0]"
                       :disabled="!edit"
@@ -6542,6 +6557,7 @@
                     >
                     </span>
                     <input
+                      class="input_edit"
                       @change="editrow(row, row_index)"
                       v-model="row.planned_events[0]"
                       :disabled="!edit"
@@ -6576,7 +6592,6 @@ export default {
   },
   beforeCreate: function () {},
   created() {
-    this.$store.commit("tr/SET_SORTTYPE", this.sortType);
     this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
     this.$store.commit("tr/SET_SEARCH", this.searchString);
     this.$store.commit("tr/SET_FILTER", this.filter);
@@ -6769,11 +6784,9 @@ export default {
       }
     },
     onChangeMonth(event) {
-      this.month = event.target.value;
       this.$store.commit("tr/SET_MONTH", event.target.value);
     },
     onChangeYear(event) {
-      this.selectYear = event.target.value;
       this.year = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
@@ -6792,6 +6805,10 @@ export default {
           this.isloading = false;
           let data = response.data;
           if (data) {
+            this.$store.commit("tr/SET_SORTPARAM", "");
+            this.$store.commit("tr/SET_SEARCH", "");
+            this.sortParam = "";
+            this.searchString = "";
             console.log(data);
             // this.wells = data.data;
             this.fullWells = data.data;
@@ -6830,6 +6847,8 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.$store.commit("tr/SET_SORTPARAM", "");
+      this.sortParam = "";
       this.isloading = true;
       const searchParam = this.searchString
         ? `search/${this.searchString}/`
@@ -6900,7 +6919,7 @@ a:hover {
   text-decoration: none !important;
 }
 .maintable {
-  padding-top: 35px;
+  padding-top: 0px;
 }
 .maintable-level2 {
   background: #272953;
@@ -6991,51 +7010,67 @@ tr:nth-child(even) {
   flex-grow: 0;
   width: 200px;
 }
-.tablecont {
+/* .tablecont {
   margin-top: -38px;
-}
-
-/* .table {
-    overflow: scroll;
-    height: calc(100vh - 247px);
 } */
+
 .table .th {
   position: sticky;
   background: rgb(51, 57, 117);
 }
 .table tr:first-child .th {
-  top: 0;
+  top: -1px;
   z-index: 3000;
 }
 .table tr:nth-child(2) .th {
-  top: 25px;
+  top: 24px;
   z-index: 3000;
 }
 .table tr:nth-child(3) .th {
-  top: 50px;
+  top: 49px;
   z-index: 3000;
 }
 .table tr:nth-child(4) .th {
-  top: 81px;
+  top: 80px;
   z-index: 3000;
 }
 .table tr:nth-child(5) .th {
-  top: 98px;
+  top: 97px;
   z-index: 3000;
 }
-tr td:first-child {
-  background-color: #0074d9;
-  color: #fff;
-  position: sticky;
-  left: 0;
-  width: 100px;
-}
 .table-outer {
-  position: relative
+  position: relative;
 }
 .table-inner {
-
   overflow-y: visible;
+}
+tr:not(.notsticky) td:nth-child(-n+3) {
+  position: sticky;
+  left: -1px;
+  width: 27px;
+}
+tr:not(.notsticky) td:nth-child(2) {
+  left: 23px;
+  width: 100px;
+}
+tr:not(.notsticky) td:nth-child(3) {
+  left: 121px;
+  width: 55;
+}
+
+tr:nth-child(odd) td {
+  background-color: #454d7d;
+}
+tr:nth-child(even) td {
+  background-color: #26336f;
+}
+
+.table.table tr:not(.notsticky) .th:nth-child(-n+3) {
+  z-index: 3010;
+}
+
+.input_edit {
+  background: #FFFACD;
 }
 </style>
 <style>
@@ -7054,11 +7089,11 @@ tr td:first-child {
 }
 .fadropmenu.fadropmenu {
   background: #656a8a;
-  /* color: #ffffff; */
   width: 246px;
   z-index: 3001 !important;
 }
 .faheadhight {
   height: 40px;
 }
+
 </style>

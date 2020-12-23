@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class OilGasListResource extends JsonResource
+class OilGasListResource extends CrudListResource
 {
+
+    protected $modelName = 'oilgas';
+
     /**
      * Transform the resource into an array.
      *
@@ -14,7 +15,7 @@ class OilGasListResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $result = [
             'id' => $this->id,
             'fields' => [
                 'other_objects' => $this->other_objects->name,
@@ -35,13 +36,11 @@ class OilGasListResource extends JsonResource
                 'gas_density_at_20' => $this->gas_density_at_20,
                 'gas_viscosity_at_20' => $this->gas_viscosity_at_20,
 
-            ],
-            'links' => [
-                'show' => route('oilgas.show', $this->id),
-                'edit' => route('oilgas.edit', $this->id),
-                'history' => route('oilgas.history', $this->id),
-                'delete' => route('oilgas.destroy', $this->id),
             ]
         ];
+
+        $result['links'] = $this->getLinks();
+
+        return $result;
     }
 }

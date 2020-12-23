@@ -57,6 +57,8 @@ Vue.component('visual-center-chart-area-usd3', require('./components/visualcente
 Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
 Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
 Vue.component('indicator', require('./components/visualcenter3/Indicator.vue').default);
+Vue.component('wide-indicator', require('./components/visualcenter3/WideIndicator.vue').default);
+Vue.component('simple-indicator', require('./components/visualcenter3/SimpleIndicator.vue').default);
 Vue.component('vc-speedometer-block', require('./components/visualcenter3/VCSpeedometerBlock.vue').default);
 Vue.component('horizontal-indicators', require('./components/visualcenter3/HorizontalIndicators.vue').default);
 Vue.component('vertical-indicators', require('./components/visualcenter3/VerticalIndicators.vue').default);
@@ -77,6 +79,12 @@ Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
+Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
+Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
+Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
+Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
+Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
+Vue.component('monthly-injection', require('./components/reports/MonthlyInjection.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
@@ -85,13 +93,6 @@ Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').defau
 Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
 Vue.component('gu-map', require('./components/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
-
-Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
-Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
-
-Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
-Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
-Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
 
 Vue.component('fa-table', require('./components/fa/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);

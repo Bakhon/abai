@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ComplicationMonitoring\Kormass;
 use Illuminate\Database\Seeder;
 
 class KormassTableSeeder extends Seeder
@@ -12,12 +13,12 @@ class KormassTableSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i <= 13; $i++) {
-            App\Models\Kormass::create([
+            Kormass::create([
                 'name' => 'Кормасс-'.$i.'',
             ]);
         }
 
-        App\Models\Kormass::create([
+        Kormass::create([
             'name' => 'Прямой УПСВ'
         ]);
     }

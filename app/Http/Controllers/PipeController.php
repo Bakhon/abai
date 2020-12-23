@@ -13,18 +13,18 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
-class PipeController extends Controller
+class PipeController extends CrudController
 {
     use WithFieldsValidation;
+
+    protected $modelName = 'pipes';
 
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('pipes.create'),
                 'list' => route('pipes.list'),
-                'export' => route('pipes.export'),
             ],
             'title' => 'База данных по трубопроводам',
             'fields' => [
@@ -90,6 +90,13 @@ class PipeController extends Controller
                 ],
             ]
         ];
+
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
 
         return view('pipes.index', compact('params'));
     }

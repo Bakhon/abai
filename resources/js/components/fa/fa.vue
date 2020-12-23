@@ -126,11 +126,6 @@
       <table
         class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
         style="
-          position: sticky;
-          left: 5.31%;
-          right: 2.4%;
-          top: 48.21%;
-          bottom: 66.58%;
           background: #0d1e63;
         "
       >
@@ -194,7 +189,7 @@
           </td>
         </tr>
         <tr></tr>
-        <tr class="subHeaderColumn">
+        <tr class="subHeaderColumn" style="cursor: pointer;">
           <!-- <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
@@ -1053,7 +1048,7 @@ export default {
       }
     },
     getColorTwo(status) {
-      if (status === "1") return "#5e1d1d";
+      if (status === "1") return "#ff0000";
       return "#ff0000";
     },
     chooseDt() {
@@ -1098,6 +1093,10 @@ export default {
             this.editdtprevy = choosenSecDt[0];
             
             if (data) {
+              this.$store.commit("fa/SET_SORTPARAM", "");
+              this.$store.commit("fa/SET_SEARCH", "");
+              this.sortParam = "";
+              this.searchString = "";
               console.log(data);
               this.wells = data.data;
               this.fullWells = data.data;
@@ -1146,6 +1145,8 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.$store.commit("fa/SET_SORTPARAM", "");
+      this.sortParam = "";
       const mm = this.$store.getters["fa/month"];
       const prMm = this.$store.getters["fa/prmonth"];
       const yyyy = this.$store.getters["fa/year"];
@@ -1292,7 +1293,7 @@ body {
   font-style: normal;
   font-size: 17px;
   color: #ffffff;
-  background: #656a8a;
+  background: #333975;
   border: none !important;
   text-align: left !important;
   cursor: pointer;
@@ -1357,6 +1358,22 @@ body {
     overflow: scroll;
     height: calc(100vh - 247px);
 }
+.table tr:nth-child(-n+4) td {
+  position: sticky;
+  background: rgb(51, 57, 117);
+  top: 80px;
+  z-index: 3000;
+}
+.table tr:first-child td {
+  top: 0;
+}
+.table tr:nth-child(2) td {
+  top: 40px;
+}
+.table tr:nth-child(3) td {
+  top: 40px;
+}
+
 .fadee {
   flex: 0 1 auto;
   flex-flow: row wrap;
@@ -1379,6 +1396,26 @@ body {
 .fakrtableborderedtable {
     font-size: 9px;
     padding: unset;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
 }
 
 </style>

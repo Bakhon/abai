@@ -46,7 +46,6 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::get('/visualcenter6', 'DruidController@visualcenter6')->name('visualcenter6');
         Route::get('/visualcenter7', 'DruidController@visualcenter7')->name('visualcenter7');
         Route::get('/podborgno', 'DruidController@gno')->name('gno');
-        Route::get('/monitor', 'DruidController@monitor')->name('monitor');
         Route::get('/production', 'DruidController@production')->name('production');
         Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
         Route::get('/calcgtm', 'DruidController@calcGtm')->name('calcgtm');
@@ -126,13 +125,17 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('/import_h', 'DZO\DZOdayController@import')->name('import_h');
 
         Route::get('importdzoyear','DZO\DZOyearController@importExcel');
-        Route::get('importdzocalc','DZO\DZOcalcController@importExcel');
+
+        Route::get('/import_econom','DZO\DZOcalcController@importExcel');
+        Route::post('/import_eco', 'DZO\DZOcalcController@import')->name('import_e');
 
         Route::get('/import_excel', 'DZO\DZOdailyController@importExcel');
 
         Route::post('/import', 'DZO\DZOdailyController@import')->name('import');
 
         Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
+
+        Route::get('organizations', 'OrganizationsController@index')->name('organizations');
 
     });
     Auth::routes([

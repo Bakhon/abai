@@ -27,6 +27,9 @@ export default {
     tableToChange: {
       default: "1",
     },
+    percents: {
+      default: 100,
+    },
   },
   data: function () {
     return {

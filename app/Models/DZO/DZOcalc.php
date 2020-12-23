@@ -65,6 +65,11 @@ class DZOcalc extends Model
         'kvl_plan_2020',
         'oil_plan_2020',
         "oil_price_plan_2020",
-        "kurs_plan_2020"
+        "kurs_plan_2020",
+        "fine_2020",
+        "rent_gtm_fact_2020",
+        "ne_rent_gtm_fact_2020",
+        "rent_burenie_fact_2020",
+        "ne_rent_burenie_fact_2020",
     ];
 }
