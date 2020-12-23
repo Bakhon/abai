@@ -7070,7 +7070,7 @@ tr:nth-child(even) td {
 }
 
 .input_edit {
-  background: #FFFACD;
+  background: #7879A6;
 }
 </style>
 <style>
