@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #656a8a; height: 104px; width: 161px"
+            style="background: #333975; height: 104px; width: 161px"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -72,8 +72,8 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #656a8a;
-                  border-color: #656a8a;
+                  background-color: #333975;
+                  border-color: #333975;
                   color: white;
                 "
                 class="form-controll"
@@ -99,13 +99,13 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #656A8A ;
-                  border-color: #656A8A;
+                  background-color: #333975 ;
+                  border-color: #333975;
                   color: white;
                   width: 131px;
 
                   
-                  border: 1px solid #656A8A; !important;
+                  border: 1px solid #333975; !important;
                   height: 35px !important;
                   color: white !important;
                 "
@@ -7086,7 +7086,7 @@ tr:nth-child(even) td {
   height: 40px;
 }
 .fadropmenu.fadropmenu {
-  background: #656a8a;
+  background: #333975;
   width: 246px;
   z-index: 3001 !important;
 }

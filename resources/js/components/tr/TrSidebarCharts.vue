@@ -21,7 +21,7 @@
         </div>
       </a>
     </div>
-    <div class="dropdown-menu tr-sidebar__chart-menu" style="z-index:12000;     position: relative;">
+    <div class="dropdown-menu tr-sidebar__chart-menu" style="z-index:12000;    position: relative;">
       <div>
         <li class="tr-sidebar__page">
           <a class="tr-sidebar__link" href="/ru/fa">Факторный анализ</a>
