@@ -328,6 +328,7 @@ export default {
           zoom: {
             enabled: true,
           },
+          fontFamily: 'Harmonia-sans, Helvetica, Arial, sans-serif',
         },
         plotOptions: {
           bar: {
@@ -365,7 +366,7 @@ export default {
             hideOverlappingLabels: true,
             rotate: -45,
             style: {
-              colors: "#008FFB",
+              colors: "#5FA7FF",
             },
           },
           categories: [],
@@ -410,7 +411,7 @@ export default {
         offsetY: 18,
         style: {
           fontSize: "14px",
-          color: "#008FFB",
+          color: "#5FA7FF",
         },
       },
       subtitleBase: {
@@ -418,8 +419,8 @@ export default {
         offsetY: 36,
         style: {
           fontSize: "14px",
-          color: "#008FFB",
-          fontWeight: 900,
+          color: "#5FA7FF",
+          fontWeight: 700,
         },
       },
       yaxisBase: {
@@ -428,7 +429,7 @@ export default {
         },
         labels: {
           style: {
-            colors: "#008FFB",
+            colors: "#5FA7FF",
           },
         },
         axisTicks: {
@@ -437,7 +438,7 @@ export default {
         title: {
           text: "Дебит нефти [т/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         decimalsInFloat: 2,
@@ -463,7 +464,6 @@ export default {
   },
   methods: {
     async calcChartData() {
-      this.isLoading = true;
       if (this.chartWells && this.chartWells.length > 0) {
         let field = this.chartFilter_field;
         let horizon = this.chartFilter_horizon;
@@ -481,7 +481,6 @@ export default {
           this.chartData = await this[`setDataChart${this.chartShow}`](
             filteredResult
           );
-          this.isLoading = false;
         } catch (err) {
           console.error(err);
           this.chartData = false;
@@ -490,7 +489,6 @@ export default {
         //return false;
       } else {
         this.chartData = false;
-        this.isLoading = false;
       }
     },
     setDataChart0(filteredResult) {
@@ -529,7 +527,7 @@ export default {
       const stroke = {
         show: true,
         width: [5, 1, 1],
-        colors: ["#008ffb", "#27295300", "#27295300"],
+        colors: ["#5FA7FF", "#27295300", "#27295300"],
       };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -537,7 +535,7 @@ export default {
         title: {
           text: "Измеренная глубина [м]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         max: maxY1,
@@ -661,7 +659,7 @@ export default {
             rotate: 90,
             text: "Давление [атм]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -789,7 +787,7 @@ export default {
             rotate: 90,
             text: "Обводненность [%]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -910,7 +908,7 @@ export default {
             rotate: 90,
             text: "ГФ [м3/т]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -1013,7 +1011,7 @@ export default {
           title: {
             text: "Дебит жидкости [м3/сут]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           tooltip: {
@@ -1041,7 +1039,7 @@ export default {
             rotate: 90,
             text: "Давление [атм]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -1118,7 +1116,7 @@ export default {
         title: {
           text: "Дебит нефти [т.сут] | Дебит жидкости [м3/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         // max: maxY2,
@@ -1208,7 +1206,7 @@ export default {
         title: {
           text: "Коэффициент продуктивности [м3/сут/атм]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1300,7 +1298,7 @@ export default {
         title: {
           text: "Обводненность [%]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1350,7 +1348,7 @@ export default {
         title: {
           text: "Дебит жидкости [м3/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1411,6 +1409,7 @@ export default {
         .then((response) => {
           // this.editdtm = choosenDt[1];
           // this.editdty = choosenDt[0];
+          this.isLoading = false;
           let data = response.data;
           if (data) {
             this.fullWells = data.data;
@@ -1495,11 +1494,6 @@ export default {
   margin: 0 20px;
   width: 195px;
 }
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
-}
 body {
   color: white !important;
 }
@@ -1537,7 +1531,7 @@ body {
   margin: 0;
 }
 .second_block {
-  height: calc(100vh - 355px);
+  height: calc(100vh - 386px);
   width: calc(1.6 * (100vh - 355px));
   max-width: calc(100vw - 440px);
   margin: 0 auto;
@@ -1550,11 +1544,6 @@ body {
 .tr-chart {
   display: flex;
   width: 100%;
-}
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
 }
 .tr-chart__content {
   flex-basis: 0;
@@ -1574,5 +1563,11 @@ body {
 }
 </style>
 
-
+<style >
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
+</style>
 

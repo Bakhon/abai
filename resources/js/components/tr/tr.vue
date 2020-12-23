@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="w-100">
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -7005,7 +7005,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 247px);
+  height: calc(100vh - 215px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;

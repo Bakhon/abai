@@ -188,7 +188,7 @@ export default {
         filtersText = filtersText
           ? `${filtersText}, ${this.chartFilter_exp_meth}`
           : this.chartFilter_exp_meth;
-      if (filtersText) filtersText = `${filtersText}`;
+      if (filtersText) filtersText = `по ${filtersText}`;
 
       return filtersText;
     },
@@ -360,13 +360,14 @@ export default {
           toolbar: {
             show: true,
           },
+          fontFamily: 'Harmonia-sans, Helvetica, Arial, sans-serif',
         },
         title: {
           align: "center",
           offsetY: 18,
           style: {
             fontSize: '14px',
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         subtitle: {
@@ -375,8 +376,8 @@ export default {
         margin: 10,
         style: {
           fontSize: '14px',
-          color: "#008FFB",
-          fontWeight: 900,
+          color: "#5FA7FF",
+          fontWeight: 700,
         },
       },
         plotOptions: {
@@ -397,7 +398,7 @@ export default {
           offsetY: -20,
           style: {
             fontSize: "12px",
-            colors: ["#008ffb"],
+            colors: ["#5FA7FF"],
           },
         },
 
@@ -432,7 +433,7 @@ export default {
           },
           labels : {
             style : {
-              colors: "#008ffb"
+              colors: "#5FA7FF"
             }
           }
         },
@@ -451,13 +452,13 @@ export default {
           },
           title: {
             style: {
-              color: "#008ffb"
+              color: "#5FA7FF"
             }
 
           },
           labels : {
             style : {
-              colors: "#008ffb"
+              colors: "#5FA7FF"
             }
           }
         },
@@ -474,17 +475,17 @@ export default {
           offsetY: 18,
           style: {
             fontSize: '14px',
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         subtitle: {
           align: "center",
           offsetY: 36,
-          margin: 10,
+          margin: 15,
           style: {
             fontSize: '14px',
-            color: "#008FFB",
-            fontWeight: 900,
+            color: "#5FA7FF",
+            fontWeight: 700,
           },
         },
         chart: {
@@ -492,6 +493,7 @@ export default {
           toolbar: {
             show: true,
           },
+          fontFamily: 'Harmonia-sans, Helvetica, Arial, sans-serif',
         },
         dataLabels: {
           enabled: true,
@@ -664,22 +666,12 @@ export default {
         } else {
           console.log("No data");
         }
-        if (this.editdtm < 10 && this.editdtprevm < 10) {
-          this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
-        } else if (this.editdtm <= 10 && this.editdtprevm <= 10) {
-          this.dt = "01" + "." + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
-        } else if (this.editdtm >= 10 && this.editdtprevm < 10) {
-          this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
-        }
-        if (this.editdtm < 10) {
+        if (String(this.editdtm).length < 2) {
           this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
         } else {
           this.dt = "01" + "." + this.editdtm + "." + this.editdty;
         }
-        if (this.editdtprevm < 10) {
+        if (String(this.editdtprevm).length < 2) {
           this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
         } else {
           this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
@@ -721,11 +713,6 @@ export default {
   margin: 0 20px;
   width: 195px;
 }
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
-}
 body {
   color: white !important;
 }
@@ -753,11 +740,6 @@ body {
 .tr-chart {
   display: flex;
   width: 100%;
-}
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
 }
 .tr-chart__content {
   flex-basis: 0;

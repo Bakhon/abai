@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="w-100">
     <div class="row justify-content-between farowjustcontbet" style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px">
                 <a href="tr" class="col but-nav__link but faheadhight"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
@@ -83,9 +83,6 @@
         />
       </div>
     </div>
-    <div class="fadee" v-if="isloading">
-          <fade-loader :loading="isloading"></fade-loader>
-    </div>
     <div
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
@@ -122,7 +119,10 @@
         </svg></a
       >
     </div>
-    <div>
+    <div style="position: relative;">
+      <div class="fadee" v-if="isloading">
+        <fade-loader :loading="isloading"></fade-loader>
+      </div>
       <table
         class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
         style="
@@ -863,6 +863,7 @@ Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
+    FadeLoader,
     SearchFormRefresh,
   },
   data: function () {
@@ -996,6 +997,9 @@ export default {
     fullWells() {
       this.chooseField();
     },
+    isloading() {
+      console.log('load = ', this.isloading)
+    }
   },
   methods: {
     sortBy(type) {
@@ -1057,6 +1061,7 @@ export default {
       return "#ff0000";
     },
     chooseDt() {
+      this.isloading = true;
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
@@ -1091,6 +1096,7 @@ export default {
               "/"
           )
           .then((response) => {
+            this.isloading = false;
             let data = response.data;
             this.editdtm = choosenDt[1];
             this.editdty = choosenDt[0];
@@ -1150,6 +1156,7 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.isloading = true;
       this.$store.commit("fa/SET_SORTPARAM", "");
       this.sortParam = "";
       const mm = this.$store.getters["fa/month"];
@@ -1171,6 +1178,7 @@ export default {
             searchParam
         )
         .then((response) => {
+          this.isloading = false;
           console.log("search resp = ", response.data);
           this.$store.commit("fa/SET_SEARCH", this.searchString);
           let data = response.data;
@@ -1185,6 +1193,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.isloading = false;
           this.wells = [];
           this.fullWells = [];
           console.log("search error = ", error);
@@ -1247,16 +1256,6 @@ export default {
           this.fullWells = data.data;
         } else {
           console.log("No data");
-        }
-        if (this.editdtm < 10 && this.editdtprevm < 10) {
-          this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
-        } else if (this.editdtm <= 10 && this.editdtprevm <= 10) {
-          this.dt = "01" + "." + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
-        } else if (this.editdtm >= 10 && this.editdtprevm < 10) {
-          this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
         }
         if (this.editdtm < 10) {
           this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
@@ -1360,8 +1359,8 @@ body {
     width: 420;
 } */
 .table {
-    overflow: scroll;
-    height: calc(100vh - 247px);
+  overflow: scroll;
+  height: calc(100vh - 215px);
 }
 .fadee {
   flex: 0 1 auto;
