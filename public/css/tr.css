@@ -26,7 +26,7 @@ td.fitwidth {
     font-weight: inherit;
     padding: 5px 15px;
     border-radius: 5px;
-    font-family: Roboto;
+    font-family: "Harmonia-sans";
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
@@ -186,7 +186,6 @@ table {
     padding: 0;
     margin: 0;
 }  
-
-#app#app > .container-fluid {
+#app > .container-fluid.container-fluid {
     max-width: unset;
 }

@@ -6893,7 +6893,6 @@ export default {
 </script>
 <style scoped>
 /* @import "element-variables"; */
-
 body {
   color: white !important;
 }
@@ -7044,7 +7043,6 @@ tr:nth-child(even) {
   z-index: 3000;
 }
 tr td:first-child {
-
   color: #fff;
   position: sticky;
   left: 0;
@@ -7065,7 +7063,7 @@ tr:nth-child(even) .fixcol:first-child {
   /* z-index: 5000; */
 }
 .input_edit {
-  background: #FFFACD;
+  background: #fffacd;
 }
 </style>
 <style>
@@ -7090,5 +7088,4 @@ tr:nth-child(even) .fixcol:first-child {
 .faheadhight {
   height: 40px;
 }
-
 </style>

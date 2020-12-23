@@ -228,6 +228,6 @@ table {
     padding: 0;
     margin: 0;
 }  
-#app#app > .container-fluid {
+#app > .container-fluid.container-fluid {
     max-width: unset;
 }

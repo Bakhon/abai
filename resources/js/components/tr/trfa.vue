@@ -20,10 +20,18 @@
           >
           <a href="tr" class="col but-nav__link but trfabuttech"
             ><i style="margin-right: 10px"
-              ><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
-</svg>
-</i
+              ><svg
+                width="14"
+                height="17"
+                viewBox="0 0 14 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z"
+                  fill="white"
+                />
+              </svg> </i
             >Технологический режим</a
           >
         </div>
@@ -52,9 +60,14 @@
           >
             Выберите график
           </a>
-          <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink" style="   width: 576px;">
+          <div
+            class="dropdown-menu fadropmenu"
+            aria-labelledby="dropdownMenuLink"
+            style="width: 576px"
+          >
             <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
-              >Распределение фонда скважин по основной причине снижения дебита нефти</a
+              >Распределение фонда скважин по основной причине снижения дебита
+              нефти</a
             >
             <a class="dropdown-item" href="#" @click="chartShow = 'bar'"
               >Распределение суммарных отклонений TP по факторам, т/сут</a
@@ -80,10 +93,13 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-
             Выберите дату
           </button>
-          <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink" style="background: #656A8A;">
+          <div
+            class="dropdown-menu fadropmenu"
+            aria-labelledby="dropdownMenuLink"
+            style="background: #656a8a"
+          >
             <label for="inputDate">Введите опорную дату:</label>
             <input type="date" class="form-control" v-model="date1" />
             <label for="inputDate">Введите дату для сравнения:</label>
@@ -96,7 +112,10 @@
       </div>
       <div class="sec_nav">
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }}</h4> -->
-        <div class="filter_chart row" style=" display: flex;justify-content: center;">
+        <div
+          class="filter_chart row"
+          style="display: flex; justify-content: center"
+        >
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -131,19 +150,25 @@
           </div>
         </div>
         <div class="col-sm" v-if="chartShow === 'bar'">
-          <div class="second_block" style="display: flex; justify-content: center;">
+          <div
+            class="second_block"
+            style="display: flex; justify-content: center"
+          >
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
               width="1200"
-              height='500'
+              height="500"
               :options="chartBarOptions"
               :series="[{ name: '', data: barChartData }]"
             ></apexchart>
           </div>
         </div>
         <div class="col-sm" v-if="chartShow === 'pie'">
-          <div class="first_block" style="display: flex; justify-content: center;">
+          <div
+            class="first_block"
+            style="display: flex; justify-content: center"
+          >
             <apexchart
               v-if="pieChartData && pieChartRerender"
               type="donut"
@@ -360,26 +385,26 @@ export default {
           toolbar: {
             show: true,
           },
-          fontFamily: 'Harmonia-sans, Helvetica, Arial, sans-serif',
+          fontFamily: "Harmonia-sans, Helvetica, Arial, sans-serif",
         },
         title: {
           align: "center",
           offsetY: 18,
           style: {
-            fontSize: '14px',
+            fontSize: "14px",
             color: "#5FA7FF",
           },
         },
         subtitle: {
-        align: "center",
-        offsetY: 36,
-        margin: 10,
-        style: {
-          fontSize: '14px',
-          color: "#5FA7FF",
-          fontWeight: 700,
+          align: "center",
+          offsetY: 36,
+          margin: 10,
+          style: {
+            fontSize: "14px",
+            color: "#5FA7FF",
+            fontWeight: 700,
+          },
         },
-      },
         plotOptions: {
           bar: {
             dataLabels: {
@@ -392,7 +417,7 @@ export default {
         //   labels: {
         //     useSeriesColors: true,
         //   },
-        // }, 
+        // },
         dataLabels: {
           enabled: true,
           offsetY: -20,
@@ -431,11 +456,11 @@ export default {
           tooltip: {
             enabled: true,
           },
-          labels : {
-            style : {
-              colors: "#5FA7FF"
-            }
-          }
+          labels: {
+            style: {
+              colors: "#5FA7FF",
+            },
+          },
         },
         yaxis: {
           axisBorder: {
@@ -452,15 +477,14 @@ export default {
           },
           title: {
             style: {
-              color: "#5FA7FF"
-            }
-
+              color: "#5FA7FF",
+            },
           },
-          labels : {
-            style : {
-              colors: "#5FA7FF"
-            }
-          }
+          labels: {
+            style: {
+              colors: "#5FA7FF",
+            },
+          },
         },
       },
       chartOptions: {
@@ -474,7 +498,7 @@ export default {
           align: "center",
           offsetY: 18,
           style: {
-            fontSize: '14px',
+            fontSize: "14px",
             color: "#5FA7FF",
           },
         },
@@ -483,7 +507,7 @@ export default {
           offsetY: 36,
           margin: 15,
           style: {
-            fontSize: '14px',
+            fontSize: "14px",
             color: "#5FA7FF",
             fontWeight: 700,
           },
@@ -493,7 +517,7 @@ export default {
           toolbar: {
             show: true,
           },
-          fontFamily: 'Harmonia-sans, Helvetica, Arial, sans-serif',
+          fontFamily: "Harmonia-sans, Helvetica, Arial, sans-serif",
         },
         dataLabels: {
           enabled: true,
@@ -505,7 +529,7 @@ export default {
           labels: {
             useSeriesColors: true,
           },
-        }, 
+        },
         colors: ["#ff382c", "#b051df", "#59c9fa", "#007bff"],
         plotOptions: {
           pie: {
@@ -757,5 +781,4 @@ body {
   color: #ffffff;
   width: 246px;
 }
-
 </style>

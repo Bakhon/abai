@@ -144,7 +144,10 @@
       </div>
       <div class="sec_nav">
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4> -->
-        <div class="filter_chart row" style=" display: flex;justify-content: center;">
+        <div
+          class="filter_chart row"
+          style="display: flex; justify-content: center"
+        >
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -328,7 +331,7 @@ export default {
           zoom: {
             enabled: true,
           },
-          fontFamily: 'Harmonia-sans, Helvetica, Arial, sans-serif',
+          fontFamily: "Harmonia-sans, Helvetica, Arial, sans-serif",
         },
         plotOptions: {
           bar: {
@@ -769,13 +772,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -890,13 +893,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -1021,13 +1024,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -1508,10 +1511,6 @@ body {
 .trfacolbutnavlinkbut {
   margin-left: 28px;
 }
-.trfabtdata {
-  margin-left: 864px;
-  background: #5973cc !important;
-}
 .trfabtgraph {
   width: 195px;
   background: #5973cc !important;
@@ -1552,7 +1551,6 @@ body {
 }
 .fadropmenu .fadropmenu {
   background: #656a8a;
-  /* color: #ffffff; */
   width: 246px;
 }
 .form-control {

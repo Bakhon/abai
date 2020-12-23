@@ -1,12 +1,27 @@
 <template>
   <div class="w-100">
-    <div class="row justify-content-between farowjustcontbet" style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px">
-                <a href="tr" class="col but-nav__link but faheadhight"><i style=" margin-right: 10px; "><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
-</svg></i>
-Технологический режим</a>
+    <div
+      class="row justify-content-between farowjustcontbet"
+      style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px"
+    >
+      <a href="tr" class="col but-nav__link but faheadhight"
+        ><i style="margin-right: 10px"
+          ><svg
+            width="14"
+            height="17"
+            viewBox="0 0 14 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z"
+              fill="white"
+            /></svg
+        ></i>
+        Технологический режим</a
+      >
 
-      <div class="col dropdown" style="padding: 0px; margin:0 20px;">
+      <div class="col dropdown" style="padding: 0px; margin: 0 20px">
         <button
           class="col-md-12 but-nav__link but faheadhight"
           href="#"
@@ -15,7 +30,8 @@
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
-          ><i style="margin-right: 10px">
+        >
+          <i style="margin-right: 10px">
             <svg
               width="18"
               height="20"
@@ -88,8 +104,13 @@
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
       <h3 style="color: white; margin-left: 3px">Факторный анализ</h3>
-      <select name="Company" class="form-control tr-field-filter" id="companySelect"
-        v-model="filter" @change="chooseField">
+      <select
+        name="Company"
+        class="form-control tr-field-filter"
+        id="companySelect"
+        v-model="filter"
+        @change="chooseField"
+      >
         <option value="Все месторождения">Все месторождения</option>
         <option value="Акшабулак Центральный">Акшабулак Центральный</option>
         <option value="Акшабулак Южный">Акшабулак Южный</option>
@@ -97,7 +118,7 @@
         <option value="Нуралы">Нуралы</option>
         <option value="Аксай">Аксай</option>
         <option value="Аксай Южный">Аксай Южный</option>
-    </select>
+      </select>
       <a
         class="but-nav__link but"
         href="trfa"
@@ -115,11 +136,10 @@
             stroke="white"
             stroke-width="1.4"
             stroke-linecap="round"
-          />
-        </svg></a
-      >
+          /></svg
+      ></a>
     </div>
-    <div style="position: relative;">
+    <div style="position: relative">
       <div class="fadee" v-if="isloading">
         <fade-loader :loading="isloading"></fade-loader>
       </div>
@@ -194,7 +214,7 @@
           </td>
         </tr>
         <tr></tr>
-        <tr class="subHeaderColumn" style="cursor: pointer;">
+        <tr class="subHeaderColumn" style="cursor: pointer">
           <!-- <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
@@ -261,29 +281,72 @@
           <td @click="sortBy('Main_problem')" style="background: #272953">
             <i class="fa fa-fw fa-sort"></i>
           </td> -->
-          <td @click="sortBy('well')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
-          <td @click="sortBy('field')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
-          <td @click="sortBy('horizon')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
-          <td @click="sortBy('exp_meth')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
-          <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-          <td @click="sortBy('q_o_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('wct_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>%</td>
-          <td @click="sortBy('bhp_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>атм</td>
-          <td @click="sortBy('p_res_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>атм</td>
-          <td @click="sortBy('pi_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
-          <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-          <td @click="sortBy('q_o_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('wct_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>%</td>
-          <td @click="sortBy('bhp_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>атм</td>
-          <td @click="sortBy('p_res_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>атм</td>
-          <td @click="sortBy('pi_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
-          <td @click="sortBy('dqn')" style="background: #E50303"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('Pbh')" style="background: #F08143"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('wct')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('p_res')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('PI')" style="background: #4FB26A"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('Main_problem')" style="background: #272953"><i class="fa fa-fw fa-sort"></i></td>
-
+          <td @click="sortBy('well')" style="background: #12135c">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
+          <td @click="sortBy('field')" style="background: #12135c">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
+          <td @click="sortBy('horizon')" style="background: #12135c">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
+          <td @click="sortBy('exp_meth')" style="background: #12135c">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
+          <td @click="sortBy('q_l_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>м3/сут
+          </td>
+          <td @click="sortBy('q_o_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>т/сут
+          </td>
+          <td @click="sortBy('wct_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>%
+          </td>
+          <td @click="sortBy('bhp_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>атм
+          </td>
+          <td @click="sortBy('p_res_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>атм
+          </td>
+          <td @click="sortBy('pi_1')" style="background: #2c3379">
+            <i class="fa fa-fw fa-sort"></i>т/сут/атм
+          </td>
+          <td @click="sortBy('q_l_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>м3/сут
+          </td>
+          <td @click="sortBy('q_o_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>т/сут
+          </td>
+          <td @click="sortBy('wct_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>%
+          </td>
+          <td @click="sortBy('bhp_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>атм
+          </td>
+          <td @click="sortBy('p_res_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>атм
+          </td>
+          <td @click="sortBy('pi_2')" style="background: #1a2370">
+            <i class="fa fa-fw fa-sort"></i>т/сут/атм
+          </td>
+          <td @click="sortBy('dqn')" style="background: #e50303">
+            <i class="fa fa-fw fa-sort"></i>т/сут
+          </td>
+          <td @click="sortBy('Pbh')" style="background: #f08143">
+            <i class="fa fa-fw fa-sort"></i>т/сут
+          </td>
+          <td @click="sortBy('wct')" style="background: #4fb26a">
+            <i class="fa fa-fw fa-sort"></i>т/сут
+          </td>
+          <td @click="sortBy('p_res')" style="background: #4fb26a">
+            <i class="fa fa-fw fa-sort"></i>т/сут
+          </td>
+          <td @click="sortBy('PI')" style="background: #4fb26a">
+            <i class="fa fa-fw fa-sort"></i>т/сут
+          </td>
+          <td @click="sortBy('Main_problem')" style="background: #272953">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
           <td style="background: #12135c">{{ row.well }}</td>
@@ -324,7 +387,9 @@
               )}`"
             >
             </span>
-            <span v-if="row.q_l_1[0] != null">{{ Math.round(row.q_l_1[0] * 10) / 10 }}</span>
+            <span v-if="row.q_l_1[0] != null">{{
+              Math.round(row.q_l_1[0] * 10) / 10
+            }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_l_1[1][1] }}
             </span>
@@ -998,8 +1063,8 @@ export default {
       this.chooseField();
     },
     isloading() {
-      console.log('load = ', this.isloading)
-    }
+      console.log("load = ", this.isloading);
+    },
   },
   methods: {
     sortBy(type) {
@@ -1066,10 +1131,10 @@ export default {
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
       var choosenSecDt = date2.split("-");
-      const mm = choosenDt[1]
-      const prMm = choosenSecDt[1]
-      const yyyy = choosenDt[0]
-      const pryyyy = choosenSecDt[0]
+      const mm = choosenDt[1];
+      const prMm = choosenSecDt[1];
+      const yyyy = choosenDt[0];
+      const pryyyy = choosenSecDt[0];
       //   this.$store.commit('fa/SET_MONTH', prMm);
       //   this.$store.commit('fa/SET_YEAR', yyyy);
       //   this.$store.commit('fa/SET_PR_MONTH', prPrMm);
@@ -1102,7 +1167,7 @@ export default {
             this.editdty = choosenDt[0];
             this.editdtprevm = choosenSecDt[1];
             this.editdtprevy = choosenSecDt[0];
-            
+
             if (data) {
               this.$store.commit("fa/SET_SORTPARAM", "");
               this.$store.commit("fa/SET_SEARCH", "");
@@ -1163,7 +1228,9 @@ export default {
       const prMm = this.$store.getters["fa/prmonth"];
       const yyyy = this.$store.getters["fa/year"];
       const pryyyy = this.$store.getters["fa/pryear"];
-      const searchParam = this.searchString ? `search/${this.searchString}/` : ''
+      const searchParam = this.searchString
+        ? `search/${this.searchString}/`
+        : "";
       this.axios
         .get(
           "http://172.20.103.187:7576/api/techregime/factor/" +
@@ -1272,7 +1339,7 @@ export default {
   mounted: function () {
     const mm =
       `${this.$store.getters["fa/month"]}`.length < 2
-        ? `0${this.$store.getters["fa/month"] }`
+        ? `0${this.$store.getters["fa/month"]}`
         : `${this.$store.getters["fa/month"]}`;
     const prmm =
       `${this.$store.getters["fa/prmonth"]}`.length < 2
@@ -1327,16 +1394,15 @@ body {
   padding: 5px !important;
 }
 
-
 .farowjustcontbet {
-    /* margin-bottom: 11px; */
-    box-sizing: border box; 
-    /* flex-grow: 1;  */
-    padding-right: 0; 
-    margin-right: 0; 
-    margin-left: 0; 
-    padding-left: 0;
-    display:flex;
+  /* margin-bottom: 11px; */
+  box-sizing: border box;
+  /* flex-grow: 1;  */
+  padding-right: 0;
+  margin-right: 0;
+  margin-left: 0;
+  padding-left: 0;
+  display: flex;
 }
 /* .fabutdata {
   margin-left: 156px;
@@ -1352,7 +1418,7 @@ body {
   width: 246px;
 }
 .trcol {
-    padding-right: 0;
+  padding-right: 0;
 }
 /* .fabutdata {
     margin-left: -6px;
@@ -1382,8 +1448,8 @@ body {
     padding: 5px !important;
 } */
 .fakrtableborderedtable {
-    font-size: 9px;
-    padding: unset;
+  font-size: 9px;
+  padding: unset;
 }
 
 /* width */
@@ -1405,5 +1471,4 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #272953;
 }
-
 </style>
