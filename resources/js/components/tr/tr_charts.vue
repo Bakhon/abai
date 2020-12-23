@@ -221,7 +221,7 @@ export default {
         filtersText = filtersText
           ? `${filtersText}, ${this.chartFilter_exp_meth}`
           : this.chartFilter_exp_meth;
-      if (filtersText) filtersText = `по ${filtersText}`;
+      if (filtersText) filtersText = `${filtersText}`;
 
       return filtersText;
     },
