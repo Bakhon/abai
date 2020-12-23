@@ -360,7 +360,7 @@
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
-                  <td rowspan="4" class="th">№</td>
+                  <td rowspan="4" class="th" >№</td>
                   <td rowspan="4" class="th">НГДУ/месторождение</td>
                   <td rowspan="4" class="th">№ скв</td>
                   <td rowspan="4" class="th">Тип скважины</td>
@@ -7071,30 +7071,6 @@ tr:nth-child(even) td {
 .input_edit {
   background: #7879A6;
 }
-</style>
-<style>
-.tr-field-filter.tr-field-filter {
-  margin: 0 0 0 auto;
-  flex-grow: 0;
-  width: 230px;
-}
-.tr-table-header {
-  justify-content: space-between;
-  height: 48px;
-  align-items: center;
-}
-.trheadhight {
-  height: 40px;
-}
-.fadropmenu.fadropmenu {
-  background: #333975;
-  width: 246px;
-  z-index: 3001 !important;
-}
-.faheadhight {
-  height: 40px;
-}
-
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -7119,5 +7095,30 @@ tr:nth-child(even) td {
 ::-webkit-scrollbar-corner  {
   background: #333975;
 }
+</style>
+<style>
+.tr-field-filter.tr-field-filter {
+  margin: 0 0 0 auto;
+  flex-grow: 0;
+  width: 230px;
+}
+.tr-table-header {
+  justify-content: space-between;
+  height: 48px;
+  align-items: center;
+}
+.trheadhight {
+  height: 40px;
+}
+.fadropmenu.fadropmenu {
+  background: #333975;
+  width: 246px;
+  z-index: 3001 !important;
+}
+.faheadhight {
+  height: 40px;
+}
+
+
 
 </style>
