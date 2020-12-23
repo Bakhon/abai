@@ -35,7 +35,7 @@ class DZOdailyImport implements ToModel
             "gk_plan" => $row[ 15 ],
             "gk_fact" => $row[ 16 ],
             "otm_burenie_prohodka_plan" => $row[ 17 ],
-            "otm_burenie_prohodka_fact" => $row[ 18 ] ?? NULL,
+            "otm_burenie_prohodka_fact" => $row[ 18 ],
         ]);
     }
 }

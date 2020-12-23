@@ -93,7 +93,7 @@
       <h3 style="color: white; margin-left: 3px">Факторный анализ</h3>
       <select name="Company" class="form-control tr-field-filter" id="companySelect"
         v-model="filter" @change="chooseField">
-        <option value="Выберите месторождение">Выберите месторождение</option>
+        <option value="Все месторождения">Все месторождения</option>
         <option value="Акшабулак Центральный">Акшабулак Центральный</option>
         <option value="Акшабулак Южный">Акшабулак Южный</option>
         <option value="Акшабулак Восточный">Акшабулак Восточный</option>
@@ -119,19 +119,13 @@
             stroke-width="1.4"
             stroke-linecap="round"
           />
-        </svg>
-        Показать графики</a
+        </svg></a
       >
     </div>
     <div>
       <table
-        class="table table-bordered table-dark table-responsive ce"
+        class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
         style="
-          position: sticky;
-          left: 5.31%;
-          right: 2.4%;
-          top: 48.21%;
-          bottom: 66.58%;
           background: #0d1e63;
         "
       >
@@ -195,7 +189,7 @@
           </td>
         </tr>
         <tr></tr>
-        <tr class="subHeaderColumn">
+        <tr class="subHeaderColumn" style="cursor: pointer;">
           <!-- <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
@@ -266,17 +260,17 @@
           <td @click="sortBy('field')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
           <td @click="sortBy('horizon')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
           <td @click="sortBy('exp_meth')" style="background: #12135C"><i class="fa fa-fw fa-sort"></i></td>
-          <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('q_o_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('q_l_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('q_o_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('wct_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>%</td>
-          <td @click="sortBy('bhp_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>ат</td>
-          <td @click="sortBy('p_res_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>ат</td>
+          <td @click="sortBy('bhp_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>атм</td>
+          <td @click="sortBy('p_res_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>атм</td>
           <td @click="sortBy('pi_1')" style="background: #2C3379"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
-          <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-          <td @click="sortBy('q_o_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('q_l_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+          <td @click="sortBy('q_o_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('wct_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>%</td>
-          <td @click="sortBy('bhp_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>ат</td>
-          <td @click="sortBy('p_res_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>ат</td>
+          <td @click="sortBy('bhp_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>атм</td>
+          <td @click="sortBy('p_res_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>атм</td>
           <td @click="sortBy('pi_2')" style="background: #1A2370"><i class="fa fa-fw fa-sort"></i>т/сут/атм</td>
           <td @click="sortBy('dqn')" style="background: #E50303"><i class="fa fa-fw fa-sort"></i>т/сут</td>
           <td @click="sortBy('Pbh')" style="background: #F08143"><i class="fa fa-fw fa-sort"></i>т/сут</td>
@@ -325,7 +319,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_l_1[0] * 10) / 10 }}</span>
+            <span v-if="row.q_l_1[0] != null">{{ Math.round(row.q_l_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_l_1[1][1] }}
             </span>
@@ -871,13 +865,14 @@ export default {
       pieChartRerender: true,
       wells: [],
       searchString: "",
+      sortParam: "",
       sortType: "asc",
       dt: null,
       dt2: null,
       date1: null,
       date2: null,
       fullWells: [],
-      filter: "Выберите месторождение",
+      filter: "Все месторождения",
       editdtm: null,
       editdty: null,
       editdtprevm: null,
@@ -999,6 +994,9 @@ export default {
   },
   methods: {
     sortBy(type) {
+      this.sortParam = type;
+      this.$store.commit("fa/SET_SORTTYPE", this.sortType);
+      this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
       let { wells, sortType } = this;
       console.log(type, sortType);
       if (sortType === "asc") {
@@ -1050,7 +1048,7 @@ export default {
       }
     },
     getColorTwo(status) {
-      if (status === "1") return "#5e1d1d";
+      if (status === "1") return "#ff0000";
       return "#ff0000";
     },
     chooseDt() {
@@ -1095,6 +1093,10 @@ export default {
             this.editdtprevy = choosenSecDt[0];
             
             if (data) {
+              this.$store.commit("fa/SET_SORTPARAM", "");
+              this.$store.commit("fa/SET_SEARCH", "");
+              this.sortParam = "";
+              this.searchString = "";
               console.log(data);
               this.wells = data.data;
               this.fullWells = data.data;
@@ -1111,7 +1113,8 @@ export default {
       console.log(filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
-      if (!filter || filter == "Выберите месторождение") {
+      this.$store.commit("fa/SET_FILTER", filter);
+      if (!filter || filter == "Все месторождения") {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
@@ -1127,7 +1130,7 @@ export default {
     },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
-        return "#ac3939";
+        return "#CD5C5C";
       else {
         return "#272953";
       }
@@ -1142,6 +1145,8 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      this.$store.commit("fa/SET_SORTPARAM", "");
+      this.sortParam = "";
       const mm = this.$store.getters["fa/month"];
       const prMm = this.$store.getters["fa/prmonth"];
       const yyyy = this.$store.getters["fa/year"];
@@ -1162,6 +1167,7 @@ export default {
         )
         .then((response) => {
           console.log("search resp = ", response.data);
+          this.$store.commit("fa/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
             console.log(data);
@@ -1180,7 +1186,11 @@ export default {
         });
     },
   },
-  beforeCreate: function () {
+  created: function () {
+    this.$store.commit("fa/SET_SORTTYPE", this.sortType);
+    this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
+    this.$store.commit("fa/SET_SEARCH", this.searchString);
+    this.$store.commit("fa/SET_FILTER", this.filter);
     console.log("dt1-month", this.$store.getters["tr/month"]);
     console.log("dt1-year", this.$store.getters["tr/year"]);
     var today = new Date();
@@ -1283,7 +1293,7 @@ body {
   font-style: normal;
   font-size: 17px;
   color: #ffffff;
-  background: #656a8a;
+  background: #333975;
   border: none !important;
   text-align: left !important;
   cursor: pointer;
@@ -1348,6 +1358,22 @@ body {
     overflow: scroll;
     height: calc(100vh - 247px);
 }
+.table tr:nth-child(-n+4) td {
+  position: sticky;
+  background: rgb(51, 57, 117);
+  top: 80px;
+  z-index: 3000;
+}
+.table tr:first-child td {
+  top: 0;
+}
+.table tr:nth-child(2) td {
+  top: 40px;
+}
+.table tr:nth-child(3) td {
+  top: 40px;
+}
+
 .fadee {
   flex: 0 1 auto;
   flex-flow: row wrap;
@@ -1363,4 +1389,33 @@ body {
 .faheadhight {
   height: 40px;
 }
+
+/* .table th, .table td {
+    padding: 5px !important;
+} */
+.fakrtableborderedtable {
+    font-size: 9px;
+    padding: unset;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+}
+
 </style>

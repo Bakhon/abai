@@ -15,7 +15,7 @@
                 <form action="{{ route('pipes.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <pipe-form></pipe-form>
+                        <pipe-form :validation-params='@json($validationParams)'></pipe-form>
                     </div>
                 </form>
             </div>

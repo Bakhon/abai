@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <inhibitor-edit :inhibitor='@json($inhibitor)'></inhibitor-edit>
+                        <inhibitor-edit :inhibitor='@json($inhibitor)' :validation-params='@json($validationParams)'></inhibitor-edit>
                     </div>
                 </form>
             </div>

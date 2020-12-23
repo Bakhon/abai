@@ -48,7 +48,6 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
         @include('layouts.visual-center4-sidebar')
         @elseif (basename(Request::url()) === "visualcenter7")
         @include('layouts.visual-center4-sidebar')        
-        @elseif (basename(Request::url()) === "tr" || basename(Request::url()) === "fa" || basename(Request::url()) === "trfa" || basename(Request::url()) === "tr_charts")
     @elseif (basename(Request::url()) === "tr" || basename(Request::url()) === "fa" || basename(Request::url()) === "trfa" || basename(Request::url()) === "tr_charts")
         @include('layouts.tr-sidebar')
     @elseif (basename(Request::url()) === "monitor")

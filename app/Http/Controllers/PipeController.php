@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Filters\PipeFilter;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
 use App\Http\Requests\PipeCreateRequest;
 use App\Http\Requests\PipeUpdateRequest;
@@ -12,16 +13,18 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 
-class PipeController extends Controller
+class PipeController extends CrudController
 {
+    use WithFieldsValidation;
+
+    protected $modelName = 'pipes';
+
     public function index()
     {
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('pipes.create'),
                 'list' => route('pipes.list'),
-                'export' => route('pipes.export'),
             ],
             'title' => 'База данных по трубопроводам',
             'fields' => [
@@ -88,6 +91,13 @@ class PipeController extends Controller
             ]
         ];
 
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
+
         return view('pipes.index', compact('params'));
     }
 
@@ -105,14 +115,14 @@ class PipeController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = Pipe::query()
-            ->with('gu');
+        $job = new \App\Jobs\ExportPipesToExcel($request->validated());
+        $this->dispatch($job);
 
-        $pipes = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new \App\Exports\PipeExport($pipes), 'pipes.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
@@ -122,7 +132,8 @@ class PipeController extends Controller
      */
     public function create()
     {
-        return view('pipes.create');
+        $validationParams = $this->getValidationParams('pipes');
+        return view('pipes.create', compact('validationParams'));
     }
 
     /**
@@ -133,8 +144,9 @@ class PipeController extends Controller
      */
     public function store(PipeCreateRequest $request)
     {
+        $this->validateFields($request, 'pipes');
+        
         $pipe = Pipe::create($request->validated());
-
         return redirect()->route('pipes.index')->with('success', __('app.created'));
     }
 
@@ -169,7 +181,8 @@ class PipeController extends Controller
      */
     public function edit(Pipe $pipe)
     {
-        return view('pipes.edit', compact('pipe'));
+        $validationParams = $this->getValidationParams('pipes');
+        return view('pipes.edit', compact('pipe', 'validationParams'));
     }
 
     /**
@@ -181,6 +194,8 @@ class PipeController extends Controller
      */
     public function update(PipeUpdateRequest $request, Pipe $pipe)
     {
+        $this->validateFields($request, 'pipes');
+        
         $pipe->update($request->validated());
         return redirect()->route('pipes.index')->with('success', __('app.updated'));
     }

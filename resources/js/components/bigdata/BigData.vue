@@ -172,8 +172,11 @@
             {{ selectedReport.title }}
           </div>
         </div>
-
-        <new-report-table v-if="selectedReport.tag === 'month-mining'"/>
+        <monthly-production v-if="selectedReport.tag === 'monthly-production'"/>
+        <daily-production v-if="selectedReport.tag === 'daily-production'"/>
+        <daily-injection v-if="selectedReport.tag === 'daily-injection'"/>
+        <monthly-injection v-if="selectedReport.tag === 'monthly-injection'"/>
+        <report-template />
       </div>
     </div>
   </div>
@@ -181,7 +184,7 @@
 
 <script>
 import Sections from './sections.json'
-import NewReportTable from '../reports/NewReportTable';
+import NewReportTable from '../reports/MonthlyProduction';
 import SearchForm from '../ui-kit/SearchForm';
 import BigDataReportButton from './BigDataReportButton';
 

@@ -7,16 +7,29 @@ use App\Http\Requests\ReportRequest;
 class ReportsController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('can:monitoring make report');
+    }
+
     public function index()
     {
         return view('reports.index');
     }
 
-    public function monitoringReport(ReportRequest $request)
+    public function generateReport(ReportRequest $request)
     {
         $startDate = \Carbon\Carbon::parse($request->get('start_date'));
         $endDate = \Carbon\Carbon::parse($request->get('end_date'));
+        $sections = $request->get('sections');
 
-        return (new \App\Services\MonitoringReportService())->report($startDate, $endDate);
+        $job = new \App\Jobs\ExportMonitoringReportToExcel($startDate, $endDate, $sections);
+        $this->dispatch($job);
+
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 }

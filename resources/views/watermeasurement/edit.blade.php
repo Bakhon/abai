@@ -16,7 +16,7 @@
                     @method('patch')
                     @csrf
                     <div class="row">
-                        <wm-form :wm='@json($watermeasurement)'></wm-form>
+                        <wm-form :wm='@json($watermeasurement)' :validation-params='@json($validationParams)'></wm-form>
                     </div>
                 </form>
             </div>

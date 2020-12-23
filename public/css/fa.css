@@ -47,7 +47,7 @@ td.fitwidth {
     vertical-align: middle !important;
     font-size: 12px;
     width: 64px;
-    cursor: pointer;
+    /* cursor: pointer; */
 }
 
 .headerColumn td span {
@@ -95,14 +95,14 @@ table {
 }
 
 .ce {
-    position: relative;
-    top: 54.7901% !important;
-    bottom: 66.58%;
-    background: rgb(13, 30, 99) none repeat scroll 0% 0%;
-    left: 14px !important;
+    /* position: relative; */
+    /* top: 54.7901% !important;
+    bottom: 66.58%; */
+    /* background: rgb(13, 30, 99) none repeat scroll 0% 0%; */
+    /* left: 14px !important;
     right: 20px;
-    border-right-style: solid;
-    display: inline;
+    border-right-style: solid; */
+    /* display: inline; */
 }
 
 .buto {
@@ -196,7 +196,6 @@ table {
     margin-right: 20px;
     cursor: pointer;
 }
-
 .cell-comment{
     display: none;
     width: auto;

@@ -193,12 +193,11 @@ class Marab2Controller extends Controller
             $TypeSumArray = [];
             foreach($InputArray as $item){
                 $month = date("m",strtotime($item[1]));
-                if (array_key_exists($month,$TypeSumArray)){
-                    $TypeSumArray[$month] = array($TypeSumArray[$month], $item[2]);
-                }
-                else{
-                    $TypeSumArray[$month] = $item[2];  
-                }
+                $TypeSumArray[$month][] = $item[2];
+                // {"10":[[[[[[[[[[[[6172,7250],3000],10281],3791],-6853],-2390],500],12562],400],-51],-68],-49]}
+                // else{
+                //     $TypeSumArray[$month] = $item[2];  
+                // }
             }
             return $TypeSumArray;
         }

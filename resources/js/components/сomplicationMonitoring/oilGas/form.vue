@@ -36,15 +36,42 @@
             </div>
             <label>Вязкость нефти при 40С, мм2/с</label>
             <div class="form-label-group">
-                <input v-model="formFields.oil_viscosity_at_40" type="number" step="0.0001" name="oil_viscosity_at_40" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.oil_viscosity_at_40"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.oil_viscosity_at_40.min"
+                    :max="validationParams.oil_viscosity_at_40.max"
+                    name="oil_viscosity_at_40"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
             <label>H2S в газе, ppm</label>
             <div class="form-label-group">
-                <input v-model="formFields.hydrogen_sulfide_in_gas" type="number" step="0.0001" name="hydrogen_sulfide_in_gas" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.hydrogen_sulfide_in_gas"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.hydrogen_sulfide_in_gas.min"
+                    :max="validationParams.hydrogen_sulfide_in_gas.max"
+                    name="hydrogen_sulfide_in_gas"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
             <label>Плотность газа при 20°С, кг/м3</label>
             <div class="form-label-group">
-                <input v-model="formFields.gas_density_at_20" type="number" step="0.0001" name="gas_density_at_20" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.gas_density_at_20"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.gas_density_at_20.min"
+                    :max="validationParams.gas_density_at_20.max"
+                    name="gas_density_at_20"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
@@ -62,19 +89,55 @@
             </div>
             <label>Плотность нефти при 20°С, кг/м3 </label>
             <div class="form-label-group">
-                <input v-model="formFields.water_density_at_20" type="number" step="0.0001" name="water_density_at_20" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.water_density_at_20"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.water_density_at_20.min"
+                    :max="validationParams.water_density_at_20.max"
+                    name="water_density_at_20"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
             <label>Вязкость нефти при 50С, мм2/с</label>
             <div class="form-label-group">
-                <input v-model="formFields.oil_viscosity_at_50" type="number" step="0.0001" name="oil_viscosity_at_50" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.oil_viscosity_at_50"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.oil_viscosity_at_50.min"
+                    :max="validationParams.oil_viscosity_at_50.max"
+                    name="oil_viscosity_at_50"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
             <label>О2 в газе, %</label>
             <div class="form-label-group">
-                <input v-model="formFields.oxygen_in_gas" type="number" step="0.0001" name="oxygen_in_gas" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.oxygen_in_gas"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.oxygen_in_gas.min"
+                    :max="validationParams.oxygen_in_gas.max"
+                    name="oxygen_in_gas"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
             <label>Вязкость газа при 20С, сП</label>
             <div class="form-label-group">
-                <input v-model="formFields.gas_viscosity_at_20" type="number" step="0.0001" name="gas_viscosity_at_20" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.gas_viscosity_at_20"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.gas_viscosity_at_20.min"
+                    :max="validationParams.gas_viscosity_at_20.max"
+                    name="gas_viscosity_at_20"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
@@ -92,15 +155,42 @@
             </div>
             <label>Вязкость нефти при 20С, мм2/с</label>
             <div class="form-label-group">
-                <input v-model="formFields.oil_viscosity_at_20" type="number" step="0.0001" name="oil_viscosity_at_20" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.oil_viscosity_at_20"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.oil_viscosity_at_20.min"
+                    :max="validationParams.oil_viscosity_at_20.max"
+                    name="oil_viscosity_at_20"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
             <label>Вязкость нефти при 60С, мм2/с</label>
             <div class="form-label-group">
-                <input v-model="formFields.oil_viscosity_at_60" type="number" step="0.0001" name="oil_viscosity_at_60" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.oil_viscosity_at_60"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.oil_viscosity_at_60.min"
+                    :max="validationParams.oil_viscosity_at_60.max"
+                    name="oil_viscosity_at_60"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
             <label>CO2 в газе, %</label>
             <div class="form-label-group">
-                <input v-model="formFields.carbon_dioxide_in_gas" type="number" step="0.0001" name="carbon_dioxide_in_gas" class="form-control" placeholder="">
+                <input
+                    v-model="formFields.carbon_dioxide_in_gas"
+                    type="number"
+                    step="0.0001"
+                    :min="validationParams.carbon_dioxide_in_gas.min"
+                    :max="validationParams.carbon_dioxide_in_gas.max"
+                    name="carbon_dioxide_in_gas"
+                    class="form-control"
+                    placeholder=""
+                >
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -124,7 +214,8 @@ Vue.use(Datetime)
 export default {
     name: "oilgas-form",
     props: [
-        'oilgas'
+        'oilgas',
+        'validationParams'
     ],
     data: function () {
         return {

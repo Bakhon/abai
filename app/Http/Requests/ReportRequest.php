@@ -16,6 +16,8 @@ class ReportRequest extends FormRequest
         return [
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
+            'sections' => 'array',
+            'sections.*' => 'in:omgca,omguhe,corrosion,omgngdu,watermeasurement,oilgas'
         ];
     }
 }

@@ -15,7 +15,7 @@
                 <form action="{{ route('omguhe.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <omguhe-form></omguhe-form>
+                        <omguhe-form :validation-params='@json($validationParams)'></omguhe-form>
                     </div>
                 </form>
             </div>

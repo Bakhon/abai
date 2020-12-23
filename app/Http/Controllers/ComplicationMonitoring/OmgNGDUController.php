@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\ComplicationMonitoring;
 
-use App\Exports\OmgNGDUExport;
 use App\Filters\OmgNGDUFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CrudController;
+use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
+use App\Http\Requests\OmgNGDUCreateRequest;
 use App\Http\Requests\OmgNGDUUpdateRequest;
 use App\Models\ComplicationMonitoring\GuKormass as ComplicationMonitoringGuKormass;
 use App\Models\ComplicationMonitoring\Kormass as ComplicationMonitoringKormass;
@@ -16,13 +18,15 @@ use App\Models\ComplicationMonitoring\OmgUHE as ComplicationMonitoringOmgUHE;
 use App\Models\ComplicationMonitoring\WaterMeasurement;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
 
-class OmgNGDUController extends Controller
+class OmgNGDUController extends CrudController
 {
+    use WithFieldsValidation;
+
+    protected $modelName = 'omgngdu';
+
     /**
      * Display a listing of the resource.
      *
@@ -33,9 +37,7 @@ class OmgNGDUController extends Controller
         $params = [
             'success' => Session::get('success'),
             'links' => [
-                'create' => route('omgngdu.create'),
                 'list' => route('omgngdu.list'),
-                'export' => route('omgngdu.export'),
             ],
             'title' => 'База данных ОМГ НГДУ',
             'table_header' => [
@@ -194,6 +196,13 @@ class OmgNGDUController extends Controller
             ]
         ];
 
+        if(auth()->user()->can('monitoring create '.$this->modelName)) {
+            $params['links']['create'] = route($this->modelName.'.create');
+        }
+        if(auth()->user()->can('monitoring export '.$this->modelName)) {
+            $params['links']['export'] = route($this->modelName.'.export');
+        }
+
         return view('omgngdu.index', compact('params'));
     }
 
@@ -216,19 +225,14 @@ class OmgNGDUController extends Controller
 
     public function export(IndexTableRequest $request)
     {
-        $query = ComplicationMonitoringOmgNGDU::query()
-            ->with('field')
-            ->with('ngdu')
-            ->with('cdng')
-            ->with('gu')
-            ->with('zu')
-            ->with('well');
+        $job = new \App\Jobs\ExportOmgNGDUToExcel($request->validated());
+        $this->dispatch($job);
 
-        $omgngdu = $this
-            ->getFilteredQuery($request->validated(), $query)
-            ->get();
-
-        return Excel::download(new OmgNGDUExport($omgngdu), 'omgngdu.xls');
+        return response()->json(
+            [
+                'id' => $job->getJobStatusId()
+            ]
+        );
     }
 
     /**
@@ -238,7 +242,8 @@ class OmgNGDUController extends Controller
      */
     public function create()
     {
-        return view('omgngdu.create');
+        $validationParams = $this->getValidationParams('omgngdu');
+        return view('omgngdu.create', compact('validationParams'));
     }
 
     /**
@@ -247,36 +252,13 @@ class OmgNGDUController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(OmgNGDUCreateRequest $request)
     {
-        $request->validate(
-            [
-                'date' => 'required',
-            ]
-        );
+        $this->validateFields($request, 'omgngdu');
 
         $omgngdu = new ComplicationMonitoringOmgNGDU;
-        $omgngdu->field_id = $request->field_id ?? null;
-        $omgngdu->ngdu_id = ($request->ngdu_id) ? $request->ngdu_id : null;
-        $omgngdu->cdng_id = ($request->cdng_id) ? $request->cdng_id : null;
-        $omgngdu->gu_id = ($request->gu_id) ? $request->gu_id : null;
-        $omgngdu->zu_id = ($request->zu_id) ? $request->zu_id : null;
-        $omgngdu->well_id = ($request->well_id) ? $request->well_id : null;
-        $omgngdu->date = date("Y-m-d H:i", strtotime($request->date));
-        $omgngdu->daily_fluid_production = ($request->daily_fluid_production) ? $request->daily_fluid_production : null;
-        $omgngdu->daily_water_production = ($request->daily_water_production) ? $request->daily_water_production : null;
-        $omgngdu->daily_oil_production = ($request->daily_oil_production) ? $request->daily_oil_production : null;
-        $omgngdu->daily_gas_production_in_sib = ($request->daily_gas_production_in_sib) ? $request->daily_gas_production_in_sib : null;
-        $omgngdu->bsw = ($request->bsw) ? $request->bsw : null;
-        $omgngdu->surge_tank_pressure = ($request->surge_tank_pressure) ? $request->surge_tank_pressure : null;
-        $omgngdu->pump_discharge_pressure = ($request->pump_discharge_pressure) ? $request->pump_discharge_pressure : null;
-        $omgngdu->heater_inlet_pressure = ($request->heater_inlet_pressure) ? $request->heater_inlet_pressure : null;
-        $omgngdu->heater_output_pressure = ($request->heater_output_pressure) ? $request->heater_output_pressure : null;
-        $omgngdu->kormass_number = ($request->kormass_number) ? $request->kormass_number : null;
-        $omgngdu->pressure = ($request->pressure) ? $request->pressure : null;
-        $omgngdu->temperature = ($request->temperature) ? $request->temperature : null;
-        $omgngdu->daily_fluid_production_kormass = ($request->daily_fluid_production_kormass) ? $request->daily_fluid_production_kormass : null;
-        $omgngdu->cruser_id = Auth::user()->id;
+        $omgngdu->fill($request->validated());
+        $omgngdu->cruser_id = auth()->id();
         $omgngdu->save();
 
         return redirect()->route('omgngdu.index')->with('success', __('app.created'));
@@ -321,7 +303,8 @@ class OmgNGDUController extends Controller
      */
     public function edit(ComplicationMonitoringOmgNGDU $omgngdu)
     {
-        return view('omgngdu.edit', compact('omgngdu'));
+        $validationParams = $this->getValidationParams('omgngdu');
+        return view('omgngdu.edit', compact('omgngdu', 'validationParams'));
     }
 
     /**
@@ -333,6 +316,8 @@ class OmgNGDUController extends Controller
      */
     public function update(OmgNGDUUpdateRequest $request, ComplicationMonitoringOmgNGDU $omgngdu)
     {
+        $this->validateFields($request, 'omgngdu');
+
         $omgngdu->update($request->validated());
         return redirect()->route('omgngdu.index')->with('success', __('app.updated'));
     }
