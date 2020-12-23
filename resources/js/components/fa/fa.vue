@@ -103,7 +103,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="color: white; margin-left: 3px">Факторный анализ</h3>
+      <h3 style="margin-left: 3px">Факторный анализ</h3>
       <select
         name="Company"
         class="form-control tr-field-filter"
@@ -1343,7 +1343,7 @@ body {
   font-weight: inherit;
   padding: 5px 15px;
   border-radius: 5px;
-  font-family: Roboto;
+  font-family: "Harmonia-sans";
   font-style: normal;
   font-size: 17px;
   color: #ffffff;
@@ -1447,27 +1447,27 @@ body {
 }
 
 /* width */
-::-webkit-scrollbar {
+table::-webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+table::-webkit-scrollbar-track {
   background: #333975;
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+table::-webkit-scrollbar-thumb {
   background: #272953;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+table::-webkit-scrollbar-thumb:hover {
   background: #272953;
 
 }
 /* уголок скролла  */
-::-webkit-scrollbar-corner  {
+table::-webkit-scrollbar-corner  {
   background: #333975;
 }
 </style>

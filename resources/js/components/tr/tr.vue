@@ -241,7 +241,7 @@
         </div>
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 4px; color: white">
-            <h3 style="color: white; width: 475px">
+            <h3 >
               Технологический режим на {{ dt }}
             </h3>
           </div>
@@ -7051,7 +7051,7 @@ tr:not(.notsticky) td:nth-child(-n+3) {
   position: sticky;
   left: -1px;
   width: 27px;
-  z-index: 3010;
+  z-index: 3009;
 }
 tr:not(.notsticky) td:nth-child(2) {
   left: 23px;
@@ -7101,27 +7101,27 @@ tr:nth-child(even) td {
 }
 
 /* width */
-::-webkit-scrollbar {
+table::-webkit-scrollbar {
   width: 10px;
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+table::-webkit-scrollbar-track {
   background: #333975;
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
+table::-webkit-scrollbar-thumb {
   background: #272953;
 }
 
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+table::-webkit-scrollbar-thumb:hover {
   background: #272953;
 
 }
 
-::-webkit-scrollbar-corner  {
+table::-webkit-scrollbar-corner  {
   background: #333975;
 }
 

@@ -15,3 +15,6 @@
 #app > .container-fluid.container-fluid {
     max-width: unset;
 }
+.tr-sidebar .list-group-item {
+    padding: 15px 7px 15px 8px;
+}
