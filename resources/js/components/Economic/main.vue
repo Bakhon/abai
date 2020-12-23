@@ -163,7 +163,7 @@ export default {
     this.axios.get('/ru/organizations').then(({data}) => {
       this.organizations = data.organizations
 
-      this.getEconomicData(this.organizations[0].druid_id)
+      this.getEconomicData(this.organizations[0].id)
     })
   },
   methods: {
