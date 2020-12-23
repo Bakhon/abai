@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #333975; height: 104px; width: 161px"
+            style="background: #333975; height: 104px; width: 161px; "
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -75,6 +75,7 @@
                   background-color: #333975;
                   border-color: #333975;
                   color: white;
+                  width: 100%;
                 "
                 class="form-controll"
                 id="companySelect"
@@ -102,7 +103,7 @@
                   background-color: #333975 ;
                   border-color: #333975;
                   color: white;
-                  width: 131px;
+                  width: 100%;
 
                   
                   border: 1px solid #333975; !important;

@@ -1330,11 +1330,6 @@ body {
   width: 367;
   margin-left: 1px;
 }
-/* .fadropmenu {
-  background: #333975;
-  color: #ffffff;
-  width: 246px;
-} */
 .trcol {
     padding-right: 0;
 }
