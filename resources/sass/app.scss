@@ -18,17 +18,5 @@ src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 
-// Material theme used for this sample
-@import "~@syncfusion/ej2-base/styles/material.css";
-@import "~@syncfusion/ej2-inputs/styles/material.css";
-@import "~@syncfusion/ej2-buttons/styles/material.css";
-@import "~@syncfusion/ej2-dropdowns/styles/material.css";
-@import "~@syncfusion/ej2-lists/styles/material.css";
-@import "~@syncfusion/ej2-popups/styles/material.css";
-@import "~@syncfusion/ej2-popups/styles/material.css";
-@import "~@syncfusion/ej2-navigations/styles/material.css";
-@import "~@syncfusion/ej2-grids/styles/material.css";
-@import "~@syncfusion/ej2-pivotview/styles/material.css";
-
 @import 'includes/navbar';
 @import 'components/vSelect';

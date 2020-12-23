@@ -1,5 +1,4 @@
 import BootstrapTable from 'bootstrap-table/dist/bootstrap-table-vue.esm.js'
-import 'tableexport.jquery.plugin'
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.css'
 import 'bootstrap-table/dist/bootstrap-table.min.css'
