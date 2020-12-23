@@ -72,6 +72,11 @@ class CreateDZOcalcsTable extends Migration
             $table->float('oil_plan_2020',30,4)->nullable();
             $table->float("oil_price_plan_2020",30,4)->nullable();
             $table->float("kurs_plan_2020",30,4)->nullable();
+            $table->float("fine_2020",30,4)->nullable();
+            $table->integer("rent_gtm_fact_2020",5)->nullable();
+            $table->integer("ne_rent_gtm_fact_2020",5)->nullable();
+            $table->integer("rent_burenie_fact_2020",5)->nullable();
+            $table->integer("ne_rent_burenie_fact_2020",5)->nullable();				
             $table->timestamps();
         });
     }

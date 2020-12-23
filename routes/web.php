@@ -125,7 +125,9 @@ Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale()], fu
         Route::post('/import_h', 'DZO\DZOdayController@import')->name('import_h');
 
         Route::get('importdzoyear','DZO\DZOyearController@importExcel');
-        Route::get('importdzocalc','DZO\DZOcalcController@importExcel');
+
+        Route::get('/import_econom','DZO\DZOcalcController@importExcel');
+        Route::post('/import_eco', 'DZO\DZOcalcController@import')->name('import_e');
 
         Route::get('/import_excel', 'DZO\DZOdailyController@importExcel');
 
