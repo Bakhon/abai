@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #656a8a; height: 104px; width: 161px"
+            style="background: #333975; height: 104px; width: 161px; "
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -72,9 +72,10 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #656a8a;
-                  border-color: #656a8a;
+                  background-color: #333975;
+                  border-color: #333975;
                   color: white;
+                  width: 100%;
                 "
                 class="form-controll"
                 id="companySelect"
@@ -99,13 +100,13 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #656A8A ;
-                  border-color: #656A8A;
+                  background-color: #333975 ;
+                  border-color: #333975;
                   color: white;
-                  width: 131px;
+                  width: 100%;
 
                   
-                  border: 1px solid #656A8A; !important;
+                  border: 1px solid #333975; !important;
                   height: 35px !important;
                   color: white !important;
                 "
@@ -354,11 +355,6 @@
               v-if="show_second"
               class="table table-bordered table-dark table-responsive ce trtable"
               style="
-                position: sticky;
-                left: 5.31%;
-                right: 2.4%;
-                top: 48.21%;
-                bottom: 66.58%;
                 background: #0d1e63;
               "
             >
@@ -475,7 +471,7 @@
                   </td>
                   <td class="colspan th" colspan="12">Намечаемый режим</td>
                 </tr>
-                <tr class="headerColumn" style="background: #333975">
+                <tr class="headerColumn notsticky" style="background: #333975">
                   <td rowspan="3" class="th"><span>P заб</span></td>
                   <td rowspan="3" class="th"><span>Q ж</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
@@ -533,7 +529,7 @@
                     <span>Мероприятия по обеспечению техрежима</span>
                   </td>
                 </tr>
-                <tr class="headerColumn" style="background: #333975">
+                <tr class="headerColumn notsticky" style="background: #333975">
                   <td rowspan="2" class="th"><span>Q ж</span></td>
                   <td rowspan="2" class="th">
                     <span>Q ж с поправкой на D э/к</span>
@@ -7015,40 +7011,30 @@ tr:nth-child(even) {
   flex-grow: 0;
   width: 200px;
 }
-/* .tablecont {
-  margin-top: -38px;
-} */
 
 .table .th {
   position: sticky;
   background: rgb(51, 57, 117);
 }
 .table tr:first-child .th {
-  top: 0;
+  top: -1px;
   z-index: 3000;
 }
 .table tr:nth-child(2) .th {
-  top: 25px;
+  top: 24px;
   z-index: 3000;
 }
 .table tr:nth-child(3) .th {
-  top: 50px;
+  top: 49px;
   z-index: 3000;
 }
 .table tr:nth-child(4) .th {
-  top: 81px;
+  top: 80px;
   z-index: 3000;
 }
 .table tr:nth-child(5) .th {
-  top: 98px;
+  top: 97px;
   z-index: 3000;
-}
-tr td:first-child {
-
-  color: #fff;
-  position: sticky;
-  left: 0;
-  width: 100px;
 }
 .table-outer {
   position: relative;
@@ -7056,16 +7042,34 @@ tr td:first-child {
 .table-inner {
   overflow-y: visible;
 }
-tr:nth-child(odd) .fixcol:first-child {
+tr:not(.notsticky) td:nth-child(-n+3) {
+  position: sticky;
+  left: -1px;
+  width: 27px;
+  z-index: 3010;
+}
+tr:not(.notsticky) td:nth-child(2) {
+  left: 23px;
+  width: 100px;
+}
+tr:not(.notsticky) td:nth-child(3) {
+  left: 121px;
+  width: 55;
+}
+
+tr:nth-child(odd) td {
   background-color: #454d7d;
-  /* z-index: 5000; */
 }
-tr:nth-child(even) .fixcol:first-child {
-  background-color: #454d7d73;
-  /* z-index: 5000; */
+tr:nth-child(even) td {
+  background-color: #26336f;
 }
+
+.table.table tr:not(.notsticky) .th:nth-child(-n+3) {
+  z-index: 3010;
+}
+
 .input_edit {
-  background: #FFFACD;
+  background: #7879A6;
 }
 </style>
 <style>
@@ -7083,12 +7087,37 @@ tr:nth-child(even) .fixcol:first-child {
   height: 40px;
 }
 .fadropmenu.fadropmenu {
-  background: #656a8a;
+  background: #333975;
   width: 246px;
   z-index: 3001 !important;
 }
 .faheadhight {
   height: 40px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+
+}
+
+::-webkit-scrollbar-corner  {
+  background: #333975;
 }
 
 </style>

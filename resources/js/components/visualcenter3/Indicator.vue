@@ -1,5 +1,5 @@
 <template>
-    <div class="indicatorCell flex-grow-1 mr-xs-0 mr-xl-2 mb-1 mb-md-0" v-bind:class="{ 'indicator-active': isActive }" v-on:click="onClick">
+    <div class="indicatorCell flex-grow-1 mr-0 mr-sm-2 mb-1 mb-sm-0" v-bind:class="{ 'indicator-active': isActive }" v-on:click="onClick">
         <div class="text-right text-sm-left">
             <div>
                 <div class="number">
@@ -27,11 +27,11 @@
             </div>
         </div>
         <div class="w-100 text-nowrap mt-2 d-flex d-flex-row align-items-center" v-if="prevPeriodValue && progressValue">
-            <div v-if="(prevPeriodValue - progressValue ) / progressValue * 100 > 0" class="arrow2"></div>
-            <div v-if="(prevPeriodValue - progressValue ) / progressValue * 100 < 0" class="arrow3"></div>
+            <div v-if="prevPeriodValue > progressValue" class="arrow2"></div>
+            <div v-if="prevPeriodValue < progressValue" class="arrow3"></div>
             <div>
                 <span class="txt2-2">
-                    {{ Math.abs(Math.round((prevPeriodValue - progressValue ) / progressValue * 100))}}%
+                    {{ percents }}%
                 </span>
                 <span class="txt3 ml-1"> {{ lastPeriod }}</span>
             </div>

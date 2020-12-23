@@ -1,0 +1,124 @@
+<div class="row col-4">
+    <div class="col-12 mb-4">
+        <label>Название</label>
+        <div class="form-label-group">
+            <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    placeholder=""
+                    value="{{!empty($role) ? $role->name : ''}}"
+            >
+        </div>
+    </div>
+    <div class="col-12 permissions">
+        <h2>Список разрешений</h2>
+        <nav class="navbar navbar-light justify-content-start mb-3">
+            <button class="btn btn-outline-secondary active" type="button" data-tab="monitoring">Модуль мониторинг</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="economic">Модуль экономика</button>
+        </nav>
+        <div class="tabs tab-monitoring active">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('monitoring view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('monitoring view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring view main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('monitoring view main')->id}}">Просмотр главной
+                    страницы</label>
+            </div>
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('monitoring make report')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('monitoring make report')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring make report')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('monitoring make report')->id}}">Создание сводного
+                    отчета</label>
+            </div>
+            <div class="form-check mb-4">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('monitoring view pipes map')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('monitoring view pipes map')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring view pipes map')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('monitoring view pipes map')->id}}">Просмотр карты</label>
+            </div>
+            @foreach($sections as $code => $name)
+                <div class="section mb-4">
+                    <h5>{{$name}}</h5>
+                    @foreach([
+                        'list' => 'Просмотр списка',
+                        'create' => 'Создание',
+                        'read' => 'Просмотр',
+                        'update' => 'Изменение',
+                        'delete' => 'Удаление',
+                        'export' => 'Экспорт в excel',
+                        'view history' => 'Просмотр истории',
+                    ] as $fieldCode => $fieldName)
+                        <div class="form-check">
+                            <input
+                                    class="form-check-input"
+                                    id="permission_{{$permissions->get('monitoring '.$fieldCode.' '.$code)->id}}"
+                                    type="checkbox"
+                                    name="permissions[]"
+                                    value="{{$permissions->get('monitoring '.$fieldCode.' '.$code)->id}}"
+                                    {{!empty($role) && $role->permissions->where('id', $permissions->get('monitoring '.$fieldCode.' '.$code)->id)->isNotEmpty() ? 'checked' : ''}}
+                            >
+                            <label class="form-check-label"
+                                   for="permission_{{$permissions->get('monitoring '.$fieldCode.' '.$code)->id}}">{{$fieldName}}</label>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
+        </div>
+        <div class="tabs tab-economic">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('economic view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('economic view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('economic view main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('economic view main')->id}}">Просмотр главной
+                    страницы</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 mt-3 text-center">
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </div>
+</div>
+@section('custom_js')
+    <script>
+        $(function(){
+            $('.permissions .navbar button').click(function(){
+                $('.tab-'+$(this).data('tab')).addClass('active').siblings().removeClass('active')
+                $(this).addClass('active').siblings().removeClass('active')
+            })
+        })
+    </script>
+    <style>
+        .tabs{
+            display: none;
+        }
+        .tabs.active{
+            display: block;
+        }
+    </style>
+@endsection

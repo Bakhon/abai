@@ -18,6 +18,20 @@
                     @method('patch')
                     @csrf
                     <div class="row col-4">
+                        <div class="col-12 mb-4">
+                            <h3>Компания</h3>
+                            <select name="org_id" class="form-control">
+                                <option value=""></option>
+                                @foreach($orgs as $org)
+                                    <option
+                                        value="{{$org->id}}"
+                                        {{ $user->org_id === $org->id ? 'selected' : '' }}
+                                    >
+                                        {{$org->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="col-12">
                             <h3>Список ролей</h3>
                             @foreach($roles as $role)

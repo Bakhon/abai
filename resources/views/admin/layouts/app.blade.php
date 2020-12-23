@@ -25,5 +25,6 @@
         @yield('content')
     </div>
 </div>
+@yield('custom_js')
 </body>
 </html>
