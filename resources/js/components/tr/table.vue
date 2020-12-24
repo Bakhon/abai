@@ -546,7 +546,7 @@ tr td:first-child {
   position: sticky;
   left: -1px;
   width: 100px;
-  z-index: 3010;
+  z-index: 3009;
 }
 
 tr:nth-child(odd) .fixcol:first-child {

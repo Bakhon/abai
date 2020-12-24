@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="w-100">
     <div class="col-md-12 row trcolmd12">
       <div
         class="col-md-12 row justify-content-between"
@@ -9,13 +9,13 @@
           padding-right: 0;
           margin-right: 0;
           margin-left: 0;
-          paddng-left: 0;
+          padding-left: 0;
         "
       >
         <a
           href="fa"
           class="col but-nav__link but trheadhight"
-          style="margin-left: -17px"
+          style="min-width:330px;"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -241,7 +241,7 @@
         </div>
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 4px; color: white">
-            <h3 style="color: white; width: 475px">
+            <h3 >
               Технологический режим на {{ dt }}
             </h3>
           </div>
@@ -360,7 +360,7 @@
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
-                  <td rowspan="4" class="th">№</td>
+                  <td rowspan="4" class="th" >№</td>
                   <td rowspan="4" class="th">НГДУ/месторождение</td>
                   <td rowspan="4" class="th">№ скв</td>
                   <td rowspan="4" class="th">Тип скважины</td>
@@ -797,7 +797,7 @@
                     <i class="fa fa-fw fa-sort"></i>т/сут
                   </td>
                   <td @click="sortBy('gp_grp_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>%
+                    <i class="fa fa-fw fa-sort"></i>м3/сут
                   </td>
                   <td @click="sortBy('gp_grp_q_liq_cas_d_corr')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -6889,7 +6889,6 @@ export default {
 </script>
 <style scoped>
 /* @import "element-variables"; */
-
 body {
   color: white !important;
 }
@@ -7001,7 +7000,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 247px);
+  height: calc(100vh - 215px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
@@ -7036,6 +7035,12 @@ tr:nth-child(even) {
   top: 97px;
   z-index: 3000;
 }
+tr td:first-child {
+  color: #fff;
+  position: sticky;
+  left: 0;
+  width: 100px;
+}
 .table-outer {
   position: relative;
 }
@@ -7046,7 +7051,7 @@ tr:not(.notsticky) td:nth-child(-n+3) {
   position: sticky;
   left: -1px;
   width: 27px;
-  z-index: 3010;
+  z-index: 3009;
 }
 tr:not(.notsticky) td:nth-child(2) {
   left: 23px;
@@ -7070,6 +7075,31 @@ tr:nth-child(even) td {
 
 .input_edit {
   background: #7879A6;
+}
+
+/* width */
+table::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+table::-webkit-scrollbar-track {
+  background: #333975;
+}
+
+/* Handle */
+table::-webkit-scrollbar-thumb {
+  background: #272953;
+}
+
+/* Handle on hover */
+table::-webkit-scrollbar-thumb:hover {
+  background: #272953;
+
+}
+
+table::-webkit-scrollbar-corner  {
+  background: #333975;
 }
 </style>
 <style>
@@ -7095,29 +7125,6 @@ tr:nth-child(even) td {
   height: 40px;
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
-}
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #333975;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #272953;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #272953;
-
-}
-
-::-webkit-scrollbar-corner  {
-  background: #333975;
-}
 
 </style>

@@ -1062,10 +1062,10 @@ class Marab2Controller extends Controller
             foreach($aimArray as $item2){
                 foreach($vyzovArray as $item3){
                     foreach($factArray as $item4){
-                        $porog = date("m",strtotime($item[1]));
-                        $aim = date("m",strtotime($item2[1]));
-                        $vyzov = date("m",strtotime($item3[1]));
-                        $fact = date("m",strtotime($item4[1]));
+                        $porog = (int)date("m",strtotime($item[1]));
+                        $aim = (int)date("m",strtotime($item2[1]));
+                        $vyzov = (int)date("m",strtotime($item3[1]));
+                        $fact = (int)date("m",strtotime($item4[1]));
 
                         if($fact<=$porog && $fact>$aim){
                             array_push($Abd4Formula, [$porog, $aim, $vyzov, $fact, 50, $abd4weight*50]);
@@ -1584,10 +1584,8 @@ class Marab2Controller extends Controller
             }
         }
 
-        
-
         #Results
-        $result['Marabayev1'] = $newmarabayev1Calculations; #/kpicalc
+        $result['Marabayev1(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarabayev1Calculations; #/kpicalc
         $result['Marabayev2(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newfactoranalysisCalculations; #/kpicalc
         $result['Marabayev3(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarab3Calculations; #/kpicalc
         $result['Marabayev4(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarab4Calculations; #/kpicalc

@@ -7,7 +7,7 @@
     font-weight: inherit;
     padding: 5px 15px;
     border-radius: 5px;
-    font-family: Roboto;
+    font-family: "Harmonia-sans";
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
@@ -23,7 +23,7 @@
 
 .trfa_page.trfa_page {
     padding: 0 !important;
-    width: calc(100vw - 65px);
+    width: calc(100vw - 77px);
     display: flex;
     margin-left: 44px;
 }
@@ -35,3 +35,12 @@
     padding: 0;
     margin: 0;
 }  
+#app > .container-fluid.container-fluid {
+    max-width: unset;
+}
+a:hover {
+    color: #FFFFFF;
+}
+.tr-sidebar .list-group-item {
+    padding: 15px 7px 15px 8px;
+}
