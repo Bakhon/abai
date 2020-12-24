@@ -11,7 +11,7 @@
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center p-2">
-                                <h4 class="font-weight-bold">Strategy</h4>
+                                <h5 class="font-weight-bold m-0">Strategy</h5>
                                 <div class="w-75">
                                     <div class="progress2">
                                         <div
@@ -54,6 +54,7 @@
                             v-bind:title="'Оптимизированный Инвестиционный портфель'"
                             v-bind:mainTitle="'Октябрь'"
                             v-bind:mainValue="t4"
+                            v-bind:sliderTooltip="'Октябрь'"
                             v-bind:units="'дата'"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
@@ -63,12 +64,21 @@
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Мероприятия по передаче КазТрансГаз в Самрук-Казына'"
+                            v-bind:mainTitle="'Декабрь'"
+                            v-bind:sliderTooltip="'Декабрь'"
                             v-bind:mainValue="t6"
                             v-bind:units="'дата'"
                         ></vc-speedometer-block>
                     </div>
                     <div class="text-center p-3" v-else>
-                        <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                        <div class="box">
+                            <div class="cat">
+                                <div class="cat__body"></div>
+                                <div class="cat__body"></div>
+                                <div class="cat__tail"></div>
+                                <div class="cat__head"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

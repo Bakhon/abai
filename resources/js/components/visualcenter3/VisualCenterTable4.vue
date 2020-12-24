@@ -11,7 +11,7 @@
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center p-2">
-                                <div>Корпоративные КПД</div>
+                                <h5 class="font-weight-bold m-0">Корпоративные КПД</h5>
                                 <div class="w-75">
                                     <div class="progress2">
                                         <div
@@ -67,7 +67,14 @@
                         ></vc-speedometer-block>
                     </div>
                     <div class="text-center p-3" v-else>
-                        <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                        <div class="box">
+                            <div class="cat">
+                                <div class="cat__body"></div>
+                                <div class="cat__body"></div>
+                                <div class="cat__tail"></div>
+                                <div class="cat__head"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

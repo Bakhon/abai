@@ -15,6 +15,7 @@ export default {
     tableToChange: {
       default: 1,
     },
+    sliderTooltip: '',
   },
   data: function () {
     return {}
