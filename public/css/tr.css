@@ -175,7 +175,6 @@ table {
 .tr_page.tr_page {
     padding: 0 !important;
     display: flex;
-    position: static;
 }
 .tr_page .level1-content  {
     margin: 0;
@@ -188,5 +187,4 @@ table {
 #app > .container-fluid.container-fluid {
     max-width: calc(100% - 89px);
     margin-bottom: 0 !important;
-    position: static;
 }

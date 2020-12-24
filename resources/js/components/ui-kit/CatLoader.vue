@@ -116,7 +116,7 @@ export default {
   justify-content: flex-start;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
