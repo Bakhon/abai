@@ -241,7 +241,7 @@
           <fade-loader :loading="isloading"></fade-loader>
         </div>
         <div class="techbt1 tr-table-header">
-          <div class="tech" style="margin-left: 4px; color: white">
+          <div class="tech" style="margin-left: 14px;; color: white">
             <h3 >
               Технологический режим на {{ dt }}
             </h3>
@@ -570,7 +570,7 @@
                   <td rowspan="2" class="th"><span>Q ж</span></td>
                 </tr>
                 <tr></tr>
-                <tr class="subHeaderColumn" style="background: #333975">
+                <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
                   <td @click="sortBy('gu')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>

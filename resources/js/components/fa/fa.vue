@@ -103,7 +103,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 3px">Факторный анализ</h3>
+      <h3 style="margin-left: 14px">Факторный анализ</h3>
       <select
         name="Company"
         class="form-control tr-field-filter"
@@ -1375,19 +1375,16 @@ body {
 }
 
 .farowjustcontbet {
-  /* margin-bottom: 11px; */
+
   box-sizing: border box;
-  /* flex-grow: 1;  */
+
   padding-right: 0;
   margin-right: 0;
   margin-left: 0;
   padding-left: 0;
   display: flex;
 }
-/* .fabutdata {
-  margin-left: 156px;
-  width: 470;
-} */
+
 .fasearch {
   width: 367;
   margin-left: 1px;
@@ -1396,10 +1393,7 @@ body {
 .trcol {
   padding-right: 0;
 }
-/* .fabutdata {
-    margin-left: -6px;
-    width: 420;
-} */
+
 .table {
   overflow: scroll;
   height: calc(100vh - 198px);
@@ -1436,9 +1430,7 @@ body {
   height: 40px;
 }
 
-/* .table th, .table td {
-    padding: 5px !important;
-} */
+
 .fakrtableborderedtable {
   font-size: 9px;
   padding: unset;
