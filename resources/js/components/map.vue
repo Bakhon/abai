@@ -1,21 +1,21 @@
 <template>
   <div class="gu-map">
-    <div v-if="gus">
-      <v-select
-          v-model="gu"
-          @input="centerToGu"
-          :options="gus"
-          :reduce="option => option.id"
-          label="name"
-          placeholder="Выберите ГУ"
-          style="margin: 0 0 20px; width: 300px"
-      >
-      </v-select>
+    <div class="gu-map__controls">
+      <h1>Карта</h1>
+      <div v-if="gus">
+        <v-select
+            v-model="gu"
+            @input="centerToGu"
+            :options="gus"
+            :reduce="option => option.id"
+            label="name"
+            placeholder="Выберите ГУ"
+        >
+        </v-select>
+      </div>
     </div>
-    <div class="gu-map__wrapper">
-      <div id="map" style="width: 100%; height: 500px"></div>
-      <canvas id="deck-canvas"></canvas>
-    </div>
+    <div id="map"></div>
+    <canvas id="deck-canvas"></canvas>
   </div>
 </template>
 
@@ -93,7 +93,7 @@ export default {
       })
 
       //added to fix a bug with deck.gl on first click to gu select
-      if(!this.firstCentered) {
+      if (!this.firstCentered) {
         this.deck.setProps({
           initialViewState: {
             longitude: parseFloat(center[0]),
@@ -145,8 +145,6 @@ export default {
 
         this.deck = new Deck({
           canvas: 'deck-canvas',
-          width: '100%',
-          height: '100%',
           initialViewState: this.viewState,
           controller: true,
           onViewStateChange: ({viewState}) => {
@@ -186,7 +184,9 @@ export default {
               getPosition: d => d.coords,
               sizeUnits: 'meters',
               getSize: d => 2,
-              onClick: (event) => { console.log(event)}
+              onClick: (event) => {
+                console.log(event)
+              }
             }),
             new IconLayer({
               id: 'icon-layer-zu',
@@ -201,7 +201,9 @@ export default {
               getPosition: d => d.coords,
               sizeUnits: 'meters',
               getSize: d => 2,
-              onClick: (event) => { console.log(event)}
+              onClick: (event) => {
+                console.log(event)
+              }
             }),
             new IconLayer({
               id: 'icon-layer-well',
@@ -216,7 +218,9 @@ export default {
               getPosition: d => d.coords,
               sizeUnits: 'meters',
               getSize: d => 2,
-              onClick: (event) => { console.log(event)}
+              onClick: (event) => {
+                console.log(event)
+              }
             })
           ]
         });
@@ -232,15 +236,45 @@ h1 {
   color: #fff;
 }
 
-.gu-map{
-  &__wrapper{
+.gu-map {
+  position: relative;
+  height: calc(100vh - 96px);
+  width: 100%;
+
+  &__controls {
+    display: inline-block;
+    padding: 15px 0 0 15px;
     position: relative;
-    #deckgl-overlay{
-      background: rgba(255,255,255,0.4);
-      left: 0;
-      position: absolute;
-      top: 0;
+    z-index: 10;
+    width: 100px;
+
+    h1 {
+      color: #000;
+      font-size: 28px;
+    }
+
+    .v-select{
+      min-width: 200px;
+    }
+    .vs__dropdown-toggle{
+      padding-bottom: 0;
     }
   }
+
+  #map {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  #deckgl-overlay {
+    background: rgba(255, 255, 255, 0.4);
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+
 }
 </style>
