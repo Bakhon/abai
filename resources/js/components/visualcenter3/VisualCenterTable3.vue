@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
+  <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height">
     <div class="left-side flex-grow-1 pr-3">
       <div class="first-string">
         <div class="table-responsive">
@@ -233,8 +233,8 @@
           </table>
         </div>
       </div>
-      <div class="first-table" :style="`${Table1}`">
-        <div class="first-string first-string2 big-area">
+      <div class="first-table big-area" :style="`${Table1}`">
+        <div class="first-string first-string2">
           <!--<div class="container-fluid">
             class="table-responsive"-->
           <!--<table class="table table2">
@@ -393,8 +393,8 @@
                 :style="`${buttonHover6}`"
                 @click="
                   getProduction(
-                    'inj_plan',
-                    'inj_fact',
+                    'liq_plan',
+                    'liq_fact',
                     'Динамика объёма закачки воды',
                     'м³',
                     'Закачка воды'
@@ -453,7 +453,7 @@
                 >
                   Календарь
                 </div>
-                <ul class="center-menu2">
+                <ul class="center-menu2 right-indent">
                   <li class="center-li">
                     <br /><br />
 
@@ -511,7 +511,7 @@
        </div>-->
           </div>
 
-          <div class="big-area row container-fluid" :style="`${displayTable}`">
+          <div class="row container-fluid" :style="`${displayTable}`">
             <div class="col-6 px-3">
               <table class="table4-2 w-100">
                 <tbody>
@@ -519,13 +519,13 @@
                     <td class="big-table-hidtd small-td"></td>
 
                     <td class="small-td">
-                      <div class="center2">план</div>
+                      <div class="center2">план ({{ item4 }})</div>
                     </td>
                     <td class="small-td">
-                      <div class="center2">факт</div>
+                      <div class="center2">факт ({{ item4 }})</div>
                     </td>
                     <td class="small-td">
-                      <div class="center2">+/-</div>
+                      <div class="center2">+/- ({{ item4 }})</div>
                     </td>
                     <td class="small-td"><div class="center2">%</div></td>
                   </tr>
@@ -561,7 +561,7 @@
 
                       <div class="font" v-if="item.plan">
                         {{ new Intl.NumberFormat("ru-RU").format(item.plan) }}
-                        <div class="right">{{ item4 }}</div>
+                       <!-- <div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
@@ -583,7 +583,7 @@
 
                       <div class="font" v-if="item.fact">
                         {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
-                        <div class="right">{{ item4 }}</div>
+                        <!--<div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td
@@ -611,7 +611,7 @@
                             )
                           )
                         }}
-                        <div class="right">{{ item4 }}</div>
+                       <!-- <div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
@@ -859,10 +859,10 @@
         </div>
       </div>
 
-      <div class="second-table" :style="`${Table2}`">
+      <div class="second-table big-area " :style="`${Table2}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">
+          <div class="container-fluid">
             <br />
 
             <div
@@ -881,10 +881,10 @@
         </div>
       </div>
 
-      <div class="third-table" :style="`${Table3}`">
+      <div class="third-table big-area" :style="`${Table3}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">
+          <div class="container-fluid">
             <br />
 
             <div
@@ -903,12 +903,13 @@
         </div>
       </div>
 
-      <div class="third-table" :style="`${Table4}`">
+      <div class="third-table big-area" :style="`${Table5}`">
         <div class="first-string first-string2">
-          <div class="big-area container-fluid">
+          <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold">Фонд добывающих скважин</div>
+                <div class="ml-4 bold">                    Фонд нагнетательных скважин
+                </div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">Закрыть</div>
@@ -952,7 +953,7 @@
                   >
                     Календарь
                   </div>
-                  <ul class="center-menu2">
+                  <ul class="center-menu2 ">
                     <li class="center-li">
                       <br /><br />
 
@@ -1050,7 +1051,7 @@
                       "
                     >
                       <div class="font">
-                        {{ item.value2 }}
+                       
                       </div>
                     </td>
                   </tr>
@@ -1072,26 +1073,26 @@
         </div>
       </div>-->
 
-      <div class="third-table" :style="`${Table5}`">
+      <div class="third-table big-area" :style="`${Table4}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">
-            Фонд нагнетательных скважин
+          <div class="container-fluid">
+        Фонд добывающих скважин
           </div>
         </div>
       </div>
 
-      <div class="third-table" :style="`${Table6}`">
+      <div class="third-table big-area" :style="`${Table6}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">ОТМ</div>
+          <div class=" container-fluid">ОТМ</div>
         </div>
       </div>
 
-      <div class="third-table" :style="`${Table7}`">
+      <div class="third-table big-area" :style="`${Table7}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">Химизация</div>
+          <div class="container-fluid">Химизация</div>
         </div>
       </div>
     </div>

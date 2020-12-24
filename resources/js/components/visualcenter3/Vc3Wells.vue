@@ -16,15 +16,46 @@ export default {
   data: function() {
     return {
       chartOptions: {
+     grid: {
+    show: true,
+    borderColor: '#90A4AE',
+    strokeDashArray: 0,
+    position: 'back',
+    xaxis: {
+        lines: {
+            show: false
+        }
+    },   
+    yaxis: {
+        lines: {
+            show: true
+        }
+    },  
+    row: {
+        colors: undefined,
+        opacity: 0.5
+    },  
+    column: {
+        colors: undefined,
+        opacity: 0.5
+    },  
+    padding: {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0
+    },  
+},
         
         chart: {
-            stacked: true,
+
+            stacked: false,
             foreColor: '#FFFFFF',
             locales: [ru],
             defaultLocale: 'ru'
         },
         tooltip: {
-               enabled: true,
+               enabled: false,
           enabledOnSeries: undefined,
           shared: true,
           followCursor: false,
@@ -62,9 +93,9 @@ export default {
         plotOptions: {
           bar: {
 			  dataLabels: {
-                  position: 'top',
+              //    position: 'top',
                 },
-            columnWidth: '15%'
+            columnWidth: '20%'
           }
         },
 
@@ -90,13 +121,13 @@ export default {
 
       		  yaxis: {
               axisBorder: {
-                show: true
+                show: false
               },
               axisTicks: {
                 show: false,
               },
               labels: {
-                show: false,
+                show: true,
                 formatter: function (val) {
                   return val /*+ "%"*/;
                 }
