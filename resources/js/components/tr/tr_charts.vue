@@ -52,7 +52,7 @@
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
               class="dropdown-item"
-              style="background: #656a8a !important; color: #fff"
+              style="background: #5973cc !important; color: #fff"
               v-for="(item, index) in chartNames"
               :key="item"
               href="#"
@@ -76,7 +76,7 @@
 
           <div
             class="dropdown-menu"
-            style="background: #656a8a !important"
+            style="background: #5973cc !important"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -85,8 +85,8 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #656a8a !important;
-                  border-color: #656a8a !important;
+                  background-color: #5973cc !important;
+                  border-color: #5973cc !important;
 
                   color: white;
                 "
@@ -113,8 +113,8 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #656a8a !important;
-                  border-color: #656a8a !important;
+                  background-color: #5973cc !important;
+                  border-color: #5973cc !important;
 
                   color: white;
                 "
@@ -1542,7 +1542,8 @@ body {
   margin: 0 auto;
 }
 .droptr.droptr {
-  background: #656a8a;
+  background: #5973cc;
+  padding: 0px;
 }
 
 a:hover {
