@@ -73,8 +73,8 @@ export default {
   color: white !important;
   background: #3366ff !important;
   border: none !important;
-  border-top-right-radius: 20px !important;
-  border-bottom-right-radius: 20px !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
   width: 120px;
@@ -101,8 +101,8 @@ export default {
 
 .form-control,
 .fix-rounded-right {
-  border-top-left-radius: 20px !important;
-  border-bottom-left-radius: 20px !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
   height: 40px !important;
   background: #393d75 !important;
   border: none !important;

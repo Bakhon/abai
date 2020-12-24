@@ -1,8 +1,6 @@
 .trfa_page.trfa_page {
     padding: 0 !important;
-    width: calc(100vw - 65px);
     display: flex;
-    margin-left: 44px;
 }
 .trfa_page .level1-content  {
     margin: 0;
@@ -13,8 +11,6 @@
     margin: 0;
 }  
 #app > .container-fluid.container-fluid {
-    max-width: unset;
-}
-.tr-sidebar .list-group-item {
-    padding: 15px 7px 15px 8px;
+    max-width: calc(100% - 89px);
+    margin-bottom: 0 !important;
 }
