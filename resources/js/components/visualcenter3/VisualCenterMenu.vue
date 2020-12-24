@@ -428,7 +428,7 @@ export default {
 
     getCurrencyNow: function (dates) {
       var datas;
-      let uri = "/ru/getcurrency?fdate=" + dates + "";
+      let uri = this.localeUrl("/getcurrency?fdate=") + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -445,7 +445,7 @@ export default {
     getCurrencyPeriod: function (dates, item2) {
       var dates = dates;
       let uri =
-        "/ru/getcurrencyperiod?dates=" + dates + "&period=" + item2 + " ";
+        this.localeUrl("/getcurrencyperiod?dates=") + dates + "&period=" + item2 + " ";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {

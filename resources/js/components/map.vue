@@ -1,7 +1,7 @@
 <template>
   <div class="gu-map">
     <div class="gu-map__controls">
-      <h1>Карта</h1>
+      <h1>{{ trans('monitoring.map.title') }}</h1>
       <div v-if="gus">
         <v-select
             v-model="gu"
@@ -9,7 +9,7 @@
             :options="gus"
             :reduce="option => option.id"
             label="name"
-            placeholder="Выберите ГУ"
+            :placeholder="trans('monitoring.map.select_gu')"
         >
         </v-select>
       </div>
@@ -117,7 +117,7 @@ export default {
       this.zuPoints = []
       this.wellPoints = []
       this.guPoints = []
-      this.axios.get("/ru/gu-map/pipes", {params: {gu: this.gu}}).then((response) => {
+      this.axios.get(this.localeUrl("/gu-map/pipes"), {params: {gu: this.gu}}).then((response) => {
         this.pipes = response.data.pipes
         this.zuPoints = response.data.zuPoints
         this.wellPoints = response.data.wellPoints

@@ -26,10 +26,10 @@ class PipeController extends CrudController
             'links' => [
                 'list' => route('pipes.list'),
             ],
-            'title' => 'База данных по трубопроводам',
+            'title' => trans('monitoring.pipe.title'),
             'fields' => [
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => trans('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('pipe')
@@ -47,27 +47,27 @@ class PipeController extends CrudController
                     ]
                 ],
                 'length' => [
-                    'title' => 'Длина',
+                    'title' => trans('monitoring.pipe.fields.length'),
                     'type' => 'numeric',
                 ],
                 'outside_diameter' => [
-                    'title' => 'Внешний диаметр',
+                    'title' => trans('monitoring.pipe.fields.outside_diameter'),
                     'type' => 'numeric',
                 ],
                 'inner_diameter' => [
-                    'title' => 'Внутренний диаметр',
+                    'title' => trans('monitoring.pipe.fields.inner_diameter'),
                     'type' => 'numeric',
                 ],
                 'thickness' => [
-                    'title' => 'Толщина стенок',
+                    'title' => trans('monitoring.pipe.fields.thickness'),
                     'type' => 'numeric',
                 ],
                 'roughness' => [
-                    'title' => 'Жесткость',
+                    'title' => trans('monitoring.pipe.fields.roughness'),
                     'type' => 'numeric',
                 ],
                 'material' => [
-                    'title' => 'Материал',
+                    'title' => trans('monitoring.pipe.fields.material'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\ComplicationMonitoring\Material::whereHas('pipe')
@@ -85,7 +85,7 @@ class PipeController extends CrudController
                     ]
                 ],
                 'plot' => [
-                    'title' => 'Участок',
+                    'title' => trans('monitoring.pipe.fields.plot'),
                     'type' => 'numeric',
                 ],
             ]

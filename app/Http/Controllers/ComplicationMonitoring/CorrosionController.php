@@ -28,10 +28,10 @@ class CorrosionController extends CrudController
             'links' => [
                 'list' => route('corrosioncrud.list'),
             ],
-            'title' => 'База данных по скорости коррозии',
+            'title' => trans('monitoring.corrosion.title'),
             'fields' => [
                 'field' => [
-                    'title' => 'Месторождение',
+                    'title' => trans('monitoring.field'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Field::whereHas('corrosion')
@@ -49,7 +49,7 @@ class CorrosionController extends CrudController
                     ]
                 ],
                 'ngdu' => [
-                    'title' => 'НГДУ',
+                    'title' => trans('monitoring.ngdu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('corrosion')
@@ -67,7 +67,7 @@ class CorrosionController extends CrudController
                     ]
                 ],
                 'cdng' => [
-                    'title' => 'ЦДНГ',
+                    'title' => trans('monitoring.cdng'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('corrosion')
@@ -85,7 +85,7 @@ class CorrosionController extends CrudController
                     ]
                 ],
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => trans('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('corrosion')
@@ -103,47 +103,47 @@ class CorrosionController extends CrudController
                     ]
                 ],
                 'start_date_of_background_corrosion' => [
-                    'title' => 'Дата начала',
+                    'title' => trans('monitoring.corrosion.fields.start_date_of_background_corrosion'),
                     'type' => 'date',
                 ],
                 'final_date_of_background_corrosion' => [
-                    'title' => 'Дата окончания',
+                    'title' => trans('monitoring.corrosion.fields.final_date_of_background_corrosion'),
                     'type' => 'date',
                 ],
                 'background_corrosion_velocity' => [
-                    'title' => 'Фоновая скорость',
+                    'title' => trans('monitoring.corrosion.fields.background_corrosion_velocity'),
                     'type' => 'numeric',
                 ],
                 'start_date_of_corrosion_velocity_with_inhibitor_measure' => [
-                    'title' => 'Дата начало замера скорости коррозии с реагентом',
+                    'title' => trans('monitoring.corrosion.fields.start_date_of_corrosion_velocity_with_inhibitor_measure'),
                     'type' => 'date',
                 ],
                 'final_date_of_corrosion_velocity_with_inhibitor_measure' => [
-                    'title' => 'Дата окончания замера скорости коррозии с реагентом',
+                    'title' => trans('monitoring.corrosion.fields.final_date_of_corrosion_velocity_with_inhibitor_measure'),
                     'type' => 'date',
                 ],
                 'corrosion_velocity_with_inhibitor' => [
-                    'title' => 'Скорость коррозии',
+                    'title' => trans('monitoring.corrosion.fields.corrosion_velocity_with_inhibitor'),
                     'type' => 'numeric',
                 ],
                 'sample_number' => [
-                    'title' => 'Номер образца-свидетеля',
+                    'title' => trans('monitoring.corrosion.fields.sample_number'),
                     'type' => 'numeric',
                 ],
                 'weight_before' => [
-                    'title' => 'Масса до установки, гр',
+                    'title' => trans('monitoring.corrosion.fields.weight_before'),
                     'type' => 'numeric',
                 ],
                 'days' => [
-                    'title' => 'Количество дней экспозиции',
+                    'title' => trans('monitoring.corrosion.fields.days'),
                     'type' => 'numeric',
                 ],
                 'weight_after' => [
-                    'title' => 'Масса после извлечения, гр',
+                    'title' => trans('monitoring.corrosion.fields.weight_after'),
                     'type' => 'numeric',
                 ],
                 'avg_speed' => [
-                    'title' => 'Средняя скорость коррозии, мм/г',
+                    'title' => trans('monitoring.corrosion.fields.avg_speed'),
                     'type' => 'numeric',
                 ]
             ]
