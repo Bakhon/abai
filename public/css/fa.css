@@ -217,7 +217,6 @@ table {
     padding: 0 !important;
     /* width: calc(100vw - 76px); */
     display: flex;
-    position: static;
     /* margin-left: 43px; */
 }
 .fa_page .level1-content  {
@@ -231,5 +230,4 @@ table {
 #app > .container-fluid.container-fluid {
     max-width: calc(100% - 89px);
     margin-bottom: 0 !important;
-    position: static;
 }

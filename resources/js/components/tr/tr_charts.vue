@@ -36,7 +36,10 @@
           >
         </div>
       </div>
-      <div class="row sec_nav trfacolmdrowsecnav" style=" display: flex;justify-content: center;">
+      <div
+        class="row sec_nav trfacolmdrowsecnav"
+        style="display: flex; justify-content: center"
+      >
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -630,7 +633,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -759,7 +765,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -880,7 +889,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -1004,7 +1016,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -1128,6 +1143,10 @@ export default {
         ...this.titleBase,
         text: this.titleText,
       };
+      const stroke = {
+        show: false,
+        width: [1, 1],
+      };
       const subtitle = {
         ...this.subtitleBase,
         text: this.subtitleText,
@@ -1138,6 +1157,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
         fill: this.fillBase,
         title,
@@ -1220,11 +1240,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1262,11 +1286,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1312,11 +1340,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1362,11 +1394,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1546,7 +1582,7 @@ body {
 }
 
 a:hover {
-    color: #FFFFFF;
+  color: #ffffff;
 }
 </style>
 <style scoped>
