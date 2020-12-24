@@ -247,11 +247,12 @@
               Технологический режим на {{ dt }}
             </h3>
           </div>
-          <select
+          <!-- <select
             name="Company"
             class="form-control tr-field-filter"
             id="companySelect"
             v-model="filter"
+            multiple
             @change="chooseField"
           >
             <option value="Все месторождения">Все месторождения</option>
@@ -261,8 +262,20 @@
             <option value="Нуралы">Нуралы</option>
             <option value="Аксай">Аксай</option>
             <option value="Аксай Южный">Аксай Южный</option>
-          </select>
-
+          </select> -->
+          <multiselect
+            v-model="filter"
+            :options="fieldFilterOptions"
+            :multiple="true"
+            :searchable="false"
+            :closeOnSelect="false"
+            group-values="fields"
+            group-label="group"
+            :group-select="true"
+            placeholder="Выберите месторождения"
+            track-by="name"
+            label="name">
+          </multiselect>
           <div
             @click="cancelEdit"
             v-if="edit"
@@ -6583,6 +6596,7 @@
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import Multiselect from 'vue-multiselect';
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 
 export default {
@@ -6591,6 +6605,7 @@ export default {
     TrTable,
     TrFullTable,
     SearchFormRefresh,
+    Multiselect,
     // FadeLoader,
   },
   beforeCreate: function () {},
@@ -6634,7 +6649,21 @@ export default {
       searched: false,
       sortParam: "",
       sortType: "asc",
-      filter: "Все месторождения",
+      // filter: "Все месторождения",
+      filter: [],
+      fieldFilterOptions: [
+        {
+          group: 'Все месторождения',
+          fields: [
+            { name: 'Акшабулак Центральный' },
+            { name: 'Акшабулак Южный' },
+            { name: 'Акшабулак Восточный' },
+            { name: 'Нуралы' },
+            { name: 'Аксай' },
+            { name: 'Аксай Южный' },
+          ]
+        }
+      ],
       dt: null,
       fullWells: [],
       editedWells: [],
@@ -6833,13 +6862,25 @@ export default {
           }
         });
     },
+    // chooseField() {
+    //   const { filter, fullWells } = this;
+    //   console.log(filter);
+    //   console.log(fullWells);
+    //   // if (!filter || filter == "Казгермунай") {
+    //   this.$store.commit("tr/SET_FILTER", filter);
+    //   if (!filter || filter == "Все месторождения") {
+    //     this.wells = fullWells;
+    //   } else {
+    //     this.wells = fullWells.filter((e) => e.field === filter);
+    //   }
+    // },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter);
+      console.log('filter = ', filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("tr/SET_FILTER", filter);
-      if (!filter || filter == "Все месторождения") {
+      if (!filter || filter.length === 0) {
         this.wells = fullWells;
       } else {
         this.wells = fullWells.filter((e) => e.field === filter);
@@ -6903,6 +6944,7 @@ export default {
   },
 };
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 /* @import "element-variables"; */
 body {
