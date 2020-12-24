@@ -15,7 +15,9 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
     header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/tr');
 }
 ?>
-</html>
+@section('sidebar_menu')
+    @include('partials.sidebar.menu')
+@endsection
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -38,39 +40,8 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
 <body>
 @include('layouts.navbar')
 <div class="no-row row" id="app">
-    @if (basename(Request::url()) === "visualcenter3")
-        @include('layouts.visual-center4-sidebar')
-    @elseif (basename(Request::url()) === "visualcenter4")
-        @include('layouts.visual-center4-sidebar')
-        @elseif (basename(Request::url()) === "visualcenter5")
-        @include('layouts.visual-center4-sidebar')
-        @elseif (basename(Request::url()) === "visualcenter6")
-        @include('layouts.visual-center4-sidebar')
-        @elseif (basename(Request::url()) === "visualcenter7")
-        @include('layouts.visual-center4-sidebar')        
-    @elseif (basename(Request::url()) === "tr" || basename(Request::url()) === "fa" || basename(Request::url()) === "trfa" || basename(Request::url()) === "tr_charts")
-        @include('layouts.tr-sidebar')
-    @elseif (basename(Request::url()) === "monitor")
-        @include('layouts.monitor-sidebar')
-    @else
-        @include('layouts.head-sidebar')
-    @endif
 
-    {{-- @if (basename(Request::url()) === "ru")
-     @include('layouts.sidebar')
-     @elseif (basename(Request::url()) === "visualcenter")
-     @include('layouts.visual-center-sidebar')
-     @elseif (basename(Request::url()) === "podborgno")
-     @include('layouts.gno-sidebar')
-     @elseif (basename(Request::url()) === "monitor")
-     @include('layouts.gno-sidebar')
-     @elseif (basename(Request::url()) === "visualcenter3")
-     @include('layouts.visual-center4-sidebar')
-     @elseif (basename(Request::url()) === "visualcenter4")
-     @include('layouts.visual-center4-sidebar')
-
-     @endif--}}
-
+    @include('layouts.head-sidebar')
 
     @if (basename(Request::url()) === "oilpivot")
         <div class="col">

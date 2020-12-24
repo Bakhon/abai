@@ -71,13 +71,6 @@ return $response;
 
     public function visualcenter3()
     {
-//$file = 'https://yandex.ru/news/quotes/graph_1006.json';
-//$file_name = 'D:/openserver/OpenServer/domains/localhost/public/js/json/graph_1006.json';
-//file_put_contents($file_name, file_get_contents($file));
-
-//Role::create(['name'=>'writer']);
-//$permission = Permission::create(['name'=>'writer post']);
-//auth()->user()->givePermissionTo('edit post');
         return view('visualcenter.visualcenter3');
     }
 
