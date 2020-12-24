@@ -125,7 +125,7 @@ Vue.component("Plotly", Plotly);
 
 export default {
   components: { PerfectScrollbar },
-  props: ["wellNumber", "wellIncl"],
+  props: ["wellNumber", "wellIncl", "isLoading"],
   data: function () {
     return {
       data: null,
@@ -194,10 +194,16 @@ export default {
     }
     Plotly.newPlot(data, layout, {modeBarButtonsToRemove: ['toImage']})
   },
-
+  // watch: {
+  //   isLoading: function (newVal, oldVal) {
+  //     this.$emit('update:isLoading', newVal);
+  //   },
+  // },
   mounted() {
     var wi = this.wellIncl.split('_');
     let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
+    this.$emit('update:isLoading', true);
+
     this.axios.get(uri).then((response) => {
 
       console.log(response);
@@ -242,6 +248,8 @@ export default {
       } else this.data = [];
 
 
+    }).finally(() => {
+      this.$emit('update:isLoading', false);
     })
   }
 
