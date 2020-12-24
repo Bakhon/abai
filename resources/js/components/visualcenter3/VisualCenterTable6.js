@@ -42,7 +42,7 @@ export default {
             this.tSum = response.data['Abdulgafarov1'][0][5] +
               response.data['Abdulgafarov2'][0][5] + response.data['Abdulgafarov3'][0][5] +
               response.data['Abdulgafarov4'][0][5] + response.data['Abdulgafarov5'][0][5];
-            this.t6 = [1, 0, 1, 2, 1, 0];
+            this.t6 = [1, 0, 1, 2, 2, 0];
             this.isEnableSpeedometers = true;
           }
         });

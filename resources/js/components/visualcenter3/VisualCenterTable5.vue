@@ -7,7 +7,7 @@
                 v-bind:dzo="dzoSelect"
             ></horizontal-indicators>
             <div class="d-flex flex-column first-string flex-sm-row mr-sm-2">
-                <div class="w-25 m-3 flex-column">
+                <div class="col-sm-3 p-3 flex-column">
                     <h5>
                         <strong>
                             Оперативные итоги<br />
@@ -30,7 +30,7 @@
                         <option :value="12" :disabled="actualMonth < 11">Январь - Декабрь 2020</option>
                     </select>
                 </div>
-                <div class="w-50 flex-column mt-3">
+                <div class="col-sm-6 flex-column pt-3">
                     <select class="w-100 p-2" :style="{background: '#2A2E5C', color: 'white'}" v-model="dzoSelect">
                         <option :value="'ALL'" :selected="'selected'">Все НДО</option>
                         <option v-for="company in fullCompanyNames" v-bind:value="company.code">{{ company.title }}</option>
@@ -60,7 +60,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="w-25 flex-column m-3">
+                <div class="col-sm-3 flex-column p-3">
                     <div class="w-25 float-right">
                         <div class="close2 d-none d-sm-block">Закрыть</div>
                     </div>
@@ -183,7 +183,14 @@
                     </div>
                 </div>
                 <div class="text-center p-3" v-else>
-                    <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="box">
+                        <div class="cat">
+                            <div class="cat__body"></div>
+                            <div class="cat__body"></div>
+                            <div class="cat__tail"></div>
+                            <div class="cat__head"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

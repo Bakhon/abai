@@ -41,7 +41,7 @@ export default {
             this.tSum = response.data['Marabayev1'][0][6] +
               response.data['Marabayev2'][0][6] + response.data['Marabayev3'][0][6] +
               response.data['Marabayev4'][0][6] + response.data['Marabayev5'][0][6];
-            this.t6 = [1, 0, 1, 2, 1];
+            this.t6 = [1, 0, 5, 10, 10, 0];
             this.isEnableSpeedometers = true;
           }
         });

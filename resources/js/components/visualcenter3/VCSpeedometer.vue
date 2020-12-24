@@ -32,6 +32,7 @@
                 :max="max"
                 step="0.1"
                 :tooltip-format="tooltipFormat"
+                tooltipColor="#fefefe"
             />
         </div>
     </div>
@@ -47,7 +48,8 @@ export default {
             default: function () {
                 return [1, 0, 50, 100, 48]
             }
-        }
+        },
+        sliderTooltip: '',
     },
     data: function () {
         return {
@@ -61,26 +63,40 @@ export default {
     },
     methods: {
         tooltipFormat: function () {
-            return this.tooltipValue;
+            if (typeof this.sliderTooltip !== "undefined") {
+                return this.sliderTooltip;
+            }
+            return new Intl.NumberFormat("ru-RU").format(this.tooltipValue);
         }
     },
     mounted() {
         let item = this.sliderValue;
         let rangeColor = '#fe5c5c';
+        let rangeColorInverse = '#009846';
         let slider1Value = [0, 33];
+        let slider1ValueInverse = [66, 100];
         let slider2Value = item[4];
-        if (slider2Value >= item[2]) {
-            slider1Value = [33, 74]
+        let sortValues = [Math.abs(item[1]), Math.abs(item[2]), Math.abs(item[3])];
+        let inverse = item[1] > item[2];
+        sortValues = sortValues.sort(function (a, b) {
+            return a - b;
+        });
+        if (slider2Value >= sortValues[1]) {
+            slider1Value = [33, 66]
+            slider1ValueInverse = [33, 66]
             rangeColor = '#237deb';
+            rangeColorInverse = '#237deb';
         }
-        if (slider2Value >= item[3]) {
-            slider1Value = [75, 100]
+        if (slider2Value >= sortValues[2]) {
+            slider1Value = [66, 100]
+            slider1ValueInverse = [0, 33]
             rangeColor = '#009846';
+            rangeColorInverse = '#fe5c5c';
         }
-        this.slider1Value = slider1Value;
+        this.slider1Value = inverse ? slider1ValueInverse : slider1Value;
         this.slider2Value = slider2Value;
         this.tooltipValue = item[2];
-        this.rangeColor = rangeColor;
+        this.rangeColor = inverse ? rangeColorInverse : rangeColor;
         this.min = item[1];
         this.max = item[3];
     }
