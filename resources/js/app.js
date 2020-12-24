@@ -110,8 +110,9 @@ Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').defau
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 
 
-Vue.prototype.trans = string => _.get(window.i18n, string);
+Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
+Vue.prototype.currentLang = window.current_lang;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

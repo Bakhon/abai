@@ -174,7 +174,7 @@
         <br>
         <div class="row corrosion">
           <div class="col-12">
-            <h4>{{ trans('monitoring.corrosion') }}</h4>
+            <h4>{{ trans('monitoring.corrosion_name') }}</h4>
           </div>
           <div class="col-4">
             <table class="table table-bordered economicModalTable">
@@ -535,7 +535,7 @@
             <calendar
                 is-expanded
                 :first-day-of-week="2"
-                :locale="{id: 'ru', masks: { weekdays: 'WW' }}"
+                :locale="{id: currentLang, masks: { weekdays: 'WW' }}"
                 :max-date="new Date()"
                 @dayclick="dayClicked"
             >

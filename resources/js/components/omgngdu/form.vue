@@ -1,19 +1,19 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>Месторождение</label>
+      <label>{{ trans('monitoring.field') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="field_id" v-model="formFields.field_id">
           <option v-for="row in fields" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>ГУ</label>
+      <label>{{ trans('monitoring.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu()">
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Дата и время</label>
+      <label>{{ trans('app.date_time') }}</label>
       <div class="form-label-group">
         <datetime
             type="date"
@@ -33,7 +33,7 @@
         <input type="hidden" name="date" v-model="formatedDate" class="form-control" placeholder="">
 
       </div>
-      <label>Давление на выходе насоса в ГУ, бар</label>
+      <label>{{ trans('monitoring.omgngdu.fields.pump_discharge_pressure') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.pump_discharge_pressure"
@@ -46,7 +46,7 @@
             placeholder=""
         >
       </div>
-      <label>Обводненность в ГУ, %</label>
+      <label>{{ trans('monitoring.omgngdu.fields.bsw') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.bsw"
@@ -59,7 +59,7 @@
             placeholder=""
         >
       </div>
-      <label>Суточная добыча воды, м3/сут</label>
+      <label>{{ trans('monitoring.omgngdu.fields.daily_water_production') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.daily_water_production"
@@ -74,7 +74,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>НГДУ</label>
+      <label>{{ trans('monitoring.ngdu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="ngdu_id" v-model="formFields.ngdu_id" @change="chooseNgdu($event)">
           <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
@@ -86,7 +86,7 @@
           <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Суточная добыча жидкости в ГУ, м3/сут</label>
+      <label>{{ trans('monitoring.omgngdu.fields.daily_fluid_production') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.daily_fluid_production"
@@ -99,7 +99,7 @@
             placeholder=""
         >
       </div>
-      <label>Температура на входе в печь в ГУ, С</label>
+      <label>{{ trans('monitoring.omgngdu.fields.heater_inlet_pressure') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.heater_inlet_pressure"
@@ -112,7 +112,7 @@
             placeholder=""
         >
       </div>
-      <label>Суточная добыча нефти, т/сут</label>
+      <label>{{ trans('monitoring.omgngdu.fields.daily_oil_production') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.daily_oil_production"
@@ -127,19 +127,19 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>ЦДНГ</label>
+      <label>{{ trans('monitoring.cdng') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="cdng_id" v-model="formFields.cdng_id" @change="chooseCdng($event)">
           <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Скважина</label>
+      <label>{{ trans('monitoring.well') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="well_id" v-model="formFields.well_id">
           <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Давление в буферной емкости в ГУ, бар</label>
+      <label>{{ trans('monitoring.omgngdu.fields.surge_tank_pressure') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.surge_tank_pressure"
@@ -152,7 +152,7 @@
             placeholder=""
         >
       </div>
-      <label>Количество газа в СИБ, ст.м3/сут</label>
+      <label>{{ trans('monitoring.omgngdu.fields.daily_gas_production_in_sib') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.daily_gas_production_in_sib"
@@ -165,7 +165,7 @@
             placeholder=""
         >
       </div>
-      <label>Температура на выходе из печи в ГУ, С</label>
+      <label>{{ trans('monitoring.omgngdu.fields.heater_output_pressure') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.heater_output_pressure"
@@ -180,7 +180,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-      <button type="submit" :disabled="!formFields.date" class="btn btn-success">Сохранить</button>
+      <button type="submit" :disabled="!formFields.date" class="btn btn-success">{{ trans('app.save') }}</button>
     </div>
   </div>
 </template>
@@ -189,11 +189,7 @@
 import Vue from 'vue'
 import {Datetime} from 'vue-datetime'
 import moment from 'moment'
-// You need a specific loader for CSS files
 import 'vue-datetime/dist/vue-datetime.css'
-import {Settings} from 'luxon'
-
-Settings.defaultLocale = 'ru'
 
 Vue.use(Datetime)
 

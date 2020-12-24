@@ -16,7 +16,7 @@
             <div class="col-9">
                 <table class="table table-bordered history__fields" v-if="selectedItem">
                     <tr>
-                        <th><b>Наименование</b></th>
+                        <th><b>{{ trans('app.param_name') }}</b></th>
                         <th>
                             <p><b>{{ previousUser }}</b></p>
                             <span>{{ previousDate }}</span>
@@ -27,7 +27,7 @@
                         </th>
                     </tr>
                     <tr v-for="(row, index) in selectedItem.payload" :key="index" :class="{'changed': row.changed}">
-                        <td>{{ row.name }}</td>
+                        <td>{{ trans(row.name) }}</td>
                         <td>{{ row.old }}</td>
                         <td>{{ row.new }}</td>
                     </tr>
@@ -35,7 +35,7 @@
             </div>
         </template>
         <template v-else>
-            <p class="w-100 text-center mb-0">Запись не редактировалась</p>
+            <p class="w-100 text-center mb-0">{{ trans('monitoring.history.no_history') }}</p>
         </template>
     </div>
 </template>

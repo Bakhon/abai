@@ -53,14 +53,14 @@ class WaterMeasurementController extends CrudController
             'links' => [
                 'list' => route('watermeasurement.list'),
             ],
-            'title' => 'База данных по промысловой жидкости',
+            'title' => trans('monitoring.wm.title'),
             'fields' => [
                 'date' => [
-                    'title' => 'Дата отбора',
+                    'title' => trans('monitoring.wm.fields.date'),
                     'type' => 'date',
                 ],
                 'other_objects' => [
-                    'title' => 'Прочие объекты',
+                    'title' => trans('monitoring.other_objects'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\OtherObjects::whereHas('watermeasurement')
@@ -78,7 +78,7 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
                 'ngdu' => [
-                    'title' => 'НГДУ',
+                    'title' => trans('monitoring.ngdu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('watermeasurement')
@@ -96,7 +96,7 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
                 'cdng' => [
-                    'title' => 'ЦДНГ',
+                    'title' => trans('monitoring.cdng'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('watermeasurement')
@@ -114,7 +114,7 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => trans('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('watermeasurement')
@@ -132,7 +132,7 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
                 'zu' => [
-                    'title' => 'ЗУ',
+                    'title' => trans('monitoring.zu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('watermeasurement')
@@ -150,7 +150,7 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
                 'well' => [
-                    'title' => 'Скважина',
+                    'title' => trans('monitoring.well'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('watermeasurement')
@@ -196,23 +196,23 @@ class WaterMeasurementController extends CrudController
                     'type' => 'numeric',
                 ],
                 'density' => [
-                    'title' => 'Плотность при 20°С, г/см³',
+                    'title' => trans('monitoring.wm.fields.density'),
                     'type' => 'numeric',
                 ],
                 'ph' => [
-                    'title' => 'рН',
+                    'title' => 'pH',
                     'type' => 'numeric',
                 ],
                 'mineralization' => [
-                    'title' => 'Общая минерализация, мг/дм³',
+                    'title' => trans('monitoring.wm.fields.mineralization'),
                     'type' => 'numeric',
                 ],
                 'total_hardness' => [
-                    'title' => 'Общая жесткость, мг-экв/дм³',
+                    'title' => trans('monitoring.wm.fields.total_hardness'),
                     'type' => 'numeric',
                 ],
                 'water_type_by_sulin' => [
-                    'title' => 'Тип воды по Сулину',
+                    'title' => trans('monitoring.wm.fields.water_type_by_sulin'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\WaterTypeBySulin::whereHas('watermeasurement')
@@ -230,47 +230,47 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
                 'content_of_petrolium_products' => [
-                    'title' => 'Содержание нефтепродуктов, мг/дм³',
+                    'title' => trans('monitoring.wm.fields.content_of_petrolium_products'),
                     'type' => 'numeric',
                 ],
                 'mechanical_impurities' => [
-                    'title' => 'Механические примеси, мг/дм³',
+                    'title' => trans('monitoring.wm.fields.mechanical_impurities'),
                     'type' => 'numeric',
                 ],
                 'strontium_content' => [
-                    'title' => 'Содержание стронция, мг/дм³',
+                    'title' => trans('monitoring.wm.fields.strontium_content'),
                     'type' => 'numeric',
                 ],
                 'barium_content' => [
-                    'title' => 'Содержание бария, мг/дм³',
+                    'title' => trans('monitoring.wm.fields.barium_content'),
                     'type' => 'numeric',
                 ],
                 'total_iron_content' => [
-                    'title' => 'Содержание общего железа мг/дм³',
+                    'title' => trans('monitoring.wm.fields.total_iron_content'),
                     'type' => 'numeric',
                 ],
                 'ferric_iron_content' => [
-                    'title' => 'Содержание трехвалентного железа мг/дм³',
+                    'title' => trans('monitoring.wm.fields.ferric_iron_content'),
                     'type' => 'numeric',
                 ],
                 'ferrous_iron_content' => [
-                    'title' => 'Содержание двухвалентного железа мг/дм³',
+                    'title' => trans('monitoring.wm.fields.ferrous_iron_content'),
                     'type' => 'numeric',
                 ],
                 'hydrogen_sulfide' => [
-                    'title' => 'H₂S, мг/дм³ (после буферной емкости)',
+                    'title' => trans('monitoring.wm.fields.hydrogen_sulfide'),
                     'type' => 'numeric',
                 ],
                 'oxygen' => [
-                    'title' => 'О₂, мг/дм³',
+                    'title' => trans('monitoring.wm.fields.oxygen'),
                     'type' => 'numeric',
                 ],
                 'carbon_dioxide' => [
-                    'title' => 'CO₂, мг/дм³ (после буферной емкости)',
+                    'title' => trans('monitoring.wm.fields.carbon_dioxide'),
                     'type' => 'numeric',
                 ],
                 'sulphate_reducing_bacteria' => [
-                    'title' => 'СВБ, кл/см³',
+                    'title' => trans('monitoring.wm.fields.sulphate_reducing_bacteria'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\SulphateReducingBacteria::whereHas('watermeasurement')
@@ -288,7 +288,7 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
                 'hydrocarbon_oxidizing_bacteria' => [
-                    'title' => 'УОБ, кл/см³',
+                    'title' => trans('monitoring.wm.fields.hydrocarbon_oxidizing_bacteria'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\HydrocarbonOxidizingBacteria::whereHas('watermeasurement')
@@ -306,7 +306,7 @@ class WaterMeasurementController extends CrudController
                     ]
                 ],
                 'thionic_bacteria' => [
-                    'title' => 'ТБ, кл/см³',
+                    'title' => trans('monitoring.wm.fields.thionic_bacteria'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\ThionicBacteria::whereHas('watermeasurement')

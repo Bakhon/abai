@@ -10,7 +10,7 @@
                 </div>
             @endif
             <div class="x_panel">
-                <h1>Редактирование данных ОМГ УХЭ</h1>
+                <h1>{{ trans('monitoring.omguhe.edit_title') }}</h1>
                 <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
                 <form action="{{ route('omguhe.update', $omguhe) }}" method="POST">
                     @method('patch')

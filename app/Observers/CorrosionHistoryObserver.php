@@ -21,20 +21,20 @@ class CorrosionHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'gu_id' => 'ГУ',
-            'ngdu_id' => 'НГДУ',
-            'cdng_id' => 'ЦДНГ',
-            'start_date_of_background_corrosion' => 'Дата начала',
-            'final_date_of_background_corrosion' => 'Дата окончания',
-            'background_corrosion_velocity' => 'Фоновая скорость',
-            'start_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата начало замера скорости коррозии с реагентом',
-            'final_date_of_corrosion_velocity_with_inhibitor_measure' => 'Дата окончания замера скорости коррозии с реагентом',
-            'corrosion_velocity_with_inhibitor' => 'Скорость коррозии',
-            'sample_number' => 'Номер образца-свидетеля',
-            'weight_before' => 'Масса до установки, гр',
-            'days' => 'Количество дней экспозиции',
-            'weight_after' => 'Масса после извлечения, гр',
-            'avg_speed' => 'Средняя скорость коррозии, мм/г',
+            'gu_id' => 'monitoring.gu',
+            'ngdu_id' => 'monitoring.ngdu',
+            'cdng_id' => 'monitoring.cdng',
+            'start_date_of_background_corrosion' => 'monitoring.corrosion.fields.start_date_of_background_corrosion',
+            'final_date_of_background_corrosion' => 'monitoring.corrosion.fields.final_date_of_background_corrosion',
+            'background_corrosion_velocity' => 'monitoring.corrosion.fields.background_corrosion_velocity',
+            'start_date_of_corrosion_velocity_with_inhibitor_measure' => 'monitoring.corrosion.fields.start_date_of_corrosion_velocity_with_inhibitor_measure',
+            'final_date_of_corrosion_velocity_with_inhibitor_measure' => 'monitoring.corrosion.fields.final_date_of_corrosion_velocity_with_inhibitor_measure',
+            'corrosion_velocity_with_inhibitor' => 'monitoring.corrosion.fields.corrosion_velocity_with_inhibitor',
+            'sample_number' => 'monitoring.corrosion.fields.sample_number',
+            'weight_before' => 'monitoring.corrosion.fields.weight_before',
+            'days' => 'monitoring.corrosion.fields.days',
+            'weight_after' => 'monitoring.corrosion.fields.weight_after',
+            'avg_speed' => 'monitoring.corrosion.fields.avg_speed',
         ];
 
         foreach ($fields as $field => $name) {

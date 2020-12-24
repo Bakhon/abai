@@ -1,13 +1,13 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>ГУ</label>
+      <label>{{ trans('monitoring.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id">
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Внутренний диаметр</label>
+      <label>{{ trans('monitoring.pipe.fields.inner_diameter') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.inner_diameter"
@@ -20,7 +20,7 @@
             placeholder=""
         >
       </div>
-      <label>Материал</label>
+      <label>{{ trans('monitoring.pipe.fields.material') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="material_id" v-model="formFields.material_id">
           <option v-for="row in materials" v-bind:value="row.id">{{ row.name }}</option>
@@ -28,7 +28,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>Длина</label>
+      <label>{{ trans('monitoring.pipe.fields.length') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.length"
@@ -41,7 +41,7 @@
             placeholder=""
         >
       </div>
-      <label>Толщина стенок</label>
+      <label>{{ trans('monitoring.pipe.fields.thickness') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.thickness"
@@ -54,7 +54,7 @@
             placeholder=""
         >
       </div>
-      <label>Участок</label>
+      <label>{{ trans('monitoring.pipe.fields.plot') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.plot"
@@ -67,7 +67,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>Внешний диаметр</label>
+      <label>{{ trans('monitoring.pipe.fields.outside_diameter') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.outside_diameter"
@@ -80,7 +80,7 @@
             placeholder=""
         >
       </div>
-      <label>Жесткость</label>
+      <label>{{ trans('monitoring.pipe.fields.roughness') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.roughness"
@@ -95,7 +95,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-      <button type="submit" :disabled="!valid" class="btn btn-success">Сохранить</button>
+      <button type="submit" :disabled="!valid" class="btn btn-success">{{ trans('app.save') }}</button>
     </div>
   </div>
 </template>

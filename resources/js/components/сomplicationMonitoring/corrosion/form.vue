@@ -1,13 +1,13 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>ГУ</label>
+      <label>{{ trans('monitoring.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id">
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Дата начала</label>
+      <label>{{ trans('monitoring.corrosion.fields.start_date_of_background_corrosion') }}</label>
       <div class="form-label-group">
         <datetime
             type="date"
@@ -28,7 +28,7 @@
                v-bind:value="formatDate(formFields.start_date_of_background_corrosion)"
                class="form-control" placeholder="">
       </div>
-      <label>Дата начало замера скорости коррозии с реагентом</label>
+      <label>{{ trans('monitoring.corrosion.fields.start_date_of_corrosion_velocity_with_inhibitor_measure') }}</label>
       <div class="form-label-group">
         <datetime
             type="date"
@@ -49,11 +49,11 @@
                v-bind:value="formatDate(formFields.start_date_of_corrosion_velocity_with_inhibitor_measure)"
                class="form-control" placeholder="">
       </div>
-      <label>Номер образца-свидетеля</label>
+      <label>{{ trans('monitoring.corrosion.fields.sample_number') }}</label>
       <div class="form-label-group">
         <input v-model="formFields.sample_number" type="text" name="sample_number" class="form-control" placeholder="">
       </div>
-      <label>Количество дней экспозиции</label>
+      <label>{{ trans('monitoring.corrosion.fields.days') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.days"
@@ -68,13 +68,13 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>НГДУ</label>
+      <label>{{ trans('monitoring.ngdu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="ngdu_id" v-model="formFields.ngdu_id">
           <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Дата окончания</label>
+      <label>{{ trans('monitoring.corrosion.fields.final_date_of_background_corrosion') }}</label>
       <div class="form-label-group">
         <datetime
             type="date"
@@ -95,7 +95,7 @@
                v-bind:value="formatDate(formFields.final_date_of_background_corrosion)"
                class="form-control" placeholder="">
       </div>
-      <label>Дата окончания замера скорости коррозии с реагентом</label>
+      <label>{{ trans('monitoring.corrosion.fields.final_date_of_corrosion_velocity_with_inhibitor_measure') }}</label>
       <div class="form-label-group">
         <datetime
             type="date"
@@ -116,7 +116,7 @@
                v-bind:value="formatDate(formFields.final_date_of_corrosion_velocity_with_inhibitor_measure)"
                class="form-control" placeholder="">
       </div>
-      <label>Масса до установки, гр</label>
+      <label>{{ trans('monitoring.corrosion.fields.weight_before') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.weight_before"
@@ -129,7 +129,7 @@
             placeholder=""
         >
       </div>
-      <label>Средняя скорость коррозии, мм/г</label>
+      <label>{{ trans('monitoring.corrosion.fields.avg_speed') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.avg_speed"
@@ -144,13 +144,13 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>ЦДНГ</label>
+      <label>{{ trans('monitoring.cdng') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="cdng_id" v-model="formFields.cdng_id">
           <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Фоновая скорость</label>
+      <label>{{ trans('monitoring.corrosion.fields.background_corrosion_velocity') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.background_corrosion_velocity"
@@ -163,7 +163,7 @@
             placeholder=""
         >
       </div>
-      <label>Скорость коррозии</label>
+      <label>{{ trans('monitoring.corrosion.fields.corrosion_velocity_with_inhibitor') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.corrosion_velocity_with_inhibitor"
@@ -176,7 +176,7 @@
             placeholder=""
         >
       </div>
-      <label>Масса после извлечения, гр</label>
+      <label>{{ trans('monitoring.corrosion.fields.weight_after') }}</label>
       <div class="form-label-group">
         <input
             v-model="formFields.weight_after"
@@ -192,7 +192,7 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
       <button type="submit" :disabled="!formFields.start_date_of_background_corrosion" class="btn btn-success">
-        Сохранить
+        {{ trans('app.save') }}
       </button>
     </div>
   </div>
@@ -201,12 +201,8 @@
 <script>
 import Vue from 'vue'
 import {Datetime} from 'vue-datetime'
-// You need a specific loader for CSS files
 import 'vue-datetime/dist/vue-datetime.css'
-import {Settings} from 'luxon'
-import moment from "moment";
-
-Settings.defaultLocale = 'ru'
+import moment from "moment"
 
 Vue.use(Datetime)
 

@@ -2,14 +2,14 @@
   <div class="col-xs-12 col-sm-12 col-md-12 row">
     <notifications></notifications>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>Год</label>
+      <label>{{ trans('app.year') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="date" v-model="fields.year" @change="checkDublicate"
                 v-show="years.length > 0">
           <option v-for="row in years" v-bind:value="row.id">{{ row.name }}</option>
         </select>
       </div>
-      <label>Qв, тыс.м³/год</label>
+      <label>{{ trans('monitoring.omgca.fields.q_v') }}</label>
       <div class="form-label-group">
         <input
             type="number"
@@ -24,10 +24,10 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>ГУ</label>
+      <label>{{ trans('monitoring.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" v-model="gu" @change="checkDublicate">
-          <option v-if="type && type === 'create'" value="all">Все ГУ</option>
+          <option v-if="type && type === 'create'" value="all">{{ trans('monitoring.all_gus') }}</option>
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
         </select>
         <input type="hidden" name="gu_id" v-bind:value="fields.gu">
@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>Планируемая дозировка, г/м3</label>
+      <label>{{ trans('monitoring.omgca.fields.plan_dosage') }}</label>
       <div class="form-label-group">
         <input
             type="number"
@@ -52,7 +52,7 @@
     <div class="col-xs-12 col-sm-12 col-md-12 text-center">
       <button type="submit" :disabled="!fields.year || (!fields.gu && !fields.all_gus) || dublicate"
               class="btn btn-success">
-        Сохранить
+        {{ trans('app.save') }}
       </button>
     </div>
   </div>
@@ -150,7 +150,7 @@ export default {
           if (data) {
             this.dublicate = false;
           } else {
-            this.$notifyInfo("На эту дату по этому ГУ уже есть информация!");
+            this.$notifyInfo(this.trans('monitoring.omgca.have_info_about_gu'));
             this.dublicate = true;
           }
         });

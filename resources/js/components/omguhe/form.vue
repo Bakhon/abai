@@ -1,7 +1,7 @@
 <template>
     <div class="col-xs-12 col-sm-12 col-md-12 row">
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>Месторождение</label>
+            <label>{{ trans('monitoring.field') }}</label>
             <div class="form-label-group">
                 <select
                     class="form-control"
@@ -13,7 +13,7 @@
                     </option>
                 </select>
             </div>
-            <label>ГУ</label>
+            <label>{{ trans('monitoring.gu') }}</label>
             <div class="form-label-group">
                 <select
                     class="form-control"
@@ -26,7 +26,7 @@
                     </option>
                 </select>
             </div>
-            <label> Дата и время </label>
+            <label> {{ trans('app.date_time') }} </label>
             <div class="form-label-group">
                 <datetime
                     type="datetime"
@@ -57,17 +57,17 @@
                     v-model="formFields.out_of_service_оf_dosing"
                 />
                 <label class="form-check-label" for="out_of_service_оf_dosing"
-                >Простой дозатора, сутки</label
+                >{{ trans('monitoring.omguhe.fields.dosator_idle') }}</label
                 >
             </div>
             <div class="form-label-group" v-show="formFields.out_of_service_оf_dosing">
-                <label>Причина</label>
+                <label>{{ trans('monitoring.omguhe.fields.reason') }}</label>
                 <textarea v-model="formFields.reason" type="text" name="reason" class="form-control" placeholder="">
         </textarea>
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>НГДУ</label>
+            <label>{{ trans('monitoring.ngdu') }}</label>
             <div class="form-label-group">
                 <select
                     class="form-control"
@@ -80,7 +80,7 @@
                     </option>
                 </select>
             </div>
-            <label>ЗУ</label>
+            <label>{{ trans('monitoring.zu') }}</label>
             <div class="form-label-group">
                 <select
                     class="form-control"
@@ -93,7 +93,7 @@
                     </option>
                 </select>
             </div>
-            <label>Уровень</label>
+            <label>{{ trans('monitoring.level') }}</label>
             <div class="form-label-group">
                 <input
                     type="hidden"
@@ -132,7 +132,7 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>ЦДНГ</label>
+            <label>{{ trans('monitoring.cdng') }}</label>
             <div class="form-label-group">
                 <select
                     class="form-control"
@@ -145,7 +145,7 @@
                     </option>
                 </select>
             </div>
-            <label>Скважина</label>
+            <label>{{ trans('monitoring.well') }}</label>
             <div class="form-label-group">
                 <select class="form-control" name="well_id" v-model="formFields.well_id">
                     <option v-for="row in wells" v-bind:value="row.id">
@@ -153,7 +153,7 @@
                     </option>
                 </select>
             </div>
-            <label>Ингибитор</label>
+            <label>{{ trans('monitoring.omguhe.fields.inhibitor') }}</label>
             <div class="form-label-group">
                 <select
                     class="form-control"
@@ -173,7 +173,7 @@
                 id="fill_status"
                 v-model="formFields.fill_status"
                 />
-                <label class="form-check-label" for="fill_status">Заправка</label>
+                <label class="form-check-label" for="fill_status">{{ trans('monitoring.omguhe.fields.fill') }}</label>
             </div>
             <div class="form-label-group" v-show="formFields.fill_status">
                 <input
@@ -187,12 +187,12 @@
                 id="fill"
                 placeholder=""
                 />
-                <label class="form-check-label" for="fill">Заправка</label>
+                <label class="form-check-label" for="fill">{{ trans('monitoring.omguhe.fields.fill') }}</label>
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
             <button type="submit" :disabled="!formFields.date" class="btn btn-success">
-                Сохранить
+              {{ trans('app.save') }}
             </button>
         </div>
     </div>
@@ -202,10 +202,8 @@
 import Vue from "vue";
 import {Datetime} from "vue-datetime";
 import "vue-datetime/dist/vue-datetime.css";
-import {Settings} from "luxon";
 import moment from "moment";
 
-Settings.defaultLocale = "ru";
 
 Vue.use(Datetime);
 

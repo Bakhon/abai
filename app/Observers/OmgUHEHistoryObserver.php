@@ -21,19 +21,19 @@ class OmgUHEHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'ngdu_id' => 'НГДУ',
-            'cdng_id' => 'ЦДНГ',
-            'gu_id' => 'ГУ',
-            'zu_id' => 'ЗУ',
-            'well_id' => 'Скважина',
-            'date' => 'Дата и время',
-            'inhibitor_id' => 'Ингибитор',
-            'field_id' => 'Месторождение',
-            'fill' => 'Заправка',
-            'level' => 'Уровень',
-            'out_of_service_оf_dosing' => 'Простой дозатора, сутки',
-            'current_dosage' => 'Фактическая дозировка, г/м3',
-            'reason' => 'Причина',
+            'ngdu_id' => 'monitoring.ngdu',
+            'cdng_id' => 'monitoring.cdng',
+            'gu_id' => 'monitoring.gu',
+            'zu_id' => 'monitoring.zu',
+            'well_id' => 'monitoring.well',
+            'date' => 'app.date_time',
+            'inhibitor_id' => 'monitoring.omguhe.fields.inhibitor',
+            'field_id' => 'monitoring.field',
+            'fill' => 'monitoring.omguhe.fields.fill',
+            'level' => 'monitoring.level',
+            'out_of_service_оf_dosing' => 'monitoring.omguhe.fields.dosator_idle',
+            'current_dosage' => 'monitoring.omguhe.fields.fact_dosage',
+            'reason' => 'monitoring.omguhe.fields.reason',
         ];
 
         foreach ($fields as $field => $name) {
