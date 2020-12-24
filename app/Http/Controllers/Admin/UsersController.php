@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Filters\UserFilter;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Http\Requests\IndexTableRequest;
 use App\User;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class UsersController extends Controller
                     'title' => 'Имя пользователя',
                     'type' => 'string',
                 ],
-                'company' => [
+                'org' => [
                     'title' => 'Компания',
                     'type' => 'string',
                 ],
@@ -73,8 +74,9 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         $roles = \Spatie\Permission\Models\Role::all();
+        $orgs = \App\Models\Refs\Org::all();
 
-        return view('admin.users.edit', compact('user', 'roles'));
+        return view('admin.users.edit', compact('user', 'roles', 'orgs'));
     }
 
     /**
@@ -84,8 +86,12 @@ class UsersController extends Controller
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
+        $user->update([
+            'org_id' => $request->org_id
+        ]);
+
         $user->syncRoles($request->roles);
         return redirect()->route('admin.users.index')->with('success', __('app.updated'));
     }

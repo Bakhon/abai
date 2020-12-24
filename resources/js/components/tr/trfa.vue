@@ -20,10 +20,18 @@
           >
           <a href="tr" class="col but-nav__link but trfabuttech"
             ><i style="margin-right: 10px"
-              ><svg width="14" height="17" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z" fill="white"/>
-</svg>
-</i
+              ><svg
+                width="14"
+                height="17"
+                viewBox="0 0 14 17"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.75 16.905L0 11.655L1.215 10.71L6.7425 15.0075L12.2775 10.7032L13.5 11.655L6.75 16.905ZM6.75 13.7025L0 8.45249L1.215 7.50749L6.7425 11.805L12.2775 7.49999L13.5 8.45249L6.75 13.7025ZM6.75 10.5L1.2225 6.2025L0 5.25L6.75 0L13.5 5.25L12.27 6.2025L6.75 10.5Z"
+                  fill="white"
+                />
+              </svg> </i
             >Технологический режим</a
           >
         </div>
@@ -39,7 +47,7 @@
                 <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
         </div> -->
       </div>
-      <div class="row sec_nav trfacolmdrowsecnav">
+      <div class="row sec_nav trfacolmdrowsecnav" style=" display: flex;justify-content: center;">
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -52,9 +60,14 @@
           >
             Выберите график
           </a>
-          <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink" style="   width: 576px;">
+          <div
+            class="dropdown-menu fadropmenu"
+            aria-labelledby="dropdownMenuLink"
+            style="width: 576px"
+          >
             <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
-              >Распределение фонда скважин по основной причине снижения дебита нефти</a
+              >Распределение фонда скважин по основной причине снижения дебита
+              нефти</a
             >
             <a class="dropdown-item" href="#" @click="chartShow = 'bar'"
               >Распределение суммарных отклонений TP по факторам, т/сут</a
@@ -80,10 +93,13 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-
             Выберите дату
           </button>
-          <div class="dropdown-menu fadropmenu" aria-labelledby="dropdownMenuLink" style="background: #656A8A;">
+          <div
+            class="dropdown-menu fadropmenu"
+            aria-labelledby="dropdownMenuLink"
+            style="background: #656a8a"
+          >
             <label for="inputDate">Введите опорную дату:</label>
             <input type="date" class="form-control" v-model="date1" />
             <label for="inputDate">Введите дату для сравнения:</label>
@@ -96,7 +112,10 @@
       </div>
       <div class="sec_nav">
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }}</h4> -->
-        <div class="filter_chart row" style=" display: flex;justify-content: center;">
+        <div
+          class="filter_chart row"
+          style="display: flex; justify-content: center"
+        >
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -130,20 +149,25 @@
             </select>
           </div>
         </div>
-        <div class="col-sm" v-if="chartShow === 'bar'">
-          <div class="second_block" style="display: flex; justify-content: center;">
+        <div class="" v-if="chartShow === 'bar'">
+          <div
+            class="second_block"
+            style="display: flex; justify-content: center"
+          >
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
-              width="1200"
-              height='500'
+              width="800"
               :options="chartBarOptions"
               :series="[{ name: '', data: barChartData }]"
             ></apexchart>
           </div>
         </div>
-        <div class="col-sm" v-if="chartShow === 'pie'">
-          <div class="first_block" style="display: flex; justify-content: center;">
+        <div class="" v-if="chartShow === 'pie'">
+          <div
+            class="first_block"
+            style="display: flex; justify-content: center"
+          >
             <apexchart
               v-if="pieChartData && pieChartRerender"
               type="donut"
@@ -188,7 +212,7 @@ export default {
         filtersText = filtersText
           ? `${filtersText}, ${this.chartFilter_exp_meth}`
           : this.chartFilter_exp_meth;
-      if (filtersText) filtersText = `${filtersText}`;
+      if (filtersText) filtersText = `по ${filtersText}`;
 
       return filtersText;
     },
@@ -355,30 +379,31 @@ export default {
       // ],
       chartBarOptions: {
         chart: {
-          height: 350,
+          height: "100%",
           type: "bar",
           toolbar: {
             show: true,
           },
+          fontFamily: "Harmonia-sans, Helvetica, Arial, sans-serif",
         },
         title: {
           align: "center",
           offsetY: 18,
           style: {
-            fontSize: '14px',
-            color: "#008FFB",
+            fontSize: "14px",
+            color: "#5FA7FF",
           },
         },
         subtitle: {
-        align: "center",
-        offsetY: 36,
-        margin: 10,
-        style: {
-          fontSize: '14px',
-          color: "#008FFB",
-          fontWeight: 900,
+          align: "center",
+          offsetY: 36,
+          margin: 10,
+          style: {
+            fontSize: "14px",
+            color: "#5FA7FF",
+            fontWeight: 700,
+          },
         },
-      },
         plotOptions: {
           bar: {
             dataLabels: {
@@ -391,13 +416,13 @@ export default {
         //   labels: {
         //     useSeriesColors: true,
         //   },
-        // }, 
+        // },
         dataLabels: {
           enabled: true,
           offsetY: -20,
           style: {
             fontSize: "12px",
-            colors: ["#008ffb"],
+            colors: ["#5FA7FF"],
           },
         },
 
@@ -430,11 +455,11 @@ export default {
           tooltip: {
             enabled: true,
           },
-          labels : {
-            style : {
-              colors: "#008ffb"
-            }
-          }
+          labels: {
+            style: {
+              colors: "#5FA7FF",
+            },
+          },
         },
         yaxis: {
           axisBorder: {
@@ -451,15 +476,14 @@ export default {
           },
           title: {
             style: {
-              color: "#008ffb"
-            }
-
+              color: "#5FA7FF",
+            },
           },
-          labels : {
-            style : {
-              colors: "#008ffb"
-            }
-          }
+          labels: {
+            style: {
+              colors: "#5FA7FF",
+            },
+          },
         },
       },
       chartOptions: {
@@ -473,18 +497,18 @@ export default {
           align: "center",
           offsetY: 18,
           style: {
-            fontSize: '14px',
-            color: "#008FFB",
+            fontSize: "14px",
+            color: "#5FA7FF",
           },
         },
         subtitle: {
           align: "center",
           offsetY: 36,
-          margin: 10,
+          margin: 15,
           style: {
-            fontSize: '14px',
-            color: "#008FFB",
-            fontWeight: 900,
+            fontSize: "14px",
+            color: "#5FA7FF",
+            fontWeight: 700,
           },
         },
         chart: {
@@ -492,6 +516,7 @@ export default {
           toolbar: {
             show: true,
           },
+          fontFamily: "Harmonia-sans, Helvetica, Arial, sans-serif",
         },
         dataLabels: {
           enabled: true,
@@ -503,7 +528,7 @@ export default {
           labels: {
             useSeriesColors: true,
           },
-        }, 
+        },
         colors: ["#ff382c", "#b051df", "#59c9fa", "#007bff"],
         plotOptions: {
           pie: {
@@ -542,6 +567,7 @@ export default {
   },
   methods: {
     chooseDt() {
+      this.$store.commit("globalloading/SET_LOADING", true);
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
@@ -572,6 +598,7 @@ export default {
               "/"
           )
           .then((response) => {
+            this.$store.commit("globalloading/SET_LOADING", false);
             let data = response.data;
             this.editdtm = choosenDt[1];
             this.editdty = choosenDt[0];
@@ -603,6 +630,7 @@ export default {
     },
   },
   created: function () {
+    this.$store.commit("globalloading/SET_LOADING", true);
     if (this.$store.getters["fa/chart"])
       this.chartShow = this.chartArr[this.$store.getters["fa/chart"]];
     var today = new Date();
@@ -647,6 +675,7 @@ export default {
           "/"
       )
       .then((response) => {
+        this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         this.editdtm = mm;
         console.log(this.editdtm);
@@ -664,22 +693,12 @@ export default {
         } else {
           console.log("No data");
         }
-        if (this.editdtm < 10 && this.editdtprevm < 10) {
-          this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
-        } else if (this.editdtm <= 10 && this.editdtprevm <= 10) {
-          this.dt = "01" + "." + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
-        } else if (this.editdtm >= 10 && this.editdtprevm < 10) {
-          this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
-          this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
-        }
-        if (this.editdtm < 10) {
+        if (String(this.editdtm).length < 2) {
           this.dt = "01" + ".0" + this.editdtm + "." + this.editdty;
         } else {
           this.dt = "01" + "." + this.editdtm + "." + this.editdty;
         }
-        if (this.editdtprevm < 10) {
+        if (String(this.editdtprevm).length < 2) {
           this.dt2 = "01" + ".0" + this.editdtprevm + "." + this.editdtprevy;
         } else {
           this.dt2 = "01" + "." + this.editdtprevm + "." + this.editdtprevy;
@@ -721,16 +740,19 @@ export default {
   margin: 0 20px;
   width: 195px;
 }
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
+.second_block {
+  height: calc(100vh - 386px);
+  width: calc(1.6 * (100vh - 365px));
+  max-width: calc(100vw - 440px);
+  min-width: 800px;
+  min-height: 500px;
+  margin: 0 auto;
 }
 body {
   color: white !important;
 }
 .trfabuttech {
-  margin-left: 57px;
+  margin-left: 15px;
 }
 .trfacolmdrowsecnav {
   margin-bottom: 7px;
@@ -748,16 +770,14 @@ body {
   width: 195px;
   background: #5973cc !important;
 }
+a:hover {
+    color: #FFFFFF;
+}
 </style>
 <style scoped >
 .tr-chart {
   display: flex;
   width: 100%;
-}
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
 }
 .tr-chart__content {
   flex-basis: 0;
@@ -775,5 +795,4 @@ body {
   color: #ffffff;
   width: 246px;
 }
-
 </style>

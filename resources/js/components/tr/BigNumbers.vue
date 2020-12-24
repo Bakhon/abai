@@ -1,10 +1,7 @@
 <template>
   <div class="big-numbers">
     <!-- <h4>Цифровые показатели</h4> -->
-    <div class="fadee tr-chart__loader" v-if="isLoading">
-      <fade-loader :loading="isLoading"></fade-loader>
-    </div>
-    <div class="big-numbers__list" v-else>
+    <div class="big-numbers__list">
       <div v-for="item in numbers" :key="item.name" class="big-numbers__item">
         <div class="big-numbers__count h2">{{ item.count }}</div>
         <div class="big-numbers__name">{{ item.name }}</div>
@@ -42,10 +39,6 @@ export default {
     param: {
       type: String,
       default: "exp_meth",
-    },
-    isLoading: {
-      type: Boolean,
-      default: false,
     },
     baseName: {
       type: String,
@@ -120,7 +113,7 @@ export default {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
+  margin-left: 5px;
   box-sizing: border-box;
 }
 .big-numbers__list :first-child {
@@ -132,7 +125,7 @@ export default {
 .big-numbers__item {
   padding: 30px 20px;
   background: #272953;
-  margin: 10px;
+  margin: 7px 0 7px 10px;
 }
 .big-numbers__name {
   font-size: 17px;

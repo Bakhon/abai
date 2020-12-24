@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Models\Refs\Org;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'username', 'password',
+        'name', 'username', 'password', 'org_id'
     ];
 
     /**
@@ -37,4 +38,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function org()
+    {
+        return $this->belongsTo(\App\Models\Refs\Org::class);
+    }
+
+    public function getOrganizations()
+    {
+        if($this->org_id) {
+            return Org::query()
+                ->where('id', $this->org_id)
+                ->orWhere('parent_id', $this->org_id)
+                ->get();
+        }
+        else {
+            return new \Illuminate\Database\Eloquent\Collection();
+        }
+    }
+
+    public function getOrganizationIds()
+    {
+        return $this->getOrganizations()->pluck('id')->toArray();
+    }
 }

@@ -11,6 +11,12 @@ object-assign
 */
 
 /*!
+   * perfect-scrollbar v1.5.0
+   * Copyright 2020 Hyunje Jun, MDBootstrap and Contributors
+   * Licensed under MIT
+   */
+
+/*!
   * Bootstrap v4.5.3 (https://getbootstrap.com/)
   * Copyright 2011-2020 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
@@ -25,9 +31,23 @@ object-assign
  */
 
 /*!
- * ApexCharts v3.22.1
+ * ApexCharts v3.23.0
  * (c) 2018-2020 Juned Chhipa
  * Released under the MIT License.
+ */
+
+/*!
+ * Bootstrap-select v1.13.18 (https://developer.snapappointments.com/bootstrap-select)
+ *
+ * Copyright 2012-2020 SnapAppointments, LLC
+ * Licensed under MIT (https://github.com/snapappointments/bootstrap-select/blob/master/LICENSE)
+ */
+
+/*!
+ * Chart.js v2.9.4
+ * https://www.chartjs.org
+ * (c) 2020 Chart.js Contributors
+ * Released under the MIT License
  */
 
 /*!
@@ -103,28 +123,26 @@ object-assign
  */
 
 /*!
- * vue-friendly-iframe v0.18.0 (https://github.com/officert/vue-friendly-iframe)
- * (c) 2020 Tim Officer
- * Released under the MIT License.
+ * vuex v3.6.0
+ * (c) 2020 Evan You
+ * @license MIT
  */
 
-/*! Apply the style for chart */
+/*!
+* vue-round-slider v1.0.1
+*
+* @website https://vue.roundsliderui.com/
+* @copyright (c) 2020 Soundar
+* @license MIT
+*/
 
-/*! Bind the Event handler */
+/*! Hammer.JS - v2.0.7 - 2016-04-22
+ * http://hammerjs.github.io/
+ *
+ * Copyright (c) 2016 Jorik Tangelder;
+ * Licensed under the MIT license */
 
-/*! Calculate column size */
-
-/*! Calculate row size */
-
-/*! Find the Events type */
-
-/*! Generate axis labels */
-
-/*! Set theme */
-
-/*! Set theme for accumulation chart */
-
-/*! UnBind the Event handler */
+/*! roundSlider v1.6.1 | (c) 2015-2020, Soundar | MIT license | http://roundsliderui.com/licence.html */
 
 /*! svg.draggable.js - v2.2.2 - 2019-01-08
   * https://github.com/svgdotjs/svg.draggable.js
@@ -141,6 +159,21 @@ object-assign
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+ */
+
+/**
+ * Checks if an event is supported in the current execution environment.
+ *
+ * NOTE: This will not work correctly for non-generic events such as `change`,
+ * `reset`, `load`, `error`, and `select`.
+ *
+ * Borrows from Modernizr.
+ *
+ * @param {string} eventNameSuffix Event name, e.g. "click".
+ * @param {?boolean} capture Check if the capture phase is supported.
+ * @return {boolean} True if the event is supported.
+ * @internal
+ * @license Modernizr 3.0.0pre (Custom Build) | MIT
  */
 
 /**!
@@ -167,3 +200,7 @@ object-assign
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+
+//! moment.js
+
+//! moment.js locale configuration
