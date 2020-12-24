@@ -1,5 +1,5 @@
 <template>
-  <div class="row remove-sidebar-container2">
+  <div class="row">
     <div class="col-12 big-data-page-content"
          :class="{'with-opened-filter': selectedReport}">
 
