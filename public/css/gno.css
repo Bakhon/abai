@@ -1496,6 +1496,7 @@ input.checkbox-q-liquid {
     font-size: 16px;
     font-weight: bold;
     height: 38px;
+    outline: none;
 }
 
 .button-pdf:hover {
@@ -1532,6 +1533,170 @@ input.checkbox-q-liquid {
 .nno-modal-buttons-container {
     position: relative;
 }
+
+.report {
+    background-color: white;
+    width: 1000px;
+    height: 1403px;
+}
+
+.title-report > h1 {
+    color: black;
+    padding-top: 20px;
+    padding-left: 60px;
+    font-weight: bold;
+}
+
+.first-report-block {
+    border-color: black;
+    width: 100%;
+}
+
+.report-block-title {
+    background-color: #323370;
+    width: 100%;
+    left: 90px;
+    top: 15px;
+    height: 60px;
+    padding-top: 14px;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid #8c8caf;
+}
+
+.second-report-block-title {
+    background-color: #656a8a;
+    width: 100%;
+    left: 90px;
+    top: 35px;
+    height: 60px;
+    padding-top: 14px;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid #8c8caf;
+}
+
+.second-report-block-title-main {
+    background-color: #323370;
+    width: 100%;
+    left: 90px;
+    top: 35px;
+    height: 60px;
+    padding-top: 18px;
+    font-weight: bold;
+    font-size: 20px;
+    border: 2px solid #8c8caf;
+}
+
+.second-report-block-title-main-2 {
+    background-color: #656a8a;
+    width: 100%;
+    left: 90px;
+    top: 35px;
+    height: 60px;
+    padding-top: 18px;
+    font-weight: bold;
+    font-size: 20px;
+    border: 2px solid #8c8caf;
+}
+
+.first-report-block-data {
+    width: 100%;
+}
+
+.second-report-block {
+    width: 100%;
+}
+
+.report-block-data {
+    background-color: white;
+    width: 100%;
+    left: 90px;
+    top: 15px;
+    height: 35px;
+    padding-top: 14px;
+    font-size: 15px;
+    color: black;
+    border-left: 2px solid #8c8caf;
+    border-right: 2px solid #8c8caf;
+}
+
+.report-block-data-second-bottom {
+    background-color: white;
+    width: 100%;
+    left: 90px;
+    top: 15px;
+    height: 45px;
+    padding-top: 14px;
+    font-size: 15px;
+    color: black;
+    border-left: 2px solid #8c8caf;
+    border-right: 2px solid #8c8caf;
+    border-bottom: 2px solid #8c8caf;
+}
+
+.report-block-data-second-bottom-2 {
+    background-color: white;
+    width: 100%;
+    left: 90px;
+    top: 35px;
+    height: 45px;
+    padding-top: 14px;
+    font-size: 15px;
+    color: black;
+    border-left: 2px solid #8c8caf;
+    border-right: 2px solid #8c8caf;
+    border-bottom: 2px solid #8c8caf;
+}
+
+.report-block-data-second-top {
+    background-color: white;
+    width: 100%;
+    left: 90px;
+    top: 35px;
+    height: 35px;
+    padding-top: 14px;
+    font-size: 15px;
+    color: black;
+    border-left: 2px solid #8c8caf;
+    border-right: 2px solid #8c8caf;
+}
+
+.report-block-data-third-top {
+    background-color: white;
+    width: 100%;
+    left: 75px;
+    top: 30px;
+    height: 35px;
+    padding-top: 14px;
+    font-size: 15px;
+    color: black;
+    border-left: 2px solid #8c8caf;
+    border-right: 2px solid #8c8caf;
+}
+
+.report-block-data-third-bottom {
+    background-color: white;
+    width: 100%;
+    left: 90px;
+    top: 35px;
+    height: 45px;
+    padding-top: 14px;
+    font-size: 15px;
+    color: black;
+    border-left: 2px solid #8c8caf;
+    border-right: 2px solid #8c8caf;
+    border-bottom: 2px solid #8c8caf;
+}
+
+.gno-chart-clone {
+    top: 70px;
+    left: 75px;
+    background-color: #323370;
+}
+
+
+
 
 /*cheat-code потом эти проблемы необходимо будет решить глобально*/
 #app #sidebar-container2 {

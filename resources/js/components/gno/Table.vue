@@ -1,6 +1,6 @@
 <template>
   <div class="gno-page-wrapper">
-    <div ref="gno-page">
+    <div>
       <div class="row gno-page-container">
         <div class="second-column col-lg-3 order-md-2">
           <div class="col-md-12 second-column-container">
@@ -1617,8 +1617,198 @@
           <!-- Конец блока -->
         </div>
       </div>
-    </div>
 
+      <div class="report" ref="gno-page">
+        <div class="title-report col-12">
+          <h1>ИС ABAI. Модуль Подбор ГНО.</h1>
+        </div>
+
+        <div class="first-report-block row">
+		      <div class="report-block-title col-5">
+            Отчет по подбору ГНО
+		      </div>
+		      <div class="report-block-title col-5">
+            СКВАЖИНА {{wellNumber}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data col-5">
+            Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}
+		      </div>
+		      <div class="report-block-data col-5">
+            Месторождение: {{field}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data col-5">
+            Выполнил технолог: КМГИ
+		      </div>
+		      <div class="report-block-data col-5">
+            Горизонт: {{horizon}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data col-5">
+            
+		      </div>
+		      <div class="report-block-data col-5">
+            Способ эксплуатации: {{ expMeth }}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-bottom col-5">
+            
+		      </div>
+		      <div class="report-block-data-second-bottom col-5">
+            Орг.структура: {{ ngdu }}
+		      </div>
+	      </div>
+
+        <div class="second-report-block row">
+		      <div class="second-report-block-title-main col-10" style="border-bottom: 2px solid #8c8caf">
+            ДАННЫЕ ДЛЯ РАСЧЕТА
+		      </div>
+	      </div>
+
+        <div class="first-report-block row">
+		      <div class="second-report-block-title col-5">
+            Конструкция
+		      </div>
+		      <div class="second-report-block-title col-5">
+            PVT
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            Наружный Ø ЭК: {{casOD + ' мм'}}
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Рнас: {{PBubblePoint + ' атм'}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            Внутренний Ø ЭК: {{casID}}
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Газовый фактор: {{gorInput}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            Нперф (ВДП): {{hPerf + ' м'}}
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Температура пласта: {{tRes + ' ℃'}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            Удл.на Нперф: {{udl + ' м'}}
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Вязкость нефти (пл.усл.): {{viscOilRc + ' сПз'}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            Текущий забой: {{curr + ' м'}}
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Вязкость воды (пл.усл.): {{viscWaterRc + ' г/cм³'}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Плотность нефти:  {{densOil + ' г/cм³'}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-bottom-2 col-5">
+            
+		      </div>
+		      <div class="report-block-data-second-bottom-2 col-5">
+            Плотность воды:  {{densWater + ' г/cм³'}}
+		      </div>
+	      </div>
+
+        <div class="second-report-block row">
+		      <div class="second-report-block-title-main-2 col-10" style="border-bottom: 2px solid #8c8caf">
+            Технологический режим: 
+		      </div>
+	      </div>
+
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            Qж: {{qL + ' м³/сут'}}
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Pзаб:  {{bhp + ' атм'}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            Обв: {{wct + ' %'}}
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Qн:  {{qO + ' т/сут '}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-second-top col-5">
+            Ндин: {{hDyn + ' м'}}
+		      </div>
+		      <div class="report-block-data-second-top col-5">
+            Рзатр:  {{pAnnular + ' атм'}}
+		      </div>
+	      </div>
+
+        <div class="first-report-block-data row">
+		      <div class="report-block-data-third-bottom col-5">
+            Гф: {{gor + ' м³/т'}}
+		      </div>
+		      <div class="report-block-data-third-bottom col-5">
+            Рпл:  {{pRes + ' атм'}}
+		      </div>
+	      </div>
+
+        <div class="gno-chart-clone col-10">
+          <gno-line-points-chart></gno-line-points-chart>
+        </div>
+        
+       
+        
+		     
+
+       
+
+         <!-- <div class="first-report-block-data row">
+		      <div class="report-block-data col-5">
+            Отчет по подбору ГНО
+		      </div>
+		      <div class="report-block-data col-5">
+            СКВАЖИНА
+		      </div>
+	      </div> -->
+      </div>
+    </div>
     <notifications position="top"></notifications>
 
     <full-page-loader v-show="isLoading"/>
@@ -2516,7 +2706,6 @@ export default {
       }
 
 
-
       let jsonData = JSON.stringify(
         {
           "curveSelect": this.curveSelect,
@@ -2551,6 +2740,17 @@ export default {
         Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
       } else {
         this.isLoading = true;
+
+      if(this.casOD < 127) {
+        Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
+      }
+
+      if (this.qlCelValue.split(' ')[0] < 28) {
+        Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
+      }
+      if (this.qlCelValue.split(' ')[0] > 106) {
+        Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
+      }
 
         this.axios.post(uri, jsonData).then((response) => {
           var data = response.data;
@@ -2883,7 +3083,7 @@ export default {
           img_png.attr("src", dataURL);
         });
       });
-    }
+    },
   },
 };
 </script>
