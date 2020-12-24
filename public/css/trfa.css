@@ -24,6 +24,7 @@
 .trfa_page.trfa_page {
     padding: 0 !important;
     display: flex;
+    position: static;
 }
 .trfa_page .level1-content  {
     margin: 0;
@@ -36,6 +37,7 @@
 #app > .container-fluid.container-fluid {
     max-width: calc(100% - 89px);
     margin-bottom: 0 !important;
+    position: static;
 }
 a:hover {
     color: #FFFFFF;

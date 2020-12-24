@@ -100,6 +100,7 @@ Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
 Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue').default);
 Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
+Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 
@@ -108,6 +109,7 @@ Vue.component('viscenter2-create', require('./components/viscenter2/create.vue')
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
+Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 
 

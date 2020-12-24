@@ -227,6 +227,7 @@
           <search-form-refresh
             @input="handlerSearch"
             @start-search="searchWell()"
+            :clear="searched"
           />
         </div>
       </div>
@@ -237,9 +238,9 @@
     </div>
     <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
-        <div class="fadee" v-if="isloading">
+        <!-- <div class="fadee" v-if="isloading">
           <fade-loader :loading="isloading"></fade-loader>
-        </div>
+        </div> -->
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px;; color: white">
             <h3 >
@@ -6582,7 +6583,7 @@
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 
 export default {
   name: "TrPage",
@@ -6590,10 +6591,11 @@ export default {
     TrTable,
     TrFullTable,
     SearchFormRefresh,
-    FadeLoader,
+    // FadeLoader,
   },
   beforeCreate: function () {},
   created() {
+    this.$store.commit("globalloading/SET_LOADING", true);
     this.$store.commit("tr/SET_SORTPARAM", this.sortParam);
     this.$store.commit("tr/SET_SEARCH", this.searchString);
     this.$store.commit("tr/SET_FILTER", this.filter);
@@ -6609,7 +6611,8 @@ export default {
         this.year = yyyy;
         this.selectYear = yyyy;
         this.month = mm;
-        this.isloading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isloading = false;
         if (data) {
           console.log(data);
           this.wells = data.data;
@@ -6623,13 +6626,12 @@ export default {
           this.dt = "01" + "." + mm + "." + yyyy;
         }
       });
-    console.log("isloading", this.isloading);
-    //   this.isloading = false;
   },
   data: function () {
     return {
       wells: [],
       searchString: "",
+      searched: false,
       sortParam: "",
       sortType: "asc",
       filter: "Все месторождения",
@@ -6646,7 +6648,7 @@ export default {
       year: null,
       selectYear: null,
       month: null,
-      isloading: true,
+      // isloading: true,
       isfulltable: false,
     };
   },
@@ -6695,7 +6697,8 @@ export default {
     },
     savetable() {
       this.edit = false;
-      this.isloading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
       const searchParam = this.searchString ? `${this.searchString}/` : "";
       this.axios
         .post(
@@ -6713,12 +6716,15 @@ export default {
           console.log(response.data);
           this.fullWells = response.data;
           this.editedWells = [];
-          this.isloading = false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          this.searched = searchParam ? true : false;
         })
         .catch((error) => {
           console.log(error.data);
           this.editedWells = [];
           this.searchWell();
+          this.searched = searchParam ? true : false;
         });
     },
     cancelEdit() {
@@ -6794,7 +6800,8 @@ export default {
     },
 
     chooseDt() {
-      this.isloading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
       this.axios
         .get(
           "http://172.20.103.187:7576/api/techregime/" +
@@ -6804,9 +6811,11 @@ export default {
             "/"
         )
         .then((response) => {
-          this.isloading = false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
           let data = response.data;
           if (data) {
+            this.searched = false;
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
@@ -6849,9 +6858,11 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      console.log('search = ', this.searchString)
       this.$store.commit("tr/SET_SORTPARAM", "");
       this.sortParam = "";
-      this.isloading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
       const searchParam = this.searchString
         ? `search/${this.searchString}/`
         : "";
@@ -6865,7 +6876,9 @@ export default {
             searchParam
         )
         .then((response) => {
-          this.isloading = false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          this.searched = searchParam ? true : false;
           this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
@@ -6880,7 +6893,9 @@ export default {
         })
         .catch((error) => {
           // this.wells = [];
-          this.isloading = false;
+          this.searched = searchParam ? true : false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
           this.fullWells = [];
           console.log("search error = ", error);
         });
