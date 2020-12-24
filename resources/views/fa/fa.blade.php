@@ -10,6 +10,7 @@
 
             </div>
         </div>
+        <cat-loader />
     </div>
 @endsection
 <link href="{{ asset('css/fa.css')}}" rel="stylesheet">
