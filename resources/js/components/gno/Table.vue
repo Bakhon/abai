@@ -147,14 +147,14 @@
                     Число качаний
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{spmDev}} м-1
+                    {{spmDev}} 1/м
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     Диаметр насоса
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }} м
+                    {{ pumpType }} мм
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">Нсп</div>
@@ -275,7 +275,7 @@
                      v-show="activeRightTabName === 'technological-mode'">
                   <div class="tech-data no-gutter col-7">Qж</div>
                   <div class="tech-data table-border-gno no-gutter col-5">
-                    {{ qL }} м3/сут
+                    {{ qL }} м³/сут
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">Qн</div>
@@ -440,6 +440,10 @@
                                type="checkbox"/>
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
                       </div>
+                       <div class="icon-for-table" @click="onOpenTable()">
+                        <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.8654 0.56543C7.5741 0.56543 0.851562 7.05353 0.851562 15.0557C0.851562 19.2903 2.73469 23.1007 5.73609 25.7508L4.40373 34.6378L11.9882 29.0583C13.2252 29.3767 14.5247 29.5473 15.8654 29.5473C24.1566 29.5473 30.8807 23.0578 30.8807 15.0557C30.8807 7.05353 24.1566 0.56543 15.8654 0.56543ZM18.9912 23.0236C18.2183 23.3179 17.6029 23.541 17.1415 23.6956C16.6815 23.8503 16.1462 23.9274 15.5377 23.9274C14.6019 23.9274 13.8735 23.7069 13.3551 23.2663C12.8364 22.826 12.5786 22.2678 12.5786 21.5896C12.5786 21.3258 12.5974 21.0558 12.6359 20.7811C12.6751 20.506 12.7373 20.1971 12.8225 19.8499L13.7899 16.5522C13.8747 16.236 13.9487 15.9355 14.0071 15.6557C14.0655 15.3733 14.0937 15.1146 14.0937 14.8792C14.0937 14.4596 14.0033 14.1653 13.8242 13.9997C13.6421 13.8338 13.3005 13.753 12.7908 13.753C12.5416 13.753 12.2849 13.7887 12.0218 13.8633C11.7612 13.9408 11.535 14.0106 11.3495 14.0794L11.6047 13.0635C12.2377 12.8146 12.844 12.601 13.4223 12.4245C14.0006 12.2451 14.5473 12.1571 15.0623 12.1571C15.9913 12.1571 16.7079 12.3754 17.2128 12.8069C17.7149 13.2403 17.968 13.8032 17.968 14.4953C17.968 14.6387 17.9499 14.8915 17.916 15.2521C17.8813 15.6138 17.8163 15.9438 17.7225 16.2469L16.7603 19.5348C16.6815 19.7983 16.6115 20.1003 16.5481 20.4376C16.4855 20.7749 16.4553 21.0325 16.4553 21.2053C16.4553 21.642 16.5557 21.9403 16.7593 22.0986C16.9599 22.2569 17.3119 22.3366 17.8099 22.3366C18.0452 22.3366 18.3085 22.2959 18.6059 22.2176C18.9008 22.139 19.1145 22.0692 19.2491 22.0091L18.9912 23.0236ZM18.8208 9.6788C18.3722 10.0812 17.8318 10.2825 17.1999 10.2825C16.5696 10.2825 16.0256 10.0812 15.5732 9.6788C15.123 9.27673 14.8957 8.78698 14.8957 8.21535C14.8957 7.64517 15.1245 7.1543 15.5732 6.74823C16.0256 6.34106 16.5696 6.13876 17.1999 6.13876C17.8318 6.13876 18.3733 6.34106 18.8208 6.74823C19.2694 7.1543 19.4944 7.64517 19.4944 8.21535C19.4944 8.78843 19.2694 9.27673 18.8208 9.6788Z" fill="#FEFEFE"/></svg>
+                      </div>
                       <button type="button"
                               class="old_well_button"
                               @click="setGraphNew()">
@@ -448,6 +452,214 @@
                     </div>
                   </div>
                 </div>
+              </modal>
+
+              <modal class="" name="modalNearWells" :width="1150" :height="450" :adaptive="true">
+                 <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title">
+                      Анализ потенциала
+                    </div>
+
+                    <button type="button"
+                            class="modal-bign-button"
+                            @click="closeModal('modalNearWells')">
+                      Закрыть
+                    </button>
+
+                    
+
+                  </div>
+                   <div class="tablePgno no-gutter">
+                    <perfect-scrollbar>
+                      <table class="gno-table-with-header pgno">
+                        <thead>
+                        <tr height="60" style="height: 60pt;">
+                          <td>
+                            № п/п
+                          </td>
+                          <td>
+                            Номер скважины
+                          </td>
+                          <td>
+                            Расстояние, м
+                          </td>
+                          <td>
+                            Коэффициент влияния
+                          </td>
+                          <td>
+                            Кпрод, (м³/сут)/атм
+                          </td>
+                          <td>
+                            kh
+                          </td>
+                          <td>
+                            Скин-фактор
+                          </td>
+                          <td>
+                            Рпл, атм
+                          </td>
+                          <td>
+                            Рзаб, атм
+                          </td>
+                          <td>
+                            Qж, м³/сут
+                          </td>
+                          <td>
+                            WC, %
+                          </td>
+                          <td>
+                            Qн, т/сут
+                          </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>5</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>6</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>7</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>8</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>9</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>10</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        
+                        </tbody>
+                      </table>
+                    </perfect-scrollbar>
+                  </div>
+                 </div>
               </modal>
 
               <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :width="1300" :height="550" :adaptive="true">
@@ -1491,7 +1703,7 @@ export default {
           orientation: "h",
           y: -0.3,
           font: {
-            size: 12,
+            size: 9.3,
             color: "#fff",
           },
         },
@@ -1795,6 +2007,7 @@ export default {
       this.data = [
         {
           name: "Кривая притока (пользователь)",
+          legendgroup: 1,
           x: qo_points2,
           y: ipr_points2,
           text: q_oil2,
@@ -1810,6 +2023,7 @@ export default {
         },
         {
           name: "Текущий режим",
+          legendgroup: 2,
           x: [],
           y: [],
           text: [],
@@ -1826,6 +2040,7 @@ export default {
 
         {
           name: "Потенциальный режим",
+          legendgroup: 3,
           x: [],
           y: [],
           text: [],
@@ -1841,6 +2056,7 @@ export default {
         },
         {
           name: "Кривая притока (анализ)",
+          legendgroup: 4,
           x: [],
           y: [],
           text: [],
@@ -2080,6 +2296,10 @@ export default {
 
 
       }
+    },
+
+    onOpenTable() {
+      this.$modal.show("modalNearWells");
     },
 
     InclMenu() {

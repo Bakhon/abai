@@ -15,6 +15,14 @@
     float: left!important;
 }
 
+.icon-for-table {
+    position: absolute;
+    left: 72.25%;
+    right: 3.18%;
+    top: 74.02%;
+    bottom: 43.83%;
+}
+
 /*@media only screen and (max-width:680px) {*/
 /*    .square2 {*/
 /*      width:35px!important;*/

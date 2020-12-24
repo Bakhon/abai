@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.visualcenter')
 @section('content')
     <div>
         <visual-center-table7></visual-center-table7>
