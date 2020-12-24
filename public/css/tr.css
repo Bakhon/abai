@@ -26,7 +26,7 @@ td.fitwidth {
     font-weight: inherit;
     padding: 5px 15px;
     border-radius: 5px;
-    font-family: Roboto;
+    font-family: "Harmonia-sans";
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
@@ -164,7 +164,7 @@ table {
 }
 
 .tech{
-    font-family: "Roboto", sans-serif;
+    font-family: "Harmonia-sans", sans-serif;
     font-size: 2rem;
     font-weight: 400;
     line-height: 1.6;
@@ -174,7 +174,7 @@ table {
 
 .tr_page.tr_page {
     padding: 0 !important;
-    width: calc(100vw - 65px);
+    width: calc(100vw - 49px);
     display: flex;
     margin-left: 30px;
 }
@@ -186,5 +186,9 @@ table {
     padding: 0;
     margin: 0;
 }  
-
-
+#app > .container-fluid.container-fluid {
+    max-width: unset;
+}
+.tr-sidebar .list-group-item {
+    padding: 15px 7px 15px 8px;
+}
