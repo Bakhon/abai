@@ -15,6 +15,12 @@ use Illuminate\Http\Request;
 
 class EconomicController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:economic view main');
+    }
+
     public function index(Request $request)
     {
         return view('economic.main');
@@ -24,9 +30,10 @@ class EconomicController extends Controller
     public function getEconomicData(Request $request)
     {
 
-        if($request->org != auth()->user()->org_id) {
+        if(!in_array($request->org, auth()->user()->getOrganizationIds())) {
             abort(403);
         }
+
         $org = \App\Models\Refs\Org::find($request->org);
 
         $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);

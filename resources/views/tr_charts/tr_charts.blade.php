@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.tr')
 @section('content')
     <div class="col px-4 trfa_page" id="app">
         <a href="{{url('/')}}/ru/export" class="float-right">

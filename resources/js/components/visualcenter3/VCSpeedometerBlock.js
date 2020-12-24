@@ -3,6 +3,9 @@ export default {
     title: {
       default: 'Данные по умолчанию',
     },
+    mainTitle: {
+      default: '',
+    },
     mainValue: {
       default: '777',
     },

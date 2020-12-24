@@ -54,7 +54,8 @@
     echo "Build static"
     cd {{ $new_release_dir }}
     npm install --prefer-offline --no-audit
-    npm run --silent dev
+    export NODE_OPTIONS=--max_old_space_size=8192
+    npm run --silent prod
 @endtask
 
 @task('update_symlinks')

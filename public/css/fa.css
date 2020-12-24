@@ -32,7 +32,7 @@ td.fitwidth {
     border: 3px solid #0638E9;
     box-sizing: border-box;
     border-radius: 20px;
-    font-family: Roboto;
+    font-family: Harmonia-sans;
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
@@ -98,7 +98,7 @@ table {
     /* position: relative; */
     /* top: 54.7901% !important;
     bottom: 66.58%; */
-    /* background: rgb(13, 30, 99) none repeat scroll 0% 0%; */
+    background: rgb(13, 30, 99) none repeat scroll 0% 0%;
     /* left: 14px !important;
     right: 20px;
     border-right-style: solid; */
@@ -151,7 +151,7 @@ table {
 }
 
 .filter_font {
-    font-family: "Roboto", sans-serif;
+    font-family: "Harmonia-sans", sans-serif;
     font-size: 1.9rem;
     font-weight: 400;
     line-height: 1.6;
@@ -166,7 +166,7 @@ table {
 }
 
 .tech{
-    font-family: "Roboto", sans-serif;
+    font-family: "Harmonia-sans", sans-serif;
     font-size: 2rem;
     font-weight: 400;
     line-height: 1.6;
@@ -215,9 +215,10 @@ table {
 }
 .fa_page.fa_page {
     padding: 0 !important;
-    width: calc(100vw - 65px);
+    width: calc(100vw - 76px);
     display: flex;
-    margin-left: 30px;
+    margin-left: 43px;
+
 }
 .fa_page .level1-content  {
     margin: 0;
@@ -227,3 +228,9 @@ table {
     padding: 0;
     margin: 0;
 }  
+#app > .container-fluid.container-fluid {
+    max-width: unset;
+}
+.tr-sidebar .list-group-item {
+    padding: 15px 7px 15px 8px;
+}

@@ -17,13 +17,13 @@
                                         <div
                                             class="progress-bar"
                                             role="progressbar"
-                                            :style="{width: t1Sum + '%'}"
-                                            :aria-valuenow="t1Sum"
+                                            :style="{width: tSum + '%'}"
+                                            :aria-valuenow="tSum"
                                             aria-valuemin="0"
                                             :aria-valuemax="100"
                                         >
-                                            <div v-if="t1Sum">
-                                                {{ t1Sum.toFixed(1) }}%
+                                            <div v-if="tSum">
+                                                {{ tSum.toFixed(1) }}%
                                             </div>
                                         </div>
                                     </div>

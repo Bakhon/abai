@@ -7,38 +7,13 @@ export default {
       t4:'',
       t5:'',
       t6:'',
-      t1Sum:'',
+      tSum:'',
       dateStart: '',
       dateEnd: '',
       isEnableSpeedometers: false,
     };
   },
   methods: {
-    changeTable(change) {
-      this.Table1 = "display:none";
-      this.Table2 = "display:none";
-      this.Table3 = "display:none";
-      this.Table4 = "display:none";
-      this.Table5 = "display:none";
-      this.Table6 = "display:none";
-      this.Table7 = "display:none";
-
-      if (change === "1") {
-        this.Table1 = "display:block";
-      } else if (change === "2") {
-        this.Table2 = "display:block";
-      } else if (change === "3") {
-        this.Table3 = "display:block";
-      } else if (change === "4") {
-        this.Table4 = "display:block";
-      } else if (change === "5") {
-        this.Table5 = "display:block";
-      } else if (change === "6") {
-        this.Table6 = "display:block";
-      } else if (change === "7") {
-        this.Table7 = "display:block";
-      }
-    },
     getDefaultData() {
       this.axios
         .get('/ru/getdzocalcsactualmonth', {})
@@ -63,7 +38,7 @@ export default {
             this.t3 = response.data['Marabayev3'][0];
             this.t4 = response.data['Marabayev4'][0];
             this.t5 = response.data['Marabayev5'][0];
-            this.t1Sum = response.data['Marabayev1'][0][6] +
+            this.tSum = response.data['Marabayev1'][0][6] +
               response.data['Marabayev2'][0][6] + response.data['Marabayev3'][0][6] +
               response.data['Marabayev4'][0][6] + response.data['Marabayev5'][0][6];
             this.t6 = [1, 0, 1, 2, 1];

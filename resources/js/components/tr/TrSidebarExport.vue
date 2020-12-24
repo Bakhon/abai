@@ -9,7 +9,7 @@
         src="/img/gno/download.png"
         width="25"
         height="25"
-        class="companyLogo"
+        class=""
       />
       <span class="menu-collapsed companyName d-none"></span>
     </div>

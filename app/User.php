@@ -56,4 +56,9 @@ class User extends Authenticatable
             return new \Illuminate\Database\Eloquent\Collection();
         }
     }
+
+    public function getOrganizationIds()
+    {
+        return $this->getOrganizations()->pluck('id')->toArray();
+    }
 }
