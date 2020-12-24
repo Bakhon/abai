@@ -274,32 +274,32 @@
                 <div class="right-block-details"
                      v-show="activeRightTabName === 'technological-mode'">
                   <div class="tech-data no-gutter col-7">Qж</div>
-                  <div class="tech-data table-border-gno no-gutter col-5">
+                  <div class="tech-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ qL }} м³/сут
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">Qн</div>
-                  <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ qO }} т/сут
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">Обвод</div>
-                  <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ wct }} %
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">Рзаб</div>
-                  <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ bhp }} атм
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">Рпл</div>
-                  <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ pRes }} ат
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">Ндин</div>
-                  <div class="tech-data table-border-gno table-border-gno-top no-gutter col-5">
+                  <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ hDyn }} м
                   </div>
                   <div class="tech-data table-border-gno-top no-gutter col-7">Рзат</div>
@@ -1887,14 +1887,14 @@ export default {
       if (this.method == "CurveSetting") {
         this.pResInput = data["Well Data"]["p_res"][0] + ' атм'
         this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/ат'
-        this.qLInput = data["Well Data"]["q_l"][0].toFixed(0)
+        this.qLInput = data["Well Data"]["q_l"][0].toFixed(0) + ' м³/сут'
         this.wctInput = data["Well Data"]["wct"][0] + ' %'
         this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + ' м'
         this.gorInput = data["Well Data"]["gor"][0] + ' м³/т'
         this.bhpInput = data["Well Data"]["bhp"][0].toFixed(0) + ' атм'
         this.hDynInput = data["Well Data"]["h_dyn"][0].toFixed(0) + ' м'
         this.pAnnularInput = data["Well Data"]["p_annular"][0].toFixed(0) + ' атм'
-        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0)
+        this.qlCelValue = JSON.parse(data.PointsData)["data"][2]["q_l"].toFixed(0) + ' м³/сут'
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][2]["p"].toFixed(0) + ' атм'
         this.piCelValue = JSON.parse(data.PointsData)["data"][2]["pin"].toFixed(0) + ' атм'
         this.whpInput = data["Well Data"]["whp"][0].toFixed(0) + ' атм'
@@ -1943,7 +1943,7 @@ export default {
         this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(0)
         this.whp = data["Well Data"]["whp"][0].toFixed(0)
         this.lineP = data["Well Data"]["line_p"][0].toFixed(0)
-        this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' атм'
+        this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/ат'
         this.curr = data["Well Data"]["curr_bh"][0].toFixed(0)
         this.piCelValue = JSON.parse(data.PointsData)["data"][0]["pin"].toFixed(0) + ' атм'
         this.bhpCelValue = JSON.parse(data.PointsData)["data"][0]["p"].toFixed(0) + ' атм'
@@ -1955,7 +1955,7 @@ export default {
 
         this.stopDate = this.stopDate.substring(0, 10)
         this.pResInput = this.pRes + ' атм'
-        this.qLInput = this.qL
+        this.qLInput = this.qL  + ' м³/сут'
         this.wctInput = this.wct + ' %'
         this.gorInput = this.gor + ' м³/т'
         this.bhpInput = this.bhp + ' атм'
@@ -1965,7 +1965,7 @@ export default {
         this.hPumpManomInput = data["Well Data"]["h_pump_set"][0] + ' м'
         this.whpInput = this.whp + ' атм'
         this.qlCelButton = true
-        this.qlCelValue = this.qLInput + ' м³/сут'
+        this.qlCelValue = this.qLInput
         this.hPumpValue = this.hPumpSet + ' м'
 
 
@@ -2722,7 +2722,7 @@ export default {
       this.$eventBus.$emit('newPointsData', this.newPointsData)
       this.pResInput = this.newData["p_res"][0].toFixed(0) + ' атм'
       this.piInput = this.newData["pi"][0].toFixed(2) + ' м³/сут/ат'
-      this.qLInput = this.newData["q_l"][0].toFixed(0)
+      this.qLInput = this.newData["q_l"][0].toFixed(0) + ' м³/сут'
       this.bhpInput = this.newData["bhp"][0].toFixed(0) + ' атм'
       this.hDynInput = this.newData["h_dyn"][0].toFixed(0) + ' м'
       this.pAnnularInput = this.newData["p_annular"][0].toFixed(0) + ' атм'
@@ -2730,7 +2730,7 @@ export default {
       this.hPumpManomInput = this.newData["h_pump_set"][0].toFixed(0) + ' м'
       this.whpInput = this.newData["whp"][0].toFixed(0) + ' атм'
       this.wctInput = this.newData["wct"][0].toFixed(0) + ' %'
-      this.qlCelValue = this.newPointsData[0]["q_l"].toFixed(0)
+      this.qlCelValue = this.newPointsData[0]["q_l"].toFixed(0) + ' м³/сут'
       this.bhpCelValue = this.newPointsData[0]["p"].toFixed(0) + ' атм'
       this.piCelValue = this.newPointsData[0]["pin"].toFixed(0) + ' атм'
     },
