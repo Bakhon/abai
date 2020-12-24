@@ -1,9 +1,9 @@
 <template>
   <div class="gno-page-wrapper">
     <div>
-      <div class="row">
+      <div class="row gno-page-container">
         <div class="second-column col-lg-3 order-md-2">
-          <div class=" col-md-12">
+          <div class="col-md-12 second-column-container">
             <!-- Выбор скважины start -->
             <div class="tables-string-gno col-12">
               <div class="choosing-well-title col-12">Выбор скважины</div>
@@ -147,14 +147,14 @@
                     Число качаний
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{spmDev}} м-1
+                    {{spmDev}} 1/м
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     Диаметр насоса
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }} м
+                    {{ pumpType }} мм
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">Нсп</div>
@@ -275,7 +275,7 @@
                      v-show="activeRightTabName === 'technological-mode'">
                   <div class="tech-data no-gutter col-7">Qж</div>
                   <div class="tech-data table-border-gno no-gutter col-5">
-                    {{ qL }} м3/сут
+                    {{ qL }} м³/сут
                   </div>
 
                   <div class="tech-data table-border-gno-top no-gutter col-7">Qн</div>
@@ -440,6 +440,10 @@
                                type="checkbox"/>
                         <label for="checkbox1" class="new-checkbox-modal-analysis-menu-label">с ГРП</label>
                       </div>
+                       <div class="icon-for-table" @click="onOpenTable()">
+                        <svg width="31" height="35" viewBox="0 0 31 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.8654 0.56543C7.5741 0.56543 0.851562 7.05353 0.851562 15.0557C0.851562 19.2903 2.73469 23.1007 5.73609 25.7508L4.40373 34.6378L11.9882 29.0583C13.2252 29.3767 14.5247 29.5473 15.8654 29.5473C24.1566 29.5473 30.8807 23.0578 30.8807 15.0557C30.8807 7.05353 24.1566 0.56543 15.8654 0.56543ZM18.9912 23.0236C18.2183 23.3179 17.6029 23.541 17.1415 23.6956C16.6815 23.8503 16.1462 23.9274 15.5377 23.9274C14.6019 23.9274 13.8735 23.7069 13.3551 23.2663C12.8364 22.826 12.5786 22.2678 12.5786 21.5896C12.5786 21.3258 12.5974 21.0558 12.6359 20.7811C12.6751 20.506 12.7373 20.1971 12.8225 19.8499L13.7899 16.5522C13.8747 16.236 13.9487 15.9355 14.0071 15.6557C14.0655 15.3733 14.0937 15.1146 14.0937 14.8792C14.0937 14.4596 14.0033 14.1653 13.8242 13.9997C13.6421 13.8338 13.3005 13.753 12.7908 13.753C12.5416 13.753 12.2849 13.7887 12.0218 13.8633C11.7612 13.9408 11.535 14.0106 11.3495 14.0794L11.6047 13.0635C12.2377 12.8146 12.844 12.601 13.4223 12.4245C14.0006 12.2451 14.5473 12.1571 15.0623 12.1571C15.9913 12.1571 16.7079 12.3754 17.2128 12.8069C17.7149 13.2403 17.968 13.8032 17.968 14.4953C17.968 14.6387 17.9499 14.8915 17.916 15.2521C17.8813 15.6138 17.8163 15.9438 17.7225 16.2469L16.7603 19.5348C16.6815 19.7983 16.6115 20.1003 16.5481 20.4376C16.4855 20.7749 16.4553 21.0325 16.4553 21.2053C16.4553 21.642 16.5557 21.9403 16.7593 22.0986C16.9599 22.2569 17.3119 22.3366 17.8099 22.3366C18.0452 22.3366 18.3085 22.2959 18.6059 22.2176C18.9008 22.139 19.1145 22.0692 19.2491 22.0091L18.9912 23.0236ZM18.8208 9.6788C18.3722 10.0812 17.8318 10.2825 17.1999 10.2825C16.5696 10.2825 16.0256 10.0812 15.5732 9.6788C15.123 9.27673 14.8957 8.78698 14.8957 8.21535C14.8957 7.64517 15.1245 7.1543 15.5732 6.74823C16.0256 6.34106 16.5696 6.13876 17.1999 6.13876C17.8318 6.13876 18.3733 6.34106 18.8208 6.74823C19.2694 7.1543 19.4944 7.64517 19.4944 8.21535C19.4944 8.78843 19.2694 9.27673 18.8208 9.6788Z" fill="#FEFEFE"/></svg>
+                      </div>
                       <button type="button"
                               class="old_well_button"
                               @click="setGraphNew()">
@@ -448,6 +452,214 @@
                     </div>
                   </div>
                 </div>
+              </modal>
+
+              <modal class="" name="modalNearWells" :width="1150" :height="450" :adaptive="true">
+                 <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title">
+                      Анализ потенциала
+                    </div>
+
+                    <button type="button"
+                            class="modal-bign-button"
+                            @click="closeModal('modalNearWells')">
+                      Закрыть
+                    </button>
+
+                    
+
+                  </div>
+                   <div class="tablePgno no-gutter">
+                    <perfect-scrollbar>
+                      <table class="gno-table-with-header pgno">
+                        <thead>
+                        <tr height="60" style="height: 60pt;">
+                          <td>
+                            № п/п
+                          </td>
+                          <td>
+                            Номер скважины
+                          </td>
+                          <td>
+                            Расстояние, м
+                          </td>
+                          <td>
+                            Коэффициент влияния
+                          </td>
+                          <td>
+                            Кпрод, (м³/сут)/атм
+                          </td>
+                          <td>
+                            kh
+                          </td>
+                          <td>
+                            Скин-фактор
+                          </td>
+                          <td>
+                            Рпл, атм
+                          </td>
+                          <td>
+                            Рзаб, атм
+                          </td>
+                          <td>
+                            Qж, м³/сут
+                          </td>
+                          <td>
+                            WC, %
+                          </td>
+                          <td>
+                            Qн, т/сут
+                          </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>4</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>5</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>6</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>7</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>8</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>9</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td>10</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        
+                        </tbody>
+                      </table>
+                    </perfect-scrollbar>
+                  </div>
+                 </div>
               </modal>
 
               <modal class="modal-bign-wrapper chart" name="modalExpAnalysis" :width="1300" :height="550" :adaptive="true">
@@ -469,23 +681,23 @@
                       <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
                     </div>
 
-                    <div class="nno-info-button">
-                      <div class="nno-icon" @click="onShowTable()">
-                        <svg width="31" height="35"
-                             viewBox="0 0 31 35"
-                             fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M15.131 0.290039C6.83973 0.290039 0.117188 6.77814 0.117188 14.7803C0.117188 19.0149 2.00031 22.8253 5.00172 25.4754L3.66936 34.3624L11.2537 28.7829C12.4906 29.1013 13.7903 29.2719 15.131 29.2719C23.4223 29.2719 30.1463 22.7824 30.1463 14.7803C30.1463 6.77814 23.4223 0.290039 15.131 0.290039ZM18.2567 22.7482C17.4838 23.0426 16.8686 23.2656 16.4071 23.4202C15.9471 23.5749 15.4118 23.6521 14.8033 23.6521C13.8676 23.6521 13.1392 23.4316 12.6208 22.9909C12.102 22.5506 11.8441 21.9925 11.8441 21.3142C11.8441 21.0504 11.863 20.7804 11.9015 20.5057C11.9407 20.2306 12.0029 19.9217 12.0881 19.5746L13.0555 16.2768C13.1403 15.9606 13.2141 15.6601 13.2726 15.3803C13.331 15.0979 13.3593 14.8392 13.3593 14.6038C13.3593 14.1843 13.2689 13.8899 13.0898 13.7244C12.9077 13.5584 12.5661 13.4776 12.0564 13.4776C11.8072 13.4776 11.5504 13.5133 11.2872 13.5879C11.0267 13.6654 10.8006 13.7352 10.6151 13.804L10.8703 12.7881C11.5033 12.5392 12.1096 12.3256 12.6879 12.1491C13.2663 11.9698 13.8129 11.8817 14.3279 11.8817C15.2569 11.8817 15.9736 12.1 16.4784 12.5316C16.9806 12.9649 17.2336 13.5278 17.2336 14.2199C17.2336 14.3633 17.2154 14.6162 17.1814 14.9768C17.1468 15.3385 17.082 15.6685 16.9881 15.9716L16.026 19.2594C15.9472 19.5229 15.8771 19.8249 15.8137 20.1622C15.7512 20.4995 15.721 20.7571 15.721 20.93C15.721 21.3666 15.8212 21.665 16.0248 21.8233C16.2254 21.9816 16.5775 22.0612 17.0756 22.0612C17.3108 22.0612 17.5739 22.0205 17.8714 21.9422C18.1662 21.8636 18.3801 21.7938 18.5147 21.7337L18.2567 22.7482ZM18.0863 9.40345C17.6376 9.80588 17.0974 10.0071 16.4656 10.0071C15.8352 10.0071 15.2912 9.80588 14.8388 9.40345C14.3887 9.00138 14.1612 8.51159 14.1612 7.93996C14.1612 7.36978 14.3902 6.87891 14.8388 6.47284C15.2912 6.06567 15.8352 5.86336 16.4656 5.86336C17.0974 5.86336 17.6388 6.06567 18.0863 6.47284C18.5349 6.87891 18.76 7.36978 18.76 7.93996C18.76 8.51304 18.5349 9.00138 18.0863 9.40345Z"
-                                fill="#FEFEFE"/>
-                        </svg>
-                      </div>
-                    </div>
-
                     <div class="nno-modal-button-wrapper">
-                      <button class="button-nno" @click="onCompareNpv()">
-                        Выбрать способ эксплуатации с более высоким NPV
-                      </button>
+                      <div class="nno-modal-buttons-container">
+                        <div class="nno-icon" @click="onShowTable()">
+                          <svg width="31" height="35"
+                               viewBox="0 0 31 35"
+                               fill="none"
+                               xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M15.131 0.290039C6.83973 0.290039 0.117188 6.77814 0.117188 14.7803C0.117188 19.0149 2.00031 22.8253 5.00172 25.4754L3.66936 34.3624L11.2537 28.7829C12.4906 29.1013 13.7903 29.2719 15.131 29.2719C23.4223 29.2719 30.1463 22.7824 30.1463 14.7803C30.1463 6.77814 23.4223 0.290039 15.131 0.290039ZM18.2567 22.7482C17.4838 23.0426 16.8686 23.2656 16.4071 23.4202C15.9471 23.5749 15.4118 23.6521 14.8033 23.6521C13.8676 23.6521 13.1392 23.4316 12.6208 22.9909C12.102 22.5506 11.8441 21.9925 11.8441 21.3142C11.8441 21.0504 11.863 20.7804 11.9015 20.5057C11.9407 20.2306 12.0029 19.9217 12.0881 19.5746L13.0555 16.2768C13.1403 15.9606 13.2141 15.6601 13.2726 15.3803C13.331 15.0979 13.3593 14.8392 13.3593 14.6038C13.3593 14.1843 13.2689 13.8899 13.0898 13.7244C12.9077 13.5584 12.5661 13.4776 12.0564 13.4776C11.8072 13.4776 11.5504 13.5133 11.2872 13.5879C11.0267 13.6654 10.8006 13.7352 10.6151 13.804L10.8703 12.7881C11.5033 12.5392 12.1096 12.3256 12.6879 12.1491C13.2663 11.9698 13.8129 11.8817 14.3279 11.8817C15.2569 11.8817 15.9736 12.1 16.4784 12.5316C16.9806 12.9649 17.2336 13.5278 17.2336 14.2199C17.2336 14.3633 17.2154 14.6162 17.1814 14.9768C17.1468 15.3385 17.082 15.6685 16.9881 15.9716L16.026 19.2594C15.9472 19.5229 15.8771 19.8249 15.8137 20.1622C15.7512 20.4995 15.721 20.7571 15.721 20.93C15.721 21.3666 15.8212 21.665 16.0248 21.8233C16.2254 21.9816 16.5775 22.0612 17.0756 22.0612C17.3108 22.0612 17.5739 22.0205 17.8714 21.9422C18.1662 21.8636 18.3801 21.7938 18.5147 21.7337L18.2567 22.7482ZM18.0863 9.40345C17.6376 9.80588 17.0974 10.0071 16.4656 10.0071C15.8352 10.0071 15.2912 9.80588 14.8388 9.40345C14.3887 9.00138 14.1612 8.51159 14.1612 7.93996C14.1612 7.36978 14.3902 6.87891 14.8388 6.47284C15.2912 6.06567 15.8352 5.86336 16.4656 5.86336C17.0974 5.86336 17.6388 6.06567 18.0863 6.47284C18.5349 6.87891 18.76 7.36978 18.76 7.93996C18.76 8.51304 18.5349 9.00138 18.0863 9.40345Z"
+                                  fill="#FEFEFE"/>
+                          </svg>
+                        </div>
+
+                        <button class="button-nno" @click="onCompareNpv()">
+                          Выбрать способ эксплуатации с более высоким NPV
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -926,7 +1138,7 @@
                          alt="podbor-gno"/>
                   </div>
 
-                  <div class="table-pgno-button col-8">
+                  <div class="table-pgno-button gno-shgn-table-section col-8">
                     <div class="table-pgno-one">
                       <table class="table-pgno gno-table-with-header">
                         <thead>
@@ -1041,7 +1253,10 @@
                       </table>
                     </div>
 
-                    <!-- <button class="button-pdf col-12" @click="createPDF()">Скачать данные</button> -->
+                     <button class="button-pdf col-12"
+                             @click="createPDF()">
+                       Создание отчета
+                     </button>
                   </div>
                 </div>
               </div>
@@ -1050,7 +1265,7 @@
 
           <modal name="table" :width="1150" :height="385" :adaptive="true"></modal>
 
-          <div class="no-gutter col-md-12">
+          <div class="no-gutter col-md-12 first-column-params-block">
             <div class="container-fluid d-sm-block">
               <div class="row">
                 <div class="col-md-12">
@@ -1110,7 +1325,10 @@
                                     </div>
 
                                     <div class="col-5 py-1 px-1">
-                                      <input v-model="piInput" :disabled="curveSelect != 'pi'" @change="postCurveData()" onfocus="this.value=''"
+                                      <input v-model="piInput"
+                                             :disabled="curveSelect != 'pi'"
+                                             @change="postCurveData()"
+                                             onfocus="this.value=''"
                                              type="text" class="square3"/>
 
                                     </div>
@@ -1160,47 +1378,43 @@
                                 <div class="col-5"></div>
                               </div>
                             </div>
-                            <div class="table-border-gno-top">
-                              <div class="row">
 
-                                <div class="col-1"></div>
-                                <div class="col-2 ml-3 pl-4 pr-3 ic-min-block2 pt-1">
-                                  <div class="table-border-gno-right pt-1">
-                                    <label for="">
-                                      <input v-model="curveSelect" value="bhp" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
-                                             @change="postCurveData()"
-                                             name="set2"/> Рзаб</label>
-                                  </div>
+                            <div class="table-border-gno-top no-margin row">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <label for="">
+                                    <input v-model="curveSelect"
+                                           value="bhp"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Рзаб</label>
                                 </div>
-                                <div class="col-7 px-0 pt-2">
-                                  <input :disabled="curveSelect != 'bhp'" v-model="bhpInput" @change="postCurveData()" onfocus="this.value=''"
+                                <div class="col-6 pt-1 pb-1">
+                                  <input :disabled="curveSelect != 'bhp'"
+                                         v-model="bhpInput"
+                                         @change="postCurveData()"
+                                         onfocus="this.value=''"
                                          type="text"
                                          class="square3"/>
                                 </div>
-
-
                               </div>
                             </div>
-                            <div class="table-border-gno-top">
-                              <div class="row">
 
-                                <div class="col-1">
+                            <div class="table-border-gno-top no-margin row">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <label for="">
+                                    <input v-model="curveSelect"
+                                           value="hdyn"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Ндин</label>
                                 </div>
-
-                                <div class="tech-data ml-3 pl-4 pr-3  col-2  ic-min-block2">
-                                  <div class="table-border-gno-right">
-                                    <label for="">
-                                      <input v-model="curveSelect"
-                                             value="hdyn"
-                                             :disabled="curveSelect == 'pi'"
-                                             class="checkbox-k-prod"
-                                             type="radio"
-                                             @change="postCurveData()"
-                                             name="set2"/> Ндин</label>
-                                  </div>
-                                </div>
-
-                                <div class="col-2 px-0 pt-1 mr-2">
+                                <div class="col-6 table-border-gno-right table-border-gno-right-second pt-1 pb-1">
                                   <input :disabled="curveSelect != 'hdyn'"
                                          v-model="hDynInput"
                                          @change="postCurveData()"
@@ -1208,84 +1422,81 @@
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
+                              </div>
 
-                                <div class="pt-1">
-                                  <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <div class="tech-data curve">
                                     Рзат
                                   </div>
                                 </div>
-                                <div class="col-2 pt-1">
-                                  <input :disabled="curveSelect != 'hdyn'" v-model="pAnnularInput" @change="postCurveData()" type="text"
+                                <div class="col-6 pt-1 pb-1">
+                                  <input :disabled="curveSelect != 'hdyn'"
+                                         v-model="pAnnularInput"
+                                         @change="postCurveData()"
+                                         type="text"
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
-
-                                <div class="col-1">
-                                </div>
-
                               </div>
                             </div>
-                            <div class="table-border-gno-top">
-                              <div class="row">
 
-                                <div class="col-1">
+                            <div class="table-border-gno-top no-margin row">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <label for="">
+                                    <input v-model="curveSelect"
+                                           value="pmanom"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
+                                           @change="postCurveData()"
+                                           name="set2" /> Рманом</label>
                                 </div>
-
-                                <div class="tech-data  ml-3 pl-4 pr-3 col-2 ic-min-block2">
-
-                                  <div class="table-border-gno-right">
-                                    <label for="">
-                                      <input v-model="curveSelect" value="pmanom" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
-                                      @change="postCurveData()"
-                                      name="set2" /> Рманом</label>
-                                  </div>
-                                </div>
-
-                                <div class="col-2 px-0 pt-1 mr-2">
-
-                                  <input :disabled="curveSelect != 'pmanom'" v-model="pManomInput" @change="postCurveData()" type="text"
+                                <div class="col-6 table-border-gno-right table-border-gno-right-second pt-1 pb-1">
+                                  <input :disabled="curveSelect != 'pmanom'"
+                                         v-model="pManomInput"
+                                         @change="postCurveData()"
+                                         type="text"
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
+                              </div>
 
-                                <div class="pb-1">
-                                  <div class="tech-data col-2 table-border-gno-left-right ic-min-block3">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <div class="tech-data curve">
                                     Нсп маном
                                   </div>
                                 </div>
-
-                                <div class="col-2 pt-1">
-                                  <input :disabled="curveSelect != 'pmanom'" v-model="hPumpManomInput" @change="postCurveData()" type="text"
+                                <div class="col-6 pt-1 pb-1">
+                                  <input :disabled="curveSelect != 'pmanom'"
+                                         v-model="hPumpManomInput"
+                                         @change="postCurveData()"
+                                         type="text"
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
-
-                                <div class="col-2">
-                                </div>
-
                               </div>
                             </div>
-                            <div class="table-border-gno-top">
-                              <div class="row">
 
-                                <div class="col-1">
+                            <div class="table-border-gno-top no-margin row">
+                              <div class="col-sm-6 col-xs-12 no-margin no-padding row">
+                                <div class="col-6 table-border-gno-right pt-1 pb-1">
+                                  <label for="">
+                                    <input v-model="curveSelect"
+                                           value="whp"
+                                           :disabled="curveSelect == 'pi'"
+                                           class="checkbox-k-prod"
+                                           type="radio"
+                                           @change="postCurveData()"
+                                           name="set2"/> Рбуф(ФЭ)</label>
                                 </div>
-
-                                <div class="tech-data ml-3 pl-4 pr-3 col-2 ic-min-block2 mb-2">
-
-                                  <div class="table-border-gno-right">
-                                    <label for="">
-                                      <input v-model="curveSelect" value="whp" :disabled="curveSelect == 'pi'" class="checkbox-k-prod" type="radio"
-                                             @change="postCurveData()"
-                                             name="set2"/> Рбуф(ФЭ)</label>
-                                  </div>
-                                </div>
-                                <div class="col-7 px-0 pt-1">
+                                <div class="col-6 pt-1 pb-1">
                                   <input :disabled="curveSelect != 'whp'" v-model="whpInput" @change="postCurveData()" type="text"
                                          onfocus="this.value=''"
                                          class="square3"/>
                                 </div>
-
                               </div>
                             </div>
                           </div>
@@ -1450,7 +1661,7 @@ export default {
             dash: 'dot'
           }
         }],
-        width: 800,
+        // width: 800,
         height: 360,
         showlegend: true,
         margin: {
@@ -1492,7 +1703,7 @@ export default {
           orientation: "h",
           y: -0.3,
           font: {
-            size: 12,
+            size: 9.3,
             color: "#fff",
           },
         },
@@ -1796,6 +2007,7 @@ export default {
       this.data = [
         {
           name: "Кривая притока (пользователь)",
+          legendgroup: 1,
           x: qo_points2,
           y: ipr_points2,
           text: q_oil2,
@@ -1811,6 +2023,7 @@ export default {
         },
         {
           name: "Текущий режим",
+          legendgroup: 2,
           x: [],
           y: [],
           text: [],
@@ -1827,6 +2040,7 @@ export default {
 
         {
           name: "Потенциальный режим",
+          legendgroup: 3,
           x: [],
           y: [],
           text: [],
@@ -1842,6 +2056,7 @@ export default {
         },
         {
           name: "Кривая притока (анализ)",
+          legendgroup: 4,
           x: [],
           y: [],
           text: [],
@@ -2024,9 +2239,6 @@ export default {
       else {
         console.log('No data');
       }
-
-
-
     },
     async NnoCalc(){
       let uri = "http://172.20.103.187:7575/api/nno/";
@@ -2084,6 +2296,10 @@ export default {
 
 
       }
+    },
+
+    onOpenTable() {
+      this.$modal.show("modalNearWells");
     },
 
     InclMenu() {
