@@ -1,6 +1,6 @@
 <template>
   <div class="gno-page-wrapper">
-    <div>
+    <div ref="gno-page">
       <div class="row gno-page-container">
         <div class="second-column col-lg-3 order-md-2">
           <div class="col-md-12 second-column-container">
@@ -1625,9 +1625,6 @@
   </div>
 </template>
 
-
-
-
 <script>
 import { Plotly } from "vue-plotly";
 import { eventBus } from "../../event-bus.js";
@@ -1639,6 +1636,8 @@ import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from 'vue';
 import FullPageLoader from '../ui-kit/FullPageLoader';
+import * as htmlToImage from 'html-to-image';
+import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -2849,6 +2848,29 @@ export default {
       }
 
       this.activeRightTabName = val;
+    },
+
+    createPDF() {
+      this.isLoading = true;
+
+      htmlToImage.toPng(this.$refs['gno-page'])
+        .then(function (dataUrl) {
+          // let img = new Image();
+          // img.src = dataUrl;
+
+          let link = document.createElement('a');
+          link.setAttribute('href', dataUrl);
+          link.setAttribute('download','download');
+          link.click();
+          link.remove();
+
+          // document.body.appendChild(img);
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        }).finally(() => {
+            this.isLoading = false;
+      });
     },
 
     downloadImg() {
