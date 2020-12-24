@@ -36,7 +36,10 @@
           >
         </div>
       </div>
-      <div class="row sec_nav trfacolmdrowsecnav" style=" display: flex;justify-content: center;">
+      <div
+        class="row sec_nav trfacolmdrowsecnav"
+        style="display: flex; justify-content: center"
+      >
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -181,10 +184,10 @@
             </select>
           </div>
         </div>
-        <div class="fadee tr-chart__loader" v-if="isLoading">
+        <!-- <div class="fadee tr-chart__loader" v-if="isLoading">
           <fade-loader :loading="isLoading"></fade-loader>
-        </div>
-        <div class="" v-else>
+        </div> -->
+        <div class="">
           <div class="second_block">
             <apexchart
               v-if="chartData"
@@ -195,18 +198,18 @@
         </div>
       </div>
     </div>
-    <big-numbers :list="filteredWells" :isLoading="isLoading" />
+    <big-numbers :list="filteredWells" />
   </div>
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
-import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import BigNumbers from "./BigNumbers.vue";
 
 export default {
   name: "TrCharts",
   components: {
-    FadeLoader,
+    // FadeLoader,
     BigNumbers,
   },
   computed: {
@@ -288,7 +291,7 @@ export default {
   data: function () {
     return {
       chartShow: 0,
-      isLoading: true,
+      // isLoading: true,
       chartWells: [],
       filteredWells: [],
       sortType: "asc",
@@ -487,7 +490,6 @@ export default {
         } catch (err) {
           console.error(err);
           this.chartData = false;
-          this.isLoading = false;
         }
         //return false;
       } else {
@@ -631,7 +633,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -760,7 +765,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -881,7 +889,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -1005,7 +1016,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -1129,6 +1143,10 @@ export default {
         ...this.titleBase,
         text: this.titleText,
       };
+      const stroke = {
+        show: false,
+        width: [1, 1],
+      };
       const subtitle = {
         ...this.subtitleBase,
         text: this.subtitleText,
@@ -1139,6 +1157,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
         fill: this.fillBase,
         title,
@@ -1221,11 +1240,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1263,11 +1286,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1313,11 +1340,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1363,11 +1394,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1393,7 +1428,8 @@ export default {
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt() {
-      this.isLoading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isLoading = true;
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
       if (this.month < 10) {
@@ -1412,7 +1448,8 @@ export default {
         .then((response) => {
           // this.editdtm = choosenDt[1];
           // this.editdty = choosenDt[0];
-          this.isLoading = false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isLoading = false;
           let data = response.data;
           if (data) {
             this.fullWells = data.data;
@@ -1430,7 +1467,8 @@ export default {
     },
   },
   created() {
-    this.isLoading = true;
+    this.$store.commit("globalloading/SET_LOADING", true);
+    // this.isLoading = true;
     if (this.$store.getters["tr/chart"])
       this.chartShow = this.$store.getters["tr/chart"];
     let mm, yyyy;
@@ -1456,7 +1494,8 @@ export default {
           "/"
       )
       .then((response) => {
-        this.isLoading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
         this.editdty = yyyy;
@@ -1473,7 +1512,8 @@ export default {
         }
       })
       .catch((e) => {
-        this.isLoading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isLoading = false;
       });
   },
 };
@@ -1542,7 +1582,7 @@ body {
 }
 
 a:hover {
-    color: #FFFFFF;
+  color: #ffffff;
 }
 </style>
 <style scoped>

@@ -215,10 +215,9 @@ table {
 }
 .fa_page.fa_page {
     padding: 0 !important;
-    width: calc(100vw - 76px);
+    /* width: calc(100vw - 76px); */
     display: flex;
-    margin-left: 43px;
-
+    /* margin-left: 43px; */
 }
 .fa_page .level1-content  {
     margin: 0;
@@ -229,8 +228,6 @@ table {
     margin: 0;
 }  
 #app > .container-fluid.container-fluid {
-    max-width: unset;
-}
-.tr-sidebar .list-group-item {
-    padding: 15px 7px 15px 8px;
+    max-width: calc(100% - 89px);
+    margin-bottom: 0 !important;
 }

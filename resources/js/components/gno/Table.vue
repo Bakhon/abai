@@ -336,7 +336,9 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <gno-incl-table :wellNumber="wellNumber" :wellIncl="wellIncl"></gno-incl-table>
+                    <gno-incl-table :wellNumber="wellNumber"
+                                    :wellIncl="wellIncl"
+                                    :is-loading.sync="isLoading"></gno-incl-table>
                   </div>
                 </div>
               </modal>
@@ -1618,6 +1620,8 @@
     </div>
 
     <notifications position="top"></notifications>
+
+    <full-page-loader v-show="isLoading"/>
   </div>
 </template>
 
@@ -1634,6 +1638,7 @@ import moment from "moment";
 import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import Vue from 'vue';
+import FullPageLoader from '../ui-kit/FullPageLoader';
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -1643,9 +1648,10 @@ Vue.component("Plotly", Plotly);
 
 
 export default {
-  components: { PerfectScrollbar },
+  components: { PerfectScrollbar, FullPageLoader },
   data: function () {
     return {
+      isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
         shapes: [{
@@ -2208,7 +2214,11 @@ export default {
       let uri2=this.localeUrl("/nnoeco?equip=1&org=5&param=")+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
       let uri3=this.localeUrl("/nnoeco?equip=2&org=5&param=")+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
 
-      const responses = await Promise.all([ this.axios.get(uri2), this.axios.get(uri3) ]);
+      this.isLoading = true;
+
+      const responses = await Promise.all([ this.axios.get(uri2), this.axios.get(uri3) ]).finally(() => {
+        this.isLoading = false;
+      });
 
 
       let data = responses[0].data;
@@ -2225,7 +2235,7 @@ export default {
 
 
       let data2 = responses[1].data;
-      if(data2) {
+      if (data2) {
 
         this.expAnalysisData.ecnParam=data2[12].godovoiEcnParam;
         this.expAnalysisData.ecnNpv=data2[12].npv;
@@ -2270,8 +2280,12 @@ export default {
           }
         )
 
+        this.isLoading = true;
 
-        const responses = await Promise.all([ this.axios.post(uri, jsonData), this.axios.post(uri, jsonData2) ]);
+        const responses = await Promise.all([ this.axios.post(uri, jsonData), this.axios.post(uri, jsonData2) ])
+            .finally(() => {
+              this.isLoading = false;
+            });
         //microservise na SHGN NNO
 
 
@@ -2314,6 +2328,8 @@ export default {
     getWellNumber(wellnumber) {
       this.visibleChart = true;
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
+      this.isLoading = true;
+
       this.axios.get(uri).then((response) => {
           var data = response.data;
           this.method = 'MainMenu'
@@ -2478,7 +2494,9 @@ export default {
           this.$emit('PointsData', this.curvePointsData)
           //this.NnoCalc();
         }
-      );
+      ).finally((response) => {
+        this.isLoading = false;
+      });
 
 
 
@@ -2533,6 +2551,8 @@ export default {
       if(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1) {
         Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
       } else {
+        this.isLoading = true;
+
         this.axios.post(uri, jsonData).then((response) => {
           var data = response.data;
           if (data) {
@@ -2562,6 +2582,8 @@ export default {
 
           } else {
           }
+        }).finally(() => {
+          this.isLoading = false;
         });
       }
 
@@ -2607,6 +2629,9 @@ export default {
           "analysisBox8": this.analysisBox8
         }
       )
+
+      this.isLoading = true;
+
       this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
@@ -2622,6 +2647,8 @@ export default {
           // this.$emit('PointsData', this.curvePointsData)
         } else {
         }
+      }).finally(() => {
+        this.isLoading = false;
       });
     },
 
@@ -2666,6 +2693,9 @@ export default {
           "analysisBox8": this.analysisBox8
         }
       )
+
+      this.isLoading = true;
+
       this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
@@ -2681,6 +2711,8 @@ export default {
           // this.$emit('PointsData', this.curvePointsData)
         } else {
         }
+      }).finally(() => {
+        this.isLoading = false;
       });
     },
     setGraphOld() {
@@ -2759,6 +2791,9 @@ export default {
                 "pin_cel_value": this.piCelValue.split(' ')[0]
               }
             )
+
+            this.isLoading = true;
+
             this.axios.post(uri, jsonData).then((response) => {
               var data = JSON.parse(response.data);
               if(data) {
@@ -2793,6 +2828,8 @@ export default {
                 }
               } else {
               }
+            }).finally(() => {
+              this.isLoading = false;
             })
           } else {
             this.visibleChart = !this.visibleChart

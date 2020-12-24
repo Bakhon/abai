@@ -505,10 +505,6 @@ tr:nth-child(even) {
     padding: unset;
 }
 
-.table {
-    overflow: scroll;
-    height: calc(100vh - 247px);
-}
 .table .th {
     position: sticky;
     background: rgb(51, 57, 117);
@@ -533,7 +529,7 @@ tr:nth-child(even) {
     z-index: 3000;
 }
 .table tr:nth-child(5) .th {
-    top: 98px;
+    top: 95px;
     z-index: 3000;
 }
 
