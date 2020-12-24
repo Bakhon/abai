@@ -21,25 +21,25 @@
                 </div>
                 <div class="dropdown-menu graphic_dropdown_menu">
                     <div class="move-menu">
-                        <li class="left-menu-li tr-sidebar__page"> <a class="tr-sidebar__link" href="/ru/fa">Факторный анализ</a></li>
+                        <li class="left-menu-li tr-sidebar__page"> <a class="tr-sidebar__link" :href="localeUrl('/fa')">Факторный анализ</a></li>
                         <li
                           v-for="(item, index) in chartNamesFA"
                           :key="item"
                           class="tr-sidebar__graph"
                         >
-                          <a class="tr-sidebar__link" href="/ru/trfa" @click="() => setChartFa(index)">{{ item }}</a>
+                          <a class="tr-sidebar__link" :href="localeUrl('/trfa')" @click="() => setChartFa(index)">{{ item }}</a>
                         </li>
                         <li class="left-menu-li">
-                          <a class="tr-sidebar__link tr-sidebar__page" href="/ru/tr">Тех.режим</a>
+                          <a class="tr-sidebar__link tr-sidebar__page" :href="localeUrl('/tr')">Тех.режим</a>
                         </li>
                         <li
                           v-for="(item, index) in chartNames"
                           :key="item"
                           class="tr-sidebar__graph"
                         >
-                          <a class="tr-sidebar__link" href="/ru/tr_charts" @click="() => setChart(index)">{{ item }}</a>
+                          <a class="tr-sidebar__link" :href="localeUrl('/tr_charts')" @click="() => setChart(index)">{{ item }}</a>
                         </li>
-    
+
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@ export default {
 
 
 
-  
+
 <style  scoped>
 /* .tr-sidebar__chart-menu {
   margin: 0;

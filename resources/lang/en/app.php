@@ -13,4 +13,7 @@ return array (
   'liquid' => 'Liquid',
   'submit' => 'Submit',
   'updated' => 'Updated',
+  'year' => 'Year',
+  'cancel' => 'Cancel',
+  'show' => 'Show',
 );

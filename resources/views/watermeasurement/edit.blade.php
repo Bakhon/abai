@@ -11,7 +11,7 @@
             @endif
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a><hr>
             <div class="container">
-                <h1>Редактирование данных по воде</h1>
+                <h1>{{ trans('monitoring.wm.edit_title') }}</h1>
                 <form action="{{ route('watermeasurement.update', ['watermeasurement' => $watermeasurement->id]) }}" method="POST">
                     @method('patch')
                     @csrf

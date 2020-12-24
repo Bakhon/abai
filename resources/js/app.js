@@ -112,6 +112,9 @@ Vue.component('bigdata-report-button', require('./components/bigdata/BigDataRepo
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 
+Vue.prototype.trans = string => _.get(window.i18n, string) || string;
+Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
+Vue.prototype.currentLang = window.current_lang;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
