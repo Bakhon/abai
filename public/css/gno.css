@@ -15,6 +15,14 @@
     float: left!important;
 }
 
+.icon-for-table {
+    position: absolute;
+    left: 72.25%;
+    right: 3.18%;
+    top: 74.02%;
+    bottom: 43.83%;
+}
+
 /*@media only screen and (max-width:680px) {*/
 /*    .square2 {*/
 /*      width:35px!important;*/
@@ -337,7 +345,12 @@ body {
 }
 
 .table-border-gno-top label {
-    margin: 0.25rem 0;
+    margin: 0;
+    line-height: 16px;
+}
+
+.table-border-gno-top label input {
+    margin-top: 3px;
 }
 
 .table-border-gno-right {
@@ -625,7 +638,7 @@ input[type="text"]:enabled.square2 {
     background: #494AA5;
     border: 1px solid #272953;
     outline: none;
-    width: 100px;
+    width: 100%;
     height: 22px;
     color: white;
     box-sizing: border-box;
@@ -642,6 +655,10 @@ input[type="text"]:enabled.square2 {
 .square3:disabled {
     color: #928f8f;
     background: #353e70;
+}
+
+.square3.podbor {
+    width: 100px;
 }
 
 input[type="text"]:enabled.square3 {
@@ -812,11 +829,13 @@ td {
 .nno-modal-button-wrapper {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .nno-icon {
-    margin-left: 880px;
-    margin-bottom: 48px;
+    position: absolute;
+    top: -25px;
+    right: -25px;
 }
 
 .nno-icon svg {
@@ -1219,6 +1238,7 @@ input.checkbox-q-liquid {
     background-color: #2B2E5E;
     padding-left: 36px;
     padding-right: 41px;
+    padding-bottom: 1px;
 }
 
 .select-params
@@ -1250,13 +1270,11 @@ input.checkbox-q-liquid {
     min-width: 125px;
 }
 
-.ic-min-block3
-{
+.ic-min-block3 {
     min-width: 110px;
 }
 
-.ic-ar
-{
+.ic-ar {
     text-align: right;
     padding-right: 5px;
 }
@@ -1343,6 +1361,9 @@ input.checkbox-q-liquid {
 .modal-bign-title {
     font-size: 20px;
     font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .vm--modal {
@@ -1360,8 +1381,9 @@ input.checkbox-q-liquid {
     color: white;
 }
 
-.gno-incl-content-wrapper {
+.gno-incl-content-wrapper, .modal-old-well-content-container {
     height: calc(100% - 42px);
+    overflow-y: auto;
 }
 
 .no-margin {
@@ -1499,6 +1521,38 @@ input.checkbox-q-liquid {
     position: relative;
 }
 
+.second-column-container {
+    padding-left: 10px !important;
+}
+
+.gno-shgn-table-section {
+    height: 400px;
+}
+
+.nno-modal-buttons-container {
+    position: relative;
+}
+
+/*cheat-code потом эти проблемы необходимо будет решить глобально*/
+#app #sidebar-container2 {
+    padding-right: 15px !important;
+}
+
+#app > .container-fluid {
+    max-width: 100% !important;
+    padding: 15px !important;
+}
+
+.container-fluid.col.m-lg-3.m-1.p-0 {
+    margin: 0 !important;
+}
+
+.navbar {
+    overflow: hidden !important;
+}
+
+/*media*/
+
 @media (max-width: 1765px) {
     .curve-settings, .choice-params {
         flex: 0 0 100% !important;
@@ -1529,6 +1583,15 @@ input.checkbox-q-liquid {
     .table-pgno-one, .table-pgno-two, .table-pgno-four {
         margin-bottom: 10px !important;
     }
+
+    .gno-shgn-wrapper {
+        height: initial;
+    }
+
+    .gno-shgn-table-section {
+        height: initial;
+        margin-bottom: 10px;
+    }
 }
 
 @media (max-width: 1302px) {
@@ -1554,10 +1617,6 @@ input.checkbox-q-liquid {
         width: calc(100% - 65px) !important;
     }
 
-    .square3 {
-        max-width: 80% !important;
-    }
-
     .select-params, .inflow-configuration {
         padding: 0 10px !important;
         min-width: 240px !important;
@@ -1571,14 +1630,33 @@ input.checkbox-q-liquid {
 @media (max-width: 1090px) {
     .gno-incl-content-wrapper {
         display: flex;
-        /*flex-direction: column;*/
         align-items: center;
         justify-content: center;
+        overflow-y: auto;
     }
 
     .incl-modal-table, .gno-plotly-graph {
         flex: 0 0 100% !important;
         max-width: 100% !important;
+    }
+}
+
+@media (max-width: 1060px) {
+    .modal-old-well-content-container {
+        flex-direction: column;
+    }
+
+    .modal-old-well-plotly-container {
+        width: 100%;
+    }
+
+    .modal-analysis-menu {
+        margin-top: 15px;
+        width: 100%;
+    }
+
+    .old_well_button {
+        margin-top: 15px;
     }
 }
 
@@ -1588,10 +1666,28 @@ input.checkbox-q-liquid {
     }
 }
 
+@media (max-width: 991px) {
+    #app #sidebar-container2 {
+        display: none !important;
+    }
+
+    .gno-page-container {
+        margin: 0 !important;
+    }
+
+    .second-column-container {
+        padding-right: 0 !important;
+    }
+}
+
 @media (max-width: 767px) {
     .first-column, .second-column {
         flex: 0 0 100% !important;
         max-width: 100% !important;
+    }
+
+    .first-column {
+        margin-top: 5px !important;
     }
 
     .no-gutter>[class*='col-'] {
@@ -1602,11 +1698,47 @@ input.checkbox-q-liquid {
     .table-pgno-button {
         padding: 0 !important;
     }
+
+    .second-column-container {
+        padding-left: 0 !important;
+    }
+
+    #app div.first-column-params-block, #app div.first-column-curve-block {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .button-nno {
+        width: initial;
+        height: initial;
+    }
+
+    .nno-icon {
+        right: -7px;
+    }
+
+    .nno-modal-button-wrapper {
+        margin-top: 0;
+    }
+
+    .nno-modal-buttons-container {
+        padding: 0 20px;
+    }
 }
 
 @media (max-width: 584px) {
     .table-border-gno-top .row .col-1 {
         display: none !important;
+    }
+}
+
+@media (max-width: 575px) {
+    .table-border-gno-right-second {
+        border-right: none !important;
+    }
+
+    .tech-data.curve {
+        padding-left: 15px;
     }
 }
 
@@ -1622,14 +1754,20 @@ input.checkbox-q-liquid {
     }
 
     .square3.podbor {
-        width: 100% !important;
+        width: 80% !important;
     }
 }
 
-@media (max-width: 490px) {
-    .table-border-gno-top .row {
-        display: flex;
-        flex-wrap: nowrap !important;
+/*@media (max-width: 490px) {*/
+/*    .table-border-gno-top .row {*/
+/*        display: flex;*/
+/*        flex-wrap: nowrap !important;*/
+/*    }*/
+/*}*/
+
+@media (max-width: 430px) {
+    .square3 {
+        max-width: 100% !important;
     }
 }
 
@@ -1639,20 +1777,8 @@ input.checkbox-q-liquid {
     }
 }
 
-
-
-
-
-/*cheat-code потом эти проблемы необходимо будет решить глобально*/
-#app #sidebar-container2 {
-    padding-right: 15px !important;
-}
-
-#app > .container-fluid {
-    max-width: 100% !important;
-    padding: 15px !important;
-}
-
-.container-fluid.col.m-lg-3.m-1.p-0 {
-    margin: 0 !important;
+@media (max-width: 400px) {
+    #app > .container-fluid {
+        padding: 10px !important;
+    }
 }
