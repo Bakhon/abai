@@ -84,6 +84,7 @@ Vue.component('monthly-production', require('./components/reports/MonthlyProduct
 Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
 Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
 Vue.component('monthly-injection', require('./components/reports/MonthlyInjection.vue').default);
+Vue.component('well-stock-block', require('./components/reports/WellStockBlock.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);

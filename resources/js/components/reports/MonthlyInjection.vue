@@ -88,6 +88,7 @@ export default {
         // let uri = "http://0.0.0.0:8090/monthly/injection/";
       let data = {
         dzo: this.org,
+        period: 'monthly',
         report_date_start: `${this.start_date}`.concat('-01 00:00:00'),
         report_date_end: `${this.end_date}`.concat('-01 00:00:00')
       };
