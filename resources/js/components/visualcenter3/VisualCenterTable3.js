@@ -1789,7 +1789,7 @@ export default {
       this.quantityRange = ((this.timestampEnd - this.timestampToday) / 86400000) + 1;
       var nowDate = new Date(this.range.start).toLocaleDateString();
       this.timeSelect = nowDate;
-      this.getProduction(this.item, this.item2, this.item3, this.item4, 'Добыча нефти');
+      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
       //this.getProductionOilandGas();
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
