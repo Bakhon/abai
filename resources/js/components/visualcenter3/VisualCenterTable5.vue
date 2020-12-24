@@ -26,7 +26,7 @@
                         <option :value="8" :disabled="actualMonth < 7">Январь - Август 2020</option>
                         <option :value="9" :disabled="actualMonth < 8">Январь - Сентябрь 2020</option>
                         <option :value="10" :disabled="actualMonth < 9">Январь - Октябрь 2020</option>
-                        <option :value="11" :disabled="actualMonth < 12">Январь - Ноябрь 2020</option>
+                        <option :value="11" :disabled="actualMonth < 10">Январь - Ноябрь 2020</option>
                         <option :value="12" :disabled="actualMonth < 11">Январь - Декабрь 2020</option>
                     </select>
                 </div>

@@ -6,7 +6,10 @@
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
             ></horizontal-indicators>
-            <div class="vc-tables">
+            <div class="first-string mr-2" v-if="isShowInteractiveBlock">
+
+            </div>
+            <div v-if="isShowMainBlock">
                 <div class="mr-sm-2 vc-central-block">
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">
@@ -42,11 +45,17 @@
                             v-bind:title="'Чистый денежный поток'"
                             v-bind:mainValue="t2"
                             v-bind:units="'млн. тенге'"
+                            v-bind:showLink="true"
+                            v-bind:tableToChange="2"
+                            @changeTable="tableToChange => changeTable(tableToChange)"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Операционные затраты'"
                             v-bind:mainValue="t3"
                             v-bind:units="'млн. тенге'"
+                            v-bind:showLink="true"
+                            v-bind:tableToChange="3"
+                            @changeTable="tableToChange => changeTable(tableToChange)"
                         ></vc-speedometer-block>
                     </div>
                     <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2" v-if="isEnableSpeedometers">
@@ -54,11 +63,17 @@
                             v-bind:title="'Капитальные затраты по операционным активам'"
                             v-bind:mainValue="t4"
                             v-bind:units="'млн. тенге'"
+                            v-bind:showLink="true"
+                            v-bind:tableToChange="4"
+                            @changeTable="tableToChange => changeTable(tableToChange)"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Капитальные затраты крупных проектов'"
                             v-bind:mainValue="t5"
                             v-bind:units="'млн. тенге'"
+                            v-bind:showLink="true"
+                            v-bind:tableToChange="5"
+                            @changeTable="tableToChange => changeTable(tableToChange)"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Разработка концепции Разведка и добыча'"

@@ -11,6 +11,9 @@ export default {
       dateStart: '',
       dateEnd: '',
       isEnableSpeedometers: false,
+      isShowInteractiveBlock: false,
+      isShowMainBlock: true,
+      tableToShowId: 0,
     };
   },
   methods: {
@@ -45,6 +48,11 @@ export default {
             this.isEnableSpeedometers = true;
           }
         });
+    },
+    changeTable(tableId) {
+      this.isShowInteractiveBlock = true;
+      this.isShowMainBlock = false;
+      this.tableToShowId = tableId;
     },
   },
   async mounted() {

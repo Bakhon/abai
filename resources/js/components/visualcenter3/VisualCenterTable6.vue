@@ -6,7 +6,7 @@
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
             ></horizontal-indicators>
-            <div class="vc-tables">
+            <div>
                 <div class="mr-sm-2 vc-central-block">
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">

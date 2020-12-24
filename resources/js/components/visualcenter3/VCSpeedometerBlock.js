@@ -16,6 +16,7 @@ export default {
       default: 1,
     },
     sliderTooltip: '',
+    showLink: false,
   },
   data: function () {
     return {}
