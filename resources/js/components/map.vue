@@ -238,7 +238,7 @@ h1 {
 
 .gu-map {
   position: relative;
-  height: calc(100vh - 144px);
+  height: calc(100vh - 96px);
   width: 100%;
 
   &__controls {
