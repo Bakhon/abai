@@ -227,6 +227,7 @@
           <search-form-refresh
             @input="handlerSearch"
             @start-search="searchWell()"
+            :clear="searched"
           />
         </div>
       </div>
@@ -6630,6 +6631,7 @@ export default {
     return {
       wells: [],
       searchString: "",
+      searched: false,
       sortParam: "",
       sortType: "asc",
       filter: "Все месторождения",
@@ -6714,11 +6716,13 @@ export default {
           this.fullWells = response.data;
           this.editedWells = [];
           this.isloading = false;
+          this.searched = searchParam ? true : false;
         })
         .catch((error) => {
           console.log(error.data);
           this.editedWells = [];
           this.searchWell();
+          this.searched = searchParam ? true : false;
         });
     },
     cancelEdit() {
@@ -6807,6 +6811,7 @@ export default {
           this.isloading = false;
           let data = response.data;
           if (data) {
+            this.searched = false;
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
@@ -6849,6 +6854,7 @@ export default {
       this.searchString = search;
     },
     searchWell() {
+      console.log('search = ', this.searchString)
       this.$store.commit("tr/SET_SORTPARAM", "");
       this.sortParam = "";
       this.isloading = true;
@@ -6866,6 +6872,7 @@ export default {
         )
         .then((response) => {
           this.isloading = false;
+          this.searched = searchParam ? true : false;
           this.$store.commit("tr/SET_SEARCH", this.searchString);
           let data = response.data;
           if (data) {
@@ -6880,6 +6887,7 @@ export default {
         })
         .catch((error) => {
           // this.wells = [];
+          this.searched = searchParam ? true : false;
           this.isloading = false;
           this.fullWells = [];
           console.log("search error = ", error);

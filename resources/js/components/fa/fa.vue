@@ -96,6 +96,7 @@
         <search-form-refresh
           @input="handlerSearch"
           @start-search="searchWell()"
+          :clear="searched"
         />
       </div>
     </div>
@@ -919,6 +920,7 @@ export default {
       pieChartRerender: true,
       wells: [],
       searchString: "",
+      searched: false,
       sortParam: "",
       sortType: "asc",
       dt: null,
@@ -1141,6 +1143,7 @@ export default {
               "/"
           )
           .then((response) => {
+            this.searched = false;
             this.isloading = false;
             let data = response.data;
             this.editdtm = choosenDt[1];
@@ -1225,6 +1228,7 @@ export default {
             searchParam
         )
         .then((response) => {
+          this.searched = searchParam ? true : false;
           this.isloading = false;
           console.log("search resp = ", response.data);
           this.$store.commit("fa/SET_SEARCH", this.searchString);
@@ -1240,6 +1244,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.searched = searchParam ? true : false;
           this.isloading = false;
           this.wells = [];
           this.fullWells = [];
