@@ -114,9 +114,6 @@ div.r-txt2 {
     cursor: pointer;
     user-select: none;
 }
-.remove-sidebar-container2 {
-    margin-left: -45px !important;
-}
 
 .section {
     min-width: 150px;

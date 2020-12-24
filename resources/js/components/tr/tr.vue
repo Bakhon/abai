@@ -180,7 +180,7 @@
           @click="editable()"
           v-if="!edit"
           class="col but-nav__link but trheadhight"
-          style="margin-right: 11px"
+          style="margin-right: 15px"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -200,6 +200,7 @@
         <a
           @click="savetable()"
           v-if="edit"
+          style="margin-right: 15px"
           class="col but-nav__link but trheadhight"
           >Сохранить</a
         >
@@ -6919,7 +6920,7 @@ a:hover {
   text-decoration: none !important;
 }
 .maintable {
-  padding-top: 0px;
+  padding: 0;
 }
 .maintable-level2 {
   background: #272953;
@@ -6966,7 +6967,8 @@ tr:nth-child(even) {
 }
 
 .trcolmd12 {
-  margin-left: 0px;
+  margin: 0;
+  padding: 0;
 }
 .fadee {
   flex: 0 1 auto;
@@ -7000,7 +7002,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 215px);
+  height: calc(100vh - 198px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;

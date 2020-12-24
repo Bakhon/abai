@@ -336,7 +336,7 @@ export default {
 </script>
 <style lang="scss">
 #app > .container-fluid {
-  max-width: calc(100% - 120px);
+  max-width: calc(100% - 90px);
 }
 
 .table-page {

@@ -1402,22 +1402,22 @@ body {
 } */
 .table {
   overflow: scroll;
-  height: calc(100vh - 215px);
+  height: calc(100vh - 198px);
 }
 .table tr:nth-child(-n+4) td {
   position: sticky;
   background: rgb(51, 57, 117);
-  top: 80px;
+  top: 79px;
   z-index: 3000;
 }
 .table tr:first-child td {
-  top: 0;
+  top: -1;
 }
 .table tr:nth-child(2) td {
-  top: 40px;
+  top: 39px;
 }
 .table tr:nth-child(3) td {
-  top: 40px;
+  top: 38px;
 }
 
 .fadee {

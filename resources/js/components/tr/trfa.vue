@@ -149,7 +149,7 @@
             </select>
           </div>
         </div>
-        <div class="col-sm" v-if="chartShow === 'bar'">
+        <div class="" v-if="chartShow === 'bar'">
           <div
             class="second_block"
             style="display: flex; justify-content: center"
@@ -163,7 +163,7 @@
             ></apexchart>
           </div>
         </div>
-        <div class="col-sm" v-if="chartShow === 'pie'">
+        <div class="" v-if="chartShow === 'pie'">
           <div
             class="first_block"
             style="display: flex; justify-content: center"
