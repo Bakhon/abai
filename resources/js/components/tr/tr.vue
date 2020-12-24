@@ -269,12 +269,19 @@
             :multiple="true"
             :searchable="false"
             :closeOnSelect="false"
+            select-label="Выбрать"
+            deselect-label="Убрать"
+            select-group-label="Выбрать все"
+            deselect-group-label="Убрать все"
+            selected-label="Выбрано"
             group-values="fields"
             group-label="group"
             :group-select="true"
+            :limit="1"
+            :limit-text="() => ''"
             placeholder="Выберите месторождения"
-            track-by="name"
-            label="name">
+          >
+            <template slot="tag"><span class="option__desc">{{ getFieldFilterTest() }}</span></template>
           </multiselect>
           <div
             @click="cancelEdit"
@@ -6598,6 +6605,8 @@ import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import Multiselect from 'vue-multiselect';
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+import { fields } from "./constants.js";
+import { declOfNum } from "./helpers.js";
 
 export default {
   name: "TrPage",
@@ -6650,18 +6659,13 @@ export default {
       sortParam: "",
       sortType: "asc",
       // filter: "Все месторождения",
-      filter: [],
+      filter: [...fields],
       fieldFilterOptions: [
         {
           group: 'Все месторождения',
           fields: [
-            { name: 'Акшабулак Центральный' },
-            { name: 'Акшабулак Южный' },
-            { name: 'Акшабулак Восточный' },
-            { name: 'Нуралы' },
-            { name: 'Аксай' },
-            { name: 'Аксай Южный' },
-          ]
+            ...fields
+          ],
         }
       ],
       dt: null,
@@ -6685,8 +6689,14 @@ export default {
     fullWells() {
       this.chooseField();
     },
+    filter() {
+      this.chooseField();
+    },
   },
   methods: {
+    getFieldFilterTest() {
+      return fields.length === this.filter.length ? "Выбраны все месторождения" : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length)}`;
+    },
     editrow(row, rowId) {
       console.log("row = ", row);
       console.log("rowId = ", rowId);
@@ -6880,10 +6890,10 @@ export default {
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("tr/SET_FILTER", filter);
-      if (!filter || filter.length === 0) {
+      if (!filter) {
         this.wells = fullWells;
       } else {
-        this.wells = fullWells.filter((e) => e.field === filter);
+        this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
       }
     },
     swap() {

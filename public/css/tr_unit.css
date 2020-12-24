@@ -1,0 +1,28 @@
+#app>.container-fluid.container-fluid {
+    max-width: calc(100% - 89px);
+    margin-bottom: 0 !important;
+}
+
+#app .multiselect--active, #app .multiselect {
+    z-index: 3050;
+}
+
+#app .multiselect {
+    width: 300px;
+    margin: 0 0 0 auto;
+}
+
+#app .multiselect__tags, #app .multiselect__content, #app .multiselect__content-wrapper {
+    background: #272953;
+    border: 1px solid #656a8a;
+    color: #fff;
+}
+
+#app .multiselect__placeholder, #app .multiselect__option {
+    background: #272953;
+    color: #fff;
+}
+
+#app .multiselect__tags-wrap:not(:first-child) {
+    display: none;
+}
