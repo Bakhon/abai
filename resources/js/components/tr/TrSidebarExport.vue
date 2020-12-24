@@ -69,8 +69,8 @@ export default {
   methods: {
     ifFaTr(fa, tr) {
       if (
-        window.location.pathname === "/ru/fa" ||
-        window.location.pathname === "/ru/trfa"
+        window.location.pathname === this.localeUrl("/fa") ||
+        window.location.pathname === this.localeUrl("/trfa")
       ) {
         // FA
         return fa;

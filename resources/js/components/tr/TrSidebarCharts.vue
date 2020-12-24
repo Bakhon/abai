@@ -24,25 +24,25 @@
     <div class="dropdown-menu tr-sidebar__chart-menu" style="z-index:12000;    position: relative;">
       <div>
         <li class="tr-sidebar__page">
-          <a class="tr-sidebar__link" href="/ru/fa">Факторный анализ</a>
+          <a class="tr-sidebar__link" :href="localeUrl('/fa')">Факторный анализ</a>
         </li>
         <li
           v-for="(item, index) in chartNamesFA"
           :key="item"
           class="tr-sidebar__graph"
         >
-          <a class="tr-sidebar__link" href="/ru/trfa" @click="() => setChartFa(index)">{{ item }}</a>
+          <a class="tr-sidebar__link" :href="localeUrl('/trfa')" @click="() => setChartFa(index)">{{ item }}</a>
         </li>
 
         <li class="tr-sidebar__page">
-          <a class="tr-sidebar__link" href="/ru/tr">Тех.режим</a>
+          <a class="tr-sidebar__link" :href="localeUrl('/tr')">Тех.режим</a>
         </li>
         <li
           v-for="(item, index) in chartNames"
           :key="item"
           class="tr-sidebar__graph"
         >
-          <a class="tr-sidebar__link" href="/ru/tr_charts" @click="() => setChart(index)">{{ item }}</a>
+          <a class="tr-sidebar__link" :href="localeUrl('/tr_charts')"@click="() => setChart(index)">{{ item }}</a>
         </li>
       </div>
     </div>

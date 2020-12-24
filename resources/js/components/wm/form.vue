@@ -491,7 +491,7 @@ export default {
   },
   methods: {
     chooseGu(init = false) {
-      this.axios.post("/ru/getzu", {
+      this.axios.post(this.localeUrl("/getzu"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
         let data = response.data;
@@ -505,7 +505,7 @@ export default {
         }
       });
 
-      this.axios.post("/ru/getgucdngngdufield", {
+      this.axios.post(this.localeUrl("/getgucdngngdufield"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
         let data = response.data;
@@ -518,7 +518,7 @@ export default {
       });
     },
     chooseZu() {
-      this.axios.post("/ru/getwell", {
+      this.axios.post(this.localeUrl("/getwell"), {
         zu_id: this.formFields.zu_id,
       }).then((response) => {
         let data = response.data;
@@ -531,7 +531,7 @@ export default {
     },
   },
   beforeCreate: function () {
-    this.axios.get("/ru/getotherobjects").then((response) => {
+    this.axios.get(this.localeUrl("/getotherobjects")).then((response) => {
       let data = response.data;
       if (data) {
         this.otherObjects = data.data;
@@ -540,7 +540,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getngdu").then((response) => {
+    this.axios.get(this.localeUrl("/getngdu")).then((response) => {
       let data = response.data;
       if (data) {
         this.ngdus = data.data;
@@ -549,7 +549,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getcdng").then((response) => {
+    this.axios.get(this.localeUrl("/getcdng")).then((response) => {
       let data = response.data;
       if (data) {
         this.cndgs = data.data;
@@ -558,7 +558,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getwbs").then((response) => {
+    this.axios.get(this.localeUrl("/getwbs")).then((response) => {
       let data = response.data;
       if (data) {
         this.wbs = data.data;
@@ -567,7 +567,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getsrb").then((response) => {
+    this.axios.get(this.localeUrl("/getsrb")).then((response) => {
       let data = response.data;
       if (data) {
         this.srb = data.data;
@@ -576,7 +576,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/gethob").then((response) => {
+    this.axios.get(this.localeUrl("/gethob")).then((response) => {
       let data = response.data;
       if (data) {
         this.hob = data.data;
@@ -585,7 +585,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/gethb").then((response) => {
+    this.axios.get(this.localeUrl("/gethb")).then((response) => {
       let data = response.data;
       if (data) {
         this.hb = data.data;
@@ -594,7 +594,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getallgus").then((response) => {
+    this.axios.get(this.localeUrl("/getallgus")).then((response) => {
       let data = response.data;
       if (data) {
         this.gus = data.data;

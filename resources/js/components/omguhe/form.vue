@@ -285,7 +285,7 @@ export default {
     methods: {
         chooseNgdu() {
             this.axios
-                .get("/ru/getcdng", {
+                .get(this.localeUrl("/getcdng"), {
                     ngdu_id: this.formFields.ngdu_id,
                 })
                 .then((response) => {
@@ -299,7 +299,7 @@ export default {
         },
         chooseCdng() {
             this.axios
-                .post("/ru/getgu", {
+                .post(this.localeUrl("/getgu"), {
                     cdng_id: this.formFields.cdng_id,
                 })
                 .then((response) => {
@@ -313,7 +313,7 @@ export default {
         },
         chooseGu() {
             this.axios
-                .post("/ru/getzu", {
+                .post(this.localeUrl("/getzu"), {
                     gu_id: this.formFields.gu_id,
                 })
                 .then((response) => {
@@ -326,7 +326,7 @@ export default {
                 });
 
             this.axios
-                .post("/ru/getgucdngngdufield", {
+                .post(this.localeUrl("/getgucdngngdufield"), {
                     gu_id: this.formFields.gu_id,
                 })
                 .then((response) => {
@@ -341,7 +341,7 @@ export default {
         },
         chooseZu() {
             this.axios
-                .post("/ru/getwell", {
+                .post(this.localeUrl("/getwell"), {
                     zu_id: this.formFields.zu_id,
                 })
                 .then((response) => {
@@ -355,7 +355,7 @@ export default {
         },
         pick() {
             this.axios
-                .post("/ru/getprevdaylevel", {
+                .post(this.localeUrl("/getprevdaylevel"), {
                     gu_id: this.formFields.gu_id,
                     date: this.formFields.date,
                 })
@@ -379,7 +379,7 @@ export default {
         }
     },
     beforeCreate: function () {
-        this.axios.get("/ru/getfields").then((response) => {
+        this.axios.get(this.localeUrl("/getfields")).then((response) => {
             let data = response.data;
             if (data) {
                 this.fields = data.data;
@@ -388,7 +388,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getngdu").then((response) => {
+        this.axios.get(this.localeUrl("/getngdu")).then((response) => {
             let data = response.data;
             if (data) {
                 this.ngdus = data.data;
@@ -397,7 +397,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getcdng").then((response) => {
+        this.axios.get(this.localeUrl("/getcdng")).then((response) => {
             let data = response.data;
             if (data) {
                 this.cndgs = data.data;
@@ -406,7 +406,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getallgus").then((response) => {
+        this.axios.get(this.localeUrl("/getallgus")).then((response) => {
             let data = response.data;
             if (data) {
                 this.gus = data.data;
@@ -415,7 +415,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getinhibitors").then((response) => {
+        this.axios.get(this.localeUrl("/getinhibitors")).then((response) => {
             let data = response.data;
             if (data) {
                 this.inhibitors = data.data;

@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     getIndicatorsData() {
-      let uri = "/ru/getdzocalcs";
+      let uri = this.localeUrl("/getdzocalcs");
       let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart);
       let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd);
       let prevPeriodDateStart = new Date(

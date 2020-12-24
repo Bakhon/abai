@@ -106,7 +106,7 @@ export default {
     }
   },
   beforeCreate: function () {
-    this.axios.get("/ru/getallgus").then((response) => {
+    this.axios.get(this.localeUrl("/getallgus")).then((response) => {
       let data = response.data;
       if (data) {
         this.gus = data.data;
@@ -141,7 +141,7 @@ export default {
       }
 
       if (this.gu != null && this.fields.year != null) {
-        this.axios.post("/ru/checkdublicateomgddng", {
+        this.axios.post(this.localeUrl("/checkdublicateomgddng"), {
           id: this.omgca ? this.omgca.id : null,
           gu: this.gu,
           dt: this.fields.year,

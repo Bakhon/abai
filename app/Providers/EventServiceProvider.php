@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         \Adldap\Laravel\Events\Authenticated::class => [
             \App\Listeners\UserLogged::class,
         ],
+        \Barryvdh\TranslationManager\Events\TranslationsExportedEvent::class => [
+            \App\Listeners\TranslationExported::class
+        ]
     ];
 
     /**
@@ -31,7 +34,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
         //
     }
 }

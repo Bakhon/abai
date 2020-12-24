@@ -146,7 +146,7 @@ export default {
     }
   },
   beforeCreate: function () {
-    this.axios.get("/ru/getallgus").then((response) => {
+    this.axios.get(this.localeUrl("/getallgus")).then((response) => {
       let data = response.data;
       if (data) {
         this.gus = data.data;
@@ -154,7 +154,7 @@ export default {
         console.log('No data');
       }
     });
-    this.axios.get("/ru/getmaterials").then((response) => {
+    this.axios.get(this.localeUrl("/getmaterials")).then((response) => {
       let data = response.data;
       if (data) {
         this.materials = data.data;

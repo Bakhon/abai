@@ -241,7 +241,7 @@ export default {
   },
   beforeCreate: function () {
 
-    this.axios.get("/ru/getngdu").then((response) => {
+    this.axios.get(this.localeUrl("/getngdu")).then((response) => {
       let data = response.data;
       if (data) {
         this.ngdus = data.data;
@@ -250,7 +250,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getcdng").then((response) => {
+    this.axios.get(this.localeUrl("/getcdng")).then((response) => {
       let data = response.data;
       if (data) {
         this.cndgs = data.data;
@@ -259,7 +259,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getallgus").then((response) => {
+    this.axios.get(this.localeUrl("/getallgus")).then((response) => {
       let data = response.data;
       if (data) {
         this.gus = data.data;

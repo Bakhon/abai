@@ -244,7 +244,7 @@ export default {
   },
   beforeCreate: function () {
 
-    this.axios.get("/ru/getfields").then((response) => {
+    this.axios.get(this.localeUrl("/getfields")).then((response) => {
       let data = response.data;
       if (data) {
         this.fields = data.data;
@@ -253,7 +253,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getngdu").then((response) => {
+    this.axios.get(this.localeUrl("/getngdu")).then((response) => {
       let data = response.data;
       if (data) {
         this.ngdus = data.data;
@@ -262,7 +262,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getcdng").then((response) => {
+    this.axios.get(this.localeUrl("/getcdng")).then((response) => {
       let data = response.data;
       if (data) {
         this.cndgs = data.data;
@@ -271,7 +271,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getallgus").then((response) => {
+    this.axios.get(this.localeUrl("/getallgus")).then((response) => {
       let data = response.data;
       if (data) {
         this.gus = data.data;
@@ -280,7 +280,7 @@ export default {
       }
     });
 
-    this.axios.get("/ru/getallkormasses").then((response) => {
+    this.axios.get(this.localeUrl("/getallkormasses")).then((response) => {
       let data = response.data;
       if (data) {
         this.kormass = data.data;
@@ -320,7 +320,7 @@ export default {
   },
   methods: {
     chooseNgdu(event) {
-      this.axios.get("/ru/getcdng", {
+      this.axios.get(this.localeUrl("/getcdng"), {
         ngdu_id: event.target.value,
       }).then((response) => {
         let data = response.data;
@@ -332,7 +332,7 @@ export default {
       });
     },
     chooseCdng(event) {
-      this.axios.post("/ru/getgu", {
+      this.axios.post(this.localeUrl("/getgu"), {
         cdng_id: event.target.value,
       }).then((response) => {
         let data = response.data;
@@ -347,7 +347,7 @@ export default {
       if (!init) {
         this.formFields.well_id = null
       }
-      this.axios.post("/ru/getzu", {
+      this.axios.post(this.localeUrl("/getzu"), {
         gu_id: this.formFields.gu_id,
       }).then((response) => {
         let data = response.data;
@@ -359,7 +359,7 @@ export default {
       });
     },
     chooseZu() {
-      this.axios.post("/ru/getwell", {
+      this.axios.post(this.localeUrl("/getwell"), {
         zu_id: this.formFields.zu_id,
       }).then((response) => {
         let data = response.data;

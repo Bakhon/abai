@@ -117,7 +117,7 @@ export default {
       this.zuPoints = []
       this.wellPoints = []
       this.guPoints = []
-      this.axios.get("/ru/gu-map/pipes", {params: {gu: this.gu}}).then((response) => {
+      this.axios.get(this.localeUrl("/gu-map/pipes"), {params: {gu: this.gu}}).then((response) => {
         this.pipes = response.data.pipes
         this.zuPoints = response.data.zuPoints
         this.wellPoints = response.data.wellPoints
