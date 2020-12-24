@@ -10,13 +10,16 @@ export default {
   },
   data: function () {
     return {
+      nameChartLeft: '',
+      oilChartHeadName: 'Динамика добычи нефти',
       prod_wells_workAll: [
-        { name: "ЭФ" }, { name: "ДФ" },
-        { name: "В работе добывающие скважины" },
-        { name: "БД" },
-        { name: "Освоение" },
-        { name: "ОФЛС" },
-        { name: "Простой добывающих скважин" }
+        { name: "ЭФ", value: 603, value2: 101 },
+        { name: "ДФ", value: 98, value2: 56 },
+        { name: "В работе добывающие скважины", value: 45, value2: 31 },
+        { name: "БД", value: 121, value2: 108 },
+        { name: "Освоение", value: 143, value2: 114 },
+        { name: "ОФЛС", value: 98, value2: 36 },
+        { name: "Простой добывающих скважин", value: 86, value2: 54 }
       ],
       prod_wells_work: 0,
       prod_wells_idle: 0,
@@ -30,9 +33,6 @@ export default {
       quantityGetProductionOilandGas: "",
       /*calendar*/
       range: {
-        //start: "2020-01-06T06:00:00+06:00",
-        //end: "2020-01-10T06:00:00+06:00",
-
         start: "2020-12-18T06:00:00+06:00",
         end: "2020-12-18T09:00:00+06:00",
       },
@@ -240,9 +240,9 @@ export default {
   },
   methods: {
     saveCompany(com) {
-     // console.log(com);
+      // console.log(com);
       this.company = com;
-      this.getProduction(this.item, this.item2, this.item3, this.item4);
+      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
       // this.getProductionOilandGas();
       // this.getProductionOilandGasPercent();
     },
@@ -579,13 +579,19 @@ export default {
       this.$modal.show(bign);
     },
     displaynumbers: function (event) {
-      return this.getProduction(this.item, this.item2, this.item3, this.item4);
+      return this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
 
     getColor(status) {
-      if (status < "0") return "    margin-top: 17px;border-top: 10px solid #b40300";
+      if (status < "0") return "margin-top: 0.6em;border-top: 10px solid #b40300";
       if (status == "0") return "    ";
-      return "border-bottom: 10px solid #008a17";
+      return "margin-top: 0.2em; border-bottom: 10px solid #008a17";
+    },
+
+    getColor2(status) {
+      if (status < "0") return "margin-top:17em!important; border-top: 10px solid #b40300;margin-right:0.2em;";
+      if (status == "0") return "    ";
+      return "margin-top: 16.6em!important; border-bottom: 10px solid #008a17;margin-right:0.2em;";
     },
 
 
@@ -697,220 +703,220 @@ export default {
 
 
     getProductionOilandGas(data) {
-         if (data) {
-      var timestampToday = this.timestampToday;
-      var timestampEnd = this.timestampEnd;
-      var company = this.company;
-      if (company != "all") {
-        data = _.filter(data, _.iteratee({ dzo: company }));
+      if (data) {
+        var timestampToday = this.timestampToday;
+        var timestampEnd = this.timestampEnd;
+        var company = this.company;
+        if (company != "all") {
+          data = _.filter(data, _.iteratee({ dzo: company }));
+        }
+        var dataWithMay = new Array();
+        dataWithMay = _.filter(data, function (item) {
+          return _.every([
+            _.inRange(
+              item.__time,
+              timestampToday,
+              timestampEnd + 86400000
+            ),
+          ]);
+        });
+        //this.quantityGetProductionOilandGas = Object.keys(dataWithMay).length;//k1q
+        var quantityGetProductionOilandGas = Object.keys(_.filter(dataWithMay, _.iteratee({ dzo: dataWithMay[0].dzo }))).length;//k1q
+        this.quantityGetProductionOilandGas = quantityGetProductionOilandGas;
+
+
+
+        //Summ plan and fact from dzo
+        var SummFromRange = _(dataWithMay)
+          .groupBy("dzo")
+          .map((dzo, id) => ({
+            dzo: id,
+            oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
+            oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
+            oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
+            oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
+            gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
+            gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
+          }))
+
+          .value();
+
+
+        var oil_planSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.oil_plan;
+          },
+          0
+        );
+
+
+        var oil_factSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.oil_fact;
+          },
+          0
+        );
+
+
+        var oil_dlv_planSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.oil_dlv_plan;
+          },
+          0
+        );
+
+
+
+        var oil_dlv_factSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.oil_dlv_fact;
+          },
+          0
+        );
+
+
+
+        var gas_planSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.gas_plan;
+          },
+          0
+        );
+
+
+        var gas_factSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.gas_fact;
+          },
+          0
+        );
+
+        if (oil_factSumm) { this.oil_factDay = oil_factSumm; }
+        if (oil_planSumm) { this.oil_planDay = oil_planSumm; }
+        if (oil_factSumm || oil_planSumm) { this.oil_factDayProgressBar = (oil_factSumm / oil_planSumm) * 100; }
+
+        if (oil_dlv_factSumm) { this.oil_dlv_factDay = oil_dlv_factSumm; }
+        if (oil_dlv_planSumm) { this.oil_dlv_planDay = oil_dlv_planSumm; }
+        if (oil_dlv_factSumm || oil_dlv_planSumm) { this.oil_dlv_factDayProgressBar = (oil_dlv_factSumm / oil_dlv_planSumm) * 100; }
+
+        if (gas_factSumm) { this.gas_factDay = gas_factSumm; }
+        if (gas_planSumm) { this.gas_planDay = gas_planSumm; }
+        if (gas_factSumm || gas_planSumm) { this.gas_factDayProgressBar = (gas_factSumm / gas_planSumm) * 100; }
+
       }
-      var dataWithMay = new Array();
-      dataWithMay = _.filter(data, function (item) {
-        return _.every([
-          _.inRange(
-            item.__time,
-            timestampToday,
-            timestampEnd + 86400000
-          ),
-        ]);
-      });
-      //this.quantityGetProductionOilandGas = Object.keys(dataWithMay).length;//k1q
-      var quantityGetProductionOilandGas = Object.keys(_.filter(dataWithMay, _.iteratee({ dzo: dataWithMay[0].dzo }))).length;//k1q
-      this.quantityGetProductionOilandGas = quantityGetProductionOilandGas;
-
-
-
-      //Summ plan and fact from dzo
-      var SummFromRange = _(dataWithMay)
-        .groupBy("dzo")
-        .map((dzo, id) => ({
-          dzo: id,
-          oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-          oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
-          oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
-          oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
-          gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
-          gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
-        }))
-
-        .value();
-
-
-      var oil_planSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.oil_plan;
-        },
-        0
-      );
-
-
-      var oil_factSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.oil_fact;
-        },
-        0
-      );
-
-
-      var oil_dlv_planSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.oil_dlv_plan;
-        },
-        0
-      );
-
-
-
-      var oil_dlv_factSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.oil_dlv_fact;
-        },
-        0
-      );
-
-
-
-      var gas_planSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.gas_plan;
-        },
-        0
-      );
-
-
-      var gas_factSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.gas_fact;
-        },
-        0
-      );
-
-      if (oil_factSumm) { this.oil_factDay = oil_factSumm; }
-      if (oil_planSumm) { this.oil_planDay = oil_planSumm; }
-      if (oil_factSumm || oil_planSumm) { this.oil_factDayProgressBar = (oil_factSumm / oil_planSumm) * 100; }
-
-      if (oil_dlv_factSumm) { this.oil_dlv_factDay = oil_dlv_factSumm; }
-      if (oil_dlv_planSumm) { this.oil_dlv_planDay = oil_dlv_planSumm; }
-      if (oil_dlv_factSumm || oil_dlv_planSumm) { this.oil_dlv_factDayProgressBar = (oil_dlv_factSumm / oil_dlv_planSumm) * 100; }
-
-      if (gas_factSumm) { this.gas_factDay = gas_factSumm; }
-      if (gas_planSumm) { this.gas_planDay = gas_planSumm; }
-      if (gas_factSumm || gas_planSumm) { this.gas_factDayProgressBar = (gas_factSumm / gas_planSumm) * 100; }
-
-       }
       //});
     },
-    getProductionOilandGasPercent(data) {  
-         if (data) {
-      var timestampToday = this.timestampToday;
-      var timestampEnd = this.timestampEnd;
-      var company = this.company;
-      if (company != "all") {
-        data = _.filter(data, _.iteratee({ dzo: company }));
-      }
+    getProductionOilandGasPercent(data) {
+      if (data) {
+        var timestampToday = this.timestampToday;
+        var timestampEnd = this.timestampEnd;
+        var company = this.company;
+        if (company != "all") {
+          data = _.filter(data, _.iteratee({ dzo: company }));
+        }
 
-      var quantityRange = this.quantityRange;
+        var quantityRange = this.quantityRange;
 
-      var dataWithMay = new Array();
-      dataWithMay = _.filter(data, function (item) {
-        return _.every([
-          _.inRange(
-            item.__time,
-            timestampToday - quantityRange * 86400000,
-            timestampToday
-          ),
-        ]);
-      });
-
-
-      //Summ plan and fact from dzo
-      var SummFromRange = _(dataWithMay)
-        .groupBy("dzo")
-        .map((dzo, id) => ({
-          dzo: id,
-          oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-          oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
-          oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
-          oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
-          gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
-          gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
-        }))
-
-        .value();
+        var dataWithMay = new Array();
+        dataWithMay = _.filter(data, function (item) {
+          return _.every([
+            _.inRange(
+              item.__time,
+              timestampToday - quantityRange * 86400000,
+              timestampToday
+            ),
+          ]);
+        });
 
 
-      var oil_planSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.oil_plan;
-        },
-        0
-      );
+        //Summ plan and fact from dzo
+        var SummFromRange = _(dataWithMay)
+          .groupBy("dzo")
+          .map((dzo, id) => ({
+            dzo: id,
+            oil_plan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
+            oil_fact: _.round(_.sumBy(dzo, 'oil_fact'), 0),
+            oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
+            oil_dlv_fact: _.round(_.sumBy(dzo, 'oil_dlv_fact'), 0),
+            gas_plan: _.round(_.sumBy(dzo, 'gas_plan'), 0),
+            gas_fact: _.round(_.sumBy(dzo, 'gas_fact'), 0),
+          }))
+
+          .value();
 
 
-      var oil_factSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.oil_fact;
-        },
-        0
-      );
+        var oil_planSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.oil_plan;
+          },
+          0
+        );
 
 
-      var oil_dlv_planSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.oil_dlv_plan;
-        },
-        0
-      );
+        var oil_factSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.oil_fact;
+          },
+          0
+        );
 
 
-
-      var oil_dlv_factSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.oil_dlv_fact;
-        },
-        0
-      );
+        var oil_dlv_planSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.oil_dlv_plan;
+          },
+          0
+        );
 
 
 
+        var oil_dlv_factSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.oil_dlv_fact;
+          },
+          0
+        );
 
 
-      var gas_planSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.gas_plan;
-        },
-        0
-      );
 
 
-      var gas_factSumm = _.reduce(
-        SummFromRange,
-        function (memo, item) {
-          return memo + item.gas_fact;
-        },
-        0
-      );
 
-      this.oil_factDayPercent = oil_factSumm;
-      this.gas_factDayPercent = gas_factSumm;
-      this.oil_dlv_factDayPercent = oil_dlv_factSumm;
+        var gas_planSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.gas_plan;
+          },
+          0
+        );
+
+
+        var gas_factSumm = _.reduce(
+          SummFromRange,
+          function (memo, item) {
+            return memo + item.gas_fact;
+          },
+          0
+        );
+
+        this.oil_factDayPercent = oil_factSumm;
+        this.gas_factDayPercent = gas_factSumm;
+        this.oil_dlv_factDayPercent = oil_dlv_factSumm;
 
       }
       // });
     },
 
-    getProduction(item, item2, item3, item4) {
+    getProduction(item, item2, item3, item4, item5) {
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
 
@@ -919,6 +925,7 @@ export default {
       this.item2 = item2;
       this.item3 = item3;
       this.item4 = item4;
+      this.nameChartLeft = item5;
 
       localStorage.setItem("production-plan", item);
       localStorage.setItem("production-fact", item2);
@@ -987,9 +994,9 @@ export default {
 
             //this.getProductionPercentOneDzo(arrdata);      
 
-        /*    var dataDay = [];
-            dataDay = _.filter(arrdata, _.iteratee({ __time: Number(timestampToday) }));
-            dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);*/
+            /*    var dataDay = [];
+                dataDay = _.filter(arrdata, _.iteratee({ __time: Number(timestampToday) }));
+                dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);*/
 
             /*var dataDay = new Array();
             dataDay = _.filter(arrdata, function (item) {
@@ -1013,9 +1020,9 @@ export default {
 
 
 
-            
-          /*  this.wells = dataDay;
-            this.wells2 = dataDay;*/
+
+            /*  this.wells = dataDay;
+              this.wells2 = dataDay;*/
 
 
             //get data by Month        
@@ -1031,7 +1038,7 @@ export default {
               ]);
             });
 
-         
+
             var productionForChart = _(dataWithMay)
               .groupBy("__time")
               .map((__time, id) => ({
@@ -1041,13 +1048,18 @@ export default {
               }))
               .value();
 
-              this.inj_wells_idle = dataWithMay[0]['inj_wells_idle'];
-              this.inj_wells_work = dataWithMay[0]['inj_wells_work'];
-              this.prod_wells_work = dataWithMay[0]['prod_wells_work'];
-              this.prod_wells_idle = dataWithMay[0]['prod_wells_idle'];
+            var dataWithMayLast = [];
+            dataWithMayLast = _.last(dataWithMay);//.slice(-1);
 
 
-              //console.log(productionForChart);
+
+            this.inj_wells_idle = dataWithMayLast['inj_wells_idle'];
+            this.inj_wells_work = dataWithMayLast['inj_wells_work'];
+            this.prod_wells_work = dataWithMayLast['prod_wells_work'];
+            this.prod_wells_idle = dataWithMayLast['prod_wells_idle'];
+
+
+            //console.log(productionForChart);
             if (this.company != "all") {
               this.$emit("data", productionForChart); //k1q new
             }
@@ -1242,15 +1254,15 @@ export default {
           );
 
           var dataDay = [];
-        
+
 
           dataDay = _.filter(data, function (item) {
             return _.every([
               _.inRange(
                 //item.dateSimple,
                 item.__time,
-                timestampToday - 86400000,// * Number(period),
-                timestampToday + 86400000
+                timestampEnd - 86400000,// * Number(period),
+                timestampEnd// + 86400000
               ),
             ]);
           });
@@ -1273,8 +1285,8 @@ export default {
           var dzoBriefly = [];
           var dzoPercent = [];
           var productionFactPercent = [];
+          var dataDayLast = [];
 
-          console.log(dataDay);
 
 
           _.forEach(dataDay, function (item) {
@@ -1324,8 +1336,9 @@ export default {
              0
            );*/
 
+
           if (inj_wells_idle) {
-            var inj_wells_idle = _.reduce(
+            inj_wells_idle = _.reduce(
               inj_wells_idle,
               function (memo, item) {
                 return memo + item.inj_wells_idle;
@@ -1336,7 +1349,7 @@ export default {
           }
 
           if (inj_wells_work) {
-            var inj_wells_work = _.reduce(
+            inj_wells_work = _.reduce(
               inj_wells_work,
               function (memo, item) {
                 return memo + item.inj_wells_work;
@@ -1358,7 +1371,7 @@ export default {
           }
 
           if (prod_wells_idle) {
-            var prod_wells_idle = _.reduce(
+            prod_wells_idle = _.reduce(
               prod_wells_idle,
               function (memo, item) {
                 return memo + item.prod_wells_idle;
@@ -1750,10 +1763,10 @@ export default {
         this.displayChart = "display:none;";
 
         if (this.company == "all") {
-          this.displayHeadTables = "display: block";
+          this.displayHeadTables = "d-flex";
           this.displayTable = "display:none;";
         } else {
-          this.displayTable = "display:block;";
+          this.displayTable = "d-flex;";
           this.displayHeadTables = "display: none";
         }
         this.showTableOn = ""; //colour button
@@ -1762,7 +1775,7 @@ export default {
         this.displayHeadTables = "display: none";
         this.displayChart = "display:block;";
         this.ChartTable = "Таблица";
-    
+
 
         this.showTableOn = showTableOn; //colour button
       }
@@ -1776,7 +1789,7 @@ export default {
       this.quantityRange = ((this.timestampEnd - this.timestampToday) / 86400000) + 1;
       var nowDate = new Date(this.range.start).toLocaleDateString();
       this.timeSelect = nowDate;
-      this.getProduction(this.item, this.item2, this.item3, this.item4);
+      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
       //this.getProductionOilandGas();
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
@@ -1824,25 +1837,43 @@ export default {
     },
 
   },
+  created() {
+    if (window.location.host === 'dashboard') {
+      //    this.Table1="display:none";  
+      // this.Table4="display:block"; 
+    }
+
+  },
 
   async mounted() {
-    this.range = {
-      start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
-      end: new Date().toISOString(),
-      formatInput: true,
-    };
-    localStorage.setItem("changeButton","Yes");
+
+    this.item3 = this.oilChartHeadName;
+
+    if (window.location.host === 'dashboard') {
+
+
+      this.range = {
+        start: "2020-12-17T06:00:00+06:00",
+        end: "2020-12-18T09:00:00+06:00",
+        formatInput: true,
+      };
+    } else {
+      this.range = {
+        start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
+        end: new Date().toISOString(),
+        formatInput: true,
+      };
+    }
+    localStorage.setItem("changeButton", "Yes");
     var nowDate = new Date().toLocaleDateString();
     this.timeSelect = nowDate;
     this.timestampToday = new Date(this.range.start).getTime();
     this.timestampEnd = new Date(this.range.end).getTime();
     if (this.company == "all") {
-      // this.getProduction("oil_plan", "oil_fact", "Добыча нефти", "тн");
-      //this.changeButton("No");
     }
     this.selectedYear = this.year;
-    var productionPlan = localStorage.getItem("production-plan");
-    var productionFact = localStorage.getItem("production-fact");
+    //var productionPlan = localStorage.getItem("production-plan");
+    //var productionFact = localStorage.getItem("production-fact");
 
     localStorage.setItem("selectedDMY", "undefined");
     this.getCurrencyNow(this.timeSelect);

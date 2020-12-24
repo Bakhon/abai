@@ -1402,7 +1402,7 @@ body {
 } */
 .table {
   overflow: scroll;
-  height: calc(100vh - 215px);
+  height: calc(100vh - 198px);
 }
 .table tr:nth-child(-n+4) td {
   position: sticky;
