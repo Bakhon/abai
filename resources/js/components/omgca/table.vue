@@ -1,8 +1,6 @@
 <template>
   <div class="table-page">
-    <div class="loader" v-if="loading">
-      <fade-loader :loading="loading"></fade-loader>
-    </div>
+    <cat-loader v-show="loading"/>
     <div class="filter-bg" v-if="filterOpened" @click="hideFilters"></div>
     <div class="float-right table-page__links">
       <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add" :href="params.links.create">
@@ -174,14 +172,14 @@
 <script>
 import moment from "moment"
 import vSelect from 'vue-select'
-import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
+import CatLoader from '../ui-kit/CatLoader'
 import 'vue-select/dist/vue-select.css'
 
 export default {
   name: "view-table",
   components: {
     vSelect,
-    FadeLoader
+    CatLoader
   },
   props: [
     'params'
