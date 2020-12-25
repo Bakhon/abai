@@ -2,7 +2,7 @@
   <div class="w-100">
     <div
       class="row justify-content-between farowjustcontbet"
-      style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px"
+      style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; line-height: 31px;"
     >
       <a href="tr" class="col but-nav__link but faheadhight"
         ><i style="margin-right: 10px"
@@ -1395,6 +1395,7 @@ body {
   margin-left: 0;
   padding-left: 0;
   display: flex;
+  margin-bottom: 15px;
 }
 
 .fasearch {
@@ -1408,19 +1409,19 @@ body {
 
 .table {
   overflow: scroll;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 211px);
 }
 .table tr:nth-child(-n+4) td {
   position: sticky;
   background: rgb(51, 57, 117);
-  top: 79px;
+  top: 75px;
   z-index: 3000;
 }
 .table tr:first-child td {
   top: -1;
 }
 .table tr:nth-child(2) td {
-  top: 39px;
+  top: 37px;
 }
 .table tr:nth-child(3) td {
   top: 38px;

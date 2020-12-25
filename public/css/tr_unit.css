@@ -12,6 +12,9 @@
     margin: 0 !important;
     padding: 15px 15px 0 !important;
     overflow-x: overlay;
+    min-width: unset;
+    width: unset;
+    max-width: unset;
 }
 
 #app > .sidebar-container2 {

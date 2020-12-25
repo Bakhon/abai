@@ -15,7 +15,7 @@
         <a
           href="fa"
           class="col but-nav__link but trheadhight"
-          style="min-width:330px;"
+          style="min-width:330px; line-height: 31px;"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -180,7 +180,7 @@
           @click="editable()"
           v-if="!edit"
           class="col but-nav__link but trheadhight"
-          style="margin-right: 15px"
+          style="margin-right: 15px; line-height: 31px;"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -200,7 +200,7 @@
         <a
           @click="savetable()"
           v-if="edit"
-          style="margin-right: 15px"
+          style="margin-right: 15px; line-height: 31px;"
           class="col but-nav__link but trheadhight"
           >Сохранить</a
         >
@@ -6984,6 +6984,7 @@ tr:nth-child(even) {
 .trcolmd12 {
   margin: 0;
   padding: 0;
+  margin-bottom: 15px;
 }
 .fadee {
   flex: 0 1 auto;
@@ -7017,7 +7018,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 211px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
