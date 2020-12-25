@@ -44,7 +44,7 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
 
     @include('layouts.head-sidebar')
 
-    <div class="container-fluid col m-1 p-0 container-main">
+    <div class="container-fluid col m-1 container-main">
         @yield('content')
     </div>
 </div>

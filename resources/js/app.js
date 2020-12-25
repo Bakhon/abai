@@ -95,7 +95,7 @@ Vue.component('corrosion-form', require('./components/сomplicationMonitoring/co
 Vue.component('gu-map', require('./components/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
-Vue.component('fa-table', require('./components/fa/fa.vue').default);
+Vue.component('fa-table', require('./components/tr/fa.vue').default);
 Vue.component('tr-table', require('./components/tr/tr.vue').default);
 Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
