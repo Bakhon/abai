@@ -1108,35 +1108,31 @@
                 </div>
 
                 <div class="podbor-gno">
-<!--                  <div class="img-text col-2">-->
-<!--                    <div class="text_img_1">Экс.колонна {{ this.casID }}мм</div>-->
-<!--                    <div class="text_img_2">НКТ {{ this.tubOD }}мм</div>-->
-<!--                    <div class="text_img_3">-->
-<!--                      Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м-->
-<!--                    </div>-->
-<!--                    <div class="text_img_4">-->
-<!--                      Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{-->
-<!--                        this.shgnS1L * 1 + this.shgnS2L * 1-->
-<!--                      }}м-->
-<!--                    </div>-->
-<!--                    <div class="text_img_5">-->
-<!--                      Штанги {{ this.shgnS1D }}мм-->
-<!--                      {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{-->
-<!--                        this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1-->
-<!--                      }}м-->
-<!--                    </div>-->
-<!--                    <div class="text_img_6">Насос {{ this.shgnPumpType }}мм</div>-->
-<!--                    <div class="text_img_7">-->
-<!--                      Интервал перфорации {{ this.hPerf }}-{{-->
-<!--                        this.hPerf * 1 + this.hPerfND * 1-->
-<!--                      }}м-->
-<!--                    </div>-->
-<!--                    <div class="text_img_8">Текущий забой {{ this.curr }}м</div>-->
-<!--                  </div>-->
-
                   <div class="image-data col-3">
+                    <div class="shgn-image-text image-text-1">Экс.колонна {{ this.casID }}мм</div>
+                    <div class="shgn-image-text image-text-2">НКТ {{ this.tubOD }}мм</div>
+                    <div class="shgn-image-text image-text-3">Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м</div>
+                    <div class="shgn-image-text image-text-4">
+                      Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
+                        this.shgnS1L * 1 + this.shgnS2L * 1
+                      }}м
+                    </div>
+                    <div class="shgn-image-text image-text-5">
+                      Штанги {{ this.shgnS1D }}мм
+                      {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
+                        this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
+                      }}м
+                    </div>
+                    <div class="shgn-image-text image-text-6">Насос {{ this.shgnPumpType }}мм</div>
+                    <div class="shgn-image-text image-text-7">
+                      Интервал перфорации <br> {{ this.hPerf }}-{{
+                        this.hPerf * 1 + this.hPerfND * 1
+                      }}м
+                    </div>
+                    <div class="shgn-image-text image-text-8">Текущий забой {{ this.curr }}м</div>
+
                     <img class="podborgnoimg"
-                         src="./images/podbor-gno.svg"
+                         src="./images/shgn.png"
                          alt="podbor-gno"/>
                   </div>
 
