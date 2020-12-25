@@ -15,7 +15,7 @@
         <a
           href="fa"
           class="col but-nav__link but trheadhight"
-          style="min-width:330px;"
+          style="min-width: 330px"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #333975; height: 104px; width: 161px; "
+            style="background: #333975; height: 104px; width: 161px"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -242,10 +242,8 @@
           <fade-loader :loading="isloading"></fade-loader>
         </div> -->
         <div class="techbt1 tr-table-header">
-          <div class="tech" style="margin-left: 14px;; color: white">
-            <h3 >
-              Технологический режим на {{ dt }}
-            </h3>
+          <div class="tech" style="margin-left: 14px; color: white">
+            <h3>Технологический режим на {{ dt }}</h3>
           </div>
           <!-- <select
             name="Company"
@@ -269,11 +267,11 @@
             :multiple="true"
             :searchable="false"
             :closeOnSelect="false"
-            select-label="Выбрать"
-            deselect-label="Убрать"
-            select-group-label="Выбрать все"
-            deselect-group-label="Убрать все"
-            selected-label="Выбрано"
+            select-label=""
+            deselect-label=""
+            select-group-label=""
+            deselect-group-label=""
+            selected-label=""
             group-values="fields"
             group-label="group"
             :group-select="true"
@@ -281,7 +279,29 @@
             :limit-text="() => ''"
             placeholder="Выберите месторождения"
           >
-            <template slot="tag"><span class="option__desc">{{ getFieldFilterTest() }}</span></template>
+            <div
+              class="multiselect__option__item"
+              slot="option"
+              slot-scope="scope"
+              @click.self="select(scope.option)"
+            >
+              <div class="multiselect__option__checkbox">
+                <img
+                  src="/img/check.svg"
+                  class="multiselect__option__checkbox__check"
+                />
+              </div>
+              <span>{{
+                scope.option.$groupLabel
+                  ? scope.option.$groupLabel
+                  : scope.option
+              }}</span>
+            </div>
+            <template slot="tag"
+              ><span class="option__desc">{{
+                getFieldFilterTest()
+              }}</span></template
+            >
           </multiselect>
           <div
             @click="cancelEdit"
@@ -376,13 +396,11 @@
             <table
               v-if="show_second"
               class="table table-bordered table-dark table-responsive ce trtable"
-              style="
-                background: #0d1e63;
-              "
+              style="background: #0d1e63"
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
-                  <td rowspan="4" class="th" >№</td>
+                  <td rowspan="4" class="th">№</td>
                   <td rowspan="4" class="th">НГДУ/месторождение</td>
                   <td rowspan="4" class="th">№ скв</td>
                   <td rowspan="4" class="th">Тип скважины</td>
@@ -591,7 +609,10 @@
                   <td rowspan="2" class="th"><span>Q ж</span></td>
                 </tr>
                 <tr></tr>
-                <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
+                <tr
+                  class="subHeaderColumn"
+                  style="background: #333975; cursor: pointer"
+                >
                   <td @click="sortBy('gu')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
@@ -6603,7 +6624,7 @@
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-import Multiselect from 'vue-multiselect';
+import Multiselect from "vue-multiselect";
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import { fields } from "./constants.js";
 import { declOfNum } from "./helpers.js";
@@ -6662,11 +6683,9 @@ export default {
       filter: [...fields],
       fieldFilterOptions: [
         {
-          group: 'Все месторождения',
-          fields: [
-            ...fields
-          ],
-        }
+          group: "Все месторождения",
+          fields: [...fields],
+        },
       ],
       dt: null,
       fullWells: [],
@@ -6695,7 +6714,9 @@ export default {
   },
   methods: {
     getFieldFilterTest() {
-      return fields.length === this.filter.length ? "Выбраны все месторождения" : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length)}`;
+      return fields.length === this.filter.length
+        ? "Выбраны все месторождения"
+        : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length)}`;
     },
     editrow(row, rowId) {
       console.log("row = ", row);
@@ -6886,7 +6907,7 @@ export default {
     // },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log('filter = ', filter);
+      console.log("filter = ", filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("tr/SET_FILTER", filter);
@@ -6909,7 +6930,7 @@ export default {
       this.searchString = search;
     },
     searchWell() {
-      console.log('search = ', this.searchString)
+      console.log("search = ", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "");
       this.sortParam = "";
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -7116,7 +7137,7 @@ tr td:first-child {
 .table-inner {
   overflow-y: visible;
 }
-tr:not(.notsticky) td:nth-child(-n+3) {
+tr:not(.notsticky) td:nth-child(-n + 3) {
   position: sticky;
   left: -1px;
   width: 27px;
@@ -7138,12 +7159,12 @@ tr:nth-child(even) td {
   background-color: #26336f;
 }
 
-.table.table tr:not(.notsticky) .th:nth-child(-n+3) {
+.table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
   z-index: 3010;
 }
 
 .input_edit {
-  background: #7879A6;
+  background: #7879a6;
 }
 
 /* width */
@@ -7164,10 +7185,9 @@ table::-webkit-scrollbar-thumb {
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
   background: #272953;
-
 }
 
-table::-webkit-scrollbar-corner  {
+table::-webkit-scrollbar-corner {
   background: #333975;
 }
 </style>
@@ -7193,7 +7213,4 @@ table::-webkit-scrollbar-corner  {
 .faheadhight {
   height: 40px;
 }
-
-
-
 </style>

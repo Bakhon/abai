@@ -26,3 +26,28 @@
 #app .multiselect__tags-wrap:not(:first-child) {
     display: none;
 }
+
+.multiselect__option__item {
+    display: flex;
+}
+.multiselect__option__checkbox {
+    width: 14px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid #237DEB;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.multiselect__option--selected .multiselect__option__checkbox, .multiselect__option--group-selected .multiselect__option__checkbox {
+    background: #237DEB;
+}
+.multiselect__option__checkbox__check {
+    display: none;
+}
+.multiselect__option--selected .multiselect__option__checkbox__check, .multiselect__option--group-selected .multiselect__option__checkbox__check {
+    display: block;
+}

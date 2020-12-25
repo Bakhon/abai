@@ -121,25 +121,45 @@
         <option value="Аксай Южный">Аксай Южный</option>
       </select> -->
       <multiselect
-            v-model="filter"
-            :options="fieldFilterOptions"
-            :multiple="true"
-            :searchable="false"
-            :closeOnSelect="false"
-            select-label="Выбрать"
-            deselect-label="Убрать"
-            select-group-label="Выбрать все"
-            deselect-group-label="Убрать все"
-            selected-label="Выбрано"
-            group-values="fields"
-            group-label="group"
-            :group-select="true"
-            :limit="1"
-            :limit-text="() => ''"
-            placeholder="Выберите месторождения"
-          >
-            <template slot="tag"><span class="option__desc">{{ getFieldFilterTest() }}</span></template>
-          </multiselect>
+        v-model="filter"
+        :options="fieldFilterOptions"
+        :multiple="true"
+        :searchable="false"
+        :closeOnSelect="false"
+        select-label=""
+        deselect-label=""
+        select-group-label=""
+        deselect-group-label=""
+        selected-label=""
+        group-values="fields"
+        group-label="group"
+        :group-select="true"
+        :limit="1"
+        :limit-text="() => ''"
+        placeholder="Выберите месторождения"
+      >
+        <div
+          class="multiselect__option__item"
+          slot="option"
+          slot-scope="scope"
+          @click.self="select(scope.option)"
+        >
+          <div class="multiselect__option__checkbox">
+            <img
+              src="/img/check.svg"
+              class="multiselect__option__checkbox__check"
+            />
+          </div>
+          <span>{{
+            scope.option.$groupLabel ? scope.option.$groupLabel : scope.option
+          }}</span>
+        </div>
+        <template slot="tag"
+          ><span class="option__desc">{{
+            getFieldFilterTest()
+          }}</span></template
+        >
+      </multiselect>
       <a
         class="but-nav__link but"
         href="trfa"
@@ -166,9 +186,7 @@
       </div> -->
       <table
         class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
-        style="
-          background: #0d1e63;
-        "
+        style="background: #0d1e63"
       >
         <tr class="headerColumn">
           <td rowspan="3" style="background: #12135c"><span>Скважина</span></td>
@@ -927,7 +945,7 @@ import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
-import Multiselect from 'vue-multiselect';
+import Multiselect from "vue-multiselect";
 import { fields } from "./constants.js";
 import { declOfNum } from "./helpers.js";
 
@@ -956,11 +974,9 @@ export default {
       filter: [...fields],
       fieldFilterOptions: [
         {
-          group: 'Все месторождения',
-          fields: [
-            ...fields
-          ],
-        }
+          group: "Все месторождения",
+          fields: [...fields],
+        },
       ],
       editdtm: null,
       editdty: null,
@@ -1086,7 +1102,9 @@ export default {
   },
   methods: {
     getFieldFilterTest() {
-      return fields.length === this.filter.length ? "Выбраны все месторождения" : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length)}`;
+      return fields.length === this.filter.length
+        ? "Выбраны все месторождения"
+        : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length)}`;
     },
     sortBy(type) {
       this.sortParam = type;
@@ -1222,7 +1240,7 @@ export default {
     // },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log('filter = ', filter);
+      console.log("filter = ", filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("tr/SET_FILTER", filter);
@@ -1438,7 +1456,6 @@ body {
 }
 
 .farowjustcontbet {
-
   box-sizing: border box;
 
   padding-right: 0;
@@ -1461,7 +1478,7 @@ body {
   overflow: scroll;
   height: calc(100vh - 198px);
 }
-.table tr:nth-child(-n+4) td {
+.table tr:nth-child(-n + 4) td {
   position: sticky;
   background: rgb(51, 57, 117);
   top: 79px;
@@ -1493,7 +1510,6 @@ body {
   height: 40px;
 }
 
-
 .fakrtableborderedtable {
   font-size: 9px;
   padding: unset;
@@ -1517,10 +1533,9 @@ table::-webkit-scrollbar-thumb {
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
   background: #272953;
-
 }
 /* уголок скролла  */
-table::-webkit-scrollbar-corner  {
+table::-webkit-scrollbar-corner {
   background: #333975;
 }
 </style>
