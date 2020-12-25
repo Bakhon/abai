@@ -128,6 +128,11 @@
                                 </a>
                             @endif
                         </li>
+                        <li class="left-menu-li">
+                            <a href="{{route('facilities')}}">
+                                {{ trans('monitoring.tech_map_prototype') }}
+                            </a>
+                        </li>
                     </ul>
 
                 </li>
