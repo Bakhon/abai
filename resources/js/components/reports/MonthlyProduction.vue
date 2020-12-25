@@ -1,5 +1,6 @@
 <template>
   <div class="filter-container">
+    <cat-loader v-show="isLoading"/>
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
@@ -51,14 +52,6 @@
         </span>
         &nbsp;Выгрузить в Excel
       </button>
-    </div>
-    <div v-if="isLoading" class="loader_cat">
-      <div class="cat">
-        <div class="cat__body"></div>
-        <div class="cat__body"></div>
-        <div class="cat__tail"></div>
-        <div class="cat__head"></div>
-      </div>
     </div>
   </div>
 </template>
