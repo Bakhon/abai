@@ -1,12 +1,12 @@
 <template>
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 mr-2">
             <horizontal-indicators
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
                 v-bind:dzo="dzoSelect"
             ></horizontal-indicators>
-            <div class="d-flex flex-column first-string flex-sm-row mr-sm-2">
+            <div class="d-flex flex-column first-string flex-sm-row">
                 <div class="col-sm-3 p-3 flex-column">
                     <h5>
                         <strong>
@@ -71,7 +71,7 @@
                     </button>
                 </div>
             </div>
-            <div class="first-string mr-2">
+            <div class="first-string">
                 <div v-if="macroData.length > 0">
                     <h5 class="text-center mr-2"><strong>Макропоказатели</strong></h5>
                     <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3">

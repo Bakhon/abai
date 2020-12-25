@@ -1,5 +1,5 @@
 <template>
-    <div class="col first-string mb-1 mb-sm-0 mr-2" v-bind:class="{'cursor-pointer': showLink}" >
+    <div class="col first-string mb-1 mb-sm-0" v-bind:class="{'cursor-pointer': showLink, 'mr-2': !isLastBlock}" >
         <div class="d-flex flex-row justify-sm-content-center text-sm-left text-center">
             <div class="mt-0 mt-sm-4 ml-1 ml-sm-3 w-50 mr-0 mr-sm-0">
                 <h1 class="txt7 display-sm-3 m-0">

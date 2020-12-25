@@ -44,8 +44,8 @@ Route::group(
                 Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
                 Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
                 Route::get('/economic', 'EconomicController@index')->name('economic');
-                Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
-                Route::get('/getdzocalcsactualmonth', 'EconomicController@getDZOCalcsActualMonth')->name(
+                Route::get('/getdzocalcs', 'VisualCenterController@getDZOcalcs')->name('getdzocalcs');
+                Route::get('/getdzocalcsactualmonth', 'VisualCenterController@getDZOCalcsActualMonth')->name(
                     'getdzocalcsactualmonth'
                 );
                 Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');

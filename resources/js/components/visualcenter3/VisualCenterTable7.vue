@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 vc-central-block mr-2 mb-2">
             <horizontal-indicators
                 @changeTable="tableToChange => changeTable(tableToChange)"
                 v-bind:dateStart="dateStart"
@@ -10,7 +10,7 @@
 
             </div>
             <div v-if="isShowMainBlock">
-                <div class="mr-sm-2 vc-central-block">
+                <div>
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center p-2">
@@ -55,6 +55,7 @@
                             v-bind:units="'млн. тенге'"
                             v-bind:showLink="true"
                             v-bind:tableToChange="3"
+                            v-bind:isLastBlock="true"
                             @changeTable="tableToChange => changeTable(tableToChange)"
                         ></vc-speedometer-block>
                     </div>
@@ -81,6 +82,7 @@
                             v-bind:sliderTooltip="'Ноябрь'"
                             v-bind:mainValue="t6"
                             v-bind:units="'дата'"
+                            v-bind:isLastBlock="true"
                         ></vc-speedometer-block>
                     </div>
                     <div class="text-center p-3" v-else>

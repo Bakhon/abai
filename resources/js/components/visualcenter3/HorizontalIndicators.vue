@@ -81,6 +81,7 @@
         v-bind:tableToChange="'3'"
         @changeTable="tableToChange => $emit('changeTable', tableToChange)"
         v-bind:percents="oilPercents"
+        v-bind:isLastBlock="true"
     ></indicator>
   </div>
 </template>

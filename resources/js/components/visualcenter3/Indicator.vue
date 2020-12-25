@@ -1,5 +1,7 @@
 <template>
-    <div class="indicatorCell flex-grow-1 mr-0 mr-sm-2 mb-1 mb-sm-0 d-flex flex-column" v-bind:class="{ 'indicator-active': isActive }" v-on:click="onClick">
+    <div class="indicatorCell flex-grow-1 mr-0 mb-1 mb-sm-0 d-flex flex-column"
+         v-bind:class="{ 'indicator-active': isActive, 'mr-sm-2': !isLastBlock }"
+         v-on:click="onClick">
         <div class="text-right text-sm-left">
             <div>
                 <div class="number">

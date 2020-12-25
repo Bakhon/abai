@@ -17,6 +17,7 @@ export default {
     },
     sliderTooltip: '',
     showLink: false,
+    isLastBlock: false,
   },
   data: function () {
     return {}
