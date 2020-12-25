@@ -1,9 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <!--<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>-->
     <a href="{{url('/')}}">
         <div class="logo"></div>
+    </a>
         <a href="#top" data-toggle="sidebar-colapse">
             <i class="fas fa-bars fa-lg"></i>
         </a>
@@ -20,6 +18,25 @@
             </div>
 
             <div class="form-inline my-2 my-lg-0">
+                <li class="nav-item2 mr-5">
+                    <div class="nav-lang">
+                        <a href="#" class="nav-lang__select">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="11" cy="11" r="10.2" stroke="white" stroke-width="1.6"/>
+                                <path d="M5.5 11C5.5 2 11 1 11 1C11 1 16.5 2 16.5 11C16.5 20 11 21 11 21C11 21 5.5 20 5.5 11Z"
+                                      stroke="white" stroke-width="1.6"/>
+                                <path d="M11 1V21" stroke="white" stroke-width="1.6"/>
+                                <path d="M1 11H21" stroke="white" stroke-width="1.6"/>
+                            </svg>
+                            <span>{{$languages['current']['name']}}</span>
+                        </a>
+                        <div class="nav-lang__dropdown">
+                            @foreach($languages['list'] as $lang)
+                                <a href="{{$lang['url']}}" class="nav-lang__dropdown-item">{{$lang['name']}}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                </li>
                 <li class="nav-item2">
                     <i class="fas fa-bell fa-lg"></i>
                 </li>
@@ -32,24 +49,23 @@
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: one;">
                                 {{ csrf_field() }}
 
-                                <a class="logout" onClick="document.forms['logout-form'].submit();" href="#"> Выйти</a>
-                            </form>
-                        </li>
-                        <li class="nav-item child">
-                        </li>
-                    </ul>
-                </li>
-                {{-- @else--}}
+                            <a class="logout" onClick="document.forms['logout-form'].submit();" href="#"> Выйти</a>
+                        </form>
+                    </li>
+                    <li class="nav-item child">
+                    </li>
+                </ul>
+            </li>
+            {{-- @else--}}
 
-                {{--@endif--}}
-                <li class="nav-item2">
-                    <i class="fas fa-ellipsis-v"></i>
-                </li>
+            {{--@endif--}}
+            <li class="nav-item2">
+                <i class="fas fa-ellipsis-v"></i>
+            </li>
 
-            </div>
         </div>
+    </div>
 </nav>
-
 
 <script>
     // Hide submenus

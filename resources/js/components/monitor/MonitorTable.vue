@@ -329,7 +329,7 @@
       <div class="col-8 monitor__schema">
         <div class="tables-string-gno3">
           <div class="schema">
-            <img src="/img/monitor/schema.svg">
+            <img :src="schemaImage">
             <ul class="string1">
               <li class="nav-string">
                 <span class="before">{{ trans('monitoring.units.p_kon') }}</span>
@@ -615,6 +615,13 @@ export default {
       problemGus: [],
       economicCurrentDays: null
     };
+  },
+  computed: {
+    schemaImage() {
+      console.log(this.currentLang)
+      if(this.currentLang === 'kz') return '/img/monitor/schema_kz.svg'
+      return '/img/monitor/schema.svg'
+    }
   },
   beforeCreate: function () {
     this.axios.get(this.localeUrl("/getallgus")).then((response) => {

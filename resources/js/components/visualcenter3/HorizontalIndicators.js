@@ -209,20 +209,20 @@ export default {
             this.oilFact = oilFact.toFixed(0);
             this.oilPlan = oilPlan.toFixed(0);
 
-            this.dataPlan = (dataPlan / 1000000000).toFixed(2);
-            this.dataFact = (dataFact / 1000000000).toFixed(2);
+            this.dataPlan = (dataPlan / 1000000).toFixed(0);
+            this.dataFact = (dataFact / 1000000).toFixed(0);
 
-            this.spendingPlan = (spendingPlan / 1000000000).toFixed(2);
-            this.spendingFact = (spendingFact / 1000000000).toFixed(2);
+            this.spendingPlan = (spendingPlan / 1000000).toFixed(0);
+            this.spendingFact = (spendingFact / 1000000).toFixed(0);
 
-            this.netProfitPlan = (netProfitPlan / 1000000).toFixed(2);
-            this.netProfitFact = (netProfitFact / 1000000).toFixed(2);
+            this.netProfitPlan = (netProfitPlan / 1000000).toFixed(1);
+            this.netProfitFact = (netProfitFact / 1000000).toFixed(1);
 
-            this.capitalInvPlan = (capitalInvPlan / 1000000).toFixed(2);
-            this.capitalInvFact = (capitalInvFact / 1000000).toFixed(2);
+            this.capitalInvPlan = (capitalInvPlan / 1000000).toFixed(1);
+            this.capitalInvFact = (capitalInvFact / 1000000).toFixed(1);
 
-            this.cashFlowPlan = (cashFlowPlan / 1000000).toFixed(2);
-            this.cashFlowFact = (cashFlowFact / 1000000).toFixed(2);
+            this.cashFlowPlan = (cashFlowPlan / 1000000).toFixed(1);
+            this.cashFlowFact = (cashFlowFact / 1000000).toFixed(1);
           }
         });
       queryParams = {params: {'dateStart': prevPeriodDateStart, 'dateEnd': dateStart}};
@@ -245,11 +245,11 @@ export default {
               prevCashFlowFact += item.cash_flow_val_fact;
             });
             this.prevOilFact = prevPeriodOilFact.toFixed(0);
-            this.prevDataFact = (prevDataFact / 1000000000).toFixed(2);
-            this.prevSpendingFact = (prevSpendingFact / 1000000000).toFixed(2);
-            this.prevNetProfitFact = (prevNetProfitFact / 1000000).toFixed(2);
-            this.prevCapitalInvFact = (prevCapitalInvFact / 1000000).toFixed(2);
-            this.prevCashFlowFact = (prevCashFlowFact / 1000000).toFixed(2);
+            this.prevDataFact = (prevDataFact / 1000000).toFixed(0);
+            this.prevSpendingFact = (prevSpendingFact / 1000000).toFixed(0);
+            this.prevNetProfitFact = (prevNetProfitFact / 1000000).toFixed(1);
+            this.prevCapitalInvFact = (prevCapitalInvFact / 1000000).toFixed(1);
+            this.prevCashFlowFact = (prevCashFlowFact / 1000000).toFixed(1);
           }
         });
       this.getCurrencyNow(this.timeSelect);

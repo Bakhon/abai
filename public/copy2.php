@@ -1,7 +1,7 @@
 <?php
 
 $file = 'https://yandex.ru/news/quotes/graph_1006.json';
-$file_name = 'D:/openserver/OpenServer/domains/localhost/public/js/json/graph_1006.json';
+$file_name = 'C:/OpenServer/domains/dashboard/public/js/json/graph_1006.json';
 file_put_contents($file_name, file_get_contents($file));
 
 
