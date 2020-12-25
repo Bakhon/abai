@@ -19,10 +19,10 @@ class OmgCAHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'year' => 'Год',
-            'gu_id' => 'ГУ',
-            'plan_dosage' => 'Планируемая дозировка, г/м3',
-            'q_v' => 'Qв, тыс.м³/год'
+            'year' => 'app.year',
+            'gu_id' => 'monitoring.gu',
+            'plan_dosage' => 'monitoring.omgca.fields.plan_dosage',
+            'q_v' => 'monitoring.omgca.fields.q_v'
         ];
 
         foreach ($fields as $field => $name) {

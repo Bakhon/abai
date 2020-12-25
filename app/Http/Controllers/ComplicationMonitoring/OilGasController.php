@@ -30,10 +30,10 @@ class OilGasController extends CrudController
             'links' => [
                 'list' => route('oilgas.list'),
             ],
-            'title' => 'База данных по нефти и газу',
+            'title' => trans('monitoring.oil.title'),
             'fields' => [
                 'other_objects' => [
-                    'title' => 'Прочие объекты',
+                    'title' => trans('monitoring.other_objects'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\OtherObjects::whereHas('oilgas')
@@ -51,7 +51,7 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'ngdu' => [
-                    'title' => 'НГДУ',
+                    'title' => trans('monitoring.ngdu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('oilgas')
@@ -69,7 +69,7 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'cdng' => [
-                    'title' => 'ЦДНГ',
+                    'title' => trans('monitoring.cdng'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('oilgas')
@@ -87,7 +87,7 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => trans('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('oilgas')
@@ -105,7 +105,7 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'zu' => [
-                    'title' => 'ЗУ',
+                    'title' => trans('monitoring.zu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('oilgas')
@@ -123,7 +123,7 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'well' => [
-                    'title' => 'Скважина',
+                    'title' => trans('monitoring.well'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('oilgas')
@@ -141,47 +141,47 @@ class OilGasController extends CrudController
                     ]
                 ],
                 'date' => [
-                    'title' => 'Дата',
+                    'title' => trans('app.date'),
                     'type' => 'date',
                 ],
                 'water_density_at_20' => [
-                    'title' => 'Плотность нефти при 20°С, кг/м3',
+                    'title' => trans('monitoring.oil.fields.water_density_at_20'),
                     'type' => 'numeric',
                 ],
                 'oil_viscosity_at_20' => [
-                    'title' => 'Вязкость нефти при 20°С, мм²/с',
+                    'title' => trans('monitoring.oil.fields.oil_viscosity_at_20'),
                     'type' => 'numeric',
                 ],
                 'oil_viscosity_at_40' => [
-                    'title' => 'Вязкость нефти при 40°С, мм²/с',
+                    'title' => trans('monitoring.oil.fields.oil_viscosity_at_40'),
                     'type' => 'numeric',
                 ],
                 'oil_viscosity_at_50' => [
-                    'title' => 'Вязкость нефти при 50°С, мм²/с',
+                    'title' => trans('monitoring.oil.fields.oil_viscosity_at_50'),
                     'type' => 'numeric',
                 ],
                 'oil_viscosity_at_60' => [
-                    'title' => 'Вязкость нефти при 60°С, мм²/с',
+                    'title' => trans('monitoring.oil.fields.oil_viscosity_at_60'),
                     'type' => 'numeric',
                 ],
                 'hydrogen_sulfide_in_gas' => [
-                    'title' => 'H₂S в газе, ppm',
+                    'title' => trans('monitoring.oil.fields.hydrogen_sulfide_in_gas'),
                     'type' => 'numeric',
                 ],
                 'oxygen_in_gas' => [
-                    'title' => 'О₂ в газе, %',
+                    'title' => trans('monitoring.oil.fields.oxygen_in_gas'),
                     'type' => 'numeric',
                 ],
                 'carbon_dioxide_in_gas' => [
-                    'title' => 'CO₂ в газе, %',
+                    'title' => trans('monitoring.oil.fields.carbon_dioxide_in_gas'),
                     'type' => 'numeric',
                 ],
                 'gas_density_at_20' => [
-                    'title' => 'Плотность газа при 20°С, кг/м³',
+                    'title' => trans('monitoring.oil.fields.gas_density_at_20'),
                     'type' => 'numeric',
                 ],
                 'gas_viscosity_at_20' => [
-                    'title' => 'Вязкость газа при 20°С, сП',
+                    'title' => trans('monitoring.oil.fields.gas_viscosity_at_20'),
                     'type' => 'numeric',
                 ],
             ]

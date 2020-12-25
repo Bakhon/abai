@@ -1,8 +1,6 @@
 <template>
   <div class="container-fluid economic-wrap">
-    <div class="loader" v-if="loading">
-      <fade-loader :loading="loading"></fade-loader>
-    </div>
+    <cat-loader v-show="loading"/>
     <div class="row justify-content-between">
       <modal name="bign1" :width="1150" :height="400" :adaptive="true">
           <div class="modal-bign">
@@ -130,7 +128,7 @@
 <script>
 import VModal from 'vue-js-modal'
 import VueTableDynamic from 'vue-table-dynamic'
-import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
+import CatLoader from '../ui-kit/CatLoader'
 
 Vue.use(VModal, { dynamicDefault: { draggable: true, resizable: true } });
 
@@ -138,7 +136,7 @@ export default {
   name: "economic-component",
   components: {
     VueTableDynamic,
-    FadeLoader
+    CatLoader
   },
   data: function () {
     return {

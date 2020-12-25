@@ -9,7 +9,7 @@
         src="/img/gno/download.png"
         width="25"
         height="25"
-        class=""
+        class="companyLogo"
       />
       <span class="menu-collapsed companyName d-none"></span>
     </div>
@@ -69,8 +69,8 @@ export default {
   methods: {
     ifFaTr(fa, tr) {
       if (
-        window.location.pathname === "/ru/fa" ||
-        window.location.pathname === "/ru/trfa"
+        window.location.pathname === this.localeUrl("/fa") ||
+        window.location.pathname === this.localeUrl("/trfa")
       ) {
         // FA
         return fa;

@@ -466,7 +466,7 @@ export default {
     },
 
     getCurrencyNow(dates) {
-      let uri = "/ru/getcurrency?fdate=" + dates + "";
+      let uri = this.localeUrl("/getcurrency?fdate=") + dates + "";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -482,7 +482,7 @@ export default {
     getCurrencyPeriod: function (dates, item2) {
       var dates = dates;
       let uri =
-        "/ru/getcurrencyperiod?dates=" + dates + "&period=" + item2 + " ";
+        this.localeUrl("/getcurrencyperiod?dates=") + dates + "&period=" + item2 + " ";
       this.axios.get(uri).then((response) => {
         var data = response.data;
         if (data) {
@@ -944,9 +944,9 @@ export default {
       }
 
       //data from the day
-      let uri = "/ru/visualcenter3GetData?timestampToday=" + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
+      let uri = this.localeUrl("/visualcenter3GetData?timestampToday=") + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
 
-      //let uri = "/ru/getnkkmg";
+      //let uri = this.localeUrl("/getnkkmg");
       // let uri = "/js/json/getnkkmg.json";
       this.axios.get(uri).then((response) => {
         let data = response.data;
