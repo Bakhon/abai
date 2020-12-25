@@ -121,3 +121,17 @@
     border-radius: 20px;
     margin-left: 40px;
 }
+
+.module-block{
+    align-items: center;
+    display: flex;
+    height: 37px;
+    margin: 0 0 0 70px;
+    padding: 0 34px 0 0;
+    &__title{
+        color: #fff;
+        font-size: 24px;
+        margin-left: 12px;
+        white-space: nowrap;
+    }
+}
