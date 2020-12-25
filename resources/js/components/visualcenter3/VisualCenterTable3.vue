@@ -1,8 +1,8 @@
 <template>
   <div
-    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height"
+    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height p-2"
   >
-    <div class="left-side flex-grow-1 pr-3">
+    <div class="left-side flex-grow-1 pr-2">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1">
@@ -1104,7 +1104,7 @@
         </div>
       </div>
     </div>
-    <div class="right-side2 flex-grow-1">
+    <div class="right-side2 flex-grow-1 pl-1">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1-2">
