@@ -539,7 +539,7 @@ td.big-table-hidtd {
 .center2 {
     margin-top: -0.8em;
     position: absolute;
-    margin-left: 2.3em;
+    margin-left: 1em;
     font-size: 0.63em;
     font-weight: 500;
 }
@@ -774,7 +774,7 @@ a.dropdown-link-vc3 {
 
 .right-side2 {
     overflow: hidden;
-    max-width: 20%;
+    max-width: 18%;
 }
 
 .all-height {
