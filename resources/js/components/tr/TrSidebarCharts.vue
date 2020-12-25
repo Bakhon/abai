@@ -110,7 +110,7 @@ export default {
   z-index: 5000;
 }
 .graphic_dropdown_menu {
-    width: 520;
+    width: 555px;
     max-width: 80vw;
     padding: 0px;
     margin: 0;
