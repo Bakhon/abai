@@ -54,6 +54,7 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
         </div>
     @endif
 </div>
+@yield('custom_js')
 </body>
 
 </html>
