@@ -723,7 +723,7 @@ export default {
     // },
     updateData(){
       let uri = '/ru/gtm1';
-      this.axios.post("/ru/gtm1", {
+      this.axios.post(this.localeUrl("/gtm1"), {
         dzo: this.dzo,
          ngdu: this.ngdu,
          block: this.block,

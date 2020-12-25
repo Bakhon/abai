@@ -96,6 +96,7 @@
         <search-form-refresh
           @input="handlerSearch"
           @start-search="searchWell()"
+          :clear="searched"
         />
       </div>
     </div>
@@ -103,7 +104,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 3px">Факторный анализ</h3>
+      <h3 style="margin-left: 14px">Факторный анализ</h3>
       <select
         name="Company"
         class="form-control tr-field-filter"
@@ -140,9 +141,9 @@
       ></a>
     </div>
     <div style="position: relative">
-      <div class="fadee" v-if="isloading">
+      <!-- <div class="fadee" v-if="isloading">
         <fade-loader :loading="isloading"></fade-loader>
-      </div>
+      </div> -->
       <table
         class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
         style="
@@ -905,13 +906,13 @@ import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
   name: "FaPage",
   components: {
-    FadeLoader,
+    // FadeLoader,
     SearchFormRefresh,
   },
   data: function () {
@@ -919,6 +920,7 @@ export default {
       pieChartRerender: true,
       wells: [],
       searchString: "",
+      searched: false,
       sortParam: "",
       sortType: "asc",
       dt: null,
@@ -931,7 +933,7 @@ export default {
       editdty: null,
       editdtprevm: null,
       editdtprevy: null,
-      isloading: true,
+      // isloading: true,
       chartBarOptions: {
         chart: {
           height: 350,
@@ -1106,7 +1108,8 @@ export default {
       return "#ff0000";
     },
     chooseDt() {
-      this.isloading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
@@ -1141,7 +1144,9 @@ export default {
               "/"
           )
           .then((response) => {
-            this.isloading = false;
+            this.searched = false;
+            this.$store.commit("globalloading/SET_LOADING", false);
+            // this.isloading = false;
             let data = response.data;
             this.editdtm = choosenDt[1];
             this.editdty = choosenDt[0];
@@ -1201,7 +1206,8 @@ export default {
       this.searchString = search;
     },
     searchWell() {
-      this.isloading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
       this.$store.commit("fa/SET_SORTPARAM", "");
       this.sortParam = "";
       const mm = this.$store.getters["fa/month"];
@@ -1225,7 +1231,9 @@ export default {
             searchParam
         )
         .then((response) => {
-          this.isloading = false;
+          this.searched = searchParam ? true : false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
           console.log("search resp = ", response.data);
           this.$store.commit("fa/SET_SEARCH", this.searchString);
           let data = response.data;
@@ -1240,7 +1248,9 @@ export default {
           }
         })
         .catch((error) => {
-          this.isloading = false;
+          this.searched = searchParam ? true : false;
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
           this.wells = [];
           this.fullWells = [];
           console.log("search error = ", error);
@@ -1248,6 +1258,7 @@ export default {
     },
   },
   created: function () {
+    this.$store.commit("globalloading/SET_LOADING", true);
     this.$store.commit("fa/SET_SORTTYPE", this.sortType);
     this.$store.commit("fa/SET_SORTPARAM", this.sortParam);
     this.$store.commit("fa/SET_SEARCH", this.searchString);
@@ -1296,7 +1307,8 @@ export default {
         console.log(this.editdtprevm);
         this.editdtprevy = pryyyy;
         console.log(this.editdtprevy);
-        this.isloading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isloading = false;
         if (data) {
           console.log(data);
           this.wells = data.data;
@@ -1375,19 +1387,16 @@ body {
 }
 
 .farowjustcontbet {
-  /* margin-bottom: 11px; */
+
   box-sizing: border box;
-  /* flex-grow: 1;  */
+
   padding-right: 0;
   margin-right: 0;
   margin-left: 0;
   padding-left: 0;
   display: flex;
 }
-/* .fabutdata {
-  margin-left: 156px;
-  width: 470;
-} */
+
 .fasearch {
   width: 367;
   margin-left: 1px;
@@ -1396,10 +1405,7 @@ body {
 .trcol {
   padding-right: 0;
 }
-/* .fabutdata {
-    margin-left: -6px;
-    width: 420;
-} */
+
 .table {
   overflow: scroll;
   height: calc(100vh - 198px);
@@ -1436,9 +1442,7 @@ body {
   height: 40px;
 }
 
-/* .table th, .table td {
-    padding: 5px !important;
-} */
+
 .fakrtableborderedtable {
   font-size: 9px;
   padding: unset;

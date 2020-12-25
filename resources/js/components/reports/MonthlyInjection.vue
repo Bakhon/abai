@@ -52,6 +52,14 @@
         &nbsp;Выгрузить в Excel
       </button>
     </div>
+    <div v-if="isLoading" class="loader_cat">
+      <div class="cat">
+        <div class="cat__body"></div>
+        <div class="cat__body"></div>
+        <div class="cat__tail"></div>
+        <div class="cat__head"></div>
+      </div>
+    </div>
   </div>
 
 </template>
@@ -88,6 +96,7 @@ export default {
         // let uri = "http://0.0.0.0:8090/monthly/injection/";
       let data = {
         dzo: this.org,
+        period: 'monthly',
         report_date_start: `${this.start_date}`.concat('-01 00:00:00'),
         report_date_end: `${this.end_date}`.concat('-01 00:00:00')
       };

@@ -25,18 +25,18 @@ class InhibitorsController extends CrudController
             'links' => [
                 'list' => route('inhibitors.list'),
             ],
-            'title' => 'Справочник ингибиторов',
+            'title' => trans('monitoring.inhibitor.title'),
             'fields' => [
                 'name' => [
-                    'title' => 'Название',
+                    'title' => trans('monitoring.inhibitor.fields.title'),
                     'type' => 'numeric',
                 ],
                 'price' => [
-                    'title' => 'Цена',
+                    'title' => trans('monitoring.inhibitor.fields.price'),
                     'type' => 'numeric',
                 ],
                 'date_from' => [
-                    'title' => 'Дата изменения цены',
+                    'title' => trans('monitoring.inhibitor.fields.price_date'),
                     'type' => 'numeric',
                 ],
             ]
@@ -65,7 +65,7 @@ class InhibitorsController extends CrudController
 
     public function create()
     {
-        $validationParams = $this->getValidationParams('pipes');
+        $validationParams = $this->getValidationParams('inhibitors');
         return view('inhibitors.create', compact('validationParams'));
     }
 
@@ -97,7 +97,7 @@ class InhibitorsController extends CrudController
 
     public function edit(Inhibitor $inhibitor)
     {
-        $validationParams = $this->getValidationParams('pipes');
+        $validationParams = $this->getValidationParams('inhibitors');
         return view(
             'inhibitors.edit',
             [

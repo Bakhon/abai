@@ -1,13 +1,13 @@
 <template>
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 mr-2">
             <horizontal-indicators
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
                 v-bind:dzo="dzoSelect"
             ></horizontal-indicators>
-            <div class="d-flex flex-column first-string flex-sm-row mr-sm-2">
-                <div class="w-25 m-3 flex-column">
+            <div class="d-flex flex-column first-string flex-sm-row">
+                <div class="col-sm-3 p-3 flex-column">
                     <h5>
                         <strong>
                             Оперативные итоги<br />
@@ -26,11 +26,11 @@
                         <option :value="8" :disabled="actualMonth < 7">Январь - Август 2020</option>
                         <option :value="9" :disabled="actualMonth < 8">Январь - Сентябрь 2020</option>
                         <option :value="10" :disabled="actualMonth < 9">Январь - Октябрь 2020</option>
-                        <option :value="11" :disabled="actualMonth < 12">Январь - Ноябрь 2020</option>
+                        <option :value="11" :disabled="actualMonth < 10">Январь - Ноябрь 2020</option>
                         <option :value="12" :disabled="actualMonth < 11">Январь - Декабрь 2020</option>
                     </select>
                 </div>
-                <div class="w-50 flex-column mt-3">
+                <div class="col-sm-6 flex-column pt-3">
                     <select class="w-100 p-2" :style="{background: '#2A2E5C', color: 'white'}" v-model="dzoSelect">
                         <option :value="'ALL'" :selected="'selected'">Все НДО</option>
                         <option v-for="company in fullCompanyNames" v-bind:value="company.code">{{ company.title }}</option>
@@ -60,7 +60,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="w-25 flex-column m-3">
+                <div class="col-sm-3 flex-column p-3">
                     <div class="w-25 float-right">
                         <div class="close2 d-none d-sm-block">Закрыть</div>
                     </div>
@@ -71,7 +71,7 @@
                     </button>
                 </div>
             </div>
-            <div class="first-string mr-2">
+            <div class="first-string">
                 <div v-if="macroData.length > 0">
                     <h5 class="text-center mr-2"><strong>Макропоказатели</strong></h5>
                     <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3">
@@ -183,7 +183,14 @@
                     </div>
                 </div>
                 <div class="text-center p-3" v-else>
-                    <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    <div class="box">
+                        <div class="cat">
+                            <div class="cat__body"></div>
+                            <div class="cat__body"></div>
+                            <div class="cat__tail"></div>
+                            <div class="cat__head"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -462,19 +462,19 @@ input.checkbox0 {
     text-decoration: underline;
 }
 
-.spoiler .box>span.closer {
+.spoiler .right-side-box>span.closer {
     display: none;
 }
 
-.spoiler.opened .box>span.closer {
+.spoiler.opened .right-side-box>span.closer {
     display: inline;
 }
 
-.spoiler.opened .box>span.open {
+.spoiler.opened .right-side-box>span.open {
     display: none;
 }
 
-.spoiler .box>span.open {
+.spoiler .right-side-box>span.open {
     display: inline;
 }
 
@@ -894,11 +894,52 @@ td {
     padding-bottom: 5px;
     display: flex;
     /*background-color: #153e7c;*/
+    position: relative;
+}
+
+.shgn-image-text {
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    left: 0;
+}
+
+.image-text-1 {
+    top: 37px;
+}
+
+.image-text-2 {
+    top: 60px;
+}
+
+.image-text-3 {
+    top: 79px;
+}
+
+.image-text-4 {
+    top: 152px;
+}
+
+.image-text-5 {
+    top: 219px;
+}
+
+.image-text-6 {
+    top: 255px;
+}
+
+.image-text-7 {
+    top: 314px;
+    line-height: 12px;
+}
+
+.image-text-8 {
+    top: 343px;
 }
 
 .podborgnoimg {
-    /*width: 125px;*/
-    height: 380px;
+    height: 100%;
+    max-height: 355px;
 }
 
 .img-text {
@@ -1555,10 +1596,10 @@ input.checkbox-q-liquid {
 
 .second-column-container {
     padding-left: 10px !important;
+    padding-right: 0 !important;
 }
 
 .gno-shgn-table-section {
-    /*height: 400px;*/
     height: 100%;
 }
 
@@ -1811,28 +1852,8 @@ input.checkbox-q-liquid {
     width: 100%;
 }
 
-/*cheat-code потом эти проблемы необходимо будет решить глобально*/
-#app #sidebar-container2 {
-    padding-right: 15px !important;
-}
-
-#app > .container-fluid {
-    max-width: 100% !important;
-    padding: 15px !important;
-}
-
-.container-fluid.col.m-lg-3.m-1.p-0 {
+.gno-page-container {
     margin: 0 !important;
-}
-
-.navbar {
-    overflow: hidden !important;
-}
-
-@media (max-width: 991px) {
-    #app #sidebar-container2 {
-        display: none !important;
-    }
 }
 
 /*media*/
@@ -2034,6 +2055,16 @@ input.checkbox-q-liquid {
     .shgn-table {
         max-width: 250px;
     }
+
+    .shgn-image-text {
+        left: 150px;
+    }
+}
+
+@media (max-width: 870px) {
+    .shgn-image-text {
+        left: 100px;
+    }
 }
 
 @media (max-width: 767px) {
@@ -2114,6 +2145,12 @@ input.checkbox-q-liquid {
     }
 }
 
+@media (max-width: 500px) {
+    .shgn-image-text {
+        left: 50px;
+    }
+}
+
 @media (max-width: 430px) {
     .square3 {
         max-width: 100% !important;
@@ -2129,11 +2166,10 @@ input.checkbox-q-liquid {
 @media (max-width: 400px) {
     #app > .container-fluid {
         padding: 10px !important;
+        margin: 0 !important;
     }
-}
 
-@media (max-width: 350px) {
-    .podborgnoimg {
-        width: 100%;
+    .shgn-image-text {
+        left: 0;
     }
 }

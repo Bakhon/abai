@@ -101,10 +101,13 @@
             <div class="inclinom-button" @click="InclMenu()">Инклинометрия</div>
             <!-- Кнопка инклонометрии end-->
 
-            <div class="spoiler" :class="{ 'opened': activeRightTabName === 'devices' }">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1"
-                :checked="activeRightTabName === 'devices'" @change="setActiveRightTabName($event, 'devices')" />
-              <div class="box">
+            <div class="spoiler"
+                 :class="{ 'opened': activeRightTabName === 'devices' }">
+              <input style="width: 845px; height: 45px;" type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'devices'"
+                     @change="setActiveRightTabName($event, 'devices')"/>
+              <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
                   <div class="devices-title"><b>Оборудование</b></div>
                 </div>
@@ -142,7 +145,7 @@
                     Число качаний
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{spmDev}} 1/м
+                    {{spmDev}} 1/мин
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
@@ -179,10 +182,14 @@
               </div>
             </div>
 
-            <div class="spoiler" :class="{ 'opened': activeRightTabName === 'pvt' }">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1"
-                :checked="activeRightTabName === 'pvt'" @change="setActiveRightTabName($event, 'pvt')" />
-              <div class="box">
+            <div class="spoiler"
+                 :class="{ 'opened': activeRightTabName === 'pvt' }">
+              <input style="width: 845px; height: 45px;"
+                     type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'pvt'"
+                     @change="setActiveRightTabName($event, 'pvt')"/>
+              <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
                   <div class="pvt-title">PVT</div>
                 </div>
@@ -249,11 +256,13 @@
             </div>
 
             <div class="spoiler"
-              :class="{ 'opened': activeRightTabName === 'technological-mode' || (windowWidth <= 1300 && windowWidth > 991) }">
-              <input style="width: 845px; height: 45px;" type="checkbox" tabindex="-1"
-                :checked="activeRightTabName === 'technological-mode'"
-                @click="setActiveRightTabName($event, 'technological-mode')" />
-              <div class="box">
+                 :class="{ 'opened': activeRightTabName === 'technological-mode' || (windowWidth <= 1300 && windowWidth > 991) }">
+              <input style="width: 845px; height: 45px;"
+                     type="checkbox"
+                     tabindex="-1"
+                     :checked="activeRightTabName === 'technological-mode'"
+                     @click="setActiveRightTabName($event, 'technological-mode')"/>
+              <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
 
                   <div class="technological-mode-title">Технологический режим</div>
@@ -1080,34 +1089,32 @@
                 </div>
 
                 <div class="podbor-gno">
-                  <!-- <div class="img-text col-2">-->
-                  <!-- <div class="text_img_1">Экс.колонна {{ this.casID }}мм</div>-->
-                  <!--                    <div class="text_img_2">НКТ {{ this.tubOD }}мм</div>-->
-                  <!--                    <div class="text_img_3">-->
-                  <!--                      Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м-->
-                  <!--                    </div>-->
-                  <!--                    <div class="text_img_4">-->
-                  <!--                      Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{-->
-                  <!--                        this.shgnS1L * 1 + this.shgnS2L * 1-->
-                  <!--                      }}м-->
-                  <!--                    </div>-->
-                  <!--                    <div class="text_img_5">-->
-                  <!--                      Штанги {{ this.shgnS1D }}мм-->
-                  <!--                      {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{-->
-                  <!--                        this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1-->
-                  <!--                      }}м-->
-                  <!--                    </div>-->
-                  <!--                    <div class="text_img_6">Насос {{ this.shgnPumpType }}мм</div>-->
-                  <!--                    <div class="text_img_7">-->
-                  <!--                      Интервал перфорации {{ this.hPerf }}-{{-->
-                  <!--                        this.hPerf * 1 + this.hPerfND * 1-->
-                  <!--                      }}м-->
-                  <!--                    </div>-->
-                  <!--                    <div class="text_img_8">Текущий забой {{ this.curr }}м</div>-->
-                  <!--                  </div> -->
-
                   <div class="image-data col-3">
-                    <img class="podborgnoimg" src="./images/podbor-gno.svg" alt="podbor-gno" />
+                    <div class="shgn-image-text image-text-1">Экс.колонна {{ this.casID }}мм</div>
+                    <div class="shgn-image-text image-text-2">НКТ {{ this.tubOD }}мм</div>
+                    <div class="shgn-image-text image-text-3">Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м</div>
+                    <div class="shgn-image-text image-text-4">
+                      Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
+                        this.shgnS1L * 1 + this.shgnS2L * 1
+                      }}м
+                    </div>
+                    <div class="shgn-image-text image-text-5">
+                      Штанги {{ this.shgnS1D }}мм
+                      {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
+                        this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
+                      }}м
+                    </div>
+                    <div class="shgn-image-text image-text-6">Насос {{ this.shgnPumpType }}мм</div>
+                    <div class="shgn-image-text image-text-7">
+                      Интервал перфорации <br> {{ this.hPerf }}-{{
+                        this.hPerf * 1 + this.hPerfND * 1
+                      }}м
+                    </div>
+                    <div class="shgn-image-text image-text-8">Текущий забой {{ this.curr }}м</div>
+
+                    <img class="podborgnoimg"
+                         src="./images/shgn.png"
+                         alt="podbor-gno"/>
                   </div>
 
                   <div class="table-pgno-button gno-shgn-table-section col-9">
@@ -2356,7 +2363,7 @@
                       </div>
                       <div class="col-6"
                         style="background-color: white; color: black; border-bottom: 2px solid #8c8caf; border-right: 2px solid #8c8caf;">
-                        Число качаний: {{spmDev + ' 1/м'}}
+                        Число качаний: {{spmDev + ' 1/мин'}}
                       </div>
 
                     </div>

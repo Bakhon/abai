@@ -15,6 +15,9 @@ export default {
     tableToChange: {
       default: 1,
     },
+    sliderTooltip: '',
+    showLink: false,
+    isLastBlock: false,
   },
   data: function () {
     return {}

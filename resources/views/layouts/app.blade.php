@@ -35,24 +35,20 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
     <link href="{{ asset('css/loader.css')}}" rel="stylesheet">
 
     <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ route('assets.lang') }}"></script>
 </head>
 
-<body>
+<body class="@yield('body_class')">
 @include('layouts.navbar')
 <div class="no-row row" id="app">
 
     @include('layouts.head-sidebar')
 
-    @if (basename(Request::url()) === "oilpivot")
-        <div class="col">
-            @yield('content')
-        </div>
-    @else
-        <div class="container-fluid col m-lg-3 m-1 p-0">
-            @yield('content')
-        </div>
-    @endif
+    <div class="container-fluid col m-1 p-0 container-main">
+        @yield('content')
+    </div>
 </div>
+@yield('custom_js')
 </body>
 
 </html>

@@ -31,14 +31,14 @@ class OmgUHEController extends CrudController
             'links' => [
                 'list' => route('omguhe.list'),
             ],
-            'title' => 'База данных ОМГ УХЭ',
+            'title' => trans('monitoring.omguhe.title'),
             'table_header' => [
-                'Узел отбора' => 6,
-                'Фактические данные от УХЭ' => 6,
+                trans('monitoring.selection_node') => 6,
+                trans('monitoring.omguhe.fields.fact_data') => 6,
             ],
             'fields' => [
                 'field' => [
-                    'title' => 'Месторождение',
+                    'title' => trans('monitoring.field'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Field::whereHas('omguhe')
@@ -56,7 +56,7 @@ class OmgUHEController extends CrudController
                     ]
                 ],
                 'ngdu' => [
-                    'title' => 'НГДУ',
+                    'title' => trans('monitoring.ngdu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('omguhe')
@@ -74,7 +74,7 @@ class OmgUHEController extends CrudController
                     ]
                 ],
                 'cdng' => [
-                    'title' => 'ЦДНГ',
+                    'title' => trans('monitoring.cdng'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('omguhe')
@@ -92,7 +92,7 @@ class OmgUHEController extends CrudController
                     ]
                 ],
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => trans('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omguhe')
@@ -110,7 +110,7 @@ class OmgUHEController extends CrudController
                     ]
                 ],
                 'zu' => [
-                    'title' => 'ЗУ',
+                    'title' => trans('monitoring.zu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('omguhe')
@@ -128,7 +128,7 @@ class OmgUHEController extends CrudController
                     ]
                 ],
                 'well' => [
-                    'title' => 'Скважина',
+                    'title' => trans('monitoring.well'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('omguhe')
@@ -146,11 +146,11 @@ class OmgUHEController extends CrudController
                     ]
                 ],
                 'date' => [
-                    'title' => 'Дата',
+                    'title' => trans('app.date'),
                     'type' => 'date',
                 ],
                 'inhibitor' => [
-                    'title' => 'Ингибитор',
+                    'title' => trans('monitoring.omguhe.fields.inhibitor'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Inhibitor::whereHas('omguhe')
@@ -168,31 +168,31 @@ class OmgUHEController extends CrudController
                     ]
                 ],
                 'current_dosage' => [
-                    'title' => 'Фактическая дозировка, г/м3',
+                    'title' => trans('monitoring.omguhe.fields.fact_dosage'),
                     'type' => 'numeric',
                 ],
                 'daily_inhibitor_flowrate' => [
-                    'title' => 'Суточный расход ингибитора, кг/сут',
+                    'title' => trans('monitoring.omguhe.fields.inhibitor_rate'),
                     'type' => 'numeric',
                 ],
                 'out_of_service_оf_dosing' => [
-                    'title' => 'Простой дозатора',
+                    'title' => trans('monitoring.omguhe.fields.dosator_idle'),
                     'type' => 'select',
                     'filter' => [
                         'values' => [
                             [
                                 'id' => '',
-                                'name' => 'Простоя не было'
+                                'name' => trans('monitoring.omguhe.fields.dosator.no_idle')
                             ],
                             [
                                 'id' => '1',
-                                'name' => 'Был простой'
+                                'name' => trans('monitoring.omguhe.fields.dosator.idle')
                             ],
                         ]
                     ]
                 ],
                 'reason' => [
-                    'title' => 'Причина',
+                    'title' => trans('monitoring.omguhe.fields.reason'),
                     'type' => 'numeric',
                 ]
             ]
