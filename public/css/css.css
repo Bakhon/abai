@@ -942,8 +942,7 @@ span.logout {
 
 ul.dropdown-child2 {
     position: absolute;
-    margin-left: -54px;
-
+    margin-left: -8px;
 }
 
 .dropdown2 {
@@ -1528,4 +1527,3 @@ li.left-menu-li {
         padding: 0.5rem 0rem;
     }
 }
-

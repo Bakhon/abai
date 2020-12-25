@@ -31,6 +31,7 @@ return array (
     'v_kor' => 'Vкор',
     'mg_l' => 'мг/л',
     'm_s' => 'м/с',
+    'mm_year' => 'мм/год',
   ),
   'kormass' => 'Кормасс',
   'ik_recommend' => 'Рекомендованная дозировка ИК',
@@ -247,4 +248,5 @@ return array (
     'select_gu' => 'Выберите ГУ',
   ),
   'module_name' => 'Мониторинг осложнений',
+  'tech_map_prototype' => 'Техкарта прототип',
 );

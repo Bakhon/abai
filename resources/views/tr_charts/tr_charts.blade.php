@@ -14,6 +14,7 @@
     </div>
 @endsection
 <link href="{{ asset('css/trfa.css')}}" rel="stylesheet">
+<link href="{{ asset('css/tr_unit.css')}}" rel="stylesheet">
 <style>
     .p-4{
         background-color: #0F1430;

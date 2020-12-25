@@ -1,0 +1,24 @@
+#app {
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+#app > .container-main.container-main {
+    flex-grow: 1;
+    flex-basis: 0;
+    flex-shrink: 1;
+    box-sizing: border-box;
+    display: flex;
+    margin: 0 !important;
+    padding: 15px 15px 0 !important;
+    overflow-x: overlay;
+    min-width: unset;
+    width: unset;
+    max-width: unset;
+}
+
+#app > .sidebar-container2 {
+    flex-grow: 0;
+    flex-basis: 57px;
+    flex-shrink: 0; 
+}
