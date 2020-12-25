@@ -16,7 +16,7 @@ class EconomicController extends Controller
 
     public function __construct()
     {
-        $this->middleware('can:economic view main');
+        $this->middleware('can:economic view main')->only('index', 'getEconomicData');
     }
 
     public function index(Request $request)

@@ -10,11 +10,11 @@
                 </div>
             @endif
             <div class="container">
-                <h1>Просмотр карточки</h1>
+                <h1>{{ trans('monitoring.show_title') }}</h1>
                 <table class="table table-bordered">
                     <tr>
-                        <th><b>Наименование</b></th>
-                        <th><b>Значение</b></th>
+                        <th><b>{{ trans('app.param_name') }}</b></th>
+                        <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
                         <td>ГУ</td>

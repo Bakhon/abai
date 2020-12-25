@@ -137,7 +137,7 @@ export default {
         });
     },
     getCurrencyNow(dates) {
-      this.axios.get("/ru/getcurrencyperiod", {params:{dates: dates, period: "2"}})
+      this.axios.get(this.localeUrl("/getcurrencyperiod"), {params:{dates: dates, period: "2"}})
         .then((response) => {
           var data = response.data;
           if (data) {
@@ -149,7 +149,7 @@ export default {
         });
     },
     getCurrencyPeriod: function (dates, period) {
-      this.axios.get("/ru/getcurrencyperiod", {params:{dates: dates, period: period}})
+      this.axios.get(this.localeUrl("/getcurrencyperiod"), {params:{dates: dates, period: period}})
         .then((response) => {
           var data = response.data;
           if (data) {
@@ -164,7 +164,7 @@ export default {
         });
     },
     getIndicatorsData() {
-      let uri = "/ru/getdzocalcs";
+      let uri = this.localeUrl("/getdzocalcs");
       let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart);
       let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd);
       let prevPeriodDateStart = new Date(

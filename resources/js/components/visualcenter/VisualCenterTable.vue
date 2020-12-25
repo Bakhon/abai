@@ -1098,7 +1098,6 @@ export default {
 
       //data from the day
       let uri = "/js/json/getnkkmg.json";
-      //let uri = "/ru/getnkkmg";
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {

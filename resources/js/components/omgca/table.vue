@@ -1,8 +1,6 @@
 <template>
   <div class="table-page">
-    <div class="loader" v-if="loading">
-      <fade-loader :loading="loading"></fade-loader>
-    </div>
+    <cat-loader v-show="loading"/>
     <div class="filter-bg" v-if="filterOpened" @click="hideFilters"></div>
     <div class="float-right table-page__links">
       <a v-if="params.links.create" class="table-page__links-item table-page__links-item_add" :href="params.links.create">
@@ -23,11 +21,11 @@
               d="M4.37372 13.1938C4.66705 13.1938 4.90572 13.2885 5.08972 13.4778C5.27372 13.6645 5.36572 13.9085 5.36572 14.2098C5.36572 14.2685 5.36305 14.3218 5.35772 14.3698H4.01372C4.01372 14.4792 4.05105 14.5725 4.12572 14.6498C4.20039 14.7245 4.29239 14.7618 4.40172 14.7618C4.55105 14.7618 4.65639 14.7018 4.71772 14.5818H5.34172C5.27505 14.7818 5.16305 14.9418 5.00572 15.0618C4.84839 15.1818 4.64305 15.2418 4.38972 15.2418C4.10439 15.2418 3.86172 15.1472 3.66172 14.9578C3.46439 14.7685 3.36572 14.5192 3.36572 14.2098C3.36572 13.9165 3.45372 13.6738 3.62972 13.4818C3.80839 13.2898 4.05639 13.1938 4.37372 13.1938ZM4.36572 13.6298C4.26705 13.6298 4.18705 13.6605 4.12572 13.7218C4.06439 13.7805 4.02839 13.8538 4.01772 13.9418H4.71372C4.70305 13.8512 4.66572 13.7765 4.60172 13.7178C4.54039 13.6592 4.46172 13.6298 4.36572 13.6298ZM5.42922 15.1738L6.11722 14.2178L5.46522 13.2578H6.20922L6.39722 13.5978C6.42922 13.6565 6.45855 13.7258 6.48522 13.8058H6.50122C6.53855 13.6938 6.56255 13.6272 6.57322 13.6058L6.74522 13.2578H7.48522L6.83722 14.2058L7.50522 15.1738H6.73322L6.54922 14.8338C6.50389 14.7458 6.47855 14.6738 6.47322 14.6178H6.45722C6.44122 14.6765 6.41189 14.7498 6.36922 14.8378L6.18522 15.1738H5.42922ZM8.5735 13.1938C8.8295 13.1938 9.04017 13.2725 9.2055 13.4298C9.37083 13.5845 9.4695 13.7672 9.5015 13.9778H8.8495C8.83617 13.9112 8.80283 13.8578 8.7495 13.8178C8.69883 13.7778 8.6375 13.7578 8.5655 13.7578C8.44817 13.7578 8.3615 13.8005 8.3055 13.8858C8.25217 13.9712 8.2255 14.0805 8.2255 14.2138C8.2255 14.3472 8.25483 14.4578 8.3135 14.5458C8.37217 14.6312 8.46017 14.6738 8.5775 14.6738C8.65217 14.6738 8.71483 14.6525 8.7655 14.6098C8.81883 14.5645 8.85483 14.5072 8.8735 14.4378H9.5375C9.47883 14.6805 9.36683 14.8752 9.2015 15.0218C9.03883 15.1685 8.82683 15.2418 8.5655 15.2418C8.28017 15.2418 8.0375 15.1472 7.8375 14.9578C7.64017 14.7685 7.5415 14.5192 7.5415 14.2098C7.5415 13.9218 7.63483 13.6805 7.8215 13.4858C8.00817 13.2912 8.25883 13.1938 8.5735 13.1938ZM10.7604 13.1938C11.0538 13.1938 11.2924 13.2885 11.4764 13.4778C11.6604 13.6645 11.7524 13.9085 11.7524 14.2098C11.7524 14.2685 11.7498 14.3218 11.7444 14.3698H10.4004C10.4004 14.4792 10.4378 14.5725 10.5124 14.6498C10.5871 14.7245 10.6791 14.7618 10.7884 14.7618C10.9378 14.7618 11.0431 14.7018 11.1044 14.5818H11.7284C11.6618 14.7818 11.5498 14.9418 11.3924 15.0618C11.2351 15.1818 11.0298 15.2418 10.7764 15.2418C10.4911 15.2418 10.2484 15.1472 10.0484 14.9578C9.8511 14.7685 9.75244 14.5192 9.75244 14.2098C9.75244 13.9165 9.84044 13.6738 10.0164 13.4818C10.1951 13.2898 10.4431 13.1938 10.7604 13.1938ZM10.7524 13.6298C10.6538 13.6298 10.5738 13.6605 10.5124 13.7218C10.4511 13.7805 10.4151 13.8538 10.4044 13.9418H11.1004C11.0898 13.8512 11.0524 13.7765 10.9884 13.7178C10.9271 13.6592 10.8484 13.6298 10.7524 13.6298ZM12.107 15.1738V12.2938H12.783V15.1738H12.107Z"
               fill="white"/>
         </svg>
-        <span>Выгрузить в Excel</span>
+        <span>{{ trans('monitoring.table.export_excel') }}</span>
       </a>
       <a class="table-page__links-item table-page__links-item_add" @click.prevent="resetFilters" href="#"
          v-if="activeFilters">
-        Сбросить фильтр
+        {{ trans('monitoring.table.reset_filter') }}
       </a>
     </div>
     <h1 style="color:#fff">{{ params.title }}</h1>
@@ -41,7 +39,7 @@
         <thead>
         <tr v-if="params.table_header">
           <th v-for="(colspan, header) in params.table_header" :colspan="colspan">{{ header }}</th>
-          <th rowspan="2">Управление</th>
+          <th rowspan="2">{{ trans('monitoring.table.management') }}</th>
         </tr>
         <tr>
           <th v-for="(field, code) in params.fields" :class="{'selected': filters[code] && filters[code].show}">
@@ -49,7 +47,7 @@
               field.title
             }}
           </th>
-          <th v-if="!params.table_header">Управление</th>
+          <th v-if="!params.table_header">{{ trans('monitoring.table.management') }}</th>
         </tr>
         <tr v-if="omgca && omgca.data" class="table-sort">
           <th
@@ -174,14 +172,14 @@
 <script>
 import moment from "moment"
 import vSelect from 'vue-select'
-import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
+import CatLoader from '../ui-kit/CatLoader'
 import 'vue-select/dist/vue-select.css'
 
 export default {
   name: "view-table",
   components: {
     vSelect,
-    FadeLoader
+    CatLoader
   },
   props: [
     'params'
@@ -294,7 +292,7 @@ export default {
     deleteItem(item) {
       this.axios.delete(item.links.delete).then(response => {
         this.loadData()
-        this.params.success = 'Удалено'
+        this.params.success = this.trans('app.deleted')
       })
     },
     exportExcel() {
@@ -309,7 +307,7 @@ export default {
             } else if (response.data.job.status === 'failed') {
               this.loading = false
               clearInterval(interval)
-              alert('Ошибка экспорта')
+              alert(this.trans('monitoring.table.export_error'))
             }
           })
         }, 2000)

@@ -47,33 +47,33 @@
                 <li class="nav-item active  dropdown">
                     <img src="{{ asset('img/level1/icon_obustroystvo.svg') }}" width="15" height="15"
                          class="workTypeLogo">
-                    <a href="{{url('/')}}/ru/facilities"><span class="workTypeText">Обустройство</span></a>
+                    <a href="{{route('facilities')}}"><span class="workTypeText">Обустройство</span></a>
                     <ul class="dropdown-child">
                         <li class="nav-item child">
                             @if(auth()->user()->can('monitoring view main'))
-                                <a href="{{url('/')}}/ru/monitor">
-                                    <span class="workTypeText">Мониторинг коррозии ГУ - Кормасс</span>
+                                <a href="{{route('monitor')}}">
+                                    <span class="workTypeText">{{ trans('monitoring.corrosion_monitoring') }}</span>
                                 </a>
                             @endif
                             <ul>
                                 @if(auth()->user()->can('monitoring view main'))
                                     <li class="nav-item child">
-                                        <a href="{{url('/')}}/ru/omgca">
-                                            <span class="workTypeText">ОМГ ДДНГ</span>
+                                        <a href="{{route('omgca.index')}}">
+                                            <span class="workTypeText">{{ trans('monitoring.omgca.menu') }}</span>
                                         </a>
                                     </li>
                                 @endif
                                 @if(auth()->user()->can('monitoring view main'))
                                     <li class="nav-item child">
-                                        <a href="{{url('/')}}/ru/omguhe">
-                                            <span class="workTypeText">ОМГ УХЭ</span>
+                                        <a href="{{route('omguhe.index')}}">
+                                            <span class="workTypeText">{{ trans('monitoring.omguhe.menu') }}</span>
                                         </a>
                                     </li>
                                 @endif
                                 @if(auth()->user()->can('monitoring view main'))
                                     <li class="nav-item child">
-                                        <a href="{{url('/')}}/ru/omgngdu">
-                                            <span class="workTypeText">ОМГ НГДУ</span>
+                                        <a href="{{route('omgngdu.index')}}">
+                                            <span class="workTypeText">{{ trans('monitoring.omgngdu.menu') }}</span>
                                         </a>
                                     </li>
                                 @endif
@@ -86,27 +86,27 @@
                         )
                         <li class="nav-item child">
                             <a>
-                                <span class="workTypeText">КазНИПИ ЦНЛИ</span>
+                                <span class="workTypeText">{{ trans('monitoring.kaznipi') }}</span>
                             </a>
                             <ul>
                                 @if(auth()->user()->can('monitoring list watermeasurement'))
                                     <li class="nav-item child">
-                                        <a href="{{url('/')}}/ru/watermeasurement">
-                                            <span class="workTypeText">База данных по промысловой жидкости и газу</span>
+                                        <a href="{{route('watermeasurement.index')}}">
+                                            <span class="workTypeText">{{ trans('monitoring.wm.menu') }}</span>
                                         </a>
                                     </li>
                                 @endif
                                 @if(auth()->user()->can('monitoring list oilgas'))
                                     <li class="nav-item child">
-                                        <a href="{{url('/')}}/ru/oilgas">
-                                            <span class="workTypeText">База данных по нефти и газу</span>
+                                        <a href="{{route('oilgas.index')}}">
+                                            <span class="workTypeText">{{ trans('monitoring.oil.menu') }}</span>
                                         </a>
                                     </li>
                                 @endif
                                 @if(auth()->user()->can('monitoring list corrosion'))
                                     <li class="nav-item child">
-                                        <a href="{{url('/')}}/ru/corrosioncrud">
-                                            <span class="workTypeText">База данных по скорости коррозии</span>
+                                        <a href="{{route('corrosioncrud.index')}}">
+                                            <span class="workTypeText">{{ trans('monitoring.corrosion.menu') }}</span>
                                         </a>
                                     </li>
                                 @endif
@@ -119,20 +119,20 @@
                         )
                             <li class="nav-item child">
                                 <a>
-                                    <span class="workTypeText">Справочники</span>
+                                    <span class="workTypeText">{{ trans('monitoring.dictionaries') }}</span>
                                 </a>
                                 <ul>
                                     @if(auth()->user()->can('monitoring list pipes'))
                                         <li class="nav-item child">
-                                            <a href="{{url('/ru/pipes')}}">
-                                                <span class="workTypeText">Трубопроводы</span>
+                                            <a href="{{route('pipes.index')}}">
+                                                <span class="workTypeText">{{ trans('monitoring.pipe.menu') }}</span>
                                             </a>
                                         </li>
                                     @endif
                                     @if(auth()->user()->can('monitoring list inhibitors'))
                                         <li class="nav-item child">
-                                            <a href="{{url('/ru/inhibitors')}}">
-                                                <span class="workTypeText">Ингибиторы</span>
+                                            <a href="{{route('inhibitors.index')}}">
+                                                <span class="workTypeText">{{ trans('monitoring.inhibitors') }}</span>
                                             </a>
                                         </li>
                                     @endif
@@ -141,8 +141,8 @@
                         @endif
                         <li class="nav-item child">
                             @if(auth()->user()->can('monitoring view pipes map'))
-                                <a href="{{url('/ru/gu-map')}}">
-                                    <span class="workTypeText">Техкарта</span>
+                                <a href="{{route('maps.gu')}}">
+                                    <span class="workTypeText">{{ trans('monitoring.tech_map') }}</span>
                                 </a>
                             @endif
                         </li>

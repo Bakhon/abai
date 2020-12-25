@@ -85,6 +85,7 @@ Vue.component('monthly-production', require('./components/reports/MonthlyProduct
 Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
 Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
 Vue.component('monthly-injection', require('./components/reports/MonthlyInjection.vue').default);
+Vue.component('well-stock-block', require('./components/reports/WellStockBlock.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
@@ -112,6 +113,9 @@ Vue.component('bigdata-report-button', require('./components/bigdata/BigDataRepo
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 
+Vue.prototype.trans = string => _.get(window.i18n, string) || string;
+Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
+Vue.prototype.currentLang = window.current_lang;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -754,7 +754,7 @@ export default {
     // },
     updateData(){
       let uri = '/ru/dob1';
-      this.axios.post("/ru/dob1", {
+      this.axios.post(this.localeUrl("/dob1"), {
         dzo: this.dzo,
         field: this.field
         //  ngdu: this.ngdu,
