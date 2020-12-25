@@ -18,6 +18,22 @@ use App\Http\Controllers\Controller;
 class Marab2Controller extends Controller
 {
     /**
+     * Константы типов данных
+     */
+    const POROG_TYPE_ID = 1;
+
+    const AIM_TYPE_ID = 2;
+
+    const VIZOV_TYPE_ID = 3;
+
+    const FACT_TYPE_ID = 4;
+
+    /**
+     * @var array
+     */
+    protected static $companyNames;
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -165,73 +181,22 @@ class Marab2Controller extends Controller
         $abd5weight = 0.2;
         $abd6weight = 0.05;
 
-        function divideToType($InputArray) {
-            $porogArray = [];
-            $aimArray = [];
-            $vyzovArray = [];
-            $factArray = [];
-            $TotalArray = [];
-            foreach($InputArray as $item){
-                if ($item[0] == 1){
-                    array_push($porogArray, $item);
-                }
-                else if($item[0] == 2){
-                    array_push($aimArray, $item);
-                }
-                else if($item[0] == 3){
-                    array_push($vyzovArray, $item);
-                }
-                else if($item[0] == 4){
-                    array_push($factArray, $item);
-                }
-            }
-            array_push($TotalArray, $porogArray, $aimArray, $vyzovArray, $factArray);
-            return $TotalArray;
-        }
-
         function TypeSum($InputArray) {
             $TypeSumArray = [];
             foreach($InputArray as $item){
                 $month = date("m",strtotime($item[1]));
                 $TypeSumArray[$month][] = $item[2];
-                // {"10":[[[[[[[[[[[[6172,7250],3000],10281],3791],-6853],-2390],500],12562],400],-51],-68],-49]}
-                // else{
-                //     $TypeSumArray[$month] = $item[2];  
-                // }
             }
             return $TypeSumArray;
         }
         #Marabayev1 total
         $companyId = EcoRefsCompaniesId::get();
         $company = [];
-        $companyNames = [];
         foreach($companyId as $item){
-            $companyNames[$item->id] = $item->name;
+            self::$companyNames[$item->id] = $item->name;
             array_push($company,$item->id);
         }
 
-        // $categoryTotal = [];
-        // $MarabTotalArray = [];
-        // $marabayev_1 = Marabayev_1::whereIn('company_id',$company)->get();
-        // foreach($marabayev_1 as $item){
-        //     $categoryTotal[$item->company_id] = $item->A_category + $item->B_category + $item->C1_category;
-        //     array_push($MarabTotalArray, $item->type_id, $categoryTotal[$item->company_id]);
-        // }
-
-        #Marabayev 1-5 calculations
-        #Marabayev 1 calculations
-        // $marab1Total = [];
-        // $marab1TotalArray = [];
-        // $marab1TempArr = [];
-        // $marab1 = Marabayev_1::whereIn('company_id',$company)->get();
-        // foreach($marab1 as $item){
-        //     $marab1Total[$item->company_id]= $item->dividends + $item->vklad_v_ustavnoy_kapital + $item->vydacha_zaimov + $item->vozvrat_zaimov + $item->vozvrat_ustavnogo_kapitala + $item->others;
-        //     // $factorTotal = array_push($factorTotal[$item->company_id]
-        //     array_push($factorTempArr, $item->company_id, $item->date, $item->type_id, $factorTotal[$item->company_id]); #Сумма: $TempArr[3]
-        //     array_push($factorTotalArray, $factorTempArr);
-        //     $factorTempArr = [];
-        // }
-        
         #Marabayev1 calculations
         $Marab1Total = [];
         $Marab1TotalArray = [];
@@ -244,28 +209,11 @@ class Marab2Controller extends Controller
             $Marab1TempArr = [];
         }
 
-        $aimArray = divideToType($Marab1TotalArray)[1];
-        $factArray = divideToType($Marab1TotalArray)[3];
-
-        $marabayev1Calculations = [];
-        $deviationTotal = 0;
-        foreach($factArray as $item){
-            foreach($aimArray as $item2){
-                if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($marabayev1Calculations, [ $item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
-                    $deviationTotal += $item[3]-$item2[3];
-                }
-            }
-        }
-        $newmarabayev1Calculations = [];
-        foreach($marabayev1Calculations as $item){
-            array_push($newmarabayev1Calculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
-        }
+        $newmarabayev1Calculations = $this->compileMarabData($Marab1TotalArray);
 
         #Factor Analysis (Marabayev 2) calculations
         $factorTotal = [];
         $factorTotalArray = [];
-        $factortype = [];
         $factorTempArr = [];
         $factoranalysis = Marab2::whereIn('company_id',$company)->get();
         foreach($factoranalysis as $item){
@@ -276,23 +224,7 @@ class Marab2Controller extends Controller
             $factorTempArr = [];
         }
 
-        $aimArray = divideToType($factorTotalArray)[1];
-        $factArray = divideToType($factorTotalArray)[3];
-        $factoranalysisCalculations = [];
-        $deviationTotal = 0;
-        foreach($factArray as $item){
-            foreach($aimArray as $item2){
-                if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($factoranalysisCalculations, [$item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
-                    $deviationTotal += $item[3]-$item2[3];
-                }
-            }
-        }
-
-        $newfactoranalysisCalculations = [];
-        foreach($factoranalysisCalculations as $item){
-            array_push($newfactoranalysisCalculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
-        }
+        $newfactoranalysisCalculations = $this->compileMarabData($factorTotalArray);
 
         #Marabayev 3/4/5 calculations
         $Marab3Total = [];
@@ -326,64 +258,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        #Marabayev3 calculation
-        $aimArray = divideToType($Marab3TotalArray)[1];
-        $factArray = divideToType($Marab3TotalArray)[3];
-        $marab3Calculations = [];
-        $deviationTotal = 0;
-        foreach($factArray as $item){
-            foreach($aimArray as $item2){
-                if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($marab3Calculations, [$item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
-                    $deviationTotal += $item[3]-$item2[3];
-                }
-            }
-        }
 
-        $newmarab3Calculations = [];
-        foreach($marab3Calculations as $item){
-            array_push($newmarab3Calculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
-        }
-
-        #Marabayev4 calculation
-        $aimArray = divideToType($Marab4TotalArray)[1];
-        $factArray = divideToType($Marab4TotalArray)[3];
-        $marab4Calculations = [];
-        $deviationTotal = 0;
-        foreach($factArray as $item){
-            foreach($aimArray as $item2){
-                if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($marab4Calculations, [$item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
-                    $deviationTotal += $item[3]-$item2[3];
-                }
-            }
-        }
-
-        $newmarab4Calculations = [];
-        foreach($marab4Calculations as $item){
-            array_push($newmarab4Calculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
-        }
-
-        #Marabayev5 calculation
-        $aimArray = divideToType($Marab5TotalArray)[1];
-        $factArray = divideToType($Marab5TotalArray)[3];
-        $marab5Calculations = [];
-        $deviationTotal = 0;
-        foreach($factArray as $item){
-            foreach($aimArray as $item2){
-                if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($marab5Calculations, [$item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
-                    $deviationTotal += $item[3]-$item2[3];
-                }
-            }
-        }
-
-        $newmarab5Calculations = [];
-        foreach($marab5Calculations as $item){
-            array_push($newmarab5Calculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
-        }
-
-        
+        $newmarab3Calculations = $this->compileMarabData($Marab3TotalArray);
+        $newmarab4Calculations = $this->compileMarabData($Marab4TotalArray);
+        $newmarab5Calculations = $this->compileMarabData($Marab5TotalArray);
 
         #Calculations with weights
         #Marab - 1
@@ -398,10 +276,10 @@ class Marab2Controller extends Controller
             $Marab1TempArr = [];
         }
 
-        $porogArray = divideToType($Marab1TotalArray)[0];
-        $aimArray = divideToType($Marab1TotalArray)[1];
-        $vyzovArray = divideToType($Marab1TotalArray)[2];
-        $factArray = divideToType($Marab1TotalArray)[3];
+        $porogArray = $this->divideToType($Marab1TotalArray)[0];
+        $aimArray = $this->divideToType($Marab1TotalArray)[1];
+        $vyzovArray = $this->divideToType($Marab1TotalArray)[2];
+        $factArray = $this->divideToType($Marab1TotalArray)[3];
         
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -477,10 +355,10 @@ class Marab2Controller extends Controller
             $Marab2TempArr = [];
         }
 
-        $porogArray = divideToType($Marab2TotalArray)[0];
-        $aimArray = divideToType($Marab2TotalArray)[1];
-        $vyzovArray = divideToType($Marab2TotalArray)[2];
-        $factArray = divideToType($Marab2TotalArray)[3];
+        $porogArray = $this->divideToType($Marab2TotalArray)[0];
+        $aimArray = $this->divideToType($Marab2TotalArray)[1];
+        $vyzovArray = $this->divideToType($Marab2TotalArray)[2];
+        $factArray = $this->divideToType($Marab2TotalArray)[3];
         
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -576,10 +454,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Marab3TotalArray)[0];
-        $aimArray = divideToType($Marab3TotalArray)[1];
-        $vyzovArray = divideToType($Marab3TotalArray)[2];
-        $factArray = divideToType($Marab3TotalArray)[3];
+        $porogArray = $this->divideToType($Marab3TotalArray)[0];
+        $aimArray = $this->divideToType($Marab3TotalArray)[1];
+        $vyzovArray = $this->divideToType($Marab3TotalArray)[2];
+        $factArray = $this->divideToType($Marab3TotalArray)[3];
         
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -643,10 +521,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Marab4TotalArray)[0];
-        $aimArray = divideToType($Marab4TotalArray)[1];
-        $vyzovArray = divideToType($Marab4TotalArray)[2];
-        $factArray = divideToType($Marab4TotalArray)[3];
+        $porogArray = $this->divideToType($Marab4TotalArray)[0];
+        $aimArray = $this->divideToType($Marab4TotalArray)[1];
+        $vyzovArray = $this->divideToType($Marab4TotalArray)[2];
+        $factArray = $this->divideToType($Marab4TotalArray)[3];
         
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -710,10 +588,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Marab5TotalArray)[0];
-        $aimArray = divideToType($Marab5TotalArray)[1];
-        $vyzovArray = divideToType($Marab5TotalArray)[2];
-        $factArray = divideToType($Marab5TotalArray)[3];
+        $porogArray = $this->divideToType($Marab5TotalArray)[0];
+        $aimArray = $this->divideToType($Marab5TotalArray)[1];
+        $vyzovArray = $this->divideToType($Marab5TotalArray)[2];
+        $factArray = $this->divideToType($Marab5TotalArray)[3];
         
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -793,10 +671,10 @@ class Marab2Controller extends Controller
             $Marab6TempArr = [];
         }
 
-        $porogArray = divideToType($Marab6TotalArray)[0];
-        $aimArray = divideToType($Marab6TotalArray)[1];
-        $vyzovArray = divideToType($Marab6TotalArray)[2];
-        $factArray = divideToType($Marab6TotalArray)[3];
+        $porogArray = $this->divideToType($Marab6TotalArray)[0];
+        $aimArray = $this->divideToType($Marab6TotalArray)[1];
+        $vyzovArray = $this->divideToType($Marab6TotalArray)[2];
+        $factArray = $this->divideToType($Marab6TotalArray)[3];
         
         $Marabayev6Formula = [];
         foreach($porogArray as $item){
@@ -846,10 +724,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Abd1TotalArray)[0];
-        $aimArray = divideToType($Abd1TotalArray)[1];
-        $vyzovArray = divideToType($Abd1TotalArray)[2];
-        $factArray = divideToType($Abd1TotalArray)[3];
+        $porogArray = $this->divideToType($Abd1TotalArray)[0];
+        $aimArray = $this->divideToType($Abd1TotalArray)[1];
+        $vyzovArray = $this->divideToType($Abd1TotalArray)[2];
+        $factArray = $this->divideToType($Abd1TotalArray)[3];
         
         $Abd1Formula = [];
         foreach($porogArray as $item){
@@ -886,10 +764,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Abd2TotalArray)[0];
-        $aimArray = divideToType($Abd2TotalArray)[1];
-        $vyzovArray = divideToType($Abd2TotalArray)[2];
-        $factArray = divideToType($Abd2TotalArray)[3];
+        $porogArray = $this->divideToType($Abd2TotalArray)[0];
+        $aimArray = $this->divideToType($Abd2TotalArray)[1];
+        $vyzovArray = $this->divideToType($Abd2TotalArray)[2];
+        $factArray = $this->divideToType($Abd2TotalArray)[3];
         
         $Abd2Formula = [];
         foreach($porogArray as $item){
@@ -950,10 +828,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Abd3TotalArray)[0];
-        $aimArray = divideToType($Abd3TotalArray)[1];
-        $vyzovArray = divideToType($Abd3TotalArray)[2];
-        $factArray = divideToType($Abd3TotalArray)[3];
+        $porogArray = $this->divideToType($Abd3TotalArray)[0];
+        $aimArray = $this->divideToType($Abd3TotalArray)[1];
+        $vyzovArray = $this->divideToType($Abd3TotalArray)[2];
+        $factArray = $this->divideToType($Abd3TotalArray)[3];
         
         $Abd3Formula = [];
         foreach($porogArray as $item){
@@ -990,10 +868,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Abd5TotalArray)[0];
-        $aimArray = divideToType($Abd5TotalArray)[1];
-        $vyzovArray = divideToType($Abd5TotalArray)[2];
-        $factArray = divideToType($Abd5TotalArray)[3];
+        $porogArray = $this->divideToType($Abd5TotalArray)[0];
+        $aimArray = $this->divideToType($Abd5TotalArray)[1];
+        $vyzovArray = $this->divideToType($Abd5TotalArray)[2];
+        $factArray = $this->divideToType($Abd5TotalArray)[3];
         
         $Abd5Formula = [];
         foreach($porogArray as $item){
@@ -1054,10 +932,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Abd4TotalArray)[0];
-        $aimArray = divideToType($Abd4TotalArray)[1];
-        $vyzovArray = divideToType($Abd4TotalArray)[2];
-        $factArray = divideToType($Abd4TotalArray)[3];
+        $porogArray = $this->divideToType($Abd4TotalArray)[0];
+        $aimArray = $this->divideToType($Abd4TotalArray)[1];
+        $vyzovArray = $this->divideToType($Abd4TotalArray)[2];
+        $factArray = $this->divideToType($Abd4TotalArray)[3];
         
         $Abd4Formula = [];
         foreach($porogArray as $item){
@@ -1083,10 +961,10 @@ class Marab2Controller extends Controller
             }
         }
 
-        $porogArray = divideToType($Abd6TotalArray)[0];
-        $aimArray = divideToType($Abd6TotalArray)[1];
-        $vyzovArray = divideToType($Abd6TotalArray)[2];
-        $factArray = divideToType($Abd6TotalArray)[3];
+        $porogArray = $this->divideToType($Abd6TotalArray)[0];
+        $aimArray = $this->divideToType($Abd6TotalArray)[1];
+        $vyzovArray = $this->divideToType($Abd6TotalArray)[2];
+        $factArray = $this->divideToType($Abd6TotalArray)[3];
         
         $Abd6Formula = [];
         foreach($porogArray as $item){
@@ -1124,10 +1002,10 @@ class Marab2Controller extends Controller
             }
         } 
 
-        $porogArray = divideToType($CorpAll1Array)[0];
-        $aimArray = divideToType($CorpAll1Array)[1];
-        $vyzovArray = divideToType($CorpAll1Array)[2];
-        $factArray = divideToType($CorpAll1Array)[3];
+        $porogArray = $this->divideToType($CorpAll1Array)[0];
+        $aimArray = $this->divideToType($CorpAll1Array)[1];
+        $vyzovArray = $this->divideToType($CorpAll1Array)[2];
+        $factArray = $this->divideToType($CorpAll1Array)[3];
 
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -1203,10 +1081,10 @@ class Marab2Controller extends Controller
             }
         } 
 
-        $porogArray = divideToType($CorpAll2Array)[0];
-        $aimArray = divideToType($CorpAll2Array)[1];
-        $vyzovArray = divideToType($CorpAll2Array)[2];
-        $factArray = divideToType($CorpAll2Array)[3];
+        $porogArray = $this->divideToType($CorpAll2Array)[0];
+        $aimArray = $this->divideToType($CorpAll2Array)[1];
+        $vyzovArray = $this->divideToType($CorpAll2Array)[2];
+        $factArray = $this->divideToType($CorpAll2Array)[3];
 
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -1282,10 +1160,10 @@ class Marab2Controller extends Controller
             }
         } 
 
-        $porogArray = divideToType($CorpAll3Array)[0];
-        $aimArray = divideToType($CorpAll3Array)[1];
-        $vyzovArray = divideToType($CorpAll3Array)[2];
-        $factArray = divideToType($CorpAll3Array)[3];
+        $porogArray = $this->divideToType($CorpAll3Array)[0];
+        $aimArray = $this->divideToType($CorpAll3Array)[1];
+        $vyzovArray = $this->divideToType($CorpAll3Array)[2];
+        $factArray = $this->divideToType($CorpAll3Array)[3];
 
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -1361,10 +1239,10 @@ class Marab2Controller extends Controller
             }
         } 
 
-        $porogArray = divideToType($CorpAll4Array)[0];
-        $aimArray = divideToType($CorpAll4Array)[1];
-        $vyzovArray = divideToType($CorpAll4Array)[2];
-        $factArray = divideToType($CorpAll4Array)[3];
+        $porogArray = $this->divideToType($CorpAll4Array)[0];
+        $aimArray = $this->divideToType($CorpAll4Array)[1];
+        $vyzovArray = $this->divideToType($CorpAll4Array)[2];
+        $factArray = $this->divideToType($CorpAll4Array)[3];
 
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -1440,10 +1318,10 @@ class Marab2Controller extends Controller
             }
         } 
 
-        $porogArray = divideToType($CorpAll5Array)[0];
-        $aimArray = divideToType($CorpAll5Array)[1];
-        $vyzovArray = divideToType($CorpAll5Array)[2];
-        $factArray = divideToType($CorpAll5Array)[3];
+        $porogArray = $this->divideToType($CorpAll5Array)[0];
+        $aimArray = $this->divideToType($CorpAll5Array)[1];
+        $vyzovArray = $this->divideToType($CorpAll5Array)[2];
+        $factArray = $this->divideToType($CorpAll5Array)[3];
 
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -1519,10 +1397,10 @@ class Marab2Controller extends Controller
             }
         } 
 
-        $porogArray = divideToType($CorpAll6Array)[0];
-        $aimArray = divideToType($CorpAll6Array)[1];
-        $vyzovArray = divideToType($CorpAll6Array)[2];
-        $factArray = divideToType($CorpAll6Array)[3];
+        $porogArray = $this->divideToType($CorpAll6Array)[0];
+        $aimArray = $this->divideToType($CorpAll6Array)[1];
+        $vyzovArray = $this->divideToType($CorpAll6Array)[2];
+        $factArray = $this->divideToType($CorpAll6Array)[3];
 
         $porogSum = TypeSum($porogArray);
         $aimSum = TypeSum($aimArray);
@@ -1631,5 +1509,73 @@ class Marab2Controller extends Controller
         #Корпоративные КПД - /corpall
 
         return $result;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    private function compileMarabData(array $data)
+    {
+        $tmpArray = [];
+        $tmpDeviationArray = [];
+        foreach ($data as $dataItem) {
+            $tmpArray[$dataItem[1]][$dataItem[2]][$dataItem[0]] = $dataItem[3];
+            if ($dataItem[0] == self::FACT_TYPE_ID) {
+                $tmpDeviationArray[$dataItem[2]][self::FACT_TYPE_ID][] = $dataItem[3];
+            }
+            if ($dataItem[0] == self::AIM_TYPE_ID) {
+                $tmpDeviationArray[$dataItem[2]][self::AIM_TYPE_ID][] = $dataItem[3];
+            }
         }
+        $resultArray = [];
+        foreach ($tmpArray as $companyId => $tmpItem) {
+            $lastElement = end($tmpItem);
+            $porog = $lastElement[self::POROG_TYPE_ID] ?? 0;
+            $aim = $lastElement[self::AIM_TYPE_ID] ?? 0;
+            $vizov = $lastElement[self::VIZOV_TYPE_ID] ?? 0;
+            $fact = $lastElement[self::FACT_TYPE_ID] ?? 0;
+            $itemDeviation = array_sum($tmpDeviationArray[array_key_last($tmpItem)][self::FACT_TYPE_ID] ?? [])
+                - array_sum($tmpDeviationArray[array_key_last($tmpItem)][self::AIM_TYPE_ID] ?? []);
+            $itemDeviation = $itemDeviation ?: $fact - $aim ?: 1;
+            $effect = ($fact - $aim) / $itemDeviation;
+            $resultArray[] = [
+                $porog,
+                $aim,
+                $vizov,
+                $fact,
+                self::$companyNames[$companyId],
+                array_key_last($tmpItem),
+                $fact - $aim,
+                $aim ? ($fact - $aim) / $aim : 0,
+                $effect,
+            ];
+        }
+
+        return $resultArray;
+    }
+
+    private function divideToType($InputArray) {
+        $porogArray = [];
+        $aimArray = [];
+        $vyzovArray = [];
+        $factArray = [];
+        $TotalArray = [];
+        foreach($InputArray as $item){
+            if ($item[0] == 1){
+                array_push($porogArray, $item);
+            }
+            else if($item[0] == 2){
+                array_push($aimArray, $item);
+            }
+            else if($item[0] == 3){
+                array_push($vyzovArray, $item);
+            }
+            else if($item[0] == 4){
+                array_push($factArray, $item);
+            }
+        }
+        array_push($TotalArray, $porogArray, $aimArray, $vyzovArray, $factArray);
+        return $TotalArray;
+    }
 }
