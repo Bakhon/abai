@@ -11,9 +11,9 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format(oil_factDay) }}
+                      {{ new Intl.NumberFormat("ru-RU").format((oil_factDay/1000).toFixed(0)) }}
                     </div>
-                    <div class="unit-vc">тонн</div>
+                    <div class="unit-vc">тыс. тонн</div>
                   </div>
                   <div class="txt1">Добыча нефти</div>
                   <br />
@@ -71,10 +71,10 @@
                   <div class="nu">
                     <div class="number">
                       {{
-                        new Intl.NumberFormat("ru-RU").format(oil_dlv_factDay)
+                        new Intl.NumberFormat("ru-RU").format((oil_dlv_factDay/1000).toFixed(0))
                       }}
                     </div>
-                    <div class="unit-vc">тонн</div>
+                    <div class="unit-vc">тыс. тонн</div>
                   </div>
                   <div class="txt1">Сдача нефти</div>
                   <br />
@@ -136,7 +136,7 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format(gas_factDay) }}
+                      {{ new Intl.NumberFormat("ru-RU").format((gas_factDay/1000).toFixed(0)) }}
                     </div>
                     <div class="unit-vc">
                       <!--млрд.-->
