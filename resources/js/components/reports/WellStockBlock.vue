@@ -16,30 +16,21 @@
       </select>
     </div>
 
-    <div class="form-group2 filter-group">
-      <label for="start_date">Выберите начальную дату</label>
-      <input id="start_date"
-             class="form-control datepicker filter-input"
-             type="month"
-             :disabled="isLoading"
-             v-model="start_date">
-    </div>
-
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
       <input id="end_date"
              class="form-control datepicker filter-input"
-             type="month"
+             type="date"
              :disabled="isLoading"
              v-model="end_date">
     </div>
 
-      <div class="form-group3 result-link text-center">
-          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
+      <div class="form-group3 result-link">
+          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report text-center">Скачать отчёт</a>
       </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !start_date || !end_date || isLoading"
+      <button :disabled="!org || !end_date || isLoading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -59,13 +50,11 @@
 <script>
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
 
     return {
       org: '',
-      start_date: null,
       end_date: null,
       isLoading: false,
       resultLink: null
@@ -84,14 +73,12 @@ export default {
       // link.remove();
     },
     updateData() {
-      let uri = "http://172.20.103.157:8082/monthly/production/";
-        // let uri = "http://0.0.0.0:8090/monthly/production/";
+      // let uri = "http://172.20.103.157:8082/well_stock/block/";
+        let uri = "http://0.0.0.0:8090/well_stock/block/";
       let data = {
         dzo: this.org,
-        period: 'monthly',
-        // TODO: 'input type="month"' в Chrome возвращает год-месяц, а в Firefox: день.месяц.год
-        report_date_start: `${this.start_date}`.concat('-01 00:00:00'),
-        report_date_end: `${this.end_date}`.concat('-01 00:00:00')
+        report_date_start: `${this.end_date}`.concat(' 00:00:00'),
+        report_date_end: `${this.end_date}`.concat(' 00:00:00')
       };
 
       let json_data = JSON.stringify(data);
@@ -124,6 +111,9 @@ export default {
     },
     onChangeYear(event) {
       this.year = event.target.value;
+    },
+    onChangeDay(event) {
+      this.day = event.target.value;
     },
   },
 }

@@ -74,9 +74,10 @@ export default {
     },
     updateData() {
       let uri = "http://172.20.103.157:8082/generic/";
-        // let uri = "http://0.0.0.0:8090/daily/injection/";
+        // let uri = "http://0.0.0.0:8090/generic/";
       let data = {
         type: 'daily_dynamic_well_injection',
+        period: 'days',
         dzo: this.org,
         report_date_start: `${this.end_date}`.substr(0, 8).concat('01 00:00:00'),
         report_date_end: `${this.end_date}`.concat(' 00:00:00')
