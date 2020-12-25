@@ -1,5 +1,5 @@
 <template>
-    <div class="col first-string mb-1 mb-sm-0 mr-2">
+    <div class="col first-string mb-1 mb-sm-0" v-bind:class="{'cursor-pointer': showLink, 'mr-2': !isLastBlock}" >
         <div class="d-flex flex-row justify-sm-content-center text-sm-left text-center">
             <div class="mt-0 mt-sm-4 ml-1 ml-sm-3 w-50 mr-0 mr-sm-0">
                 <h1 class="txt7 display-sm-3 m-0">
@@ -16,6 +16,9 @@
                     v-bind:sliderValue="mainValue"
                     v-bind:sliderTooltip="sliderTooltip"
                 ></visual-center-speedometer>
+            </div>
+            <div class="speedometerLinkBlock mt-1" v-if="showLink">
+                <img src="/img/icons/link.svg">
             </div>
         </div>
         <div class="d-none d-sm-flex flex-column flex-sm-row justify-content-center mt-4">

@@ -1,12 +1,12 @@
 <template>
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 mr-2">
             <horizontal-indicators
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
                 v-bind:dzo="dzoSelect"
             ></horizontal-indicators>
-            <div class="d-flex flex-column first-string flex-sm-row mr-sm-2">
+            <div class="d-flex flex-column first-string flex-sm-row">
                 <div class="col-sm-3 p-3 flex-column">
                     <h5>
                         <strong>
@@ -26,7 +26,7 @@
                         <option :value="8" :disabled="actualMonth < 7">Январь - Август 2020</option>
                         <option :value="9" :disabled="actualMonth < 8">Январь - Сентябрь 2020</option>
                         <option :value="10" :disabled="actualMonth < 9">Январь - Октябрь 2020</option>
-                        <option :value="11" :disabled="actualMonth < 12">Январь - Ноябрь 2020</option>
+                        <option :value="11" :disabled="actualMonth < 10">Январь - Ноябрь 2020</option>
                         <option :value="12" :disabled="actualMonth < 11">Январь - Декабрь 2020</option>
                     </select>
                 </div>
@@ -71,7 +71,7 @@
                     </button>
                 </div>
             </div>
-            <div class="first-string mr-2">
+            <div class="first-string">
                 <div v-if="macroData.length > 0">
                     <h5 class="text-center mr-2"><strong>Макропоказатели</strong></h5>
                     <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3">

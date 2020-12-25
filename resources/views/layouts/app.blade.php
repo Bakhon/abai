@@ -49,7 +49,7 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
             @yield('content')
         </div>
     @else
-        <div class="container-fluid col m-lg-3 m-1 p-0">
+        <div class="container-fluid col m-1 p-0">
             @yield('content')
         </div>
     @endif
