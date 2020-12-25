@@ -10,6 +10,7 @@ export default {
   },
   data: function () {
     return {
+      isEnableSpeedometers: true,
       nameChartLeft: 'Добыча нефти',
       oilChartHeadName: 'Динамика добычи нефти',
       prod_wells_workAll: [
@@ -917,6 +918,7 @@ export default {
     },
 
     getProduction(item, item2, item3, item4, item5) {
+      this.isEnableSpeedometers=false;
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
 
@@ -1024,6 +1026,12 @@ export default {
               ]);
             });
 
+            dataWithMay = _.orderBy(
+              dataWithMay,
+              ["__time"],
+              ["asc"]
+            );
+
 
 
 
@@ -1043,7 +1051,7 @@ export default {
     }))
     .value();
 
-  console.log(productionPlanAndFactMonthWells);
+ // console.log(productionPlanAndFactMonthWells);
 
 
   var productionPlanAndFactMonthWellsName = [];
@@ -1099,6 +1107,7 @@ export default {
 
             //console.log(productionForChart);
             if (this.company != "all") {
+              this.isEnableSpeedometers = true;
               this.$emit("data", productionForChart); //k1q new
             }
 
@@ -1188,6 +1197,7 @@ export default {
         //bigtable
         //year
         if (this.company == "all") {
+          this.isEnableSpeedometers = true;
           var dataDay = [];
           var dataYear = [];
           var dzo = [];
@@ -1229,6 +1239,13 @@ export default {
           });
 
 
+          dataWithMay = _.orderBy(
+            dataWithMay,
+            ["__time"],
+            ["asc"]
+          );
+
+          
 
           //Summ plan and fact from dzo k1q for month!!!
           var productionPlanAndFactMonth = _(dataWithMay)
@@ -1273,7 +1290,7 @@ export default {
             }))
             .value();
 
-          console.log(productionPlanAndFactMonthWells);
+         // console.log(productionPlanAndFactMonthWells);
 
 
           var productionPlanAndFactMonthWellsName = [];
@@ -1294,7 +1311,7 @@ export default {
           this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
 
 
-
+            console.log(dataWithMay);
 
 
           var productionForChart = _(dataWithMay)
@@ -1700,6 +1717,7 @@ export default {
  
            this.starts = starts;*/
           // console.log(productionForChart);
+          console.log(productionForChart);
 
           this.$emit("data", productionForChart);
 
@@ -1708,10 +1726,11 @@ export default {
         }
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
+        
       });
       this.showTable(localStorage.getItem("changeButton"));
 
-
+     
     },
 
 
@@ -1778,6 +1797,7 @@ export default {
             timestampToday
           ),
         ]);
+     
       });
 
 
@@ -1851,6 +1871,7 @@ export default {
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
       // this.getProductionOilandGasPercent();
+    
     },
 
     getNameDzoFull: function (dzo) {
@@ -1895,9 +1916,10 @@ export default {
 
   },
   created() {
+
     if (window.location.host === 'dashboard') {
-      this.Table1 = "display:none";
-      this.Table5 = "display:block";
+     // this.Table1 = "display:none";
+     // this.Table5 = "display:block";
     }
 
   },
@@ -1910,10 +1932,10 @@ export default {
 
 
       this.range = {
-        start: "2020-04-01T06:00:00+06:00",
-        end: "2020-04-01T09:00:00+06:00",
-        // start: "2020-12-17T06:00:00+06:00",
-        // end: "2020-12-18T09:00:00+06:00",
+        //start: "2020-04-01T06:00:00+06:00",
+       // end: "2020-04-01T09:00:00+06:00",
+         start: "2020-12-17T06:00:00+06:00",
+         end: "2020-12-18T09:00:00+06:00",
         formatInput: true,
       };
     } else {
@@ -1940,6 +1962,7 @@ export default {
     this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     this.changeAssets('b11');
     // this.getProductionOilandGasPercent();
+ 
   },
   computed: {
   },

@@ -513,7 +513,7 @@
 
           <div class="row container-fluid" :style="`${displayTable}`">
             <div class="col-6 px-3">
-              <table class="table4-2 w-100">
+              <table class="table4-2 w-100" v-if="isEnableSpeedometers">
                 <tbody>
                   <tr>
                     <td class="big-table-hidtd small-td"></td>
@@ -652,6 +652,18 @@
                   </tr>
                 </tbody>
               </table>
+                 <div class="text-center p-3" v-else>
+                        <div class="box">
+                            <div class="cat">
+                                <div class="cat__body"></div>
+                                <div class="cat__body"></div>
+                                <div class="cat__tail"></div>
+                                <div class="cat__head"></div>
+                            </div>
+                        </div>
+                    </div>
+
+              
             </div>
 
             <div class="col-6 pl-5">
@@ -660,9 +672,9 @@
               <vc-chart v-if="company != 'all'"> </vc-chart>
             </div>
           </div>
-          <div class="row container-fluid" :style="`${displayHeadTables}`">
+          <div   class="row container-fluid" :style="`${displayHeadTables}`">
             <div class="col-6 px-3">
-              <table class="table4 w-100">
+              <table class="table4 w-100" v-if="isEnableSpeedometers">
                 <tbody>
                   <tr>
                     <td class="big-table-hidtd small-td"></td>
@@ -848,7 +860,19 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="text-center p-3" v-else>
+                        <div class="box">
+                            <div class="cat">
+                                <div class="cat__body"></div>
+                                <div class="cat__body"></div>
+                                <div class="cat__tail"></div>
+                                <div class="cat__head"></div>
+                            </div>
+                        </div>
+                    </div>
+              
             </div>
+            
 
             <div class="col-6 pl-5">
               <div class="name-chart-left">{{ nameChartLeft }}</div>
@@ -856,8 +880,15 @@
               <vc-chart v-if="company == 'all'"> </vc-chart>
             </div>
           </div>
+
+             
+          
         </div>
+          
       </div>
+      
+
+      
 
       <div class="second-table big-area " :style="`${Table2}`">
         <div class="first-string first-string2">
@@ -953,7 +984,7 @@
                   >
                     Календарь
                   </div>
-                  <ul class="center-menu2 ">
+                  <ul class="center-menu2 right-indent">
                     <li class="center-li">
                       <br /><br />
 
@@ -1021,7 +1052,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="col-5">
+              <div class="col-6">
                 <table class="table4">
                   <tr v-for="(item, index) in prod_wells_workAll">
                     <!-- @click="saveCompany('all')"-->
@@ -1057,7 +1088,7 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-7 container-fluid">
+              <div class="col-6 px-2">
                 <visual-center3-wells></visual-center3-wells>
               </div>
             </div>
