@@ -243,9 +243,9 @@
         </div> -->
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px;; color: white">
-            <h3 >
+            <h5 >
               Технологический режим на {{ dt }}
-            </h3>
+            </h5>
           </div>
           <select
             name="Company"
@@ -527,7 +527,7 @@
                   <td class="colspan th" colspan="2">
                     <span>Изменения к режиму</span>
                   </td>
-                  <td rowspan="3">
+                  <td rowspan="3" class="th">
                     <span>Мероприятия по обеспечению техрежима</span>
                   </td>
                 </tr>

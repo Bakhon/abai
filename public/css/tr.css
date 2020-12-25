@@ -123,6 +123,7 @@ table {
 
 .CellWithComment{
     position:relative;
+    
 }
 
 .cell-with-comment {
@@ -149,7 +150,7 @@ table {
     display: none;
     width: auto;
     position:absolute;
-    z-index:100;
+    z-index:3060;
     text-align: Left;
     opacity: 0.4;
     transition: opacity 2s;

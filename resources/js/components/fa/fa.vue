@@ -104,7 +104,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 14px">Факторный анализ</h3>
+      <h5 style="margin-left: 14px">Факторный анализ</h5>
       <select
         name="Company"
         class="form-control tr-field-filter"
