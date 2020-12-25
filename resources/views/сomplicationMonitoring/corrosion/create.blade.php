@@ -10,7 +10,7 @@
                 </div>
             @endif
             <div class="x_panel">
-                <h1>Добавление данных по скорости коррозии</h1>
+                <h1>{{ trans('monitoring.corrosion.create_title') }}</h1>
                 <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i
                         class="fas fa-arrow-left"></i></a>
                 <form action="{{ route('corrosioncrud.store') }}" method="POST">

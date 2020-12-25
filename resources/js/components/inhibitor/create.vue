@@ -1,13 +1,13 @@
 <template>
     <div class="col-xs-12 col-sm-12 col-md-12 row">
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>Название</label>
+            <label>{{ trans('monitoring.inhibitor.fields.title') }}</label>
             <div class="form-label-group">
                 <input v-model="formFields.name" type="text" name="name" class="form-control" placeholder="">
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>Цена</label>
+            <label>{{ trans('monitoring.inhibitor.fields.price') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.price"
@@ -21,16 +21,12 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" :disabled="!valid" class="btn btn-success">Сохранить</button>
+            <button type="submit" :disabled="!valid" class="btn btn-success">{{ trans('app.save') }}</button>
         </div>
     </div>
 </template>
 
 <script>
-import {Settings} from 'luxon'
-
-Settings.defaultLocale = 'ru'
-
 export default {
     name: "inhibitor-create",
     props: [

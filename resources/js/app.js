@@ -45,6 +45,7 @@ Vue.component('visual-center-chart-area-center', require('./components/visualcen
 Vue.component('visual-center-chart-bar-bottom', require('./components/visualcenter/VisualCenterChartBarBottom.vue').default);
 Vue.component('visual-center-chart-donut-right1', require('./components/visualcenter/VisualCenterChartDonutRight1.vue').default);
 Vue.component('visual-center-chart-donut-right2', require('./components/visualcenter/VisualCenterChartDonutRight2.vue').default);
+Vue.component('visual-center3-wells', require('./components/visualcenter3/Vc3Wells.vue').default);
 Vue.component('visual-center-table', require('./components/visualcenter/VisualCenterTable.vue').default);
 Vue.component('visual-center-table3', require('./components/visualcenter3/VisualCenterTable3.vue').default);
 Vue.component('visual-center-table4', require('./components/visualcenter3/VisualCenterTable4.vue').default);
@@ -100,6 +101,7 @@ Vue.component('trfa-table', require('./components/tr/trfa.vue').default);
 Vue.component('tr-charts-table', require('./components/tr/tr_charts.vue').default);
 Vue.component('tr-sidebar-charts', require('./components/tr/TrSidebarCharts.vue').default);
 Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue').default);
+Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
 
@@ -108,8 +110,12 @@ Vue.component('viscenter2-create', require('./components/viscenter2/create.vue')
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
+Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 
+Vue.prototype.trans = string => _.get(window.i18n, string) || string;
+Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
+Vue.prototype.currentLang = window.current_lang;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

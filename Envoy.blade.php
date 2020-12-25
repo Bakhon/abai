@@ -38,7 +38,6 @@
     php artisan migrate --force --no-interaction
 
     php artisan storage:link
-    php artisan cache:clear
 @endtask
 
 @task('restart_services')
@@ -71,7 +70,7 @@
     echo "Updating permissions"
     sudo chown -R dash:dash {{ $new_release_dir }}
     sudo chgrp -R www-data {{ $new_release_dir }}/storage {{ $new_release_dir }}/bootstrap/cache
-    sudo chmod -R ug+rwx {{ $new_release_dir }}/storage {{ $new_release_dir }}/bootstrap/cache
+    sudo chmod -R 777 {{ $new_release_dir }}/storage {{ $new_release_dir }}/bootstrap/cache
 @endtask
 
 @task('clean_old_releases')

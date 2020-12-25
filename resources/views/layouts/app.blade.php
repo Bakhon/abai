@@ -35,6 +35,7 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
     <link href="{{ asset('css/loader.css')}}" rel="stylesheet">
 
     <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ route('assets.lang') }}"></script>
 </head>
 
 <body>
@@ -48,11 +49,12 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
             @yield('content')
         </div>
     @else
-        <div class="container-fluid col m-lg-3 m-1 p-0">
+        <div class="container-fluid col m-1 p-0">
             @yield('content')
         </div>
     @endif
 </div>
+@yield('custom_js')
 </body>
 
 </html>

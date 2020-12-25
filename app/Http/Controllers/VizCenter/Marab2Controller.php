@@ -204,7 +204,9 @@ class Marab2Controller extends Controller
         #Marabayev1 total
         $companyId = EcoRefsCompaniesId::get();
         $company = [];
+        $companyNames = [];
         foreach($companyId as $item){
+            $companyNames[$item->id] = $item->name;
             array_push($company,$item->id);
         }
 
@@ -250,14 +252,14 @@ class Marab2Controller extends Controller
         foreach($factArray as $item){
             foreach($aimArray as $item2){
                 if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($marabayev1Calculations, [ $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
+                    array_push($marabayev1Calculations, [ $item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
                     $deviationTotal += $item[3]-$item2[3];
                 }
             }
         }
         $newmarabayev1Calculations = [];
         foreach($marabayev1Calculations as $item){
-            array_push($newmarabayev1Calculations, [$item[0], $item[1], $item[2], $item[3], $item[2]/$deviationTotal]);
+            array_push($newmarabayev1Calculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
         }
 
         #Factor Analysis (Marabayev 2) calculations
@@ -281,7 +283,7 @@ class Marab2Controller extends Controller
         foreach($factArray as $item){
             foreach($aimArray as $item2){
                 if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($factoranalysisCalculations, [$item[1], $item[2], $item[0], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
+                    array_push($factoranalysisCalculations, [$item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
                     $deviationTotal += $item[3]-$item2[3];
                 }
             }
@@ -289,7 +291,7 @@ class Marab2Controller extends Controller
 
         $newfactoranalysisCalculations = [];
         foreach($factoranalysisCalculations as $item){
-            array_push($newfactoranalysisCalculations, [$item[0], $item[1], $item[3], $item[4], $item[3]/$deviationTotal]);
+            array_push($newfactoranalysisCalculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
         }
 
         #Marabayev 3/4/5 calculations
@@ -332,7 +334,7 @@ class Marab2Controller extends Controller
         foreach($factArray as $item){
             foreach($aimArray as $item2){
                 if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($marab3Calculations, [$item[1], $item[2], $item[0], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
+                    array_push($marab3Calculations, [$item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
                     $deviationTotal += $item[3]-$item2[3];
                 }
             }
@@ -340,7 +342,7 @@ class Marab2Controller extends Controller
 
         $newmarab3Calculations = [];
         foreach($marab3Calculations as $item){
-            array_push($newmarab3Calculations, [$item[0], $item[1], $item[3], $item[4], $item[3]/$deviationTotal]);
+            array_push($newmarab3Calculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
         }
 
         #Marabayev4 calculation
@@ -351,7 +353,7 @@ class Marab2Controller extends Controller
         foreach($factArray as $item){
             foreach($aimArray as $item2){
                 if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($marab4Calculations, [$item[1], $item[2], $item[0], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
+                    array_push($marab4Calculations, [$item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
                     $deviationTotal += $item[3]-$item2[3];
                 }
             }
@@ -359,7 +361,7 @@ class Marab2Controller extends Controller
 
         $newmarab4Calculations = [];
         foreach($marab4Calculations as $item){
-            array_push($newmarab4Calculations, [$item[0], $item[1], $item[3], $item[4], $item[3]/$deviationTotal]);
+            array_push($newmarab4Calculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
         }
 
         #Marabayev5 calculation
@@ -370,7 +372,7 @@ class Marab2Controller extends Controller
         foreach($factArray as $item){
             foreach($aimArray as $item2){
                 if ($item[1]==$item2[1] && $item[2]==$item2[2]){
-                    array_push($marab5Calculations, [$item[1], $item[2], $item[0], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
+                    array_push($marab5Calculations, [$item2[3], $item[3], $item[1], $item[2], $item[3]-$item2[3], ($item[3]-$item2[3])/$item2[3]]);
                     $deviationTotal += $item[3]-$item2[3];
                 }
             }
@@ -378,7 +380,7 @@ class Marab2Controller extends Controller
 
         $newmarab5Calculations = [];
         foreach($marab5Calculations as $item){
-            array_push($newmarab5Calculations, [$item[0], $item[1], $item[3], $item[4], $item[3]/$deviationTotal]);
+            array_push($newmarab5Calculations, [$item[0], $item[1], $companyNames[$item[2]], $item[3],$item[4],$item[5], $item[4]/$deviationTotal]);
         }
 
         
@@ -1585,11 +1587,11 @@ class Marab2Controller extends Controller
         }
 
         #Results
-        $result['Marabayev1(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarabayev1Calculations; #/kpicalc
-        $result['Marabayev2(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newfactoranalysisCalculations; #/kpicalc
-        $result['Marabayev3(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarab3Calculations; #/kpicalc
-        $result['Marabayev4(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarab4Calculations; #/kpicalc
-        $result['Marabayev5(company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie)'] = $newmarab5Calculations; #/kpicalc
+        $result['Marabayev1Table'] = $newmarabayev1Calculations; #/kpicalc
+        $result['Marabayev2Table'] = $newfactoranalysisCalculations; #/kpicalc
+        $result['Marabayev3Table'] = $newmarab3Calculations; #/kpicalc
+        $result['Marabayev4Table'] = $newmarab4Calculations; #/kpicalc
+        $result['Marabayev5Table'] = $newmarab5Calculations; #/kpicalc
         
         $result['Marabayev1'] = $Marabayev1Formula; #/kpicalc
         $result['Marabayev2'] = $Marabayev2Formula; #/kpicalc

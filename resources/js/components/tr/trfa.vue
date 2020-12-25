@@ -63,13 +63,13 @@
           <div
             class="dropdown-menu fadropmenu"
             aria-labelledby="dropdownMenuLink"
-            style="width: 576px"
+            style="width: 576px; padding:0;"
           >
-            <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
+            <a class="dropdown-item background_dropdown" href="#" @click="chartShow = 'pie'"
               >Распределение фонда скважин по основной причине снижения дебита
               нефти</a
             >
-            <a class="dropdown-item" href="#" @click="chartShow = 'bar'"
+            <a class="dropdown-item background_dropdown" href="#" @click="chartShow = 'bar'"
               >Распределение суммарных отклонений TP по факторам, т/сут</a
             >
           </div>
@@ -98,7 +98,7 @@
           <div
             class="dropdown-menu fadropmenu"
             aria-labelledby="dropdownMenuLink"
-            style="background: #656a8a"
+            style="background: #5973cc"
           >
             <label for="inputDate">Введите опорную дату:</label>
             <input type="date" class="form-control" v-model="date1" />
@@ -149,7 +149,7 @@
             </select>
           </div>
         </div>
-        <div class="col-sm" v-if="chartShow === 'bar'">
+        <div class="" v-if="chartShow === 'bar'">
           <div
             class="second_block"
             style="display: flex; justify-content: center"
@@ -163,7 +163,7 @@
             ></apexchart>
           </div>
         </div>
-        <div class="col-sm" v-if="chartShow === 'pie'">
+        <div class="" v-if="chartShow === 'pie'">
           <div
             class="first_block"
             style="display: flex; justify-content: center"
@@ -567,6 +567,7 @@ export default {
   },
   methods: {
     chooseDt() {
+      this.$store.commit("globalloading/SET_LOADING", true);
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
@@ -597,6 +598,7 @@ export default {
               "/"
           )
           .then((response) => {
+            this.$store.commit("globalloading/SET_LOADING", false);
             let data = response.data;
             this.editdtm = choosenDt[1];
             this.editdty = choosenDt[0];
@@ -628,6 +630,7 @@ export default {
     },
   },
   created: function () {
+    this.$store.commit("globalloading/SET_LOADING", true);
     if (this.$store.getters["fa/chart"])
       this.chartShow = this.chartArr[this.$store.getters["fa/chart"]];
     var today = new Date();
@@ -672,6 +675,7 @@ export default {
           "/"
       )
       .then((response) => {
+        this.$store.commit("globalloading/SET_LOADING", false);
         let data = response.data;
         this.editdtm = mm;
         console.log(this.editdtm);
@@ -790,5 +794,9 @@ a:hover {
   background: #656a8a;
   color: #ffffff;
   width: 246px;
+}
+.background_dropdown {
+  color: #FFFFFF;
+  background: #5973cc;
 }
 </style>

@@ -13,7 +13,7 @@
     <indicator
         v-bind:title="'Выручка/Доход'"
         v-bind:indicatorValue="dataFact"
-        v-bind:units="'млрд. тенге'"
+        v-bind:units="'млн. тенге'"
         v-bind:hasProgressBar="true"
         v-bind:progressValue="dataFact"
         v-bind:progressMax="dataPlan"
@@ -23,7 +23,7 @@
     <indicator
         v-bind:title="'Расходы'"
         v-bind:indicatorValue="spendingFact"
-        v-bind:units="'млрд. тенге'"
+        v-bind:units="'млн. тенге'"
         v-bind:hasProgressBar="true"
         v-bind:progressValue="spendingFact"
         v-bind:progressMax="spendingPlan"
@@ -54,7 +54,7 @@
         v-bind:title="'Свободный денежный поток'"
         v-bind:indicatorValue="cashFlowFact"
         v-bind:units="'млн. тенге'"
-        v-bind:hasProgressBar="true"
+        v-bind:hasProgressBar="false"
         v-bind:progressValue="cashFlowFact"
         v-bind:progressMax="cashFlowPlan"
         v-bind:prevPeriodValue="prevCashFlowFact"
@@ -81,6 +81,7 @@
         v-bind:tableToChange="'3'"
         @changeTable="tableToChange => $emit('changeTable', tableToChange)"
         v-bind:percents="oilPercents"
+        v-bind:isLastBlock="true"
     ></indicator>
   </div>
 </template>
