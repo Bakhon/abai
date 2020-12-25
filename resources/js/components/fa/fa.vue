@@ -1395,6 +1395,7 @@ body {
   margin-left: 0;
   padding-left: 0;
   display: flex;
+  /* margin-bottom: 15px; */
 }
 
 .fasearch {
@@ -1408,7 +1409,7 @@ body {
 
 .table {
   overflow: scroll;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 211px);
 }
 .table tr:nth-child(-n+4) td {
   position: sticky;

@@ -6984,6 +6984,7 @@ tr:nth-child(even) {
 .trcolmd12 {
   margin: 0;
   padding: 0;
+  /* margin-bottom: 15px; */
 }
 .fadee {
   flex: 0 1 auto;
@@ -7017,7 +7018,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 211px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
