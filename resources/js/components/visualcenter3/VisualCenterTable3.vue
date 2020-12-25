@@ -1,5 +1,7 @@
 <template>
-  <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height">
+  <div
+    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height"
+  >
     <div class="left-side flex-grow-1 pr-3">
       <div class="first-string">
         <div class="table-responsive">
@@ -298,11 +300,19 @@
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('102')">
                   <a class="col-10">Сдача нефти по узлам учёта</a>
-                  <div class="col-2"><div class="square-small2"   :style="`${changeMenuButton2}`">✓</div></div>
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton2}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
                 <li class="center-li row px-4" @click="changeMenu('103')">
                   <a class="col-10">Товарный остаток нефти</a>
-                  <div class="col-2"><div class="square-small2" :style="`${changeMenuButton3}`">✓</div></div>
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton3}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
 
                 <!-- <li class="center-li" @click="changeMenu('102')">
@@ -513,7 +523,7 @@
 
           <div class="row container-fluid" :style="`${displayTable}`">
             <div class="col-6 px-3">
-              <table class="table4-2 w-100" v-if="isEnableSpeedometers">
+              <table class="table4-2 w-100">
                 <tbody>
                   <tr>
                     <td class="big-table-hidtd small-td"></td>
@@ -561,7 +571,7 @@
 
                       <div class="font" v-if="item.plan">
                         {{ new Intl.NumberFormat("ru-RU").format(item.plan) }}
-                       <!-- <div class="right">{{ item4 }}</div>-->
+                        <!-- <div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
@@ -611,7 +621,7 @@
                             )
                           )
                         }}
-                       <!-- <div class="right">{{ item4 }}</div>-->
+                        <!-- <div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
@@ -652,18 +662,6 @@
                   </tr>
                 </tbody>
               </table>
-                 <div class="text-center p-3" v-else>
-                        <div class="box">
-                            <div class="cat">
-                                <div class="cat__body"></div>
-                                <div class="cat__body"></div>
-                                <div class="cat__tail"></div>
-                                <div class="cat__head"></div>
-                            </div>
-                        </div>
-                    </div>
-
-              
             </div>
 
             <div class="col-6 pl-5">
@@ -672,9 +670,9 @@
               <vc-chart v-if="company != 'all'"> </vc-chart>
             </div>
           </div>
-          <div   class="row container-fluid" :style="`${displayHeadTables}`">
+          <div class="row container-fluid" :style="`${displayHeadTables}`">
             <div class="col-6 px-3">
-              <table class="table4 w-100" v-if="isEnableSpeedometers">
+              <table class="table4 w-100">
                 <tbody>
                   <tr>
                     <td class="big-table-hidtd small-td"></td>
@@ -860,19 +858,7 @@
                   </tr>
                 </tbody>
               </table>
-              <div class="text-center p-3" v-else>
-                        <div class="box">
-                            <div class="cat">
-                                <div class="cat__body"></div>
-                                <div class="cat__body"></div>
-                                <div class="cat__tail"></div>
-                                <div class="cat__head"></div>
-                            </div>
-                        </div>
-                    </div>
-              
             </div>
-            
 
             <div class="col-6 pl-5">
               <div class="name-chart-left">{{ nameChartLeft }}</div>
@@ -880,17 +866,10 @@
               <vc-chart v-if="company == 'all'"> </vc-chart>
             </div>
           </div>
-
-             
-          
         </div>
-          
       </div>
-      
 
-      
-
-      <div class="second-table big-area " :style="`${Table2}`">
+      <div class="second-table big-area" :style="`${Table2}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
           <div class="container-fluid">
@@ -939,8 +918,7 @@
           <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold">                    Фонд нагнетательных скважин
-                </div>
+                <div class="ml-4 bold">Фонд нагнетательных скважин</div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">Закрыть</div>
@@ -1081,9 +1059,7 @@
                         index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
                       "
                     >
-                      <div class="font">
-                       
-                      </div>
+                      <div class="font"></div>
                     </td>
                   </tr>
                 </table>
@@ -1107,16 +1083,14 @@
       <div class="third-table big-area" :style="`${Table4}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">
-        Фонд добывающих скважин
-          </div>
+          <div class="container-fluid">Фонд добывающих скважин</div>
         </div>
       </div>
 
       <div class="third-table big-area" :style="`${Table6}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class=" container-fluid">ОТМ</div>
+          <div class="container-fluid">ОТМ</div>
         </div>
       </div>
 

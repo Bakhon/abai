@@ -6,11 +6,10 @@ Vue.component("date-picker", DatePicker);
 export default {
   components: {
     Calendar,
-    DatePicker,
+    DatePicker
   },
   data: function () {
-    return {
-      isEnableSpeedometers: true,
+    return { 
       nameChartLeft: 'Добыча нефти',
       oilChartHeadName: 'Динамика добычи нефти',
       prod_wells_workAll: [
@@ -917,8 +916,8 @@ export default {
       // });
     },
 
-    getProduction(item, item2, item3, item4, item5) {
-      this.isEnableSpeedometers=false;
+    getProduction(item, item2, item3, item4, item5) {  
+      this.$store.commit('globalloading/SET_LOADING',true);
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
 
@@ -1106,8 +1105,8 @@ export default {
 
 
             //console.log(productionForChart);
-            if (this.company != "all") {
-              this.isEnableSpeedometers = true;
+            if (this.company != "all") {             
+              this.$store.commit('globalloading/SET_LOADING',false);
               this.$emit("data", productionForChart); //k1q new
             }
 
@@ -1196,8 +1195,8 @@ export default {
 
         //bigtable
         //year
-        if (this.company == "all") {
-          this.isEnableSpeedometers = true;
+        if (this.company == "all") {         
+          this.$store.commit('globalloading/SET_LOADING',false);
           var dataDay = [];
           var dataYear = [];
           var dzo = [];
@@ -1726,7 +1725,7 @@ export default {
         }
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
-        
+    
       });
       this.showTable(localStorage.getItem("changeButton"));
 
