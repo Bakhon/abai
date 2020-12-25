@@ -96,24 +96,26 @@ export default {
               fines += item.fine_2020;
             });
 
-            this.udIncomePlan = (udIncomePlan / 1000).toFixed(1);
-            this.udIncomeBblPlan = udIncomeBblPlan.toFixed(1);
-            this.udIncomeFact = (udIncomeFact / 1000).toFixed(1);
-            this.udIncomeBblFact = udIncomeBblFact.toFixed(1);
+            let dzoDataActualLength = (response.data['dzoDataActual']).length;
+            let changeConst = 7.23;
+            this.udIncomePlan = (udIncomePlan / dzoDataActualLength / 1000).toFixed(0);
+            this.udIncomeBblPlan = (udIncomeBblPlan / dzoDataActualLength / changeConst).toFixed(0);
+            this.udIncomeFact = (udIncomeFact / dzoDataActualLength / 1000).toFixed(0);
+            this.udIncomeBblFact = (udIncomeBblFact / dzoDataActualLength / changeConst).toFixed(0);
 
-            this.udSpendingPlan = (udSpendingPlan / 1000).toFixed(1);
-            this.udSpendingBblPlan = udSpendingBblPlan.toFixed(1);
-            this.udSpendingFact = (udSpendingFact / 1000).toFixed(1);
-            this.udSpendingBblFact = udSpendingBblFact.toFixed(1);
+            this.udSpendingPlan = (udSpendingPlan / dzoDataActualLength / 1000).toFixed(0);
+            this.udSpendingBblPlan = (udSpendingBblPlan / dzoDataActualLength).toFixed(0);
+            this.udSpendingFact = (udSpendingFact / dzoDataActualLength / 1000).toFixed(0);
+            this.udSpendingBblFact = (udSpendingBblFact / dzoDataActualLength).toFixed(0);
 
-            this.kvlPlan = (kvlPlan / 1000).toFixed(1);
-            this.kvlFact = (kvlFact / 1000).toFixed(1);
+            this.kvlPlan = (kvlPlan / dzoDataActualLength / 1000).toFixed(0);
+            this.kvlFact = (kvlFact / dzoDataActualLength / 1000).toFixed(0);
 
-            this.rentGtm = rentGtm.toFixed(1);
-            this.neRentGtm = neRentGtm.toFixed(1);
+            this.rentGtm = rentGtm.toFixed(0);
+            this.neRentGtm = neRentGtm.toFixed(0);
 
-            this.rentBurenie = rentBurenie.toFixed(1);
-            this.neRentBurenie = neRentBurenie.toFixed(1);
+            this.rentBurenie = rentBurenie.toFixed(0);
+            this.neRentBurenie = neRentBurenie.toFixed(0);
 
             this.fines = fines.toFixed(0);
           }

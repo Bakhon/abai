@@ -1538,7 +1538,8 @@ class Marab2Controller extends Controller
             $itemDeviation = array_sum($tmpDeviationArray[array_key_last($tmpItem)][self::FACT_TYPE_ID] ?? [])
                 - array_sum($tmpDeviationArray[array_key_last($tmpItem)][self::AIM_TYPE_ID] ?? []);
             $itemDeviation = $itemDeviation ?: $fact - $aim ?: 1;
-            $effect = ($fact - $aim) / $itemDeviation;
+            $relativeDeviation = $aim ? ($fact - $aim) / $aim : 1;
+            $effect = round(-(($fact - $aim) / $itemDeviation * 100), 2);
             $resultArray[] = [
                 $porog,
                 $aim,
@@ -1547,12 +1548,29 @@ class Marab2Controller extends Controller
                 self::$companyNames[$companyId],
                 array_key_last($tmpItem),
                 $fact - $aim,
-                $aim ? ($fact - $aim) / $aim : 0,
+                round($relativeDeviation * 100, 2),
                 $effect,
             ];
         }
+        $sumPorog = $sumAim = $sumVizov = $sumFact = $sumDeviation = $sumEffect = 0.00;
+        foreach ($resultArray as $tmpItem) {
+            $sumPorog += $tmpItem[0];
+            $sumAim += $tmpItem[1];
+            $sumVizov += $tmpItem[2];
+            $sumFact += $tmpItem[3];
+            $sumDeviation += $tmpItem[6];
+            $sumEffect += $tmpItem[8];
+        }
 
-        return $resultArray;
+        return ['data' => $resultArray, 'sum' => [
+            $sumPorog,
+            $sumAim,
+            $sumVizov,
+            $sumFact,
+            $sumDeviation,
+            round((($sumFact - $sumAim) / $sumAim * 100), 2),
+            round($sumEffect, 2),
+        ]];
     }
 
     private function divideToType($InputArray) {
