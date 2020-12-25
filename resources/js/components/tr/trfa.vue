@@ -63,13 +63,13 @@
           <div
             class="dropdown-menu fadropmenu"
             aria-labelledby="dropdownMenuLink"
-            style="width: 576px"
+            style="width: 576px; padding:0;"
           >
-            <a class="dropdown-item" href="#" @click="chartShow = 'pie'"
+            <a class="dropdown-item background_dropdown" href="#" @click="chartShow = 'pie'"
               >Распределение фонда скважин по основной причине снижения дебита
               нефти</a
             >
-            <a class="dropdown-item" href="#" @click="chartShow = 'bar'"
+            <a class="dropdown-item background_dropdown" href="#" @click="chartShow = 'bar'"
               >Распределение суммарных отклонений TP по факторам, т/сут</a
             >
           </div>
@@ -98,7 +98,7 @@
           <div
             class="dropdown-menu fadropmenu"
             aria-labelledby="dropdownMenuLink"
-            style="background: #656a8a"
+            style="background: #5973cc"
           >
             <label for="inputDate">Введите опорную дату:</label>
             <input type="date" class="form-control" v-model="date1" />
@@ -794,5 +794,9 @@ a:hover {
   background: #656a8a;
   color: #ffffff;
   width: 246px;
+}
+.background_dropdown {
+  color: #FFFFFF;
+  background: #5973cc;
 }
 </style>
