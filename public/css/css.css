@@ -1531,7 +1531,7 @@ li.left-menu-li {
 
 /*Loader*/
 
-.cat {
+.loader_cat >.cat {
     /*position: relative;*/
     position: fixed;
     left: 45%;
