@@ -462,19 +462,19 @@ input.checkbox0 {
     text-decoration: underline;
 }
 
-.spoiler .box>span.closer {
+.spoiler .right-side-box>span.closer {
     display: none;
 }
 
-.spoiler.opened .box>span.closer {
+.spoiler.opened .right-side-box>span.closer {
     display: inline;
 }
 
-.spoiler.opened .box>span.open {
+.spoiler.opened .right-side-box>span.open {
     display: none;
 }
 
-.spoiler .box>span.open {
+.spoiler .right-side-box>span.open {
     display: inline;
 }
 

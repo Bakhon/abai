@@ -107,7 +107,7 @@
                      tabindex="-1"
                      :checked="activeRightTabName === 'devices'"
                      @change="setActiveRightTabName($event, 'devices')"/>
-              <div class="box">
+              <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
                   <div class="devices-title"><b>Оборудование</b></div>
                 </div>
@@ -191,7 +191,7 @@
                      tabindex="-1"
                      :checked="activeRightTabName === 'pvt'"
                      @change="setActiveRightTabName($event, 'pvt')"/>
-              <div class="box">
+              <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
                   <div class="pvt-title">PVT</div>
                 </div>
@@ -265,7 +265,7 @@
                      tabindex="-1"
                      :checked="activeRightTabName === 'technological-mode'"
                      @click="setActiveRightTabName($event, 'technological-mode')"/>
-              <div class="box">
+              <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
 
                   <div class="technological-mode-title">Технологический режим</div>
