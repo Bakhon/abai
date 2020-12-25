@@ -1,5 +1,6 @@
 <template>
   <div class="filter-container">
+    <cat-loader v-show="isLoading"/>
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
@@ -53,7 +54,6 @@
       </button>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -84,6 +84,9 @@ export default {
       // link.remove();
     },
     updateData() {
+      // this.$store.commit("globalloading/SET_LOADING", true);
+      this.isLoading = true;
+
       let uri = "http://172.20.103.157:8082/monthly/production/";
         // let uri = "http://0.0.0.0:8090/monthly/production/";
       let data = {
@@ -95,8 +98,6 @@ export default {
       };
 
       let json_data = JSON.stringify(data);
-
-      this.isLoading = true;
 
       this.axios.post(uri, json_data, {
         // responseType:'arraybuffer',

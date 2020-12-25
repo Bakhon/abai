@@ -71,7 +71,108 @@
                 </li>
                 <li class="left-menu-li"><a href="{{url('/')}}/ru/tr">Модуль "Технологический режим"</a></li>
                 <li class="left-menu-li"><a href="{{url('/')}}/ru/podborgno">Модуль "Подбор ГНО"</a></li>
-                <li class="left-menu-li"><a href="{{url('/')}}/ru/monitor">Модуль "Мониторинг осложнений"</a>
+                <li class="left-menu-li">
+                    <a href="{{url('/')}}/ru/monitor">Модуль "Мониторинг осложнений"</a>
+                    <ul class="dropdown-child">
+                        <li class="left-menu-li">
+                            <ul>
+                                @if(auth()->user()->can('monitoring view main'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('omgca.index')}}">
+                                            {{ trans('monitoring.omgca.menu') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring view main'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('omguhe.index')}}">
+                                            {{ trans('monitoring.omguhe.menu') }}
+                                        </a>
+                                    </li>
+                                @endif
+                                @if(auth()->user()->can('monitoring view main'))
+                                    <li class="left-menu-li">
+                                        <a href="{{route('omgngdu.index')}}">
+                                            {{ trans('monitoring.omgngdu.menu') }}
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </li>
+                        @if(
+                            auth()->user()->can('monitoring list watermeasurement')
+                            || auth()->user()->can('monitoring list oilgas')
+                            || auth()->user()->can('monitoring list corrosion')
+                        )
+                            <li class="left-menu-li">
+                                <a>
+                                    {{ trans('monitoring.kaznipi') }}
+                                </a>
+                                <ul>
+                                    @if(auth()->user()->can('monitoring list watermeasurement'))
+                                        <li class="left-menu-li">
+                                            <a href="{{route('watermeasurement.index')}}">
+                                                {{ trans('monitoring.wm.menu') }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if(auth()->user()->can('monitoring list oilgas'))
+                                        <li class="left-menu-li">
+                                            <a href="{{route('oilgas.index')}}">
+                                                {{ trans('monitoring.oil.menu') }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if(auth()->user()->can('monitoring list corrosion'))
+                                        <li class="left-menu-li">
+                                            <a href="{{route('corrosioncrud.index')}}">
+                                                {{ trans('monitoring.corrosion.menu') }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </li>
+                        @endif
+                        @if(
+                            auth()->user()->can('monitoring list pipes')
+                            || auth()->user()->can('monitoring list inhibitors')
+                        )
+                            <li class="left-menu-li">
+                                <a>
+                                    {{ trans('monitoring.dictionaries') }}
+                                </a>
+                                <ul>
+                                    @if(auth()->user()->can('monitoring list pipes'))
+                                        <li class="left-menu-li">
+                                            <a href="{{route('pipes.index')}}">
+                                                {{ trans('monitoring.pipe.menu') }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                    @if(auth()->user()->can('monitoring list inhibitors'))
+                                        <li class="left-menu-li">
+                                            <a href="{{route('inhibitors.index')}}">
+                                                {{ trans('monitoring.inhibitors') }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </li>
+                        @endif
+                        <li class="left-menu-li">
+                            @if(auth()->user()->can('monitoring view pipes map'))
+                                <a href="{{route('maps.gu')}}">
+                                    {{ trans('monitoring.tech_map') }}
+                                </a>
+                            @endif
+                        </li>
+                        <li class="left-menu-li">
+                            <a href="{{route('facilities')}}">
+                                {{ trans('monitoring.tech_map_prototype') }}
+                            </a>
+                        </li>
+                    </ul>
+
                 </li>
             </div>
         </div>

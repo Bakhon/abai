@@ -1,5 +1,6 @@
 <template>
   <div class="filter-container">
+    <cat-loader v-show="isLoading"/>
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
