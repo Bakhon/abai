@@ -476,7 +476,9 @@
                           is-range
                           class="m-auto"
                           :model-config="modelConfig"
+                            @dayclick="dayClicked"
                           @input="changeDate"
+                          
                         />
                       </div>
                     </div>
@@ -976,6 +978,7 @@
                             class="m-auto"
                             :model-config="modelConfig"
                             @input="changeDate"
+                              @dayclick="dayClicked"
                           />
                         </div>
                       </div>
