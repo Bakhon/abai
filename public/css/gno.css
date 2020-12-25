@@ -1555,10 +1555,10 @@ input.checkbox-q-liquid {
 
 .second-column-container {
     padding-left: 10px !important;
+    padding-right: 0 !important;
 }
 
 .gno-shgn-table-section {
-    /*height: 400px;*/
     height: 100%;
 }
 
@@ -1752,28 +1752,8 @@ input.checkbox-q-liquid {
     width: 100%;
 }
 
-/*cheat-code потом эти проблемы необходимо будет решить глобально*/
-#app #sidebar-container2 {
-    padding-right: 15px !important;
-}
-
-#app > .container-fluid {
-    max-width: 100% !important;
-    padding: 15px !important;
-}
-
-.container-fluid.col.m-lg-3.m-1.p-0 {
+.gno-page-container {
     margin: 0 !important;
-}
-
-.navbar {
-    overflow: hidden !important;
-}
-
-@media (max-width: 991px) {
-    #app #sidebar-container2 {
-        display: none !important;
-    }
 }
 
 /*media*/
@@ -2070,6 +2050,7 @@ input.checkbox-q-liquid {
 @media (max-width: 400px) {
     #app > .container-fluid {
         padding: 10px !important;
+        margin: 0 !important;
     }
 }
 
