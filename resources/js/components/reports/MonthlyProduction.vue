@@ -52,8 +52,15 @@
         &nbsp;Выгрузить в Excel
       </button>
     </div>
+    <div v-if="isLoading" class="loader_cat">
+      <div class="cat">
+        <div class="cat__body"></div>
+        <div class="cat__body"></div>
+        <div class="cat__tail"></div>
+        <div class="cat__head"></div>
+      </div>
+    </div>
   </div>
-
 </template>
 
 <script>
