@@ -6984,7 +6984,7 @@ tr:nth-child(even) {
 .trcolmd12 {
   margin: 0;
   padding: 0;
-  /* margin-bottom: 15px; */
+  margin-bottom: 15px;
 }
 .fadee {
   flex: 0 1 auto;

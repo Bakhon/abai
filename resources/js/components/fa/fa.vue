@@ -1395,7 +1395,7 @@ body {
   margin-left: 0;
   padding-left: 0;
   display: flex;
-  /* margin-bottom: 15px; */
+  margin-bottom: 15px;
 }
 
 .fasearch {
