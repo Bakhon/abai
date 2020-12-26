@@ -227,6 +227,3 @@ table {
     padding: 0;
     margin: 0;
 }  
-#app > .container-fluid.container-fluid {
-    margin-bottom: 0 !important;
-}

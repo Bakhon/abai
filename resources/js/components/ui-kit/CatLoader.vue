@@ -122,7 +122,7 @@ export default {
   top: 0;
   left: 0;
   background: #454d7d99;
-  z-index: 9998;
+  z-index: 99999;
 }
 
 *,
