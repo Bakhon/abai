@@ -1,5 +1,5 @@
 <ul class="menu-collapsed padding" aria-expanded="false" data-toggle="collapse show">
-    <a href="#" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+    <a href="{{route('mainpage')}}" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-start align-items-center"><img src="/img/gno/home.png" width="25" height="25" class="companyLogo"> <span class="menu-collapsed companyName d-none"></span></div>
     </a>
     <a href="#" class="bg-dark list-group-item list-group-item-action">
@@ -16,11 +16,11 @@
         </div>
         <div class="dropdown-menu">
             <div class="move-menu">
-                <li class="left-menu-li"> <a href="{{url('/')}}/ru/bigdata">Модуль "Прототип БД ABAI"</a></li>
-                <li class="left-menu-li"> <a href="{{url('/')}}/ru/visualcenter3">Модуль "Центр визуализации"</a></li>
-                <li class="left-menu-li"> <a href="{{url('/')}}/ru/tr">Модуль "Технологический режим"</a></li>
-                <li class="left-menu-li"> <a href="{{url('/')}}/ru/podborgno">Модуль "Подбор ГНО"</a></li>
-                <li class="left-menu-li"> <a href="{{url('/')}}/ru/monitor">Модуль "Мониторинг осложнений"</a>
+                <li class="left-menu-li"> <a href="{{route('bigdata')}}">Модуль "Прототип БД ABAI"</a></li>
+                <li class="left-menu-li"> <a href="{{route('visualcenter3')}}">Модуль "Центр визуализации"</a></li>
+                <li class="left-menu-li"> <a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
+                <li class="left-menu-li"> <a href="{{route('gno')}}">Модуль "Подбор ГНО"</a></li>
+                <li class="left-menu-li"> <a href="{{route('monitor')}}">Модуль "Мониторинг осложнений"</a>
                     <ul class="dropdown-child">
                         <li class="left-menu-li">
                             <ul>

@@ -37,7 +37,7 @@ Route::group(
                     function () {
                         return view('welcome');
                     }
-                );
+                )->name('mainpage');
                 Route::get('/druid', 'DruidController@index');
                 Route::get('/oilprice', 'DruidController@getOilPrice');
                 Route::get('/getnkkmg', 'DruidController@getNkKmg');

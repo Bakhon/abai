@@ -94,7 +94,7 @@ class AppServiceProvider extends ServiceProvider
             if($lang === LocaleMiddleware::getLocale()) continue;
 
             $languages['list'][] = [
-                'url' => str_replace('/'.LocaleMiddleware::getLocale().'/', "/${lang}/", url()->current()),
+                'url' => str_replace(request()->getHttpHost().'/'.LocaleMiddleware::getLocale(), request()->getHttpHost()."/${lang}", url()->current()),
                 'name' => $langDict[$lang]
             ];
         }
