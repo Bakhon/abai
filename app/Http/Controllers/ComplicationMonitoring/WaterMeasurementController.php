@@ -55,7 +55,64 @@ class WaterMeasurementController extends CrudController
             ],
             'title' => trans('monitoring.wm.title'),
             'fields' => [
-                
+                'date' => [
+                    'title' => trans('monitoring.wm.fields.date'),
+                    'type' => 'date',
+                ],
+                'other_objects' => [
+                    'title' => trans('monitoring.other_objects'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\OtherObjects::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'ngdu' => [
+                    'title' => trans('monitoring.ngdu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Ngdu::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'cdng' => [
+                    'title' => trans('monitoring.cdng'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Cdng::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
                 'gu' => [
                     'title' => trans('monitoring.gu'),
                     'type' => 'select',
@@ -74,7 +131,24 @@ class WaterMeasurementController extends CrudController
                             ->toArray()
                     ]
                 ],
-                
+                'zu' => [
+                    'title' => trans('monitoring.zu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Zu::whereHas('watermeasurement')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
                 'well' => [
                     'title' => trans('monitoring.well'),
                     'type' => 'select',

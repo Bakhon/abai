@@ -30,7 +30,60 @@ class CorrosionController extends CrudController
             ],
             'title' => trans('monitoring.corrosion.title'),
             'fields' => [
-                
+                'field' => [
+                    'title' => trans('monitoring.field'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Field::whereHas('corrosion')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'ngdu' => [
+                    'title' => trans('monitoring.ngdu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Ngdu::whereHas('corrosion')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'cdng' => [
+                    'title' => trans('monitoring.cdng'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Cdng::whereHas('corrosion')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
                 'gu' => [
                     'title' => trans('monitoring.gu'),
                     'type' => 'select',
