@@ -39,7 +39,6 @@ class WellCoordinates extends Command
     public function handle(\App\Services\DruidService $druidService)
     {
         $wells = \App\Models\Refs\Well::query()
-            ->where('updated_at', '>', Carbon::now()->subDay(2))
             ->get()
             ->keyBy('name');
 
@@ -50,7 +49,7 @@ class WellCoordinates extends Command
             if($wellCoord['surfx'] > 54 || $wellCoord['surfx'] < 51) continue;
 
             $well = $wells->get($wellCoord['uwi']);
-            if(!empty($well)) {
+            if(!empty($well) && empty($well->lat) && empty($well->lon)) {
                 $well->lat = $wellCoord['surfy'];
                 $well->lon = $wellCoord['surfx'];
                 $well->save();

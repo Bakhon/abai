@@ -33,4 +33,22 @@ class DruidService
         return $result->data();
     }
 
+    public function getWellOil()
+    {
+
+        $builder = $this->client->query('economic_2020v4', Granularity::DAY);
+
+        $builder
+            ->interval('2020-07-01T00:00:00+00:00/2020-07-02T00:00:00+00:00')
+            ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
+                $extractionBuilder->timeFormat('yyyy-MM-dd');
+            })
+            ->select('uwi')
+            ->select('oil');
+
+        $result = $builder->groupBy();
+
+        return $result->data();
+    }
+
 }
