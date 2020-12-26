@@ -461,9 +461,9 @@
                   </div>
                   <div class="tablePgno no-gutter">
                     <perfect-scrollbar>
-                      <table class="gno-table-with-header pgno">
+                      <table class="gno-table-with-header pgno" style="height: inherit;">
                         <thead>
-                          <tr height="60" style="height: 60pt;">
+                          <tr height="10" style="height: 10pt;">
                             <td>
                               № п/п
                             </td>
@@ -503,147 +503,35 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>1</td>
+                          <tr style="font-weight: bold;">
                             <td></td>
+                            <td>{{this.wellOkr}}</td>
                             <td></td>
                             <td></td>
+                            <td>{{this.piOkr}}</td>
+                            <td>{{this.khOkr}}</td>
+                            <td>{{this.skinOkr}}</td>
+                            <td>{{this.presOkr}}</td>
                             <td></td>
                             <td></td>
+                            <td>{{this.wctOkr}}</td>
                             <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>2</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>3</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>4</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>5</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>6</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>7</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>8</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>9</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>10</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                          </tr>
 
+                          </tr>
+                          <tr v-for="(row, row_index) in this.nearWells" :key="row_index">
+                            <td>{{row.index + 1}}</td>
+                            <td>{{row.well}}</td>
+                            <td>{{row.dist.toFixed(0)}}</td>
+                            <td>{{row.k_v.toFixed(3)}}</td>
+                            <td>{{row.pi.toFixed(2)}}</td>
+                            <td>{{row.kh.toFixed(1)}}</td>
+                            <td>{{row.tp_idn_skin.toFixed(1)}}</td>
+                            <td>{{row.p_res.toFixed(0)}}</td>
+                            <td>{{row.bhp.toFixed(0)}}</td>
+                            <td>{{row.q_l.toFixed(0)}}</td>
+                            <td>{{row.wct.toFixed(0)}}</td>
+                            <td>{{row.q_o.toFixed(1)}}</td>
+                          </tr>
                         </tbody>
                       </table>
                     </perfect-scrollbar>
@@ -2648,12 +2536,19 @@ export default {
       qZhExpShgn:null,
       qOilExpShgn:null,
       param_eco:null,
+      potMenu: false,
 
       field: "UZN",
       wellIncl: null,
       dataNNO:"2020-11-01",
+      nearWells: [],
+      windowWidth: null,
 
-      windowWidth: null
+      wellOkr: null,
+      piOkr: null,
+      khOkr: null,
+      skinOkr: null,
+      presOkr: null,
 
     };
 
@@ -2810,7 +2705,6 @@ export default {
       }
     },
     setLine: function (value) {
-      console.log(value)
       var ipr_points = [];
       var qo_points = [];
       var value2 = [];
@@ -2919,7 +2813,6 @@ export default {
       this.data[3]['x'] = qo_points2
       this.data[3]['y'] = ipr_points2
       this.data[3]['text'] = q_oil2
-      console.log(JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']))
       if (JSON.stringify(this.data[0]['x']) == JSON.stringify(this.data[3]['x']) && JSON.stringify(this.data[0]['y']) == JSON.stringify(this.data[3]['y'])) {
         this.data[3]['x'] = []
         this.data[3]['y'] = []
@@ -3026,7 +2919,6 @@ export default {
       }
     },
     async EconomCalc(){
-      console.log('Nno',typeof this.expAnalysisData.NNO1,typeof this.expAnalysisData.NNO2);
 
 
 
@@ -3323,7 +3215,6 @@ export default {
 
     postCurveData() {
       this.visibleChart = true;
-      console.log()
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
       // api/pgno/UZN/
       // KMB
@@ -3396,17 +3287,12 @@ export default {
               this.setData(data)
               this.$emit('LineData', this.curveLineData)
               this.$emit('PointsData', this.curvePointsData)
-
-              console.log(this.qlPot, this.qlCelValue.split(' ')[0], this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
-
               if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
                 Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
               } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
                 Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-                // console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
               } else if(this.pinPot * 1  > this.piCelValue.split(' ')[0] * 1  && this.CelButton == 'pin'){
                 Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-                // console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
               }
             }
 
@@ -3465,7 +3351,6 @@ export default {
       this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
-          console.log(data)
           this.method = "CurveSetting"
           this.newData = data["Well Data"]
           // this.setData(data)
@@ -3484,7 +3369,6 @@ export default {
 
     postAnalysisNew() {
       this.visibleChart = true;
-      console.log("POST NEW WELL")
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
@@ -3529,13 +3413,18 @@ export default {
       this.axios.post(uri, jsonData).then((response) => {
         var data = response.data;
         if (data) {
-          console.log(data)
           this.newData = data["Well Data"]
           this.method = "CurveSetting"
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
+          this.nearWells = JSON.parse(data.NearWells)["data"]
           this.updateLine(this.newCurveLineData)
           this.setPoints(this.newPointsData)
+          this.wellOkr = data["Well Data"]["well"][0]
+          this.piOkr = data["Well Data"]["pi"][0].toFixed(2)
+          this.khOkr = data["Well Data"]["kh"][0].toFixed(1)
+          this.skinOkr = data["Well Data"]["skin"][0].toFixed(1)
+          this.presOkr = data["Well Data"]["p_res"][0].toFixed(0)
           this.wctOkr = data["Well Data"]["wct"][0].toFixed(0)
           // this.$emit('LineData', this.curveLineData)
           // this.$emit('PointsData', this.curvePointsData)
@@ -3577,7 +3466,6 @@ export default {
       this.piInput = this.newData["pi"][0].toFixed(2) + ' м³/сут/ат'
       this.wctInput = this.newData["wct"][0].toFixed(0) + ' %'
       this.hPumpValue = this.newData["h_pump_set"][0].toFixed(0) + ' м'
-      console.log(this.newData)
     },
 
     onCompareNpv() {
@@ -3591,7 +3479,6 @@ export default {
     },
 
     onShowTable() {
-      console.log('mytable');
       this.$modal.hide("modalExpAnalysis");
       this.$modal.show("tablePGNO")
     },
@@ -3601,10 +3488,8 @@ export default {
         Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
       } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
         Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-        // console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
       } else if(this.pinPot * 1  > this.piCelValue.split(' ')[0] * 1  && this.CelButton == 'pin'){
         Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
-        // console.log(this.qlPot, this.qlCelValue, this.bhpPot, this.bhpCelValue, this.pinPot, this.piCelValue);
       } else {
         if(this.expChoose == 'ШГН'){
           if(this.visibleChart) {
@@ -3690,6 +3575,10 @@ export default {
       this.activeRightTabName = val;
     },
 
+    getNearWells() {
+
+    },
+
     createPDF() {
 
       this.isLoading = true;
@@ -3727,7 +3616,6 @@ export default {
         //$("#content").append(title);
         var divGraph = $('#graph');
         Plotly.toImage('graph', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
-          console.log(dataURL);
           img_png.attr("src", dataURL);
         });
       });
