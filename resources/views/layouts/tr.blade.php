@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('sidebar_menu')
+@section('sidebar_menu_additional')
     @include('partials.sidebar.tr_menu')
 @endsection
 @section('module_icon')
