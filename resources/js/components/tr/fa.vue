@@ -106,6 +106,7 @@
     >
       <h3 style="margin-left: 14px">Факторный анализ</h3>
       <tr-multiselect
+        :filter="filter"
         :fieldFilterOptions="fieldFilterOptions"
         @change-filter="handlerFilter"
         filterName="месторождения"

@@ -1,6 +1,7 @@
 <template>
   <multiselect
-    v-model="filter"
+    :value="filter"
+    @input="updateValueAction"
     :options="fieldFilterOptions"
     :multiple="true"
     :searchable="false"
@@ -10,12 +11,14 @@
     select-group-label=""
     deselect-group-label=""
     selected-label=""
+    noOptions="Нет доступных опций"
     group-values="fields"
     group-label="group"
+    :preselect-first="true"
     :group-select="true"
     :limit="1"
     :limit-text="() => ''"
-    :placeholder="`Выберите ${filterName}`"
+    :placeholder="`Выберите ${filterName} ${filterNameAdditional}`"
   >
     <div
       class="multiselect__option__item"
@@ -49,6 +52,12 @@ export default {
     Multiselect,
   },
   props: {
+    filter: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
     fieldFilterOptions: {
       type: Array,
       default() {
@@ -59,29 +68,46 @@ export default {
       type: String,
       default: "месторождения",
     },
+    filterNameAdditional: {
+      type: String,
+      default: "",
+    },
     filterNames: {
       type: Array,
+    },
+    textFormsRow: {
+      type: String,
+      default: "fields",
     },
   },
   data: function () {
     return {
-      filter: []
+      // filter: []
     }
   },
   watch: {
-    filter() {
-      this.$emit("change-filter", this.filter);
-    },
+    // filter() {
+    //   this.$emit("change-filter", this.filter);
+    // },
+  },
+  computed: {
+    // filter() {
+    //   [...this.filters]
+    // },
   },
   created: function () {
-    this.filter = this.fieldFilterOptions[0].fields
+    console.log('options = ', this.fieldFilterOptions)
+    // this.filter = this.fieldFilterOptions[0] ? this.fieldFilterOptions[0].fields : []
   },
   methods: {
+    updateValueAction(value) {
+      this.$emit("change-filter", value);
+    },
     getFieldFilterText() {
       if (!this.fieldFilterOptions[0] || !this.fieldFilterOptions[0].fields) return "Нет опций"
       return this.fieldFilterOptions[0].fields.length === this.filter.length
-        ? `Выбраны все ${this.filterName}`
-        : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length)}`;
+        ? `Выбраны все ${this.filterName} ${this.filterNameAdditional}`
+        : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length, this.textFormsRow)} ${this.filterNameAdditional}`;
     },
   },
 };
