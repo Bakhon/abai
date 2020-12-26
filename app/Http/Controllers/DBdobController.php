@@ -18,9 +18,8 @@ class DBdobController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function dob1(Request $request)
+    public function dob1(Request $request, DruidClient $client)
     {
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
         $builder = $client->query('date_by_prod_dob_v01', Granularity::ALL);
 
         if  ($request->has('field')) {

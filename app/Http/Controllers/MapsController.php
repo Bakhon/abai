@@ -17,6 +17,7 @@ class MapsController extends Controller
 
     public function guMap()
     {
+
         $gus = \App\Models\Refs\Gu::query()
             ->whereHas('zuPipes')
             ->orWhereHas('wellPipes')
@@ -28,7 +29,7 @@ class MapsController extends Controller
         return view('maps.gu_map', compact('gus'));
     }
 
-    public function guPipes(Request $request)
+    public function guPipes(Request $request, \App\Services\DruidService $druidService)
     {
         $gus = \App\Models\Refs\Gu::all();
 
@@ -41,30 +42,25 @@ class MapsController extends Controller
                     if (!isset($coordinates[$pipe->gu_id])) {
                         $coordinates[$pipe->gu_id] = [];
                     }
+
+                    $coords = array_map(
+                        function ($coord) {
+                            return [
+                                round($coord[1], 6),
+                                round($coord[0], 6),
+                            ];
+                        },
+                        $pipe->coordinates
+                    );
+
                     $coordinates[$pipe->gu_id] = array_merge(
                         $coordinates[$pipe->gu_id],
-                        array_map(
-                            function ($coord) {
-                                return [
-                                    round($coord[1], 6),
-                                    round($coord[0], 6),
-                                ];
-                            },
-                            $pipe->coordinates
-                        )
+                        $coords
                     );
                     return [
                         'color' => [255, 0, 0],
                         'name' => (string)$pipe->id,
-                        'path' => array_map(
-                            function ($coord) {
-                                return [
-                                    round($coord[1], 6),
-                                    round($coord[0], 6),
-                                ];
-                            },
-                            $pipe->coordinates
-                        )
+                        'path' => $coords
                     ];
                 }
             );
@@ -77,30 +73,25 @@ class MapsController extends Controller
                     if (!isset($coordinates[$pipe->gu_id])) {
                         $coordinates[$pipe->gu_id] = [];
                     }
+
+                    $coords = array_map(
+                        function ($coord) {
+                            return [
+                                round($coord[1], 6),
+                                round($coord[0], 6),
+                            ];
+                        },
+                        $pipe->coordinates
+                    );
+
                     $coordinates[$pipe->gu_id] = array_merge(
                         $coordinates[$pipe->gu_id],
-                        array_map(
-                            function ($coord) {
-                                return [
-                                    round($coord[1], 6),
-                                    round($coord[0], 6),
-                                ];
-                            },
-                            $pipe->coordinates
-                        )
+                        $coords
                     );
                     return [
                         'color' => [0, 255, 0],
                         'name' => (string)$pipe->id,
-                        'path' => array_map(
-                            function ($coord) {
-                                return [
-                                    round($coord[1], 6),
-                                    round($coord[0], 6),
-                                ];
-                            },
-                            $pipe->coordinates
-                        )
+                        'path' => $coords
                     ];
                 }
             );
@@ -111,15 +102,23 @@ class MapsController extends Controller
 
         $center = $this->mapService->calculateCenterOfCoordinates($guCenters);
 
+
+        $wellOilInfo = $this->getWellOilInfo($druidService);
         $wellPoints = \App\Models\Refs\Well::query()
             ->whereHas('zu.gu')
             ->whereNotNull('wells.lat')
             ->whereNotNull('wells.lon')
             ->get()
             ->map(
-                function ($well) {
+                function ($well) use($wellOilInfo) {
+
+                    $name = 'Скважина: '.$well->name."\n";
+                    if(array_key_exists($well->name, $wellOilInfo)) {
+                        $name .= 'Добыча за 01.07.2020: ' . $wellOilInfo[$well->name] . "\n";
+                    }
+
                     return [
-                        'name' => $well->name,
+                        'name' => $name,
                         'coords' => [(float)$well->lon, (float)$well->lat],
                     ];
                 }
@@ -159,6 +158,15 @@ class MapsController extends Controller
             'guCenters' => $guCenters,
             'center' => $center,
         ];
+    }
+
+    private function getWellOilInfo($druidService)
+    {
+        $wellOil = $druidService->getWellOil();
+        foreach($wellOil as $row) {
+            $result[$row['uwi']] = $row['oil'];
+        }
+        return $result;
     }
 
 }
