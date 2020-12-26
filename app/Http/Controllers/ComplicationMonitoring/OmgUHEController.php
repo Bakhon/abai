@@ -37,7 +37,60 @@ class OmgUHEController extends CrudController
                 trans('monitoring.omguhe.fields.fact_data') => 6,
             ],
             'fields' => [
-                
+                'field' => [
+                    'title' => trans('monitoring.field'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Field::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'ngdu' => [
+                    'title' => trans('monitoring.ngdu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Ngdu::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
+                'cdng' => [
+                    'title' => trans('monitoring.cdng'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Cdng::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
                 'gu' => [
                     'title' => trans('monitoring.gu'),
                     'type' => 'select',
@@ -56,7 +109,24 @@ class OmgUHEController extends CrudController
                             ->toArray()
                     ]
                 ],
-                
+                'zu' => [
+                    'title' => trans('monitoring.zu'),
+                    'type' => 'select',
+                    'filter' => [
+                        'values' => \App\Models\Refs\Zu::whereHas('omguhe')
+                            ->orderBy('name', 'asc')
+                            ->get()
+                            ->map(
+                                function ($item) {
+                                    return [
+                                        'id' => $item->id,
+                                        'name' => $item->name,
+                                    ];
+                                }
+                            )
+                            ->toArray()
+                    ]
+                ],
                 'well' => [
                     'title' => trans('monitoring.well'),
                     'type' => 'select',
