@@ -12,12 +12,25 @@
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M9.48121 0C12.1145 0 14.3541 0.921826 16.1968 2.76547C18.0405 4.60814 18.9623 6.84756 18.9623 9.48078C18.9623 11.3244 18.4688 13.0032 17.4818 14.5182L24 21.0361L21.036 24L14.5178 17.4811C12.9376 18.4681 11.2588 18.9625 9.48121 18.9625C6.8469 18.9625 4.60936 18.0407 2.76563 16.1971C0.920925 14.3534 0 12.115 0 9.48078C0 6.84756 0.920925 4.60814 2.76563 2.76547C4.60936 0.921826 6.8469 0 9.48121 0ZM9.48121 4.24691C8.03229 4.24691 6.79752 4.75717 5.77696 5.77769C4.7564 6.79821 4.24614 8.0329 4.24614 9.48078C4.24614 10.9296 4.7564 12.1633 5.77696 13.1839C6.79752 14.2054 8.03229 14.7156 9.48121 14.7156C10.9291 14.7156 12.1638 14.2054 13.1844 13.1839C14.206 12.1633 14.7152 10.9296 14.7152 9.48078C14.7152 8.0329 14.206 6.79821 13.1844 5.77769C12.1638 4.75717 10.9291 4.24691 9.48121 4.24691Z"
-            fill="#9EA4C9"
-          />
+          <mask
+            id="mask0"
+            mask-type="alpha"
+            maskUnits="userSpaceOnUse"
+            x="3"
+            y="3"
+            width="18"
+            height="18"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M15.1867 14.4716H15.9767L20.2167 18.7316C20.6267 19.1416 20.6267 19.8116 20.2167 20.2216C19.8067 20.6316 19.1367 20.6316 18.7267 20.2216L14.4767 15.9716V15.1816L14.2067 14.9016C12.8067 16.1016 10.8967 16.7216 8.8667 16.3816C6.0867 15.9116 3.8667 13.5916 3.5267 10.7916C3.0067 6.56157 6.5667 3.00157 10.7967 3.52157C13.5967 3.86157 15.9167 6.08157 16.3867 8.86157C16.7267 10.8916 16.1067 12.8016 14.9067 14.2016L15.1867 14.4716ZM5.4767 9.97157C5.4767 12.4616 7.4867 14.4716 9.9767 14.4716C12.4667 14.4716 14.4767 12.4616 14.4767 9.97157C14.4767 7.48157 12.4667 5.47157 9.9767 5.47157C7.4867 5.47157 5.4767 7.48157 5.4767 9.97157Z"
+              fill="black"
+            />
+          </mask>
+          <g mask="url(#mask0)">
+            <rect width="24" height="24" fill="white" />
+          </g>
         </svg>
       </div>
       <input
@@ -28,7 +41,18 @@
         v-model="searchStringModel"
       />
     </div>
-
+    <div class="clear-button" v-if="clear" @click="clearClick">
+      <svg
+        version="1.1"
+        width="40"
+        height="40"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <line x1="7" y1="17" x2="17" y2="7" stroke="white" stroke-width="1" />
+        <line x1="7" y1="7" x2="17" y2="17" stroke="white" stroke-width="1" />
+      </svg>
+    </div>
     <button type="submit" class="input-submit-button">Поиск</button>
   </form>
 </template>
@@ -40,6 +64,11 @@ export default {
       type: String,
       required: false,
     },
+    clear: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
@@ -50,6 +79,11 @@ export default {
     search() {
       this.$emit("start-search");
     },
+    clearClick() {
+      this.searchStringModel= "";
+      this.$emit("input", "");
+      this.search();
+    },
     onInput({ target: { value } }) {
       this.$emit("input", value);
     },
@@ -58,6 +92,14 @@ export default {
 </script>
 
 <style scoped>
+.clear-button {
+  display: flex;
+  align-items: center;
+  background: #393d75;
+  width: 40px;
+  cursor: pointer;
+  justify-content: center;
+}
 .input-form-icon {
   position: absolute;
   top: 9px;
@@ -65,7 +107,7 @@ export default {
 }
 
 .input-group-F {
-  width: calc(100% - 120px);
+  min-width: 200px;
   position: relative;
 }
 
@@ -73,8 +115,8 @@ export default {
   color: white !important;
   background: #3366ff !important;
   border: none !important;
-  border-top-right-radius: 20px !important;
-  border-bottom-right-radius: 20px !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-right-radius: 5px !important;
   border-top-left-radius: 0 !important;
   border-bottom-left-radius: 0 !important;
   width: 120px;
@@ -101,8 +143,8 @@ export default {
 
 .form-control,
 .fix-rounded-right {
-  border-top-left-radius: 20px !important;
-  border-bottom-left-radius: 20px !important;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
   height: 40px !important;
   background: #393d75 !important;
   border: none !important;

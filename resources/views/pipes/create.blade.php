@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.monitor')
 
 @section('content')
     <div class="row" id="app">
@@ -10,7 +10,7 @@
                 </div>
             @endif
             <div class="x_panel">
-            <h1>Ввод данных по трубопроводу</h1>
+            <h1>{{ trans('monitoring.pipe.create_title') }}</h1>
             <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
                 <form action="{{ route('pipes.store') }}" method="POST">
                     @csrf

@@ -19,22 +19,22 @@ class OmgNGDUHistoryObserver extends EditHistoryObserver
 
         $history = [];
         $fields = [
-            'field_id' => 'Месторождение',
-            'ngdu_id' => 'НГДУ',
-            'cdng_id' => 'ЦДНГ',
-            'gu_id' => 'ГУ',
-            'zu_id' => 'ЗУ',
-            'well_id' => 'Скважина',
-            'date' => 'Дата и время',
-            'daily_fluid_production' => 'Суточная добыча жидкости в ГУ, м3/сут',
-            'surge_tank_pressure' => 'Давление в буферной емкости в ГУ, бар',
-            'pump_discharge_pressure' => 'Давление на выходе насоса в ГУ, бар',
-            'heater_inlet_pressure' => 'Температура на входе в печь в ГУ, С',
-            'daily_gas_production_in_sib' => 'Количество газа в СИБ, ст.м3/сут',
-            'bsw' => 'Обводненность в ГУ, %',
-            'daily_oil_production' => 'Суточная добыча нефти, т/сут',
-            'heater_output_pressure' => 'Температура на выходе из печи в ГУ, С',
-            'daily_water_production' => 'Суточная добыча воды, м3/сут',
+            'field_id' => 'monitoring.field',
+            'ngdu_id' => 'monitoring.ngdu',
+            'cdng_id' => 'monitoring.cdng',
+            'gu_id' => 'monitoring.gu',
+            'zu_id' => 'monitoring.zu',
+            'well_id' => 'monitoring.well',
+            'date' => 'app.date_time',
+            'daily_fluid_production' => 'monitoring.omgngdu.fields.daily_fluid_production',
+            'surge_tank_pressure' => 'monitoring.omgngdu.fields.surge_tank_pressure',
+            'pump_discharge_pressure' => 'monitoring.omgngdu.fields.pump_discharge_pressure',
+            'heater_inlet_pressure' => 'monitoring.omgngdu.fields.heater_inlet_pressure',
+            'daily_gas_production_in_sib' => 'monitoring.omgngdu.fields.daily_gas_production_in_sib',
+            'bsw' => 'monitoring.omgngdu.fields.bsw',
+            'daily_oil_production' => 'monitoring.omgngdu.fields.daily_oil_production',
+            'heater_output_pressure' => 'monitoring.omgngdu.fields.heater_output_pressure',
+            'daily_water_production' => 'monitoring.omgngdu.fields.daily_water_production',
         ];
 
         foreach ($fields as $field => $name) {

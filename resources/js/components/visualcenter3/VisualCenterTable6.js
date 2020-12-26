@@ -7,38 +7,14 @@ export default {
       t4:'',
       t5:'',
       t6:'',
-      t1Sum:'',
+      tSum:'',
       dateStart: '',
       dateEnd: '',
       isEnableSpeedometers: false,
+      mainTitle: '',
     };
   },
   methods: {
-    changeTable(change) {
-      this.Table1 = "display:none";
-      this.Table2 = "display:none";
-      this.Table3 = "display:none";
-      this.Table4 = "display:none";
-      this.Table5 = "display:none";
-      this.Table6 = "display:none";
-      this.Table7 = "display:none";
-
-      if (change === "1") {
-        this.Table1 = "display:block";
-      } else if (change === "2") {
-        this.Table2 = "display:block";
-      } else if (change === "3") {
-        this.Table3 = "display:block";
-      } else if (change === "4") {
-        this.Table4 = "display:block";
-      } else if (change === "5") {
-        this.Table5 = "display:block";
-      } else if (change === "6") {
-        this.Table6 = "display:block";
-      } else if (change === "7") {
-        this.Table7 = "display:block";
-      }
-    },
     getDefaultData() {
       this.axios
         .get('/ru/getdzocalcsactualmonth', {})
@@ -58,15 +34,15 @@ export default {
           if (response.data) {
             // console.log((month_number; porog; tsel; vyzov; fact; formula1; formula2))
             // console.log((company_id; date; otklonenie ot tseli; otklonenie ot tseli %; vlianie na uluchshenie-uhudshenie))
-            this.t1 = response.data['Abdulgafarov1'][0];
-            this.t2 = response.data['Abdulgafarov2'][0];
-            this.t3 = response.data['Abdulgafarov3'][0];
-            this.t4 = response.data['Abdulgafarov4'][0];
-            this.t5 = response.data['Abdulgafarov5'][0];
-            this.t1Sum = response.data['Abdulgafarov1'][0][6] +
-              response.data['Abdulgafarov2'][0][6] + response.data['Abdulgafarov3'][0][6] +
-              response.data['Abdulgafarov4'][0][6] + response.data['Abdulgafarov5'][0][6];
-            this.t6 = [1, 0, 1, 2, 1];
+            this.t1 = [1].concat(response.data['Abdulgafarov1'][0]);
+            this.t2 = [1].concat(response.data['Abdulgafarov2'][0]);
+            this.t3 = [1].concat(response.data['Abdulgafarov3'][0]);
+            this.t4 = [1].concat(response.data['Abdulgafarov4'][0]);
+            this.t5 = [1].concat(response.data['Abdulgafarov5'][0]);
+            this.tSum = response.data['Abdulgafarov1'][0][5] +
+              response.data['Abdulgafarov2'][0][5] + response.data['Abdulgafarov3'][0][5] +
+              response.data['Abdulgafarov4'][0][5] + response.data['Abdulgafarov5'][0][5];
+            this.t6 = [1, 0, 1, 2, 2, 0];
             this.isEnableSpeedometers = true;
           }
         });

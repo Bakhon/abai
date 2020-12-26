@@ -7,11 +7,11 @@
     font-weight: inherit;
     padding: 5px 15px;
     border-radius: 5px;
-    font-family: Roboto;
+    font-family: "Harmonia-sans";
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
-    background: #656A8A;
+    background: #333975;
     border: none!important;
     text-align: left!important;
     cursor: pointer;
@@ -23,9 +23,7 @@
 
 .trfa_page.trfa_page {
     padding: 0 !important;
-    width: calc(100vw - 65px);
     display: flex;
-    margin-left: 44px;
 }
 .trfa_page .level1-content  {
     margin: 0;
@@ -35,6 +33,6 @@
     padding: 0;
     margin: 0;
 }  
-a:hover {
+/* a:hover {
     color: #FFFFFF;
-}
+} */

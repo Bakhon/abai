@@ -1,0 +1,34 @@
+#sidebar-container2{
+  z-index: 9999;
+  .left-panel{
+    min-height: calc(100vh - 78px);
+    position: relative;
+
+    .dropdown-menu{
+      margin-left: 0;
+    }
+
+    .left-menu-li{
+      .dropdown-child{
+        background-color: #272953;
+        display: none;
+        left: 15px;
+        margin: 0;
+        padding: 10px!important;
+        ul{
+          padding-left: 10px;
+        }
+        .left-menu-li{
+          display: inline-block;
+          margin-left: 0;
+        }
+      }
+      &:hover{
+        .dropdown-child{
+          display: block;
+        }
+      }
+    }
+
+  }
+}

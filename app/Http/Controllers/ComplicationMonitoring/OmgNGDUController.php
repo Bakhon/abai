@@ -39,14 +39,14 @@ class OmgNGDUController extends CrudController
             'links' => [
                 'list' => route('omgngdu.list'),
             ],
-            'title' => 'База данных ОМГ НГДУ',
+            'title' => trans('monitoring.omgngdu.title'),
             'table_header' => [
-                'Узел отбора' => 6,
-                'Фактические данные ОМГ ЦА' => 10,
+                trans('monitoring.selection_node') => 6,
+                trans('monitoring.omgngdu.fields.fact_data') => 10,
             ],
             'fields' => [
                 'field' => [
-                    'title' => 'Месторождение',
+                    'title' => trans('monitoring.field'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Field::whereHas('omgngdu')
@@ -64,7 +64,7 @@ class OmgNGDUController extends CrudController
                     ]
                 ],
                 'ngdu' => [
-                    'title' => 'НГДУ',
+                    'title' => trans('monitoring.ngdu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Ngdu::whereHas('omgngdu')
@@ -82,7 +82,7 @@ class OmgNGDUController extends CrudController
                     ]
                 ],
                 'cdng' => [
-                    'title' => 'ЦДНГ',
+                    'title' => trans('monitoring.cdng'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Cdng::whereHas('omgngdu')
@@ -100,7 +100,7 @@ class OmgNGDUController extends CrudController
                     ]
                 ],
                 'gu' => [
-                    'title' => 'ГУ',
+                    'title' => trans('monitoring.gu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Gu::whereHas('omgngdu')
@@ -118,7 +118,7 @@ class OmgNGDUController extends CrudController
                     ]
                 ],
                 'zu' => [
-                    'title' => 'ЗУ',
+                    'title' => trans('monitoring.zu'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Zu::whereHas('omgngdu')
@@ -136,7 +136,7 @@ class OmgNGDUController extends CrudController
                     ]
                 ],
                 'well' => [
-                    'title' => 'Скважина',
+                    'title' => trans('monitoring.well'),
                     'type' => 'select',
                     'filter' => [
                         'values' => \App\Models\Refs\Well::whereHas('omgngdu')
@@ -154,43 +154,43 @@ class OmgNGDUController extends CrudController
                     ]
                 ],
                 'date' => [
-                    'title' => 'Дата',
+                    'title' => trans('app.date'),
                     'type' => 'date',
                 ],
                 'daily_fluid_production' => [
-                    'title' => 'Суточная добыча жидкости, м3/сут',
+                    'title' => trans('monitoring.omgngdu.fields.daily_fluid_production'),
                     'type' => 'numeric',
                 ],
                 'daily_water_production' => [
-                    'title' => 'Суточная добыча воды, м3/сут',
+                    'title' => trans('monitoring.omgngdu.fields.daily_water_production'),
                     'type' => 'numeric',
                 ],
                 'daily_oil_production' => [
-                    'title' => 'Суточная добыча нефти, т/сут',
+                    'title' => trans('monitoring.omgngdu.fields.daily_oil_production'),
                     'type' => 'numeric',
                 ],
                 'daily_gas_production_in_sib' => [
-                    'title' => 'Количество газа в СИБ, ст.м3/сут',
+                    'title' => trans('monitoring.omgngdu.fields.daily_gas_production_in_sib'),
                     'type' => 'numeric',
                 ],
                 'bsw' => [
-                    'title' => 'Обводненность, %',
+                    'title' => trans('monitoring.omgngdu.fields.bsw'),
                     'type' => 'numeric',
                 ],
                 'surge_tank_pressure' => [
-                    'title' => 'Давление в буферной емкости, бар',
+                    'title' => trans('monitoring.omgngdu.fields.surge_tank_pressure'),
                     'type' => 'numeric',
                 ],
                 'pump_discharge_pressure' => [
-                    'title' => 'Давление на выходе насоса, бар',
+                    'title' => trans('monitoring.omgngdu.fields.pump_discharge_pressure'),
                     'type' => 'numeric',
                 ],
                 'heater_inlet_pressure' => [
-                    'title' => 'Температура на входе в печь, С',
+                    'title' => trans('monitoring.omgngdu.fields.heater_inlet_pressure'),
                     'type' => 'numeric',
                 ],
                 'heater_output_pressure' => [
-                    'title' => 'Температура на выходе из печи, С',
+                    'title' => trans('monitoring.omgngdu.fields.heater_output_pressure'),
                     'type' => 'numeric',
                 ],
             ]

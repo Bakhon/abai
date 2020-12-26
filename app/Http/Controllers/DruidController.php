@@ -71,13 +71,6 @@ return $response;
 
     public function visualcenter3()
     {
-//$file = 'https://yandex.ru/news/quotes/graph_1006.json';
-//$file_name = 'D:/openserver/OpenServer/domains/localhost/public/js/json/graph_1006.json';
-//file_put_contents($file_name, file_get_contents($file));
-
-//Role::create(['name'=>'writer']);
-//$permission = Permission::create(['name'=>'writer post']);
-//auth()->user()->givePermissionTo('edit post');
         return view('visualcenter.visualcenter3');
     }
 
@@ -86,9 +79,10 @@ return $response;
 
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
         $period = ($request->timestampEnd-$request->timestampToday)-86400000;        
-        return response()->json(DZOdaily::all('oil_plan','oil_fact','gas_plan','gas_fact','__time',
+        return response()->json(DZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
+            'oil_plan','oil_fact','gas_plan','gas_fact','__time',
         'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
-        'inj_wells_work','gk_plan','gk_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
+        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
         //return  response()->json($request);
     }

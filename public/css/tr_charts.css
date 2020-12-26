@@ -1,8 +1,6 @@
 .trfa_page.trfa_page {
     padding: 0 !important;
-    width: calc(100vw - 65px);
     display: flex;
-    margin-left: 44px;
 }
 .trfa_page .level1-content  {
     margin: 0;

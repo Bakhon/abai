@@ -26,7 +26,7 @@ td.fitwidth {
     font-weight: inherit;
     padding: 5px 15px;
     border-radius: 5px;
-    font-family: Roboto;
+    font-family: "Harmonia-sans";
     font-style: normal;
     font-size: 17px;
     color: #FFFFFF;
@@ -123,6 +123,7 @@ table {
 
 .CellWithComment{
     position:relative;
+    
 }
 
 .cell-with-comment {
@@ -149,7 +150,7 @@ table {
     display: none;
     width: auto;
     position:absolute;
-    z-index:100;
+    z-index:3060;
     text-align: Left;
     opacity: 0.4;
     transition: opacity 2s;
@@ -164,7 +165,7 @@ table {
 }
 
 .tech{
-    font-family: "Roboto", sans-serif;
+    font-family: "Harmonia-sans", sans-serif;
     font-size: 2rem;
     font-weight: 400;
     line-height: 1.6;
@@ -174,9 +175,7 @@ table {
 
 .tr_page.tr_page {
     padding: 0 !important;
-    width: calc(100vw - 65px);
     display: flex;
-    margin-left: 30px;
 }
 .tr_page .level1-content  {
     margin: 0;
@@ -186,5 +185,3 @@ table {
     padding: 0;
     margin: 0;
 }  
-
-

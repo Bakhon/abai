@@ -1,20 +1,20 @@
 <template>
     <div class="col-xs-12 col-sm-12 col-md-12 row">
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>Прочие объекты</label>
+            <label>{{ trans('monitoring.other_objects') }}</label>
             <div class="form-label-group">
                 <select class="form-control" name="other_objects_id" v-model="formFields.other_objects_id"
                         v-show="otherObjects.length > 0">
                     <option v-for="row in otherObjects" v-bind:value="row.id">{{ row.name }}</option>
                 </select>
             </div>
-            <label>ГУ</label>
+            <label>{{ trans('monitoring.gu') }}</label>
             <div class="form-label-group">
                 <select class="form-control" name="gu_id" v-model="formFields.gu_id" @change="chooseGu()">
                     <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
                 </select>
             </div>
-            <label>Дата и время</label>
+            <label>{{ trans('app.date_time') }}</label>
             <div class="form-label-group">
                 <datetime
                     type="date"
@@ -34,7 +34,7 @@
                 <input type="hidden" name="date" v-model="formatedDate" class="form-control" placeholder="">
 
             </div>
-            <label>Вязкость нефти при 40С, мм2/с</label>
+            <label>{{ trans('monitoring.oil.fields.oil_viscosity_at_40') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.oil_viscosity_at_40"
@@ -47,7 +47,7 @@
                     placeholder=""
                 >
             </div>
-            <label>H2S в газе, ppm</label>
+            <label>{{ trans('monitoring.oil.fields.hydrogen_sulfide_in_gas') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.hydrogen_sulfide_in_gas"
@@ -60,7 +60,7 @@
                     placeholder=""
                 >
             </div>
-            <label>Плотность газа при 20°С, кг/м3</label>
+            <label>{{ trans('monitoring.oil.fields.gas_density_at_20') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.gas_density_at_20"
@@ -75,19 +75,19 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>НГДУ</label>
+            <label>{{ trans('monitoring.ngdu') }}</label>
             <div class="form-label-group">
                 <select class="form-control" name="ngdu_id" v-model="formFields.ngdu_id" @change="chooseNgdu($event)">
                     <option v-for="row in ngdus" v-bind:value="row.id">{{ row.name }}</option>
                 </select>
             </div>
-            <label>ЗУ</label>
+            <label>{{ trans('monitoring.zu') }}</label>
             <div class="form-label-group">
                 <select class="form-control" name="zu_id" v-model="formFields.zu_id" @change="chooseZu()">
                     <option v-for="row in zus" v-bind:value="row.id">{{ row.name }}</option>
                 </select>
             </div>
-            <label>Плотность нефти при 20°С, кг/м3 </label>
+            <label>{{ trans('monitoring.oil.fields.water_density_at_20') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.water_density_at_20"
@@ -100,7 +100,7 @@
                     placeholder=""
                 >
             </div>
-            <label>Вязкость нефти при 50С, мм2/с</label>
+            <label>{{ trans('monitoring.oil.fields.oil_viscosity_at_50') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.oil_viscosity_at_50"
@@ -113,7 +113,7 @@
                     placeholder=""
                 >
             </div>
-            <label>О2 в газе, %</label>
+            <label>{{ trans('monitoring.oil.fields.oxygen_in_gas') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.oxygen_in_gas"
@@ -126,7 +126,7 @@
                     placeholder=""
                 >
             </div>
-            <label>Вязкость газа при 20С, сП</label>
+            <label>{{ trans('monitoring.oil.fields.gas_viscosity_at_20') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.gas_viscosity_at_20"
@@ -141,19 +141,19 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-4 col-md-4">
-            <label>ЦДНГ</label>
+            <label>{{ trans('monitoring.cdng') }}</label>
             <div class="form-label-group">
                 <select class="form-control" name="cdng_id" v-model="formFields.cdng_id" @change="chooseCdng($event)">
                     <option v-for="row in cndgs" v-bind:value="row.id">{{ row.name }}</option>
                 </select>
             </div>
-            <label>Скважина</label>
+            <label>{{ trans('monitoring.well') }}</label>
             <div class="form-label-group">
                 <select class="form-control" name="well_id" v-model="formFields.well_id">
                     <option v-for="row in wells" v-bind:value="row.id">{{ row.name }}</option>
                 </select>
             </div>
-            <label>Вязкость нефти при 20С, мм2/с</label>
+            <label>{{ trans('monitoring.oil.fields.oil_viscosity_at_20') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.oil_viscosity_at_20"
@@ -166,7 +166,7 @@
                     placeholder=""
                 >
             </div>
-            <label>Вязкость нефти при 60С, мм2/с</label>
+            <label>{{ trans('monitoring.oil.fields.oil_viscosity_at_60') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.oil_viscosity_at_60"
@@ -179,7 +179,7 @@
                     placeholder=""
                 >
             </div>
-            <label>CO2 в газе, %</label>
+            <label>{{ trans('monitoring.oil.fields.carbon_dioxide_in_gas') }}</label>
             <div class="form-label-group">
                 <input
                     v-model="formFields.carbon_dioxide_in_gas"
@@ -194,7 +194,7 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" :disabled="!formFields.date" class="btn btn-success">Сохранить</button>
+            <button type="submit" :disabled="!formFields.date" class="btn btn-success">{{ trans('app.save') }}</button>
         </div>
     </div>
 </template>
@@ -256,7 +256,7 @@ export default {
         }
     },
     beforeCreate: function () {
-        this.axios.get("/ru/getotherobjects").then((response) => {
+        this.axios.get(this.localeUrl("/getotherobjects")).then((response) => {
             let data = response.data;
             if (data) {
                 this.otherObjects = data.data;
@@ -265,7 +265,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getngdu").then((response) => {
+        this.axios.get(this.localeUrl("/getngdu")).then((response) => {
             let data = response.data;
             if (data) {
                 this.ngdus = data.data;
@@ -274,7 +274,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getcdng").then((response) => {
+        this.axios.get(this.localeUrl("/getcdng")).then((response) => {
             let data = response.data;
             if (data) {
                 this.cndgs = data.data;
@@ -283,7 +283,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getwbs").then((response) => {
+        this.axios.get(this.localeUrl("/getwbs")).then((response) => {
             let data = response.data;
             if (data) {
                 this.wbs = data.data;
@@ -292,7 +292,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getsrb").then((response) => {
+        this.axios.get(this.localeUrl("/getsrb")).then((response) => {
             let data = response.data;
             if (data) {
                 this.srb = data.data;
@@ -301,7 +301,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/gethob").then((response) => {
+        this.axios.get(this.localeUrl("/gethob")).then((response) => {
             let data = response.data;
             if (data) {
                 this.hob = data.data;
@@ -310,7 +310,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/gethb").then((response) => {
+        this.axios.get(this.localeUrl("/gethb")).then((response) => {
             let data = response.data;
             if (data) {
                 this.hb = data.data;
@@ -319,7 +319,7 @@ export default {
             }
         });
 
-        this.axios.get("/ru/getallgus").then((response) => {
+        this.axios.get(this.localeUrl("/getallgus")).then((response) => {
             let data = response.data;
             if (data) {
                 this.gus = data.data;
@@ -369,7 +369,7 @@ export default {
     },
     methods: {
         chooseGu(init = false) {
-            this.axios.post("/ru/getzu", {
+            this.axios.post(this.localeUrl("/getzu"), {
                 gu_id: this.formFields.gu_id,
             }).then((response) => {
                 let data = response.data;
@@ -383,7 +383,7 @@ export default {
                 }
             });
 
-            this.axios.post("/ru/getgucdngngdufield", {
+            this.axios.post(this.localeUrl("/getgucdngngdufield"), {
                 gu_id: this.formFields.gu_id,
             }).then((response) => {
                 let data = response.data;
@@ -396,7 +396,7 @@ export default {
             });
         },
         chooseZu() {
-            this.axios.post("/ru/getwell", {
+            this.axios.post(this.localeUrl("/getwell"), {
                 zu_id: this.formFields.zu_id,
             }).then((response) => {
                 let data = response.data;

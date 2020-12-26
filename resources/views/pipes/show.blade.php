@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.monitor')
 
 @section('content')
     <div class="row">
@@ -10,42 +10,42 @@
                 </div>
             @endif
             <div class="container">
-                <h1>Просмотр карточки</h1>
+                <h1>{{ trans('monitoring.show_title') }}</h1>
                 <table class="table table-bordered">
                     <tr>
-                        <th><b>Наименование</b></th>
-                        <th><b>Значение</b></th>
+                        <th><b>{{ trans('app.param_name') }}</b></th>
+                        <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>ГУ</td>
+                        <td>{{ trans('monitoring.gu') }}</td>
                         <td>{{$pipe->gu->name}}</td>
                     </tr>
                     <tr>
-                        <td>Длина</td>
+                        <td>{{ trans('monitoring.pipe.fields.length') }}</td>
                         <td>{{ $pipe->length }}</td>
                     </tr>
                     <tr>
-                        <td>Внешний диаметр</td>
+                        <td>{{ trans('monitoring.pipe.fields.outside_diameter') }}</td>
                         <td>{{ $pipe->outside_diameter }}</td>
                     </tr>
                     <tr>
-                        <td>Внутренний диаметр</td>
+                        <td>{{ trans('monitoring.pipe.fields.inner_diameter') }}</td>
                         <td>{{ $pipe->inner_diameter }}</td>
                     </tr>
                     <tr>
-                        <td>Толщина стенок</td>
+                        <td>{{ trans('monitoring.pipe.fields.thickness') }}</td>
                         <td>{{ $pipe->thickness }}</td>
                     </tr>
                     <tr>
-                        <td>Жесткость</td>
+                        <td>{{ trans('monitoring.pipe.fields.roughness') }}</td>
                         <td>{{ $pipe->roughness }}</td>
                     </tr>
                     <tr>
-                        <td>Материал</td>
+                        <td>{{ trans('monitoring.pipe.fields.material') }}</td>
                         <td>{{ $pipe->material_id }}</td>
                     </tr>
                     <tr>
-                        <td>Участок</td>
+                        <td>{{ trans('monitoring.pipe.fields.plot') }}</td>
                         <td>{{ $pipe->plot }}</td>
                     </tr>
                 </table>

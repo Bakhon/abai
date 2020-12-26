@@ -2,6 +2,7 @@ export default {
   data: function () {
     return {
       dzoData: [],
+      macroData: [],
       fullCompanyNames: [
         {
           code: 'ОМГ',
@@ -41,11 +42,12 @@ export default {
   },
   methods: {
     refreshData() {
-      let uri = "/ru/getdzocalcs";
+      let uri = this.localeUrl("/getdzocalcs");
       let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart)
       let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd)
       let queryParams = {params: {'dateStart': dateStart, 'dateEnd': dateEnd}};
       this.dzoData = [];
+      this.macroData = [];
       if (this.dzoSelect !== 'ALL') {
         queryParams.params.dzo = this.dzoSelect;
       }
@@ -63,7 +65,9 @@ export default {
             ebitdaPlan = 0.00, ebitdaFact = 0.00, ebitdaFactPrevYear = 0.00, ebitdaPlan2020 = 0.00,
             netProfitPlan = 0.00, netProfitFact = 0.00, netProfitFactPrevYear = 0.00, netProfitPlan2020 = 0.00,
             capitalInvPlan = 0.00, capitalInvFact = 0.00, capitalInvFactPrevYear = 0.00, capitalInvPlan2020 = 0.00,
-            cashFlowPlan = 0.00, cashFlowFact = 0.00, cashFlowFactPrevYear = 0.00, cashFlowPlan2020 = 0.00;
+            cashFlowPlan = 0.00, cashFlowFact = 0.00, cashFlowFactPrevYear = 0.00, cashFlowPlan2020 = 0.00,
+            kursPlan = 0.00, kursFact = 0.00, kursPrevYear = 0.00, kursPlan2020 = 0.00,
+            oilPricePlan = 0.00, oilPriceFact = 0.00, oilPricePrevYear = 0.00, oilPricePlan2020 = 0.00;
 
           _.forEach(response.data['dzoDataActual'], (item) => {
             dataPlan += item.main_prc_val_plan;
@@ -96,6 +100,12 @@ export default {
             cashFlowPlan += item.cash_flow_val_plan;
             cashFlowFact += item.cash_flow_val_fact;
 
+            kursPlan = item.kurs_plan;
+            kursFact = item.kurs_fact;
+
+            oilPricePlan = item.oil_price_plan;
+            oilPriceFact = item.oil_price_fact;
+
             plan2020 = item.main_prc_plan_2020;
             spendingPlan2020 = item.spending_plan_2020;
             costPlan2020 = item.cost_plan_2020;
@@ -106,6 +116,8 @@ export default {
             netProfitPlan2020 = item.net_profit_plan_2020;
             capitalInvPlan2020 = item.capital_inv_plan_2020;
             cashFlowPlan2020 = item.cash_flow_plan_2020;
+            kursPlan2020 = item.kurs_plan_2020;
+            oilPricePlan2020 = item.oil_price_plan_2020;
           });
           _.forEach(response.data['dzoDataPrevYear'], (item) => {
             dataFactPrevYear += item.main_prc_val_fact;
@@ -118,6 +130,8 @@ export default {
             netProfitFactPrevYear += item.net_profit_val_fact;
             capitalInvFactPrevYear += item.capital_inv_val_fact;
             cashFlowFactPrevYear += item.cash_flow_val_fact;
+            kursPrevYear = item.kurs_fact;
+            oilPricePrevYear = item.oil_price_fact;
           });
           this.dzoData.push({
             title: 'Выручка от основной деятельности',
@@ -208,6 +222,22 @@ export default {
             dataFactPrevYear: cashFlowFactPrevYear,
             plan2020: cashFlowPlan2020,
             divider: 1000000,
+          });
+          this.macroData.push({
+            title: 'Обменный курс',
+            units: 'Тенге/$',
+            dataPlan: kursPlan,
+            dataFact: kursFact,
+            dataFactPrevYear: kursPrevYear,
+            plan2020: kursPlan2020,
+          });
+          this.macroData.push({
+            title: 'Цена Brent',
+            units: '$/баррель',
+            dataPlan: oilPricePlan,
+            dataFact: oilPriceFact,
+            dataFactPrevYear: oilPricePrevYear,
+            plan2020: oilPricePlan2020,
           });
           this.dzoData = this.dzoData.map((item) => {
             return {

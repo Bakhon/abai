@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="background: #0D1E63;">
+    <table class="table table-bordered table-dark table-responsive trkrtableborderedtabledarktableresponsive" style="background: #0D1E63; margin-bottom: 0;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
                 <td rowspan="4" class="th" style="background: #333975;">№ скв</td>
@@ -505,10 +505,6 @@ tr:nth-child(even) {
     padding: unset;
 }
 
-.table {
-    overflow: scroll;
-    height: calc(100vh - 247px);
-}
 .table .th {
     position: sticky;
     background: rgb(51, 57, 117);
@@ -521,11 +517,11 @@ tr:nth-child(even) {
     z-index: 3010;
 }
 .table tr:nth-child(2) .th {
-    top: 24px;
+    top: 23px;
     z-index: 3000;
 }
 .table tr:nth-child(3) .th {
-    top: 49px;
+    top: 47px;
     z-index: 3000;
 }
 .table tr:nth-child(4) .th {
@@ -533,11 +529,9 @@ tr:nth-child(even) {
     z-index: 3000;
 }
 .table tr:nth-child(5) .th {
-    top: 98px;
+    top: 92px;
     z-index: 3000;
 }
-
-
 
 
 .trtablerow {
@@ -548,6 +542,7 @@ tr td:first-child {
   position: sticky;
   left: -1px;
   width: 100px;
+  z-index: 3009;
 }
 
 tr:nth-child(odd) .fixcol:first-child {

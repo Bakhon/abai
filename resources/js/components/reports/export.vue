@@ -1,8 +1,6 @@
 <template>
   <div class="export-wrapper">
-    <div class="export-loader" v-if="loading">
-      <fade-loader :loading="loading"></fade-loader>
-    </div>
+    <cat-loader v-show="loading"/>
     <div class="col-xs-12 col-sm-12 col-md-12 row">
       <div class="col-xs-12 col-sm-4 col-md-4 mb-4">
         <label>Выберите разделы</label>
@@ -82,12 +80,12 @@
 </template>
 <script>
 import moment from 'moment'
-import FadeLoader from 'vue-spinner/src/FadeLoader.vue'
+import CatLoader from '../ui-kit/CatLoader'
 
 export default {
   name: 'report-export',
   components: {
-    FadeLoader
+    CatLoader
   },
   data() {
     return {

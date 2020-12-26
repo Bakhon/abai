@@ -36,7 +36,10 @@
           >
         </div>
       </div>
-      <div class="row sec_nav trfacolmdrowsecnav">
+      <div
+        class="row sec_nav trfacolmdrowsecnav"
+        style="display: flex; justify-content: center"
+      >
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -52,7 +55,7 @@
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
               class="dropdown-item"
-              style="background: #656a8a !important; color: #fff"
+              style="background: #5973cc !important; color: #fff"
               v-for="(item, index) in chartNames"
               :key="item"
               href="#"
@@ -76,7 +79,7 @@
 
           <div
             class="dropdown-menu"
-            style="background: #656a8a !important"
+            style="background: #5973cc !important"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -85,8 +88,8 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #656a8a !important;
-                  border-color: #656a8a !important;
+                  background-color: #5973cc !important;
+                  border-color: #5973cc !important;
 
                   color: white;
                 "
@@ -113,8 +116,8 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #656a8a !important;
-                  border-color: #656a8a !important;
+                  background-color: #5973cc !important;
+                  border-color: #5973cc !important;
 
                   color: white;
                 "
@@ -144,7 +147,10 @@
       </div>
       <div class="sec_nav">
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4> -->
-        <div class="filter_chart row" style=" display: flex;justify-content: center;">
+        <div
+          class="filter_chart row"
+          style="display: flex; justify-content: center"
+        >
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
@@ -178,10 +184,10 @@
             </select>
           </div>
         </div>
-        <div class="fadee tr-chart__loader" v-if="isLoading">
+        <!-- <div class="fadee tr-chart__loader" v-if="isLoading">
           <fade-loader :loading="isLoading"></fade-loader>
-        </div>
-        <div class="" v-else>
+        </div> -->
+        <div class="">
           <div class="second_block">
             <apexchart
               v-if="chartData"
@@ -192,18 +198,18 @@
         </div>
       </div>
     </div>
-    <big-numbers :list="filteredWells" :isLoading="isLoading" />
+    <big-numbers :list="filteredWells" />
   </div>
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
-import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+// import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import BigNumbers from "./BigNumbers.vue";
 
 export default {
   name: "TrCharts",
   components: {
-    FadeLoader,
+    // FadeLoader,
     BigNumbers,
   },
   computed: {
@@ -285,7 +291,7 @@ export default {
   data: function () {
     return {
       chartShow: 0,
-      isLoading: true,
+      // isLoading: true,
       chartWells: [],
       filteredWells: [],
       sortType: "asc",
@@ -328,6 +334,7 @@ export default {
           zoom: {
             enabled: true,
           },
+          fontFamily: "Harmonia-sans, Helvetica, Arial, sans-serif",
         },
         plotOptions: {
           bar: {
@@ -365,7 +372,7 @@ export default {
             hideOverlappingLabels: true,
             rotate: -45,
             style: {
-              colors: "#008FFB",
+              colors: "#5FA7FF",
             },
           },
           categories: [],
@@ -410,7 +417,7 @@ export default {
         offsetY: 18,
         style: {
           fontSize: "14px",
-          color: "#008FFB",
+          color: "#5FA7FF",
         },
       },
       subtitleBase: {
@@ -418,8 +425,8 @@ export default {
         offsetY: 36,
         style: {
           fontSize: "14px",
-          color: "#008FFB",
-          fontWeight: 900,
+          color: "#5FA7FF",
+          fontWeight: 700,
         },
       },
       yaxisBase: {
@@ -428,7 +435,7 @@ export default {
         },
         labels: {
           style: {
-            colors: "#008FFB",
+            colors: "#5FA7FF",
           },
         },
         axisTicks: {
@@ -437,7 +444,7 @@ export default {
         title: {
           text: "Дебит нефти [т/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         decimalsInFloat: 2,
@@ -463,7 +470,6 @@ export default {
   },
   methods: {
     async calcChartData() {
-      this.isLoading = true;
       if (this.chartWells && this.chartWells.length > 0) {
         let field = this.chartFilter_field;
         let horizon = this.chartFilter_horizon;
@@ -481,16 +487,13 @@ export default {
           this.chartData = await this[`setDataChart${this.chartShow}`](
             filteredResult
           );
-          this.isLoading = false;
         } catch (err) {
           console.error(err);
           this.chartData = false;
-          this.isLoading = false;
         }
         //return false;
       } else {
         this.chartData = false;
-        this.isLoading = false;
       }
     },
     setDataChart0(filteredResult) {
@@ -529,7 +532,7 @@ export default {
       const stroke = {
         show: true,
         width: [5, 1, 1],
-        colors: ["#008ffb", "#27295300", "#27295300"],
+        colors: ["#5FA7FF", "#27295300", "#27295300"],
       };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -537,7 +540,7 @@ export default {
         title: {
           text: "Измеренная глубина [м]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         max: maxY1,
@@ -630,7 +633,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -661,7 +667,7 @@ export default {
             rotate: 90,
             text: "Давление [атм]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -759,7 +765,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -771,13 +780,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -789,7 +798,7 @@ export default {
             rotate: 90,
             text: "Обводненность [%]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -880,7 +889,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -892,13 +904,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -910,7 +922,7 @@ export default {
             rotate: 90,
             text: "ГФ [м3/т]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -1004,7 +1016,10 @@ export default {
       });
       const xaxis = { ...this.chartBarOptions.xaxis, categories };
       const stacked = true;
-      const stroke = { show: false };
+      const stroke = {
+        show: false,
+        width: [1, 1, 1],
+      };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = [
         {
@@ -1013,7 +1028,7 @@ export default {
           title: {
             text: "Дебит жидкости [м3/сут]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           tooltip: {
@@ -1023,13 +1038,13 @@ export default {
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
         },
         {
-        ...this.yaxisBase,
+          ...this.yaxisBase,
           show: false,
           max: maxY1,
           min: minY1,
@@ -1041,7 +1056,7 @@ export default {
             rotate: 90,
             text: "Давление [атм]",
             style: {
-              color: "#008FFB",
+              color: "#5FA7FF",
             },
           },
           max: maxY2,
@@ -1118,7 +1133,7 @@ export default {
         title: {
           text: "Дебит нефти [т.сут] | Дебит жидкости [м3/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
         // max: maxY2,
@@ -1127,6 +1142,10 @@ export default {
       const title = {
         ...this.titleBase,
         text: this.titleText,
+      };
+      const stroke = {
+        show: false,
+        width: [1, 1],
       };
       const subtitle = {
         ...this.subtitleBase,
@@ -1138,6 +1157,7 @@ export default {
         xaxis,
         yaxis,
         chart,
+        stroke,
         markers: this.markersBase,
         fill: this.fillBase,
         title,
@@ -1208,7 +1228,7 @@ export default {
         title: {
           text: "Коэффициент продуктивности [м3/сут/атм]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1220,11 +1240,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1262,11 +1286,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1300,7 +1328,7 @@ export default {
         title: {
           text: "Обводненность [%]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1312,11 +1340,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1350,7 +1382,7 @@ export default {
         title: {
           text: "Дебит жидкости [м3/сут]",
           style: {
-            color: "#008FFB",
+            color: "#5FA7FF",
           },
         },
       };
@@ -1362,11 +1394,15 @@ export default {
         ...this.subtitleBase,
         text: this.subtitleText,
       };
-
+      const stroke = {
+        show: false,
+        width: [1],
+      };
       this.chartBarOptions = {
         ...this.chartBarOptions,
         xaxis,
         yaxis,
+        stroke,
         fill: this.fillBase,
         title,
         subtitle,
@@ -1392,7 +1428,8 @@ export default {
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt() {
-      this.isLoading = true;
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isLoading = true;
       this.$store.commit("tr/SET_MONTH", this.month);
       this.$store.commit("tr/SET_YEAR", this.selectYear);
       if (this.month < 10) {
@@ -1411,6 +1448,8 @@ export default {
         .then((response) => {
           // this.editdtm = choosenDt[1];
           // this.editdty = choosenDt[0];
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isLoading = false;
           let data = response.data;
           if (data) {
             this.fullWells = data.data;
@@ -1428,7 +1467,8 @@ export default {
     },
   },
   created() {
-    this.isLoading = true;
+    this.$store.commit("globalloading/SET_LOADING", true);
+    // this.isLoading = true;
     if (this.$store.getters["tr/chart"])
       this.chartShow = this.$store.getters["tr/chart"];
     let mm, yyyy;
@@ -1454,7 +1494,8 @@ export default {
           "/"
       )
       .then((response) => {
-        this.isLoading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isLoading = false;
         let data = response.data;
         this.editdtm = mm;
         this.editdty = yyyy;
@@ -1471,7 +1512,8 @@ export default {
         }
       })
       .catch((e) => {
-        this.isLoading = false;
+        this.$store.commit("globalloading/SET_LOADING", false);
+        // this.isLoading = false;
       });
   },
 };
@@ -1495,11 +1537,6 @@ export default {
   margin: 0 20px;
   width: 195px;
 }
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
-}
 body {
   color: white !important;
 }
@@ -1507,16 +1544,11 @@ body {
   margin-left: 57px;
 }
 .trfacolmdrowsecnav {
-  margin-bottom: 7px;
-  margin-top: 7px;
-  margin-left: 1px;
+  margin-bottom: 13px;
+  margin-top: 13px;
 }
 .trfacolbutnavlinkbut {
   margin-left: 28px;
-}
-.trfabtdata {
-  margin-left: 864px;
-  background: #5973cc !important;
 }
 .trfabtgraph {
   width: 195px;
@@ -1537,28 +1569,26 @@ body {
   margin: 0;
 }
 .second_block {
-  height: calc(100vh - 355px);
-  width: calc(1.6 * (100vh - 355px));
+  height: calc(100vh - 374px);
+  width: calc(1.6 * (100vh - 365px));
   max-width: calc(100vw - 440px);
+  min-width: 800px;
+  min-height: 633px;
   margin: 0 auto;
 }
 .droptr.droptr {
-  background: #656a8a;
+  background: #5973cc;
+  padding: 0px;
 }
 
 a:hover {
-    color: #FFFFFF;
+  color: #ffffff;
 }
 </style>
 <style scoped>
 .tr-chart {
   display: flex;
   width: 100%;
-}
-.tr-chart__loader {
-  margin: 50px auto;
-  width: 1px;
-  height: 78px;
 }
 .tr-chart__content {
   flex-basis: 0;
@@ -1567,7 +1597,6 @@ a:hover {
 }
 .fadropmenu .fadropmenu {
   background: #656a8a;
-  /* color: #ffffff; */
   width: 246px;
 }
 .form-control {
@@ -1578,5 +1607,11 @@ a:hover {
 }
 </style>
 
-
+<style >
+.tr-chart__loader {
+  margin: 50px auto;
+  width: 1px;
+  height: 78px;
+}
+</style>
 

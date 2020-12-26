@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.tr')
 @section('content')
     <div class="col p-4 fa_page" id="app">
         <a href="{{url('/')}}/ru/export" class="float-right">
@@ -10,9 +10,11 @@
 
             </div>
         </div>
+        <cat-loader />
     </div>
 @endsection
 <link href="{{ asset('css/fa.css')}}" rel="stylesheet">
+<link href="{{ asset('css/tr_unit.css')}}" rel="stylesheet">
 <style>
     .p-4{
         background-color: #0F1430;
