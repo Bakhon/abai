@@ -1,9 +1,9 @@
-const text_forms = [
+const textForms = [
     'месторождение',
     'месторождения',
     'месторождений',
 ]
-exports.declOfNum = (n) => {  
+exports.declOfNum = (n, text_forms = textForms) => {  
     n = Math.abs(n) % 100; var n1 = n % 10;
     if (n > 10 && n < 20) { return text_forms[2]; }
     if (n1 > 1 && n1 < 5) { return text_forms[1]; }

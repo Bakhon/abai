@@ -105,61 +105,11 @@
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
       <h3 style="margin-left: 14px">Факторный анализ</h3>
-      <!-- <select
-        name="Company"
-        class="form-control tr-field-filter"
-        id="companySelect"
-        v-model="filter"
-        @change="chooseField"
-      >
-        <option value="Все месторождения">Все месторождения</option>
-        <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-        <option value="Акшабулак Южный">Акшабулак Южный</option>
-        <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-        <option value="Нуралы">Нуралы</option>
-        <option value="Аксай">Аксай</option>
-        <option value="Аксай Южный">Аксай Южный</option>
-      </select> -->
-      <multiselect
-        v-model="filter"
-        :options="fieldFilterOptions"
-        :multiple="true"
-        :searchable="false"
-        :closeOnSelect="false"
-        select-label=""
-        deselect-label=""
-        select-group-label=""
-        deselect-group-label=""
-        selected-label=""
-        group-values="fields"
-        group-label="group"
-        :group-select="true"
-        :limit="1"
-        :limit-text="() => ''"
-        placeholder="Выберите месторождения"
-      >
-        <div
-          class="multiselect__option__item"
-          slot="option"
-          slot-scope="scope"
-          @click.self="select(scope.option)"
-        >
-          <div class="multiselect__option__checkbox">
-            <img
-              src="/img/check.svg"
-              class="multiselect__option__checkbox__check"
-            />
-          </div>
-          <span>{{
-            scope.option.$groupLabel ? scope.option.$groupLabel : scope.option
-          }}</span>
-        </div>
-        <template slot="tag"
-          ><span class="option__desc">{{
-            getFieldFilterTest()
-          }}</span></template
-        >
-      </multiselect>
+      <tr-multiselect
+        :fieldFilterOptions="fieldFilterOptions"
+        @change-filter="handlerFilter"
+        filterName="месторождения"
+      />
       <a
         class="but-nav__link but"
         href="trfa"
@@ -945,9 +895,8 @@ import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
-import Multiselect from "vue-multiselect";
 import { fields } from "./constants.js";
-import { declOfNum } from "./helpers.js";
+import TrMultiselect from "./TrMultiselect.vue";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
@@ -955,7 +904,7 @@ export default {
   components: {
     // FadeLoader,
     SearchFormRefresh,
-    Multiselect,
+    TrMultiselect,
   },
   data: function () {
     return {
@@ -1101,11 +1050,6 @@ export default {
     },
   },
   methods: {
-    getFieldFilterTest() {
-      return fields.length === this.filter.length
-        ? "Выбраны все месторождения"
-        : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length)}`;
-    },
     sortBy(type) {
       this.sortParam = type;
       this.$store.commit("fa/SET_SORTTYPE", this.sortType);
@@ -1273,6 +1217,9 @@ export default {
     },
     handlerSearch(search) {
       this.searchString = search;
+    },
+    handlerFilter(filter) {
+      this.filter = filter;
     },
     searchWell() {
       this.$store.commit("globalloading/SET_LOADING", true);

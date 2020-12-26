@@ -261,48 +261,11 @@
             <option value="Аксай">Аксай</option>
             <option value="Аксай Южный">Аксай Южный</option>
           </select> -->
-          <multiselect
-            v-model="filter"
-            :options="fieldFilterOptions"
-            :multiple="true"
-            :searchable="false"
-            :closeOnSelect="false"
-            select-label=""
-            deselect-label=""
-            select-group-label=""
-            deselect-group-label=""
-            selected-label=""
-            group-values="fields"
-            group-label="group"
-            :group-select="true"
-            :limit="1"
-            :limit-text="() => ''"
-            placeholder="Выберите месторождения"
-          >
-            <div
-              class="multiselect__option__item"
-              slot="option"
-              slot-scope="scope"
-              @click.self="select(scope.option)"
-            >
-              <div class="multiselect__option__checkbox">
-                <img
-                  src="/img/check.svg"
-                  class="multiselect__option__checkbox__check"
-                />
-              </div>
-              <span>{{
-                scope.option.$groupLabel
-                  ? scope.option.$groupLabel
-                  : scope.option
-              }}</span>
-            </div>
-            <template slot="tag"
-              ><span class="option__desc">{{
-                getFieldFilterTest()
-              }}</span></template
-            >
-          </multiselect>
+          <tr-multiselect
+            :fieldFilterOptions="fieldFilterOptions"
+            @change-filter="handlerFilter"
+            filterName="месторождения"
+          />
           <div
             @click="cancelEdit"
             v-if="edit"
@@ -6624,10 +6587,9 @@
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
-import Multiselect from "vue-multiselect";
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import { fields } from "./constants.js";
-import { declOfNum } from "./helpers.js";
+import TrMultiselect from "./TrMultiselect.vue";
 
 export default {
   name: "TrPage",
@@ -6635,7 +6597,7 @@ export default {
     TrTable,
     TrFullTable,
     SearchFormRefresh,
-    Multiselect,
+    TrMultiselect,
     // FadeLoader,
   },
   beforeCreate: function () {},
@@ -6713,11 +6675,6 @@ export default {
     },
   },
   methods: {
-    getFieldFilterTest() {
-      return fields.length === this.filter.length
-        ? "Выбраны все месторождения"
-        : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length)}`;
-    },
     editrow(row, rowId) {
       console.log("row = ", row);
       console.log("rowId = ", rowId);
@@ -6929,6 +6886,9 @@ export default {
     handlerSearch(search) {
       this.searchString = search;
     },
+    handlerFilter(filter) {
+      this.filter = filter;
+    },
     searchWell() {
       console.log("search = ", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "");
@@ -6975,7 +6935,6 @@ export default {
   },
 };
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 /* @import "element-variables"; */
 body {
