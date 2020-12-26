@@ -11,7 +11,7 @@
     </svg>
 @endsection
 @section('module_title', 'Прототип БД')
-@section('sidebar_menu')
+@section('sidebar_menu_additional')
     @include('partials.sidebar.bigdata_menu')
 @endsection
 @section('content')
