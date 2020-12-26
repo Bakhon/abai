@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use Adldap\Laravel\Events\Authenticated;
+use Adldap\Laravel\Events\AuthenticationSuccessful;
 
 class UserLogged
 {
@@ -19,10 +19,15 @@ class UserLogged
     /**
      * Handle the event.
      *
-     * @param Authenticated $event
+     * @param AuthenticationSuccessful $event
      */
-    public function handle(Authenticated $event)
+    public function handle(AuthenticationSuccessful $event)
     {
-        //dd($event->user);
+        $base64 = 'data:image/jpeg;base64,' . base64_encode($event->user->thumbnailphoto[0]);
+
+        $event->model->thumb = $base64;
+        $event->model->last_authorized_at = \Carbon\Carbon::now();
+        $event->model->save();
+
     }
 }

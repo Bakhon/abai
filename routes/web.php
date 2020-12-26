@@ -153,6 +153,8 @@ Route::group(
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
+
+                Route::get('profile', 'UserController@profile')->name('profile');
             }
         );
         Auth::routes(
