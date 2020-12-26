@@ -45,60 +45,7 @@ class OmgNGDUController extends CrudController
                 trans('monitoring.omgngdu.fields.fact_data') => 10,
             ],
             'fields' => [
-                'field' => [
-                    'title' => trans('monitoring.field'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Field::whereHas('omgngdu')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'ngdu' => [
-                    'title' => trans('monitoring.ngdu'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Ngdu::whereHas('omgngdu')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'cdng' => [
-                    'title' => trans('monitoring.cdng'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Cdng::whereHas('omgngdu')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
+                
                 'gu' => [
                     'title' => trans('monitoring.gu'),
                     'type' => 'select',
@@ -117,24 +64,7 @@ class OmgNGDUController extends CrudController
                             ->toArray()
                     ]
                 ],
-                'zu' => [
-                    'title' => trans('monitoring.zu'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Zu::whereHas('omgngdu')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
+                
                 'well' => [
                     'title' => trans('monitoring.well'),
                     'type' => 'select',
