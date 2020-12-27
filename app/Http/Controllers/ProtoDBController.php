@@ -11,10 +11,8 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ProtoDBController extends Controller
 {
-    public function getProtoOtchet1(Request $request)
+    public function getProtoOtchet1(Request $request, DruidClient $client)
     {
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-
         $builder = $client->query('month_meter_prod_oil_v03', Granularity::MONTH);
 
         if ($request->has('org') && $request->has('start_date') && $request->has('end_date')) {

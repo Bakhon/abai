@@ -15,7 +15,7 @@
         <a
           href="fa"
           class="col but-nav__link but trheadhight"
-          style="min-width:330px;"
+          style="min-width:330px; line-height: 31px;"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -35,7 +35,7 @@
                     <label for="inputDate">Введите дату:</label>
                     <input type="date" value = "01.06.2020" class="form-control" v-model="dt">
             </form> -->
-        <div class="col dropdown">
+        <div class="col dropdown" style="padding: 0 13px;">
           <button
             class="col-md-12 but-nav__link but faheadhight"
             type="button"
@@ -180,7 +180,7 @@
           @click="editable()"
           v-if="!edit"
           class="col but-nav__link but trheadhight"
-          style="margin-right: 15px"
+          style="margin-right: 13px; line-height: 31px;"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -200,7 +200,7 @@
         <a
           @click="savetable()"
           v-if="edit"
-          style="margin-right: 15px"
+          style="margin-right: 15px; line-height: 31px;"
           class="col but-nav__link but trheadhight"
           >Сохранить</a
         >
@@ -243,9 +243,9 @@
         </div> -->
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px;; color: white">
-            <h3 >
+            <h5 >
               Технологический режим на {{ dt }}
-            </h3>
+            </h5>
           </div>
           <select
             name="Company"
@@ -355,8 +355,9 @@
             <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             <table
               v-if="show_second"
-              class="table table-bordered table-dark table-responsive ce trtable"
+              class="table table-bordered table-dark table-responsive trtable"
               style="
+                margin-bottom: 0;
                 background: #0d1e63;
               "
             >
@@ -527,7 +528,7 @@
                   <td class="colspan th" colspan="2">
                     <span>Изменения к режиму</span>
                   </td>
-                  <td rowspan="3">
+                  <td rowspan="3" class="th">
                     <span>Мероприятия по обеспечению техрежима</span>
                   </td>
                 </tr>
@@ -6984,6 +6985,7 @@ tr:nth-child(even) {
 .trcolmd12 {
   margin: 0;
   padding: 0;
+  margin-bottom: 13px;
 }
 .fadee {
   flex: 0 1 auto;
@@ -7017,7 +7019,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 205px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;

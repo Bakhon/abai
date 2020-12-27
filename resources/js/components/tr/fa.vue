@@ -2,7 +2,7 @@
   <div class="w-100">
     <div
       class="row justify-content-between farowjustcontbet"
-      style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px"
+      style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; line-height: 31px;"
     >
       <a href="tr" class="col but-nav__link but faheadhight"
         ><i style="margin-right: 10px"
@@ -21,7 +21,7 @@
         Технологический режим</a
       >
 
-      <div class="col dropdown" style="padding: 0px; margin: 0 20px">
+      <div class="col dropdown" style="padding: 0px; margin: 0 13px">
         <button
           class="col-md-12 but-nav__link but faheadhight"
           href="#"
@@ -104,7 +104,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 14px">Факторный анализ</h3>
+      <h5 style="margin-left: 14px">Факторный анализ</h5>
       <select
         name="Company"
         class="form-control tr-field-filter"
@@ -145,9 +145,10 @@
         <fade-loader :loading="isloading"></fade-loader>
       </div> -->
       <table
-        class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
+        class="table table-bordered table-dark table-responsive fakrtableborderedtable"
         style="
           background: #0d1e63;
+          margin-bottom: 0;
         "
       >
         <tr class="headerColumn">
@@ -1387,14 +1388,13 @@ body {
 }
 
 .farowjustcontbet {
-
-  box-sizing: border box;
-
+    box-sizing: border box;
   padding-right: 0;
   margin-right: 0;
   margin-left: 0;
   padding-left: 0;
   display: flex;
+  margin-bottom: 13px;
 }
 
 .fasearch {
@@ -1408,19 +1408,19 @@ body {
 
 .table {
   overflow: scroll;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 205px);
 }
 .table tr:nth-child(-n+4) td {
   position: sticky;
   background: rgb(51, 57, 117);
-  top: 79px;
+  top: 75px;
   z-index: 3000;
 }
 .table tr:first-child td {
   top: -1;
 }
 .table tr:nth-child(2) td {
-  top: 39px;
+  top: 37px;
 }
 .table tr:nth-child(3) td {
   top: 38px;

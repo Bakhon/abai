@@ -18,8 +18,12 @@ src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 @import "~@fortawesome/fontawesome-free/scss/solid";
 @import "~@fortawesome/fontawesome-free/scss/brands";
 
+@import 'includes/layout';
 @import 'includes/navbar';
 @import 'includes/sidebar';
+@import 'includes/profile';
 @import 'components/vSelect';
+@import 'components/modal';
 
 @import 'modules/monitoring';
+@import 'modules/bigdata';

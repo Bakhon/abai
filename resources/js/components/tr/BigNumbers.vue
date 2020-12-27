@@ -113,7 +113,7 @@ export default {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  margin-left: 5px;
+  margin-left: 13px;
   box-sizing: border-box;
 }
 .big-numbers__list :first-child {
@@ -125,7 +125,7 @@ export default {
 .big-numbers__item {
   padding: 30px 20px;
   background: #272953;
-  margin: 7px 0 7px 10px;
+  margin: 13px 0;
 }
 .big-numbers__name {
   font-size: 17px;
