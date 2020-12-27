@@ -226,9 +226,10 @@
                 <div class="txt1">Курс доллара</div>
                 <br />
                 <div class="percent-currency">
-                  <div class="arrow"></div>
-                  <div class="txt2">5,2%</div>
-                  <div class="txt3">vs сентябрь</div>
+                  <div class="arrow" v-if="dailyCurrencyChangeIndexUsd === 'UP'"></div>
+                  <div class="arrow2" v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"></div>
+                  <div class="txt2">{{ dailyCurrencyChangeUsd }}%</div>
+                  <div class="txt3">vs вчера</div>
                 </div>
               </td>
             </tr>
@@ -878,7 +879,7 @@
             <div
               @click="selectedDMY = menuDMY.id"
               class="period"
-              v-for="(menuDMY, index) in periodSelectFunc()"
+              v-for="(menuDMY, index) in periodSelectFunc"
               :style="{
                 color: menuDMY.current,
               }"
@@ -891,27 +892,13 @@
         </div>
       </div>
 
-      <div class="third-table big-area" :style="`${Table3}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">
-            <br />
-
-            <div
-              @click="selectedDMY2 = menuDMY.id"
-              class="period"
-              v-for="(menuDMY, index) in periodSelectFunc()"
-              :style="{
-                color: menuDMY.current2,
-              }"
-              v-on:click="periodSelectUSD"
-            >
-              <div>{{ menuDMY.DMY }}</div>
-            </div>
-            <visual-center-chart-area-usd3></visual-center-chart-area-usd3>
-          </div>
-        </div>
-      </div>
+      <visual-center-third-table
+          :table-3.sync="Table3"
+          :selected-DMY-2.sync="selectedDMY2"
+          :period-select-USD.sync="periodSelectUSD"
+          :period-select-func.sync="periodSelectFunc"
+          :currency-chart-data.sync="currencyChartData"
+          @change-table="changeTable('1')"/>
 
       <div class="third-table big-area" :style="`${Table5}`">
         <div class="first-string first-string2">

@@ -217,6 +217,7 @@ return $response;
             }
         }
     }
+
     public function mzdn()
     {
         return view('reports.mzdn');
@@ -264,6 +265,8 @@ return $response;
                         $array[$i] =  array(
                             "dates" => $dates,
                             "description" => $description,
+                            "change" => $item->change,
+                            "index" => $item->index,
                         );
                     }
                 }

@@ -83,7 +83,7 @@ export default {
       Table7: "display:none;",
       //oil and currency down
       currencyNow: "",
-      currencyChart: "",
+      currencyChartData: "",
       currencyNowUsd: "",
       selectedDMY2: "",
       periodSelectOil: "",
@@ -236,6 +236,8 @@ export default {
       planDaySumm: "",
       timestampToday: "",
       timestampEnd: "",
+      dailyCurrencyChangeUsd: 0,
+      dailyCurrencyChangeIndexUsd: ''
     };
   },
   methods: {
@@ -403,29 +405,6 @@ export default {
 
     },
 
-    //currency and oil down
-    periodSelectFunc() {
-      var DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
-      var menuDMY = [];
-      var id = 0;
-      for (let i = 0; i <= 4; i++) {
-        var a = { index: i, id: i };
-        a.DMY = DMY[i];
-        menuDMY.push(a);
-        if (this.selectedDMY == i) {
-          a.current = "#fff";
-          this.DMY = menuDMY[i]["DMY"];
-        }
-        if (this.selectedDMY2 == i) {
-          a.current2 = "#fff";
-          this.DMY = menuDMY[i]["DMY"];
-        }
-      }
-
-      return menuDMY;
-
-    },
-
     periodSelect(event) {
       if (this.selectedDMY == 0) {
         this.period = 7;
@@ -466,12 +445,15 @@ export default {
 
     getCurrencyNow(dates) {
       let uri = this.localeUrl("/getcurrency?fdate=") + dates + "";
+
       this.axios.get(uri).then((response) => {
-        var data = response.data;
+        let data = response.data;
+
         if (data) {
-          //console.log(data);
           this.currencyNow = parseInt(data.description * 10) / 10;
           this.currencyNowUsd = parseInt(data.description * 10) / 10;
+          this.dailyCurrencyChangeUsd = Math.abs(parseFloat(data.change));
+          this.dailyCurrencyChangeIndexUsd = data.index;
         } else {
           console.log("No data");
         }
@@ -479,20 +461,40 @@ export default {
     },
 
     getCurrencyPeriod: function (dates, item2) {
-      var dates = dates;
+      console.log(item2);
+      console.log('================');
+
       let uri =
         this.localeUrl("/getcurrencyperiod?dates=") + dates + "&period=" + item2 + " ";
       this.axios.get(uri).then((response) => {
-        var data = response.data;
+        let data = response.data;
+
         if (data) {
-          var arrdata2 = [];
+          let arrdata2 = [];
+
           _.forEach(data, function (item) {
-            arrdata2.push({ dates: item.dates, value: item.description["0"] });
+            arrdata2.push({
+              date: item.dates,
+              value: parseInt(item.description[0] * 10) / 10,
+              change: parseFloat(item.change[0]),
+              index: item.index[0] || null
+            });
+
+            // console.log(item.dates);
+            console.log(item.dates.split('.').reverse().join('-'));
+            console.log(new Date(item.dates.split('.').reverse().join('-')));
           });
 
+          // console.log(arrdata2);
+          // console.log(dates);
+          // console.log(item2);
+          // console.log('+++++++++++++++++');
+
           //var currencyChart = Array({ data: arrdata2 });
-          this.$emit("currencyChart", arrdata2);
-          //this.currencyChart = currencyChart;
+          // this.$emit("currencyChart", arrdata2);
+          this.currencyChartData = arrdata2;
+
+          console.log(this.currencyChartData);
         } else {
           console.log("No data");
         }
@@ -1964,6 +1966,27 @@ export default {
  
   },
   computed: {
+    //currency and oil down
+    periodSelectFunc() {
+      var DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
+      var menuDMY = [];
+      var id = 0;
+      for (let i = 0; i <= 4; i++) {
+        var a = { index: i, id: i };
+        a.DMY = DMY[i];
+        menuDMY.push(a);
+        if (this.selectedDMY == i) {
+          a.current = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+        if (this.selectedDMY2 == i) {
+          a.current2 = "#fff";
+          this.DMY = menuDMY[i]["DMY"];
+        }
+      }
+
+      return menuDMY;
+    },
   },
 
 

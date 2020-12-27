@@ -15,7 +15,9 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 import { EventBus } from "../../event-bus.js";
+
 Vue.component("apexchart", VueApexCharts);
+
 export default {
   name: "mix-chart",
   props: ["postTitles"],
@@ -24,6 +26,11 @@ export default {
       begin: "",
       end: "",
       chartOptions: {
+        xaxis: {
+          labels: {
+            show: false,
+          },
+        },
         yaxis: {
           labels: {
             formatter: function (val) {
@@ -42,6 +49,7 @@ export default {
           foreColor: "#FFFFFF",
           height: 150,
           type: "area",
+          stacked: false,
         },
         stroke: {
           curve: "smooth",
@@ -51,17 +59,10 @@ export default {
             columnWidth: "50%",
           },
         },
-
         dataLabels: {
           enabled: false,
         },
         labels: [""],
-        xaxis: {
-          labels: {
-            show: false,
-          },
-        },
-
         tooltip: {
           enabled: true,
           enabledOnSeries: undefined,
@@ -108,6 +109,7 @@ export default {
       series: [
         {
           name: "Курс",
+          stacked: false,
           type: "area",
           stroke: {
             curve: "smooth",
