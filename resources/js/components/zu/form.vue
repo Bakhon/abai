@@ -1,7 +1,7 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-12 row mb-5">
     <div class="col-xs-12 col-sm-4 col-md-4">
-      <label>{{ trans('monitoring.zu') }}</label>
+      <label>{{ trans('monitoring.gu') }}</label>
       <div class="form-label-group">
         <select class="form-control" name="gu_id" v-model="formFields.gu_id">
           <option v-for="row in gus" v-bind:value="row.id">{{ row.name }}</option>
