@@ -191,6 +191,7 @@
           <div class="second_block">
             <apexchart
               v-if="chartData"
+              height="100%"
               :options="chartBarOptions"
               :series="chartData"
             ></apexchart>
@@ -1569,10 +1570,10 @@ body {
   margin: 0;
 }
 .second_block {
-  height: calc(100vh - 374px);
-  width: calc(1.6 * (100vh - 365px));
+  height: calc(100vh - 323px);
+  /* width: calc(1.6 * (100vh - 365px));
   max-width: calc(100vw - 440px);
-  min-width: 800px;
+  min-width: 800px; */
   min-height: 633px;
   margin: 0 auto;
 }
