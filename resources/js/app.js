@@ -81,6 +81,7 @@ Vue.component('omgca-form', require('./components/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('gu-form', require('./components/gu/form.vue').default);
+Vue.component('zu-form', require('./components/zu/form.vue').default);
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);

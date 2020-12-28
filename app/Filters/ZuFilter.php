@@ -6,7 +6,7 @@ namespace App\Filters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 
-class GuFilter extends BaseFilter
+class ZuFilter extends BaseFilter
 {
 
     public function __construct(Builder $query, array $params)
@@ -19,19 +19,19 @@ class GuFilter extends BaseFilter
     protected function sort(string $field, bool $desc)
     {
         switch ($field) {
-            case 'cdng':
+            case 'gu':
                 $this->query
-                    ->select('gus.*')
-                    ->leftJoin('cdngs', 'cdngs.id', '=', 'gus.cdng_id')
+                    ->select('zus.*')
+                    ->leftJoin('gus', 'gus.id', '=', 'zus.gu_id')
                     //dirty hack for alphanumeric sort but other solutions doesn't work
-                    ->addSelect(DB::raw('lpad(cdngs.name, 10, 0) AS cdng_name'))
-                    ->orderBy('cdng_name', $desc === true ? 'desc' : 'asc');
+                    ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gu_name'))
+                    ->orderBy('gu_name', $desc === true ? 'desc' : 'asc');
                 break;
             case 'name':
                 $this->query
-                    ->select('gus.*')
-                    ->addSelect(DB::raw('lpad(gus.name, 10, 0) AS gu_name'))
-                    ->orderBy('gu_name', $desc === true ? 'desc' : 'asc');
+                    ->select('zus.*')
+                    ->addSelect(DB::raw('lpad(zus.name, 10, 0) AS zu_name'))
+                    ->orderBy('zu_name', $desc === true ? 'desc' : 'asc');
                 break;
             default:
                 $this->query->orderBy($field, $desc === true ? 'desc' : 'asc');
