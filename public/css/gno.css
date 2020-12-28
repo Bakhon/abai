@@ -1380,38 +1380,6 @@ input.checkbox-q-liquid {
     padding: 10px 0 0 0;
 }
 
-.modal-bign-container {
-    padding: 20px;
-    color: white;
-    border: 2px solid #656A8A;
-    border-radius: 8px;
-    background: #272953;
-    height: 100%;
-}
-
-.modal-bign-header {
-    padding-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    height: 40px;
-}
-
-.modal-bign-header.with-padding {
-    padding: 10px 15px;
-    height: 50px;
-}
-
-.modal-bign-title {
-    font-size: 20px;
-    font-weight: bold;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.vm--modal {
-    border-radius: 9px !important;
-}
 
 .vm--container {
     z-index: 99999 !important;
@@ -1435,21 +1403,6 @@ input.checkbox-q-liquid {
 
 .no-padding {
     padding: 0 !important;
-}
-
-.modal-bign-button {
-    border: none;
-    outline: none;
-    background: #656A8A;
-    color: white;
-    font-weight: bold;
-    font-size: 16px;
-    width: 100px;
-    border-radius: 8px;
-}
-
-.modal-bign-button:hover {
-    background: #4e516c;
 }
 
 .gno-plotly-graph {

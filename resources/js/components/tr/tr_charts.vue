@@ -1544,9 +1544,8 @@ body {
   margin-left: 57px;
 }
 .trfacolmdrowsecnav {
-  margin-bottom: 7px;
-  margin-top: 7px;
-  margin-left: 1px;
+  margin-bottom: 13px;
+  margin-top: 13px;
 }
 .trfacolbutnavlinkbut {
   margin-left: 28px;
@@ -1570,11 +1569,11 @@ body {
   margin: 0;
 }
 .second_block {
-  height: calc(100vh - 386px);
+  height: calc(100vh - 374px);
   width: calc(1.6 * (100vh - 365px));
   max-width: calc(100vw - 440px);
   min-width: 800px;
-  min-height: 500px;
+  min-height: 633px;
   margin: 0 auto;
 }
 .droptr.droptr {

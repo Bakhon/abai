@@ -18,9 +18,8 @@ class DBgtmController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function gtm1(Request $request)
+    public function gtm1(Request $request, DruidClient $client)
     {
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
         $builder = $client->query('raschet_by_gtm_month_v07', Granularity::ALL);
 
         if  ($request->has('ngdu')) {

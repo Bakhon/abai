@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-bordered table-dark table-responsive ce trkrtableborderedtabledarktableresponsive" style="background: #0D1E63;">
+    <table class="table table-bordered table-dark table-responsive trkrtableborderedtabledarktableresponsive" style="background: #0D1E63; margin-bottom: 0;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
                 <td rowspan="4" class="th" style="background: #333975;">№ скв</td>

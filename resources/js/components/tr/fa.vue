@@ -21,7 +21,7 @@
         Технологический режим</a
       >
 
-      <div class="col dropdown" style="padding: 0px; margin: 0 20px">
+      <div class="col dropdown" style="padding: 0px; margin: 0 13px">
         <button
           class="col-md-12 but-nav__link but faheadhight"
           href="#"
@@ -145,9 +145,10 @@
         <fade-loader :loading="isloading"></fade-loader>
       </div> -->
       <table
-        class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
+        class="table table-bordered table-dark table-responsive fakrtableborderedtable"
         style="
           background: #0d1e63;
+          margin-bottom: 0;
         "
       >
         <tr class="headerColumn">
@@ -1387,15 +1388,13 @@ body {
 }
 
 .farowjustcontbet {
-
-  box-sizing: border box;
-
+    box-sizing: border box;
   padding-right: 0;
   margin-right: 0;
   margin-left: 0;
   padding-left: 0;
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: 13px;
 }
 
 .fasearch {
@@ -1409,7 +1408,7 @@ body {
 
 .table {
   overflow: scroll;
-  height: calc(100vh - 211px);
+  height: calc(100vh - 205px);
 }
 .table tr:nth-child(-n+4) td {
   position: sticky;
