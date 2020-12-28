@@ -62,6 +62,7 @@ Vue.component('simple-indicator', require('./components/visualcenter3/SimpleIndi
 Vue.component('vc-speedometer-block', require('./components/visualcenter3/VCSpeedometerBlock.vue').default);
 Vue.component('horizontal-indicators', require('./components/visualcenter3/HorizontalIndicators.vue').default);
 Vue.component('vertical-indicators', require('./components/visualcenter3/VerticalIndicators.vue').default);
+Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
 Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
@@ -79,6 +80,9 @@ Vue.component('wm-form', require('./components/wm/form.vue').default);
 Vue.component('omgca-form', require('./components/omgca/form.vue').default);
 Vue.component('omguhe-form', require('./components/omguhe/form.vue').default);
 Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
+Vue.component('gu-form', require('./components/gu/form.vue').default);
+Vue.component('zu-form', require('./components/zu/form.vue').default);
+
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
 Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);

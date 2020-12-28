@@ -12,6 +12,7 @@ abstract class BaseFilter
     protected $query;
     protected $params;
     protected $defaultSortField;
+    protected $defaultSortDesc;
 
     public function __construct(Builder $query, array $params)
     {
@@ -41,7 +42,7 @@ abstract class BaseFilter
             $this->sort($this->params['order_by'], (bool)$this->params['order_desc']);
         }
         else {
-            $this->sort($this->defaultSortField ?? 'created_at', true);
+            $this->sort($this->defaultSortField ?? 'created_at', $this->defaultSortDesc ?? true);
         }
 
         return $this->query;

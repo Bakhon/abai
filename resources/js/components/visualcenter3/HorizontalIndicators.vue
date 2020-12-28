@@ -11,9 +11,9 @@
         v-bind:percents="oilPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Выручка/Доход'"
+        v-bind:title="'Выручка(Доход)'"
         v-bind:indicatorValue="dataFact"
-        v-bind:units="'млн. тенге'"
+        v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="true"
         v-bind:progressValue="dataFact"
         v-bind:progressMax="dataPlan"
@@ -23,7 +23,7 @@
     <indicator
         v-bind:title="'Расходы'"
         v-bind:indicatorValue="spendingFact"
-        v-bind:units="'млн. тенге'"
+        v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="true"
         v-bind:progressValue="spendingFact"
         v-bind:progressMax="spendingPlan"
@@ -33,7 +33,7 @@
     <indicator
         v-bind:title="'Чистая прибыль'"
         v-bind:indicatorValue="netProfitFact"
-        v-bind:units="'млн. тенге'"
+        v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="true"
         v-bind:progressValue="netProfitFact"
         v-bind:progressMax="netProfitPlan"
@@ -43,7 +43,7 @@
     <indicator
         v-bind:title="'Капиталовложения'"
         v-bind:indicatorValue="capitalInvFact"
-        v-bind:units="'млн. тенге'"
+        v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="true"
         v-bind:progressValue="capitalInvFact"
         v-bind:progressMax="capitalInvPlan"
@@ -53,7 +53,7 @@
     <indicator
         v-bind:title="'Свободный денежный поток'"
         v-bind:indicatorValue="cashFlowFact"
-        v-bind:units="'млн. тенге'"
+        v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="false"
         v-bind:progressValue="cashFlowFact"
         v-bind:progressMax="cashFlowPlan"

@@ -7,7 +7,30 @@
                 v-bind:dateEnd="dateEnd"
             ></horizontal-indicators>
             <div class="first-string mr-2" v-if="isShowInteractiveBlock">
-
+                <vc-upstream-table
+                    v-if="tableToShowId === 2"
+                    v-bind:tableData="t2TableData"
+                    v-bind:tableTitle="'Чистый денежный поток'"
+                    @closeTable="closeTable"
+                ></vc-upstream-table>
+                <vc-upstream-table
+                    v-if="tableToShowId === 3"
+                    v-bind:tableData="t3TableData"
+                    v-bind:tableTitle="'Операционные затраты'"
+                    @closeTable="closeTable"
+                ></vc-upstream-table>
+                <vc-upstream-table
+                    v-if="tableToShowId === 4"
+                    v-bind:tableData="t4TableData"
+                    v-bind:tableTitle="'Капитальные затраты по операционным активам'"
+                    @closeTable="closeTable"
+                ></vc-upstream-table>
+                <vc-upstream-table
+                    v-if="tableToShowId === 5"
+                    v-bind:tableData="t5TableData"
+                    v-bind:tableTitle="'Капитальные затраты крупных проектов'"
+                    @closeTable="closeTable"
+                ></vc-upstream-table>
             </div>
             <div v-if="isShowMainBlock">
                 <div>
