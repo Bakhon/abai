@@ -153,7 +153,7 @@
       >
         <tr class="headerColumn">
           <td rowspan="3" style="background: #12135c"><span>Скважина</span></td>
-          <td rowspan="3" style="background: #12135c">
+          <td rowspan="3" style="background: #12135c; min-width: 120px;">
             <span>Месторождение</span>
           </td>
           <td rowspan="3" style="background: #12135c"><span>Горизонт</span></td>
@@ -175,7 +175,7 @@
           <td class="colspan" colspan="3" style="background: #4fb26a">
             Геологические
           </td>
-          <td rowspan="3" style="background: #272953">
+          <td rowspan="3" style="background: #272953; min-width:248px;">
             <span>Основное отклонение в ТР</span>
           </td>
         </tr>
@@ -281,7 +281,7 @@
           <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
-          <td @click="sortBy('field')" style="background: #12135c">
+          <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('horizon')" style="background: #12135c">
@@ -341,13 +341,13 @@
           <td @click="sortBy('PI')" style="background: #4fb26a">
             <i class="fa fa-fw fa-sort"></i>т/сут
           </td>
-          <td @click="sortBy('Main_problem')" style="background: #272953">
+          <td @click="sortBy('Main_problem')" style="background: #272953; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
           <td style="background: #12135c">{{ row.well }}</td>
-          <td style="background: #12135c">{{ row.field }}</td>
+          <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
           <td style="background: #12135c">{{ row.horizon }}</td>
           <td style="background: #12135c">{{ row.exp_meth }}</td>
 
@@ -869,7 +869,7 @@
           <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
           <!-- <td>{{row.Main_problem}}</td> -->
           <td
-            style="background: #272953"
+            style="background: #272953; min-width:248px;"
             :class="{
               'cell-with-comment':
                 wells &&
