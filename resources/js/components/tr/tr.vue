@@ -332,7 +332,7 @@
 
             <svg
               width="19"
-              style="margin-right: 10px"
+              
               height="19"
               viewBox="0 0 19 19"
               fill="none"
