@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ComplicationMonitoring;
 
 use App\Filters\OmgCAFilter;
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CrudController;
 use App\Http\Controllers\Traits\WithFieldsValidation;
 use App\Http\Requests\IndexTableRequest;
