@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #333975; height: 104px; width: 161px; "
+            style="background: #40467E; height: 117px;  flex-direction: column; width: calc(100% - 26px); margin-top: 4px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -72,10 +72,11 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #333975;
-                  border-color: #333975;
+                  background-color: #40467E;
+                  border-color: #40467E;
                   color: white;
                   width: 100%;
+                  padding: 8px;
                 "
                 class="form-controll"
                 id="companySelect"
@@ -100,13 +101,12 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #333975 ;
-                  border-color: #333975;
+                  background-color: #40467E ;
+                  border-color: #40467E;
                   color: white;
                   width: 100%;
-
-                  
-                  border: 1px solid #333975; !important;
+                  padding: 8px;
+                  border: 1px solid #40467E; !important;
                   height: 35px !important;
                   color: white !important;
                 "
@@ -124,7 +124,7 @@
                 <option value="2014">2014</option>
               </select>
             </div>
-            <a href="#" @click.prevent="chooseDt" class="btn btn-primary"
+            <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
               >Сформировать</a
             >
           </div>
@@ -301,6 +301,7 @@
             style="
               background: #272953;
               color: white;
+              margin-right: 11px;
 
               border: none;
             "
@@ -309,9 +310,9 @@
             data-placement="top"
           >
             <svg
-              width="25"
-              height="24"
-              viewBox="0 0 25 24"
+              width="19"
+              height="19"
+              viewBox="0 0 19 19"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="isfulltable"
@@ -332,7 +333,7 @@
 
             <svg
               width="19"
-              style="margin-right: 10px"
+              
               height="19"
               viewBox="0 0 19 19"
               fill="none"
@@ -7137,13 +7138,24 @@ table::-webkit-scrollbar-corner  {
 }
 .fadropmenu.fadropmenu {
   background: #333975;
-  width: 246px;
-  z-index: 3001 !important;
+  /* width: 246px; */
+  z-index: 4001 !important;
 }
 .faheadhight {
   height: 40px;
 }
 
-
-
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  /* display: flex;  */
+  /* justify-content: center */
+}
+.dropdown-menu.show {
+  display: flex;
+  flex-direction: column;
+}
 </style>
