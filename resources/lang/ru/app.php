@@ -20,4 +20,6 @@ return array (
   'param_name' => 'Наименование',
   'param_value' => 'Значение',
   'date_time' => 'Дата и время',
+  'lat' => 'Широта',
+  'lon' => 'Долгота',
 );

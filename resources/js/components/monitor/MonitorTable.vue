@@ -1,308 +1,334 @@
 <template>
   <div>
-    <modal name="economicmodal" :width="1200" :height="600" :adaptive="true">
-      <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
-        <div class="row">
-          <div class="col-12">
-            <h3 class="economicHeader">{{ trans('monitoring.economic_effect') }} {{ nextYear }}</h3>
-          </div>
+    <modal class="modal-bign-wrapper" name="economicmodal" :width="1200" :height="600" :adaptive="true">
+      <div class="modal-bign modal-bign-container">
+        <div class="modal-bign-header">
+          <p class="title"></p>
+          <button type="button" class="modal-bign-button" @click="$modal.hide('economicmodal')">
+            Закрыть
+          </button>
         </div>
-        <div class="row">
-          <div class="col-12">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr v-for="row in economicNextYear">
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-                <td>{{ row[5] }}</td>
-                <td>{{ row[6] }}</td>
-                <td>{{ row[7] }}</td>
-                <td>{{ row[8] }}</td>
-              </tr>
-              </tbody>
-            </table>
+
+        <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
+          <div class="row">
+            <div class="col-12">
+              <h3 class="economicHeader">{{ trans('monitoring.economic_effect') }} {{ nextYear }}</h3>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <h3 class="economicHeader">{{ trans('monitoring.economic_effect') }} {{ currentYear }}</h3>
-            <h4 class="economicHeader" v-if="economicCurrentDays">{{ trans('monitoring.days_count') }}: {{ economicCurrentDays }}</h4>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr v-for="row in economicNextYear">
+                  <td>{{ row[0] }}</td>
+                  <td>{{ row[1] }}</td>
+                  <td>{{ row[2] }}</td>
+                  <td>{{ row[3] }}</td>
+                  <td>{{ row[4] }}</td>
+                  <td>{{ row[5] }}</td>
+                  <td>{{ row[6] }}</td>
+                  <td>{{ row[7] }}</td>
+                  <td>{{ row[8] }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr v-for="row in economicCurrentYear">
-                <td>{{ row[0] }}</td>
-                <td>{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-              </tr>
-              </tbody>
-            </table>
+          <div class="row">
+            <div class="col-12">
+              <h3 class="economicHeader">{{ trans('monitoring.economic_effect') }} {{ currentYear }}</h3>
+              <h4 class="economicHeader" v-if="economicCurrentDays">{{ trans('monitoring.days_count') }}:
+                {{ economicCurrentDays }}</h4>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr v-for="row in economicCurrentYear">
+                  <td>{{ row[0] }}</td>
+                  <td>{{ row[1] }}</td>
+                  <td>{{ row[2] }}</td>
+                  <td>{{ row[3] }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </modal>
-    <modal name="corrosion" :width="1200" :height="800" :adaptive="true">
-      <div class="container-fluid economicModal" style="width: 100%; height: 100%; overflow-y: auto;">
-        <h1>{{ trans('monitoring.corrosion_simulator') }}</h1>
-        <div class="row corrosion">
-          <div class="col-12">
-            <h4>{{ trans('monitoring.environment_conditions') }}</h4>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td>H2S {{ trans('monitoring.in_water') }}</td>
-                <td v-if="wmLastH2S">{{ wmLastH2S.hydrogen_sulfide }} мг/л</td>
-              </tr>
-              <tr>
-                <td>CO2 {{ trans('monitoring.in_water') }}</td>
-                <td v-if="wmLastCO2">{{ wmLastCO2.carbon_dioxide }} мг/л</td>
-              </tr>
-              <tr>
-                <td>H2S {{ trans('monitoring.in_gas') }}</td>
-                <td v-if="oilGas">{{ oilGas.hydrogen_sulfide_in_gas }} ppm</td>
-              </tr>
-              <tr>
-                <td>H2S {{ trans('monitoring.in_gas') }}</td>
-                <td v-if="oilGas">{{ oilGas.carbon_dioxide_in_gas }} %</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
+    <modal class="modal-bign-wrapper" name="corrosion" :width="1200" :height="800" :adaptive="true">
+      <div class="modal-bign modal-bign-container">
+        <div class="modal-bign-header">
+          <h1>{{ trans('monitoring.corrosion_simulator') }}</h1>
+          <button type="button" class="modal-bign-button" @click="$modal.hide('corrosion')">
+            Закрыть
+          </button>
+        </div>
+        <div class="container-fluid economicModal" style="width: 100%; height: calc(100% - 40px); overflow-y: auto;">
+          <div class="row corrosion">
+            <div class="col-12">
+              <h4>{{ trans('monitoring.environment_conditions') }}</h4>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td>H2S {{ trans('monitoring.in_water') }}</td>
+                  <td v-if="wmLastH2S">{{ wmLastH2S.hydrogen_sulfide }} мг/л</td>
+                </tr>
+                <tr>
+                  <td>CO2 {{ trans('monitoring.in_water') }}</td>
+                  <td v-if="wmLastCO2">{{ wmLastCO2.carbon_dioxide }} мг/л</td>
+                </tr>
+                <tr>
+                  <td>H2S {{ trans('monitoring.in_gas') }}</td>
+                  <td v-if="oilGas">{{ oilGas.hydrogen_sulfide_in_gas }} ppm</td>
+                </tr>
+                <tr>
+                  <td>H2S {{ trans('monitoring.in_gas') }}</td>
+                  <td v-if="oilGas">{{ oilGas.carbon_dioxide_in_gas }} %</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
                   <td>{{ trans('monitoring.partial_pressure') }} рH2S</td>
-                <td>{{ result.pH2S_kPa }} кПа</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.partial_pressure') }} рCO2</td>
-                <td>{{ result.pCO2_kPa }} кПа</td>
-              </tr>
-              </tbody>
-            </table>
+                  <td>{{ result.pH2S_kPa }} кПа</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.partial_pressure') }} рCO2</td>
+                  <td>{{ result.pCO2_kPa }} кПа</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td>{{ trans('monitoring.environment_in_communication_point') }} А</td>
+                  <td>{{ result.environment_point_A }}</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.environment_in_point') }} E</td>
+                  <td>{{ result.environment_point_E }}</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.environment_in_point') }} F</td>
+                  <td>{{ result.environment_point_F }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td>{{ trans('monitoring.environment_in_communication_point') }} А</td>
-                <td>{{ result.environment_point_A }}</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.environment_in_point') }} E</td>
-                <td>{{ result.environment_point_E }}</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.environment_in_point') }} F</td>
-                <td>{{ result.environment_point_F }}</td>
-              </tr>
-              </tbody>
-            </table>
+          <br>
+          <div class="row corrosion">
+            <div class="col-12">
+              <h4>{{ trans('monitoring.fluid_parameters') }}</h4>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} А</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.pressure') }}</td>
+                  <td v-if="ngdu">{{ ngdu.surge_tank_pressure }} {{ trans('monitoring.units.bar') }}</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.temperature') }}</td>
+                  <td>25 С</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} Е</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.pressure') }}</td>
+                  <td v-if="ngdu">{{ ngdu.pump_discharge_pressure }} {{ trans('monitoring.units.bar') }}</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.temperature') }}</td>
+                  <td>{{ result.t_final_celsius_point_E }} С</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.pressure') }}</td>
+                  <td>{{ result.final_pressure_bar_point_F }} {{ trans('monitoring.units.bar') }}</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.temperature') }}</td>
+                  <td>{{ result.t_final_celsius_point_F }} C</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.stream_velocity') }}</td>
+                  <td>{{ result.flow_velocity_meter_per_sec }} {{ trans('monitoring.units.m_s') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <br>
-        <div class="row corrosion">
-          <div class="col-12">
-            <h4>{{ trans('monitoring.fluid_parameters') }}</h4>
+          <br>
+          <div class="row corrosion">
+            <div class="col-12">
+              <h4>{{ trans('monitoring.corrosion_name') }}</h4>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.fact_common_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}),
+                    {{ trans('monitoring.units.v_kor_fact') }}
+                  </td>
+                  <td v-if="corrosionVelocityWithInhibitor">{{ corrosionVelocityWithInhibitor.toFixed(2) }}
+                    {{ trans('monitoring.units.mm_year') }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (А)
+                  </td>
+                  <td>{{ result.corrosion_rate_mm_per_y_point_A }} {{ trans('monitoring.units.mm_year') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} E</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (Е)
+                  </td>
+                  <td>{{ result.corrosion_rate_mm_per_y_point_E }} {{ trans('monitoring.units.mm_year') }}</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.calc_local_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}),
+                    {{ trans('monitoring.units.v_kor') }} (Е)
+                  </td>
+                  <td>{{ result.papavinasam_corrosion_mm_per_y_point_E }} {{ trans('monitoring.units.mm_year') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (F)
+                  </td>
+                  <td>{{ result.corrosion_rate_mm_per_y_point_F }} {{ trans('monitoring.units.mm_year') }}</td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.calc_local_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}),
+                    {{ trans('monitoring.units.v_kor') }} (F)
+                  </td>
+                  <td>{{ result.papavinasam_corrosion_mm_per_y_point_F }} {{ trans('monitoring.units.mm_year') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} А</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.pressure') }}</td>
-                <td v-if="ngdu">{{ ngdu.surge_tank_pressure }} {{ trans('monitoring.units.bar') }}</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.temperature') }}</td>
-                <td>25 С</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} Е</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.pressure') }}</td>
-                <td v-if="ngdu">{{ ngdu.pump_discharge_pressure }} {{ trans('monitoring.units.bar') }}</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.temperature') }}</td>
-                <td>{{ result.t_final_celsius_point_E }} С</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.pressure') }}</td>
-                <td>{{ result.final_pressure_bar_point_F }} {{ trans('monitoring.units.bar') }}</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.temperature') }}</td>
-                <td>{{ result.t_final_celsius_point_F }} C</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.stream_velocity') }}</td>
-                <td>{{ result.flow_velocity_meter_per_sec }} {{ trans('monitoring.units.m_s') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <br>
-        <div class="row corrosion">
-          <div class="col-12">
-            <h4>{{ trans('monitoring.corrosion_name') }}</h4>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.fact_common_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}), {{ trans('monitoring.units.v_kor_fact') }}</td>
-                <td v-if="corrosionVelocityWithInhibitor">{{ corrosionVelocityWithInhibitor.toFixed(2) }}
-                  {{ trans('monitoring.units.mm_year') }}
-                </td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (А)</td>
-                <td>{{ result.corrosion_rate_mm_per_y_point_A }} {{ trans('monitoring.units.mm_year') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} E</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (Е)</td>
-                <td>{{ result.corrosion_rate_mm_per_y_point_E }} {{ trans('monitoring.units.mm_year') }}</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.calc_local_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}), {{ trans('monitoring.units.v_kor') }} (Е)</td>
-                <td>{{ result.papavinasam_corrosion_mm_per_y_point_E }} {{ trans('monitoring.units.mm_year') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.calc_common_corrosion_speed') }}, {{ trans('monitoring.units.v_kor') }} (F)</td>
-                <td>{{ result.corrosion_rate_mm_per_y_point_F }} {{ trans('monitoring.units.mm_year') }}</td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.calc_local_corrosion_speed') }} ({{ trans('monitoring.test_coupons') }}), {{ trans('monitoring.units.v_kor') }} (F)</td>
-                <td>{{ result.papavinasam_corrosion_mm_per_y_point_F }} {{ trans('monitoring.units.mm_year') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <br>
-        <div class="row corrosion">
-          <div class="col-12">
-            <h4>{{ trans('monitoring.corrosion_inhibitor') }}</h4>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.recommended_dosage') }}</td>
-                <td v-if="result">{{ result.dose_mg_per_l_point_A }} {{ trans('monitoring.units.mg_l') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} E</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.recommended_dosage') }}</td>
-                <td v-if="result">{{ result.dose_mg_per_l_point_E }} {{ trans('monitoring.units.mg_l') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
-              </tr>
-              <tr>
-                <td>{{ trans('monitoring.recommended_dosage') }}</td>
-                <td v-if="result">{{ result.dose_mg_per_l_point_F }} {{ trans('monitoring.units.mg_l') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td>{{ trans('monitoring.max_recommended_dosage') }}</td>
-                <td v-if="result">{{ result.max_dose }} {{ trans('monitoring.units.mg_l') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td>{{ trans('monitoring.fact_dosage') }}</td>
-                <td v-if="current_dosage">{{ current_dosage }} {{ trans('monitoring.units.mg_l') }}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-4">
-            <table class="table table-bordered economicModalTable">
-              <tbody>
-              <tr>
-                <td>{{ trans('monitoring.plan_dosage') }}</td>
-                <td v-if="plan_dosage">{{ plan_dosage }} {{ trans('monitoring.units.mg_l') }}</td>
-              </tr>
-              </tbody>
-            </table>
+          <br>
+          <div class="row corrosion">
+            <div class="col-12">
+              <h4>{{ trans('monitoring.corrosion_inhibitor') }}</h4>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.gu') }}, {{ trans('monitoring.point') }} A</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.recommended_dosage') }}</td>
+                  <td v-if="result">{{ result.dose_mg_per_l_point_A }} {{ trans('monitoring.units.mg_l') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} E</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.recommended_dosage') }}</td>
+                  <td v-if="result">{{ result.dose_mg_per_l_point_E }} {{ trans('monitoring.units.mg_l') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td colspan="2"><h5>{{ trans('monitoring.collector') }}, {{ trans('monitoring.point') }} F</h5></td>
+                </tr>
+                <tr>
+                  <td>{{ trans('monitoring.recommended_dosage') }}</td>
+                  <td v-if="result">{{ result.dose_mg_per_l_point_F }} {{ trans('monitoring.units.mg_l') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td>{{ trans('monitoring.max_recommended_dosage') }}</td>
+                  <td v-if="result">{{ result.max_dose }} {{ trans('monitoring.units.mg_l') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td>{{ trans('monitoring.fact_dosage') }}</td>
+                  <td v-if="current_dosage">{{ current_dosage }} {{ trans('monitoring.units.mg_l') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-4">
+              <table class="table table-bordered economicModalTable">
+                <tbody>
+                <tr>
+                  <td>{{ trans('monitoring.plan_dosage') }}</td>
+                  <td v-if="plan_dosage">{{ plan_dosage }} {{ trans('monitoring.units.mg_l') }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -619,7 +645,7 @@ export default {
   computed: {
     schemaImage() {
       console.log(this.currentLang)
-      if(this.currentLang === 'kz') return '/img/monitor/schema_kz.svg'
+      if (this.currentLang === 'kz') return '/img/monitor/schema_kz.svg'
       return '/img/monitor/schema.svg'
     }
   },
@@ -816,18 +842,12 @@ export default {
 };
 </script>
 <style scoped>
-
-.economicModal {
-  background-color: #0F1430;
-}
-
 .economicModalTable {
   color: #fff;
   border: #fff solid 2px;
 }
 
 .corrosion {
-  background-color: #20274F;
   margin: 2px;
 }
 </style>
