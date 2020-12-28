@@ -15,9 +15,6 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
     header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/tr');
 }
 ?>
-@section('sidebar_menu')
-    @include('partials.sidebar.menu')
-@endsection
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 

@@ -40,25 +40,25 @@
                 <li class="nav-item2">
                     <i class="fas fa-bell fa-lg"></i>
                 </li>
-                {{--@if (Auth::guest())--}}
                 <li class="nav-item2 active dropdown2">
-                    <a href="{{ route('login') }}"><img src="{{ asset('img/level1/icon_user.svg') }}" width="30"
-                                                        height="30" alt=""></a>
+                    <a href="{{ route('profile') }}" class="nav-avatar-wrap">
+                        @if(auth()->user()->thumb)
+                            <img src="{{ auth()->user()->thumb }}">
+                        @else
+                            <img src="{{ asset('img/level1/icon_user.svg') }}">
+                        @endif
+                    </a>
                     <ul class="dropdown-child2">
                         <li class="nav-item child2">
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: one;">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                 {{ csrf_field() }}
-
-                            <a class="logout" onClick="document.forms['logout-form'].submit();" href="#"> Выйти</a>
-                        </form>
+                                <a class="logout" onClick="document.forms['logout-form'].submit();" href="#"> Выйти</a>
+                            </form>
                     </li>
                     <li class="nav-item child">
                     </li>
                 </ul>
             </li>
-            {{-- @else--}}
-
-            {{--@endif--}}
             <li class="nav-item2">
                 <i class="fas fa-ellipsis-v"></i>
             </li>
