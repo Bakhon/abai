@@ -23,7 +23,7 @@
     </a>
 
 
-    <div class="dropright">
+    <!-- <div class="dropright">
         <div data-toggle="dropdown">
             <a href="#" class="bg-dark list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-start align-items-center"><img
@@ -31,7 +31,7 @@
                             class="menu-collapsed companyName d-none"></span></div>
             </a>
         </div>
-    </div>
+    </div> -->
 </div>
 <div class="dropright">
     <div data-toggle="dropdown">
