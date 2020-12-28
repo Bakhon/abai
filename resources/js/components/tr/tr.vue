@@ -262,6 +262,7 @@
             <option value="Аксай Южный">Аксай Южный</option>
           </select> -->
           <tr-multiselect
+            :filter="filter"
             :fieldFilterOptions="fieldFilterOptions"
             @change-filter="handlerFilter"
             filterName="месторождения"

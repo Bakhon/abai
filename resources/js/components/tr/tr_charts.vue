@@ -491,22 +491,37 @@ export default {
     },
     fieldFilters() {
       if (this.chartFilter_field_start) {
+        console.log('fieldFilters start =====================================')
         this.chartFilter_field = this.fieldFilters[0].fields;
         this.chartFilter_field_start = false;
+      } else {
+        console.log('fieldFilters changed =====================================')
+        const newFilter = this.chartFilter_field.filter(el =>  this.fieldFilters[0].fields.indexOf(el) !== -1)
+        if (newFilter.length !== this.chartFilter_field.length) this.chartFilter_field = newFilter;
       }
       this.calcChartData();
     },
     horizonFilters() {
       if (this.chartFilter_horizon_start) {
-        this.chartFilter_horizon = this.horizonFilters[0].fields
+        console.log('horizonFilters start =====================================')
+        this.chartFilter_horizon = this.horizonFilters[0].fields;
         this.chartFilter_horizon_start = false;
+      } else {
+        console.log('horizonFilters changed =====================================')
+        const newFilter = this.chartFilter_horizon.filter(el =>  this.horizonFilters[0].fields.indexOf(el) !== -1)
+        if (newFilter.length !== this.chartFilter_horizon.length) this.chartFilter_horizon = newFilter;
       }
       this.calcChartData();
     },
     exp_methFilters() {
       if (this.chartFilter_exp_meth_start) {
-        this.chartFilter_exp_meth = this.exp_methFilters[0].fields
+        console.log('exp_methFilters start =====================================')
+        this.chartFilter_exp_meth = this.exp_methFilters[0].fields;
         this.chartFilter_exp_meth_start = false;
+      } else {
+        console.log('exp_methFilters changed =====================================')
+        const newFilter = this.chartFilter_exp_meth.filter(el =>  this.exp_methFilters[0].fields.indexOf(el) !== -1)
+        if (newFilter.length !== this.chartFilter_exp_meth.length) this.chartFilter_exp_meth = newFilter;
       }
       this.calcChartData();
     },
