@@ -2,10 +2,21 @@
 
 namespace App\Models\Refs;
 
+use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
 
 class Gu extends Model
 {
+    use WithHistory;
+
+    protected $localKey = 'id';
+    protected $guarded = ['id'];
+
+    public function cdng()
+    {
+        return $this->belongsTo(Cdng::class);
+    }
+
     public function zus()
     {
         return $this->hasMany(\App\Models\Refs\Zu::class);
