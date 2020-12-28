@@ -181,6 +181,7 @@
               textFormsRow="expMethods"
             />
           </div>
+          <clear-icon v-if="chartWells.length !== filteredWells.length" @clear-click="clearFilters()" background="#272953" placeholder="Сбросить фильтры" />
         </div>
         <!-- <div class="fadee tr-chart__loader" v-if="isLoading">
           <fade-loader :loading="isLoading"></fade-loader>
@@ -204,12 +205,15 @@ import VueApexCharts from "vue-apexcharts";
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import BigNumbers from "./BigNumbers.vue";
 import TrMultiselect from "./TrMultiselect.vue";
+import { getFilterText } from "./helpers.js";
+import ClearIcon from "../ui-kit/ClearIcon.vue";
 
 export default {
   name: "TrCharts",
   components: {
     // FadeLoader,
     TrMultiselect,
+    ClearIcon,
     BigNumbers,
   },
   computed: {
@@ -217,20 +221,23 @@ export default {
       return `${this.chartNames[this.chartShow]} на ${this.dt}`;
     },
     subtitleText() {
-      let filtersText = "";
-      if (!this.chartFilter_field || this.chartFilter_field.length === 0)
-        filtersText = "Все месторождения";
-      if (!this.chartFilter_horizon || this.chartFilter_horizon.length === 0)
-        filtersText = filtersText
-          ? `${filtersText}, все горизонты`
-          : "Все горизонты";
-      if (!this.chartFilter_exp_meth || this.chartFilter_exp_meth.length === 0)
-        filtersText = filtersText
-          ? `${filtersText}, все способы добычи`
-          : "Все способы добычи";
-      if (filtersText) filtersText = `${filtersText}`;
-
-      return filtersText;
+      return [
+        getFilterText(
+          this.chartFilter_field,
+          this.fieldFilters[0].fields,
+          "fields"
+        ),
+        getFilterText(
+          this.chartFilter_horizon,
+          this.horizonFilters[0].fields,
+          "horizons"
+        ),
+        getFilterText(
+          this.chartFilter_exp_meth,
+          this.exp_methFilters[0].fields,
+          "expMethods"
+        ),
+      ];
     },
     fieldFilters() {
       if (this.chartWells && this.chartWells.length > 0) {
@@ -250,7 +257,6 @@ export default {
             filters = [...filters, el.field];
           }
         });
-        console.log("fieldFilters = ", [...filters]);
         return [
           {
             group: "Все месторождения",
@@ -277,7 +283,6 @@ export default {
             filters = [...filters, el_horizon];
           }
         });
-        console.log("horizonFilters = ", [...filters]);
         return [
           {
             group: "Все горизонты",
@@ -288,7 +293,6 @@ export default {
     },
     exp_methFilters() {
       if (this.chartWells && this.chartWells.length > 0) {
-        console.log("chartWells = ", this.chartWells);
         let filters = [];
 
         this.chartWells.forEach((el) => {
@@ -306,7 +310,6 @@ export default {
             filters = [...filters, el_exp_meth];
           }
         });
-        console.log("exp_methFilters = ", [...filters]);
         return [
           {
             group: "Все способы добычи",
@@ -491,42 +494,64 @@ export default {
     },
     fieldFilters() {
       if (this.chartFilter_field_start) {
-        console.log('fieldFilters start =====================================')
         this.chartFilter_field = this.fieldFilters[0].fields;
         this.chartFilter_field_start = false;
       } else {
-        console.log('fieldFilters changed =====================================')
-        const newFilter = this.chartFilter_field.filter(el =>  this.fieldFilters[0].fields.indexOf(el) !== -1)
-        if (newFilter.length !== this.chartFilter_field.length) this.chartFilter_field = newFilter;
+        const newFilter = this.chartFilter_field.filter(
+          (el) => this.fieldFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_field.length)
+          this.chartFilter_field = newFilter;
       }
+      this.refreshFilters();
       this.calcChartData();
     },
     horizonFilters() {
       if (this.chartFilter_horizon_start) {
-        console.log('horizonFilters start =====================================')
         this.chartFilter_horizon = this.horizonFilters[0].fields;
         this.chartFilter_horizon_start = false;
       } else {
-        console.log('horizonFilters changed =====================================')
-        const newFilter = this.chartFilter_horizon.filter(el =>  this.horizonFilters[0].fields.indexOf(el) !== -1)
-        if (newFilter.length !== this.chartFilter_horizon.length) this.chartFilter_horizon = newFilter;
+        const newFilter = this.chartFilter_horizon.filter(
+          (el) => this.horizonFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_horizon.length)
+          this.chartFilter_horizon = newFilter;
       }
+      this.refreshFilters();
       this.calcChartData();
     },
     exp_methFilters() {
       if (this.chartFilter_exp_meth_start) {
-        console.log('exp_methFilters start =====================================')
         this.chartFilter_exp_meth = this.exp_methFilters[0].fields;
         this.chartFilter_exp_meth_start = false;
       } else {
-        console.log('exp_methFilters changed =====================================')
-        const newFilter = this.chartFilter_exp_meth.filter(el =>  this.exp_methFilters[0].fields.indexOf(el) !== -1)
-        if (newFilter.length !== this.chartFilter_exp_meth.length) this.chartFilter_exp_meth = newFilter;
+        const newFilter = this.chartFilter_exp_meth.filter(
+          (el) => this.exp_methFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_exp_meth.length)
+          this.chartFilter_exp_meth = newFilter;
       }
+      this.refreshFilters();
       this.calcChartData();
     },
   },
   methods: {
+    clearFilters() {
+      this.chartFilter_exp_meth = [];
+      this.chartFilter_horizon = [];
+      this.chartFilter_field = [];
+    },
+    refreshFilters() {
+      if (
+        this.chartFilter_exp_meth.length === 0 &&
+        this.chartFilter_horizon.length === 0 &&
+        this.chartFilter_field.length === 0
+      ) {
+        this.chartFilter_exp_meth = [...this.exp_methFilters[0].fields];
+        this.chartFilter_horizon = [...this.horizonFilters[0].fields];
+        this.chartFilter_field = [...this.fieldFilters[0].fields];
+      }
+    },
     handlerFilterFields(filter) {
       this.chartFilter_field = filter;
     },
@@ -537,9 +562,6 @@ export default {
       this.chartFilter_exp_meth = filter;
     },
     async calcChartData() {
-      console.log("chartFilter_field = ", this.chartFilter_field);
-      console.log("chartFilter_horizon = ", this.chartFilter_horizon);
-      console.log("chartFilter_exp_meth = ", this.chartFilter_exp_meth);
       if (this.chartWells && this.chartWells.length > 0) {
         let field = this.chartFilter_field;
         let horizon = this.chartFilter_horizon;
