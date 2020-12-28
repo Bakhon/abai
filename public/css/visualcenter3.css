@@ -780,3 +780,40 @@ a.dropdown-link-vc3 {
 .all-height {
     height: 100%;
 }
+
+.vc-select-table {
+    user-select: none;
+    cursor: pointer;
+}
+
+.vc-period-item {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 1px solid white;
+    border-radius: 3px;
+    margin: 5px;
+    background: transparent;
+    color: white;
+}
+
+.vc-period-item.active {
+    color: #333333;
+    background: white;
+}
+
+.vc-period-item:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.vc-period-item:disabled:hover {
+    opacity: 0.3;
+}
+
+.vc-period-item:hover {
+    opacity: 0.7;
+}
+
+.vc-period-container {
+    display: flex;
+}
