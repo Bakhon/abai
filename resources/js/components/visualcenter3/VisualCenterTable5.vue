@@ -94,32 +94,32 @@
                                 <tr v-for="item in macroData">
                                     <td class="text-left" style="white-space: nowrap;">{{ item.title }}</td>
                                     <td style="white-space: nowrap;">{{ item.units }}</td>
-                                    <td>{{ (item.dataPlan).toFixed(2) }}</td>
-                                    <td>{{ (item.dataFact).toFixed(2) }}</td>
+                                    <td>{{ (item.dataPlan).toFixed(1) }}</td>
+                                    <td>{{ (item.dataFact).toFixed(1) }}</td>
                                     <td>
                                         <div class="d-flex justify-content-end">
                                             <span v-if="item.dataPlan - item.dataFact > 0" class="arrow2"></span>
                                             <span v-else class="arrow3"></span>
-                                            {{ (Math.abs(item.dataPlan - item.dataFact)).toFixed(2) }}
+                                            {{ (Math.abs(item.dataPlan - item.dataFact)).toFixed(1) }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-end">
                                             <span v-if="((item.dataPlan - item.dataFact) / item.dataPlan * 100) > 0" class="arrow2"></span>
                                             <span v-else class="arrow3"></span>
-                                            {{ Math.abs((item.dataPlan - item.dataFact) / item.dataPlan * 100).toFixed(2) }}
+                                            {{ Math.abs((item.dataPlan - item.dataFact) / item.dataPlan * 100).toFixed(1) }}
                                         </div>
                                     </td>
-                                    <td>{{ (item.dataFactPrevYear).toFixed(2) }}</td>
+                                    <td>{{ (item.dataFactPrevYear).toFixed(1) }}</td>
                                     <td>
                                         <div class="d-flex justify-content-end">
                                             <span v-if="item.dataFact - item.dataFactPrevYear > 0" class="arrow2"></span>
                                             <span v-else class="arrow3"></span>
-                                            {{ (Math.abs(item.dataFact - item.dataFactPrevYear)).toFixed(2) }}
+                                            {{ (Math.abs(item.dataFact - item.dataFactPrevYear)).toFixed(1) }}
                                         </div>
                                     </td>
                                     <td>
-                                        <div v-if="item.plan2020">{{ (item.plan2020).toFixed(2) }}</div>
+                                        <div v-if="item.plan2020">{{ (item.plan2020).toFixed(1) }}</div>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -149,32 +149,32 @@
                                 <tr v-for="item in dzoData">
                                     <td class="text-left">{{ item.title }}</td>
                                     <td>{{ item.units }}</td>
-                                    <td>{{ (item.dataPlan).toFixed(2) }}</td>
-                                    <td>{{ (item.dataFact).toFixed(2) }}</td>
+                                    <td>{{ (item.dataPlan).toFixed(1) }}</td>
+                                    <td>{{ (item.dataFact).toFixed(1) }}</td>
                                     <td>
                                         <div class="d-flex justify-content-end">
                                             <span v-if="item.dataPlan - item.dataFact > 0" class="arrow2"></span>
                                             <span v-else class="arrow3"></span>
-                                            {{ (Math.abs(item.dataPlan - item.dataFact)).toFixed(2) }}
+                                            {{ (Math.abs(item.dataPlan - item.dataFact)).toFixed(1) }}
                                         </div>
                                     </td>
                                     <td>
                                         <div class="d-flex justify-content-end">
                                             <span v-if="((item.dataPlan - item.dataFact) / item.dataPlan * 100) > 0" class="arrow2"></span>
                                             <span v-else class="arrow3"></span>
-                                            {{ Math.abs((item.dataPlan - item.dataFact) / item.dataPlan * 100).toFixed(2) }}
+                                            {{ Math.abs((item.dataPlan - item.dataFact) / item.dataPlan * 100).toFixed(1) }}
                                         </div>
                                     </td>
-                                    <td>{{ (item.dataFactPrevYear).toFixed(2) }}</td>
+                                    <td>{{ (item.dataFactPrevYear).toFixed(1) }}</td>
                                     <td>
                                         <div class="d-flex justify-content-end">
                                             <span v-if="item.dataFact - item.dataFactPrevYear > 0" class="arrow2"></span>
                                             <span v-else class="arrow3"></span>
-                                            {{ (Math.abs(item.dataFact - item.dataFactPrevYear)).toFixed(2) }}
+                                            {{ (Math.abs(item.dataFact - item.dataFactPrevYear)).toFixed(1) }}
                                         </div>
                                     </td>
                                     <td>
-                                        <div v-if="item.plan2020">{{ (item.plan2020).toFixed(2) }}</div>
+                                        <div v-if="item.plan2020">{{ (item.plan2020).toFixed(1) }}</div>
                                     </td>
                                 </tr>
                                 </tbody>
