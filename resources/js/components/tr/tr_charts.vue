@@ -232,11 +232,11 @@ export default {
           this.horizonFilters[0].fields,
           "horizons"
         ),
-        getFilterText(
+        `${getFilterText(
           this.chartFilter_exp_meth,
           this.exp_methFilters[0].fields,
           "expMethods"
-        ),
+        )} добычи`,
       ];
     },
     fieldFilters() {
