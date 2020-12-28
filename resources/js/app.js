@@ -62,6 +62,7 @@ Vue.component('simple-indicator', require('./components/visualcenter3/SimpleIndi
 Vue.component('vc-speedometer-block', require('./components/visualcenter3/VCSpeedometerBlock.vue').default);
 Vue.component('horizontal-indicators', require('./components/visualcenter3/HorizontalIndicators.vue').default);
 Vue.component('vertical-indicators', require('./components/visualcenter3/VerticalIndicators.vue').default);
+Vue.component('vc-upstream-table', require('./components/visualcenter3/UpstreamTable.vue').default);
 Vue.component('visual-center-menu', require('./components/visualcenter/VisualCenterMenu.vue').default);
 Vue.component('economic-component', require('./components/Economic/main.vue').default);
 Vue.component('chart1-component', require('./components/Economic/chart1.vue').default);
@@ -87,7 +88,11 @@ Vue.component('monthly-production', require('./components/reports/MonthlyProduct
 Vue.component('daily-production', require('./components/reports/DailyProduction.vue').default);
 Vue.component('daily-injection', require('./components/reports/DailyInjection.vue').default);
 Vue.component('monthly-injection', require('./components/reports/MonthlyInjection.vue').default);
-Vue.component('well-stock-block', require('./components/reports/WellStockBlock.vue').default);
+Vue.component('analyze-gtm', require('./components/reports/AnalyzeGtm.vue').default);
+Vue.component('dynamics-indicators', require('./components/reports/DynamicsIndicators.vue').default);
+Vue.component('well-fund', require('./components/reports/WellFund.vue').default);
+Vue.component('well-fund-block', require('./components/reports/WellFundBlock.vue').default);
+Vue.component('well-fund-field', require('./components/reports/WellFundField.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);

@@ -1,5 +1,6 @@
 <template>
   <div class="filter-container">
+    <cat-loader v-show="isLoading"/>
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
@@ -64,20 +65,15 @@ export default {
   methods: {
     createDownloadLink(response) {
         this.resultLink = response.data.report_link
-
-      // let blob = new Blob([response.data], {type:'application/*'})
-      // let link = document.createElement('a')
-      // link.href = window.URL.createObjectURL(blob)
-      // link.download = `${this.start_date}_${this.end_date}_exportTable.xls`
-      // link.click();
-      // link.remove();
     },
     updateData() {
-      // let uri = "http://172.20.103.157:8082/well_stock/block/";
-        let uri = "http://0.0.0.0:8090/well_stock/block/";
+      let uri = "http://172.20.103.157:8082/dynamics/indicators/";
+        // let uri = "http://0.0.0.0:8090/dynamics/indicators/";
       let data = {
+        type: 'daily_dynamic_well_injection',
+        period: 'days',
         dzo: this.org,
-        report_date_start: `${this.end_date}`.concat(' 00:00:00'),
+        report_date_start: `${this.end_date}`.substr(0, 8).concat('01 00:00:00'),
         report_date_end: `${this.end_date}`.concat(' 00:00:00')
       };
 
