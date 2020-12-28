@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #40467E; height: 117px; width: 93%; flex-direction: column; z-index: 4000"
+            style="background: #40467E; height: 117px;  flex-direction: column; width: calc(100% - 26px); margin-top: 4px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
