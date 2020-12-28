@@ -249,4 +249,10 @@ return array (
   ),
   'module_name' => 'Мониторинг осложнений',
   'tech_map_prototype' => 'Техкарта прототип',
+  'gus' => 
+  array (
+    'title' => 'База данных ГУ',
+    'create_title' => 'Ввод данных по ГУ',
+    'edit_title' => 'Редактирование ГУ',
+  ),
 );

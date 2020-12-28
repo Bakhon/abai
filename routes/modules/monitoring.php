@@ -100,9 +100,13 @@ Route::group(
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');
 
-
                 Route::get('/settings/fields', 'Settings\FieldValidationsController@index')->name('settings.fields');
                 Route::post('/settings/fields', 'Settings\FieldValidationsController@update')->name('settings.fields.update');
+
+                Route::get('gus/list', 'ComplicationMonitoring\GusController@list')->name('gus.list');
+                Route::get('gus/export', 'ComplicationMonitoring\GusController@export')->name('gus.export');
+                Route::get('gus/history/{gu}', 'ComplicationMonitoring\GusController@history')->name('gus.history');
+                Route::resource('gus','ComplicationMonitoring\GusController');
             }
         );
     }
