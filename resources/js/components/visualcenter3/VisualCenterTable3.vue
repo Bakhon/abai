@@ -1,8 +1,8 @@
 <template>
   <div
-    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height"
+    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height p-2"
   >
-    <div class="left-side flex-grow-1 pr-3">
+    <div class="left-side flex-grow-1 pr-2">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1">
@@ -11,9 +11,9 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format(oil_factDay) }}
+                      {{ new Intl.NumberFormat("ru-RU").format((oil_factDay/1000).toFixed(0)) }}
                     </div>
-                    <div class="unit-vc">тонн</div>
+                    <div class="unit-vc">тыс. тонн</div>
                   </div>
                   <div class="txt1">Добыча нефти</div>
                   <br />
@@ -71,10 +71,10 @@
                   <div class="nu">
                     <div class="number">
                       {{
-                        new Intl.NumberFormat("ru-RU").format(oil_dlv_factDay)
+                        new Intl.NumberFormat("ru-RU").format((oil_dlv_factDay/1000).toFixed(0))
                       }}
                     </div>
-                    <div class="unit-vc">тонн</div>
+                    <div class="unit-vc">тыс. тонн</div>
                   </div>
                   <div class="txt1">Сдача нефти</div>
                   <br />
@@ -136,7 +136,7 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format(gas_factDay) }}
+                      {{ new Intl.NumberFormat("ru-RU").format((gas_factDay/1000).toFixed(0)) }}
                     </div>
                     <div class="unit-vc">
                       <!--млрд.-->
@@ -477,7 +477,9 @@
                           is-range
                           class="m-auto"
                           :model-config="modelConfig"
+                            @dayclick="dayClicked"
                           @input="changeDate"
+                          
                         />
                       </div>
                     </div>
@@ -963,6 +965,7 @@
                             class="m-auto"
                             :model-config="modelConfig"
                             @input="changeDate"
+                              @dayclick="dayClicked"
                           />
                         </div>
                       </div>
@@ -1088,7 +1091,7 @@
         </div>
       </div>
     </div>
-    <div class="right-side2 flex-grow-1">
+    <div class="right-side2 flex-grow-1 pl-1">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1-2">

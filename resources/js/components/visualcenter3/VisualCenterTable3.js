@@ -320,6 +320,12 @@ export default {
       }
     },
 
+    dayClicked(){
+
+      console.log('test');
+this.changeMenu2('4');
+    },
+
 
     changeMenu2(change) {
 
