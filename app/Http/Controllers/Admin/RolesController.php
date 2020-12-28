@@ -21,7 +21,10 @@ class RolesController extends Controller
             'omgngdu' => 'ОМГ НГДУ',
             'omguhe' => 'ОМГ УХЭ',
             'pipes' => 'Трубопроводы',
-            'inhibitors' => 'Ингибиторы'
+            'inhibitors' => 'Ингибиторы',
+            'gu' => 'ГУ',
+            'zu' => 'ЗУ',
+            'well' => 'Скважины',
         ];
 
     public function index()
