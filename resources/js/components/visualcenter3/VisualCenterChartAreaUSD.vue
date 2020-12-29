@@ -29,12 +29,29 @@ export default {
         data: []
       }],
       chartOptions: {
+        legend: {
+          show: true,
+          position: 'top',
+          horizontalAlign: 'left',
+          fontSize: '14px',
+          fontWeight: 400,
+          showForSingleSeries: true,
+        },
         stroke: {
           curve: 'straight',
           colors: ['#1956e5']
         },
         chart: {
-          // locales: 'ru',
+          locales: [{
+            "name": "ru",
+            "options": {
+              "months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+              "shortMonths": ["Янв", "Фев", "Мар", "Апр", "Май", "Июнь", "Июль", "Авг", "Сент", "Окт", "Нояб", "Дек"],
+              "days": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"],
+              "shortDays": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            }
+          }],
+          defaultLocale: "ru",
           foreColor: '#ffffff',
           toolbar: {
             show: false,
@@ -42,7 +59,6 @@ export default {
           },
           id: 'area-datetime',
           type: 'area',
-          // height: 400,
           zoom: {
             autoScaleYaxis: true
           }
@@ -50,24 +66,18 @@ export default {
         annotations: {
           yaxis: [{
             y: 30,
-            borderColor: '#999',
             label: {
               show: true,
               text: 'Support',
               style: {
-                color: "#fff",
+                color: "#333333",
                 background: '#00E396'
               }
             }
           }],
           xaxis: [{
             x: new Date().getTime(),
-            borderColor: '#e30b0b',
             yAxisIndex: 0,
-            axisBorder: {
-              show: true,
-              color: '#36d90e',
-            },
           }]
         },
         dataLabels: {
@@ -81,11 +91,48 @@ export default {
           type: 'datetime',
           min: 1608595200000,
           tickAmount: 6,
-        },
-        tooltip: {
-          x: {
-            format: 'dd MMM yyyy'
+          axisBorder: {
+            show: true,
+            color: '#2f356f',
+            height: 2,
+            width: '100%',
+            offsetX: 0,
+            offsetY: 0
+          },
+          axisTicks: {
+            show: true,
+            borderType: 'solid',
+            color: '#2f356f',
+            height: 6,
+            offsetX: 0,
+            offsetY: 0
+          },
+          labels: {
+            style: {
+              fontSize: '14px'
+            }
           }
+        },
+        yaxis: {
+          labels: {
+            style: {
+              fontSize: '14px'
+            }
+          }
+        },
+        grid: {
+          show: true,
+          borderColor: '#2f356f',
+          xaxis: {
+            lines: {
+              show: false
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true
+            }
+          },
         },
         fill: {
           type: 'gradient',
@@ -97,112 +144,43 @@ export default {
           }
         },
       },
-      // chartOptions: {
-      //   xaxis: {
-      //     labels: {
-      //       show: false,
-      //     },
-      //   },
-      //   yaxis: {
-      //     labels: {
-      //       formatter: function (val) {
-      //         return val.toFixed(0);
-      //       },
-      //     },
-      //   },
-      //   chart: {
-      //     toolbar: {
-      //       show: false,
-      //       autoSelected: "pan",
-      //     },
-      //     zoom: {
-      //       enabled: false,
-      //     },
-      //     foreColor: "#FFFFFF",
-      //     height: 150,
-      //     type: "area",
-      //     stacked: false,
-      //   },
-      //   stroke: {
-      //     curve: "smooth",
-      //   },
-      //   plotOptions: {
-      //     bar: {
-      //       columnWidth: "50%",
-      //     },
-      //   },
-      //   dataLabels: {
-      //     enabled: false,
-      //   },
-      //   labels: [""],
-      //   tooltip: {
-      //     enabled: true,
-      //     enabledOnSeries: undefined,
-      //     shared: true,
-      //     followCursor: false,
-      //     intersect: false,
-      //     inverseOrder: false,
-      //     custom: undefined,
-      //     fillSeriesColor: false,
-      //     theme: false,
-      //     style: {
-      //       fontSize: "12px",
-      //       fontFamily: undefined,
-      //     },
-      //     x: {
-      //       show: false,
-      //       format: "dd MMM",
-      //       formatter: undefined,
-      //     },
-      //     y: {
-      //       show: false,
-      //       formatter: undefined,
-      //       title: {
-      //         formatter: (seriesName) => seriesName,
-      //       },
-      //     },
-      //     z: {
-      //       show: false,
-      //       formatter: undefined,
-      //       title: "Size: ",
-      //     },
-      //
-      //     marker: {
-      //       show: false,
-      //     },
-      //     fixed: {
-      //       enabled: false,
-      //       position: "topRight",
-      //       offsetX: 0,
-      //       offsetY: 0,
-      //     },
-      //   },
-      // },
-      // series: [
-      //   {
-      //     name: "Курс",
-      //     stacked: false,
-      //     type: "area",
-      //     stroke: {
-      //       curve: "smooth",
-      //     },
-      //     data: [11, 32, 45, 32, 34, 52, 41],
-      //   },
-      // ],
     };
   },
   methods: {
+    getDate(timestamp) {
+      return this.$moment(timestamp).format('dddd, DD MMMM YYYY');
+    },
     updateChartOptions(value) {
+      let self = this;
+
       this.chartOptions = {
         ...this.chartOptions, ...{
           xaxis: {
             min: value.for_chart[0][0]
-          }
+          },
+          tooltip: {
+            x: {
+              format: 'dd MMM yyyy'
+            },
+            style: {
+              fontSize: '14px',
+            },
+            custom: function({series, seriesIndex, dataPointIndex, w}) {
+              // console.log(w.globals.labels);
+
+              return '<div class="vc-chart-tooltip">' +
+                  '<div>Покупка</div>' +
+                  '<div class="vc-chart-tooltip-value">' + series[seriesIndex][dataPointIndex] + '</div>' +
+                  '<div>' + self.getDate(w.globals.labels[dataPointIndex]) + '</div>' +
+                  '</div>'
+            }
+          },
         }
       }
 
       this.series = [
         {
+          name: 'Продажа',
           data: value.for_chart
         }
       ]

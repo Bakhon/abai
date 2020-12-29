@@ -23,9 +23,9 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 window.Jquery = require('jquery');
+moment.locale('ru');
 Vue.prototype.$moment = moment
 
 Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar);

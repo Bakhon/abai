@@ -24,7 +24,7 @@
                     @click="selectPeriod(menuDMY.id)"
                     class="vc-period-item"
                     :class="{ 'active': menuDMY.active_usd }"
-                    :disabled="usdChartIsLoading"
+                    :disabled="true"
                 >
                   {{ menuDMY.DMY }}
                 </button>
