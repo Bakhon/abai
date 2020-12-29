@@ -68,16 +68,6 @@
                             v-bind:isLastBlock="true"
                         ></vc-speedometer-block>
                     </div>
-                    <div class="text-center p-3" v-else>
-                        <div class="box">
-                            <div class="cat">
-                                <div class="cat__body"></div>
-                                <div class="cat__body"></div>
-                                <div class="cat__tail"></div>
-                                <div class="cat__head"></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -87,6 +77,7 @@
                 v-bind:dateEnd="dateEnd"
             ></vertical-indicators>
         </div>
+        <cat-loader />
     </div>
 </template>
 <script src="./VisualCenterTable4.js"></script>
