@@ -61,7 +61,7 @@
         v-bind:percents="cashFlowPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Цена на нефть'"
+        v-bind:title="'Цена на нефть (Brent)'"
         v-bind:indicatorValue="oilNow"
         v-bind:units="'$ / bbl'"
         v-bind:hasProgressBar="false"

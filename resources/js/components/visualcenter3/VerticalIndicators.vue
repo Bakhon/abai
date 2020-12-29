@@ -22,7 +22,7 @@
             v-bind:leftNumbers="[{title: 'план', value: kvlPlan}]"
             v-bind:rightNumbers="[{title: 'факт', value: kvlFact}]"
             v-bind:leftUnits="leftUnits"
-            v-bind:rightUnits="'тыс.тенге/тонна'"
+            v-bind:rightUnits="'тенге/тонна'"
             v-bind:title="'КВЛ на тонну'"
             v-bind:isUpArrow="kvlFact > kvlPlan"
             v-bind:progressPercents="Math.abs((kvlPlan - kvlFact) / udIncomePlan * 100).toFixed(0)"
