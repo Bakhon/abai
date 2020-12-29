@@ -22,6 +22,7 @@ export default {
   },
   methods: {
     getDefaultData() {
+      this.$store.commit('globalloading/SET_LOADING',true);
       this.axios
         .get('/ru/getdzocalcsactualmonth', {})
         .then(response => {
@@ -55,6 +56,7 @@ export default {
             this.t6 = [1, 0, 5, 10, 10, 0];
             this.isEnableSpeedometers = true;
           }
+          this.$store.commit('globalloading/SET_LOADING',false);
         });
     },
     changeTable(tableId) {
