@@ -895,12 +895,12 @@
       </div>
 
       <visual-center-usd-table
-          :table-3.sync="Table3"
+          :style="`${Table3}`"
           :selected-usd-period.sync="selectedUsdPeriod"
           @period-select-usd="periodSelectUsd(selectedUsdPeriod)"
           :period-select-func.sync="periodSelectFunc"
           :currency-chart-data.sync="currencyChartData"
-          :usd-chart-is-loading.sunc="usdChartIsLoading"
+          :usd-chart-is-loading.sync="usdChartIsLoading"
           @change-table="changeTable('1')"/>
 
       <div class="third-table big-area" :style="`${Table5}`">

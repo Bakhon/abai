@@ -240,6 +240,7 @@ export default {
       dailyCurrencyChangeIndexUsd: '',
       usdChartIsLoading: false,
       oilChartIsLoading: false,
+      currencyTimeSelect: new Date().toLocaleDateString()
     };
   },
   methods: {
@@ -451,7 +452,8 @@ export default {
       // console.log(this.timeSelect);
       // console.log(this.periodUSD);
 
-      return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+      // return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+      return this.getCurrencyPeriod(new Date().toLocaleDateString(), this.periodUSD);
     },
 
     getCurrencyNow(dates) {
@@ -461,6 +463,9 @@ export default {
 
       this.axios.get(uri).then((response) => {
         let data = response.data;
+
+        // console.log(data);
+        // console.log('=================');
 
         if (data) {
           this.currencyNow = parseInt(data.description * 10) / 10;
@@ -486,18 +491,21 @@ export default {
         let data = response.data;
 
         if (data) {
-          let arrdata2 = [];
+          let arrdata2 = {
+            for_chart: [],
+            for_table: []
+          };
 
           _.forEach(data, function (item) {
-            // arrdata2.push({
-            //   date_string: item.dates,
-            //   date: new Date(item.dates.split('.').reverse().join('-')),
-            //   value: parseInt(item.description[0] * 10) / 10,
-            //   change: parseFloat(item.change[0]),
-            //   index: item.index[0] || null
-            // });
+            arrdata2.for_table.push({
+              date_string: item.dates,
+              // date: new Date(item.dates.split('.').reverse().join('-')),
+              value: parseInt(item.description[0] * 10) / 10,
+              change: Math.abs(parseFloat(item.change[0])),
+              index: item.index[0] || null
+            });
 
-            arrdata2.push([
+            arrdata2.for_chart.push([
               new Date(item.dates.split('.').reverse().join('-')).getTime(),
               parseInt(item.description[0] * 10) / 10,
             ]);
@@ -1317,7 +1325,6 @@ export default {
 
          // console.log(productionPlanAndFactMonthWells);
 
-
           var productionPlanAndFactMonthWellsName = [];
 
           productionPlanAndFactMonthWellsName.push(
@@ -1888,8 +1895,9 @@ export default {
       this.timestampToday = new Date(this.range.start).getTime();
       this.timestampEnd = new Date(this.range.end).getTime();
       this.quantityRange = ((this.timestampEnd - this.timestampToday) / 86400000) + 1;
-      // let nowDate = new Date(this.range.start).toLocaleDateString();
-      this.timeSelect = new Date().toLocaleDateString();
+      let nowDate = new Date(this.range.start).toLocaleDateString();
+      this.timeSelect = nowDate;
+      // this.timeSelect = new Date().toLocaleDateString();
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
       //this.getProductionOilandGas();
       this.getCurrencyNow(this.timeSelect);
@@ -1970,8 +1978,9 @@ export default {
       };
     }
     localStorage.setItem("changeButton", "Yes");
-    // var nowDate = new Date().toLocaleDateString();
-    this.timeSelect = new Date().toLocaleDateString();
+    var nowDate = new Date().toLocaleDateString();
+    this.timeSelect = nowDate;
+    // this.timeSelect = new Date().toLocaleDateString();
     this.timestampToday = new Date(this.range.start).getTime();
     this.timestampEnd = new Date(this.range.end).getTime();
     if (this.company == "all") {
@@ -1993,8 +2002,17 @@ export default {
     //currency and oil down
     periodSelectFunc() {
       let DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
+      let DMY_titles = [
+        "За последние 7 дней",
+        "За последний месяц",
+        "За последние 6 месяцев",
+        "За последний год",
+        "За последние 5 лет"
+      ];
+
       let menuDMY = [];
       let id = 0;
+
       for (let i = 0; i <= 4; i++) {
         let a = {
           index: i,
@@ -2004,6 +2022,7 @@ export default {
         };
 
         a.DMY = DMY[i];
+        a.DMY_title = DMY_titles[i];
         menuDMY.push(a);
 
         if (this.selectedOilPeriod === i) {
