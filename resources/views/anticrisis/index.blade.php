@@ -187,7 +187,7 @@
                                         скважин и доли оплаты простаивающего персонала</p>
                                     <div class="chart-wrap">
                                         <div class="chart-inner">
-                                            <canvas width="1030" height="310" id="main_chart"></canvas>
+                                            <div id="main_chart"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -268,7 +268,7 @@
                                     </table>
                                 </div>
                                 <div class="col-6">
-
+                                    <div id="small_chart"></div>
                                 </div>
                             </div>
                         </div>
@@ -2631,7 +2631,9 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab tab_6" id="tab6"></div>
+                        <div class="tab tab_6" id="tab6">
+                            <div id="hedgehog_chart"></div>
+                        </div>
                         <div class="tab tab_7" id="tab7">
                             <p class="tab__title">Сравнение исходного и предлагаемого вариантов при цене на нефть в Х
                                 $/баррель</p>
@@ -3705,103 +3707,871 @@
             crossorigin="anonymous"></script>
     <script>
         $(function () {
-            var ctx = $('#main_chart');
-            var myChart = new Chart(ctx, {
-                plugins: [{
-                    beforeInit: function (chart, options) {
-                        chart.legend.afterFit = function () {
-                            this.width = this.width + 70;
-                        };
-                    }
-                }],
-                type: 'line',
-                data: {
-                    labels: ['27 000', '25 000', '27 000', '29 000', '25 000', '27 000', '29 000', '25 000', '27 000', '29 000', '25 000', '27 000', '29 000', '25 000', '27 000', '29 000', '29 000'],
-                    datasets: [
-                        {
-                            label: '40%',
-                            fill: false,
-                            backgroundColor: '#81B9FE',
-                            borderColor: '#81B9FE',
-                            data: [NaN, 1835, 1825, 1810, 1790, 1765, 1735, 1700, 1640, 1575, 1510, 1440, 1365, 1285, 1200, 1110, NaN],
-                            pointRadius: 6,
-                            borderWidth: 1
-                        },
-                        {
-                            label: '30%',
-                            fill: false,
-                            backgroundColor: '#FFC607',
-                            borderColor: '#FFC607',
-                            data: [NaN, 1805, 1795, 1780, 1760, 1735, 1705, 1670, 1610, 1545, 1480, 1410, 1335, 1255, 1170, 1080, NaN],
-                            pointRadius: 6,
-                            borderWidth: 1
-                        },
-                        {
-                            label: '20%',
-                            fill: false,
-                            backgroundColor: '#A8A8A8',
-                            borderColor: '#A8A8A8',
-                            data: [NaN, 1775, 1765, 1750, 1730, 1705, 1675, 1640, 1580, 1515, 1450, 1380, 1305, 1225, 1140, 1050, NaN],
-                            pointRadius: 6,
-                            borderWidth: 1
-                        },
-                        {
-                            label: '10%',
-                            fill: false,
-                            backgroundColor: '#F27E31',
-                            borderColor: '#F27E31',
-                            data: [NaN, 1745, 1735, 1720, 1700, 1675, 1645, 1610, 1550, 1485, 1420, 1350, 1275, 1195, 1110, 1020, NaN],
-                            pointRadius: 6,
-                            borderWidth: 1
-                        },
-                        {
-                            label: '0%',
-                            backgroundColor: '#426DB0',
-                            borderColor: '#426DB0',
-                            data: [NaN, 1715, 1705, 1690, 1670, 1645, 1615, 1580, 1520, 1455, 1390, 1320, 1245, 1165, 1080, 990, NaN],
-                            fill: false,
-                            pointRadius: 6,
-                            borderWidth: 1
-                        },
-                    ]
+            var options = {
+                annotations: {
+                    points:
+                        [
+                            {
+                                x: 3753,
+                                y: 160840,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '1735'
+                                }
+                            },
+                            {
+                                x: 3808,
+                                y: 159680,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '1819'
+                                }
+                            },
+                            {
+                                x: 3838,
+                                y: 157134,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '1903'
+                                }
+                            },
+                            {
+                                x: 3866,
+                                y: 154459,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '1987'
+                                }
+                            },
+                            {
+                                x: 3895,
+                                y: 151275,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2071'
+                                }
+                            },
+                            {
+                                x: 3921,
+                                y: 148279,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2155'
+                                }
+                            },
+                            {
+                                x: 3946,
+                                y: 145012,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2239'
+                                }
+                            },
+                            {
+                                x: 3967,
+                                y: 141648,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2323'
+                                }
+                            },
+                            {
+                                x: 3986,
+                                y: 138079,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2406'
+                                }
+                            },
+                            {
+                                x: 4005,
+                                y: 134441,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2489'
+                                }
+                            },
+                            {
+                                x: 4021,
+                                y: 130540,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2572'
+                                }
+                            },
+                            {
+                                x: 4035,
+                                y: 126272,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2660'
+                                }
+                            },
+                            {
+                                x: 4046,
+                                y: 121945,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2745'
+                                }
+                            },
+                            {
+                                x: 4056,
+                                y: 117345,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2896'
+                                }
+                            },
+                            {
+                                x: 4063,
+                                y: 112284,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2947'
+                                }
+                            },
+                            {
+                                x: 4064,
+                                y: 107632,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '3000'
+                                }
+                            },
+                        ]
                 },
-                options: {
-                    responsive: true,
-                    scales: {
-                        xAxes: [{
-                            gridLines: {
-                                color: '#454d7d',
-                                lineWidth: 0.2,
-                                zeroLineColor: '#81B9FE'
-                            },
-                            ticks: {
-                                beginAtZero: true,
-                                fontColor: '#fff',
-                                color: '#81B9FE'
-                            }
-                        }],
-                        yAxes: [{
-                            gridLines: {
-                                color: '#454D7D',
-                                lineWidth: 0.2,
-                                zeroLineColor: '#81B9FE'
-                            },
-                            ticks: {
-                                beginAtZero: true,
-                                fontColor: '#fff',
-                                color: '#81B9FE'
-                            }
-                        }]
+                series: [{
+                    name: "0% c ГТМ",
+                    data: [[3753, 160840], [3808, 159680], [3838, 157134], [3866, 154459], [3895, 151275], [3921, 148279], [3946, 145012], [3967, 141648], [3986, 138079],
+                        [4005, 134441], [4021, 130540], [4035, 126272], [4046, 121945], [4056, 117345], [4063, 112284], [4064, 107632]]
+                }, {
+                    name: "0%",
+                    data: [[3578, 147828], [3633, 146984], [3682, 145847], [3728, 144423], [3772, 142727], [3812, 140821], [3851, 138684], [3886, 136323], [3919, 133774], [3949, 130992], [3976, 127992], [4001, 124553], [4021, 120948], [4040, 117056], [4056, 112727], [4064, 107632]]
+                }, {
+                    name: "10%",
+                    data: [[3578, 143455], [3633, 142898], [3682, 142033], [3728, 140885], [3772, 139473], [3812, 137851], [3851, 136002], [3886, 133925], [3919, 131662], [3949, 129165], [3976, 126453], [4001, 123320], [4021, 120009], [4040, 116420], [4056, 112404], [4064, 107632]]
+                }, {
+                    name: "20%",
+                    data: [[3578, 139082], [3633, 138802], [3682, 138218], [3728, 137346], [3772, 136219], [3812, 134881], [3851, 133320], [3886, 131527], [3919, 129549], [3949, 127339], [3976, 124913], [4001, 122086], [4021, 119070], [4040, 115785], [4056, 112080], [4064, 107632]]
+                }, {
+                    name: "30%",
+                    data: [[3578, 134709], [3633, 134711], [3682, 134404], [3728, 133808], [3772, 132965], [3812, 131912], [3851, 130638], [3886, 129129], [3919, 127437], [3949, 125513], [3976, 123374], [4001, 120852], [4021, 118131], [4040, 115149], [4056, 111757], [4064, 107632]]
+                }, {
+                    name: "40%",
+                    data: [[3578, 130336], [3633, 130620], [3682, 130589], [3728, 130270], [3772, 129711], [3812, 128942], [3851, 127955], [3886, 126732], [3919, 125324], [3949, 123686], [3976, 121835], [4001, 119618], [4021, 117192], [4040, 114514], [4056, 111434], [4064, 107632]]
+                }, {
+                    name: "50%",
+                    data: [[3578, 125963], [3633, 126528], [3682, 126774], [3728, 126732], [3772, 126457], [3812, 125972], [3851, 125273], [3886, 124334], [3919, 123211], [3949, 121860], [3976, 120296], [4001, 118385], [4021, 116253], [4040, 113879], [4056, 111111], [4064, 107632]]
+                }, {
+                    name: "60%",
+                    data: [[3578, 121590], [3633, 122437], [3682, 122960], [3728, 123194], [3772, 123203], [3812, 123003], [3851, 122591], [3886, 121936], [3919, 121099], [3949, 120034], [3976, 118757], [4001, 117151], [4021, 115314], [4040, 113243], [4056, 110788], [4064, 107632]]
+                }, {
+                    name: "70%",
+                    data: [[3578, 117217], [3633, 118346], [3682, 119145], [3728, 119656], [3772, 119949], [3812, 120033], [3851, 119909], [3886, 119538], [3919, 118986], [3949, 118207], [3976, 117218], [4001, 115917], [4021, 114376], [4040, 112608], [4056, 110465], [4064, 107632]]
+                }, {
+                    name: "80%",
+                    data: [[3578, 112844], [3633, 114255], [3682, 115331], [3728, 116118], [3772, 116696], [3812, 117063], [3851, 117227], [3886, 117141], [3919, 116874], [3949, 116381], [3976, 115678], [4001, 114683], [4021, 113437], [4040, 111972], [4056, 110142], [4064, 107632]]
+                }, {
+                    name: "90%",
+                    data: [[3578, 108472], [3633, 110164], [3682, 111516], [3728, 112579], [3772, 113442], [3812, 114094], [3851, 114545], [3886, 114743], [3919, 114761], [3949, 114555], [3976, 114139], [4001, 113450], [4021, 112498], [4040, 111337], [4056, 109818], [4064, 107632]]
+                }, {
+                    name: "100%",
+                    data: [[3578, 104099], [3633, 106073], [3682, 107702], [3728, 109041], [3772, 110188], [3812, 111124], [3851, 111863], [3886, 112345], [3919, 112649], [3949, 112729], [3976, 112600], [4001, 112216], [4021, 111559], [4040, 110702], [4056, 109495], [4064, 107632]]
+                }],
+                chart: {
+                    height: 320,
+                    width: 1000,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
                     },
-                    legend: {
-                        position: 'left',
-                        labels: {
-                            fontColor: '#ffffff',
-                            usePointStyle: true
+                    animations: {
+                        enabled: false,
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    width: 1,
+                    curve: 'straight',
+                    colors: ['#656A8A', '#33548B', '#9C7300', '#454D7D', '#A2480D', '#374AB4', '#78B44E', '#81B9FE', '#FFC607', '#A8A8A8', '#F27E31', '#426DB0'],
+                    dashArray: [5, 0]
+                },
+                markers: {
+                    size: 4,
+                    strokeWidth: 0,
+                    colors: ['#656A8A', '#33548B', '#9C7300', '#454D7D', '#A2480D', '#374AB4', '#78B44E', '#81B9FE', '#FFC607', '#A8A8A8', '#F27E31', '#426DB0']
+                },
+                tooltip: {
+                    enabled: false
+                },
+                grid: {
+                    row: {
+                        colors: ['transparent'],
+                        opacity: 0.5
+                    },
+                    borderColor: '#353565',
+                },
+                xaxis: {
+                    title: {
+                        text: 'Годовая добыча нефти, тыс. тонн',
+                        style: {
+                            color: '#fff'
                         }
+                    },
+                    labels: {
+                        style: {
+                            colors: ['#fff']
+                        }
+                    },
+                    min: 3500,
+                    max: 4100,
+                    tickAmount: 6,
+                    axisBorder: {
+                        show: true,
+                        color: '#81B9FE',
+                        offsetX: 0,
+                        offsetY: 0
+                    },
+                },
+                yaxis: {
+                    title: {
+                        text: 'Доход/убыток предприятия, млрд. тг',
+                        style: {
+                            color: '#fff'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            colors: ['#fff']
+                        },
+                        formatter: function(seriesName, opts) {
+                            return Math.round(parseInt(seriesName/1000))
+                        }
+                    },
+                    min: 80000,
+                    max: 170000,
+                    axisBorder: {
+                        show: true,
+                        color: '#81B9FE',
+                        offsetX: 0,
+                        offsetY: 0
+                    },
+                },
+                legend: {
+                    position: 'left',
+                    labels: {
+                        colors: ['#fff']
+                    },
+                    markers: {
+                        fillColors: ['#656A8A', '#33548B', '#9C7300', '#454D7D', '#A2480D', '#374AB4', '#78B44E', '#81B9FE', '#FFC607', '#A8A8A8', '#F27E31', '#426DB0']
                     }
                 }
-            });
+            };
+
+            var chart = new ApexCharts(document.querySelector("#main_chart"), options);
+            chart.render();
+
+
+            var options = {
+                annotations: {
+                    points:
+                        [
+                            {
+                                x: 3753,
+                                y: 160840,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '1735'
+                                }
+                            },
+                            {
+                                x: 3808,
+                                y: 159680,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '1819'
+                                }
+                            },
+                            {
+                                x: 3838,
+                                y: 157134,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '1903'
+                                }
+                            },
+                            {
+                                x: 3866,
+                                y: 154459,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '1987'
+                                }
+                            },
+                            {
+                                x: 3895,
+                                y: 151275,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2071'
+                                }
+                            },
+                            {
+                                x: 3921,
+                                y: 148279,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2155'
+                                }
+                            },
+                            {
+                                x: 3946,
+                                y: 145012,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2239'
+                                }
+                            },
+                            {
+                                x: 3967,
+                                y: 141648,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2323'
+                                }
+                            },
+                            {
+                                x: 3986,
+                                y: 138079,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2406'
+                                }
+                            },
+                            {
+                                x: 4005,
+                                y: 134441,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2489'
+                                }
+                            },
+                            {
+                                x: 4021,
+                                y: 130540,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2572'
+                                }
+                            },
+                            {
+                                x: 4035,
+                                y: 126272,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2660'
+                                }
+                            },
+                            {
+                                x: 4046,
+                                y: 121945,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2745'
+                                }
+                            },
+                            {
+                                x: 4056,
+                                y: 117345,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2896'
+                                }
+                            },
+                            {
+                                x: 4063,
+                                y: 112284,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '2947'
+                                }
+                            },
+                            {
+                                x: 4064,
+                                y: 107632,
+                                marker: {
+                                    size: 0,
+                                },
+                                label: {
+                                    borderColor: 'transparent',
+                                    style: {
+                                        background: 'transparent',
+                                        color: '#ffffff',
+                                    },
+                                    text: '3000'
+                                }
+                            },
+                        ]
+                },
+                series: [{
+                    name: "0% c ГТМ",
+                    data: [[3753, 160840], [3808, 159680], [3838, 157134], [3866, 154459], [3895, 151275], [3921, 148279], [3946, 145012], [3967, 141648], [3986, 138079],
+                        [4005, 134441], [4021, 130540], [4035, 126272], [4046, 121945], [4056, 117345], [4063, 112284], [4064, 107632]]
+                }, {
+                    name: "0%",
+                    data: [[3578, 147828], [3633, 146984], [3682, 145847], [3728, 144423], [3772, 142727], [3812, 140821], [3851, 138684], [3886, 136323], [3919, 133774], [3949, 130992], [3976, 127992], [4001, 124553], [4021, 120948], [4040, 117056], [4056, 112727], [4064, 107632]]
+                }, {
+                    name: "10%",
+                    data: [[3578, 143455], [3633, 142898], [3682, 142033], [3728, 140885], [3772, 139473], [3812, 137851], [3851, 136002], [3886, 133925], [3919, 131662], [3949, 129165], [3976, 126453], [4001, 123320], [4021, 120009], [4040, 116420], [4056, 112404], [4064, 107632]]
+                }, {
+                    name: "20%",
+                    data: [[3578, 139082], [3633, 138802], [3682, 138218], [3728, 137346], [3772, 136219], [3812, 134881], [3851, 133320], [3886, 131527], [3919, 129549], [3949, 127339], [3976, 124913], [4001, 122086], [4021, 119070], [4040, 115785], [4056, 112080], [4064, 107632]]
+                }, {
+                    name: "30%",
+                    data: [[3578, 134709], [3633, 134711], [3682, 134404], [3728, 133808], [3772, 132965], [3812, 131912], [3851, 130638], [3886, 129129], [3919, 127437], [3949, 125513], [3976, 123374], [4001, 120852], [4021, 118131], [4040, 115149], [4056, 111757], [4064, 107632]]
+                }, {
+                    name: "40%",
+                    data: [[3578, 130336], [3633, 130620], [3682, 130589], [3728, 130270], [3772, 129711], [3812, 128942], [3851, 127955], [3886, 126732], [3919, 125324], [3949, 123686], [3976, 121835], [4001, 119618], [4021, 117192], [4040, 114514], [4056, 111434], [4064, 107632]]
+                }, {
+                    name: "50%",
+                    data: [[3578, 125963], [3633, 126528], [3682, 126774], [3728, 126732], [3772, 126457], [3812, 125972], [3851, 125273], [3886, 124334], [3919, 123211], [3949, 121860], [3976, 120296], [4001, 118385], [4021, 116253], [4040, 113879], [4056, 111111], [4064, 107632]]
+                }, {
+                    name: "60%",
+                    data: [[3578, 121590], [3633, 122437], [3682, 122960], [3728, 123194], [3772, 123203], [3812, 123003], [3851, 122591], [3886, 121936], [3919, 121099], [3949, 120034], [3976, 118757], [4001, 117151], [4021, 115314], [4040, 113243], [4056, 110788], [4064, 107632]]
+                }, {
+                    name: "70%",
+                    data: [[3578, 117217], [3633, 118346], [3682, 119145], [3728, 119656], [3772, 119949], [3812, 120033], [3851, 119909], [3886, 119538], [3919, 118986], [3949, 118207], [3976, 117218], [4001, 115917], [4021, 114376], [4040, 112608], [4056, 110465], [4064, 107632]]
+                }, {
+                    name: "80%",
+                    data: [[3578, 112844], [3633, 114255], [3682, 115331], [3728, 116118], [3772, 116696], [3812, 117063], [3851, 117227], [3886, 117141], [3919, 116874], [3949, 116381], [3976, 115678], [4001, 114683], [4021, 113437], [4040, 111972], [4056, 110142], [4064, 107632]]
+                }, {
+                    name: "90%",
+                    data: [[3578, 108472], [3633, 110164], [3682, 111516], [3728, 112579], [3772, 113442], [3812, 114094], [3851, 114545], [3886, 114743], [3919, 114761], [3949, 114555], [3976, 114139], [4001, 113450], [4021, 112498], [4040, 111337], [4056, 109818], [4064, 107632]]
+                }, {
+                    name: "100%",
+                    data: [[3578, 104099], [3633, 106073], [3682, 107702], [3728, 109041], [3772, 110188], [3812, 111124], [3851, 111863], [3886, 112345], [3919, 112649], [3949, 112729], [3976, 112600], [4001, 112216], [4021, 111559], [4040, 110702], [4056, 109495], [4064, 107632]]
+                }],
+                chart: {
+                    height: 700,
+                    width: 1300,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    },
+                    animations: {
+                        enabled: false,
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    width: 1,
+                    curve: 'straight',
+                    colors: ['#656A8A', '#33548B', '#9C7300', '#454D7D', '#A2480D', '#374AB4', '#78B44E', '#81B9FE', '#FFC607', '#A8A8A8', '#F27E31', '#426DB0'],
+                    dashArray: [5, 0]
+                },
+                markers: {
+                    size: 4,
+                    strokeWidth: 0,
+                    colors: ['#656A8A', '#33548B', '#9C7300', '#454D7D', '#A2480D', '#374AB4', '#78B44E', '#81B9FE', '#FFC607', '#A8A8A8', '#F27E31', '#426DB0']
+                },
+                tooltip: {
+                    enabled: false
+                },
+                grid: {
+                    row: {
+                        colors: ['transparent'],
+                        opacity: 0.5
+                    },
+                    borderColor: '#353565',
+                },
+                xaxis: {
+                    title: {
+                        text: 'Годовая добыча нефти, тыс. тонн',
+                        style: {
+                            color: '#fff'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            colors: ['#fff']
+                        }
+                    },
+                    min: 3500,
+                    max: 4100,
+                    tickAmount: 6,
+                    axisBorder: {
+                        show: true,
+                        color: '#81B9FE',
+                        offsetX: 0,
+                        offsetY: 0
+                    },
+                },
+                yaxis: {
+                    title: {
+                        text: 'Доход/убыток предприятия, млрд. тг',
+                        style: {
+                            color: '#fff'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            colors: ['#fff']
+                        },
+                        formatter: function(seriesName, opts) {
+                            return Math.round(parseInt(seriesName/1000))
+                        }
+                    },
+                    min: 90000,
+                    max: 170000,
+                    axisBorder: {
+                        show: true,
+                        color: '#81B9FE',
+                        offsetX: 0,
+                        offsetY: 0
+                    },
+                },
+                legend: {
+                    position: 'left',
+                    labels: {
+                        colors: ['#fff']
+                    },
+                    markers: {
+                        fillColors: ['#656A8A', '#33548B', '#9C7300', '#454D7D', '#A2480D', '#374AB4', '#78B44E', '#81B9FE', '#FFC607', '#A8A8A8', '#F27E31', '#426DB0']
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#hedgehog_chart"), options);
+            chart.render();
+
+            var options = {
+                series: [{
+                    name: 'Операционная прибыль / убыток до оптимизации',
+                    type: 'bar',
+                    data: [-48, -16, 16, 42, 80, 102, 131]
+                }, {
+                    name: 'Операционная прибыль / убыток после оптимизации',
+                    type: 'bar',
+                    data: [18, 48, 74, 99, 135, 157, 183]
+                }, {
+                    name: '',
+                    type: 'line',
+                    data: [156, 164, 178, 183, 195, 199, 208]
+                }, {
+                    name: '',
+                    type: 'line',
+                    data: [174, 210, 252, 282, 330, 355, 391]
+                }, {
+                    name: 'Валовый доход до оптимизации',
+                    type: 'line',
+                    data: [198, 230, 262, 289, 327, 349, 377]
+                }, {
+                    name: 'Валовый доход после оптимизации',
+                    type: 'line',
+                    data: [246, 246, 246, 246, 246, 246, 246]
+                }],
+                chart: {
+                    height: 354,
+                    width: 566,
+                    type: 'line',
+                    zoom: {
+                        enabled: false
+                    },
+                    animations: {
+                        enabled: false,
+                    }
+                },
+                stroke: {
+                    width: [0, 0, 3, 3, 3, 3],
+                    curve: 'straight',
+                    colors: ['#c4c4c4', '#147050', '#F27E31', '#F27E31', '#82BAFF', '#82BAFF'],
+                    dashArray: [0, 0, 5, 0, 0, 5]
+                },
+                fill: {
+                    opacity: 1,
+                    colors: ['#c4c4c4', '#147050', '#F27E31', '#F27E31', '#82BAFF', '#82BAFF']
+                },
+                markers: {
+                    size: 4,
+                    strokeWidth: 0,
+                    colors: ['#c4c4c4', '#147050', '#F27E31', '#F27E31', '#82BAFF', '#82BAFF']
+                },
+                dataLabels: {
+                    enabled: true,
+                    enabledOnSeries: [0, 1],
+                    background: {
+                        enabled: false
+                    },
+                    style: {
+                        colors: ['#fff']
+                    },
+                    offsetY: -10
+                },
+                yaxis: {
+                    title: {
+                        text: 'млрд. тенге',
+                        style: {
+                            color: '#fff'
+                        }
+                    },
+                    labels: {
+                        style: {
+                            colors: ['#fff']
+                        }
+                    },
+                    min: -50,
+                    max: 400,
+                    axisBorder: {
+                        show: false
+                    }
+                },
+                grid: {
+                    row: {
+                        colors: ['transparent'],
+                        opacity: 0.5
+                    },
+                    borderColor: '#353565',
+                },
+                tooltip: {
+                    enabled: false
+                },
+                labels: ['20$/bbl', '25$/bbl', '30$/bbl', '35$/bbl', '40$/bbl', '50$/bbl', '60$/bbl'],
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        colors: ['#fff']
+                    },
+                    markers: {
+                        fillColors: ['#C4C4C4', '#147050', '#F27E31', '#F27E31', '#82BAFF', '#82BAFF']
+                    }
+                }
+            };
+
+            var chart = new ApexCharts(document.querySelector("#small_chart"), options);
+            chart.render();
+
 
             $('.button1').click(function () {
                 $('.button1').removeClass('active')
