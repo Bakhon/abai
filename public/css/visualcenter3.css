@@ -361,6 +361,10 @@ td:last-of-type {
     white-space: nowrap;
 }
 
+.first-td:hover {
+    text-decoration: underline;
+}
+
 /* Calendar */
 
 .month-day {
@@ -665,6 +669,7 @@ li.center-li {
 .assets4:hover {
     text-align: center;
     text-decoration: underline;
+    cursor: pointer;
     color: white;
 }
 

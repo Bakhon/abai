@@ -479,7 +479,7 @@
                           :model-config="modelConfig"
                             @dayclick="dayClicked"
                           @input="changeDate"
-                          
+
                         />
                       </div>
                     </div>
@@ -495,32 +495,32 @@
                 <td>-->
 
           <div class="row mt-3">
-            <div
+            <h5
               class="col assets4"
               :style="`${buttonHover11}`"
               @click="changeAssets('b11')"
             >
               Операционные активы
-            </div>
+            </h5>
 
-            <div
+            <h5
               class="col assets4"
               :style="`${buttonHover12}`"
               @click="changeAssets('b12')"
             >
               Неоперационные активы
-            </div>
+            </h5>
 
-            <div
+            <h5
               class="col assets4"
               :style="`${buttonHover13}`"
               @click="changeAssets('b13')"
             >
               Все активы КМГ
-            </div>
+            </h5>
 
             <!-- </tr>
-           
+
        </div>-->
           </div>
 
@@ -639,7 +639,7 @@
                         )}`"
                       ></div>
                       <div class="percent2 font">
-                        <!--                                       
+                        <!--
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
@@ -694,11 +694,16 @@
 
                   <tr v-for="(item, index) in bigTable">
                     <td
+                      class="d-flex flex-row"
                       @click="saveCompany(item.dzoMonth)"
                       :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
+                      style="cursor: pointer;"
                     >
                       <div class="first-td">
                         {{ getNameDzoFull(item.dzoMonth) }}
+                      </div>
+                      <div class="mt-2 ml-1">
+                        <img class="w-75" src="/img/icons/link.svg">
                       </div>
                     </td>
 
