@@ -981,4 +981,8 @@ a.dropdown-link-vc3 {
   display: none;
 }
 
+.apexcharts-toolbar {
+  display: none !important;
+}
+
 /*# sourceMappingURL=anticrisis.css.map */
