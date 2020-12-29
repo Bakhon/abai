@@ -188,7 +188,7 @@
           </td>
           <td rowspan="2" style="background: #2c3379"><span>Pзаб</span></td>
           <td rowspan="2" style="background: #2c3379"><span>Pпл</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>Кпр</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>Кпрод</span></td>
           <td rowspan="2" style="background: #1a2370"><span>Qж</span></td>
           <td rowspan="2" style="background: #1a2370"><span>Qн</span></td>
           <td rowspan="2" style="background: #1a2370">
@@ -196,7 +196,7 @@
           </td>
           <td rowspan="2" style="background: #1a2370"><span>Pзаб</span></td>
           <td rowspan="2" style="background: #1a2370"><span>Pпл</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Кпр</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>Кпрод</span></td>
           <td rowspan="2" style="background: #e50303"><span>dQн</span></td>
           <td rowspan="2" style="background: #f08143">
             <span>Недостижение режимного Pзаб</span>
@@ -403,7 +403,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_o_1[0] * 10) / 10 }}</span>
+            <span v-if="row.q_o_1[0] != null">{{ Math.round(row.q_o_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_o_1[1][1] }}
             </span>
@@ -431,7 +431,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.wct_1[0] * 10) / 10 }}</span>
+            <span v-if="row.wct_1[0] != null">{{ Math.round(row.wct_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].wct_1[1][1] }}
             </span>
@@ -459,7 +459,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.bhp_1[0] * 10) / 10 }}</span>
+            <span  v-if="row.bhp_1[0] != null">{{ Math.round(row.bhp_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].bhp_1[1][1] }}
             </span>
@@ -487,7 +487,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.p_res_1[0] * 10) / 10 }}</span>
+            <span v-if="row.p_res_1[0] != null">{{ Math.round(row.p_res_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].p_res_1[1][1] }}
             </span>
@@ -513,7 +513,7 @@
               :style="`background :${getColorTwo(wells[row_index].pi_1[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.pi_1[0] * 10) / 10 }}</span>
+            <span v-if="row.pi_1[0] != null">{{ Math.round(row.pi_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].pi_1[1][1] }}
             </span>
@@ -541,7 +541,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_l_2[0] * 10) / 10 }}</span>
+            <span v-if="row.q_l_2[0] != null">{{ Math.round(row.q_l_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_l_2[1][1] }}
             </span>
@@ -569,7 +569,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_o_2[0] * 10) / 10 }}</span>
+            <span v-if="row.q_o_2[0] != null">{{ Math.round(row.q_o_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_o_2[1][1] }}
             </span>
@@ -597,7 +597,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.wct_2[0] * 10) / 10 }}</span>
+            <span v-if="row.wct_2[0] != null">{{ Math.round(row.wct_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].wct_2[1][1] }}
             </span>
@@ -625,7 +625,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.bhp_2[0] * 10) / 10 }}</span>
+            <span v-if="row.bhp_2[0] != null">{{ Math.round(row.bhp_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].bhp_2[1][1] }}
             </span>
@@ -653,7 +653,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.p_res_2[0] * 10) / 10 }}</span>
+            <span v-if="row.p_res_2[0] != null">{{ Math.round(row.p_res_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].p_res_2[1][1] }}
             </span>
@@ -679,7 +679,7 @@
               :style="`background :${getColorTwo(wells[row_index].pi_2[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.pi_2[0] * 10) / 10 }}</span>
+            <span v-if="row.pi_2[0] != null">{{ Math.round(row.pi_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].pi_2[1][1] }}
             </span>
@@ -714,7 +714,7 @@
               :style="`background :${getColorTwo(wells[row_index].dqn[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.dqn[0] * 10) / 10 }}</span>
+            <span v-if="row.dqn[0] != null">{{ Math.round(row.dqn[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].dqn[1][1] }}
             </span>
@@ -750,7 +750,7 @@
               :style="`background :${getColorTwo(wells[row_index].Pbh[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.Pbh[0] * 10) / 10 }}</span>
+            <span v-if="row.Pbh[0] != null">{{ Math.round(row.Pbh[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].Pbh[1][1] }}
             </span>
@@ -786,7 +786,7 @@
               :style="`background :${getColorTwo(wells[row_index].wct[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.wct[0] * 10) / 10 }}</span>
+            <span v-if="row.wct[0] != null">{{ Math.round(row.wct[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].wct[1][1] }}
             </span>
@@ -826,7 +826,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.p_res[0] * 10) / 10 }}</span>
+            <span v-if="row.p_res[0] != null">{{ Math.round(row.p_res[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].p_res[1][1] }}
             </span>
@@ -861,7 +861,7 @@
               :style="`background :${getColorTwo(wells[row_index].PI[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.PI[0] * 10) / 10 }}</span>
+            <span v-if="row.PI[0] != null">{{ Math.round(row.PI[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].PI[1][1] }}
             </span>

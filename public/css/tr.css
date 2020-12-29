@@ -120,7 +120,6 @@ table {
     padding-bottom: 0px;
 }
 
-
 .CellWithComment{
     position:relative;
     
@@ -138,11 +137,14 @@ table {
 
 .circle-err {
     display: block;
-    background: #0d092a;
+    /* background: #0d092a; */
     height: 10px;
     border-radius: 50px;
     width: 10px;
     margin-right: 20px;
+    background: rgb(255, 0, 0);
+    /* float: left;
+    margin-right: -10px; */
     /* cursor: pointer; */
 }
 
