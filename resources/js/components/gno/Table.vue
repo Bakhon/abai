@@ -134,22 +134,24 @@
                     {{ sk }}
                   </div>
 
-                  <div class="devices-data table-border-gno-top no-gutter col-7">
+                  <div class="hide-block"  v-show="!hideStrokeLength">
+                    <div class="devices-data table-border-gno-top no-gutter col-7">
                     Длина хода
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{strokeLenDev}} м
                   </div>
+                  </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Число качаний
+                    {{ freq }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{spmDev}} 1/мин
+                    {{spmDev}} 
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Диаметр насоса
+                    {{ dNasosa }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ pumpType }} мм
@@ -2529,7 +2531,7 @@ export default {
       grp_skin: false,
       newData: null,
       strokeLenDev: null,
-      spmDev: null,
+      spmDev: '1/мин',
       expAnalysisData:{
         NNO1:null,
         NNO2:null,
@@ -2565,7 +2567,10 @@ export default {
       khOkr: null,
       skinOkr: null,
       presOkr: null,
-
+      stanokKachalka: null,
+      freq: 'Число качаний',
+      dNasosa: 'Диаметр насоса',
+      hideStrokeLength: false,
     };
 
   },
@@ -2592,7 +2597,8 @@ export default {
       } else {
         return 'Кривая притока'
       }
-    }
+    },
+    
   },
   created() {
     window.addEventListener("resize", () => {
@@ -2681,7 +2687,18 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
-        this.spmDev = data["Well Data"]["spm"][0]
+        if (this.expMeth == 'ШГН') {
+          this.dNasosa = 'Диаметр насоса'
+          this.freq = 'Число качаний'
+          this.spmDev = data["Well Data"]["spm"][0] + ' 1/мин'
+        } else {
+          this.dNasosa = 'Номинальная подача'
+          this.freq = 'Частота'
+          this.spmDev = data["Well Data"]["freq"][0] + ' Гц'
+        }
+        if (this.expMeth == 'УЭЦН') {
+        this.hideStrokeLength = true
+        } else
 
 
         this.stopDate = this.stopDate.substring(0, 10)
