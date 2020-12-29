@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cdng extends Model
 {
+    public function gu()
+    {
+        return $this->hasMany(Gu::class);
+    }
+
     public function omgngdu()
     {
         return $this->hasMany(\App\Models\ComplicationMonitoring\OmgNGDU::class);

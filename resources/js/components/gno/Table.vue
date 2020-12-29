@@ -18,7 +18,7 @@
                 Скважина №
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
-                <input v-model="wellNumber" type="text" @change="getWellNumber(wellNumber)" class="square2" />
+                <input v-model="wellNumber" onfocus="this.value=''" type="text"  @change="getWellNumber(wellNumber)" class="square2" />
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 Новая скважина
@@ -134,22 +134,24 @@
                     {{ sk }}
                   </div>
 
-                  <div class="devices-data table-border-gno-top no-gutter col-7">
+                  <div class="hide-block"  v-show="!hideStrokeLength">
+                    <div class="devices-data table-border-gno-top no-gutter col-7">
                     Длина хода
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{strokeLenDev}} м
                   </div>
+                  </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Число качаний
+                    {{ freq }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{spmDev}} 1/мин
+                    {{spmDev}} 
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Диаметр насоса
+                    {{ dNasosa }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ pumpType }} мм
@@ -178,6 +180,7 @@
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ stopDate }}
                   </div>
+                  <div class="prs-button" @click="onPrsButtonClick()">Информация о выполненных ремонтах</div>
                 </div>
               </div>
             </div>
@@ -535,6 +538,21 @@
                         </tbody>
                       </table>
                     </perfect-scrollbar>
+                  </div>
+                </div>
+              </modal>
+
+              <modal class="" name="modal-prs" :width="1150" :height="450" :adaptive="true">
+                <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title">
+                      Выполненные ремонты
+                    </div>
+
+                    <button type="button" class="modal-bign-button" @click="closeModal('modalNearWells')">
+                      Закрыть
+                    </button>
+
                   </div>
                 </div>
               </modal>
@@ -1345,7 +1363,7 @@
                               </div>
                               <div class="col-4">
                                 <label class="label-for-celevoi pl-3">Нсп</label>
-                                <input v-model="hPumpValue" @change="postCurveData()" type="text"
+                                <input v-model="hPumpValue" @change="postCurveData()" type="text" onfocus="this.value=''" 
                                   class="square3 podbor" />
                               </div>
                             </div>
@@ -2513,7 +2531,7 @@ export default {
       grp_skin: false,
       newData: null,
       strokeLenDev: null,
-      spmDev: null,
+      spmDev: '1/мин',
       expAnalysisData:{
         NNO1:null,
         NNO2:null,
@@ -2549,7 +2567,10 @@ export default {
       khOkr: null,
       skinOkr: null,
       presOkr: null,
-
+      stanokKachalka: null,
+      freq: 'Число качаний',
+      dNasosa: 'Диаметр насоса',
+      hideStrokeLength: false,
     };
 
   },
@@ -2576,7 +2597,8 @@ export default {
       } else {
         return 'Кривая притока'
       }
-    }
+    },
+    
   },
   created() {
     window.addEventListener("resize", () => {
@@ -2665,7 +2687,18 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
-        this.spmDev = data["Well Data"]["spm"][0]
+        if (this.expMeth == 'ШГН') {
+          this.dNasosa = 'Диаметр насоса'
+          this.freq = 'Число качаний'
+          this.spmDev = data["Well Data"]["spm"][0] + ' 1/мин'
+        } else {
+          this.dNasosa = 'Номинальная подача'
+          this.freq = 'Частота'
+          this.spmDev = data["Well Data"]["freq"][0] + ' Гц'
+        }
+        if (this.expMeth == 'УЭЦН') {
+        this.hideStrokeLength = true
+        } else
 
 
         this.stopDate = this.stopDate.substring(0, 10)
@@ -3044,8 +3077,12 @@ export default {
       this.axios.get(uri).then((response) => {
           var data = response.data;
           this.method = 'MainMenu'
-          if (data["Error"] === "NoData"){
-            Vue.prototype.$notifyError("Указанная скважина отсутствует");
+          if (data["Error"] == "NoData" || data["Error"] == 'data_error'){
+            if(data["Error"] == "NoData") {
+              Vue.prototype.$notifyError("Указанная скважина отсутствует");
+            } else if(data["Error"] == 'data_error') {
+              Vue.prototype.$notifyError("Данные тех режима по скважине некорректны");
+            }
 
             this.curveLineData = JSON.parse(data.LineData)["data"]
             this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -3575,8 +3612,8 @@ export default {
       this.activeRightTabName = val;
     },
 
-    getNearWells() {
-
+    onPrsButtonClick() {
+      this.$modal.show('modal-prs')
     },
 
     createPDF() {

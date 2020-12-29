@@ -11,7 +11,7 @@
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center p-2">
-                                <h5 class="font-weight-bold m-0">Strategy</h5>
+                                <h5 class="font-weight-bold m-0">КПД Блока стратегии</h5>
                                 <div class="w-75">
                                     <div class="progress2">
                                         <div
@@ -72,16 +72,6 @@
                             v-bind:isLastBlock="true"
                         ></vc-speedometer-block>
                     </div>
-                    <div class="text-center p-3" v-else>
-                        <div class="box">
-                            <div class="cat">
-                                <div class="cat__body"></div>
-                                <div class="cat__body"></div>
-                                <div class="cat__tail"></div>
-                                <div class="cat__head"></div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -91,6 +81,7 @@
                 v-bind:dateEnd="dateEnd"
             ></vertical-indicators>
         </div>
+        <cat-loader />
     </div>
 </template>
 <script src="./VisualCenterTable6.js"></script>

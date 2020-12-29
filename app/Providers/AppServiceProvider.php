@@ -71,6 +71,16 @@ class AppServiceProvider extends ServiceProvider
                 \App\Observers\PipeHistoryObserver::class
             ]
         );
+        \App\Models\Refs\Gu::observe(
+            [
+                \App\Observers\GuHistoryObserver::class
+            ]
+        );
+        \App\Models\Refs\Zu::observe(
+            [
+                \App\Observers\ZuHistoryObserver::class
+            ]
+        );
     }
 
     private function setLanguages()

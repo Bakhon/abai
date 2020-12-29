@@ -78,7 +78,7 @@ Route::group(
 
                 Route::get('pipes/list', 'PipeController@list')->name('pipes.list');
                 Route::get('pipes/export', 'PipeController@export')->name('pipes.export');
-                Route::get('pipes/history/{pipes}', 'PipeController@history')->name('pipes.history');
+                Route::get('pipes/history/{pipe}', 'PipeController@history')->name('pipes.history');
                 Route::resource('pipes','PipeController');
 
                 Route::get('inhibitors/list', 'InhibitorsController@list')->name('inhibitors.list');
@@ -100,9 +100,16 @@ Route::group(
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');
 
-
                 Route::get('/settings/fields', 'Settings\FieldValidationsController@index')->name('settings.fields');
                 Route::post('/settings/fields', 'Settings\FieldValidationsController@update')->name('settings.fields.update');
+
+                Route::get('gus/list', 'ComplicationMonitoring\GusController@list')->name('gus.list');
+                Route::get('gus/history/{gu}', 'ComplicationMonitoring\GusController@history')->name('gus.history');
+                Route::resource('gus','ComplicationMonitoring\GusController');
+
+                Route::get('zus/list', 'ComplicationMonitoring\ZusController@list')->name('zus.list');
+                Route::get('zus/history/{zu}', 'ComplicationMonitoring\ZusController@history')->name('zus.history');
+                Route::resource('zus','ComplicationMonitoring\ZusController');
             }
         );
     }

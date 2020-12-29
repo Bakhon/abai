@@ -50,15 +50,16 @@
 
         <div
           class="dropdown-menu fadropmenu"
+          style="background: #40467E; margin-top: 4px;"
           aria-labelledby="dropdownMenuLink"
         >
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate">Введите опорную дату:</label>
+          <label for="inputDate" style="margin-left: 8px;">Введите опорную дату:</label>
           <input type="date" class="form-control" v-model="date1" />
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate">Введите дату для сравнения:</label>
+          <label for="inputDate" style="margin-left: 8px;">Введите дату для сравнения:</label>
           <input type="date" class="form-control" v-model="date2" />
-          <a href="#" class="btn btn-primary" @click.prevent="chooseDt"
+          <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
             >Сформировать</a
           >
         </div>
@@ -153,7 +154,7 @@
       >
         <tr class="headerColumn">
           <td rowspan="3" style="background: #12135c"><span>Скважина</span></td>
-          <td rowspan="3" style="background: #12135c">
+          <td rowspan="3" style="background: #12135c; min-width: 120px;">
             <span>Месторождение</span>
           </td>
           <td rowspan="3" style="background: #12135c"><span>Горизонт</span></td>
@@ -175,7 +176,7 @@
           <td class="colspan" colspan="3" style="background: #4fb26a">
             Геологические
           </td>
-          <td rowspan="3" style="background: #272953">
+          <td rowspan="3" style="background: #272953; min-width:248px;">
             <span>Основное отклонение в ТР</span>
           </td>
         </tr>
@@ -281,7 +282,7 @@
           <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
-          <td @click="sortBy('field')" style="background: #12135c">
+          <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('horizon')" style="background: #12135c">
@@ -341,13 +342,13 @@
           <td @click="sortBy('PI')" style="background: #4fb26a">
             <i class="fa fa-fw fa-sort"></i>т/сут
           </td>
-          <td @click="sortBy('Main_problem')" style="background: #272953">
+          <td @click="sortBy('Main_problem')" style="background: #272953; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
           <td style="background: #12135c">{{ row.well }}</td>
-          <td style="background: #12135c">{{ row.field }}</td>
+          <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
           <td style="background: #12135c">{{ row.horizon }}</td>
           <td style="background: #12135c">{{ row.exp_meth }}</td>
 
@@ -869,7 +870,7 @@
           <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
           <!-- <td>{{row.Main_problem}}</td> -->
           <td
-            style="background: #272953"
+            style="background: #272953; min-width:248px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -1109,7 +1110,6 @@ export default {
       return "#ff0000";
     },
     chooseDt() {
-      this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
@@ -1127,6 +1127,7 @@ export default {
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
+        this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("fa/SET_MONTH", mm);
         this.$store.commit("fa/SET_YEAR", yyyy);
         this.$store.commit("fa/SET_PR_MONTH", prMm);
@@ -1471,5 +1472,18 @@ table::-webkit-scrollbar-thumb:hover {
 /* уголок скролла  */
 table::-webkit-scrollbar-corner  {
   background: #333975;
+}
+.fadropmenu {
+width: 70%;
+}
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+  /* display: flex;  */
+  /* justify-content: center */
 }
 </style>
