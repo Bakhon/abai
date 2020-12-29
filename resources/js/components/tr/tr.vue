@@ -174,7 +174,7 @@
             </div> -->
         <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
         <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a
+        <!-- <a
           @click="editable()"
           v-if="!edit"
           class="col but-nav__link but trheadhight"
@@ -194,7 +194,7 @@
             </svg>
           </i>
           Редактировать</a
-        >
+        > -->
         <a
           @click="savetable()"
           v-if="edit"
@@ -268,9 +268,12 @@
           >
             Отмена
           </div>
+
+
+
           <a
             v-if="!edit"
-            class="but-nav__link but trgraph"
+            class="trgraph"
             title="Показать графики"
             data-toggle="tooltip"
             data-placement="top"
@@ -292,14 +295,26 @@
             </svg>
           </a>
 
+          <a
+            v-if="!edit"
+            title="Редактировать"
+            data-toggle="tooltip"
+            data-placement="top"
+            @click="editable()"
+            ><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15" stroke="white" stroke-width="1.4"/>
+</svg>
+
+          </a>
+
           <button
             v-if="!edit"
+            class="trgraph"
             id="bt1"
             @click="swap"
             style="
               background: #272953;
               color: white;
-              margin-right: 11px;
 
               border: none;
             "
@@ -308,9 +323,9 @@
             data-placement="top"
           >
             <svg
-              width="19"
-              height="19"
-              viewBox="0 0 19 19"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="isfulltable"
@@ -330,10 +345,10 @@
             </svg>
 
             <svg
-              width="19"
+              width="24"
               
-              height="19"
-              viewBox="0 0 19 19"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="!isfulltable"
@@ -7006,7 +7021,7 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-  margin-top: 4px;
+  margin: 0 10px ;
   background: #272953;
 }
 
