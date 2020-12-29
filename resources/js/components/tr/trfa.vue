@@ -740,11 +740,11 @@ export default {
   margin: 0 20px;
   width: 195px;
 }
-.second_block {
+.second_block, .first_block {
   height: calc(100vh - 374px);
-  width: calc(1.6 * (100vh - 365px));
+  /* width: calc(1.6 * (100vh - 365px));
   max-width: calc(100vw - 440px);
-  min-width: 800px;
+  min-width: 800px; */
   min-height: 633px;
   margin: 0 auto;
 }

@@ -20,7 +20,7 @@
                     v-bind:sliderTooltip="sliderTooltip"
                 ></visual-center-speedometer>
             </div>
-            <div class="speedometerLinkBlock mt-1" v-if="showLink">
+            <div class="mt-1" v-if="showLink">
                 <img src="/img/icons/link.svg">
             </div>
         </div>

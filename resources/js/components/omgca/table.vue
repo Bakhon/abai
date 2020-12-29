@@ -290,10 +290,12 @@ export default {
       this.loadData()
     },
     deleteItem(item) {
-      this.axios.delete(item.links.delete).then(response => {
-        this.loadData()
-        this.params.success = this.trans('app.deleted')
-      })
+      if(window.confirm('Вы действительно хотите удалить запись?')) {
+        this.axios.delete(item.links.delete).then(response => {
+          this.loadData()
+          this.params.success = this.trans('app.deleted')
+        })
+      }
     },
     exportExcel() {
       this.loading = true

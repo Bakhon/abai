@@ -517,11 +517,11 @@ tr:nth-child(even) {
     z-index: 3010;
 }
 .table tr:nth-child(2) .th {
-    top: 23px;
+    top: 22px;
     z-index: 3000;
 }
 .table tr:nth-child(3) .th {
-    top: 47px;
+    top: 46px;
     z-index: 3000;
 }
 .table tr:nth-child(4) .th {
@@ -529,7 +529,7 @@ tr:nth-child(even) {
     z-index: 3000;
 }
 .table tr:nth-child(5) .th {
-    top: 92px;
+    top: 88px;
     z-index: 3000;
 }
 
