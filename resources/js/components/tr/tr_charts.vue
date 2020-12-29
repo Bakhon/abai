@@ -704,7 +704,8 @@ export default {
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = false;
       const stroke = {
         show: true,
@@ -810,7 +811,9 @@ export default {
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
+      console.log('xaxis = ', xaxis)
       const stacked = true;
       const stroke = {
         show: false,
@@ -944,7 +947,8 @@ export default {
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -1070,7 +1074,8 @@ export default {
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -1199,7 +1204,8 @@ export default {
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -1312,7 +1318,8 @@ export default {
       const categories = ["Факт", "ИДН", "ИДН+ГРП"];
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = false;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = false;
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -1409,7 +1416,8 @@ export default {
       );
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
@@ -1465,7 +1473,8 @@ export default {
       );
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = { ...this.yaxisBase };
       const title = {
         ...this.titleBase,
@@ -1513,7 +1522,8 @@ export default {
       );
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
@@ -1569,7 +1579,8 @@ export default {
       );
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
-      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
