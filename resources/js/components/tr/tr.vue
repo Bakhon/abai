@@ -82,7 +82,6 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option disabled>Выберите месяц</option>
                 <option value="1">январь</option>
                 <option value="2">февраль</option>
                 <option value="3">март</option>
@@ -106,7 +105,7 @@
                   color: white;
                   width: 100%;
                   padding: 8px;
-                  border: 1px solid #40467E; !important;
+                  border: none
                   height: 35px !important;
                   color: white !important;
                 "
@@ -114,7 +113,6 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option disabled value="">Выберите год</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -480,7 +478,7 @@
                   <td rowspan="3" class="th"><span>Q ж</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
                   <td rowspan="3" class="th"><span>Hдин</span></td>
-                  <td rowspan="3" class="th"><span>Kпр</span></td>
+                  <td rowspan="3" class="th"><span>Kпрод</span></td>
                   <td rowspan="3" class="th"><span>P заб</span></td>
                   <td rowspan="3" class="th"><span>Q н</span></td>
                   <td rowspan="3" class="th"><span>Q ж</span></td>
@@ -7151,6 +7149,7 @@ table::-webkit-scrollbar-corner  {
   color: #fff;
   align-self: center;
   width: 150px;
+      margin-top: 5px;
   /* display: flex;  */
   /* justify-content: center */
 }
