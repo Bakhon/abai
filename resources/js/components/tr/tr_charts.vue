@@ -55,7 +55,7 @@
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
               class="dropdown-item"
-              style="background: #656a8a !important; color: #fff"
+              style="background: #5973cc !important; color: #fff"
               v-for="(item, index) in chartNames"
               :key="item"
               href="#"
@@ -79,7 +79,7 @@
 
           <div
             class="dropdown-menu"
-            style="background: #656a8a !important"
+            style="background: #5973cc !important"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -88,8 +88,8 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #656a8a !important;
-                  border-color: #656a8a !important;
+                  background-color: #5973cc !important;
+                  border-color: #5973cc !important;
 
                   color: white;
                 "
@@ -116,8 +116,8 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #656a8a !important;
-                  border-color: #656a8a !important;
+                  background-color: #5973cc !important;
+                  border-color: #5973cc !important;
 
                   color: white;
                 "
@@ -199,6 +199,7 @@
           <div class="second_block">
             <apexchart
               v-if="chartData"
+              height="100%"
               :options="chartBarOptions"
               :series="chartData"
             ></apexchart>
@@ -1740,9 +1741,8 @@ body {
   margin-left: 57px;
 }
 .trfacolmdrowsecnav {
-  margin-bottom: 7px;
-  margin-top: 7px;
-  margin-left: 1px;
+  margin-bottom: 13px;
+  margin-top: 13px;
 }
 .trfacolbutnavlinkbut {
   margin-left: 28px;
@@ -1766,15 +1766,16 @@ body {
   margin: 0;
 }
 .second_block {
-  height: calc(100vh - 386px);
-  width: calc(1.6 * (100vh - 365px));
+  height: calc(100vh - 323px);
+  /* width: calc(1.6 * (100vh - 365px));
   max-width: calc(100vw - 440px);
-  min-width: 800px;
-  min-height: 500px;
+  min-width: 800px; */
+  min-height: 633px;
   margin: 0 auto;
 }
 .droptr.droptr {
-  background: #656a8a;
+  background: #5973cc;
+  padding: 0px;
 }
 
 a:hover {

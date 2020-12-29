@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DZO\DZOcalc;
-use Faker\Provider\DateTime;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 use Level23\Druid\Context\GroupByV2QueryContext;
@@ -16,9 +14,12 @@ use Illuminate\Http\Request;
 class EconomicController extends Controller
 {
 
-    public function __construct()
+    protected $druidClient;
+
+    public function __construct(DruidClient $druidClient)
     {
         $this->middleware('can:economic view main')->only('index', 'getEconomicData');
+        $this->druidClient = $druidClient;
     }
 
     public function index(Request $request)
@@ -36,23 +37,21 @@ class EconomicController extends Controller
 
         $org = \App\Models\Refs\Org::find($request->org);
 
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-
-        $builder = $client->query('economic_2020v4', Granularity::YEAR);
-        $builder2 = $client->query('economic_2020v4', Granularity::MONTH);
-        $builder3 = $client->query('economic_2020v4', Granularity::MONTH);
-        $builder4 = $client->query('economic_2020v4', Granularity::MONTH);
-        $builder5 = $client->query('economic_2020v4', Granularity::YEAR);
-        $builder6 = $client->query('economic_2020v4', Granularity::MONTH);
-        $builder7 = $client->query('economic_2020v4', Granularity::DAY);
-        $builder8 = $client->query('economic_2020v4', Granularity::MONTH);
-        $builder9 = $client->query('economic_2020v4', Granularity::YEAR);
-        $builder10 = $client->query('economic_2020v4', Granularity::DAY);
-        $builder11 = $client->query('economic_2020v4', Granularity::DAY);
-        $builder12 = $client->query('economic_2020v4', Granularity::DAY);
-        $builder13 = $client->query('economic_2020v4', Granularity::DAY);
-        $builder14 = $client->query('economic_2020v4', Granularity::YEAR);
-        $builder15 = $client->query('economic_2020v4', Granularity::DAY);
+        $builder = $this->druidClient->query('economic_2020v4', Granularity::YEAR);
+        $builder2 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
+        $builder3 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
+        $builder4 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
+        $builder5 = $this->druidClient->query('economic_2020v4', Granularity::YEAR);
+        $builder6 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
+        $builder7 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
+        $builder8 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
+        $builder9 = $this->druidClient->query('economic_2020v4', Granularity::YEAR);
+        $builder10 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
+        $builder11 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
+        $builder12 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
+        $builder13 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
+        $builder14 = $this->druidClient->query('economic_2020v4', Granularity::YEAR);
+        $builder15 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
 
         $builder
             ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
@@ -440,9 +439,7 @@ class EconomicController extends Controller
 
     public function getEconomicPivotData(){
 
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-
-        $builder = $client->query('economic_2020v4', Granularity::DAY);
+        $builder = $this->druidClient->query('economic_2020v4', Granularity::DAY);
 
         $builder
         ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
@@ -466,81 +463,10 @@ class EconomicController extends Controller
 
     public function getOilPivotData(){
 
-        // $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-
-        // $builder = $client->query('economic_2020v4', Granularity::DAY);
-
-        // $builder
-        // ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
-        // ->select('__time', 'dt', function (ExtractionBuilder $extractionBuilder) {
-        //     $extractionBuilder->timeFormat('yyyy-MM-dd');
-        // })
-        // ->select(['well_uwi','org'])
-        // ->select(['dpz','status'])
-        // ->select(['block','cdng'])
-        // ->select(['grzs','gu'])
-        // ->sum('oil')
-        // ->sum('tm_oil')
-        // ->sum('density_oil')
-        // ->sum('bsw');
-
-        // $result = $builder->groupBy();
-
-        // $array = $result->data();
-
-        // return response()->json($array);
-
-
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-        $response = $client->query('economic_2020v4', Granularity::ALL)
+        $response = $this->druidClient->query('economic_2020v4', Granularity::ALL)
             ->interval('2020-07-30T18:00:00+00:00/2020-07-31T18:00:00+00:00')
             ->execute();
 
         return response()->json($response->data());
-    }
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Exception
-     */
-    public function getDZOcalcs(Request $request) {
-        $dateStart = $request->get('dateStart');
-        $dateEnd = $request->get('dateEnd');
-        $dzo = $request->get('dzo');
-        if (!$dateEnd) {
-            $dateEnd = new \DateTime($dateStart);
-            $dateStart = clone $dateEnd;
-            $dateStart->sub(new \DateInterval('P3M'));
-            $dateStart = $dateStart->format('Y-m-d H:i:s');
-            $dateEnd = $dateEnd->format('Y-m-d H:i:s');
-        }
-        $dateTimeStart = new \DateTime($dateStart);
-        $dateTimeEnd = new \DateTime($dateEnd);
-        $dzoDataActual = DZOcalc::query()
-            ->where('date', '>=', $dateTimeStart->format('Y-m-d H:i:s'))
-            ->where('date', '<', $dateTimeEnd->format('Y-m-d H:i:s'));
-        if ($dzo) {
-            $dzoDataActual->where('dzo', '=', $dzo);
-        }
-        $dzoDataActual = $dzoDataActual->get();
-
-        $dateTimeStart->sub(new \DateInterval('P1Y'));
-        $dateTimeEnd->sub(new \DateInterval('P1Y'));
-        $dzoDataPrevYear = DZOcalc::query()
-            ->where('date', '>=', $dateTimeStart->format('Y-m-d H:i:s'))
-            ->where('date', '<', $dateTimeEnd->format('Y-m-d H:i:s'));
-        if ($dzo) {
-            $dzoDataPrevYear->where('dzo', '=', $dzo);
-        }
-        $dzoDataPrevYear = $dzoDataPrevYear->get();
-
-        return response()->json(['dzoDataActual' => $dzoDataActual, 'dzoDataPrevYear' => $dzoDataPrevYear]);
-    }
-
-    public function getDZOCalcsActualMonth() {
-        $maxDate = DZOcalc::query()->max('date');
-        $tmpDate = \DateTime::createFromFormat('Y-m-d H:i:s', $maxDate);
-        return $tmpDate->format('m');
     }
 }

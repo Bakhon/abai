@@ -5,29 +5,23 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
-use Level23\Druid\Context\GroupByV2QueryContext;
-use Level23\Druid\Filters\FilterBuilder;
 use Level23\Druid\Extractions\ExtractionBuilder;
-use Adldap\Laravel\Facades\Adldap;
 use App\Models\DZO\DZOdaily;
-use App\Models\VisCenter2\Vis2Form;
-use Spatie\Permission\Contracts\Permission;
-use Spatie\Permission\Models\Permission as ModelsPermission;
-use Spatie\Permission\Models\Role;
 
 class DruidController extends Controller
 {
 
-    public function __construct()
+    protected $druidClient;
+
+    public function __construct(DruidClient $druidClient)
     {
         $this->middleware('can:monitoring view main', ['only' => ['monitor']]);
+        $this->druidClient = $druidClient;
     }
 
     public function index()
     {
-
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-        $response = $client->query('month_meter_prod_oil_v02', Granularity::MONTH)
+        $response = $this->druidClient->query('month_meter_prod_oil_v02', Granularity::MONTH)
             ->interval('2014-01-01 20:00:00', '2020-10-20 22:00:00')
             ->count('totalNrRecords')
             ->execute();
@@ -79,9 +73,10 @@ return $response;
 
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
         $period = ($request->timestampEnd-$request->timestampToday)-86400000;        
-        return response()->json(DZOdaily::all('oil_plan','oil_fact','gas_plan','gas_fact','__time',
+        return response()->json(DZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
+            'oil_plan','oil_fact','gas_plan','gas_fact','__time',
         'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
-        'inj_wells_work','gk_plan','gk_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
+        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
         //return  response()->json($request);
     }
@@ -154,8 +149,7 @@ return $response;
 
     public function getNkKmg()
     {
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-        $response = $client->query('nk_kmg', Granularity::ALL)
+        $response = $this->druidClient->query('nk_kmg', Granularity::ALL)
             ->interval('1901-01-01T00:00:00+00:00/2020-07-31T18:02:55+00:00')
             ->execute();
 
@@ -164,9 +158,7 @@ return $response;
 
     public function getNkKmgYear()
     {
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-
-        $response = $client->query('nk_kmg_year', Granularity::ALL)
+        $response = $this->druidClient->query('nk_kmg_year', Granularity::ALL)
             ->interval('1901-01-01T00:00:00+00:00/2020-07-31T18:02:55+00:00')
             ->execute();
 
@@ -176,9 +168,7 @@ return $response;
 
     public function getWellDailyOil()
     {
-        $client = new DruidClient(['router_url' => 'http://cent7-bigdata.kmg.kz:8888']);
-
-        $builder = $client->query('well_daily_oil2_v10', Granularity::DAY);
+        $builder = $this->druidClient->query('well_daily_oil2_v10', Granularity::DAY);
 
         $builder
             ->interval('2020-01-01T00:00:00+00:00/2020-01-02T00:00:00+00:00')

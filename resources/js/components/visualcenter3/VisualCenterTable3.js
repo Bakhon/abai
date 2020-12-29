@@ -6,11 +6,11 @@ Vue.component("date-picker", DatePicker);
 export default {
   components: {
     Calendar,
-    DatePicker,
+    DatePicker
   },
   data: function () {
-    return {
-      nameChartLeft: '',
+    return { 
+      nameChartLeft: 'Добыча нефти',
       oilChartHeadName: 'Динамика добычи нефти',
       prod_wells_workAll: [
         { name: "ЭФ", value: 603, value2: 101 },
@@ -68,7 +68,7 @@ export default {
       tableHover4: "",
       tableHover5: "",
       tableHover6: "",
-      changeMenuButton: "color: #fff;",
+      changeMenuButton: "color: #fff; text-decoration: underline;",
       changeMenuButton1: "",
       changeMenuButton2: "",
       changeMenuButton3: "",
@@ -316,6 +316,12 @@ export default {
       if (change == "105") {
         this.changeMenuButton5 = changeMenuButton;
       }
+    },
+
+    dayClicked(){
+
+      console.log('test');
+this.changeMenu2('4');
     },
 
 
@@ -917,6 +923,7 @@ export default {
     },
 
     getProduction(item, item2, item3, item4, item5) {
+      this.$store.commit('globalloading/SET_LOADING',true);
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
 
@@ -992,26 +999,12 @@ export default {
 
 
 
-            //this.getProductionPercentOneDzo(arrdata);      
 
-            /*    var dataDay = [];
-                dataDay = _.filter(arrdata, _.iteratee({ __time: Number(timestampToday) }));
-                dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);*/
 
-            /*var dataDay = new Array();
-            dataDay = _.filter(arrdata, function (item) {
-              return _.every([
-                _.inRange(
-                  item.__time,
-                  // 1588291200000, // May 2020
-                  
-                 Number (timestampToday),
-                 Number (timestampToday) + 86400000 //* dayInMonth
-                ),
-              ]);
-            });
-       
-            */
+        
+
+
+          
 
 
 
@@ -1038,6 +1031,64 @@ export default {
               ]);
             });
 
+            dataWithMay = _.orderBy(
+              dataWithMay,
+              ["__time"],
+              ["asc"]
+            );
+
+
+
+
+    //Summ plan and fact from dzo nagnetatWells k1q for month!!!
+    var productionPlanAndFactMonthWells = _(dataWithMay)
+    .groupBy("data")
+    .map((__time, id) => ({
+      __time: id,
+      fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
+      fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
+      fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
+      fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
+      fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
+      fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
+      fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
+      fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
+    }))
+    .value();
+
+ // console.log(productionPlanAndFactMonthWells);
+
+
+  var productionPlanAndFactMonthWellsName = [];
+
+  productionPlanAndFactMonthWellsName.push(
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
+
+  );
+
+
+  this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             var productionForChart = _(dataWithMay)
               .groupBy("__time")
@@ -1060,7 +1111,8 @@ export default {
 
 
             //console.log(productionForChart);
-            if (this.company != "all") {
+            if (this.company != "all") {             
+              this.$store.commit('globalloading/SET_LOADING',false);
               this.$emit("data", productionForChart); //k1q new
             }
 
@@ -1137,7 +1189,7 @@ export default {
             this.buttonHover5 = "";
           }
 
-          if (productionPlan == "inj_plan") {
+          if (productionPlan == "liq_plan") {//inj_plan
             this.buttonHover6 = buttonHover;
           } else {
             this.buttonHover6 = "";
@@ -1149,7 +1201,8 @@ export default {
 
         //bigtable
         //year
-        if (this.company == "all") {
+        if (this.company == "all") {         
+          this.$store.commit('globalloading/SET_LOADING',false);
           var dataDay = [];
           var dataYear = [];
           var dzo = [];
@@ -1190,7 +1243,16 @@ export default {
             ]);
           });
 
-          //Summ plan and fact from dzo k1q!!!
+
+          dataWithMay = _.orderBy(
+            dataWithMay,
+            ["__time"],
+            ["asc"]
+          );
+
+          
+
+          //Summ plan and fact from dzo k1q for month!!!
           var productionPlanAndFactMonth = _(dataWithMay)
             .groupBy("dzo")
             .map((dzo, id) => ({
@@ -1198,14 +1260,64 @@ export default {
               productionFactForChart: _.round(_.sumBy(dzo, productionFact), 0),
               productionPlanForChart: _.round(_.sumBy(dzo, productionPlan), 0),
             }))
-
             .value();
+
 
           productionPlanAndFactMonth = _.orderBy(
             productionPlanAndFactMonth,
             ["dzo"],
             ["desc"]
           );
+
+
+          /*
+          var dzoTest = [];
+          dataWithMay.forEach(function(singleCell) {
+            dzoTest.push({fond_nagnetat_prs: singleCell.fond_nagnetat_prs, dzo: singleCell.dzo});
+          });
+          console.log(dzoTest);
+          */
+
+
+          //Summ plan and fact from dzo nagnetatWells k1q for month!!!
+          var productionPlanAndFactMonthWells = _(dataWithMay)
+            .groupBy("data")
+            .map((__time, id) => ({
+              __time: id,
+              fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
+              fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
+              fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
+              fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
+              fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
+              fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
+              fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
+              fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
+            }))
+            .value();
+
+         // console.log(productionPlanAndFactMonthWells);
+
+
+          var productionPlanAndFactMonthWellsName = [];
+
+          productionPlanAndFactMonthWellsName.push(
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
+
+          );
+
+
+          this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
+
+
+            console.log(dataWithMay);
+
 
           var productionForChart = _(dataWithMay)
             .groupBy("__time")
@@ -1215,6 +1327,9 @@ export default {
               productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
             }))
             .value();
+
+
+
 
           var dzo2 = [];
           var planMonth = [];
@@ -1403,6 +1518,7 @@ export default {
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КТМ" }));
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КБМ" }));
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КОА" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ЭМГ" }));
 
             data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
             data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
@@ -1410,6 +1526,7 @@ export default {
             data = _.reject(data, _.iteratee({ dzo: "КТМ" }));
             data = _.reject(data, _.iteratee({ dzo: "КБМ" }));
             data = _.reject(data, _.iteratee({ dzo: "КОА" }));
+            data = _.reject(data, _.iteratee({ dzo: "ЭМГ" }));
 
 
             dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" });
@@ -1419,25 +1536,15 @@ export default {
           }
 
           if (this.buttonHover13 != '') {
-            dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" }, { dzoMonth: "ЭМГ" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" });
-            factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
-            planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+            dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" });
+            factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+            planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
           }
 
 
 
 
-
-          /*
-          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
-          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
-          data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
-          data = _.reject(data, _.iteratee({ dzo: "КГМ" }));*/
-
-
-
-          //productionPlanAndFactMonth= _.reject([{dzo:"ОМГ"}]);
 
           _.forEach(productionPlanAndFactMonth, function (item) { //k1q!!!
             factMonth.push({ factMonth: item.productionFactForChart });
@@ -1447,34 +1554,6 @@ export default {
 
 
 
-
-
-
-          /*
-          //changed data reject
-          var getProductionPercent = this.getProductionPercent(data);
-          getProductionPercent = _.orderBy(getProductionPercent, ["dzoPercent"], ["desc"]);
-
-
-          _.forEach(getProductionPercent, function (item) {
-            // dzoPercent.push({ dzoPercent: item.dzoPercent });
-            productionFactPercent.push({ productionFactPercent: item.productionFactPercent });
-          });
-          */
-
-
-
-
-
-
-
-
-
-
-
-
-
-          //if (this.buttonHover11 != '') {
 
           //summ table value
           var factYearSumm = _.reduce(
@@ -1643,6 +1722,7 @@ export default {
  
            this.starts = starts;*/
           // console.log(productionForChart);
+          console.log(productionForChart);
 
           this.$emit("data", productionForChart);
 
@@ -1651,10 +1731,11 @@ export default {
         }
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
+    
       });
       this.showTable(localStorage.getItem("changeButton"));
 
-
+     
     },
 
 
@@ -1721,6 +1802,7 @@ export default {
             timestampToday
           ),
         ]);
+     
       });
 
 
@@ -1794,6 +1876,7 @@ export default {
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
       // this.getProductionOilandGasPercent();
+    
     },
 
     getNameDzoFull: function (dzo) {
@@ -1838,9 +1921,10 @@ export default {
 
   },
   created() {
+
     if (window.location.host === 'dashboard') {
-      //    this.Table1="display:none";  
-      // this.Table4="display:block"; 
+     // this.Table1 = "display:none";
+     // this.Table5 = "display:block";
     }
 
   },
@@ -1853,8 +1937,10 @@ export default {
 
 
       this.range = {
-        start: "2020-12-17T06:00:00+06:00",
-        end: "2020-12-18T09:00:00+06:00",
+        //start: "2020-04-01T06:00:00+06:00",
+       // end: "2020-04-01T09:00:00+06:00",
+         start: "2020-12-17T06:00:00+06:00",
+         end: "2020-12-18T09:00:00+06:00",
         formatInput: true,
       };
     } else {
@@ -1879,8 +1965,9 @@ export default {
     this.getCurrencyNow(this.timeSelect);
     this.getOilNow(this.timeSelect, this.period);
     this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-    this.changeAssets('b11');
+    this.changeAssets('b13');
     // this.getProductionOilandGasPercent();
+ 
   },
   computed: {
   },

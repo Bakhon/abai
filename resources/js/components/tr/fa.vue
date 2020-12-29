@@ -2,7 +2,7 @@
   <div class="w-100">
     <div
       class="row justify-content-between farowjustcontbet"
-      style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; 8px"
+      style="box-sizing: border box; flex-grow: 1; padding-right: 0; margin-right: 0; margin-left: 0; paddng-left: 0; line-height: 31px;"
     >
       <a href="tr" class="col but-nav__link but faheadhight"
         ><i style="margin-right: 10px"
@@ -21,7 +21,7 @@
         Технологический режим</a
       >
 
-      <div class="col dropdown" style="padding: 0px; margin: 0 20px">
+      <div class="col dropdown" style="padding: 0px; margin: 0 13px">
         <button
           class="col-md-12 but-nav__link but faheadhight"
           href="#"
@@ -50,15 +50,16 @@
 
         <div
           class="dropdown-menu fadropmenu"
+          style="background: #40467E; margin-top: 4px;"
           aria-labelledby="dropdownMenuLink"
         >
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate">Введите опорную дату:</label>
+          <label for="inputDate" style="margin-left: 8px;">Введите опорную дату:</label>
           <input type="date" class="form-control" v-model="date1" />
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate">Введите дату для сравнения:</label>
+          <label for="inputDate" style="margin-left: 8px;">Введите дату для сравнения:</label>
           <input type="date" class="form-control" v-model="date2" />
-          <a href="#" class="btn btn-primary" @click.prevent="chooseDt"
+          <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
             >Сформировать</a
           >
         </div>
@@ -135,12 +136,12 @@
         <fade-loader :loading="isloading"></fade-loader>
       </div> -->
       <table
-        class="table table-bordered table-dark table-responsive ce fakrtableborderedtable"
+        class="table-bordered table-dark table-responsive fakrtableborderedtable"
         style="background: #0d1e63"
       >
         <tr class="headerColumn">
           <td rowspan="3" style="background: #12135c"><span>Скважина</span></td>
-          <td rowspan="3" style="background: #12135c">
+          <td rowspan="3" style="background: #12135c; min-width: 120px;">
             <span>Месторождение</span>
           </td>
           <td rowspan="3" style="background: #12135c"><span>Горизонт</span></td>
@@ -162,7 +163,7 @@
           <td class="colspan" colspan="3" style="background: #4fb26a">
             Геологические
           </td>
-          <td rowspan="3" style="background: #272953">
+          <td rowspan="3" style="background: #272953; min-width:248px;">
             <span>Основное отклонение в ТР</span>
           </td>
         </tr>
@@ -174,7 +175,7 @@
           </td>
           <td rowspan="2" style="background: #2c3379"><span>Pзаб</span></td>
           <td rowspan="2" style="background: #2c3379"><span>Pпл</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>Кпр</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>Кпрод</span></td>
           <td rowspan="2" style="background: #1a2370"><span>Qж</span></td>
           <td rowspan="2" style="background: #1a2370"><span>Qн</span></td>
           <td rowspan="2" style="background: #1a2370">
@@ -182,7 +183,7 @@
           </td>
           <td rowspan="2" style="background: #1a2370"><span>Pзаб</span></td>
           <td rowspan="2" style="background: #1a2370"><span>Pпл</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Кпр</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>Кпрод</span></td>
           <td rowspan="2" style="background: #e50303"><span>dQн</span></td>
           <td rowspan="2" style="background: #f08143">
             <span>Недостижение режимного Pзаб</span>
@@ -268,7 +269,7 @@
           <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
-          <td @click="sortBy('field')" style="background: #12135c">
+          <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('horizon')" style="background: #12135c">
@@ -328,13 +329,13 @@
           <td @click="sortBy('PI')" style="background: #4fb26a">
             <i class="fa fa-fw fa-sort"></i>т/сут
           </td>
-          <td @click="sortBy('Main_problem')" style="background: #272953">
+          <td @click="sortBy('Main_problem')" style="background: #272953; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
           <td style="background: #12135c">{{ row.well }}</td>
-          <td style="background: #12135c">{{ row.field }}</td>
+          <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
           <td style="background: #12135c">{{ row.horizon }}</td>
           <td style="background: #12135c">{{ row.exp_meth }}</td>
 
@@ -389,7 +390,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_o_1[0] * 10) / 10 }}</span>
+            <span v-if="row.q_o_1[0] != null">{{ Math.round(row.q_o_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_o_1[1][1] }}
             </span>
@@ -417,7 +418,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.wct_1[0] * 10) / 10 }}</span>
+            <span v-if="row.wct_1[0] != null">{{ Math.round(row.wct_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].wct_1[1][1] }}
             </span>
@@ -445,7 +446,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.bhp_1[0] * 10) / 10 }}</span>
+            <span  v-if="row.bhp_1[0] != null">{{ Math.round(row.bhp_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].bhp_1[1][1] }}
             </span>
@@ -473,7 +474,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.p_res_1[0] * 10) / 10 }}</span>
+            <span v-if="row.p_res_1[0] != null">{{ Math.round(row.p_res_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].p_res_1[1][1] }}
             </span>
@@ -499,7 +500,7 @@
               :style="`background :${getColorTwo(wells[row_index].pi_1[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.pi_1[0] * 10) / 10 }}</span>
+            <span v-if="row.pi_1[0] != null">{{ Math.round(row.pi_1[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].pi_1[1][1] }}
             </span>
@@ -527,7 +528,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_l_2[0] * 10) / 10 }}</span>
+            <span v-if="row.q_l_2[0] != null">{{ Math.round(row.q_l_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_l_2[1][1] }}
             </span>
@@ -555,7 +556,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.q_o_2[0] * 10) / 10 }}</span>
+            <span v-if="row.q_o_2[0] != null">{{ Math.round(row.q_o_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].q_o_2[1][1] }}
             </span>
@@ -583,7 +584,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.wct_2[0] * 10) / 10 }}</span>
+            <span v-if="row.wct_2[0] != null">{{ Math.round(row.wct_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].wct_2[1][1] }}
             </span>
@@ -611,7 +612,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.bhp_2[0] * 10) / 10 }}</span>
+            <span v-if="row.bhp_2[0] != null">{{ Math.round(row.bhp_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].bhp_2[1][1] }}
             </span>
@@ -639,7 +640,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.p_res_2[0] * 10) / 10 }}</span>
+            <span v-if="row.p_res_2[0] != null">{{ Math.round(row.p_res_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].p_res_2[1][1] }}
             </span>
@@ -665,7 +666,7 @@
               :style="`background :${getColorTwo(wells[row_index].pi_2[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.pi_2[0] * 10) / 10 }}</span>
+            <span v-if="row.pi_2[0] != null">{{ Math.round(row.pi_2[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].pi_2[1][1] }}
             </span>
@@ -700,7 +701,7 @@
               :style="`background :${getColorTwo(wells[row_index].dqn[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.dqn[0] * 10) / 10 }}</span>
+            <span v-if="row.dqn[0] != null">{{ Math.round(row.dqn[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].dqn[1][1] }}
             </span>
@@ -736,7 +737,7 @@
               :style="`background :${getColorTwo(wells[row_index].Pbh[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.Pbh[0] * 10) / 10 }}</span>
+            <span v-if="row.Pbh[0] != null">{{ Math.round(row.Pbh[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].Pbh[1][1] }}
             </span>
@@ -772,7 +773,7 @@
               :style="`background :${getColorTwo(wells[row_index].wct[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.wct[0] * 10) / 10 }}</span>
+            <span v-if="row.wct[0] != null">{{ Math.round(row.wct[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].wct[1][1] }}
             </span>
@@ -812,7 +813,7 @@
               )}`"
             >
             </span>
-            <span>{{ Math.round(row.p_res[0] * 10) / 10 }}</span>
+            <span v-if="row.p_res[0] != null">{{ Math.round(row.p_res[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].p_res[1][1] }}
             </span>
@@ -847,7 +848,7 @@
               :style="`background :${getColorTwo(wells[row_index].PI[1][0])}`"
             >
             </span>
-            <span>{{ Math.round(row.PI[0] * 10) / 10 }}</span>
+            <span v-if="row.PI[0] != null">{{ Math.round(row.PI[0] * 10) / 10 }}</span>
             <span v-if="wells && wells[row_index]" class="cell-comment">
               {{ wells[row_index].PI[1][1] }}
             </span>
@@ -856,7 +857,7 @@
           <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
           <!-- <td>{{row.Main_problem}}</td> -->
           <td
-            style="background: #272953"
+            style="background: #272953; min-width:248px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -1109,7 +1110,6 @@ export default {
       return "#ff0000";
     },
     chooseDt() {
-      this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
@@ -1127,6 +1127,7 @@ export default {
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
+        this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("fa/SET_MONTH", mm);
         this.$store.commit("fa/SET_YEAR", yyyy);
         this.$store.commit("fa/SET_PR_MONTH", prMm);
@@ -1404,12 +1405,12 @@ body {
 
 .farowjustcontbet {
   box-sizing: border box;
-
   padding-right: 0;
   margin-right: 0;
   margin-left: 0;
   padding-left: 0;
   display: flex;
+  margin-bottom: 13px;
 }
 
 .fasearch {
@@ -1423,19 +1424,19 @@ body {
 
 .table {
   overflow: scroll;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 205px);
 }
 .table tr:nth-child(-n + 4) td {
   position: sticky;
   background: rgb(51, 57, 117);
-  top: 79px;
+  top: 75px;
   z-index: 3000;
 }
 .table tr:first-child td {
   top: -1;
 }
 .table tr:nth-child(2) td {
-  top: 39px;
+  top: 37px;
 }
 .table tr:nth-child(3) td {
   top: 38px;
@@ -1484,5 +1485,18 @@ table::-webkit-scrollbar-thumb:hover {
 /* уголок скролла  */
 table::-webkit-scrollbar-corner {
   background: #333975;
+}
+.fadropmenu {
+width: 70%;
+}
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+  /* display: flex;  */
+  /* justify-content: center */
 }
 </style>

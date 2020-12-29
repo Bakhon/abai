@@ -15,7 +15,7 @@
         <a
           href="fa"
           class="col but-nav__link but trheadhight"
-          style="min-width: 330px"
+          style="min-width:330px; line-height: 31px;"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -35,7 +35,7 @@
                     <label for="inputDate">Введите дату:</label>
                     <input type="date" value = "01.06.2020" class="form-control" v-model="dt">
             </form> -->
-        <div class="col dropdown">
+        <div class="col dropdown" style="padding: 0 13px;">
           <button
             class="col-md-12 but-nav__link but faheadhight"
             type="button"
@@ -63,7 +63,7 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #333975; height: 104px; width: 161px"
+            style="background: #40467E; height: 117px;  flex-direction: column; width: calc(100% - 26px); margin-top: 4px;"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -72,16 +72,16 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #333975;
-                  border-color: #333975;
+                  background-color: #40467E;
+                  border-color: #40467E;
                   color: white;
                   width: 100%;
+                  padding: 8px;
                 "
                 class="form-controll"
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option disabled>Выберите месяц</option>
                 <option value="1">январь</option>
                 <option value="2">февраль</option>
                 <option value="3">март</option>
@@ -100,13 +100,12 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #333975 ;
-                  border-color: #333975;
+                  background-color: #40467E ;
+                  border-color: #40467E;
                   color: white;
                   width: 100%;
-
-                  
-                  border: 1px solid #333975; !important;
+                  padding: 8px;
+                  border: none
                   height: 35px !important;
                   color: white !important;
                 "
@@ -114,7 +113,6 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option disabled value="">Выберите год</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -124,7 +122,7 @@
                 <option value="2014">2014</option>
               </select>
             </div>
-            <a href="#" @click.prevent="chooseDt" class="btn btn-primary"
+            <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
               >Сформировать</a
             >
           </div>
@@ -176,11 +174,11 @@
             </div> -->
         <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
         <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a
+        <!-- <a
           @click="editable()"
           v-if="!edit"
           class="col but-nav__link but trheadhight"
-          style="margin-right: 15px"
+          style="margin-right: 13px; line-height: 31px;"
           ><i style="margin-right: 10px">
             <svg
               width="19"
@@ -196,11 +194,11 @@
             </svg>
           </i>
           Редактировать</a
-        >
+        > -->
         <a
           @click="savetable()"
           v-if="edit"
-          style="margin-right: 15px"
+          style="margin-right: 15px; line-height: 31px;"
           class="col but-nav__link but trheadhight"
           >Сохранить</a
         >
@@ -242,8 +240,10 @@
           <fade-loader :loading="isloading"></fade-loader>
         </div> -->
         <div class="techbt1 tr-table-header">
-          <div class="tech" style="margin-left: 14px; color: white">
-            <h3>Технологический режим на {{ dt }}</h3>
+          <div class="tech" style="margin-left: 14px;; color: white">
+            <h5 >
+              Технологический режим на {{ dt }}
+            </h5>
           </div>
           <!-- <select
             name="Company"
@@ -274,9 +274,12 @@
           >
             Отмена
           </div>
+
+
+
           <a
             v-if="!edit"
-            class="but-nav__link but trgraph"
+            class="trgraph"
             title="Показать графики"
             data-toggle="tooltip"
             data-placement="top"
@@ -298,8 +301,21 @@
             </svg>
           </a>
 
+          <a
+            v-if="!edit"
+            title="Редактировать"
+            data-toggle="tooltip"
+            data-placement="top"
+            @click="editable()"
+            ><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15" stroke="white" stroke-width="1.4"/>
+</svg>
+
+          </a>
+
           <button
             v-if="!edit"
+            class="trgraph"
             id="bt1"
             @click="swap"
             style="
@@ -313,9 +329,9 @@
             data-placement="top"
           >
             <svg
-              width="25"
+              width="24"
               height="24"
-              viewBox="0 0 25 24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="isfulltable"
@@ -335,10 +351,10 @@
             </svg>
 
             <svg
-              width="19"
-              style="margin-right: 10px"
-              height="19"
-              viewBox="0 0 19 19"
+              width="24"
+              
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="!isfulltable"
@@ -359,7 +375,7 @@
             <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             <table
               v-if="show_second"
-              class="table table-bordered table-dark table-responsive ce trtable"
+              class="table-bordered table-dark table-responsive trtable"
               style="background: #0d1e63"
             >
               <thead>
@@ -480,7 +496,7 @@
                   <td rowspan="3" class="th"><span>Q ж</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
                   <td rowspan="3" class="th"><span>Hдин</span></td>
-                  <td rowspan="3" class="th"><span>Kпр</span></td>
+                  <td rowspan="3" class="th"><span>Kпрод</span></td>
                   <td rowspan="3" class="th"><span>P заб</span></td>
                   <td rowspan="3" class="th"><span>Q н</span></td>
                   <td rowspan="3" class="th"><span>Q ж</span></td>
@@ -529,7 +545,7 @@
                   <td class="colspan th" colspan="2">
                     <span>Изменения к режиму</span>
                   </td>
-                  <td rowspan="3">
+                  <td rowspan="3" class="th">
                     <span>Мероприятия по обеспечению техрежима</span>
                   </td>
                 </tr>
@@ -7017,6 +7033,7 @@ tr:nth-child(even) {
 .trcolmd12 {
   margin: 0;
   padding: 0;
+  margin-bottom: 13px;
 }
 .fadee {
   flex: 0 1 auto;
@@ -7038,7 +7055,7 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-  margin-top: 4px;
+  margin: 0 10px ;
   background: #272953;
 }
 
@@ -7050,7 +7067,7 @@ tr:nth-child(even) {
 }
 .table {
   overflow: scroll;
-  height: calc(100vh - 198px);
+  height: calc(100vh - 205px);
 }
 .trkrtableborderedtabledarktableresponsive {
   font-size: 9px;
@@ -7167,10 +7184,23 @@ table::-webkit-scrollbar-corner {
 }
 .fadropmenu.fadropmenu {
   background: #333975;
-  width: 246px;
-  z-index: 3001 !important;
+  /* width: 246px; */
+  z-index: 4001 !important;
 }
 .faheadhight {
   height: 40px;
+}
+
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+}
+.dropdown-menu.show {
+  display: flex;
+  flex-direction: column;
 }
 </style>

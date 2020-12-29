@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('sidebar_menu')
+@section('body_class', 'body_monitor')
+@section('sidebar_menu_additional')
     @include('partials.sidebar.monitor_menu')
 @endsection
 @section('module_icon')

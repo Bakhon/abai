@@ -37,15 +37,15 @@ Route::group(
                     function () {
                         return view('welcome');
                     }
-                );
+                )->name('mainpage');
                 Route::get('/druid', 'DruidController@index');
                 Route::get('/oilprice', 'DruidController@getOilPrice');
                 Route::get('/getnkkmg', 'DruidController@getNkKmg');
                 Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
                 Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
                 Route::get('/economic', 'EconomicController@index')->name('economic');
-                Route::get('/getdzocalcs', 'EconomicController@getDZOcalcs')->name('getdzocalcs');
-                Route::get('/getdzocalcsactualmonth', 'EconomicController@getDZOCalcsActualMonth')->name(
+                Route::get('/getdzocalcs', 'VisualCenterController@getDZOcalcs')->name('getdzocalcs');
+                Route::get('/getdzocalcsactualmonth', 'VisualCenterController@getDZOCalcsActualMonth')->name(
                     'getdzocalcsactualmonth'
                 );
                 Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
@@ -153,6 +153,10 @@ Route::group(
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
+
+                Route::get('profile', 'UserController@profile')->name('profile');
+
+                Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
             }
         );
         Auth::routes(

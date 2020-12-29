@@ -120,9 +120,9 @@ table {
     padding-bottom: 0px;
 }
 
-
 .CellWithComment{
     position:relative;
+    
 }
 
 .cell-with-comment {
@@ -137,11 +137,14 @@ table {
 
 .circle-err {
     display: block;
-    background: #0d092a;
+    /* background: #0d092a; */
     height: 10px;
     border-radius: 50px;
     width: 10px;
     margin-right: 20px;
+    background: rgb(255, 0, 0);
+    /* float: left;
+    margin-right: -10px; */
     /* cursor: pointer; */
 }
 
@@ -149,14 +152,15 @@ table {
     display: none;
     width: auto;
     position:absolute;
-    z-index:100;
+    z-index:3060;
     text-align: Left;
     opacity: 0.4;
     transition: opacity 2s;
     border-radius: 6px;
     background-color: #555;
     padding:3px;
-    top:-80px;
+    bottom: 20px;
+    /* top:-80px; */
 }
 .cell-with-comment:hover .cell-comment {
     display: flex;

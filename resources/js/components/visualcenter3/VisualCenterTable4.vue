@@ -1,17 +1,17 @@
 <template>
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 vc-central-block mr-2 mb-2">
             <horizontal-indicators
                 @changeTable="tableToChange => changeTable(tableToChange)"
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
             ></horizontal-indicators>
-            <div class="vc-tables">
-                <div class="mr-sm-2 vc-central-block">
+            <div>
+                <div>
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center p-2">
-                                <div>Корпоративные КПД</div>
+                                <h5 class="font-weight-bold m-0">Корпоративные КПД</h5>
                                 <div class="w-75">
                                     <div class="progress2">
                                         <div
@@ -47,6 +47,7 @@
                             v-bind:title="'ROACE'"
                             v-bind:mainValue="t3"
                             v-bind:units="'%'"
+                            v-bind:isLastBlock="true"
                         ></vc-speedometer-block>
                     </div>
                     <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2" v-if="isEnableSpeedometers">
@@ -64,10 +65,8 @@
                             v-bind:title="'Местное содержание'"
                             v-bind:mainValue="t6"
                             v-bind:units="'%'"
+                            v-bind:isLastBlock="true"
                         ></vc-speedometer-block>
-                    </div>
-                    <div class="text-center p-3" v-else>
-                        <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                     </div>
                 </div>
             </div>
@@ -78,6 +77,7 @@
                 v-bind:dateEnd="dateEnd"
             ></vertical-indicators>
         </div>
+        <cat-loader />
     </div>
 </template>
 <script src="./VisualCenterTable4.js"></script>

@@ -2,10 +2,15 @@
 
 namespace App\Models\Refs;
 
+use App\Models\Traits\WithHistory;
 use Illuminate\Database\Eloquent\Model;
 
 class Zu extends Model
 {
+    use WithHistory;
+
+    protected $guarded = ['id'];
+
     public function gu()
     {
         return $this->belongsTo(\App\Models\Refs\Gu::class);

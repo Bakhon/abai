@@ -1,6 +1,8 @@
 <template>
-  <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
-    <div class="left-side flex-grow-1 pr-3">
+  <div
+    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height p-2"
+  >
+    <div class="left-side flex-grow-1 pr-2">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1">
@@ -9,9 +11,9 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format(oil_factDay) }}
+                      {{ new Intl.NumberFormat("ru-RU").format((oil_factDay/1000).toFixed(0)) }}
                     </div>
-                    <div class="unit-vc">тонн</div>
+                    <div class="unit-vc">тыс. тонн</div>
                   </div>
                   <div class="txt1">Добыча нефти</div>
                   <br />
@@ -69,10 +71,10 @@
                   <div class="nu">
                     <div class="number">
                       {{
-                        new Intl.NumberFormat("ru-RU").format(oil_dlv_factDay)
+                        new Intl.NumberFormat("ru-RU").format((oil_dlv_factDay/1000).toFixed(0))
                       }}
                     </div>
-                    <div class="unit-vc">тонн</div>
+                    <div class="unit-vc">тыс. тонн</div>
                   </div>
                   <div class="txt1">Сдача нефти</div>
                   <br />
@@ -134,7 +136,7 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format(gas_factDay) }}
+                      {{ new Intl.NumberFormat("ru-RU").format((gas_factDay/1000).toFixed(0)) }}
                     </div>
                     <div class="unit-vc">
                       <!--млрд.-->
@@ -233,8 +235,8 @@
           </table>
         </div>
       </div>
-      <div class="first-table" :style="`${Table1}`">
-        <div class="first-string first-string2 big-area">
+      <div class="first-table big-area" :style="`${Table1}`">
+        <div class="first-string first-string2">
           <!--<div class="container-fluid">
             class="table-responsive"-->
           <!--<table class="table table2">
@@ -298,11 +300,19 @@
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('102')">
                   <a class="col-10">Сдача нефти по узлам учёта</a>
-                  <div class="col-2"><div class="square-small2"   :style="`${changeMenuButton2}`">✓</div></div>
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton2}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
                 <li class="center-li row px-4" @click="changeMenu('103')">
                   <a class="col-10">Товарный остаток нефти</a>
-                  <div class="col-2"><div class="square-small2" :style="`${changeMenuButton3}`">✓</div></div>
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton3}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
 
                 <!-- <li class="center-li" @click="changeMenu('102')">
@@ -393,8 +403,8 @@
                 :style="`${buttonHover6}`"
                 @click="
                   getProduction(
-                    'inj_plan',
-                    'inj_fact',
+                    'liq_plan',
+                    'liq_fact',
                     'Динамика объёма закачки воды',
                     'м³',
                     'Закачка воды'
@@ -453,7 +463,7 @@
                 >
                   Календарь
                 </div>
-                <ul class="center-menu2">
+                <ul class="center-menu2 right-indent">
                   <li class="center-li">
                     <br /><br />
 
@@ -466,7 +476,9 @@
                           is-range
                           class="m-auto"
                           :model-config="modelConfig"
+                            @dayclick="dayClicked"
                           @input="changeDate"
+
                         />
                       </div>
                     </div>
@@ -482,36 +494,36 @@
                 <td>-->
 
           <div class="row mt-3">
-            <div
+            <h5
               class="col assets4"
               :style="`${buttonHover11}`"
               @click="changeAssets('b11')"
             >
               Операционные активы
-            </div>
+            </h5>
 
-            <div
+            <h5
               class="col assets4"
               :style="`${buttonHover12}`"
               @click="changeAssets('b12')"
             >
               Неоперационные активы
-            </div>
+            </h5>
 
-            <div
+            <h5
               class="col assets4"
               :style="`${buttonHover13}`"
               @click="changeAssets('b13')"
             >
               Все активы КМГ
-            </div>
+            </h5>
 
             <!-- </tr>
-           
+
        </div>-->
           </div>
 
-          <div class="big-area row container-fluid" :style="`${displayTable}`">
+          <div class="row container-fluid" :style="`${displayTable}`">
             <div class="col-6 px-3">
               <table class="table4-2 w-100">
                 <tbody>
@@ -519,13 +531,13 @@
                     <td class="big-table-hidtd small-td"></td>
 
                     <td class="small-td">
-                      <div class="center2">план</div>
+                      <div class="center2">план ({{ item4 }})</div>
                     </td>
                     <td class="small-td">
-                      <div class="center2">факт</div>
+                      <div class="center2">факт ({{ item4 }})</div>
                     </td>
                     <td class="small-td">
-                      <div class="center2">+/-</div>
+                      <div class="center2">+/- ({{ item4 }})</div>
                     </td>
                     <td class="small-td"><div class="center2">%</div></td>
                   </tr>
@@ -561,7 +573,7 @@
 
                       <div class="font" v-if="item.plan">
                         {{ new Intl.NumberFormat("ru-RU").format(item.plan) }}
-                        <div class="right">{{ item4 }}</div>
+                        <!-- <div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
@@ -583,7 +595,7 @@
 
                       <div class="font" v-if="item.fact">
                         {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
-                        <div class="right">{{ item4 }}</div>
+                        <!--<div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td
@@ -611,7 +623,7 @@
                             )
                           )
                         }}
-                        <div class="right">{{ item4 }}</div>
+                        <!-- <div class="right">{{ item4 }}</div>-->
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
@@ -626,7 +638,7 @@
                         )}`"
                       ></div>
                       <div class="percent2 font">
-                        <!--                                       
+                        <!--
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
@@ -681,11 +693,16 @@
 
                   <tr v-for="(item, index) in bigTable">
                     <td
+                      class="d-flex flex-row"
                       @click="saveCompany(item.dzoMonth)"
                       :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
+                      style="cursor: pointer;"
                     >
                       <div class="first-td">
                         {{ getNameDzoFull(item.dzoMonth) }}
+                      </div>
+                      <div class="mt-2 ml-1">
+                        <img class="w-75" src="/img/icons/link.svg">
                       </div>
                     </td>
 
@@ -859,10 +876,10 @@
         </div>
       </div>
 
-      <div class="second-table" :style="`${Table2}`">
+      <div class="second-table big-area" :style="`${Table2}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">
+          <div class="container-fluid">
             <br />
 
             <div
@@ -881,10 +898,10 @@
         </div>
       </div>
 
-      <div class="third-table" :style="`${Table3}`">
+      <div class="third-table big-area" :style="`${Table3}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">
+          <div class="container-fluid">
             <br />
 
             <div
@@ -903,12 +920,12 @@
         </div>
       </div>
 
-      <div class="third-table" :style="`${Table4}`">
+      <div class="third-table big-area" :style="`${Table5}`">
         <div class="first-string first-string2">
-          <div class="big-area container-fluid">
+          <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold">Фонд добывающих скважин</div>
+                <div class="ml-4 bold">Фонд нагнетательных скважин</div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">Закрыть</div>
@@ -952,7 +969,7 @@
                   >
                     Календарь
                   </div>
-                  <ul class="center-menu2">
+                  <ul class="center-menu2 right-indent">
                     <li class="center-li">
                       <br /><br />
 
@@ -966,6 +983,7 @@
                             class="m-auto"
                             :model-config="modelConfig"
                             @input="changeDate"
+                              @dayclick="dayClicked"
                           />
                         </div>
                       </div>
@@ -1020,7 +1038,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="col-5">
+              <div class="col-6">
                 <table class="table4">
                   <tr v-for="(item, index) in prod_wells_workAll">
                     <!-- @click="saveCompany('all')"-->
@@ -1049,14 +1067,12 @@
                         index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
                       "
                     >
-                      <div class="font">
-                        {{ item.value2 }}
-                      </div>
+                      <div class="font"></div>
                     </td>
                   </tr>
                 </table>
               </div>
-              <div class="col-7 container-fluid">
+              <div class="col-6 px-2">
                 <visual-center3-wells></visual-center3-wells>
               </div>
             </div>
@@ -1072,30 +1088,28 @@
         </div>
       </div>-->
 
-      <div class="third-table" :style="`${Table5}`">
+      <div class="third-table big-area" :style="`${Table4}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">
-            Фонд нагнетательных скважин
-          </div>
+          <div class="container-fluid">Фонд добывающих скважин</div>
         </div>
       </div>
 
-      <div class="third-table" :style="`${Table6}`">
+      <div class="third-table big-area" :style="`${Table6}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">ОТМ</div>
+          <div class="container-fluid">ОТМ</div>
         </div>
       </div>
 
-      <div class="third-table" :style="`${Table7}`">
+      <div class="third-table big-area" :style="`${Table7}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">Химизация</div>
+          <div class="container-fluid">Химизация</div>
         </div>
       </div>
     </div>
-    <div class="right-side2 flex-grow-1">
+    <div class="right-side2 flex-grow-1 pl-1">
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1-2">

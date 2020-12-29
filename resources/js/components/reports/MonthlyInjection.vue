@@ -1,5 +1,6 @@
 <template>
   <div class="filter-container">
+    <cat-loader v-show="isLoading"/>
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
@@ -88,6 +89,7 @@ export default {
         // let uri = "http://0.0.0.0:8090/monthly/injection/";
       let data = {
         dzo: this.org,
+        period: 'monthly',
         report_date_start: `${this.start_date}`.concat('-01 00:00:00'),
         report_date_end: `${this.end_date}`.concat('-01 00:00:00')
       };

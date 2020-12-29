@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('body_class', 'body_bigdata')
 @section('module_icon')
     <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M24.9764 5.36837C24.9764 2.40411 19.3854 0.00108624 12.4887 0.00108624C5.59184 0.00108624 0.000915527 2.40411 0.000915527 5.36837C0.000915527 8.33264 5.59184 10.7357 12.4887 10.7357C19.3854 10.7357 24.9764 8.33264 24.9764 5.36837Z" fill="#3366FF"/>
@@ -10,6 +11,9 @@
     </svg>
 @endsection
 @section('module_title', 'Прототип БД')
+@section('sidebar_menu_additional')
+    @include('partials.sidebar.bigdata_menu')
+@endsection
 @section('content')
     <big-data></big-data>
 @endsection

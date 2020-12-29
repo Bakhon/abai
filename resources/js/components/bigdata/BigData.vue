@@ -185,6 +185,12 @@
         <daily-production v-if="selectedReport.tag === 'daily-production'"/>
         <daily-injection v-if="selectedReport.tag === 'daily-injection'"/>
         <monthly-injection v-if="selectedReport.tag === 'monthly-injection'"/>
+        <well-stock-block v-if="selectedReport.tag === 'well-stock-block'"/>
+        <analyze-gtm v-if="selectedReport.tag === 'analyze-gtm'"/>
+        <dynamics-indicators v-if="selectedReport.tag === 'dynamics-indicators'"/>
+        <well-fund v-if="selectedReport.tag === 'well-fund'"/>
+        <well-fund-block v-if="selectedReport.tag === 'well-fund-block'"/>
+        <well-fund-field v-if="selectedReport.tag === 'well-fund-field'"/>
       </div>
     </div>
   </div>
