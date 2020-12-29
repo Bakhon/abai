@@ -120,7 +120,6 @@ table {
     padding-bottom: 0px;
 }
 
-
 .CellWithComment{
     position:relative;
     
@@ -144,8 +143,8 @@ table {
     width: 10px;
     margin-right: 20px;
     background: rgb(255, 0, 0);
-    float: left;
-    margin-right: -10px;
+    /* float: left;
+    margin-right: -10px; */
     /* cursor: pointer; */
 }
 

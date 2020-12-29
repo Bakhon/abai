@@ -111,6 +111,15 @@
         </div>
       </div>
       <div class="sec_nav">
+
+
+        
+
+
+
+
+
+
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }}</h4> -->
         <div
           class="filter_chart row"

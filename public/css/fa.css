@@ -196,8 +196,8 @@ table {
     margin-right: 20px;
     cursor: pointer;
     background: rgb(255, 0, 0);
-    float: left;
-    margin-right: -10px;
+    /* float: left; */
+    /* margin-right: -10px; */
 }
 .cell-comment{
     display: none;
