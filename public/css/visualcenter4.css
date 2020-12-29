@@ -821,7 +821,7 @@ li.center-li {
 }
 
 .wide-indicator-border {
-    border-left: 1px solid #454D7D
+    border-left: 1px solid #454D7D;
 }
 
 .cursor-pointer {
@@ -830,4 +830,8 @@ li.center-li {
 
 #app > .container-fluid {
     max-width: 100% !important;
+}
+
+.vc-speedometer-line {
+    height: 36.3%;
 }

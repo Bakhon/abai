@@ -20,6 +20,8 @@ export default {
     isLastBlock: false,
   },
   data: function () {
-    return {}
+    return {
+      kpdIcon: 1,
+    }
   }
 }

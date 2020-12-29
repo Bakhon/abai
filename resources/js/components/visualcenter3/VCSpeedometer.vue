@@ -71,13 +71,13 @@ export default {
     },
     mounted() {
         let item = this.sliderValue;
-        let rangeColor = '#fe5c5c';
-        let rangeColorInverse = '#009846';
         let slider1Value = [0, 33];
         let slider1ValueInverse = [66, 100];
         let slider2Value = item[4];
         let sortValues = [Math.abs(item[1]), Math.abs(item[2]), Math.abs(item[3])];
         let inverse = item[1] > item[2];
+        let rangeColor = inverse ? '#009846' : '#fe5c5c';
+        let kpdIcon = inverse ? 3 : 1;
         sortValues = sortValues.sort(function (a, b) {
             return a - b;
         });
@@ -85,20 +85,21 @@ export default {
             slider1Value = [33, 66]
             slider1ValueInverse = [33, 66]
             rangeColor = '#237deb';
-            rangeColorInverse = '#237deb';
+            kpdIcon = 2;
         }
         if (slider2Value >= sortValues[2]) {
             slider1Value = [66, 100]
             slider1ValueInverse = [0, 33]
-            rangeColor = '#009846';
-            rangeColorInverse = '#fe5c5c';
+            rangeColor = inverse ? '#fe5c5c' : '#009846';
+            kpdIcon = inverse ? 1 : 3;
         }
         this.slider1Value = inverse ? slider1ValueInverse : slider1Value;
         this.slider2Value = slider2Value;
         this.tooltipValue = item[2];
-        this.rangeColor = inverse ? rangeColorInverse : rangeColor;
+        this.rangeColor = rangeColor;
         this.min = item[1];
         this.max = item[3];
+        this.$emit('changeKpdIcon', kpdIcon)
     }
 };
 </script>
