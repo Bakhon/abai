@@ -10,7 +10,7 @@ export default {
         title: 'план',
         value: 224543,
       }],
-      leftUnits: "тыс.тенге/тонна",
+      leftUnits: "тенге/тонна",
       rightNumbers: [{
         title: 'факт',
         value: 789373,
@@ -97,19 +97,18 @@ export default {
             });
 
             let dzoDataActualLength = (response.data['dzoDataActual']).length;
-            let changeConst = 7.23;
-            this.udIncomePlan = (udIncomePlan / dzoDataActualLength / 1000).toFixed(0);
-            this.udIncomeBblPlan = (udIncomeBblPlan / dzoDataActualLength / changeConst).toFixed(0);
-            this.udIncomeFact = (udIncomeFact / dzoDataActualLength / 1000).toFixed(0);
-            this.udIncomeBblFact = (udIncomeBblFact / dzoDataActualLength / changeConst).toFixed(0);
+            this.udIncomePlan = (udIncomePlan / dzoDataActualLength).toFixed(0);
+            this.udIncomeBblPlan = (udIncomeBblPlan / dzoDataActualLength).toFixed(2);
+            this.udIncomeFact = (udIncomeFact / dzoDataActualLength).toFixed(0);
+            this.udIncomeBblFact = (udIncomeBblFact / dzoDataActualLength).toFixed(2);
 
-            this.udSpendingPlan = (udSpendingPlan / dzoDataActualLength / 1000).toFixed(0);
-            this.udSpendingBblPlan = (udSpendingBblPlan / dzoDataActualLength).toFixed(0);
-            this.udSpendingFact = (udSpendingFact / dzoDataActualLength / 1000).toFixed(0);
-            this.udSpendingBblFact = (udSpendingBblFact / dzoDataActualLength).toFixed(0);
+            this.udSpendingPlan = (udSpendingPlan / dzoDataActualLength).toFixed(0);
+            this.udSpendingBblPlan = (udSpendingBblPlan / dzoDataActualLength).toFixed(2);
+            this.udSpendingFact = (udSpendingFact / dzoDataActualLength).toFixed(0);
+            this.udSpendingBblFact = (udSpendingBblFact / dzoDataActualLength).toFixed(2);
 
-            this.kvlPlan = (kvlPlan / dzoDataActualLength / 1000).toFixed(0);
-            this.kvlFact = (kvlFact / dzoDataActualLength / 1000).toFixed(0);
+            this.kvlPlan = (kvlPlan / dzoDataActualLength).toFixed(0);
+            this.kvlFact = (kvlFact / dzoDataActualLength).toFixed(0);
 
             this.rentGtm = rentGtm.toFixed(0);
             this.neRentGtm = neRentGtm.toFixed(0);

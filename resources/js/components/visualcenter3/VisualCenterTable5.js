@@ -46,6 +46,7 @@ export default {
       let dateStart = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateStart)
       let dateEnd = new Intl.DateTimeFormat('en', {year: 'numeric', month: 'short', day: '2-digit'}).format(this.dateEnd)
       let queryParams = {params: {'dateStart': dateStart, 'dateEnd': dateEnd}};
+      this.$store.commit('globalloading/SET_LOADING',true);
       this.dzoData = [];
       this.macroData = [];
       if (this.dzoSelect !== 'ALL') {
@@ -252,6 +253,7 @@ export default {
         } else {
           console.log("No data");
         }
+        this.$store.commit('globalloading/SET_LOADING',false);
       })
     },
   },

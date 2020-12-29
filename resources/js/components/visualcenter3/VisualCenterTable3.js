@@ -68,7 +68,7 @@ export default {
       tableHover4: "",
       tableHover5: "",
       tableHover6: "",
-      changeMenuButton: "color: #fff;",
+      changeMenuButton: "color: #fff; text-decoration: underline;",
       changeMenuButton1: "",
       changeMenuButton2: "",
       changeMenuButton3: "",
@@ -922,7 +922,7 @@ this.changeMenu2('4');
       // });
     },
 
-    getProduction(item, item2, item3, item4, item5) {  
+    getProduction(item, item2, item3, item4, item5) {
       this.$store.commit('globalloading/SET_LOADING',true);
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
@@ -1965,7 +1965,7 @@ this.changeMenu2('4');
     this.getCurrencyNow(this.timeSelect);
     this.getOilNow(this.timeSelect, this.period);
     this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-    this.changeAssets('b11');
+    this.changeAssets('b13');
     // this.getProductionOilandGasPercent();
  
   },
