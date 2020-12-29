@@ -17,6 +17,18 @@ const textForms = {
         'горизонтов',
         'горизонты',
     ],
+    objects: [
+        'объект',
+        'объекта',
+        'объектов',
+        'объекты',
+    ],
+    blocks: [
+        'блок',
+        'блока',
+        'блоков',
+        'блоки',
+    ],
 }
 
 exports.declOfNum = (n, row = "fields") => {  
@@ -29,6 +41,6 @@ exports.declOfNum = (n, row = "fields") => {
 
 exports.getFilterText = (filter, options, field) => {
     if (filter.length === 0) return `Выберите ${textForms[field][3]}`
-    if (filter.length === options.length) return `Все ${textForms[field][3]}`
+    // if (filter.length === options.length) return `Все ${textForms[field][3]}`
     else return filter.join(', ');
 }

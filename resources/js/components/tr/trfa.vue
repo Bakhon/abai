@@ -149,6 +149,15 @@
               textFormsRow="expMethods"
             />
           </div>
+          <div class="" style="margin-left: 15px">
+            <tr-multiselect
+              :filter="chartFilter_object"
+              :fieldFilterOptions="objectFilters"
+              @change-filter="handlerFilterObjects"
+              filterName="блоки"
+              textFormsRow="blocks"
+            />
+          </div>
           <clear-icon
             v-if="chartWells.length !== filteredWellsBar.length"
             @clear-click="clearFilters()"
@@ -231,17 +240,24 @@ export default {
           this.exp_methFilters[0].fields,
           "expMethods"
         )} добычи`,
+        getFilterText(
+          this.chartFilter_object,
+          this.objectFilters[0].fields,
+          "blocks"
+        ),
       ];
     },
     pieChartData() {
       if (this.chartWells && this.chartWells.length > 0) {
-        let field = this.chartFilter_field;
-        let horizon = this.chartFilter_horizon;
-        let exp_meth = this.chartFilter_exp_meth;
+        const field = this.chartFilter_field;
+        const horizon = this.chartFilter_horizon;
+        const exp_meth = this.chartFilter_exp_meth;
+        const object = this.chartFilter_object;
         try {
           let filteredResult = this.chartWells.filter(
             (row) =>
               (!field || field.indexOf(row.field) !== -1) &&
+              (!object || object.indexOf(row.block) !== -1) &&
               (!horizon ||
                 horizon.indexOf(this.getStringOrFirstItem(row, "horizon")) !==
                   -1) &&
@@ -277,13 +293,15 @@ export default {
     },
     barChartData() {
       if (this.chartWells && this.chartWells.length > 0) {
-        let field = this.chartFilter_field;
-        let horizon = this.chartFilter_horizon;
-        let exp_meth = this.chartFilter_exp_meth;
+        const field = this.chartFilter_field;
+        const horizon = this.chartFilter_horizon;
+        const exp_meth = this.chartFilter_exp_meth;
+        const object = this.chartFilter_object;
         try {
           let filteredResult = this.chartWells.filter(
             (row) =>
               (!field || field.indexOf(row.field) !== -1) &&
+              (!object || object.indexOf(row.block) !== -1) &&
               (!horizon ||
                 horizon.indexOf(this.getStringOrFirstItem(row, "horizon")) !==
                   -1) &&
@@ -339,7 +357,10 @@ export default {
               this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
             (!this.chartFilter_exp_meth ||
               this.chartFilter_exp_meth.length === 0 ||
-              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.block) !== -1)
           ) {
             filters = [...filters, el.field];
           }
@@ -365,7 +386,10 @@ export default {
               this.chartFilter_field.indexOf(el.field) !== -1) &&
             (!this.chartFilter_exp_meth ||
               this.chartFilter_exp_meth.length === 0 ||
-              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.block) !== -1)
           ) {
             filters = [...filters, el_horizon];
           }
@@ -392,7 +416,10 @@ export default {
               this.chartFilter_field.indexOf(el.field) !== -1) &&
             (!this.chartFilter_horizon ||
               this.chartFilter_horizon.length === 0 ||
-              this.chartFilter_horizon.indexOf(el_horizon) !== -1)
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.block) !== -1)
           ) {
             filters = [...filters, el_exp_meth];
           }
@@ -400,6 +427,36 @@ export default {
         return [
           {
             group: "Все способы добычи",
+            fields: [...filters],
+          },
+        ];
+      } else return [];
+    },
+    objectFilters() {
+      if (this.chartWells && this.chartWells.length > 0) {
+        let filters = [];
+
+        this.chartWells.forEach((el) => {
+          const el_horizon = this.getStringOrFirstItem(el, "horizon");
+          const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
+          if (
+            filters.indexOf(el.block) === -1 &&
+            (!this.chartFilter_field ||
+              this.chartFilter_field.length === 0 ||
+              this.chartFilter_field.indexOf(el.field) !== -1) &&
+            (!this.chartFilter_horizon ||
+              this.chartFilter_horizon.length === 0 ||
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
+            (!this.chartFilter_exp_meth ||
+              this.chartFilter_exp_meth.length === 0 ||
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
+          ) {
+            filters = [...filters, el.block];
+          }
+        });
+        return [
+          {
+            group: "Все блоки",
             fields: [...filters],
           },
         ];
@@ -431,6 +488,8 @@ export default {
       chartFilter_horizon_start: true,
       chartFilter_exp_meth: [],
       chartFilter_exp_meth_start: true,
+      chartFilter_object: [],
+      chartFilter_object_start: true,
       // chartNames: [
       //   "Распределение фонда скважин по основной причине снижения дебита нефти",
       //   "Распределение суммарных отклонений TP по факторам, т/сут",
@@ -554,18 +613,18 @@ export default {
         ],
         title: {
           align: "center",
-          offsetY: 18,
+          offsetY: 15,
           style: {
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#5FA7FF",
           },
         },
         subtitle: {
           align: "center",
-          offsetY: 36,
-          margin: 15,
+          offsetY: 30,
+          margin: 10,
           style: {
-            fontSize: "14px",
+            fontSize: "12px",
             color: "#5FA7FF",
             fontWeight: 700,
           },
@@ -662,22 +721,39 @@ export default {
       }
       this.refreshFilters();
     },
+    objectFilters() {
+      if (this.chartFilter_object_start) {
+        this.chartFilter_object = this.objectFilters[0].fields;
+        this.chartFilter_object_start = false;
+      } else {
+        const newFilter = this.chartFilter_object.filter(
+          (el) => this.objectFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_object.length)
+          this.chartFilter_object = newFilter;
+      }
+      this.refreshFilters();
+      this.calcChartData();
+    },
   },
   methods: {
     getStringOrFirstItem(el, param) {
       return Array.isArray(el[param]) ? el[param][0] : el[param];
     },
     clearFilters() {
+      this.chartFilter_object = [];
       this.chartFilter_exp_meth = [];
       this.chartFilter_horizon = [];
       this.chartFilter_field = [];
     },
     refreshFilters() {
       if (
+        this.chartFilter_object.length === 0 &&
         this.chartFilter_exp_meth.length === 0 &&
         this.chartFilter_horizon.length === 0 &&
         this.chartFilter_field.length === 0
       ) {
+        this.chartFilter_object = [...this.objectFilters[0].fields];
         this.chartFilter_exp_meth = [...this.exp_methFilters[0].fields];
         this.chartFilter_horizon = [...this.horizonFilters[0].fields];
         this.chartFilter_field = [...this.fieldFilters[0].fields];
@@ -691,6 +767,9 @@ export default {
     },
     handlerFilterFieldsMethods(filter) {
       this.chartFilter_exp_meth = filter;
+    },
+    handlerFilterObjects(filter) {
+      this.chartFilter_object = filter;
     },
     chooseDt() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -738,6 +817,7 @@ export default {
               this.chartFilter_field_start = true;
               this.chartFilter_horizon_start = true;
               this.chartFilter_exp_meth_start = true;
+              this.chartFilter_object_start = true;
             } else {
               console.log("No data");
             }

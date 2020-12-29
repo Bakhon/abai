@@ -154,7 +154,7 @@
           <div class="namefilter mb-2" style="color: white">
             <h4>Фильтр по</h4>
           </div>
-          <div class="filterplaceone" style="margin-left: 15px">
+          <div class="" style="margin-left: 15px">
             <tr-multiselect
               :filter="chartFilter_field"
               :fieldFilterOptions="fieldFilters"
@@ -162,7 +162,7 @@
               filterName="месторождения"
             />
           </div>
-          <div class="filterplacetwo" style="margin-left: 15px">
+          <div class="" style="margin-left: 15px">
             <tr-multiselect
               :filter="chartFilter_horizon"
               :fieldFilterOptions="horizonFilters"
@@ -171,7 +171,7 @@
               textFormsRow="horizons"
             />
           </div>
-          <div class="filterplacethree" style="margin-left: 15px">
+          <div class="" style="margin-left: 15px">
             <tr-multiselect
               :filter="chartFilter_exp_meth"
               :fieldFilterOptions="exp_methFilters"
@@ -181,7 +181,16 @@
               textFormsRow="expMethods"
             />
           </div>
-          <clear-icon v-if="chartWells.length !== filteredWells.length" @clear-click="clearFilters()" background="#272953" placeholder="Сбросить фильтры" />
+          <div class="" style="margin-left: 15px">
+            <tr-multiselect
+              :filter="chartFilter_object"
+              :fieldFilterOptions="objectFilters"
+              @change-filter="handlerFilterObjects"
+              filterName="блоки"
+              textFormsRow="blocks"
+            />
+          </div>
+          <clear-icon v-if="chartWells.length !== filteredWellsPreGraph.length" @clear-click="clearFilters()" background="#272953" placeholder="Сбросить фильтры" />
         </div>
         <!-- <div class="fadee tr-chart__loader" v-if="isLoading">
           <fade-loader :loading="isLoading"></fade-loader>
@@ -237,6 +246,11 @@ export default {
           this.exp_methFilters[0].fields,
           "expMethods"
         )} добычи`,
+        getFilterText(
+          this.chartFilter_object,
+          this.objectFilters[0].fields,
+          "blocks"
+        ),
       ];
     },
     fieldFilters() {
@@ -252,7 +266,11 @@ export default {
               this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
             (!this.chartFilter_exp_meth ||
               this.chartFilter_exp_meth.length === 0 ||
-              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.block) !== -1)
+              //change it to object
           ) {
             filters = [...filters, el.field];
           }
@@ -278,7 +296,10 @@ export default {
               this.chartFilter_field.indexOf(el.field) !== -1) &&
             (!this.chartFilter_exp_meth ||
               this.chartFilter_exp_meth.length === 0 ||
-              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.block) !== -1)
           ) {
             filters = [...filters, el_horizon];
           }
@@ -305,7 +326,10 @@ export default {
               this.chartFilter_field.indexOf(el.field) !== -1) &&
             (!this.chartFilter_horizon ||
               this.chartFilter_horizon.length === 0 ||
-              this.chartFilter_horizon.indexOf(el_horizon) !== -1)
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.block) !== -1)
           ) {
             filters = [...filters, el_exp_meth];
           }
@@ -318,12 +342,43 @@ export default {
         ];
       } else return [];
     },
+    objectFilters() {
+      if (this.chartWells && this.chartWells.length > 0) {
+        let filters = [];
+
+        this.chartWells.forEach((el) => {
+          const el_horizon = this.getStringOrFirstItem(el, "horizon");
+          const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
+          if (
+            filters.indexOf(el.block) === -1 &&
+            (!this.chartFilter_field ||
+              this.chartFilter_field.length === 0 ||
+              this.chartFilter_field.indexOf(el.field) !== -1) &&
+            (!this.chartFilter_horizon ||
+              this.chartFilter_horizon.length === 0 ||
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
+            (!this.chartFilter_exp_meth ||
+              this.chartFilter_exp_meth.length === 0 ||
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
+          ) {
+            filters = [...filters, el.block];
+          }
+        });
+        return [
+          {
+            group: "Все блоки",
+            fields: [...filters],
+          },
+        ];
+      } else return [];
+    },
   },
   data: function () {
     return {
       chartShow: 0,
       // isLoading: true,
       chartWells: [],
+      filteredWellsPreGraph: [],
       filteredWells: [],
       sortType: "asc",
       dt: null,
@@ -340,6 +395,8 @@ export default {
       chartFilter_horizon_start: true,
       chartFilter_exp_meth: [],
       chartFilter_exp_meth_start: true,
+      chartFilter_object: [],
+      chartFilter_object_start: true,
       // sortField: null,
       // currentSortDir: 'asc',
       year: null,
@@ -448,17 +505,17 @@ export default {
       },
       titleBase: {
         align: "center",
-        offsetY: 18,
+        offsetY: 15,
         style: {
-          fontSize: "14px",
+          fontSize: "12px",
           color: "#5FA7FF",
         },
       },
       subtitleBase: {
         align: "center",
-        offsetY: 36,
+        offsetY: 30,
         style: {
-          fontSize: "14px",
+          fontSize: "12px",
           color: "#5FA7FF",
           fontWeight: 700,
         },
@@ -534,19 +591,36 @@ export default {
       this.refreshFilters();
       this.calcChartData();
     },
+    objectFilters() {
+      if (this.chartFilter_object_start) {
+        this.chartFilter_object = this.objectFilters[0].fields;
+        this.chartFilter_object_start = false;
+      } else {
+        const newFilter = this.chartFilter_object.filter(
+          (el) => this.objectFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_object.length)
+          this.chartFilter_object = newFilter;
+      }
+      this.refreshFilters();
+      this.calcChartData();
+    },
   },
   methods: {
     clearFilters() {
+      this.chartFilter_object = [];
       this.chartFilter_exp_meth = [];
       this.chartFilter_horizon = [];
       this.chartFilter_field = [];
     },
     refreshFilters() {
       if (
+        this.chartFilter_object.length === 0 &&
         this.chartFilter_exp_meth.length === 0 &&
         this.chartFilter_horizon.length === 0 &&
         this.chartFilter_field.length === 0
       ) {
+        this.chartFilter_object = [...this.objectFilters[0].fields];
         this.chartFilter_exp_meth = [...this.exp_methFilters[0].fields];
         this.chartFilter_horizon = [...this.horizonFilters[0].fields];
         this.chartFilter_field = [...this.fieldFilters[0].fields];
@@ -561,15 +635,20 @@ export default {
     handlerFilterFieldsMethods(filter) {
       this.chartFilter_exp_meth = filter;
     },
+    handlerFilterObjects(filter) {
+      this.chartFilter_object = filter;
+    },
     async calcChartData() {
       if (this.chartWells && this.chartWells.length > 0) {
-        let field = this.chartFilter_field;
-        let horizon = this.chartFilter_horizon;
-        let exp_meth = this.chartFilter_exp_meth;
+        const field = this.chartFilter_field;
+        const horizon = this.chartFilter_horizon;
+        const exp_meth = this.chartFilter_exp_meth;
+        const object = this.chartFilter_object;
         try {
           const filteredResult = this.chartWells.filter(
             (row) =>
               (!field || field.indexOf(row.field) !== -1) &&
+              (!object || object.indexOf(row.block) !== -1) &&
               (!horizon ||
                 horizon.indexOf(this.getStringOrFirstItem(row, "horizon")) !==
                   -1) &&
@@ -578,6 +657,7 @@ export default {
                   -1)
           );
           console.log("filtered = ", filteredResult);
+          this.filteredWellsPreGraph = filteredResult;
           this.chartData = await this[`setDataChart${this.chartShow}`](
             filteredResult
           );
@@ -621,7 +701,9 @@ export default {
         if (newMaxY1 > maxY1) maxY1 = newMaxY1;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const stacked = false;
       const stroke = {
         show: true,
@@ -725,7 +807,9 @@ export default {
         if (newY2Max > maxY2) maxY2 = newY2Max;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -857,7 +941,9 @@ export default {
         if (newY2 > maxY2) maxY2 = newY2;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -981,7 +1067,9 @@ export default {
         if (newY2 > maxY2) maxY2 = newY2;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -1108,7 +1196,9 @@ export default {
         if (newY2Max > maxY2) maxY2 = newY2Max;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -1219,7 +1309,9 @@ export default {
     setDataChart5(filteredResult) {
       this.filteredWells = filteredResult;
       const categories = ["Факт", "ИДН", "ИДН+ГРП"];
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const stacked = false;
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -1230,8 +1322,6 @@ export default {
             color: "#5FA7FF",
           },
         },
-        // max: maxY2,
-        // min: minY2,
       };
       const title = {
         ...this.titleBase,
@@ -1316,7 +1406,9 @@ export default {
       const categories = filteredResult.map((item) =>
         this.getStringOrFirstItem(item, "well")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
@@ -1370,7 +1462,9 @@ export default {
       const categories = filteredResult.map((item) =>
         this.getStringOrFirstItem(item, "well")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const yaxis = { ...this.yaxisBase };
       const title = {
         ...this.titleBase,
@@ -1416,7 +1510,9 @@ export default {
       const categories = filteredResult.map((item) =>
         this.getStringOrFirstItem(item, "well")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
@@ -1470,7 +1566,9 @@ export default {
       const categories = filteredResult.map((item) =>
         this.getStringOrFirstItem(item, "well")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      const xaxis = { ...this.chartBarOptions.xaxis, ...labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
@@ -1551,6 +1649,7 @@ export default {
             this.chartFilter_field_start = true;
             this.chartFilter_horizon_start = true;
             this.chartFilter_exp_meth_start = true;
+            this.chartFilter_object_start = true;
           } else {
             console.log("No data");
           }

@@ -3,7 +3,8 @@
     margin-bottom: 0 !important;
 }
 
-#app .multiselect--active, #app .multiselect {
+#app .multiselect--active,
+#app .multiselect {
     z-index: 3050;
 }
 
@@ -12,13 +13,16 @@
     margin: 0 0 0 auto;
 }
 
-#app .multiselect__tags, #app .multiselect__content, #app .multiselect__content-wrapper {
+#app .multiselect__tags,
+#app .multiselect__content,
+#app .multiselect__content-wrapper {
     background: #272953;
     border: 1px solid #656a8a;
     color: #fff;
 }
 
-#app .multiselect__placeholder, #app .multiselect__option {
+#app .multiselect__placeholder,
+#app .multiselect__option {
     background: #272953;
     color: #fff;
 }
@@ -30,6 +34,7 @@
 .multiselect__option__item {
     display: flex;
 }
+
 .multiselect__option__checkbox {
     width: 14px;
     height: 14px;
@@ -42,12 +47,23 @@
     align-items: center;
     justify-content: center;
 }
-.multiselect__option--selected .multiselect__option__checkbox, .multiselect__option--group-selected .multiselect__option__checkbox {
+
+.multiselect__option--selected .multiselect__option__checkbox,
+.multiselect__option--group-selected .multiselect__option__checkbox {
     background: #237DEB;
 }
+
 .multiselect__option__checkbox__check {
     display: none;
 }
-.multiselect__option--selected .multiselect__option__checkbox__check, .multiselect__option--group-selected .multiselect__option__checkbox__check {
+
+.multiselect__option--selected .multiselect__option__checkbox__check,
+.multiselect__option--group-selected .multiselect__option__checkbox__check {
     display: block;
+}
+
+.chart-labels {
+    font-size: 10px;
+    line-height: 14px;
+    height: 14px;
 }
