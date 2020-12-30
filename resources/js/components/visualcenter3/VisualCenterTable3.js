@@ -33,6 +33,8 @@ export default {
         { name: "Простой добывающих скважин", value: 86, value2: 54 }
       ],
       innerWells2:'',
+      otmData: [],
+      chemistryData: [],
       prod_wells_work: 0,
       prod_wells_idle: 0,
       inj_wells_idle: 0,
@@ -1057,6 +1059,8 @@ export default {
 
             this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);
             this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);
+            this.otmData = this.getOtmData(dataWithMay)
+            this.chemistryData = this.getChemistryData(dataWithMay)
 
 
             var productionForChart = _(dataWithMay)
@@ -1871,6 +1875,50 @@ console.log(dataWithMay)
 
       return productionPlanAndFactMonthWellsName;
 
+    },
+
+    getOtmData(arr){
+      let otmData = _(arr)
+      .groupBy("data")
+      .map((__time, id) => ({
+        __time: id,
+        otm_iz_burenia_skv_plan: _.round(_.sumBy(__time, 'otm_iz_burenia_skv_plan'), 0),
+        otm_iz_burenia_skv_fact: _.round(_.sumBy(__time, 'otm_iz_burenia_skv_fact'), 0),
+        otm_burenie_prohodka_plan: _.round(_.sumBy(__time, 'otm_burenie_prohodka_plan'), 0),
+        otm_burenie_prohodka_fact: _.round(_.sumBy(__time, 'otm_burenie_prohodka_fact'), 0),
+        otm_krs_skv_plan: _.round(_.sumBy(__time, 'otm_krs_skv_plan'), 0),
+        otm_krs_skv_fact: _.round(_.sumBy(__time, 'otm_krs_skv_fact'), 0),
+        otm_prs_skv_plan: _.round(_.sumBy(__time, 'otm_prs_skv_plan'), 0),
+        otm_prs_skv_fact: _.round(_.sumBy(__time, 'otm_prs_skv_fact'), 0),
+      }))
+      .value();
+
+      let result = [];
+
+      result.push(
+          {
+            name: 'Скважин из бурения',
+            plan: otmData[0]['otm_iz_burenia_skv_plan'],
+            fact: otmData[0]['otm_iz_burenia_skv_fact'],
+          },
+          {
+            name: 'Бурение проходка',
+            plan: otmData[0]['otm_burenie_prohodka_plan'],
+            fact: otmData[0]['otm_burenie_prohodka_fact'],
+          },
+          {
+            name: 'КРС',
+            plan: otmData[0]['otm_krs_skv_plan'],
+            fact: otmData[0]['otm_krs_skv_fact'],
+          },
+          {
+            name: 'ПРС',
+            plan: otmData[0]['otm_prs_skv_plan'],
+            fact: otmData[0]['otm_prs_skv_fact'],
+          },
+      )
+
+      return result
     },
 
     innerWellsProdMetOnChange($event){

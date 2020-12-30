@@ -1403,17 +1403,144 @@
         </div>
       </div>
 
-      <!--<div class="third-table big-area" :style="`${Table4}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">Фонд добывающих скважин</div>
-        </div>
-      </div>-->
-
       <div class="third-table big-area" :style="`${Table6}`">
         <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">ОТМ</div>
+          <div class="container-fluid">
+            <div class="area-6-name row mt-3 mb-3 px-2">
+              <div class="col">
+                <div class="ml-4 bold">ОТМ</div>
+              </div>
+              <div class="col px-4">
+                <div class="close2" @click="changeTable('1')">Закрыть</div>
+              </div>
+            </div>
+
+            <div class="row px-4">
+              <div class="w-25 pr-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover7}`"
+                    @click="changeMenu2(1)"
+                >
+                  Суточная
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover8}`"
+                    @click="changeMenu2(2)"
+                >
+                  С начала месяца
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover9}`"
+                    @click="changeMenu2(3)"
+                >
+                  С начала года
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div class="dropdown3">
+                  <div
+                      class="button2"
+                      :style="`${buttonHover10}`"
+                      @click="changeMenu2(4)"
+                  >
+                    Календарь
+                  </div>
+                  <ul class="center-menu2 right-indent">
+                    <li class="center-li">
+                      <br /><br />
+
+                      <div class="month-day">
+                        <div class="calendar-day">
+                          <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="">
+              <div class="row px-4">
+                <div class="w-100 pr-2">
+                  <select
+                      style="
+                      background-color: #333975;
+                      border-color: #20274e;
+                      color: white;
+                    "
+                      class="form-control w-100"
+                      id="OTMcompanySelect"
+                      @change="innerWellsProdMetOnChange($event)"
+                  >
+                    <option value="all" v-if="company!='all'"> {{ getNameDzoFull(company) }}</option>
+                    <option v-else>Все компании</option>
+                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
+                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
+                    <option value="КГМ">ТОО «КазГерМунай»</option>
+                    <option value="КОА">ТОО "Казахойл Актобе</option>
+                    <option value="КГМ">ТОО "Казгермунай"</option>
+                    <option value="КБМ">АО «Каражанбасмунай»</option>
+                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row container-fluid">
+              <div class="col-6">
+                <table class="table4">
+                  <tr v-for="(item, index) in otmData">
+                    <td
+                        :class="
+                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
+                      "
+                    >
+                      <div class="first-td">
+                        {{ item.name }}
+                      </div>
+                    </td>
+                    <td
+                        :class="
+                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
+                      "
+                    >
+                      <div class="font">
+                        {{ item.value }}
+                      </div>
+                    </td>
+
+                    <td
+                        :class="
+                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
+                      "
+                    >
+                      <div class="font"></div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-6 px-2">
+                <visual-center3-wells></visual-center3-wells>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
