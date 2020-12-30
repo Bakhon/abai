@@ -59,6 +59,7 @@ class VisualCenterController extends Controller
     public function getUsdRates()
     {
         $data = UsdRate::query()
+            ->where('date', '>=', '2010-01-01')
             ->get()
             ->toArray();
 
