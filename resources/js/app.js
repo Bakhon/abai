@@ -120,6 +120,8 @@ Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').defau
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
+Vue.component('main-page', require('./components/mainpage.vue').default);
+
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
