@@ -21,7 +21,7 @@
                         <option :value="3" :disabled="actualMonth < 2">Январь - Март 2020</option>
                         <option :value="4" :disabled="actualMonth < 3">Январь - Апрель 2020</option>
                         <option :value="5" :disabled="actualMonth < 4">Январь - Май 2020</option>
-                        <option :value="6" :disabled="actualMonth < 5">Январь - Июнь 2020</option>1
+                        <option :value="6" :disabled="actualMonth < 5">Январь - Июнь 2020</option>
                         <option :value="7" :disabled="actualMonth < 6">Январь - Июль 2020</option>
                         <option :value="8" :disabled="actualMonth < 7">Январь - Август 2020</option>
                         <option :value="9" :disabled="actualMonth < 8">Январь - Сентябрь 2020</option>
@@ -71,7 +71,7 @@
                     </button>
                 </div>
             </div>
-            <div class="first-string">
+            <div class="first-string vc-5-tables-block">
                 <div v-if="macroData.length > 0">
                     <h5 class="text-center mr-2"><strong>Макропоказатели</strong></h5>
                     <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3">

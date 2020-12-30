@@ -2,7 +2,6 @@
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
         <div class="flex-grow-1 vc-central-block mr-2 mb-2">
             <horizontal-indicators
-                @changeTable="tableToChange => changeTable(tableToChange)"
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
             ></horizontal-indicators>
@@ -32,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-sm-2" v-if="isEnableSpeedometers">
+                    <div class="d-flex flex-column flex-sm-row mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Снижение OPEX и CAPEX'"
                             v-bind:mainValue="t1"
@@ -50,7 +49,7 @@
                             v-bind:isLastBlock="true"
                         ></vc-speedometer-block>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2" v-if="isEnableSpeedometers">
+                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Запасы (A+B+C1)'"
                             v-bind:mainValue="t4"

@@ -58,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-sm-2" v-if="isEnableSpeedometers">
+                    <div class="d-flex flex-column flex-sm-row mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Прирост запасов (A+B+C1)'"
                             v-bind:mainValue="t1"
@@ -82,7 +82,7 @@
                             @changeTable="tableToChange => changeTable(tableToChange)"
                         ></vc-speedometer-block>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2" v-if="isEnableSpeedometers">
+                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Капитальные затраты по операционным активам'"
                             v-bind:mainValue="t4"
@@ -102,7 +102,9 @@
                         <vc-speedometer-block
                             v-bind:title="'Разработка концепции Разведка и добыча'"
                             v-bind:mainTitle="'Ноябрь'"
-                            v-bind:sliderTooltip="'Ноябрь'"
+                            v-bind:toolTipPorog="'Декабрь'"
+                            v-bind:toolTipAim="'Ноябрь'"
+                            v-bind:toolTipVizov="'-'"
                             v-bind:mainValue="t6"
                             v-bind:units="'дата'"
                             v-bind:isLastBlock="true"

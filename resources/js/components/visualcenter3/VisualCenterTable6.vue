@@ -2,7 +2,6 @@
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
         <div class="flex-grow-1 vc-central-block mr-2 mb-2">
             <horizontal-indicators
-                @changeTable="tableToChange => changeTable(tableToChange)"
                 v-bind:dateStart="dateStart"
                 v-bind:dateEnd="dateEnd"
             ></horizontal-indicators>
@@ -32,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-sm-2" v-if="isEnableSpeedometers">
+                    <div class="d-flex flex-column flex-sm-row mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Заключение/реализация контрактов на недропользование'"
                             v-bind:mainValue="t1"
@@ -50,12 +49,14 @@
                             v-bind:isLastBlock="true"
                         ></vc-speedometer-block>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2" v-if="isEnableSpeedometers">
+                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Оптимизированный Инвестиционный портфель'"
                             v-bind:mainTitle="'Октябрь'"
                             v-bind:mainValue="t4"
-                            v-bind:sliderTooltip="'Октябрь'"
+                            v-bind:toolTipPorog="'Ноябрь'"
+                            v-bind:toolTipAim="'Октябрь'"
+                            v-bind:toolTipVizov="'Сентябрь'"
                             v-bind:units="'дата'"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
@@ -66,7 +67,9 @@
                         <vc-speedometer-block
                             v-bind:title="'Мероприятия по передаче КазТрансГаз в Самрук-Казына'"
                             v-bind:mainTitle="'Декабрь'"
-                            v-bind:sliderTooltip="'Декабрь'"
+                            v-bind:toolTipPorog="'-'"
+                            v-bind:toolTipAim="'Декабрь'"
+                            v-bind:toolTipVizov="'-'"
                             v-bind:mainValue="t6"
                             v-bind:units="'дата'"
                             v-bind:isLastBlock="true"
