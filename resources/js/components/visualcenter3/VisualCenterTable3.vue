@@ -1042,10 +1042,10 @@
               </table>
             </div>
 
-            <div class="vis-chart pl-5">
+            <div class="vis-chart pl-3">
               <div class="name-chart-left">{{ nameChartLeft }}</div>
               <div class="name-chart-head">{{ item3 }}</div>
-              <vc-chart v-if="company == 'all'"> </vc-chart>
+              <vc-chart :height="500" v-if="company == 'all'"> </vc-chart>
             </div>
           </div>
         </div>
