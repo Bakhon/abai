@@ -20,6 +20,7 @@ export default {
     toolTipVizov: '',
     showLink: false,
     isLastBlock: false,
+    planWeight: 0,
   },
   data: function () {
     return {

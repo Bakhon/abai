@@ -27,7 +27,7 @@
                 <div>
                     <h5 class="font-weight-bold m-0 d-flex">{{ title }}</h5>
                 </div>
-                <div v-if="!hidePercents" class="d-flex justify-content-end font-weight-bold align-items-center">
+                <div v-if="!hidePercents" class="d-flex justify-content-end font-weight-bold align-items-center" style="font-size: 1.2rem;">
                     <div v-if="isUpArrow" class="arrow3"></div>
                     <div v-else class="arrow2"></div>
                     {{ progressPercents }}%

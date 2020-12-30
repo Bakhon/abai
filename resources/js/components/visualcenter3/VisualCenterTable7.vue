@@ -63,6 +63,7 @@
                             v-bind:title="'Прирост запасов (A+B+C1)'"
                             v-bind:mainValue="t1"
                             v-bind:units="'млн. тонн'"
+                            v-bind:planWeight="'20'"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Чистый денежный поток'"
@@ -71,6 +72,7 @@
                             v-bind:showLink="true"
                             v-bind:tableToChange="2"
                             @changeTable="tableToChange => changeTable(tableToChange)"
+                            v-bind:planWeight="'20'"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Операционные затраты'"
@@ -80,6 +82,7 @@
                             v-bind:tableToChange="3"
                             v-bind:isLastBlock="true"
                             @changeTable="tableToChange => changeTable(tableToChange)"
+                            v-bind:planWeight="'20'"
                         ></vc-speedometer-block>
                     </div>
                     <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
@@ -90,6 +93,7 @@
                             v-bind:showLink="true"
                             v-bind:tableToChange="4"
                             @changeTable="tableToChange => changeTable(tableToChange)"
+                            v-bind:planWeight="'20'"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Капитальные затраты крупных проектов'"
@@ -98,6 +102,7 @@
                             v-bind:showLink="true"
                             v-bind:tableToChange="5"
                             @changeTable="tableToChange => changeTable(tableToChange)"
+                            v-bind:planWeight="'15'"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
                             v-bind:title="'Разработка концепции Разведка и добыча'"
@@ -108,6 +113,7 @@
                             v-bind:mainValue="t6"
                             v-bind:units="'дата'"
                             v-bind:isLastBlock="true"
+                            v-bind:planWeight="'5'"
                         ></vc-speedometer-block>
                     </div>
                 </div>

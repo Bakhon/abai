@@ -205,10 +205,16 @@
                 </div>
                 <div class="second-td-header"></div>
               </td>
-              <td
-                style="width: 200px; border-left: 10px solid #0f1430"
-                @click="changeTable('2')"
-                :style="`${tableHover2}`"
+
+<!--              <td class="vc-select-table"-->
+<!--                style="width: 200px; border-left: 10px solid #0f1430"-->
+<!--                @click="changeTable('2')"-->
+<!--                :style="`${tableHover2}`"-->
+<!--              >-->
+
+              <td class="vc-select-table"
+                  style="width: 200px; border-left: 10px solid #0f1430"
+                  :style="`${tableHover2}`"
               >
                 <div class="nu">
                   <div class="number">{{ oilNow }}</div>
@@ -223,7 +229,7 @@
                   <div class="txt3">vs сентябрь</div>
                 </div>
               </td>
-              <td
+              <td class="vc-select-table"
                 style="width: 200px; border-left: 10px solid #0f1430"
                 @click="changeTable('3')"
                 :style="`${tableHover3}`"
@@ -236,9 +242,10 @@
                 <div class="txt1">Курс доллара</div>
                 <br />
                 <div class="percent-currency">
-                  <div class="arrow"></div>
-                  <div class="txt2">5,2%</div>
-                  <div class="txt3">vs сентябрь</div>
+                  <div class="arrow" v-if="dailyCurrencyChangeIndexUsd === 'UP'"></div>
+                  <div class="arrow2" v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"></div>
+                  <div class="txt2">{{ dailyCurrencyChangeUsd }}%</div>
+                  <div class="txt3">vs вчера</div>
                 </div>
               </td>
             </tr>
@@ -664,7 +671,7 @@
                     <div class="month-day">
                       <div class="calendar-day">
                         <date-picker
-                          v-if="selectedDMY == 0"
+                          v-if="selectedOilPeriod == 0"
                           mode="range"
                           v-model="range"
                           is-range
@@ -1051,9 +1058,9 @@
             <br />
 
             <div
-              @click="selectedDMY = menuDMY.id"
+              @click="selectedOilPeriod = menuDMY.id"
               class="period"
-              v-for="(menuDMY, index) in periodSelectFunc()"
+              v-for="(menuDMY, index) in periodSelectFunc"
               :style="{
                 color: menuDMY.current,
               }"
@@ -1066,27 +1073,15 @@
         </div>
       </div>
 
-      <div class="third-table big-area" :style="`${Table3}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">
-            <br />
-
-            <div
-              @click="selectedDMY2 = menuDMY.id"
-              class="period"
-              v-for="(menuDMY, index) in periodSelectFunc()"
-              :style="{
-                color: menuDMY.current2,
-              }"
-              v-on:click="periodSelectUSD"
-            >
-              <div>{{ menuDMY.DMY }}</div>
-            </div>
-            <visual-center-chart-area-usd3></visual-center-chart-area-usd3>
-          </div>
-        </div>
-      </div>
+      <visual-center-usd-table
+          :style="`${Table3}`"
+          :selected-usd-period.sync="selectedUsdPeriod"
+          :usd-rates-data.sync="usdRatesData"
+          @period-select-usd="periodSelectUsd(selectedUsdPeriod)"
+          :period-select-func.sync="periodSelectFunc"
+          :currency-chart-data.sync="currencyChartData"
+          :usd-chart-is-loading.sync="usdChartIsLoading"
+          @change-table="changeTable('1')"/>
 
       <div class="third-table big-area" :style="`${Table5}`">
         <div class="first-string first-string2">
@@ -1144,7 +1139,7 @@
                       <div class="month-day">
                         <div class="calendar-day">
                           <date-picker
-                            v-if="selectedDMY == 0"
+                            v-if="selectedOilPeriod == 0"
                             mode="range"
                             v-model="range"
                             is-range

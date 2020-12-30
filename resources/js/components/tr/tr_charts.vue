@@ -52,7 +52,7 @@
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
               class="dropdown-item"
-              style="background: #5973cc !important; color: #fff"
+              style="background: #40467e !important; color: #fff"
               v-for="(item, index) in chartNames"
               :key="item"
               href="#"
@@ -65,6 +65,7 @@
         <div class="dropdown">
           <button
             class="btn btn-secondary dropdown-toggle trfabtgraph"
+            
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
@@ -76,7 +77,8 @@
 
           <div
             class="dropdown-menu"
-            style="background: #5973cc !important"
+            
+            style="background: #40467e !important; width: calc(100% - 2px);"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -85,8 +87,8 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #5973cc !important;
-                  border-color: #5973cc !important;
+                  background-color: #40467e !important;
+                  border-color: #40467e !important;
 
                   color: white;
                 "
@@ -113,8 +115,8 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #5973cc !important;
-                  border-color: #5973cc !important;
+                  background-color: #40467e !important;
+                  border-color: #40467e !important;
 
                   color: white;
                 "
@@ -135,7 +137,7 @@
             <a
               href="#"
               @click.prevent="chooseDt"
-              class="btn btn-primary"
+              class="btn btn-sm button_form"
               style="margin-left: 15px"
               >Сформировать</a
             >
@@ -160,7 +162,7 @@
           <div class="mx-2">Фильтр</div>
         </div>
         <div class="filters row" v-if="showFilters">
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <select
               class="form-control"
               v-model="chartFilter_field"
@@ -171,14 +173,14 @@
               </option>
             </select>
           </div>
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <select class="form-control" v-model="chartFilter_horizon">
               <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
                 {{ f === undefined ? "Все горизонты" : f }}
               </option>
             </select>
           </div>
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <select
               v-if="exp_methFilters"
               class="form-control"
@@ -1544,7 +1546,7 @@ body {
 }
 .trfabtgraph {
   width: 195px;
-  background: #5973cc !important;
+  background: #40467e !important;
 }
 .trfa_page.trfa_page {
   padding: 0 !important;
@@ -1621,13 +1623,14 @@ a:hover {
   align-items: center;
   width: calc(100% - 155px);
   position: absolute;
-  height: 55px;
+  min-height: 55px;
   top: 10px;
-  padding-right: 10px;
+  padding: 0 10px 10px 0;
+  z-index: 1000;
 }
 .filters__item {
   flex: auto;
-  margin-left: 10px;
+  margin: 10px 0 0 10px;
 }
 .tr-chart .row {
   margin-left: 0;
@@ -1647,6 +1650,17 @@ a:hover {
   height: 35px;
   margin-right: 20px;
   width: 195px;
+}
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+  margin-right: 12px;
+  /* display: flex;  */
+  /* justify-content: center */
 }
 </style>
 

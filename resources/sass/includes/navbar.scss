@@ -133,21 +133,16 @@
         line-height: 19px;
         padding: 20px 17px 20px 0;
         position: relative;
-        &:hover{
+        &:hover {
             color: #fff;
             text-decoration: none;
-
-            &:after{
-                transform: rotate(180deg) translateY(50%);
-            }
         }
         &:after{
             background: url('/img/icons/lang_arr.svg') no-repeat;
             content: "";
             height: 7px;
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 26px;
             right: 0;
             width: 11px;
         }
@@ -178,9 +173,14 @@
             }
         }
     }
-    &:hover {
+    &.active {
         .nav-lang__dropdown {
             display: block;
+        }
+        .nav-lang__select {
+            &:after{
+                transform: rotate(180deg);
+            }
         }
     }
 }
