@@ -1058,6 +1058,7 @@
           </div>
         </div>
       </div>
+
         <visual-center-usd-table
             :style="`${Table2}`"
             :selected-usd-period.sync="selectedOilPeriod"
@@ -1073,11 +1074,11 @@
 
       <visual-center-usd-table
           :style="`${Table3}`"
-          :selected-usd-period.sync="selectedUsdPeriod"
+          :period.sync="period"
           :usd-rates-data.sync="usdRatesData"
-          @period-select-usd="periodUSD = periodSelect(selectedUsdPeriod)"
           :period-select-func.sync="periodSelectFunc"
           :currency-chart-data.sync="currencyChartData"
+          :table-data.sync="usdRatesDataTableForCurrentPeriod"
           :usd-chart-is-loading.sync="usdChartIsLoading"
           @change-table="changeTable('1')"
           :main-title="'Динамика курса доллара США к тенге (USD, НБ РК)'"
