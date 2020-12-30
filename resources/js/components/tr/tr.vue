@@ -399,10 +399,9 @@
             style="
               background: #272953;
               color: white;
-
               border: none;
             "
-            title="Длинная версия"
+            :title="isfulltable ? 'Короткая версия' : 'Длинная версия'"
             data-toggle="tooltip"
             data-placement="top"
           >
