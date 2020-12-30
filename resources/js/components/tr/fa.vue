@@ -1191,7 +1191,7 @@ export default {
       console.log("filter = ", filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
-      this.$store.commit("tr/SET_FILTER", filter);
+      this.$store.commit("fa/SET_FILTER", filter);
       if (!filter) {
         this.wells = fullWells;
       } else {
@@ -1431,6 +1431,7 @@ body {
 .table {
   overflow: scroll;
   height: calc(100vh - 205px);
+  margin: 0;
 }
 .table tr:nth-child(-n + 4) td {
   position: sticky;
