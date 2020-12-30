@@ -1390,7 +1390,7 @@ body {
 }
 
 .farowjustcontbet {
-    box-sizing: border box;
+  box-sizing: border box;
   padding-right: 0;
   margin-right: 0;
   margin-left: 0;
