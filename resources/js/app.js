@@ -72,6 +72,7 @@ Vue.component('chart3-component', require('./components/Economic/chart3.vue').de
 Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
 Vue.component('gno-incl-table', require('./components/gno/GnoInclTable.vue').default);
+Vue.component('gno-wells-repairs', require('./components/gno/GnoWellsRepairs.vue').default);
 Vue.component('gno-line-points-chart', require('./components/gno/GnoCurveTable.vue').default);
 Vue.component('gno-chart-bar', require('./components/gno/GnoChartBar.vue').default);
 Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);

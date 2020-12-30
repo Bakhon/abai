@@ -180,7 +180,7 @@
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ stopDate }}
                   </div>
-                  <div class="prs-button" @click="onPrsButtonClick()">Информация о выполненных ремонтах</div>
+                  <div class="prs-button" @click="onPrsButtonClick()">История КРС и ПРС</div>
                 </div>
               </div>
             </div>
@@ -542,11 +542,11 @@
                 </div>
               </modal>
 
-              <modal class="" name="modal-prs" :width="1150" :height="450" :adaptive="true">
+              <modal class="" name="modal-prs" :width="1150" :height="470" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      Выполненные ремонты
+                      История ремонтов на скважине {{wellNumber}}
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modal-prs')">
@@ -559,15 +559,17 @@
 		                   	<div class="row">
 				                  
                           <div class="col-6">
-                            <h6 style="text-align: center;">Информация по причинам ПРС на скважине за <b>скользящий год</b></h6>
-			                      <gno-wells-repairs></gno-wells-repairs>
+                            <h6 style="text-align: center;">Причины ПРС за <b>скользящий год</b></h6>
+			                      <gno-wells-repairs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></gno-wells-repairs>
+                            <h6>Количество ремонтов: {{numberRepairs}}</h6>
+                            <h6>ННО: {{numberNNO + ' сут'}}</h6>
                         	</div>
-				                  
+  
                           <div class="col-6">
-                            <h6 style="text-align: center;">Информация по Выполненным КРС на скважине</h6>
+                            <h6 style="text-align: center;">Информация по КРС</h6>
 				                     <div class="table-fix no-gutter">
                               <perfect-scrollbar>
-                                <table class="gno-table-with-header pgno" style="height: inherit;">
+                                <table class="gno-table-with-header pgno" style="height: initial;">
                                   <thead>
                                     <tr height="10" style="height: 10pt;">
                                       <td>
@@ -583,20 +585,10 @@
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr style="font-weight: bold;">
-                                      <td>05.05.2019</td>
-                                      <td>07.05.2019</td>
-                                      <td>Изоляция</td>
-                                    </tr>
-                                    <tr>
-                                      <td>05.06.2019</td>
-                                      <td>05.07.2019</td>
-                                      <td>ГРП</td>
-                                    </tr>
-                                    <tr style="font-weight: bold;">
-                                      <td>05.05.2019</td>
-                                      <td>07.05.2019</td>
-                                      <td>ПР к ГРП</td>
+                                    <tr v-for="(row, row_index) in this.krsTable" :key="row_index" style="font-weight: bold;">
+                                      <td>{{row.dbeg.substring(0, 10)}}</td>
+                                      <td>{{row.dend.substring(0, 10)}}</td>
+                                      <td>{{row.krs_name}}</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -1501,9 +1493,16 @@
       
       <div style="position: absolute; left: -9999px; height: 0; overflow: hidden;">
         <div class="report" ref="gno-page">
-        <div class="title-report col-12">
-          <h1>ИС ABAI. Модуль Подбор ГНО.</h1>
-        </div>
+          <div class="row">
+            <div class="col-10" style="background-color: #20274f; width: 1500px; left: 76px; margin: 0;">
+              <div class="logo" style="top: 0px;"></div>
+              <div style="left: 90px; color: white; padding-top: 10px; font-size: 20px;">ИС ABAI. Модуль Подбор ГНО.</div>
+            </div>
+          </div>
+        <!-- <div class="title-report col-10" style="background-color: #20274f; left: 76px;">
+          <div class="logo" style="top: 0px;"></div>
+          <h3 style="left: 90px; color: white; padding-bottom: 5px;">ИС ABAI. Модуль Подбор ГНО.</h3>
+        </div> -->
 
         <div class="first-report-block row">
           <div class="report-block-title col-5">
@@ -2626,6 +2625,9 @@ export default {
       freq: 'Число качаний',
       dNasosa: 'Диаметр насоса',
       hideStrokeLength: false,
+      krsTable: [],
+      numberRepairs: null,
+      numberNNO: null,
     };
 
   },
@@ -2754,12 +2756,6 @@ export default {
         if (this.expMeth == 'УЭЦН') {
         this.hideStrokeLength = true
         } else
-
-        if(this.sk == "0") {
-          this.sk = 'Нет данных';
-        } else {
-          console.log('doshlo')
-        }
 
 
         this.stopDate = this.stopDate.substring(0, 10)
@@ -3675,6 +3671,15 @@ export default {
 
     onPrsButtonClick() {
       this.$modal.show('modal-prs')
+      let krsTable = [];
+      let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
+      this.axios.get(uriPrsKrs).then((response) => {
+        let krs = response['data']['krs']
+        this.numberRepairs = response['data']['prs']['prs']
+        this.numberNNO = response['data']['prs']['nno']
+        this.krsTable = JSON.parse(krs)["data"]
+        console.log(this.krsTable);
+    })
     },
 
     createPDF() {
