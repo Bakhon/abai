@@ -56,8 +56,6 @@ class VisualCenterController extends Controller
         return $tmpDate->format('m');
     }
 
-//INSERT INTO dashboard.usd_rate (id, value, date, `change`, `index`, created_at, updated_at) VALUES
-
     public function getUsdRates()
     {
         $data = UsdRate::query()
