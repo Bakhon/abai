@@ -1,6 +1,9 @@
-#app .multiselect--active,
 #app .multiselect {
     z-index: 3050;
+}
+
+#app .multiselect--active{
+    z-index: 3060;
 }
 
 #app .multiselect {

@@ -1835,12 +1835,12 @@ a:hover {
   position: absolute;
   min-height: 55px;
   top: 10px;
-  padding: 10px 10px 10px 0;
+  padding: 0 10px 10px 0;
   z-index: 1000;
 }
 .filters__item {
   flex: auto;
-  margin-left: 10px;
+  margin: 10px 0 0 10px;
 }
 .tr-chart .row {
   margin-left: 0;
