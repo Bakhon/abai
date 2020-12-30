@@ -34,7 +34,11 @@ export default {
       ],
       innerWells2:'',
       otmData: [],
+      otmSelectedRow: 'otm_iz_burenia_skv_fact',
+      otmChartData: [],
       chemistryData: [],
+      chemistrySelectedRow: 'chem_prod_zakacka_demulg_fact',
+      chemistryChartData: [],
       prod_wells_work: 0,
       prod_wells_idle: 0,
       inj_wells_idle: 0,
@@ -1060,7 +1064,9 @@ export default {
             this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);
             this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);
             this.otmData = this.getOtmData(dataWithMay)
+            this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
+            this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
 
             var productionForChart = _(dataWithMay)
@@ -1225,6 +1231,10 @@ export default {
 
           this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);
           this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);
+          this.otmData = this.getOtmData(dataWithMay)
+          this.otmChartData = this.getOtmChartData(dataWithMay)
+          this.chemistryData = this.getChemistryData(dataWithMay)
+          this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
 
           //Summ plan and fact from dzo nagnetatWells k1q for month!!!
@@ -1783,7 +1793,6 @@ console.log(dataWithMay)
 
       }))
       .value();
-    //  console.log(productionPlanAndFactMonthWells);
 
       var productionPlanAndFactMonthWellsName = [];
 
@@ -1847,7 +1856,6 @@ console.log(dataWithMay)
         fond_neftedob_others: _.round(_.sumBy(__time, 'fond_neftedob_others'), 0),
       }))
       .value();
-      console.log(productionPlanAndFactMonthWells);
 
       var productionPlanAndFactMonthWellsName = [];
 
@@ -1898,25 +1906,133 @@ console.log(dataWithMay)
       result.push(
           {
             name: 'Скважин из бурения',
+            code: 'otm_iz_burenia_skv_fact',
             plan: otmData[0]['otm_iz_burenia_skv_plan'],
             fact: otmData[0]['otm_iz_burenia_skv_fact'],
           },
           {
             name: 'Бурение проходка',
+            code: 'otm_burenie_prohodka_fact',
             plan: otmData[0]['otm_burenie_prohodka_plan'],
             fact: otmData[0]['otm_burenie_prohodka_fact'],
           },
           {
             name: 'КРС',
+            code: 'otm_krs_skv_fact',
             plan: otmData[0]['otm_krs_skv_plan'],
             fact: otmData[0]['otm_krs_skv_fact'],
           },
           {
             name: 'ПРС',
+            code: 'otm_prs_skv_fact',
             plan: otmData[0]['otm_prs_skv_plan'],
             fact: otmData[0]['otm_prs_skv_fact'],
           },
       )
+
+      return result
+    },
+
+    getOtmChartData(arr){
+      let otmData
+      if(this.buttonHover9) {
+        otmData = _.groupBy(arr, item => {
+          return moment(parseInt(item.__time)).format('MMM')
+        })
+      }
+      else {
+        otmData = _.groupBy(arr, item => {
+          return moment(parseInt(item.__time)).format('D')
+        })
+      }
+
+      let result = {}
+
+      if(typeof otmData !== 'undefined') {
+        for (let i in otmData) {
+          result[i] = {
+            otm_iz_burenia_skv_fact: _.round(_.sumBy(otmData[i], 'otm_iz_burenia_skv_fact'), 0),
+            otm_burenie_prohodka_fact: _.round(_.sumBy(otmData[i], 'otm_burenie_prohodka_fact'), 0),
+            otm_krs_skv_fact: _.round(_.sumBy(otmData[i], 'otm_krs_skv_fact'), 0),
+            otm_prs_skv_fact: _.round(_.sumBy(otmData[i], 'otm_prs_skv_fact'), 0),
+          }
+        }
+      }
+
+      return result
+    },
+    getChemistryData(arr){
+      let chemistryData = _(arr)
+      .groupBy("data")
+      .map((__time, id) => ({
+        __time: id,
+        chem_prod_zakacka_demulg_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_demulg_plan'), 0),
+        chem_prod_zakacka_demulg_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_demulg_fact'), 0),
+        chem_prod_zakacka_bakteracid_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_bakteracid_plan'), 0),
+        chem_prod_zakacka_bakteracid_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_bakteracid_fact'), 0),
+        chem_prod_zakacka_ingibator_korrozin_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_korrozin_plan'), 0),
+        chem_prod_zakacka_ingibator_korrozin_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_korrozin_fact'), 0),
+        chem_prod_zakacka_ingibator_soleotloj_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_soleotloj_plan'), 0),
+        chem_prod_zakacka_ingibator_soleotloj_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_soleotloj_fact'), 0),
+      }))
+      .value();
+
+      let result = [];
+
+      result.push(
+          {
+            name: 'Деэмульгатор',
+            code: 'chem_prod_zakacka_demulg_fact',
+            plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
+            fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
+          },
+          {
+            name: 'Бактерицид',
+            code: 'chem_prod_zakacka_bakteracid_fact',
+            plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
+            fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
+          },
+          {
+            name: 'Ингибитор коррозии',
+            code: 'chem_prod_zakacka_ingibator_korrozin_fact',
+            plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
+            fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
+          },
+          {
+            name: 'Ингибитор солеотложения',
+            code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
+            plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
+            fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
+          },
+      )
+
+      return result
+    },
+    getChemistryChartData(arr){
+      let chemistryData
+      if(this.buttonHover9) {
+        chemistryData = _.groupBy(arr, item => {
+          return moment(parseInt(item.__time)).format('MMM')
+        })
+      }
+      else {
+        chemistryData = _.groupBy(arr, item => {
+          return moment(parseInt(item.__time)).format('D')
+        })
+      }
+
+      let result = {}
+
+      if(typeof chemistryData !== 'undefined') {
+        for (let i in chemistryData) {
+          result[i] = {
+            chem_prod_zakacka_demulg_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_demulg_fact'), 0),
+            chem_prod_zakacka_bakteracid_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_bakteracid_fact'), 0),
+            chem_prod_zakacka_ingibator_korrozin_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_ingibator_korrozin_fact'), 0),
+            chem_prod_zakacka_ingibator_soleotloj_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_ingibator_soleotloj_fact'), 0),
+          }
+        }
+      }
 
       return result
     },
@@ -2044,6 +2160,30 @@ console.log(dataWithMay)
 
       return menuDMY;
     },
+    otmDataForChart() {
+      let series = []
+      let labels = []
+      for(let i in this.otmChartData) {
+        series.push(this.otmSelectedRow ? this.otmChartData[i][this.otmSelectedRow] : this.otmChartData[i]['otm_iz_burenia_skv_fact'])
+        labels.push(i)
+      }
+      return {
+        series: series,
+        labels: labels
+      }
+    },
+    chemistryDataForChart() {
+      let series = []
+      let labels = []
+      for(let i in this.chemistryChartData) {
+        series.push(this.chemistrySelectedRow ? this.chemistryChartData[i][this.chemistrySelectedRow] : this.chemistryChartData[i]['chem_prod_zakacka_demulg_fact'])
+        labels.push(i)
+      }
+      return {
+        series: series,
+        labels: labels
+      }
+    }
   },
 
 

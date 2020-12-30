@@ -97,8 +97,26 @@ return $response;
             'fond_nagnetat_osvoenie',
             'fond_nagnetat_konv',
             'fond_nagnetat_well_survey',
-            'fond_nagnetat_others',   
-            
+            'fond_nagnetat_others',
+
+            'otm_iz_burenia_skv_plan',
+            'otm_iz_burenia_skv_fact',
+            'otm_burenie_prohodka_plan',
+            'otm_burenie_prohodka_fact',
+            'otm_krs_skv_plan',
+            'otm_krs_skv_fact',
+            'otm_prs_skv_plan',
+            'otm_prs_skv_fact',
+
+            'chem_prod_zakacka_demulg_plan',
+            'chem_prod_zakacka_demulg_fact',
+            'chem_prod_zakacka_bakteracid_plan',
+            'chem_prod_zakacka_bakteracid_fact',
+            'chem_prod_zakacka_ingibator_korrozin_plan',
+            'chem_prod_zakacka_ingibator_korrozin_fact',
+            'chem_prod_zakacka_ingibator_soleotloj_plan',
+            'chem_prod_zakacka_ingibator_soleotloj_fact',
+
             'fond_neftedob_ef',  
             'fond_neftedob_df',
             'fond_neftedob_bd',
