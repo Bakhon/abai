@@ -59,6 +59,7 @@ export default {
             backgroundColor: fillPattern,
             showLine: true,
             data: productionPlanForChart,
+            pointRadius: 0
           },
           {
             label: "Факт",
@@ -66,6 +67,7 @@ export default {
             fill: false,
             showLine: true,
             data: productionFactForChart,
+            pointRadius: 0
           },
         ]
       }, {
