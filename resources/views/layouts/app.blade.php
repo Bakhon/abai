@@ -30,6 +30,7 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/css.css') }}" rel="stylesheet">
     <link href="{{ asset('css/loader.css')}}" rel="stylesheet">
+    @yield('custom_css')
 
     <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ route('assets.lang') }}"></script>
