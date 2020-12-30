@@ -785,7 +785,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab tab_4" id="tab4"></div>
+                        <div class="tab tab_4" id="tab4">
+                            <div class="tab__inner">
+                                <img src="/img/anticrisis_map.svg">
+                            </div>
+                        </div>
                         <div class="tab tab_5" id="tab5">
                             <table class="anti-table w-100">
                                 <thead>

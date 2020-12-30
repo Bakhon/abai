@@ -891,7 +891,14 @@ a.dropdown-link-vc3 {
     }
   }
 
-  &_2 {
+  &_4 {
+    height: 100%;
+    .tab__inner{
+      align-items: center;
+      display: flex;
+      height: 100%;
+      justify-content: center;
+    }
   }
 
   &_5 {

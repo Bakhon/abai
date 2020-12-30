@@ -837,6 +837,15 @@ a.dropdown-link-vc3 {
   border-bottom: none;
   padding: 3px 0;
 }
+.tab_4 {
+  height: 100%;
+}
+.tab_4 .tab__inner {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
 .tab_5 .anti-table {
   font-size: 10px;
 }
