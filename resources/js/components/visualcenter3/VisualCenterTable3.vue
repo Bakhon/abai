@@ -216,7 +216,7 @@
                 </div>
                 <br />
                 <div class="txt1">Цена на нефть (Brent)</div>
-            
+
                 <div class="percent-currency">
                   <div class="arrow"></div>
                   <div class="txt2">5,2%</div>
@@ -866,8 +866,8 @@
             </div>
           </div>
           <div class="row container-fluid" :style="`${displayHeadTables}`">
-            <div class="col-6 px-3">
-              <table class="table4 w-100">
+            <div class="vis-table px-3">
+              <table v-if="bigTable.length" class="table4 w-100">
                 <tbody>
                   <tr>
                     <td class="big-table-hidtd small-td"></td>
@@ -886,17 +886,14 @@
 
                   <tr v-for="(item, index) in bigTable">
                     <td
-                      class="d-flex flex-row"
-                      @click="saveCompany(item.dzoMonth)"
-                      :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
-                      style="cursor: pointer"
+                        @click="saveCompany(item.dzoMonth)"
+                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                        style="cursor: pointer"
                     >
-                      <div class="first-td">
-                        {{ getNameDzoFull(item.dzoMonth) }}
-                      </div>
-                      <div class="mt-2 ml-1">
-                        <img class="w-75" src="/img/icons/link.svg" />
-                      </div>
+                        <span>
+                          {{ getNameDzoFull(item.dzoMonth) }}
+                          <img src="/img/icons/link.svg"/>
+                        </span>
                     </td>
 
                     <td
@@ -1060,7 +1057,7 @@
               </table>
             </div>
 
-            <div class="col-6 pl-5">
+            <div class="vis-chart pl-5">
               <div class="name-chart-left">{{ nameChartLeft }}</div>
               <div class="name-chart-head">{{ item3 }}</div>
               <vc-chart v-if="company == 'all'"> </vc-chart>
@@ -1713,3 +1710,32 @@
   </div>
 </template>
 <script src="./VisualCenterTable3.js"></script>
+<style scoped lang="scss">
+    .vis-table{
+      flex: 0 0 56%;
+      max-width: 56%;
+      .table4{
+        tr{
+          td{
+            vertical-align: middle;
+            padding: 5px 5px 5px 10px;
+            &:first-child{
+              height: 56px;
+              white-space: normal;
+              width: 215px;
+              span{
+                font-weight: bold;
+                img{
+                  width: 9px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .vis-chart{
+      flex: 0 0 44%;
+      max-width: 44%;
+    }
+</style>
