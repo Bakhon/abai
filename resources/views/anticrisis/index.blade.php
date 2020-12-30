@@ -785,7 +785,24 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab tab_4" id="tab4"></div>
+                        <div class="tab tab_4" id="tab4">
+                            <p class="tab__title">Обзорная карта расположения скважин по экономической эффективности</p>
+                            <div class="tab__map">
+                                <img src="/img/anticrisis_map.svg">
+                                <div class="tab__map-legend">
+                                    <div class="tab__map-legend-row tab__map-legend-row_1">
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_1"><span>НГДУ-1</span></p>
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_2"><span>НГДУ-2</span></p>
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_3"><span>НГДУ-3</span></p>
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_4"><span>НГДУ-4</span></p>
+                                    </div>
+                                    <div class="tab__map-legend-row tab__map-legend-row_2">
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_1"><span>Рентабельные</span></p>
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_2"><span>Нерентабельные</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="tab tab_5" id="tab5">
                             <table class="anti-table w-100">
                                 <thead>
