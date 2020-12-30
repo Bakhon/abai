@@ -20,7 +20,7 @@
                 <td class="colspan th" colspan="4">Фактический режим</td>
                 <td rowspan="4" class="th">Состояние на конец месяца</td>
                 <td rowspan="4" class="th">ГФ</td>
-                <td rowspan="4" class="th">К прод</td>
+                <td rowspan="4" class="th">Кпрод</td>
                 <td class="colspan th" colspan="7">Расчет технологического потенциала от ИДН</td>
                 <td class="colspan th" colspan="4">Намечаемый режим</td>
             </tr>
@@ -31,7 +31,7 @@
                 <td rowspan="3" class="th">Обводненность</td>
                 <td rowspan="3" class="th">P заб</td>
                 <td class="colspan th" colspan="2">ИДН</td>
-                <td rowspan="3" class="th">К прод от стимуляции</td>
+                <td rowspan="3" class="th">Кпрод от стимуляции</td>
                 <td class="colspan th" colspan="2">ГРП</td>
                 <td rowspan="3" class="th">Общий прирост Q н</td>
 
@@ -517,11 +517,11 @@ tr:nth-child(even) {
     z-index: 3010;
 }
 .table tr:nth-child(2) .th {
-    top: 23px;
+    top: 22px;
     z-index: 3000;
 }
 .table tr:nth-child(3) .th {
-    top: 47px;
+    top: 46px;
     z-index: 3000;
 }
 .table tr:nth-child(4) .th {
@@ -529,7 +529,7 @@ tr:nth-child(even) {
     z-index: 3000;
 }
 .table tr:nth-child(5) .th {
-    top: 92px;
+    top: 88px;
     z-index: 3000;
 }
 
@@ -571,7 +571,7 @@ position: static;
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #272953;
+  background: #656A8A;
 }
 
 /* Handle on hover */
