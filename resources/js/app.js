@@ -23,9 +23,9 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 window.Jquery = require('jquery');
+moment.locale('ru');
 Vue.prototype.$moment = moment
 
 Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar);
@@ -54,6 +54,7 @@ Vue.component('visual-center-table6', require('./components/visualcenter3/Visual
 Vue.component('visual-center-table7', require('./components/visualcenter3/VisualCenterTable7.vue').default);
 Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
+Vue.component('visual-center-usd-table', require('./components/visualcenter3/VisualCenterUsdTable.vue').default);
 Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
 Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
 Vue.component('indicator', require('./components/visualcenter3/Indicator.vue').default);
