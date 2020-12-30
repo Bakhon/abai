@@ -25,12 +25,15 @@
             </div>
         </div>
         <div class="d-none d-sm-flex flex-column flex-sm-row justify-content-center h-25">
-            <div class="ml-0 ml-sm-3 w-50 d-flex align-items-center speedometer-border">
-                <div class="mr-2">
-                    <img src="/img/icons/success-icon.svg">
+            <div class="ml-0 ml-sm-3 w-50 d-flex align-items-center speedometer-border vc-speedometer-weight-block">
+<!--                <div class="mr-2">-->
+<!--                    <img src="/img/icons/success-icon.svg">-->
+<!--                </div>-->
+                <div class="mr-2 in-work">
+                    Вес факт:
                 </div>
                 <div>
-                    Исполнение<br />за&nbsp;отчётный период
+                    {{ new Intl.NumberFormat("ru-RU").format(mainValue[6].toFixed(1)) }}%
                 </div>
             </div>
             <div class="ml-3 w-50 d-flex align-items-center">
@@ -44,16 +47,16 @@
                 </div>
             </div>
         </div>
-        <div class="d-none d-sm-flex flex-column flex-sm-row justify-content-center vc-speedometer-weight-block">
+        <div class="d-none d-sm-flex flex-column flex-sm-row justify-content-center">
             <div class="ml-0 ml-sm-3 w-50 d-flex align-items-center speedometer-border">
                 <div class="mr-2 in-work">
-                    Вес:
+                    Вес план:
                 </div>
                 <div>
-                    {{ new Intl.NumberFormat("ru-RU").format(mainValue[6].toFixed(1)) }}%
+                    {{ planWeight }}%
                 </div>
             </div>
-            <div class="ml-3 w-50 d-flex align-items-center">
+            <div class="ml-3 w-50 d-flex align-items-center vc-speedometer-weight-block">
                 <div class="mr-2" v-if="(mainValue[5].toFixed(1) - 100) !== 0">
                     <div v-if="(mainValue[5].toFixed(1) - 100) < 0" class="arrow2"></div>
                     <div v-else class="arrow3"></div>
