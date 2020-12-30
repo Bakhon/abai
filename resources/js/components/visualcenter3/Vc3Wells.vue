@@ -1,9 +1,8 @@
 <template>
-<div>
-  <apexchart type="bar" height="480"  style="margin-top:0px;" :options="chartOptions" :series="series"></apexchart>
-</div>
+  <div>
+    <apexchart v-if="series.length" type="bar" height="480" style="margin-top:0px;" :options="chartOptions" :series="series"></apexchart>
+  </div>
 </template>
-
 
 
 <script>
@@ -13,41 +12,52 @@ import VueApexCharts from 'vue-apexcharts'
 Vue.component('apexchart', VueApexCharts)
 export default {
   name: 'mix-chart',
-  data: function() {
+  props: ['chartData'],
+  data: function () {
     return {
-      chartOptions: {
-     grid: {
-    show: true,
-    borderColor: '#90A4AE',
-    strokeDashArray: 0,
-    position: 'back',
-    xaxis: {
-        lines: {
-            show: false
-        }
-    },   
-    yaxis: {
-        lines: {
-            show: true
-        }
-    },  
-    row: {
-        colors: undefined,
-        opacity: 0.5
-    },  
-    column: {
-        colors: undefined,
-        opacity: 0.5
-    },  
-    padding: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0
-    },  
-},
+
+    }
+  },
+  computed: {
+    chartOptions() {
+
+      if(typeof this.chartData === 'undefined') {
+        return {}
+      }
+
+      return {
+        grid: {
+          show: true,
+          borderColor: '#90A4AE',
+          strokeDashArray: 0,
+          position: 'back',
+          xaxis: {
+            lines: {
+              show: false
+            }
+          },
+          yaxis: {
+            lines: {
+              show: true
+            }
+          },
+          row: {
+            colors: undefined,
+            opacity: 0.5
+          },
+          column: {
+            colors: undefined,
+            opacity: 0.5
+          },
+          padding: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0
+          },
+        },
         tooltip: {
-               enabled: false,
+          enabled: false,
           enabledOnSeries: undefined,
           shared: true,
           followCursor: false,
@@ -56,117 +66,122 @@ export default {
           custom: undefined,
           fillSeriesColor: false,
           theme: false,
-         // theme: 'dark',
-         /// shared: false,
-         // intersect: false,
+          // theme: 'dark',
+          /// shared: false,
+          // intersect: false,
           y: {
-            formatter: function(y) {
+            formatter: function (y) {
               if (typeof y !== "undefined") {
-                return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + "";
+                return new Intl.NumberFormat('en-IN', {maximumSignificantDigits: 3}).format(y.toFixed(0)) + "";
               }
               return y;
             }
           }
         },
-		colors:['#4A90E2','#0080FF','#F5FCFF'],
+        colors: ['#4A90E2', '#0080FF', '#F5FCFF'],
         chart: {
-            stacked: false,
-            locales: [ru],
-            defaultLocale: 'ru',
+          stacked: false,
+          locales: [ru],
+          defaultLocale: 'ru',
           toolbar: {
             show: false,
-             Color: '#373d3f',
+            Color: '#373d3f',
 
           },
-           foreColor: "#FFFFFF",
-			/*animations: {
-            speed: 200
-          },*/
-            //  type: 'area'
+          foreColor: "#FFFFFF",
+          /*animations: {
+              speed: 200
+            },*/
+          //  type: 'area'
         },
 
         plotOptions: {
           bar: {
-			  dataLabels: {
+            dataLabels: {
               //    position: 'top',
-                },
+            },
             columnWidth: '20%'
           }
         },
 
-		dataLabels: {
-              enabled: false,
-              formatter: function (val) {
-                return val  /*+"%"*/;
-              },
-              offsetY: -20,
-              style: {
-                fontSize: '12px',
-                colors: ["#c5c5c5"]
-              }
-            },
-        labels: [
-		'5','15','25','25','25','25',
-		],
-      legend: {
-        show:false,
+        dataLabels: {
+          enabled: false,
+          formatter: function (val) {
+            return val  /*+"%"*/;
+          },
+          offsetY: -20,
+          style: {
+            fontSize: '12px',
+            colors: ["#c5c5c5"]
+          }
+        },
+        labels: this.chartData.labels,
+        legend: {
+          show: false,
           position: "bottom",
           horizontalAlign: "right",
         },
 
-      		  yaxis: {
-              axisBorder: {
-                show: false
-              },
-              axisTicks: {
-                show: false,
-              },
-              labels: {
-                show: true,
-                formatter: function (val) {
-                  return val /*+ "%"*/;
-                }
-		  },},
-       xaxis: {
-              position: 'bottom',
-              axisBorder: {
-                show: false
-              },
-              axisTicks: {
-                show: false
-              },
-
-
-            },
+        yaxis: {
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false,
+          },
+          labels: {
+            show: true,
+            formatter: function (val) {
+              return val /*+ "%"*/;
+            }
+          },
         },
-      series: [{
-        type: 'bar',
-         name: 'Фактическая закачка ингибитора коррозии',
-        stroke: {
-			show:false
-               },
-        data: [10,20,30,40,50,60]
-      }],
+        xaxis: {
+          position: 'bottom',
+          axisBorder: {
+            show: false
+          },
+          axisTicks: {
+            show: false
+          },
+
+
+        },
+      }
+    },
+    series() {
+      if(typeof this.chartData === 'undefined') {
+        return []
+      }
+
+        return [{
+          type: 'bar',
+          name: 'Фактическая закачка ингибитора коррозии',
+          stroke: {
+            show: false
+          },
+          data: this.chartData.series
+        }]
     }
   },
   methods: {
-  /*  setValue: function(value) {
-        this.series = [
-            {
-                name: 'Фактическая закачка ингибитора коррозии',
-               // data: value.value
-               data:  [20,30,40]
-            }
-            ];
+    /*  setValue: function(value) {
+          this.series = [
+              {
+                  name: 'Фактическая закачка ингибитора коррозии',
+                 // data: value.value
+                 data:  [20,30,40]
+              }
+              ];
 
-        this.chartOptions = {
-        //  ['20','30','40'] /// labels: value.dt
-        };
-    }*/
+          this.chartOptions = {
+          //  ['20','30','40'] /// labels: value.dt
+          };
+      }*/
   },
-  created: function() {
-   // this.$parent.$on('chart3', this.setValue);
-   // this.setValue;
+  created: function () {
+    // this.$parent.$on('chart3', this.setValue);
+    // this.setValue;
   }
 }
 </script>

@@ -1051,7 +1051,7 @@
             </div>
 
             <div class="vis-chart pl-3">
-              <div class="name-chart-left">{{ nameChartLeft }}, тыс. тонн</div>
+              <div class="name-chart-left">{{ nameChartLeft }}, {{ item4 }}</div>
               <div class="name-chart-head">{{ item3 }}</div>
               <vc-chart :height="500" v-if="company == 'all'"> </vc-chart>
             </div>
@@ -1384,24 +1384,275 @@
         </div>
       </div>
 
-      <!--<div class="third-table big-area" :style="`${Table4}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">Фонд добывающих скважин</div>
-        </div>
-      </div>-->
-
       <div class="third-table big-area" :style="`${Table6}`">
         <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">ОТМ</div>
+          <div class="container-fluid">
+            <div class="area-6-name row mt-3 mb-3 px-2">
+              <div class="col">
+                <div class="ml-4 bold">ОТМ</div>
+              </div>
+              <div class="col px-4">
+                <div class="close2" @click="changeTable('1')">Закрыть</div>
+              </div>
+            </div>
+
+            <div class="row px-4">
+              <div class="w-25 pr-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover7}`"
+                    @click="changeMenu2(1)"
+                >
+                  Суточная
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover8}`"
+                    @click="changeMenu2(2)"
+                >
+                  С начала месяца
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover9}`"
+                    @click="changeMenu2(3)"
+                >
+                  С начала года
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div class="dropdown3">
+                  <div
+                      class="button2"
+                      :style="`${buttonHover10}`"
+                      @click="changeMenu2(4)"
+                  >
+                    Календарь
+                  </div>
+                  <ul class="center-menu2 right-indent">
+                    <li class="center-li">
+                      <br /><br />
+
+                      <div class="month-day">
+                        <div class="calendar-day">
+                          <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="">
+              <div class="row px-4">
+                <div class="w-100 pr-2">
+                  <select
+                      style="
+                      background-color: #333975;
+                      border-color: #20274e;
+                      color: white;
+                    "
+                      class="form-control w-100"
+                      id="OTMcompanySelect"
+                      @change="innerWellsProdMetOnChange($event)"
+                  >
+                    <option value="all" v-if="company!='all'"> {{ getNameDzoFull(company) }}</option>
+                    <option v-else>Все компании</option>
+                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
+                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
+                    <option value="КГМ">ТОО «КазГерМунай»</option>
+                    <option value="КОА">ТОО "Казахойл Актобе</option>
+                    <option value="КГМ">ТОО "Казгермунай"</option>
+                    <option value="КБМ">АО «Каражанбасмунай»</option>
+                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row container-fluid">
+              <div class="vis-table vis-table-small px-3">
+                <table v-if="otmData.length" class="table4 w-100" style="height: calc(100% - 20px)">
+                  <tbody>
+                  <tr v-for="(item, index) in otmData" @click="otmSelectedRow = item.code">
+                    <td @click="otmSelectedRow = item.code"
+                        class="w-50"
+                        :class="{
+                          'tdStyle': index % 2 === 0,
+                          'selected': otmSelectedRow === item.code
+                        }"
+                        style="cursor: pointer"
+                    >
+                                <span>
+                                  {{ item.name }}
+                                </span>
+                    </td>
+                    <td @click="otmSelectedRow = item.code"
+                        class="w-25 text-center"
+                        :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                        style="cursor: pointer; font-size: 30px"
+                    >
+                      <div v-if="index === 0" class="center" style="font-size: 12px; line-height: 1.2">План</div>
+                      {{ item.fact }}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col">
+                <visual-center3-wells v-if="otmDataForChart" :chartData="otmDataForChart"></visual-center3-wells>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="third-table big-area" :style="`${Table7}`">
         <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">Химизация</div>
+          <div class="container-fluid">
+            <div class="area-6-name row mt-3 mb-3 px-2">
+              <div class="col">
+                <div class="ml-4 bold">Химизация</div>
+              </div>
+              <div class="col px-4">
+                <div class="close2" @click="changeTable('1')">Закрыть</div>
+              </div>
+            </div>
+
+            <div class="row px-4">
+              <div class="w-25 pr-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover7}`"
+                    @click="changeMenu2(1)"
+                >
+                  Суточная
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover8}`"
+                    @click="changeMenu2(2)"
+                >
+                  С начала месяца
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover9}`"
+                    @click="changeMenu2(3)"
+                >
+                  С начала года
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div class="dropdown3">
+                  <div
+                      class="button2"
+                      :style="`${buttonHover10}`"
+                      @click="changeMenu2(4)"
+                  >
+                    Календарь
+                  </div>
+                  <ul class="center-menu2 right-indent">
+                    <li class="center-li">
+                      <br /><br />
+
+                      <div class="month-day">
+                        <div class="calendar-day">
+                          <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="">
+              <div class="row px-4">
+                <div class="w-100 pr-2">
+                  <select
+                      style="
+                      background-color: #333975;
+                      border-color: #20274e;
+                      color: white;
+                    "
+                      class="form-control w-100"
+                      id="ChemistryCompanySelect"
+                      @change="innerWellsProdMetOnChange($event)"
+                  >
+                    <option value="all" v-if="company!='all'"> {{ getNameDzoFull(company) }}</option>
+                    <option v-else>Все компании</option>
+                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
+                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
+                    <option value="КГМ">ТОО «КазГерМунай»</option>
+                    <option value="КОА">ТОО "Казахойл Актобе</option>
+                    <option value="КГМ">ТОО "Казгермунай"</option>
+                    <option value="КБМ">АО «Каражанбасмунай»</option>
+                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row container-fluid">
+              <div class="vis-table vis-table-small px-3">
+                <table v-if="chemistryData.length" class="table4 w-100" style="height: calc(100% - 20px)">
+                  <tbody>
+                  <tr v-for="(item, index) in chemistryData" @click="chemistrySelectedRow = item.code">
+                    <td @click="chemistrySelectedRow = item.code"
+                        class="w-50"
+                        :class="{
+                          'tdStyle': index % 2 === 0,
+                          'selected': chemistrySelectedRow === item.code
+                        }"
+                        style="cursor: pointer"
+                    >
+                      {{item.name}}
+                    </td>
+                    <td @click="chemistrySelectedRow = item.code"
+                        class="w-25 text-center"
+                        :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                        style="cursor: pointer; font-size: 30px"
+                    >
+                      <div v-if="index === 0" class="center" style="font-size: 12px; line-height: 1.2">План</div>
+                      {{ item.fact }}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col">
+                <visual-center3-wells v-if="chemistryDataForChart" :chartData="chemistryDataForChart"></visual-center3-wells>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1530,6 +1781,7 @@
                   @click="changeTable('6')"
                   :style="`${tableHover6}`"
                 >
+                  <div class="mt-1 float-right"><img data-v-3712f8d4="" src="/img/icons/link.svg"></div>
                   <div class="otm"></div>
                   <div class="txt2">ОТМ</div>
                 </td>
@@ -1539,6 +1791,7 @@
                   @click="changeTable('7')"
                   :style="`${tableHover7}`"
                 >
+                  <div class="mt-1 float-right"><img data-v-3712f8d4="" src="/img/icons/link.svg"></div>
                   <div class="him"></div>
                   <div class="txt2">Химизация</div>
                 </td>
@@ -1716,6 +1969,9 @@
                   width: 9px;
                 }
               }
+            }
+            &.selected{
+              background: #2e47c0!important;
             }
             .font{
               align-items: baseline;
