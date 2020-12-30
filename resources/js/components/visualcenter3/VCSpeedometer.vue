@@ -83,7 +83,6 @@ export default {
     mounted() {
         let item = this.sliderValue;
         let slider1Value = [0, 33];
-        let slider1ValueInverse = [66, 100];
         let slider2Value = item[4];
         let sortValues = [Math.abs(item[1]), Math.abs(item[2]), Math.abs(item[3])];
         let inverse = item[1] > item[2];
@@ -92,19 +91,17 @@ export default {
         sortValues = sortValues.sort(function (a, b) {
             return a - b;
         });
-        if (slider2Value >= sortValues[1]) {
-            slider1Value = [33, 66]
-            slider1ValueInverse = [33, 66]
+        if (slider2Value >= sortValues[1] || (inverse && slider2Value < sortValues[1])) {
+            slider1Value = [33, 75]
             rangeColor = '#237deb';
             kpdIcon = 2;
         }
-        if (slider2Value >= sortValues[2]) {
+        if (slider2Value >= sortValues[2] || (inverse && slider2Value < sortValues[0])) {
             slider1Value = [66, 100]
-            slider1ValueInverse = [0, 33]
-            rangeColor = inverse ? '#fe5c5c' : '#009846';
-            kpdIcon = inverse ? 1 : 3;
+            rangeColor = '#009846';
+            kpdIcon = 3;
         }
-        this.slider1Value = inverse ? slider1ValueInverse : slider1Value;
+        this.slider1Value = slider1Value;
         this.slider2Value = slider2Value;
         this.tooltipValue = item[2];
         this.rangeColor = rangeColor;
