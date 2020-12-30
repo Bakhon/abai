@@ -308,14 +308,14 @@
               </div>
 
               <ul>
-                <li class="center-li row px-4" @click="changeMenu('102')">
+               <!-- <li class="center-li row px-4" @click="changeMenu('102')">
                   <a class="col-10">Сдача нефти по узлам учёта</a>
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton2}`">
                       ✓
                     </div>
                   </div>
-                </li>
+                </li>-->
                 <li class="center-li row px-4" @click="changeMenu('103')">
                   <a
                     class="col-10"
@@ -418,7 +418,7 @@
                     </div>
                   </div>
                 </li>
-                <li class="center-li row px-4" @click="changeMenu('106')">
+                <!--<li class="center-li row px-4" @click="changeMenu('106')">
                   <a
                     class="col-10"
                     @click="
@@ -437,7 +437,7 @@
                       ✓
                     </div>
                   </div>
-                </li>
+                </li>-->
 
                 <li class="center-li row px-4" @click="changeMenu('108')">
                   <a
@@ -1645,7 +1645,7 @@
           <table class="table table1-2">
             <tr>
               <td>
-                <div class="number">11</div>
+                <div class="number">0</div>
                 <div class="near-number">
                   <!-- <div class="column-1">
                     <div class="arrow"></div>
@@ -1660,7 +1660,7 @@
               </td>
 
               <td>
-                <div class="number">11</div>
+                <div class="number">0</div>
                 <div class="near-number">
                   <!--  <div class="column-1">
                     <div class="arrow"></div>
