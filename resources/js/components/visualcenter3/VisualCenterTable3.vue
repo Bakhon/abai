@@ -222,7 +222,7 @@
                 </div>
                 <br />
                 <div class="txt1">Цена на нефть (Brent)</div>
-            
+
                 <div class="percent-currency">
                   <div class="arrow"></div>
                   <div class="txt2">5,2%</div>
@@ -873,37 +873,19 @@
             </div>
           </div>
           <div class="row container-fluid" :style="`${displayHeadTables}`">
-            <div class="col-6 px-3">
-              <table class="table4 w-100">
+            <div class="vis-table px-3">
+              <table v-if="bigTable.length" class="table4 w-100">
                 <tbody>
-                  <tr>
-                    <td class="big-table-hidtd small-td"></td>
-
-                    <td class="small-td">
-                      <div class="center">план</div>
-                    </td>
-                    <td class="small-td">
-                      <div class="center">факт</div>
-                    </td>
-                    <td class="small-td">
-                      <div class="center">+/-</div>
-                    </td>
-                    <td class="small-td"><div class="center">%</div></td>
-                  </tr>
-
                   <tr v-for="(item, index) in bigTable">
                     <td
-                      class="d-flex flex-row"
-                      @click="saveCompany(item.dzoMonth)"
-                      :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
-                      style="cursor: pointer"
+                        @click="saveCompany(item.dzoMonth)"
+                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                        style="cursor: pointer"
                     >
-                      <div class="first-td">
-                        {{ getNameDzoFull(item.dzoMonth) }}
-                      </div>
-                      <div class="mt-2 ml-1">
-                        <img class="w-75" src="/img/icons/link.svg" />
-                      </div>
+                        <span>
+                          {{ getNameDzoFull(item.dzoMonth) }}
+                          <img src="/img/icons/link.svg"/>
+                        </span>
                     </td>
 
                     <td
@@ -911,29 +893,21 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
+                      <div v-if="index === 0" class="center">план</div>
                       <div class="font" v-if="item.planMonth">
-                        <!-- {{
-                          new Intl.NumberFormat("ru-RU").format(item.planDay)
-                        }}-->
-
                         {{
                           new Intl.NumberFormat("ru-RU").format(item.planMonth)
                         }}
-
-                        <div class="right">{{ item4 }}</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                      <div v-if="index === 0" class="center">факт</div>
                       <div class="font" v-if="item.factMonth">
-                        <!--  {{
-                          new Intl.NumberFormat("ru-RU").format(item.factDay)
-                        }}-->
-
                         {{
                           new Intl.NumberFormat("ru-RU").format(item.factMonth)
                         }}
-
-                        <div class="right">{{ item4 }}</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
                     </td>
                     <td
@@ -941,21 +915,23 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
+                      <div v-if="index === 0" class="center">+/-</div>
                       <div
                         v-if="item.factMonth"
                         class="triangle"
                         :style="`${getColor(item.factMonth - item.planMonth)}`"
                       ></div>
-                      <div class="percent font" v-if="item.factMonth">
+                      <div class="font" v-if="item.factMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(item.factMonth - item.planMonth)
                           )
                         }}
-                        <!-- <div class="right">{{ item4 }}</div>-->
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                      <div v-if="index === 0" class="center">%</div>
                       <div
                         v-if="item.factMonth"
                         class="triangle"
@@ -964,7 +940,7 @@
                             100
                         )}`"
                       ></div>
-                      <div class="percent font" v-if="item.factMonth">
+                      <div class="font" v-if="item.factMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
@@ -1008,7 +984,7 @@
                           new Intl.NumberFormat("ru-RU").format(planMonthSumm)
                         }}
 
-                        <div class="right">{{ item4 }}</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
@@ -1017,7 +993,7 @@
                         {{
                           new Intl.NumberFormat("ru-RU").format(factMonthSumm)
                         }}
-                        <div class="right">{{ item4 }}</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
                     </td>
                     <td
@@ -1036,8 +1012,7 @@
                             Math.abs(factMonthSumm - planMonthSumm)
                           )
                         }}
-
-                        <!--<div class="right">{{ item4 }}</div>-->
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
@@ -1067,7 +1042,7 @@
               </table>
             </div>
 
-            <div class="col-6 pl-5">
+            <div class="vis-chart pl-5">
               <div class="name-chart-left">{{ nameChartLeft }}</div>
               <div class="name-chart-head">{{ item3 }}</div>
               <vc-chart v-if="company == 'all'"> </vc-chart>
@@ -1708,3 +1683,82 @@
   </div>
 </template>
 <script src="./VisualCenterTable3.js"></script>
+<style scoped lang="scss">
+    .vis-table{
+      flex: 0 0 56%;
+      height: 535px;
+      max-width: 56%;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #333975;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #1f213e;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #1f213e;
+      }
+
+      &::-webkit-scrollbar-corner {
+        background: #333975;
+      }
+
+      .table4{
+        tr{
+          td{
+            padding: 5px 5px 5px 10px;
+            position: relative;
+            vertical-align: middle;
+            &:first-child{
+              height: 56px;
+              white-space: normal;
+              width: 215px;
+              span{
+                font-weight: bold;
+                img{
+                  width: 9px;
+                }
+              }
+            }
+            .font{
+              align-items: baseline;
+              display: flex;
+              justify-content: space-between;
+              font-size: 18px;
+              margin-left: 0;
+              .right{
+                font-size: 10px;
+                margin-right: 0;
+              }
+            }
+            .center{
+              font-size: 0.63em;
+              font-weight: bold;
+              left: 0;
+              margin: 0;
+              position: absolute;
+              text-align: center;
+              top: 4px;
+              width: 100%;
+            }
+            .triangle{
+              border: 6px solid transparent;
+              height: 6px;
+              margin-right: 5px;
+              width: 6px;
+            }
+          }
+        }
+      }
+    }
+    .vis-chart{
+      flex: 0 0 44%;
+      max-width: 44%;
+    }
+</style>
