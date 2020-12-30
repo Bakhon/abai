@@ -1,6 +1,6 @@
 <template>
-    <div class="col first-string mb-1 mb-sm-0"
-         v-bind:class="{'cursor-pointer': showLink, 'mr-2': !isLastBlock}"
+    <div class="col first-string mb-1 mb-sm-0 mr-2 ml-2"
+         v-bind:class="{'cursor-pointer': showLink}"
          @click="$emit('changeTable', tableToChange)"
     >
         <div class="d-flex flex-row justify-sm-content-center text-sm-left text-center vc-speedometer-title-block">
