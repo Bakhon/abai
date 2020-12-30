@@ -25,7 +25,8 @@
 
 #app .multiselect__tags {
     min-height: 35px;
-    padding: 6px 40px 0 8px;
+    height: 35px;
+    padding: 5px 40px 0 8px;
 }
 
 #app .multiselect__placeholder,
