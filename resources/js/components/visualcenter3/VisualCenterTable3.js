@@ -1433,6 +1433,18 @@ export default {
           var planMonth = [];
 
    //delete after paste data for dzo
+
+   if (this.buttonHover11 != '') {
+    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШ" }));
+    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "НКО" }));
+    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КПО" }));
+
+    data = _.reject(data, _.iteratee({ dzo: "ТШ" }));
+    data = _.reject(data, _.iteratee({ dzo: "НКО" }));
+    data = _.reject(data, _.iteratee({ dzo: "КПО" }));
+
+   }
+
           if (this.buttonHover12 != '') {
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
@@ -1451,10 +1463,10 @@ export default {
             data = _.reject(data, _.iteratee({ dzo: "ЭМГ" }));
 
 
-            dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" });
+          /*  dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" });
             factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
             planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });*/
           }
 
           if (this.buttonHover13 != '') {
