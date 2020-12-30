@@ -195,10 +195,16 @@
                 </div>
                 <div class="second-td-header"></div>
               </td>
+
+<!--              <td class="vc-select-table"-->
+<!--                style="width: 200px; border-left: 10px solid #0f1430"-->
+<!--                @click="changeTable('2')"-->
+<!--                :style="`${tableHover2}`"-->
+<!--              >-->
+
               <td class="vc-select-table"
-                style="width: 200px; border-left: 10px solid #0f1430"
-                @click="changeTable('2')"
-                :style="`${tableHover2}`"
+                  style="width: 200px; border-left: 10px solid #0f1430"
+                  :style="`${tableHover2}`"
               >
                 <div class="nu">
                   <div class="number">{{ oilNow }}</div>
@@ -902,6 +908,7 @@
       <visual-center-usd-table
           :style="`${Table3}`"
           :selected-usd-period.sync="selectedUsdPeriod"
+          :usd-rates-data.sync="usdRatesData"
           @period-select-usd="periodSelectUsd(selectedUsdPeriod)"
           :period-select-func.sync="periodSelectFunc"
           :currency-chart-data.sync="currencyChartData"

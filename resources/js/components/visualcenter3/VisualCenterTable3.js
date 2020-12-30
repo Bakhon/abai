@@ -9,7 +9,11 @@ export default {
     DatePicker
   },
   data: function () {
-    return { 
+    return {
+      usdRatesData: {
+        for_chart: [],
+        for_table: []
+      },
       nameChartLeft: 'Добыча нефти',
       oilChartHeadName: 'Динамика добычи нефти',
       prod_wells_workAll: [
@@ -85,7 +89,7 @@ export default {
       currencyNow: "",
       currencyChartData: "",
       currencyNowUsd: "",
-      selectedUsdPeriod: 0,
+      selectedUsdPeriod: 4,
       periodSelectOil: "",
       oilPeriod: "",
       period: 7,
@@ -453,7 +457,7 @@ export default {
       // console.log(this.periodUSD);
 
       // return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-      return this.getCurrencyPeriod(new Date().toLocaleDateString(), this.periodUSD);
+      // return this.getCurrencyPeriod(new Date().toLocaleDateString(), this.periodUSD);
     },
 
     getCurrencyNow(dates) {
@@ -474,6 +478,39 @@ export default {
           this.dailyCurrencyChangeIndexUsd = data.index;
         } else {
           console.log("No data");
+        }
+      });
+    },
+
+    getUsdRatesData() {
+      let url = this.localeUrl("/get-usd-rates");
+
+      this.axios.get(url).then((response) => {
+        if (response.data) {
+          let usdRatesData = {
+            for_chart: [],
+            for_table: []
+          };
+
+          let self = this;
+
+          response.data.forEach((item) => {
+            usdRatesData.for_table.push({
+              date_string: self.$moment(item.date).format('DD.MM.YYYY'),
+              value: parseInt(item.value * 10) / 10,
+              change: Math.abs(parseFloat(item.change)),
+              index: item.index || null
+            });
+
+            usdRatesData.for_chart.push([
+              new Date(item.date).getTime(),
+              parseInt(item.value * 10) / 10,
+            ]);
+          });
+
+          this.usdRatesData = usdRatesData;
+        } else {
+          console.log('No data.');
         }
       });
     },
@@ -1992,22 +2029,24 @@ export default {
     localStorage.setItem("selectedOilPeriod", "undefined");
     this.getCurrencyNow(this.timeSelect);
     this.getOilNow(this.timeSelect, this.period);
-    this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    // this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     this.changeAssets('b13');
     // this.getProductionOilandGasPercent();
+
+    this.getUsdRatesData();
  
   },
   watch: {},
   computed: {
     //currency and oil down
     periodSelectFunc() {
-      let DMY = ["7 дней", "1 мес", "6 мес", "1 год", "5 лет"];
+      let DMY = ["Неделя", "Месяц", "Квартал", "год", "Всё"];
       let DMY_titles = [
         "За последние 7 дней",
         "За последний месяц",
-        "За последние 6 месяцев",
+        "За последние 3 месяца",
         "За последний год",
-        "За последние 5 лет"
+        "За всё время"
       ];
 
       let menuDMY = [];

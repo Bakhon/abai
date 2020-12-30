@@ -30,7 +30,7 @@
                 </button>
               </div>
 
-              <visual-center-chart-area-usd3 :currency-chart-data.sync="currencyChartData"/>
+              <visual-center-chart-area-usd3 :usd-rates-data.sync="usdRatesData"/>
             </div>
           </div>
 
@@ -51,7 +51,7 @@
                   </thead>
 
                   <tbody>
-                  <tr v-for="(data, index) in currencyChartData.for_table">
+                  <tr v-for="(data, index) in usdRatesData.for_table">
                     <td>{{ data.date_string }}</td>
                     <td>{{ data.value }}</td>
                     <td>
@@ -88,14 +88,12 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 export default {
   components: { PerfectScrollbar },
   props: [
+    'usdRatesData',
     'selectedUsdPeriod',
     'periodSelectFunc',
     'currencyChartData',
     'usdChartIsLoading',
   ],
-  mounted() {
-    this.getData();
-  },
   computed: {
     activeTitle() {
       let active = this.periodSelectFunc.find((item) => {
@@ -106,15 +104,6 @@ export default {
     }
   },
   methods: {
-    getData() {
-      let url = this.localeUrl("/get-usd-rates");
-
-      this.axios.get(url).then((response) => {
-        console.log('response.data');
-        console.log(response.data);
-        console.log('============================');
-      });
-    },
     changeTable() {
       this.$emit('change-table');
     },

@@ -20,7 +20,7 @@ Vue.component("apexchart", VueApexCharts);
 
 export default {
   name: "mix-chart",
-  props: ['postTitles', 'currencyChartData'],
+  props: ['postTitles', 'usdRatesData'],
   data: function () {
     return {
       begin: "",
@@ -66,14 +66,9 @@ export default {
         annotations: {
           yaxis: [{
             y: 30,
-            label: {
-              show: true,
-              text: 'Support',
-              style: {
-                color: "#333333",
-                background: '#00E396'
-              }
-            }
+            // label: {
+            //   show: false,
+            // }
           }],
           xaxis: [{
             x: new Date().getTime(),
@@ -153,6 +148,8 @@ export default {
     updateChartOptions(value) {
       let self = this;
 
+      // console.log(value);
+
       this.chartOptions = {
         ...this.chartOptions, ...{
           xaxis: {
@@ -166,12 +163,11 @@ export default {
               fontSize: '14px',
             },
             custom: function({series, seriesIndex, dataPointIndex, w}) {
-              // console.log(w.globals.labels);
 
               return '<div class="vc-chart-tooltip">' +
                   '<div>Покупка</div>' +
                   '<div class="vc-chart-tooltip-value">' + series[seriesIndex][dataPointIndex] + '</div>' +
-                  '<div>' + self.getDate(w.globals.labels[dataPointIndex]) + '</div>' +
+                  // '<div>' + self.getDate(w.globals.labels[dataPointIndex]) + '</div>' +
                   '</div>'
             }
           },
@@ -187,7 +183,7 @@ export default {
     },
   },
   watch: {
-    currencyChartData(newVal) {
+    usdRatesData(newVal) {
       this.updateChartOptions(newVal);
     }
   },
