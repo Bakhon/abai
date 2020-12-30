@@ -7037,6 +7037,9 @@ export default {
 body {
   color: white !important;
 }
+#app .multiselect {
+  max-width: 300px;
+}
 .form-control,
 .fix-rounded-right {
   background: #272953 !important;
