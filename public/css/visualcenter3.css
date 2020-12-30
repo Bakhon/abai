@@ -945,3 +945,7 @@ a.dropdown-link-vc3 {
 .font-weight{
     font-weight:bold;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

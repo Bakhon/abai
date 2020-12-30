@@ -206,18 +206,25 @@
                 <div class="second-td-header"></div>
               </td>
 
-<!--              <td class="vc-select-table"-->
-<!--                style="width: 200px; border-left: 10px solid #0f1430"-->
-<!--                @click="changeTable('2')"-->
-<!--                :style="`${tableHover2}`"-->
-<!--              >-->
-
               <td class="vc-select-table"
-                  style="width: 200px; border-left: 10px solid #0f1430"
-                  :style="`${tableHover2}`"
+                style="width: 200px; border-left: 10px solid #0f1430"
+                @click="changeTable('2')"
+                :style="`${tableHover2}`"
               >
+
+<!--              <td class="vc-select-table"-->
+<!--                  style="width: 200px; border-left: 10px solid #0f1430"-->
+<!--                  :style="`${tableHover2}`"-->
+<!--              >-->
                 <div class="nu">
-                  <div class="number">{{ oilNow }}</div>
+                  <div class="number d-flex justify-content-between">
+                      <div>
+                          {{ oilNow }}
+                      </div>
+                      <div class="mt-1">
+                          <img src="/img/icons/link.svg">
+                      </div>
+                  </div>
                   <div class="unit-vc">$ / bbl</div>
                 </div>
                 <br />
@@ -235,7 +242,14 @@
                 :style="`${tableHover3}`"
               >
                 <div class="nu">
-                  <div class="number">{{ currencyNow }}</div>
+                    <div class="number d-flex justify-content-between">
+                        <div>
+                            {{ currencyNow }}
+                        </div>
+                        <div class="mt-1">
+                            <img src="/img/icons/link.svg">
+                        </div>
+                    </div>
                   <div class="unit-vc">kzt / $</div>
                 </div>
                 <br />
@@ -1050,38 +1064,31 @@
           </div>
         </div>
       </div>
-
-      <div class="second-table big-area" :style="`${Table2}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">
-            <br />
-
-            <div
-              @click="selectedOilPeriod = menuDMY.id"
-              class="period"
-              v-for="(menuDMY, index) in periodSelectFunc"
-              :style="{
-                color: menuDMY.current,
-              }"
-              v-on:click="periodSelect"
-            >
-              <div>{{ menuDMY.DMY }}</div>
-            </div>
-            <visual-center-chart-area-oil3></visual-center-chart-area-oil3>
-          </div>
-        </div>
-      </div>
+        <visual-center-usd-table
+            :style="`${Table2}`"
+            :selected-usd-period.sync="selectedOilPeriod"
+            :usd-rates-data.sync="oilRatesData"
+            @period-select-usd="getOilNow(timeSelect, periodSelect(selectedOilPeriod))"
+            :period-select-func.sync="periodSelectFunc"
+            :currency-chart-data.sync="currencyChartData"
+            :usd-chart-is-loading.sync="usdChartIsLoading"
+            @change-table="changeTable('1')"
+            :main-title="'Динамика цены на нефть'"
+            :second-title="''"
+        />
 
       <visual-center-usd-table
           :style="`${Table3}`"
           :selected-usd-period.sync="selectedUsdPeriod"
           :usd-rates-data.sync="usdRatesData"
-          @period-select-usd="periodSelectUsd(selectedUsdPeriod)"
+          @period-select-usd="periodUSD = periodSelect(selectedUsdPeriod)"
           :period-select-func.sync="periodSelectFunc"
           :currency-chart-data.sync="currencyChartData"
           :usd-chart-is-loading.sync="usdChartIsLoading"
-          @change-table="changeTable('1')"/>
+          @change-table="changeTable('1')"
+          :main-title="'Динамика курса доллара США к тенге (USD, НБ РК)'"
+          :second-title="'USD НБ РК'"
+      />
 
       <div class="third-table big-area" :style="`${Table5}`">
         <div class="first-string first-string2">
@@ -1427,7 +1434,7 @@
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1-2">
-            <tr>
+            <tr class="cursor-pointer">
               <td
                 class="w-50"
                 @click="changeTable('4')"
@@ -1447,14 +1454,18 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt4">
-                  <!--v-if="wells2[0].prod_wells_idle"-->
-                  {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      // wells2[0].prod_wells_idle
-                      prod_wells_idle
-                    )
-                  }}
+                <div class="txt4 d-flex justify-content-between">
+                    <div>
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          // wells2[0].prod_wells_idle
+                          prod_wells_idle
+                        )
+                      }}
+                    </div>
+                    <div class="mt-1">
+                        <img src="/img/icons/link.svg">
+                    </div>
                 </div>
                 <div class="in-idle">В простое</div>
                 <div class="arrow"></div>
@@ -1462,7 +1473,7 @@
                 <br />
               </td>
             </tr>
-            <tr>
+            <tr class="cursor-pointer">
               <td
                 colspan="2"
                 @click="changeTable('4')"
@@ -1477,7 +1488,7 @@
         <div class="first-string first-string2">
           <div class="table-responsive">
             <table class="table table1-2">
-              <tr>
+              <tr class="cursor-pointer">
                 <td
                   class="w-50"
                   @click="changeTable('5')"
@@ -1502,22 +1513,27 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt4">
-                    <!-- v-if="wells[0].inj_wells_idle"-->
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        // wells[0].inj_wells_idle
-                        inj_wells_idle
-                      )
-                    }}
-                  </div>
+                    <div class="txt4 d-flex justify-content-between">
+                        <div>
+                            <!-- v-if="wells[0].inj_wells_idle"-->
+                            {{
+                                new Intl.NumberFormat("ru-RU").format(
+                                    // wells[0].inj_wells_idle
+                                    inj_wells_idle
+                                )
+                            }}
+                        </div>
+                        <div class="mt-1">
+                            <img src="/img/icons/link.svg">
+                        </div>
+                    </div>
                   <div class="in-idle">В простое</div>
                   <div class="arrow"></div>
                   <div class="txt2">200</div>
                   <br />
                 </td>
               </tr>
-              <tr>
+              <tr class="cursor-pointer">
                 <td
                   colspan="2"
                   @click="changeTable('5')"

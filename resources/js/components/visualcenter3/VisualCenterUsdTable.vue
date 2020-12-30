@@ -8,13 +8,13 @@
         </div>
 
         <div class="vc-chart-block-header">
-          Динамика курса доллара США к тенге (USD, НБ РК)
+            {{ mainTitle }}
         </div>
 
         <div class="row no-margin vc-chart-content-wrapper">
           <div class="col-sm-9">
             <div class="vc-chart-block-subheader">
-              USD НБ РК
+              {{ secondTitle }}
             </div>
 
             <div class="vc-chart-wrapper">
@@ -93,6 +93,8 @@ export default {
     'periodSelectFunc',
     'currencyChartData',
     'usdChartIsLoading',
+    'mainTitle',
+    'secondTitle',
   ],
   computed: {
     activeTitle() {
