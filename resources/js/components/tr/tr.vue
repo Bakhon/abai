@@ -268,7 +268,7 @@
           <a
             v-if="edit"
             title="Сохранить"
-            style="margin-left: 13px"
+            style="margin-left: 13px; cursor: pointer;"
             @click="savetable()"
             ><svg
               width="24"
@@ -319,6 +319,7 @@
             v-if="edit"
             class="trgraph"
             title="Отмена"
+            style="cursor: pointer;"
             data-toggle="tooltip"
             data-placement="top"
             @click="cancelEdit"
@@ -371,6 +372,7 @@
           <a
             v-if="!edit"
             title="Редактировать"
+            style="cursor: pointer;"
             data-toggle="tooltip"
             data-placement="top"
             @click="editable()"
