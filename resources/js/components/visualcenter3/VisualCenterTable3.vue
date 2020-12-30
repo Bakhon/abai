@@ -1216,11 +1216,11 @@
                                 </span>
                             </td>
                             <td
-                                class="w-25"
+                                class="w-25 tdNumber"
                                 :class="index % 2 === 0 ? 'tdStyle' : ''"
                                 style="cursor: pointer"
                             >
-                                {{ item.value }}
+                                {{ item.value }} <span>скважин</span>
                             </td>
                         </tr>
                         </tbody>
@@ -1366,11 +1366,11 @@
                                 </span>
                             </td>
                             <td
-                                class="w-25"
+                                class="w-25 tdNumber"
                                 :class="index % 2 === 0 ? 'tdStyle' : ''"
                                 style="cursor: pointer"
                             >
-                                {{ item.value }}
+                                {{ item.value }} <span>скважин</span>
                             </td>
                         </tr>
                         </tbody>
@@ -1758,6 +1758,14 @@
             line-height: 4.2rem !important;
             font-size: 1.2rem !important;
             font-family: Bold !important;
+        }
+        .tdNumber {
+            font-size: 1.6rem;
+            text-align: right;
+            span {
+                font-size: 0.8rem;
+                font-weight: normal;
+            }
         }
     }
     .vis-chart{
