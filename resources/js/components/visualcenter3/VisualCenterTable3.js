@@ -101,6 +101,7 @@ export default {
       currencyChartData: "",
       currencyNowUsd: "",
       selectedUsdPeriod: 4,
+      selectedDMY: 0,
       periodSelectOil: "",
       oilPeriod: "",
       period: 7,
