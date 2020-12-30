@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-column flex-sm-row justify-content-between w-sm-100">
-        <div class="flex-grow-1 vc-central-block mr-2 mb-2">
+        <div class="flex-grow-1 mr-2 mb-2">
             <horizontal-indicators
                 @changeTable="tableToChange => changeTable(tableToChange)"
                 v-bind:dateStart="dateStart"
@@ -32,12 +32,12 @@
                     @closeTable="closeTable"
                 ></vc-upstream-table>
             </div>
-            <div v-if="isShowMainBlock">
-                <div>
+            <div class="vc-central-block">
+                <div v-if="isShowMainBlock">
                     <div class="d-flex flex-row mb-2">
                         <div class="flex-grow-1 first-string">
                             <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center p-2">
-                                <h5 class="font-weight-bold m-0">Upstream</h5>
+                                <h5 class="font-weight-bold m-0">КПД Блока добычи</h5>
                                 <div class="w-75">
                                     <div class="progress2">
                                         <div
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-sm-2" v-if="isEnableSpeedometers">
+                    <div class="d-flex flex-column flex-sm-row mb-sm-3 vc-speedometer-line" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Прирост запасов (A+B+C1)'"
                             v-bind:mainValue="t1"
@@ -82,7 +82,7 @@
                             @changeTable="tableToChange => changeTable(tableToChange)"
                         ></vc-speedometer-block>
                     </div>
-                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 pb-2" v-if="isEnableSpeedometers">
+                    <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                         <vc-speedometer-block
                             v-bind:title="'Капитальные затраты по операционным активам'"
                             v-bind:mainValue="t4"
@@ -102,21 +102,13 @@
                         <vc-speedometer-block
                             v-bind:title="'Разработка концепции Разведка и добыча'"
                             v-bind:mainTitle="'Ноябрь'"
-                            v-bind:sliderTooltip="'Ноябрь'"
+                            v-bind:toolTipPorog="'Декабрь'"
+                            v-bind:toolTipAim="'Ноябрь'"
+                            v-bind:toolTipVizov="'-'"
                             v-bind:mainValue="t6"
                             v-bind:units="'дата'"
                             v-bind:isLastBlock="true"
                         ></vc-speedometer-block>
-                    </div>
-                    <div class="text-center p-3" v-else>
-                        <div class="box">
-                            <div class="cat">
-                                <div class="cat__body"></div>
-                                <div class="cat__body"></div>
-                                <div class="cat__tail"></div>
-                                <div class="cat__head"></div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -127,6 +119,7 @@
                 v-bind:dateEnd="dateEnd"
             ></vertical-indicators>
         </div>
+        <cat-loader />
     </div>
 </template>
 <script src="./VisualCenterTable7.js"></script>

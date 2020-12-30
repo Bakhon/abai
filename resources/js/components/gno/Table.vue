@@ -134,25 +134,27 @@
                     {{ sk }}
                   </div>
 
-                  <div class="devices-data table-border-gno-top no-gutter col-7">
+                  <div class="hide-block"  v-show="!hideStrokeLength">
+                    <div class="devices-data table-border-gno-top no-gutter col-7">
                     Длина хода
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{strokeLenDev}} м
                   </div>
-
-                  <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Число качаний
-                  </div>
-                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{spmDev}} 1/мин
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Диаметр насоса
+                    {{ freq }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
-                    {{ pumpType }} мм
+                    {{spmDev}} 
+                  </div>
+
+                  <div class="devices-data table-border-gno-top no-gutter col-7">
+                    {{ dNasosa }}
+                  </div>
+                  <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
+                    {{ pumpType }} м³/сут
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">Нсп</div>
@@ -547,11 +549,66 @@
                       Выполненные ремонты
                     </div>
 
-                    <button type="button" class="modal-bign-button" @click="closeModal('modalNearWells')">
+                    <button type="button" class="modal-bign-button" @click="closeModal('modal-prs')">
                       Закрыть
                     </button>
-
                   </div>
+                  <div class="container-fluid">
+	                  <div class="row">
+	                  	<div class="col-12">
+		                   	<div class="row">
+				                  
+                          <div class="col-6">
+                            <h6 style="text-align: center;">Информация по причинам ПРС на скважине за <b>скользящий год</b></h6>
+			                      <gno-wells-repairs></gno-wells-repairs>
+                        	</div>
+				                  
+                          <div class="col-6">
+                            <h6 style="text-align: center;">Информация по Выполненным КРС на скважине</h6>
+				                     <div class="table-fix no-gutter">
+                              <perfect-scrollbar>
+                                <table class="gno-table-with-header pgno" style="height: inherit;">
+                                  <thead>
+                                    <tr height="10" style="height: 10pt;">
+                                      <td>
+                                        Дата начала работ
+                                      </td>
+                                      <td>
+                                        Дата окончания
+                                      </td>
+                                      <td>
+                                        Вид ремонтных работ
+                                      </td>
+                            
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr style="font-weight: bold;">
+                                      <td>05.05.2019</td>
+                                      <td>07.05.2019</td>
+                                      <td>Изоляция</td>
+                                    </tr>
+                                    <tr>
+                                      <td>05.06.2019</td>
+                                      <td>05.07.2019</td>
+                                      <td>ГРП</td>
+                                    </tr>
+                                    <tr style="font-weight: bold;">
+                                      <td>05.05.2019</td>
+                                      <td>07.05.2019</td>
+                                      <td>ПР к ГРП</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </perfect-scrollbar>
+                            </div>
+                          </div>
+			                  
+                        </div>
+		                  </div>
+	                  </div>
+                  </div>
+                  
                 </div>
               </modal>
 
@@ -2529,7 +2586,7 @@ export default {
       grp_skin: false,
       newData: null,
       strokeLenDev: null,
-      spmDev: null,
+      spmDev: '1/мин',
       expAnalysisData:{
         NNO1:null,
         NNO2:null,
@@ -2565,7 +2622,10 @@ export default {
       khOkr: null,
       skinOkr: null,
       presOkr: null,
-
+      stanokKachalka: null,
+      freq: 'Число качаний',
+      dNasosa: 'Диаметр насоса',
+      hideStrokeLength: false,
     };
 
   },
@@ -2592,7 +2652,8 @@ export default {
       } else {
         return 'Кривая притока'
       }
-    }
+    },
+    
   },
   created() {
     window.addEventListener("resize", () => {
@@ -2681,7 +2742,24 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
-        this.spmDev = data["Well Data"]["spm"][0]
+        if (this.expMeth == 'ШГН') {
+          this.dNasosa = 'Диаметр насоса'
+          this.freq = 'Число качаний'
+          this.spmDev = data["Well Data"]["spm"][0] + ' 1/мин'
+        } else {
+          this.dNasosa = 'Номинальная подача'
+          this.freq = 'Частота'
+          this.spmDev = data["Well Data"]["freq"][0] + ' Гц'
+        }
+        if (this.expMeth == 'УЭЦН') {
+        this.hideStrokeLength = true
+        } else
+
+        if(this.sk == "0") {
+          this.sk = 'Нет данных';
+        } else {
+          console.log('doshlo')
+        }
 
 
         this.stopDate = this.stopDate.substring(0, 10)

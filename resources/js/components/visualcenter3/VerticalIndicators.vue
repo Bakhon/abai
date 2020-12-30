@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="vertical-indicators-block">
         <wide-indicator
             v-bind:leftNumbers="[{title: 'план', value: udIncomePlan}, {title: 'факт', value: udIncomeFact}]"
             v-bind:rightNumbers="[{title: 'план', value: udIncomeBblPlan}, {title: 'факт', value: udIncomeBblFact}]"

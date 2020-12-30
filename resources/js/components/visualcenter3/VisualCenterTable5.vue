@@ -71,7 +71,7 @@
                     </button>
                 </div>
             </div>
-            <div class="first-string">
+            <div class="first-string vc-5-tables-block">
                 <div v-if="macroData.length > 0">
                     <h5 class="text-center mr-2"><strong>Макропоказатели</strong></h5>
                     <div class="ml-0 ml-sm-3 mr-0 mr-sm-3 pb-3">
@@ -182,16 +182,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-center p-3" v-else>
-                    <div class="box">
-                        <div class="cat">
-                            <div class="cat__body"></div>
-                            <div class="cat__body"></div>
-                            <div class="cat__tail"></div>
-                            <div class="cat__head"></div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="flex-grow-1" v-if="dateStart">
@@ -201,6 +191,7 @@
                 v-bind:dzo="dzoSelect"
             ></vertical-indicators>
         </div>
+        <cat-loader />
     </div>
 </template>
 <script src="./VisualCenterTable5.js"></script>
