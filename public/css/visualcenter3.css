@@ -518,8 +518,13 @@ td.size-td {
     background: #656A8A;
     /* margin-top: 15px; */
     /* margin-bottom: -20px; */
-    border-radius: 10px;
-    padding: 1px 12px;
+    border-radius: 5px;
+    padding: 3px 12px;
+    cursor: pointer;
+}
+
+.close2:hover {
+    opacity: 0.7;
 }
 
 /*
@@ -784,6 +789,157 @@ a.dropdown-link-vc3 {
 
 .all-height {
     height: 100%;
+}
+
+.vc-select-table {
+    user-select: none;
+    cursor: pointer;
+}
+
+.vc-period-item {
+    cursor: pointer;
+    padding: 5px 10px;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    margin: 5px;
+    background: transparent;
+    color: white;
+    font-weight: bold;
+}
+
+.vc-period-item.active {
+    background: #1d58e5;
+}
+
+.vc-period-item.active:hover {
+    background: transparent;
+    border: 2px solid #1d58e5;
+}
+
+.vc-period-item:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.vc-period-item:disabled:hover {
+    opacity: 0.6;
+}
+
+.vc-period-item:hover {
+    border: 2px solid #1d58e5
+}
+
+.vc-period-container {
+    display: flex;
+    padding-right: 40px;
+}
+
+.vc-oil-usd-wrapper {
+    padding-top: 15px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.vc-chart-block-header {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 0 20px 0;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.vc-chart-wrapper {
+    background: #292f5d;
+    padding: 15px;
+    width: fit-content;
+}
+
+.vc-chart-block-subheader {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.vc-chart-content-wrapper {
+    height: calc(100% - 62px);
+}
+
+.vc-chart-table-wrapper {
+    position: relative;
+    height: calc(100% - 50px);
+    max-height: calc(100% - 50px);
+}
+
+.vc-chart-table-wrapper .ps {
+    height: 100%;
+}
+
+.vc-charts-table {
+    font-size: 16px;
+    width: 100%;
+    height: initial;
+}
+
+.vc-charts-table tbody tr:nth-child(odd) td {
+    background: #575e7e;
+    font-weight: bold;
+}
+
+.vc-charts-table tbody tr:nth-child(odd) td:first-child {
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.vc-charts-table tbody tr:nth-child(odd) td:last-child {
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.vc-charts-table td, .vc-charts-table th {
+    padding: 15px;
+}
+
+.vc-charts-table thead th {
+    position: sticky;
+    top: 0;
+    background: #272953;
+}
+
+.vc-down-arrow, .vc-up-arrow {
+    float: right;
+}
+
+.vc-down-arrow i {
+    color: #c00010;
+}
+
+.vc-up-arrow i {
+    color: #33b148;
+}
+
+.big-area.usd-chart {
+    max-height: 712px;
+}
+
+.apexcharts-tooltip.apexcharts-theme-light {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.vc-chart-tooltip {
+    background: #303b74;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+}
+
+.vc-chart-tooltip-value {
+    font-weight: bold;
+    font-size: 26px;
 }
 
 .font-weight{
