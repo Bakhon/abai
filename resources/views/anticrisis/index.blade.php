@@ -267,8 +267,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-6">
-                                    <div id="small_chart"></div>
+                                <div class="col-6 text-center">
+                                    <div style="display: inline-block" id="small_chart"></div>
                                 </div>
                             </div>
                         </div>
