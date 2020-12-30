@@ -11,7 +11,11 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format((oil_factDay/1000).toFixed(0)) }}
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          (oil_factDay / 1000).toFixed(0)
+                        )
+                      }}
                     </div>
                     <div class="unit-vc">тыс. тонн</div>
                   </div>
@@ -71,7 +75,9 @@
                   <div class="nu">
                     <div class="number">
                       {{
-                        new Intl.NumberFormat("ru-RU").format((oil_dlv_factDay/1000).toFixed(0))
+                        new Intl.NumberFormat("ru-RU").format(
+                          (oil_dlv_factDay / 1000).toFixed(0)
+                        )
                       }}
                     </div>
                     <div class="unit-vc">тыс. тонн</div>
@@ -136,7 +142,11 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{ new Intl.NumberFormat("ru-RU").format((gas_factDay/1000).toFixed(0)) }}
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          (gas_factDay / 1000).toFixed(0)
+                        )
+                      }}
                     </div>
                     <div class="unit-vc">
                       <!--млрд.-->
@@ -242,7 +252,7 @@
           <!--<table class="table table2">
               <tr>-->
           <div class="row px-4 mt-3">
-            <div class="col dropdown3">
+            <div class="col dropdown3 font-weight">
               <input type="checkbox" id="menu" />
 
               <div
@@ -278,7 +288,7 @@
                 </li>
               </ul>
             </div>
-            <div class="col dropdown3">
+            <div class="col dropdown3 font-weight">
               <div
                 class="button1"
                 :style="`${buttonHover2}`"
@@ -307,7 +317,19 @@
                   </div>
                 </li>
                 <li class="center-li row px-4" @click="changeMenu('103')">
-                  <a class="col-10">Товарный остаток нефти</a>
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'tovarnyi_ostatok_nefti_prev_day',
+                        'tovarnyi_ostatok_nefti_today',
+                        `${oilChartHeadName}`,
+                        'тн',
+                        'Товарный остаток нефти'
+                      )
+                    "
+                    >Товарный остаток нефти</a
+                  >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton3}`">
                       ✓
@@ -336,7 +358,7 @@
                     </li>-->
               </ul>
             </div>
-            <div class="col dropdown3">
+            <div class="col dropdown3 font-weight">
               <div
                 class="button1"
                 :style="`${buttonHover3}`"
@@ -355,25 +377,133 @@
                 <div class="txt6">тыс м³</div>
               </div>
               <ul>
-                <li class="center-li">
-                  <a href> Сдача природного газа</a>
+                <li class="center-li row px-4" @click="changeMenu('104')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'sdacha_gaza_prirod_plan',
+                        'sdacha_gaza_prirod_fact',
+                        'Динамика сдачи природного газа',
+                        'тыс м³',
+                        'Сдача природного газа'
+                      )
+                    "
+                    >Сдача природного газа</a
+                  >
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton4}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
-                <li class="center-li">
-                  <a href>Расход природного газа на собственные нужды </a>
+
+                <li class="center-li row px-4" @click="changeMenu('105')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'raskhod_prirod_plan',
+                        'raskhod_prirod_fact',
+                        'Динамика расхода природного газа',
+                        'тыс м³',
+                        'Расход природного газа на собственные нужды'
+                      )
+                    "
+                    >Расход природного газа на собственные нужды
+                  </a>
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton5}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
-                <li class="center-li">
-                  <a href>Переработка природного газа</a>
+                <li class="center-li row px-4" @click="changeMenu('106')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'pererabotka_gaza_prirod_plan',
+                        'pererabotka_gaza_prirod_fact',
+                        'Динамика переработки природного газа',
+                        'тыс м³',
+                        'Переработка природного газа'
+                      )
+                    "
+                    >Переработка природного газа</a
+                  >
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton6}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
-                <li class="center-li"><a href>Сдача попутного газа </a></li>
-                <li class="center-li">
-                  <a href>Расход попутного газа на собственные нужды </a>
+
+                <li class="center-li row px-4" @click="changeMenu('108')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'sdacha_gaza_poput_plan',
+                        'sdacha_gaza_poput_fact',
+                        'Динамика сдачи попутного газа',
+                        'тн',
+                        'Сдача попутного газа'
+                      )
+                    "
+                    >Сдача попутного газа</a
+                  >
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton8}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
-                <li class="center-li">
-                  <a href> Переработка попутного газа </a>
+
+                <li class="center-li row px-4" @click="changeMenu('103')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'raskhod_poput_plan',
+                        'raskhod_poput_fact',
+                        'Динамика расхода попутного газа на собственные нужды',
+                        'тыс м³',
+                        'Расход попутного газа на собственные нужды '
+                      )
+                    "
+                    >Расход попутного газа на собственные нужды
+                  </a>
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton3}`">
+                      ✓
+                    </div>
+                  </div>
+                </li>
+
+                <li class="center-li row px-4" @click="changeMenu('107')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'pererabotka_gaza_poput_plan',
+                        'pererabotka_gaza_poput_fact',
+                        'Динамика переработки попутного газа',
+                        'тыс м³',
+                        'Переработка попутного газа'
+                      )
+                    "
+                    >Переработка попутного газа</a
+                  >
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton7}`">
+                      ✓
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>
-            <div class="col dropdown3">
+            <div class="col dropdown3 font-weight">
               <div
                 class="button1"
                 :style="`${buttonHover5}`"
@@ -392,12 +522,17 @@
                 <div class="txt6">тыс. тонн</div>
               </div>
               <ul>
-                <li class="center-li">
-                  <a href>С учётом доли участия КМГ</a>
+             <li class="center-li row px-4" @click="changeMenu('113')">
+                  <a class="col-10">С учётом доли участия КМГ</a>
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton13}`">
+                      &#10003;
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>
-            <div class="col dropdown3">
+            <div class="col dropdown3 font-weight">
               <div
                 class="button1"
                 :style="`${buttonHover6}`"
@@ -416,9 +551,68 @@
                 <div class="txt6">тыс. м³</div>
               </div>
               <ul>
-                <li class="center-li"><a href> Закачка морской воды</a></li>
-                <li class="center-li"><a href>Закачка сточной воды</a></li>
-                <li class="center-li"><a href>Закачка альбсен. воды</a></li>
+                <li class="center-li row px-4" @click="changeMenu('109')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'ppd_zakachka_morskoi_vody_plan',
+                        'ppd_zakachka_morskoi_vody_fact',
+                        'Динамика закачки морской воды',
+                        'тыс. м³',
+                        'Закачка морской воды'
+                      )
+                    "
+                    >Закачка морской воды</a
+                  >
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton9}`">
+                      ✓
+                    </div>
+                  </div>
+                </li>
+
+                <li class="center-li row px-4" @click="changeMenu('110')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'ppd_zakachka_stochnoi_vody_plan',
+                        'ppd_zakachka_stochnoi_vody_fact',
+                        'Динамика закачки сточной воды',
+                        'тыс. м³',
+                        'Закачка сточной воды'
+                      )
+                    "
+                    >Закачка сточной воды</a
+                  >
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton10}`">
+                      ✓
+                    </div>
+                  </div>
+                </li>
+
+                <li class="center-li row px-4" @click="changeMenu('111')">
+                  <a
+                    class="col-10"
+                    @click="
+                      getProduction(
+                        'ppd_zakachka_albsen_vody_plan',
+                        'ppd_zakachka_albsen_vody_fact',
+                        'Динамика закачки альбсен. воды',
+                        'тыс. м³',
+                        'Закачка альбсен. воды'
+                      )
+                    "
+                    >Закачка альбсен. воды</a
+                  >
+                  <div class="col-2">
+                    <div class="square-small2" :style="`${changeMenuButton11}`">
+                      ✓
+                    </div>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -476,9 +670,8 @@
                           is-range
                           class="m-auto"
                           :model-config="modelConfig"
-                            @dayclick="dayClicked"
+                          @dayclick="dayClicked"
                           @input="changeDate"
-
                         />
                       </div>
                     </div>
@@ -696,13 +889,13 @@
                       class="d-flex flex-row"
                       @click="saveCompany(item.dzoMonth)"
                       :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
-                      style="cursor: pointer;"
+                      style="cursor: pointer"
                     >
                       <div class="first-td">
                         {{ getNameDzoFull(item.dzoMonth) }}
                       </div>
                       <div class="mt-2 ml-1">
-                        <img class="w-75" src="/img/icons/link.svg">
+                        <img class="w-75" src="/img/icons/link.svg" />
                       </div>
                     </td>
 
@@ -983,7 +1176,7 @@
                             class="m-auto"
                             :model-config="modelConfig"
                             @input="changeDate"
-                              @dayclick="dayClicked"
+                            @dayclick="dayClicked"
                           />
                         </div>
                       </div>
@@ -1004,35 +1197,34 @@
                     "
                     class="form-control w-100"
                     id="companySelect"
-                    @change="onChange($event)"
+                    @change="innerWellsNagMetOnChange($event)"
                   >
-                    <option value="">
+                    <!--<option value="">
                       <div class="float">Компания</div>
-                    </option>
-                    <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
-                    <option value="КБМ">АО «Каражанбасмунай»</option>
-                    <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-                    <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+                    </option>-->
+                    <option value="all" v-if="company!='all'"> {{ getNameDzoFull(company) }}</option>
+                     <option v-else>Все компании</option>
+                   <!-- <option value="all"></option>-->
+                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
                     <option value="ММГ">АО «Мангистаумунайгаз»</option>
+                    <option value="КГМ">ТОО «КазГерМунай»</option>
+                    <option value="КОА">ТОО "Казахойл Актобе</option>
+                    <option value="КГМ">ТОО "Казгермунай"</option>
+                    <option value="КБМ">АО «Каражанбасмунай»</option>
+                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
                   </select>
                 </div>
 
                 <div class="w-50 pl-2 pr-1">
-                  <select
-                    style="
-                      background-color: #333975;
-                      border-color: #20274e;
-                      color: white;
-                    "
-                    class="form-control w-100"
-                    id="companySelect"
-                    @change="onChange($event)"
-                  >
-                    <option value="work">
-                      <div class="float">В работе</div>
-                    </option>
-                    <option value="notWork">В простое</option>
-                  </select>
+                  <div class="col">
+                    <div
+                      class="button2"
+                      :style="`${buttonHoverNagInnerWells}`"
+                      @click="buttonInnerWellsNag()"
+                    >
+                      В простое
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1040,7 +1232,7 @@
             <div class="row container-fluid">
               <div class="col-6">
                 <table class="table4">
-                  <tr v-for="(item, index) in prod_wells_workAll">
+                  <tr v-for="(item, index) in innerWells">
                     <!-- @click="saveCompany('all')"-->
                     <td
                       :class="
@@ -1080,20 +1272,172 @@
         </div>
       </div>
 
-      <!--
-      <div class="third-table" :style="`${Table4}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="big-area container-fluid">Фонд добывающих скважин</div>
-        </div>
-      </div>-->
 
       <div class="third-table big-area" :style="`${Table4}`">
+        <div class="first-string first-string2">
+          <div class="container-fluid">
+            <div class="area-6-name row mt-3 mb-3 px-2">
+              <div class="col">
+                <div class="ml-4 bold">Фонд добывающих скважин</div>
+              </div>
+              <div class="col px-4">
+                <div class="close2" @click="changeTable('1')">Закрыть</div>
+              </div>
+            </div>
+
+            <div class="row px-4">
+              <div class="w-25 pr-2">
+                <div
+                  class="button2"
+                  :style="`${buttonHover7}`"
+                  @click="changeMenu2(1)"
+                >
+                  Суточная
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                  class="button2"
+                  :style="`${buttonHover8}`"
+                  @click="changeMenu2(2)"
+                >
+                  С начала месяца
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                  class="button2"
+                  :style="`${buttonHover9}`"
+                  @click="changeMenu2(3)"
+                >
+                  С начала года
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div class="dropdown3">
+                  <div
+                    class="button2"
+                    :style="`${buttonHover10}`"
+                    @click="changeMenu2(4)"
+                  >
+                    Календарь
+                  </div>
+                  <ul class="center-menu2 right-indent">
+                    <li class="center-li">
+                      <br /><br />
+
+                      <div class="month-day">
+                        <div class="calendar-day">
+                          <date-picker
+                            v-if="selectedDMY == 0"
+                            mode="range"
+                            v-model="range"
+                            is-range
+                            class="m-auto"
+                            :model-config="modelConfig"
+                            @input="changeDate"
+                            @dayclick="dayClicked"
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="">
+              <div class="row px-4">
+                <div class="w-50 pr-2">
+                  <select
+                    style="
+                      background-color: #333975;
+                      border-color: #20274e;
+                      color: white;
+                    "
+                    class="form-control w-100"
+                    id="companySelect"
+                    @change="innerWellsProdMetOnChange($event)"
+                  >
+                    <!--<option value="">
+                      <div class="float">Компания</div>
+                    </option>-->
+                    <option value="all" v-if="company!='all'"> {{ getNameDzoFull(company) }}</option>
+                     <option v-else>Все компании</option>
+                   <!-- <option value="all"></option>-->
+                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
+                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
+                    <option value="КГМ">ТОО «КазГерМунай»</option>
+                    <option value="КОА">ТОО "Казахойл Актобе</option>
+                    <option value="КГМ">ТОО "Казгермунай"</option>
+                    <option value="КБМ">АО «Каражанбасмунай»</option>
+                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                  </select>
+                </div>
+
+                <div class="w-50 pl-2 pr-1">
+                  <div class="col">
+                    <div
+                      class="button2"
+                      :style="`${buttonHoverProdInnerWells}`"
+                      @click="buttonInnerWellsProd()"
+                    >
+                      В простое
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row container-fluid">
+              <div class="col-6">
+                <table class="table4">
+                  <tr v-for="(item, index) in innerWells2">
+                    <!-- @click="saveCompany('all')"-->
+                    <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
+                      "
+                    >
+                      <div class="first-td">
+                        {{ item.name }}
+                      </div>
+                      <!--{{ getNameDzoFull(item.name) }}-->
+                    </td>
+                    <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
+                      "
+                    >
+                      <div class="font">
+                        {{ item.value }}
+                      </div>
+                    </td>
+
+                    <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
+                      "
+                    >
+                      <div class="font"></div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-6 px-2">
+                <visual-center3-wells></visual-center3-wells>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--<div class="third-table big-area" :style="`${Table4}`">
         <div class="first-string first-string2">
           <div class="close2" @click="changeTable('1')">Закрыть</div>
           <div class="container-fluid">Фонд добывающих скважин</div>
         </div>
-      </div>
+      </div>-->
 
       <div class="third-table big-area" :style="`${Table6}`">
         <div class="first-string first-string2">
@@ -1347,14 +1691,10 @@
           <table class="table">
             <tr>
               <td class="size-td">
-                <div class="number">2</div>
+                <div class="number">0</div>
               </td>
 
               <td class="w-65">
-                <!--  <div class="column-1">
-                  <div class="arrow"></div>
-                  <div class="txt2">1</div>
-                </div>-->
                 <div class="column-1">
                   <div class="in-idle">Прирост</div>
                   <div class="in-idle">с начала месяца</div>

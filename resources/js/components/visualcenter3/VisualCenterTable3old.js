@@ -9,12 +9,10 @@ export default {
     DatePicker
   },
   data: function () {
-    return {
-      innerWellsButtonProstoi: 0,
-      innerWellsButtonProstoi2: 0,
+    return { 
       nameChartLeft: 'Добыча нефти',
-      oilChartHeadName: 'Динамика добычи нефти',     
-      innerWells: [
+      oilChartHeadName: 'Динамика добычи нефти',
+      prod_wells_workAll: [
         { name: "ЭФ", value: 603, value2: 101 },
         { name: "ДФ", value: 98, value2: 56 },
         { name: "В работе добывающие скважины", value: 45, value2: 31 },
@@ -23,7 +21,6 @@ export default {
         { name: "ОФЛС", value: 98, value2: 36 },
         { name: "Простой добывающих скважин", value: 86, value2: 54 }
       ],
-      innerWells2:'',
       prod_wells_work: 0,
       prod_wells_idle: 0,
       inj_wells_idle: 0,
@@ -77,14 +74,6 @@ export default {
       changeMenuButton3: "",
       changeMenuButton4: "",
       changeMenuButton5: "",
-      changeMenuButton6: "",
-      changeMenuButton7: "",
-      changeMenuButton8: "",
-      changeMenuButton9: "",
-      changeMenuButton10: "",
-      changeMenuButton11: "",
-      changeMenuButton12: "",
-      changeMenuButton13: "",
       Table1: "display:block;",
       Table2: "display:none;",
       Table3: "display:none;",
@@ -132,8 +121,6 @@ export default {
       buttonHover11: "color: #fff;",//this.changeMenuButton,
       buttonHover12: "",//this.changeMenuButton,
       buttonHover13: "",
-      buttonHoverNagInnerWells: "",
-      buttonHoverProdInnerWells: "",
 
       tableHover7: "",
       tableHover8: "",
@@ -252,10 +239,13 @@ export default {
     };
   },
   methods: {
-    saveCompany(com) {  
+    saveCompany(com) {
+      // console.log(com);
       this.company = com;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
-     },
+      // this.getProductionOilandGas();
+      // this.getProductionOilandGasPercent();
+    },
     changeTable(change) {
       this.Table1 = "display:none";
       this.Table2 = "display:none";
@@ -300,21 +290,11 @@ export default {
 
     changeMenu(change) {
       var changeMenuButton = this.changeMenuButton;
-      this.changeMenuButton1 = '';
-      this.changeMenuButton2 = '';
-      this.changeMenuButton3 = '';
-      this.changeMenuButton4 = '';
-      this.changeMenuButton5 = '';
-      this.changeMenuButton6 = '';
-      this.changeMenuButton7 = '';
-      this.changeMenuButton8 = '';
-      this.changeMenuButton9 = '';
-      this.changeMenuButton10 = '';
-      this.changeMenuButton11 = '';
-      this.changeMenuButton12 = '';
-      this.changeMenuButton13 = '';
-
-
+      this.changeMenuButton1 = "color: ##237deb";
+      this.changeMenuButton2 = "color: ##237deb";
+      this.changeMenuButton3 = "color: ##237deb";
+      this.changeMenuButton4 = "color: ##237deb";
+      this.changeMenuButton5 = "color: ##237deb";
 
 
       if (change == "101") {
@@ -336,46 +316,12 @@ export default {
       if (change == "105") {
         this.changeMenuButton5 = changeMenuButton;
       }
-
-
-      if (change == "106") {
-        this.changeMenuButton6= changeMenuButton;
-      }
-
-      if (change == "107") {
-        this.changeMenuButton7 = changeMenuButton;
-      }
-
-      if (change == "108") {
-        this.changeMenuButton8 = changeMenuButton;
-      }
-
-      if (change == "109") {
-        this.changeMenuButton9 = changeMenuButton;
-      }
-
-      if (change == "110") {
-        this.changeMenuButton10 = changeMenuButton;
-      }
-
-      if (change == "111") {
-        this.changeMenuButton11 = changeMenuButton;
-      }
-
-      if (change == "112") {
-        this.changeMenuButton12 = changeMenuButton;
-      }
-
-      if (change == "113") {
-        this.changeMenuButton13 = changeMenuButton;
-      }
-
     },
 
-    dayClicked() {
+    dayClicked(){
 
-  
-      this.changeMenu2('4');
+      console.log('test');
+this.changeMenu2('4');
     },
 
 
@@ -976,8 +922,8 @@ export default {
       // });
     },
 
-    getProduction(item, item2, item3, item4, item5) {
-      this.$store.commit('globalloading/SET_LOADING', true);
+    getProduction(item, item2, item3, item4, item5) {  
+      this.$store.commit('globalloading/SET_LOADING',true);
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
 
@@ -1055,10 +1001,10 @@ export default {
 
 
 
+        
 
 
-
-
+          
 
 
 
@@ -1092,8 +1038,56 @@ export default {
             );
 
 
-            this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi); 
-            this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);   
+
+
+    //Summ plan and fact from dzo nagnetatWells k1q for month!!!
+    var productionPlanAndFactMonthWells = _(dataWithMay)
+    .groupBy("data")
+    .map((__time, id) => ({
+      __time: id,
+      fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
+      fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
+      fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
+      fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
+      fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
+      fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
+      fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
+      fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
+    }))
+    .value();
+
+ // console.log(productionPlanAndFactMonthWells);
+
+
+  var productionPlanAndFactMonthWellsName = [];
+
+  productionPlanAndFactMonthWellsName.push(
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
+    { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
+
+  );
+
+
+  this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
             var productionForChart = _(dataWithMay)
@@ -1117,8 +1111,8 @@ export default {
 
 
             //console.log(productionForChart);
-            if (this.company != "all") {
-              this.$store.commit('globalloading/SET_LOADING', false);
+            if (this.company != "all") {             
+              this.$store.commit('globalloading/SET_LOADING',false);
               this.$emit("data", productionForChart); //k1q new
             }
 
@@ -1154,11 +1148,10 @@ export default {
             }
 
             if (this.buttonHover13 != '') {
-              /*  dzoMonth.push({ dzoMonth: NameDzoFull[5] }, { dzoMonth: NameDzoFull[11] }, { dzoMonth: NameDzoFull[12] }, { dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] });
-                factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
-                planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-                productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
-            */
+              dzoMonth.push({ dzoMonth: NameDzoFull[5] }, { dzoMonth: NameDzoFull[11] }, { dzoMonth: NameDzoFull[12] }, { dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] });
+              factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+              planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+              productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
             }
 
 
@@ -1208,8 +1201,8 @@ export default {
 
         //bigtable
         //year
-        if (this.company == "all") {
-          this.$store.commit('globalloading/SET_LOADING', false);
+        if (this.company == "all") {         
+          this.$store.commit('globalloading/SET_LOADING',false);
           var dataDay = [];
           var dataYear = [];
           var dzo = [];
@@ -1257,7 +1250,7 @@ export default {
             ["asc"]
           );
 
-
+          
 
           //Summ plan and fact from dzo k1q for month!!!
           var productionPlanAndFactMonth = _(dataWithMay)
@@ -1274,11 +1267,57 @@ export default {
             productionPlanAndFactMonth,
             ["dzo"],
             ["desc"]
-          );  
-  
+          );
 
-          this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);     
-          this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);      
+
+          /*
+          var dzoTest = [];
+          dataWithMay.forEach(function(singleCell) {
+            dzoTest.push({fond_nagnetat_prs: singleCell.fond_nagnetat_prs, dzo: singleCell.dzo});
+          });
+          console.log(dzoTest);
+          */
+
+
+          //Summ plan and fact from dzo nagnetatWells k1q for month!!!
+          var productionPlanAndFactMonthWells = _(dataWithMay)
+            .groupBy("data")
+            .map((__time, id) => ({
+              __time: id,
+              fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
+              fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
+              fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
+              fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
+              fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
+              fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
+              fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
+              fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
+            }))
+            .value();
+
+         // console.log(productionPlanAndFactMonthWells);
+
+
+          var productionPlanAndFactMonthWellsName = [];
+
+          productionPlanAndFactMonthWellsName.push(
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
+            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
+
+          );
+
+
+          this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
+
+
+            console.log(dataWithMay);
+
 
           var productionForChart = _(dataWithMay)
             .groupBy("__time")
@@ -1380,8 +1419,38 @@ export default {
             inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
             prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
             prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });
+            /*starts_krs.push({ starts_krs: item.starts_krs });
+            starts_prs.push({ starts_prs: item.starts_prs });
+            starts_drl.push({ starts_drl: item.starts_drl });*/
           });
-       
+
+
+
+
+          /* var starts_krs = _.reduce(
+             starts_krs,
+             function (memo, item) {
+               return memo + item.starts_krs;
+             },
+             0
+           );
+ 
+           var starts_prs = _.reduce(
+             starts_prs,
+             function (memo, item) {
+               return memo + item.starts_prs;
+             },
+             0
+           );
+ 
+           var starts_drl = _.reduce(
+             starts_drl,
+             function (memo, item) {
+               return memo + item.starts_drl;
+             },
+             0
+           );*/
+
 
           if (inj_wells_idle) {
             inj_wells_idle = _.reduce(
@@ -1432,7 +1501,16 @@ export default {
           var factMonth = [];
           var planMonth = [];
 
-   //delete after paste data for dzo
+          /*  if (this.buttonHover11 != '') {
+              dzoMonth.push(
+                { dzoMonth: "ЭМГ" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" }
+                //{ dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] }
+              );
+              factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
+              planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
+              productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+            }*/
+
           if (this.buttonHover12 != '') {
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
@@ -1603,7 +1681,48 @@ export default {
           this.bigTable = bigTable;
 
 
-      
+
+          /* var wells = [];
+           wells = _.zipWith(
+             [{ inj_wells_idle: inj_wells_idle }],
+             [{ inj_wells_work: inj_wells_work }],
+             (inj_wells_idle, inj_wells_work) =>
+               _.defaults(inj_wells_idle, inj_wells_work)
+           );
+ 
+           this.wells = wells;
+ 
+           var wells2 = _.zipWith(
+             //[{ prod_wells_work: prod_wells_work }],
+             [{ prod_wells_idle: prod_wells_idle }],
+ 
+             (
+               //prod_wells_work,
+                prod_wells_idle) =>
+               _.defaults(
+                 //prod_wells_work,
+                  prod_wells_idle)
+           );
+ 
+           this.wells2 = wells2;
+ 
+           var starts = _.zipWith(
+             [{ starts_krs: starts_krs }],
+             [{ starts_prs: starts_prs }],
+             [{ starts_drl: starts_drl }],
+ 
+             
+             (
+               //prod_wells_work,
+                prod_wells_idle) =>
+               _.defaults(
+                // prod_wells_work,
+                  prod_wells_idle)
+           );
+ 
+           this.starts = starts;*/
+          // console.log(productionForChart);
+          console.log(productionForChart);
 
           this.$emit("data", productionForChart);
 
@@ -1612,11 +1731,11 @@ export default {
         }
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
-
+    
       });
       this.showTable(localStorage.getItem("changeButton"));
 
-
+     
     },
 
 
@@ -1683,7 +1802,7 @@ export default {
             timestampToday
           ),
         ]);
-
+     
       });
 
 
@@ -1753,148 +1872,12 @@ export default {
       var nowDate = new Date(this.range.start).toLocaleDateString();
       this.timeSelect = nowDate;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
+      //this.getProductionOilandGas();
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
+      // this.getProductionOilandGasPercent();
+    
     },
-
-
-
-
-    buttonInnerWellsNag(){     
-      if (this.innerWellsButtonProstoi==1)
-      { this.buttonHoverNagInnerWells = this.buttonHover;  
-        this.innerWellsButtonProstoi=0;} 
-      else
-      { this.buttonHoverNagInnerWells = "";
-        this.innerWellsButtonProstoi=1;}      
-    this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
-  },    
-
-    innerWellsNagMet(arr,i){
-      var productionPlanAndFactMonthWells = _(arr)
-      .groupBy("data")
-      .map((__time, id) => ({
-        __time: id,
-        fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
-        fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
-        fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
-        fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
-        fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
-        fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
-        fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
-        fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
-        fond_nagnetat_osvoenie: _.round(_.sumBy(__time, 'fond_nagnetat_osvoenie'), 0),
-        fond_nagnetat_konv: _.round(_.sumBy(__time, 'fond_nagnetat_konv'), 0),
-        fond_nagnetat_well_survey: _.round(_.sumBy(__time, 'fond_nagnetat_well_survey'), 0),
-        fond_nagnetat_others: _.round(_.sumBy(__time, 'fond_nagnetat_others'), 0),
-
-
-   
-      }))
-      .value();
-    //  console.log(productionPlanAndFactMonthWells);
-
-      var productionPlanAndFactMonthWellsName = [];
-
-      if (i!=1) {
-      productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },  
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name: 'Освоение' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 'Консервация' },
-        );
-      };
-
-      if (i==1) {
-        productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_well_survey'], name: 'Исследование скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_others'], name: 'Прочие' },
-          );};
-
-      return productionPlanAndFactMonthWellsName;
-
-    },
-
-    innerWellsNagMetOnChange($event){
-      this.company = $event.target.value;
-      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
-    },
-
-
-    buttonInnerWellsProd(){     
-      if (this.innerWellsButtonProstoi==1)
-      { this.buttonHoverProdInnerWells = this.buttonHover;  
-        this.innerWellsButtonProstoi2=0;} 
-      else
-      { this.buttonHoverProdInnerWells = "";
-        this.innerWellsButtonProstoi2=1;}      
-    this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
-  },    
-
-    innerWellsProdMet(arr,i){
-      var productionPlanAndFactMonthWells = _(arr)
-      .groupBy("data")
-      .map((__time, id) => ({
-        __time: id,
-        fond_neftedob_ef: _.round(_.sumBy(__time, 'fond_neftedob_ef'), 0),
-        fond_neftedob_df: _.round(_.sumBy(__time, 'fond_neftedob_df'), 0),
-        fond_neftedob_bd: _.round(_.sumBy(__time, 'fond_neftedob_bd'), 0),
-        fond_neftedob_osvoenie: _.round(_.sumBy(__time, 'fond_neftedob_osvoenie'), 0),
-        fond_neftedob_ofls: _.round(_.sumBy(__time, 'fond_neftedob_ofls'), 0),
-        fond_neftedob_prs: _.round(_.sumBy(__time, 'fond_neftedob_prs'), 0),
-        fond_neftedob_oprs: _.round(_.sumBy(__time, 'fond_neftedob_oprs'), 0),
-        fond_neftedob_krs: _.round(_.sumBy(__time, 'fond_neftedob_krs'), 0),
-        fond_neftedob_okrs: _.round(_.sumBy(__time, 'fond_neftedob_okrs'), 0),
-        fond_neftedob_well_survey: _.round(_.sumBy(__time, 'fond_neftedob_well_survey'), 0),
-        fond_neftedob_nrs: _.round(_.sumBy(__time, 'fond_neftedob_nrs'), 0),       
-        fond_neftedob_others: _.round(_.sumBy(__time, 'fond_neftedob_others'), 0),   
-      }))
-      .value();
-      console.log(productionPlanAndFactMonthWells);
-
-      var productionPlanAndFactMonthWellsName = [];
-
-      if (i!=1) {
-      productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ef'], name: 'Эксплуатационный фонд' },  
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name: 'Действующий фонд' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name: 'Бездействующий фонд скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_osvoenie'], name: 'Освоение' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ofls'], name: 'Ожидание физической ликвидации скважин' },
-       // { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 'Консервация' },
-        );
-      };
-
-      if (i==1) {
-        productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_prs'], name: 'Подземный ремонт скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_oprs'], name: 'Ожидание подземного ремонта скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_krs'], name: 'Капитальный ремонт скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_okrs'], name: 'Ожидание капитального ремонта скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_well_survey'], name: 'Исследование скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_nrs'], name: 'Нерентабельные скважины' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_others'], name: 'Прочие' },
-          );};
-
-      return productionPlanAndFactMonthWellsName;
-
-    },
-
-    innerWellsProdMetOnChange($event){
-      this.company = $event.target.value;
-      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
-    },
-
-
-
-
-
 
     getNameDzoFull: function (dzo) {
       var NameDzoFull = this.NameDzoFull;
@@ -1940,9 +1923,8 @@ export default {
   created() {
 
     if (window.location.host === 'dashboard') {
-  
-   // this.Table5 = "display:block";
-   // this.Table1 = "display:none";
+     // this.Table1 = "display:none";
+     // this.Table5 = "display:block";
     }
 
   },
@@ -1954,9 +1936,11 @@ export default {
     if (window.location.host === 'dashboard') {
 
 
-      this.range = {     
-        start: "2020-06-01T06:00:00+06:00",
-        end: "2020-06-01T09:00:00+06:00",
+      this.range = {
+        //start: "2020-04-01T06:00:00+06:00",
+       // end: "2020-04-01T09:00:00+06:00",
+         start: "2020-12-17T06:00:00+06:00",
+         end: "2020-12-18T09:00:00+06:00",
         formatInput: true,
       };
     } else {
@@ -1981,9 +1965,9 @@ export default {
     this.getCurrencyNow(this.timeSelect);
     this.getOilNow(this.timeSelect, this.period);
     this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-    this.changeAssets('b13');
+    this.changeAssets('b11');
     // this.getProductionOilandGasPercent();
-
+ 
   },
   computed: {
   },
