@@ -94,6 +94,7 @@ Vue.component('dynamics-indicators', require('./components/reports/DynamicsIndic
 Vue.component('well-fund', require('./components/reports/WellFund.vue').default);
 Vue.component('well-fund-block', require('./components/reports/WellFundBlock.vue').default);
 Vue.component('well-fund-field', require('./components/reports/WellFundField.vue').default);
+Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
