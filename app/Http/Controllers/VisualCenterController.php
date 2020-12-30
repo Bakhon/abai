@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DZO\DZOcalc;
+use App\Models\UsdRate;
 use Illuminate\Http\Request;
 
 class VisualCenterController extends Controller
@@ -53,6 +54,17 @@ class VisualCenterController extends Controller
         $maxDate = DZOcalc::query()->max('date');
         $tmpDate = \DateTime::createFromFormat('Y-m-d H:i:s', $maxDate);
         return $tmpDate->format('m');
+    }
+
+//INSERT INTO dashboard.usd_rate (id, value, date, `change`, `index`, created_at, updated_at) VALUES
+
+    public function getUsdRates()
+    {
+        $data = UsdRate::query()
+            ->get()
+            ->toArray();
+
+        return response()->json($data);
     }
 
     public function getCurrency(Request $request)

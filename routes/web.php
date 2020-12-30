@@ -31,6 +31,7 @@ Route::group(
                 Route::get("/geteconimicdata", "EconomicController@getEconomicData");
                 Route::get("/getcurrency", "VisualCenterController@getCurrency");
                 Route::get("/getcurrencyperiod", "VisualCenterController@getCurrencyPeriod");
+                Route::get("/get-usd-rates", "VisualCenterController@getUsdRates");
                 Route::post("/corrosion", "DruidController@corrosion");
                 Route::get(
                     '/',

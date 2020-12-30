@@ -93,7 +93,9 @@ export default {
     'currencyChartData',
     'usdChartIsLoading',
   ],
-  mounted() {},
+  mounted() {
+    this.getData();
+  },
   computed: {
     activeTitle() {
       let active = this.periodSelectFunc.find((item) => {
@@ -104,6 +106,15 @@ export default {
     }
   },
   methods: {
+    getData() {
+      let url = this.localeUrl("/get-usd-rates");
+
+      this.axios.get(url).then((response) => {
+        console.log('response.data');
+        console.log(response.data);
+        console.log('============================');
+      });
+    },
     changeTable() {
       this.$emit('change-table');
     },
