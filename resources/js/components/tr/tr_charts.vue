@@ -162,7 +162,7 @@
           <div class="mx-2">Фильтр</div>
         </div>
         <div class="filters row" v-if="showFilters">
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <select
               class="form-control"
               v-model="chartFilter_field"
@@ -173,14 +173,14 @@
               </option>
             </select>
           </div>
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <select class="form-control" v-model="chartFilter_horizon">
               <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
                 {{ f === undefined ? "Все горизонты" : f }}
               </option>
             </select>
           </div>
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <select
               v-if="exp_methFilters"
               class="form-control"
@@ -1623,13 +1623,14 @@ a:hover {
   align-items: center;
   width: calc(100% - 155px);
   position: absolute;
-  height: 55px;
+  min-height: 55px;
   top: 10px;
-  padding-right: 10px;
+  padding: 0 10px 10px 0;
+  z-index: 1000;
 }
 .filters__item {
   flex: auto;
-  margin-left: 10px;
+  margin: 10px 0 0 10px;
 }
 .tr-chart .row {
   margin-left: 0;
