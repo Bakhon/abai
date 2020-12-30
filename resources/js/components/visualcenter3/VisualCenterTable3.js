@@ -111,12 +111,12 @@ export default {
       currencyNow: "",
       currencyChartData: "",
       currencyNowUsd: "",
-      selectedUsdPeriod: 4,
+      selectedUsdPeriod: 0,
       selectedDMY: 0,
       periodSelectOil: "",
       oilPeriod: "",
-      period: 7,
-      periodUSD: 7,
+      period: 0,
+      // periodUSD: 7,
       timeSelect: "",
       oilNow: "",
       oilChart: "",
@@ -482,7 +482,7 @@ export default {
 
     },
 
-    periodSelect(period) {
+    periodSelect() {
       if (this.period === 0) {
         return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(7, 'days'), 'days') + 1;
       }
@@ -490,13 +490,13 @@ export default {
         return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'months'), 'days') + 1;
       }
       if (this.period === 2) {
-        return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(6, 'months'), 'days') + 1;
+        return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(3, 'months'), 'days') + 1;
       }
       if (this.period === 3) {
         return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'years'), 'days') + 1;
       }
       if (this.period === 4) {
-        return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(5, 'years'), 'days') + 1;
+        return null;
       }
 
       // console.log(this.timeSelect);
@@ -542,6 +542,7 @@ export default {
           response.data.forEach((item) => {
             usdRatesData.for_table.push({
               date_string: self.$moment(item.date).format('DD.MM.YYYY'),
+              timestamp: new Date(item.date).getTime(),
               value: parseInt(item.value * 10) / 10,
               change: Math.abs(parseFloat(item.change)),
               index: item.index || null
@@ -2123,7 +2124,7 @@ console.log(dataWithMay)
   computed: {
     //currency and oil down
     periodSelectFunc() {
-      let DMY = ["Неделя", "Месяц", "Квартал", "год", "Всё"];
+      let DMY = ["Неделя", "Месяц", "Квартал", "Год", "Всё"];
       let DMY_titles = [
         "За последние 7 дней",
         "За последний месяц",
@@ -2147,18 +2148,19 @@ console.log(dataWithMay)
         a.DMY_title = DMY_titles[i];
         menuDMY.push(a);
 
-        if (this.selectedOilPeriod === i) {
-          a.active_oil = true;
-          this.DMY = menuDMY[i]["DMY"];
-        }
-
-        if (this.selectedUsdPeriod === i) {
-          a.active_usd = true;
+        if (this.period === i) {
+          a.active = true;
           this.DMY = menuDMY[i]["DMY"];
         }
       }
 
       return menuDMY;
+    },
+    periodUSD() {
+      return this.periodSelect();
+    },
+    usdRatesDataTableForCurrentPeriod() {
+      return this.usdRatesData.for_table.slice(this.periodUSD * -1);
     },
     otmDataForChart() {
       let series = []
@@ -2185,6 +2187,4 @@ console.log(dataWithMay)
       }
     }
   },
-
-
 };

@@ -1058,6 +1058,7 @@
           </div>
         </div>
       </div>
+
         <visual-center-usd-table
             :style="`${Table2}`"
             :selected-usd-period.sync="selectedOilPeriod"
@@ -1073,11 +1074,11 @@
 
       <visual-center-usd-table
           :style="`${Table3}`"
-          :selected-usd-period.sync="selectedUsdPeriod"
+          :period.sync="period"
           :usd-rates-data.sync="usdRatesData"
-          @period-select-usd="periodUSD = periodSelect(selectedUsdPeriod)"
           :period-select-func.sync="periodSelectFunc"
           :currency-chart-data.sync="currencyChartData"
+          :table-data.sync="usdRatesDataTableForCurrentPeriod"
           :usd-chart-is-loading.sync="usdChartIsLoading"
           @change-table="changeTable('1')"
           :main-title="'Динамика курса доллара США к тенге (USD, НБ РК)'"
@@ -1215,11 +1216,11 @@
                                 </span>
                             </td>
                             <td
-                                class="w-25"
+                                class="w-25 tdNumber"
                                 :class="index % 2 === 0 ? 'tdStyle' : ''"
                                 style="cursor: pointer"
                             >
-                                {{ item.value }}
+                                {{ item.value }} <span>скважин</span>
                             </td>
                         </tr>
                         </tbody>
@@ -1365,11 +1366,11 @@
                                 </span>
                             </td>
                             <td
-                                class="w-25"
+                                class="w-25 tdNumber"
                                 :class="index % 2 === 0 ? 'tdStyle' : ''"
                                 style="cursor: pointer"
                             >
-                                {{ item.value }}
+                                {{ item.value }} <span>скважин</span>
                             </td>
                         </tr>
                         </tbody>
@@ -2013,6 +2014,14 @@
             line-height: 4.2rem !important;
             font-size: 1.2rem !important;
             font-family: Bold !important;
+        }
+        .tdNumber {
+            font-size: 1.6rem;
+            text-align: right;
+            span {
+                font-size: 0.8rem;
+                font-weight: normal;
+            }
         }
     }
     .vis-chart{
