@@ -95,13 +95,13 @@
           <div
             class="dropdown-menu fadropmenu"
             aria-labelledby="dropdownMenuLink"
-            style="background: #5973cc"
+            style="background: #40467e"
           >
-            <label for="inputDate">Введите опорную дату:</label>
+            <label for="inputDate" style="margin-left: 8px;">Введите опорную дату:</label>
             <input type="date" class="form-control" v-model="date1" />
-            <label for="inputDate">Введите дату для сравнения:</label>
+            <label for="inputDate" style="margin-left: 8px;">Введите дату для сравнения:</label>
             <input type="date" class="form-control" v-model="date2" />
-            <a href="#" class="btn btn-primary" @click.prevent="chooseDt"
+            <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
               >Сформировать</a
             >
           </div>
@@ -756,7 +756,7 @@ body {
 }
 .trfabtgraph {
   width: 195px;
-  background: #5973cc !important;
+  background: #40467e !important;
 }
 a:hover {
   color: #ffffff;
@@ -768,12 +768,22 @@ a:hover {
   color: white !important;
 }
 .fadropmenu.fadropmenu {
-  background: #656a8a;
+  background: #40467e;
   color: #ffffff;
   width: 246px;
 }
 .background_dropdown {
   color: #ffffff;
-  background: #5973cc;
+  background: #40467e;
+}
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+  /* display: flex;  */
+  /* justify-content: center */
 }
 </style>
