@@ -1016,7 +1016,7 @@ export default {
           var summForTables = [];
 
 
-          if (company === 'ПКИ') {
+         /* if (company === 'ПКИ') {
             summForTables.push({ dzo: NameDzoFull[9], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
             this.productionFactPercentOneDzo = 0;
@@ -1045,9 +1045,9 @@ export default {
             summForTables.push({ dzo: NameDzoFull[11], productionFactForMonth: 1, productionPlanForMonth: 1 });
             this.tables = summForTables;
             this.productionFactPercentOneDzo = 0;
-          }
+          }*/
 
-          else if (company != "all") {
+          if (company != "all") {
             var arrdata = new Array();
             arrdata = _.filter(data, _.iteratee({ dzo: company }));
 
@@ -1147,10 +1147,10 @@ export default {
               data = _.reject(data, _.iteratee({ dzo: "КОА" }));
 
 
-              dzoMonth.push({ dzoMonth: NameDzoFull[5] }, { dzoMonth: NameDzoFull[11] }, { dzoMonth: NameDzoFull[12] });
+              /*dzoMonth.push({ dzoMonth: NameDzoFull[5] }, { dzoMonth: NameDzoFull[11] }, { dzoMonth: NameDzoFull[12] });
               factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
               planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-              productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+              productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });*/
             }
 
             if (this.buttonHover13 != '') {
@@ -1458,10 +1458,11 @@ export default {
           }
 
           if (this.buttonHover13 != '') {
-            dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" });
+           /* dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" });
             factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
             planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
             productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
+         */
           }
 
 

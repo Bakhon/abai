@@ -216,7 +216,7 @@
                 </div>
                 <br />
                 <div class="txt1">Цена на нефть (Brent)</div>
-                <br />
+            
                 <div class="percent-currency">
                   <div class="arrow"></div>
                   <div class="txt2">5,2%</div>
