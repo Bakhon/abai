@@ -156,6 +156,8 @@ Route::group(
                 Route::get('organizations', 'OrganizationsController@index')->name('organizations');
 
                 Route::get('profile', 'UserController@profile')->name('profile');
+
+                Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
             }
         );
         Auth::routes(

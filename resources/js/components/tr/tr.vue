@@ -15,7 +15,7 @@
         <a
           href="fa"
           class="col but-nav__link but trheadhight"
-          style="min-width:330px; line-height: 31px;"
+          style="min-width: 330px; line-height: 31px"
           ><i style="margin-right: 10px"
             ><svg
               width="24"
@@ -35,7 +35,7 @@
                     <label for="inputDate">Введите дату:</label>
                     <input type="date" value = "01.06.2020" class="form-control" v-model="dt">
             </form> -->
-        <div class="col dropdown" style="padding: 0 13px;">
+        <div class="col dropdown" style="padding: 0 13px">
           <button
             class="col-md-12 but-nav__link but faheadhight"
             type="button"
@@ -63,7 +63,13 @@
 
           <div
             class="dropdown-menu fadropmenu"
-            style="background: #40467E; height: 117px;  flex-direction: column; width: calc(100% - 26px); margin-top: 4px;"
+            style="
+              background: #40467e;
+              height: 117px;
+              flex-direction: column;
+              width: calc(100% - 26px);
+              margin-top: 4px;
+            "
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -72,8 +78,8 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #40467E;
-                  border-color: #40467E;
+                  background-color: #40467e;
+                  border-color: #40467e;
                   color: white;
                   width: 100%;
                   padding: 8px;
@@ -82,7 +88,6 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option disabled>Выберите месяц</option>
                 <option value="1">январь</option>
                 <option value="2">февраль</option>
                 <option value="3">март</option>
@@ -106,7 +111,7 @@
                   color: white;
                   width: 100%;
                   padding: 8px;
-                  border: 1px solid #40467E; !important;
+                  border: none
                   height: 35px !important;
                   color: white !important;
                 "
@@ -114,7 +119,6 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-                <option disabled value="">Выберите год</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -176,7 +180,7 @@
             </div> -->
         <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
         <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <a
+        <!-- <a
           @click="editable()"
           v-if="!edit"
           class="col but-nav__link but trheadhight"
@@ -196,14 +200,14 @@
             </svg>
           </i>
           Редактировать</a
-        >
-        <a
+        > -->
+        <!-- <a
           @click="savetable()"
           v-if="edit"
           style="margin-right: 15px; line-height: 31px;"
           class="col but-nav__link but trheadhight"
           >Сохранить</a
-        >
+        > -->
 
         <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a> -->
 
@@ -242,10 +246,8 @@
           <fade-loader :loading="isloading"></fade-loader>
         </div> -->
         <div class="techbt1 tr-table-header">
-          <div class="tech" style="margin-left: 14px;; color: white">
-            <h5 >
-              Технологический режим на {{ dt }}
-            </h5>
+          <div class="tech" style="margin-left: 14px; color: white">
+            <h5>Технологический режим на {{ dt }}</h5>
           </div>
           <select
             name="Company"
@@ -262,22 +264,94 @@
             <option value="Аксай">Аксай</option>
             <option value="Аксай Южный">Аксай Южный</option>
           </select>
-
-          <div
-            @click="cancelEdit"
+          <a v-show="false" v-if="edit"></a>
+          <a
             v-if="edit"
-            class="col but-nav__link but mx-2 butcancel"
-          >
-            Отмена
-          </div>
+            title="Сохранить"
+            style="margin-left: 13px"
+            @click="savetable()"
+            ><svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M15.4735 5C15.7387 5 15.9931 5.10536 16.1806 5.29289L18.9985 8.11077L18.9985 17.9985C18.9985 18.5508 18.5508 18.9985 17.9985 18.9985L6 18.9985C5.44772 18.9985 5 18.5508 5 17.9985L5 6C5 5.44772 5.44771 5 6 5L15.4735 5Z"
+                stroke="white"
+                stroke-width="1.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <rect
+                x="8.109"
+                y="12.778"
+                width="7.77693"
+                height="6.22155"
+                stroke="white"
+                stroke-width="1.2"
+                stroke-linejoin="round"
+              />
+              <rect
+                x="8.88917"
+                y="5"
+                width="6.22155"
+                height="3.88847"
+                stroke="white"
+                stroke-width="1.2"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+
+          <!-- <a
+          @click="savetable()"
+          v-if="edit"
+          style="margin-right: 15px; line-height: 31px;"
+          class="col but-nav__link but trheadhight"
+          >Сохранить</a
+        > -->
+
+          <a
+            v-if="edit"
+            class="trgraph"
+            title="Отмена"
+            data-toggle="tooltip"
+            data-placement="top"
+            @click="cancelEdit"
+            ><svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.6574 17.6575L6.34367 6.34383"
+                stroke="white"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+              <path
+                d="M17.6563 6.34383L6.34262 17.6575"
+                stroke="white"
+                stroke-width="1.4"
+                stroke-linecap="round"
+              />
+            </svg>
+          </a>
+
           <a
             v-if="!edit"
-            class="but-nav__link but trgraph"
+            class="trgraph"
             title="Показать графики"
             data-toggle="tooltip"
             data-placement="top"
             href="tr_charts"
-            @click="pushBign('chart')"
+           
             ><svg
               width="24"
               height="24"
@@ -294,14 +368,35 @@
             </svg>
           </a>
 
+          <a
+            v-if="!edit"
+            title="Редактировать"
+            data-toggle="tooltip"
+            data-placement="top"
+            @click="editable()"
+            ><svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 11.5L1.55336 16.3221C1.53048 16.3984 1.6016 16.4695 1.67788 16.4466L6.5 15M3 11.5C3 11.5 11.0603 3.43942 12.7227 1.7772C12.8789 1.62104 13.1257 1.62572 13.2819 1.78189C13.8372 2.33714 15.1144 3.61434 16.2171 4.71709C16.3733 4.87334 16.3788 5.12115 16.2226 5.27738C14.5597 6.94002 6.5 15 6.5 15M3 11.5L3.64727 10.8527L7.14727 14.3527L6.5 15"
+                stroke="white"
+                stroke-width="1.4"
+              />
+            </svg>
+          </a>
+
           <button
             v-if="!edit"
+            class="trgraph"
             id="bt1"
             @click="swap"
             style="
               background: #272953;
               color: white;
-              margin-right: 11px;
 
               border: none;
             "
@@ -310,9 +405,9 @@
             data-placement="top"
           >
             <svg
-              width="19"
-              height="19"
-              viewBox="0 0 19 19"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="isfulltable"
@@ -332,10 +427,9 @@
             </svg>
 
             <svg
-              width="19"
-              
-              height="19"
-              viewBox="0 0 19 19"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               v-if="!isfulltable"
@@ -357,14 +451,11 @@
             <table
               v-if="show_second"
               class="table table-bordered table-dark table-responsive trtable"
-              style="
-                margin-bottom: 0;
-                background: #0d1e63;
-              "
+              style="margin-bottom: 0; background: #0d1e63"
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
-                  <td rowspan="4" class="th" >№</td>
+                  <td rowspan="4" class="th">№</td>
                   <td rowspan="4" class="th">НГДУ/месторождение</td>
                   <td rowspan="4" class="th">№ скв</td>
                   <td rowspan="4" class="th">Тип скважины</td>
@@ -443,11 +534,9 @@
                   <td rowspan="4" class="th">Назначение по проекту</td>
                   <td rowspan="4" class="th">Р заб замерное</td>
                   <td rowspan="4" class="th">Нефтенасыщенная толщина</td>
-                  <td rowspan="4" class="th">Накопленная добыча нефти</td>
+                  <td rowspan="4" class="th">Накопленная Q н</td>
                   <td rowspan="4" class="th">
-                    <span
-                      >Максимальный дебит жидкости за всю историю работы</span
-                    >
+                    <span>Максимальный Q ж за всю историю работы</span>
                   </td>
                   <td rowspan="4" class="th">Расстояние до нагн скважины</td>
                   <td rowspan="4" class="th">Расстояние до ВНК</td>
@@ -464,7 +553,7 @@
                   </td>
                   <td rowspan="4" class="th"><span>Мероприятия</span></td>
                   <td rowspan="4" class="th">
-                    <span>Сведения о тех.состоянии экс.колонны</span>
+                    <span>Сведения о тех.состоянии э/к</span>
                   </td>
                   <td rowspan="4" class="th"><span>Комментарии</span></td>
                   <td rowspan="4" class="th">
@@ -480,7 +569,7 @@
                   <td rowspan="3" class="th"><span>Q ж</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
                   <td rowspan="3" class="th"><span>Hдин</span></td>
-                  <td rowspan="3" class="th"><span>Kпр</span></td>
+                  <td rowspan="3" class="th"><span>Kпрод</span></td>
                   <td rowspan="3" class="th"><span>P заб</span></td>
                   <td rowspan="3" class="th"><span>Q н</span></td>
                   <td rowspan="3" class="th"><span>Q ж</span></td>
@@ -567,13 +656,16 @@
                     <span>Первое предупреждение</span>
                   </td>
                   <td rowspan="2" class="th"><span>Проводить</span></td>
-                  <td rowspan="2" class="th"><span>Дебит жидкости</span></td>
+                  <td rowspan="2" class="th"><span>Q ж</span></td>
                   <td rowspan="2" class="th"><span>Обводненность</span></td>
                   <td rowspan="2" class="th"><span>Q н</span></td>
                   <td rowspan="2" class="th"><span>Q ж</span></td>
                 </tr>
                 <tr></tr>
-                <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
+                <tr
+                  class="subHeaderColumn"
+                  style="background: #333975; cursor: pointer"
+                >
                   <td @click="sortBy('gu')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
@@ -917,10 +1009,10 @@
                   <td @click="sortBy('plan_comment')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('EMPTY')" class="th">
+                  <td @click="sortBy('last_gtm_date')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <td @click="sortBy('EMPTY')" class="th">
+                  <td @click="sortBy('last_gtm_type')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
 
@@ -5860,11 +5952,11 @@
                   <td v-if="!edit">{{ row.plan_comment }}</td>
                   <td v-if="edit">{{ row.plan_comment }}</td>
 
-                  <td v-if="!edit">{{ row.EMPTY }}</td>
-                  <td v-if="edit">{{ row.EMPTY }}</td>
+                  <td v-if="!edit">{{ row.last_gtm_date }}</td>
+                  <td v-if="edit">{{ row.last_gtm_date }}</td>
 
-                  <td v-if="!edit">{{ row.EMPTY }}</td>
-                  <td v-if="edit">{{ row.EMPTY }}</td>
+                  <td v-if="!edit">{{ row.last_gtm_type }}</td>
+                  <td v-if="edit">{{ row.last_gtm_type }}</td>
 
                   <td
                     v-if="!edit"
@@ -6860,7 +6952,7 @@ export default {
       this.searchString = search;
     },
     searchWell() {
-      console.log('search = ', this.searchString)
+      console.log("search = ", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "");
       this.sortParam = "";
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -7008,7 +7100,7 @@ tr:nth-child(even) {
 }
 
 .trgraph {
-  margin-top: 4px;
+  margin: 0 10px;
   background: #272953;
 }
 
@@ -7067,7 +7159,7 @@ tr td:first-child {
 .table-inner {
   overflow-y: visible;
 }
-tr:not(.notsticky) td:nth-child(-n+3) {
+tr:not(.notsticky) td:nth-child(-n + 3) {
   position: sticky;
   left: -1px;
   width: 27px;
@@ -7089,12 +7181,12 @@ tr:nth-child(even) td {
   background-color: #26336f;
 }
 
-.table.table tr:not(.notsticky) .th:nth-child(-n+3) {
+.table.table tr:not(.notsticky) .th:nth-child(-n + 3) {
   z-index: 3010;
 }
 
 .input_edit {
-  background: #7879A6;
+  background: #7879a6;
 }
 
 /* width */
@@ -7109,16 +7201,15 @@ table::-webkit-scrollbar-track {
 
 /* Handle */
 table::-webkit-scrollbar-thumb {
-  background: #272953;
+  background: #656a8a;
 }
 
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
   background: #272953;
-
 }
 
-table::-webkit-scrollbar-corner  {
+table::-webkit-scrollbar-corner {
   background: #333975;
 }
 </style>
@@ -7151,6 +7242,7 @@ table::-webkit-scrollbar-corner  {
   color: #fff;
   align-self: center;
   width: 150px;
+  margin-top: 5px;
   /* display: flex;  */
   /* justify-content: center */
 }
