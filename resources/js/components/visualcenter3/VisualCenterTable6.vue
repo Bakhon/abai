@@ -35,17 +35,20 @@
                         v-bind:title="'Заключение/реализация контрактов на недропользование'"
                         v-bind:mainValue="t1"
                         v-bind:units="'кол-во проектов'"
+                        v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'Привлечение стратегических партнеров'"
                         v-bind:mainValue="t2"
                         v-bind:units="'кол-во проектов'"
+                        v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'ESG рейтинг'"
                         v-bind:mainValue="t3"
                         v-bind:units="'%'"
                         v-bind:isLastBlock="true"
+                        v-bind:planWeight="'10'"
                     ></vc-speedometer-block>
                 </div>
                 <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
@@ -57,11 +60,13 @@
                         v-bind:toolTipAim="'Октябрь'"
                         v-bind:toolTipVizov="'Сентябрь'"
                         v-bind:units="'дата'"
+                        v-bind:planWeight="'25'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'Мероприятия по реструктуризации активов'"
                         v-bind:mainValue="t5"
                         v-bind:units="'%'"
+                        v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'Мероприятия по передаче КазТрансГаз в Самрук-Казына'"
@@ -72,6 +77,7 @@
                         v-bind:mainValue="t6"
                         v-bind:units="'дата'"
                         v-bind:isLastBlock="true"
+                        v-bind:planWeight="'5'"
                     ></vc-speedometer-block>
                 </div>
             </div>
