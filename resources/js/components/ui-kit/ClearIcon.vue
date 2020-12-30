@@ -42,6 +42,7 @@ export default {
 .clear-button {
   display: flex;
   align-items: center;
+  align-self: flex-end;
   width: 35px;
   cursor: pointer;
   justify-content: center;
