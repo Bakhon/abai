@@ -35,17 +35,6 @@
             >Технологический режим</a
           >
         </div>
-        <!-- <div class="row justify-content-between">
-                <form class="form-group but-nav__link">
-                        <label for="inputDate">Введите дату:</label>
-                        <input type="date" class="form-control" v-model="date1">
-                </form>
-                <form class="form-group but-nav__link">
-                        <label for="inputDate">Выбор даты 2:</label>
-                        <input type="date" class="form-control" v-model="date2">
-                </form>
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
-        </div> -->
       </div>
       <div class="row sec_nav trfacolmdrowsecnav" style=" display: flex;justify-content: center;">
         <div class="dropdown show">
@@ -111,13 +100,6 @@
         </div>
       </div>
       <div class="sec_nav">
-
-
-        
-
-
-
-
 
 
         <!-- <h4 style="color: white">{{ chartNames[chartShow] }}</h4> -->

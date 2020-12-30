@@ -195,13 +195,13 @@
           </i>
           Редактировать</a
         > -->
-        <a
+        <!-- <a
           @click="savetable()"
           v-if="edit"
           style="margin-right: 15px; line-height: 31px;"
           class="col but-nav__link but trheadhight"
           >Сохранить</a
-        >
+        > -->
 
         <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a> -->
 
@@ -248,6 +248,7 @@
           <select
             name="Company"
             class="form-control tr-field-filter"
+            
             id="companySelect"
             v-model="filter"
             @change="chooseField"
@@ -261,15 +262,37 @@
             <option value="Аксай Южный">Аксай Южный</option>
           </select>
 
-          <div
-            @click="cancelEdit"
+
+          <a
             v-if="edit"
-            class="col but-nav__link but mx-2 butcancel"
-          >
-            Отмена
-          </div>
+            title="Сохранить"
+            style="margin-left: 13px;"
+            data-toggle="tooltip"
+            data-placement="top"
+            @click="savetable()"
+            ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.4735 5C15.7387 5 15.9931 5.10536 16.1806 5.29289L18.9985 8.11077L18.9985 17.9985C18.9985 18.5508 18.5508 18.9985 17.9985 18.9985L6 18.9985C5.44772 18.9985 5 18.5508 5 17.9985L5 6C5 5.44772 5.44771 5 6 5L15.4735 5Z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="8.109" y="12.778" width="7.77693" height="6.22155" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
+<rect x="8.88917" y="5" width="6.22155" height="3.88847" stroke="white" stroke-width="1.2" stroke-linejoin="round"/>
+</svg>
+
+          </a>
+
+          <a
+            v-if="edit"
+            class="trgraph"
+            title="Отмена"
+            data-toggle="tooltip"
+            data-placement="top"
+            @click="cancelEdit"
+            ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.6574 17.6575L6.34367 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M17.6563 6.34383L6.34262 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
 
 
+
+          </a>
 
           <a
             v-if="!edit"
@@ -7122,7 +7145,7 @@ table::-webkit-scrollbar-track {
 
 /* Handle */
 table::-webkit-scrollbar-thumb {
-  background: #272953;
+  background: #656A8A;
 }
 
 /* Handle on hover */

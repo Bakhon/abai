@@ -571,7 +571,7 @@ position: static;
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #272953;
+  background: #656A8A;
 }
 
 /* Handle on hover */
