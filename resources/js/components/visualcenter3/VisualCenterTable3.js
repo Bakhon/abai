@@ -223,7 +223,11 @@ export default {
         "«Норт Каспиан Оперейтинг Компани н.в.»",
         "(конденсат)(100%)",
         "в т.ч.:газовый конденсат",
-        'АО "Тургай-Петролеум" (50%*33)',
+        'АО "Тургай-Петролеум"',
+        'Урихтау Оперейтинг',
+        'АО ПетроКазахстан Кумколь Ресорсиз', 
+        'АО ПетроКазахстан Инк'       
+        
       ],
       date: new Date(),
       selectedDay: undefined,
@@ -1435,13 +1439,19 @@ export default {
    //delete after paste data for dzo
 
    if (this.buttonHover11 != '') {
-    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШ" }));
+    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШО" }));
     productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "НКО" }));
     productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КПО" }));
+    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТП" }));
+    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКК" }));
+    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКИ" }));
 
-    data = _.reject(data, _.iteratee({ dzo: "ТШ" }));
+    data = _.reject(data, _.iteratee({ dzo: "ТШО" }));
     data = _.reject(data, _.iteratee({ dzo: "НКО" }));
     data = _.reject(data, _.iteratee({ dzo: "КПО" }));
+    data = _.reject(data, _.iteratee({ dzo: "ТП" }));
+    data = _.reject(data, _.iteratee({ dzo: "ПКК" }));
+    data = _.reject(data, _.iteratee({ dzo: "ПКИ" }));
 
    }
 
@@ -1945,6 +1955,20 @@ export default {
       else if (String(dzo) === "КПО") {
         name = NameDzoFull[11];
       }
+      else if (String(dzo) === "УО") {
+        name = NameDzoFull[16];
+      }
+      else if (String(dzo) === "ТШО") {
+        name = NameDzoFull[5];
+      }
+      else if (String(dzo) === "ПКК") {
+        name = NameDzoFull[17];
+      }
+      else if (String(dzo) === "АГ") {
+        name = NameDzoFull[10];
+      }
+
+    
       else { name = dzo }
       return name;
     },
