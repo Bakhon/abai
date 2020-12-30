@@ -1201,43 +1201,33 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="col-6">
-                <table class="table4">
-                  <tr v-for="(item, index) in innerWells">
-                    <!-- @click="saveCompany('all')"-->
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="first-td">
-                        {{ item.name }}
-                      </div>
-                      <!--{{ getNameDzoFull(item.name) }}-->
-                    </td>
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="font">
-                        {{ item.value }}
-                      </div>
-                    </td>
-
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="font"></div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div class="col-6 px-2">
-                <visual-center3-wells></visual-center3-wells>
-              </div>
+                <div class="vis-table vis-table-small px-3">
+                    <table v-if="innerWells.length" class="table4 w-100">
+                        <tbody>
+                        <tr v-for="(item, index) in innerWells">
+                            <td
+                                class="w-50"
+                                :class="index % 2 === 0 ? 'tdStyle' : ''"
+                                style="cursor: pointer"
+                            >
+                                <span>
+                                  {{ item.name }}
+                                </span>
+                            </td>
+                            <td
+                                class="w-25"
+                                :class="index % 2 === 0 ? 'tdStyle' : ''"
+                                style="cursor: pointer"
+                            >
+                                {{ item.value }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <visual-center3-wells></visual-center3-wells>
+                </div>
             </div>
           </div>
         </div>
@@ -1361,43 +1351,33 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="col-6">
-                <table class="table4">
-                  <tr v-for="(item, index) in innerWells2">
-                    <!-- @click="saveCompany('all')"-->
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="first-td">
-                        {{ item.name }}
-                      </div>
-                      <!--{{ getNameDzoFull(item.name) }}-->
-                    </td>
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="font">
-                        {{ item.value }}
-                      </div>
-                    </td>
-
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="font"></div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div class="col-6 px-2">
-                <visual-center3-wells></visual-center3-wells>
-              </div>
+                <div class="vis-table vis-table-small px-3">
+                    <table v-if="innerWells2.length" class="table4 w-100">
+                        <tbody>
+                        <tr v-for="(item, index) in innerWells2">
+                            <td
+                                class="w-50"
+                                :class="index % 2 === 0 ? 'tdStyle' : ''"
+                                style="cursor: pointer"
+                            >
+                                <span>
+                                  {{ item.name }}
+                                </span>
+                            </td>
+                            <td
+                                class="w-25"
+                                :class="index % 2 === 0 ? 'tdStyle' : ''"
+                                style="cursor: pointer"
+                            >
+                                {{ item.value }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <visual-center3-wells></visual-center3-wells>
+                </div>
             </div>
           </div>
         </div>
@@ -1897,6 +1877,14 @@
           }
         }
       }
+    }
+    .vis-table-small {
+        max-width: 48% !important;
+        tr {
+            line-height: 4.2rem !important;
+            font-size: 1.2rem !important;
+            font-family: Bold !important;
+        }
     }
     .vis-chart{
       flex: 0 0 44%;
