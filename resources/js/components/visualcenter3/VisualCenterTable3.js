@@ -1,4 +1,5 @@
 import { EventBus } from "../../event-bus.js";
+import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 Vue.component("calendar", Calendar);
@@ -393,10 +394,8 @@ export default {
         this.range = {
           start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
           //start: (this.date.setDate(this.date.getDate() - 1)),//.toISOString(),
-          end: new Date().toISOString(),//"F j, Y", time() - 60 * 60 * 24
+          end: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
 
-          //  start: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
-          // end: new Date(this.year + '-' + this.month + '-04T06:00:00+06:00').toISOString(),
           formatInput: true,
         };
 
@@ -410,7 +409,7 @@ export default {
         this.buttonHover8 = buttonHover;
         this.range = {
           start: new Date(this.year + '-' + this.month + '-01T06:00:00+06:00'),
-          end: new Date(),
+          end: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
           formatInput: true,
         };
 
@@ -424,7 +423,7 @@ export default {
         this.buttonHover9 = buttonHover;
         this.range = {
           start: new Date(this.year + '-' + '01' + '-01T06:00:00+06:00'),
-          end: new Date(),
+          end: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
           formatInput: true,
         };
 
@@ -780,7 +779,7 @@ export default {
             _.inRange(
               item.__time,
               timestampToday,
-              timestampEnd + 86400000
+              timestampEnd + 10// 86400000
             ),
           ]);
         });
@@ -1056,22 +1055,6 @@ export default {
             arrdata = _.filter(data, _.iteratee({ dzo: company }));
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             /*  this.wells = dataDay;
               this.wells2 = dataDay;*/
 
@@ -1084,7 +1067,7 @@ export default {
                   item.__time,
                   // 1588291200000, // May 2020
                   timestampToday,
-                  timestampEnd + 86400000 //* dayInMonth
+                  timestampEnd + 10//86400000 //* dayInMonth
                 ),
               ]);
             });
@@ -1249,7 +1232,7 @@ export default {
               _.inRange(
                 item.__time,
                 timestampToday,
-                timestampEnd + 86400000
+                timestampEnd + 10// 86400000
               ),
             ]);
           });
