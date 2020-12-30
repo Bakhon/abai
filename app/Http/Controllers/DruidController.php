@@ -231,18 +231,7 @@ return $response;
     {
         return view('production.map');
     }
-    public function getCurrency(Request $request)
-    {
-        $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $request->fdate;
-        $dataObj = simplexml_load_file($url);
-        if ($dataObj) {
-            foreach ($dataObj as $item) {
-                if ($item->title == 'USD') {
-                    return response()->json($item);
-                }
-            }
-        }
-    }
+
     public function mzdn()
     {
         return view('reports.mzdn');
@@ -264,39 +253,6 @@ return $response;
     public function dob()
     {
         return view('reports.dob');
-    }
-
-    function getCurrencyPeriod(Request $request)
-    {
-        $datesNow = $request->dates;
-        $period = $request->period;
-        $datesNowString = strtotime($datesNow);
-        $last = strtotime($datesNow . '-' . $period . 'day');
-        //$last = strtotime($datesNow . '- 1 month');
-        $countDay = ($datesNowString - $last) / 86400;
-        for (
-            $i = 1;
-            $i <= $countDay;
-            $i++
-        ) {
-            $last = $last + 86400;
-            $dates = date('d.m.Y', $last);
-            $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $dates;
-            $dataObj = simplexml_load_file($url);
-            if ($dataObj) {
-                foreach ($dataObj as $item) {
-                    if ($item->title == 'USD') {
-                        $description = $item->description;
-                        $array[$i] =  array(
-                            "dates" => $dates,
-                            "description" => $description,
-                        );
-                    }
-                }
-            }
-        }
-
-        return response()->json($array);
     }
 
     public function gno()
