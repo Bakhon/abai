@@ -239,7 +239,7 @@ export default {
 
       wells: [""],
       wells2: [""],
-      bigTable: [""],
+      bigTable: [],
       displayTable: "display:  none;",
       displayHeadTables: "display: block;",
       starts: [""],
@@ -647,9 +647,9 @@ export default {
     },
 
     getColor(status) {
-      if (status < "0") return "margin-top: 0.6em;border-top: 10px solid #b40300";
-      if (status == "0") return "    ";
-      return "margin-top: 0.2em; border-bottom: 10px solid #008a17";
+      if (status < "0") return "margin-top: 17px; border-top: 6px solid #e31e24";
+      if (status == "0") return "";
+      return "margin-top: 10px; border-bottom: 6px solid #009846";
     },
 
     getColor2(status) {
@@ -1543,12 +1543,12 @@ export default {
               'Урихтау Оперейтинг',
           ]
 
-          bigTable.sort((a, b) => {
-            console.log(tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : 0)
-            return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
-          })
+          bigTable
+              .sort((a, b) => {
+                return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
+              })
 
-          this.bigTable = bigTable
+          this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
 
 
           this.$emit("data", productionForChart);
