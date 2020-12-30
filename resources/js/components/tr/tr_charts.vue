@@ -159,7 +159,7 @@
           <div class="mx-2">Фильтр</div>
         </div>
         <div class="filters row" v-if="showFilters">
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <tr-multiselect
               :filter="chartFilter_field"
               :fieldFilterOptions="fieldFilters"
@@ -167,7 +167,7 @@
               filterName="месторождения"
             />
           </div>
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <tr-multiselect
               :filter="chartFilter_horizon"
               :fieldFilterOptions="horizonFilters"
@@ -176,7 +176,7 @@
               textFormsRow="horizons"
             />
           </div>
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <tr-multiselect
               :filter="chartFilter_exp_meth"
               :fieldFilterOptions="exp_methFilters"
@@ -186,7 +186,7 @@
               textFormsRow="expMethods"
             />
           </div>
-          <div class="filters__item" style="margin-left: 15px">
+          <div class="filters__item">
             <tr-multiselect
               :filter="chartFilter_object"
               :fieldFilterOptions="objectFilters"
