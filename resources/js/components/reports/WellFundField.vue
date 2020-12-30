@@ -74,7 +74,7 @@ export default {
         period: 'days',
         dzo: this.org,
         report_date_start: `${this.end_date}`.concat(' 00:00:00'),
-        report_date_end: `${this.end_date}`.concat(' 00:00:00')
+        report_date_end: `${this.end_date}`.concat(' 23:59:59')
       };
 
       let json_data = JSON.stringify(data);

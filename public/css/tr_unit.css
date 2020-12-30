@@ -4,7 +4,7 @@
 }
 
 #app .multiselect {
-    width: 300px;
+    /* width: 300px; */
     margin: 0 0 0 auto;
 }
 
@@ -14,6 +14,16 @@
     background: #272953;
     border: 1px solid #656a8a;
     color: #fff;
+}
+
+#app .multiselect, #app .multiselect__select, #app .multiselect__option {
+    height: 35px;
+    min-height: 35px;
+}
+
+#app .multiselect__tags {
+    min-height: 35px;
+    padding: 6px 40px 0 8px;
 }
 
 #app .multiselect__placeholder,

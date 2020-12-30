@@ -154,16 +154,17 @@
           <td class="colspan" colspan="6" style="background: #1a2370">
             ТР на {{ dt2 }}
           </td>
-          <td class="colspan" colspan="1" style="background: #e50303">
+          <td class="colspan" colspan="1" style="background: #12135C">
             Отклон. Qн
           </td>
-          <td class="colspan" colspan="1" style="background: #f08143">
+          <td class="colspan" colspan="1" style="background: #12135C">
             Технологические
           </td>
-          <td class="colspan" colspan="3" style="background: #4fb26a">
+          <td class="colspan" colspan="3" style="background: #12135C">
             Геологические
           </td>
-          <td rowspan="3" style="background: #272953; min-width:248px;">
+          <td rowspan="3" style="background: #12135C
+; min-width:248px;">
             <span>Основное отклонение в ТР</span>
           </td>
         </tr>
@@ -184,17 +185,17 @@
           <td rowspan="2" style="background: #1a2370"><span>Pзаб</span></td>
           <td rowspan="2" style="background: #1a2370"><span>Pпл</span></td>
           <td rowspan="2" style="background: #1a2370"><span>Кпрод</span></td>
-          <td rowspan="2" style="background: #e50303"><span>dQн</span></td>
-          <td rowspan="2" style="background: #f08143">
+          <td rowspan="2" style="background: #12135C"><span>dQн</span></td>
+          <td rowspan="2" style="background: #12135C">
             <span>Недостижение режимного Pзаб</span>
           </td>
-          <td rowspan="2" style="background: #4fb26a">
+          <td rowspan="2" style="background: #12135C">
             <span>Рост обводненности</span>
           </td>
-          <td rowspan="2" style="background: #4fb26a">
+          <td rowspan="2" style="background: #12135C">
             <span>Снижение Pпл</span>
           </td>
-          <td rowspan="2" style="background: #4fb26a">
+          <td rowspan="2" style="background: #12135C">
             <span>Снижение Kпрод</span>
           </td>
         </tr>
@@ -314,22 +315,22 @@
           <td @click="sortBy('pi_2')" style="background: #1a2370">
             <i class="fa fa-fw fa-sort"></i>т/сут/атм
           </td>
-          <td @click="sortBy('dqn')" style="background: #e50303">
+          <td @click="sortBy('dqn')" style="background: #12135C">
             <i class="fa fa-fw fa-sort"></i>т/сут
           </td>
-          <td @click="sortBy('Pbh')" style="background: #f08143">
+          <td @click="sortBy('Pbh')" style="background: #12135C">
             <i class="fa fa-fw fa-sort"></i>т/сут
           </td>
-          <td @click="sortBy('wct')" style="background: #4fb26a">
+          <td @click="sortBy('wct')" style="background: #12135C">
             <i class="fa fa-fw fa-sort"></i>т/сут
           </td>
-          <td @click="sortBy('p_res')" style="background: #4fb26a">
+          <td @click="sortBy('p_res')" style="background: #12135C">
             <i class="fa fa-fw fa-sort"></i>т/сут
           </td>
-          <td @click="sortBy('PI')" style="background: #4fb26a">
+          <td @click="sortBy('PI')" style="background: #12135C">
             <i class="fa fa-fw fa-sort"></i>т/сут
           </td>
-          <td @click="sortBy('Main_problem')" style="background: #272953; min-width:248px;">
+          <td @click="sortBy('Main_problem')" style="background: #12135C; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
         </tr>
@@ -857,7 +858,7 @@
           <!-- <td>{{Math.round(row.PI*10)/10}}</td> -->
           <!-- <td>{{row.Main_problem}}</td> -->
           <td
-            style="background: #272953; min-width:248px;"
+            style="background: #12135C; min-width:248px;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -1207,13 +1208,13 @@ export default {
       if (status < "0" && status === Math.min(status, ...values))
         return "#CD5C5C";
       else {
-        return "#272953";
+        return "#12135C";
       }
     },
     getColorone(status) {
       if (status < "0") return "#ac3939";
       else {
-        return "#272953";
+        return "#12135C";
       }
     },
     handlerSearch(search) {
@@ -1475,7 +1476,7 @@ table::-webkit-scrollbar-track {
 
 /* Handle */
 table::-webkit-scrollbar-thumb {
-  background: #272953;
+  background: #656A8A;
 }
 
 /* Handle on hover */

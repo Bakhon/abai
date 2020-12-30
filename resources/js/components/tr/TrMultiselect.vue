@@ -14,6 +14,7 @@
     noOptions="Нет доступных опций"
     group-values="fields"
     group-label="group"
+    :option-height="35"
     :preselect-first="true"
     :group-select="true"
     :limit="1"
@@ -105,9 +106,10 @@ export default {
     },
     getFieldFilterText() {
       if (!this.fieldFilterOptions[0] || !this.fieldFilterOptions[0].fields) return "Нет опций"
-      return this.fieldFilterOptions[0].fields.length === this.filter.length
-        ? `Выбраны все ${this.filterName} ${this.filterNameAdditional}`
-        : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length, this.textFormsRow)} ${this.filterNameAdditional}`;
+      // return this.fieldFilterOptions[0].fields.length === this.filter.length
+      //   ? `Выбраны все ${this.filterName} ${this.filterNameAdditional}`
+      //   : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length, this.textFormsRow)} ${this.filterNameAdditional}`;
+      return `Выбрано ${this.filter.length} ${declOfNum(this.filter.length, this.textFormsRow)} ${this.filterNameAdditional}`;
     },
   },
 };

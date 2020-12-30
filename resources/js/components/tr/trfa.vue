@@ -35,22 +35,8 @@
             >Технологический режим</a
           >
         </div>
-        <!-- <div class="row justify-content-between">
-                <form class="form-group but-nav__link">
-                        <label for="inputDate">Введите дату:</label>
-                        <input type="date" class="form-control" v-model="date1">
-                </form>
-                <form class="form-group but-nav__link">
-                        <label for="inputDate">Выбор даты 2:</label>
-                        <input type="date" class="form-control" v-model="date2">
-                </form>
-                <a href="#" class="but-nav__link but" @click.prevent="chooseDt">Сформировать</a>
-        </div> -->
       </div>
-      <div
-        class="row sec_nav trfacolmdrowsecnav"
-        style="display: flex; justify-content: center"
-      >
+      <div class="row sec_nav trfacolmdrowsecnav">
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -66,13 +52,19 @@
           <div
             class="dropdown-menu fadropmenu"
             aria-labelledby="dropdownMenuLink"
-            style="width: 576px; padding:0;"
+            style="width: 576px; padding: 0"
           >
-            <a class="dropdown-item background_dropdown" href="#" @click="chartShow = 'pie'"
+            <a
+              class="dropdown-item background_dropdown"
+              href="#"
+              @click="chartShow = 'pie'"
               >Распределение фонда скважин по основной причине снижения дебита
               нефти</a
             >
-            <a class="dropdown-item background_dropdown" href="#" @click="chartShow = 'bar'"
+            <a
+              class="dropdown-item background_dropdown"
+              href="#"
+              @click="chartShow = 'bar'"
               >Распределение суммарных отклонений TP по факторам, т/сут</a
             >
           </div>
@@ -112,26 +104,26 @@
             >
           </div>
         </div>
-      </div>
-      <div class="sec_nav">
-
-
-        
-
-
-
-
-
-
-        <!-- <h4 style="color: white">{{ chartNames[chartShow] }}</h4> -->
-        <div
-          class="filter_chart row"
-          style="display: flex; justify-content: center"
-        >
-          <div class="namefilter mb-2" style="color: white">
-            <h4>Фильтр по</h4>
-          </div>
-          <div class="filterplaceone" style="margin-left: 15px">
+        <div class="namefilter" @click="showFilters = !showFilters">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="filter">
+              <path
+                id="Combined Shape"
+                d="M10.1488 12.2398H10.8488C10.8488 12.0699 10.787 11.9057 10.6749 11.778L10.1488 12.2398ZM5.25043 6.65971L4.72436 7.1215H4.72436L5.25043 6.65971ZM18.7472 6.65971L18.2211 6.19791L18.7472 6.65971ZM13.7956 12.3004L13.2696 11.8386C13.1574 11.9663 13.0956 12.1304 13.0956 12.3004H13.7956ZM13.7956 16.3796L14.2041 16.948C14.3871 16.8165 14.4956 16.6049 14.4956 16.3796H13.7956ZM10.1488 19H9.44881C9.44881 19.2625 9.59575 19.503 9.82938 19.6228C10.063 19.7427 10.3441 19.7216 10.5573 19.5684L10.1488 19ZM10.6749 11.778L5.77649 6.19791L4.72436 7.1215L9.62275 12.7016L10.6749 11.778ZM5.77649 6.19791C5.6063 6.00404 5.74397 5.7 6.00195 5.7V4.3C4.5401 4.3 3.75996 6.02289 4.72436 7.1215L5.77649 6.19791ZM6.00195 5.7H17.9957V4.3H6.00195V5.7ZM17.9957 5.7C18.2536 5.7 18.3913 6.00404 18.2211 6.19791L19.2733 7.12151C20.2377 6.02289 19.4575 4.3 17.9957 4.3V5.7ZM18.2211 6.19791L13.2696 11.8386L14.3217 12.7622L19.2733 7.12151L18.2211 6.19791ZM13.0956 12.3004V16.3796H14.4956V12.3004H13.0956ZM13.3872 15.8111L9.74034 18.4315L10.5573 19.5684L14.2041 16.948L13.3872 15.8111ZM10.8488 19V12.2398H9.44881V19H10.8488Z"
+                fill="white"
+              />
+            </g>
+          </svg>
+          <div class="mx-2">Фильтр</div>
+        </div>
+        <div class="filters row" v-if="showFilters">
+          <div class="filters__item">
             <tr-multiselect
               :filter="chartFilter_field"
               :fieldFilterOptions="fieldFilters"
@@ -139,7 +131,7 @@
               filterName="месторождения"
             />
           </div>
-          <div class="filterplacetwo" style="margin-left: 15px">
+          <div class="filters__item">
             <tr-multiselect
               :filter="chartFilter_horizon"
               :fieldFilterOptions="horizonFilters"
@@ -148,7 +140,7 @@
               textFormsRow="horizons"
             />
           </div>
-          <div class="filterplacethree" style="margin-left: 15px">
+          <div class="filters__item">
             <tr-multiselect
               :filter="chartFilter_exp_meth"
               :fieldFilterOptions="exp_methFilters"
@@ -158,7 +150,7 @@
               textFormsRow="expMethods"
             />
           </div>
-          <div class="" style="margin-left: 15px">
+          <div class="filters__item">
             <tr-multiselect
               :filter="chartFilter_object"
               :fieldFilterOptions="objectFilters"
@@ -170,10 +162,15 @@
           <clear-icon
             v-if="chartWells.length !== filteredWellsBar.length"
             @clear-click="clearFilters()"
-            background="#272953"
+            background="#333975"
             placeholder="Сбросить фильтры"
+            style="margin-left: 10px;"
           />
         </div>
+
+        <notifications position="top"></notifications>
+      </div>
+      <div class="sec_nav">
         <div class="" v-if="chartShow === 'bar'">
           <div
             class="second_block"
@@ -204,7 +201,6 @@
           </div>
         </div>
       </div>
-      <notifications position="top"></notifications>
     </div>
     <big-numbers :list="filteredWellsBar" />
   </div>
@@ -491,6 +487,7 @@ export default {
       editdty: null,
       editdtprevm: null,
       editdtprevy: null,
+      showFilters: false,
       chartFilter_field: [],
       chartFilter_field_start: true,
       chartFilter_horizon: [],
@@ -940,29 +937,9 @@ export default {
 };
 </script>
 <style  scoped>
-.tr-chart .row {
-  margin-left: 0;
-  margin-right: 0;
-  padding: 0;
-  width: 100%;
-}
-.tr-chart .sec_nav {
-  padding: 20px;
-  box-sizing: border-box;
-  width: 100%;
-  justify-content: space-between;
-}
-.tr-chart .dropdown {
-  display: flex;
-  height: 35px;
-  margin: 0 20px;
-  width: 195px;
-}
-.second_block, .first_block {
-  height: calc(100vh - 374px);
-  /* width: calc(1.6 * (100vh - 365px));
-  max-width: calc(100vw - 440px);
-  min-width: 800px; */
+.second_block,
+.first_block {
+  height: calc(100vh - 280px);
   min-height: 633px;
   margin: 0 auto;
 }
@@ -990,17 +967,6 @@ body {
 a:hover {
   color: #ffffff;
 }
-</style>
-<style scoped >
-.tr-chart {
-  display: flex;
-  width: 100%;
-}
-.tr-chart__content {
-  flex-basis: 0;
-  flex-grow: 1;
-  flex-shrink: 0;
-}
 .form-control {
   background: #272953 !important;
   border: 1px solid #656a8a !important;
@@ -1013,7 +979,7 @@ a:hover {
   width: 246px;
 }
 .background_dropdown {
-  color: #FFFFFF;
+  color: #ffffff;
   background: #5973cc;
 }
 </style>

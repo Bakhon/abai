@@ -15,11 +15,15 @@ export default {
     tableToChange: {
       default: 1,
     },
-    sliderTooltip: '',
+    toolTipPorog: '',
+    toolTipAim: '',
+    toolTipVizov: '',
     showLink: false,
     isLastBlock: false,
   },
   data: function () {
-    return {}
+    return {
+      kpdIcon: 1,
+    }
   }
 }

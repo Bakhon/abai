@@ -36,10 +36,7 @@
           >
         </div>
       </div>
-      <div
-        class="row sec_nav trfacolmdrowsecnav"
-        style="display: flex; justify-content: center"
-      >
+      <div class="row sec_nav trfacolmdrowsecnav">
         <div class="dropdown show">
           <a
             class="btn btn-secondary dropdown-toggle trfabtgraph"
@@ -118,7 +115,6 @@
                 style="
                   background-color: #5973cc !important;
                   border-color: #5973cc !important;
-
                   color: white;
                 "
                 class="form-control"
@@ -144,17 +140,26 @@
             >
           </div>
         </div>
-      </div>
-      <div class="sec_nav">
-        <!-- <h4 style="color: white">{{ chartNames[chartShow] }} на {{ dt }}</h4> -->
-        <div
-          class="filter_chart row"
-          style="display: flex; justify-content: center"
-        >
-          <div class="namefilter mb-2" style="color: white">
-            <h4>Фильтр по</h4>
-          </div>
-          <div class="" style="margin-left: 15px">
+        <div class="namefilter" @click="showFilters = !showFilters">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g id="filter">
+              <path
+                id="Combined Shape"
+                d="M10.1488 12.2398H10.8488C10.8488 12.0699 10.787 11.9057 10.6749 11.778L10.1488 12.2398ZM5.25043 6.65971L4.72436 7.1215H4.72436L5.25043 6.65971ZM18.7472 6.65971L18.2211 6.19791L18.7472 6.65971ZM13.7956 12.3004L13.2696 11.8386C13.1574 11.9663 13.0956 12.1304 13.0956 12.3004H13.7956ZM13.7956 16.3796L14.2041 16.948C14.3871 16.8165 14.4956 16.6049 14.4956 16.3796H13.7956ZM10.1488 19H9.44881C9.44881 19.2625 9.59575 19.503 9.82938 19.6228C10.063 19.7427 10.3441 19.7216 10.5573 19.5684L10.1488 19ZM10.6749 11.778L5.77649 6.19791L4.72436 7.1215L9.62275 12.7016L10.6749 11.778ZM5.77649 6.19791C5.6063 6.00404 5.74397 5.7 6.00195 5.7V4.3C4.5401 4.3 3.75996 6.02289 4.72436 7.1215L5.77649 6.19791ZM6.00195 5.7H17.9957V4.3H6.00195V5.7ZM17.9957 5.7C18.2536 5.7 18.3913 6.00404 18.2211 6.19791L19.2733 7.12151C20.2377 6.02289 19.4575 4.3 17.9957 4.3V5.7ZM18.2211 6.19791L13.2696 11.8386L14.3217 12.7622L19.2733 7.12151L18.2211 6.19791ZM13.0956 12.3004V16.3796H14.4956V12.3004H13.0956ZM13.3872 15.8111L9.74034 18.4315L10.5573 19.5684L14.2041 16.948L13.3872 15.8111ZM10.8488 19V12.2398H9.44881V19H10.8488Z"
+                fill="white"
+              />
+            </g>
+          </svg>
+          <div class="mx-2">Фильтр</div>
+        </div>
+        <div class="filters row" v-if="showFilters">
+          <div class="filters__item" style="margin-left: 15px">
             <tr-multiselect
               :filter="chartFilter_field"
               :fieldFilterOptions="fieldFilters"
@@ -162,7 +167,7 @@
               filterName="месторождения"
             />
           </div>
-          <div class="" style="margin-left: 15px">
+          <div class="filters__item" style="margin-left: 15px">
             <tr-multiselect
               :filter="chartFilter_horizon"
               :fieldFilterOptions="horizonFilters"
@@ -171,7 +176,7 @@
               textFormsRow="horizons"
             />
           </div>
-          <div class="" style="margin-left: 15px">
+          <div class="filters__item" style="margin-left: 15px">
             <tr-multiselect
               :filter="chartFilter_exp_meth"
               :fieldFilterOptions="exp_methFilters"
@@ -181,7 +186,7 @@
               textFormsRow="expMethods"
             />
           </div>
-          <div class="" style="margin-left: 15px">
+          <div class="filters__item" style="margin-left: 15px">
             <tr-multiselect
               :filter="chartFilter_object"
               :fieldFilterOptions="objectFilters"
@@ -190,11 +195,16 @@
               textFormsRow="blocks"
             />
           </div>
-          <clear-icon v-if="chartWells.length !== filteredWellsPreGraph.length" @clear-click="clearFilters()" background="#272953" placeholder="Сбросить фильтры" />
+          <clear-icon
+            v-if="chartWells.length !== filteredWellsPreGraph.length"
+            @clear-click="clearFilters()"
+            background="#333975"
+            placeholder="Сбросить фильтры"
+            style="margin-left: 10px"
+          />
         </div>
-        <!-- <div class="fadee tr-chart__loader" v-if="isLoading">
-          <fade-loader :loading="isLoading"></fade-loader>
-        </div> -->
+      </div>
+      <div class="sec_nav">
         <div class="">
           <div class="second_block">
             <apexchart
@@ -271,7 +281,7 @@ export default {
             (!this.chartFilter_object ||
               this.chartFilter_object.length === 0 ||
               this.chartFilter_object.indexOf(el.block) !== -1)
-              //change it to object
+            //change it to object
           ) {
             filters = [...filters, el.field];
           }
@@ -390,6 +400,7 @@ export default {
       editdty: null,
       editdtprevm: null,
       editdtprevy: null,
+      showFilters: false,
       chartFilter_field: [],
       chartFilter_field_start: true,
       chartFilter_horizon: [],
@@ -417,6 +428,7 @@ export default {
         "Распределение скважин по дебиту жидкости",
       ],
       chartBarOptions: {
+        colors: ["#00e396", "#feb019", "#5FA7FF", "#ff4560", "#554298"],
         chart: {
           height: "100%",
           stacked: true,
@@ -709,8 +721,8 @@ export default {
       const stacked = false;
       const stroke = {
         show: true,
-        width: [5, 1, 1],
-        colors: ["#5FA7FF", "#27295300", "#27295300"],
+        width: [1, 1, 5],
+        colors: ["#27295300", "#27295300", "#5FA7FF"],
       };
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -741,7 +753,7 @@ export default {
         chart,
         stroke,
         markers: {
-          size: [0, 5, 5],
+          size: [5, 5, 0],
           offsetX: -2,
         },
         fill: {
@@ -752,13 +764,6 @@ export default {
       };
 
       const series = [
-        {
-          name: "Н вдп",
-          type: "area",
-          data: filteredResult.map((item) =>
-            this.getStringOrFirstItem(item, "h_up_perf_md")
-          ),
-        },
         {
           name: "Н дин",
           type: "line",
@@ -771,6 +776,13 @@ export default {
           type: "line",
           data: filteredResult.map((item, index) =>
             this.getStringOrFirstItem(item, "h_pump_set")
+          ),
+        },
+        {
+          name: "Н вдп",
+          type: "area",
+          data: filteredResult.map((item) =>
+            this.getStringOrFirstItem(item, "h_up_perf_md")
           ),
         },
       ];
@@ -813,7 +825,7 @@ export default {
       labels.style.cssClass = "";
       labels.rotateAlways = true;
       const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
-      console.log('xaxis = ', xaxis)
+      console.log("xaxis = ", xaxis);
       const stacked = true;
       const stroke = {
         show: false,
@@ -1727,24 +1739,6 @@ export default {
 };
 </script>
 <style  scoped>
-.tr-chart .row {
-  margin-left: 0;
-  margin-right: 0;
-  padding: 0;
-  width: 100%;
-}
-.tr-chart .sec_nav {
-  padding: 20px;
-  box-sizing: border-box;
-  width: 100%;
-  justify-content: space-between;
-}
-.tr-chart .dropdown {
-  display: flex;
-  height: 35px;
-  margin: 0 20px;
-  width: 195px;
-}
 body {
   color: white !important;
 }
@@ -1754,6 +1748,8 @@ body {
 .trfacolmdrowsecnav {
   margin-bottom: 13px;
   margin-top: 13px;
+  display: flex;
+  justify-content: flex-start;
 }
 .trfacolbutnavlinkbut {
   margin-left: 28px;
@@ -1777,10 +1773,7 @@ body {
   margin: 0;
 }
 .second_block {
-  height: calc(100vh - 323px);
-  /* width: calc(1.6 * (100vh - 365px));
-  max-width: calc(100vw - 440px);
-  min-width: 800px; */
+  height: calc(100vh - 280px);
   min-height: 633px;
   margin: 0 auto;
 }
@@ -1788,20 +1781,8 @@ body {
   background: #5973cc;
   padding: 0px;
 }
-
 a:hover {
   color: #ffffff;
-}
-</style>
-<style scoped>
-.tr-chart {
-  display: flex;
-  width: 100%;
-}
-.tr-chart__content {
-  flex-basis: 0;
-  flex-grow: 1;
-  flex-shrink: 0;
 }
 .fadropmenu .fadropmenu {
   background: #656a8a;
@@ -1816,10 +1797,69 @@ a:hover {
 </style>
 
 <style >
+.tr-chart {
+  display: flex;
+  width: 100%;
+}
+.tr-chart__content {
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 0;
+}
 .tr-chart__loader {
   margin: 50px auto;
   width: 1px;
   height: 78px;
+}
+.namefilter {
+  color: #fff;
+  margin: 0 0 0 auto;
+  display: flex;
+  align-items: center;
+  background: #454fa1;
+  border: 1px solid #82baff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  padding: 3px 4px;
+  cursor: pointer;
+}
+.filters.filters.filters {
+  background: #333975;
+  border: 1px solid #82baff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: calc(100% - 155px);
+  position: absolute;
+  min-height: 55px;
+  top: 10px;
+  padding: 10px 10px 10px 0;
+  z-index: 1000;
+}
+.filters__item {
+  flex: auto;
+  margin-left: 10px;
+}
+.tr-chart .row {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0;
+  width: 100%;
+}
+.tr-chart .sec_nav {
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: space-between;
+  position: relative;
+}
+.tr-chart .dropdown {
+  display: flex;
+  height: 35px;
+  margin-right: 20px;
+  width: 195px;
 }
 </style>
 

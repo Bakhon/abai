@@ -7,8 +7,8 @@
   >
     <svg
       version="1.1"
-      width="40"
-      height="40"
+      width="35"
+      height="35"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -42,7 +42,7 @@ export default {
 .clear-button {
   display: flex;
   align-items: center;
-  width: 40px;
+  width: 35px;
   cursor: pointer;
   justify-content: center;
 }

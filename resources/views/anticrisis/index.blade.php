@@ -267,8 +267,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-6">
-                                    <div id="small_chart"></div>
+                                <div class="col-6 text-center">
+                                    <div style="display: inline-block" id="small_chart"></div>
                                 </div>
                             </div>
                         </div>
@@ -3633,14 +3633,20 @@
                         <table class="table table1-2">
                             <tr>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        4,0
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4">
+                                            4,0
+                                        </div>
+                                        <div class="unit-vc ml-2">тонн/сутки</div>
                                     </div>
                                     <div class="in-work">Базовый</div>
                                 </td>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        7,2
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4">
+                                            7,2
+                                        </div>
+                                        <div class="unit-vc ml-2">тонн/сутки</div>
                                     </div>
                                     <div class="in-idle">Выбранный</div>
                                 </td>

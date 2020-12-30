@@ -108,10 +108,13 @@ export default {
   max-width: 100%;
   flex-grow: 0;
   flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
   margin-left: 13px;
   box-sizing: border-box;
+}
+.big-numbers__list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .big-numbers__list :first-child {
   margin-top: 0;
@@ -120,9 +123,13 @@ export default {
   margin-bottom: 0;
 }
 .big-numbers__item {
-  padding: 30px 20px;
+  padding: 5px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background: #272953;
-  margin: 13px 0;
+  margin-top: 13px;
+  flex-grow: 1;
 }
 .big-numbers__name {
   font-size: 17px;
