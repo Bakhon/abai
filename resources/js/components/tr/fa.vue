@@ -136,7 +136,7 @@
         <fade-loader :loading="isloading"></fade-loader>
       </div> -->
       <table
-        class="table-bordered table-dark table-responsive fakrtableborderedtable"
+        class="table table-bordered table-dark table-responsive fakrtableborderedtable"
         style="background: #0d1e63"
       >
         <tr class="headerColumn">
@@ -1365,6 +1365,9 @@ export default {
 <style  scoped>
 body {
   color: white !important;
+}
+#app .multiselect {
+  max-width: 300px;
 }
 .but-nav__link {
   font-weight: inherit;
