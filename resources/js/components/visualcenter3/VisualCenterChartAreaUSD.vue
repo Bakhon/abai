@@ -2,8 +2,9 @@
   <div>
     <apexchart
         type="area"
-        height="450"
-        width="1100"
+        height="450px"
+        width="100%"
+        ref="chart"
         :options="chartOptions"
         :series="series"
     ></apexchart>
@@ -20,7 +21,7 @@ Vue.component("apexchart", VueApexCharts);
 
 export default {
   name: "mix-chart",
-  props: ['postTitles', 'usdRatesData'],
+  props: ['postTitles', 'chartData', 'tableData'],
   data: function () {
     return {
       begin: "",
@@ -42,6 +43,8 @@ export default {
           colors: ['#1956e5']
         },
         chart: {
+          // height: '450px',
+          // width: '100%',
           locales: [{
             "name": "ru",
             "options": {
@@ -60,6 +63,8 @@ export default {
           id: 'area-datetime',
           type: 'area',
           zoom: {
+            type: 'x',
+            enabled: true,
             autoScaleYaxis: true
           }
         },
@@ -153,7 +158,7 @@ export default {
       this.chartOptions = {
         ...this.chartOptions, ...{
           xaxis: {
-            min: value.for_chart[0][0]
+            min: value[0][0]
           },
           tooltip: {
             x: {
@@ -177,13 +182,26 @@ export default {
       this.series = [
         {
           name: 'Продажа',
-          data: value.for_chart
+          data: value
         }
       ]
     },
+    updateZoom() {
+      let self = this;
+
+      setTimeout(() => {
+        self.$refs.chart.zoomX(
+            self.tableData[0].timestamp,
+            self.tableData[self.tableData.length - 1].timestamp
+        )
+      }, 100);
+    }
   },
   watch: {
-    usdRatesData(newVal) {
+    tableData() {
+      this.updateZoom();
+    },
+    chartData(newVal) {
       this.updateChartOptions(newVal);
     }
   },

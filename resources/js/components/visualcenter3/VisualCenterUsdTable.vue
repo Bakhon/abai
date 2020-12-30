@@ -12,7 +12,7 @@
         </div>
 
         <div class="row no-margin vc-chart-content-wrapper">
-          <div class="col-sm-9">
+          <div class="col-sm-9 vc-chart-container">
             <div class="vc-chart-block-subheader">
               {{ secondTitle }}
             </div>
@@ -23,14 +23,15 @@
                     v-for="(menuDMY, index) in periodSelectFunc"
                     @click="selectPeriod(menuDMY.id)"
                     class="vc-period-item"
-                    :class="{ 'active': menuDMY.active_usd }"
-                    :disabled="true"
+                    :class="{ 'active': menuDMY.active }"
+                    :disabled="false"
                 >
                   {{ menuDMY.DMY }}
                 </button>
               </div>
 
-              <visual-center-chart-area-usd3 :usd-rates-data.sync="usdRatesData"/>
+              <visual-center-chart-area-usd3 :chart-data.sync="usdRatesData.for_chart"
+                                             :table-data.sync="tableData"/>
             </div>
           </div>
 
@@ -51,7 +52,7 @@
                   </thead>
 
                   <tbody>
-                  <tr v-for="(data, index) in usdRatesData.for_table">
+                  <tr v-for="(data, index) in tableData">
                     <td>{{ data.date_string }}</td>
                     <td>{{ data.value }}</td>
                     <td>
@@ -89,17 +90,18 @@ export default {
   components: { PerfectScrollbar },
   props: [
     'usdRatesData',
-    'selectedUsdPeriod',
+    'period',
     'periodSelectFunc',
     'currencyChartData',
     'usdChartIsLoading',
     'mainTitle',
     'secondTitle',
+    'tableData'
   ],
   computed: {
     activeTitle() {
       let active = this.periodSelectFunc.find((item) => {
-        return item.active_usd
+        return item.active
       });
 
       return active.DMY_title;
@@ -110,7 +112,7 @@ export default {
       this.$emit('change-table');
     },
     selectPeriod(period) {
-      this.$emit('update:selectedUsdPeriod', period);
+      this.$emit('update:period', period);
       this.$emit('period-select-usd');
     }
   },
