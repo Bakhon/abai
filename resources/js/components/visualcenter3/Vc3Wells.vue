@@ -46,14 +46,6 @@ export default {
         left: 0
     },  
 },
-        
-        chart: {
-
-            stacked: false,
-            foreColor: '#FFFFFF',
-            locales: [ru],
-            defaultLocale: 'ru'
-        },
         tooltip: {
                enabled: false,
           enabledOnSeries: undefined,
@@ -78,6 +70,9 @@ export default {
         },
 		colors:['#4A90E2','#0080FF','#F5FCFF'],
         chart: {
+            stacked: false,
+            locales: [ru],
+            defaultLocale: 'ru',
           toolbar: {
             show: false,
              Color: '#373d3f',
