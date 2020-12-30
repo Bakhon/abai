@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="d-flex justify-content-center">
         <div class="position-absolute">
             <round-slider
                 v-model="slider1Value"
@@ -17,7 +17,7 @@
                 step="0.1"
             />
         </div>
-        <div class="position-absolute">
+        <div>
             <round-slider
                 v-model="slider2Value"
                 start-angle="0"
@@ -31,9 +31,14 @@
                 :min="min"
                 :max="max"
                 step="0.1"
-                :tooltip-format="tooltipFormat"
                 tooltipColor="#fefefe"
+                showTooltip="false"
             />
+        </div>
+        <div class="d-flex align-items-end position-absolute vc-speedometer-absolute-values">
+            <div class="w-25 text-center">{{ toolTipPorogValue }}</div>
+            <div class="w-50 text-center align-self-start pt-5 vc-speedometer-aim">{{ toolTipAimValue }}</div>
+            <div class="w-25 text-center">{{ toolTipVizovValue }}</div>
         </div>
     </div>
 </template>
@@ -49,7 +54,9 @@ export default {
                 return [1, 0, 50, 100, 48]
             }
         },
-        sliderTooltip: '',
+        toolTipPorog: '',
+        toolTipAim: '',
+        toolTipVizov: '',
     },
     data: function () {
         return {
@@ -61,13 +68,17 @@ export default {
             tooltipValue: 0,
         };
     },
-    methods: {
-        tooltipFormat: function () {
-            if (typeof this.sliderTooltip !== "undefined") {
-                return this.sliderTooltip;
-            }
-            return new Intl.NumberFormat("ru-RU").format(this.tooltipValue);
-        }
+    computed: {
+        toolTipPorogValue: function () {
+            console.log(this.toolTipPorog);
+            return this.toolTipPorog ?? this.sliderValue[1]
+        },
+        toolTipAimValue: function () {
+            return this.toolTipAim ?? this.sliderValue[2]
+        },
+        toolTipVizovValue: function () {
+            return this.toolTipVizov ?? this.sliderValue[3]
+        },
     },
     mounted() {
         let item = this.sliderValue;

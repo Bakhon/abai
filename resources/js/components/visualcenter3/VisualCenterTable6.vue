@@ -54,7 +54,9 @@
                             v-bind:title="'Оптимизированный Инвестиционный портфель'"
                             v-bind:mainTitle="'Октябрь'"
                             v-bind:mainValue="t4"
-                            v-bind:sliderTooltip="'Октябрь'"
+                            v-bind:toolTipPorog="'Ноябрь'"
+                            v-bind:toolTipAim="'Октябрь'"
+                            v-bind:toolTipVizov="'Сентябрь'"
                             v-bind:units="'дата'"
                         ></vc-speedometer-block>
                         <vc-speedometer-block
@@ -65,7 +67,9 @@
                         <vc-speedometer-block
                             v-bind:title="'Мероприятия по передаче КазТрансГаз в Самрук-Казына'"
                             v-bind:mainTitle="'Декабрь'"
-                            v-bind:sliderTooltip="'Декабрь'"
+                            v-bind:toolTipPorog="'-'"
+                            v-bind:toolTipAim="'Декабрь'"
+                            v-bind:toolTipVizov="'-'"
                             v-bind:mainValue="t6"
                             v-bind:units="'дата'"
                             v-bind:isLastBlock="true"

@@ -102,7 +102,9 @@
                         <vc-speedometer-block
                             v-bind:title="'Разработка концепции Разведка и добыча'"
                             v-bind:mainTitle="'Ноябрь'"
-                            v-bind:sliderTooltip="'Ноябрь'"
+                            v-bind:toolTipPorog="'Декабрь'"
+                            v-bind:toolTipAim="'Ноябрь'"
+                            v-bind:toolTipVizov="'-'"
                             v-bind:mainValue="t6"
                             v-bind:units="'дата'"
                             v-bind:isLastBlock="true"

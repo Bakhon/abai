@@ -15,7 +15,9 @@ export default {
     tableToChange: {
       default: 1,
     },
-    sliderTooltip: '',
+    toolTipPorog: '',
+    toolTipAim: '',
+    toolTipVizov: '',
     showLink: false,
     isLastBlock: false,
   },
