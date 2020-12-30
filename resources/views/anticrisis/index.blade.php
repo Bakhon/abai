@@ -3579,21 +3579,23 @@
                         <table class="table table1-2">
                             <tr>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        4,905
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4 text-nowrap">4 905</div>
+                                        <div class="unit-vc ml-2" style="line-height: 1">тыс. тонн</div>
                                     </div>
                                     <div class="in-work">Базовый</div>
                                 </td>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        4,378
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4 text-nowrap">4 378</div>
+                                        <div class="unit-vc ml-2" style="line-height: 1">тыс. тонн</div>
                                     </div>
                                     <div class="in-idle">Выбранный</div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <div class="txt2">Добыча нефти, тыс. тонн</div>
+                                    <div class="txt2">Добыча нефти</div>
                                 </td>
                             </tr>
                         </table>
@@ -3604,16 +3606,18 @@
                         <table class="table table1-2">
                             <tr>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        16 944
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4 text-nowrap">16 944</div>
+                                        <div class="unit-vc ml-2" style="line-height: 1">ед</div>
                                     </div>
                                     <div class="in-work">Базовый</div>
                                     <div class="txt2 mt-2 float-none">4,7</div>
                                     <div class="in-work">Удельно ПРС на скв</div>
                                 </td>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        6 130
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4 text-nowrap">6 130</div>
+                                        <div class="unit-vc ml-2" style="line-height: 1">ед</div>
                                     </div>
                                     <div class="in-idle">Выбранный</div>
                                     <div class="txt2 mt-2 float-none">3,5</div>
@@ -3622,7 +3626,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <div class="txt2">Кол-во ПРС</div>
+                                    <div class="txt2">Общее количество ПРС</div>
                                 </td>
                             </tr>
                         </table>
@@ -4065,8 +4069,8 @@
                         style: {
                             colors: ['#fff']
                         },
-                        formatter: function(seriesName, opts) {
-                            return Math.round(parseInt(seriesName/1000))
+                        formatter: function (seriesName, opts) {
+                            return Math.round(parseInt(seriesName / 1000))
                         }
                     },
                     min: 80000,
@@ -4445,8 +4449,8 @@
                         style: {
                             colors: ['#fff']
                         },
-                        formatter: function(seriesName, opts) {
-                            return Math.round(parseInt(seriesName/1000))
+                        formatter: function (seriesName, opts) {
+                            return Math.round(parseInt(seriesName / 1000))
                         }
                     },
                     min: 90000,
