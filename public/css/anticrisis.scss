@@ -16,9 +16,8 @@ ol, ul, dl {
 .txt2 {
   font-family: Bold;
   float: left;
-  font-size: 0.9em;
-  margin-left: 0em;
-  /* margin-top: -15; */
+  font-size: 20px;
+  margin-left: 0;
 }
 
 body {
@@ -72,7 +71,8 @@ body {
 .unit-vc {
   color: #82BAFF;
   display: block;
-  margin: -14px 0 0 4px;
+  margin: -5px 0 0 4px;
+  font-size: 16px;
 }
 
 .float {
