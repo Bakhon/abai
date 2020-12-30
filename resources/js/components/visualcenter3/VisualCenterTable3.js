@@ -399,12 +399,9 @@ export default {
       if (change == 1) {
 
         this.buttonHover7 = buttonHover;
-        //console.log(this.date.getDate() - 1);
         this.range = {
-          start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
-          //start: (this.date.setDate(this.date.getDate() - 1)),//.toISOString(),
-          end: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
-
+          start: moment().subtract(3, "day").startOf('day').toDate(),
+          end: moment().subtract(1, "day").endOf('day').toDate(),
           formatInput: true,
         };
 
@@ -712,9 +709,9 @@ export default {
     },
 
     getColor(status) {
-      if (status < "0") return "margin-top: 17px; border-top: 6px solid #e31e24";
+      if (status < "0") return "margin-top: 23px; border-top: 6px solid #e31e24";
       if (status == "0") return "";
-      return "margin-top: 10px; border-bottom: 6px solid #009846";
+      return "margin-top: 16px; border-bottom: 6px solid #009846";
     },
 
     getColor2(status) {
@@ -1146,12 +1143,6 @@ export default {
               .value();
 
             if (this.buttonHover12 != '') {
-              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
-              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
-              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ММГ" }));
-              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КТМ" }));
-              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КБМ" }));
-              _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КОА" }));
 
               data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
               data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
@@ -1160,21 +1151,7 @@ export default {
               data = _.reject(data, _.iteratee({ dzo: "КБМ" }));
               data = _.reject(data, _.iteratee({ dzo: "КОА" }));
 
-
-              /*dzoMonth.push({ dzoMonth: NameDzoFull[5] }, { dzoMonth: NameDzoFull[11] }, { dzoMonth: NameDzoFull[12] });
-              factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
-              planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-              productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });*/
             }
-
-            if (this.buttonHover13 != '') {
-              /*  dzoMonth.push({ dzoMonth: NameDzoFull[5] }, { dzoMonth: NameDzoFull[11] }, { dzoMonth: NameDzoFull[12] }, { dzoMonth: NameDzoFull[2] }, { dzoMonth: NameDzoFull[9] }, { dzoMonth: NameDzoFull[10] });
-                factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
-                planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-                productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
-            */
-            }
-
 
             this.tables = summForTables;
           }
@@ -1311,8 +1288,6 @@ export default {
             }))
             .value();
 
-         // console.log(productionPlanAndFactMonthWells);
-
           var productionPlanAndFactMonthWellsName = [];
 
           productionPlanAndFactMonthWellsName.push(
@@ -1329,9 +1304,6 @@ export default {
 
 
           this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
-
-
-            // console.log(dataWithMay);
 
 
           var productionForChart = _(dataWithMay)
@@ -1484,41 +1456,68 @@ export default {
           var factMonth = [];
           var planMonth = [];
 
-   //delete after paste data for dzo
+         //delete after paste data for dzo
 
-   if (this.buttonHover11 != '') {
-    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШО" }));
-    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "НКО" }));
-    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КПО" }));
-    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТП" }));
-    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКК" }));
-    productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКИ" }));
+         if (this.buttonHover11 != '') {
+          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШО" }));
+          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "НКО" }));
+          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КПО" }));
+          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТП" }));
+          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКК" }));
+          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКИ" }));
 
-    data = _.reject(data, _.iteratee({ dzo: "ТШО" }));
-    data = _.reject(data, _.iteratee({ dzo: "НКО" }));
-    data = _.reject(data, _.iteratee({ dzo: "КПО" }));
-    data = _.reject(data, _.iteratee({ dzo: "ТП" }));
-    data = _.reject(data, _.iteratee({ dzo: "ПКК" }));
-    data = _.reject(data, _.iteratee({ dzo: "ПКИ" }));
+          data = _.reject(data, _.iteratee({ dzo: "ТШО" }));
+          data = _.reject(data, _.iteratee({ dzo: "НКО" }));
+          data = _.reject(data, _.iteratee({ dzo: "КПО" }));
+          data = _.reject(data, _.iteratee({ dzo: "ТП" }));
+          data = _.reject(data, _.iteratee({ dzo: "ПКК" }));
+          data = _.reject(data, _.iteratee({ dzo: "ПКИ" }));
 
-   }
+         }
 
           if (this.buttonHover12 != '') {
-            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ОМГ" }));
-            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КГМ" }));
-            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ММГ" }));
-            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КТМ" }));
-            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КБМ" }));
-            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КОА" }));
-            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ЭМГ" }));
 
-            data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
-            data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
-            data = _.reject(data, _.iteratee({ dzo: "ММГ" }));
-            data = _.reject(data, _.iteratee({ dzo: "КТМ" }));
-            data = _.reject(data, _.iteratee({ dzo: "КБМ" }));
-            data = _.reject(data, _.iteratee({ dzo: "КОА" }));
-            data = _.reject(data, _.iteratee({ dzo: "ЭМГ" }));
+            let dzoToShow = [
+              "ТОО «Тенгизшевройл»",
+              "«Карачаганак Петролеум Оперейтинг б.в.»",
+              "«Норт Каспиан Оперейтинг Компани н.в.»"
+            ]
+
+            productionPlanAndFactMonth = productionPlanAndFactMonth.filter(item => {
+              let fullName = this.getNameDzoFull(item.dzo)
+              return dzoToShow.indexOf(fullName) > -1
+            })
+
+            data = data.filter(item => {
+              let fullName = this.getNameDzoFull(item.dzo)
+              return dzoToShow.indexOf(fullName) > -1
+            })
+
+          }
+
+
+          if(item5 === 'С учётом доли участия КМГ') {
+
+            let companyPercents = {
+              'АО "Каражанбасмунай"': 0.5,
+              'ТОО "Казгермунай"': 0.5,
+              'АО ПетроКазахстан Инк': 0.33,
+              '"ПетроКазахстан Инк."': 0.33,
+              'АО "Тургай-Петролеум"': 0.5*0.33,
+              "ТОО «Тенгизшевройл»": 0.2,
+              'АО "Мангистаумунайгаз"': 0.5,
+              'ТОО "Казахойл Актобе"': 0.5,
+              "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
+              "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
+            }
+
+            productionPlanAndFactMonth.map(item => {
+              if(typeof companyPercents[this.getNameDzoFull(item.dzo)] !== 'undefined') {
+                item.productionFactForChart = item.productionFactForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+                item.productionPlanForChart = item.productionPlanForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+              }
+              return item
+            })
 
           }
 
@@ -1588,19 +1587,6 @@ export default {
           this.factDaySumm = factDaySumm;
           this.planDaySumm = planDaySumm;
 
-
-
-          /*   var productionFactPercentSumm = _.reduce(
-               productionFactPercent,
-               function (memo, item) {
-                 return memo + item.productionFactPercent;
-               },
-               0
-             );
-
-
-             this.productionFactPercentSumm = productionFactPercentSumm;*/
-
           var bigTable = _.zipWith(
             productionFactPercent,
             dzoPercent,
@@ -1655,8 +1641,6 @@ export default {
 
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
 
-
-
           this.$emit("data", productionForChart);
 
           productionForChart = { data: productionForChart };
@@ -1694,7 +1678,7 @@ export default {
           ),
         ]);
       });
-
+console.log(dataWithMay)
 
       var productionForChart = _(dataWithMay)
         .groupBy("dzo")
@@ -1803,7 +1787,7 @@ export default {
       this.quantityRange = ((this.timestampEnd - this.timestampToday) / 86400000) + 1;
       let nowDate = new Date(this.range.start).toLocaleDateString();
       this.timeSelect = nowDate;
-      // this.timeSelect = new Date().toLocaleDateString();
+
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
@@ -1976,8 +1960,8 @@ export default {
       };
     } else {
       this.range = {
-        start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
-        end: new Date().toISOString(),
+        start: moment().subtract(3, "day").startOf('day').toDate(),
+        end: moment().subtract(1, "day").endOf('day').toDate(),
         formatInput: true,
       };
     }
