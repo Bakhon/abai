@@ -217,7 +217,14 @@
                   :style="`${tableHover2}`"
               >
                 <div class="nu">
-                  <div class="number">{{ oilNow }}</div>
+                  <div class="number d-flex justify-content-between">
+                      <div>
+                          {{ oilNow }}
+                      </div>
+                      <div class="mt-1">
+                          <img src="/img/icons/link.svg">
+                      </div>
+                  </div>
                   <div class="unit-vc">$ / bbl</div>
                 </div>
                 <br />
@@ -235,7 +242,14 @@
                 :style="`${tableHover3}`"
               >
                 <div class="nu">
-                  <div class="number">{{ currencyNow }}</div>
+                    <div class="number d-flex justify-content-between">
+                        <div>
+                            {{ currencyNow }}
+                        </div>
+                        <div class="mt-1">
+                            <img src="/img/icons/link.svg">
+                        </div>
+                    </div>
                   <div class="unit-vc">kzt / $</div>
                 </div>
                 <br />
@@ -1427,7 +1441,7 @@
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1-2">
-            <tr>
+            <tr class="cursor-pointer">
               <td
                 class="w-50"
                 @click="changeTable('4')"
@@ -1447,14 +1461,18 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt4">
-                  <!--v-if="wells2[0].prod_wells_idle"-->
-                  {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      // wells2[0].prod_wells_idle
-                      prod_wells_idle
-                    )
-                  }}
+                <div class="txt4 d-flex justify-content-between">
+                    <div>
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          // wells2[0].prod_wells_idle
+                          prod_wells_idle
+                        )
+                      }}
+                    </div>
+                    <div class="mt-1">
+                        <img src="/img/icons/link.svg">
+                    </div>
                 </div>
                 <div class="in-idle">В простое</div>
                 <div class="arrow"></div>
@@ -1462,7 +1480,7 @@
                 <br />
               </td>
             </tr>
-            <tr>
+            <tr class="cursor-pointer">
               <td
                 colspan="2"
                 @click="changeTable('4')"
@@ -1477,7 +1495,7 @@
         <div class="first-string first-string2">
           <div class="table-responsive">
             <table class="table table1-2">
-              <tr>
+              <tr class="cursor-pointer">
                 <td
                   class="w-50"
                   @click="changeTable('5')"
@@ -1502,22 +1520,27 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt4">
-                    <!-- v-if="wells[0].inj_wells_idle"-->
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        // wells[0].inj_wells_idle
-                        inj_wells_idle
-                      )
-                    }}
-                  </div>
+                    <div class="txt4 d-flex justify-content-between">
+                        <div>
+                            <!-- v-if="wells[0].inj_wells_idle"-->
+                            {{
+                                new Intl.NumberFormat("ru-RU").format(
+                                    // wells[0].inj_wells_idle
+                                    inj_wells_idle
+                                )
+                            }}
+                        </div>
+                        <div class="mt-1">
+                            <img src="/img/icons/link.svg">
+                        </div>
+                    </div>
                   <div class="in-idle">В простое</div>
                   <div class="arrow"></div>
                   <div class="txt2">200</div>
                   <br />
                 </td>
               </tr>
-              <tr>
+              <tr class="cursor-pointer">
                 <td
                   colspan="2"
                   @click="changeTable('5')"
