@@ -14,7 +14,7 @@ export default {
       innerWellsButtonProstoi: 0,
       innerWellsButtonProstoi2: 0,
       nameChartLeft: 'Добыча нефти',
-      oilChartHeadName: 'Динамика добычи нефти',     
+      oilChartHeadName: 'Динамика добычи нефти',
       innerWells: [
         { name: "ЭФ", value: 603, value2: 101 },
         { name: "ДФ", value: 98, value2: 56 },
@@ -208,28 +208,29 @@ export default {
         "Dec",
       ],
 
-      NameDzoFull: [
-        "Всего добыча нефти с учётом доли участия АО НК КазМунайГаз",
-        'АО "Озенмунайгаз"',
-        'АО "Эмбамунайгаз"',
-        'АО "Каражанбасмунай"',
-        'ТОО "Казгермунай"',
-        "ТОО «Тенгизшевройл»",
-        'АО "Мангистаумунайгаз"',
-        'ТОО "Казахтуркмунай"',
-        'ТОО "Казахойл Актобе"',
-        '"ПетроКазахстан Инк."',
-        '"Амангельды Газ"',
-        "«Карачаганак Петролеум Оперейтинг б.в.»",
-        "«Норт Каспиан Оперейтинг Компани н.в.»",
-        "(конденсат)(100%)",
-        "в т.ч.:газовый конденсат",
-        'АО "Тургай-Петролеум"',
-        'Урихтау Оперейтинг',
-        'АО ПетроКазахстан Кумколь Ресорсиз', 
-        'АО ПетроКазахстан Инк'       
-        
-      ],
+      NameDzoFull: {
+        0: "Всего добыча нефти с учётом доли участия АО НК КазМунайГаз",
+        1: "(конденсат)(100%)",
+        2: "в т.ч.:газовый конденсат",
+        3: 'АО ПетроКазахстан Инк',
+        'ОМГ': 'АО "Озенмунайгаз"',
+        'ЭМГ': 'АО "Эмбамунайгаз"',
+        'КБМ': 'АО "Каражанбасмунай"',
+        'КГМ': 'ТОО "Казгермунай"',
+        'ТШ': "ТОО «Тенгизшевройл»",
+        'ТШО': "ТОО «Тенгизшевройл»",
+        'ММГ': 'АО "Мангистаумунайгаз"',
+        'КТМ': 'ТОО "Казахтуркмунай"',
+        'КОА': 'ТОО "Казахойл Актобе"',
+        'ПКИ': '"ПетроКазахстан Инк."',
+        'АМГ': '"Амангельды Газ"',
+        'АГ': '"Амангельды Газ"',
+        'КПО': "«Карачаганак Петролеум Оперейтинг б.в.»",
+        'НКО': "«Норт Каспиан Оперейтинг Компани н.в.»",
+        'ТП': 'АО "Тургай-Петролеум"',
+        'УО': 'Урихтау Оперейтинг',
+        'ПКК': 'АО ПетроКазахстан Кумколь Ресорсиз',
+      },
       date: new Date(),
       selectedDay: undefined,
       selectedMonth: undefined,
@@ -257,7 +258,7 @@ export default {
     };
   },
   methods: {
-    saveCompany(com) {  
+    saveCompany(com) {
       this.company = com;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
      },
@@ -379,7 +380,7 @@ export default {
 
     dayClicked() {
 
-  
+
       this.changeMenu2('4');
     },
 
@@ -661,7 +662,7 @@ export default {
     /*   getMonths: function () {
          var monthAll = [];
          var month = new Date(this.year, this.month + 1, 0).getMonth();
-   
+
          for (let i = 1; i <= 12; i++) {
            if (new Date(this.year, this.month + 1, i)) {
              var a = { index: i, id: i };
@@ -669,9 +670,9 @@ export default {
              if (this.selectedMonth == i) {
                a.current = "#232236";
              } else if (
-               i == Number(new Date().getMonth() + 1) && 
+               i == Number(new Date().getMonth() + 1) &&
                this.year ==
-               new Date().getFullYear() 
+               new Date().getFullYear()
              ) {
                a.current = "#13B062";
              }
@@ -682,7 +683,7 @@ export default {
            return monthAll;
          }
        },
-   
+
        getDays: function () {
          var DaysInMonth = [];
          var dlast = new Date(this.year, this.month + 1, 0).getDate();
@@ -692,7 +693,7 @@ export default {
          }
          return DaysInMonth;
        },
-   
+
        getDaysMonth: function () {
          var DaysInMonth = [];
          var dlast = new Date(this.year, this.selectedMonth, 0).getDate();
@@ -702,7 +703,7 @@ export default {
          }
          return DaysInMonth;
        },
-   
+
        getDaysInYear: function () {
          var getDaysInYear = [];
          for (let q = 1; q <= 12; q++) {
@@ -714,7 +715,7 @@ export default {
          }
          return getDaysInYear;
        },
-   
+
        getYears: function () {
          var yearAll = [];
          var year = this.year;
@@ -726,12 +727,12 @@ export default {
              a.current = "#232236";
            } else if (
              i ==
-             year 
+             year
            ) {
              a.current = "#13B062";
            }
          }
-   
+
          if (this.selectedDMY == "2") {
            this.display = "none";
            return yearAll;
@@ -1008,8 +1009,6 @@ export default {
       //data from the day
       let uri = this.localeUrl("/visualcenter3GetData?timestampToday=") + this.timestampToday + "&timestampEnd=" + this.timestampEnd + " ";
 
-      //let uri = this.localeUrl("/getnkkmg");
-      // let uri = "/js/json/getnkkmg.json";
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
@@ -1018,48 +1017,12 @@ export default {
           var company = this.company;
           var summForTables = [];
 
-
-         /* if (company === 'ПКИ') {
-            summForTables.push({ dzo: NameDzoFull[9], productionFactForMonth: 1, productionPlanForMonth: 1 });
-            this.tables = summForTables;
-            this.productionFactPercentOneDzo = 0;
-          }
-
-          else if (company === 'АМГ') {
-            summForTables.push({ dzo: NameDzoFull[10], productionFactForMonth: 1, productionPlanForMonth: 1 });
-            this.tables = summForTables;
-            this.productionFactPercentOneDzo = 0;
-          }
-
-          else if (company === 'ТШ') {
-            summForTables.push({ dzo: NameDzoFull[5], productionFactForMonth: 1, productionPlanForMonth: 1 });
-            this.tables = summForTables;
-            this.productionFactPercentOneDzo = 0;
-          }
-
-
-          else if (company === 'НКО') {
-            summForTables.push({ dzo: NameDzoFull[12], productionFactForMonth: 1, productionPlanForMonth: 1 });
-            this.tables = summForTables;
-            this.productionFactPercentOneDzo = 0;
-          }
-
-          else if (company === 'КПО') {
-            summForTables.push({ dzo: NameDzoFull[11], productionFactForMonth: 1, productionPlanForMonth: 1 });
-            this.tables = summForTables;
-            this.productionFactPercentOneDzo = 0;
-          }*/
-
           if (company != "all") {
             var arrdata = new Array();
             arrdata = _.filter(data, _.iteratee({ dzo: company }));
 
 
-            /*  this.wells = dataDay;
-              this.wells2 = dataDay;*/
-
-
-            //get data by Month        
+            //get data by Month
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
               return _.every([
@@ -1079,8 +1042,8 @@ export default {
             );
 
 
-            this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi); 
-            this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);   
+            this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);
+            this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);
 
 
             var productionForChart = _(dataWithMay)
@@ -1094,7 +1057,6 @@ export default {
 
             var dataWithMayLast = [];
             dataWithMayLast = _.last(dataWithMay);//.slice(-1);
-
 
 
             this.inj_wells_idle = dataWithMayLast['inj_wells_idle'];
@@ -1212,12 +1174,12 @@ export default {
           );*/
 
           /*  dataMonth = _.orderBy(dataMonth, ["dzo"], ["desc"]);
-  
+
             _.forEach(dataMonth, function (item) {
               var e = [];
               e = { dzoYear: item.dzo };
               dzoYear.push(e);
-  
+
               var f = [];
               f = { factYear: Math.ceil(item[productionFact]) };
               factYear.push(f);
@@ -1261,11 +1223,11 @@ export default {
             productionPlanAndFactMonth,
             ["dzo"],
             ["desc"]
-          );  
-  
+          );
 
-          this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);     
-          this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);      
+
+          this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);
+          this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);
 
           var productionForChart = _(dataWithMay)
             .groupBy("__time")
@@ -1330,8 +1292,6 @@ export default {
             ]);
           });
 
-
-          //dataDay = _.filter(data, _.iteratee({ __time: timestampToday }));
           dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
 
           var dzoDay = [];
@@ -1368,7 +1328,7 @@ export default {
             prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
             prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });
           });
-       
+
 
           if (inj_wells_idle) {
             inj_wells_idle = _.reduce(
@@ -1455,23 +1415,7 @@ export default {
             data = _.reject(data, _.iteratee({ dzo: "КОА" }));
             data = _.reject(data, _.iteratee({ dzo: "ЭМГ" }));
 
-
-          /*  dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" });
-            factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
-            planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });*/
           }
-
-          if (this.buttonHover13 != '') {
-           /* dzoMonth.push({ dzoMonth: "ТШ" }, { dzoMonth: "НКО" }, { dzoMonth: "КПО" }, { dzoMonth: "ПКИ" }, { dzoMonth: "АМГ" });
-            factMonth.push({ factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 }, { factMonth: 1 });
-            planMonth.push({ planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 }, { planMonth: 1 });
-            productionFactPercent.push({ productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 }, { productionFactPercent: 0 });
-         */
-          }
-
-
-
 
 
           _.forEach(productionPlanAndFactMonth, function (item) { //k1q!!!
@@ -1548,68 +1492,64 @@ export default {
                },
                0
              );
-   
-   
+
+
              this.productionFactPercentSumm = productionFactPercentSumm;*/
 
           var bigTable = _.zipWith(
             productionFactPercent,
             dzoPercent,
-            //getProductionPercent
-            // dzoBriefly,
-            /* dzoYear,,*/
             dzoMonth,
-            //factYear
             dzo,
             dzo2,
-            /* planYear,*/
             planMonth,
             factMonth,
-            // dzoDay,
-            // factDay,
-            // planDay,
             (
               productionFactPercent,
               dzoPercent,
-              //dzoBriefly,
-              /*  dzoYear,*/
               dzoMonth,
-              //factYear,
               dzo,
               dzo2,
-              /*  planYear,*/
               planMonth,
               factMonth,
-              // dzoDay,
-              // factDay,
-              //  planDay
             ) =>
               _.defaults(
                 productionFactPercent,
                 dzoPercent,
-                // dzoBriefly,
-                /*  dzoYear,*/
                 dzoMonth,
-                //factYear,
                 dzo,
                 dzo2,
-                /*  planYear,*/
                 planMonth,
                 factMonth,
-                //  dzoDay,
-                //  factDay,
-                //  planDay
               )
           );
 
+          let tmpArrayToSort = [
+              'АО "Озенмунайгаз"',
+              'АО "Эмбамунайгаз"',
+              'АО "Каражанбасмунай"',
+              'ТОО "Казгермунай"',
+              'АО ПетроКазахстан Инк',
+              'АО ПетроКазахстан Кумколь Ресорсиз',
+              '"ПетроКазахстан Инк."',
+              'АО "Тургай-Петролеум"',
+              '"Амангельды Газ"',
+              "ТОО «Тенгизшевройл»",
+              'АО "Мангистаумунайгаз"',
+              'ТОО "Казахойл Актобе"',
+              'ТОО "Казахтуркмунай"',
+              "«Карачаганак Петролеум Оперейтинг б.в.»",
+              "«Норт Каспиан Оперейтинг Компани н.в.»",
+              'Урихтау Оперейтинг',
+          ]
 
-          bigTable = _.orderBy(bigTable, ["dzoMonth"], ["desc"]);
+          bigTable.sort((a, b) => {
+            console.log(tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : 0)
+            return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
+          })
 
-          // console.log(bigTable);
-          this.bigTable = bigTable;
+          this.bigTable = bigTable
 
-
-      
 
           this.$emit("data", productionForChart);
 
@@ -1766,15 +1706,15 @@ export default {
 
 
 
-    buttonInnerWellsNag(){     
+    buttonInnerWellsNag(){
       if (this.innerWellsButtonProstoi==1)
-      { this.buttonHoverNagInnerWells = this.buttonHover;  
-        this.innerWellsButtonProstoi=0;} 
+      { this.buttonHoverNagInnerWells = this.buttonHover;
+        this.innerWellsButtonProstoi=0;}
       else
       { this.buttonHoverNagInnerWells = "";
-        this.innerWellsButtonProstoi=1;}      
+        this.innerWellsButtonProstoi=1;}
     this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
-  },    
+  },
 
     innerWellsNagMet(arr,i){
       var productionPlanAndFactMonthWells = _(arr)
@@ -1795,7 +1735,7 @@ export default {
         fond_nagnetat_others: _.round(_.sumBy(__time, 'fond_nagnetat_others'), 0),
 
 
-   
+
       }))
       .value();
     //  console.log(productionPlanAndFactMonthWells);
@@ -1804,7 +1744,7 @@ export default {
 
       if (i!=1) {
       productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },  
+        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
         { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
         { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
         { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name: 'Освоение' },
@@ -1833,15 +1773,15 @@ export default {
     },
 
 
-    buttonInnerWellsProd(){     
+    buttonInnerWellsProd(){
       if (this.innerWellsButtonProstoi==1)
-      { this.buttonHoverProdInnerWells = this.buttonHover;  
-        this.innerWellsButtonProstoi2=0;} 
+      { this.buttonHoverProdInnerWells = this.buttonHover;
+        this.innerWellsButtonProstoi2=0;}
       else
       { this.buttonHoverProdInnerWells = "";
-        this.innerWellsButtonProstoi2=1;}      
+        this.innerWellsButtonProstoi2=1;}
     this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
-  },    
+  },
 
     innerWellsProdMet(arr,i){
       var productionPlanAndFactMonthWells = _(arr)
@@ -1858,8 +1798,8 @@ export default {
         fond_neftedob_krs: _.round(_.sumBy(__time, 'fond_neftedob_krs'), 0),
         fond_neftedob_okrs: _.round(_.sumBy(__time, 'fond_neftedob_okrs'), 0),
         fond_neftedob_well_survey: _.round(_.sumBy(__time, 'fond_neftedob_well_survey'), 0),
-        fond_neftedob_nrs: _.round(_.sumBy(__time, 'fond_neftedob_nrs'), 0),       
-        fond_neftedob_others: _.round(_.sumBy(__time, 'fond_neftedob_others'), 0),   
+        fond_neftedob_nrs: _.round(_.sumBy(__time, 'fond_neftedob_nrs'), 0),
+        fond_neftedob_others: _.round(_.sumBy(__time, 'fond_neftedob_others'), 0),
       }))
       .value();
       console.log(productionPlanAndFactMonthWells);
@@ -1868,7 +1808,7 @@ export default {
 
       if (i!=1) {
       productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ef'], name: 'Эксплуатационный фонд' },  
+        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ef'], name: 'Эксплуатационный фонд' },
         { value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name: 'Действующий фонд' },
         { value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name: 'Бездействующий фонд скважин' },
         { value: productionPlanAndFactMonthWells[0]['fond_neftedob_osvoenie'], name: 'Освоение' },
@@ -1898,69 +1838,18 @@ export default {
     },
 
 
-
-
-
-
     getNameDzoFull: function (dzo) {
-      var NameDzoFull = this.NameDzoFull;
-      if (String(dzo) === "ОМГ") {
-        name = NameDzoFull[1];
-      } else if (String(dzo) === "ММГ") {
-        name = NameDzoFull[6];
-      } else if (String(dzo) === "КТМ") {
-        name = NameDzoFull[7];
-      } else if (String(dzo) === "КОА") {
-        name = NameDzoFull[8];
-      } else if (String(dzo) === "КГМ") {
-        name = NameDzoFull[4];
-      } else if (String(dzo) === "КБМ") {
-        name = NameDzoFull[3];
+      if(typeof this.NameDzoFull[dzo] !== 'undefined') {
+        return this.NameDzoFull[dzo]
       }
-      else if (String(dzo) === "ЭМГ") {
-        name = NameDzoFull[2];
-      }
-
-      else if (String(dzo) === "ТП") {
-        name = NameDzoFull[15];
-      }
-      else if (String(dzo) === "ПКИ") {
-        name = NameDzoFull[9];
-      } else if (String(dzo) === "АМГ") {
-        name = NameDzoFull[10];
-      }
-      else if (String(dzo) === "ТШ") {
-        name = NameDzoFull[5];
-      }
-      else if (String(dzo) === "НКО") {
-        name = NameDzoFull[12];
-      }
-      else if (String(dzo) === "КПО") {
-        name = NameDzoFull[11];
-      }
-      else if (String(dzo) === "УО") {
-        name = NameDzoFull[16];
-      }
-      else if (String(dzo) === "ТШО") {
-        name = NameDzoFull[5];
-      }
-      else if (String(dzo) === "ПКК") {
-        name = NameDzoFull[17];
-      }
-      else if (String(dzo) === "АГ") {
-        name = NameDzoFull[10];
-      }
-
-    
-      else { name = dzo }
-      return name;
+      return dzo;
     },
 
   },
   created() {
 
     if (window.location.host === 'dashboard') {
-  
+
    // this.Table5 = "display:block";
    // this.Table1 = "display:none";
     }
@@ -1974,7 +1863,7 @@ export default {
     if (window.location.host === 'dashboard') {
 
 
-      this.range = {     
+      this.range = {
         start: "2020-06-01T06:00:00+06:00",
         end: "2020-06-01T09:00:00+06:00",
         formatInput: true,
