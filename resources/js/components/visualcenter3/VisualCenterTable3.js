@@ -15,6 +15,10 @@ export default {
         for_chart: [],
         for_table: []
       },
+      oilRatesData: {
+        for_chart: [],
+        for_table: []
+      },
       innerWellsButtonProstoi: 0,
       innerWellsButtonProstoi2: 0,
       nameChartLeft: 'Добыча нефти',
@@ -472,40 +476,21 @@ export default {
 
     },
 
-    periodSelect(event) {
-      if (this.selectedOilPeriod == 0) {
-        this.period = 7;
+    periodSelect(period) {
+      if (this.period === 0) {
+        return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(7, 'days'), 'days') + 1;
       }
-      if (this.selectedOilPeriod == 1) {
-        this.period = 30;
+      if (this.period === 1) {
+        return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'months'), 'days') + 1;
       }
-      if (this.selectedOilPeriod == 2) {
-        this.period = 183;
+      if (this.period === 2) {
+        return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(6, 'months'), 'days') + 1;
       }
-      if (this.selectedOilPeriod == 3) {
-        this.period = 365;
+      if (this.period === 3) {
+        return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'years'), 'days') + 1;
       }
-      if (this.selectedOilPeriod == 4) {
-        this.period = 1825;
-      }
-      return this.getOilNow(this.timeSelect, this.period);
-    },
-
-    periodSelectUsd() {
-      if (this.selectedUsdPeriod === 0) {
-        this.periodUSD = this.$moment(new Date()).diff(this.$moment(new Date()).subtract(7, 'days'), 'days') + 1;
-      }
-      if (this.selectedUsdPeriod === 1) {
-        this.periodUSD = this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'months'), 'days') + 1;
-      }
-      if (this.selectedUsdPeriod === 2) {
-        this.periodUSD = this.$moment(new Date()).diff(this.$moment(new Date()).subtract(6, 'months'), 'days') + 1;
-      }
-      if (this.selectedUsdPeriod === 3) {
-        this.periodUSD = this.$moment(new Date()).diff(this.$moment(new Date()).subtract(1, 'years'), 'days') + 1;
-      }
-      if (this.selectedUsdPeriod === 4) {
-        this.periodUSD = this.$moment(new Date()).diff(this.$moment(new Date()).subtract(5, 'years'), 'days') + 1;
+      if (this.period === 4) {
+        return this.$moment(new Date()).diff(this.$moment(new Date()).subtract(5, 'years'), 'days') + 1;
       }
 
       // console.log(this.timeSelect);
@@ -548,7 +533,6 @@ export default {
           };
 
           let self = this;
-
           response.data.forEach((item) => {
             usdRatesData.for_table.push({
               date_string: self.$moment(item.date).format('DD.MM.YYYY'),
@@ -626,72 +610,39 @@ export default {
     },
 
     getOilNow(dates, period) {
+      this.usdChartIsLoading = true;
+      let oilRatesData = {
+        for_chart: [],
+        for_table: []
+      };
       let uri = "/js/json/graph_1006.json";
       //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
       this.axios.get(uri).then((response) => {
-        var data = response.data;
+        let data = response.data;
+        let self = this;
         if (data) {
-          var timestampToday = this.timestampToday;
-          var oilDate;
-          var oilDate2;
-          var oilValue;
-          var splits = [];
-          var oil = [];
-          var oil2;
-          _.forEach(data.prices, function (prices) {
-            splits = prices.toString().split(",");
-            oilValue = splits["1"];
-            oilDate = Number(splits["0"]);
+          let prevValue = 0.00;
+          _.forEach(data.prices, function (item) {
+            let changeValue = parseFloat(((item[1] - prevValue) / item[1]) * 100).toFixed(2);
+            oilRatesData.for_table.push({
+              date_string: self.$moment(item[0]).format('DD.MM.YYYY'),
+              value: parseInt(item[1] * 10) / 10,
+              change: Math.abs(changeValue),
+              index: changeValue > 0 ? 'UP' : 'DOWN'
+            });
 
-            (oilDate2 = new Date(oilDate).toLocaleString("ru", {
-              year: "numeric",
-              day: "numeric",
-              month: "numeric",
-              timeZone: "Europe/Moscow",
-            })),
-              oil.push({
-                dateSimple: oilDate,
-                date: oilDate2,
-                value: oilValue,
-              });
-          });
-
-          var oil2 = [];
-
-          oil2 = _.filter(oil, _.iteratee({ date: dates }));
-
-          if (oil2.length != "0") {
-            this.oilNow = Number(oil2[0].value).toFixed(1);
-          } else {
-            oil2 = _.last(oil);
-            /*var oilNow2=oil.value;
-            oilNow2=oilNow2.toFixed(1);*/
-
-            this.oilNow = Number(oil2.value).toFixed(1);
-          }
-
-          var datesNow = [];
-          datesNow = dates.split(".");
-          var day = datesNow[0];
-          var month = datesNow[1].replace(/^0+/, "");
-          var year = datesNow[2];
-
-          var dateInOil = [];
-
-          dateInOil = _.filter(oil, function (item) {
-            return _.every([
-              _.inRange(
-                item.dateSimple,
-                timestampToday - 86400000 * Number(period),
-                timestampToday + 86400000
-              ),
+            oilRatesData.for_chart.push([
+              new Date(item[0]).getTime(),
+              parseInt(item[1] * 10) / 10,
             ]);
+            prevValue = item[1];
           });
-          //console.log(dateInOil);
-          this.$emit("oilChart", dateInOil);
+          this.oilNow = _.last(oilRatesData.for_chart)[1];
+          this.oilRatesData = oilRatesData;
         } else {
           console.log("No data");
         }
+        this.usdChartIsLoading = false;
       });
     },
     //currency and oil up
