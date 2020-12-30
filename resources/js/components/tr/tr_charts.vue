@@ -1774,7 +1774,7 @@ body {
 }
 .second_block {
   height: calc(100vh - 280px);
-  min-height: 633px;
+  min-height: 587px;
   margin: 0 auto;
 }
 .droptr.droptr {

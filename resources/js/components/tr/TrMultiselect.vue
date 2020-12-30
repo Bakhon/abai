@@ -80,25 +80,10 @@ export default {
       type: String,
       default: "fields",
     },
-  },
-  data: function () {
-    return {
-      // filter: []
-    }
-  },
-  watch: {
-    // filter() {
-    //   this.$emit("change-filter", this.filter);
-    // },
-  },
-  computed: {
-    // filter() {
-    //   [...this.filters]
-    // },
-  },
-  created: function () {
-    console.log('options = ', this.fieldFilterOptions)
-    // this.filter = this.fieldFilterOptions[0] ? this.fieldFilterOptions[0].fields : []
+    selectedAllTag: {
+      type: Boolean,
+      default: false,
+    },
   },
   methods: {
     updateValueAction(value) {
@@ -106,9 +91,7 @@ export default {
     },
     getFieldFilterText() {
       if (!this.fieldFilterOptions[0] || !this.fieldFilterOptions[0].fields) return "Нет опций"
-      // return this.fieldFilterOptions[0].fields.length === this.filter.length
-      //   ? `Выбраны все ${this.filterName} ${this.filterNameAdditional}`
-      //   : `Выбрано ${this.filter.length} ${declOfNum(this.filter.length, this.textFormsRow)} ${this.filterNameAdditional}`;
+      if (this.selectedAllTag && this.fieldFilterOptions[0].fields.length === this.filter.length) return `Выбраны все ${this.filterName} ${this.filterNameAdditional}`;
       return `Выбрано ${this.filter.length} ${declOfNum(this.filter.length, this.textFormsRow)} ${this.filterNameAdditional}`;
     },
   },

@@ -267,6 +267,7 @@
           </select> -->
           <tr-multiselect
             :filter="filter"
+            :selectedAllTag="true"
             :fieldFilterOptions="fieldFilterOptions"
             @change-filter="handlerFilter"
             filterName="месторождения"

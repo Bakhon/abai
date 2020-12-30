@@ -940,7 +940,7 @@ export default {
 .second_block,
 .first_block {
   height: calc(100vh - 280px);
-  min-height: 633px;
+  min-height: 587px;
   margin: 0 auto;
 }
 body {
