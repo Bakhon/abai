@@ -18,9 +18,9 @@
     </div>
     <div class="dropdown-menu">
         <div class="move-menu">
-            <li><a href="{{url('/')}}/ru/visualcenter4">Corporate</a></li>
-            <li><a href="{{url('/')}}/ru/visualcenter6">Upstream</a></li>
-            <li><a href="{{url('/')}}/ru/visualcenter7">Strategy</a></li>
+            <li><a href="{{url('/')}}/ru/visualcenter4">Корпоративные КПД</a></li>
+            <li><a href="{{url('/')}}/ru/visualcenter7">КПД Блока добычи</a></li>
+            <li><a href="{{url('/')}}/ru/visualcenter6">КПД Блока стратегии</a></li>
         </div>
     </div>
 </div>

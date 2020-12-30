@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="d-flex justify-content-center">
         <div class="position-absolute">
             <round-slider
                 v-model="slider1Value"
@@ -17,7 +17,7 @@
                 step="0.1"
             />
         </div>
-        <div class="position-absolute">
+        <div>
             <round-slider
                 v-model="slider2Value"
                 start-angle="0"
@@ -31,9 +31,14 @@
                 :min="min"
                 :max="max"
                 step="0.1"
-                :tooltip-format="tooltipFormat"
                 tooltipColor="#fefefe"
+                showTooltip="false"
             />
+        </div>
+        <div class="d-flex align-items-end position-absolute vc-speedometer-absolute-values">
+            <div class="w-25 text-center">{{ toolTipPorogValue }}</div>
+            <div class="w-50 text-center align-self-start pt-5 vc-speedometer-aim">{{ toolTipAimValue }}</div>
+            <div class="w-25 text-center">{{ toolTipVizovValue }}</div>
         </div>
     </div>
 </template>
@@ -49,7 +54,9 @@ export default {
                 return [1, 0, 50, 100, 48]
             }
         },
-        sliderTooltip: '',
+        toolTipPorog: '',
+        toolTipAim: '',
+        toolTipVizov: '',
     },
     data: function () {
         return {
@@ -61,44 +68,46 @@ export default {
             tooltipValue: 0,
         };
     },
-    methods: {
-        tooltipFormat: function () {
-            if (typeof this.sliderTooltip !== "undefined") {
-                return this.sliderTooltip;
-            }
-            return new Intl.NumberFormat("ru-RU").format(this.tooltipValue);
-        }
+    computed: {
+        toolTipPorogValue: function () {
+            console.log(this.toolTipPorog);
+            return this.toolTipPorog ?? this.sliderValue[1]
+        },
+        toolTipAimValue: function () {
+            return this.toolTipAim ?? this.sliderValue[2]
+        },
+        toolTipVizovValue: function () {
+            return this.toolTipVizov ?? this.sliderValue[3]
+        },
     },
     mounted() {
         let item = this.sliderValue;
-        let rangeColor = '#fe5c5c';
-        let rangeColorInverse = '#009846';
         let slider1Value = [0, 33];
-        let slider1ValueInverse = [66, 100];
         let slider2Value = item[4];
         let sortValues = [Math.abs(item[1]), Math.abs(item[2]), Math.abs(item[3])];
         let inverse = item[1] > item[2];
+        let rangeColor = inverse ? '#009846' : '#fe5c5c';
+        let kpdIcon = inverse ? 3 : 1;
         sortValues = sortValues.sort(function (a, b) {
             return a - b;
         });
-        if (slider2Value >= sortValues[1]) {
-            slider1Value = [33, 66]
-            slider1ValueInverse = [33, 66]
+        if (slider2Value >= sortValues[1] || (inverse && slider2Value < sortValues[1])) {
+            slider1Value = [33, 75]
             rangeColor = '#237deb';
-            rangeColorInverse = '#237deb';
+            kpdIcon = 2;
         }
-        if (slider2Value >= sortValues[2]) {
+        if (slider2Value >= sortValues[2] || (inverse && slider2Value < sortValues[0])) {
             slider1Value = [66, 100]
-            slider1ValueInverse = [0, 33]
             rangeColor = '#009846';
-            rangeColorInverse = '#fe5c5c';
+            kpdIcon = 3;
         }
-        this.slider1Value = inverse ? slider1ValueInverse : slider1Value;
+        this.slider1Value = slider1Value;
         this.slider2Value = slider2Value;
         this.tooltipValue = item[2];
-        this.rangeColor = inverse ? rangeColorInverse : rangeColor;
+        this.rangeColor = rangeColor;
         this.min = item[1];
         this.max = item[3];
+        this.$emit('changeKpdIcon', kpdIcon)
     }
 };
 </script>

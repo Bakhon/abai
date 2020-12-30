@@ -75,6 +75,43 @@ return $response;
         $period = ($request->timestampEnd-$request->timestampToday)-86400000;        
         return response()->json(DZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
             'oil_plan','oil_fact','gas_plan','gas_fact','__time',
+            'tovarnyi_ostatok_nefti_prev_day',
+            'tovarnyi_ostatok_nefti_today',
+            'sdacha_gaza_prirod_plan',
+            'sdacha_gaza_prirod_fact',
+            'raskhod_prirod_plan',
+            'raskhod_prirod_fact',
+            'pererabotka_gaza_prirod_plan',
+            'pererabotka_gaza_prirod_fact',
+            'pererabotka_gaza_poput_plan',
+            'pererabotka_gaza_poput_fact',
+            'sdacha_gaza_poput_plan',
+            'sdacha_gaza_poput_fact',
+            'raskhod_poput_plan',
+            'raskhod_poput_fact',
+            'ppd_zakachka_morskoi_vody_plan',
+            'ppd_zakachka_morskoi_vody_fact',
+            'ppd_zakachka_stochnoi_vody_plan',
+            'ppd_zakachka_stochnoi_vody_fact',
+            'ppd_zakachka_albsen_vody_plan',
+            'ppd_zakachka_albsen_vody_fact',
+            'fond_nagnetat_osvoenie',
+            'fond_nagnetat_konv',
+            'fond_nagnetat_well_survey',
+            'fond_nagnetat_others',   
+            
+            'fond_neftedob_ef',  
+            'fond_neftedob_df',
+            'fond_neftedob_bd',
+            'fond_neftedob_osvoenie',
+            'fond_neftedob_ofls',
+            'fond_neftedob_prs',
+            'fond_neftedob_oprs',
+            'fond_neftedob_krs',
+            'fond_neftedob_okrs',
+            'fond_neftedob_well_survey',
+            'fond_neftedob_nrs',
+            'fond_neftedob_others',
         'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
         'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
@@ -194,18 +231,7 @@ return $response;
     {
         return view('production.map');
     }
-    public function getCurrency(Request $request)
-    {
-        $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $request->fdate;
-        $dataObj = simplexml_load_file($url);
-        if ($dataObj) {
-            foreach ($dataObj as $item) {
-                if ($item->title == 'USD') {
-                    return response()->json($item);
-                }
-            }
-        }
-    }
+
     public function mzdn()
     {
         return view('reports.mzdn');
@@ -227,39 +253,6 @@ return $response;
     public function dob()
     {
         return view('reports.dob');
-    }
-
-    function getCurrencyPeriod(Request $request)
-    {
-        $datesNow = $request->dates;
-        $period = $request->period;
-        $datesNowString = strtotime($datesNow);
-        $last = strtotime($datesNow . '-' . $period . 'day');
-        //$last = strtotime($datesNow . '- 1 month');
-        $countDay = ($datesNowString - $last) / 86400;
-        for (
-            $i = 1;
-            $i <= $countDay;
-            $i++
-        ) {
-            $last = $last + 86400;
-            $dates = date('d.m.Y', $last);
-            $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $dates;
-            $dataObj = simplexml_load_file($url);
-            if ($dataObj) {
-                foreach ($dataObj as $item) {
-                    if ($item->title == 'USD') {
-                        $description = $item->description;
-                        $array[$i] =  array(
-                            "dates" => $dates,
-                            "description" => $description,
-                        );
-                    }
-                }
-            }
-        }
-
-        return response()->json($array);
     }
 
     public function gno()

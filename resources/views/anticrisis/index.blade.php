@@ -785,7 +785,24 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab tab_4" id="tab4"></div>
+                        <div class="tab tab_4" id="tab4">
+                            <p class="tab__title">Обзорная карта расположения скважин по экономической эффективности</p>
+                            <div class="tab__map">
+                                <img src="/img/anticrisis_map.svg">
+                                <div class="tab__map-legend">
+                                    <div class="tab__map-legend-row tab__map-legend-row_1">
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_1"><span>НГДУ-1</span></p>
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_2"><span>НГДУ-2</span></p>
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_3"><span>НГДУ-3</span></p>
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_4"><span>НГДУ-4</span></p>
+                                    </div>
+                                    <div class="tab__map-legend-row tab__map-legend-row_2">
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_1"><span>Рентабельные</span></p>
+                                        <p class="tab__map-legend-row-item tab__map-legend-row-item_2"><span>Нерентабельные</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="tab tab_5" id="tab5">
                             <table class="anti-table w-100">
                                 <thead>
@@ -3579,21 +3596,23 @@
                         <table class="table table1-2">
                             <tr>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        4,905
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4 text-nowrap">4 905</div>
+                                        <div class="unit-vc ml-2" style="line-height: 1">тыс. тонн</div>
                                     </div>
                                     <div class="in-work">Базовый</div>
                                 </td>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        4,378
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4 text-nowrap">4 378</div>
+                                        <div class="unit-vc ml-2" style="line-height: 1">тыс. тонн</div>
                                     </div>
                                     <div class="in-idle">Выбранный</div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <div class="txt2">Добыча нефти, тыс. тонн</div>
+                                    <div class="txt2">Добыча нефти</div>
                                 </td>
                             </tr>
                         </table>
@@ -3604,16 +3623,18 @@
                         <table class="table table1-2">
                             <tr>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        16 944
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4 text-nowrap">16 944</div>
+                                        <div class="unit-vc ml-2" style="line-height: 1">ед</div>
                                     </div>
                                     <div class="in-work">Базовый</div>
                                     <div class="txt2 mt-2 float-none">4,7</div>
                                     <div class="in-work">Удельно ПРС на скв</div>
                                 </td>
                                 <td class="w-50">
-                                    <div class="txt4">
-                                        6 130
+                                    <div class="d-flex align-items-center">
+                                        <div class="txt4 text-nowrap">6 130</div>
+                                        <div class="unit-vc ml-2" style="line-height: 1">ед</div>
                                     </div>
                                     <div class="in-idle">Выбранный</div>
                                     <div class="txt2 mt-2 float-none">3,5</div>
@@ -3622,7 +3643,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <div class="txt2">Кол-во ПРС</div>
+                                    <div class="txt2">Общее количество ПРС</div>
                                 </td>
                             </tr>
                         </table>
@@ -4065,8 +4086,8 @@
                         style: {
                             colors: ['#fff']
                         },
-                        formatter: function(seriesName, opts) {
-                            return Math.round(parseInt(seriesName/1000))
+                        formatter: function (seriesName, opts) {
+                            return Math.round(parseInt(seriesName / 1000))
                         }
                     },
                     min: 80000,
@@ -4445,8 +4466,8 @@
                         style: {
                             colors: ['#fff']
                         },
-                        formatter: function(seriesName, opts) {
-                            return Math.round(parseInt(seriesName/1000))
+                        formatter: function (seriesName, opts) {
+                            return Math.round(parseInt(seriesName / 1000))
                         }
                     },
                     min: 90000,

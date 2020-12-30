@@ -779,7 +779,7 @@ a.dropdown-link-vc3 {
 }
 
 .tabs {
-  height: 730px;
+  height: 775px;
   margin: 10px 5px 0 0;
   overflow-y: auto;
 
@@ -891,7 +891,116 @@ a.dropdown-link-vc3 {
     }
   }
 
-  &_2 {
+  &_4 {
+    height: 100%;
+
+    .tab__map {
+      background: -moz-linear-gradient(0deg, rgba(13, 43, 77, 0) 48%, #1c2a51 50%, rgba(13, 43, 77, 0) 52%),
+      -moz-linear-gradient(-90deg, rgba(13, 43, 77, 0) 48%, #1c2a51 50%, rgba(13, 43, 77, 0) 52%);
+      background: -webkit-linear-gradient(0deg, rgba(13, 43, 77, 0) 48%, #1c2a51 50%, rgba(13, 43, 77, 0) 52%),
+      -webkit-linear-gradient(-90deg, rgba(13, 43, 77, 0) 48%, #1c2a51 50%, rgba(13, 43, 77, 0) 52%);
+      background: -ms-linear-gradient(0deg, rgba(13, 43, 77, 0) 48%, #1c2a51 50%, rgba(13, 43, 77, 0) 52%),
+      -ms-linear-gradient(-90deg, rgba(13, 43, 77, 0) 48%, #1c2a51 50%, rgba(13, 43, 77, 0) 52%);
+      background: linear-gradient(0deg, rgba(13, 43, 77, 0) 48%, #1c2a51 50%, rgba(13, 43, 77, 0) 52%),
+      linear-gradient(-90deg, rgba(13, 43, 77, 0) 48%, #1c2a51 50%, rgba(13, 43, 77, 0) 52%);
+      background-size: 3em 3em;
+      background-color: #1d2145;
+      height: calc(100% - 32px);
+      position: relative;
+
+      img {
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      &-legend {
+        bottom: 39px;
+        left: 39px;
+        position: absolute;
+
+        &-row {
+          display: flex;
+          margin-top: 30px;
+
+          &_1 {
+            .tab__map-legend-row-item{
+              font-size: 15px;
+              font-weight: bold;
+              margin: 0 26px 0 0;
+              padding: 0 0 0 32px;
+              position: relative;
+              span{
+                position: relative;
+                top: 4px;
+              }
+              &:before{
+                content: "";
+                border-radius: 2px;
+                height: 25px;
+                left: 0;
+                position: absolute;
+                top: 0;
+                width: 25px;
+              }
+              &_1{
+                &:before{
+                  background-color: #F6A2A2;
+                }
+              }
+              &_2{
+                &:before{
+                  background-color: #4F5485;
+                }
+              }
+              &_3{
+                &:before{
+                  background-color: #81B9FE;
+                }
+              }
+              &_4{
+                &:before{
+                  background-color: #374AB4;
+                }
+              }
+            }
+          }
+
+          &_2 {
+            .tab__map-legend-row-item{
+              font-size: 15px;
+              font-weight: bold;
+              margin: 0 35px 0 0;
+              padding: 0 0 0 35px;
+              position: relative;
+              span{
+                position: relative;
+              }
+              &:before{
+                content: "";
+                border-radius: 50%;
+                height: 16px;
+                left: 0;
+                position: absolute;
+                top: 0;
+                width: 16px;
+              }
+              &_1{
+                &:before{
+                  background-color: #00A54F;
+                }
+              }
+              &_2{
+                &:before{
+                  background-color: #EE1C23;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   &_5 {
@@ -1059,12 +1168,12 @@ a.dropdown-link-vc3 {
 }
 
 #small_chart {
-  .apexcharts-legend{
-    display: block!important;
-    margin-top: 5px!important;
+  .apexcharts-legend {
+    display: block !important;
+    margin-top: 5px !important;
   }
 
-  .apexcharts-legend-series{
+  .apexcharts-legend-series {
     display: flex;
     justify-content: center;
   }
@@ -1087,6 +1196,7 @@ a.dropdown-link-vc3 {
     }
   }
 }
-.apexcharts-toolbar{
-  display: none!important;
+
+.apexcharts-toolbar {
+  display: none !important;
 }
