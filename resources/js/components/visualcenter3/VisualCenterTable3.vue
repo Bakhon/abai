@@ -299,8 +299,19 @@
               <!-- <div class="dropdown">-->
 
               <ul>
-                <li class="center-li row px-4" @click="changeMenu('101')">
-                  <a class="col-10">С учётом доли участия КМГ</a>
+                <li class="center-li row px-4">
+                  <a
+                      class="col-10"
+                      @click="
+                        getProduction(
+                          'oil_plan',
+                          'oil_fact',
+                          `${oilChartHeadName}`,
+                          'тн',
+                          'С учётом доли участия КМГ'
+                        )
+                    "
+                  >С учётом доли участия КМГ</a>
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton1}`">
                       &#10003;
@@ -329,7 +340,7 @@
               </div>
 
               <ul>
-                <li class="center-li row px-4" @click="changeMenu('102')">
+                <li class="center-li row px-4">
                   <a class="col-10">Сдача нефти по узлам учёта</a>
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton2}`">
@@ -337,7 +348,7 @@
                     </div>
                   </div>
                 </li>
-                <li class="center-li row px-4" @click="changeMenu('103')">
+                <li class="center-li row px-4">
                   <a
                     class="col-10"
                     @click="
@@ -910,7 +921,9 @@
                       <div v-if="index === 0" class="center">план</div>
                       <div class="font" v-if="item.planMonth">
                         {{
-                          new Intl.NumberFormat("ru-RU").format(item.planMonth)
+                          new Intl.NumberFormat("ru-RU").format(
+                              item.planMonth >= 1000 ? (item.planMonth / 1000).toFixed(0) : (item.planMonth / 1000)
+                          )
                         }}
                         <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
@@ -919,7 +932,9 @@
                       <div v-if="index === 0" class="center">факт</div>
                       <div class="font" v-if="item.factMonth">
                         {{
-                          new Intl.NumberFormat("ru-RU").format(item.factMonth)
+                          new Intl.NumberFormat("ru-RU").format(
+                              item.factMonth >= 1000 ? (item.factMonth / 1000).toFixed(0) : (item.factMonth / 1000)
+                          )
                         }}
                         <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
@@ -938,7 +953,7 @@
                       <div class="font" v-if="item.factMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(item.factMonth - item.planMonth)
+                            Math.abs(item.factMonth - item.planMonth) >= 1000 ? (Math.abs(item.factMonth - item.planMonth) / 1000).toFixed(0) : (Math.abs(item.factMonth - item.planMonth) / 1000)
                           )
                         }}
                         <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
@@ -968,19 +983,6 @@
                       </div>
                     </td>
                   </tr>
-
-                  <!--  <tr>
-                <td colspan="13">1</td>
-              </tr>
-
-              <tr>
-                <td>2</td>
-              </tr>
-
-              <tr>
-                <td colspan="13">3</td>
-              </tr>-->
-
                   <tr>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ NameDzoFull[0] }}</div>
@@ -992,12 +994,11 @@
                       "
                     >
                       <div class="font">
-                        <!--{{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}-->
-
                         {{
-                          new Intl.NumberFormat("ru-RU").format(planMonthSumm)
+                          new Intl.NumberFormat("ru-RU").format(
+                              planMonthSumm >= 1000 ? (planMonthSumm / 1000).toFixed(0) : (planMonthSumm / 1000)
+                          )
                         }}
-
                         <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
                     </td>
@@ -1005,7 +1006,9 @@
                       <div class="font">
                         <!-- {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}-->
                         {{
-                          new Intl.NumberFormat("ru-RU").format(factMonthSumm)
+                          new Intl.NumberFormat("ru-RU").format(
+                              factMonthSumm >= 1000 ? (factMonthSumm / 1000).toFixed(0) : (factMonthSumm / 1000)
+                          )
                         }}
                         <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
                       </div>
@@ -1020,10 +1023,10 @@
                         class="triangle"
                         :style="`${getColor(factMonthSumm - planMonthSumm)}`"
                       ></div>
-                      <div class="percent font">
+                      <div class="font">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(factMonthSumm - planMonthSumm)
+                            Math.abs(factMonthSumm - planMonthSumm) >= 1000 ? (Math.abs(factMonthSumm - planMonthSumm) / 1000).toFixed(0) : (Math.abs(factMonthSumm - planMonthSumm) / 1000)
                           )
                         }}
                         <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
@@ -1038,7 +1041,7 @@
                             100
                         )}`"
                       ></div>
-                      <div class="percent font" v-if="factMonthSumm">
+                      <div class="font" v-if="factMonthSumm">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
@@ -1057,7 +1060,7 @@
             </div>
 
             <div class="vis-chart pl-3">
-              <div class="name-chart-left">{{ nameChartLeft }}</div>
+              <div class="name-chart-left">{{ nameChartLeft }}, тыс. тонн</div>
               <div class="name-chart-head">{{ item3 }}</div>
               <vc-chart :height="500" v-if="company == 'all'"> </vc-chart>
             </div>
@@ -1746,7 +1749,7 @@
               align-items: baseline;
               display: flex;
               justify-content: space-between;
-              font-size: 18px;
+              font-size: 24px;
               margin-left: 0;
               .right{
                 font-size: 10px;
