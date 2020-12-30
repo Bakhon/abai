@@ -52,7 +52,7 @@
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
               class="dropdown-item"
-              style="background: #5973cc !important; color: #fff"
+              style="background: #40467e !important; color: #fff"
               v-for="(item, index) in chartNames"
               :key="item"
               href="#"
@@ -65,6 +65,7 @@
         <div class="dropdown">
           <button
             class="btn btn-secondary dropdown-toggle trfabtgraph"
+            
             type="button"
             id="dropdownMenuButton"
             data-toggle="dropdown"
@@ -76,7 +77,8 @@
 
           <div
             class="dropdown-menu"
-            style="background: #5973cc !important"
+            
+            style="background: #40467e !important; width: calc(100% - 2px);"
             aria-labelledby="dropdownMenuButton"
             data-toggle="dropdown"
             @click.prevent.stop="() => {}"
@@ -85,8 +87,8 @@
               <select
                 v-model="month"
                 style="
-                  background-color: #5973cc !important;
-                  border-color: #5973cc !important;
+                  background-color: #40467e !important;
+                  border-color: #40467e !important;
 
                   color: white;
                 "
@@ -113,8 +115,8 @@
               <select
                 v-model="selectYear"
                 style="
-                  background-color: #5973cc !important;
-                  border-color: #5973cc !important;
+                  background-color: #40467e !important;
+                  border-color: #40467e !important;
 
                   color: white;
                 "
@@ -135,7 +137,7 @@
             <a
               href="#"
               @click.prevent="chooseDt"
-              class="btn btn-primary"
+              class="btn btn-sm button_form"
               style="margin-left: 15px"
               >Сформировать</a
             >
@@ -1544,7 +1546,7 @@ body {
 }
 .trfabtgraph {
   width: 195px;
-  background: #5973cc !important;
+  background: #40467e !important;
 }
 .trfa_page.trfa_page {
   padding: 0 !important;
@@ -1647,6 +1649,17 @@ a:hover {
   height: 35px;
   margin-right: 20px;
   width: 195px;
+}
+.button_form.button_form {
+  background: #333975;
+  border: 0px;
+  color: #fff;
+  align-self: center;
+  width: 150px;
+  margin-top: 5px;
+  margin-right: 12px;
+  /* display: flex;  */
+  /* justify-content: center */
 }
 </style>
 
