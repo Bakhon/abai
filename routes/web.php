@@ -29,8 +29,9 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
                 Route::get("/geteconimicdata", "EconomicController@getEconomicData");
-                Route::get("/getcurrency", "DruidController@getCurrency");
-                Route::get("/getcurrencyperiod", "DruidController@getCurrencyPeriod");
+                Route::get("/getcurrency", "VisualCenterController@getCurrency");
+                Route::get("/getcurrencyperiod", "VisualCenterController@getCurrencyPeriod");
+                Route::get("/get-usd-rates", "VisualCenterController@getUsdRates");
                 Route::post("/corrosion", "DruidController@corrosion");
                 Route::get(
                     '/',

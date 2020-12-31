@@ -91,4 +91,15 @@
             SeparatorTitle.addClass('d-flex');
         }
     }
+    $(function(){
+        $('.nav-lang__select').click(function(){
+            $('.nav-lang').toggleClass('active')
+        })
+        $(document).click(function(event) {
+            var $target = $(event.target);
+            if(!$target.closest('.nav-lang').length) {
+                $('.nav-lang').removeClass('active');
+            }
+        });
+    })
 </script>

@@ -23,9 +23,9 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 window.Jquery = require('jquery');
+moment.locale('ru');
 Vue.prototype.$moment = moment
 
 Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar);
@@ -54,6 +54,7 @@ Vue.component('visual-center-table6', require('./components/visualcenter3/Visual
 Vue.component('visual-center-table7', require('./components/visualcenter3/VisualCenterTable7.vue').default);
 Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
+Vue.component('visual-center-usd-table', require('./components/visualcenter3/VisualCenterUsdTable.vue').default);
 Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
 Vue.component('vc-chart', require('./components/visualcenter3/VcChart.vue').default);
 Vue.component('indicator', require('./components/visualcenter3/Indicator.vue').default);
@@ -71,6 +72,7 @@ Vue.component('chart3-component', require('./components/Economic/chart3.vue').de
 Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
 Vue.component('gno-incl-table', require('./components/gno/GnoInclTable.vue').default);
+Vue.component('gno-wells-repairs', require('./components/gno/GnoWellsRepairs.vue').default);
 Vue.component('gno-line-points-chart', require('./components/gno/GnoCurveTable.vue').default);
 Vue.component('gno-chart-bar', require('./components/gno/GnoChartBar.vue').default);
 Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);

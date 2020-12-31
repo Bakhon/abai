@@ -205,13 +205,26 @@
                 </div>
                 <div class="second-td-header"></div>
               </td>
-              <td
+
+              <td class="vc-select-table"
                 style="width: 200px; border-left: 10px solid #0f1430"
                 @click="changeTable('2')"
                 :style="`${tableHover2}`"
               >
+
+<!--              <td class="vc-select-table"-->
+<!--                  style="width: 200px; border-left: 10px solid #0f1430"-->
+<!--                  :style="`${tableHover2}`"-->
+<!--              >-->
                 <div class="nu">
-                  <div class="number">{{ oilNow }}</div>
+                  <div class="number d-flex justify-content-between">
+                      <div>
+                          {{ oilNow }}
+                      </div>
+                      <div class="mt-1">
+                          <img src="/img/icons/link.svg">
+                      </div>
+                  </div>
                   <div class="unit-vc">$ / bbl</div>
                 </div>
                 <br />
@@ -223,22 +236,30 @@
                   <div class="txt3">vs сентябрь</div>
                 </div>
               </td>
-              <td
+              <td class="vc-select-table"
                 style="width: 200px; border-left: 10px solid #0f1430"
                 @click="changeTable('3')"
                 :style="`${tableHover3}`"
               >
                 <div class="nu">
-                  <div class="number">{{ currencyNow }}</div>
+                    <div class="number d-flex justify-content-between">
+                        <div>
+                            {{ currencyNow }}
+                        </div>
+                        <div class="mt-1">
+                            <img src="/img/icons/link.svg">
+                        </div>
+                    </div>
                   <div class="unit-vc">kzt / $</div>
                 </div>
                 <br />
                 <div class="txt1">Курс доллара</div>
                 <br />
                 <div class="percent-currency">
-                  <div class="arrow"></div>
-                  <div class="txt2">5,2%</div>
-                  <div class="txt3">vs сентябрь</div>
+                  <div class="arrow" v-if="dailyCurrencyChangeIndexUsd === 'UP'"></div>
+                  <div class="arrow2" v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"></div>
+                  <div class="txt2">{{ dailyCurrencyChangeUsd }}%</div>
+                  <div class="txt3">vs вчера</div>
                 </div>
               </td>
             </tr>
@@ -263,7 +284,7 @@
                     'oil_plan',
                     'oil_fact',
                     `${oilChartHeadName}`,
-                    'тн',
+                    'тыс. тонн',
                     'Добыча нефти'
                   )
                 "
@@ -271,15 +292,26 @@
                 <!-- <label for="menu">-->
                 <div class="icon-all icons1"></div>
                 <div class="txt5">Добыча нефти</div>
-                <div class="txt6">тыс. тн</div>
+                <div class="txt6">тыс. тонн</div>
                 <!--   </label>-->
               </div>
 
               <!-- <div class="dropdown">-->
 
               <ul>
-                <li class="center-li row px-4" @click="changeMenu('101')">
-                  <a class="col-10">С учётом доли участия КМГ</a>
+                <li class="center-li row px-4">
+                  <a
+                      class="col-10"
+                      @click="
+                        getProduction(
+                          'oil_plan',
+                          'oil_fact',
+                          `${oilChartHeadName}`,
+                          'тыс. тонн',
+                          'С учётом доли участия КМГ'
+                        )
+                    "
+                  >С учётом доли участия КМГ</a>
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton1}`">
                       &#10003;
@@ -297,7 +329,7 @@
                     'oil_dlv_plan',
                     'oil_dlv_fact',
                     'Динамика сдачи нефти',
-                    'тыс. тн',
+                    'тыс. тонн',
                     'Сдача нефти'
                   )
                 "
@@ -308,15 +340,26 @@
               </div>
 
               <ul>
-               <!-- <li class="center-li row px-4" @click="changeMenu('102')">
-                  <a class="col-10">Сдача нефти по узлам учёта</a>
+                <li class="center-li row px-4">
+                  <a
+                      class="col-10"
+                      @click="
+                        getProduction(
+                          'oil_dlv_plan',
+                          'oil_dlv_fact',
+                          'Динамика сдачи нефти',
+                          'тыс. тонн',
+                          'С учётом доли участия КМГ'
+                        )
+                      "
+                  >С учётом доли участия КМГ</a>
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton2}`">
                       ✓
                     </div>
                   </div>
-                </li>-->
-                <li class="center-li row px-4" @click="changeMenu('103')">
+                </li>
+                <li class="center-li row px-4">
                   <a
                     class="col-10"
                     @click="
@@ -324,7 +367,7 @@
                         'tovarnyi_ostatok_nefti_prev_day',
                         'tovarnyi_ostatok_nefti_today',
                         `${oilChartHeadName}`,
-                        'тн',
+                        'тыс. тонн',
                         'Товарный остаток нефти'
                       )
                     "
@@ -367,14 +410,14 @@
                     'gas_plan',
                     'gas_fact',
                     'Динамика добычи газа',
-                    'тыс м³',
+                    'тыс. м³',
                     'Добыча газа'
                   )
                 "
               >
                 <div class="icon-all icons3"></div>
                 <div class="txt5">Добыча газа</div>
-                <div class="txt6">тыс м³</div>
+                <div class="txt6">тыс. м³</div>
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('104')">
@@ -385,7 +428,7 @@
                         'sdacha_gaza_prirod_plan',
                         'sdacha_gaza_prirod_fact',
                         'Динамика сдачи природного газа',
-                        'тыс м³',
+                        'тыс. м³',
                         'Сдача природного газа'
                       )
                     "
@@ -406,7 +449,7 @@
                         'raskhod_prirod_plan',
                         'raskhod_prirod_fact',
                         'Динамика расхода природного газа',
-                        'тыс м³',
+                        'тыс. м³',
                         'Расход природного газа на собственные нужды'
                       )
                     "
@@ -426,7 +469,7 @@
                         'pererabotka_gaza_prirod_plan',
                         'pererabotka_gaza_prirod_fact',
                         'Динамика переработки природного газа',
-                        'тыс м³',
+                        'тыс. м³',
                         'Переработка природного газа'
                       )
                     "
@@ -447,7 +490,7 @@
                         'sdacha_gaza_poput_plan',
                         'sdacha_gaza_poput_fact',
                         'Динамика сдачи попутного газа',
-                        'тн',
+                        'тыс. тонн',
                         'Сдача попутного газа'
                       )
                     "
@@ -468,7 +511,7 @@
                         'raskhod_poput_plan',
                         'raskhod_poput_fact',
                         'Динамика расхода попутного газа на собственные нужды',
-                        'тыс м³',
+                        'тыс. м³',
                         'Расход попутного газа на собственные нужды '
                       )
                     "
@@ -489,7 +532,7 @@
                         'pererabotka_gaza_poput_plan',
                         'pererabotka_gaza_poput_fact',
                         'Динамика переработки попутного газа',
-                        'тыс м³',
+                        'тыс. м³',
                         'Переработка попутного газа'
                       )
                     "
@@ -512,7 +555,7 @@
                     'gk_plan',
                     'gk_fact',
                     'Динамика добычи конденсата',
-                    'тыс. тн',
+                    'тыс. тонн',
                     'Добыча конденсата'
                   )
                 "
@@ -523,7 +566,18 @@
               </div>
               <ul>
              <li class="center-li row px-4" @click="changeMenu('113')">
-                  <a class="col-10">С учётом доли участия КМГ</a>
+                  <a
+                      class="col-10"
+                      @click="
+                        getProduction(
+                          'gk_plan',
+                          'gk_fact',
+                          'Динамика добычи конденсата',
+                          'тыс. тонн',
+                          'С учётом доли участия КМГ'
+                        )
+                      "
+                  >С учётом доли участия КМГ</a>
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton13}`">
                       &#10003;
@@ -541,7 +595,7 @@
                     'liq_plan',
                     'liq_fact',
                     'Динамика объёма закачки воды',
-                    'м³',
+                    'тыс. м³',
                     'Закачка воды'
                   )
                 "
@@ -664,7 +718,7 @@
                     <div class="month-day">
                       <div class="calendar-day">
                         <date-picker
-                          v-if="selectedDMY == 0"
+                          v-if="selectedOilPeriod == 0"
                           mode="range"
                           v-model="range"
                           is-range
@@ -717,30 +771,16 @@
           </div>
 
           <div class="row container-fluid" :style="`${displayTable}`">
-            <div class="col-6 px-3">
-              <table class="table4-2 w-100">
+            <div class="vis-table px-3">
+              <table class="table4 w-100">
                 <tbody>
-                  <tr>
-                    <td class="big-table-hidtd small-td"></td>
-
-                    <td class="small-td">
-                      <div class="center2">план ({{ item4 }})</div>
-                    </td>
-                    <td class="small-td">
-                      <div class="center2">факт ({{ item4 }})</div>
-                    </td>
-                    <td class="small-td">
-                      <div class="center2">+/- ({{ item4 }})</div>
-                    </td>
-                    <td class="small-td"><div class="center2">%</div></td>
-                  </tr>
-
                   <tr v-for="(item, index) in tables">
                     <td
                       @click="saveCompany('all')"
                       :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
+                      style="cursor: pointer"
                     >
-                      <div class="first-td">{{ getNameDzoFull(item.dzo) }}</div>
+                      <span>{{ getNameDzoFull(item.dzo) }}</span>
                     </td>
 
                     <td
@@ -748,47 +788,52 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
+                      <div v-if="index === 0" class="center">план</div>
                       <!--old date-->
-                      <div v-if="item.productionPlanForMonth">
+                      <div class="font" v-if="item.productionPlanForMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             item.productionPlanForMonth
                           )
                         }}
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
 
-                      <div v-if="item.planYear">
+                      <div class="font" v-if="item.planYear">
                         {{
                           new Intl.NumberFormat("ru-RU").format(item.planYear)
                         }}
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                       <!--old date-->
 
                       <div class="font" v-if="item.plan">
                         {{ new Intl.NumberFormat("ru-RU").format(item.plan) }}
-                        <!-- <div class="right">{{ item4 }}</div>-->
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <!--old date-->
-                      <div v-if="item.productionFactForMonth">
+                      <div v-if="index === 0" class="center">факт</div>
+                      <div class="font" v-if="item.productionFactForMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             item.productionFactForMonth
                           )
                         }}
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
 
-                      <div v-if="item.factYear">
+                      <div class="font" v-if="item.factYear">
                         {{
                           new Intl.NumberFormat("ru-RU").format(item.factYear)
                         }}
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                       <!--old date-->
 
                       <div class="font" v-if="item.fact">
                         {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
-                        <!--<div class="right">{{ item4 }}</div>-->
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td
@@ -796,16 +841,17 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
+                      <div v-if="index === 0" class="center">+/-</div>
                       <div
                         v-if="item.productionFactForMonth"
-                        class="triangle2"
-                        :style="`${getColor2(
+                        class="triangle"
+                        :style="`${getColor(
                           item.productionFactForMonth -
                             item.productionPlanForMonth
                         )}`"
                       ></div>
                       <div
-                        class="percent2 font"
+                        class="dynamic font"
                         v-if="item.productionFactForMonth"
                       >
                         {{
@@ -816,32 +862,22 @@
                             )
                           )
                         }}
-                        <!-- <div class="right">{{ item4 }}</div>-->
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                      <div v-if="index === 0" class="center">%</div>
                       <div
                         v-if="item.productionFactForMonth"
-                        class="triangle2"
-                        :style="`${getColor2(
+                        class="triangle"
+                        :style="`${getColor(
                           ((item.productionFactForMonth -
                             item.productionPlanForMonth) /
                             item.productionPlanForMonth) *
                             100
                         )}`"
                       ></div>
-                      <div class="percent2 font">
-                        <!--
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(
-                              (productionFactPercentOneDzo /
-                                item.productionFactForMonth -
-                                1) *
-                                100
-                            ).toFixed(2)
-                          )
-                        }}-->
+                      <div class="dynamic font">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             (Math.abs(
@@ -859,7 +895,7 @@
               </table>
             </div>
 
-            <div class="col-6 pl-5">
+            <div class="vis-chart pl-3">
               <div class="name-chart-left">{{ nameChartLeft }}</div>
               <div class="name-chart-head">{{ item3 }}</div>
               <vc-chart v-if="company != 'all'"> </vc-chart>
@@ -889,18 +925,18 @@
                       <div v-if="index === 0" class="center">план</div>
                       <div class="font" v-if="item.planMonth">
                         {{
-                          new Intl.NumberFormat("ru-RU").format(item.planMonth)
+                          formatVisTableNumber(item.planMonth)
                         }}
-                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div v-if="index === 0" class="center">факт</div>
                       <div class="font" v-if="item.factMonth">
                         {{
-                          new Intl.NumberFormat("ru-RU").format(item.factMonth)
+                          formatVisTableNumber(item.factMonth)
                         }}
-                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td
@@ -914,13 +950,11 @@
                         class="triangle"
                         :style="`${getColor(item.factMonth - item.planMonth)}`"
                       ></div>
-                      <div class="font" v-if="item.factMonth">
+                      <div class="font dynamic" v-if="item.factMonth">
                         {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(item.factMonth - item.planMonth)
-                          )
+                          formatVisTableNumber(Math.abs(item.factMonth - item.planMonth))
                         }}
-                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
@@ -933,33 +967,20 @@
                             100
                         )}`"
                       ></div>
-                      <div class="font" v-if="item.factMonth">
+                      <div class="font dynamic" v-if="item.factMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
                               ((item.factMonth - item.planMonth) /
                                 item.planMonth) *
                                 100
-                            ).toFixed(2)
+                            ).toFixed(1)
                           )
                         }}
                         %
                       </div>
                     </td>
                   </tr>
-
-                  <!--  <tr>
-                <td colspan="13">1</td>
-              </tr>
-
-              <tr>
-                <td>2</td>
-              </tr>
-
-              <tr>
-                <td colspan="13">3</td>
-              </tr>-->
-
                   <tr>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ NameDzoFull[0] }}</div>
@@ -971,22 +992,18 @@
                       "
                     >
                       <div class="font">
-                        <!--{{ new Intl.NumberFormat("ru-RU").format(planDaySumm) }}-->
-
                         {{
-                          new Intl.NumberFormat("ru-RU").format(planMonthSumm)
+                          formatVisTableNumber(planMonthSumm)
                         }}
-
-                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                       <div class="font">
-                        <!-- {{ new Intl.NumberFormat("ru-RU").format(factDaySumm) }}-->
                         {{
-                          new Intl.NumberFormat("ru-RU").format(factMonthSumm)
+                          formatVisTableNumber(factMonthSumm)
                         }}
-                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td
@@ -999,13 +1016,11 @@
                         class="triangle"
                         :style="`${getColor(factMonthSumm - planMonthSumm)}`"
                       ></div>
-                      <div class="percent font">
+                      <div class="font dynamic">
                         {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(factMonthSumm - planMonthSumm)
-                          )
+                          formatVisTableNumber(Math.abs(factMonthSumm - planMonthSumm))
                         }}
-                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">тыс. тонн</div>
+                        <div class="right" style="font-family: 'Harmonia-sans', sans-serif; opacity: 0.6;">{{ item4 }}</div>
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
@@ -1017,14 +1032,14 @@
                             100
                         )}`"
                       ></div>
-                      <div class="percent font" v-if="factMonthSumm">
+                      <div class="font dynamic" v-if="factMonthSumm">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
                               ((factMonthSumm - planMonthSumm) /
                                 planMonthSumm) *
                                 100
-                            ).toFixed(2)
+                            ).toFixed(1)
                           )
                         }}
                         %
@@ -1035,58 +1050,40 @@
               </table>
             </div>
 
-            <div class="vis-chart pl-5">
-              <div class="name-chart-left">{{ nameChartLeft }}</div>
+            <div class="vis-chart pl-3">
+              <div class="name-chart-left">{{ nameChartLeft }}, {{ item4 }}</div>
               <div class="name-chart-head">{{ item3 }}</div>
-              <vc-chart v-if="company == 'all'"> </vc-chart>
+              <vc-chart :height="500" v-if="company == 'all'"> </vc-chart>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="second-table big-area" :style="`${Table2}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">
-            <br />
+        <visual-center-usd-table
+            :style="`${Table2}`"
+            :selected-usd-period.sync="selectedOilPeriod"
+            :usd-rates-data.sync="oilRatesData"
+            @period-select-usd="getOilNow(timeSelect, periodSelect(selectedOilPeriod))"
+            :period-select-func.sync="periodSelectFunc"
+            :currency-chart-data.sync="currencyChartData"
+            :usd-chart-is-loading.sync="usdChartIsLoading"
+            @change-table="changeTable('1')"
+            :main-title="'Динамика цены на нефть'"
+            :second-title="''"
+        />
 
-            <div
-              @click="selectedDMY = menuDMY.id"
-              class="period"
-              v-for="(menuDMY, index) in periodSelectFunc()"
-              :style="{
-                color: menuDMY.current,
-              }"
-              v-on:click="periodSelect"
-            >
-              <div>{{ menuDMY.DMY }}</div>
-            </div>
-            <visual-center-chart-area-oil3></visual-center-chart-area-oil3>
-          </div>
-        </div>
-      </div>
-
-      <div class="third-table big-area" :style="`${Table3}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">
-            <br />
-
-            <div
-              @click="selectedDMY2 = menuDMY.id"
-              class="period"
-              v-for="(menuDMY, index) in periodSelectFunc()"
-              :style="{
-                color: menuDMY.current2,
-              }"
-              v-on:click="periodSelectUSD"
-            >
-              <div>{{ menuDMY.DMY }}</div>
-            </div>
-            <visual-center-chart-area-usd3></visual-center-chart-area-usd3>
-          </div>
-        </div>
-      </div>
+      <visual-center-usd-table
+          :style="`${Table3}`"
+          :period.sync="period"
+          :usd-rates-data.sync="usdRatesData"
+          :period-select-func.sync="periodSelectFunc"
+          :currency-chart-data.sync="currencyChartData"
+          :table-data.sync="usdRatesDataTableForCurrentPeriod"
+          :usd-chart-is-loading.sync="usdChartIsLoading"
+          @change-table="changeTable('1')"
+          :main-title="'Динамика курса доллара США к тенге (USD, НБ РК)'"
+          :second-title="'USD НБ РК'"
+      />
 
       <div class="third-table big-area" :style="`${Table5}`">
         <div class="first-string first-string2">
@@ -1144,7 +1141,7 @@
                       <div class="month-day">
                         <div class="calendar-day">
                           <date-picker
-                            v-if="selectedDMY == 0"
+                            v-if="selectedOilPeriod == 0"
                             mode="range"
                             v-model="range"
                             is-range
@@ -1205,43 +1202,33 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="col-6">
-                <table class="table4">
-                  <tr v-for="(item, index) in innerWells">
-                    <!-- @click="saveCompany('all')"-->
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="first-td">
-                        {{ item.name }}
-                      </div>
-                      <!--{{ getNameDzoFull(item.name) }}-->
-                    </td>
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="font">
-                        {{ item.value }}
-                      </div>
-                    </td>
-
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="font"></div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div class="col-6 px-2">
-                <visual-center3-wells></visual-center3-wells>
-              </div>
+                <div class="vis-table vis-table-small px-3">
+                    <table v-if="innerWells.length" class="table4 w-100">
+                        <tbody>
+                        <tr v-for="(item, index) in innerWells">
+                            <td
+                                class="w-50"
+                                :class="index % 2 === 0 ? 'tdStyle' : ''"
+                                style="cursor: pointer"
+                            >
+                                <span>
+                                  {{ item.name }}
+                                </span>
+                            </td>
+                            <td
+                                class="w-25 tdNumber"
+                                :class="index % 2 === 0 ? 'tdStyle' : ''"
+                                style="cursor: pointer"
+                            >
+                                {{ item.value }} <span>скважин</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <visual-center3-wells></visual-center3-wells>
+                </div>
             </div>
           </div>
         </div>
@@ -1365,66 +1352,307 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="col-6">
-                <table class="table4">
-                  <tr v-for="(item, index) in innerWells2">
-                    <!-- @click="saveCompany('all')"-->
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="first-td">
-                        {{ item.name }}
-                      </div>
-                      <!--{{ getNameDzoFull(item.name) }}-->
-                    </td>
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
-                    >
-                      <div class="font">
-                        {{ item.value }}
-                      </div>
-                    </td>
+                <div class="vis-table vis-table-small px-3">
+                    <table v-if="innerWells2.length" class="table4 w-100">
+                        <tbody>
+                        <tr v-for="(item, index) in innerWells2">
+                            <td
+                                class="w-50"
+                                :class="index % 2 === 0 ? 'tdStyle' : ''"
+                                style="cursor: pointer"
+                            >
+                                <span>
+                                  {{ item.name }}
+                                </span>
+                            </td>
+                            <td
+                                class="w-25 tdNumber"
+                                :class="index % 2 === 0 ? 'tdStyle' : ''"
+                                style="cursor: pointer"
+                            >
+                                {{ item.value }} <span>скважин</span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <visual-center3-wells></visual-center3-wells>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyle wells-td' : 'tdNone wells-td'
-                      "
+      <div class="third-table big-area" :style="`${Table6}`">
+        <div class="first-string first-string2">
+          <div class="container-fluid">
+            <div class="area-6-name row mt-3 mb-3 px-2">
+              <div class="col">
+                <div class="ml-4 bold">ОТМ</div>
+              </div>
+              <div class="col px-4">
+                <div class="close2" @click="changeTable('1')">Закрыть</div>
+              </div>
+            </div>
+
+            <div class="row px-4">
+              <div class="w-25 pr-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover7}`"
+                    @click="changeMenu2(1)"
+                >
+                  Суточная
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover8}`"
+                    @click="changeMenu2(2)"
+                >
+                  С начала месяца
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover9}`"
+                    @click="changeMenu2(3)"
+                >
+                  С начала года
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div class="dropdown3">
+                  <div
+                      class="button2"
+                      :style="`${buttonHover10}`"
+                      @click="changeMenu2(4)"
+                  >
+                    Календарь
+                  </div>
+                  <ul class="center-menu2 right-indent">
+                    <li class="center-li">
+                      <br /><br />
+
+                      <div class="month-day">
+                        <div class="calendar-day">
+                          <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="">
+              <div class="row px-4">
+                <div class="w-100 pr-2">
+                  <select
+                      style="
+                      background-color: #333975;
+                      border-color: #20274e;
+                      color: white;
+                    "
+                      class="form-control w-100"
+                      id="OTMcompanySelect"
+                      @change="innerWellsProdMetOnChange($event)"
+                  >
+                    <option value="all" v-if="company!='all'"> {{ getNameDzoFull(company) }}</option>
+                    <option v-else>Все компании</option>
+                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
+                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
+                    <option value="КГМ">ТОО «КазГерМунай»</option>
+                    <option value="КОА">ТОО "Казахойл Актобе</option>
+                    <option value="КГМ">ТОО "Казгермунай"</option>
+                    <option value="КБМ">АО «Каражанбасмунай»</option>
+                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row container-fluid">
+              <div class="vis-table vis-table-small px-3">
+                <table v-if="otmData.length" class="table4 w-100" style="height: calc(100% - 20px)">
+                  <tbody>
+                  <tr v-for="(item, index) in otmData" @click="otmSelectedRow = item.code">
+                    <td @click="otmSelectedRow = item.code"
+                        class="w-50"
+                        :class="{
+                          'tdStyle': index % 2 === 0,
+                          'selected': otmSelectedRow === item.code
+                        }"
+                        style="cursor: pointer"
                     >
-                      <div class="font"></div>
+                                <span>
+                                  {{ item.name }}
+                                </span>
+                    </td>
+                    <td @click="otmSelectedRow = item.code"
+                        class="w-25 text-center"
+                        :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                        style="cursor: pointer; font-size: 30px"
+                    >
+                      <div v-if="index === 0" class="center" style="font-size: 12px; line-height: 1.2">План</div>
+                      {{ item.fact }}
                     </td>
                   </tr>
+                  </tbody>
                 </table>
               </div>
-              <div class="col-6 px-2">
-                <visual-center3-wells></visual-center3-wells>
+              <div class="col">
+                <visual-center3-wells v-if="otmDataForChart" :chartData="otmDataForChart"></visual-center3-wells>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!--<div class="third-table big-area" :style="`${Table4}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">Фонд добывающих скважин</div>
-        </div>
-      </div>-->
-
-      <div class="third-table big-area" :style="`${Table6}`">
-        <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">ОТМ</div>
-        </div>
-      </div>
-
       <div class="third-table big-area" :style="`${Table7}`">
         <div class="first-string first-string2">
-          <div class="close2" @click="changeTable('1')">Закрыть</div>
-          <div class="container-fluid">Химизация</div>
+          <div class="container-fluid">
+            <div class="area-6-name row mt-3 mb-3 px-2">
+              <div class="col">
+                <div class="ml-4 bold">Химизация</div>
+              </div>
+              <div class="col px-4">
+                <div class="close2" @click="changeTable('1')">Закрыть</div>
+              </div>
+            </div>
+
+            <div class="row px-4">
+              <div class="w-25 pr-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover7}`"
+                    @click="changeMenu2(1)"
+                >
+                  Суточная
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover8}`"
+                    @click="changeMenu2(2)"
+                >
+                  С начала месяца
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div
+                    class="button2"
+                    :style="`${buttonHover9}`"
+                    @click="changeMenu2(3)"
+                >
+                  С начала года
+                </div>
+              </div>
+              <div class="w-25 px-2">
+                <div class="dropdown3">
+                  <div
+                      class="button2"
+                      :style="`${buttonHover10}`"
+                      @click="changeMenu2(4)"
+                  >
+                    Календарь
+                  </div>
+                  <ul class="center-menu2 right-indent">
+                    <li class="center-li">
+                      <br /><br />
+
+                      <div class="month-day">
+                        <div class="calendar-day">
+                          <date-picker
+                              v-if="selectedDMY == 0"
+                              mode="range"
+                              v-model="range"
+                              is-range
+                              class="m-auto"
+                              :model-config="modelConfig"
+                              @input="changeDate"
+                              @dayclick="dayClicked"
+                          />
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="">
+              <div class="row px-4">
+                <div class="w-100 pr-2">
+                  <select
+                      style="
+                      background-color: #333975;
+                      border-color: #20274e;
+                      color: white;
+                    "
+                      class="form-control w-100"
+                      id="ChemistryCompanySelect"
+                      @change="innerWellsProdMetOnChange($event)"
+                  >
+                    <option value="all" v-if="company!='all'"> {{ getNameDzoFull(company) }}</option>
+                    <option v-else>Все компании</option>
+                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
+                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
+                    <option value="КГМ">ТОО «КазГерМунай»</option>
+                    <option value="КОА">ТОО "Казахойл Актобе</option>
+                    <option value="КГМ">ТОО "Казгермунай"</option>
+                    <option value="КБМ">АО «Каражанбасмунай»</option>
+                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row container-fluid">
+              <div class="vis-table vis-table-small px-3">
+                <table v-if="chemistryData.length" class="table4 w-100" style="height: calc(100% - 20px)">
+                  <tbody>
+                  <tr v-for="(item, index) in chemistryData" @click="chemistrySelectedRow = item.code">
+                    <td @click="chemistrySelectedRow = item.code"
+                        class="w-50"
+                        :class="{
+                          'tdStyle': index % 2 === 0,
+                          'selected': chemistrySelectedRow === item.code
+                        }"
+                        style="cursor: pointer"
+                    >
+                      {{item.name}}
+                    </td>
+                    <td @click="chemistrySelectedRow = item.code"
+                        class="w-25 text-center"
+                        :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
+                        style="cursor: pointer; font-size: 30px"
+                    >
+                      <div v-if="index === 0" class="center" style="font-size: 12px; line-height: 1.2">План</div>
+                      {{ item.fact }}
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col">
+                <visual-center3-wells v-if="chemistryDataForChart" :chartData="chemistryDataForChart"></visual-center3-wells>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1432,7 +1660,7 @@
       <div class="first-string">
         <div class="table-responsive">
           <table class="table table1-2">
-            <tr>
+            <tr class="cursor-pointer">
               <td
                 class="w-50"
                 @click="changeTable('4')"
@@ -1452,14 +1680,18 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt4">
-                  <!--v-if="wells2[0].prod_wells_idle"-->
-                  {{
-                    new Intl.NumberFormat("ru-RU").format(
-                      // wells2[0].prod_wells_idle
-                      prod_wells_idle
-                    )
-                  }}
+                <div class="txt4 d-flex justify-content-between">
+                    <div>
+                      {{
+                        new Intl.NumberFormat("ru-RU").format(
+                          // wells2[0].prod_wells_idle
+                          prod_wells_idle
+                        )
+                      }}
+                    </div>
+                    <div class="mt-1">
+                        <img src="/img/icons/link.svg">
+                    </div>
                 </div>
                 <div class="in-idle">В простое</div>
                 <div class="arrow"></div>
@@ -1467,7 +1699,7 @@
                 <br />
               </td>
             </tr>
-            <tr>
+            <tr class="cursor-pointer">
               <td
                 colspan="2"
                 @click="changeTable('4')"
@@ -1482,7 +1714,7 @@
         <div class="first-string first-string2">
           <div class="table-responsive">
             <table class="table table1-2">
-              <tr>
+              <tr class="cursor-pointer">
                 <td
                   class="w-50"
                   @click="changeTable('5')"
@@ -1507,22 +1739,27 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt4">
-                    <!-- v-if="wells[0].inj_wells_idle"-->
-                    {{
-                      new Intl.NumberFormat("ru-RU").format(
-                        // wells[0].inj_wells_idle
-                        inj_wells_idle
-                      )
-                    }}
-                  </div>
+                    <div class="txt4 d-flex justify-content-between">
+                        <div>
+                            <!-- v-if="wells[0].inj_wells_idle"-->
+                            {{
+                                new Intl.NumberFormat("ru-RU").format(
+                                    // wells[0].inj_wells_idle
+                                    inj_wells_idle
+                                )
+                            }}
+                        </div>
+                        <div class="mt-1">
+                            <img src="/img/icons/link.svg">
+                        </div>
+                    </div>
                   <div class="in-idle">В простое</div>
                   <div class="arrow"></div>
                   <div class="txt2">200</div>
                   <br />
                 </td>
               </tr>
-              <tr>
+              <tr class="cursor-pointer">
                 <td
                   colspan="2"
                   @click="changeTable('5')"
@@ -1544,6 +1781,7 @@
                   @click="changeTable('6')"
                   :style="`${tableHover6}`"
                 >
+                  <div class="mt-1 float-right"><img data-v-3712f8d4="" src="/img/icons/link.svg"></div>
                   <div class="otm"></div>
                   <div class="txt2">ОТМ</div>
                 </td>
@@ -1553,6 +1791,7 @@
                   @click="changeTable('7')"
                   :style="`${tableHover7}`"
                 >
+                  <div class="mt-1 float-right"><img data-v-3712f8d4="" src="/img/icons/link.svg"></div>
                   <div class="him"></div>
                   <div class="txt2">Химизация</div>
                 </td>
@@ -1731,12 +1970,18 @@
                 }
               }
             }
+            &.selected{
+              background: #2e47c0!important;
+            }
             .font{
               align-items: baseline;
               display: flex;
               justify-content: space-between;
-              font-size: 18px;
+              font-size: 24px;
               margin-left: 0;
+              &.dynamic{
+                padding-left: 17px;
+              }
               .right{
                 font-size: 10px;
                 margin-right: 0;
@@ -1756,11 +2001,28 @@
               border: 6px solid transparent;
               height: 6px;
               margin-right: 5px;
+              position: absolute;
               width: 6px;
             }
           }
         }
       }
+    }
+    .vis-table-small {
+        max-width: 48% !important;
+        tr {
+            line-height: 4.2rem !important;
+            font-size: 1.2rem !important;
+            font-family: Bold !important;
+        }
+        .tdNumber {
+            font-size: 1.6rem;
+            text-align: right;
+            span {
+                font-size: 0.8rem;
+                font-weight: normal;
+            }
+        }
     }
     .vis-chart{
       flex: 0 0 44%;

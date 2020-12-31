@@ -35,17 +35,20 @@
                         v-bind:title="'Снижение OPEX и CAPEX'"
                         v-bind:mainValue="t1"
                         v-bind:units="'млрд. тенге'"
+                        v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'Долг/EBIDTA'"
                         v-bind:mainValue="t2"
                         v-bind:units="'коэф.'"
+                        v-bind:planWeight="'25'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'ROACE'"
                         v-bind:mainValue="t3"
                         v-bind:units="'%'"
                         v-bind:isLastBlock="true"
+                        v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                 </div>
                 <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
@@ -53,17 +56,20 @@
                         v-bind:title="'Запасы (A+B+C1)'"
                         v-bind:mainValue="t4"
                         v-bind:units="'млн. тонн'"
+                        v-bind:planWeight="'15'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'ESG рейтинг'"
                         v-bind:mainValue="t5"
                         v-bind:units="'рейтинг'"
+                        v-bind:planWeight="'10'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'Местное содержание'"
                         v-bind:mainValue="t6"
                         v-bind:units="'%'"
                         v-bind:isLastBlock="true"
+                        v-bind:planWeight="'10'"
                     ></vc-speedometer-block>
                 </div>
             </div>
