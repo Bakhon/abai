@@ -410,8 +410,8 @@ export default {
 
         this.buttonHover7 = buttonHover;
         this.range = {
-          start: moment().subtract(3, "day").startOf('day').toDate(),
-          end: moment().subtract(1, "day").endOf('day').toDate(),
+          start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
+          end: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() -1) + 'T23:59:00+06:00'),
           formatInput: true,
         };
 
@@ -2079,6 +2079,7 @@ console.log(dataWithMay)
   },
 
   async mounted() {
+    
 
     this.item3 = this.oilChartHeadName;
 
@@ -2117,6 +2118,8 @@ console.log(dataWithMay)
     // this.getProductionOilandGasPercent();
 
     this.getUsdRatesData();
+    this.changeMenu2();
+   
 
 
   },

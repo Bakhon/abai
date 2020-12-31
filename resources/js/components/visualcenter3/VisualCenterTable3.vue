@@ -461,7 +461,7 @@
                     </div>
                   </div>
                 </li>
-                <li class="center-li row px-4" @click="changeMenu('106')">
+                <!--<li class="center-li row px-4" @click="changeMenu('106')">
                   <a
                     class="col-10"
                     @click="
@@ -480,7 +480,7 @@
                       ✓
                     </div>
                   </div>
-                </li>
+                </li>-->
 
                 <li class="center-li row px-4" @click="changeMenu('108')">
                   <a

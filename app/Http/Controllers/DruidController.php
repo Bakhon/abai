@@ -69,7 +69,7 @@ return $response;
     }
 
     public function visualcenter3GetData(Request $request)  
-    {
+    {$period = ($request->timestampEnd-$request->timestampToday)-86400000; 
 
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
         return response()->json(DZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
@@ -130,9 +130,7 @@ return $response;
             'fond_neftedob_nrs',
             'fond_neftedob_others',
         'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
-        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')
-            ->where('__time', '>', $request->timestampToday)
-            ->where('__time', '<', $request->timestampEnd));
+        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
         //return  response()->json($request);
     }
