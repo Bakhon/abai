@@ -1834,13 +1834,13 @@
           <table class="table">
             <tr>
               <td class="size-td">
-                <div class="number">24</div>
+                <div class="number">1715</div>
               </td>
 
               <td class="w-65">
                 <div class="column-1">
                   <div class="arrow"></div>
-                  <div class="txt2">11</div>
+                  <div class="txt2">67</div>
                 </div>
                 <div class="column-1">
                   <div class="in-idle">Прирост</div>
@@ -1862,7 +1862,7 @@
           <table class="table table1-2">
             <tr>
               <td>
-                <div class="number">11</div>
+                <div class="number">0</div>
                 <div class="near-number">
                   <!-- <div class="column-1">
                     <div class="arrow"></div>
@@ -1877,7 +1877,7 @@
               </td>
 
               <td>
-                <div class="number">11</div>
+                <div class="number">0</div>
                 <div class="near-number">
                   <!--  <div class="column-1">
                     <div class="arrow"></div>
