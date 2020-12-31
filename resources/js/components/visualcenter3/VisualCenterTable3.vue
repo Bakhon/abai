@@ -1775,7 +1775,7 @@
         <div class="first-string first-string2">
           <div class="table-responsive">
             <table class="table table5">
-              <tr>
+              <tr class="cursor-pointer">
                 <td
                   class="w-50"
                   @click="changeTable('6')"
