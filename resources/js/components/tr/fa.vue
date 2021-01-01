@@ -162,10 +162,10 @@
             <span>Способ Эксплуатации</span>
           </td>
           <td class="colspan" colspan="6" style="background: #2c3379">
-            ТР на {{ dt }}
+            Фактические данные на {{ dt }}
           </td>
           <td class="colspan" colspan="6" style="background: #1a2370">
-            ТР на {{ dt2 }}
+            Фактические данные на {{ dt2 }}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
             Отклон. Qн
