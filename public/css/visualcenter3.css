@@ -329,7 +329,6 @@ td:last-of-type {
 
 .tdStyle3-total {
     background: #293688;
-    line-height: 2em!important;
     font-size: 0.9em;
 }
 
@@ -854,7 +853,11 @@ a.dropdown-link-vc3 {
 .vc-chart-wrapper {
     background: #292f5d;
     padding: 15px;
-    width: fit-content;
+    width: 100%;
+}
+
+.vc-chart-container {
+    padding-right: 25px !important;
 }
 
 .vc-chart-block-subheader {
@@ -944,4 +947,8 @@ a.dropdown-link-vc3 {
 
 .font-weight{
     font-weight:bold;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

@@ -59,6 +59,7 @@ export default {
             backgroundColor: fillPattern,
             showLine: true,
             data: productionPlanForChart,
+            pointRadius: 0
           },
           {
             label: "Факт",
@@ -66,6 +67,7 @@ export default {
             fill: false,
             showLine: true,
             data: productionFactForChart,
+            pointRadius: 0
           },
         ]
       }, {
@@ -74,6 +76,7 @@ export default {
         legend: {
           position: "bottom",
           labels: {
+            fontColor: '#fff',
             generateLabels: (chart) => {
               let data = chart.data;
               if (data.labels.length && data.datasets.length) {
@@ -95,6 +98,21 @@ export default {
               return [];
             }
           }
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              fontColor: '#fff',
+              callback: function(value) {
+                return Math.round(value / 1000);
+              }
+            }
+          }],
+          xAxes: [{
+            ticks: {
+              fontColor: '#fff',
+            }
+          }]
         }
       })
     }
