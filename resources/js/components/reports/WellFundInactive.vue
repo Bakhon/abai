@@ -16,6 +16,19 @@
         <option value="ММГ">АО «Мангистаумунайгаз»</option>
       </select>
     </div>
+    <div class="form-group1 filter-group select">
+      <select
+          class="form-control filter-input select"
+          id="categorySelect"
+          :disabled="isLoading"
+          v-model="category"
+      >
+        <option disabled value="">Выберите категорию</option>
+        <option value="Газовая">Газовая</option>
+        <option value="Нагнетательная">Нагнетательная</option>
+        <option value="Нефтяная">Нефтяная</option>
+      </select>
+    </div>
 
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
@@ -57,6 +70,7 @@ export default {
     return {
       org: '',
       end_date: null,
+      category: '',
       isLoading: false,
       resultLink: null
     }
@@ -70,9 +84,10 @@ export default {
       let uri = "http://172.20.103.157:8082/generic/";
         // let uri = "http://0.0.0.0:8090/generic/";
       let data = {
-        type: 'well_fund',
+        type: 'inactive_fund_stat',
         period: 'days',
         dzo: this.org,
+        category: this.category,
         report_date_start: `${this.end_date}`.concat(' 00:00:00'),
         report_date_end: `${this.end_date}`.concat(' 23:59:59')
       };
