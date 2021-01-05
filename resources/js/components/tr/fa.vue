@@ -162,10 +162,10 @@
             <span>Способ Эксплуатации</span>
           </td>
           <td class="colspan" colspan="6" style="background: #2c3379">
-            ТР на {{ dt }}
+            Фактические данные на {{ dt }}
           </td>
           <td class="colspan" colspan="6" style="background: #1a2370">
-            ТР на {{ dt2 }}
+            Фактические данные на {{ dt2 }}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
             Отклон. Qн
@@ -280,7 +280,9 @@
           <td @click="sortBy('Main_problem')" style="background: #272953">
             <i class="fa fa-fw fa-sort"></i>
           </td> -->
-          <td @click="sortBy('well')" style="background: #12135c">
+          <td @click="sortBy('well')"  style="background: #12135c">
+            <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
+            <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
@@ -909,6 +911,7 @@ import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import columnSortable from 'vue-column-sortable'
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 
 Vue.use(NotifyPlugin, VueMomentLib);
@@ -920,6 +923,7 @@ export default {
   },
   data: function () {
     return {
+      // issorttobig: false,
       pieChartRerender: true,
       wells: [],
       searchString: "",
@@ -1149,6 +1153,7 @@ export default {
           .then((response) => {
             this.searched = false;
             this.$store.commit("globalloading/SET_LOADING", false);
+            
             // this.isloading = false;
             let data = response.data;
             this.editdtm = choosenDt[1];
@@ -1192,6 +1197,9 @@ export default {
       }
       this.$modal.show(bign);
     },
+    // swap() {
+    //   this.issorttobig = !this.issorttobig;
+    // },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
         return "#CD5C5C";
