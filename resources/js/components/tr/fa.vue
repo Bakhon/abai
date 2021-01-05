@@ -162,10 +162,10 @@
             <span>Способ Эксплуатации</span>
           </td>
           <td class="colspan" colspan="6" style="background: #2c3379">
-            Фактические данные на {{ dt }}
+            ТР на {{ dt }}
           </td>
           <td class="colspan" colspan="6" style="background: #1a2370">
-            Фактические данные на {{ dt2 }}
+            ТР на {{ dt2 }}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
             Отклон. Qн
@@ -282,10 +282,6 @@
           </td> -->
           <td @click="sortBy('well')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
-
-            <!-- сортировка -->
-            <!-- <i class="fas fa-sort-down" v-if="issorttosmall"></i>
-            <i class="fas fa-sort-up" v-if="!issorttosmall"></i> -->
           </td>
           <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
             <i class="fa fa-fw fa-sort"></i>
@@ -924,7 +920,6 @@ export default {
   },
   data: function () {
     return {
-      // issorttosmall: false, сортировка
       pieChartRerender: true,
       wells: [],
       searchString: "",
@@ -1133,7 +1128,7 @@ export default {
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
-        this.$store.commit("globalloading/SET_LOADING", false);
+        this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("fa/SET_MONTH", mm);
         this.$store.commit("fa/SET_YEAR", yyyy);
         this.$store.commit("fa/SET_PR_MONTH", prMm);
@@ -1197,11 +1192,6 @@ export default {
       }
       this.$modal.show(bign);
     },
-    // сортировка
-    // swap() {
-
-    //   this.issorttosmall = !this.issorttosmall;
-    // },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
         return "#CD5C5C";
