@@ -6900,6 +6900,9 @@ export default {
       this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;
       this.axios
+      // if (console.log("No data")) {
+      //   Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+      // }
         .get(
           "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
