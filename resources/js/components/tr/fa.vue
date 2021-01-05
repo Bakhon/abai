@@ -280,7 +280,7 @@
           <td @click="sortBy('Main_problem')" style="background: #272953">
             <i class="fa fa-fw fa-sort"></i>
           </td> -->
-          <td @click="sortBy('well')" v-column-sortable style="background: #12135c">
+          <td @click="sortBy('well')"  style="background: #12135c">
             <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
             <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
             <i class="fa fa-fw fa-sort"></i>
