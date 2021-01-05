@@ -6715,6 +6715,7 @@ export default {
           this.fullWells = data.data;
         } else {
           console.log("No data");
+          
         }
         if (mm < 10) {
           this.dt = "01" + ".0" + mm + "." + yyyy;
