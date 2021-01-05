@@ -410,8 +410,8 @@ export default {
 
         this.buttonHover7 = buttonHover;
         this.range = {
-          start: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() -1) + 'T23:59:00+06:00'),
+          start: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
+          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() -1) + 'T23:59:00+06:00'),
           formatInput: true,
         };
 
@@ -424,8 +424,8 @@ export default {
       if (change == 2) {
         this.buttonHover8 = buttonHover;
         this.range = {
-          start: new Date(this.year + '-' + this.month + '-01T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
+          start: new Date(this.year + '-' + this.pad(this.month) + '-01T06:00:00+06:00'),
+          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
           formatInput: true,
         };
 
@@ -439,7 +439,7 @@ export default {
         this.buttonHover9 = buttonHover;
         this.range = {
           start: new Date(this.year + '-' + '01' + '-01T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.month + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
+          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
           formatInput: true,
         };
 
@@ -2078,9 +2078,7 @@ console.log(dataWithMay)
 
   },
 
-  async mounted() {
-    
-
+  async mounted() {  
     this.item3 = this.oilChartHeadName;
 
     if (window.location.host === 'dashboard') {

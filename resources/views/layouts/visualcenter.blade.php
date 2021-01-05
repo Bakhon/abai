@@ -3,7 +3,7 @@
     @include('partials.sidebar.visualcenter_menu')
 @endsection
 @section('module_icon')
-    <svg width="33" height="28" viewBox="0 0 33 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="37" height="37" viewBox="0 0 33 37" fill="none" xmlns="http://www.w3.org/2000/svg">
 
 
 <path fill-rule="evenodd" clip-rule="evenodd" d="M10.1993 30.219H11.8995V25.1202H10.1993V30.219Z" fill="#3366FF"/>
