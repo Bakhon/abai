@@ -121,35 +121,35 @@ Route::group(
                 Route::resource('ecorefsprocdob', 'EcoRefsProcDobController');
                 Route::resource('ecorefsavgprs', 'EcoRefsAvgPrsController');
 
-                Route::resource('marabkpiid', 'VizCenter\MarabKpiIdController');
-                Route::resource('abdkpiid', 'VizCenter\AbdKpiIdController');
-                Route::resource('typeid', 'VizCenter\TypeIdController');
-                Route::resource('marab1', 'VizCenter\Marab1Controller');
-                Route::resource('marab2', 'VizCenter\Marab2Controller');
-                Route::resource('marab345', 'VizCenter\Marab345Controller');
-                Route::resource('marab6', 'VizCenter\Marab6Controller');
-                Route::resource('abd12', 'VizCenter\Abd12Controller');
-                Route::resource('abd35', 'VizCenter\Abd35Controller');
-                Route::resource('abd46', 'VizCenter\Abd46Controller');
-                Route::resource('corpkpiid', 'VizCenter\CorpKpiIdController');
-                Route::resource('corpall', 'VizCenter\CorpAllController');
+                Route::resource('marabkpiid', 'VisCenter\KPI\MarabKpiIdController');
+                Route::resource('abdkpiid', 'VisCenter\KPI\AbdKpiIdController');
+                Route::resource('typeid', 'VisCenter\KPI\TypeIdController');
+                Route::resource('marab1', 'VisCenter\KPI\Marab1Controller');
+                Route::resource('marab2', 'VisCenter\KPI\Marab2Controller');
+                Route::resource('marab345', 'VisCenter\KPI\Marab345Controller');
+                Route::resource('marab6', 'VisCenter\KPI\Marab6Controller');
+                Route::resource('abd12', 'VisCenter\KPI\Abd12Controller');
+                Route::resource('abd35', 'VisCenter\KPI\Abd35Controller');
+                Route::resource('abd46', 'VisCenter\KPI\Abd46Controller');
+                Route::resource('corpkpiid', 'VisCenter\KPI\CorpKpiIdController');
+                Route::resource('corpall', 'VisCenter\KPI\CorpAllController');
 
-                Route::get('kpicalc', 'VizCenter\Marab2Controller@kpicalculation');
-                Route::get('kpiList', 'VizCenter\Marab2Controller@kpiList');
+                Route::get('kpicalc', 'VisCenter\KPI\Marab2Controller@kpicalculation');
+                Route::get('kpiList', 'VisCenter\KPI\Marab2Controller@kpiList');
 
-                Route::resource('viscenter2', 'VisCenter2\Vis2FormController');
+                Route::resource('viscenter2', 'VisCenter\InputForm\Vis2FormController');
 
-                Route::get('/import_hist', 'DZO\DZOdayController@importExcel');
-                Route::post('/import_h', 'DZO\DZOdayController@import')->name('import_h');
+                Route::get('/import_hist', 'VisCenter\ImportForms\DZOdayController@importExcel');
+                Route::post('/import_h', 'VisCenter\ImportForms\DZOdayController@import')->name('import_h');
 
-                Route::get('importdzoyear', 'DZO\DZOyearController@importExcel');
+                Route::get('importdzoyear', 'VisCenter\ImportForms\DZOyearController@importExcel');
 
-                Route::get('/import_econom', 'DZO\DZOcalcController@importExcel');
-                Route::post('/import_eco', 'DZO\DZOcalcController@import')->name('import_e');
+                Route::get('/import_econom', 'VisCenter\ImportForms\DZOcalcController@importExcel');
+                Route::post('/import_eco', 'VisCenter\ImportForms\DZOcalcController@import')->name('import_e');
 
-                Route::get('/import_excel', 'DZO\DZOdailyController@importExcel');
+                Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
 
-                Route::post('/import', 'DZO\DZOdailyController@import')->name('import');
+                Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
 
                 Route::get('jobs/status', 'JobsController@getStatus')->name('jobs.status');
 

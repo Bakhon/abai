@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\DZO\DZOdaily;
+use App\Models\VisCenter\ImportForms\DZOdaily;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use DB;
