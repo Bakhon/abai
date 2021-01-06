@@ -20,6 +20,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import store from './store';
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
+import columnSortable from 'vue-column-sortable'
 
 
 require('./bootstrap');
@@ -28,7 +29,7 @@ window.Jquery = require('jquery');
 moment.locale('ru');
 Vue.prototype.$moment = moment
 
-Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar);
+Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar, columnSortable);
 
 /**
  * The following block of code may be used to automatically register your

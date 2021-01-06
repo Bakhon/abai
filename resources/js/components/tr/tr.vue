@@ -119,13 +119,14 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
-                <option value="2018">2018</option>
+                <!-- <option value="2018">2018</option>
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
                 <option value="2015">2015</option>
-                <option value="2014">2014</option>
+                <option value="2014">2014</option> -->
               </select>
             </div>
             <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
@@ -6714,6 +6715,7 @@ export default {
           this.fullWells = data.data;
         } else {
           console.log("No data");
+          
         }
         if (mm < 10) {
           this.dt = "01" + ".0" + mm + "." + yyyy;
@@ -6898,6 +6900,9 @@ export default {
       this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;
       this.axios
+      // if (console.log("No data")) {
+      //   Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+      // }
         .get(
           "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
