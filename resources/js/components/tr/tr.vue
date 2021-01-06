@@ -462,6 +462,7 @@
                   <td rowspan="4" class="th">№ скв</td>
                   <td rowspan="4" class="th">Тип скважины</td>
                   <td rowspan="4" class="th">Горизонт</td>
+                  <!-- <td rowspan="4" class="th">Объект</td> -->
                   <td rowspan="4" class="th">Блок</td>
                   <td rowspan="4" class="th">R контура питания</td>
                   <td rowspan="4" class="th">Наружный диаметр э/к</td>
@@ -683,6 +684,9 @@
                   <td @click="sortBy('horizon')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
+                  <!-- <td @click="sortBy('object')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>
+                  </td> -->
                   <td @click="sortBy('block')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
@@ -1185,8 +1189,58 @@
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{row.block}}</td>
-                          <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.block" :disabled="!edit"></td> -->
+                  <!-- <td
+                    v-if="!edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].object[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].object[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].object[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span>{{ row.object[0] }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].object[1][1] }}
+                    </span>
+                  </td>
+                  <td
+                    v-if="edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].object[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].object[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].object[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span>{{ row.object[0] }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].object[1][1] }}
+                    </span>
+                  </td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -6900,9 +6954,6 @@ export default {
       this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;
       this.axios
-      // if (console.log("No data")) {
-      //   Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
-      // }
         .get(
           "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
@@ -7197,7 +7248,7 @@ tr:nth-child(even) td {
 
 /* width */
 table::-webkit-scrollbar {
-  width: 10px;
+  width: 13px;
 }
 
 /* Track */
@@ -7207,12 +7258,14 @@ table::-webkit-scrollbar-track {
 
 /* Handle */
 table::-webkit-scrollbar-thumb {
-  background: #656a8a;
+  background: #656A8A;
+  
 }
 
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
-  background: #272953;
+  background: #656A8A;
+  
 }
 
 table::-webkit-scrollbar-corner {

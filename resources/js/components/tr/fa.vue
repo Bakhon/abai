@@ -158,6 +158,7 @@
             <span>Месторождение</span>
           </td>
           <td rowspan="3" style="background: #12135c"><span>Горизонт</span></td>
+          <td rowspan="3" style="background: #12135c"><span>Объект</span></td>
           <td rowspan="3" style="background: #12135c">
             <span>Способ Эксплуатации</span>
           </td>
@@ -280,15 +281,18 @@
           <td @click="sortBy('Main_problem')" style="background: #272953">
             <i class="fa fa-fw fa-sort"></i>
           </td> -->
-          <td @click="sortBy('well')"  style="background: #12135c">
+          <td @click="sortBy('well')"  style="background: #12135c" class="sortik">
             <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
             <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
-            <i class="fa fa-fw fa-sort"></i>
+            <!-- <i class="fa fa-fw fa-sort"></i> -->
           </td>
           <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('horizon')" style="background: #12135c">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
+          <td @click="sortBy('object')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('exp_meth')" style="background: #12135c">
@@ -353,6 +357,7 @@
           <td style="background: #12135c">{{ row.well }}</td>
           <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
           <td style="background: #12135c">{{ row.horizon }}</td>
+          <td style="background: #12135c">{{ row.object }}</td>
           <td style="background: #12135c">{{ row.exp_meth }}</td>
 
           <td
@@ -923,7 +928,7 @@ export default {
   },
   data: function () {
     return {
-      // issorttobig: false,
+      issorttobig: false,
       pieChartRerender: true,
       wells: [],
       searchString: "",
@@ -1197,9 +1202,9 @@ export default {
       }
       this.$modal.show(bign);
     },
-    // swap() {
-    //   this.issorttobig = !this.issorttobig;
-    // },
+    swap() {
+      this.issorttobig = !this.issorttobig;
+    },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
         return "#CD5C5C";
@@ -1460,7 +1465,7 @@ body {
 
 /* width */
 table::-webkit-scrollbar {
-  width: 10px;
+  width: 13px;
 }
 
 /* Track */
@@ -1475,7 +1480,7 @@ table::-webkit-scrollbar-thumb {
 
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
-  background: #272953;
+  background: #656A8A;
 
 }
 /* уголок скролла  */
@@ -1494,5 +1499,13 @@ width: 70%;
   margin-top: 5px;
   /* display: flex;  */
   /* justify-content: center */
+}
+
+.sortik[issort="-1"]::after {
+	content: "▼"
+}
+
+.sortik[data-order="1"]::after {
+	content: "▲"
 }
 </style>
