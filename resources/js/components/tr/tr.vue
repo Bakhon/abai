@@ -1555,7 +1555,7 @@
                     </span>
                   </td>
                   <td v-if="edit">
-                    {{ Math.round(row.h_up_perf_md * 10) / 10 }}
+                    {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
                   </td>
 
                   <td

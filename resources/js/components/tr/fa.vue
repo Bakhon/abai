@@ -282,9 +282,9 @@
             <i class="fa fa-fw fa-sort"></i>
           </td> -->
           <td @click="sortBy('well')"  style="background: #12135c" class="sortik">
-            <i class="fas fa-sort-down" v-if="issorttobig"></i>
-            <i class="fas fa-sort-up" v-if="!issorttobig"></i>
-            <!-- <i class="fa fa-fw fa-sort"></i> -->
+            <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
+            <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
+            <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
             <i class="fa fa-fw fa-sort"></i>
