@@ -282,8 +282,8 @@
             <i class="fa fa-fw fa-sort"></i>
           </td> -->
           <td @click="sortBy('well')"  style="background: #12135c" class="sortik">
-            <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
-            <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
+            <i class="fas fa-sort-down" v-if="issorttobig"></i>
+            <i class="fas fa-sort-up" v-if="!issorttobig"></i>
             <!-- <i class="fa fa-fw fa-sort"></i> -->
           </td>
           <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
@@ -928,7 +928,7 @@ export default {
   },
   data: function () {
     return {
-      issorttobig: false,
+      // issorttobig: false,
       pieChartRerender: true,
       wells: [],
       searchString: "",
@@ -1202,9 +1202,9 @@ export default {
       }
       this.$modal.show(bign);
     },
-    swap() {
-      this.issorttobig = !this.issorttobig;
-    },
+    // swap() {
+    //   this.issorttobig = !this.issorttobig;
+    // },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
         return "#CD5C5C";
@@ -1501,11 +1501,11 @@ width: 70%;
   /* justify-content: center */
 }
 
-.sortik[issort="-1"]::after {
+/* .sortik[issorttobig="true"]::after {
 	content: "▼"
 }
 
-.sortik[data-order="1"]::after {
+.sortik[issorttobig="false"]::after {
 	content: "▲"
-}
+} */
 </style>
