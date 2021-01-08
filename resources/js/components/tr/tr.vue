@@ -462,7 +462,7 @@
                   <td rowspan="4" class="th">№ скв</td>
                   <td rowspan="4" class="th">Тип скважины</td>
                   <td rowspan="4" class="th">Горизонт</td>
-                  <!-- <td rowspan="4" class="th">Объект</td> -->
+                  <td rowspan="4" class="th">Объект</td>
                   <td rowspan="4" class="th">Блок</td>
                   <td rowspan="4" class="th">R контура питания</td>
                   <td rowspan="4" class="th">Наружный диаметр э/к</td>
@@ -565,7 +565,7 @@
                   <td rowspan="4" class="th">
                     <span>Вид последнего ГТМ</span>
                   </td>
-                  <td class="colspan th" colspan="12">Намечаемый режим</td>
+                  <td class="colspan th" colspan="14">Намечаемый режим</td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
                   <td rowspan="3" class="th"><span>P заб</span></td>
@@ -604,7 +604,9 @@
                   <td rowspan="3" class="th"><span>Диаметр штуцера</span></td>
                   <td rowspan="3" class="th"><span>Qн</span></td>
                   <td rowspan="3" class="th"><span>Qж</span></td>
+                  <td rowspan="3" class="th"><span>Qг</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
+                  <td rowspan="3" class="th"><span>Газовый фактор</span></td>
                   <td rowspan="3" class="th"><span>Число дней работы</span></td>
                   <td rowspan="3" class="th">
                     <span>Добыча нефти за месяц</span>
@@ -684,9 +686,9 @@
                   <td @click="sortBy('horizon')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
-                  <!-- <td @click="sortBy('object')" class="th">
+                  <td @click="sortBy('object')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
-                  </td> -->
+                  </td>
                   <td @click="sortBy('block')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
@@ -1031,8 +1033,14 @@
                   <td @click="sortBy('planned_liq')" class="th">
                     <i class="fa fa-fw fa-sort"></i>м3/сут
                   </td>
+                  <td @click="sortBy('planned_gas')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>тыс.м3/сут
+                  </td>
                   <td @click="sortBy('planned_wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
+                  </td>
+                  <td @click="sortBy('planned_gor')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>м3/т
                   </td>
                   <td @click="sortBy('planned_month_days')" class="th">
                     <i class="fa fa-fw fa-sort"></i>сут
@@ -1068,8 +1076,8 @@
                   <td v-if="!edit">{{ row.field }}</td>
                   <td v-if="edit">{{ row.field }}</td>
 
-                  <td v-if="!edit">{{ row.well }}</td>
-                  <td v-if="edit">{{ row.well }}</td>
+                  <td v-if="!edit">{{ row.rus_wellname }}</td>
+                  <td v-if="edit">{{ row.rus_wellname }}</td>
                   <!-- <td>{{row.well_type}}</td> -->
 
                   <td
@@ -1189,58 +1197,9 @@
                     </span>
                   </td>
 
-                  <!-- <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].object[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].object[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].object[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <span>{{ row.object[0] }}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].object[1][1] }}
-                    </span>
-                  </td>
-                  <td
-                    v-if="edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].object[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].object[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].object[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <span>{{ row.object[0] }}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].object[1][1] }}
-                    </span>
-                  </td> -->
+                  <td v-if="!edit">{{ row.object }}</td>
+                  <td v-if="edit">{{ row.object }}</td>
+
                   <td
                     v-if="!edit"
                     :class="{
@@ -6192,6 +6151,9 @@
                     </span>
                   </td>
 
+                  <td v-if="!edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+
                   <td
                     v-if="!edit"
                     :class="{
@@ -6252,6 +6214,9 @@
                       {{ wells[row_index].planned_wct[1][1] }}
                     </span>
                   </td>
+
+                  <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
+                  <td v-if="edit" contenteditable='true'><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
