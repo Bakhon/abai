@@ -630,7 +630,9 @@ ul.center-menu2 {
 }
 
 .dropdown3 a {
-    color: #000;
+    color: #373435;
+    font-weight:normal!important;
+    font-size: 1.1em;
 }
 
 .dropdown3:hover ul {
@@ -638,14 +640,16 @@ ul.center-menu2 {
 }
 
 .square-small2 {
-    background: #237deb;
+    /* background: #237deb; */
+    border-radius: 5px;
+    border: 1px solid #237deb; 
     width: 22px;
     height: 22px;
     /* position: relative; */
     /* left: 200px; */
     top: -15px;
     text-align: center;
-    color: #237deb;
+    color: #fff;
 }
 
 /*calendar */

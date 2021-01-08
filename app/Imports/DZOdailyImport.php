@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\DZO\DZOdaily;
+use App\Models\VisCenter\ImportForms\DZOdaily;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use DB;
@@ -36,6 +36,32 @@ class DZOdailyImport implements ToModel
             "gk_fact" => $row[ 16 ],
             "otm_burenie_prohodka_plan" => $row[ 17 ],
             "otm_burenie_prohodka_fact" => $row[ 18 ],
+            "fond_neftedob_ef" => $row[ 19 ],
+            "fond_neftedob_df" => $row[ 20 ],
+            "fond_neftedob_bd" => $row[ 21 ],
+            "fond_neftedob_osvoenie" => $row[ 22 ],
+            "fond_neftedob_ofls" => $row[ 23 ],
+            "fond_neftedob_prs" => $row[ 24 ],
+            "fond_neftedob_oprs" => $row[ 25 ],
+            "fond_neftedob_krs" => $row[ 26 ],
+            "fond_neftedob_okrs" => $row[ 27 ],
+            "fond_neftedob_well_survey" => $row[ 28 ],
+            "fond_neftedob_nrs" => $row[ 29 ],
+            "fond_neftedob_others" => $row[ 30 ],
+            "fond_nagnetat_ef" => $row[ 31 ],
+            "fond_nagnetat_df" => $row[ 32 ],
+            "fond_nagnetat_bd" => $row[ 33 ],
+            "fond_nagnetat_osvoenie" => $row[ 34 ],
+            "fond_nagnetat_ofls" => $row[ 35 ],
+            "fond_nagnetat_konv" => $row[ 36 ],
+            "fond_nagnetat_prs" => $row[ 37 ],
+            "fond_nagnetat_oprs" => $row[ 38 ],
+            "fond_nagnetat_krs" => $row[ 39 ],
+            "fond_nagnetat_okrs" => $row[ 40 ],
+            "fond_nagnetat_well_survey" => $row[ 41 ],
+            "fond_nagnetat_others" => $row[ 42 ],
+            "tb_covid_recover" => $row[ 43 ],
+            "tb_covid_total" => $row[ 44 ],
         ]);
     }
 }
