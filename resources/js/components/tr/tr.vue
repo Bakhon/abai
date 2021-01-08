@@ -459,7 +459,7 @@
                 <tr class="headerColumn sticky" style="background: #333975">
                   <td rowspan="4" class="th">№</td>
                   <td rowspan="4" class="th">НГДУ/месторождение</td>
-                  <td rowspan="4" class="th">№ скв</td>
+                  <td rowspan="4" class="th">№ скважины</td>
                   <td rowspan="4" class="th">Тип скважины</td>
                   <td rowspan="4" class="th">Горизонт</td>
                   <td rowspan="4" class="th">Объект</td>
@@ -491,12 +491,12 @@
                   <td class="colspan th" colspan="5">
                     Данные за предыдущий месяц
                   </td>
-                  <td class="colspan th" colspan="4">Фактический режим</td>
+                  <td class="colspan th" colspan="5">Фактический режим</td>
                   <td rowspan="4" class="th">
                     <span>Состояние на конец месяца</span>
                   </td>
                   <td rowspan="4" class="th">P нас</td>
-                  <td rowspan="4" class="th">ГФ</td>
+                  <!-- <td rowspan="4" class="th">ГФ</td> -->
                   <td rowspan="4" class="th">Т пл</td>
                   <td rowspan="4" class="th">Т уст</td>
                   <td class="colspan th" colspan="4">ГРП</td>
@@ -537,7 +537,7 @@
                   <td rowspan="4" class="th">Назначение по проекту</td>
                   <td rowspan="4" class="th">Р заб замерное</td>
                   <td rowspan="4" class="th">Нефтенасыщенная толщина</td>
-                  <td rowspan="4" class="th">Накопленная Q н</td>
+                  <td rowspan="4" class="th">Накопленная Qн с начала разработки</td>
                   <td rowspan="4" class="th">
                     <span>Максимальный Q ж за всю историю работы</span>
                   </td>
@@ -577,6 +577,7 @@
                   <td rowspan="3" class="th"><span>Q н</span></td>
                   <td rowspan="3" class="th"><span>Q ж</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
+                  <td rowspan="3" class="th"><span>ГФ</span></td>
                   <td rowspan="3" class="th"><span>Скин</span></td>
                   <td rowspan="3" class="th"><span>JD факт</span></td>
                   <td rowspan="3" class="th"><span>Дата проведения</span></td>
@@ -606,7 +607,7 @@
                   <td rowspan="3" class="th"><span>Qж</span></td>
                   <td rowspan="3" class="th"><span>Qг</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
-                  <td rowspan="3" class="th"><span>Газовый фактор</span></td>
+                  <td rowspan="3" class="th"><span>ГФ</span></td>
                   <td rowspan="3" class="th"><span>Число дней работы</span></td>
                   <td rowspan="3" class="th">
                     <span>Добыча нефти за месяц</span>
@@ -785,14 +786,14 @@
                   <td @click="sortBy('wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
+                  <td @click="sortBy('gor')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>м3/т
+                  </td>
                   <td @click="sortBy('well_status_last_day')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('P_bubble_point')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
-                  </td>
-                  <td @click="sortBy('gor')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/т
                   </td>
                   <td @click="sortBy('t_res')" class="th">
                     <i class="fa fa-fw fa-sort"></i>ºC
@@ -2633,6 +2634,69 @@
                     </span>
                   </td>
 
+                  <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
+                  <td
+                    v-if="!edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].gor[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].gor[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].gor[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span v-if="row.gor[0] != null">{{
+                      Math.round(row.gor[0] * 10) / 10
+                    }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].gor[1][1] }}
+                    </span>
+                  </td>
+                  <td
+                    v-if="edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].gor[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].gor[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].gor[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <input
+                      class="input_edit"
+                      @change="editrow(row, row_index)"
+                      v-model="row.gor[0]"
+                      :disabled="!edit"
+                    />
+                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].gor[1][1] }}
+                    </span>
+                  </td>
+
+
                   <!-- <td>{{row.well_status_last_day}}</td> -->
                   <td
                     v-if="!edit"
@@ -2746,69 +2810,7 @@
                       {{ wells[row_index].P_bubble_point[1][1] }}
                     </span>
                   </td>
-
-                  <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
-                  <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].gor[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].gor[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <span v-if="row.gor[0] != null">{{
-                      Math.round(row.gor[0] * 10) / 10
-                    }}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].gor[1][1] }}
-                    </span>
-                  </td>
-                  <td
-                    v-if="edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].gor[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].gor[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <input
-                      class="input_edit"
-                      @change="editrow(row, row_index)"
-                      v-model="row.gor[0]"
-                      :disabled="!edit"
-                    />
-                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].gor[1][1] }}
-                    </span>
-                  </td>
-
+                 
                   <!-- <td>{{Math.round(row.t_res*10)/10}}</td> -->
                   <td
                     v-if="!edit"

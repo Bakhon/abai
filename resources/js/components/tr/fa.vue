@@ -281,7 +281,7 @@
           <td @click="sortBy('Main_problem')" style="background: #272953">
             <i class="fa fa-fw fa-sort"></i>
           </td> -->
-          <td @click="sortBy('well')"  style="background: #12135c" class="sortik">
+          <td @click="sortBy('rus_wellname')"  style="background: #12135c" class="sortik">
             <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
             <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
             <i class="fa fa-fw fa-sort"></i>
@@ -354,7 +354,7 @@
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
-          <td style="background: #12135c">{{ row.well }}</td>
+          <td style="background: #12135c">{{ row.rus_wellname }}</td>
           <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
           <td style="background: #12135c">{{ row.horizon }}</td>
           <td style="background: #12135c">{{ row.object }}</td>
