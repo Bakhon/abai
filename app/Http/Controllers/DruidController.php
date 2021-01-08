@@ -68,8 +68,20 @@ return $response;
         return view('visualcenter.visualcenter3');
     }
 
+    public function visualcenter3GetDataStaff(Request $request)  
+    {   
+      
+
+    }
+
     public function visualcenter3GetData(Request $request)  
-    {$period = ($request->timestampEnd-$request->timestampToday)-86400000; 
+    {   $today=$request->timestampToday;
+        $end=$request->timestampEnd;
+        $period = (($end - $today)+(86400000*2));
+        $todayback = $today-$period;
+        
+        
+      //  $period = ($request->timestampEnd-$request->timestampToday)-86400000; 
 
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
         return response()->json(DZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
@@ -129,8 +141,10 @@ return $response;
             'fond_neftedob_well_survey',
             'fond_neftedob_nrs',
             'fond_neftedob_others',
+            'tb_covid_total',
+            'tb_personal_fact',
         'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
-        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
+        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $todayback)->where('__time', '<', $end+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
         //return  response()->json($request);
     }
