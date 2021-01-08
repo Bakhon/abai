@@ -7,6 +7,7 @@ use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use App\Models\DZO\DZOdaily;
+use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
 
 class DruidController extends Controller
 {
@@ -84,7 +85,7 @@ return $response;
       //  $period = ($request->timestampEnd-$request->timestampToday)-86400000; 
 
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
-        return response()->json(DZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
+        return response()->json(ImportFormsDZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
             'oil_plan','oil_fact','gas_plan','gas_fact','__time',
             'tovarnyi_ostatok_nefti_prev_day',
             'tovarnyi_ostatok_nefti_today',
