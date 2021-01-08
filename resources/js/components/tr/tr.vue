@@ -119,13 +119,14 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
-                <option value="2018">2018</option>
+                <!-- <option value="2018">2018</option>
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
                 <option value="2015">2015</option>
-                <option value="2014">2014</option>
+                <option value="2014">2014</option> -->
               </select>
             </div>
             <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
@@ -461,6 +462,7 @@
                   <td rowspan="4" class="th">№ скв</td>
                   <td rowspan="4" class="th">Тип скважины</td>
                   <td rowspan="4" class="th">Горизонт</td>
+                  <!-- <td rowspan="4" class="th">Объект</td> -->
                   <td rowspan="4" class="th">Блок</td>
                   <td rowspan="4" class="th">R контура питания</td>
                   <td rowspan="4" class="th">Наружный диаметр э/к</td>
@@ -682,6 +684,9 @@
                   <td @click="sortBy('horizon')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
+                  <!-- <td @click="sortBy('object')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>
+                  </td> -->
                   <td @click="sortBy('block')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
@@ -1184,8 +1189,58 @@
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{row.block}}</td>
-                          <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.block" :disabled="!edit"></td> -->
+                  <!-- <td
+                    v-if="!edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].object[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].object[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].object[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span>{{ row.object[0] }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].object[1][1] }}
+                    </span>
+                  </td>
+                  <td
+                    v-if="edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].object[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].object[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].object[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span>{{ row.object[0] }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].object[1][1] }}
+                    </span>
+                  </td> -->
                   <td
                     v-if="!edit"
                     :class="{
@@ -1500,7 +1555,7 @@
                     </span>
                   </td>
                   <td v-if="edit">
-                    {{ Math.round(row.h_up_perf_md * 10) / 10 }}
+                    {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
                   </td>
 
                   <td
@@ -6714,6 +6769,7 @@ export default {
           this.fullWells = data.data;
         } else {
           console.log("No data");
+          
         }
         if (mm < 10) {
           this.dt = "01" + ".0" + mm + "." + yyyy;
@@ -7192,7 +7248,7 @@ tr:nth-child(even) td {
 
 /* width */
 table::-webkit-scrollbar {
-  width: 10px;
+  width: 13px;
 }
 
 /* Track */
@@ -7202,12 +7258,14 @@ table::-webkit-scrollbar-track {
 
 /* Handle */
 table::-webkit-scrollbar-thumb {
-  background: #656a8a;
+  background: #656A8A;
+  
 }
 
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
-  background: #272953;
+  background: #656A8A;
+  
 }
 
 table::-webkit-scrollbar-corner {
