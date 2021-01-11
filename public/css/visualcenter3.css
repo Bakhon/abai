@@ -241,6 +241,7 @@ td:last-of-type {
     /* height: 48px; */
     overflow: hidden;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .icon-all {
@@ -623,6 +624,7 @@ td.small-td {
     border-radius: 10px;
     margin-left: 9px;
     border: 2px solid #2743cb;
+    cursor: pointer;
 }
 
 ul.center-menu2 {

@@ -290,7 +290,7 @@
 
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('101')">
-                  <div class="col-1 mt-2" v-html="flagOff"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton1Flag"></div>
 
                   <a
                     class="col-9 px-2"
@@ -312,7 +312,7 @@
                   </div>
                 </li>
 
-                <li class="center-li row px-4">
+                <!--<li class="center-li row px-4">
                   <a
                     class="col-10"
                     @click="
@@ -331,7 +331,7 @@
                       &#10003;
                     </div>
                   </div>
-                </li>
+                </li>-->
               </ul>
             </div>
             <div class="col dropdown3 font-weight">
@@ -355,8 +355,10 @@
 
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('102')">
+                    <div class="col-1 mt-2" v-html="changeMenuButton2Flag"></div>
+
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'oil_dlv_plan',
@@ -375,8 +377,10 @@
                   </div>
                 </li>
                 <li class="center-li row px-4" @click="changeMenu('103')">
+                  <div class="col-1 mt-2" v-html="changeMenuButton3Flag"></div>
+
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'tovarnyi_ostatok_nefti_prev_day',
@@ -416,8 +420,9 @@
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('104')">
+                    <div class="col-1 mt-2" v-html="changeMenuButton4Flag"></div>
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'sdacha_gaza_prirod_plan',
@@ -437,7 +442,7 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('105')">
-                     <div class="col-1 mt-2" v-html="flagOff"></div>
+                     <div class="col-1 mt-2" v-html="changeMenuButton5Flag"></div>
                   <a
                    class="col-9 px-2"
                     @click="
@@ -479,8 +484,9 @@
                 </li>-->
 
                 <li class="center-li row px-4" @click="changeMenu('108')">
+                     <div class="col-1 mt-2" v-html="changeMenuButton8Flag"></div>
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'sdacha_gaza_poput_plan',
@@ -500,8 +506,9 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('103')">
+                    <div class="col-1 mt-2" v-html="changeMenuButton3Flag"></div>
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'raskhod_poput_plan',
@@ -521,8 +528,9 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('107')">
+                  <div class="col-1 mt-2" v-html="changeMenuButton7Flag"></div>
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'pererabotka_gaza_poput_plan',
@@ -562,8 +570,9 @@
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('113')">
+                   <div class="col-1 mt-2" v-html="changeMenuButton13Flag"></div>
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'gk_plan',
@@ -603,8 +612,9 @@
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('109')">
+                 <div class="col-1 mt-2" v-html="changeMenuButton9Flag"></div>
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'ppd_zakachka_morskoi_vody_plan',
@@ -624,8 +634,9 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('110')">
+                 <div class="col-1 mt-2" v-html="changeMenuButton10Flag"></div>
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'ppd_zakachka_stochnoi_vody_plan',
@@ -645,8 +656,9 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('111')">
+                <div class="col-1 mt-2" v-html="changeMenuButton11Flag"></div>
                   <a
-                    class="col-10"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'ppd_zakachka_albsen_vody_plan',
@@ -2014,17 +2026,25 @@
           <table class="table">
             <tr>
               <td class="size-td">
-                <div class="number">{{ personalFact }}</div>
+                <div class="number">{{ staff }}</div>
               </td>
 
               <td class="w-65">
                 <div class="column-1">
-                  <div class="arrow"></div>
-                  <div class="txt2">7</div>
+                   <div class="column-1">
+                  <div
+                    :class="`${getColor2(
+                      getDiffProcentLastP(staffPercent, staff)
+                    )}`"
+                  ></div>
+                  <div class="txt2">
+                    {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                  </div>
+                </div>
                 </div>
                 <div class="column-1">
                   <div class="in-idle">Прирост</div>
-                  <div class="in-idle">с начала месяца</div>
+                  <div class="in-idle">vs прошлый период</div>
                 </div>
               </td>
             </tr>
@@ -2053,7 +2073,7 @@
                     )}`"
                   ></div>
                   <div class="txt2">
-                    {{ Math.abs(getDiffProcentLastP(covidPercent, covid)) }}
+                    {{ Math.abs(getDiffProcentLastP(covidPercent, covid)) }}%
                   </div>
                 </div>
                 <div class="column-1">
