@@ -8,6 +8,7 @@ use Level23\Druid\Types\Granularity;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use App\Models\DZO\DZOdaily;
 use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
+use App\Models\VisCenter\ImportForms\DZOstaff;
 
 class DruidController extends Controller
 {
@@ -70,9 +71,8 @@ return $response;
     }
 
     public function visualcenter3GetDataStaff(Request $request)  
-    {   
-      
-
+    {         
+        return response()->json(DZOstaff ::all());
     }
 
     public function visualcenter3GetData(Request $request)  
