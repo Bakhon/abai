@@ -11,15 +11,19 @@ export default {
   },
   data: function () {
     return {
-      flagOn:'',
-      flagOff:'<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n'+
-      '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
-      '</svg>',
-      inj_wells_idlePercent:0,
-      inj_wells_workPercent:0,
-      prod_wells_workPercent:0,
-      prod_wells_idlePercent:0,
-      personalFact:'',
+      staffPercent:0,
+      staff:0,
+      flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+        '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
+        '</svg>',
+      flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
+        '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
+        '</svg>',
+      inj_wells_idlePercent: 0,
+      inj_wells_workPercent: 0,
+      prod_wells_workPercent: 0,
+      prod_wells_idlePercent: 0,
+      personalFact: '',
       covidPercent: '',
       covid: '',
       usdRatesData: {
@@ -62,17 +66,17 @@ export default {
       quantityGetProductionOilandGas: "",
       /*calendar*/
       range: {
-       /* start: "2020-12-18T06:00:00+06:00",
-        end: "2020-12-18T09:00:00+06:00",*/
+        /* start: "2020-12-18T06:00:00+06:00",
+         end: "2020-12-18T09:00:00+06:00",*/
       },
       modelConfig: {
         start: {
-          timeAdjust: '06:00:00',
+          timeAdjust: '00:00:00',
           type: 'string',
           mask: 'YYYY-MM-DDTHH:mm:ssXXX',
         },
         end: {
-          timeAdjust: '06:00:00',
+          timeAdjust: '23:59:00',
           type: 'string',
           mask: 'YYYY-MM-DDTHH:mm:ssXXX',
         },
@@ -111,6 +115,20 @@ export default {
       changeMenuButton11: "",
       changeMenuButton12: "",
       changeMenuButton13: "",
+
+      changeMenuButton1Flag: "",
+      changeMenuButton2Flag: "",
+      changeMenuButton3Flag: "",
+      changeMenuButton4Flag: "",
+      changeMenuButton5Flag: "",
+      changeMenuButton6Flag: "",
+      changeMenuButton7Flag: "",
+      changeMenuButton8Flag: "",
+      changeMenuButton9Flag: "",
+      changeMenuButton10Flag: "",
+      changeMenuButton11Flag: "",
+      changeMenuButton12Flag: "",
+      changeMenuButton13Flag: "",
       Table1: "display:block;",
       Table2: "display:none;",
       Table3: "display:none;",
@@ -337,7 +355,9 @@ export default {
     },
 
     changeMenu(change) {
-      var changeMenuButton = this.changeMenuButton;
+      let changeMenuButton = this.changeMenuButton;
+      let flagOn = this.flagOn;
+      let flagOff = this.flagOff;
       this.changeMenuButton1 = '';
       this.changeMenuButton2 = '';
       this.changeMenuButton3 = '';
@@ -352,60 +372,87 @@ export default {
       this.changeMenuButton12 = '';
       this.changeMenuButton13 = '';
 
+      this.changeMenuButton1Flag = flagOff;
+      this.changeMenuButton2Flag = flagOff;
+      this.changeMenuButton3Flag = flagOff;
+      this.changeMenuButton4Flag = flagOff;
+      this.changeMenuButton5Flag = flagOff;
+      this.changeMenuButton6Flag = flagOff;
+      this.changeMenuButton7Flag = flagOff;
+      this.changeMenuButton8Flag = flagOff;
+      this.changeMenuButton9Flag = flagOff;
+      this.changeMenuButton10Flag = flagOff;
+      this.changeMenuButton11Flag = flagOff;
+      this.changeMenuButton12Flag = flagOff;
+      this.changeMenuButton13Flag = flagOff;
+
 
 
 
       if (change == "101") {
         this.changeMenuButton1 = changeMenuButton;
+        this.changeMenuButton1Flag = flagOn;
       }
 
       if (change == "102") {
         this.changeMenuButton2 = changeMenuButton;
+        this.changeMenuButton2Flag = flagOn;
       }
 
       if (change == "103") {
         this.changeMenuButton3 = changeMenuButton;
+        this.changeMenuButton3Flag = flagOn;
       }
 
       if (change == "104") {
         this.changeMenuButton4 = changeMenuButton;
+        this.changeMenuButton4Flag = flagOn;
       }
 
       if (change == "105") {
         this.changeMenuButton5 = changeMenuButton;
+        this.changeMenuButton5Flag = flagOn;
       }
 
 
       if (change == "106") {
         this.changeMenuButton6 = changeMenuButton;
+        this.changeMenuButton6Flag = flagOn;
       }
 
       if (change == "107") {
         this.changeMenuButton7 = changeMenuButton;
+        this.changeMenuButton7Flag = flagOn;
       }
 
       if (change == "108") {
         this.changeMenuButton8 = changeMenuButton;
+        this.changeMenuButton8Flag = flagOn;
       }
 
       if (change == "109") {
         this.changeMenuButton9 = changeMenuButton;
+        this.changeMenuButton9Flag = flagOn;
       }
 
       if (change == "110") {
         this.changeMenuButton10 = changeMenuButton;
+        this.changeMenuButton10Flag = flagOn;
       }
 
       if (change == "111") {
         this.changeMenuButton11 = changeMenuButton;
+        this.changeMenuButton11Flag = flagOn;
       }
 
       if (change == "112") {
         this.changeMenuButton12 = changeMenuButton;
+        this.changeMenuButton12Flag = flagOn;
       }
 
       if (change == "113") {
         this.changeMenuButton13 = changeMenuButton;
+        this.changeMenuButton13Flag = flagOn;
       }
 
     },
@@ -414,6 +461,15 @@ export default {
       this.changeMenu2('4');
     },
 
+    ISODateString(d) {
+      function pad(n) { return n < 10 ? '0' + n : n }
+      return d.getUTCFullYear() + '-'
+        + pad(d.getUTCMonth() + 1) + '-'
+        + pad(d.getUTCDate()) + 'T'
+        + pad(d.getUTCHours()) + ':'
+        + pad(d.getUTCMinutes()) + ':'
+        + pad(d.getUTCSeconds()) + '+06:00'
+    },
 
     changeMenu2(change) {
 
@@ -422,8 +478,8 @@ export default {
 
         this.buttonHover7 = buttonHover;
         this.range = {
-          start: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
+          start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
           formatInput: true,
         };
 
@@ -436,8 +492,8 @@ export default {
       if (change == 2) {
         this.buttonHover8 = buttonHover;
         this.range = {
-          start: new Date(this.year + '-' + this.pad(this.month) + '-01T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
+          start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-01T06:00:00+06:00')),
+          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
           formatInput: true,
         };
 
@@ -450,8 +506,8 @@ export default {
       if (change == 3) {
         this.buttonHover9 = buttonHover;
         this.range = {
-          start: new Date(this.year + '-' + '01' + '-01T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
+          start: this.ISODateString(new Date(this.year + '-' + '01' + '-01T06:00:00+06:00')),
+          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
           formatInput: true,
         };
 
@@ -619,7 +675,7 @@ export default {
           // this.$emit("currencyChart", arrdata2);
           this.currencyChartData = arrdata2;
 
-          console.log(this.currencyChartData);
+          //console.log(this.currencyChartData);
         } else {
           console.log("No data");
         }
@@ -687,18 +743,19 @@ export default {
 
 
     getDiffProcentLastBigN(a, b) {
-      if (a != '')  {
-      return (100 - ((a / b - 1)) * 100).toFixed(2);
-      }  else { return 0 }
+      if (a != '') {
+        return (100 - ((a / b - 1)) * 100).toFixed(2);
+      } else { return 0 }
     },
 
     getDiffProcentLastP(a, b) {
-      if (a != '')  return ((a / b - 1) * 100).toFixed(2)
-      else return 0;           
+      if (b==0) {return 0} else {
+      if (a != '') return ((a / b - 1) * 100).toFixed(2)
+      //else return 0;
+    }
     },
 
     getColor2(i) {
-      console.log(i);
       if (i < 0) return "arrow";
       if (i > 0) return "arrow2";
     },
@@ -1013,7 +1070,7 @@ export default {
               },
               0
             );
-  
+
             this.covid = covid;
 
 
@@ -1041,7 +1098,7 @@ export default {
             this.inj_wells_idle = dataWithMayLast['inj_wells_idle'];
             this.inj_wells_work = dataWithMayLast['inj_wells_work'];
             this.prod_wells_work = dataWithMayLast['prod_wells_work'];
-            this.prod_wells_idle = dataWithMayLast['prod_wells_idle'];          
+            this.prod_wells_idle = dataWithMayLast['prod_wells_idle'];
 
             //console.log(productionForChart);
             if (this.company != "all") {
@@ -1195,7 +1252,7 @@ export default {
 
 
           //Summ plan and fact from dzo nagnetatWells k1q for month!!!
-          var productionPlanAndFactMonthWells = _(dataWithMay)
+          /*var productionPlanAndFactMonthWells = _(dataWithMay)
             .groupBy("data")
             .map((__time, id) => ({
               __time: id,
@@ -1226,7 +1283,7 @@ export default {
 
 
           this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
-
+*/
 
           var productionForChart = _(dataWithMay)
             .groupBy("__time")
@@ -1285,14 +1342,14 @@ export default {
               _.inRange(
                 //item.dateSimple,
                 item.__time,
-                timestampEnd, //- 86400000,// * Number(period),
-                timestampEnd + 86400000
+                timestampEnd - 86400000,// * Number(period),
+                timestampEnd
               ),
             ]);
           });
 
           dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
-          
+
 
           var dzoDay = [];
           var factDay = [];
@@ -1323,13 +1380,14 @@ export default {
             dzoDay.push(e);
             factDay.push(f);
             planDay.push(p);
-           /* inj_wells_idle.push({ inj_wells_idle: item.inj_wells_idle });
-            inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
-            prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
-            prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });*/
+            /* inj_wells_idle.push({ inj_wells_idle: item.inj_wells_idle });
+             inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
+             prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
+             prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });*/
           });
 
           this.getProductionPercentWells(data);
+
           if (inj_wells_idle) {
             inj_wells_idle = _.reduce(
               dataDay,
@@ -1510,7 +1568,7 @@ export default {
           this.factDaySumm = factDaySumm;
           this.planDaySumm = planDaySumm;
 
-          
+
 
           let personalFact = _.reduce(
             dataDay,
@@ -1644,7 +1702,7 @@ export default {
     getProductionPercentCovid(data) {
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
-      var quantityRange = this.quantityRange;    
+      var quantityRange = this.quantityRange;
 
       var dataWithMay = new Array();
       dataWithMay = _.filter(data, function (item) {
@@ -1677,7 +1735,7 @@ export default {
       let prod_wells_idle = [];
       let timestampToday = this.timestampToday;
       let timestampEnd = this.timestampEnd;
-      let quantityRange = this.quantityRange;    
+      let quantityRange = this.quantityRange;
 
       let dataWithMay = new Array();
       dataWithMay = _.filter(data, function (item) {
@@ -1690,8 +1748,9 @@ export default {
         ]);
       });
 
+
       // dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);    
-      
+
       if (inj_wells_idle) {
         inj_wells_idle = _.reduce(
           dataWithMay,
@@ -2134,15 +2193,31 @@ export default {
       return dzo;
     },
 
-    getStaff(){
+    getStaff() {
       let uri = this.localeUrl("/visualcenter3GetDataStaff");
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
-        } else
-        {console.log('No data Personal')}
-    
-        });
+          console.log(data);
+          var staff = _(data)
+            .groupBy("__time")
+            .map((__time, id) => ({
+              time: id,
+              staff_number: _.round(_.sumBy(__time, 'staff_number'), 0),
+           
+            }))
+            .value();
+            staff = _.orderBy(
+              staff,
+              ["time"],
+              ["desc"]
+            );  
+          this.staff=staff[0]['staff_number'];
+          this.staffPercent=staff[1]['staff_number'];
+
+        } else { console.log('No data Personal') }
+
+      });
     },
 
     formatVisTableNumber(num) {
@@ -2166,14 +2241,14 @@ export default {
 
     if (window.location.host === 'dashboard') {
 
-      // this.Table5 = "display:block";
-      // this.Table1 = "display:none";
+   // this.Table6 = "display:block";
+    // this.Table1 = "display:none";
     }
 
   },
 
 
-  
+
 
   async mounted() {
     this.item3 = this.oilChartHeadName;
@@ -2182,14 +2257,18 @@ export default {
 
 
       this.range = {
-        start:"2021-01-05T06:00:00+06:00",
-        end:"2021-01-05T06:00:00+06:00",   
+       // start:"2020-01-05T00:00:00+06:00",
+      //  end:"2021-01-05T17:59:00+06:00", 
+        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 3) + 'T06:00:00+06:00')),
+      end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     } else {
       this.range = {
-        start: moment().subtract(3, "day").startOf('day').toDate(),
-        end: moment().subtract(1, "day").endOf('day').toDate(),
+        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 3) + 'T06:00:00+06:00')),
+        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+        // start: moment().subtract(3, "day").startOf('day').toDate(),
+        // end: moment().subtract(1, "day").endOf('day').toDate(),
         formatInput: true,
       };
     }
@@ -2214,6 +2293,24 @@ export default {
 
     this.getUsdRatesData();
     this.changeMenu2();
+    this.getStaff();
+
+    let flagOff = this.flagOff;
+    this.changeMenuButton1Flag = flagOff;
+    this.changeMenuButton2Flag = flagOff;
+    this.changeMenuButton3Flag = flagOff;
+    this.changeMenuButton4Flag = flagOff;
+    this.changeMenuButton5Flag = flagOff;
+    this.changeMenuButton6Flag = flagOff;
+    this.changeMenuButton7Flag = flagOff;
+    this.changeMenuButton8Flag = flagOff;
+    this.changeMenuButton9Flag = flagOff;
+    this.changeMenuButton10Flag = flagOff;
+    this.changeMenuButton11Flag = flagOff;
+    this.changeMenuButton12Flag = flagOff;
+    this.changeMenuButton13Flag = flagOff;
+
+
 
 
 

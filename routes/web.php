@@ -59,6 +59,7 @@ Route::group(
                 Route::get('/visualcenter2', 'DruidController@visualcenter2')->name('visualcenter2');
                 Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
                 Route::get('/visualcenter3GetData', 'DruidController@visualcenter3GetData');
+                Route::get('/visualcenter3GetDataStaff', 'DruidController@visualcenter3GetDataStaff');
                 Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
                 Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
                 Route::get('/visualcenter6', 'DruidController@visualcenter6')->name('visualcenter6');
