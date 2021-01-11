@@ -105,22 +105,14 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h5 style="margin-left: 14px">Факторный анализ</h5>
-      <select
-        name="Company"
-        class="form-control tr-field-filter"
-        id="companySelect"
-        v-model="filter"
-        @change="chooseField"
-      >
-        <option value="Все месторождения">Все месторождения</option>
-        <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-        <option value="Акшабулак Южный">Акшабулак Южный</option>
-        <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-        <option value="Нуралы">Нуралы</option>
-        <option value="Аксай">Аксай</option>
-        <option value="Аксай Южный">Аксай Южный</option>
-      </select>
+      <h3 style="margin-left: 14px">Факторный анализ</h3>
+      <tr-multiselect
+        :filter="filter"
+        :selectedAllTag="true"
+        :fieldFilterOptions="fieldFilterOptions"
+        @change-filter="handlerFilter"
+        filterName="месторождения"
+      />
       <a
         class="but-nav__link but"
         href="trfa"
@@ -147,10 +139,7 @@
       </div> -->
       <table
         class="table table-bordered table-dark table-responsive fakrtableborderedtable"
-        style="
-          background: #0d1e63;
-          margin-bottom: 0;
-        "
+        style="background: #0d1e63"
       >
         <tr class="headerColumn">
           <td rowspan="3" style="background: #12135c"><span>Скважина</span></td>
@@ -918,6 +907,8 @@ import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import columnSortable from 'vue-column-sortable'
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+import { fields } from "./constants.js";
+import TrMultiselect from "./TrMultiselect.vue";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
@@ -925,6 +916,7 @@ export default {
   components: {
     // FadeLoader,
     SearchFormRefresh,
+    TrMultiselect,
   },
   data: function () {
     return {
@@ -940,7 +932,14 @@ export default {
       date1: null,
       date2: null,
       fullWells: [],
-      filter: "Все месторождения",
+      // filter: "Все месторождения",
+      filter: [...fields],
+      fieldFilterOptions: [
+        {
+          group: "Все месторождения",
+          fields: [...fields],
+        },
+      ],
       editdtm: null,
       editdty: null,
       editdtprevm: null,
@@ -1057,6 +1056,9 @@ export default {
   },
   watch: {
     fullWells() {
+      this.chooseField();
+    },
+    filter() {
       this.chooseField();
     },
   },
@@ -1182,16 +1184,28 @@ export default {
           });
       }
     },
+    // chooseField() {
+    //   const { filter, fullWells } = this;
+    //   console.log(filter);
+    //   console.log(fullWells);
+    //   // if (!filter || filter == "Казгермунай") {
+    //   this.$store.commit("fa/SET_FILTER", filter);
+    //   if (!filter || filter == "Все месторождения") {
+    //     this.wells = fullWells;
+    //   } else {
+    //     this.wells = fullWells.filter((e) => e.field === filter);
+    //   }
+    // },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter);
+      console.log("filter = ", filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("fa/SET_FILTER", filter);
-      if (!filter || filter == "Все месторождения") {
+      if (!filter) {
         this.wells = fullWells;
       } else {
-        this.wells = fullWells.filter((e) => e.field === filter);
+        this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
       }
     },
     pushBign(bign) {
@@ -1220,6 +1234,9 @@ export default {
     },
     handlerSearch(search) {
       this.searchString = search;
+    },
+    handlerFilter(filter) {
+      this.filter = filter;
     },
     searchWell() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -1364,6 +1381,9 @@ export default {
 body {
   color: white !important;
 }
+#app .multiselect {
+  max-width: 300px;
+}
 .but-nav__link {
   font-weight: inherit;
   padding: 5px 15px;
@@ -1424,8 +1444,9 @@ body {
 .table {
   overflow: scroll;
   height: calc(100vh - 205px);
+  margin: 0;
 }
-.table tr:nth-child(-n+4) td {
+.table tr:nth-child(-n + 4) td {
   position: sticky;
   background: rgb(51, 57, 117);
   top: 75px;
@@ -1457,7 +1478,6 @@ body {
   height: 40px;
 }
 
-
 .fakrtableborderedtable {
   font-size: 9px;
   padding: unset;
@@ -1484,7 +1504,7 @@ table::-webkit-scrollbar-thumb:hover {
 
 }
 /* уголок скролла  */
-table::-webkit-scrollbar-corner  {
+table::-webkit-scrollbar-corner {
   background: #333975;
 }
 .fadropmenu {

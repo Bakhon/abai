@@ -164,34 +164,49 @@
         </div>
         <div class="filters row" v-if="showFilters">
           <div class="filters__item">
-            <select
-              class="form-control"
-              v-model="chartFilter_field"
-              value="Месторождение"
-            >
-              <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
-                {{ f === undefined ? "Все месторождения" : f }}
-              </option>
-            </select>
+            <tr-multiselect
+              :filter="chartFilter_field"
+              :fieldFilterOptions="fieldFilters"
+              @change-filter="handlerFilterFields"
+              filterName="месторождения"
+            />
           </div>
           <div class="filters__item">
-            <select class="form-control" v-model="chartFilter_horizon">
-              <option v-for="(f, k) in horizonFilters" :key="k" :value="f">
-                {{ f === undefined ? "Все горизонты" : f }}
-              </option>
-            </select>
+            <tr-multiselect
+              :filter="chartFilter_horizon"
+              :fieldFilterOptions="horizonFilters"
+              @change-filter="handlerFilterHorizons"
+              filterName="горизонты"
+              textFormsRow="horizons"
+            />
           </div>
           <div class="filters__item">
-            <select
-              v-if="exp_methFilters"
-              class="form-control"
-              v-model="chartFilter_exp_meth"
-            >
-              <option v-for="(f, k) in exp_methFilters" :key="k" :value="f">
-                {{ f === undefined ? "Все способы эксплуатации" : f }}
-              </option>
-            </select>
+            <tr-multiselect
+              :filter="chartFilter_exp_meth"
+              :fieldFilterOptions="exp_methFilters"
+              @change-filter="handlerFilterFieldsMethods"
+              filterName="способы"
+              filterNameAdditional="добычи"
+              textFormsRow="expMethods"
+            />
           </div>
+          
+          <div class="filters__item">
+            <tr-multiselect
+              :filter="chartFilter_object"
+              :fieldFilterOptions="objectFilters"
+              @change-filter="handlerFilterObjects"
+              filterName="обьекты"
+              textFormsRow="objects"
+            />
+          </div>
+          <clear-icon
+            v-if="chartWells.length !== filteredWellsPreGraph.length"
+            @clear-click="clearFilters()"
+            background="#333975"
+            placeholder="Сбросить фильтры"
+            style="margin-left: 10px"
+          />
         </div>
       </div>
       <div class="sec_nav">
@@ -214,11 +229,16 @@
 import VueApexCharts from "vue-apexcharts";
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
 import BigNumbers from "./BigNumbers.vue";
+import TrMultiselect from "./TrMultiselect.vue";
+import { getFilterText } from "./helpers.js";
+import ClearIcon from "../ui-kit/ClearIcon.vue";
 
 export default {
   name: "TrCharts",
   components: {
     // FadeLoader,
+    TrMultiselect,
+    ClearIcon,
     BigNumbers,
   },
   computed: {
@@ -226,19 +246,28 @@ export default {
       return `${this.chartNames[this.chartShow]} на ${this.dt}`;
     },
     subtitleText() {
-      let filtersText = "";
-      if (this.chartFilter_field) filtersText = this.chartFilter_field;
-      if (this.chartFilter_horizon)
-        filtersText = filtersText
-          ? `${filtersText}, ${this.chartFilter_horizon}`
-          : this.chartFilter_horizon;
-      if (this.chartFilter_exp_meth)
-        filtersText = filtersText
-          ? `${filtersText}, ${this.chartFilter_exp_meth}`
-          : this.chartFilter_exp_meth;
-      if (filtersText) filtersText = `${filtersText}`;
-
-      return filtersText;
+      return [
+        getFilterText(
+          this.chartFilter_field,
+          this.fieldFilters[0].fields,
+          "fields"
+        ),
+        getFilterText(
+          this.chartFilter_horizon,
+          this.horizonFilters[0].fields,
+          "horizons"
+        ),
+        `${getFilterText(
+          this.chartFilter_exp_meth,
+          this.exp_methFilters[0].fields,
+          "expMethods"
+        )} добычи`,
+        getFilterText(
+          this.chartFilter_object,
+          this.objectFilters[0].fields,
+          "objects"
+        ),
+      ];
     },
     fieldFilters() {
       if (this.chartWells && this.chartWells.length > 0) {
@@ -249,14 +278,25 @@ export default {
           if (
             filters.indexOf(el.field) === -1 &&
             (!this.chartFilter_horizon ||
-              el_horizon === this.chartFilter_horizon) &&
+              this.chartFilter_horizon.length === 0 ||
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
             (!this.chartFilter_exp_meth ||
-              el_exp_meth === this.chartFilter_exp_meth)
+              this.chartFilter_exp_meth.length === 0 ||
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.object) !== -1)
+            //change it to object
           ) {
             filters = [...filters, el.field];
           }
         });
-        return [undefined, ...filters];
+        return [
+          {
+            group: "Все месторождения",
+            fields: [...filters],
+          },
+        ];
       } else return [];
     },
     horizonFilters() {
@@ -267,14 +307,25 @@ export default {
           const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
           if (
             filters.indexOf(el_horizon) === -1 &&
-            (!this.chartFilter_field || el.field === this.chartFilter_field) &&
+            (!this.chartFilter_field ||
+              this.chartFilter_field.length === 0 ||
+              this.chartFilter_field.indexOf(el.field) !== -1) &&
             (!this.chartFilter_exp_meth ||
-              el_exp_meth === this.chartFilter_exp_meth)
+              this.chartFilter_exp_meth.length === 0 ||
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.object) !== -1)
           ) {
             filters = [...filters, el_horizon];
           }
         });
-        return [undefined, ...filters];
+        return [
+          {
+            group: "Все горизонты",
+            fields: [...filters],
+          },
+        ];
       } else return [];
     },
     exp_methFilters() {
@@ -286,14 +337,55 @@ export default {
           const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
           if (
             filters.indexOf(el_exp_meth) === -1 &&
-            (!this.chartFilter_field || el.field === this.chartFilter_field) &&
+            (!this.chartFilter_field ||
+              this.chartFilter_field.length === 0 ||
+              this.chartFilter_field.indexOf(el.field) !== -1) &&
             (!this.chartFilter_horizon ||
-              el_horizon === this.chartFilter_horizon)
+              this.chartFilter_horizon.length === 0 ||
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
+            (!this.chartFilter_object ||
+              this.chartFilter_object.length === 0 ||
+              this.chartFilter_object.indexOf(el.object) !== -1)
           ) {
             filters = [...filters, el_exp_meth];
           }
         });
-        return [undefined, ...filters];
+        return [
+          {
+            group: "Все способы добычи",
+            fields: [...filters],
+          },
+        ];
+      } else return [];
+    },
+    objectFilters() {
+      if (this.chartWells && this.chartWells.length > 0) {
+        let filters = [];
+
+        this.chartWells.forEach((el) => {
+          const el_horizon = this.getStringOrFirstItem(el, "horizon");
+          const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
+          if (
+            filters.indexOf(el.object) === -1 &&
+            (!this.chartFilter_field ||
+              this.chartFilter_field.length === 0 ||
+              this.chartFilter_field.indexOf(el.field) !== -1) &&
+            (!this.chartFilter_horizon ||
+              this.chartFilter_horizon.length === 0 ||
+              this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
+            (!this.chartFilter_exp_meth ||
+              this.chartFilter_exp_meth.length === 0 ||
+              this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
+          ) {
+            filters = [...filters, el.object];
+          }
+        });
+        return [
+          {
+            group: "Все обьекты",
+            fields: [...filters],
+          },
+        ];
       } else return [];
     },
   },
@@ -302,6 +394,7 @@ export default {
       chartShow: 0,
       // isLoading: true,
       chartWells: [],
+      filteredWellsPreGraph: [],
       filteredWells: [],
       sortType: "asc",
       dt: null,
@@ -313,9 +406,14 @@ export default {
       editdtprevm: null,
       editdtprevy: null,
       showFilters: false,
-      chartFilter_field: undefined,
-      chartFilter_horizon: undefined,
-      chartFilter_exp_meth: undefined,
+      chartFilter_field: [],
+      chartFilter_field_start: true,
+      chartFilter_horizon: [],
+      chartFilter_horizon_start: true,
+      chartFilter_exp_meth: [],
+      chartFilter_exp_meth_start: true,
+      chartFilter_object: [],
+      chartFilter_object_start: true,
       // sortField: null,
       // currentSortDir: 'asc',
       year: null,
@@ -425,17 +523,17 @@ export default {
       },
       titleBase: {
         align: "center",
-        offsetY: 18,
+        offsetY: 15,
         style: {
-          fontSize: "14px",
+          fontSize: "12px",
           color: "#5FA7FF",
         },
       },
       subtitleBase: {
         align: "center",
-        offsetY: 36,
+        offsetY: 30,
         style: {
-          fontSize: "14px",
+          fontSize: "12px",
           color: "#5FA7FF",
           fontWeight: 700,
         },
@@ -470,31 +568,114 @@ export default {
       this.calcChartData();
     },
     fieldFilters() {
+      if (this.chartFilter_field_start) {
+        this.chartFilter_field = this.fieldFilters[0].fields;
+        this.chartFilter_field_start = false;
+      } else {
+        const newFilter = this.chartFilter_field.filter(
+          (el) => this.fieldFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_field.length)
+          this.chartFilter_field = newFilter;
+      }
+      this.refreshFilters();
       this.calcChartData();
     },
     horizonFilters() {
+      if (this.chartFilter_horizon_start) {
+        this.chartFilter_horizon = this.horizonFilters[0].fields;
+        this.chartFilter_horizon_start = false;
+      } else {
+        const newFilter = this.chartFilter_horizon.filter(
+          (el) => this.horizonFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_horizon.length)
+          this.chartFilter_horizon = newFilter;
+      }
+      this.refreshFilters();
       this.calcChartData();
     },
     exp_methFilters() {
+      if (this.chartFilter_exp_meth_start) {
+        this.chartFilter_exp_meth = this.exp_methFilters[0].fields;
+        this.chartFilter_exp_meth_start = false;
+      } else {
+        const newFilter = this.chartFilter_exp_meth.filter(
+          (el) => this.exp_methFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_exp_meth.length)
+          this.chartFilter_exp_meth = newFilter;
+      }
+      this.refreshFilters();
+      this.calcChartData();
+    },
+    objectFilters() {
+      if (this.chartFilter_object_start) {
+        this.chartFilter_object = this.objectFilters[0].fields;
+        this.chartFilter_object_start = false;
+      } else {
+        const newFilter = this.chartFilter_object.filter(
+          (el) => this.objectFilters[0].fields.indexOf(el) !== -1
+        );
+        if (newFilter.length !== this.chartFilter_object.length)
+          this.chartFilter_object = newFilter;
+      }
+      this.refreshFilters();
       this.calcChartData();
     },
   },
   methods: {
+    clearFilters() {
+      this.chartFilter_object = [];
+      this.chartFilter_exp_meth = [];
+      this.chartFilter_horizon = [];
+      this.chartFilter_field = [];
+    },
+    refreshFilters() {
+      if (
+        this.chartFilter_object.length === 0 &&
+        this.chartFilter_exp_meth.length === 0 &&
+        this.chartFilter_horizon.length === 0 &&
+        this.chartFilter_field.length === 0
+      ) {
+        this.chartFilter_object = [...this.objectFilters[0].fields];
+        this.chartFilter_exp_meth = [...this.exp_methFilters[0].fields];
+        this.chartFilter_horizon = [...this.horizonFilters[0].fields];
+        this.chartFilter_field = [...this.fieldFilters[0].fields];
+      }
+    },
+    handlerFilterFields(filter) {
+      this.chartFilter_field = filter;
+    },
+    handlerFilterHorizons(filter) {
+      this.chartFilter_horizon = filter;
+    },
+    handlerFilterFieldsMethods(filter) {
+      this.chartFilter_exp_meth = filter;
+    },
+    handlerFilterObjects(filter) {
+      this.chartFilter_object = filter;
+    },
     async calcChartData() {
       if (this.chartWells && this.chartWells.length > 0) {
-        let field = this.chartFilter_field;
-        let horizon = this.chartFilter_horizon;
-        let exp_meth = this.chartFilter_exp_meth;
+        const field = this.chartFilter_field;
+        const horizon = this.chartFilter_horizon;
+        const exp_meth = this.chartFilter_exp_meth;
+        const object = this.chartFilter_object;
         try {
           const filteredResult = this.chartWells.filter(
             (row) =>
-              (!field || row.field === field) &&
+              (!field || field.indexOf(row.field) !== -1) &&
+              (!object || object.indexOf(row.object) !== -1) &&
               (!horizon ||
-                this.getStringOrFirstItem(row, "horizon") === horizon) &&
+                horizon.indexOf(this.getStringOrFirstItem(row, "horizon")) !==
+                  -1) &&
               (!exp_meth ||
-                this.getStringOrFirstItem(row, "exp_meth") === exp_meth)
+                exp_meth.indexOf(this.getStringOrFirstItem(row, "exp_meth")) !==
+                  -1)
           );
-
+          console.log("filtered = ", filteredResult);
+          this.filteredWellsPreGraph = filteredResult;
           this.chartData = await this[`setDataChart${this.chartShow}`](
             filteredResult
           );
@@ -538,7 +719,10 @@ export default {
         if (newMaxY1 > maxY1) maxY1 = newMaxY1;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = false;
       const stroke = {
         show: true,
@@ -642,7 +826,11 @@ export default {
         if (newY2Max > maxY2) maxY2 = newY2Max;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
+      console.log("xaxis = ", xaxis);
       const stacked = true;
       const stroke = {
         show: false,
@@ -774,7 +962,10 @@ export default {
         if (newY2 > maxY2) maxY2 = newY2;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -898,7 +1089,10 @@ export default {
         if (newY2 > maxY2) maxY2 = newY2;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -1025,7 +1219,10 @@ export default {
         if (newY2Max > maxY2) maxY2 = newY2Max;
         return this.getStringOrFirstItem(item, "well");
       });
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = true;
       const stroke = {
         show: false,
@@ -1136,7 +1333,10 @@ export default {
     setDataChart5(filteredResult) {
       this.filteredWells = filteredResult;
       const categories = ["Факт", "ИДН", "ИДН+ГРП"];
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "";
+      labels.rotateAlways = false;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const stacked = false;
       const chart = { ...this.chartBarOptions.chart, stacked };
       const yaxis = {
@@ -1147,8 +1347,6 @@ export default {
             color: "#5FA7FF",
           },
         },
-        // max: maxY2,
-        // min: minY2,
       };
       const title = {
         ...this.titleBase,
@@ -1233,7 +1431,10 @@ export default {
       const categories = filteredResult.map((item) =>
         this.getStringOrFirstItem(item, "well")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
@@ -1287,7 +1488,10 @@ export default {
       const categories = filteredResult.map((item) =>
         this.getStringOrFirstItem(item, "well")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = { ...this.yaxisBase };
       const title = {
         ...this.titleBase,
@@ -1333,7 +1537,10 @@ export default {
       const categories = filteredResult.map((item) =>
         this.getStringOrFirstItem(item, "well")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
@@ -1387,7 +1594,10 @@ export default {
       const categories = filteredResult.map((item) =>
         this.getStringOrFirstItem(item, "well")
       );
-      const xaxis = { ...this.chartBarOptions.xaxis, categories };
+      const labels = { ...this.chartBarOptions.xaxis.labels };
+      labels.style.cssClass = "chart-labels";
+      labels.rotateAlways = true;
+      const xaxis = { ...this.chartBarOptions.xaxis, labels, categories };
       const yaxis = {
         ...this.yaxisBase,
         title: {
@@ -1465,6 +1675,10 @@ export default {
           if (data) {
             this.fullWells = data.data;
             this.chartWells = data.data;
+            this.chartFilter_field_start = true;
+            this.chartFilter_horizon_start = true;
+            this.chartFilter_exp_meth_start = true;
+            this.chartFilter_object_start = true;
           } else {
             console.log("No data");
           }
@@ -1565,7 +1779,7 @@ body {
 }
 .second_block {
   height: calc(100vh - 280px);
-  min-height: 633px;
+  min-height: 587px;
   margin: 0 auto;
 }
 .droptr.droptr {
