@@ -17,7 +17,7 @@
                         )
                       }}
                     </div>
-                    <div class="unit-vc">тыс. тонн</div>
+                    <div class="unit-vc"> тонн</div>
                   </div>
                   <div class="txt1">Добыча нефти</div>
                   <br />
@@ -50,7 +50,7 @@
                     )}`"
                   ></div>
 
-                  <div class="txt2">
+                  <div class="txt2-2">
                     {{
                       Math.abs(
                         getDiffProcentLastP(oil_factDayPercent, oil_factDay)
@@ -73,7 +73,7 @@
                         )
                       }}
                     </div>
-                    <div class="unit-vc">тыс. тонн</div>
+                    <div class="unit-vc"> тонн</div>
                   </div>
                   <div class="txt1">Сдача нефти</div>
                   <br />
@@ -112,7 +112,7 @@
                     )}`"
                   ></div>
 
-                  <div class="txt2">
+                  <div class="txt2-2">
                     {{
                       Math.abs(
                         getDiffProcentLastP(
@@ -177,7 +177,7 @@
                     )}`"
                   ></div>
 
-                  <div class="txt2">
+                  <div class="txt2-2">
                     {{
                       Math.abs(
                         getDiffProcentLastP(gas_factDayPercent, gas_factDay)
@@ -215,7 +215,7 @@
 
                 <div class="percent-currency">
                   <div class="arrow"></div>
-                  <div class="txt2">5,2%</div>
+                  <div class="txt2-2">5,2%</div>
                   <div class="txt3">vs сентябрь</div>
                 </div>
               </td>
@@ -248,7 +248,7 @@
                     class="arrow2"
                     v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"
                   ></div>
-                  <div class="txt2">{{ dailyCurrencyChangeUsd }}%</div>
+                  <div class="txt2-2">{{ dailyCurrencyChangeUsd }}%</div>
                   <div class="txt3">vs вчера</div>
                 </div>
               </td>
@@ -274,7 +274,7 @@
                     'oil_plan',
                     'oil_fact',
                     `${oilChartHeadName}`,
-                    'тыс. тонн',
+                    ' тонн',
                     'Добыча нефти'
                   )
                 "
@@ -282,8 +282,8 @@
                 <!-- <label for="menu">-->
                 <div class="icon-all icons1"></div>
                 <div class="txt5">Добыча нефти</div>
-                <div class="txt6">тыс. тонн</div>
-                <!--   </label>-->
+                <!--  <div class="txt6"> тонн</div>
+                 </label>-->
               </div>
 
               <!-- <div class="dropdown">-->
@@ -299,7 +299,7 @@
                         'oil_plan',
                         'oil_fact',
                         `${oilChartHeadName}`,
-                        'тыс. тонн',
+                        ' тонн',
                         'С учётом доли участия КМГ'
                       )
                     "
@@ -320,7 +320,7 @@
                         'tb_personal_fact',
                         'tb_personal_fact',
                         `${oilChartHeadName}`,
-                        'тыс. тонн',
+                        ' тонн',
                         'Численость персонала'
                       )
                     "
@@ -343,14 +343,14 @@
                     'oil_dlv_plan',
                     'oil_dlv_fact',
                     'Динамика сдачи нефти',
-                    'тыс. тонн',
+                    ' тонн',
                     'Сдача нефти'
                   )
                 "
               >
                 <div class="icon-all icons2"></div>
                 <div class="txt5">Сдача нефти</div>
-                <div class="txt6">тыс. тонн</div>
+                <!--  <div class="txt6"> тонн</div>-->
               </div>
 
               <ul>
@@ -364,7 +364,7 @@
                         'oil_dlv_plan',
                         'oil_dlv_fact',
                         'Динамика сдачи нефти',
-                        'тыс. тонн',
+                        ' тонн',
                         'С учётом доли участия КМГ'
                       )
                     "
@@ -386,7 +386,7 @@
                         'tovarnyi_ostatok_nefti_prev_day',
                         'tovarnyi_ostatok_nefti_today',
                         `${oilChartHeadName}`,
-                        'тыс. тонн',
+                        ' тонн',
                         'Товарный остаток нефти'
                       )
                     "
@@ -409,14 +409,14 @@
                     'gas_plan',
                     'gas_fact',
                     'Динамика добычи газа',
-                    'тыс. м³',
+                    ' м³',
                     'Добыча газа'
                   )
                 "
               >
                 <div class="icon-all icons3"></div>
                 <div class="txt5">Добыча газа</div>
-                <div class="txt6">тыс. м³</div>
+                <!--  <div class="txt6"> м³</div>-->
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('104')">
@@ -428,7 +428,7 @@
                         'sdacha_gaza_prirod_plan',
                         'sdacha_gaza_prirod_fact',
                         'Динамика сдачи природного газа',
-                        'тыс. м³',
+                        ' м³',
                         'Сдача природного газа'
                       )
                     "
@@ -450,7 +450,7 @@
                         'raskhod_prirod_plan',
                         'raskhod_prirod_fact',
                         'Динамика расхода природного газа',
-                        'тыс. м³',
+                        ' м³',
                         'Расход природного газа на собственные нужды'
                       )
                     "
@@ -470,7 +470,7 @@
                         'pererabotka_gaza_prirod_plan',
                         'pererabotka_gaza_prirod_fact',
                         'Динамика переработки природного газа',
-                        'тыс. м³',
+                        ' м³',
                         'Переработка природного газа'
                       )
                     "
@@ -492,7 +492,7 @@
                         'sdacha_gaza_poput_plan',
                         'sdacha_gaza_poput_fact',
                         'Динамика сдачи попутного газа',
-                        'тыс. тонн',
+                        ' тонн',
                         'Сдача попутного газа'
                       )
                     "
@@ -514,7 +514,7 @@
                         'raskhod_poput_plan',
                         'raskhod_poput_fact',
                         'Динамика расхода попутного газа на собственные нужды',
-                        'тыс. м³',
+                        ' м³',
                         'Расход попутного газа на собственные нужды '
                       )
                     "
@@ -536,7 +536,7 @@
                         'pererabotka_gaza_poput_plan',
                         'pererabotka_gaza_poput_fact',
                         'Динамика переработки попутного газа',
-                        'тыс. м³',
+                        ' м³',
                         'Переработка попутного газа'
                       )
                     "
@@ -559,14 +559,14 @@
                     'gk_plan',
                     'gk_fact',
                     'Динамика добычи конденсата',
-                    'тыс. тонн',
+                    ' тонн',
                     'Добыча конденсата'
                   )
                 "
               >
                 <div class="icon-all icons4"></div>
                 <div class="txt5">Добыча конденсата</div>
-                <div class="txt6">тыс. тонн</div>
+                 <!-- <div class="txt6"> тонн</div>-->
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('113')">
@@ -578,7 +578,7 @@
                         'gk_plan',
                         'gk_fact',
                         'Динамика добычи конденсата',
-                        'тыс. тонн',
+                        ' тонн',
                         'С учётом доли участия КМГ'
                       )
                     "
@@ -601,14 +601,14 @@
                     'liq_plan',
                     'liq_fact',
                     'Динамика объёма закачки воды',
-                    'тыс. м³',
+                    ' м³',
                     'Закачка воды'
                   )
                 "
               >
                 <div class="icon-all icons5"></div>
                 <div class="txt5">Закачка воды</div>
-                <div class="txt6">тыс. м³</div>
+                 <!-- <div class="txt6"> м³</div>-->
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('109')">
@@ -620,7 +620,7 @@
                         'ppd_zakachka_morskoi_vody_plan',
                         'ppd_zakachka_morskoi_vody_fact',
                         'Динамика закачки морской воды',
-                        'тыс. м³',
+                        ' м³',
                         'Закачка морской воды'
                       )
                     "
@@ -642,7 +642,7 @@
                         'ppd_zakachka_stochnoi_vody_plan',
                         'ppd_zakachka_stochnoi_vody_fact',
                         'Динамика закачки сточной воды',
-                        'тыс. м³',
+                        ' м³',
                         'Закачка сточной воды'
                       )
                     "
@@ -664,7 +664,7 @@
                         'ppd_zakachka_albsen_vody_plan',
                         'ppd_zakachka_albsen_vody_fact',
                         'Динамика закачки альбсен. воды',
-                        'тыс. м³',
+                        ' м³',
                         'Закачка альбсен. воды'
                       )
                     "
@@ -718,7 +718,7 @@
                   :style="`${buttonHover10}`"
                   @click="changeMenu2(4)"
                 >
-                  Календарь
+                  Период [{{timeSelect}} - {{timeSelectOld}}]
                 </div>
                 <ul class="center-menu2 right-indent">
                   <li class="center-li">
@@ -812,7 +812,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                         {{thousand}}{{ item4 }}
                         </div>
                       </div>
 
@@ -827,7 +827,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                          {{thousand}}{{ item4 }}
                         </div>
                       </div>
                       <!--old date-->
@@ -841,7 +841,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                         {{thousand}} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -860,7 +860,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                         {{thousand}}{{ item4 }}
                         </div>
                       </div>
 
@@ -875,7 +875,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                          {{thousand}}{{ item4 }}
                         </div>
                       </div>
                       <!--old date-->
@@ -889,7 +889,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                          {{thousand}}{{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -926,7 +926,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                         {{thousand}} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -997,7 +997,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                          {{thousand}}{{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1012,7 +1012,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                         {{thousand}} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1040,7 +1040,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                          {{thousand}} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1087,7 +1087,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                          {{thousand}} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1101,7 +1101,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                         {{thousand}} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1128,7 +1128,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{ item4 }}
+                        {{thousand}}{{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1161,10 +1161,10 @@
 
             <div class="vis-chart pl-3">
               <div class="name-chart-left">
-                {{ nameChartLeft }}, {{ item4 }}
+                {{ nameChartLeft }}, {{thousand}} {{ item4 }}
               </div>
               <div class="name-chart-head">{{ item3 }}</div>
-              <vc-chart :height="500" v-if="company == 'all'"> </vc-chart>
+              <vc-chart :height="465" v-if="company == 'all'"> </vc-chart>
             </div>
           </div>
         </div>
@@ -1245,7 +1245,7 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Календарь
+                    Период [{{timeSelect}} - {{timeSelectOld}}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1396,7 +1396,7 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Календарь
+                    Период [{{timeSelect}} - {{timeSelectOld}}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1547,7 +1547,7 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Календарь
+                    Период [{{timeSelect}} - {{timeSelectOld}}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1706,7 +1706,7 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Календарь
+                    Период [{{timeSelect}} - {{timeSelectOld}}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1837,7 +1837,7 @@
                   )}`"
                 ></div>
 
-                <div class="txt2">
+                <div class="txt2-2">
                   {{
                     Math.abs(
                       getDiffProcentLastP(
@@ -1874,7 +1874,7 @@
                   )}`"
                 ></div>
 
-                <div class="txt2">
+                <div class="txt2-2">
                   {{
                     Math.abs(
                       getDiffProcentLastP(
@@ -1924,7 +1924,7 @@
                     )}`"
                   ></div>
 
-                  <div class="txt2">
+                  <div class="txt2-2">
                     {{
                       Math.abs(
                         getDiffProcentLastP(
@@ -1962,7 +1962,7 @@
                     )}`"
                   ></div>
 
-                  <div class="txt2">
+                  <div class="txt2-2">
                     {{
                       Math.abs(
                         getDiffProcentLastP(
@@ -2037,7 +2037,7 @@
                       getDiffProcentLastP(staffPercent, staff)
                     )}`"
                   ></div>
-                  <div class="txt2">
+                  <div class="txt2-2">
                     {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
                   </div>
                 </div>
@@ -2072,7 +2072,7 @@
                       getDiffProcentLastP(covidPercent, covid)
                     )}`"
                   ></div>
-                  <div class="txt2">
+                  <div class="txt2-2">
                     {{ Math.abs(getDiffProcentLastP(covidPercent, covid)) }}%
                   </div>
                 </div>
@@ -2164,7 +2164,7 @@
 <style scoped lang="scss">
 .vis-table {
   flex: 0 0 56%;
-  height: 535px;
+  height: 500px;
   max-width: 56%;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -2194,7 +2194,7 @@
         position: relative;
         vertical-align: middle;
         &:first-child {
-          height: 56px;
+          height: 50px;
           white-space: normal;
           width: 215px;
           span {
@@ -2253,7 +2253,7 @@
     font-size: 1.6rem;
     text-align: right;
     span {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: normal;
     }
   }
