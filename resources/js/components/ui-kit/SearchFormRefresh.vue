@@ -41,24 +41,18 @@
         v-model="searchStringModel"
       />
     </div>
-    <div class="clear-button" v-if="clear" @click="clearClick">
-      <svg
-        version="1.1"
-        width="40"
-        height="40"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <line x1="7" y1="17" x2="17" y2="7" stroke="white" stroke-width="1" />
-        <line x1="7" y1="7" x2="17" y2="17" stroke="white" stroke-width="1" />
-      </svg>
-    </div>
+    <clear-icon v-if="clear" @clear-click="clearClick()" background="#393d75" placeholder="Сбросить поиск"/>
     <button type="submit" class="input-submit-button">Поиск</button>
   </form>
 </template>
 
 <script>
+import ClearIcon from "../ui-kit/ClearIcon.vue";
+
 export default {
+  components: {
+    ClearIcon,
+  },
   props: {
     placeholder: {
       type: String,
@@ -92,14 +86,6 @@ export default {
 </script>
 
 <style scoped>
-.clear-button {
-  display: flex;
-  align-items: center;
-  background: #393d75;
-  width: 40px;
-  cursor: pointer;
-  justify-content: center;
-}
 .input-form-icon {
   position: absolute;
   top: 9px;

@@ -22,12 +22,9 @@
 </template>
 
 <script>
-import FadeLoader from "vue-spinner/src/FadeLoader.vue";
-
 export default {
   name: "BigNumbers",
   components: {
-    FadeLoader,
   },
   props: {
     list: {

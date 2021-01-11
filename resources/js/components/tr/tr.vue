@@ -250,11 +250,12 @@
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>Технологический режим на {{ dt }}</h5>
           </div>
-          <select
+          <!-- <select
             name="Company"
             class="form-control tr-field-filter"
             id="companySelect"
             v-model="filter"
+            multiple
             @change="chooseField"
           >
             <option value="Все месторождения">Все месторождения</option>
@@ -264,7 +265,14 @@
             <option value="Нуралы">Нуралы</option>
             <option value="Аксай">Аксай</option>
             <option value="Аксай Южный">Аксай Южный</option>
-          </select>
+          </select> -->
+          <tr-multiselect
+            :filter="filter"
+            :selectedAllTag="true"
+            :fieldFilterOptions="fieldFilterOptions"
+            @change-filter="handlerFilter"
+            filterName="месторождения"
+          />
           <a v-show="false" v-if="edit"></a>
           <a
             v-if="edit"
@@ -452,8 +460,8 @@
             <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             <table
               v-if="show_second"
-              class="table table-bordered table-dark table-responsive trtable"
-              style="margin-bottom: 0; background: #0d1e63"
+              class="table-bordered table-dark table-responsive trtable"
+              style="background: #0d1e63"
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
@@ -6701,6 +6709,8 @@ import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+import { fields } from "./constants.js";
+import TrMultiselect from "./TrMultiselect.vue";
 
 export default {
   name: "TrPage",
@@ -6708,6 +6718,7 @@ export default {
     TrTable,
     TrFullTable,
     SearchFormRefresh,
+    TrMultiselect,
     // FadeLoader,
   },
   beforeCreate: function () {},
@@ -6752,7 +6763,14 @@ export default {
       searched: false,
       sortParam: "",
       sortType: "asc",
-      filter: "Все месторождения",
+      // filter: "Все месторождения",
+      filter: [...fields],
+      fieldFilterOptions: [
+        {
+          group: "Все месторождения",
+          fields: [...fields],
+        },
+      ],
       dt: null,
       fullWells: [],
       editedWells: [],
@@ -6772,6 +6790,9 @@ export default {
   },
   watch: {
     fullWells() {
+      this.chooseField();
+    },
+    filter() {
       this.chooseField();
     },
   },
@@ -6951,16 +6972,28 @@ export default {
           }
         });
     },
+    // chooseField() {
+    //   const { filter, fullWells } = this;
+    //   console.log(filter);
+    //   console.log(fullWells);
+    //   // if (!filter || filter == "Казгермунай") {
+    //   this.$store.commit("tr/SET_FILTER", filter);
+    //   if (!filter || filter == "Все месторождения") {
+    //     this.wells = fullWells;
+    //   } else {
+    //     this.wells = fullWells.filter((e) => e.field === filter);
+    //   }
+    // },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter);
+      console.log("filter = ", filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("tr/SET_FILTER", filter);
-      if (!filter || filter == "Все месторождения") {
+      if (!filter) {
         this.wells = fullWells;
       } else {
-        this.wells = fullWells.filter((e) => e.field === filter);
+        this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
       }
     },
     swap() {
@@ -6974,6 +7007,9 @@ export default {
     },
     handlerSearch(search) {
       this.searchString = search;
+    },
+    handlerFilter(filter) {
+      this.filter = filter;
     },
     searchWell() {
       console.log("search = ", this.searchString);
@@ -7025,6 +7061,9 @@ export default {
 /* @import "element-variables"; */
 body {
   color: white !important;
+}
+#app .multiselect {
+  max-width: 300px;
 }
 .form-control,
 .fix-rounded-right {
@@ -7269,8 +7308,6 @@ table::-webkit-scrollbar-corner {
   align-self: center;
   width: 150px;
   margin-top: 5px;
-  /* display: flex;  */
-  /* justify-content: center */
 }
 .dropdown-menu.show {
   display: flex;
