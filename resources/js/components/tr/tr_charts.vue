@@ -717,7 +717,7 @@ export default {
         }
         if (newMinY1 < minY1) minY1 = newMinY1;
         if (newMaxY1 > maxY1) maxY1 = newMaxY1;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
@@ -824,7 +824,7 @@ export default {
         if (newY1 > maxY1) maxY1 = newY1;
         if (newY2Min < minY2) minY1 = newY2Min;
         if (newY2Max > maxY2) maxY2 = newY2Max;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
@@ -960,7 +960,7 @@ export default {
         if (newY1 > maxY1) maxY1 = newY1;
         if (newY2 < minY2) minY1 = newY2;
         if (newY2 > maxY2) maxY2 = newY2;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
@@ -1087,7 +1087,7 @@ export default {
         if (newY1 > maxY1) maxY1 = newY1;
         if (newY2 < minY2) minY1 = newY2;
         if (newY2 > maxY2) maxY2 = newY2;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
@@ -1217,7 +1217,7 @@ export default {
         if (newY1 > maxY1) maxY1 = newY1;
         if (newY2Min < minY2) minY1 = newY2Min;
         if (newY2Max > maxY2) maxY2 = newY2Max;
-        return this.getStringOrFirstItem(item, "well");
+        return this.getStringOrFirstItem(item, "rus_wellname");
       });
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "";
@@ -1429,7 +1429,7 @@ export default {
         return 0;
       });
       const categories = filteredResult.map((item) =>
-        this.getStringOrFirstItem(item, "well")
+        this.getStringOrFirstItem(item, "rus_wellname")
       );
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
@@ -1486,7 +1486,7 @@ export default {
         return 0;
       });
       const categories = filteredResult.map((item) =>
-        this.getStringOrFirstItem(item, "well")
+        this.getStringOrFirstItem(item, "rus_wellname")
       );
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
@@ -1535,7 +1535,7 @@ export default {
         return 0;
       });
       const categories = filteredResult.map((item) =>
-        this.getStringOrFirstItem(item, "well")
+        this.getStringOrFirstItem(item, "rus_wellname")
       );
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
@@ -1592,7 +1592,7 @@ export default {
         return 0;
       });
       const categories = filteredResult.map((item) =>
-        this.getStringOrFirstItem(item, "well")
+        this.getStringOrFirstItem(item, "rus_wellname")
       );
       const labels = { ...this.chartBarOptions.xaxis.labels };
       labels.style.cssClass = "chart-labels";
