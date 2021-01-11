@@ -156,7 +156,7 @@
               :fieldFilterOptions="objectFilters"
               @change-filter="handlerFilterObjects"
               filterName="блоки"
-              textFormsRow="blocks"
+              textFormsRow="objects"
             />
           </div>
           <clear-icon
@@ -248,7 +248,7 @@ export default {
         getFilterText(
           this.chartFilter_object,
           this.objectFilters[0].fields,
-          "blocks"
+          "objects"
         ),
       ];
     },
@@ -262,7 +262,7 @@ export default {
           let filteredResult = this.chartWells.filter(
             (row) =>
               (!field || field.indexOf(row.field) !== -1) &&
-              (!object || object.indexOf(row.block) !== -1) &&
+              (!object || object.indexOf(row.object) !== -1) &&
               (!horizon ||
                 horizon.indexOf(this.getStringOrFirstItem(row, "horizon")) !==
                   -1) &&
@@ -306,7 +306,7 @@ export default {
           let filteredResult = this.chartWells.filter(
             (row) =>
               (!field || field.indexOf(row.field) !== -1) &&
-              (!object || object.indexOf(row.block) !== -1) &&
+              (!object || object.indexOf(row.object) !== -1) &&
               (!horizon ||
                 horizon.indexOf(this.getStringOrFirstItem(row, "horizon")) !==
                   -1) &&
@@ -365,7 +365,7 @@ export default {
               this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
             (!this.chartFilter_object ||
               this.chartFilter_object.length === 0 ||
-              this.chartFilter_object.indexOf(el.block) !== -1)
+              this.chartFilter_object.indexOf(el.object) !== -1)
           ) {
             filters = [...filters, el.field];
           }
@@ -394,7 +394,7 @@ export default {
               this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1) &&
             (!this.chartFilter_object ||
               this.chartFilter_object.length === 0 ||
-              this.chartFilter_object.indexOf(el.block) !== -1)
+              this.chartFilter_object.indexOf(el.object) !== -1)
           ) {
             filters = [...filters, el_horizon];
           }
@@ -424,7 +424,7 @@ export default {
               this.chartFilter_horizon.indexOf(el_horizon) !== -1) &&
             (!this.chartFilter_object ||
               this.chartFilter_object.length === 0 ||
-              this.chartFilter_object.indexOf(el.block) !== -1)
+              this.chartFilter_object.indexOf(el.object) !== -1)
           ) {
             filters = [...filters, el_exp_meth];
           }
@@ -445,7 +445,7 @@ export default {
           const el_horizon = this.getStringOrFirstItem(el, "horizon");
           const el_exp_meth = this.getStringOrFirstItem(el, "exp_meth");
           if (
-            filters.indexOf(el.block) === -1 &&
+            filters.indexOf(el.object) === -1 &&
             (!this.chartFilter_field ||
               this.chartFilter_field.length === 0 ||
               this.chartFilter_field.indexOf(el.field) !== -1) &&
@@ -456,12 +456,12 @@ export default {
               this.chartFilter_exp_meth.length === 0 ||
               this.chartFilter_exp_meth.indexOf(el_exp_meth) !== -1)
           ) {
-            filters = [...filters, el.block];
+            filters = [...filters, el.object];
           }
         });
         return [
           {
-            group: "Все блоки",
+            group: "Все обьекты",
             fields: [...filters],
           },
         ];
