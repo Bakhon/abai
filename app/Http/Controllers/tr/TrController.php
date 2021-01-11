@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\tr;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
