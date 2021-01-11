@@ -19,23 +19,42 @@
 
     <div class="form-group2 filter-group">
       <label for="start_date">Выберите начальную дату</label>
-      <input id="start_date"
-             class="form-control datepicker filter-input"
-             type="month"
-             :disabled="isLoading"
-             v-model="start_date">
+      <datetime
+          id="start_date"
+          type="date"
+          v-model="start_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month']"
+      >
+      </datetime>
     </div>
 
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
-      <input id="end_date"
-             class="form-control datepicker filter-input"
-             type="month"
-             :disabled="isLoading"
-             v-model="end_date">
+        <datetime
+            id="end_date"
+            type="date"
+            v-model="end_date"
+            value-zone="Asia/Almaty"
+            zone="Asia/Almaty"
+            input-class="form-control filter-input"
+            format="LLLL yyyy"
+            :phrases="{ok: '', cancel: ''}"
+            :disabled="isLoading"
+            auto
+            :flow="['year', 'month']"
+        >
+        </datetime>
+
     </div>
 
-      <div class="form-group3 result-link text-center">
+    <div class="form-group3 result-link text-center">
           <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
       </div>
 
@@ -57,6 +76,13 @@
 </template>
 
 <script>
+
+import Vue from "vue";
+import {Datetime} from 'vue-datetime';
+import moment from 'moment';
+import 'vue-datetime/dist/vue-datetime.css';
+
+Vue.use(Datetime)
 
 export default {
   components: {
@@ -89,12 +115,15 @@ export default {
 
       let uri = "http://172.20.103.157:8082/monthly/production/";
         // let uri = "http://0.0.0.0:8090/monthly/production/";
+      let dateFormat = 'YYYY-MM-DD HH:mm:ss';
+      let minOfDay = {hour:0, minute:0, second:0}
+      let startDate = moment(this.start_date).set(minOfDay).set('date', 1).format(dateFormat);
+      let endDate = moment(this.end_date).set(minOfDay).set('date', 1).format(dateFormat);
       let data = {
         dzo: this.org,
         period: 'monthly',
-        // TODO: 'input type="month"' в Chrome возвращает год-месяц, а в Firefox: день.месяц.год
-        report_date_start: `${this.start_date}`.concat('-01 00:00:00'),
-        report_date_end: `${this.end_date}`.concat('-01 00:00:00')
+        report_date_start: startDate,
+        report_date_end: endDate
       };
 
       let json_data = JSON.stringify(data);
