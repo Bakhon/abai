@@ -944,20 +944,4 @@ return $response;
             return "Error. Invalid url";
         }
     }
-    public function tr()
-    {
-        return view('tr.tr');
-    }    ///
-    public function fa()
-    {
-        return view('fa.fa');
-    }    ///
-    public function trfa()
-    {
-        return view('trfa.trfa');
-    }    ///
-    public function tr_charts()
-    {
-        return view('tr_charts.tr_charts');
-    }    ///
 }

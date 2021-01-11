@@ -1501,11 +1501,5 @@ width: 70%;
   /* justify-content: center */
 }
 
-/* .sortik[issorttobig="true"]::after {
-	content: "▼"
-}
 
-.sortik[issorttobig="false"]::after {
-	content: "▲"
-} */
 </style>
