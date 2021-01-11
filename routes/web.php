@@ -86,11 +86,12 @@ Route::group(
                 Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
                 Route::get('/bigdata', 'DruidController@bigdata')->name('bigdata');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
-                Route::get('/tr', 'DruidController@tr')->name('tr');
+                Route::get('/tr', 'TrController@tr')->name('tr');
                 Route::get('/export', 'HomeController@export');
-                Route::get('/fa', 'DruidController@fa')->name('fa');
-                Route::get('/trfa', 'DruidController@trfa')->name('trfa');
-                Route::get('/tr_charts', 'DruidController@tr_charts')->name('tr_charts');
+                Route::get('/fa', 'TrController@fa')->name('fa');
+                Route::get('/trfa', 'TrController@trfa')->name('trfa');
+                Route::get('/tr_charts', 'TrController@tr_charts')->name('tr_charts');
+                Route::get('/fa_new', 'TrController@fa_new')->name('fa_new');
 
 
                 //gno economic
