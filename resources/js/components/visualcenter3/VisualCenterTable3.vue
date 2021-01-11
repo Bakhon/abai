@@ -57,7 +57,7 @@
                       )
                     }}%
                   </div>
-                  <div class="txt3">vs прошлый период</div>
+                  <div class="txt3">vs {{lastDate1}} - {{lastDate2}}</div>
                 </div>
                 <div class="second-td-header">
                   <div class="vert-line"></div>
@@ -122,7 +122,7 @@
                       )
                     }}%
                   </div>
-                  <div class="txt3">vs прошлый период</div>
+                  <div class="txt3">vs {{lastDate1}} - {{lastDate2}}</div>
                 </div>
                 <div class="second-td-header">
                   <div class="vert-line"></div>
@@ -184,7 +184,7 @@
                       )
                     }}%
                   </div>
-                  <div class="txt3">vs прошлый период</div>
+                  <div class="txt3">vs {{lastDate1}} - {{lastDate2}}</div>
                 </div>
                 <div class="second-td-header"></div>
               </td>
@@ -725,7 +725,7 @@
                     <br /><br />
 
                     <div class="month-day">
-                      <div class="calendar-day">
+                      <div class="">
                         <date-picker
                           v-if="selectedOilPeriod == 0"
                           mode="range"
@@ -1252,7 +1252,7 @@
                       <br /><br />
 
                       <div class="month-day">
-                        <div class="calendar-day">
+                        <div >
                           <date-picker
                             v-if="selectedOilPeriod == 0"
                             mode="range"
@@ -1403,7 +1403,7 @@
                       <br /><br />
 
                       <div class="month-day">
-                        <div class="calendar-day">
+                        <div >
                           <date-picker
                             v-if="selectedDMY == 0"
                             mode="range"
@@ -1554,7 +1554,7 @@
                       <br /><br />
 
                       <div class="month-day">
-                        <div class="calendar-day">
+                        <div >
                           <date-picker
                             v-if="selectedDMY == 0"
                             mode="range"
@@ -1713,7 +1713,7 @@
                       <br /><br />
 
                       <div class="month-day">
-                        <div class="calendar-day">
+                        <div >
                           <date-picker
                             v-if="selectedDMY == 0"
                             mode="range"
@@ -2063,6 +2063,7 @@
             <tr>
               <td class="size-td">
                 <div class="number">{{ covid }}</div>
+                 <div class="in-idle">{{lastDate2}}</div>
               </td>
 
               <td class="w-65">
@@ -2078,7 +2079,7 @@
                 </div>
                 <div class="column-1">
                   <div class="in-idle">Прирост</div>
-                  <div class="in-idle">vs прошлый период</div>
+                  <div class="in-idle">vs {{lastDate1}}</div>
                 </div>
               </td>
             </tr>

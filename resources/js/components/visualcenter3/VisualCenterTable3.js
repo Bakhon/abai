@@ -11,6 +11,7 @@ export default {
   },
   data: function () {
     return {
+      lastDate:0,
       timeSelectOld: '',
       thousand: 'тыс.',
       staffPercent: 0,
@@ -921,8 +922,8 @@ export default {
             ),
           ]);
         });
-
-
+        this.lastDate1=new Date(timestampToday - quantityRange * 86400000).toLocaleDateString();
+        this.lastDate2=new Date(timestampToday).toLocaleDateString();
         //Summ plan and fact from dzo
         var SummFromRange = _(dataWithMay)
           .groupBy("dzo")
@@ -937,6 +938,8 @@ export default {
           }))
 
           .value();
+
+         
 
 
         var oil_planSumm = _.reduce(
@@ -1095,9 +1098,7 @@ export default {
               month: 'numeric',
               day: 'numeric',
             });
-            if (start === end) {
-              console.log('ravno');
-  
+            if (start === end) {            
               let dataWithMay = new Array();
               dataWithMay = _.filter(data, function (item) {
                 return _.every([
@@ -1116,8 +1117,7 @@ export default {
               );
               var productionForChart = this.getProductionForChart(dataWithMay);
   
-            } else {
-              console.log('ne ravno');
+            } else {            
               var productionForChart = this.getProductionForChart(dataWithMay);
             }
 
@@ -1334,8 +1334,7 @@ export default {
             month: 'numeric',
             day: 'numeric',
           });
-          if (start === end) {
-            console.log('ravno');
+          if (start === end) {           
 
             let dataWithMay = new Array();
             dataWithMay = _.filter(data, function (item) {
@@ -1356,7 +1355,7 @@ export default {
             var productionForChart = this.getProductionForChart(dataWithMay);
 
           } else {
-            console.log('ne ravno');
+         
             var productionForChart = this.getProductionForChart(dataWithMay);
           }
           /*
@@ -1757,7 +1756,7 @@ export default {
           ),
         ]);
       });
-      //console.log(dataWithMay)
+   
 
       var productionForChart = _(dataWithMay)
         .groupBy("dzo")
@@ -1768,8 +1767,7 @@ export default {
         }))
         .value();
       this.productionFactPercentOneDzo = productionForChart[0]['productionFactPercent'];
-      // console.log(productionForChart[0]['productionFactPercent']);
-      // return productionForChart;
+
     },
 
 
@@ -1886,7 +1884,7 @@ export default {
       var productionFact = localStorage.getItem("production-fact");
 
 
-      //console.log(this.quantityGetProductionOilandGas);
+    
 
       var dataWithMay = new Array();
       dataWithMay = _.filter(data, function (item) {
@@ -1962,7 +1960,7 @@ export default {
       this.selectedDay = 0;
       this.timestampToday = new Date(this.range.start).getTime();
       this.timestampEnd = new Date(this.range.end).getTime();
-      this.quantityRange = ((this.timestampEnd - this.timestampToday) / 86400000) + 1;
+      this.quantityRange =  Math.trunc(((this.timestampEnd - this.timestampToday) / 86400000) + 1);
       let nowDate = new Date(this.range.start).toLocaleDateString();
       let oldDate = new Date(this.range.end).toLocaleDateString();
       this.timeSelect = nowDate;
@@ -2276,7 +2274,7 @@ export default {
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
-          console.log(data);
+          //console.log(data);
           var staff = _(data)
             .groupBy("__time")
             .map((__time, id) => ({
