@@ -144,6 +144,7 @@ return $response;
             'fond_neftedob_others',
             'tb_covid_total',
             'tb_personal_fact',
+            'date',
         'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
         'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $todayback)->where('__time', '<', $end+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
