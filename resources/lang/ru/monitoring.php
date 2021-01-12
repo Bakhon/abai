@@ -255,7 +255,7 @@ return array (
     'create_title' => 'Ввод данных по ГУ',
     'edit_title' => 'Редактирование ГУ',
   ),
-  'zus' =>
+  'zus' => 
   array (
     'title' => 'База данных ЗУ',
     'create_title' => 'Ввод данных по ЗУ',
