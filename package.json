@@ -11,7 +11,7 @@
         "build-report": "vue-cli-service build --report"
     },
     "devDependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "babel-plugin-component": "^1.1.1",
         "bootstrap": "^4.5.3",
         "cross-env": "^5.2.1",
