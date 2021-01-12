@@ -6,7 +6,7 @@
 
     <Plotly :data="data"
             :layout="layout"
-            :display-mode-bar="true"
+            :display-mode-bar="false"
             :displaylogo="false"
             :mode-bar-buttons-to-remove="buttonsToRemove"/>
   </div>

@@ -36,6 +36,14 @@ ol, ul, dl {
     float: left;
     font-size: 0.9em;
     margin-left: 0em;
+    margin-top: -5px; 
+}
+
+.txt2-2 {
+    font-family: Bold;
+    float: left;
+    font-size: 0.9em;
+    margin-left: 0em;
     /* margin-top: -15; */
 }
 
@@ -277,9 +285,10 @@ td:last-of-type {
 .txt5 {
     /* position: relative; */
     margin-left: 53px;
-    top: 7px;
+    margin-top: 7px;
     overflow: hidden;
-    font-size: 0.92em;
+    font-size: 1.2em;
+    margin-bottom: 12px;
 }
 
 .button2 {
@@ -405,10 +414,10 @@ td:last-of-type {
     margin-left: 20px;
 }
 
-.calendar-day {
+/*.calendar-day {
     width: 260px;
     margin-left: 20px;
-}
+}*/
 
 .day-begin {
     width: 14px;

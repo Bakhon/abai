@@ -11,8 +11,11 @@ export default {
   },
   data: function () {
     return {
-      staffPercent:0,
-      staff:0,
+      lastDate:0,
+      timeSelectOld: '',
+      thousand: 'тыс.',
+      staffPercent: 0,
+      staff: 0,
       flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
         '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
         '</svg>',
@@ -157,7 +160,7 @@ export default {
       item: "oil_plan",
       item2: "oil_fact",
       item3: "Добыча нефти",
-      item4: "тыс. тонн",
+      item4: "тонн",
       productionForChart: "",
       tables: "",
       showTable2: "Yes",
@@ -749,10 +752,10 @@ export default {
     },
 
     getDiffProcentLastP(a, b) {
-      if (b==0) {return 0} else {
-      if (a != '') return ((a / b - 1) * 100).toFixed(2)
-      //else return 0;
-    }
+      if (b == 0) { return 0 } else {
+        if (a != '') return ((a / b - 1) * 100).toFixed(2)
+        //else return 0;
+      }
     },
 
     getColor2(i) {
@@ -919,8 +922,8 @@ export default {
             ),
           ]);
         });
-
-
+        this.lastDate1=new Date(timestampToday - quantityRange * 86400000).toLocaleDateString();
+        this.lastDate2=new Date(timestampToday).toLocaleDateString();
         //Summ plan and fact from dzo
         var SummFromRange = _(dataWithMay)
           .groupBy("dzo")
@@ -935,6 +938,8 @@ export default {
           }))
 
           .value();
+
+         
 
 
         var oil_planSumm = _.reduce(
@@ -1082,14 +1087,49 @@ export default {
             this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
 
-            var productionForChart = _(dataWithMay)
+            let start= new Date(this.range.start).toLocaleString("ru", {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+            });
+  
+            let end=new Date(this.range.end).toLocaleString("ru", {
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+            });
+            if (start === end) {            
+              let dataWithMay = new Array();
+              dataWithMay = _.filter(data, function (item) {
+                return _.every([
+                  _.inRange(
+                    item.__time,
+                    timestampToday - 2 * 86400000,
+                    timestampToday + 86400000
+                  ),
+                ]);
+              });
+  
+              dataWithMay = _.orderBy(
+                dataWithMay,
+                ["__time"],
+                ["asc"]
+              );
+              var productionForChart = this.getProductionForChart(dataWithMay);
+  
+            } else {            
+              var productionForChart = this.getProductionForChart(dataWithMay);
+            }
+
+
+           /* var productionForChart = _(dataWithMay)
               .groupBy("__time")
               .map((__time, id) => ({
                 time: id,
                 productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
                 productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
               }))
-              .value();
+              .value();*/
 
             var dataWithMayLast = [];
             this.getProductionPercentWells(arrdata);
@@ -1215,8 +1255,6 @@ export default {
           });
 
 
-
-
           dataWithMay = _.orderBy(
             dataWithMay,
             ["__time"],
@@ -1285,14 +1323,51 @@ export default {
           this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
 */
 
-          var productionForChart = _(dataWithMay)
-            .groupBy("__time")
-            .map((__time, id) => ({
-              time: id,
-              productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
-              productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
-            }))
-            .value();
+          let start= new Date(this.range.start).toLocaleString("ru", {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          });
+
+          let end=new Date(this.range.end).toLocaleString("ru", {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          });
+          if (start === end) {           
+
+            let dataWithMay = new Array();
+            dataWithMay = _.filter(data, function (item) {
+              return _.every([
+                _.inRange(
+                  item.__time,
+                  timestampToday - 2 * 86400000,
+                  timestampToday + 86400000
+                ),
+              ]);
+            });
+
+            dataWithMay = _.orderBy(
+              dataWithMay,
+              ["__time"],
+              ["asc"]
+            );
+            var productionForChart = this.getProductionForChart(dataWithMay);
+
+          } else {
+         
+            var productionForChart = this.getProductionForChart(dataWithMay);
+          }
+          /*
+            var productionForChart = _(dataWithMay)
+              .groupBy("__time")
+              .map((__time, id) => ({
+                time: id,
+                productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
+                productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
+              }))
+              .value();*/
+
 
 
 
@@ -1681,7 +1756,7 @@ export default {
           ),
         ]);
       });
-      //console.log(dataWithMay)
+   
 
       var productionForChart = _(dataWithMay)
         .groupBy("dzo")
@@ -1692,8 +1767,7 @@ export default {
         }))
         .value();
       this.productionFactPercentOneDzo = productionForChart[0]['productionFactPercent'];
-      // console.log(productionForChart[0]['productionFactPercent']);
-      // return productionForChart;
+
     },
 
 
@@ -1810,7 +1884,7 @@ export default {
       var productionFact = localStorage.getItem("production-fact");
 
 
-      //console.log(this.quantityGetProductionOilandGas);
+    
 
       var dataWithMay = new Array();
       dataWithMay = _.filter(data, function (item) {
@@ -1886,9 +1960,11 @@ export default {
       this.selectedDay = 0;
       this.timestampToday = new Date(this.range.start).getTime();
       this.timestampEnd = new Date(this.range.end).getTime();
-      this.quantityRange = ((this.timestampEnd - this.timestampToday) / 86400000) + 1;
+      this.quantityRange =  Math.trunc(((this.timestampEnd - this.timestampToday) / 86400000) + 1);
       let nowDate = new Date(this.range.start).toLocaleDateString();
+      let oldDate = new Date(this.range.end).toLocaleDateString();
       this.timeSelect = nowDate;
+      this.timeSelectOld = oldDate;
 
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
       this.getCurrencyNow(this.timeSelect);
@@ -2198,51 +2274,68 @@ export default {
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
-          console.log(data);
+          //console.log(data);
           var staff = _(data)
             .groupBy("__time")
             .map((__time, id) => ({
               time: id,
               staff_number: _.round(_.sumBy(__time, 'staff_number'), 0),
-           
+
             }))
             .value();
-            staff = _.orderBy(
-              staff,
-              ["time"],
-              ["desc"]
-            );  
-          this.staff=staff[0]['staff_number'];
-          this.staffPercent=staff[1]['staff_number'];
+          staff = _.orderBy(
+            staff,
+            ["time"],
+            ["desc"]
+          );
+          this.staff = staff[0]['staff_number'];
+          this.staffPercent = staff[1]['staff_number'];
 
         } else { console.log('No data Personal') }
 
       });
     },
 
+    getProductionForChart(dataWithMay) {
+      let productionPlan = localStorage.getItem("production-plan");
+      let productionFact = localStorage.getItem("production-fact");
+      let productionForChart = _(dataWithMay)
+        .groupBy("__time")
+        .map((__time, id) => ({
+          time: id,
+          productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
+          productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
+        }))
+        .value();
+      return productionForChart;
+    },
+
     formatVisTableNumber(num) {
-      let initNum = num
-      if (num >= 1000) {
-        num = (num / 1000).toFixed(0)
+      if (this.quantityRange < 2) { this.thousand = ''; return new Intl.NumberFormat("ru-RU").format(num); } else {
+        this.thousand = 'тыс.';
+        let initNum = num
+        if (num >= 1000) {
+          num = (num / 1000).toFixed(0)
+        }
+        else if (num >= 100) {
+          num = Math.round((num / 1000) * 10) / 10
+        }
+        else if (num >= 10) {
+          num = Math.round((num / 1000) * 100) / 100
+        }
+        else if (num > 0) {
+          num = 0.01
+        }
+        return new Intl.NumberFormat("ru-RU").format(num)
       }
-      else if (num >= 100) {
-        num = Math.round((num / 1000) * 10) / 10
-      }
-      else if (num >= 10) {
-        num = Math.round((num / 1000) * 100) / 100
-      }
-      else if (num > 0) {
-        num = 0.01
-      }
-      return new Intl.NumberFormat("ru-RU").format(num)
     }
   },
   created() {
 
     if (window.location.host === 'dashboard') {
 
-   // this.Table6 = "display:block";
-    // this.Table1 = "display:none";
+      // this.Table6 = "display:block";
+      // this.Table1 = "display:none";
     }
 
   },
@@ -2257,15 +2350,15 @@ export default {
 
 
       this.range = {
-       // start:"2020-01-05T00:00:00+06:00",
-      //  end:"2021-01-05T17:59:00+06:00", 
-        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 3) + 'T06:00:00+06:00')),
-      end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+        // start:"2020-01-05T00:00:00+06:00",
+        //  end:"2021-01-05T17:59:00+06:00", 
+        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     } else {
       this.range = {
-        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 3) + 'T06:00:00+06:00')),
+        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
         end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         // start: moment().subtract(3, "day").startOf('day').toDate(),
         // end: moment().subtract(1, "day").endOf('day').toDate(),
@@ -2309,6 +2402,7 @@ export default {
     this.changeMenuButton11Flag = flagOff;
     this.changeMenuButton12Flag = flagOff;
     this.changeMenuButton13Flag = flagOff;
+    this.buttonHover7="border: none; background: #2E50E9;color:white";
 
 
 
