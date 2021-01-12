@@ -943,41 +943,42 @@ td {
 }
 
 .image-text-1 {
-    top: 37px;
+    top: 53px;
 }
 
 .image-text-2 {
-    top: 60px;
+    top: 75px;
 }
 
 .image-text-3 {
-    top: 79px;
+    top: 95px;
 }
 
 .image-text-4 {
-    top: 152px;
+    top: 150px;
 }
 
 .image-text-5 {
-    top: 219px;
+    top: 202px;
 }
 
 .image-text-6 {
-    top: 255px;
+    top: 240px;
 }
 
 .image-text-7 {
-    top: 314px;
+    top: 300px;
     line-height: 12px;
 }
 
 .image-text-8 {
-    top: 343px;
+    top: 325px;
 }
 
 .podborgnoimg {
     height: 100%;
     max-height: 355px;
+    margin-left: 65px;
 }
 
 .img-text {
