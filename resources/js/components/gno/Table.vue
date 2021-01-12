@@ -1030,9 +1030,12 @@
 
               <modal name="modalPGNO" :width="1150" :height="400" :adaptive="true">
                 <div class="modal-bign3"></div>
-              </modal>
-
-              <div class="gno-line-chart" v-if="visibleChart">
+              </modal> 
+              
+              <div class="gno-line-chart"  v-if="visibleChart">
+                <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
+                  <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
+                </div>
                 <gno-line-points-chart></gno-line-points-chart>
               </div>
 
@@ -1490,8 +1493,18 @@
         </div>
       </div>
 
+<!-- style="position: absolute; left: -9999px; height: 0; overflow: hidden;"
+       style="position: absolute; margin-left: 175px; margin-top: 2000px;"
+ -->
       
       <div style="position: absolute; left: -9999px; height: 0; overflow: hidden;">
+        <div class="gno-line-chart-clone" ref="gno-chart" v-if="visibleChart" style="background-color: #272953;">
+                <div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Скважина: {{wellNumber}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
+                </div>
+                <gno-line-points-chart></gno-line-points-chart>
+              </div>
         <div class="report" ref="gno-page">
           <div class="row">
             <div class="col-10" style="background-color: #20274f; width: 1500px; left: 76px; margin: 0;">
@@ -3711,6 +3724,60 @@ export default {
         }).finally(() => {
             this.isLoading = false;
       });
+    },
+
+    takePDF() {
+      this.isLoading = true;
+
+      htmlToImage.toPng(this.$refs['gno-chart'])
+        .then(function (dataUrl) {
+          let img = new Image();
+          let pdf = new jsPDF({
+            orientation: 'p',
+            unit: 'mm',
+            format: 'a4'
+          })
+          img.src = dataUrl;
+
+          // let link = document.createElement('a');
+          // link.setAttribute('href', dataUrl);
+          // link.setAttribute('download','download');
+          // link.click();
+          // link.remove();
+
+          pdf.addImage(dataUrl, 'png', 10, 1, 180, 80);
+          pdf.save('test.pdf')
+          // document.body.appendChild(img);
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        }).finally(() => {
+            this.isLoading = false;
+      });
+    },
+
+    takePhoto() {
+     this.isLoading = true;
+
+      htmlToImage.toPng(this.$refs['gno-chart'])
+        .then(function (dataUrl) {
+          // let img = new Image();
+          // img.src = dataUrl;
+
+          let link = document.createElement('a');
+          link.setAttribute('href', dataUrl);
+          link.setAttribute('download','download');
+          link.click();
+          link.remove();
+
+          // document.body.appendChild(img);
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        }).finally(() => {
+            this.isLoading = false;
+      });
+
     },
 
     downloadImg() {
