@@ -17,7 +17,7 @@
                         )
                       }}
                     </div>
-                    <div class="unit-vc"> тонн</div>
+                    <div class="unit-vc">тонн</div>
                   </div>
                   <div class="txt1">Добыча нефти</div>
                   <br />
@@ -57,7 +57,11 @@
                       )
                     }}%
                   </div>
-                  <div class="txt3">vs {{lastDate1}} - {{lastDate2}}</div>
+                  <div class="txt3">
+                    vs
+                    <span v-if="oneDate"> {{ lastDate2 }}</span>
+                    <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                  </div>
                 </div>
                 <div class="second-td-header">
                   <div class="vert-line"></div>
@@ -73,7 +77,7 @@
                         )
                       }}
                     </div>
-                    <div class="unit-vc"> тонн</div>
+                    <div class="unit-vc">тонн</div>
                   </div>
                   <div class="txt1">Сдача нефти</div>
                   <br />
@@ -122,7 +126,11 @@
                       )
                     }}%
                   </div>
-                  <div class="txt3">vs {{lastDate1}} - {{lastDate2}}</div>
+                  <div class="txt3">
+                    vs
+                    <span v-if="oneDate"> {{ lastDate2 }}</span>
+                    <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                  </div>
                 </div>
                 <div class="second-td-header">
                   <div class="vert-line"></div>
@@ -184,7 +192,11 @@
                       )
                     }}%
                   </div>
-                  <div class="txt3">vs {{lastDate1}} - {{lastDate2}}</div>
+                  <div class="txt3">
+                    vs
+                    <span v-if="oneDate"> {{ lastDate2 }}</span>
+                    <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                  </div>
                 </div>
                 <div class="second-td-header"></div>
               </td>
@@ -355,7 +367,7 @@
 
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('102')">
-                    <div class="col-1 mt-2" v-html="changeMenuButton2Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton2Flag"></div>
 
                   <a
                     class="col-9 px-2"
@@ -420,7 +432,7 @@
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('104')">
-                    <div class="col-1 mt-2" v-html="changeMenuButton4Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton4Flag"></div>
                   <a
                     class="col-9 px-2"
                     @click="
@@ -442,9 +454,9 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('105')">
-                     <div class="col-1 mt-2" v-html="changeMenuButton5Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton5Flag"></div>
                   <a
-                   class="col-9 px-2"
+                    class="col-9 px-2"
                     @click="
                       getProduction(
                         'raskhod_prirod_plan',
@@ -456,7 +468,7 @@
                     "
                     >Расход природного газа на собственные нужды
                   </a>
-                    <div class="col-2 mt-2">
+                  <div class="col-2 mt-2">
                     <div class="square-small2" :style="`${changeMenuButton5}`">
                       ✓
                     </div>
@@ -484,7 +496,7 @@
                 </li>-->
 
                 <li class="center-li row px-4" @click="changeMenu('108')">
-                     <div class="col-1 mt-2" v-html="changeMenuButton8Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton8Flag"></div>
                   <a
                     class="col-9 px-2"
                     @click="
@@ -506,7 +518,7 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('103')">
-                    <div class="col-1 mt-2" v-html="changeMenuButton3Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton3Flag"></div>
                   <a
                     class="col-9 px-2"
                     @click="
@@ -566,11 +578,11 @@
               >
                 <div class="icon-all icons4"></div>
                 <div class="txt5">Добыча конденсата</div>
-                 <!-- <div class="txt6"> тонн</div>-->
+                <!-- <div class="txt6"> тонн</div>-->
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('113')">
-                   <div class="col-1 mt-2" v-html="changeMenuButton13Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton13Flag"></div>
                   <a
                     class="col-9 px-2"
                     @click="
@@ -608,11 +620,11 @@
               >
                 <div class="icon-all icons5"></div>
                 <div class="txt5">Закачка воды</div>
-                 <!-- <div class="txt6"> м³</div>-->
+                <!-- <div class="txt6"> м³</div>-->
               </div>
               <ul>
                 <li class="center-li row px-4" @click="changeMenu('109')">
-                 <div class="col-1 mt-2" v-html="changeMenuButton9Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton9Flag"></div>
                   <a
                     class="col-9 px-2"
                     @click="
@@ -634,7 +646,7 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('110')">
-                 <div class="col-1 mt-2" v-html="changeMenuButton10Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton10Flag"></div>
                   <a
                     class="col-9 px-2"
                     @click="
@@ -656,7 +668,7 @@
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('111')">
-                <div class="col-1 mt-2" v-html="changeMenuButton11Flag"></div>
+                  <div class="col-1 mt-2" v-html="changeMenuButton11Flag"></div>
                   <a
                     class="col-9 px-2"
                     @click="
@@ -718,7 +730,10 @@
                   :style="`${buttonHover10}`"
                   @click="changeMenu2(4)"
                 >
-                  Период [{{timeSelect}} - {{timeSelectOld}}]
+                  <span v-if="oneDate"> Дата [{{ timeSelect }}]</span>
+                  <span v-else
+                    >Период [{{ timeSelect }} - {{ timeSelectOld }}]</span
+                  >
                 </div>
                 <ul class="center-menu2 right-indent">
                   <li class="center-li">
@@ -812,7 +827,7 @@
                             opacity: 0.6;
                           "
                         >
-                         {{thousand}}{{ item4 }}
+                          {{ thousand }}{{ item4 }}
                         </div>
                       </div>
 
@@ -827,7 +842,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{thousand}}{{ item4 }}
+                          {{ thousand }}{{ item4 }}
                         </div>
                       </div>
                       <!--old date-->
@@ -841,7 +856,7 @@
                             opacity: 0.6;
                           "
                         >
-                         {{thousand}} {{ item4 }}
+                          {{ thousand }} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -860,7 +875,7 @@
                             opacity: 0.6;
                           "
                         >
-                         {{thousand}}{{ item4 }}
+                          {{ thousand }}{{ item4 }}
                         </div>
                       </div>
 
@@ -875,7 +890,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{thousand}}{{ item4 }}
+                          {{ thousand }}{{ item4 }}
                         </div>
                       </div>
                       <!--old date-->
@@ -889,7 +904,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{thousand}}{{ item4 }}
+                          {{ thousand }}{{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -926,7 +941,7 @@
                             opacity: 0.6;
                           "
                         >
-                         {{thousand}} {{ item4 }}
+                          {{ thousand }} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -997,7 +1012,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{thousand}}{{ item4 }}
+                          {{ thousand }}{{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1012,7 +1027,7 @@
                             opacity: 0.6;
                           "
                         >
-                         {{thousand}} {{ item4 }}
+                          {{ thousand }} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1040,7 +1055,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{thousand}} {{ item4 }}
+                          {{ thousand }} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1087,7 +1102,7 @@
                             opacity: 0.6;
                           "
                         >
-                          {{thousand}} {{ item4 }}
+                          {{ thousand }} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1101,7 +1116,7 @@
                             opacity: 0.6;
                           "
                         >
-                         {{thousand}} {{ item4 }}
+                          {{ thousand }} {{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1128,7 +1143,7 @@
                             opacity: 0.6;
                           "
                         >
-                        {{thousand}}{{ item4 }}
+                          {{ thousand }}{{ item4 }}
                         </div>
                       </div>
                     </td>
@@ -1161,7 +1176,7 @@
 
             <div class="vis-chart pl-3">
               <div class="name-chart-left">
-                {{ nameChartLeft }}, {{thousand}} {{ item4 }}
+                {{ nameChartLeft }}, {{ thousand }} {{ item4 }}
               </div>
               <div class="name-chart-head">{{ item3 }}</div>
               <vc-chart :height="465" v-if="company == 'all'"> </vc-chart>
@@ -1245,14 +1260,14 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Период [{{timeSelect}} - {{timeSelectOld}}]
+                    Период [{{ timeSelect }} - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
                       <br /><br />
 
                       <div class="month-day">
-                        <div >
+                        <div>
                           <date-picker
                             v-if="selectedOilPeriod == 0"
                             mode="range"
@@ -1396,14 +1411,14 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Период [{{timeSelect}} - {{timeSelectOld}}]
+                    Период [{{ timeSelect }} - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
                       <br /><br />
 
                       <div class="month-day">
-                        <div >
+                        <div>
                           <date-picker
                             v-if="selectedDMY == 0"
                             mode="range"
@@ -1547,14 +1562,14 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Период [{{timeSelect}} - {{timeSelectOld}}]
+                    Период [{{ timeSelect }} - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
                       <br /><br />
 
                       <div class="month-day">
-                        <div >
+                        <div>
                           <date-picker
                             v-if="selectedDMY == 0"
                             mode="range"
@@ -1706,14 +1721,14 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Период [{{timeSelect}} - {{timeSelectOld}}]
+                    Период [{{ timeSelect }} - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
                       <br /><br />
 
                       <div class="month-day">
-                        <div >
+                        <div>
                           <date-picker
                             v-if="selectedDMY == 0"
                             mode="range"
@@ -2025,26 +2040,27 @@
         <div class="table-responsive">
           <table class="table">
             <tr>
-              <td class="size-td">
+              <td class="w-50 px-2">
                 <div class="number">{{ staff }}</div>
+                <div class="in-idle2">{{quarter1[0]}} квартал {{quarter1[1]}} г.</div>
               </td>
 
-              <td class="w-65">
+              <td class="w-50">
                 <div class="column-1">
-                   <div class="column-1">
-                  <div
-                    :class="`${getColor2(
-                      getDiffProcentLastP(staffPercent, staff)
-                    )}`"
-                  ></div>
-                  <div class="txt2-2">
-                    {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                  <div class="column-1">
+                    <div
+                      :class="`${getColor2(
+                        getDiffProcentLastP(staffPercent, staff)
+                      )}`"
+                    ></div>
+                    <div class="txt2-2">
+                      {{ Math.abs(getDiffProcentLastP(staffPercent, staff)) }}%
+                    </div>
                   </div>
                 </div>
-                </div>
                 <div class="column-1">
-                  <div class="in-idle">Прирост</div>
-                  <div class="in-idle">vs прошлый период</div>
+                  <div class="in-idle">{{getDiffProcentLastP(staffPercent, staff, '1')}}</div>
+                  <div class="in-idle">vs {{quarter2[0]}} квартал  {{quarter2[1]}}г.</div>
                 </div>
               </td>
             </tr>
@@ -2061,12 +2077,12 @@
         <div class="table-responsive">
           <table class="table">
             <tr>
-              <td class="size-td">
+              <td class="w-50 px-2">
                 <div class="number">{{ covid }}</div>
-                 <div class="in-idle">{{lastDate2}}</div>
+                <div class="in-idle2">{{timeSelect}}</div>
               </td>
 
-              <td class="w-65">
+              <td class="w-50">
                 <div class="column-1">
                   <div
                     :class="`${getColor2(
@@ -2078,8 +2094,12 @@
                   </div>
                 </div>
                 <div class="column-1">
-                  <div class="in-idle">Прирост</div>
-                  <div class="in-idle">vs {{lastDate1}}</div>
+                  <div class="in-idle">{{getDiffProcentLastP(covidPercent, covid, '1')}}</div>
+                  <div class="in-idle">
+                    vs
+                    <span v-if="oneDate"> {{ lastDate2 }}</span>
+                    <span v-else> {{ lastDate1 }} - {{ lastDate2 }}</span>
+                  </div>
                 </div>
               </td>
             </tr>

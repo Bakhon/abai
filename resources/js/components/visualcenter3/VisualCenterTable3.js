@@ -11,7 +11,11 @@ export default {
   },
   data: function () {
     return {
-      lastDate:0,
+      quarter1:0,
+      quarter2:0,
+      oneDate:'',
+      lastDate1:0,
+      lastDate2:0,
       timeSelectOld: '',
       thousand: 'тыс.',
       staffPercent: 0,
@@ -751,11 +755,13 @@ export default {
       } else { return 0 }
     },
 
-    getDiffProcentLastP(a, b) {
-      if (b == 0) { return 0 } else {
+    getDiffProcentLastP(a, b, c) {
+      if (c){
+      if (a>b) {return 'Снижение'} else if (a<b)  {return 'Рост'};} else{
+      if (b == 0) { return 0 } else if (a==0){ return 0 }{
         if (a != '') return ((a / b - 1) * 100).toFixed(2)
         //else return 0;
-      }
+      }}
     },
 
     getColor2(i) {
@@ -923,7 +929,7 @@ export default {
           ]);
         });
         this.lastDate1=new Date(timestampToday - quantityRange * 86400000).toLocaleDateString();
-        this.lastDate2=new Date(timestampToday).toLocaleDateString();
+        this.lastDate2=new Date(timestampToday-86400000).toLocaleDateString();
         //Summ plan and fact from dzo
         var SummFromRange = _(dataWithMay)
           .groupBy("dzo")
@@ -1009,6 +1015,18 @@ export default {
 
     getProduction(item, item2, item3, item4, item5) {
       this.$store.commit('globalloading/SET_LOADING', true);
+      let start= new Date(this.range.start).toLocaleString("ru", {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      });
+
+      let end=new Date(this.range.end).toLocaleString("ru", {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      });
+      if (start==end) {this.oneDate=1;} else {this.oneDate=''}
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
 
@@ -1087,17 +1105,7 @@ export default {
             this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
 
-            let start= new Date(this.range.start).toLocaleString("ru", {
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-            });
-  
-            let end=new Date(this.range.end).toLocaleString("ru", {
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-            });
+      
             if (start === end) {            
               let dataWithMay = new Array();
               dataWithMay = _.filter(data, function (item) {
@@ -1323,17 +1331,7 @@ export default {
           this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
 */
 
-          let start= new Date(this.range.start).toLocaleString("ru", {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-          });
-
-          let end=new Date(this.range.end).toLocaleString("ru", {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-          });
+      
           if (start === end) {           
 
             let dataWithMay = new Array();
@@ -1956,7 +1954,7 @@ export default {
       }
     },
     //When we change date
-    changeDate() {
+    changeDate() {    
       this.selectedDay = 0;
       this.timestampToday = new Date(this.range.start).getTime();
       this.timestampEnd = new Date(this.range.end).getTime();
@@ -1969,6 +1967,11 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
+      //console.log((new Date(2018,9,9)));
+  //    console.log(this.getQuarter(new Date(this.year + '.' + this.pad('04') + '.' + this.pad(this.date.getDate()))));
+      //console.log(new Date(this.year + '.' + this.pad('04') + '.' + this.pad(this.date.getDate())));
+      console.log(new Date('11.01.2021'));
+      //this.nowQuarter=this.getQuarter(new Date(this.range.start)).toLocaleString();
     },
 
 
@@ -2276,20 +2279,23 @@ export default {
         if (data) {
           //console.log(data);
           var staff = _(data)
-            .groupBy("__time")
-            .map((__time, id) => ({
-              time: id,
-              staff_number: _.round(_.sumBy(__time, 'staff_number'), 0),
+            .groupBy("date")
+            .map((date, id) => ({
+              date: id,
+              staff_number: _.round(_.sumBy(date, 'staff_number'), 0),
 
             }))
             .value();
           staff = _.orderBy(
             staff,
-            ["time"],
+            ["date"],
             ["desc"]
           );
           this.staff = staff[0]['staff_number'];
           this.staffPercent = staff[1]['staff_number'];
+
+          this.quarter1=this.getQuarter(new Date(staff[0]['date']));
+          this.quarter2=this.getQuarter(new Date(staff[1]['date']));
 
         } else { console.log('No data Personal') }
 
@@ -2308,6 +2314,13 @@ export default {
         }))
         .value();
       return productionForChart;
+    },
+
+     getQuarter(d) {
+     /* d = d || new Date();
+      var m = Math.floor(d.getMonth()/3) + 2;
+      return m > 4? m - 4 : m;*/
+      return  [parseInt(d.getMonth() / 3 ) + 1, d.getFullYear()];
     },
 
     formatVisTableNumber(num) {
@@ -2403,11 +2416,6 @@ export default {
     this.changeMenuButton12Flag = flagOff;
     this.changeMenuButton13Flag = flagOff;
     this.buttonHover7="border: none; background: #2E50E9;color:white";
-
-
-
-
-
   },
   watch: {},
   computed: {
