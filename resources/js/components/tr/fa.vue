@@ -350,7 +350,7 @@
           <td style="background: #12135c">{{ row.exp_meth }}</td>
 
           <td
-            style="background: #2c3379"
+            style="background: #2c3379;"
             :class="{
               'cell-with-comment':
                 wells &&
