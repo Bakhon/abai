@@ -1107,8 +1107,8 @@ export default {
 
       
             if (start === end) {            
-              let dataWithMay = new Array();
-              dataWithMay = _.filter(data, function (item) {
+              let dataWithMay2 = new Array();
+              dataWithMay2 = _.filter(arrdata, function (item) {
                 return _.every([
                   _.inRange(
                     item.__time,
@@ -1117,16 +1117,17 @@ export default {
                   ),
                 ]);
               });
+       
   
-              dataWithMay = _.orderBy(
-                dataWithMay,
+              let dataWithMay3 = _.orderBy(
+                dataWithMay2,
                 ["__time"],
                 ["asc"]
               );
-              var productionForChart = this.getProductionForChart(dataWithMay);
+              var productionForChart = this.getProductionForChart(dataWithMay3);
   
             } else {            
-              var productionForChart = this.getProductionForChart(dataWithMay);
+              var productionForChart = this.getProductionForChart(arrdata);
             }
 
 

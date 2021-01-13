@@ -17,9 +17,9 @@
                         )
                       }}
                     </div>
-                    <div class="unit-vc">тонн</div>
+                    <div class="unit-vc">{{ thousand }} тонн</div>
                   </div>
-                  <div class="txt1">Добыча нефти</div>
+                  <div class="txt1">Добыча нефти  {{trans('visualcenter.getoil')}}</div>
                   <br />
                   <div class="progress">
                     <br />
@@ -77,7 +77,7 @@
                         )
                       }}
                     </div>
-                    <div class="unit-vc">тонн</div>
+                    <div class="unit-vc">{{ thousand }} тонн</div>
                   </div>
                   <div class="txt1">Сдача нефти</div>
                   <br />
@@ -148,7 +148,7 @@
                     </div>
                     <div class="unit-vc">
                       <!--млрд.-->
-                      млн. м³
+                     {{ thousand }} млн. м³
                     </div>
                   </div>
                   <div class="txt1">Добыча газа</div>
