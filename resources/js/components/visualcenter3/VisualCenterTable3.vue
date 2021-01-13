@@ -19,7 +19,7 @@
                     </div>
                     <div class="unit-vc">{{ thousand }} тонн</div>
                   </div>
-                  <div class="txt1">Добыча нефти  {{trans('visualcenter.getoil')}}</div>
+                  <div class="txt1"><!--Добыча нефти-->{{trans('visualcenter.getoil')}}</div>
                   <br />
                   <div class="progress">
                     <br />
@@ -79,7 +79,7 @@
                     </div>
                     <div class="unit-vc">{{ thousand }} тонн</div>
                   </div>
-                  <div class="txt1">Сдача нефти</div>
+                  <div class="txt1"><!--Сдача нефти-->{{trans('visualcenter.oildlv')}}</div>
                   <br />
                   <div class="progress">
                     <br />
@@ -151,7 +151,7 @@
                      {{ thousand }} млн. м³
                     </div>
                   </div>
-                  <div class="txt1">Добыча газа</div>
+                  <div class="txt1"><!--Добыча газа-->{{trans('visualcenter.getgaz')}}</div>
                   <br />
                   <div class="progress">
                     <br />
@@ -223,7 +223,7 @@
                   <div class="unit-vc">$ / bbl</div>
                 </div>
                 <br />
-                <div class="txt1">Цена на нефть (Brent)</div>
+                <div class="txt1"><!--Цена на нефть (Brent)-->{{trans('visualcenter.oilPrice')}}</div>
 
                 <div class="percent-currency">
                   <div class="arrow"></div>
