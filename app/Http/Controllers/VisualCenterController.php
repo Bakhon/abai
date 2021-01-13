@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DZO\DZOcalc;
 use App\Models\UsdRate;
+use App\Models\VisCenter\ImportForms\DZOcalc as ImportFormsDZOcalc;
 use Illuminate\Http\Request;
 
 class VisualCenterController extends Controller
@@ -28,7 +29,7 @@ class VisualCenterController extends Controller
         }
         $dateTimeStart = new \DateTime($dateStart);
         $dateTimeEnd = new \DateTime($dateEnd);
-        $dzoDataActual = DZOcalc::query()
+        $dzoDataActual = ImportFormsDZOcalc::query()
             ->where('date', '>=', $dateTimeStart->format('Y-m-d H:i:s'))
             ->where('date', '<', $dateTimeEnd->format('Y-m-d H:i:s'));
         if ($dzo) {
@@ -38,7 +39,7 @@ class VisualCenterController extends Controller
 
         $dateTimeStart->sub(new \DateInterval('P1Y'));
         $dateTimeEnd->sub(new \DateInterval('P1Y'));
-        $dzoDataPrevYear = DZOcalc::query()
+        $dzoDataPrevYear = ImportFormsDZOcalc::query()
             ->where('date', '>=', $dateTimeStart->format('Y-m-d H:i:s'))
             ->where('date', '<', $dateTimeEnd->format('Y-m-d H:i:s'));
         if ($dzo) {
@@ -51,7 +52,7 @@ class VisualCenterController extends Controller
 
     public function getDZOCalcsActualMonth()
     {
-        $maxDate = DZOcalc::query()->max('date');
+        $maxDate = ImportFormsDZOcalc::query()->max('date');
         $tmpDate = \DateTime::createFromFormat('Y-m-d H:i:s', $maxDate);
         return $tmpDate->format('m');
     }

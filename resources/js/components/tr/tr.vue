@@ -250,11 +250,12 @@
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>Технологический режим на {{ dt }}</h5>
           </div>
-          <select
+          <!-- <select
             name="Company"
             class="form-control tr-field-filter"
             id="companySelect"
             v-model="filter"
+            multiple
             @change="chooseField"
           >
             <option value="Все месторождения">Все месторождения</option>
@@ -264,7 +265,14 @@
             <option value="Нуралы">Нуралы</option>
             <option value="Аксай">Аксай</option>
             <option value="Аксай Южный">Аксай Южный</option>
-          </select>
+          </select> -->
+          <tr-multiselect
+            :filter="filter"
+            :selectedAllTag="true"
+            :fieldFilterOptions="fieldFilterOptions"
+            @change-filter="handlerFilter"
+            filterName="месторождения"
+          />
           <a v-show="false" v-if="edit"></a>
           <a
             v-if="edit"
@@ -452,16 +460,17 @@
             <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             <table
               v-if="show_second"
-              class="table table-bordered table-dark table-responsive trtable"
-              style="margin-bottom: 0; background: #0d1e63"
+              class="table-bordered table-dark table-responsive trtable"
+              style="background: #0d1e63"
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
                   <td rowspan="4" class="th">№</td>
                   <td rowspan="4" class="th">НГДУ/месторождение</td>
-                  <td rowspan="4" class="th">№ скв</td>
+                  <td rowspan="4" class="th">№ скважины</td>
                   <td rowspan="4" class="th">Тип скважины</td>
                   <td rowspan="4" class="th">Горизонт</td>
+                  <td rowspan="4" class="th">Объект</td>
                   <td rowspan="4" class="th">Блок</td>
                   <td rowspan="4" class="th">R контура питания</td>
                   <td rowspan="4" class="th">Наружный диаметр э/к</td>
@@ -490,12 +499,12 @@
                   <td class="colspan th" colspan="5">
                     Данные за предыдущий месяц
                   </td>
-                  <td class="colspan th" colspan="4">Фактический режим</td>
+                  <td class="colspan th" colspan="5">Фактический режим</td>
                   <td rowspan="4" class="th">
                     <span>Состояние на конец месяца</span>
                   </td>
                   <td rowspan="4" class="th">P нас</td>
-                  <td rowspan="4" class="th">ГФ</td>
+                  <!-- <td rowspan="4" class="th">ГФ</td> -->
                   <td rowspan="4" class="th">Т пл</td>
                   <td rowspan="4" class="th">Т уст</td>
                   <td class="colspan th" colspan="4">ГРП</td>
@@ -536,7 +545,7 @@
                   <td rowspan="4" class="th">Назначение по проекту</td>
                   <td rowspan="4" class="th">Р заб замерное</td>
                   <td rowspan="4" class="th">Нефтенасыщенная толщина</td>
-                  <td rowspan="4" class="th">Накопленная Q н</td>
+                  <td rowspan="4" class="th">Накопленная Qн с начала разработки</td>
                   <td rowspan="4" class="th">
                     <span>Максимальный Q ж за всю историю работы</span>
                   </td>
@@ -564,7 +573,7 @@
                   <td rowspan="4" class="th">
                     <span>Вид последнего ГТМ</span>
                   </td>
-                  <td class="colspan th" colspan="12">Намечаемый режим</td>
+                  <td class="colspan th" colspan="14">Намечаемый режим</td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
                   <td rowspan="3" class="th"><span>P заб</span></td>
@@ -576,6 +585,7 @@
                   <td rowspan="3" class="th"><span>Q н</span></td>
                   <td rowspan="3" class="th"><span>Q ж</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
+                  <td rowspan="3" class="th"><span>ГФ</span></td>
                   <td rowspan="3" class="th"><span>Скин</span></td>
                   <td rowspan="3" class="th"><span>JD факт</span></td>
                   <td rowspan="3" class="th"><span>Дата проведения</span></td>
@@ -603,7 +613,9 @@
                   <td rowspan="3" class="th"><span>Диаметр штуцера</span></td>
                   <td rowspan="3" class="th"><span>Qн</span></td>
                   <td rowspan="3" class="th"><span>Qж</span></td>
+                  <td rowspan="3" class="th"><span>Qг</span></td>
                   <td rowspan="3" class="th"><span>Обводненность</span></td>
+                  <td rowspan="3" class="th"><span>ГФ</span></td>
                   <td rowspan="3" class="th"><span>Число дней работы</span></td>
                   <td rowspan="3" class="th">
                     <span>Добыча нефти за месяц</span>
@@ -681,6 +693,9 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('horizon')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>
+                  </td>
+                  <td @click="sortBy('object')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('block')" class="th">
@@ -779,14 +794,14 @@
                   <td @click="sortBy('wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
+                  <td @click="sortBy('gor')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>м3/т
+                  </td>
                   <td @click="sortBy('well_status_last_day')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('P_bubble_point')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
-                  </td>
-                  <td @click="sortBy('gor')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/т
                   </td>
                   <td @click="sortBy('t_res')" class="th">
                     <i class="fa fa-fw fa-sort"></i>ºC
@@ -1027,8 +1042,14 @@
                   <td @click="sortBy('planned_liq')" class="th">
                     <i class="fa fa-fw fa-sort"></i>м3/сут
                   </td>
+                  <td @click="sortBy('planned_gas')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>тыс.м3/сут
+                  </td>
                   <td @click="sortBy('planned_wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
+                  </td>
+                  <td @click="sortBy('planned_gor')" class="th">
+                    <i class="fa fa-fw fa-sort"></i>м3/т
                   </td>
                   <td @click="sortBy('planned_month_days')" class="th">
                     <i class="fa fa-fw fa-sort"></i>сут
@@ -1064,8 +1085,8 @@
                   <td v-if="!edit">{{ row.field }}</td>
                   <td v-if="edit">{{ row.field }}</td>
 
-                  <td v-if="!edit">{{ row.well }}</td>
-                  <td v-if="edit">{{ row.well }}</td>
+                  <td v-if="!edit">{{ row.rus_wellname }}</td>
+                  <td v-if="edit">{{ row.rus_wellname }}</td>
                   <!-- <td>{{row.well_type}}</td> -->
 
                   <td
@@ -1185,8 +1206,9 @@
                     </span>
                   </td>
 
-                  <!-- <td v-if="!edit">{{row.block}}</td>
-                          <td v-if="edit" contenteditable='true'><input @change="editrow(row, row_index)" v-model="row.block" :disabled="!edit"></td> -->
+                  <td v-if="!edit">{{ row.object }}</td>
+                  <td v-if="edit">{{ row.object }}</td>
+
                   <td
                     v-if="!edit"
                     :class="{
@@ -1501,9 +1523,13 @@
                     </span>
                   </td>
                   <td v-if="edit">
+<<<<<<< HEAD
                     <span>
                     {{ Math.round(row.h_up_perf_md * 10) / 10 }}
                     </span>
+=======
+                    {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
+>>>>>>> c296d556132b1b11d43483a100be145d82781002
                   </td>
 
                   <td
@@ -2622,6 +2648,69 @@
                     </span>
                   </td>
 
+                  <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
+                  <td
+                    v-if="!edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].gor[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].gor[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].gor[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <span v-if="row.gor[0] != null">{{
+                      Math.round(row.gor[0] * 10) / 10
+                    }}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].gor[1][1] }}
+                    </span>
+                  </td>
+                  <td
+                    v-if="edit"
+                    :class="{
+                      'cell-with-comment':
+                        wells &&
+                        wells[row_index] &&
+                        wells[row_index].gor[1][0] !== '0',
+                    }"
+                  >
+                    <span
+                      :class="{
+                        'circle-err':
+                          wells &&
+                          wells[row_index] &&
+                          wells[row_index].gor[1][0] !== '0',
+                      }"
+                      :style="`background :${getColor(
+                        wells[row_index].gor[1][0]
+                      )}`"
+                    >
+                    </span>
+                    <input
+                      class="input_edit"
+                      @change="editrow(row, row_index)"
+                      v-model="row.gor[0]"
+                      :disabled="!edit"
+                    />
+                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                      {{ wells[row_index].gor[1][1] }}
+                    </span>
+                  </td>
+
+
                   <!-- <td>{{row.well_status_last_day}}</td> -->
                   <td
                     v-if="!edit"
@@ -2735,69 +2824,7 @@
                       {{ wells[row_index].P_bubble_point[1][1] }}
                     </span>
                   </td>
-
-                  <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
-                  <td
-                    v-if="!edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].gor[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].gor[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <span v-if="row.gor[0] != null">{{
-                      Math.round(row.gor[0] * 10) / 10
-                    }}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].gor[1][1] }}
-                    </span>
-                  </td>
-                  <td
-                    v-if="edit"
-                    :class="{
-                      'cell-with-comment':
-                        wells &&
-                        wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
-                    }"
-                  >
-                    <span
-                      :class="{
-                        'circle-err':
-                          wells &&
-                          wells[row_index] &&
-                          wells[row_index].gor[1][0] !== '0',
-                      }"
-                      :style="`background :${getColor(
-                        wells[row_index].gor[1][0]
-                      )}`"
-                    >
-                    </span>
-                    <input
-                      class="input_edit"
-                      @change="editrow(row, row_index)"
-                      v-model="row.gor[0]"
-                      :disabled="!edit"
-                    />
-                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].gor[1][1] }}
-                    </span>
-                  </td>
-
+                 
                   <!-- <td>{{Math.round(row.t_res*10)/10}}</td> -->
                   <td
                     v-if="!edit"
@@ -6140,6 +6167,9 @@
                     </span>
                   </td>
 
+                  <td v-if="!edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+                  <td v-if="edit">{{ Math.round(row.planned_gas*10)/10 }}</td>
+
                   <td
                     v-if="!edit"
                     :class="{
@@ -6200,6 +6230,9 @@
                       {{ wells[row_index].planned_wct[1][1] }}
                     </span>
                   </td>
+
+                  <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
+                  <td v-if="edit" contenteditable='true'><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
@@ -6682,6 +6715,8 @@ import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+import { fields } from "./constants.js";
+import TrMultiselect from "./TrMultiselect.vue";
 
 export default {
   name: "TrPage",
@@ -6689,6 +6724,7 @@ export default {
     TrTable,
     TrFullTable,
     SearchFormRefresh,
+    TrMultiselect,
     // FadeLoader,
   },
   beforeCreate: function () {},
@@ -6733,7 +6769,14 @@ export default {
       searched: false,
       sortParam: "",
       sortType: "asc",
-      filter: "Все месторождения",
+      // filter: "Все месторождения",
+      filter: [...fields],
+      fieldFilterOptions: [
+        {
+          group: "Все месторождения",
+          fields: [...fields],
+        },
+      ],
       dt: null,
       fullWells: [],
       editedWells: [],
@@ -6753,6 +6796,9 @@ export default {
   },
   watch: {
     fullWells() {
+      this.chooseField();
+    },
+    filter() {
       this.chooseField();
     },
   },
@@ -6902,9 +6948,6 @@ export default {
       this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;
       this.axios
-      // if (console.log("No data")) {
-      //   Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
-      // }
         .get(
           "http://172.20.103.187:7576/api/techregime/" +
             this.selectYear +
@@ -6935,16 +6978,28 @@ export default {
           }
         });
     },
+    // chooseField() {
+    //   const { filter, fullWells } = this;
+    //   console.log(filter);
+    //   console.log(fullWells);
+    //   // if (!filter || filter == "Казгермунай") {
+    //   this.$store.commit("tr/SET_FILTER", filter);
+    //   if (!filter || filter == "Все месторождения") {
+    //     this.wells = fullWells;
+    //   } else {
+    //     this.wells = fullWells.filter((e) => e.field === filter);
+    //   }
+    // },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter);
+      console.log("filter = ", filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("tr/SET_FILTER", filter);
-      if (!filter || filter == "Все месторождения") {
+      if (!filter) {
         this.wells = fullWells;
       } else {
-        this.wells = fullWells.filter((e) => e.field === filter);
+        this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
       }
     },
     swap() {
@@ -6958,6 +7013,9 @@ export default {
     },
     handlerSearch(search) {
       this.searchString = search;
+    },
+    handlerFilter(filter) {
+      this.filter = filter;
     },
     searchWell() {
       console.log("search = ", this.searchString);
@@ -7009,6 +7067,9 @@ export default {
 /* @import "element-variables"; */
 body {
   color: white !important;
+}
+#app .multiselect {
+  max-width: 300px;
 }
 .form-control,
 .fix-rounded-right {
@@ -7199,7 +7260,7 @@ tr:nth-child(even) td {
 
 /* width */
 table::-webkit-scrollbar {
-  width: 10px;
+  width: 13px;
 }
 
 /* Track */
@@ -7209,12 +7270,14 @@ table::-webkit-scrollbar-track {
 
 /* Handle */
 table::-webkit-scrollbar-thumb {
-  background: #656a8a;
+  background: #656A8A;
+  
 }
 
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
-  background: #272953;
+  background: #656A8A;
+  
 }
 
 table::-webkit-scrollbar-corner {
@@ -7251,8 +7314,6 @@ table::-webkit-scrollbar-corner {
   align-self: center;
   width: 150px;
   margin-top: 5px;
-  /* display: flex;  */
-  /* justify-content: center */
 }
 .dropdown-menu.show {
   display: flex;

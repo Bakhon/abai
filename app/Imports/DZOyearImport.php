@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Imports;
-use App\Models\DZO\DZOyear;
+use App\Models\VisCenter\ImportForms\DZOyear;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class DZOyearImport implements ToModel

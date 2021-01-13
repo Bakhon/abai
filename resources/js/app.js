@@ -117,6 +117,8 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
+Vue.component('fa-table-two', require('./components/tr/fa_new_two.vue').default);
+
 
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 

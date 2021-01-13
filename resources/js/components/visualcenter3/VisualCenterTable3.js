@@ -11,6 +11,28 @@ export default {
   },
   data: function () {
     return {
+      quarter1:0,
+      quarter2:0,
+      oneDate:'',
+      lastDate1:0,
+      lastDate2:0,
+      timeSelectOld: '',
+      thousand: 'тыс.',
+      staffPercent: 0,
+      staff: 0,
+      flagOn: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+        '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.4791 0.469238H2.31923C1.20141 0.469238 0.297516 1.38392 0.297516 2.50136L0.287109 18.7576L7.39917 15.7094L14.5112 18.7576V2.50136C14.5112 1.38392 13.5969 0.469238 12.4791 0.469238Z" fill="#2E50E9"/>' +
+        '</svg>',
+      flagOff: '<svg width="15" height="19" viewBox="0 0 15 19" fill="none" xmlns="http://www.w3.org/2000/svg"> \n' +
+        '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.8448 0.286987H2.68496C1.56713 0.286987 0.663191 1.20167 0.663191 2.31911L0.652832 18.5754L7.76489 15.5272L14.877 18.5754V2.31911C14.877 1.20167 13.9627 0.286987 12.8448 0.286987Z" fill="#656A8A"/>' +
+        '</svg>',
+      inj_wells_idlePercent: 0,
+      inj_wells_workPercent: 0,
+      prod_wells_workPercent: 0,
+      prod_wells_idlePercent: 0,
+      personalFact: '',
+      covidPercent: '',
+      covid: '',
       usdRatesData: {
         for_chart: [],
         for_table: []
@@ -32,7 +54,7 @@ export default {
         { name: "ОФЛС", value: 98, value2: 36 },
         { name: "Простой добывающих скважин", value: 86, value2: 54 }
       ],
-      innerWells2:'',
+      innerWells2: '',
       otmData: [],
       otmSelectedRow: 'otm_iz_burenia_skv_fact',
       otmChartData: [],
@@ -51,17 +73,17 @@ export default {
       quantityGetProductionOilandGas: "",
       /*calendar*/
       range: {
-        start: "2020-12-18T06:00:00+06:00",
-        end: "2020-12-18T09:00:00+06:00",
+        /* start: "2020-12-18T06:00:00+06:00",
+         end: "2020-12-18T09:00:00+06:00",*/
       },
       modelConfig: {
         start: {
-          timeAdjust: '06:00:00',
+          timeAdjust: '00:00:00',
           type: 'string',
           mask: 'YYYY-MM-DDTHH:mm:ssXXX',
         },
         end: {
-          timeAdjust: '06:00:00',
+          timeAdjust: '23:59:00',
           type: 'string',
           mask: 'YYYY-MM-DDTHH:mm:ssXXX',
         },
@@ -86,7 +108,7 @@ export default {
       tableHover4: "",
       tableHover5: "",
       tableHover6: "",
-      changeMenuButton: "color: #fff;",
+      changeMenuButton: "color: #fff;background: #237deb;font-weight:bold;",
       changeMenuButton1: "",
       changeMenuButton2: "",
       changeMenuButton3: "",
@@ -100,6 +122,20 @@ export default {
       changeMenuButton11: "",
       changeMenuButton12: "",
       changeMenuButton13: "",
+
+      changeMenuButton1Flag: "",
+      changeMenuButton2Flag: "",
+      changeMenuButton3Flag: "",
+      changeMenuButton4Flag: "",
+      changeMenuButton5Flag: "",
+      changeMenuButton6Flag: "",
+      changeMenuButton7Flag: "",
+      changeMenuButton8Flag: "",
+      changeMenuButton9Flag: "",
+      changeMenuButton10Flag: "",
+      changeMenuButton11Flag: "",
+      changeMenuButton12Flag: "",
+      changeMenuButton13Flag: "",
       Table1: "display:block;",
       Table2: "display:none;",
       Table3: "display:none;",
@@ -128,7 +164,7 @@ export default {
       item: "oil_plan",
       item2: "oil_fact",
       item3: "Добыча нефти",
-      item4: "тыс. тонн",
+      item4: "тонн",
       productionForChart: "",
       tables: "",
       showTable2: "Yes",
@@ -281,7 +317,7 @@ export default {
     saveCompany(com) {
       this.company = com;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
-     },
+    },
     changeTable(change) {
       this.Table1 = "display:none";
       this.Table2 = "display:none";
@@ -322,10 +358,13 @@ export default {
         this.Table7 = "display:block";
         this.tableHover7 = buttonHover2;
       }
+      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
 
     changeMenu(change) {
-      var changeMenuButton = this.changeMenuButton;
+      let changeMenuButton = this.changeMenuButton;
+      let flagOn = this.flagOn;
+      let flagOff = this.flagOff;
       this.changeMenuButton1 = '';
       this.changeMenuButton2 = '';
       this.changeMenuButton3 = '';
@@ -340,68 +379,104 @@ export default {
       this.changeMenuButton12 = '';
       this.changeMenuButton13 = '';
 
+      this.changeMenuButton1Flag = flagOff;
+      this.changeMenuButton2Flag = flagOff;
+      this.changeMenuButton3Flag = flagOff;
+      this.changeMenuButton4Flag = flagOff;
+      this.changeMenuButton5Flag = flagOff;
+      this.changeMenuButton6Flag = flagOff;
+      this.changeMenuButton7Flag = flagOff;
+      this.changeMenuButton8Flag = flagOff;
+      this.changeMenuButton9Flag = flagOff;
+      this.changeMenuButton10Flag = flagOff;
+      this.changeMenuButton11Flag = flagOff;
+      this.changeMenuButton12Flag = flagOff;
+      this.changeMenuButton13Flag = flagOff;
+
 
 
 
       if (change == "101") {
         this.changeMenuButton1 = changeMenuButton;
+        this.changeMenuButton1Flag = flagOn;
       }
 
       if (change == "102") {
         this.changeMenuButton2 = changeMenuButton;
+        this.changeMenuButton2Flag = flagOn;
       }
 
       if (change == "103") {
         this.changeMenuButton3 = changeMenuButton;
+        this.changeMenuButton3Flag = flagOn;
       }
 
       if (change == "104") {
         this.changeMenuButton4 = changeMenuButton;
+        this.changeMenuButton4Flag = flagOn;
       }
 
       if (change == "105") {
         this.changeMenuButton5 = changeMenuButton;
+        this.changeMenuButton5Flag = flagOn;
       }
 
 
       if (change == "106") {
-        this.changeMenuButton6= changeMenuButton;
+        this.changeMenuButton6 = changeMenuButton;
+        this.changeMenuButton6Flag = flagOn;
       }
 
       if (change == "107") {
         this.changeMenuButton7 = changeMenuButton;
+        this.changeMenuButton7Flag = flagOn;
       }
 
       if (change == "108") {
         this.changeMenuButton8 = changeMenuButton;
+        this.changeMenuButton8Flag = flagOn;
       }
 
       if (change == "109") {
         this.changeMenuButton9 = changeMenuButton;
+        this.changeMenuButton9Flag = flagOn;
       }
 
       if (change == "110") {
         this.changeMenuButton10 = changeMenuButton;
+        this.changeMenuButton10Flag = flagOn;
       }
 
       if (change == "111") {
         this.changeMenuButton11 = changeMenuButton;
+        this.changeMenuButton11Flag = flagOn;
       }
 
       if (change == "112") {
         this.changeMenuButton12 = changeMenuButton;
+        this.changeMenuButton12Flag = flagOn;
       }
 
       if (change == "113") {
         this.changeMenuButton13 = changeMenuButton;
+        this.changeMenuButton13Flag = flagOn;
       }
 
     },
 
-    dayClicked(){
+    dayClicked() {
       this.changeMenu2('4');
     },
 
+    ISODateString(d) {
+      function pad(n) { return n < 10 ? '0' + n : n }
+      return d.getUTCFullYear() + '-'
+        + pad(d.getUTCMonth() + 1) + '-'
+        + pad(d.getUTCDate()) + 'T'
+        + pad(d.getUTCHours()) + ':'
+        + pad(d.getUTCMinutes()) + ':'
+        + pad(d.getUTCSeconds()) + '+06:00'
+    },
 
     changeMenu2(change) {
 
@@ -410,8 +485,8 @@ export default {
 
         this.buttonHover7 = buttonHover;
         this.range = {
-          start: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() -1) + 'T23:59:00+06:00'),
+          start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
           formatInput: true,
         };
 
@@ -424,8 +499,8 @@ export default {
       if (change == 2) {
         this.buttonHover8 = buttonHover;
         this.range = {
-          start: new Date(this.year + '-' + this.pad(this.month) + '-01T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
+          start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-01T06:00:00+06:00')),
+          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
           formatInput: true,
         };
 
@@ -438,8 +513,8 @@ export default {
       if (change == 3) {
         this.buttonHover9 = buttonHover;
         this.range = {
-          start: new Date(this.year + '-' + '01' + '-01T06:00:00+06:00'),
-          end: new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00'),
+          start: this.ISODateString(new Date(this.year + '-' + '01' + '-01T06:00:00+06:00')),
+          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
           formatInput: true,
         };
 
@@ -457,7 +532,7 @@ export default {
 
 
     changeAssets(change) {
-      var changeMenuButton = this.changeMenuButton;
+      let changeMenuButton = 'color:#fff';
       this.buttonHover11 = "";
       this.buttonHover12 = "";
       this.buttonHover13 = "";
@@ -607,7 +682,7 @@ export default {
           // this.$emit("currencyChart", arrdata2);
           this.currencyChartData = arrdata2;
 
-          console.log(this.currencyChartData);
+          //console.log(this.currencyChartData);
         } else {
           console.log("No data");
         }
@@ -672,92 +747,28 @@ export default {
       return "margin-top: 16px; border-bottom: 6px solid #009846";
     },
 
-    getColor2(status) {
-      if (status < "0") return "margin-top:17em!important; border-top: 10px solid #b40300;margin-right:0.2em;";
-      if (status == "0") return "    ";
-      return "margin-top: 16.6em!important; border-bottom: 10px solid #008a17;margin-right:0.2em;";
+
+
+    getDiffProcentLastBigN(a, b) {
+      if (a != '') {
+        return (100 - ((a / b - 1)) * 100).toFixed(2);
+      } else { return 0 }
     },
 
+    getDiffProcentLastP(a, b, c) {
+      if (c){
+      if (a>b) {return 'Снижение'} else if (a<b)  {return 'Рост'};} else{
+      if (b == 0) { return 0 } else if (a==0){ return 0 }{
+        if (a != '') return ((a / b - 1) * 100).toFixed(2)
+        //else return 0;
+      }}
+    },
 
-    /*   getMonths: function () {
-         var monthAll = [];
-         var month = new Date(this.year, this.month + 1, 0).getMonth();
+    getColor2(i) {
+      if (i < 0) return "arrow";
+      if (i > 0) return "arrow2";
+    },
 
-         for (let i = 1; i <= 12; i++) {
-           if (new Date(this.year, this.month + 1, i)) {
-             var a = { index: i, id: i };
-             monthAll.push(a);
-             if (this.selectedMonth == i) {
-               a.current = "#232236";
-             } else if (
-               i == Number(new Date().getMonth() + 1) &&
-               this.year ==
-               new Date().getFullYear()
-             ) {
-               a.current = "#13B062";
-             }
-           }
-         }
-         if (this.selectedOilPeriod == "1") {
-           this.display = "none";
-           return monthAll;
-         }
-       },
-
-       getDays: function () {
-         var DaysInMonth = [];
-         var dlast = new Date(this.year, this.month + 1, 0).getDate();
-         for (let i = 1; i <= dlast; i++) {
-           var a = { index: i, id: i };
-           DaysInMonth.push(a);
-         }
-         return DaysInMonth;
-       },
-
-       getDaysMonth: function () {
-         var DaysInMonth = [];
-         var dlast = new Date(this.year, this.selectedMonth, 0).getDate();
-         for (let i = 1; i <= dlast; i++) {
-           var a = { index: i, id: i };
-           DaysInMonth.push(a);
-         }
-         return DaysInMonth;
-       },
-
-       getDaysInYear: function () {
-         var getDaysInYear = [];
-         for (let q = 1; q <= 12; q++) {
-           var dlast = new Date(this.year, q, 0).getDate();
-           for (let i = 1; i <= dlast; i++) {
-             var a = { month: q, day: i };
-             getDaysInYear.push(a);
-           }
-         }
-         return getDaysInYear;
-       },
-
-       getYears: function () {
-         var yearAll = [];
-         var year = this.year;
-         for (let i = 2018; i <= year; i++) {
-           //if (this.year, this.month, i).getYear() ) {
-           var a = { index: i, id: i };
-           yearAll.push(a);
-           if (this.selectedYear == i) {
-             a.current = "#232236";
-           } else if (
-             i ==
-             year
-           ) {
-             a.current = "#13B062";
-           }
-         }
-   
-         if (this.selectedOilPeriod == "2") {
-           this.display = "none";
-           return yearAll;
-         }
-       },*/
 
     menuDMY() {
       var DMY = ["День", "Месяц", "Год"];
@@ -917,8 +928,8 @@ export default {
             ),
           ]);
         });
-
-
+        this.lastDate1=new Date(timestampToday - quantityRange * 86400000).toLocaleDateString();
+        this.lastDate2=new Date(timestampToday-86400000).toLocaleDateString();
         //Summ plan and fact from dzo
         var SummFromRange = _(dataWithMay)
           .groupBy("dzo")
@@ -933,6 +944,8 @@ export default {
           }))
 
           .value();
+
+         
 
 
         var oil_planSumm = _.reduce(
@@ -1002,6 +1015,18 @@ export default {
 
     getProduction(item, item2, item3, item4, item5) {
       this.$store.commit('globalloading/SET_LOADING', true);
+      let start= new Date(this.range.start).toLocaleString("ru", {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      });
+
+      let end=new Date(this.range.end).toLocaleString("ru", {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      });
+      if (start==end) {this.oneDate=1;} else {this.oneDate=''}
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
 
@@ -1032,7 +1057,6 @@ export default {
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
-          //console.log(data);
           var NameDzoFull = this.NameDzoFull;
           var company = this.company;
           var summForTables = [];
@@ -1061,33 +1085,68 @@ export default {
               ["asc"]
             );
 
+            this.getProductionPercentCovid(dataWithMay);
+            let covid = _.reduce(
+              dataWithMay,
+              function (memo, item) {
+                return memo + item['tb_covid_total'];
+              },
+              0
+            );
 
-            this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);
-            this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);
+            this.covid = covid;
+
+
+            this.innerWells = this.innerWellsNagMet(dataWithMay, this.innerWellsButtonProstoi);
+            this.innerWells2 = this.innerWellsProdMet(dataWithMay, this.innerWellsButtonProstoi2);
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
             this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
 
-            var productionForChart = _(dataWithMay)
+      
+            if (start === end) {            
+              let dataWithMay = new Array();
+              dataWithMay = _.filter(data, function (item) {
+                return _.every([
+                  _.inRange(
+                    item.__time,
+                    timestampToday - 2 * 86400000,
+                    timestampToday + 86400000
+                  ),
+                ]);
+              });
+  
+              dataWithMay = _.orderBy(
+                dataWithMay,
+                ["__time"],
+                ["asc"]
+              );
+              var productionForChart = this.getProductionForChart(dataWithMay);
+  
+            } else {            
+              var productionForChart = this.getProductionForChart(dataWithMay);
+            }
+
+
+           /* var productionForChart = _(dataWithMay)
               .groupBy("__time")
               .map((__time, id) => ({
                 time: id,
                 productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
                 productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
               }))
-              .value();
+              .value();*/
 
             var dataWithMayLast = [];
-            dataWithMayLast = _.last(dataWithMay);//.slice(-1);
+            this.getProductionPercentWells(arrdata);
 
-
+            dataWithMayLast = _.last(dataWithMay);
             this.inj_wells_idle = dataWithMayLast['inj_wells_idle'];
             this.inj_wells_work = dataWithMayLast['inj_wells_work'];
             this.prod_wells_work = dataWithMayLast['prod_wells_work'];
             this.prod_wells_idle = dataWithMayLast['prod_wells_idle'];
-
 
             //console.log(productionForChart);
             if (this.company != "all") {
@@ -1230,8 +1289,8 @@ export default {
           );
 
 
-          this.innerWells = this.innerWellsNagMet(dataWithMay,this.innerWellsButtonProstoi);
-          this.innerWells2 = this.innerWellsProdMet(dataWithMay,this.innerWellsButtonProstoi2);
+          this.innerWells = this.innerWellsNagMet(dataWithMay, this.innerWellsButtonProstoi);
+          this.innerWells2 = this.innerWellsProdMet(dataWithMay, this.innerWellsButtonProstoi2);
           this.otmData = this.getOtmData(dataWithMay)
           this.otmChartData = this.getOtmChartData(dataWithMay)
           this.chemistryData = this.getChemistryData(dataWithMay)
@@ -1239,7 +1298,7 @@ export default {
 
 
           //Summ plan and fact from dzo nagnetatWells k1q for month!!!
-          var productionPlanAndFactMonthWells = _(dataWithMay)
+          /*var productionPlanAndFactMonthWells = _(dataWithMay)
             .groupBy("data")
             .map((__time, id) => ({
               __time: id,
@@ -1270,16 +1329,43 @@ export default {
 
 
           this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
+*/
 
+      
+          if (start === end) {           
 
-          var productionForChart = _(dataWithMay)
-            .groupBy("__time")
-            .map((__time, id) => ({
-              time: id,
-              productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
-              productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
-            }))
-            .value();
+            let dataWithMay = new Array();
+            dataWithMay = _.filter(data, function (item) {
+              return _.every([
+                _.inRange(
+                  item.__time,
+                  timestampToday - 2 * 86400000,
+                  timestampToday + 86400000
+                ),
+              ]);
+            });
+
+            dataWithMay = _.orderBy(
+              dataWithMay,
+              ["__time"],
+              ["asc"]
+            );
+            var productionForChart = this.getProductionForChart(dataWithMay);
+
+          } else {
+         
+            var productionForChart = this.getProductionForChart(dataWithMay);
+          }
+          /*
+            var productionForChart = _(dataWithMay)
+              .groupBy("__time")
+              .map((__time, id) => ({
+                time: id,
+                productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
+                productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
+              }))
+              .value();*/
+
 
 
 
@@ -1330,12 +1416,13 @@ export default {
                 //item.dateSimple,
                 item.__time,
                 timestampEnd - 86400000,// * Number(period),
-                timestampEnd// + 86400000
+                timestampEnd
               ),
             ]);
           });
 
           dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
+
 
           var dzoDay = [];
           var factDay = [];
@@ -1366,16 +1453,17 @@ export default {
             dzoDay.push(e);
             factDay.push(f);
             planDay.push(p);
-            inj_wells_idle.push({ inj_wells_idle: item.inj_wells_idle });
-            inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
-            prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
-            prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });
+            /* inj_wells_idle.push({ inj_wells_idle: item.inj_wells_idle });
+             inj_wells_work.push({ inj_wells_work: item.inj_wells_work });
+             prod_wells_work.push({ prod_wells_work: item.prod_wells_work });
+             prod_wells_idle.push({ prod_wells_idle: item.prod_wells_idle });*/
           });
 
+          this.getProductionPercentWells(data);
 
           if (inj_wells_idle) {
             inj_wells_idle = _.reduce(
-              inj_wells_idle,
+              dataDay,
               function (memo, item) {
                 return memo + item.inj_wells_idle;
               },
@@ -1386,7 +1474,7 @@ export default {
 
           if (inj_wells_work) {
             inj_wells_work = _.reduce(
-              inj_wells_work,
+              dataDay,
               function (memo, item) {
                 return memo + item.inj_wells_work;
               },
@@ -1397,7 +1485,7 @@ export default {
 
           if (prod_wells_work) {
             prod_wells_work = _.reduce(
-              prod_wells_work,
+              dataDay,
               function (memo, item) {
                 return memo + item.prod_wells_work;
               },
@@ -1408,7 +1496,7 @@ export default {
 
           if (prod_wells_idle) {
             prod_wells_idle = _.reduce(
-              prod_wells_idle,
+              dataDay,
               function (memo, item) {
                 return memo + item.prod_wells_idle;
               },
@@ -1422,24 +1510,24 @@ export default {
           var factMonth = [];
           var planMonth = [];
 
-         //delete after paste data for dzo
+          //delete after paste data for dzo
 
-         if (this.buttonHover11 != '') {
-          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШО" }));
-          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "НКО" }));
-          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КПО" }));
-          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТП" }));
-          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКК" }));
-          productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКИ" }));
+          if (this.buttonHover11 != '') {
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШО" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "НКО" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КПО" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТП" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКК" }));
+            productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ПКИ" }));
 
-          data = _.reject(data, _.iteratee({ dzo: "ТШО" }));
-          data = _.reject(data, _.iteratee({ dzo: "НКО" }));
-          data = _.reject(data, _.iteratee({ dzo: "КПО" }));
-          data = _.reject(data, _.iteratee({ dzo: "ТП" }));
-          data = _.reject(data, _.iteratee({ dzo: "ПКК" }));
-          data = _.reject(data, _.iteratee({ dzo: "ПКИ" }));
+            data = _.reject(data, _.iteratee({ dzo: "ТШО" }));
+            data = _.reject(data, _.iteratee({ dzo: "НКО" }));
+            data = _.reject(data, _.iteratee({ dzo: "КПО" }));
+            data = _.reject(data, _.iteratee({ dzo: "ТП" }));
+            data = _.reject(data, _.iteratee({ dzo: "ПКК" }));
+            data = _.reject(data, _.iteratee({ dzo: "ПКИ" }));
 
-         }
+          }
 
           if (this.buttonHover12 != '') {
 
@@ -1462,14 +1550,14 @@ export default {
           }
 
 
-          if(item5 === 'С учётом доли участия КМГ') {
+          if (item5 === 'С учётом доли участия КМГ') {
 
             let companyPercents = {
               'АО "Каражанбасмунай"': 0.5,
               'ТОО "Казгермунай"': 0.5,
               'АО ПетроКазахстан Инк': 0.33,
               '"ПетроКазахстан Инк."': 0.33,
-              'АО "Тургай-Петролеум"': 0.5*0.33,
+              'АО "Тургай-Петролеум"': 0.5 * 0.33,
               "ТОО «Тенгизшевройл»": 0.2,
               'АО "Мангистаумунайгаз"': 0.5,
               'ТОО "Казахойл Актобе"': 0.5,
@@ -1478,7 +1566,7 @@ export default {
             }
 
             productionPlanAndFactMonth.map(item => {
-              if(typeof companyPercents[this.getNameDzoFull(item.dzo)] !== 'undefined') {
+              if (typeof companyPercents[this.getNameDzoFull(item.dzo)] !== 'undefined') {
                 item.productionFactForChart = item.productionFactForChart * companyPercents[this.getNameDzoFull(item.dzo)]
                 item.productionPlanForChart = item.productionPlanForChart * companyPercents[this.getNameDzoFull(item.dzo)]
               }
@@ -1553,6 +1641,28 @@ export default {
           this.factDaySumm = factDaySumm;
           this.planDaySumm = planDaySumm;
 
+
+
+          let personalFact = _.reduce(
+            dataDay,
+            function (memo, item) {
+              return memo + item['tb_personal_fact'];
+            },
+            0
+          );
+          this.personalFact = personalFact;
+
+          this.getProductionPercentCovid(data);
+          let covid = _.reduce(
+            dataDay,
+            function (memo, item) {
+              return memo + item['tb_covid_total'];
+            },
+            0
+          );
+
+          this.covid = covid;
+
           var bigTable = _.zipWith(
             productionFactPercent,
             dzoPercent,
@@ -1582,28 +1692,28 @@ export default {
           );
 
           let tmpArrayToSort = [
-              'АО "Озенмунайгаз"',
-              'АО "Эмбамунайгаз"',
-              'АО "Каражанбасмунай"',
-              'ТОО "Казгермунай"',
-              'АО ПетроКазахстан Инк',
-              'АО ПетроКазахстан Кумколь Ресорсиз',
-              '"ПетроКазахстан Инк."',
-              'АО "Тургай-Петролеум"',
-              '"Амангельды Газ"',
-              "ТОО «Тенгизшевройл»",
-              'АО "Мангистаумунайгаз"',
-              'ТОО "Казахойл Актобе"',
-              'ТОО "Казахтуркмунай"',
-              "«Карачаганак Петролеум Оперейтинг б.в.»",
-              "«Норт Каспиан Оперейтинг Компани н.в.»",
-              'Урихтау Оперейтинг',
+            'АО "Озенмунайгаз"',
+            'АО "Эмбамунайгаз"',
+            'АО "Каражанбасмунай"',
+            'ТОО "Казгермунай"',
+            'АО ПетроКазахстан Инк',
+            'АО ПетроКазахстан Кумколь Ресорсиз',
+            '"ПетроКазахстан Инк."',
+            'АО "Тургай-Петролеум"',
+            '"Амангельды Газ"',
+            "ТОО «Тенгизшевройл»",
+            'АО "Мангистаумунайгаз"',
+            'ТОО "Казахойл Актобе"',
+            'ТОО "Казахтуркмунай"',
+            "«Карачаганак Петролеум Оперейтинг б.в.»",
+            "«Норт Каспиан Оперейтинг Компани н.в.»",
+            'Урихтау Оперейтинг',
           ]
 
           bigTable
-              .sort((a, b) => {
-                return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
-              })
+            .sort((a, b) => {
+              return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
+            })
 
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
 
@@ -1644,7 +1754,7 @@ export default {
           ),
         ]);
       });
-console.log(dataWithMay)
+   
 
       var productionForChart = _(dataWithMay)
         .groupBy("dzo")
@@ -1655,11 +1765,109 @@ console.log(dataWithMay)
         }))
         .value();
       this.productionFactPercentOneDzo = productionForChart[0]['productionFactPercent'];
-      // console.log(productionForChart[0]['productionFactPercent']);
-      // return productionForChart;
+
     },
 
 
+
+
+    getProductionPercentCovid(data) {
+      var timestampToday = this.timestampToday;
+      var timestampEnd = this.timestampEnd;
+      var quantityRange = this.quantityRange;
+
+      var dataWithMay = new Array();
+      dataWithMay = _.filter(data, function (item) {
+        return _.every([
+          _.inRange(
+            item.__time,
+            timestampToday - quantityRange * 86400000,
+            (timestampToday - (quantityRange * 86400000)) + 86400000
+          ),
+        ]);
+      });
+
+      // dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
+
+      var covid = _.reduce(
+        dataWithMay,
+        function (memo, item) {
+          return memo + item['tb_covid_total'];
+        },
+        0
+      );
+      this.covidPercent = covid;
+    },
+
+
+    getProductionPercentWells(data) {
+      let inj_wells_idle = [];
+      let inj_wells_work = [];
+      let prod_wells_work = [];
+      let prod_wells_idle = [];
+      let timestampToday = this.timestampToday;
+      let timestampEnd = this.timestampEnd;
+      let quantityRange = this.quantityRange;
+
+      let dataWithMay = new Array();
+      dataWithMay = _.filter(data, function (item) {
+        return _.every([
+          _.inRange(
+            item.__time,
+            timestampToday - quantityRange * 86400000,
+            (timestampToday - (quantityRange * 86400000)) + 86400000
+          ),
+        ]);
+      });
+
+
+      // dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);    
+
+      if (inj_wells_idle) {
+        inj_wells_idle = _.reduce(
+          dataWithMay,
+          function (memo, item) {
+            return memo + item.inj_wells_idle;
+          },
+          0
+        );
+        this.inj_wells_idlePercent = inj_wells_idle;
+      }
+
+      if (inj_wells_work) {
+        inj_wells_work = _.reduce(
+          dataWithMay,
+          function (memo, item) {
+            return memo + item.inj_wells_work;
+          },
+          0
+        );
+        this.inj_wells_workPercent = inj_wells_work;
+      }
+
+      if (prod_wells_work) {
+        prod_wells_work = _.reduce(
+          dataWithMay,
+          function (memo, item) {
+            return memo + item.prod_wells_work;
+          },
+          0
+        );
+        this.prod_wells_workPercent = prod_wells_work;
+      }
+
+      if (prod_wells_idle) {
+        prod_wells_idle = _.reduce(
+          dataWithMay,
+          function (memo, item) {
+            return memo + item.prod_wells_idle;
+          },
+          0
+        );
+
+        this.prod_wells_idlePercent = prod_wells_idle;
+      }
+    },
 
 
 
@@ -1674,7 +1882,7 @@ console.log(dataWithMay)
       var productionFact = localStorage.getItem("production-fact");
 
 
-      //console.log(this.quantityGetProductionOilandGas);
+    
 
       var dataWithMay = new Array();
       dataWithMay = _.filter(data, function (item) {
@@ -1746,197 +1954,210 @@ console.log(dataWithMay)
       }
     },
     //When we change date
-    changeDate() {
+    changeDate() {    
       this.selectedDay = 0;
       this.timestampToday = new Date(this.range.start).getTime();
       this.timestampEnd = new Date(this.range.end).getTime();
-      this.quantityRange = ((this.timestampEnd - this.timestampToday) / 86400000) + 1;
+      this.quantityRange =  Math.trunc(((this.timestampEnd - this.timestampToday) / 86400000) + 1);
       let nowDate = new Date(this.range.start).toLocaleDateString();
+      let oldDate = new Date(this.range.end).toLocaleDateString();
       this.timeSelect = nowDate;
+      this.timeSelectOld = oldDate;
 
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
+      //console.log((new Date(2018,9,9)));
+  //    console.log(this.getQuarter(new Date(this.year + '.' + this.pad('04') + '.' + this.pad(this.date.getDate()))));
+      //console.log(new Date(this.year + '.' + this.pad('04') + '.' + this.pad(this.date.getDate())));
+      console.log(new Date('11.01.2021'));
+      //this.nowQuarter=this.getQuarter(new Date(this.range.start)).toLocaleString();
     },
 
 
 
 
-    buttonInnerWellsNag(){
-      if (this.innerWellsButtonProstoi==1)
-      { this.buttonHoverNagInnerWells = this.buttonHover;
-        this.innerWellsButtonProstoi=0;}
-      else
-      { this.buttonHoverNagInnerWells = "";
-        this.innerWellsButtonProstoi=1;}
-    this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
-  },
+    buttonInnerWellsNag() {
+      if (this.innerWellsButtonProstoi == 1) {
+        this.buttonHoverNagInnerWells = this.buttonHover;
+        this.innerWellsButtonProstoi = 0;
+      }
+      else {
+        this.buttonHoverNagInnerWells = "";
+        this.innerWellsButtonProstoi = 1;
+      }
+      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
+    },
 
-    innerWellsNagMet(arr,i){
+    innerWellsNagMet(arr, i) {
       var productionPlanAndFactMonthWells = _(arr)
-      .groupBy("data")
-      .map((__time, id) => ({
-        __time: id,
-        fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
-        fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
-        fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
-        fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
-        fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
-        fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
-        fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
-        fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
-        fond_nagnetat_osvoenie: _.round(_.sumBy(__time, 'fond_nagnetat_osvoenie'), 0),
-        fond_nagnetat_konv: _.round(_.sumBy(__time, 'fond_nagnetat_konv'), 0),
-        fond_nagnetat_well_survey: _.round(_.sumBy(__time, 'fond_nagnetat_well_survey'), 0),
-        fond_nagnetat_others: _.round(_.sumBy(__time, 'fond_nagnetat_others'), 0),
+        .groupBy("data")
+        .map((__time, id) => ({
+          __time: id,
+          fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
+          fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
+          fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
+          fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
+          fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
+          fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
+          fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
+          fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
+          fond_nagnetat_osvoenie: _.round(_.sumBy(__time, 'fond_nagnetat_osvoenie'), 0),
+          fond_nagnetat_konv: _.round(_.sumBy(__time, 'fond_nagnetat_konv'), 0),
+          fond_nagnetat_well_survey: _.round(_.sumBy(__time, 'fond_nagnetat_well_survey'), 0),
+          fond_nagnetat_others: _.round(_.sumBy(__time, 'fond_nagnetat_others'), 0),
 
 
 
-      }))
-      .value();
+        }))
+        .value();
 
       var productionPlanAndFactMonthWellsName = [];
 
-      if (i!=1) {
-      productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name: 'Освоение' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 'Консервация' },
+      if (i != 1) {
+        productionPlanAndFactMonthWellsName.push(
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name: 'Освоение' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 'Консервация' },
         );
       };
 
-      if (i==1) {
+      if (i == 1) {
         productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_well_survey'], name: 'Исследование скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_others'], name: 'Прочие' },
-          );};
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_well_survey'], name: 'Исследование скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_others'], name: 'Прочие' },
+        );
+      };
 
       return productionPlanAndFactMonthWellsName;
 
     },
 
-    innerWellsNagMetOnChange($event){
+    innerWellsNagMetOnChange($event) {
       this.company = $event.target.value;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
     },
 
 
-    buttonInnerWellsProd(){
-      if (this.innerWellsButtonProstoi==1)
-      { this.buttonHoverProdInnerWells = this.buttonHover;
-        this.innerWellsButtonProstoi2=0;}
-      else
-      { this.buttonHoverProdInnerWells = "";
-        this.innerWellsButtonProstoi2=1;}
-    this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
-  },
+    buttonInnerWellsProd() {
+      if (this.innerWellsButtonProstoi == 1) {
+        this.buttonHoverProdInnerWells = this.buttonHover;
+        this.innerWellsButtonProstoi2 = 0;
+      }
+      else {
+        this.buttonHoverProdInnerWells = "";
+        this.innerWellsButtonProstoi2 = 1;
+      }
+      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
+    },
 
-    innerWellsProdMet(arr,i){
+    innerWellsProdMet(arr, i) {
       var productionPlanAndFactMonthWells = _(arr)
-      .groupBy("data")
-      .map((__time, id) => ({
-        __time: id,
-        fond_neftedob_ef: _.round(_.sumBy(__time, 'fond_neftedob_ef'), 0),
-        fond_neftedob_df: _.round(_.sumBy(__time, 'fond_neftedob_df'), 0),
-        fond_neftedob_bd: _.round(_.sumBy(__time, 'fond_neftedob_bd'), 0),
-        fond_neftedob_osvoenie: _.round(_.sumBy(__time, 'fond_neftedob_osvoenie'), 0),
-        fond_neftedob_ofls: _.round(_.sumBy(__time, 'fond_neftedob_ofls'), 0),
-        fond_neftedob_prs: _.round(_.sumBy(__time, 'fond_neftedob_prs'), 0),
-        fond_neftedob_oprs: _.round(_.sumBy(__time, 'fond_neftedob_oprs'), 0),
-        fond_neftedob_krs: _.round(_.sumBy(__time, 'fond_neftedob_krs'), 0),
-        fond_neftedob_okrs: _.round(_.sumBy(__time, 'fond_neftedob_okrs'), 0),
-        fond_neftedob_well_survey: _.round(_.sumBy(__time, 'fond_neftedob_well_survey'), 0),
-        fond_neftedob_nrs: _.round(_.sumBy(__time, 'fond_neftedob_nrs'), 0),
-        fond_neftedob_others: _.round(_.sumBy(__time, 'fond_neftedob_others'), 0),
-      }))
-      .value();
+        .groupBy("data")
+        .map((__time, id) => ({
+          __time: id,
+          fond_neftedob_ef: _.round(_.sumBy(__time, 'fond_neftedob_ef'), 0),
+          fond_neftedob_df: _.round(_.sumBy(__time, 'fond_neftedob_df'), 0),
+          fond_neftedob_bd: _.round(_.sumBy(__time, 'fond_neftedob_bd'), 0),
+          fond_neftedob_osvoenie: _.round(_.sumBy(__time, 'fond_neftedob_osvoenie'), 0),
+          fond_neftedob_ofls: _.round(_.sumBy(__time, 'fond_neftedob_ofls'), 0),
+          fond_neftedob_prs: _.round(_.sumBy(__time, 'fond_neftedob_prs'), 0),
+          fond_neftedob_oprs: _.round(_.sumBy(__time, 'fond_neftedob_oprs'), 0),
+          fond_neftedob_krs: _.round(_.sumBy(__time, 'fond_neftedob_krs'), 0),
+          fond_neftedob_okrs: _.round(_.sumBy(__time, 'fond_neftedob_okrs'), 0),
+          fond_neftedob_well_survey: _.round(_.sumBy(__time, 'fond_neftedob_well_survey'), 0),
+          fond_neftedob_nrs: _.round(_.sumBy(__time, 'fond_neftedob_nrs'), 0),
+          fond_neftedob_others: _.round(_.sumBy(__time, 'fond_neftedob_others'), 0),
+        }))
+        .value();
 
       var productionPlanAndFactMonthWellsName = [];
 
-      if (i!=1) {
-      productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ef'], name: 'Эксплуатационный фонд' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name: 'Действующий фонд' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name: 'Бездействующий фонд скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_osvoenie'], name: 'Освоение' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ofls'], name: 'Ожидание физической ликвидации скважин' },
-       // { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 'Консервация' },
+      if (i != 1) {
+        productionPlanAndFactMonthWellsName.push(
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ef'], name: 'Эксплуатационный фонд' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name: 'Действующий фонд' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name: 'Бездействующий фонд скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_osvoenie'], name: 'Освоение' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ofls'], name: 'Ожидание физической ликвидации скважин' },
+          // { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 'Консервация' },
         );
       };
 
-      if (i==1) {
+      if (i == 1) {
         productionPlanAndFactMonthWellsName.push(
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_prs'], name: 'Подземный ремонт скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_oprs'], name: 'Ожидание подземного ремонта скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_krs'], name: 'Капитальный ремонт скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_okrs'], name: 'Ожидание капитального ремонта скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_well_survey'], name: 'Исследование скважин' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_nrs'], name: 'Нерентабельные скважины' },
-        { value: productionPlanAndFactMonthWells[0]['fond_neftedob_others'], name: 'Прочие' },
-          );};
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_prs'], name: 'Подземный ремонт скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_oprs'], name: 'Ожидание подземного ремонта скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_krs'], name: 'Капитальный ремонт скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_okrs'], name: 'Ожидание капитального ремонта скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_well_survey'], name: 'Исследование скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_nrs'], name: 'Нерентабельные скважины' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_others'], name: 'Прочие' },
+        );
+      };
 
       return productionPlanAndFactMonthWellsName;
 
     },
 
-    getOtmData(arr){
+    getOtmData(arr) {
       let otmData = _(arr)
-      .groupBy("data")
-      .map((__time, id) => ({
-        __time: id,
-        otm_iz_burenia_skv_plan: _.round(_.sumBy(__time, 'otm_iz_burenia_skv_plan'), 0),
-        otm_iz_burenia_skv_fact: _.round(_.sumBy(__time, 'otm_iz_burenia_skv_fact'), 0),
-        otm_burenie_prohodka_plan: _.round(_.sumBy(__time, 'otm_burenie_prohodka_plan'), 0),
-        otm_burenie_prohodka_fact: _.round(_.sumBy(__time, 'otm_burenie_prohodka_fact'), 0),
-        otm_krs_skv_plan: _.round(_.sumBy(__time, 'otm_krs_skv_plan'), 0),
-        otm_krs_skv_fact: _.round(_.sumBy(__time, 'otm_krs_skv_fact'), 0),
-        otm_prs_skv_plan: _.round(_.sumBy(__time, 'otm_prs_skv_plan'), 0),
-        otm_prs_skv_fact: _.round(_.sumBy(__time, 'otm_prs_skv_fact'), 0),
-      }))
-      .value();
+        .groupBy("data")
+        .map((__time, id) => ({
+          __time: id,
+          otm_iz_burenia_skv_plan: _.round(_.sumBy(__time, 'otm_iz_burenia_skv_plan'), 0),
+          otm_iz_burenia_skv_fact: _.round(_.sumBy(__time, 'otm_iz_burenia_skv_fact'), 0),
+          otm_burenie_prohodka_plan: _.round(_.sumBy(__time, 'otm_burenie_prohodka_plan'), 0),
+          otm_burenie_prohodka_fact: _.round(_.sumBy(__time, 'otm_burenie_prohodka_fact'), 0),
+          otm_krs_skv_plan: _.round(_.sumBy(__time, 'otm_krs_skv_plan'), 0),
+          otm_krs_skv_fact: _.round(_.sumBy(__time, 'otm_krs_skv_fact'), 0),
+          otm_prs_skv_plan: _.round(_.sumBy(__time, 'otm_prs_skv_plan'), 0),
+          otm_prs_skv_fact: _.round(_.sumBy(__time, 'otm_prs_skv_fact'), 0),
+        }))
+        .value();
 
       let result = [];
 
       result.push(
-          {
-            name: 'Скважин из бурения',
-            code: 'otm_iz_burenia_skv_fact',
-            plan: otmData[0]['otm_iz_burenia_skv_plan'],
-            fact: otmData[0]['otm_iz_burenia_skv_fact'],
-          },
-          {
-            name: 'Бурение проходка',
-            code: 'otm_burenie_prohodka_fact',
-            plan: otmData[0]['otm_burenie_prohodka_plan'],
-            fact: otmData[0]['otm_burenie_prohodka_fact'],
-          },
-          {
-            name: 'КРС',
-            code: 'otm_krs_skv_fact',
-            plan: otmData[0]['otm_krs_skv_plan'],
-            fact: otmData[0]['otm_krs_skv_fact'],
-          },
-          {
-            name: 'ПРС',
-            code: 'otm_prs_skv_fact',
-            plan: otmData[0]['otm_prs_skv_plan'],
-            fact: otmData[0]['otm_prs_skv_fact'],
-          },
+        {
+          name: 'Скважин из бурения',
+          code: 'otm_iz_burenia_skv_fact',
+          plan: otmData[0]['otm_iz_burenia_skv_plan'],
+          fact: otmData[0]['otm_iz_burenia_skv_fact'],
+        },
+        {
+          name: 'Бурение проходка',
+          code: 'otm_burenie_prohodka_fact',
+          plan: otmData[0]['otm_burenie_prohodka_plan'],
+          fact: otmData[0]['otm_burenie_prohodka_fact'],
+        },
+        {
+          name: 'КРС',
+          code: 'otm_krs_skv_fact',
+          plan: otmData[0]['otm_krs_skv_plan'],
+          fact: otmData[0]['otm_krs_skv_fact'],
+        },
+        {
+          name: 'ПРС',
+          code: 'otm_prs_skv_fact',
+          plan: otmData[0]['otm_prs_skv_plan'],
+          fact: otmData[0]['otm_prs_skv_fact'],
+        },
       )
 
       return result
     },
 
-    getOtmChartData(arr){
+    getOtmChartData(arr) {
       let otmData
-      if(this.buttonHover9) {
+      if (this.buttonHover9) {
         otmData = _.groupBy(arr, item => {
           return moment(parseInt(item.__time)).format('MMM')
         })
@@ -1949,7 +2170,7 @@ console.log(dataWithMay)
 
       let result = {}
 
-      if(typeof otmData !== 'undefined') {
+      if (typeof otmData !== 'undefined') {
         for (let i in otmData) {
           result[i] = {
             otm_iz_burenia_skv_fact: _.round(_.sumBy(otmData[i], 'otm_iz_burenia_skv_fact'), 0),
@@ -1962,56 +2183,56 @@ console.log(dataWithMay)
 
       return result
     },
-    getChemistryData(arr){
+    getChemistryData(arr) {
       let chemistryData = _(arr)
-      .groupBy("data")
-      .map((__time, id) => ({
-        __time: id,
-        chem_prod_zakacka_demulg_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_demulg_plan'), 0),
-        chem_prod_zakacka_demulg_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_demulg_fact'), 0),
-        chem_prod_zakacka_bakteracid_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_bakteracid_plan'), 0),
-        chem_prod_zakacka_bakteracid_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_bakteracid_fact'), 0),
-        chem_prod_zakacka_ingibator_korrozin_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_korrozin_plan'), 0),
-        chem_prod_zakacka_ingibator_korrozin_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_korrozin_fact'), 0),
-        chem_prod_zakacka_ingibator_soleotloj_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_soleotloj_plan'), 0),
-        chem_prod_zakacka_ingibator_soleotloj_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_soleotloj_fact'), 0),
-      }))
-      .value();
+        .groupBy("data")
+        .map((__time, id) => ({
+          __time: id,
+          chem_prod_zakacka_demulg_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_demulg_plan'), 0),
+          chem_prod_zakacka_demulg_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_demulg_fact'), 0),
+          chem_prod_zakacka_bakteracid_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_bakteracid_plan'), 0),
+          chem_prod_zakacka_bakteracid_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_bakteracid_fact'), 0),
+          chem_prod_zakacka_ingibator_korrozin_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_korrozin_plan'), 0),
+          chem_prod_zakacka_ingibator_korrozin_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_korrozin_fact'), 0),
+          chem_prod_zakacka_ingibator_soleotloj_plan: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_soleotloj_plan'), 0),
+          chem_prod_zakacka_ingibator_soleotloj_fact: _.round(_.sumBy(__time, 'chem_prod_zakacka_ingibator_soleotloj_fact'), 0),
+        }))
+        .value();
 
       let result = [];
 
       result.push(
-          {
-            name: 'Деэмульгатор',
-            code: 'chem_prod_zakacka_demulg_fact',
-            plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
-            fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
-          },
-          {
-            name: 'Бактерицид',
-            code: 'chem_prod_zakacka_bakteracid_fact',
-            plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
-            fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
-          },
-          {
-            name: 'Ингибитор коррозии',
-            code: 'chem_prod_zakacka_ingibator_korrozin_fact',
-            plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
-            fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
-          },
-          {
-            name: 'Ингибитор солеотложения',
-            code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
-            plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
-            fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
-          },
+        {
+          name: 'Деэмульгатор',
+          code: 'chem_prod_zakacka_demulg_fact',
+          plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
+          fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
+        },
+        {
+          name: 'Бактерицид',
+          code: 'chem_prod_zakacka_bakteracid_fact',
+          plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
+          fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
+        },
+        {
+          name: 'Ингибитор коррозии',
+          code: 'chem_prod_zakacka_ingibator_korrozin_fact',
+          plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
+          fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
+        },
+        {
+          name: 'Ингибитор солеотложения',
+          code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
+          plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
+          fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
+        },
       )
 
       return result
     },
-    getChemistryChartData(arr){
+    getChemistryChartData(arr) {
       let chemistryData
-      if(this.buttonHover9) {
+      if (this.buttonHover9) {
         chemistryData = _.groupBy(arr, item => {
           return moment(parseInt(item.__time)).format('MMM')
         })
@@ -2024,7 +2245,7 @@ console.log(dataWithMay)
 
       let result = {}
 
-      if(typeof chemistryData !== 'undefined') {
+      if (typeof chemistryData !== 'undefined') {
         for (let i in chemistryData) {
           result[i] = {
             chem_prod_zakacka_demulg_fact: _.round(_.sumBy(chemistryData[i], 'chem_prod_zakacka_demulg_fact'), 0),
@@ -2038,61 +2259,122 @@ console.log(dataWithMay)
       return result
     },
 
-    innerWellsProdMetOnChange($event){
+    innerWellsProdMetOnChange($event) {
       this.company = $event.target.value;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
     },
 
 
     getNameDzoFull: function (dzo) {
-      if(typeof this.NameDzoFull[dzo] !== 'undefined') {
+      if (typeof this.NameDzoFull[dzo] !== 'undefined') {
         return this.NameDzoFull[dzo]
       }
       return dzo;
     },
 
+    getStaff() {
+      let uri = this.localeUrl("/visualcenter3GetDataStaff");
+      this.axios.get(uri).then((response) => {
+        let data = response.data;
+        if (data) {
+          //console.log(data);
+          var staff = _(data)
+            .groupBy("date")
+            .map((date, id) => ({
+              date: id,
+              staff_number: _.round(_.sumBy(date, 'staff_number'), 0),
+
+            }))
+            .value();
+          staff = _.orderBy(
+            staff,
+            ["date"],
+            ["desc"]
+          );
+          this.staff = staff[0]['staff_number'];
+          this.staffPercent = staff[1]['staff_number'];
+
+          this.quarter1=this.getQuarter(new Date(staff[0]['date']));
+          this.quarter2=this.getQuarter(new Date(staff[1]['date']));
+
+        } else { console.log('No data Personal') }
+
+      });
+    },
+
+    getProductionForChart(dataWithMay) {
+      let productionPlan = localStorage.getItem("production-plan");
+      let productionFact = localStorage.getItem("production-fact");
+      let productionForChart = _(dataWithMay)
+        .groupBy("__time")
+        .map((__time, id) => ({
+          time: id,
+          productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
+          productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
+        }))
+        .value();
+      return productionForChart;
+    },
+
+     getQuarter(d) {
+     /* d = d || new Date();
+      var m = Math.floor(d.getMonth()/3) + 2;
+      return m > 4? m - 4 : m;*/
+      return  [parseInt(d.getMonth() / 3 ) + 1, d.getFullYear()];
+    },
+
     formatVisTableNumber(num) {
-      let initNum = num
-      if(num >= 1000) {
-        num = (num / 1000).toFixed(0)
+      if (this.quantityRange < 2) { this.thousand = ''; return new Intl.NumberFormat("ru-RU").format(num); } else {
+        this.thousand = 'тыс.';
+        let initNum = num
+        if (num >= 1000) {
+          num = (num / 1000).toFixed(0)
+        }
+        else if (num >= 100) {
+          num = Math.round((num / 1000) * 10) / 10
+        }
+        else if (num >= 10) {
+          num = Math.round((num / 1000) * 100) / 100
+        }
+        else if (num > 0) {
+          num = 0.01
+        }
+        return new Intl.NumberFormat("ru-RU").format(num)
       }
-      else if( num >= 100 ) {
-        num = Math.round((num / 1000)*10)/10
-      }
-      else if( num >= 10 ) {
-        num = Math.round((num / 1000)*100)/100
-      }
-      else if ( num > 0) {
-        num = 0.01
-      }
-      return new Intl.NumberFormat("ru-RU").format(num)
     }
   },
   created() {
 
     if (window.location.host === 'dashboard') {
 
-   // this.Table5 = "display:block";
-   // this.Table1 = "display:none";
+      // this.Table6 = "display:block";
+      // this.Table1 = "display:none";
     }
 
   },
 
-  async mounted() {  
+
+
+
+  async mounted() {
     this.item3 = this.oilChartHeadName;
 
     if (window.location.host === 'dashboard') {
 
 
       this.range = {
-        start: "2020-06-01T06:00:00+06:00",
-        end: "2020-06-01T09:00:00+06:00",
+        // start:"2020-01-05T00:00:00+06:00",
+        //  end:"2021-01-05T17:59:00+06:00", 
+        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     } else {
       this.range = {
-        start: moment().subtract(3, "day").startOf('day').toDate(),
-        end: moment().subtract(1, "day").endOf('day').toDate(),
+        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+        // start: moment().subtract(3, "day").startOf('day').toDate(),
+        // end: moment().subtract(1, "day").endOf('day').toDate(),
         formatInput: true,
       };
     }
@@ -2117,9 +2399,23 @@ console.log(dataWithMay)
 
     this.getUsdRatesData();
     this.changeMenu2();
-   
+    this.getStaff();
 
-
+    let flagOff = this.flagOff;
+    this.changeMenuButton1Flag = flagOff;
+    this.changeMenuButton2Flag = flagOff;
+    this.changeMenuButton3Flag = flagOff;
+    this.changeMenuButton4Flag = flagOff;
+    this.changeMenuButton5Flag = flagOff;
+    this.changeMenuButton6Flag = flagOff;
+    this.changeMenuButton7Flag = flagOff;
+    this.changeMenuButton8Flag = flagOff;
+    this.changeMenuButton9Flag = flagOff;
+    this.changeMenuButton10Flag = flagOff;
+    this.changeMenuButton11Flag = flagOff;
+    this.changeMenuButton12Flag = flagOff;
+    this.changeMenuButton13Flag = flagOff;
+    this.buttonHover7="border: none; background: #2E50E9;color:white";
   },
   watch: {},
   computed: {
@@ -2166,7 +2462,7 @@ console.log(dataWithMay)
     otmDataForChart() {
       let series = []
       let labels = []
-      for(let i in this.otmChartData) {
+      for (let i in this.otmChartData) {
         series.push(this.otmSelectedRow ? this.otmChartData[i][this.otmSelectedRow] : this.otmChartData[i]['otm_iz_burenia_skv_fact'])
         labels.push(i)
       }
@@ -2178,7 +2474,7 @@ console.log(dataWithMay)
     chemistryDataForChart() {
       let series = []
       let labels = []
-      for(let i in this.chemistryChartData) {
+      for (let i in this.chemistryChartData) {
         series.push(this.chemistrySelectedRow ? this.chemistryChartData[i][this.chemistrySelectedRow] : this.chemistryChartData[i]['chem_prod_zakacka_demulg_fact'])
         labels.push(i)
       }

@@ -36,6 +36,14 @@ ol, ul, dl {
     float: left;
     font-size: 0.9em;
     margin-left: 0em;
+    margin-top: -5px; 
+}
+
+.txt2-2 {
+    font-family: Bold;
+    float: left;
+    font-size: 0.9em;
+    margin-left: 0em;
     /* margin-top: -15; */
 }
 
@@ -227,6 +235,13 @@ td:last-of-type {
     font-size: 14px;
 }
 
+.in-idle2 {
+    color: #9FA5C7;
+    font-size: 14px;
+    margin-top: -8px;
+    margin-left: 5px;
+}
+
 .line-bottom {
     border: 1px solid #454D7D;
     margin-top: -15px;
@@ -241,6 +256,7 @@ td:last-of-type {
     /* height: 48px; */
     overflow: hidden;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 .icon-all {
@@ -276,9 +292,10 @@ td:last-of-type {
 .txt5 {
     /* position: relative; */
     margin-left: 53px;
-    top: 7px;
+    margin-top: 7px;
     overflow: hidden;
-    font-size: 0.92em;
+    font-size: 1.2em;
+    margin-bottom: 12px;
 }
 
 .button2 {
@@ -404,10 +421,10 @@ td:last-of-type {
     margin-left: 20px;
 }
 
-.calendar-day {
+/*.calendar-day {
     width: 260px;
     margin-left: 20px;
-}
+}*/
 
 .day-begin {
     width: 14px;
@@ -623,6 +640,7 @@ td.small-td {
     border-radius: 10px;
     margin-left: 9px;
     border: 2px solid #2743cb;
+    cursor: pointer;
 }
 
 ul.center-menu2 {
@@ -630,7 +648,9 @@ ul.center-menu2 {
 }
 
 .dropdown3 a {
-    color: #000;
+    color: #373435;
+    font-weight:normal!important;
+    font-size: 1.1em;
 }
 
 .dropdown3:hover ul {
@@ -638,14 +658,16 @@ ul.center-menu2 {
 }
 
 .square-small2 {
-    background: #237deb;
+    /* background: #237deb; */
+    border-radius: 5px;
+    border: 1px solid #237deb; 
     width: 22px;
     height: 22px;
     /* position: relative; */
     /* left: 200px; */
     top: -15px;
     text-align: center;
-    color: #237deb;
+    color: #fff;
 }
 
 /*calendar */

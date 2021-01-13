@@ -7,6 +7,8 @@ use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use App\Models\DZO\DZOdaily;
+use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
+use App\Models\VisCenter\ImportForms\DZOstaff;
 
 class DruidController extends Controller
 {
@@ -68,11 +70,22 @@ return $response;
         return view('visualcenter.visualcenter3');
     }
 
+    public function visualcenter3GetDataStaff(Request $request)  
+    {         
+        return response()->json(DZOstaff ::all());
+    }
+
     public function visualcenter3GetData(Request $request)  
-    {$period = ($request->timestampEnd-$request->timestampToday)-86400000; 
+    {   $today=$request->timestampToday;
+        $end=$request->timestampEnd;
+        $period = (($end - $today)+(86400000*2));
+        $todayback = $today-$period;
+        
+        
+      //  $period = ($request->timestampEnd-$request->timestampToday)-86400000; 
 
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
-        return response()->json(DZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
+        return response()->json(ImportFormsDZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
             'oil_plan','oil_fact','gas_plan','gas_fact','__time',
             'tovarnyi_ostatok_nefti_prev_day',
             'tovarnyi_ostatok_nefti_today',
@@ -129,8 +142,11 @@ return $response;
             'fond_neftedob_well_survey',
             'fond_neftedob_nrs',
             'fond_neftedob_others',
+            'tb_covid_total',
+            'tb_personal_fact',
+            'date',
         'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
-        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
+        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $todayback)->where('__time', '<', $end+86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
         //return  response()->json($request);
     }
@@ -929,20 +945,4 @@ return $response;
             return "Error. Invalid url";
         }
     }
-    public function tr()
-    {
-        return view('tr.tr');
-    }    ///
-    public function fa()
-    {
-        return view('fa.fa');
-    }    ///
-    public function trfa()
-    {
-        return view('trfa.trfa');
-    }    ///
-    public function tr_charts()
-    {
-        return view('tr_charts.tr_charts');
-    }    ///
 }
