@@ -462,6 +462,7 @@
               v-if="show_second"
               class="table table-bordered table-dark table-responsive trtable"
               style="margin-bottom: 0; background: #0d1e63"
+
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
@@ -6792,6 +6793,9 @@ export default {
     fullWells() {
       this.chooseField();
     },
+    filter() {
+      this.chooseField();
+    },
   },
   methods: {
     editrow(row, rowId) {
@@ -6969,6 +6973,18 @@ export default {
           }
         });
     },
+    // chooseField() {
+    //   const { filter, fullWells } = this;
+    //   console.log(filter);
+    //   console.log(fullWells);
+    //   // if (!filter || filter == "Казгермунай") {
+    //   this.$store.commit("tr/SET_FILTER", filter);
+    //   if (!filter || filter == "Все месторождения") {
+    //     this.wells = fullWells;
+    //   } else {
+    //     this.wells = fullWells.filter((e) => e.field === filter);
+    //   }
+    // },
     chooseField() {
       const { filter, fullWells } = this;
       console.log("filter = ", filter);
@@ -6996,7 +7012,6 @@ export default {
     handlerFilter(filter) {
       this.filter = filter;
     },
-
     searchWell() {
       console.log("search = ", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "");
@@ -7051,7 +7066,6 @@ body {
 #app .multiselect {
   max-width: 300px;
 }
-
 .form-control,
 .fix-rounded-right {
   background: #272953 !important;
@@ -7295,8 +7309,6 @@ table::-webkit-scrollbar-corner {
   align-self: center;
   width: 150px;
   margin-top: 5px;
-  /* display: flex;  */
-  /* justify-content: center */
 }
 .dropdown-menu.show {
   display: flex;
