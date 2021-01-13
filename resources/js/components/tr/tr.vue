@@ -1501,7 +1501,9 @@
                     </span>
                   </td>
                   <td v-if="edit">
+                    <span>
                     {{ Math.round(row.h_up_perf_md * 10) / 10 }}
+                    </span>
                   </td>
 
                   <td
