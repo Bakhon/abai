@@ -42,6 +42,7 @@ export default {
 
         colors: ["#fba409", "#13b062"],
         chart: {
+          background: '#272953',
           toolbar: {
             show: true,
             Color: "#373d3f",
