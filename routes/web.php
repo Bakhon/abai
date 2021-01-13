@@ -92,7 +92,6 @@ Route::group(
                 Route::get('/fa', 'tr\TrController@fa')->name('fa');
                 Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
                 Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
-                Route::get('/fa_new_two', 'tr\TrController@fa_new_two')->name('fa_new_two');
 
                 //gno economic
                 Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
