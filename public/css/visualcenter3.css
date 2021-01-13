@@ -235,6 +235,13 @@ td:last-of-type {
     font-size: 14px;
 }
 
+.in-idle2 {
+    color: #9FA5C7;
+    font-size: 14px;
+    margin-top: -8px;
+    margin-left: 5px;
+}
+
 .line-bottom {
     border: 1px solid #454D7D;
     margin-top: -15px;
