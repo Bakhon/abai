@@ -28,8 +28,5 @@ class TrController extends Controller
     {
         return view('tr_charts.tr_charts');
     }    ///
-    public function fa_new_two()
-    {
-        return view('fa_new_two.fa_new_two');
-    }    ///
+
 }
