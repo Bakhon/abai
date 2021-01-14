@@ -33,8 +33,8 @@ class OmgUHEController extends CrudController
             ],
             'title' => trans('monitoring.omguhe.title'),
             'table_header' => [
-                trans('monitoring.selection_node') => 6,
-                trans('monitoring.omguhe.fields.fact_data') => 6,
+                trans('monitoring.selection_node') => 1,
+                trans('monitoring.omguhe.fields.fact_data') => 5,
             ],
             'fields' => [
                 
