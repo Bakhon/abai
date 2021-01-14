@@ -1223,7 +1223,7 @@
           <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold">Фонд нагнетательных скважин</div>
+                <div class="ml-4 bold"><!--Фонд нагнетательных скважин-->{{ trans("visualcenter.wells1") }}</div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">Закрыть</div>
@@ -2001,7 +2001,7 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt2">Фонд нагнетательных скважин</div>
+                  <div class="txt2"><!--Фонд нагнетательных скважин-->{{ trans("visualcenter.wells1") }}</div>
                 </td>
               </tr>
             </table>
