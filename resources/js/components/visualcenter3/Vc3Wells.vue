@@ -150,9 +150,10 @@ export default {
       }
     },
     series() {
+      //console.log(this.chartData.series);
       if(typeof this.chartData === 'undefined') {
         return []
-      }
+      } else
 
         return [{
           type: 'bar',
