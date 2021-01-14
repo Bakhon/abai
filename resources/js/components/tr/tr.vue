@@ -29,7 +29,7 @@
                 fill="white"
               />
             </svg> </i
-          >Факторный анализ отклонений ТР</a
+          >{{trans('tr.tr')}}</a
         >
         <!-- <form class="form-group but-nav__link">
                     <label for="inputDate">Введите дату:</label>
@@ -58,7 +58,7 @@
                 />
               </svg>
             </i>
-            Выберите месяц
+            {{trans('tr.dt')}}
           </button>
 
           <div
@@ -88,18 +88,18 @@
                 id="companySelect"
                 @change="onChangeMonth($event)"
               >
-                <option value="1">январь</option>
-                <option value="2">февраль</option>
-                <option value="3">март</option>
-                <option value="4">апрель</option>
-                <option value="5">май</option>
-                <option value="6">июнь</option>
-                <option value="7">июль</option>
-                <option value="8">август</option>
-                <option value="9">сентябрь</option>
-                <option value="10">октябрь</option>
-                <option value="11">ноябрь</option>
-                <option value="12">декабрь</option>
+                <option value="1">{{trans('tr.jan')}}</option>
+                <option value="2">{{trans('tr.feb')}}</option>
+                <option value="3">{{trans('tr.mar')}}</option>
+                <option value="4">{{trans('tr.apr')}}</option>
+                <option value="5">{{trans('tr.may')}}</option>
+                <option value="6">{{trans('tr.jun')}}</option>
+                <option value="7">{{trans('tr.jul')}}</option>
+                <option value="8">{{trans('tr.aug')}}</option>
+                <option value="9">{{trans('tr.sep')}}</option>
+                <option value="10">{{trans('tr.oct')}}</option>
+                <option value="11">{{trans('tr.nov')}}</option>
+                <option value="12">{{trans('tr.dec')}}</option>
               </select>
             </div>
             <div>
@@ -130,7 +130,7 @@
               </select>
             </div>
             <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
-              >Сформировать</a
+              >{{trans('tr.sf')}}</a
             >
           </div>
         </div>
@@ -248,7 +248,7 @@
         </div> -->
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
-            <h5>Технологический режим на {{ dt }}</h5>
+            <h5>{{trans('tr.htr')}} {{ dt }}</h5>
           </div>
           <!-- <select
             name="Company"
@@ -549,214 +549,214 @@
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">
                   <td rowspan="4" class="th">№</td>
-                  <td rowspan="4" class="th">НГДУ/месторождение</td>
-                  <td rowspan="4" class="th">№ скважины</td>
-                  <td rowspan="4" class="th">Тип скважины</td>
-                  <td rowspan="4" class="th">Горизонт</td>
-                  <td rowspan="4" class="th">Объект</td>
-                  <td rowspan="4" class="th">Блок</td>
-                  <td rowspan="4" class="th">R контура питания</td>
-                  <td rowspan="4" class="th">Наружный диаметр э/к</td>
-                  <td rowspan="4" class="th">Внутренний диаметр э/к</td>
-                  <td rowspan="4" class="th">Наружный диаметр НКТ</td>
-                  <td rowspan="4" class="th">Внутренний диаметр НКТ</td>
-                  <td rowspan="4" class="th">Диаметр штуцера</td>
-                  <td rowspan="4" class="th">Нвдп</td>
-                  <td rowspan="4" class="th">Удлинение(Нвдп)</td>
-                  <td rowspan="4" class="th">Способ эксплуатации</td>
-                  <td rowspan="4" class="th">Тип Насоса</td>
-                  <td rowspan="4" class="th">Тип СК</td>
-                  <td rowspan="4" class="th">Число качаний</td>
-                  <td rowspan="4" class="th">Длина хода</td>
-                  <td rowspan="4" class="th">Q теор</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs1')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr1')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr2')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr3')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr4')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr5')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs2')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr6')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs3')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr7')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs4')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr30')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr9')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs5')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr10')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr11')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs6')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs7')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs8')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs9')}}</td>
                   <td rowspan="4" class="th">
-                    Частота работы насоса или число оборотов
+                    {{trans('tr.tr12')}}
                   </td>
-                  <td rowspan="4" class="th">Н сп насоса</td>
-                  <td rowspan="4" class="th">P буф</td>
-                  <td rowspan="4" class="th">P лин</td>
-                  <td rowspan="4" class="th">P пл</td>
-                  <td rowspan="4" class="th">Н дин</td>
-                  <td rowspan="4" class="th">Р затр</td>
-                  <td rowspan="4" class="th">Р на приеме</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr13')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs10')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs11')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs12')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr15')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.tr16')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs13')}}</td>
                   <td class="colspan th" colspan="5">
-                    Данные за предыдущий месяц
+                    {{trans('tr.trs14')}}
                   </td>
-                  <td class="colspan th" colspan="5">Фактический режим</td>
+                  <td class="colspan th" colspan="5">{{trans('tr.tr17')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Состояние на конец месяца</span>
+                    <span>{{trans('tr.tr25')}}</span>
                   </td>
-                  <td rowspan="4" class="th">P нас</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs15')}}</td>
                   <!-- <td rowspan="4" class="th">ГФ</td> -->
-                  <td rowspan="4" class="th">Т пл</td>
-                  <td rowspan="4" class="th">Т уст</td>
-                  <td class="colspan th" colspan="4">ГРП</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs16')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs17')}}</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Вязкость нефти в пластовых условиях</span>
+                    <span>{{trans('tr.trs18')}}</span>
                   </td>
                   <td rowspan="4" class="th">
-                    <span>Вязкость воды в пластовых условиях</span>
+                    <span>{{trans('tr.trs19')}}</span>
                   </td>
-                  <td rowspan="4" class="th">Вязкость жидкости</td>
-                  <td rowspan="4" class="th">Объемный коэффициент</td>
-                  <td rowspan="4" class="th">Плотность нефти</td>
-                  <td rowspan="4" class="th">Плотность воды</td>
-                  <td rowspan="4" class="th">Н перф</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs20')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs21')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs22')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs23')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs24')}}</td>
                   <td rowspan="4" class="th">k</td>
                   <td rowspan="4" class="th">КН</td>
-                  <td rowspan="4" class="th">К пр</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs25')}}</td>
                   <td class="colspan th" colspan="14">
-                    Расчет технологического потенциала от ИДН
+                    {{trans('tr.tr18')}}
                   </td>
                   <td class="colspan th" colspan="11">
-                    Расчёт геологического потенциала
+                    {{trans('tr.trs26')}}
                   </td>
-                  <td class="colspan th" colspan="4">Проверка</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.trs27')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Максимальная глубина спуска насоса при ИДН</span>
+                    <span>{{trans('tr.trs28')}}</span>
                   </td>
-                  <td rowspan="4" class="th">Дата остановки</td>
-                  <td rowspan="4" class="th">Расчлененность</td>
-                  <td rowspan="4" class="th">Зона</td>
-                  <td rowspan="4" class="th">Цех</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs29')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs30')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs31')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs32')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Фонтан через насос</span>
+                    <span>{{trans('tr.trs33')}}</span>
                   </td>
-                  <td rowspan="4" class="th">Нерентабельная</td>
-                  <td rowspan="4" class="th">Неустановившийся режим</td>
-                  <td rowspan="4" class="th">Дата ввода в эксплуатацию</td>
-                  <td rowspan="4" class="th">Назначение по проекту</td>
-                  <td rowspan="4" class="th">Р заб замерное</td>
-                  <td rowspan="4" class="th">Нефтенасыщенная толщина</td>
-                  <td rowspan="4" class="th">Накопленная Qн с начала разработки</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs34')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs35')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs36')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs37')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs38')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs39')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs40')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Максимальный Q ж за всю историю работы</span>
+                    <span>{{trans('tr.trs41')}}</span>
                   </td>
-                  <td rowspan="4" class="th">Расстояние до нагн скважины</td>
-                  <td rowspan="4" class="th">Расстояние до ВНК</td>
-                  <td rowspan="4" class="th">Текущий забой по скважине, м</td>
-                  <td rowspan="4" class="th">Кподачи насоса</td>
-                  <td rowspan="4" class="th">Тип ГЗУ</td>
-                  <td rowspan="4" class="th">Рпл начальное</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs42')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs43')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs44')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs45')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs46')}}</td>
+                  <td rowspan="4" class="th">{{trans('tr.trs47')}}</td>
                   <td rowspan="4" class="th">
-                    <span>Qr характеристический дебит жидкости</span>
+                    <span>{{trans('tr.trs48')}}</span>
                   </td>
-                  <td class="colspan th" colspan="2">АПВ</td>
+                  <td class="colspan th" colspan="2">{{trans('tr.trs49')}}</td>
                   <td class="colspan th" colspan="3">
-                    Планируемые мероприятия
+                    {{trans('tr.trs50')}}
                   </td>
-                  <td rowspan="4" class="th"><span>Мероприятия</span></td>
+                  <td rowspan="4" class="th"><span>{{trans('tr.trs51')}}</span></td>
                   <td rowspan="4" class="th">
-                    <span>Сведения о тех.состоянии э/к</span>
+                    <span>{{trans('tr.trs52')}}</span>
                   </td>
-                  <td rowspan="4" class="th"><span>Комментарии</span></td>
+                  <td rowspan="4" class="th"><span>{{trans('tr.trs54')}}</span></td>
                   <td rowspan="4" class="th">
-                    <span>Дата последнего ГТМ</span>
+                    <span>{{trans('tr.trs55')}}</span>
                   </td>
                   <td rowspan="4" class="th">
-                    <span>Вид последнего ГТМ</span>
+                    <span>{{trans('tr.trs56')}}</span>
                   </td>
-                  <td class="colspan th" colspan="14">Намечаемый режим</td>
+                  <td class="colspan th" colspan="14">{{trans('tr.tr19')}}</td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
-                  <td rowspan="3" class="th"><span>P заб</span></td>
-                  <td rowspan="3" class="th"><span>Q ж</span></td>
-                  <td rowspan="3" class="th"><span>Обводненность</span></td>
-                  <td rowspan="3" class="th"><span>Hдин</span></td>
-                  <td rowspan="3" class="th"><span>Kпрод</span></td>
-                  <td rowspan="3" class="th"><span>P заб</span></td>
-                  <td rowspan="3" class="th"><span>Q н</span></td>
-                  <td rowspan="3" class="th"><span>Q ж</span></td>
-                  <td rowspan="3" class="th"><span>Обводненность</span></td>
-                  <td rowspan="3" class="th"><span>ГФ</span></td>
-                  <td rowspan="3" class="th"><span>Скин</span></td>
-                  <td rowspan="3" class="th"><span>JD факт</span></td>
-                  <td rowspan="3" class="th"><span>Дата проведения</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr20')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs57')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs58')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr20')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr24')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs59')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs60')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs61')}}</span></td>
                   <td rowspan="3" class="th"><span>Фирма</span></td>
-                  <td rowspan="3" class="th"><span>Р заб</span></td>
-                  <td class="colspan th" colspan="4">ИДН</td>
-                  <td rowspan="3" class="th"><span>JD опт</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs63')}}</span></td>
                   <td rowspan="3" class="th"><span>Skin</span></td>
                   <td rowspan="3" class="th">
-                    <span>К пр от стимуляции</span>
+                    <span>{{trans('tr.trs64')}}</span>
                   </td>
-                  <td class="colspan th" colspan="4">ГРП</td>
-                  <td rowspan="3" class="th"><span>% прироста Q н</span></td>
-                  <td rowspan="3" class="th"><span>Общий прирост Q н</span></td>
-                  <td rowspan="3" class="th"><span>Р заб</span></td>
-                  <td class="colspan th" colspan="4">ИДН</td>
-                  <td class="colspan th" colspan="4">ГРП</td>
-                  <td rowspan="3" class="th"><span>% прироста Q н</span></td>
-                  <td rowspan="3" class="th"><span>Общий прирост Q н</span></td>
-                  <td class="colspan th" colspan="2">Ошибки</td>
-                  <td class="colspan th" colspan="2">Предупреждения</td>
-                  <td rowspan="3" class="th"><span>Траб</span></td>
-                  <td rowspan="3" class="th"><span>Тнак</span></td>
-                  <td class="colspan th" colspan="3">Изоляционные работы</td>
-                  <td rowspan="3" class="th"><span>Диаметр штуцера</span></td>
-                  <td rowspan="3" class="th"><span>Qн</span></td>
-                  <td rowspan="3" class="th"><span>Qж</span></td>
-                  <td rowspan="3" class="th"><span>Qг</span></td>
-                  <td rowspan="3" class="th"><span>Обводненность</span></td>
-                  <td rowspan="3" class="th"><span>ГФ</span></td>
-                  <td rowspan="3" class="th"><span>Число дней работы</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}Р заб</span></td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
+                  <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
+                  <td class="colspan th" colspan="2">{{trans('tr.trs66')}}</td>
+                  <td class="colspan th" colspan="2">{{trans('tr.trs67')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs68')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs69')}}</span></td>
+                  <td class="colspan th" colspan="3">{{trans('tr.trs70')}}</td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr30')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr31')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr23')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.tr24')}}</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs71')}}</span></td>
                   <td rowspan="3" class="th">
-                    <span>Добыча нефти за месяц</span>
-                  </td>
-                  <td rowspan="3" class="th">
-                    <span>Добыча газа за месяц</span>
+                    <span>{{trans('tr.trs72')}}</span>
                   </td>
                   <td rowspan="3" class="th">
-                    <span>Добыча жидкость за месяц</span>
+                    <span>{{trans('tr.trs73')}}</span>
                   </td>
                   <td rowspan="3" class="th">
-                    <span>Добыча воды за месяц</span>
+                    <span>{{trans('tr.trs74')}}</span>
+                  </td>
+                  <td rowspan="3" class="th">
+                    <span>{{trans('tr.trs75')}}</span>
                   </td>
                   <td class="colspan th" colspan="2">
-                    <span>Изменения к режиму</span>
+                    <span>{{trans('tr.trs76')}}</span>
                   </td>
                   <td rowspan="3" class="th">
-                    <span>Мероприятия по обеспечению техрежима</span>
+                    <span>{{trans('tr.trs77')}}</span>
                   </td>
                 </tr>
                 <tr class="headerColumn notsticky" style="background: #333975">
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Q ж с поправкой на D э/к</span>
+                    <span>{{trans('tr.trs78')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Прирост Q н</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Q ж с поправкой на D э/к</span>
+                    <span>{{trans('tr.trs78')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Прирост Q н</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Q ж с поправкой на D э/к</span>
+                    <span>{{trans('tr.trs78')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Прирост Q н</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Q ж с поправкой на D э/к</span>
+                    <span>{{trans('tr.trs78')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Прирост Q н</span></td>
-                  <td rowspan="2" class="th"><span>Число ошибок</span></td>
-                  <td rowspan="2" class="th"><span>Первая ошибка</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr32')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.trs79')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.trs80')}}</span></td>
                   <td rowspan="2" class="th">
-                    <span>Число предупреждений</span>
+                    <span>{{trans('tr.trs81')}}</span>
                   </td>
                   <td rowspan="2" class="th">
-                    <span>Первое предупреждение</span>
+                    <span>{{trans('tr.trs82')}}</span>
                   </td>
-                  <td rowspan="2" class="th"><span>Проводить</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
-                  <td rowspan="2" class="th"><span>Обводненность</span></td>
-                  <td rowspan="2" class="th"><span>Q н</span></td>
-                  <td rowspan="2" class="th"><span>Q ж</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.trs83')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr23')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr21')}}</span></td>
+                  <td rowspan="2" class="th"><span>{{trans('tr.tr22')}}</span></td>
                 </tr>
                 <tr></tr>
                 <tr
@@ -824,10 +824,10 @@
                     <i class="fa fa-fw fa-sort"></i>м
                   </td>
                   <td @click="sortBy('q_theor')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('freq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>Гц, об/мин
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr1')}}
                   </td>
                   <td @click="sortBy('h_pump_set')" class="th">
                     <i class="fa fa-fw fa-sort"></i>м
@@ -854,7 +854,7 @@
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('q_l_prev_m')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('wct_prev_m')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -863,16 +863,16 @@
                     <i class="fa fa-fw fa-sort"></i>м
                   </td>
                   <td @click="sortBy('pi_prev_m')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут/атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
                   </td>
                   <td @click="sortBy('bhp')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('q_o')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('q_l')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -932,22 +932,22 @@
                     <i class="fa fa-fw fa-sort"></i>мДм
                   </td>
                   <td @click="sortBy('pi')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут/атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
                   </td>
                   <td @click="sortBy('tp_idn_bhp')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('tp_idn_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('tp_idn_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('tp_idn_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('tp_idn_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('tp_idn_jd')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -956,44 +956,44 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('tp_idn_pi_after')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут/атм
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('tp_idn_grp_q_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('tp_idn_q_oil_inc_perc')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('gt_total_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
 
                   <td @click="sortBy('gp_idn_bhp')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('gp_idn_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_liq_cas_d_corr')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('gp_idn_q_oil_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('gp_grp_q_liq_cas_d_corr')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1008,7 +1008,7 @@
                     <i class="fa fa-fw fa-sort"></i>%
                   </td>
                   <td @click="sortBy('gp_total_inc')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('error_count')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1026,7 +1026,7 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('stop_date')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>д/м/г
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr6')}}
                   </td>
                   <td @click="sortBy('layers_count')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1047,7 +1047,7 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('start_up_date')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>д/м/г
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr6')}}
                   </td>
                   <td @click="sortBy('well_project_purpose')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1059,10 +1059,10 @@
                     <i class="fa fa-fw fa-sort"></i>м
                   </td>
                   <td @click="sortBy('oil_cumulative')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>тыс.т
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr7')}}
                   </td>
                   <td @click="sortBy('max_q_liq_hist')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('dist_to_inj_well')" class="th">
                     <i class="fa fa-fw fa-sort"></i>м
@@ -1074,7 +1074,7 @@
                     <i class="fa fa-fw fa-sort"></i>
                   </td>
                   <td @click="sortBy('pump_fillage')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('gzu_type')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1083,19 +1083,19 @@
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('q_liq_charac')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('APV_t_rab')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>час
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr8')}}
                   </td>
                   <td @click="sortBy('APV_t_nak')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>час
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr8')}}
                   </td>
                   <td @click="sortBy('plan_izo_work')" class="th">
                     <i class="fa fa-fw fa-sort"></i>атм
                   </td>
                   <td @click="sortBy('plan_act_q_l')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('plan_act_wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -1120,13 +1120,13 @@
                     <i class="fa fa-fw fa-sort"></i>мм
                   </td>
                   <td @click="sortBy('planned_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('planned_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('planned_gas')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>тыс.м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr5')}}
                   </td>
                   <td @click="sortBy('planned_wct')" class="th">
                     <i class="fa fa-fw fa-sort"></i>%
@@ -1135,13 +1135,13 @@
                     <i class="fa fa-fw fa-sort"></i>м3/т
                   </td>
                   <td @click="sortBy('planned_month_days')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr9')}}
                   </td>
                   <td @click="sortBy('planned_monthly_oil')" class="th">
                     <i class="fa fa-fw fa-sort"></i>тонн
                   </td>
                   <td @click="sortBy('planned_monthly_gas')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>тыс.м3
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr10')}}
                   </td>
                   <td @click="sortBy('planned_monthly_liq')" class="th">
                     <i class="fa fa-fw fa-sort"></i>м3
@@ -1150,10 +1150,10 @@
                     <i class="fa fa-fw fa-sort"></i>м3
                   </td>
                   <td @click="sortBy('planned_diff_oil')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>т/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
                   </td>
                   <td @click="sortBy('planned_diff_liq')" class="th">
-                    <i class="fa fa-fw fa-sort"></i>м3/сут
+                    <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
                   </td>
                   <td @click="sortBy('planned_events')" class="th">
                     <i class="fa fa-fw fa-sort"></i>
@@ -1606,7 +1606,13 @@
                     </span>
                   </td>
                   <td v-if="edit">
+<<<<<<< HEAD
+                    <span>
+                    {{ Math.round(row.h_up_perf_md * 10) / 10 }}
+                    </span>
+=======
                     {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
+>>>>>>> c296d556132b1b11d43483a100be145d82781002
                   </td>
 
                   <td
