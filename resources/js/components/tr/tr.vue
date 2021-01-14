@@ -278,7 +278,7 @@
 
 
 
-          Button trigger modal
+          
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" v-if="edit"><i class="fas fa-plus"></i>
             
           </button>
@@ -346,10 +346,7 @@
                           </select>
                         </div>
 
-                  
-
-
-
+         
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
@@ -358,9 +355,6 @@
               </div>
             </div>
           </div>
-
-
-
 
           <a
             v-if="edit"
