@@ -11,15 +11,13 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{
-                        new Intl.NumberFormat("ru-RU").format(
-                          (oil_factDay / 1000).toFixed(0)
-                        )
-                      }}
+                      {{ formatVisTableNumber(oil_factDay) }}
                     </div>
                     <div class="unit-vc">{{ thousand }} тонн</div>
                   </div>
-                  <div class="txt1"><!--Добыча нефти-->{{trans('visualcenter.getoil')}}</div>
+                  <div class="txt1">
+                    <!--Добыча нефти-->{{ trans("visualcenter.getoil") }}
+                  </div>
                   <br />
                   <div class="progress">
                     <br />
@@ -71,15 +69,13 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{
-                        new Intl.NumberFormat("ru-RU").format(
-                          (oil_dlv_factDay / 1000).toFixed(0)
-                        )
-                      }}
+                      {{ formatVisTableNumber(oil_dlv_factDay) }}
                     </div>
                     <div class="unit-vc">{{ thousand }} тонн</div>
                   </div>
-                  <div class="txt1"><!--Сдача нефти-->{{trans('visualcenter.oildlv')}}</div>
+                  <div class="txt1">
+                    <!--Сдача нефти-->{{ trans("visualcenter.oildlv") }}
+                  </div>
                   <br />
                   <div class="progress">
                     <br />
@@ -140,18 +136,16 @@
                 <div class="first-td-header">
                   <div class="nu">
                     <div class="number">
-                      {{
-                        new Intl.NumberFormat("ru-RU").format(
-                          (gas_factDay / 1000).toFixed(0)
-                        )
-                      }}
+                      {{ formatVisTableNumber(gas_factDay) }}
                     </div>
                     <div class="unit-vc">
                       <!--млрд.-->
-                     {{ thousand }} млн. м³
+                      {{ thousand }} млн. м³
                     </div>
                   </div>
-                  <div class="txt1"><!--Добыча газа-->{{trans('visualcenter.getgaz')}}</div>
+                  <div class="txt1">
+                    <!--Добыча газа-->{{ trans("visualcenter.getgaz") }}
+                  </div>
                   <br />
                   <div class="progress">
                     <br />
@@ -223,7 +217,11 @@
                   <div class="unit-vc">$ / bbl</div>
                 </div>
                 <br />
-                <div class="txt1"><!--Цена на нефть (Brent)-->{{trans('visualcenter.oilPrice')}}</div>
+                <div class="txt1">
+                  <!--Цена на нефть (Brent)-->{{
+                    trans("visualcenter.oilPrice")
+                  }}
+                </div>
 
                 <div class="percent-currency">
                   <div class="arrow"></div>
@@ -765,6 +763,13 @@
                 <td>-->
 
           <div class="row mt-3">
+            <h5
+              class="col assets4"
+              :style="`${buttonHover14}`"
+              @click="changeAssets('b14')"
+            >
+              С учётом ограничения ОПЕК+
+            </h5>
             <h5
               class="col assets4"
               :style="`${buttonHover11}`"
@@ -2042,7 +2047,9 @@
             <tr>
               <td class="w-50 px-2">
                 <div class="number">{{ staff }}</div>
-                <div class="in-idle2">{{quarter1[0]}} квартал {{quarter1[1]}} г.</div>
+                <div class="in-idle2">
+                  {{ quarter1[0] }} квартал {{ quarter1[1] }} г.
+                </div>
               </td>
 
               <td class="w-50">
@@ -2059,8 +2066,12 @@
                   </div>
                 </div>
                 <div class="column-1">
-                  <div class="in-idle">{{getDiffProcentLastP(staffPercent, staff, '1')}}</div>
-                  <div class="in-idle">vs {{quarter2[0]}} квартал  {{quarter2[1]}}г.</div>
+                  <div class="in-idle">
+                    {{ getDiffProcentLastP(staffPercent, staff, "1") }}
+                  </div>
+                  <div class="in-idle">
+                    vs {{ quarter2[0] }} квартал {{ quarter2[1] }}г.
+                  </div>
                 </div>
               </td>
             </tr>
@@ -2079,7 +2090,7 @@
             <tr>
               <td class="w-50 px-2">
                 <div class="number">{{ covid }}</div>
-                <div class="in-idle2">{{timeSelect}}</div>
+                <div class="in-idle2">{{ timeSelect }}</div>
               </td>
 
               <td class="w-50">
@@ -2094,7 +2105,9 @@
                   </div>
                 </div>
                 <div class="column-1">
-                  <div class="in-idle">{{getDiffProcentLastP(covidPercent, covid, '1')}}</div>
+                  <div class="in-idle">
+                    {{ getDiffProcentLastP(covidPercent, covid, "1") }}
+                  </div>
                   <div class="in-idle">
                     vs
                     <span v-if="oneDate"> {{ lastDate2 }}</span>
