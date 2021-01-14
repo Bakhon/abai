@@ -41,7 +41,7 @@ class OmgNGDUController extends CrudController
             ],
             'title' => trans('monitoring.omgngdu.title'),
             'table_header' => [
-                trans('monitoring.selection_node') => 6,
+                trans('monitoring.selection_node') => 1,
                 trans('monitoring.omgngdu.fields.fact_data') => 10,
             ],
             'fields' => [

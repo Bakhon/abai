@@ -16,7 +16,7 @@
                   d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
                   fill="white"
                 /></svg></i
-            >Факторный анализ отклонений ТР</a
+            >{{trans('tr.tr')}}</a
           >
           <a href="tr" class="col but-nav__link but trfabuttech"
             ><i style="margin-right: 10px"
@@ -32,7 +32,7 @@
                   fill="white"
                 />
               </svg> </i
-            >Технологический режим</a
+            >{{trans('tr.btr')}}</a
           >
         </div>
       </div>
@@ -47,7 +47,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Выберите график
+            {{trans('tr.trfacg')}}
           </a>
           <div
             class="dropdown-menu fadropmenu"
@@ -58,14 +58,13 @@
               class="dropdown-item background_dropdown"
               href="#"
               @click="chartShow = 'pie'"
-              >Распределение фонда скважин по основной причине снижения дебита
-              нефти</a
+              >{{trans('tr.trfag1')}}</a
             >
             <a
               class="dropdown-item background_dropdown"
               href="#"
               @click="chartShow = 'bar'"
-              >Распределение суммарных отклонений TP по факторам, т/сут</a
+              >{{trans('tr.trfag2')}}</a
             >
           </div>
           <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
@@ -95,12 +94,12 @@
             aria-labelledby="dropdownMenuLink"
             style="background: #40467e"
           >
-            <label for="inputDate" style="margin-left: 8px;">Введите опорную дату:</label>
+            <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
             <input type="date" class="form-control" v-model="date1" />
-            <label for="inputDate" style="margin-left: 8px;">Введите дату для сравнения:</label>
+            <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
             <input type="date" class="form-control" v-model="date2" />
             <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
-              >Сформировать</a
+              >{{trans('tr.sf')}}</a
             >
           </div>
         </div>
@@ -271,7 +270,7 @@ export default {
                   -1)
           );
           console.log("filteredResult pie = ", filteredResult);
-          this.chartOptions.title.text = `Распределение фонда скважин по основной причине снижения дебита нефти на ${this.dt}/${this.dt2}`;
+          this.chartOptions.title.text = `${this.trans('tr.trfagn1')} ${this.dt}/${this.dt2}`;
           this.chartOptions.subtitle.text = this.subtitleText;
           let filteredData = filteredResult.reduce((acc, res) => {
             if (acc.hasOwnProperty(res["Main_problem"])) {
@@ -316,7 +315,7 @@ export default {
           );
           this.filteredWellsBar = filteredResult;
           console.log("filteredResult bat = ", filteredResult);
-          this.chartBarOptions.title.text = `Распределение суммарных отклонений TP по факторам, т/сут на ${this.dt}/${this.dt2}`;
+          this.chartBarOptions.title.text = `${this.trans('tr.trfagn2')} ${this.dt}/${this.dt2}`;
           this.chartBarOptions.subtitle.text = this.subtitleText;
           let filteredData = filteredResult.reduce(
             (acc, res) => {
