@@ -18,7 +18,7 @@
               fill="white"
             /></svg
         ></i>
-        Технологический режим</a
+        {{trans('tr.btr')}}</a
       >
 
       <div class="col dropdown" style="padding: 0px; margin: 0 13px">
@@ -45,7 +45,7 @@
               />
             </svg>
           </i>
-          Выберите даты
+          {{trans('tr.fadt')}}
         </button>
 
         <div
@@ -54,13 +54,13 @@
           aria-labelledby="dropdownMenuLink"
         >
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate" style="margin-left: 8px;">Введите опорную дату:</label>
+          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
           <input type="date" class="form-control" v-model="date1" />
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate" style="margin-left: 8px;">Введите дату для сравнения:</label>
+          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
           <input type="date" class="form-control" v-model="date2" />
           <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
-            >Сформировать</a
+            >{{trans('tr.sf')}}</a
           >
         </div>
       </div>
@@ -105,7 +105,7 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h3 style="margin-left: 14px">Факторный анализ</h3>
+      <h3 style="margin-left: 14px">{{trans('tr.hfa')}}</h3>
       <tr-multiselect
         :filter="filter"
         :selectedAllTag="true"
@@ -142,64 +142,64 @@
         style="background: #0d1e63"
       >
         <tr class="headerColumn">
-          <td rowspan="3" style="background: #12135c"><span>Скважина</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.fa1')}}</span></td>
           <td rowspan="3" style="background: #12135c; min-width: 120px;">
-            <span>Месторождение</span>
+            <span>{{trans('tr.fa2')}}</span>
           </td>
-          <td rowspan="3" style="background: #12135c"><span>Горизонт</span></td>
-          <td rowspan="3" style="background: #12135c"><span>Объект</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.tr3')}}</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.tr4')}}</span></td>
           <td rowspan="3" style="background: #12135c">
-            <span>Способ Эксплуатации</span>
+            <span>{{trans('tr.tr10')}}</span>
           </td>
           <td class="colspan" colspan="6" style="background: #2c3379">
-            Фактические данные на {{ dt }}
+            {{trans('tr.fa3')}} {{ dt }}
           </td>
           <td class="colspan" colspan="6" style="background: #1a2370">
-            Фактические данные на {{ dt2 }}
+            {{trans('tr.fa3')}} {{ dt2 }}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
-            Отклон. Qн
+            {{trans('tr.fa4')}}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
-            Технологические
+            {{trans('tr.fa5')}}
           </td>
           <td class="colspan" colspan="3" style="background: #12135C">
-            Геологические
+            {{trans('tr.fa6')}}
           </td>
           <td rowspan="3" style="background: #12135C
 ; min-width:248px;">
-            <span>Основное отклонение в ТР</span>
+            <span>{{trans('tr.fa7')}}</span>
           </td>
         </tr>
         <tr class="headerColumn">
-          <td rowspan="2" style="background: #2c3379"><span>Qж</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>Qн</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr22')}}</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr21')}}</span></td>
           <td rowspan="2" style="background: #2c3379">
-            <span>Обводненность</span>
+            <span>{{trans('tr.tr23')}}</span>
           </td>
-          <td rowspan="2" style="background: #2c3379"><span>Pзаб</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>Pпл</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>Кпрод</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Qж</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Qн</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr20')}}</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr14')}}</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr26')}}</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr22')}}</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr21')}}</span></td>
           <td rowspan="2" style="background: #1a2370">
-            <span>Обводненность</span>
+            <span>{{trans('tr.tr23')}}</span>
           </td>
-          <td rowspan="2" style="background: #1a2370"><span>Pзаб</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Pпл</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Кпрод</span></td>
-          <td rowspan="2" style="background: #12135C"><span>dQн</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr20')}}</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr14')}}</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr26')}}</span></td>
+          <td rowspan="2" style="background: #12135C"><span>{{trans('tr.fa8')}}</span></td>
           <td rowspan="2" style="background: #12135C">
-            <span>Недостижение режимного Pзаб</span>
-          </td>
-          <td rowspan="2" style="background: #12135C">
-            <span>Рост обводненности</span>
+            <span>{{trans('tr.fa9')}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>Снижение Pпл</span>
+            <span>{{trans('tr.fa10')}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>Снижение Kпрод</span>
+            <span>{{trans('tr.fa11')}}</span>
+          </td>
+          <td rowspan="2" style="background: #12135C">
+            <span>{{trans('tr.trs58')}}</span>
           </td>
         </tr>
         <tr></tr>
@@ -288,10 +288,10 @@
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('q_l_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>м3/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
           </td>
           <td @click="sortBy('q_o_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('wct_1')" style="background: #2c3379">
             <i class="fa fa-fw fa-sort"></i>%
@@ -303,13 +303,13 @@
             <i class="fa fa-fw fa-sort"></i>атм
           </td>
           <td @click="sortBy('pi_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>т/сут/атм
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtrfa1')}}
           </td>
           <td @click="sortBy('q_l_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>м3/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
           </td>
           <td @click="sortBy('q_o_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('wct_2')" style="background: #1a2370">
             <i class="fa fa-fw fa-sort"></i>%
@@ -321,22 +321,22 @@
             <i class="fa fa-fw fa-sort"></i>атм
           </td>
           <td @click="sortBy('pi_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>т/сут/атм
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtrfa1')}}
           </td>
           <td @click="sortBy('dqn')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('Pbh')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('wct')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('p_res')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('PI')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('Main_problem')" style="background: #12135C; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>

@@ -124,7 +124,11 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
+<<<<<<< HEAD
+                <option disabled value="">Выберите год</option>
+=======
                 <!-- <option disabled value="">Выберите год</option> -->
+>>>>>>> c296d556132b1b11d43483a100be145d82781002
                 <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>

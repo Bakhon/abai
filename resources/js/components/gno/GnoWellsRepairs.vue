@@ -17,6 +17,7 @@ data: function(){
         months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь','Июль','Август','Сентябрь', 'Октябрь','Ноябрь','Декабрь'],
         prs: [],
         layout: {
+          yaxis: { rangemode:'tozero', autorange:true, tickformat: ',d'},
         font: {color: "white"},
         plot_bgcolor: "#20274e",
         paper_bgcolor: "#20274e",

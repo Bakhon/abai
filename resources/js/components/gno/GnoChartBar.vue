@@ -42,6 +42,16 @@ export default {
 
         colors: ["#fba409", "#13b062"],
         chart: {
+          title: {
+            text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
+            align: 'center',
+            margin: 20,
+            offsetY: 20,
+            style: {
+              fontSize: '20px'
+            }
+  },
+          background: '#272953',
           toolbar: {
             show: true,
             Color: "#373d3f",
@@ -109,6 +119,7 @@ export default {
         },
       },
       series:[
+        
         {
           name: "ШГН",
           type: "bar",

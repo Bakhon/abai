@@ -5,7 +5,7 @@
         <div class="modal-bign-header">
           <p class="title"></p>
           <button type="button" class="modal-bign-button" @click="$modal.hide('economicmodal')">
-            Закрыть
+            {{ trans('monitoring.close') }}
           </button>
         </div>
 
@@ -63,7 +63,7 @@
         <div class="modal-bign-header">
           <h1>{{ trans('monitoring.corrosion_simulator') }}</h1>
           <button type="button" class="modal-bign-button" @click="$modal.hide('corrosion')">
-            Закрыть
+            {{ trans('monitoring.close') }}
           </button>
         </div>
         <div class="container-fluid economicModal" style="width: 100%; height: calc(100% - 40px); overflow-y: auto;">
