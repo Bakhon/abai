@@ -274,6 +274,94 @@
             filterName="месторождения"
           />
           <a v-show="false" v-if="edit"></a>
+
+
+
+
+          Button trigger modal
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" v-if="edit"><i class="fas fa-plus"></i>
+            
+          </button>
+
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000"> 
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content" style="width: 559px;">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Скважины</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" style="display:flex">
+
+
+                       <div>
+                          <select
+                            v-model="month"
+                            class="form-controll"
+                            id="companySelect"
+                            @change="onChangeMonth($event)"
+                          >
+                            <option value="1">сохраненные</option>
+                            <option value="2">не сохраненные</option>
+
+                          </select>
+                        </div>
+                        <div>
+                          <select
+                            v-model="month"
+                            class="form-controll"
+                            id="companySelect"
+                            @change="onChangeMonth($event)"
+                          >
+                            <option value="1">Акшабулак Центральный</option>
+                            <option value="2">Акшабулак Южный</option>
+                            <option value="3">Акшабулак Восточный</option>
+                            <option value="4">Нуралы</option>
+                            <option value="5">Аксай</option>
+                          </select>
+                        </div>
+                        <div>
+                          <select
+                            v-model="month"
+                            class="form-controll"
+                            id="companySelect"
+                            @change="onChangeMonth($event)"
+                          >
+                            <option value="1">В работе</option>
+                            <option value="2">В бездействии</option>
+
+                          </select>
+                        </div>
+                        <div>
+                          <select
+                            v-model="month"
+                            class="form-controll"
+                            id="companySelect"
+                            @change="onChangeMonth($event)"
+                          >
+                            <option value="1">Акс5455</option>
+                            <option value="2">Акс455</option>
+                          </select>
+                        </div>
+
+                  
+
+
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                  <button type="button" class="btn btn-primary">Сохранить</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
           <a
             v-if="edit"
             title="Сохранить"
@@ -460,8 +548,9 @@
             <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             <table
               v-if="show_second"
-              class="table-bordered table-dark table-responsive trtable"
-              style="background: #0d1e63"
+              class="table table-bordered table-dark table-responsive trtable"
+              style="margin-bottom: 0; background: #0d1e63"
+
             >
               <thead>
                 <tr class="headerColumn sticky" style="background: #333975">

@@ -53,8 +53,8 @@
               <div class="choosing-well-data col-7">
                 {{ ngdu }}
               </div>
-              <div class="choosing-well-data cell4-gno-second  col-5">
-                АО "ОМГ"
+              <div class="choosing-well-data cell4-gno-second  col-5" >
+                <div v-if="ngdu">АО "ОМГ"</div>
               </div>
             </div>
             <!-- Выбор скважины end -->
@@ -561,7 +561,7 @@
                           <div class="col-6">
                             <h6 style="text-align: center;">Причины ПРС за <b>скользящий год</b></h6>
 			                      <gno-wells-repairs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></gno-wells-repairs>
-                            <h6>Количество ремонтов: {{numberRepairs}}</h6>
+                            <h6>Количество ремонтов без ГтМ: {{numberRepairs}}</h6>
                             <h6>ННО: {{numberNNO + ' сут'}}</h6>
                         	</div>
   
@@ -3142,7 +3142,7 @@ export default {
       this.axios.get(uriPrsKrs).then((response) => {
         let krs = response['data']['krs']
         this.numberRepairs = response['data']['prs']['prs']
-        this.numberNNO = response['data']['prs']['nno']
+        this.numberNNO = response['data']['prs']['nno'].toFixed(0)
         this.krsTable = JSON.parse(krs)["data"]
         console.log(this.krsTable);
     })
