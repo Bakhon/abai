@@ -6,8 +6,8 @@
           <div class="col-md-12 second-column-container">
             <!-- Выбор скважины start -->
             <div class="tables-string-gno col-12">
-              <div class="choosing-well-title col-12">Выбор скважины</div>
-              <div class="choosing-well-data  col-7">Месторождение</div>
+              <div class="choosing-well-title col-12">{{trans('pgno.choose_well')}}</div>
+              <div class="choosing-well-data  col-7">{{trans('pgno.mestorozhdenie')}}</div>
               <div class="choosing-well-data table-border-gno cell4-gno-second  col-5">
                 <select class="select-gno2" v-model="field">
                   <option value="UZN">Узень</option>
@@ -15,27 +15,27 @@
                 </select>
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
-                Скважина №
+                {{trans('pgno.well')}} №
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 <input v-model="wellNumber" onfocus="this.value=''" type="text"  @change="getWellNumber(wellNumber)" class="square2" />
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
-                Новая скважина
+                {{trans('pgno.new_well')}}
                 <input :checked="age === true" v-model="age" class="checkbox0" type="checkbox" />
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
-                с ГРП
+                {{trans('pgno.grp')}}
                 <input class="checkbox0" v-model="grp_skin" :disabled="!age" type="checkbox" />
               </div>
 
-              <div class="choosing-well-data table-border-gno-top  col-7">Горизонт</div>
+              <div class="choosing-well-data table-border-gno-top  col-7">{{trans('pgno.horizon')}}</div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 {{ horizon }}
               </div>
 
               <div class="choosing-well-data table-border-gno-top  col-7">
-                Способ эксплуатации
+                {{trans('pgno.method_of_operation')}}
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
 
@@ -61,35 +61,35 @@
 
             <!-- Конструкция start-->
             <div class="tables-string-gno1-1">
-              <div class="construction no-gutter col-12"><b>Конструкция</b></div>
-              <div class="construction-data no-gutter col-7">Наружный ØЭК</div>
+              <div class="construction no-gutter col-12"><b>{{trans('pgno.construction')}}</b></div>
+              <div class="construction-data no-gutter col-7">{{trans('pgno.naruznii_diametr_ex_col')}}</div>
               <div class="construction-data table-border-gno cell4-gno-second no-gutter col-5">
                 {{ casOD }} мм
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
-                Внутренний ØЭК
+                {{trans('pgno.vnutrenii_diametr_ex_col')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ casID }} мм
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
-                Нперф.(ВДП м)
+                {{trans('pgno.glubina_perf')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ hPerf }} м
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
-                Удл. на Нперф.
+                {{trans('pgno.udlinenie_perf')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ udl }} м
               </div>
 
               <div class="construction-data table-border-gno-top no-gutter col-7">
-                Текущий забой
+                {{trans('pgno.tekushii_zaboi')}}
               </div>
               <div class="construction-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                 {{ curr }} м
@@ -109,7 +109,7 @@
                      @change="setActiveRightTabName($event, 'devices')"/>
               <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
-                  <div class="devices-title"><b>Оборудование</b></div>
+                  <div class="devices-title"><b>{{trans('pgno.devices')}}</b></div>
                 </div>
                 <span class="closer">
                   <svg width="12" height="7" viewBox="0 0 12 7" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -128,7 +128,7 @@
 
                 <div class="right-block-details" v-show="activeRightTabName === 'devices'">
                   <div class="devices-data no-gutter col-7">
-                    Станок-качалка
+                    {{trans('pgno.stanok_kachalka')}}
                   </div>
                   <div class="devices-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ sk }}
@@ -136,7 +136,7 @@
 
                   <div class="hide-block"  v-show="!hideStrokeLength">
                     <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Длина хода
+                    {{trans('pgno.dlina_hoda')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{strokeLenDev}} м
@@ -157,30 +157,32 @@
                     {{ pumpType }} м³/сут
                   </div>
 
-                  <div class="devices-data table-border-gno-top no-gutter col-7">Нсп</div>
+                  <div class="devices-data table-border-gno-top no-gutter col-7">
+                    {{trans('pgno.h_spuska')}}
+                  </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ hPumpSet }} м
                   </div>
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Наружный ØНКТ
+                    {{trans('pgno.naruzhnii_nkt')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubOD }} мм
                   </div>
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Внутренний ØНКТ
+                    {{trans('pgno.vnutrenii_nkt')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tubID }} мм
                   </div>
                   <div class="devices-data table-border-gno-top no-gutter col-7">
-                    Дата запуска
+                    {{trans('pgno.data_zapuska')}}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ stopDate }}
                   </div>
-                  <div class="prs-button" @click="onPrsButtonClick()">История КРС и ПРС</div>
+                  <div class="prs-button" @click="onPrsButtonClick()">{{trans('pgno.istoria_krs_prs')}}</div>
                 </div>
               </div>
             </div>
@@ -213,43 +215,43 @@
                 </span>
 
                 <div class="right-block-details" v-show="activeRightTabName === 'pvt'">
-                  <div class="pvt-data no-gutter col-7">Рнас</div>
+                  <div class="pvt-data no-gutter col-7">{{trans('pgno.p_nas')}}</div>
                   <div class="pvt-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ PBubblePoint }} атм
                   </div>
 
-                  <div class="pvt-data table-border-gno-top no-gutter col-7">ГФ</div>
+                  <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.gf')}}</div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ gor }} м³/т
                   </div>
 
-                  <div class="pvt-data table-border-gno-top no-gutter col-7">Т пл</div>
+                  <div class="pvt-data table-border-gno-top no-gutter col-7">{{trans('pgno.t_pl')}}</div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ tRes }} ℃
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
-                    Вязкость нефти (пл.усл.)
+                    {{trans('pgno.vyazkost_nefti')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ viscOilRc }} сПз
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
-                    Вязкость воды (пл.усл.)
+                    {{trans('pgno.vyazkost_vody')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ viscWaterRc }} сПз
                   </div>
 
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
-                    Плотность нефти
+                    {{trans('pgno.plotnost_nefti')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ densOil }} г/cм³
                   </div>
                   <div class="pvt-data table-border-gno-top no-gutter col-7">
-                    Плотность воды
+                    {{trans('pgno.plotnost_vody')}}
                   </div>
                   <div class="pvt-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ densWater }} г/cм³
@@ -268,49 +270,49 @@
               <div class="right-side-box">
                 <div class="select-well no-gutter col-12">
 
-                  <div class="technological-mode-title">Технологический режим</div>
+                  <div class="technological-mode-title">{{trans('pgno.technologicheskii_rezhim')}}</div>
                 </div>
 
                 <div class="right-block-details"
                   v-show="activeRightTabName === 'technological-mode' || (windowWidth <= 1300 && windowWidth > 991)">
-                  <div class="tech-data no-gutter col-7">Qж</div>
+                  <div class="tech-data no-gutter col-7">{{trans('pgno.q_zhidkosti')}}</div>
                   <div class="tech-data table-border-gno cell4-gno-second no-gutter col-5">
                     {{ qL }} м³/сут
                   </div>
 
-                  <div class="tech-data table-border-gno-top no-gutter col-7">Qн</div>
+                  <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.q_nefti')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ qO }} т/сут
                   </div>
 
-                  <div class="tech-data table-border-gno-top no-gutter col-7">Обвод</div>
+                  <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.obvodnenost')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ wct }} %
                   </div>
 
-                  <div class="tech-data table-border-gno-top no-gutter col-7">Рзаб</div>
+                  <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_zab')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ bhp }} атм
                   </div>
 
-                  <div class="tech-data table-border-gno-top no-gutter col-7">Рпл</div>
+                  <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_pl')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ pRes }} ат
                   </div>
 
-                  <div class="tech-data table-border-gno-top no-gutter col-7">Ндин</div>
+                  <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.h_dyn')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ hDyn }} м
                   </div>
-                  <div class="tech-data table-border-gno-top no-gutter col-7">Рзат</div>
+                  <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_zat')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ pAnnular }} атм
                   </div>
-                  <div class="tech-data table-border-gno-top no-gutter col-7">Рбуф</div>
+                  <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_buf')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ whp }} атм
                   </div>
-                  <div class="tech-data table-border-gno-top no-gutter col-7">Рлин</div>
+                  <div class="tech-data table-border-gno-top no-gutter col-7">{{trans('pgno.p_lin')}}</div>
                   <div class="tech-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ lineP }} атм
                   </div>
@@ -546,7 +548,7 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      История ремонтов на скважине {{wellNumber}}
+                      {{trans('pgno.istoria_remontov')}} {{wellNumber}}
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modal-prs')">
@@ -559,27 +561,27 @@
 		                   	<div class="row">
 				                  
                           <div class="col-6">
-                            <h6 style="text-align: center;">Причины ПРС за <b>скользящий год</b></h6>
+                            <h6 style="text-align: center;">{{trans('pgno.prichini_prs')}}</h6>
 			                      <gno-wells-repairs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></gno-wells-repairs>
-                            <h6>Количество ремонтов без ГтМ: {{numberRepairs}}</h6>
+                            <h6>{{trans('pgno.kolichestvo_remontov')}}: {{numberRepairs}}</h6>
                             <h6>ННО: {{numberNNO + ' сут'}}</h6>
                         	</div>
   
                           <div class="col-6">
-                            <h6 style="text-align: center;">Информация по КРС</h6>
+                            <h6 style="text-align: center;">{{trans('pgno.info_po_krs')}}</h6>
 				                     <div class="table-fix no-gutter">
                               <perfect-scrollbar>
                                 <table class="gno-table-with-header pgno" style="height: initial;">
                                   <thead>
                                     <tr height="10" style="height: 10pt;">
                                       <td>
-                                        Дата начала работ
+                                        {{trans('pgno.data_nachala_rabot')}}
                                       </td>
                                       <td>
-                                        Дата окончания
+                                        {{trans('pgno.data_okonchania')}}
                                       </td>
                                       <td>
-                                        Вид ремонтных работ
+                                        {{trans('pgno.vid_remontnih_rabot')}}
                                       </td>
                             
                                     </tr>
@@ -1210,7 +1212,7 @@
                       <div class="row bottom-configuration">
                         <div class="col-6 px-2 curve-settings inflow-configuration-min-width">
                           <div class="bottom-configuration-header">
-                            Настройки кривой притока
+                            {{trans('pgno.nastroika_krivoy_pritoka')}}
                           </div>
                           <div class="inflow-configuration">
                             <div class="row pl-3">
@@ -1384,12 +1386,12 @@
                           </div>
 
                           <div class="tables-string-gno5 col-12" @click="PotAnalysisMenu()">
-                            Анализ потенциала скважины
+                            {{trans('pgno.analis_potenciala_skvazhini')}}
                           </div>
                         </div>
                         <div class="col-6 px-2 choice-params">
                           <div class="bottom-configuration-header">
-                            Параметры подбора
+                            {{trans('pgno.parametry_podbora')}}
                           </div>
                           <div class="select-params">
                             <div class="row">
@@ -1474,7 +1476,7 @@
                           </div>
 
                           <div class="tables-string-gno55 col-12" @click="ExpAnalysisMenu()">
-                            Анализ эффективности способа эксплуатации
+                             {{trans('pgno.analis_effect_sposoba_exp')}}
                           </div>
                         </div>
                         <div class="col-12 px-2 gno-main-green-button">
