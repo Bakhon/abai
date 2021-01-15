@@ -15,13 +15,13 @@ export default {
       if (opec === "ОПЕК+") {
         color1 = "#fff";
         color2 = "#2E50E9";
-        plan1 = "ОПЕК+";
-        plan2 = "утв.";
+        plan1 = "План ОПЕК+";
+        plan2 = "План утв.";
       } else {
         color1 = "#2E50E9";
         color2 = "#fff";
-        plan1 = "утв.";
-        plan2 = "ОПЕК+";
+        plan1 = "План утв.";
+        plan2 = "План ОПЕК+";
       }
       //color1 = "borderColor: 'red'";
       // color2 = "borderColor: 'blue'";
