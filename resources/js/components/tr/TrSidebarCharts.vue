@@ -21,7 +21,7 @@
                 </div>
                 <div class="dropdown-menu graphic_dropdown_menu">
                     <div class="move-menu">
-                        <li class="left-menu-li tr-sidebar__page"> <a class="tr-sidebar__link" :href="localeUrl('/fa')">Факторный анализ</a></li>
+                        <li class="left-menu-li tr-sidebar__page"> <a class="tr-sidebar__link" :href="localeUrl('/fa')">{{trans('tr.hfa')}}</a></li>
                         <li
                           v-for="(item, index) in chartNamesFA"
                           :key="item"
@@ -30,7 +30,7 @@
                           <a class="tr-sidebar__link" :href="localeUrl('/trfa')" @click="() => setChartFa(index)">{{ item }}</a>
                         </li>
                         <li class="left-menu-li">
-                          <a class="tr-sidebar__link tr-sidebar__page" :href="localeUrl('/tr')">Тех.режим</a>
+                          <a class="tr-sidebar__link tr-sidebar__page" :href="localeUrl('/tr')">{{trans('tr.btr')}}</a>
                         </li>
                         <li
                           v-for="(item, index) in chartNames"
@@ -51,20 +51,20 @@ export default {
   data() {
     return {
       chartNames: [
-        "Анализ глубин пластов, спуска насосов и динамического уровня",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор",
-        "ТОП-30 скважин. Потенциал прироста дебита жидкости",
-        "Суммарный дебит нефти и жидкости",
-        "Распределение коэффициента продуктивности",
-        "Распределение скважин по дебиту нефти",
-        "Распределение скважин по обводненности",
-        "Распределение скважин по дебиту жидкости",
+        `${this.trans('tr.trchn1')}`,
+        `${this.trans('tr.trchn2')}`,
+        `${this.trans('tr.trchn3')}`,
+        `${this.trans('tr.trchn4')}`,
+        `${this.trans('tr.trchn5')}`,
+        `${this.trans('tr.trchn6')}`,
+        `${this.trans('tr.trchn7')}`,
+        `${this.trans('tr.trchn8')}`,
+        `${this.trans('tr.trchn9')}`,
+        `${this.trans('tr.trchn10')}`,
       ],
       chartNamesFA: [
-        "Распределение фонда скважин по основной причине снижения дебита нефти",
-        "Распределение суммарных отклонений TP по факторам, т/сут",
+        `${this.trans('tr.trsbg1')}`,
+        `${this.trans('tr.trsbg2')}`,
       ],
     };
   },

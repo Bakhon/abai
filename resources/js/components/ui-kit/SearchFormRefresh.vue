@@ -37,12 +37,12 @@
         type="text"
         @input="onInput($event)"
         class="form-control fix-rounded-right"
-        :placeholder="placeholder || 'Поиск скважины'"
+        :placeholder="placeholder || `${this.trans('tr.trsrchw')}`"
         v-model="searchStringModel"
       />
     </div>
     <clear-icon v-if="clear" @clear-click="clearClick()" background="#393d75" placeholder="Сбросить поиск"/>
-    <button type="submit" class="input-submit-button">Поиск</button>
+    <button type="submit" class="input-submit-button">{{trans('tr.trsrch')}}</button>
   </form>
 </template>
 
