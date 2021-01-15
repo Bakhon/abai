@@ -226,7 +226,9 @@
                 <div class="percent-currency">
                   <div class="arrow"></div>
                   <div class="txt2-2">5,2%</div>
-                  <div class="txt3">vs сентябрь</div>
+                  <div class="txt3">
+                    <!-- vs сентябрь -->{{ trans("visualcenter.vsSept") }}
+                    </div>
                 </div>
               </td>
               <td
@@ -247,7 +249,9 @@
                   <div class="unit-vc">kzt / $</div>
                 </div>
                 <br />
-                <div class="txt1">Курс доллара</div>
+                <div class="txt1">
+                  <!-- Курс доллара --> {{ trans("visualcenter.usdKurs") }}
+                  </div>
                 <br />
                 <div class="percent-currency">
                   <div
@@ -259,7 +263,9 @@
                     v-if="dailyCurrencyChangeIndexUsd === 'DOWN'"
                   ></div>
                   <div class="txt2-2">{{ dailyCurrencyChangeUsd }}%</div>
-                  <div class="txt3">vs вчера</div>
+                  <div class="txt3">
+                    <!-- vs вчера  -->{{ trans("visualcenter.vsYest") }}
+                    </div>
                 </div>
               </td>
             </tr>
@@ -291,7 +297,9 @@
               >
                 <!-- <label for="menu">-->
                 <div class="icon-all icons1"></div>
-                <div class="txt5">Добыча нефти</div>
+                <div class="txt5">
+                  <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
+                  </div>
                 <!--  <div class="txt6"> тонн</div>
                  </label>-->
               </div>
@@ -313,7 +321,9 @@
                         'С учётом доли участия КМГ'
                       )
                     "
-                    >С учётом доли участия КМГ</a
+                    >
+                    <!-- С учётом доли участия КМГ -->{{ trans("visualcenter.dolyaUchast") }}
+                    </a
                   >
                   <div class="col-2 mt-2">
                     <div class="square-small2" :style="`${changeMenuButton1}`">
@@ -359,7 +369,9 @@
                 "
               >
                 <div class="icon-all icons2"></div>
-                <div class="txt5">Сдача нефти</div>
+                <div class="txt5">
+                  <!-- Сдача нефти  -->{{ trans("visualcenter.oildlv") }}
+                  </div>
                 <!--  <div class="txt6"> тонн</div>-->
               </div>
 
@@ -378,7 +390,9 @@
                         'С учётом доли участия КМГ'
                       )
                     "
-                    >С учётом доли участия КМГ</a
+                    >
+                    <!-- С учётом доли участия КМГ -->{{ trans("visualcenter.dolyaUchast") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton2}`">
@@ -400,7 +414,9 @@
                         'Товарный остаток нефти'
                       )
                     "
-                    >Товарный остаток нефти</a
+                    >
+                    <!-- Товарный остаток нефти -->{{ trans("visualcenter.ostatokNefti") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton3}`">
@@ -425,7 +441,9 @@
                 "
               >
                 <div class="icon-all icons3"></div>
-                <div class="txt5">Добыча газа</div>
+                <div class="txt5">
+                  <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
+                  </div>
                 <!--  <div class="txt6"> м³</div>-->
               </div>
               <ul>
@@ -442,7 +460,9 @@
                         'Сдача природного газа'
                       )
                     "
-                    >Сдача природного газа</a
+                    >
+                    <!-- Сдача природного газа -->{{ trans("visualcenter.prirodGazdlv") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton4}`">
@@ -464,7 +484,8 @@
                         'Расход природного газа на собственные нужды'
                       )
                     "
-                    >Расход природного газа на собственные нужды
+                    >
+                    <!-- Расход природного газа на собственные нужды -->{{ trans("visualcenter.raskhodprirodGaz") }}
                   </a>
                   <div class="col-2 mt-2">
                     <div class="square-small2" :style="`${changeMenuButton5}`">
@@ -506,7 +527,9 @@
                         'Сдача попутного газа'
                       )
                     "
-                    >Сдача попутного газа</a
+                    >
+                    <!-- Сдача попутного газа -->{{ trans("visualcenter.poputGazdlv") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton8}`">
@@ -528,7 +551,8 @@
                         'Расход попутного газа на собственные нужды '
                       )
                     "
-                    >Расход попутного газа на собственные нужды
+                    >
+                    <!-- Расход попутного газа на собственные нужды -->{{ trans("visualcenter.raskhodpoputGaz") }}
                   </a>
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton3}`">
@@ -550,7 +574,9 @@
                         'Переработка попутного газа'
                       )
                     "
-                    >Переработка попутного газа</a
+                    >
+                    <!-- Переработка попутного газа -->{{ trans("visualcenter.pererabotkapoputGaz") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton7}`">
@@ -575,7 +601,9 @@
                 "
               >
                 <div class="icon-all icons4"></div>
-                <div class="txt5">Добыча конденсата</div>
+                <div class="txt5">
+                  <!-- Добыча конденсата -->{{ trans("visualcenter.getgk") }}
+                  </div>
                 <!-- <div class="txt6"> тонн</div>-->
               </div>
               <ul>
@@ -592,7 +620,9 @@
                         'С учётом доли участия КМГ'
                       )
                     "
-                    >С учётом доли участия КМГ</a
+                    >
+                    <!-- С учётом доли участия КМГ -->{{ trans("visualcenter.dolyaUchast") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton13}`">
@@ -617,7 +647,9 @@
                 "
               >
                 <div class="icon-all icons5"></div>
-                <div class="txt5">Закачка воды</div>
+                <div class="txt5">
+                  <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
+                  </div>
                 <!-- <div class="txt6"> м³</div>-->
               </div>
               <ul>
@@ -634,7 +666,9 @@
                         'Закачка морской воды'
                       )
                     "
-                    >Закачка морской воды</a
+                    >
+                    <!-- Закачка морской воды -->{{ trans("visualcenter.liqOcean") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton9}`">
@@ -656,7 +690,9 @@
                         'Закачка сточной воды'
                       )
                     "
-                    >Закачка сточной воды</a
+                    >
+                    <!-- Закачка сточной воды -->{{ trans("visualcenter.liqStochnaya") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton10}`">
@@ -678,7 +714,9 @@
                         'Закачка альбсен. воды'
                       )
                     "
-                    >Закачка альбсен. воды</a
+                    >
+                    <!-- Закачка альбсен. воды -->{{ trans("visualcenter.liqAlbsen") }}
+                    </a
                   >
                   <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton11}`">
@@ -700,7 +738,7 @@
                 :style="`${buttonHover7}`"
                 @click="changeMenu2(1)"
               >
-                Суточная
+                <!-- Суточная -->{{ trans("visualcenter.daily") }}
               </div>
             </div>
             <div class="col">
@@ -709,7 +747,7 @@
                 :style="`${buttonHover8}`"
                 @click="changeMenu2(2)"
               >
-                С начала месяца
+                <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
               </div>
             </div>
             <div class="col">
@@ -718,7 +756,7 @@
                 :style="`${buttonHover9}`"
                 @click="changeMenu2(3)"
               >
-                С начала года
+                <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
               </div>
             </div>
             <div class="col">
@@ -728,9 +766,13 @@
                   :style="`${buttonHover10}`"
                   @click="changeMenu2(4)"
                 >
-                  <span v-if="oneDate"> Дата [{{ timeSelect }}]</span>
+                  <span v-if="oneDate"> 
+                    <!-- Дата  -->{{ trans("visualcenter.date") }}
+                    [{{ timeSelect }}]</span>
                   <span v-else
-                    >Период [{{ timeSelect }} - {{ timeSelectOld }}]</span
+                    >
+                    <!-- Период  -->{{ trans("visualcenter.period") }}
+                    [{{ timeSelect }} - {{ timeSelectOld }}]</span
                   >
                 </div>
                 <ul class="center-menu2 right-indent">
@@ -768,14 +810,14 @@
               :style="`${buttonHover14}`"
               @click="changeAssets('b14')"
             >
-              С учётом ограничения ОПЕК+
+              <!-- С учётом ограничения ОПЕК+ --> {{ trans("visualcenter.opek") }}
             </h5>
             <h5
               class="col assets4"
               :style="`${buttonHover11}`"
               @click="changeAssets('b11')"
             >
-              Операционные активы
+              <!-- Операционные активы -->{{ trans("visualcenter.operactive") }}
             </h5>
 
             <h5
@@ -783,7 +825,7 @@
               :style="`${buttonHover12}`"
               @click="changeAssets('b12')"
             >
-              Неоперационные активы
+              <!-- Неоперационные активы -->{{ trans("visualcenter.neoperactive") }}
             </h5>
 
             <h5
@@ -791,7 +833,7 @@
               :style="`${buttonHover13}`"
               @click="changeAssets('b13')"
             >
-              Все активы КМГ
+              <!-- Все активы КМГ -->{{ trans("visualcenter.allkmg") }}
             </h5>
 
             <!-- </tr>
@@ -817,7 +859,13 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
+<<<<<<< HEAD
                       <div v-if="index === 0" class="center">план {{opec}}</div>
+=======
+                      <div v-if="index === 0" class="center">
+                        <!-- план -->{{ trans("visualcenter.plan") }}
+                        </div>
+>>>>>>> 62c47fb6 (kzLang & ExcelImport updated)
                       <!--old date-->
                       <div class="font" v-if="item.productionPlanForMonth">
                         {{
@@ -866,7 +914,9 @@
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div v-if="index === 0" class="center">факт</div>
+                      <div v-if="index === 0" class="center">
+                        <!-- факт -->{{ trans("visualcenter.fact") }}
+                        </div>
                       <div class="font" v-if="item.productionFactForMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
@@ -1007,7 +1057,13 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
+<<<<<<< HEAD
                       <div v-if="index === 0" class="center">план {{opec}}</div>
+=======
+                      <div v-if="index === 0" class="center">
+                        <!-- план -->{{ trans("visualcenter.plan") }}
+                        </div>
+>>>>>>> 62c47fb6 (kzLang & ExcelImport updated)
                       <div class="font" v-if="item.planMonth">
                         {{ formatVisTableNumber(item.planMonth) }}
                         <div
@@ -1022,7 +1078,9 @@
                       </div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div v-if="index === 0" class="center">факт</div>
+                      <div v-if="index === 0" class="center">
+                        <!-- факт -->{{ trans("visualcenter.fact") }}
+                        </div>
                       <div class="font" v-if="item.factMonth">
                         {{ formatVisTableNumber(item.factMonth) }}
                         <div
@@ -1223,10 +1281,12 @@
           <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold"><!--Фонд нагнетательных скважин-->{{ trans("visualcenter.wells1") }}</div>
+                <div class="ml-4 bold"><!--Фонд нагнетательных скважин-->{{ trans("visualcenter.idle_wells") }}</div>
               </div>
               <div class="col px-4">
-                <div class="close2" @click="changeTable('1')">Закрыть</div>
+                <div class="close2" @click="changeTable('1')">
+                  <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                  </div>
               </div>
             </div>
 
@@ -1237,7 +1297,7 @@
                   :style="`${buttonHover7}`"
                   @click="changeMenu2(1)"
                 >
-                  Суточная
+                  <!-- Суточная -->{{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1246,7 +1306,7 @@
                   :style="`${buttonHover8}`"
                   @click="changeMenu2(2)"
                 >
-                  С начала месяца
+                  <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1255,7 +1315,7 @@
                   :style="`${buttonHover9}`"
                   @click="changeMenu2(3)"
                 >
-                  С начала года
+                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1265,7 +1325,8 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Период [{{ timeSelect }} - {{ timeSelectOld }}]
+                    <!-- Период  -->{{ trans("visualcenter.period") }}
+                    [{{ timeSelect }} - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1310,15 +1371,31 @@
                     <option value="all" v-if="company != 'all'">
                       {{ getNameDzoFull(company) }}
                     </option>
-                    <option v-else>Все компании</option>
+                    <option v-else>
+                      <!-- Все компании -->{{ trans("visualcenter.allCompany") }}
+                      </option>
                     <!-- <option value="all"></option>-->
-                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
-                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
-                    <option value="КГМ">ТОО «КазГерМунай»</option>
-                    <option value="КОА">ТОО "Казахойл Актобе</option>
-                    <option value="КГМ">ТОО "Казгермунай"</option>
-                    <option value="КБМ">АО «Каражанбасмунай»</option>
-                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                    <option value="ОМГ">
+                      <!-- АО «ОзенМунайГаз» -->{{ trans("visualcenter.omg") }}
+                      </option>
+                    <option value="ММГ">
+                      <!-- АО «Мангистаумунайгаз» -->{{ trans("visualcenter.mmg") }}
+                      </option>
+                    <option value="КГМ">
+                      <!-- ТОО «КазГерМунай» -->{{ trans("visualcenter.kgm") }}
+                      </option>
+                    <option value="КОА">
+                      <!-- ТОО "Казахойл Актобе -->{{ trans("visualcenter.koa") }}
+                      </option>
+                    <option value="КГМ">
+                      <!-- ТОО "Казгермунай" -->{{ trans("visualcenter.kgm") }}
+                      </option>
+                    <option value="КБМ">
+                      <!-- АО «Каражанбасмунай» -->{{ trans("visualcenter.kbm") }}
+                      </option>
+                    <option value="ЭМГ">
+                      <!-- АО «ЭмбаМунайГаз» -->{{ trans("visualcenter.emg") }}
+                      </option>
                   </select>
                 </div>
 
@@ -1329,7 +1406,7 @@
                       :style="`${buttonHoverNagInnerWells}`"
                       @click="buttonInnerWellsNag()"
                     >
-                      В простое
+                      <!-- В простое -->{{ trans("visualcenter.in_idle") }}
                     </div>
                   </div>
                 </div>
@@ -1355,7 +1432,9 @@
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                         style="cursor: pointer"
                       >
-                        {{ item.value }} <span>скважин</span>
+                        {{ item.value }} <span>
+                          <!-- скважин -->{{ trans("visualcenter.skv") }}
+                          </span>
                       </td>
                     </tr>
                   </tbody>
@@ -1374,10 +1453,14 @@
           <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold">Фонд добывающих скважин</div>
+                <div class="ml-4 bold">
+                  <!-- Фонд добывающих скважин -->{{ trans("visualcenter.prod_wells") }}
+                  </div>
               </div>
               <div class="col px-4">
-                <div class="close2" @click="changeTable('1')">Закрыть</div>
+                <div class="close2" @click="changeTable('1')">
+                  <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                  </div>
               </div>
             </div>
 
@@ -1388,7 +1471,7 @@
                   :style="`${buttonHover7}`"
                   @click="changeMenu2(1)"
                 >
-                  Суточная
+                  <!-- Суточная -->{{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1397,7 +1480,7 @@
                   :style="`${buttonHover8}`"
                   @click="changeMenu2(2)"
                 >
-                  С начала месяца
+                  <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1406,7 +1489,7 @@
                   :style="`${buttonHover9}`"
                   @click="changeMenu2(3)"
                 >
-                  С начала года
+                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1416,7 +1499,8 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Период [{{ timeSelect }} - {{ timeSelectOld }}]
+                    <!-- Период  -->{{ trans("visualcenter.period") }}
+                    [{{ timeSelect }} - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1461,15 +1545,31 @@
                     <option value="all" v-if="company != 'all'">
                       {{ getNameDzoFull(company) }}
                     </option>
-                    <option v-else>Все компании</option>
+                    <option v-else>
+                      <!-- Все компании -->{{ trans("visualcenter.allCompany") }}
+                      </option>
                     <!-- <option value="all"></option>-->
-                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
-                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
-                    <option value="КГМ">ТОО «КазГерМунай»</option>
-                    <option value="КОА">ТОО "Казахойл Актобе</option>
-                    <option value="КГМ">ТОО "Казгермунай"</option>
-                    <option value="КБМ">АО «Каражанбасмунай»</option>
-                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                    <option value="ОМГ">
+                      <!-- АО «ОзенМунайГаз» -->{{ trans("visualcenter.omg") }}
+                      </option>
+                    <option value="ММГ">
+                      <!-- АО «Мангистаумунайгаз» -->{{ trans("visualcenter.mmg") }}
+                      </option>
+                    <option value="КГМ">
+                      <!-- ТОО «КазГерМунай» -->{{ trans("visualcenter.kgm") }}
+                    </option>
+                    <option value="КОА">
+                      <!-- ТОО "Казахойл Актобе" -->{{ trans("visualcenter.koa") }}
+                      </option>
+                    <option value="КГМ">
+                      <!-- ТОО "Казгермунай" -->{{ trans("visualcenter.kgm") }}
+                      </option>
+                    <option value="КБМ">
+                      <!-- АО «Каражанбасмунай» -->{{ trans("visualcenter.kbm") }}
+                      </option>
+                    <option value="ЭМГ">
+                      <!-- АО «ЭмбаМунайГаз» -->{{ trans("visualcenter.emg") }}
+                      </option>
                   </select>
                 </div>
 
@@ -1480,7 +1580,7 @@
                       :style="`${buttonHoverProdInnerWells}`"
                       @click="buttonInnerWellsProd()"
                     >
-                      В простое
+                      <!-- В простое -->{{ trans("visualcenter.in_idle") }}
                     </div>
                   </div>
                 </div>
@@ -1506,7 +1606,9 @@
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                         style="cursor: pointer"
                       >
-                        {{ item.value }} <span>скважин</span>
+                        {{ item.value }} <span>
+                          <!-- скважин -->{{ trans("visualcenter.skv") }}
+                          </span>
                       </td>
                     </tr>
                   </tbody>
@@ -1525,10 +1627,14 @@
           <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold">ОТМ</div>
+                <div class="ml-4 bold">
+                  <!-- ОТМ -->{{ trans("visualcenter.otm") }}
+                  </div>
               </div>
               <div class="col px-4">
-                <div class="close2" @click="changeTable('1')">Закрыть</div>
+                <div class="close2" @click="changeTable('1')">
+                  <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                  </div>
               </div>
             </div>
 
@@ -1539,7 +1645,7 @@
                   :style="`${buttonHover7}`"
                   @click="changeMenu2(1)"
                 >
-                  Суточная
+                  <!-- Суточная -->{{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1548,7 +1654,7 @@
                   :style="`${buttonHover8}`"
                   @click="changeMenu2(2)"
                 >
-                  С начала месяца
+                  <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1557,7 +1663,7 @@
                   :style="`${buttonHover9}`"
                   @click="changeMenu2(3)"
                 >
-                  С начала года
+                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1567,7 +1673,8 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Период [{{ timeSelect }} - {{ timeSelectOld }}]
+                    <!-- Период  -->{{ trans("visualcenter.period") }}
+                    [{{ timeSelect }} - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1609,14 +1716,30 @@
                     <option value="all" v-if="company != 'all'">
                       {{ getNameDzoFull(company) }}
                     </option>
-                    <option v-else>Все компании</option>
-                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
-                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
-                    <option value="КГМ">ТОО «КазГерМунай»</option>
-                    <option value="КОА">ТОО "Казахойл Актобе</option>
-                    <option value="КГМ">ТОО "Казгермунай"</option>
-                    <option value="КБМ">АО «Каражанбасмунай»</option>
-                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                    <option v-else>
+                      <!-- Все компании -->{{ trans("visualcenter.allCompany") }}
+                      </option>
+                    <option value="ОМГ">
+                      <!-- АО «ОзенМунайГаз» -->{{ trans("visualcenter.omg") }}
+                      </option>
+                    <option value="ММГ">
+                      <!-- АО «Мангистаумунайгаз» -->{{ trans("visualcenter.mmg") }}
+                      </option>
+                    <option value="КГМ">
+                      <!-- ТОО «КазГерМунай» -->{{ trans("visualcenter.kgm") }}
+                      </option>
+                    <option value="КОА">
+                      <!-- ТОО "Казахойл Актобе" -->{{ trans("visualcenter.koa") }}
+                      </option>
+                    <option value="КГМ">
+                      <!-- ТОО "Казгермунай" -->{{ trans("visualcenter.kgm") }}
+                      </option>
+                    <option value="КБМ">
+                      <!-- АО «Каражанбасмунай» -->{{ trans("visualcenter.kbm") }}
+                      </option>
+                    <option value="ЭМГ">
+                      <!-- АО «ЭмбаМунайГаз» -->{{ trans("visualcenter.emg") }}
+                      </option>
                   </select>
                 </div>
               </div>
@@ -1660,7 +1783,7 @@
                           class="center"
                           style="font-size: 12px; line-height: 1.2"
                         >
-                          План
+                          <!-- План -->{{ trans("visualcenter.plan") }}
                         </div>
                         {{ item.fact }}
                       </td>
@@ -1684,10 +1807,14 @@
           <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold">Химизация</div>
+                <div class="ml-4 bold">
+                  <!-- Химизация -->{{ trans("visualcenter.chem") }}
+                  </div>
               </div>
               <div class="col px-4">
-                <div class="close2" @click="changeTable('1')">Закрыть</div>
+                <div class="close2" @click="changeTable('1')">
+                  <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                  </div>
               </div>
             </div>
 
@@ -1698,7 +1825,7 @@
                   :style="`${buttonHover7}`"
                   @click="changeMenu2(1)"
                 >
-                  Суточная
+                  <!-- Суточная -->{{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1707,7 +1834,7 @@
                   :style="`${buttonHover8}`"
                   @click="changeMenu2(2)"
                 >
-                  С начала месяца
+                  <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1716,7 +1843,7 @@
                   :style="`${buttonHover9}`"
                   @click="changeMenu2(3)"
                 >
-                  С начала года
+                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
@@ -1726,7 +1853,8 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    Период [{{ timeSelect }} - {{ timeSelectOld }}]
+                    <!-- Период  -->{{ trans("visualcenter.period") }}
+                    [{{ timeSelect }} - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1768,14 +1896,30 @@
                     <option value="all" v-if="company != 'all'">
                       {{ getNameDzoFull(company) }}
                     </option>
-                    <option v-else>Все компании</option>
-                    <option value="ОМГ">АО «ОзенМунайГаз»</option>
-                    <option value="ММГ">АО «Мангистаумунайгаз»</option>
-                    <option value="КГМ">ТОО «КазГерМунай»</option>
-                    <option value="КОА">ТОО "Казахойл Актобе</option>
-                    <option value="КГМ">ТОО "Казгермунай"</option>
-                    <option value="КБМ">АО «Каражанбасмунай»</option>
-                    <option value="ЭМГ">АО «ЭмбаМунайГаз»</option>
+                    <option v-else>
+                      <!-- Все компании -->{{ trans("visualcenter.allCompany") }}
+                      </option>
+                    <option value="ОМГ">
+                      <!-- АО «ОзенМунайГаз» -->{{ trans("visualcenter.omg") }}
+                      </option>
+                    <option value="ММГ">
+                      <!-- АО «Мангистаумунайгаз» -->{{ trans("visualcenter.mmg") }}
+                      </option>
+                    <option value="КГМ">
+                      <!-- ТОО «КазГерМунай» -->{{ trans("visualcenter.kgm") }}
+                      </option>
+                    <option value="КОА">
+                      <!-- ТОО "Казахойл Актобе" -->{{ trans("visualcenter.koa") }}
+                      </option>
+                    <option value="КГМ">
+                      <!-- ТОО "Казгермунай" -->{{ trans("visualcenter.kgm") }}
+                      </option>
+                    <option value="КБМ">
+                      <!-- АО «Каражанбасмунай» -->{{ trans("visualcenter.kbm") }}
+                      </option>
+                    <option value="ЭМГ">
+                      <!-- АО «ЭмбаМунайГаз» -->{{ trans("visualcenter.emg") }}
+                      </option>
                   </select>
                 </div>
               </div>
@@ -1817,7 +1961,7 @@
                           class="center"
                           style="font-size: 12px; line-height: 1.2"
                         >
-                          План
+                          <!-- План -->{{ trans("visualcenter.plan") }}
                         </div>
                         {{ item.fact }}
                       </td>
@@ -1850,7 +1994,9 @@
                   <!--v-if="wells2[0].prod_wells_work"  wells2[0].prod_wells_work-->
                   {{ new Intl.NumberFormat("ru-RU").format(prod_wells_work) }}
                 </div>
-                <div class="in-work">В работе</div>
+                <div class="in-work">
+                  <!-- В работе -->{{ trans("visualcenter.in_work") }}
+                  </div>
                 <div
                   :class="`${getColor2(
                     getDiffProcentLastP(prod_wells_workPercent, prod_wells_work)
@@ -1887,7 +2033,9 @@
                     <img src="/img/icons/link.svg" />
                   </div>
                 </div>
-                <div class="in-idle">В простое</div>
+                <div class="in-idle">
+                  <!-- В простое -->{{ trans("visualcenter.in_idle") }}
+                  </div>
                 <div
                   :class="`${getColor2(
                     getDiffProcentLastP(prod_wells_idlePercent, prod_wells_idle)
@@ -1913,7 +2061,9 @@
                 @click="changeTable('4')"
                 :style="`${tableHover4}`"
               >
-                <div class="txt2">Фонд добывающих скважин</div>
+                <div class="txt2">
+                  <!-- Фонд добывающих скважин --> {{ trans("visualcenter.prod_wells") }}
+                  </div>
               </td>
             </tr>
           </table>
@@ -1937,7 +2087,9 @@
                       )
                     }}
                   </div>
-                  <div class="in-work">В работе</div>
+                  <div class="in-work">
+                    <!-- В работе -->{{ trans("visualcenter.in_work") }}
+                    </div>
                   <div
                     :class="`${getColor2(
                       getDiffProcentLastP(inj_wells_workPercent, inj_wells_work)
@@ -1975,7 +2127,9 @@
                       <img src="/img/icons/link.svg" />
                     </div>
                   </div>
-                  <div class="in-idle">В простое</div>
+                  <div class="in-idle">
+                    <!-- В простое --> {{ trans("visualcenter.in_idle") }}
+                    </div>
                   <div
                     :class="`${getColor2(
                       getDiffProcentLastP(inj_wells_idlePercent, inj_wells_idle)
@@ -2001,7 +2155,7 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt2"><!--Фонд нагнетательных скважин-->{{ trans("visualcenter.wells1") }}</div>
+                  <div class="txt2"><!--Фонд нагнетательных скважин-->{{ trans("visualcenter.idle_wells") }}</div>
                 </td>
               </tr>
             </table>
@@ -2021,7 +2175,9 @@
                     <img data-v-3712f8d4="" src="/img/icons/link.svg" />
                   </div>
                   <div class="otm"></div>
-                  <div class="txt2">ОТМ</div>
+                  <div class="txt2">
+                    <!-- ОТМ -->{{ trans("visualcenter.otm") }}
+                    </div>
                 </td>
 
                 <td
@@ -2033,7 +2189,9 @@
                     <img data-v-3712f8d4="" src="/img/icons/link.svg" />
                   </div>
                   <div class="him"></div>
-                  <div class="txt2">Химизация</div>
+                  <div class="txt2">
+                    <!-- Химизация -->{{ trans("visualcenter.chem") }}
+                    </div>
                 </td>
               </tr>
             </table>
@@ -2048,7 +2206,9 @@
               <td class="w-50 px-2">
                 <div class="number">{{ staff }}</div>
                 <div class="in-idle2">
-                  {{ quarter1[0] }} квартал {{ quarter1[1] }} г.
+                  {{ quarter1[0] }} 
+                  <!-- квартал  -->{{ trans("visualcenter.quarter") }}
+                  {{ quarter1[1] }} г.
                 </div>
               </td>
 
@@ -2070,14 +2230,18 @@
                     {{ getDiffProcentLastP(staffPercent, staff, "1") }}
                   </div>
                   <div class="in-idle">
-                    vs {{ quarter2[0] }} квартал {{ quarter2[1] }}г.
+                    vs {{ quarter2[0] }} 
+                    <!-- квартал  -->{{ trans("visualcenter.quarter") }}
+                    {{ quarter2[1] }}г.
                   </div>
                 </div>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <div class="txt2">Численность персонала</div>
+                <div class="txt2">
+                  <!-- Численность персонала -->{{ trans("visualcenter.personal") }}
+                  </div>
               </td>
             </tr>
           </table>
@@ -2138,8 +2302,12 @@
                   </div>-->
                   <div class="column-1">
                     <!-- <div class="in-idle">Прирост</div>-->
-                    <div class="in-idle">с начала</div>
-                    <div class="in-idle">месяца</div>
+                    <div class="in-idle">
+                      <!-- с начала -->{{ trans("visualcenter.from_begin") }}
+                      </div>
+                    <div class="in-idle">
+                      <!-- месяца -->{{ trans("visualcenter.month") }}
+                      </div>
                   </div>
                 </div>
               </td>
@@ -2153,15 +2321,21 @@
                   </div>-->
                   <div class="column-1">
                     <!--<div class="in-idle">Прирост</div>-->
-                    <div class="in-idle">с начала</div>
-                    <div class="in-idle">года</div>
+                    <div class="in-idle">
+                      <!-- с начала -->{{ trans("visualcenter.from_begin") }}
+                      </div>
+                    <div class="in-idle">
+                      <!-- года -->{{ trans("visualcenter.year") }}
+                      </div>
                   </div>
                 </div>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <div class="txt2">Несчастные случаи</div>
+                <div class="txt2">
+                  <!-- Несчастные случаи -->{{ trans("visualcenter.accident") }}
+                  </div>
               </td>
             </tr>
           </table>
@@ -2178,14 +2352,20 @@
 
               <td class="w-65">
                 <div class="column-1">
-                  <div class="in-idle">Прирост</div>
-                  <div class="in-idle">с начала месяца</div>
+                  <div class="in-idle">
+                    <!-- Прирост -->{{ trans("visualcenter.increase") }}
+                    </div>
+                  <div class="in-idle">
+                    <!-- с начала месяца -->{{ trans("visualcenter.monthBegin") }}
+                    </div>
                 </div>
               </td>
             </tr>
             <tr>
               <td colspan="2">
-                <div class="txt2">Смертельные случаи</div>
+                <div class="txt2">
+                  <!-- Смертельные случаи --> {{ trans("visualcenter.death") }}
+                  </div>
               </td>
             </tr>
           </table>
