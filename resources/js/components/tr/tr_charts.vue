@@ -16,7 +16,7 @@
                   d="M13.8015 10.4124C13.4953 10.4123 13.2018 10.2864 12.9853 10.062L9.52204 6.47442L2.25734 14L0.625 12.309L8.36763 4.28837C8.58407 4.06415 8.87765 3.93811 9.1838 3.93799H9.86032C10.1665 3.93811 10.46 4.06415 10.6765 4.28837L14.1397 7.87597L19.0956 2.74212L16.4485 0H23.375V7.17519L20.7279 4.43307L15.2941 10.062C15.0777 10.2864 14.7841 10.4123 14.478 10.4124H13.8015Z"
                   fill="white"
                 /></svg></i
-            >Факторный анализ отклонений ТР</a
+            >{{trans('tr.tr')}}</a
           >
           <a href="tr" class="col but-nav__link but ml-3"
             ><i style="margin-right: 10px"
@@ -32,7 +32,7 @@
                   fill="white"
                 />
               </svg> </i
-            >Технологический режим</a
+            >{{trans('tr.btr')}}</a
           >
         </div>
       </div>
@@ -47,7 +47,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Выберите график
+            {{trans('tr.trfacg')}}
           </a>
           <div class="dropdown-menu droptr" aria-labelledby="dropdownMenuLink">
             <a
@@ -72,7 +72,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Выберите месяц
+            {{trans('tr.dt')}}
           </button>
 
           <div
@@ -97,18 +97,18 @@
                 @change="onChangeMonth($event)"
               >
                 <!-- <option disabled>Выберите месяц</option> -->
-                <option value="1">январь</option>
-                <option value="2">февраль</option>
-                <option value="3">март</option>
-                <option value="4">апрель</option>
-                <option value="5">май</option>
-                <option value="6">июнь</option>
-                <option value="7">июль</option>
-                <option value="8">август</option>
-                <option value="9">сентябрь</option>
-                <option value="10">октябрь</option>
-                <option value="11">ноябрь</option>
-                <option value="12">декабрь</option>
+                <option value="1">{{trans('tr.jan')}}</option>
+                <option value="2">{{trans('tr.feb')}}</option>
+                <option value="3">{{trans('tr.mar')}}</option>
+                <option value="4">{{trans('tr.apr')}}</option>
+                <option value="5">{{trans('tr.may')}}</option>
+                <option value="6">{{trans('tr.jun')}}</option>
+                <option value="7">{{trans('tr.jul')}}</option>
+                <option value="8">{{trans('tr.aug')}}</option>
+                <option value="9">{{trans('tr.sep')}}</option>
+                <option value="10">{{trans('tr.oct')}}</option>
+                <option value="11">{{trans('tr.nov')}}</option>
+                <option value="12">{{trans('tr.dec')}}</option>
               </select>
             </div>
             <div>
@@ -124,11 +124,7 @@
                 id="companySelect"
                 @change="onChangeYear($event)"
               >
-<<<<<<< HEAD
-                <option disabled value="">Выберите год</option>
-=======
                 <!-- <option disabled value="">Выберите год</option> -->
->>>>>>> c296d556132b1b11d43483a100be145d82781002
                 <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
@@ -144,7 +140,7 @@
               @click.prevent="chooseDt"
               class="btn btn-sm button_form"
               style="margin-left: 15px"
-              >Сформировать</a
+              >{{trans('tr.sf')}}</a
             >
           </div>
         </div>
@@ -164,7 +160,7 @@
               />
             </g>
           </svg>
-          <div class="mx-2">Фильтр</div>
+          <div class="mx-2">{{trans('tr.trfb')}}</div>
         </div>
         <div class="filters row" v-if="showFilters">
           <div class="filters__item">
@@ -247,7 +243,7 @@ export default {
   },
   computed: {
     titleText() {
-      return `${this.chartNames[this.chartShow]} на ${this.dt}`;
+      return `${this.chartNames[this.chartShow]} ${this.dt}`;
     },
     subtitleText() {
       return [
@@ -425,16 +421,16 @@ export default {
       month: null,
       chartData: false,
       chartNames: [
-        "Анализ глубин пластов, спуска насосов и динамического уровня",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти. Обводненность",
-        "ТОП-30 скважин. Потенциал прироста дебита нефти. Газовый фактор",
-        "ТОП-30 скважин. Потенциал прироста дебита жидкости",
-        "Суммарный дебит нефти и жидкости",
-        "Распределение коэффициента продуктивности",
-        "Распределение скважин по дебиту нефти",
-        "Распределение скважин по обводненности",
-        "Распределение скважин по дебиту жидкости",
+        `${this.trans('tr.trchn1')}`,
+        `${this.trans('tr.trchn2')}`,
+        `${this.trans('tr.trchn3')}`,
+        `${this.trans('tr.trchn4')}`,
+        `${this.trans('tr.trchn5')}`,
+        `${this.trans('tr.trchn6')}`,
+        `${this.trans('tr.trchn7')}`,
+        `${this.trans('tr.trchn8')}`,
+        `${this.trans('tr.trchn9')}`,
+        `${this.trans('tr.trchn10')}`,
       ],
       chartBarOptions: {
         colors: ["#00e396", "#feb019", "#5FA7FF", "#ff4560", "#554298"],

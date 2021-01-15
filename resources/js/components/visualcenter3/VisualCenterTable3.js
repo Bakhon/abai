@@ -11,6 +11,7 @@ export default {
   },
   data: function () {
     return {
+      opec:'утв.',
       quarter1:0,
       quarter2:0,
       oneDate:'',
@@ -184,6 +185,7 @@ export default {
       buttonHover11: "color: #fff;",//this.changeMenuButton,
       buttonHover12: "",//this.changeMenuButton,
       buttonHover13: "",
+      buttonHover14: "",
       buttonHoverNagInnerWells: "",
       buttonHoverProdInnerWells: "",
 
@@ -533,9 +535,12 @@ export default {
 
     changeAssets(change) {
       let changeMenuButton = 'color:#fff';
+      if (change != "b14") {
       this.buttonHover11 = "";
       this.buttonHover12 = "";
       this.buttonHover13 = "";
+      }
+      //this.buttonHover14 = "";
 
       if (change == "b11") {
         this.buttonHover11 = changeMenuButton;
@@ -553,6 +558,35 @@ export default {
         this.buttonHover13 = changeMenuButton;
         this.NameDzoFull[0] = 'Итого по всем активам:';
         this.changeDate();
+      }
+
+      if (change == "b14") {
+        let hover=this.buttonHover14;
+        if (hover) {
+          this.buttonHover14 ="";
+          this.getProduction(
+            'oil_plan',
+            'oil_fact',
+            this.oilChartHeadName,
+            ' тонн',
+            'Добыча нефти'
+          )
+          this.opec='утв.';
+         
+        } else {
+        this.buttonHover14 = changeMenuButton;
+        this.getProduction(
+          'oil_opek_plan',
+          'oil_fact',
+          this.oilChartHeadName,
+          ' тонн',
+          'Добыча нефти',
+          'oil_plan'
+        )     
+        this.opec='ОПЕК+';
+      }
+       // this.NameDzoFull[0] = 'Итого по всем активам:';
+        //this.changeDate();
       }
 
     },
@@ -574,23 +608,21 @@ export default {
         return null;
       }
 
-      // console.log(this.timeSelect);
-      // console.log(this.periodUSD);
+    
 
       // return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
       // return this.getCurrencyPeriod(new Date().toLocaleDateString(), this.periodUSD);
     },
 
     getCurrencyNow(dates) {
-      // console.log(dates);
+     
 
       let uri = this.localeUrl("/getcurrency?fdate=") + dates + "";
 
       this.axios.get(uri).then((response) => {
         let data = response.data;
 
-        // console.log(data);
-        // console.log('=================');
+
 
         if (data) {
           this.currencyNow = parseInt(data.description * 10) / 10;
@@ -637,9 +669,7 @@ export default {
     },
 
     getCurrencyPeriod: function (dates, item2) {
-      // console.log('+++++++++++');
-      // console.log(item2);
-      // console.log('================');
+
 
       this.usdChartIsLoading = true;
 
@@ -668,21 +698,13 @@ export default {
               parseInt(item.description[0] * 10) / 10,
             ]);
 
-            // console.log(item.dates);
-            // console.log(item.dates.split('.').reverse().join('-'));
-            // console.log(new Date(item.dates.split('.').reverse().join('-')));
+          
           });
 
-          // console.log(arrdata2);
-          // console.log(dates);
-          // console.log(item2);
-          // console.log('+++++++++++++++++');
 
-          //var currencyChart = Array({ data: arrdata2 });
-          // this.$emit("currencyChart", arrdata2);
           this.currencyChartData = arrdata2;
 
-          //console.log(this.currencyChartData);
+
         } else {
           console.log("No data");
         }
@@ -1013,7 +1035,13 @@ export default {
       // });
     },
 
-    getProduction(item, item2, item3, item4, item5) {
+    getProduction(item, item2, item3, item4, item5, item6) {
+           if (this.opec==="ОПЕК+"){
+        if (item!="oil_opek_plan"){
+          this.opec='утв.';
+          this.buttonHover14="";
+                }        
+      }
       this.$store.commit('globalloading/SET_LOADING', true);
       let start= new Date(this.range.start).toLocaleString("ru", {
         year: 'numeric',
@@ -1107,8 +1135,8 @@ export default {
 
       
             if (start === end) {            
-              let dataWithMay = new Array();
-              dataWithMay = _.filter(data, function (item) {
+              let dataWithMay2 = new Array();
+              dataWithMay2 = _.filter(arrdata, function (item) {
                 return _.every([
                   _.inRange(
                     item.__time,
@@ -1117,16 +1145,17 @@ export default {
                   ),
                 ]);
               });
+       
   
-              dataWithMay = _.orderBy(
-                dataWithMay,
+              let dataWithMay3 = _.orderBy(
+                dataWithMay2,
                 ["__time"],
                 ["asc"]
               );
-              var productionForChart = this.getProductionForChart(dataWithMay);
+              var productionForChart = this.getProductionForChart(dataWithMay3,item6);
   
             } else {            
-              var productionForChart = this.getProductionForChart(dataWithMay);
+              var productionForChart = this.getProductionForChart(arrdata,item6);
             }
 
 
@@ -1148,7 +1177,7 @@ export default {
             this.prod_wells_work = dataWithMayLast['prod_wells_work'];
             this.prod_wells_idle = dataWithMayLast['prod_wells_idle'];
 
-            //console.log(productionForChart);
+      
             if (this.company != "all") {
               this.$store.commit('globalloading/SET_LOADING', false);
               this.$emit("data", productionForChart); //k1q new
@@ -1165,12 +1194,12 @@ export default {
 
             if (this.buttonHover12 != '') {
 
-              data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
+            /*  data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
               data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
               data = _.reject(data, _.iteratee({ dzo: "ММГ" }));
               data = _.reject(data, _.iteratee({ dzo: "КТМ" }));
               data = _.reject(data, _.iteratee({ dzo: "КБМ" }));
-              data = _.reject(data, _.iteratee({ dzo: "КОА" }));
+              data = _.reject(data, _.iteratee({ dzo: "КОА" }));*/
 
             }
 
@@ -1350,11 +1379,11 @@ export default {
               ["__time"],
               ["asc"]
             );
-            var productionForChart = this.getProductionForChart(dataWithMay);
+            var productionForChart = this.getProductionForChart(dataWithMay,item6);
 
           } else {
          
-            var productionForChart = this.getProductionForChart(dataWithMay);
+            var productionForChart = this.getProductionForChart(dataWithMay,item6);
           }
           /*
             var productionForChart = _(dataWithMay)
@@ -1535,14 +1564,18 @@ export default {
               "ТОО «Тенгизшевройл»",
               "«Карачаганак Петролеум Оперейтинг б.в.»",
               "«Норт Каспиан Оперейтинг Компани н.в.»"
+              /*"ТШ",
+              "КПО",
+              "НКО"*/
             ]
-
+            console.log(productionPlanAndFactMonth);
+            console.log(data);
             productionPlanAndFactMonth = productionPlanAndFactMonth.filter(item => {
               let fullName = this.getNameDzoFull(item.dzo)
               return dzoToShow.indexOf(fullName) > -1
             })
 
-            data = data.filter(item => {
+            data = dataWithMay.filter(item => {
               let fullName = this.getNameDzoFull(item.dzo)
               return dzoToShow.indexOf(fullName) > -1
             })
@@ -1717,7 +1750,7 @@ export default {
 
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
 
-          this.$emit("data", productionForChart);
+                   this.$emit("data", [{productionForChart},{opec:this.opec}]);
 
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;
@@ -1742,7 +1775,7 @@ export default {
       var productionFact = localStorage.getItem("production-fact");
 
 
-      //console.log(this.quantityGetProductionOilandGas);
+ 
 
       var dataWithMay = new Array();
       dataWithMay = _.filter(data, function (item) {
@@ -1967,11 +2000,9 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
-      //console.log((new Date(2018,9,9)));
-  //    console.log(this.getQuarter(new Date(this.year + '.' + this.pad('04') + '.' + this.pad(this.date.getDate()))));
-      //console.log(new Date(this.year + '.' + this.pad('04') + '.' + this.pad(this.date.getDate())));
-      console.log(new Date('11.01.2021'));
-      //this.nowQuarter=this.getQuarter(new Date(this.range.start)).toLocaleString();
+
+
+ 
     },
 
 
@@ -2156,17 +2187,23 @@ export default {
     },
 
     getOtmChartData(arr) {
-      let otmData
-      if (this.buttonHover9) {
+      let otmData  
+     /* if (this.buttonHover9) {
         otmData = _.groupBy(arr, item => {
           return moment(parseInt(item.__time)).format('MMM')
         })
       }
-      else {
-        otmData = _.groupBy(arr, item => {
-          return moment(parseInt(item.__time)).format('D')
-        })
-      }
+      else {*/
+        otmData = _.groupBy(arr, item => {      
+          return moment(parseInt(item.__time)).format("DD.MM.YY")//.format('D')            
+                })
+       /* otmData = _.orderBy(
+          otmData,
+          ["__time"],
+          ["asc"]
+        );*/      
+   
+     // }
 
       let result = {}
 
@@ -2232,16 +2269,16 @@ export default {
     },
     getChemistryChartData(arr) {
       let chemistryData
-      if (this.buttonHover9) {
+      /*if (this.buttonHover9) {
         chemistryData = _.groupBy(arr, item => {
           return moment(parseInt(item.__time)).format('MMM')
         })
       }
-      else {
+      else {*/
         chemistryData = _.groupBy(arr, item => {
-          return moment(parseInt(item.__time)).format('D')
+          return moment(parseInt(item.__time)).format("DD.MM.YY")//.format('D')
         })
-      }
+    //  }
 
       let result = {}
 
@@ -2302,7 +2339,8 @@ export default {
       });
     },
 
-    getProductionForChart(dataWithMay) {
+    getProductionForChart(dataWithMay,plan2) {
+      console.log(plan2);
       let productionPlan = localStorage.getItem("production-plan");
       let productionFact = localStorage.getItem("production-fact");
       let productionForChart = _(dataWithMay)
@@ -2311,6 +2349,7 @@ export default {
           time: id,
           productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
           productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
+          productionPlanForChart2: _.round(_.sumBy(__time, plan2), 0),
         }))
         .value();
       return productionForChart;
