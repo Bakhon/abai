@@ -279,7 +279,14 @@
 
 
           
-          <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" v-if="edit">
+          <a 
+            type="button" 
+            class="btn btn-primary" 
+            data-toggle="modal" 
+            data-target="#exampleModalCenter" 
+            v-if="edit" 
+            style="background: #272953; border: none;"
+            title="Показать графики">
             <svg 
                 width="24" 
                 height="24" 
@@ -379,7 +386,7 @@
           <a
             v-if="edit"
             title="Сохранить"
-            style="margin-left: 13px; cursor: pointer;"
+            style="margin-left: 1px; cursor: pointer;"
             @click="savetable()"
             ><svg
               width="24"
