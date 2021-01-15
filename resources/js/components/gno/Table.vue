@@ -98,7 +98,7 @@
             <!-- Конструкция end -->
 
             <!-- Кнопка инклонометрии start -->
-            <div class="inclinom-button" @click="InclMenu()">Инклинометрия</div>
+            <div class="inclinom-button" @click="InclMenu()">{{trans('pgno.inclinometria')}}</div>
             <!-- Кнопка инклонометрии end-->
 
             <div class="spoiler"
@@ -329,10 +329,10 @@
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
-                    <div class="modal-bign-title">Инклинометрия</div>
+                    <div class="modal-bign-title">{{trans('pgno.inclinometria')}}</div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalIncl')">
-                      Закрыть
+                      {{trans('pgno.zakrit')}}
                     </button>
                   </div>
 
@@ -347,11 +347,11 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      Анализ потенциала
+                      {{trans('pgno.analis_potenciala')}}
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalOldWell')">
-                      Закрыть
+                     {{trans('pgno.zakrit')}}
                     </button>
                   </div>
 
@@ -388,7 +388,7 @@
                         <label for="checkbox1" class="checkbox-modal-analysis-menu-label">Обв = Обв АСМА</label>
                       </div>
                       <button type="button" class="old_well_button" @click="setGraphOld()">
-                        Применить&nbsp;выполненные корректировки
+                        {{trans('pgno.primenit_korrektirovki')}}
                       </button>
                     </div>
                   </div>
@@ -399,7 +399,7 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      Анализ потенциала
+                      {{trans('pgno.analis_potenciala')}}
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalNewWell')">
@@ -445,7 +445,7 @@
                             fill="#FEFEFE" /></svg>
                       </div>
                       <button type="button" class="old_well_button" @click="setGraphNew()">
-                        Применить&nbsp;выполненные корректировки
+                        {{trans('pgno.primenit_korrektirovki')}}
                       </button>
                     </div>
                   </div>
@@ -456,11 +456,11 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      Анализ потенциала
+                      {{trans('pgno.analis_potenciala')}}
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalNearWells')">
-                      Закрыть
+                      {{trans('pgno.zakrit')}}
                     </button>
 
                   </div>
@@ -611,11 +611,11 @@
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">
-                      Сравнение технико-экономических показателей за 1 год эксплуатации
+                      {{trans('pgno.techniko_econom_god')}}
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalExpAnalysis')">
-                      Закрыть
+                      {{trans('pgno.zakrit')}}
                     </button>
                   </div>
 
@@ -636,7 +636,7 @@
                         </div>
 
                         <button class="button-nno" @click="onCompareNpv()">
-                          Выбрать способ эксплуатации с более высоким NPV
+                          {{trans('pgno.sposob_exp_npv')}}
                         </button>
                       </div>
                     </div>
@@ -648,11 +648,11 @@
                 <div class="modal-bign modal-bign-container no-padding">
                   <div class="modal-bign-header with-padding">
                     <div class="modal-bign-title">
-                      Информация
+                       {{trans('pgno.informacia')}}
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeEconomicModal()">
-                      Закрыть
+                      {{trans('pgno.zakrit')}}
                     </button>
                   </div>
 
@@ -662,19 +662,19 @@
                         <thead>
                           <tr height="60" style="height: 60pt;">
                             <td>
-                              Наименование
+                              {{trans('pgno.naimenovanie')}}
                             </td>
                             <td>
-                              ШГН (покупка)
+                              {{trans('pgno.shgn_pokupka')}}
                             </td>
                             <td>
-                              ЭЦН (аренда)
+                              {{trans('pgno.ecn_arenda')}}
                             </td>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Доп. добыча жидкости, тыс.т</td>
+                            <td>{{trans('pgno.dop_dobycha_zhidkosti')}}</td>
                             <td>
                               {{ Math.round(expAnalysisData.npvTable1.liquid) }}
                             </td>
@@ -683,12 +683,12 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Доп. добыча нефти, тыс.т</td>
+                            <td>{{trans('pgno.dop_dobycha_nefti')}}</td>
                             <td>{{ Math.round(expAnalysisData.npvTable1.oil) }}</td>
                             <td>{{ Math.round(expAnalysisData.npvTable2.oil) }}</td>
                           </tr>
                           <tr>
-                            <td>Количество отработанных дней, сут</td>
+                            <td>{{trans('pgno.kol_otrabot_dnei')}}</td>
                             <td>
                               {{ Math.round(expAnalysisData.npvTable1.workday) }}
                             </td>
@@ -697,7 +697,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Количество ПРС</td>
+                            <td>{{trans('pgno.kol_prs')}}</td>
                             <td>
                               {{
                               Math.round(expAnalysisData.npvTable1.kolichestvoPrs)
@@ -710,7 +710,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Среднее продолжительность 1 ПРС, сут</td>
+                            <td>{{trans('pgno.srednee_prod_prs')}}</td>
                             <td>
                               {{ Math.round(expAnalysisData.npvTable1.sredniiPrs) }}
                             </td>
@@ -720,7 +720,7 @@
                           </tr>
                           <tr>
                             <td>
-                              Распределение по направлениям реализации НДО, тыс.тг
+                              {{trans('pgno.raspred_po_naprav_ndo')}}
                             </td>
                             <td>
                               {{
@@ -738,7 +738,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Определение доходной части, тыс.тг</td>
+                            <td>{{trans('pgno.opred_dohod_chasti')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -755,7 +755,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Расчет НДПИ, тыс.тг</td>
+                            <td>{{trans('pgno.raschet_ndpi')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -772,7 +772,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Расчет Рентного налога, тыс.тг</td>
+                            <td>{{trans('pgno.raschet_rent_naloga')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -789,7 +789,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Расчет ЭТП, тыс.тг</td>
+                            <td>{{trans('pgno.raschet_etp')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -806,7 +806,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Расчет Расходов по транспортировке нефти, тыс.тг</td>
+                            <td>{{trans('pgno.raschet_rashodov_po_trans_nefti')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -823,7 +823,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Затраты на электроэнергию, тыс.тг</td>
+                            <td>{{trans('pgno.zatraty_na_electro')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -841,7 +841,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Затраты на подготовку, тыс.тг</td>
+                            <td>{{trans('pgno.zatraty_na_podgotovku')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -858,7 +858,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Затраты на ПРС, тыс.тг</td>
+                            <td>{{trans('pgno.zatraty_na_prs')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -875,7 +875,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Затраты за суточное обслуживание, тыс.тг</td>
+                            <td>{{trans('pgno.zatraty_za_sut_obsluzh')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -892,7 +892,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Стоимость аренды оборудования, тыс.тг</td>
+                            <td>{{trans('pgno.stoimost_arendy_oborudov')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -909,7 +909,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Амортизация, тыс.тг</td>
+                            <td>{{trans('pgno.amortizacia')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -926,7 +926,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Операционная прибыль, тыс.тг</td>
+                            <td>{{trans('pgno.operacionaya_prybil')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -943,7 +943,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>КПН, тыс.тг</td>
+                            <td>{{trans('pgno.kpn')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -960,7 +960,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Чистая прибыль, тыс.тг</td>
+                            <td>{{trans('pgno.chistaya_prybil')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -977,7 +977,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>КВЛ, тыс.тг</td>
+                            <td>{{trans('pgno.kvl')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -994,7 +994,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>Свободный денежный поток, тыс.тг</td>
+                            <td>{{trans('pgno.svobodni_denezh_potok')}}</td>
                             <td>
                               {{
                               Math.round(
@@ -1011,7 +1011,7 @@
                             </td>
                           </tr>
                           <tr>
-                            <td>NPV, млн.тг</td>
+                            <td>{{trans('pgno.npv')}}</td>
                             <td>
                               {{
                               Math.round(expAnalysisData.npvTable1.npv / 1000000)
@@ -1043,32 +1043,32 @@
 
               <div class="gno-shgn-wrapper" v-if="!visibleChart">
                 <div class="gno-shgn-block-title">
-                  Компоновка ШГН
+                  {{trans('pgno.komponovka_shgn')}}
                 </div>
 
                 <div class="podbor-gno">
                   <div class="image-data col-3">
-                    <div class="shgn-image-text image-text-1">Экс.колонна {{ this.casID }}мм</div>
-                    <div class="shgn-image-text image-text-2">НКТ {{ this.tubOD }}мм</div>
-                    <div class="shgn-image-text image-text-3">Штанги {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м</div>
+                    <div class="shgn-image-text image-text-1">{{trans('pgno.eks_kolonna')}} {{ this.casID }}мм</div>
+                    <div class="shgn-image-text image-text-2">{{trans('pgno.nkt')}} {{ this.tubOD }}мм</div>
+                    <div class="shgn-image-text image-text-3">{{trans('pgno.shtangi')}} {{ this.shgnS1D }}мм 0-{{ this.shgnS1L }}м</div>
                     <div class="shgn-image-text image-text-4">
-                      Штанги {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
+                      {{trans('pgno.shtangi')}} {{ this.shgnS2D }}мм {{ this.shgnS1L }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1
                       }}м
                     </div>
                     <div class="shgn-image-text image-text-5">
-                      Штанги {{ this.shgnS1D }}мм
+                      {{trans('pgno.shtangi')}} {{ this.shgnS1D }}мм
                       {{ this.shgnS1L * 1 + this.shgnS2L * 1 }}-{{
                         this.shgnS1L * 1 + this.shgnS2L * 1 + this.shgnTNL * 1
                       }}м
                     </div>
-                    <div class="shgn-image-text image-text-6">Насос {{ this.shgnPumpType }}мм</div>
+                    <div class="shgn-image-text image-text-6">{{trans('pgno.nasos')}} {{ this.shgnPumpType }}мм</div>
                     <div class="shgn-image-text image-text-7">
-                      Интервал перфорации <br> {{ this.hPerf }}-{{
+                      {{trans('pgno.interval_perf')}} <br> {{ this.hPerf }}-{{
                         this.hPerf * 1 + this.hPerfND * 1
                       }}м
                     </div>
-                    <div class="shgn-image-text image-text-8">Текущий забой {{ this.curr }}м</div>
+                    <div class="shgn-image-text image-text-8">{{trans('pgno.tekushii_zaboi')}} {{ this.curr }}м</div>
 
                     <img class="podborgnoimg"
                          src="./images/shgn.png"
@@ -1082,7 +1082,7 @@
                           <thead>
                             <tr class="tr-pgno" height="10" style="height: 30pt;">
                               <td class="td-pgno" rowspan="1" no-gutter colspan="2">
-                                Расчетный режим:
+                                {{trans('pgno.raschetnii_rezhim')}}
                               </td>
                             </tr>
                           </thead>
@@ -1120,31 +1120,31 @@
                           <thead>
                             <tr class="tr-pgno" height="5px" style="height: 30pt;">
                               <td class="td-pgno" rowspan="1" no-gutter colspan="2">
-                                Компоновка:
+                                {{trans('pgno.komponovka')}}
                               </td>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Ø насоса</td>
+                              <td class="td-pgno" rowspan="1">Ø {{trans('pgno.nasosa')}}</td>
                               <td class="td-pgno" rowspan="1">
                                 {{ shgnPumpType }} мм
                               </td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Число качаний</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.chislo_kachanii')}}</td>
                               <td class="td-pgno" rowspan="1">{{ shgnSPM }} мин-1</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Длина хода</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.dlina_hoda')}}</td>
                               <td class="td-pgno" rowspan="1">{{ shgnLen }} м</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Тип СК</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.typ_sk')}}</td>
                               <td class="td-pgno" rowspan="1">{{ sk }}</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Ø НКТ</td>
+                              <td class="td-pgno" rowspan="1">Ø {{trans('pgno.nkt')}}</td>
                               <td class="td-pgno" rowspan="1">{{ shgnTubOD }} мм</td>
                             </tr>
                             <tr>
@@ -1160,30 +1160,30 @@
                           <thead>
                             <tr class="tr-pgno" height="5px" style="height: 30pt;">
                               <td class="td-pgno" rowspan="1">
-                                Штанги
+                                {{trans('pgno.shtangi')}}
                               </td>
                               <td class="td-pgno" rowspan="1">
                                 Ø, мм
                               </td>
 
                               <td class="td-pgno" rowspan="1">
-                                Длина, м
+                                {{trans('pgno.dlina')}}, м
                               </td>
                             </tr>
                           </thead>
                           <tbody>
                             <tr>
-                              <td class="td-pgno" rowspan="1">Секция 1</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.sekcia')}} 1</td>
                               <td class="td-pgno" rowspan="1">{{ shgnS1D }}</td>
                               <td class="td-pgno" rowspan="1">{{ shgnS1L }}</td>
                             </tr>
                             <tr class="tr-pgno">
-                              <td class="td-pgno" rowspan="1">Секция 2</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.sekcia')}} 2</td>
                               <td class="td-pgno" rowspan="1">{{ shgnS2D }}</td>
                               <td class="td-pgno" rowspan="1">{{ shgnS2L }}</td>
                             </tr>
                             <tr>
-                              <td class="td-pgno" rowspan="1">ТН</td>
+                              <td class="td-pgno" rowspan="1">{{trans('pgno.tn')}}</td>
                               <td class="td-pgno" rowspan="1">{{ shgnS1D }}</td>
                               <td class="td-pgno" rowspan="1">{{ shgnTNL }}</td>
                             </tr>
@@ -1193,7 +1193,7 @@
                     </div>
 
                     <button class="button-pdf col-12" @click="createPDF()">
-                      Создание отчета
+                      {{trans('pgno.sozdanie_otcheta')}}
                     </button>
                   </div>
                 </div>
@@ -1220,7 +1220,8 @@
                                 <div class="row">
                                   <div class="col-2 px-0 pt-1 ic-min-block1">
                                     <div class="table-border-gno-right py-1 ml-3">
-                                      Pпл
+                                      Рпл
+                                      <!-- {{trans('pgno.p_pl')}} -->
                                     </div>
                                   </div>
                                   <div class="col-5  px-1">
@@ -1233,7 +1234,7 @@
                               </div>
                               <div class="col-2 px-0 pt-2 pb-0">
                                 <div class="table-border-gno-right ic-ar pt-1">
-                                  Обв.
+                                 {{trans('pgno.obvodnenost')}}
                                 </div>
                               </div>
                               <div class="col-2 pt-1 pl-2 pr-0">
@@ -1435,7 +1436,7 @@
                               <div class="row">
                                 <div class="col-4 pr-0">
                                   <div class="table-border-gno-right pt-2 pb-3 podbor-bottom-title-line text-ellipsis">
-                                    Целевой параметр
+                                    {{trans('pgno.celevoi_parametr')}}
                                   </div>
                                 </div>
                                 <div class="col-4 pr-0">
