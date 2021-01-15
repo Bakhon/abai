@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="gno-curve-table-title">
-      Кривая притока
+      {{trans('pgno.krivaya_pritoka')}}
     </div>
 
     <Plotly :data="data"
