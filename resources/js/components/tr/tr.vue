@@ -284,22 +284,24 @@
           </button>
 
           <!-- Modal -->
-          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000"> 
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000;"> 
             <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content" style="width: 559px;">
+              <div class="modal-content modalcont" style="width: 559px;">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Скважины</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <h5 class="modal-title" id="exampleModalLongTitle" style="color: white;">Скважины</h5>
+                  <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">Закрыть
                     <span aria-hidden="true">&times;</span>
-                  </button>
+                  </button> -->
+                  <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
                 </div>
                 <div class="modal-body" style="display:flex">
 
 
                        <div>
                           <select
+                            
                             v-model="month"
-                            class="form-controll"
+                            class="form-controll modalselect"
                             id="companySelect"
                             @change="onChangeMonth($event)"
                           >
@@ -311,7 +313,7 @@
                         <div>
                           <select
                             v-model="month"
-                            class="form-controll"
+                            class="form-controll modalselect"
                             id="companySelect"
                             @change="onChangeMonth($event)"
                           >
@@ -325,7 +327,7 @@
                         <div>
                           <select
                             v-model="month"
-                            class="form-controll"
+                            class="form-controll modalselect"
                             id="companySelect"
                             @change="onChangeMonth($event)"
                           >
@@ -337,7 +339,7 @@
                         <div>
                           <select
                             v-model="month"
-                            class="form-controll"
+                            class="form-controll modalselect"
                             id="companySelect"
                             @change="onChangeMonth($event)"
                           >
@@ -349,8 +351,8 @@
          
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                  <button type="button" class="btn btn-primary">Сохранить</button>
+                  <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button> -->
+                  <!-- <button type="button" class="btn btn-primary">Сохранить</button> -->
                 </div>
               </div>
             </div>
@@ -7366,6 +7368,13 @@ table::-webkit-scrollbar-thumb:hover {
 table::-webkit-scrollbar-corner {
   background: #333975;
 }
+.modalcont {
+  background: #272953;
+}
+.modalselect {
+  background: #334296;
+}
+
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
