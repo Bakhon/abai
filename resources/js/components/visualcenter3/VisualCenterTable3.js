@@ -576,11 +576,12 @@ export default {
         } else {
         this.buttonHover14 = changeMenuButton;
         this.getProduction(
-          'oil_dlv_fact',
+          'oil_opek_plan',
           'oil_fact',
           this.oilChartHeadName,
           ' тонн',
-          'Добыча нефти'
+          'Добыча нефти',
+          'oil_plan'
         )     
         this.opec='ОПЕК+';
       }
@@ -1034,7 +1035,13 @@ export default {
       // });
     },
 
-    getProduction(item, item2, item3, item4, item5) {
+    getProduction(item, item2, item3, item4, item5, item6) {
+           if (this.opec==="ОПЕК+"){
+        if (item!="oil_opek_plan"){
+          this.opec='утв.';
+          this.buttonHover14="";
+                }        
+      }
       this.$store.commit('globalloading/SET_LOADING', true);
       let start= new Date(this.range.start).toLocaleString("ru", {
         year: 'numeric',
@@ -1145,10 +1152,10 @@ export default {
                 ["__time"],
                 ["asc"]
               );
-              var productionForChart = this.getProductionForChart(dataWithMay3);
+              var productionForChart = this.getProductionForChart(dataWithMay3,item6);
   
             } else {            
-              var productionForChart = this.getProductionForChart(arrdata);
+              var productionForChart = this.getProductionForChart(arrdata,item6);
             }
 
 
@@ -1372,11 +1379,11 @@ export default {
               ["__time"],
               ["asc"]
             );
-            var productionForChart = this.getProductionForChart(dataWithMay);
+            var productionForChart = this.getProductionForChart(dataWithMay,item6);
 
           } else {
          
-            var productionForChart = this.getProductionForChart(dataWithMay);
+            var productionForChart = this.getProductionForChart(dataWithMay,item6);
           }
           /*
             var productionForChart = _(dataWithMay)
@@ -2332,7 +2339,8 @@ export default {
       });
     },
 
-    getProductionForChart(dataWithMay) {
+    getProductionForChart(dataWithMay,plan2) {
+      console.log(plan2);
       let productionPlan = localStorage.getItem("production-plan");
       let productionFact = localStorage.getItem("production-fact");
       let productionForChart = _(dataWithMay)
@@ -2341,6 +2349,7 @@ export default {
           time: id,
           productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
           productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
+          productionPlanForChart2: _.round(_.sumBy(__time, plan2), 0),
         }))
         .value();
       return productionForChart;
