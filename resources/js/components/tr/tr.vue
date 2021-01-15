@@ -279,9 +279,27 @@
 
 
           
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" v-if="edit"><i class="fas fa-plus"></i>
+          <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" v-if="edit">
+            <svg 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24"
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg">
+              <path 
+                d="M18.5 12L5.5 12" 
+                stroke="white" 
+                stroke-width="1.5" 
+                stroke-linecap="round"/>
+              <path 
+                d="M12 5.5V18.5" 
+                stroke="white" 
+                stroke-width="1.5" 
+                stroke-linecap="round"/>
+            </svg>
+
             
-          </button>
+          </a>
 
           <!-- Modal -->
           <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000;"> 
@@ -7373,6 +7391,7 @@ table::-webkit-scrollbar-corner {
 }
 .modalselect {
   background: #334296;
+  color: #fff;
 }
 
 </style>
