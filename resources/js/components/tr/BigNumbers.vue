@@ -39,7 +39,7 @@ export default {
     },
     baseName: {
       type: String,
-      default: "Колличество скважин",
+      default: "Количество скважин",
     },
     nameAlias: {
       type: String,

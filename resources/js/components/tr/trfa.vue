@@ -87,7 +87,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Выберите дату
+            {{trans('tr.trchdt')}}
           </button>
           <div
             class="dropdown-menu fadropmenu"
@@ -119,7 +119,7 @@
               />
             </g>
           </svg>
-          <div class="mx-2">Фильтр</div>
+          <div class="mx-2">{{trans('tr.trfb')}}</div>
         </div>
         <div class="filters row" v-if="showFilters">
           <div class="filters__item">
