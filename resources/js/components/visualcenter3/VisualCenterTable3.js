@@ -11,6 +11,7 @@ export default {
   },
   data: function () {
     return {
+      opec:'утв.',
       quarter1:0,
       quarter2:0,
       oneDate:'',
@@ -534,10 +535,12 @@ export default {
 
     changeAssets(change) {
       let changeMenuButton = 'color:#fff';
+      if (change != "b14") {
       this.buttonHover11 = "";
       this.buttonHover12 = "";
       this.buttonHover13 = "";
-      this.buttonHover14 = "";
+      }
+      //this.buttonHover14 = "";
 
       if (change == "b11") {
         this.buttonHover11 = changeMenuButton;
@@ -558,6 +561,19 @@ export default {
       }
 
       if (change == "b14") {
+        let hover=this.buttonHover14;
+        if (hover) {
+          this.buttonHover14 ="";
+          this.getProduction(
+            'oil_plan',
+            'oil_fact',
+            this.oilChartHeadName,
+            ' тонн',
+            'Добыча нефти'
+          )
+          this.opec='утв.';
+         
+        } else {
         this.buttonHover14 = changeMenuButton;
         this.getProduction(
           'oil_dlv_fact',
@@ -565,9 +581,11 @@ export default {
           this.oilChartHeadName,
           ' тонн',
           'Добыча нефти'
-        )
+        )     
+        this.opec='ОПЕК+';
+      }
        // this.NameDzoFull[0] = 'Итого по всем активам:';
-        this.changeDate();
+        //this.changeDate();
       }
 
     },
@@ -1725,7 +1743,7 @@ export default {
 
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
 
-          this.$emit("data", productionForChart);
+                   this.$emit("data", [{productionForChart},{opec:this.opec}]);
 
           productionForChart = { data: productionForChart };
           this.productionForChart = productionForChart;

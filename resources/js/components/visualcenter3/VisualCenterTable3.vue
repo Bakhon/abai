@@ -763,7 +763,7 @@
                 <td>-->
 
           <div class="row mt-3">
-            <h5
+            <h5 v-if="item2=='oil_fact'"
               class="col assets4"
               :style="`${buttonHover14}`"
               @click="changeAssets('b14')"
@@ -817,7 +817,7 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-                      <div v-if="index === 0" class="center">план</div>
+                      <div v-if="index === 0" class="center">план {{opec}}</div>
                       <!--old date-->
                       <div class="font" v-if="item.productionPlanForMonth">
                         {{
@@ -1007,7 +1007,7 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-                      <div v-if="index === 0" class="center">план</div>
+                      <div v-if="index === 0" class="center">план {{opec}}</div>
                       <div class="font" v-if="item.planMonth">
                         {{ formatVisTableNumber(item.planMonth) }}
                         <div

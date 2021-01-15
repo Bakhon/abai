@@ -6,12 +6,14 @@ export default {
   extends: Line,
   methods: {
     setValue: function (value) {
+      //console.log(value[1]['opec']);
+      let opec=value[1]['opec'];
       let productionFactForChart = [];
       let productionPlanForChart = [];
       let labels = [];
       const monthNames = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"
       ];
-      _.forEach(value, function (item, key) {
+      _.forEach(value[0]['productionForChart'], function (item, key) {
         let date = new Date(Number(item.time));
         labels.push(date.getDate()+' / '+monthNames[date.getMonth()] + " / " + date.getFullYear());
         productionFactForChart.push(item.productionFactForChart);
@@ -53,7 +55,7 @@ export default {
         labels: labels,
         datasets: [
           {
-            label: "План",
+            label: "План "+ opec ,
             borderColor: '#2E50E9',
             fill: 1,
             backgroundColor: fillPattern,
@@ -118,7 +120,7 @@ export default {
     }
   },
   created: function () {
-    this.$parent.$on("data", this.setValue);
+    this.$parent.$on("data", this.setValue); 
   },
 }
 </script>
