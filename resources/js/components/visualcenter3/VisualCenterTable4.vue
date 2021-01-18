@@ -9,7 +9,9 @@
                 <div class="d-flex flex-row mb-2">
                     <div class="flex-grow-1 first-string">
                         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center p-2">
-                            <h5 class="font-weight-bold m-0">Корпоративные КПД</h5>
+                            <h5 class="font-weight-bold m-0">
+                                <!-- Корпоративные КПД -->{{ trans("visualcenter.corpKPI") }}
+                                </h5>
                             <div class="w-75">
                                 <div class="progress2">
                                     <div
@@ -26,7 +28,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="close2 d-none d-sm-block">Закрыть</div>
+                            <div class="close2 d-none d-sm-block">
+                                <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +61,9 @@
                         v-bind:mainValue="t4"
                         v-bind:units="'млн. тонн'"
                         v-bind:planWeight="'15'"
-                    ></vc-speedometer-block>
+                    >
+                    <!--  -->
+                    </vc-speedometer-block>
                     <vc-speedometer-block
                         v-bind:title="'ESG рейтинг'"
                         v-bind:mainValue="t5"
