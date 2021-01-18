@@ -1997,7 +1997,7 @@ export default {
       this.timeSelect = nowDate;
       this.timeSelectOld = oldDate;
 
-      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
+      this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
       this.getCurrencyNow(this.timeSelect);
       this.getOilNow(this.timeSelect, this.period);
 
