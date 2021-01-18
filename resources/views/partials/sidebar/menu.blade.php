@@ -31,7 +31,9 @@
         <div class="move-menu">
             <li class="left-menu-li"><a href="{{route('bigdata')}}">Модуль "Прототип БД ABAI"</a></li>
             <li class="left-menu-li"><a href="{{route('visualcenter3')}}">Модуль "Центр визуализации"</a></li>
+            @if(auth()->user()->can('tr view main'))
             <li class="left-menu-li"><a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
+            @endif
             <li class="left-menu-li"><a href="{{route('gno')}}">Модуль "Подбор ГНО"</a></li>
             <li class="left-menu-li"><a href="{{route('monitor')}}">Модуль "Мониторинг осложнений"</a>
                 <ul class="dropdown-child">
