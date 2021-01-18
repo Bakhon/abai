@@ -135,7 +135,8 @@ export default {
             oilPricePrevYear = item.oil_price_fact;
           });
           this.dzoData.push({
-            title: 'Выручка от основной деятельности',
+            title: this.trans('visualcenter.eco1'),
+            // 'Выручка от основной деятельности',
             units: 'млрд.тг.',
             dataPlan: dataPlan,
             dataFact: dataFact,
@@ -144,7 +145,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Расходы',
+            title: this.trans('visualcenter.eco2'), 
+            // 'Расходы',
             units: 'млрд.тг.',
             dataPlan: spendingPlan,
             dataFact: spendingFact,
@@ -153,7 +155,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Себестоимость',
+            title: this.trans('visualcenter.eco3'),  
+            // 'Себестоимость',
             units: 'млрд.тг.',
             dataPlan: costPlan,
             dataFact: costFact,
@@ -162,7 +165,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Расходы по реализации',
+            title: this.trans('visualcenter.eco4'),  
+            // 'Расходы по реализации',
             units: 'млрд.тг.',
             dataPlan: rlzSpendingPlan,
             dataFact: rlzSpendingFact,
@@ -171,7 +175,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Общие административные вопросы',
+            title: this.trans('visualcenter.eco5'),  
+            // 'Общие административные вопросы',
             units: 'млрд.тг.',
             dataPlan: admSpendingPlan,
             dataFact: admSpendingFact,
@@ -180,7 +185,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'EBITDA margin (Без СП)',
+            title: this.trans('visualcenter.eco6'), 
+            // 'EBITDA margin (Без СП)',
             units: '%',
             dataPlan: ebitdaMarginPlan,
             dataFact: ebitdaMarginFact,
@@ -198,7 +204,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Чистая прибыль*',
+            title: this.trans('visualcenter.eco7'),  
+            // 'Чистая прибыль*',
             units: 'млрд.тг.',
             dataPlan: netProfitPlan,
             dataFact: netProfitFact,
@@ -207,7 +214,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Капитальные вложения',
+            title: this.trans('visualcenter.eco8'), 
+            // 'Капитальные вложения',
             units: 'млрд.тг.',
             dataPlan: capitalInvPlan,
             dataFact: capitalInvFact,
@@ -216,7 +224,8 @@ export default {
             divider: 1000000,
           });
           this.dzoData.push({
-            title: 'Свободный денежный поток',
+            title: this.trans('visualcenter.eco9'),  
+            // 'Свободный денежный поток',
             units: 'млрд.тг.',
             dataPlan: cashFlowPlan,
             dataFact: cashFlowFact,
@@ -225,7 +234,8 @@ export default {
             divider: 1000000,
           });
           this.macroData.push({
-            title: 'Обменный курс',
+            title: this.trans('visualcenter.eco10'), 
+            // 'Обменный курс',
             units: 'Тенге/$',
             dataPlan: kursPlan,
             dataFact: kursFact,
@@ -233,7 +243,8 @@ export default {
             plan2020: kursPlan2020,
           });
           this.macroData.push({
-            title: 'Цена Brent',
+            title: this.trans('visualcenter.eco11'),  
+            // 'Цена Brent',
             units: '$/баррель',
             dataPlan: oilPricePlan,
             dataFact: oilPriceFact,

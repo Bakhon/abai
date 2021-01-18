@@ -30,7 +30,8 @@
 <!--                    <img src="/img/icons/success-icon.svg">-->
 <!--                </div>-->
                 <div class="mr-2 in-work">
-                    Вес факт:
+                    <!-- Вес факт: -->
+                    {{ trans("visualcenter.weightFact") }}
                 </div>
                 <div>
                     {{ new Intl.NumberFormat("ru-RU").format(mainValue[6].toFixed(1)) }}%
@@ -43,14 +44,16 @@
                     <img v-else src="/img/icons/error-icon.svg">
                 </div>
                 <div>
-                    Текущее исполнение КПД
+                    <!-- Текущее исполнение КПД -->
+                    {{ trans("visualcenter.CurrentKPI") }}
                 </div>
             </div>
         </div>
         <div class="d-none d-sm-flex flex-column flex-sm-row justify-content-center">
             <div class="ml-0 ml-sm-3 w-50 d-flex align-items-center speedometer-border">
                 <div class="mr-2 in-work">
-                    Вес план:
+                    <!-- Вес план: -->
+                    {{ trans("visualcenter.weightPlan") }}
                 </div>
                 <div>
                     {{ planWeight }}%

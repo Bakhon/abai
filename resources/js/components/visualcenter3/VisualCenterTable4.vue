@@ -36,13 +36,13 @@
                 </div>
                 <div class="d-flex flex-column flex-sm-row mb-sm-3 vc-speedometer-line" v-if="isEnableSpeedometers">
                     <vc-speedometer-block
-                        v-bind:title="'Снижение OPEX и CAPEX'"
+                        v-bind:title="trans('visualcenter.OPEX&CAPEX')"
                         v-bind:mainValue="t1"
                         v-bind:units="'млрд. тенге'"
                         v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
-                        v-bind:title="'Долг/EBIDTA'"
+                        v-bind:title="trans('visualcenter.EBIDTAdebt')"
                         v-bind:mainValue="t2"
                         v-bind:units="'коэф.'"
                         v-bind:planWeight="'25'"
@@ -57,7 +57,7 @@
                 </div>
                 <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                     <vc-speedometer-block
-                        v-bind:title="'Запасы (A+B+C1)'"
+                        v-bind:title="trans('visualcenter.ZapasyABC1')"
                         v-bind:mainValue="t4"
                         v-bind:units="'млн. тонн'"
                         v-bind:planWeight="'15'"
@@ -65,13 +65,13 @@
                     <!--  -->
                     </vc-speedometer-block>
                     <vc-speedometer-block
-                        v-bind:title="'ESG рейтинг'"
+                        v-bind:title="trans('visualcenter.ESGrating')"
                         v-bind:mainValue="t5"
                         v-bind:units="'рейтинг'"
                         v-bind:planWeight="'10'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
-                        v-bind:title="'Местное содержание'"
+                        v-bind:title="trans('visualcenter.MestnoeSoderj')" 
                         v-bind:mainValue="t6"
                         v-bind:units="'%'"
                         v-bind:isLastBlock="true"
