@@ -12,12 +12,27 @@ use App\Models\VisCenter\ImportForms\DZOstaff;
 
 class DruidController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('can:visualcenter3 dobycha')->only('visualcenter3');
+    //     $this->middleware('can:visualcenter4 corpKPI')->only('visualcenter4');
+    //     $this->middleware('can:visualcenter5 economic')->only('visualcenter5');
+    //     $this->middleware('can:visualcenter6 strategyKPI')->only('visualcenter6');
+    //     $this->middleware('can:visualcenter7 dobychaKPI')->only('visualcenter7');
+    // }
 
     protected $druidClient;
 
     public function __construct(DruidClient $druidClient)
     {
         $this->middleware('can:monitoring view main', ['only' => ['monitor']]);
+
+        $this->middleware('can:visualcenter view main')->only('visualcenter3','visualcenter4','visualcenter5','visualcenter6','visualcenter7');
+        // $this->middleware('can:visualcenter4 corpKPI')->only('visualcenter4');
+        // $this->middleware('can:visualcenter5 economic')->only('visualcenter5');
+        // $this->middleware('can:visualcenter6 strategyKPI')->only('visualcenter6');
+        // $this->middleware('can:visualcenter7 dobychaKPI')->only('visualcenter7');
+
         $this->druidClient = $druidClient;
     }
 
