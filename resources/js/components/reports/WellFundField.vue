@@ -70,7 +70,7 @@ export default {
       let uri = "http://172.20.103.157:8082/generic/";
         // let uri = "http://0.0.0.0:8090/generic/";
       let data = {
-        type: 'well_fund',
+        type: 'well_fund_field',
         period: 'days',
         dzo: this.org,
         report_date_start: `${this.end_date}`.concat(' 00:00:00'),
