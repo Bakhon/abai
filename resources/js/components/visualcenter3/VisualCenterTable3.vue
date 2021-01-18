@@ -805,7 +805,8 @@
                 <td>-->
 
           <div class="row mt-3">
-            <h5 v-if="item2=='oil_fact'"
+            <h5
+              v-if="item2 == 'oil_fact'"
               class="col assets4"
               :style="`${buttonHover14}`"
               @click="changeAssets('b14')"
@@ -859,13 +860,9 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-<<<<<<< HEAD
-                      <div v-if="index === 0" class="center">план {{opec}}</div>
-=======
                       <div v-if="index === 0" class="center">
-                        <!-- план -->{{ trans("visualcenter.plan") }}
-                        </div>
->>>>>>> 62c47fb6 (kzLang & ExcelImport updated)
+                        <!--план-->{{ trans("visualcenter.plan") }} {{ opec }}
+                      </div>
                       <!--old date-->
                       <div class="font" v-if="item.productionPlanForMonth">
                         {{
@@ -1037,7 +1034,7 @@
             </div>
           </div>
           <div class="row container-fluid" :style="`${displayHeadTables}`">
-            <div class="vis-table px-3">
+            <div class="vis-table px-3" :style="scroll">
               <table v-if="bigTable.length" class="table4 w-100">
                 <tbody>
                   <tr v-for="(item, index) in bigTable">
@@ -1057,13 +1054,9 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-<<<<<<< HEAD
-                      <div v-if="index === 0" class="center">план {{opec}}</div>
-=======
                       <div v-if="index === 0" class="center">
-                        <!-- план -->{{ trans("visualcenter.plan") }}
-                        </div>
->>>>>>> 62c47fb6 (kzLang & ExcelImport updated)
+                        <!--план-->{{ trans("visualcenter.plan") }} {{ opec }}
+                      </div>
                       <div class="font" v-if="item.planMonth">
                         {{ formatVisTableNumber(item.planMonth) }}
                         <div
@@ -1145,6 +1138,42 @@
                         %
                       </div>
                     </td>
+                    <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                      "
+                    >
+                      <div v-if="index === 0" class="center">ОПЕК+</div>
+                      <!--123-->
+                      <div
+                        class="triangle"
+                        :style="getAccident(item.factMonth - item.planMonth)" 
+                      ></div>
+                    </td>
+                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                      <div v-if="index === 0" class="center">
+                        Порывы/<br />посадка ЭЭ
+                      </div>
+                                          </td>
+                      <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                      "
+                    >
+                      <div v-if="index === 0" class="center">Авария в <br> системе СиП</div></td>
+                        <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyle' : 'tdNone'
+                      "
+                    >
+                      <div v-if="index === 0" class="center">Ограничения <br>КТО</div></td>
+                         <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                      "
+                    >
+                      <div v-if="index === 0" class="center">Прочие</div></td>
+                      
                   </tr>
                   <tr>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
@@ -1237,7 +1266,7 @@
               </table>
             </div>
 
-            <div class="vis-chart pl-3">
+            <div class="vis-chart pl-3" v-if="oneDate != 1">
               <div class="name-chart-left">
                 {{ nameChartLeft }}, {{ thousand }} {{ item4 }}
               </div>
