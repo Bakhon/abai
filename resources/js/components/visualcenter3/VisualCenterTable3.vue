@@ -1022,9 +1022,21 @@
                         }}
                       </div>
                     </td>
-                  </tr>
+                  </tr>                 
                 </tbody>
               </table>
+               <div  v-for="(item, index) in tables" colspan="5" style="background: rgb(54, 59, 104); height: 35em; border-top: 5px solid #272953">
+                      <div class="mt-3 text-center">Текст причины</div>
+                      <div class="ml-3">
+                      <div class="mt-2">{{item.opec}}</div>
+                      <div class="mt-2">{{item.impulses}}</div>
+                      <div class="mt-2">{{item.accident}}</div>
+                      <div class="mt-2">{{item.restrictions}}</div>
+                      <div class="mt-2">{{item.otheraccidents}}</div>
+                      </div></div>
+
+               
+                   
             </div>
 
             <div class="vis-chart pl-3">
@@ -1147,32 +1159,46 @@
                       <!--123-->
                       <div
                         class="triangle"
-                        :style="getAccident(item.factMonth - item.planMonth)" 
+                        :style="getAccident(item.opec)" 
                       ></div>
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div v-if="index === 0" class="center">
                         Порывы/<br />посадка ЭЭ
-                      </div>
+                      </div>   <div
+                        class="triangle"
+                        :style="getAccident(item.impulses)" 
+                      ></div>
                                           </td>
                       <td
                       :class="
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-                      <div v-if="index === 0" class="center">Авария в <br> системе СиП</div></td>
+                      <div v-if="index === 0" class="center">Авария в <br> системе СиП</div>   <div
+                        class="triangle"
+                        :style="getAccident(item.accident)" 
+                      ></div></td>
                         <td
                       :class="
                         index % 2 === 0 ? 'tdStyle' : 'tdNone'
                       "
                     >
-                      <div v-if="index === 0" class="center">Ограничения <br>КТО</div></td>
+                      <div v-if="index === 0" class="center">Ограничения <br>КТО</div>   <div
+                        class="triangle"
+                        :style="getAccident(item.restrictions)" 
+                      ></div></td>
                          <td
                       :class="
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-                      <div v-if="index === 0" class="center">Прочие</div></td>
+                      <div v-if="index === 0" class="center">Прочие</div>
+                         <div
+                        class="triangle"
+                        :style="getAccident(item.otheraccidents)" 
+                      ></div>
+                      </td>
                       
                   </tr>
                   <tr>
