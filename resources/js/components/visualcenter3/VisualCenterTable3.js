@@ -11,7 +11,7 @@ export default {
   },
   data: function () {
     return {
-      opec:'утв.',
+      opec:this.trans("visualcenter.utv"),
       quarter1:0,
       quarter2:0,
       oneDate:'',

@@ -859,13 +859,10 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-<<<<<<< HEAD
-                      <div v-if="index === 0" class="center">план {{opec}}</div>
-=======
                       <div v-if="index === 0" class="center">
-                        <!-- план -->{{ trans("visualcenter.plan") }}
-                        </div>
->>>>>>> 62c47fb6 (kzLang & ExcelImport updated)
+                        <!-- план  -->
+                        {{opec}}</div>
+
                       <!--old date-->
                       <div class="font" v-if="item.productionPlanForMonth">
                         {{
@@ -1057,13 +1054,9 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-<<<<<<< HEAD
-                      <div v-if="index === 0" class="center">план {{opec}}</div>
-=======
                       <div v-if="index === 0" class="center">
-                        <!-- план -->{{ trans("visualcenter.plan") }}
-                        </div>
->>>>>>> 62c47fb6 (kzLang & ExcelImport updated)
+                        <!-- план  -->{{ trans("visualcenter.plan") }}
+                        {{opec}}</div>
                       <div class="font" v-if="item.planMonth">
                         {{ formatVisTableNumber(item.planMonth) }}
                         <div
