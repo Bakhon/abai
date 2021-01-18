@@ -16,6 +16,7 @@
         <nav class="navbar navbar-light justify-content-start mb-3">
             <button class="btn btn-outline-secondary active" type="button" data-tab="monitoring">Модуль мониторинг</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="economic">Модуль экономика</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="bigdata">Модуль Прототип БД</button>
         </nav>
         <div class="tabs tab-monitoring active">
             <div class="form-check">
@@ -96,6 +97,20 @@
                 >
                 <label class="form-check-label"
                        for="permission_{{$permissions->get('economic view main')->id}}">Просмотр главной
+                    страницы</label>
+            </div>
+        </div>
+        <div class="tabs tab-bigdata">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('bigdata view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('bigdata view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata view main')->id)->isNotEmpty() ? 'checked' : ''}}>
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной
                     страницы</label>
             </div>
         </div>
