@@ -371,7 +371,7 @@ export default {
         });
         return [
           {
-            group: "Все месторождения",
+            group: `${this.trans('tr.fltr')}`,
             fields: [...filters],
           },
         ];
@@ -400,7 +400,7 @@ export default {
         });
         return [
           {
-            group: "Все горизонты",
+            group: `${this.trans('tr.trcmf1')}`,
             fields: [...filters],
           },
         ];
@@ -430,7 +430,7 @@ export default {
         });
         return [
           {
-            group: "Все способы добычи",
+            group: `${this.trans('tr.trcmf2')}`,
             fields: [...filters],
           },
         ];
@@ -460,7 +460,7 @@ export default {
         });
         return [
           {
-            group: "Все обьекты",
+            group: `${this.trans('tr.trcmf3')}`,
             fields: [...filters],
           },
         ];

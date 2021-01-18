@@ -39,11 +39,15 @@ export default {
     },
     baseName: {
       type: String,
-      default: "Количество скважин",
+      default() {
+        return `${this.trans('tr.trbn1')}`;
+      },
     },
     nameAlias: {
       type: String,
-      default: "с ",
+      default() {
+        return [`${this.trans('tr.trbn2')}`, `${this.trans('tr.trbn3')}`, `${this.trans('tr.trbn4')}`, `${this.trans('tr.trbn5')}`];
+      },
     },
     paramValues: {
       type: Array,
@@ -75,7 +79,7 @@ export default {
           this.paramValues.indexOf(key) !== -1
         ) {
           newNumbers.push({
-            name: `${this.baseName} ${this.nameAlias} ${key}`,
+            name: `${this.nameAlias[this.paramValues.indexOf(key)]}`,
             count: parsedList[key],
             percent: ((parsedList[key] / newNumbers[0].count) * 100).toFixed(2),
           });
@@ -84,7 +88,7 @@ export default {
       for (let key of this.paramValues) {
         if (!parsedList[key]) {
           newNumbers.push({
-            name: `${this.baseName} ${this.nameAlias} ${key}`,
+            name: `${this.nameAlias[this.paramValues.indexOf(key)]}`,
             count: 0,
             percent: 0,
           });
