@@ -279,27 +279,54 @@
 
 
           
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" v-if="edit"><i class="fas fa-plus"></i>
+          <button
+            type="button" 
+            
+            data-toggle="modal" 
+            data-target="#exampleModalCenter" 
+            v-if="edit" 
+            style="background: #272953; border: none; margin-left: 10px;"
+            title="Добавить скважины">
+            <svg 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24"
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg">
+              <path 
+                d="M18.5 12L5.5 12" 
+                stroke="white" 
+                stroke-width="1.5" 
+                stroke-linecap="round"/>
+              <path 
+                d="M12 5.5V18.5" 
+                stroke="white" 
+                stroke-width="1.5" 
+                stroke-linecap="round"/>
+            </svg>
+
             
           </button>
 
           <!-- Modal -->
-          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000"> 
+          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000;"> 
             <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content" style="width: 559px;">
+              <div class="modal-content modalcont" style="width: 806px;">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle">Скважины</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <h5 class="modal-title" id="exampleModalLongTitle" style="color: white;">Скважины</h5>
+                  <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">Закрыть
                     <span aria-hidden="true">&times;</span>
-                  </button>
+                  </button> -->
+                  <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
                 </div>
                 <div class="modal-body" style="display:flex">
 
 
                        <div>
                           <select
+                            
                             v-model="month"
-                            class="form-controll"
+                            class="form-controll modalselect"
                             id="companySelect"
                             @change="onChangeMonth($event)"
                           >
@@ -308,10 +335,10 @@
 
                           </select>
                         </div>
-                        <div>
+                        <div style="margin-left: 7px;">
                           <select
                             v-model="month"
-                            class="form-controll"
+                            class="form-controll modalselect"
                             id="companySelect"
                             @change="onChangeMonth($event)"
                           >
@@ -322,10 +349,10 @@
                             <option value="5">Аксай</option>
                           </select>
                         </div>
-                        <div>
+                        <div style="margin-left: 7px;">
                           <select
                             v-model="month"
-                            class="form-controll"
+                            class="form-controll modalselect"
                             id="companySelect"
                             @change="onChangeMonth($event)"
                           >
@@ -334,10 +361,10 @@
 
                           </select>
                         </div>
-                        <div>
+                        <div style="margin-left: 7px;">
                           <select
                             v-model="month"
-                            class="form-controll"
+                            class="form-controll modalselect"
                             id="companySelect"
                             @change="onChangeMonth($event)"
                           >
@@ -346,11 +373,81 @@
                           </select>
                         </div>
 
-         
+                        <a
+                            style="margin-left: 10px; cursor: pointer; color: white;"
+                            >
+                            <svg 
+                                width="24" 
+                                height="24" 
+                                viewBox="0 0 24 24"
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg">
+                              <path 
+                                d="M18.5 12L5.5 12" 
+                                stroke="white" 
+                                stroke-width="1.5" 
+                                stroke-linecap="round"/>
+                              <path 
+                                d="M12 5.5V18.5" 
+                                stroke="white" 
+                                stroke-width="1.5" 
+                                stroke-linecap="round"/>
+                            </svg>Добавить
+                          </a>
+
+                        <a
+                            style="margin-left: 3px; cursor: pointer; color: white;"
+                            >
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M17.6574 17.6575L6.34367 6.34383"
+                                  stroke="white"
+                                  stroke-width="1.4"
+                                  stroke-linecap="round"
+                                />
+                                <path
+                                  d="M17.6563 6.34383L6.34262 17.6575"
+                                  stroke="white"
+                                  stroke-width="1.4"
+                                  stroke-linecap="round"
+                                />
+                            </svg>Отмена
+                          </a>
+
+
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-                  <button type="button" class="btn btn-primary">Сохранить</button>
+                  <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button> -->
+                  <!-- <button type="button" class="btn btn-primary">Сохранить</button> -->
+
+                  <table class="table" style="height: 93px;">
+                    <thead>
+                      <tr>
+                        <th scope="col">Месторождение</th>
+                        <th scope="col">Состояние скважины</th>
+                        <th scope="col">Номер скважины</th>
+                        <th scope="col">Горизонт</th>
+                        <th scope="col">Обьект</th>
+                        <th scope="col">Способ эксплуатации</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -359,7 +456,7 @@
           <a
             v-if="edit"
             v-bind:title="trans('tr.trtlp6')"
-            style="margin-left: 13px; cursor: pointer;"
+            style="margin-left: 10px; cursor: pointer;"
             @click="savetable()"
             ><svg
               width="24"
@@ -1603,7 +1700,7 @@
                   <td v-if="!edit">
                     <span v-if="row.h_up_perf_md[0] != null">
                       {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
-                    </span>
+                    </span>ок
                   </td>
                   <td v-if="edit">
                     {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
@@ -7359,6 +7456,14 @@ table::-webkit-scrollbar-thumb:hover {
 table::-webkit-scrollbar-corner {
   background: #333975;
 }
+.modalcont {
+  background: #272953;
+}
+.modalselect {
+  background: #334296;
+  color: #fff;
+}
+
 </style>
 <style>
 .tr-field-filter.tr-field-filter {
