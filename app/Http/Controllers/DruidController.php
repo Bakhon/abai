@@ -331,12 +331,6 @@ class DruidController extends Controller
     {
         return view('reports.dob');
     }
-
-    public function gno()
-    {
-        return view('gno.gno');
-    }
-
     public function monitor()
     {
         return view('monitor.monitor');

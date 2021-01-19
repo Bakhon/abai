@@ -11,6 +11,11 @@ class PodborGNOPermissionsSeeder extends Seeder
      */
     public function run()
     {
-        //
+        \Spatie\Permission\Models\Permission::create(
+            [
+                'name' => 'podborGno view main',
+      //          'guard' => 'web'
+            ]
+        );
     }
 }
