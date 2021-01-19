@@ -1059,7 +1059,7 @@ export default {
       });
       if (start == end) {
         this.oneDate = 1;
-        this.scroll = "overflow-y: unset;";
+        this.scroll = " flex: unset!important; max-height80%; max-width: 100%!important; overflow:hidden; overflow: auto;" ;
       } else { this.oneDate = ''; this.scroll = ""; }
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
@@ -1194,6 +1194,11 @@ export default {
               .groupBy("dzo")
               .map((dzo, id) => ({
                 dzo: id,
+                opec: _.sumBy(dzo,'opec2'),
+                impulses: _.sumBy(dzo,'impulses'),
+                accident: _.sumBy(dzo,'accident'),
+                restrictions: _.sumBy(dzo,'restrictions'),
+                otheraccidents: _.sumBy(dzo,'otheraccidents'),
                 productionFactForMonth: _.round(_.sumBy(dzo, productionFact), 0),
                 productionPlanForMonth: _.round(_.sumBy(dzo, productionPlan), 0),
               }))
@@ -1311,10 +1316,12 @@ export default {
           var productionPlanAndFactMonth = _(dataWithMay)
             .groupBy("dzo")
             .map((dzo, id) => ({
-              dzo: id,
-              
-              //productionFactForChart: _.round(_.sumBy(dzo,'fond_nagnetat_others'), 0),
-              opec: _.round(_.groupBy(dzo,'opec2'), 0),
+              dzo: id,         
+              opec: _.sumBy(dzo,'opec2'),
+              impulses: _.sumBy(dzo,'impulses'),
+              accident: _.sumBy(dzo,'accident'),
+              restrictions: _.sumBy(dzo,'restrictions'),
+              otheraccidents: _.sumBy(dzo,'otheraccidents'),
               productionFactForChart: _.round(_.sumBy(dzo, productionFact), 0),
               productionPlanForChart: _.round(_.sumBy(dzo, productionPlan), 0),
             }))
@@ -1339,39 +1346,7 @@ export default {
           this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
 
-          //Summ plan and fact from dzo nagnetatWells k1q for month!!!
-          /*var productionPlanAndFactMonthWells = _(dataWithMay)
-            .groupBy("data")
-            .map((__time, id) => ({
-              __time: id,
-              fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
-              fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
-              fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
-              fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
-              fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
-              fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
-              fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
-              fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
-            }))
-            .value();
-
-          var productionPlanAndFactMonthWellsName = [];
-
-          productionPlanAndFactMonthWellsName.push(
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
-
-          );
-
-
-          this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
-*/
+       
 
 
           if (start === end) {
@@ -1622,11 +1597,19 @@ export default {
           }
 
           let opec=[];
+          let impulses = [];
+          let accident= [];
+          let restrictions= [];
+          let otheraccidents= [];
           _.forEach(productionPlanAndFactMonth, function (item) { //k1q!!!
             factMonth.push({ factMonth: item.productionFactForChart });
             planMonth.push({ planMonth: item.productionPlanForChart });
             dzoMonth.push({ dzoMonth: item.dzo });
             opec.push({ opec: item.opec });
+            impulses.push({ impulses: item.impulses });
+            accident.push({ accident: item.accident });
+            restrictions.push({ restrictions: item.restrictions });
+            otheraccidents.push({ otheraccidents: item.otheraccidents });
           });
 
 
@@ -1710,8 +1693,12 @@ export default {
 
           this.covid = covid;
 
-          var bigTable = _.zipWith(
+          var bigTable = _.zipWith(            
             opec,
+            impulses,
+            accident,
+            restrictions,
+            otheraccidents,
             productionFactPercent,
             dzoPercent,
             dzoMonth,
@@ -1720,6 +1707,10 @@ export default {
             planMonth,
             factMonth,
             (opec,
+              impulses,
+              accident,
+              restrictions,
+              otheraccidents,
               productionFactPercent,
               dzoPercent,
               dzoMonth,
@@ -1730,6 +1721,10 @@ export default {
             ) =>
               _.defaults(
                 opec,
+                impulses,
+                accident,
+                restrictions,
+                otheraccidents,
                 productionFactPercent,
                 dzoPercent,
                 dzoMonth,
@@ -2378,11 +2373,11 @@ export default {
 
 
     getAccident(a) {
-      if (a < 0) {
+      if (a) {
         return "margin-top: 3px;border-top: 6px solid rgb(227, 30, 36); margin: 10px 25px 0px;";
       } else {
 
-        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 10px 25px 0px;"
+        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 25px 25px 0px;"
       }
     },
 
