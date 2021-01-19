@@ -25,12 +25,9 @@
             <label>{{ trans('monitoring.inhibitor.fields.density') }}</label>
             <div class="form-label-group">
                 <input
-                    v-model="formFields.price"
                     type="number"
                     step="0.01"
-                    :min="validationParams.price.min"
-                    :max="validationParams.price.max"
-                    name="price"
+                    name="density"
                     class="form-control"
                 >
             </div>

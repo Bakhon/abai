@@ -6,9 +6,9 @@ return array (
   array (
     'fields' => 
     array (
-      'density' => 'Density',
       'price' => 'Price',
       'title' => 'Name',
+      'density' => 'Density',
     ),
   ),
 );
