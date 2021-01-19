@@ -101,4 +101,7 @@ return array (
   'celevoi_parametr' => 'Target parameter',
   'inclinometria' => 'Inclinometry',
   'zakrit' => 'Close',
+  'zenitnii_ugol' => 'Deviation',
+  'azimut' => 'Azimut',
+  'temp_nabora_krivizni' => 'Dog leg severity',
 );
