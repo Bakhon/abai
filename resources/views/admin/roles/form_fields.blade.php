@@ -16,8 +16,8 @@
         <nav class="navbar navbar-light justify-content-start mb-3">
             <button class="btn btn-outline-secondary active" type="button" data-tab="monitoring">Модуль мониторинг</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="economic">Модуль экономика</button>
-            <!-- <button class="btn btn-outline-secondary ml-3" type="button" data-tab="bigdata">Модуль Прототип БД</button>
-            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="tr">Модуль ТР</button> -->
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="bigdata">Модуль Прототип БД</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="tr">Модуль ТР</button>
         </nav>
         <div class="tabs tab-monitoring active">
             <div class="form-check">
