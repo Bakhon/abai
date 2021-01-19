@@ -805,7 +805,8 @@
                 <td>-->
 
           <div class="row mt-3">
-            <h5 v-if="item2=='oil_fact'"
+            <h5
+              v-if="item2 == 'oil_fact'"
               class="col assets4"
               :style="`${buttonHover14}`"
               @click="changeAssets('b14')"
@@ -859,13 +860,9 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-<<<<<<< HEAD
-                      <div v-if="index === 0" class="center">план {{opec}}</div>
-=======
                       <div v-if="index === 0" class="center">
-                        <!-- план -->{{ trans("visualcenter.plan") }}
-                        </div>
->>>>>>> 62c47fb6 (kzLang & ExcelImport updated)
+                        <!--план-->{{ trans("visualcenter.plan") }} {{ opec }}
+                      </div>
                       <!--old date-->
                       <div class="font" v-if="item.productionPlanForMonth">
                         {{
@@ -1025,9 +1022,21 @@
                         }}
                       </div>
                     </td>
-                  </tr>
+                  </tr>                 
                 </tbody>
               </table>
+               <div  v-for="(item, index) in tables" colspan="5" style="background: rgb(54, 59, 104); height: 35em; border-top: 5px solid #272953">
+                      <div class="mt-3 text-center">Текст причины</div>
+                      <div class="ml-3">
+                      <div class="mt-2">{{item.opec}}</div>
+                      <div class="mt-2">{{item.impulses}}</div>
+                      <div class="mt-2">{{item.accident}}</div>
+                      <div class="mt-2">{{item.restrictions}}</div>
+                      <div class="mt-2">{{item.otheraccidents}}</div>
+                      </div></div>
+
+               
+                   
             </div>
 
             <div class="vis-chart pl-3">
@@ -1037,7 +1046,7 @@
             </div>
           </div>
           <div class="row container-fluid" :style="`${displayHeadTables}`">
-            <div class="vis-table px-3">
+            <div class="vis-table px-3" :style="scroll">
               <table v-if="bigTable.length" class="table4 w-100">
                 <tbody>
                   <tr v-for="(item, index) in bigTable">
@@ -1057,13 +1066,9 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-<<<<<<< HEAD
-                      <div v-if="index === 0" class="center">план {{opec}}</div>
-=======
                       <div v-if="index === 0" class="center">
-                        <!-- план -->{{ trans("visualcenter.plan") }}
-                        </div>
->>>>>>> 62c47fb6 (kzLang & ExcelImport updated)
+                        <!--план-->{{ trans("visualcenter.plan") }} {{ opec }}
+                      </div>
                       <div class="font" v-if="item.planMonth">
                         {{ formatVisTableNumber(item.planMonth) }}
                         <div
@@ -1145,6 +1150,56 @@
                         %
                       </div>
                     </td>
+                    <td v-if="oneDate == 1"
+                      :class="
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets' : 'tdStyleLight2 width-accidnets '
+                      "
+                    >
+                      <div v-if="index === 0" class="center">ОПЕК+</div>
+                      <!--123-->
+                      <div
+                        class="triangle"
+                        :style="getAccident(item.opec)" 
+                      ></div>
+                    </td>
+                    <td v-if="oneDate == 1" :class="index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '">
+                      <div v-if="index === 0" class="center">
+                        Порывы/<br />посадка ЭЭ
+                      </div>   <div
+                        class="triangle"
+                        :style="getAccident(item.impulses)" 
+                      ></div>
+                                          </td>
+                      <td v-if="oneDate == 1"
+                      :class="
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
+                      "
+                    >
+                      <div v-if="index === 0" class="center">Авария в <br> системе СиП</div>   <div
+                        class="triangle"
+                        :style="getAccident(item.accident)" 
+                      ></div></td>
+                        <td v-if="oneDate == 1"
+                      :class="
+                        index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '
+                      "
+                    >
+                      <div v-if="index === 0" class="center">Ограничения <br>КТО</div>   <div
+                        class="triangle"
+                        :style="getAccident(item.restrictions)" 
+                      ></div></td>
+                         <td v-if="oneDate == 1"
+                      :class="
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
+                      "
+                    >
+                      <div v-if="index === 0" class="center">Прочие</div>
+                         <div
+                        class="triangle"
+                        :style="getAccident(item.otheraccidents)" 
+                      ></div>
+                      </td>
+                      
                   </tr>
                   <tr>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
@@ -1237,7 +1292,7 @@
               </table>
             </div>
 
-            <div class="vis-chart pl-3">
+            <div class="vis-chart pl-3" v-if="oneDate != 1">
               <div class="name-chart-left">
                 {{ nameChartLeft }}, {{ thousand }} {{ item4 }}
               </div>

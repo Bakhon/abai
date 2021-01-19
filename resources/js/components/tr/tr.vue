@@ -455,7 +455,7 @@
 
           <a
             v-if="edit"
-            title="Сохранить"
+            v-bind:title="trans('tr.trtlp6')"
             style="margin-left: 10px; cursor: pointer;"
             @click="savetable()"
             ><svg
@@ -506,7 +506,7 @@
           <a
             v-if="edit"
             class="trgraph"
-            title="Отмена"
+            v-bind:title="trans('tr.trtlp5')"
             style="cursor: pointer;"
             data-toggle="tooltip"
             data-placement="top"
@@ -536,7 +536,7 @@
           <a
             v-if="!edit"
             class="trgraph"
-            title="Показать графики"
+            v-bind:title="trans('tr.trtlp1')"
             data-toggle="tooltip"
             data-placement="top"
             href="tr_charts"
@@ -559,7 +559,7 @@
 
           <a
             v-if="!edit"
-            title="Редактировать"
+            v-bind:title="trans('tr.trtlp2')"
             style="cursor: pointer;"
             data-toggle="tooltip"
             data-placement="top"
@@ -589,7 +589,7 @@
               color: white;
               border: none;
             "
-            :title="isfulltable ? 'Короткая версия' : 'Длинная версия'"
+            :title="isfulltable ? trans('tr.trtlp3') : trans('tr.trtlp4')"
             data-toggle="tooltip"
             data-placement="top"
           >
@@ -2041,7 +2041,6 @@
                       )}`"
                     >
                     </span>
-                    <!-- <input @change="editrow(row, row_index)" v-model="row.q_theor[0]" :disabled="!edit"> -->
                     <span v-if="Math.round(row.q_theor[0] * 10) / 10 != '0'">{{
                       Math.round(row.q_theor[0] * 10) / 10
                     }}</span>
@@ -6947,7 +6946,7 @@ export default {
       filter: [...fields],
       fieldFilterOptions: [
         {
-          group: "Все месторождения",
+          group: this.trans('tr.traw'),
           fields: [...fields],
         },
       ],

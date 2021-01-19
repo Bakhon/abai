@@ -102,4 +102,7 @@ return array (
   'celevoi_parametr' => 'Мақсатты параметр',
   'inclinometria' => 'Инклинометрия',
   'zakrit' => 'Жабу',
+  'zenitnii_ugol' => 'Зенит бұрышы',
+  'azimut' => 'Азимут',
+  'temp_nabora_krivizni' => 'Қисықтық жиынтығының қарқыны',
 );

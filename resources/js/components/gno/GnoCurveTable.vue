@@ -14,7 +14,6 @@
 
 <script>
 import { Scatter } from 'vue-chartjs';
-//
 import { Plotly } from "vue-plotly";
 import { eventBus } from "../../event-bus.js";
 
@@ -26,6 +25,19 @@ export default {
   props: ["postTitle"],
   data: function () {
     return {
+      titleXRu: "Дебит жидкости, м³/сут.",
+      titleXKz: "Сұйықтық дебиті, м³/тәул.",
+      titleXEn: "Liquid flow rate, м³/d.",
+      titleYRu: "Давление, атм/газосодержание, %",
+      titleYKz: "Қысым, атм / газ құрамы, %",
+      titleYEn: "Pressure, atm/gas saturation, %",
+      nameKP: "Кривая притока" ,
+      namePN: "Давление на приёме насоса",
+      nameGN: "Газосодержание в насосе",
+      nameTR: "Текущий режим",
+      nameCR: "Целевой режим",
+      namePR: "Потенциальный режим",
+      markers: [],
       buttonsToRemove: [
         'zoom2d',
         'pan2d',
@@ -64,7 +76,7 @@ export default {
           t: 30
         },
         xaxis: {
-          title: "Дебит жидкости, м³/сут.",
+          title: '',
           hoverformat: ".1f",
           // showline: true,
           // autorange: false,
@@ -83,7 +95,7 @@ export default {
           linecolor: "#454D7D"
         },
         yaxis: {
-          title: "Давление, атм / Газосодержание, % ",
+          title: '',
           hoverformat: ".1f",
           rangemode: 'nonnegative',
           showline: true,
@@ -154,9 +166,8 @@ export default {
         q_oil2.push(q_oil);
       });
 
-      this.data = [
-        {
-          name: "Кривая притока",
+      this.data = [ {
+          name: this.nameKP,
           legendgroup: "group1",
           x: qo_points2,
           y: ipr_points2,
@@ -174,7 +185,7 @@ export default {
         },
 
         {
-          name: "Давление на приёме насоса",
+          name: this.namePN,
           legendgroup: "group2",
           x: qo_points2,
           y: pintake_points2,
@@ -187,7 +198,7 @@ export default {
         },
 
         {
-          name: "Газосодержание в насосе",
+          name: this.nameGN,
           legendgroup: "group3",
           x: qo_points2,
           y: freegas_points2,
@@ -200,7 +211,7 @@ export default {
         },
 
         {
-          name: "Текущий режим",
+          name: this.nameTR,
           legendgroup: "group4",
           x: [],
           y: [],
@@ -217,7 +228,7 @@ export default {
         },
 
         {
-          name: "Целевой режим",
+          name: this.nameCR,
           legendgroup: "group5",
           x: [],
           y: [],
@@ -234,7 +245,7 @@ export default {
         },
 
         {
-          name: "Потенциальный режим",
+          name: this.namePR,
           legendgroup: "group6",
           x: [],
           y: [],
@@ -302,10 +313,38 @@ export default {
       }
     }
 
+
+    let url = `${window.location.pathname}`
+    let langUrl = url.slice(1, 3);
+    if(langUrl === 'ru') {
+      this.layout.xaxis.title = this.titleXRu
+      this.layout.yaxis.title = this.titleYRu
+    } else if(langUrl === 'kz') {  
+      this.layout.xaxis.title = this.titleXKz
+      this.layout.yaxis.title = this.titleYKz
+      this.nameKP = "Ағын қисығы"
+      this.namePN = "Сорғының қабылдау қысымы"
+      this.nameGN = "Газ құрамы"
+      this.nameTR = "Ағымдағы  режим"
+      this.nameCR = "Мақсатты режим"
+      this.namePR = "Потенциалдық  режим"
+    } else {
+      this.layout.xaxis.title = this.titleXEn
+      this.layout.yaxis.title = this.titleYEn
+      this.nameKP = "Inflow curve"
+      this.namePN = "Intake pressure"
+      this.nameGN = "Gas saturation"
+      this.nameTR = "Current mode"
+      this.nameCR = "Target mode"
+      this.namePR = "Potential mode"
+    }
+ 
+    
+
   },
   updated: function() {
     this.$eventBus.$on("newCurveLineData", this.setLine);
     this.$eventBus.$on("newPointsData", this.setPoints);
   }
-};
+}
 </script>
