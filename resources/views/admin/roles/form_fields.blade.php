@@ -103,8 +103,6 @@
                     страницы</label>
             </div>
         </div>
-<<<<<<< HEAD
-=======
         <div class="tabs tab-podborGno">
             <div class="form-check">
                 <input
@@ -120,7 +118,6 @@
                     страницы</label>
             </div>
         </div>
->>>>>>> 5293376c46cb608f8ecd585d971b20c9c5f54caf
         <div class="tabs tab-bigdata">
             <div class="form-check">
                 <input
@@ -131,13 +128,10 @@
                         value="{{$permissions->get('bigdata view main')->id}}"
                         {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata view main')->id)->isNotEmpty() ? 'checked' : ''}}>
                 <label class="form-check-label"
-<<<<<<< HEAD
                        for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной
-=======
                        for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной</label>
             </div>
         </div>
->>>>>>> 5293376c46cb608f8ecd585d971b20c9c5f54caf
         <div class="tabs tab-tr">
             <div class="form-check">
                 <input
