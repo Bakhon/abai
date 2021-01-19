@@ -1150,9 +1150,9 @@
                         %
                       </div>
                     </td>
-                    <td
+                    <td v-if="oneDate == 1"
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets' : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">ОПЕК+</div>
@@ -1162,7 +1162,7 @@
                         :style="getAccident(item.opec)" 
                       ></div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <td v-if="oneDate == 1" :class="index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '">
                       <div v-if="index === 0" class="center">
                         Порывы/<br />посадка ЭЭ
                       </div>   <div
@@ -1170,27 +1170,27 @@
                         :style="getAccident(item.impulses)" 
                       ></div>
                                           </td>
-                      <td
+                      <td v-if="oneDate == 1"
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">Авария в <br> системе СиП</div>   <div
                         class="triangle"
                         :style="getAccident(item.accident)" 
                       ></div></td>
-                        <td
+                        <td v-if="oneDate == 1"
                       :class="
-                        index % 2 === 0 ? 'tdStyle' : 'tdNone'
+                        index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">Ограничения <br>КТО</div>   <div
                         class="triangle"
                         :style="getAccident(item.restrictions)" 
                       ></div></td>
-                         <td
+                         <td v-if="oneDate == 1"
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">Прочие</div>
