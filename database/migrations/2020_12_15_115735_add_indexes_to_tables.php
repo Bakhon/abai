@@ -13,104 +13,104 @@ class AddIndexesToTables extends Migration
      */
     public function up()
     {
-        Schema::table('omg_n_g_d_u_s', function (Blueprint $table) {
+        // Schema::table('omg_n_g_d_u_s', function (Blueprint $table) {
 
-            $table->bigInteger('field_id')->unsigned()->change();
-            $table->bigInteger('gu_id')->unsigned()->change();
-            $table->bigInteger('ngdu_id')->unsigned()->change();
-            $table->bigInteger('cdng_id')->unsigned()->change();
-            $table->bigInteger('zu_id')->unsigned()->change();
-            $table->bigInteger('well_id')->unsigned()->change();
+        //     $table->bigInteger('field_id')->unsigned()->change();
+        //     $table->bigInteger('gu_id')->unsigned()->change();
+        //     $table->bigInteger('ngdu_id')->unsigned()->change();
+        //     $table->bigInteger('cdng_id')->unsigned()->change();
+        //     $table->bigInteger('zu_id')->unsigned()->change();
+        //     $table->bigInteger('well_id')->unsigned()->change();
 
-            $table->foreign('field_id')->references('id')->on('fields')->onDelete('set null');
-            $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
-            $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
-            $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
-            $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
-            $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
-        });
+        //     $table->foreign('field_id')->references('id')->on('fields')->onDelete('set null');
+        //     $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
+        //     $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
+        //     $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
+        //     $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
+        //     $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
+        // });
 
-        Schema::table('omg_u_h_e_s', function (Blueprint $table) {
+        // Schema::table('omg_u_h_e_s', function (Blueprint $table) {
 
-            $table->bigInteger('gu_id')->unsigned()->change();
-            $table->bigInteger('ngdu_id')->unsigned()->change();
-            $table->bigInteger('cdng_id')->unsigned()->change();
-            $table->bigInteger('zu_id')->unsigned()->change();
-            $table->bigInteger('well_id')->unsigned()->change();
+        //     $table->bigInteger('gu_id')->unsigned()->change();
+        //     $table->bigInteger('ngdu_id')->unsigned()->change();
+        //     $table->bigInteger('cdng_id')->unsigned()->change();
+        //     $table->bigInteger('zu_id')->unsigned()->change();
+        //     $table->bigInteger('well_id')->unsigned()->change();
 
-            $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
-            $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
-            $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
-            $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
-            $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
-        });
+        //     $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
+        //     $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
+        //     $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
+        //     $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
+        //     $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
+        // });
 
-        Schema::table('omg_c_a_s', function (Blueprint $table) {
+        // Schema::table('omg_c_a_s', function (Blueprint $table) {
 
-            $table->bigInteger('gu_id')->unsigned()->change();
-            $table->bigInteger('ngdu_id')->unsigned()->change();
-            $table->bigInteger('cdng_id')->unsigned()->change();
-            $table->bigInteger('zu_id')->unsigned()->change();
-            $table->bigInteger('well_id')->unsigned()->change();
+        //     $table->bigInteger('gu_id')->unsigned()->change();
+        //     $table->bigInteger('ngdu_id')->unsigned()->change();
+        //     $table->bigInteger('cdng_id')->unsigned()->change();
+        //     $table->bigInteger('zu_id')->unsigned()->change();
+        //     $table->bigInteger('well_id')->unsigned()->change();
 
-            $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
-            $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
-            $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
-            $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
-            $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
-        });
+        //     $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
+        //     $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
+        //     $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
+        //     $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
+        //     $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
+        // });
 
-        Schema::table('water_measurements', function (Blueprint $table) {
+        // Schema::table('water_measurements', function (Blueprint $table) {
 
-            $table->bigInteger('water_type_by_sulin_id')->unsigned()->change();
-            $table->bigInteger('thionic_bacteria_id')->unsigned()->change();
-            $table->bigInteger('hydrocarbon_oxidizing_bacteria_id')->unsigned()->change();
-            $table->bigInteger('sulphate_reducing_bacteria_id')->unsigned()->change();
-            $table->bigInteger('other_objects_id')->unsigned()->change();
-            $table->bigInteger('gu_id')->unsigned()->change();
-            $table->bigInteger('ngdu_id')->unsigned()->change();
-            $table->bigInteger('cdng_id')->unsigned()->change();
-            $table->bigInteger('zu_id')->unsigned()->change();
-            $table->bigInteger('well_id')->unsigned()->change();
+        //     $table->bigInteger('water_type_by_sulin_id')->unsigned()->change();
+        //     $table->bigInteger('thionic_bacteria_id')->unsigned()->change();
+        //     $table->bigInteger('hydrocarbon_oxidizing_bacteria_id')->unsigned()->change();
+        //     $table->bigInteger('sulphate_reducing_bacteria_id')->unsigned()->change();
+        //     $table->bigInteger('other_objects_id')->unsigned()->change();
+        //     $table->bigInteger('gu_id')->unsigned()->change();
+        //     $table->bigInteger('ngdu_id')->unsigned()->change();
+        //     $table->bigInteger('cdng_id')->unsigned()->change();
+        //     $table->bigInteger('zu_id')->unsigned()->change();
+        //     $table->bigInteger('well_id')->unsigned()->change();
 
-            $table->foreign('water_type_by_sulin_id')->references('id')->on('water_type_by_sulins')->onDelete('set null');
-            $table->foreign('thionic_bacteria_id')->references('id')->on('thionic_bacterias')->onDelete('set null');
-            $table->foreign('hydrocarbon_oxidizing_bacteria_id')->references('id')->on('hydrocarbon_oxidizing_bacterias')->onDelete('set null');
-            $table->foreign('sulphate_reducing_bacteria_id')->references('id')->on('sulphate_reducing_bacterias')->onDelete('set null');
-            $table->foreign('other_objects_id')->references('id')->on('other_objects')->onDelete('set null');
-            $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
-            $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
-            $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
-            $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
-            $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
-        });
+        //     $table->foreign('water_type_by_sulin_id')->references('id')->on('water_type_by_sulins')->onDelete('set null');
+        //     $table->foreign('thionic_bacteria_id')->references('id')->on('thionic_bacterias')->onDelete('set null');
+        //     $table->foreign('hydrocarbon_oxidizing_bacteria_id')->references('id')->on('hydrocarbon_oxidizing_bacterias')->onDelete('set null');
+        //     $table->foreign('sulphate_reducing_bacteria_id')->references('id')->on('sulphate_reducing_bacterias')->onDelete('set null');
+        //     $table->foreign('other_objects_id')->references('id')->on('other_objects')->onDelete('set null');
+        //     $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
+        //     $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
+        //     $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
+        //     $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
+        //     $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
+        // });
 
-        Schema::table('oil_gases', function (Blueprint $table) {
+        // Schema::table('oil_gases', function (Blueprint $table) {
 
-            $table->bigInteger('other_objects_id')->unsigned()->change();
-            $table->bigInteger('gu_id')->unsigned()->change();
-            $table->bigInteger('ngdu_id')->unsigned()->change();
-            $table->bigInteger('cdng_id')->unsigned()->change();
-            $table->bigInteger('zu_id')->unsigned()->change();
-            $table->bigInteger('well_id')->unsigned()->change();
+        //     $table->bigInteger('other_objects_id')->unsigned()->change();
+        //     $table->bigInteger('gu_id')->unsigned()->change();
+        //     $table->bigInteger('ngdu_id')->unsigned()->change();
+        //     $table->bigInteger('cdng_id')->unsigned()->change();
+        //     $table->bigInteger('zu_id')->unsigned()->change();
+        //     $table->bigInteger('well_id')->unsigned()->change();
 
-            $table->foreign('other_objects_id')->references('id')->on('other_objects')->onDelete('set null');
-            $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
-            $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
-            $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
-            $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
-            $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
-        });
+        //     $table->foreign('other_objects_id')->references('id')->on('other_objects')->onDelete('set null');
+        //     $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
+        //     $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
+        //     $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
+        //     $table->foreign('zu_id')->references('id')->on('zus')->onDelete('set null');
+        //     $table->foreign('well_id')->references('id')->on('wells')->onDelete('set null');
+        // });
 
-        Schema::table('corrosions', function (Blueprint $table) {
-            $table->bigInteger('gu_id')->unsigned()->change();
-            $table->bigInteger('ngdu_id')->unsigned()->change();
-            $table->bigInteger('cdng_id')->unsigned()->change();
+        // Schema::table('corrosions', function (Blueprint $table) {
+        //     $table->bigInteger('gu_id')->unsigned()->change();
+        //     $table->bigInteger('ngdu_id')->unsigned()->change();
+        //     $table->bigInteger('cdng_id')->unsigned()->change();
 
-            $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
-            $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
-            $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
-        });
+        //     $table->foreign('gu_id')->references('id')->on('gus')->onDelete('set null');
+        //     $table->foreign('ngdu_id')->references('id')->on('ngdus')->onDelete('set null');
+        //     $table->foreign('cdng_id')->references('id')->on('cdngs')->onDelete('set null');
+        // });
 
     }
 

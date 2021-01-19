@@ -19,6 +19,7 @@
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="bigdata">Модуль Прототип БД</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="tr">Модуль ТР</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="viscenter">Модуль центр визуализации</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="podborGno">Модуль Подбор ГНО</button>
         </nav>
         <div class="tabs tab-monitoring active">
             <div class="form-check">
@@ -99,6 +100,21 @@
                 >
                 <label class="form-check-label"
                        for="permission_{{$permissions->get('economic view main')->id}}">Просмотр главной
+                    страницы</label>
+            </div>
+        </div>
+        <div class="tabs tab-podborGno">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('podborGno view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('podborGno view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('podborGno view main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('podborGno view main')->id}}">Просмотр главной
                     страницы</label>
             </div>
         </div>

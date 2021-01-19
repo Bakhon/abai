@@ -2087,6 +2087,8 @@ export default {
       expAnalysisData:{
         NNO1:null,
         NNO2:null,
+        fieldNNO1:null,
+        fieldNNO2:null,
         prs1:null,
         prs2:null,
         qoilEcn:null,
@@ -2575,12 +2577,14 @@ export default {
         let jsonData = JSON.stringify(
           {"well_number": this.wellNumber,
             "exp_meth": "ШГН",
+            "field": this.field,
           }
         )
 
         let jsonData2 = JSON.stringify(
           {"well_number": this.wellNumber,
             "exp_meth": "ЭЦН",
+            "field": this.field,
           }
         )
 
@@ -2598,6 +2602,7 @@ export default {
           this.expAnalysisData.NNO1=data.NNO
           this.expAnalysisData.qoilShgn=this.qOilExpShgn
           this.expAnalysisData.prs1=data.prs
+          this.expAnalysisData.fieldNNO1=data.fieldNNO
         } else {
           console.log("No data");
         }
@@ -2607,6 +2612,7 @@ export default {
           this.expAnalysisData.NNO2=data2.NNO
           this.expAnalysisData.qoilEcn=this.qOilExpEcn
           this.expAnalysisData.prs2=data2.prs
+          this.expAnalysisData.fieldNNO2=data.fieldNNO
         } else {
           console.log("No data");
         }

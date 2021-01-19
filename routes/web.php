@@ -64,7 +64,7 @@ Route::group(
                 Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
                 Route::get('/visualcenter6', 'DruidController@visualcenter6')->name('visualcenter6');
                 Route::get('/visualcenter7', 'DruidController@visualcenter7')->name('visualcenter7');
-                Route::get('/podborgno', 'DruidController@gno')->name('gno');
+                Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
                 Route::get('/calcgtm', 'DruidController@calcGtm')->name('calcgtm');
