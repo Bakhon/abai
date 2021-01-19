@@ -30,11 +30,16 @@
     <div class="dropdown-menu">
         <div class="move-menu">
             <li class="left-menu-li"><a href="{{route('bigdata')}}">Модуль "Прототип БД ABAI"</a></li>
+            @if(auth()->user()->can('visualcenter view main'))
             <li class="left-menu-li"><a href="{{route('visualcenter3')}}">Модуль "Центр визуализации"</a></li>
+            @endif
+            
             @if(auth()->user()->can('tr view main'))
             <li class="left-menu-li"><a href="{{route('tr')}}">Модуль "Технологический режим"</a></li>
             @endif
+            @if(auth()->user()->can('podborGno view main'))
             <li class="left-menu-li"><a href="{{route('gno')}}">Модуль "Подбор ГНО"</a></li>
+            @endif
             <li class="left-menu-li"><a href="{{route('monitor')}}">Модуль "Мониторинг осложнений"</a>
                 <ul class="dropdown-child">
                     <li class="left-menu-li">

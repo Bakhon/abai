@@ -45,8 +45,10 @@ export default {
       },
       innerWellsButtonProstoi: 0,
       innerWellsButtonProstoi2: 0,
-      nameChartLeft: 'Добыча нефти',
-      oilChartHeadName: 'Динамика добычи нефти',
+      nameChartLeft: this.trans('visualcenter.getoil'),
+      // 'Добыча нефти',
+      oilChartHeadName: this.trans('visualcenter.getoildynamic'),
+      // 'Динамика добычи нефти',
       innerWells: [
         { name: "ЭФ", value: 603, value2: 101 },
         { name: "ДФ", value: 98, value2: 56 },
@@ -267,23 +269,40 @@ export default {
         1: "(конденсат)(100%)",
         2: "в т.ч.:газовый конденсат",
         3: 'АО ПетроКазахстан Инк',
-        'ОМГ': 'АО "Озенмунайгаз"',
-        'ЭМГ': 'АО "Эмбамунайгаз"',
-        'КБМ': 'АО "Каражанбасмунай"',
-        'КГМ': 'ТОО "Казгермунай"',
-        'ТШ': "ТОО «Тенгизшевройл»",
-        'ТШО': "ТОО «Тенгизшевройл»",
-        'ММГ': 'АО "Мангистаумунайгаз"',
-        'КТМ': 'ТОО "Казахтуркмунай"',
-        'КОА': 'ТОО "Казахойл Актобе"',
-        'ПКИ': '"ПетроКазахстан Инк."',
-        'АМГ': '"Амангельды Газ"',
-        'АГ': '"Амангельды Газ"',
-        'КПО': "«Карачаганак Петролеум Оперейтинг б.в.»",
-        'НКО': "«Норт Каспиан Оперейтинг Компани н.в.»",
-        'ТП': 'АО "Тургай-Петролеум"',
-        'УО': 'Урихтау Оперейтинг',
-        'ПКК': 'АО ПетроКазахстан Кумколь Ресорсиз',
+        'ОМГ': this.trans("visualcenter.omg"),
+        // 'АО "Озенмунайгаз"'
+        'ЭМГ': this.trans("visualcenter.emg"), 
+        // 'АО "Эмбамунайгаз"',
+        'КБМ': this.trans("visualcenter.kbm"),
+        // 'АО "Каражанбасмунай"',
+        'КГМ': this.trans("visualcenter.kgm"),
+        // 'ТОО "Казгермунай"',
+        'ТШ': this.trans("visualcenter.tsho"),
+        // "ТОО «Тенгизшевройл»",
+        'ТШО': this.trans("visualcenter.tsho"),
+        // "ТОО «Тенгизшевройл»",
+        'ММГ': this.trans("visualcenter.mmg"),
+        // 'АО "Мангистаумунайгаз"',
+        'КТМ': this.trans("visualcenter.ktm"),
+        // 'ТОО "Казахтуркмунай"',
+        'КОА': this.trans("visualcenter.koa"),
+        // 'ТОО "Казахойл Актобе"',
+        'ПКИ': this.trans("visualcenter.pki"),
+        // '"ПетроКазахстан Инк."',
+        'АМГ': this.trans("visualcenter.ag"),
+        // '"Амангельды Газ"',
+        'АГ': this.trans("visualcenter.ag"),
+        // '"Амангельды Газ"',
+        'КПО': this.trans("visualcenter.kpo"),
+        // "«Карачаганак Петролеум Оперейтинг б.в.»",
+        'НКО': this.trans("visualcenter.nko"),
+        // "«Норт Каспиан Оперейтинг Компани н.в.»",
+        'ТП': this.trans("visualcenter.tp"),
+        // 'АО "Тургай-Петролеум"',
+        'УО': this.trans("visualcenter.uo"),
+        // 'Урихтау Оперейтинг',
+        'ПКК': this.trans("visualcenter.pkk"),
+        // 'АО ПетроКазахстан Кумколь Ресорсиз',
       },
       date: new Date(),
       selectedDay: undefined,
@@ -545,19 +564,22 @@ export default {
 
       if (change == "b11") {
         this.buttonHover11 = changeMenuButton;
-        this.NameDzoFull[0] = 'Итого по операционным активам:';
+        this.NameDzoFull[0] = this.trans("visualcenter.totalOperactives");
+        // 'Итого по операционным активам:';
         this.changeDate();
       }
 
       if (change == "b12") {
         this.buttonHover12 = changeMenuButton;
-        this.NameDzoFull[0] = 'Итого по неоперационным активам:';
+        this.NameDzoFull[0] = this.trans("visualcenter.totalNeoperactives");
+        // 'Итого по неоперационным активам:';
         this.changeDate();
       }
 
       if (change == "b13") {
         this.buttonHover13 = changeMenuButton;
-        this.NameDzoFull[0] = 'Итого по всем активам:';
+        this.NameDzoFull[0] = this.trans("visualcenter.totalAllactives");
+        // 'Итого по всем активам:';
         this.changeDate();
       }
 
@@ -1059,7 +1081,7 @@ export default {
       });
       if (start == end) {
         this.oneDate = 1;
-        this.scroll = "overflow-y: unset;";
+        this.scroll = " flex: unset!important; max-height80%; max-width: 100%!important; overflow:hidden; overflow: auto;" ;
       } else { this.oneDate = ''; this.scroll = ""; }
       var timestampToday = this.timestampToday;
       var timestampEnd = this.timestampEnd;
@@ -1194,6 +1216,11 @@ export default {
               .groupBy("dzo")
               .map((dzo, id) => ({
                 dzo: id,
+                opec: _.sumBy(dzo,'opec2'),
+                impulses: _.sumBy(dzo,'impulses'),
+                accident: _.sumBy(dzo,'accident'),
+                restrictions: _.sumBy(dzo,'restrictions'),
+                otheraccidents: _.sumBy(dzo,'otheraccidents'),
                 productionFactForMonth: _.round(_.sumBy(dzo, productionFact), 0),
                 productionPlanForMonth: _.round(_.sumBy(dzo, productionPlan), 0),
               }))
@@ -1311,10 +1338,12 @@ export default {
           var productionPlanAndFactMonth = _(dataWithMay)
             .groupBy("dzo")
             .map((dzo, id) => ({
-              dzo: id,
-              
-              //productionFactForChart: _.round(_.sumBy(dzo,'fond_nagnetat_others'), 0),
-              opec: _.round(_.groupBy(dzo,'opec2'), 0),
+              dzo: id,         
+              opec: _.sumBy(dzo,'opec2'),
+              impulses: _.sumBy(dzo,'impulses'),
+              accident: _.sumBy(dzo,'accident'),
+              restrictions: _.sumBy(dzo,'restrictions'),
+              otheraccidents: _.sumBy(dzo,'otheraccidents'),
               productionFactForChart: _.round(_.sumBy(dzo, productionFact), 0),
               productionPlanForChart: _.round(_.sumBy(dzo, productionPlan), 0),
             }))
@@ -1339,39 +1368,7 @@ export default {
           this.chemistryChartData = this.getChemistryChartData(dataWithMay)
 
 
-          //Summ plan and fact from dzo nagnetatWells k1q for month!!!
-          /*var productionPlanAndFactMonthWells = _(dataWithMay)
-            .groupBy("data")
-            .map((__time, id) => ({
-              __time: id,
-              fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
-              fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
-              fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
-              fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
-              fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
-              fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
-              fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
-              fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
-            }))
-            .value();
-
-          var productionPlanAndFactMonthWellsName = [];
-
-          productionPlanAndFactMonthWellsName.push(
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
-            { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
-
-          );
-
-
-          this.prod_wells_workAll = productionPlanAndFactMonthWellsName;
-*/
+       
 
 
           if (start === end) {
@@ -1622,11 +1619,19 @@ export default {
           }
 
           let opec=[];
+          let impulses = [];
+          let accident= [];
+          let restrictions= [];
+          let otheraccidents= [];
           _.forEach(productionPlanAndFactMonth, function (item) { //k1q!!!
             factMonth.push({ factMonth: item.productionFactForChart });
             planMonth.push({ planMonth: item.productionPlanForChart });
             dzoMonth.push({ dzoMonth: item.dzo });
             opec.push({ opec: item.opec });
+            impulses.push({ impulses: item.impulses });
+            accident.push({ accident: item.accident });
+            restrictions.push({ restrictions: item.restrictions });
+            otheraccidents.push({ otheraccidents: item.otheraccidents });
           });
 
 
@@ -1710,8 +1715,12 @@ export default {
 
           this.covid = covid;
 
-          var bigTable = _.zipWith(
+          var bigTable = _.zipWith(            
             opec,
+            impulses,
+            accident,
+            restrictions,
+            otheraccidents,
             productionFactPercent,
             dzoPercent,
             dzoMonth,
@@ -1720,6 +1729,10 @@ export default {
             planMonth,
             factMonth,
             (opec,
+              impulses,
+              accident,
+              restrictions,
+              otheraccidents,
               productionFactPercent,
               dzoPercent,
               dzoMonth,
@@ -1730,6 +1743,10 @@ export default {
             ) =>
               _.defaults(
                 opec,
+                impulses,
+                accident,
+                restrictions,
+                otheraccidents,
                 productionFactPercent,
                 dzoPercent,
                 dzoMonth,
@@ -2064,23 +2081,59 @@ export default {
 
       if (i != 1) {
         productionPlanAndFactMonthWellsName.push(
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 'Эксплуатационный фонд' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 'Действующий фонд' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 'Бездействующий фонд скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name: 'Освоение' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 'Ожидание физической ликвидации скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 'Консервация' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name: 
+          // 'Эксплуатационный фонд' 
+          this.trans("visualcenter.fond_nagnetat_ef")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name: 
+          // 'Действующий фонд' 
+          this.trans("visualcenter.fond_nagnetat_df")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name: 
+          // 'Бездействующий фонд скважин' 
+          this.trans("visualcenter.fond_nagnetat_bd")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name: 
+          // 'Освоение' 
+          this.trans("visualcenter.fond_nagnetat_osvoenie")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name: 
+          // 'Ожидание физической ликвидации скважин' 
+          this.trans("visualcenter.fond_nagnetat_ofls")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 
+          // 'Консервация' 
+          this.trans("visualcenter.fond_nagnetat_konv")
+          },
         );
       };
 
       if (i == 1) {
         productionPlanAndFactMonthWellsName.push(
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 'Подземный ремонт скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 'Ожидание подземного ремонта скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 'Капитальный ремонт скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 'Ожидание капитального ремонта скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_well_survey'], name: 'Исследование скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_others'], name: 'Прочие' },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name: 
+          // 'Подземный ремонт скважин'
+          this.trans("visualcenter.fond_nagnetat_prs") 
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name: 
+          // 'Ожидание подземного ремонта скважин'
+          this.trans("visualcenter.fond_nagnetat_oprs")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name: 
+          // 'Капитальный ремонт скважин' 
+          this.trans("visualcenter.fond_nagnetat_krs")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name: 
+          // 'Ожидание капитального ремонта скважин' 
+          this.trans("visualcenter.fond_nagnetat_okrs")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_well_survey'], name: 
+          // 'Исследование скважин'
+          this.trans("visualcenter.fond_nagnetat_well_survey") 
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_others'], name: 
+          // 'Прочие'
+          this.trans("visualcenter.fond_nagnetat_others")  
+          },
         );
       };
 
@@ -2130,24 +2183,60 @@ export default {
 
       if (i != 1) {
         productionPlanAndFactMonthWellsName.push(
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ef'], name: 'Эксплуатационный фонд' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name: 'Действующий фонд' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name: 'Бездействующий фонд скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_osvoenie'], name: 'Освоение' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ofls'], name: 'Ожидание физической ликвидации скважин' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ef'], name: 
+          // 'Эксплуатационный фонд'
+          this.trans("visualcenter.fond_nagnetat_ef")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name: 
+          // 'Действующий фонд' 
+          this.trans("visualcenter.fond_nagnetat_df")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name: 
+          // 'Бездействующий фонд скважин' 
+          this.trans("visualcenter.fond_nagnetat_bd")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_osvoenie'], name: 
+          // 'Освоение'
+          this.trans("visualcenter.fond_nagnetat_osvoenie") 
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_ofls'], name: 
+          // 'Ожидание физической ликвидации скважин' 
+          this.trans("visualcenter.fond_nagnetat_ofls")
+          },
           // { value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name: 'Консервация' },
         );
       };
 
       if (i == 1) {
         productionPlanAndFactMonthWellsName.push(
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_prs'], name: 'Подземный ремонт скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_oprs'], name: 'Ожидание подземного ремонта скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_krs'], name: 'Капитальный ремонт скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_okrs'], name: 'Ожидание капитального ремонта скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_well_survey'], name: 'Исследование скважин' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_nrs'], name: 'Нерентабельные скважины' },
-          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_others'], name: 'Прочие' },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_prs'], name: 
+          // 'Подземный ремонт скважин'
+          this.trans("visualcenter.fond_nagnetat_prs") 
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_oprs'], name: 
+          // 'Ожидание подземного ремонта скважин' 
+          this.trans("visualcenter.fond_nagnetat_oprs")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_krs'], name: 
+          // 'Капитальный ремонт скважин' 
+          this.trans("visualcenter.fond_nagnetat_krs")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_okrs'], name: 
+          // 'Ожидание капитального ремонта скважин' 
+          this.trans("visualcenter.fond_nagnetat_okrs")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_well_survey'], name: 
+          // 'Исследование скважин' 
+          this.trans("visualcenter.fond_nagnetat_well_survey")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_nrs'], name: 
+          // 'Нерентабельные скважины' 
+          this.trans("visualcenter.fond_neftedob_nrs")
+          },
+          { value: productionPlanAndFactMonthWells[0]['fond_neftedob_others'], name: 
+          // 'Прочие'
+          this.trans("visualcenter.fond_nagnetat_others") 
+          },
         );
       };
 
@@ -2175,25 +2264,33 @@ export default {
 
       result.push(
         {
-          name: 'Скважин из бурения',
+          name: 
+          // 'Скважин из бурения',
+          this.trans("visualcenter.otm_iz_burenia_skv_fact"),
           code: 'otm_iz_burenia_skv_fact',
           plan: otmData[0]['otm_iz_burenia_skv_plan'],
           fact: otmData[0]['otm_iz_burenia_skv_fact'],
         },
         {
-          name: 'Бурение проходка',
+          name: 
+          // 'Бурение проходка',
+          this.trans("visualcenter.otm_burenie_prohodka_fact"),
           code: 'otm_burenie_prohodka_fact',
           plan: otmData[0]['otm_burenie_prohodka_plan'],
           fact: otmData[0]['otm_burenie_prohodka_fact'],
         },
         {
-          name: 'КРС',
+          name: 
+          // 'КРС',
+          this.trans("visualcenter.otm_krs_skv_fact"),
           code: 'otm_krs_skv_fact',
           plan: otmData[0]['otm_krs_skv_plan'],
           fact: otmData[0]['otm_krs_skv_fact'],
         },
         {
-          name: 'ПРС',
+          name: 
+          // 'ПРС',
+          this.trans("visualcenter.otm_prs_skv_fact"),
           code: 'otm_prs_skv_fact',
           plan: otmData[0]['otm_prs_skv_plan'],
           fact: otmData[0]['otm_prs_skv_fact'],
@@ -2257,25 +2354,33 @@ export default {
 
       result.push(
         {
-          name: 'Деэмульгатор',
+          name: 
+          // 'Деэмульгатор',
+          this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
           code: 'chem_prod_zakacka_demulg_fact',
           plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
         },
         {
-          name: 'Бактерицид',
+          name: 
+          // 'Бактерицид',
+          this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
           code: 'chem_prod_zakacka_bakteracid_fact',
           plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
         },
         {
-          name: 'Ингибитор коррозии',
+          name: 
+          // 'Ингибитор коррозии',
+          this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
           code: 'chem_prod_zakacka_ingibator_korrozin_fact',
           plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
         },
         {
-          name: 'Ингибитор солеотложения',
+          name: 
+          // 'Ингибитор солеотложения',
+          this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
           code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
           plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
@@ -2378,17 +2483,19 @@ export default {
 
 
     getAccident(a) {
-      if (a < 0) {
+      if (a) {
         return "margin-top: 3px;border-top: 6px solid rgb(227, 30, 36); margin: 10px 25px 0px;";
       } else {
 
-        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 10px 25px 0px;"
+        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 25px 25px 0px;"
       }
     },
 
     formatVisTableNumber(num) {
       if (this.quantityRange < 2) { this.thousand = ''; return new Intl.NumberFormat("ru-RU").format(num); } else {
-        this.thousand = 'тыс.';
+        this.thousand = 
+        // 'тыс.';
+        this.trans("visualcenter.thousand");
         let initNum = num
         if (num >= 1000) {
           num = (num / 1000).toFixed(0)
@@ -2484,13 +2591,29 @@ export default {
   computed: {
     //currency and oil down
     periodSelectFunc() {
-      let DMY = ["Неделя", "Месяц", "Квартал", "Год", "Всё"];
+      let DMY = [
+        // "Неделя", 
+        this.trans("visualcenter.week"),
+        // "Месяц", 
+        this.trans("visualcenter.Month"),
+        // "Квартал",
+        this.trans("visualcenter.Quarter"), 
+        // "Год",
+        this.trans("visualcenter.Year"), 
+        // "Всё"
+        this.trans("visualcenter.All")
+      ];
       let DMY_titles = [
-        "За последние 7 дней",
-        "За последний месяц",
-        "За последние 3 месяца",
-        "За последний год",
-        "За всё время"
+        // "За последние 7 дней",
+        this.trans("visualcenter.kurs7day"),
+        // "За последний месяц",
+        this.trans("visualcenter.kurslastmonth"),
+        // "За последние 3 месяца",
+        this.trans("visualcenter.kurs3month"),
+        // "За последний год",
+        this.trans("visualcenter.kurslastyear"),
+        // "За всё время"
+        this.trans("visualcenter.kursalltime"),
       ];
 
       let menuDMY = [];

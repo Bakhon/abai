@@ -291,7 +291,7 @@
                     'oil_fact',
                     `${oilChartHeadName}`,
                     ' тонн',
-                    'Добыча нефти'
+                    trans('visualcenter.getoil')
                   )
                 "
               >
@@ -318,7 +318,8 @@
                         'oil_fact',
                         `${oilChartHeadName}`,
                         ' тонн',
-                        'С учётом доли участия КМГ'
+                        trans('visualcenter.dolyaUchast')
+                        
                       )
                     "
                     >
@@ -362,9 +363,9 @@
                   getProduction(
                     'oil_dlv_plan',
                     'oil_dlv_fact',
-                    'Динамика сдачи нефти',
+                    trans('visualcenter.dlvoildynamic'),
                     ' тонн',
-                    'Сдача нефти'
+                    trans('visualcenter.oildlv')
                   )
                 "
               >
@@ -385,9 +386,9 @@
                       getProduction(
                         'oil_dlv_plan',
                         'oil_dlv_fact',
-                        'Динамика сдачи нефти',
+                        trans('visualcenter.dlvoildynamic'),
                         ' тонн',
-                        'С учётом доли участия КМГ'
+                        trans('visualcenter.dolyaUchast'),
                       )
                     "
                     >
@@ -411,7 +412,7 @@
                         'tovarnyi_ostatok_nefti_today',
                         `${oilChartHeadName}`,
                         ' тонн',
-                        'Товарный остаток нефти'
+                        trans('visualcenter.ostatokNefti'),
                       )
                     "
                     >
@@ -434,9 +435,9 @@
                   getProduction(
                     'gas_plan',
                     'gas_fact',
-                    'Динамика добычи газа',
+                    trans('visualcenter.getgasdynamic'),
                     ' м³',
-                    'Добыча газа'
+                    trans('visualcenter.getgaz'),
                   )
                 "
               >
@@ -455,9 +456,9 @@
                       getProduction(
                         'sdacha_gaza_prirod_plan',
                         'sdacha_gaza_prirod_fact',
-                        'Динамика сдачи природного газа',
+                        trans('visualcenter.dlvPrirodGasldynamic'),
                         ' м³',
-                        'Сдача природного газа'
+                        trans('visualcenter.prirodGazdlv'),
                       )
                     "
                     >
@@ -479,9 +480,9 @@
                       getProduction(
                         'raskhod_prirod_plan',
                         'raskhod_prirod_fact',
-                        'Динамика расхода природного газа',
+                        trans('visualcenter.raskhodprirodGazDynamic'),
                         ' м³',
-                        'Расход природного газа на собственные нужды'
+                        trans('visualcenter.raskhodprirodGaz'),
                       )
                     "
                     >
@@ -522,9 +523,9 @@
                       getProduction(
                         'sdacha_gaza_poput_plan',
                         'sdacha_gaza_poput_fact',
-                        'Динамика сдачи попутного газа',
+                        trans('visualcenter.poputGazdlvDynamic'),
                         ' тонн',
-                        'Сдача попутного газа'
+                        trans('visualcenter.poputGazdlv'),
                       )
                     "
                     >
@@ -546,9 +547,9 @@
                       getProduction(
                         'raskhod_poput_plan',
                         'raskhod_poput_fact',
-                        'Динамика расхода попутного газа на собственные нужды',
+                        trans('visualcenter.raskhodpoputGazDynamic'),
                         ' м³',
-                        'Расход попутного газа на собственные нужды '
+                        trans('visualcenter.raskhodpoputGaz'),
                       )
                     "
                     >
@@ -569,9 +570,9 @@
                       getProduction(
                         'pererabotka_gaza_poput_plan',
                         'pererabotka_gaza_poput_fact',
-                        'Динамика переработки попутного газа',
+                        trans('visualcenter.pererabotkapoputGazDynamic'),
                         ' м³',
-                        'Переработка попутного газа'
+                        trans('visualcenter.pererabotkapoputGaz'),
                       )
                     "
                     >
@@ -594,9 +595,9 @@
                   getProduction(
                     'gk_plan',
                     'gk_fact',
-                    'Динамика добычи конденсата',
+                    trans('visualcenter.getgkDynamic'),
                     ' тонн',
-                    'Добыча конденсата'
+                    trans('visualcenter.getgk'),
                   )
                 "
               >
@@ -615,9 +616,9 @@
                       getProduction(
                         'gk_plan',
                         'gk_fact',
-                        'Динамика добычи конденсата',
+                        trans('visualcenter.getgkDynamic'),
                         ' тонн',
-                        'С учётом доли участия КМГ'
+                        trans('visualcenter.dolyaUchast'),
                       )
                     "
                     >
@@ -640,9 +641,9 @@
                   getProduction(
                     'liq_plan',
                     'liq_fact',
-                    'Динамика объёма закачки воды',
+                    trans('visualcenter.liqDynamic'),
                     ' м³',
-                    'Закачка воды'
+                    trans('visualcenter.liq'),
                   )
                 "
               >
@@ -661,9 +662,9 @@
                       getProduction(
                         'ppd_zakachka_morskoi_vody_plan',
                         'ppd_zakachka_morskoi_vody_fact',
-                        'Динамика закачки морской воды',
+                        trans('visualcenter.liqOceanDynamic'),
                         ' м³',
-                        'Закачка морской воды'
+                        trans('visualcenter.liqOcean'),
                       )
                     "
                     >
@@ -685,9 +686,9 @@
                       getProduction(
                         'ppd_zakachka_stochnoi_vody_plan',
                         'ppd_zakachka_stochnoi_vody_fact',
-                        'Динамика закачки сточной воды',
+                        trans('visualcenter.liqStochnayaDynamic'),
                         ' м³',
-                        'Закачка сточной воды'
+                        trans('visualcenter.liqStochnaya'),
                       )
                     "
                     >
@@ -709,9 +710,9 @@
                       getProduction(
                         'ppd_zakachka_albsen_vody_plan',
                         'ppd_zakachka_albsen_vody_fact',
-                        'Динамика закачки альбсен. воды',
+                        trans('visualcenter.liqAlbsenDynamic'),
                         ' м³',
-                        'Закачка альбсен. воды'
+                        trans('visualcenter.liqAlbsen'),
                       )
                     "
                     >
@@ -1022,9 +1023,21 @@
                         }}
                       </div>
                     </td>
-                  </tr>
+                  </tr>                 
                 </tbody>
               </table>
+               <div  v-for="(item, index) in tables" colspan="5" style="background: rgb(54, 59, 104); height: 35em; border-top: 5px solid #272953">
+                      <div class="mt-3 text-center">Текст причины</div>
+                      <div class="ml-3">
+                      <div class="mt-2">{{item.opec}}</div>
+                      <div class="mt-2">{{item.impulses}}</div>
+                      <div class="mt-2">{{item.accident}}</div>
+                      <div class="mt-2">{{item.restrictions}}</div>
+                      <div class="mt-2">{{item.otheraccidents}}</div>
+                      </div></div>
+
+               
+                   
             </div>
 
             <div class="vis-chart pl-3">
@@ -1138,41 +1151,55 @@
                         %
                       </div>
                     </td>
-                    <td
+                    <td v-if="oneDate == 1"
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets' : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">ОПЕК+</div>
                       <!--123-->
                       <div
                         class="triangle"
-                        :style="getAccident(item.factMonth - item.planMonth)" 
+                        :style="getAccident(item.opec)" 
                       ></div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <td v-if="oneDate == 1" :class="index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '">
                       <div v-if="index === 0" class="center">
                         Порывы/<br />посадка ЭЭ
-                      </div>
+                      </div>   <div
+                        class="triangle"
+                        :style="getAccident(item.impulses)" 
+                      ></div>
                                           </td>
-                      <td
+                      <td v-if="oneDate == 1"
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Авария в <br> системе СиП</div></td>
-                        <td
+                      <div v-if="index === 0" class="center">Авария в <br> системе СиП</div>   <div
+                        class="triangle"
+                        :style="getAccident(item.accident)" 
+                      ></div></td>
+                        <td v-if="oneDate == 1"
                       :class="
-                        index % 2 === 0 ? 'tdStyle' : 'tdNone'
+                        index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Ограничения <br>КТО</div></td>
-                         <td
+                      <div v-if="index === 0" class="center">Ограничения <br>КТО</div>   <div
+                        class="triangle"
+                        :style="getAccident(item.restrictions)" 
+                      ></div></td>
+                         <td v-if="oneDate == 1"
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Прочие</div></td>
+                      <div v-if="index === 0" class="center">Прочие</div>
+                         <div
+                        class="triangle"
+                        :style="getAccident(item.otheraccidents)" 
+                      ></div>
+                      </td>
                       
                   </tr>
                   <tr>
@@ -1288,10 +1315,10 @@
         :currency-chart-data.sync="currencyChartData"
         :usd-chart-is-loading.sync="usdChartIsLoading"
         @change-table="changeTable('1')"
-        :main-title="'Динамика цены на нефть'"
+        :main-title="trans('visualcenter.oilPricedynamic')"
         :second-title="''"
       />
-
+      <!-- 'Динамика цены на нефть' -->
       <visual-center-usd-table
         :style="`${Table3}`"
         :period.sync="period"
@@ -1301,10 +1328,10 @@
         :table-data.sync="usdRatesDataTableForCurrentPeriod"
         :usd-chart-is-loading.sync="usdChartIsLoading"
         @change-table="changeTable('1')"
-        :main-title="'Динамика курса доллара США к тенге (USD, НБ РК)'"
+        :main-title="trans('visualcenter.kursHeader')"
         :second-title="'USD НБ РК'"
       />
-
+      <!-- 'Динамика курса доллара США к тенге (USD, НБ РК)' -->
       <div class="third-table big-area" :style="`${Table5}`">
         <div class="first-string first-string2">
           <div class="container-fluid">
