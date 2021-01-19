@@ -16,8 +16,6 @@ class TrPermissionsSeeder extends Seeder
         $permission->name = "tr view main";
         $permission->save();
 
-           
-            
         }  
     
 }
