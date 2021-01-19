@@ -143,7 +143,8 @@
                   </div>
                   </div>
 
-                  <div class="devices-data table-border-gno-top no-gutter col-7">
+                  <div v-if="expChoose">
+                    <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{ freq }}
                   </div>
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
@@ -156,6 +157,8 @@
                   <div class="devices-data table-border-gno table-border-gno-top cell4-gno-second no-gutter col-5">
                     {{ pumpType }} м³/сут
                   </div>
+                  </div>
+                  
 
                   <div class="devices-data table-border-gno-top no-gutter col-7">
                     {{trans('pgno.h_spuska')}}
@@ -403,7 +406,7 @@
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalNewWell')">
-                      Закрыть
+                      {{trans('pgno.zakrit')}}
                     </button>
                   </div>
 
@@ -552,7 +555,7 @@
                     </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modal-prs')">
-                      Закрыть
+                      {{trans('pgno.zakrit')}}
                     </button>
                   </div>
                   <div class="container-fluid">
@@ -1962,7 +1965,8 @@ export default {
           },
         },
       ],
-      nameKP: "Кривая притока",
+      nameKPP: "Кривая притока (пользователь)",
+      nameKPA: "Кривая притока (анализ)",
       nameTR: "Текущий режим",
       namePR: "Потенциальный режим",
       titleXRu: "Дебит жидкости, м³/сут.",
@@ -1971,6 +1975,22 @@ export default {
       titleYRu: "Давление, атм/газосодержание, %",
       titleYKz: "Қысым, атм / газ құрамы, %",
       titleYEn: "Pressure, atm/gas saturation, %",
+      hovertemplateKPP: "<b>Кривая притока (пользователь)</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      hovertemplateKPA: "<b>Кривая притока (анализ)</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      hovertemplateTR: "<b>Текущий режим</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      hovertemplatePR: "<b>Потенциальный режим</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
       bhpPot: null,
       qlPot: null,
       pinPot: null,
@@ -2222,13 +2242,31 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
+        let url = `${window.location.pathname}`
+        let langUrl = url.slice(1, 3);
         if (this.expMeth == 'ШГН') {
-          this.dNasosa = 'Диаметр насоса'
-          this.freq = 'Число качаний'
+          if(langUrl === 'ru') {
+            this.dNasosa = 'Диаметр насоса'
+            this.freq = 'Число качаний'
+          } else if(langUrl === 'kz') {
+            this.dNasosa = "Сораптың диаметрі"
+            this.freq = "Тербеліс саны"
+          } else {
+            this.dNasosa = "Pump diameter"
+            this.freq = "Pump rate"
+          }
           this.spmDev = data["Well Data"]["spm"][0] + ' 1/мин'
         } else {
-          this.dNasosa = 'Номинальная подача'
-          this.freq = 'Частота'
+          if(langUrl === 'ru') {
+            this.dNasosa = 'Номинальная подача'
+            this.freq = 'Частота'
+          } else if(langUrl === 'kz') {
+            this.dNasosa = "Номиналды беру"
+            this.freq = "Жиілігі"
+          } else {
+            this.dNasosa = "Nominal feed"
+            this.freq = "Frequency"
+          }
           this.spmDev = data["Well Data"]["freq"][0] + ' Гц'
         }
         if (this.expMeth == 'УЭЦН') {
@@ -2293,16 +2331,12 @@ export default {
 
       this.data = [
         {
-          name: this.nameKP,
+          name: this.nameKPP,
           legendgroup: 1,
           x: qo_points2,
           y: ipr_points2,
           text: q_oil2,
-          hovertemplate:  "<b>Кривая притока (пользователь)</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
-
+          hovertemplate: this.hovertemplateKPP, 
           marker: {
             size: "15",
             color: "#FF0D18",
@@ -2315,10 +2349,7 @@ export default {
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Текущий режим</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplateTR,
           marker: {
             size: "15",
             color: "#00A0E3",
@@ -2332,25 +2363,19 @@ export default {
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Потенциальный режим</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplatePR,
           marker: {
             size: "8",
             color: "#FBA409",
           },
         },
         {
-          name: this.nameKP,
+          name: this.nameKPA,
           legendgroup: 4,
           x: [],
           y: [],
           text: [],
-          hovertemplate:  "<b>Кривая притока (анализ)</b><br>" +
-            "Qж = %{x:.1f} м³/сут<br>" +
-            "Qн = %{text:.1f} т/сут<br>" +
-            "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplateKPA,
 
           marker: {
             size: "15",
@@ -3265,21 +3290,55 @@ export default {
     } else if(langUrl === 'kz') {  
       this.layout.xaxis.title = this.titleXKz
       this.layout.yaxis.title = this.titleYKz
-      this.nameKP = "Ағын қисығы"
+      this.nameKPP = "Ағын қисығы (қолданушы)"
+      this.nameKPA = "Ағын қисығы (талдау)"
       this.namePN = "Сорғының қабылдау қысымы"
       this.nameGN = "Газ құрамы"
       this.nameTR = "Ағымдағы  режим"
       this.nameCR = "Мақсатты режим"
       this.namePR = "Потенциалдық  режим"
+      this.hovertemplateKPP = "<b>Ағын қисығы (қолданушы)</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplateKPA = "<b>Ағын қисығы (талдау)</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplateTR = "<b>Ағымдағы  режим</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplatePR = "<b>Потенциалдық  режим</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>"
     } else {
       this.layout.xaxis.title = this.titleXEn
       this.layout.yaxis.title = this.titleYEn
-      this.nameKP = "Inflow curve"
+      this.nameKPP = "Inflow curve (user)"
+      this.nameKPA = "Inflow curve (analys)"
       this.namePN = "Intake pressure"
       this.nameGN = "Gas saturation"
       this.nameTR = "Current mode"
       this.nameCR = "Target mode"
-      this.namePR = "Potential mode"
+      this.namePR = "Potential mode",
+      this.hovertemplateKPP = "<b>Inflow curve (user)</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplateKPA = "<b>Inflow curve (analys)</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplateTR = "<b>Current mode</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplatePR = "<b>Potential mode</b><br>" +
+            "Qж = %{x:.1f} м³/сут<br>" +
+            "Qн = %{text:.1f} т/сут<br>" +
+            "Pзаб = %{y:.1f} атм<extra></extra>"
     }
   }
 };
