@@ -42,6 +42,7 @@ export default {
 
         colors: ["#fba409", "#13b062"],
         chart: {
+<<<<<<< HEAD
           title: {
             text: 'Сравнение технико-экономических показателей за 1 год эксплуатации ',
             align: 'center',
@@ -51,6 +52,8 @@ export default {
               fontSize: '20px'
             }
   },
+=======
+>>>>>>> 19.01 10 14
           background: '#272953',
           toolbar: {
             show: true,
