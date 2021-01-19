@@ -91,8 +91,8 @@ export default {
     },
     getFieldFilterText() {
       if (!this.fieldFilterOptions[0] || !this.fieldFilterOptions[0].fields) return "Нет опций"
-      if (this.selectedAllTag && this.fieldFilterOptions[0].fields.length === this.filter.length) return `Выбраны все ${this.filterName} ${this.filterNameAdditional}`;
-      return `Выбрано ${this.filter.length} ${declOfNum(this.filter.length, this.textFormsRow)} ${this.filterNameAdditional}`;
+      if (this.selectedAllTag && this.fieldFilterOptions[0].fields.length === this.filter.length) return `${this.trans('tr.trfw1')}`;
+      return `${this.filter.length} ${this.trans(`${declOfNum(this.filter.length, this.textFormsRow)}`)}`;
     },
   },
 };
