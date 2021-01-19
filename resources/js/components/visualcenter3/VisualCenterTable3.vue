@@ -1152,7 +1152,7 @@
                     </td>
                     <td
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets' : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">ОПЕК+</div>
@@ -1162,7 +1162,7 @@
                         :style="getAccident(item.opec)" 
                       ></div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
+                    <td :class="index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '">
                       <div v-if="index === 0" class="center">
                         Порывы/<br />посадка ЭЭ
                       </div>   <div
@@ -1172,7 +1172,7 @@
                                           </td>
                       <td
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">Авария в <br> системе СиП</div>   <div
@@ -1181,7 +1181,7 @@
                       ></div></td>
                         <td
                       :class="
-                        index % 2 === 0 ? 'tdStyle' : 'tdNone'
+                        index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">Ограничения <br>КТО</div>   <div
@@ -1190,7 +1190,7 @@
                       ></div></td>
                          <td
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">Прочие</div>
