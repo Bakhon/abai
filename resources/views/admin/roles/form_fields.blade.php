@@ -18,11 +18,8 @@
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="economic">Модуль экономика</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="bigdata">Модуль Прототип БД</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="tr">Модуль ТР</button>
-<<<<<<< HEAD
-=======
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="viscenter">Модуль центр визуализации</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="podborGno">Модуль Подбор ГНО</button>
->>>>>>> 5293376c46cb608f8ecd585d971b20c9c5f54caf
         </nav>
         <div class="tabs tab-monitoring active">
             <div class="form-check">
