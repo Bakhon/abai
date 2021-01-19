@@ -102,4 +102,7 @@ return array (
   'celevoi_parametr' => 'Целевой параметр',
   'inclinometria' => 'Инклинометрия',
   'zakrit' => 'Закрыть',
+  'zenitnii_ugol' => 'Зенитный угол',
+  'azimut' => 'Азимут',
+  'temp_nabora_krivizni' => 'Темп набора пространственной кривизны',
 );

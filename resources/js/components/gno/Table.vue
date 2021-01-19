@@ -1912,7 +1912,7 @@ export default {
           t: 30
         },
         xaxis: {
-          title: "Дебит жидкости, м³/сут.",
+          title: "",
           hoverformat: ".1f",
           //  showline: true,
           zeroline: false,
@@ -1923,7 +1923,7 @@ export default {
           //tickfont: {size: 10},
         },
         yaxis: {
-          title: "Давление, Pзаб, атм.",
+          title: "",
           hoverformat: ".1f",
           showlegend: true,
           // showline: true,
@@ -1962,6 +1962,15 @@ export default {
           },
         },
       ],
+      nameKP: "Кривая притока",
+      nameTR: "Текущий режим",
+      namePR: "Потенциальный режим",
+      titleXRu: "Дебит жидкости, м³/сут.",
+      titleXKz: "Сұйықтық дебиті, м³/тәул.",
+      titleXEn: "Liquid flow rate, м³/d.",
+      titleYRu: "Давление, атм/газосодержание, %",
+      titleYKz: "Қысым, атм / газ құрамы, %",
+      titleYEn: "Pressure, atm/gas saturation, %",
       bhpPot: null,
       qlPot: null,
       pinPot: null,
@@ -2284,7 +2293,7 @@ export default {
 
       this.data = [
         {
-          name: "Кривая притока (пользователь)",
+          name: this.nameKP,
           legendgroup: 1,
           x: qo_points2,
           y: ipr_points2,
@@ -2300,7 +2309,7 @@ export default {
           },
         },
         {
-          name: "Текущий режим",
+          name: this.nameTR,
           legendgroup: 2,
           x: [],
           y: [],
@@ -2317,7 +2326,7 @@ export default {
         },
 
         {
-          name: "Потенциальный режим",
+          name: this.namePR,
           legendgroup: 3,
           x: [],
           y: [],
@@ -2333,7 +2342,7 @@ export default {
           },
         },
         {
-          name: "Кривая притока (анализ)",
+          name: this.nameKP,
           legendgroup: 4,
           x: [],
           y: [],
@@ -3247,6 +3256,32 @@ export default {
       });
     },
   },
+  created() {
+    let url = `${window.location.pathname}`
+    let langUrl = url.slice(1, 3);
+    if(langUrl === 'ru') {
+      this.layout.xaxis.title = this.titleXRu
+      this.layout.yaxis.title = this.titleYRu
+    } else if(langUrl === 'kz') {  
+      this.layout.xaxis.title = this.titleXKz
+      this.layout.yaxis.title = this.titleYKz
+      this.nameKP = "Ағын қисығы"
+      this.namePN = "Сорғының қабылдау қысымы"
+      this.nameGN = "Газ құрамы"
+      this.nameTR = "Ағымдағы  режим"
+      this.nameCR = "Мақсатты режим"
+      this.namePR = "Потенциалдық  режим"
+    } else {
+      this.layout.xaxis.title = this.titleXEn
+      this.layout.yaxis.title = this.titleYEn
+      this.nameKP = "Inflow curve"
+      this.namePN = "Intake pressure"
+      this.nameGN = "Gas saturation"
+      this.nameTR = "Current mode"
+      this.nameCR = "Target mode"
+      this.namePR = "Potential mode"
+    }
+  }
 };
 </script>
 
