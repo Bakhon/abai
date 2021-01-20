@@ -1068,8 +1068,9 @@
               >
                 <div class="mt-3 text-center">Текст причины</div>
                 <div class="ml-3">
-                  <div class="mt-2">{{ item.opec }}</div>
+                  <div class="mt-2">{{ item.opec }}</div>                  
                   <div class="mt-2">{{ item.impulses }}</div>
+                  <div class="mt-2">{{ item.landing }}</div>
                   <div class="mt-2">{{ item.accident }}</div>
                   <div class="mt-2">{{ item.restrictions }}</div>
                   <div class="mt-2">{{ item.otheraccidents }}</div>
@@ -1218,13 +1219,33 @@
                       "
                     >
                       <div v-if="index === 0" class="center">
-                        Порывы/<br />посадка ЭЭ
+                        Порывы
                       </div>
                       <div
                         class="triangle"
                         :style="getAccident(item.impulses)"
                       ></div>
                     </td>
+
+                     <td
+                      v-if="
+                        (item2 == 'oil_fact' && oneDate == 1) ||
+                        (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                      :class="
+                        index % 2 === 0
+                          ? 'tdStyle width-accidnets '
+                          : 'tdNone width-accidnets '
+                      "
+                    >
+                      <div v-if="index === 0" class="center">
+                       Посадка ЭЭ
+                      </div>
+                      <div
+                        class="triangle"
+                        :style="getAccident(item.landing)"
+                      ></div>
+                    </td>                  
                     <td
                       v-if="
                         (item2 == 'oil_fact' && oneDate == 1) ||
@@ -2632,7 +2653,8 @@
         &:first-child {
           height: 50px;
           white-space: normal;
-          width: 215px;
+          //width: 215px;
+          width: 235px;
           span {
             font-weight: bold;
             img {

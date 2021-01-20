@@ -175,6 +175,7 @@ class DruidController extends Controller
             'oil_opek_plan',
             'date',
             'opec2',
+            'landing',
             'impulses',
             'accident',
             'restrictions',

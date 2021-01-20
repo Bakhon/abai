@@ -1250,6 +1250,7 @@ export default {
                 dzo: id,
                 opec: _.sumBy(dzo,'opec2'),
                 impulses: _.sumBy(dzo,'impulses'),
+                landing: _.sumBy(dzo,'landing'),
                 accident: _.sumBy(dzo,'accident'),
                 restrictions: _.sumBy(dzo,'restrictions'),
                 otheraccidents: _.sumBy(dzo,'otheraccidents'),
@@ -1374,6 +1375,7 @@ export default {
               dzo: id,         
               opec: _.sumBy(dzo,'opec2'),
               impulses: _.sumBy(dzo,'impulses'),
+              landing: _.sumBy(dzo,'landing'),              
               accident: _.sumBy(dzo,'accident'),
               restrictions: _.sumBy(dzo,'restrictions'),
               otheraccidents: _.sumBy(dzo,'otheraccidents'),
@@ -1655,6 +1657,7 @@ export default {
 
           let opec=[];
           let impulses = [];
+          let landing = [];
           let accident= [];
           let restrictions= [];
           let otheraccidents= [];
@@ -1664,6 +1667,7 @@ export default {
             dzoMonth.push({ dzoMonth: item.dzo });
             opec.push({ opec: item.opec });
             impulses.push({ impulses: item.impulses });
+            landing.push({ landing: item.landing })            
             accident.push({ accident: item.accident });
             restrictions.push({ restrictions: item.restrictions });
             otheraccidents.push({ otheraccidents: item.otheraccidents });
@@ -1753,6 +1757,7 @@ export default {
           var bigTable = _.zipWith(            
             opec,
             impulses,
+            landing,
             accident,
             restrictions,
             otheraccidents,
@@ -1765,6 +1770,7 @@ export default {
             factMonth,
             (opec,
               impulses,
+              landing,
               accident,
               restrictions,
               otheraccidents,
@@ -1779,6 +1785,7 @@ export default {
               _.defaults(
                 opec,
                 impulses,
+                landing,
                 accident,
                 restrictions,
                 otheraccidents,
@@ -2545,10 +2552,10 @@ export default {
 
     getAccident(a) {
       if (a) {
-        return "margin-top: 3px;border-top: 6px solid rgb(227, 30, 36); margin: 10px 56px 0px;";
+        return "margin-top: 3px;border-top: 6px solid rgb(227, 30, 36); margin: 10px 48px 0px;";
       } else {
 
-        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 25px 56px 0px;"
+        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 25px 48px 0px;"
       }
     },
 
