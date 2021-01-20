@@ -352,6 +352,9 @@
                     <div class="modal-bign-title">
                       {{trans('pgno.analis_potenciala')}}
                     </div>
+                    <div style="position: absolute; margin-left: 200px; margin-top: 0px;">
+                      <svg style="fill: white;" @click="takePhotoOldNewWell()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
+                    </div>
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalOldWell')">
                      {{trans('pgno.zakrit')}}
@@ -359,6 +362,7 @@
                   </div>
 
                   <div class="modal-old-well-content-container">
+                    
                     <div class="modal-old-well-plotly-container">
                       <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
                     </div>
@@ -404,6 +408,11 @@
                     <div class="modal-bign-title">
                       {{trans('pgno.analis_potenciala')}}
                     </div>
+
+                    <div style="position: absolute; margin-left: 200px; margin-top: 0px;">
+                      <svg style="fill: white;" @click="takePhotoOldNewWell()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
+                    </div>
+
 
                     <button type="button" class="modal-bign-button" @click="closeModal('modalNewWell')">
                       {{trans('pgno.zakrit')}}
@@ -1511,6 +1520,15 @@
                 </div>
                 <gno-line-points-chart></gno-line-points-chart>
               </div>
+
+        <div class="gno-line-chart-well-old-clone" ref="gno-chart-new-old-well" v-if="visibleChart" style="background-color: #272953;">
+                <div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Анализ потенциала cкважины: {{field}}-{{wellNumber}}</div>
+                  <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
+                </div>
+                <Plotly :data="data" :layout="layout" :display-mode-bar="false"></Plotly>
+              </div>
+
         <div class="report" ref="gno-page">
           <div class="row">
             <div class="col-10" style="background-color: #20274f; width: 1500px; left: 76px; margin: 0;">
@@ -2128,6 +2146,7 @@ export default {
       krsTable: [],
       numberRepairs: null,
       numberNNO: null,
+      langUrl: '',
     };
 
   },
@@ -2149,10 +2168,24 @@ export default {
 
   computed: {
     getOnPgnoButtonTitle() {
+     var langUrl = `${window.location.pathname}`.slice(1, 3);
       if (this.visibleChart) {
-        return 'Подбор ГНО'
+        if(langUrl === 'ru') {
+          return 'Подбор ГНО'
+        } else if(langUrl === 'kz') {
+          return 'Терең сорғы жабдықтарын таңдау'
+        } else {
+          return 'Selection of downhole pumping equipment'
+        }
+        
       } else {
-        return 'Кривая притока'
+        if(langUrl === 'ru') {
+          return 'Кривая притока'
+        } else if(langUrl === 'kz') {
+          return 'Ағын қисығы'
+        } else {
+          return 'Inflow curve'
+        }
       }
     },
     
@@ -2244,8 +2277,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
-        let url = `${window.location.pathname}`
-        let langUrl = url.slice(1, 3);
+        let langUrl = `${window.location.pathname}`.slice(1, 3);
         if (this.expMeth == 'ШГН') {
           if(langUrl === 'ru') {
             this.dNasosa = 'Диаметр насоса'
@@ -3276,6 +3308,32 @@ export default {
 
     },
 
+    takePhotoOldNewWell() {
+     this.isLoading = true;
+      
+      htmlToImage.toPng(this.$refs['gno-chart-new-old-well'])
+        .then(function (dataUrl) {
+          // let img = new Image();
+          // img.src = dataUrl;
+
+          let link = document.createElement('a');
+          link.setAttribute('href', dataUrl);
+          link.setAttribute('download','download');
+          link.click();
+          link.remove();
+
+          // document.body.appendChild(img);
+        })
+        .catch(function (error) {
+          console.error('oops, something went wrong!', error);
+        }).finally(() => {
+            this.isLoading = false;
+      });
+
+    },
+
+    
+
     downloadImg() {
       $('#btnExport').click(function(){
         //var title = $("<p>Image Here</p>");
@@ -3288,8 +3346,7 @@ export default {
     },
   },
   created() {
-    let url = `${window.location.pathname}`
-    let langUrl = url.slice(1, 3);
+    let langUrl = `${window.location.pathname}`.slice(1, 3);
     if(langUrl === 'ru') {
       this.layout.xaxis.title = this.titleXRu
       this.layout.yaxis.title = this.titleYRu
