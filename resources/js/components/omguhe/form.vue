@@ -93,7 +93,7 @@
                     </option>
                 </select>
             </div>
-            <label>{{ trans('monitoring.level') }}</label>
+            <label>{{ trans('monitoring.level') }}, л</label>
             <div class="form-label-group">
                 <input
                     type="hidden"
