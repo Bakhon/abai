@@ -1,22 +1,19 @@
 <template>
   <div class="filter-container">
     <cat-loader v-show="isLoading"/>
+
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
-          id="companySelect"
+          id="geoStructureSelect"
           :disabled="isLoading"
-          v-model="org"
+          v-model="geoStructure"
       >
-        <option disabled value="">Выберите компанию</option>
-        <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
-        <option value="КБМ">АО «Каражанбасмунай»</option>
-        <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-        <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-        <option value="ММГ">АО «Мангистаумунайгаз»</option>
+        <option disabled value="">Выберите геоструктуру</option>
+        <option value="Узень">Узень</option>
+        <option value="Карамандыбас">Карамандыбас</option>
       </select>
     </div>
-
     <div class="form-group1 filter-group select">
       <select
           class="form-control filter-input select"
@@ -31,9 +28,9 @@
         <option value="4">Б/Д нагнетательный фонд</option>
         <option value="5">Ликвидированный добывающий фонд</option>
         <option value="6">Ликвидированный нагнетательный фонд</option>
-        <option value="7">В консервации добывающий фонд</option>
-        <option value="8">В консервации ликвидированный нагнетательный фонд</option>
         <option value="9">Наблюдательный фонд</option>
+        <option value="10">В консервации нагнетательный фонд</option>
+        <option value="11">В консервации наблюдательный фонд</option>
       </select>
     </div>
     <div class="form-group3 filter-group">
@@ -51,7 +48,7 @@
     </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !fondType || !end_date || isLoading"
+      <button :disabled="!fondType || !geoStructure || !end_date || isLoading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -80,7 +77,7 @@ export default {
   data() {
 
     return {
-      org: '',
+      geoStructure: '',
       fondType: '',
       end_date: null,
       isLoading: false,
@@ -100,16 +97,16 @@ export default {
         4: "Б/Д нагнетательный фонд",
         5: "ликвидированный добывающий фонд",
         6: "ликвидированный нагнетательный фонд",
-        7: "в консервации добывающий фонд",
-        8: "в консервации ликвидированный нагнетательный фонд",
-        9: "наблюдательный фонд"
+        9: "наблюдательный фонд",
+        10: "В консервации нагнетательный фонд",
+        11: "В консервации наблюдательный фонд"
       };
       let uri = "http://172.20.103.157:8082/generic/";
       // let uri = "http://0.0.0.0:8090/generic/";
       let data = {
-        type: 'rev_fund_' + this.fondType,
+        type: 'rev_fund_well_' + this.fondType,
         period: 'days',
-        dzo: this.org,
+        geo_structure: this.geoStructure,
         fond: fondTypeByFundId[this.fondType],
         report_date_start: `${this.end_date}`.concat(' 00:00:00'),
         report_date_end: `${this.end_date}`.concat(' 23:59:59')
