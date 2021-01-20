@@ -193,6 +193,7 @@
         <well-fund-field v-if="selectedReport.tag === 'well-fund-field'"/>
         <well-fund-inactive v-if="selectedReport.tag === 'well-fund-inactive'"/>
         <well-fund-revision v-if="selectedReport.tag === 'well-fund-revision'"/>
+        <well-fund-revision-field v-if="selectedReport.tag === 'well-fund-revision-field'"/>
       </div>
     </div>
   </div>
