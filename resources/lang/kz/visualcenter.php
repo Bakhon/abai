@@ -3,11 +3,11 @@
 return array (
   'getoil' => 'Добыча нефти2',
   'oildlv' => 'Сдача нефти2',
-  'getgaz' => 'Добыча газа2',
+  'getgaz' => 'Добыча газа',
   'oilPrice' => 'Цена на нефть (Brent)2',
   'usdKurs' => 'Курс доллара2',
   'vsYest' => 'vs вчера2',
-  'vsSept' => 'vs сентябрь2',
+  'vsSept' => 'vs2',
   'dolyaUchast' => 'С учётом доли участия КМГ2',
   'ostatokNefti' => 'Товарный остаток нефти2',
   'prirodGazdlv' => 'Сдача природного газа2',

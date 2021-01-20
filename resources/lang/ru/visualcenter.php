@@ -7,7 +7,7 @@ return array (
   'oilPrice' => 'Цена на нефть (Brent)',
   'usdKurs' => 'Курс доллара',
   'vsYest' => 'vs вчера',
-  'vsSept' => 'vs сентябрь',
+  'vsSept' => 'vs',
   'dolyaUchast' => 'С учётом доли участия КМГ',
   'ostatokNefti' => 'Товарный остаток нефти',
   'prirodGazdlv' => 'Сдача природного газа',
