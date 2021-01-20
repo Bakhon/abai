@@ -14,7 +14,6 @@
 
 <script>
 import { Scatter } from 'vue-chartjs';
-//
 import { Plotly } from "vue-plotly";
 import { eventBus } from "../../event-bus.js";
 
@@ -26,6 +25,36 @@ export default {
   props: ["postTitle"],
   data: function () {
     return {
+      titleXRu: "Дебит жидкости, м³/сут.",
+      titleXKz: "Сұйықтық дебиті, м³/тәул.",
+      titleXEn: "Liquid flow rate, м³/d.",
+      titleYRu: "Давление, атм/газосодержание, %",
+      titleYKz: "Қысым, атм / газ құрамы, %",
+      titleYEn: "Pressure, atm/gas saturation, %",
+      nameKP: "Кривая притока" ,
+      namePN: "Давление на приёме насоса",
+      nameGN: "Газосодержание в насосе",
+      nameTR: "Текущий режим",
+      nameCR: "Целевой режим",
+      namePR: "Потенциальный режим",
+      hovertemplateKP: "<b>Кривая притока</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      hovertemplateGS: '<b>Газосодержание в насосе = %{y:.1f}%</b><extra></extra>',
+      hovertemplateTR:  "<b>Текущий режим</b><br><extra></extra>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм",
+      hovertemplateCR: "<b>Целевой режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      hovertemplatePR: "<b>Потенциальный режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",                  
+      markers: [],
       buttonsToRemove: [
         'zoom2d',
         'pan2d',
@@ -64,7 +93,7 @@ export default {
           t: 30
         },
         xaxis: {
-          title: "Дебит жидкости, м³/сут.",
+          title: '',
           hoverformat: ".1f",
           // showline: true,
           // autorange: false,
@@ -83,7 +112,7 @@ export default {
           linecolor: "#454D7D"
         },
         yaxis: {
-          title: "Давление, атм / Газосодержание, % ",
+          title: '',
           hoverformat: ".1f",
           rangemode: 'nonnegative',
           showline: true,
@@ -154,17 +183,13 @@ export default {
         q_oil2.push(q_oil);
       });
 
-      this.data = [
-        {
-          name: "Кривая притока",
+      this.data = [ {
+          name: this.nameKP,
           legendgroup: "group1",
           x: qo_points2,
           y: ipr_points2,
           text: q_oil2,
-          hovertemplate: "<b>Кривая притока</b><br>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplateKP, 
           marker: {
             x: 20,
             y: 60,
@@ -174,7 +199,7 @@ export default {
         },
 
         {
-          name: "Давление на приёме насоса",
+          name: this.namePN,
           legendgroup: "group2",
           x: qo_points2,
           y: pintake_points2,
@@ -187,12 +212,12 @@ export default {
         },
 
         {
-          name: "Газосодержание в насосе",
+          name: this.nameGN,
           legendgroup: "group3",
           x: qo_points2,
           y: freegas_points2,
           yaxis: 'y',
-          hovertemplate: '<b>Газосодержание в насосе = %{y:.1f}%</b><extra></extra>',
+          hovertemplate: this.hovertemplateGS, 
           marker: {
             size: "15",
             color: "#237DEB",
@@ -200,16 +225,13 @@ export default {
         },
 
         {
-          name: "Текущий режим",
+          name: this.nameTR,
           legendgroup: "group4",
           x: [],
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Текущий режим</b><br><extra></extra>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм",
+          hovertemplate: this.hovertemplateTR,
           marker: {
             size: "15",
             color: "#00A0E3",
@@ -217,16 +239,13 @@ export default {
         },
 
         {
-          name: "Целевой режим",
+          name: this.nameCR,
           legendgroup: "group5",
           x: [],
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Целевой режим</b><br>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplateCR,
           marker: {
             size: "15",
             color: "#13B062",
@@ -234,16 +253,13 @@ export default {
         },
 
         {
-          name: "Потенциальный режим",
+          name: this.namePR,
           legendgroup: "group6",
           x: [],
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Потенциальный режим</b><br>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplatePR,
           marker: {
             size: "6",
             color: "#FBA409",
@@ -302,10 +318,72 @@ export default {
       }
     }
 
+
+    let url = `${window.location.pathname}`
+    let langUrl = url.slice(1, 3);
+    if(langUrl === 'ru') {
+      this.layout.xaxis.title = this.titleXRu
+      this.layout.yaxis.title = this.titleYRu
+    } else if(langUrl === 'kz') {  
+      this.layout.xaxis.title = this.titleXKz
+      this.layout.yaxis.title = this.titleYKz
+      this.nameKP = "Ағын қисығы"
+      this.namePN = "Сорғының қабылдау қысымы"
+      this.nameGN = "Газ құрамы"
+      this.nameTR = "Ағымдағы  режим"
+      this.nameCR = "Мақсатты режим"
+      this.namePR = "Потенциалдық  режим"
+      this.hovertemplateGS = "<b>Газ құрамы = %{y:.1f}%</b><extra></extra>",
+      this.hovertemplateKP = "<b>Ағын қисығы</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplateTR = "<b>Ағымдағы  режим</b><br><extra></extra>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм",
+      this.hovertemplateCR = "<b>Мақсатты режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplatePR = "<b>Потенциалдық  режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>"             
+    } else {
+      this.layout.xaxis.title = this.titleXEn
+      this.layout.yaxis.title = this.titleYEn
+      this.nameKP = "Inflow curve"
+      this.namePN = "Intake pressure"
+      this.nameGN = "Gas saturation"
+      this.nameTR = "Current mode"
+      this.nameCR = "Target mode"
+      this.namePR = "Potential mode"
+      this.hovertemplateGS = "<b>Gas saturation = %{y:.1f}%</b><extra></extra>",
+      this.hovertemplateKP = "<b>Inflow curve</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplateTR = "<b>Current mode</b><br><extra></extra>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм",
+      this.hovertemplateCR = "<b>Target mode</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplatePR =  "<b>Potential mode</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>"             
+    }
+ 
+    
+
   },
   updated: function() {
     this.$eventBus.$on("newCurveLineData", this.setLine);
     this.$eventBus.$on("newPointsData", this.setPoints);
   }
-};
+}
 </script>

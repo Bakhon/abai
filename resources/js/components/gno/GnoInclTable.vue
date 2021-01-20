@@ -43,21 +43,21 @@
                 width="88"
                 style="border-left: none; width: 66pt;"
               >
-                Зенитный угол, гр
+                {{trans('pgno.zenitnii_ugol')}}, гр
               </td>
               <td
                 class="xl6321650"
                 width="95"
                 style="border-left: none; width: 71pt;"
               >
-                Азимут, гр
+                {{trans('pgno.azimut')}}, гр
               </td>
               <td
                 class="xl6321650"
                 width="160"
                 style="border-left: none; width: 120pt;"
               >
-                Темп набора пространственной кривизны, (DLS), гр/10м
+                {{trans('pgno.temp_nabora_krivizni')}} (DLS), гр/10м
               </td>
             </tr>
             </thead>
