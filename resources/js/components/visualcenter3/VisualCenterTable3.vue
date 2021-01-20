@@ -38,7 +38,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}
+                    {{ formatVisTableNumber(oil_planDay) }}
+                   <!-- {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}-->
                   </div>
                   <br />
 
@@ -100,7 +101,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_dlv_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}
+                     {{ formatVisTableNumber(oil_dlv_planDay) }}
+                    <!--{{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}-->
                   </div>
                   <br />
                   <div
@@ -168,7 +170,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="gas_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}
+                   {{ formatVisTableNumber(gas_planDay) }}
+                   <!-- {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}-->
                   </div>
 
                   <br />
