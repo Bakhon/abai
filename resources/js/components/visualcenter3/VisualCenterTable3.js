@@ -11,6 +11,7 @@ export default {
   },
   data: function () {
     return {
+      oilLast:0,
       scroll: '',
       opec: 'утв.',
       quarter1: 0,
@@ -586,8 +587,7 @@ export default {
           )
           this.opec = 'ОПЕК+';
         }
-        // this.NameDzoFull[0] = 'Итого по всем активам:';
-        //this.changeDate();
+     
       }
 
     },
@@ -742,7 +742,14 @@ export default {
             ]);
             prevValue = item[1];
           });
-          this.oilNow = _.last(oilRatesData.for_chart)[1];
+          let oilNow = _.orderBy(
+            oilRatesData.for_chart,
+            [0],
+            ["desc"]
+          );
+        
+          this.oilNow = oilNow[0][1];//_.last(oilRatesData.for_chart)[1];
+          this.oilLast = oilNow[1];
           this.oilRatesData = oilRatesData;
         } else {
           console.log("No data");
@@ -1043,8 +1050,24 @@ export default {
         if (item != "oil_opek_plan") {
           this.opec = 'утв.';
           this.buttonHover14 = "";
+        }else {       
+          this.opec = 'ОПЕК+';
+        item6 = 'oil_plan';
         }
       }
+  
+     /* if (change == "b14") {
+        let hover = this.buttonHover14;
+        if (hover) {       
+          this.opec = 'утв.';
+
+        } else {       
+          this.opec = 'ОПЕК+';
+        }
+     
+      }*/
+
+
       this.$store.commit('globalloading/SET_LOADING', true);
       let start = new Date(this.range.start).toLocaleString("ru", {
         year: 'numeric',
@@ -1076,6 +1099,9 @@ export default {
 
       var productionPlan = localStorage.getItem("production-plan");
       var productionFact = localStorage.getItem("production-fact");
+
+
+    
 
       this.circleMenu = item3;
 
@@ -1220,11 +1246,12 @@ export default {
 
 
           var buttonHover = this.buttonHover;
-          if (productionPlan == "oil_plan") {
+          if ((productionPlan == "oil_plan") || (productionPlan == "oil_opek_plan")) {
             this.buttonHover1 = buttonHover;
           } else {
             this.buttonHover1 = "";
           }
+            
           if (productionPlan == "oil_dlv_plan") {
             this.buttonHover2 = buttonHover;
           } else {
@@ -2374,10 +2401,10 @@ export default {
 
     getAccident(a) {
       if (a) {
-        return "margin-top: 3px;border-top: 6px solid rgb(227, 30, 36); margin: 10px 25px 0px;";
+        return "margin-top: 3px;border-top: 6px solid rgb(227, 30, 36); margin: 10px 56px 0px;";
       } else {
 
-        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 25px 25px 0px;"
+        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 25px 56px 0px;"
       }
     },
 
@@ -2421,10 +2448,10 @@ export default {
 
 
       this.range = {
-        start: "2021-01-14T00:00:00+06:00",
-        end: "2021-01-14T17:59:00+06:00",
-        //start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        //end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+        /*start: "2021-01-14T00:00:00+06:00",
+        end: "2021-01-14T17:59:00+06:00",*/
+        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     } else {

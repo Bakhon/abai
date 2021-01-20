@@ -10,7 +10,7 @@ return array (
   'wells2' => 'Фонд нагнетательных скважин23',
   'usdKurs' => 'Курс доллара',
   'vsYest' => 'vs вчера',
-  'vsSept' => 'vs сентябрь',
+  'vsSept' => 'vs',
   'dolyaUchast' => 'С учётом доли участия КМГ',
   'ostatokNefti' => 'Товарный остаток нефти',
   'prirodGazdlv' => 'Сдача природного газа',
