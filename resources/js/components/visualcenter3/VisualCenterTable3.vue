@@ -38,7 +38,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}
+                    {{ formatVisTableNumber(oil_planDay) }}
+                   <!-- {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}-->
                   </div>
                   <br />
 
@@ -100,7 +101,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_dlv_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}
+                     {{ formatVisTableNumber(oil_dlv_planDay) }}
+                    <!--{{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}-->
                   </div>
                   <br />
                   <div
@@ -168,7 +170,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="gas_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}
+                   {{ formatVisTableNumber(gas_planDay) }}
+                   <!-- {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}-->
                   </div>
 
                   <br />
@@ -1572,10 +1575,15 @@
               <div class="vis-table vis-table-small px-3">
                 <table v-if="innerWells.length" class="table4 w-100">
                   <tbody>
-                    <tr v-for="(item, index) in innerWells">
+                    <tr v-for="(item, index) in innerWells"
+                     @click="innerWellsSelectedRow = item.code">
                       <td
+                      @click="innerWellsSelectedRow = item.code"
                         class="w-50"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                         :class="{
+                          tdStyle: index % 2 === 0,
+                          selected: innerWellsSelectedRow === item.code,
+                        }"
                         style="cursor: pointer"
                       >
                         <span>
@@ -1583,6 +1591,7 @@
                         </span>
                       </td>
                       <td
+                      @click="innerWellsSelectedRow = item.code"
                         class="w-25 tdNumber"
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                         style="cursor: pointer"
@@ -1597,7 +1606,9 @@
                 </table>
               </div>
               <div class="col">
-                <visual-center3-wells></visual-center3-wells>
+                <visual-center3-wells
+                v-if="innerWellsNagDataForChart"
+                  :chartData="innerWellsNagDataForChart">  ></visual-center3-wells>
               </div>
             </div>
           </div>
@@ -1759,10 +1770,15 @@
               <div class="vis-table vis-table-small px-3">
                 <table v-if="innerWells2.length" class="table4 w-100">
                   <tbody>
-                    <tr v-for="(item, index) in innerWells2">
+                    <tr v-for="(item, index) in innerWells2"
+                      @click="innerWells2SelectedRow = item.code">
                       <td
-                        class="w-50"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                        @click="innerWells2SelectedRow = item.code"
+                        class="w-50"                 
+                        :class="{
+                          tdStyle: index % 2 === 0,
+                          selected: innerWells2SelectedRow === item.code,
+                        }"
                         style="cursor: pointer"
                       >
                         <span>
@@ -1770,8 +1786,11 @@
                         </span>
                       </td>
                       <td
-                        class="w-25 tdNumber"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                      @click="innerWells2SelectedRow = item.code"
+                        class="w-25 text-center"
+                        :class="
+                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        "
                         style="cursor: pointer"
                       >
                         {{ item.value }}
@@ -1784,7 +1803,10 @@
                 </table>
               </div>
               <div class="col">
-                <visual-center3-wells></visual-center3-wells>
+                <visual-center3-wells
+                 v-if="innerWellsProd2DataForChart"
+                  :chartData="innerWellsProd2DataForChart">                  
+                </visual-center3-wells>
               </div>
             </div>
           </div>
@@ -2657,7 +2679,7 @@
   }
 }
 .vis-table-small {
-  max-width: 48% !important;
+  max-width: 46% !important;
   tr {
     line-height: 4.2rem !important;
     font-size: 1.2rem !important;
