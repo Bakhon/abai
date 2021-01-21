@@ -98,6 +98,7 @@ Vue.component('well-fund', require('./components/reports/WellFund.vue').default)
 Vue.component('well-fund-block', require('./components/reports/WellFundBlock.vue').default);
 Vue.component('well-fund-field', require('./components/reports/WellFundField.vue').default);
 Vue.component('well-fund-inactive', require('./components/reports/WellFundInactive.vue').default);
+Vue.component('well-fund-revision-field', require('./components/reports/WellFundRevisionField.vue').default);
 Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
