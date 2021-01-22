@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex flex-column flex-sm-row justify-content-between mb-1 mb-sm-2">
     <indicator
-        v-bind:title="'Добыча нефти'"
+        v-bind:title="trans('visualcenter.getoil')"
         v-bind:indicatorValue="oilFact"
-        v-bind:units="'тыс. тонн'"
+        v-bind:units="trans('visualcenter.thousand') + ' ' + 'тонн'"
         v-bind:hasProgressBar="true"
         v-bind:progressValue="oilFact"
         v-bind:progressMax="oilPlan"
@@ -11,7 +11,7 @@
         v-bind:percents="oilPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Выручка(Доход)'"
+        v-bind:title="trans('visualcenter.ecoBlock1')"
         v-bind:indicatorValue="dataFact"
         v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="true"
@@ -21,7 +21,7 @@
         v-bind:percents="dataPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Расходы'"
+        v-bind:title="trans('visualcenter.eco2')"
         v-bind:indicatorValue="spendingFact"
         v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="true"
@@ -31,7 +31,7 @@
         v-bind:percents="spendingPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Чистая прибыль'"
+        v-bind:title="trans('visualcenter.ecoBlock2')"
         v-bind:indicatorValue="netProfitFact"
         v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="true"
@@ -41,7 +41,7 @@
         v-bind:percents="netProfitPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Капиталовложения'"
+        v-bind:title="trans('visualcenter.ecoBlock3')"
         v-bind:indicatorValue="capitalInvFact"
         v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="true"
@@ -51,7 +51,7 @@
         v-bind:percents="capitalInvPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Свободный денежный поток'"
+        v-bind:title="trans('visualcenter.eco9')"
         v-bind:indicatorValue="cashFlowFact"
         v-bind:units="'млрд. тенге'"
         v-bind:hasProgressBar="false"
@@ -61,7 +61,7 @@
         v-bind:percents="cashFlowPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Цена на нефть (Brent)'"
+        v-bind:title="trans('visualcenter.oilPrice')"
         v-bind:indicatorValue="oilNow"
         v-bind:units="'$ / bbl'"
         v-bind:hasProgressBar="false"
@@ -72,7 +72,7 @@
         v-bind:percents="oilPercents"
     ></indicator>
     <indicator
-        v-bind:title="'Курс доллара'"
+        v-bind:title="trans('visualcenter.usdKurs')"
         v-bind:indicatorValue="currencyNow"
         v-bind:units="'kzt / $'"
         v-bind:hasProgressBar="false"

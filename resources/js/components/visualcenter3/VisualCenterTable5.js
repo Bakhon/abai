@@ -6,27 +6,33 @@ export default {
       fullCompanyNames: [
         {
           code: 'ОМГ',
-          title: 'АО "ОзенМунайГаз"'
+          title: this.trans('visualcenter.omg') 
+          // 'АО "ОзенМунайГаз"'
         },
         {
           code: 'ЭМГ',
-          title: 'АО "ЭмбаМунайГаз"'
+          title: this.trans('visualcenter.emg')  
+          // 'АО "ЭмбаМунайГаз"'
         },
         {
           code: 'КГМ',
-          title: 'ТОО "КазГерМунай"'
+          title: this.trans('visualcenter.kgm') 
+          // 'ТОО "КазГерМунай"'
         },
         {
           code: 'ММГ',
-          title: 'АО "Мангистаумунайгаз"'
+          title: this.trans('visualcenter.mmg') 
+          // 'АО "Мангистаумунайгаз"'
         },
         {
           code: 'КТМ',
-          title: 'ТОО "Казахтуркмунай"'
+          title: this.trans('visualcenter.ktm')  
+          // 'ТОО "Казахтуркмунай"'
         },
         {
           code: 'КОА',
-          title: 'ТОО "Казахойл Актобе"'
+          title: this.trans('visualcenter.koa') 
+          // 'ТОО "Казахойл Актобе"'
         },
       ],
       dzoSelect: 'ALL',

@@ -15,13 +15,17 @@ export default {
       if (opec === "ОПЕК+") {
         color1 = "#fff";
         color2 = "#2E50E9";
-        plan1 = "План ОПЕК+";
-        plan2 = "План утв.";
+        plan1 = this.trans('visualcenter.planOPEK');
+        // "План ОПЕК+";
+        plan2 = this.trans('visualcenter.Plan') + ' ' + this.trans('visualcenter.utv');
+        // "План утв.";
       } else {
         color1 = "#2E50E9";
         color2 = "#fff";
-        plan1 = "План утв.";
-        plan2 = "План ОПЕК+";
+        plan1 = this.trans('visualcenter.Plan') + ' ' + this.trans('visualcenter.utv');
+        // "План утв.";
+        plan2 = this.trans('visualcenter.planOPEK');
+        // "План ОПЕК+";
       }
       //color1 = "borderColor: 'red'";
       // color2 = "borderColor: 'blue'";
@@ -31,18 +35,30 @@ export default {
       let productionPlanForChart2 = [];
       let labels = [];
       const monthNames = [
-        "Янв",
-        "Фев",
-        "Мар",
-        "Апр",
-        "Май",
-        "Июн",
-        "Июл",
-        "Авг",
-        "Сен",
-        "Окт",
-        "Ноя",
-        "Дек",
+        // "Янв",
+        this.trans('visualcenter.jan'),
+        // "Фев",
+        this.trans('visualcenter.feb'),
+        // "Мар",
+        this.trans('visualcenter.mar'),
+        // "Апр",
+        this.trans('visualcenter.apr'),
+        // "Май",
+        this.trans('visualcenter.may'),
+        // "Июн",
+        this.trans('visualcenter.june'),
+        // "Июл",
+        this.trans('visualcenter.july'),
+        // "Авг",
+        this.trans('visualcenter.aug'),
+        // "Сен",
+        this.trans('visualcenter.sept'),
+        // "Окт",
+        this.trans('visualcenter.oct'),
+        // "Ноя",
+        this.trans('visualcenter.nov'),
+        // "Дек",
+        this.trans('visualcenter.dec'),
       ];
       _.forEach(value[0]["productionForChart"], function (item, key) {
         let date = new Date(Number(item.time));
@@ -103,7 +119,8 @@ export default {
               pointRadius: 0,
             },
             {
-              label: "Факт",
+              label: this.trans('visualcenter.Fact'), 
+              // "Факт",
               borderColor: "#9EA4C9",
               fill: false,
               showLine: true,
@@ -140,7 +157,8 @@ export default {
                     };
                   });
                   returnData.push({
-                    text: "Отклонение",
+                    text: this.trans('visualcenter.deviation'), 
+                    // "Отклонение",
                     fillStyle: fillPattern,
                   });
 

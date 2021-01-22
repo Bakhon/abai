@@ -103,6 +103,7 @@
                     страницы</label>
             </div>
         </div>
+        
         <div class="tabs tab-podborGno">
             <div class="form-check">
                 <input
@@ -128,6 +129,7 @@
                         value="{{$permissions->get('bigdata view main')->id}}"
                         {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata view main')->id)->isNotEmpty() ? 'checked' : ''}}>
                 <label class="form-check-label"
+                       for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной
                        for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной</label>
             </div>
         </div>

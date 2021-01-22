@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height p-2"
+    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height px-2"
   >
     <div class="left-side flex-grow-1 pr-2">
       <div class="first-string">
@@ -38,7 +38,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}
+                    {{ formatVisTableNumber(oil_planDay) }}
+                   <!-- {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}-->
                   </div>
                   <br />
 
@@ -100,7 +101,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_dlv_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}
+                     {{ formatVisTableNumber(oil_dlv_planDay) }}
+                    <!--{{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}-->
                   </div>
                   <br />
                   <div
@@ -140,7 +142,7 @@
                     </div>
                     <div class="unit-vc">
                       <!--млрд.-->
-                      {{ thousand }} млн. м³
+                      {{ thousand }} м³
                     </div>
                   </div>
                   <div class="txt1">
@@ -168,7 +170,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="gas_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}
+                   {{ formatVisTableNumber(gas_planDay) }}
+                   <!-- {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}-->
                   </div>
 
                   <br />
@@ -224,11 +227,18 @@
                 </div>
 
                 <div class="percent-currency">
-                  <div class="arrow"></div>
-                  <div class="txt2-2">5,2%</div>
-                  <div class="txt3">
+                  <div
+                    :class="`${getColor2(
+                      getDiffProcentLastP(oilLast[1],oilNow)
+                    )}`"
+                  ></div>
+                  <div class="txt2-2">
+                   {{  Math.abs(getDiffProcentLastP(oilLast[1],oilNow))}} %
+                  </div>
+                  <div class="txt3">                  
                     <!-- vs сентябрь -->{{ trans("visualcenter.vsSept") }}
-                    </div>
+                     {{ new Date(oilLast[0]).toLocaleDateString()}}
+                  </div>
                 </div>
               </td>
               <td
@@ -250,8 +260,9 @@
                 </div>
                 <br />
                 <div class="txt1">
-                  <!-- Курс доллара --> {{ trans("visualcenter.usdKurs") }}
-                  </div>
+                  <!-- Курс доллара -->
+                  {{ trans("visualcenter.usdKurs") }}
+                </div>
                 <br />
                 <div class="percent-currency">
                   <div
@@ -265,7 +276,7 @@
                   <div class="txt2-2">{{ dailyCurrencyChangeUsd }}%</div>
                   <div class="txt3">
                     <!-- vs вчера  -->{{ trans("visualcenter.vsYest") }}
-                    </div>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -291,7 +302,7 @@
                     'oil_fact',
                     `${oilChartHeadName}`,
                     ' тонн',
-                    'Добыча нефти'
+                    trans('visualcenter.getoil')
                   )
                 "
               >
@@ -299,7 +310,7 @@
                 <div class="icon-all icons1"></div>
                 <div class="txt5">
                   <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
-                  </div>
+                </div>
                 <!--  <div class="txt6"> тонн</div>
                  </label>-->
               </div>
@@ -318,18 +329,20 @@
                         'oil_fact',
                         `${oilChartHeadName}`,
                         ' тонн',
-                        'С учётом доли участия КМГ'
+                        trans('visualcenter.dolyaUchast')
+                        
                       )
                     "
-                    >
-                    <!-- С учётом доли участия КМГ -->{{ trans("visualcenter.dolyaUchast") }}
-                    </a
                   >
-                  <div class="col-2 mt-2">
+                    <!-- С учётом доли участия КМГ -->{{
+                      trans("visualcenter.dolyaUchast")
+                    }}
+                  </a>
+                  <!--<div class="col-2 mt-2">
                     <div class="square-small2" :style="`${changeMenuButton1}`">
                       &#10003;
                     </div>
-                  </div>
+                  </div>-->
                 </li>
 
                 <!--<li class="center-li row px-4">
@@ -362,16 +375,16 @@
                   getProduction(
                     'oil_dlv_plan',
                     'oil_dlv_fact',
-                    'Динамика сдачи нефти',
+                    trans('visualcenter.dlvoildynamic'),
                     ' тонн',
-                    'Сдача нефти'
+                    trans('visualcenter.oildlv')
                   )
                 "
               >
                 <div class="icon-all icons2"></div>
                 <div class="txt5">
                   <!-- Сдача нефти  -->{{ trans("visualcenter.oildlv") }}
-                  </div>
+                </div>
                 <!--  <div class="txt6"> тонн</div>-->
               </div>
 
@@ -385,20 +398,21 @@
                       getProduction(
                         'oil_dlv_plan',
                         'oil_dlv_fact',
-                        'Динамика сдачи нефти',
+                        trans('visualcenter.dlvoildynamic'),
                         ' тонн',
-                        'С учётом доли участия КМГ'
+                        trans('visualcenter.dolyaUchast'),
                       )
                     "
-                    >
-                    <!-- С учётом доли участия КМГ -->{{ trans("visualcenter.dolyaUchast") }}
-                    </a
                   >
-                  <div class="col-2">
+                    <!-- С учётом доли участия КМГ -->{{
+                      trans("visualcenter.dolyaUchast")
+                    }}
+                  </a>
+                  <!--<div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton2}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
                 <li class="center-li row px-4" @click="changeMenu('103')">
                   <div class="col-1 mt-2" v-html="changeMenuButton3Flag"></div>
@@ -411,18 +425,19 @@
                         'tovarnyi_ostatok_nefti_today',
                         `${oilChartHeadName}`,
                         ' тонн',
-                        'Товарный остаток нефти'
+                        trans('visualcenter.ostatokNefti'),
                       )
                     "
-                    >
-                    <!-- Товарный остаток нефти -->{{ trans("visualcenter.ostatokNefti") }}
-                    </a
                   >
-                  <div class="col-2">
+                    <!-- Товарный остаток нефти -->{{
+                      trans("visualcenter.ostatokNefti")
+                    }}
+                  </a>
+                 <!-- <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton3}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
               </ul>
             </div>
@@ -434,16 +449,16 @@
                   getProduction(
                     'gas_plan',
                     'gas_fact',
-                    'Динамика добычи газа',
+                    trans('visualcenter.getgasdynamic'),
                     ' м³',
-                    'Добыча газа'
+                    trans('visualcenter.getgaz'),
                   )
                 "
               >
                 <div class="icon-all icons3"></div>
                 <div class="txt5">
                   <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
-                  </div>
+                </div>
                 <!--  <div class="txt6"> м³</div>-->
               </div>
               <ul>
@@ -455,20 +470,21 @@
                       getProduction(
                         'sdacha_gaza_prirod_plan',
                         'sdacha_gaza_prirod_fact',
-                        'Динамика сдачи природного газа',
+                        trans('visualcenter.dlvPrirodGasldynamic'),
                         ' м³',
-                        'Сдача природного газа'
+                        trans('visualcenter.prirodGazdlv'),
                       )
                     "
-                    >
-                    <!-- Сдача природного газа -->{{ trans("visualcenter.prirodGazdlv") }}
-                    </a
                   >
-                  <div class="col-2">
+                    <!-- Сдача природного газа -->{{
+                      trans("visualcenter.prirodGazdlv")
+                    }}
+                  </a>
+                  <!--<div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton4}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('105')">
@@ -479,19 +495,21 @@
                       getProduction(
                         'raskhod_prirod_plan',
                         'raskhod_prirod_fact',
-                        'Динамика расхода природного газа',
+                        trans('visualcenter.raskhodprirodGazDynamic'),
                         ' м³',
-                        'Расход природного газа на собственные нужды'
+                        trans('visualcenter.raskhodprirodGaz'),
                       )
                     "
-                    >
-                    <!-- Расход природного газа на собственные нужды -->{{ trans("visualcenter.raskhodprirodGaz") }}
+                  >
+                    <!-- Расход природного газа на собственные нужды -->{{
+                      trans("visualcenter.raskhodprirodGaz")
+                    }}
                   </a>
-                  <div class="col-2 mt-2">
+                  <!--<div class="col-2 mt-2">
                     <div class="square-small2" :style="`${changeMenuButton5}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
                 <!--<li class="center-li row px-4" @click="changeMenu('106')">
                   <a
@@ -522,20 +540,21 @@
                       getProduction(
                         'sdacha_gaza_poput_plan',
                         'sdacha_gaza_poput_fact',
-                        'Динамика сдачи попутного газа',
+                        trans('visualcenter.poputGazdlvDynamic'),
                         ' тонн',
-                        'Сдача попутного газа'
+                        trans('visualcenter.poputGazdlv'),
                       )
                     "
-                    >
-                    <!-- Сдача попутного газа -->{{ trans("visualcenter.poputGazdlv") }}
-                    </a
                   >
-                  <div class="col-2">
+                    <!-- Сдача попутного газа -->{{
+                      trans("visualcenter.poputGazdlv")
+                    }}
+                  </a>
+                  <!--<div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton8}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('103')">
@@ -546,19 +565,21 @@
                       getProduction(
                         'raskhod_poput_plan',
                         'raskhod_poput_fact',
-                        'Динамика расхода попутного газа на собственные нужды',
+                        trans('visualcenter.raskhodpoputGazDynamic'),
                         ' м³',
-                        'Расход попутного газа на собственные нужды '
+                        trans('visualcenter.raskhodpoputGaz'),
                       )
                     "
-                    >
-                    <!-- Расход попутного газа на собственные нужды -->{{ trans("visualcenter.raskhodpoputGaz") }}
+                  >
+                    <!-- Расход попутного газа на собственные нужды -->{{
+                      trans("visualcenter.raskhodpoputGaz")
+                    }}
                   </a>
-                  <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton3}`">
+                   <!--<div class="col-2">
+                   <div class="square-small2" :style="`${changeMenuButton3}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('107')">
@@ -569,20 +590,21 @@
                       getProduction(
                         'pererabotka_gaza_poput_plan',
                         'pererabotka_gaza_poput_fact',
-                        'Динамика переработки попутного газа',
+                        trans('visualcenter.pererabotkapoputGazDynamic'),
                         ' м³',
-                        'Переработка попутного газа'
+                        trans('visualcenter.pererabotkapoputGaz'),
                       )
                     "
-                    >
-                    <!-- Переработка попутного газа -->{{ trans("visualcenter.pererabotkapoputGaz") }}
-                    </a
                   >
-                  <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton7}`">
+                    <!-- Переработка попутного газа -->{{
+                      trans("visualcenter.pererabotkapoputGaz")
+                    }}
+                  </a>
+                   <!--<div class="col-2">
+                   <div class="square-small2" :style="`${changeMenuButton7}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
               </ul>
             </div>
@@ -594,16 +616,16 @@
                   getProduction(
                     'gk_plan',
                     'gk_fact',
-                    'Динамика добычи конденсата',
+                    trans('visualcenter.getgkDynamic'),
                     ' тонн',
-                    'Добыча конденсата'
+                    trans('visualcenter.getgk'),
                   )
                 "
               >
                 <div class="icon-all icons4"></div>
                 <div class="txt5">
                   <!-- Добыча конденсата -->{{ trans("visualcenter.getgk") }}
-                  </div>
+                </div>
                 <!-- <div class="txt6"> тонн</div>-->
               </div>
               <ul>
@@ -615,20 +637,21 @@
                       getProduction(
                         'gk_plan',
                         'gk_fact',
-                        'Динамика добычи конденсата',
+                        trans('visualcenter.getgkDynamic'),
                         ' тонн',
-                        'С учётом доли участия КМГ'
+                        trans('visualcenter.dolyaUchast'),
                       )
                     "
-                    >
-                    <!-- С учётом доли участия КМГ -->{{ trans("visualcenter.dolyaUchast") }}
-                    </a
                   >
-                  <div class="col-2">
+                    <!-- С учётом доли участия КМГ -->{{
+                      trans("visualcenter.dolyaUchast")
+                    }}
+                  </a>
+                  <!--<div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton13}`">
                       &#10003;
                     </div>
-                  </div>
+                  </div>-->
                 </li>
               </ul>
             </div>
@@ -640,16 +663,16 @@
                   getProduction(
                     'liq_plan',
                     'liq_fact',
-                    'Динамика объёма закачки воды',
+                    trans('visualcenter.liqDynamic'),
                     ' м³',
-                    'Закачка воды'
+                    trans('visualcenter.liq'),
                   )
                 "
               >
                 <div class="icon-all icons5"></div>
                 <div class="txt5">
                   <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
-                  </div>
+                </div>
                 <!-- <div class="txt6"> м³</div>-->
               </div>
               <ul>
@@ -661,20 +684,21 @@
                       getProduction(
                         'ppd_zakachka_morskoi_vody_plan',
                         'ppd_zakachka_morskoi_vody_fact',
-                        'Динамика закачки морской воды',
+                        trans('visualcenter.liqOceanDynamic'),
                         ' м³',
-                        'Закачка морской воды'
+                        trans('visualcenter.liqOcean'),
                       )
                     "
-                    >
-                    <!-- Закачка морской воды -->{{ trans("visualcenter.liqOcean") }}
-                    </a
                   >
-                  <div class="col-2">
+                    <!-- Закачка морской воды -->{{
+                      trans("visualcenter.liqOcean")
+                    }}
+                  </a>
+                  <!--<div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton9}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('110')">
@@ -685,20 +709,21 @@
                       getProduction(
                         'ppd_zakachka_stochnoi_vody_plan',
                         'ppd_zakachka_stochnoi_vody_fact',
-                        'Динамика закачки сточной воды',
+                        trans('visualcenter.liqStochnayaDynamic'),
                         ' м³',
-                        'Закачка сточной воды'
+                        trans('visualcenter.liqStochnaya'),
                       )
                     "
-                    >
-                    <!-- Закачка сточной воды -->{{ trans("visualcenter.liqStochnaya") }}
-                    </a
                   >
-                  <div class="col-2">
+                    <!-- Закачка сточной воды -->{{
+                      trans("visualcenter.liqStochnaya")
+                    }}
+                  </a>
+                  <!--<div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton10}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
 
                 <li class="center-li row px-4" @click="changeMenu('111')">
@@ -709,20 +734,21 @@
                       getProduction(
                         'ppd_zakachka_albsen_vody_plan',
                         'ppd_zakachka_albsen_vody_fact',
-                        'Динамика закачки альбсен. воды',
+                        trans('visualcenter.liqAlbsenDynamic'),
                         ' м³',
-                        'Закачка альбсен. воды'
+                        trans('visualcenter.liqAlbsen'),
                       )
                     "
-                    >
-                    <!-- Закачка альбсен. воды -->{{ trans("visualcenter.liqAlbsen") }}
-                    </a
                   >
-                  <div class="col-2">
+                    <!-- Закачка альбсен. воды -->{{
+                      trans("visualcenter.liqAlbsen")
+                    }}
+                  </a>
+                <!--  <div class="col-2">
                     <div class="square-small2" :style="`${changeMenuButton11}`">
                       ✓
                     </div>
-                  </div>
+                  </div>-->
                 </li>
               </ul>
             </div>
@@ -766,13 +792,16 @@
                   :style="`${buttonHover10}`"
                   @click="changeMenu2(4)"
                 >
-                  <span v-if="oneDate"> 
-                    <!-- Дата  -->{{ trans("visualcenter.date") }}
-                    [{{ timeSelect }}]</span>
-                  <span v-else
-                    >
-                    <!-- Период  -->{{ trans("visualcenter.period") }}
-                    [{{ timeSelect }} - {{ timeSelectOld }}]</span
+                  <span v-if="oneDate">
+                    <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      timeSelect
+                    }}]</span
+                  >
+                  <span v-else>
+                    <!-- Период  -->{{ trans("visualcenter.period") }} [{{
+                      timeSelect
+                    }}
+                    - {{ timeSelectOld }}]</span
                   >
                 </div>
                 <ul class="center-menu2 right-indent">
@@ -811,7 +840,8 @@
               :style="`${buttonHover14}`"
               @click="changeAssets('b14')"
             >
-              <!-- С учётом ограничения ОПЕК+ --> {{ trans("visualcenter.opek") }}
+              <!-- С учётом ограничения ОПЕК+ -->
+              {{ trans("visualcenter.opek") }}
             </h5>
             <h5
               class="col assets4"
@@ -826,7 +856,9 @@
               :style="`${buttonHover12}`"
               @click="changeAssets('b12')"
             >
-              <!-- Неоперационные активы -->{{ trans("visualcenter.neoperactive") }}
+              <!-- Неоперационные активы -->{{
+                trans("visualcenter.neoperactive")
+              }}
             </h5>
 
             <h5
@@ -913,7 +945,7 @@
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div v-if="index === 0" class="center">
                         <!-- факт -->{{ trans("visualcenter.fact") }}
-                        </div>
+                      </div>
                       <div class="font" v-if="item.productionFactForMonth">
                         {{
                           new Intl.NumberFormat("ru-RU").format(
@@ -1022,21 +1054,28 @@
                         }}
                       </div>
                     </td>
-                  </tr>                 
+                  </tr>
                 </tbody>
               </table>
-               <div  v-for="(item, index) in tables" colspan="5" style="background: rgb(54, 59, 104); height: 35em; border-top: 5px solid #272953">
-                      <div class="mt-3 text-center">Текст причины</div>
-                      <div class="ml-3">
-                      <div class="mt-2">{{item.opec}}</div>
-                      <div class="mt-2">{{item.impulses}}</div>
-                      <div class="mt-2">{{item.accident}}</div>
-                      <div class="mt-2">{{item.restrictions}}</div>
-                      <div class="mt-2">{{item.otheraccidents}}</div>
-                      </div></div>
-
-               
-                   
+              <div
+                v-for="(item, index) in tables"
+                colspan="5"
+                style="
+                  background: rgb(54, 59, 104);
+                  height: 35em;
+                  border-top: 5px solid #272953;
+                "
+              >
+                <div class="mt-3 text-center">Текст причины</div>
+                <div class="ml-3">
+                  <div class="mt-2">{{ item.opec }}</div>                  
+                  <div class="mt-2">{{ item.impulses }}</div>
+                  <div class="mt-2">{{ item.landing }}</div>
+                  <div class="mt-2">{{ item.accident }}</div>
+                  <div class="mt-2">{{ item.restrictions }}</div>
+                  <div class="mt-2">{{ item.otheraccidents }}</div>
+                </div>
+              </div>
             </div>
 
             <div class="vis-chart pl-3">
@@ -1085,7 +1124,7 @@
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div v-if="index === 0" class="center">
                         <!-- факт -->{{ trans("visualcenter.fact") }}
-                        </div>
+                      </div>
                       <div class="font" v-if="item.factMonth">
                         {{ formatVisTableNumber(item.factMonth) }}
                         <div
@@ -1150,56 +1189,119 @@
                         %
                       </div>
                     </td>
-                    <td v-if="oneDate == 1"
+                    <td
+                      v-if="
+                        (item2 == 'oil_fact' && oneDate == 1) ||
+                        (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight width-accidnets' : 'tdStyleLight2 width-accidnets '
+                        index % 2 === 0
+                          ? 'tdStyleLight width-accidnets'
+                          : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">ОПЕК+</div>
                       <!--123-->
                       <div
                         class="triangle"
-                        :style="getAccident(item.opec)" 
+                        :style="getAccident(item.opec)"
                       ></div>
                     </td>
-                    <td v-if="oneDate == 1" :class="index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '">
+                    <td
+                      v-if="
+                        (item2 == 'oil_fact' && oneDate == 1) ||
+                        (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                      :class="
+                        index % 2 === 0
+                          ? 'tdStyle width-accidnets '
+                          : 'tdNone width-accidnets '
+                      "
+                    >
                       <div v-if="index === 0" class="center">
-                        Порывы/<br />посадка ЭЭ
-                      </div>   <div
+                        Порывы
+                      </div>
+                      <div
                         class="triangle"
-                        :style="getAccident(item.impulses)" 
+                        :style="getAccident(item.impulses)"
                       ></div>
-                                          </td>
-                      <td v-if="oneDate == 1"
+                    </td>
+
+                     <td
+                      v-if="
+                        (item2 == 'oil_fact' && oneDate == 1) ||
+                        (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
+                        index % 2 === 0
+                          ? 'tdStyle width-accidnets '
+                          : 'tdNone width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Авария в <br> системе СиП</div>   <div
+                      <div v-if="index === 0" class="center">
+                       Посадка ЭЭ
+                      </div>
+                      <div
                         class="triangle"
-                        :style="getAccident(item.accident)" 
-                      ></div></td>
-                        <td v-if="oneDate == 1"
+                        :style="getAccident(item.landing)"
+                      ></div>
+                    </td>                  
+                    <td
+                      v-if="
+                        (item2 == 'oil_fact' && oneDate == 1) ||
+                        (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
                       :class="
-                        index % 2 === 0 ? 'tdStyle width-accidnets ' : 'tdNone width-accidnets '
+                        index % 2 === 0
+                          ? 'tdStyleLight width-accidnets '
+                          : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Ограничения <br>КТО</div>   <div
+                      <div v-if="index === 0" class="center">
+                        Авария в <br />
+                        системе СиП
+                      </div>
+                      <div
                         class="triangle"
-                        :style="getAccident(item.restrictions)" 
-                      ></div></td>
-                         <td v-if="oneDate == 1"
+                        :style="getAccident(item.accident)"
+                      ></div>
+                    </td>
+                    <td
+                      v-if="
+                        (item2 == 'oil_fact' && oneDate == 1) ||
+                        (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
                       :class="
-                        index % 2 === 0 ? 'tdStyleLight width-accidnets ' : 'tdStyleLight2 width-accidnets '
+                        index % 2 === 0
+                          ? 'tdStyle width-accidnets '
+                          : 'tdNone width-accidnets '
+                      "
+                    >
+                      <div v-if="index === 0" class="center">
+                        Ограничения <br />КТО
+                      </div>
+                      <div
+                        class="triangle"
+                        :style="getAccident(item.restrictions)"
+                      ></div>
+                    </td>
+                    <td
+                      v-if="
+                        (item2 == 'oil_fact' && oneDate == 1) ||
+                        (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                      :class="
+                        index % 2 === 0
+                          ? 'tdStyleLight width-accidnets '
+                          : 'tdStyleLight2 width-accidnets '
                       "
                     >
                       <div v-if="index === 0" class="center">Прочие</div>
-                         <div
+                      <div
                         class="triangle"
-                        :style="getAccident(item.otheraccidents)" 
+                        :style="getAccident(item.otheraccidents)"
                       ></div>
-                      </td>
-                      
+                    </td>
                   </tr>
                   <tr>
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
@@ -1292,7 +1394,15 @@
               </table>
             </div>
 
-            <div class="vis-chart pl-3" v-if="oneDate != 1">
+            <div
+              class="vis-chart pl-3"
+              v-if="
+                (item != 'oil_plan' &&
+                  item != 'oil_dlv_plan' &&
+                  item != 'oil_opek_plan') ||
+                oneDate != 1
+              "
+            >
               <div class="name-chart-left">
                 {{ nameChartLeft }}, {{ thousand }} {{ item4 }}
               </div>
@@ -1314,10 +1424,10 @@
         :currency-chart-data.sync="currencyChartData"
         :usd-chart-is-loading.sync="usdChartIsLoading"
         @change-table="changeTable('1')"
-        :main-title="'Динамика цены на нефть'"
+        :main-title="trans('visualcenter.oilPricedynamic')"
         :second-title="''"
       />
-
+      <!-- 'Динамика цены на нефть' -->
       <visual-center-usd-table
         :style="`${Table3}`"
         :period.sync="period"
@@ -1327,21 +1437,25 @@
         :table-data.sync="usdRatesDataTableForCurrentPeriod"
         :usd-chart-is-loading.sync="usdChartIsLoading"
         @change-table="changeTable('1')"
-        :main-title="'Динамика курса доллара США к тенге (USD, НБ РК)'"
+        :main-title="trans('visualcenter.kursHeader')"
         :second-title="'USD НБ РК'"
       />
-
+      <!-- 'Динамика курса доллара США к тенге (USD, НБ РК)' -->
       <div class="third-table big-area" :style="`${Table5}`">
         <div class="first-string first-string2">
           <div class="container-fluid">
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
-                <div class="ml-4 bold"><!--Фонд нагнетательных скважин-->{{ trans("visualcenter.idle_wells") }}</div>
+                <div class="ml-4 bold">
+                  <!--Фонд нагнетательных скважин-->{{
+                    trans("visualcenter.idle_wells")
+                  }}
+                </div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">
                   <!-- Закрыть -->{{ trans("visualcenter.close") }}
-                  </div>
+                </div>
               </div>
             </div>
 
@@ -1380,8 +1494,10 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    <!-- Период  -->{{ trans("visualcenter.period") }}
-                    [{{ timeSelect }} - {{ timeSelectOld }}]
+                    <!-- Период  -->{{ trans("visualcenter.period") }} [{{
+                      timeSelect
+                    }}
+                    - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1427,30 +1543,38 @@
                       {{ getNameDzoFull(company) }}
                     </option>
                     <option v-else>
-                      <!-- Все компании -->{{ trans("visualcenter.allCompany") }}
-                      </option>
+                      <!-- Все компании -->{{
+                        trans("visualcenter.allCompany")
+                      }}
+                    </option>
                     <!-- <option value="all"></option>-->
                     <option value="ОМГ">
                       <!-- АО «ОзенМунайГаз» -->{{ trans("visualcenter.omg") }}
-                      </option>
+                    </option>
                     <option value="ММГ">
-                      <!-- АО «Мангистаумунайгаз» -->{{ trans("visualcenter.mmg") }}
-                      </option>
+                      <!-- АО «Мангистаумунайгаз» -->{{
+                        trans("visualcenter.mmg")
+                      }}
+                    </option>
                     <option value="КГМ">
                       <!-- ТОО «КазГерМунай» -->{{ trans("visualcenter.kgm") }}
-                      </option>
+                    </option>
                     <option value="КОА">
-                      <!-- ТОО "Казахойл Актобе -->{{ trans("visualcenter.koa") }}
-                      </option>
+                      <!-- ТОО "Казахойл Актобе -->{{
+                        trans("visualcenter.koa")
+                      }}
+                    </option>
                     <option value="КГМ">
                       <!-- ТОО "Казгермунай" -->{{ trans("visualcenter.kgm") }}
-                      </option>
+                    </option>
                     <option value="КБМ">
-                      <!-- АО «Каражанбасмунай» -->{{ trans("visualcenter.kbm") }}
-                      </option>
+                      <!-- АО «Каражанбасмунай» -->{{
+                        trans("visualcenter.kbm")
+                      }}
+                    </option>
                     <option value="ЭМГ">
                       <!-- АО «ЭмбаМунайГаз» -->{{ trans("visualcenter.emg") }}
-                      </option>
+                    </option>
                   </select>
                 </div>
 
@@ -1472,10 +1596,15 @@
               <div class="vis-table vis-table-small px-3">
                 <table v-if="innerWells.length" class="table4 w-100">
                   <tbody>
-                    <tr v-for="(item, index) in innerWells">
+                    <tr v-for="(item, index) in innerWells"
+                     @click="innerWellsSelectedRow = item.code">
                       <td
+                      @click="innerWellsSelectedRow = item.code"
                         class="w-50"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                         :class="{
+                          tdStyle: index % 2 === 0,
+                          selected: innerWellsSelectedRow === item.code,
+                        }"
                         style="cursor: pointer"
                       >
                         <span>
@@ -1483,20 +1612,24 @@
                         </span>
                       </td>
                       <td
+                      @click="innerWellsSelectedRow = item.code"
                         class="w-25 tdNumber"
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                         style="cursor: pointer"
                       >
-                        {{ item.value }} <span>
+                        {{ item.value }}
+                        <span>
                           <!-- скважин -->{{ trans("visualcenter.skv") }}
-                          </span>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="col">
-                <visual-center3-wells></visual-center3-wells>
+                <visual-center3-wells
+                v-if="innerWellsNagDataForChart"
+                  :chartData="innerWellsNagDataForChart">  ></visual-center3-wells>
               </div>
             </div>
           </div>
@@ -1509,13 +1642,15 @@
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
                 <div class="ml-4 bold">
-                  <!-- Фонд добывающих скважин -->{{ trans("visualcenter.prod_wells") }}
-                  </div>
+                  <!-- Фонд добывающих скважин -->{{
+                    trans("visualcenter.prod_wells")
+                  }}
+                </div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">
                   <!-- Закрыть -->{{ trans("visualcenter.close") }}
-                  </div>
+                </div>
               </div>
             </div>
 
@@ -1554,8 +1689,10 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    <!-- Период  -->{{ trans("visualcenter.period") }}
-                    [{{ timeSelect }} - {{ timeSelectOld }}]
+                    <!-- Период  -->{{ trans("visualcenter.period") }} [{{
+                      timeSelect
+                    }}
+                    - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1601,30 +1738,38 @@
                       {{ getNameDzoFull(company) }}
                     </option>
                     <option v-else>
-                      <!-- Все компании -->{{ trans("visualcenter.allCompany") }}
-                      </option>
+                      <!-- Все компании -->{{
+                        trans("visualcenter.allCompany")
+                      }}
+                    </option>
                     <!-- <option value="all"></option>-->
                     <option value="ОМГ">
                       <!-- АО «ОзенМунайГаз» -->{{ trans("visualcenter.omg") }}
-                      </option>
+                    </option>
                     <option value="ММГ">
-                      <!-- АО «Мангистаумунайгаз» -->{{ trans("visualcenter.mmg") }}
-                      </option>
+                      <!-- АО «Мангистаумунайгаз» -->{{
+                        trans("visualcenter.mmg")
+                      }}
+                    </option>
                     <option value="КГМ">
                       <!-- ТОО «КазГерМунай» -->{{ trans("visualcenter.kgm") }}
                     </option>
                     <option value="КОА">
-                      <!-- ТОО "Казахойл Актобе" -->{{ trans("visualcenter.koa") }}
-                      </option>
+                      <!-- ТОО "Казахойл Актобе" -->{{
+                        trans("visualcenter.koa")
+                      }}
+                    </option>
                     <option value="КГМ">
                       <!-- ТОО "Казгермунай" -->{{ trans("visualcenter.kgm") }}
-                      </option>
+                    </option>
                     <option value="КБМ">
-                      <!-- АО «Каражанбасмунай» -->{{ trans("visualcenter.kbm") }}
-                      </option>
+                      <!-- АО «Каражанбасмунай» -->{{
+                        trans("visualcenter.kbm")
+                      }}
+                    </option>
                     <option value="ЭМГ">
                       <!-- АО «ЭмбаМунайГаз» -->{{ trans("visualcenter.emg") }}
-                      </option>
+                    </option>
                   </select>
                 </div>
 
@@ -1646,10 +1791,15 @@
               <div class="vis-table vis-table-small px-3">
                 <table v-if="innerWells2.length" class="table4 w-100">
                   <tbody>
-                    <tr v-for="(item, index) in innerWells2">
+                    <tr v-for="(item, index) in innerWells2"
+                      @click="innerWells2SelectedRow = item.code">
                       <td
-                        class="w-50"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                        @click="innerWells2SelectedRow = item.code"
+                        class="w-50"                 
+                        :class="{
+                          tdStyle: index % 2 === 0,
+                          selected: innerWells2SelectedRow === item.code,
+                        }"
                         style="cursor: pointer"
                       >
                         <span>
@@ -1657,20 +1807,27 @@
                         </span>
                       </td>
                       <td
-                        class="w-25 tdNumber"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                      @click="innerWells2SelectedRow = item.code"
+                        class="w-25 text-center"
+                        :class="
+                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        "
                         style="cursor: pointer"
                       >
-                        {{ item.value }} <span>
+                        {{ item.value }}
+                        <span>
                           <!-- скважин -->{{ trans("visualcenter.skv") }}
-                          </span>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="col">
-                <visual-center3-wells></visual-center3-wells>
+                <visual-center3-wells
+                 v-if="innerWellsProd2DataForChart"
+                  :chartData="innerWellsProd2DataForChart">                  
+                </visual-center3-wells>
               </div>
             </div>
           </div>
@@ -1684,12 +1841,12 @@
               <div class="col">
                 <div class="ml-4 bold">
                   <!-- ОТМ -->{{ trans("visualcenter.otm") }}
-                  </div>
+                </div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">
                   <!-- Закрыть -->{{ trans("visualcenter.close") }}
-                  </div>
+                </div>
               </div>
             </div>
 
@@ -1728,8 +1885,10 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    <!-- Период  -->{{ trans("visualcenter.period") }}
-                    [{{ timeSelect }} - {{ timeSelectOld }}]
+                    <!-- Период  -->{{ trans("visualcenter.period") }} [{{
+                      timeSelect
+                    }}
+                    - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1772,29 +1931,37 @@
                       {{ getNameDzoFull(company) }}
                     </option>
                     <option v-else>
-                      <!-- Все компании -->{{ trans("visualcenter.allCompany") }}
-                      </option>
+                      <!-- Все компании -->{{
+                        trans("visualcenter.allCompany")
+                      }}
+                    </option>
                     <option value="ОМГ">
                       <!-- АО «ОзенМунайГаз» -->{{ trans("visualcenter.omg") }}
-                      </option>
+                    </option>
                     <option value="ММГ">
-                      <!-- АО «Мангистаумунайгаз» -->{{ trans("visualcenter.mmg") }}
-                      </option>
+                      <!-- АО «Мангистаумунайгаз» -->{{
+                        trans("visualcenter.mmg")
+                      }}
+                    </option>
                     <option value="КГМ">
                       <!-- ТОО «КазГерМунай» -->{{ trans("visualcenter.kgm") }}
-                      </option>
+                    </option>
                     <option value="КОА">
-                      <!-- ТОО "Казахойл Актобе" -->{{ trans("visualcenter.koa") }}
-                      </option>
+                      <!-- ТОО "Казахойл Актобе" -->{{
+                        trans("visualcenter.koa")
+                      }}
+                    </option>
                     <option value="КГМ">
                       <!-- ТОО "Казгермунай" -->{{ trans("visualcenter.kgm") }}
-                      </option>
+                    </option>
                     <option value="КБМ">
-                      <!-- АО «Каражанбасмунай» -->{{ trans("visualcenter.kbm") }}
-                      </option>
+                      <!-- АО «Каражанбасмунай» -->{{
+                        trans("visualcenter.kbm")
+                      }}
+                    </option>
                     <option value="ЭМГ">
                       <!-- АО «ЭмбаМунайГаз» -->{{ trans("visualcenter.emg") }}
-                      </option>
+                    </option>
                   </select>
                 </div>
               </div>
@@ -1864,12 +2031,12 @@
               <div class="col">
                 <div class="ml-4 bold">
                   <!-- Химизация -->{{ trans("visualcenter.chem") }}
-                  </div>
+                </div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">
                   <!-- Закрыть -->{{ trans("visualcenter.close") }}
-                  </div>
+                </div>
               </div>
             </div>
 
@@ -1908,8 +2075,10 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
-                    <!-- Период  -->{{ trans("visualcenter.period") }}
-                    [{{ timeSelect }} - {{ timeSelectOld }}]
+                    <!-- Период  -->{{ trans("visualcenter.period") }} [{{
+                      timeSelect
+                    }}
+                    - {{ timeSelectOld }}]
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1952,29 +2121,37 @@
                       {{ getNameDzoFull(company) }}
                     </option>
                     <option v-else>
-                      <!-- Все компании -->{{ trans("visualcenter.allCompany") }}
-                      </option>
+                      <!-- Все компании -->{{
+                        trans("visualcenter.allCompany")
+                      }}
+                    </option>
                     <option value="ОМГ">
                       <!-- АО «ОзенМунайГаз» -->{{ trans("visualcenter.omg") }}
-                      </option>
+                    </option>
                     <option value="ММГ">
-                      <!-- АО «Мангистаумунайгаз» -->{{ trans("visualcenter.mmg") }}
-                      </option>
+                      <!-- АО «Мангистаумунайгаз» -->{{
+                        trans("visualcenter.mmg")
+                      }}
+                    </option>
                     <option value="КГМ">
                       <!-- ТОО «КазГерМунай» -->{{ trans("visualcenter.kgm") }}
-                      </option>
+                    </option>
                     <option value="КОА">
-                      <!-- ТОО "Казахойл Актобе" -->{{ trans("visualcenter.koa") }}
-                      </option>
+                      <!-- ТОО "Казахойл Актобе" -->{{
+                        trans("visualcenter.koa")
+                      }}
+                    </option>
                     <option value="КГМ">
                       <!-- ТОО "Казгермунай" -->{{ trans("visualcenter.kgm") }}
-                      </option>
+                    </option>
                     <option value="КБМ">
-                      <!-- АО «Каражанбасмунай» -->{{ trans("visualcenter.kbm") }}
-                      </option>
+                      <!-- АО «Каражанбасмунай» -->{{
+                        trans("visualcenter.kbm")
+                      }}
+                    </option>
                     <option value="ЭМГ">
                       <!-- АО «ЭмбаМунайГаз» -->{{ trans("visualcenter.emg") }}
-                      </option>
+                    </option>
                   </select>
                 </div>
               </div>
@@ -2051,7 +2228,7 @@
                 </div>
                 <div class="in-work">
                   <!-- В работе -->{{ trans("visualcenter.in_work") }}
-                  </div>
+                </div>
                 <div
                   :class="`${getColor2(
                     getDiffProcentLastP(prod_wells_workPercent, prod_wells_work)
@@ -2090,7 +2267,7 @@
                 </div>
                 <div class="in-idle">
                   <!-- В простое -->{{ trans("visualcenter.in_idle") }}
-                  </div>
+                </div>
                 <div
                   :class="`${getColor2(
                     getDiffProcentLastP(prod_wells_idlePercent, prod_wells_idle)
@@ -2117,8 +2294,9 @@
                 :style="`${tableHover4}`"
               >
                 <div class="txt2">
-                  <!-- Фонд добывающих скважин --> {{ trans("visualcenter.prod_wells") }}
-                  </div>
+                  <!-- Фонд добывающих скважин -->
+                  {{ trans("visualcenter.prod_wells") }}
+                </div>
               </td>
             </tr>
           </table>
@@ -2144,7 +2322,7 @@
                   </div>
                   <div class="in-work">
                     <!-- В работе -->{{ trans("visualcenter.in_work") }}
-                    </div>
+                  </div>
                   <div
                     :class="`${getColor2(
                       getDiffProcentLastP(inj_wells_workPercent, inj_wells_work)
@@ -2183,8 +2361,9 @@
                     </div>
                   </div>
                   <div class="in-idle">
-                    <!-- В простое --> {{ trans("visualcenter.in_idle") }}
-                    </div>
+                    <!-- В простое -->
+                    {{ trans("visualcenter.in_idle") }}
+                  </div>
                   <div
                     :class="`${getColor2(
                       getDiffProcentLastP(inj_wells_idlePercent, inj_wells_idle)
@@ -2210,7 +2389,11 @@
                   @click="changeTable('5')"
                   :style="`${tableHover5}`"
                 >
-                  <div class="txt2"><!--Фонд нагнетательных скважин-->{{ trans("visualcenter.idle_wells") }}</div>
+                  <div class="txt2">
+                    <!--Фонд нагнетательных скважин-->{{
+                      trans("visualcenter.idle_wells")
+                    }}
+                  </div>
                 </td>
               </tr>
             </table>
@@ -2232,7 +2415,7 @@
                   <div class="otm"></div>
                   <div class="txt2">
                     <!-- ОТМ -->{{ trans("visualcenter.otm") }}
-                    </div>
+                  </div>
                 </td>
 
                 <td
@@ -2246,7 +2429,7 @@
                   <div class="him"></div>
                   <div class="txt2">
                     <!-- Химизация -->{{ trans("visualcenter.chem") }}
-                    </div>
+                  </div>
                 </td>
               </tr>
             </table>
@@ -2261,7 +2444,7 @@
               <td class="w-50 px-2">
                 <div class="number">{{ staff }}</div>
                 <div class="in-idle2">
-                  {{ quarter1[0] }} 
+                  {{ quarter1[0] }}
                   <!-- квартал  -->{{ trans("visualcenter.quarter") }}
                   {{ quarter1[1] }} г.
                 </div>
@@ -2285,7 +2468,7 @@
                     {{ getDiffProcentLastP(staffPercent, staff, "1") }}
                   </div>
                   <div class="in-idle">
-                    vs {{ quarter2[0] }} 
+                    vs {{ quarter2[0] }}
                     <!-- квартал  -->{{ trans("visualcenter.quarter") }}
                     {{ quarter2[1] }}г.
                   </div>
@@ -2295,8 +2478,10 @@
             <tr>
               <td colspan="2">
                 <div class="txt2">
-                  <!-- Численность персонала -->{{ trans("visualcenter.personal") }}
-                  </div>
+                  <!-- Численность персонала -->{{
+                    trans("visualcenter.personal")
+                  }}
+                </div>
               </td>
             </tr>
           </table>
@@ -2359,10 +2544,10 @@
                     <!-- <div class="in-idle">Прирост</div>-->
                     <div class="in-idle">
                       <!-- с начала -->{{ trans("visualcenter.from_begin") }}
-                      </div>
+                    </div>
                     <div class="in-idle">
                       <!-- месяца -->{{ trans("visualcenter.month") }}
-                      </div>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -2378,10 +2563,10 @@
                     <!--<div class="in-idle">Прирост</div>-->
                     <div class="in-idle">
                       <!-- с начала -->{{ trans("visualcenter.from_begin") }}
-                      </div>
+                    </div>
                     <div class="in-idle">
                       <!-- года -->{{ trans("visualcenter.year") }}
-                      </div>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -2390,7 +2575,7 @@
               <td colspan="2">
                 <div class="txt2">
                   <!-- Несчастные случаи -->{{ trans("visualcenter.accident") }}
-                  </div>
+                </div>
               </td>
             </tr>
           </table>
@@ -2409,18 +2594,21 @@
                 <div class="column-1">
                   <div class="in-idle">
                     <!-- Прирост -->{{ trans("visualcenter.increase") }}
-                    </div>
+                  </div>
                   <div class="in-idle">
-                    <!-- с начала месяца -->{{ trans("visualcenter.monthBegin") }}
-                    </div>
+                    <!-- с начала месяца -->{{
+                      trans("visualcenter.monthBegin")
+                    }}
+                  </div>
                 </div>
               </td>
             </tr>
             <tr>
               <td colspan="2">
                 <div class="txt2">
-                  <!-- Смертельные случаи --> {{ trans("visualcenter.death") }}
-                  </div>
+                  <!-- Смертельные случаи -->
+                  {{ trans("visualcenter.death") }}
+                </div>
               </td>
             </tr>
           </table>
@@ -2465,7 +2653,8 @@
         &:first-child {
           height: 50px;
           white-space: normal;
-          width: 215px;
+          //width: 215px;
+          width: 235px;
           span {
             font-weight: bold;
             img {
@@ -2512,7 +2701,7 @@
   }
 }
 .vis-table-small {
-  max-width: 48% !important;
+  max-width: 46% !important;
   tr {
     line-height: 4.2rem !important;
     font-size: 1.2rem !important;
