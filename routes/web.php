@@ -29,9 +29,7 @@ Route::group(
             ['middleware' => 'auth'],
             function () {
                 Route::get("/geteconimicdata", "EconomicController@getEconomicData");
-                Route::get("/getcurrency", "VisualCenterController@getCurrency");
-                Route::get("/getcurrencyperiod", "VisualCenterController@getCurrencyPeriod");
-                Route::get("/get-usd-rates", "VisualCenterController@getUsdRates");
+
                 Route::post("/corrosion", "DruidController@corrosion");
                 Route::get(
                     '/',
@@ -45,25 +43,29 @@ Route::group(
                 Route::get('/getwelldailyoil', 'DruidController@getWellDailyOil');
                 Route::get('/getnkkmgyear', 'DruidController@getNkKmgYear');
                 Route::get('/economic', 'EconomicController@index')->name('economic');
-                Route::get('/getdzocalcs', 'VisualCenterController@getDZOcalcs')->name('getdzocalcs');
-                Route::get('/getdzocalcsactualmonth', 'VisualCenterController@getDZOCalcsActualMonth')->name(
-                    'getdzocalcsactualmonth'
-                );
                 Route::get('/economicpivot', 'EconomicController@economicPivot')->name('economicpivot');
                 Route::get('/oilpivot', 'EconomicController@oilPivot')->name('oilpivot');
                 Route::get('/geteconomicpivotdata', 'EconomicController@getEconomicPivotData')->name(
                     'geteconomicpivotdata'
                 );
                 Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
-                Route::get('/visualcenter', 'DruidController@visualcenter')->name('visualcenter');
-                Route::get('/visualcenter2', 'DruidController@visualcenter2')->name('visualcenter2');
-                Route::get('/visualcenter3', 'DruidController@visualcenter3')->name('visualcenter3');
-                Route::get('/visualcenter3GetData', 'DruidController@visualcenter3GetData');
-                Route::get('/visualcenter3GetDataStaff', 'DruidController@visualcenter3GetDataStaff');
-                Route::get('/visualcenter4', 'DruidController@visualcenter4')->name('visualcenter4');
-                Route::get('/visualcenter5', 'DruidController@visualcenter5')->name('visualcenter5');
-                Route::get('/visualcenter6', 'DruidController@visualcenter6')->name('visualcenter6');
-                Route::get('/visualcenter7', 'DruidController@visualcenter7')->name('visualcenter7');
+                // visual center
+                Route::get('/visualcenter', 'VisCenter\VisualCenterController@visualcenter')->name('visualcenter');
+                Route::get('/visualcenter2', 'VisCenter\VisualCenterController@visualcenter2')->name('visualcenter2');
+                Route::get('/visualcenter3', 'VisCenter\VisualCenterController@visualcenter3')->name('visualcenter3');
+                Route::get('/visualcenter3GetData', 'VisCenter\VisualCenterController@visualcenter3GetData');
+                Route::get('/visualcenter3GetDataStaff', 'VisCenter\VisualCenterController@visualcenter3GetDataStaff');
+                Route::get('/visualcenter4', 'VisCenter\VisualCenterController@visualcenter4')->name('visualcenter4');
+                Route::get('/visualcenter5', 'VisCenter\VisualCenterController@visualcenter5')->name('visualcenter5');
+                Route::get('/visualcenter6', 'VisCenter\VisualCenterController@visualcenter6')->name('visualcenter6');
+                Route::get('/visualcenter7', 'VisCenter\VisualCenterController@visualcenter7')->name('visualcenter7');
+                Route::get('/getdzocalcs', 'VisCenter\VisualCenterController@getDZOcalcs')->name('getdzocalcs');
+                Route::get('/getdzocalcsactualmonth', 'VisCenter\VisualCenterController@getDZOCalcsActualMonth')->name(
+                    'getdzocalcsactualmonth'
+                );
+                Route::get("/getcurrency", "VisCenter\VisualCenterController@getCurrency");
+                Route::get("/getcurrencyperiod", "VisCenter\VisualCenterController@getCurrencyPeriod");
+                Route::get("/get-usd-rates", "VisCenter\VisualCenterController@getUsdRates");
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');

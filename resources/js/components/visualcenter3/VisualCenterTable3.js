@@ -2581,6 +2581,10 @@ export default {
       }
     }
   },
+
+  getOpec(){
+    
+  },
   created() {
 
     if (window.location.host === 'dashboard') {
@@ -2601,10 +2605,10 @@ export default {
 
 
       this.range = {
-        /*start: "2021-01-14T00:00:00+06:00",
-        end: "2021-01-14T17:59:00+06:00",*/
-        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+        start: "2021-01-14T00:00:00+06:00",
+        end: "2021-01-14T17:59:00+06:00",
+       // start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+      //  end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     } else {
