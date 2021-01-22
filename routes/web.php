@@ -86,6 +86,7 @@ Route::group(
                 Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
                 Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
                 Route::get('/bigdata', 'bd\DBController@bigdata')->name('bigdata');
+                Route::get('/protoform', 'bd\DBController@form')->name('protoform');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
                 Route::get('/tr', 'tr\TrController@tr')->name('tr');
                 Route::get('/export', 'HomeController@export');
