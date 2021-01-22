@@ -58,16 +58,13 @@
              v-model="end_date">
     </div>
 
-    <div class="form-group1 filter-group select">
-      <select
-          class="form-control filter-input select"
-          id="yearSelect"
-          :disabled="isLoading"
-          v-model="year"
-      >
-        <option disabled value="">На год</option>
-        <option value="2020">2020</option>
-      </select>
+    <div class="form-group2 filter-group">
+      <label for="start_date">Выберите дату отчета</label>
+      <input id="yearSelect"
+             class="form-control datepicker filter-input"
+             type="date"
+             :disabled="isLoading"
+             v-model="year">
     </div>
 
       <div class="form-group3 result-link">
@@ -122,7 +119,7 @@ export default {
         report_date_start: `${this.start_date}`.substr(0, 8).concat('01 00:00:00'),
         report_date_end: `${this.end_date}`.concat(' 00:00:00'),
         type_event: `${this.type_event}`,
-        year: `${this.year}`,
+        year: `${this.year}`.substr(0, 4),
       };
 
       let json_data = JSON.stringify(data);
