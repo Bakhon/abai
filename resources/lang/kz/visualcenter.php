@@ -5,8 +5,6 @@ return array (
   'oildlv' => 'Сдача нефти2',
   'getgaz' => 'Добыча газа',
   'oilPrice' => 'Цена на нефть (Brent)2',
-  'chekslines' => 'проверкастроки',
-  'wells1' => 'Фонд нагнетательных скважин2',
   'usdKurs' => 'Курс доллара2',
   'vsYest' => 'vs вчера2',
   'vsSept' => 'vs2',
