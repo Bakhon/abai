@@ -8,6 +8,7 @@ use App\Models\UsdRate;
 use App\Models\VisCenter\ImportForms\DZOcalc as ImportFormsDZOcalc;
 use App\Models\VisCenter\ImportForms\DZOstaff;
 use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
+use App\Models\VisCenter\ImportForms\DZOyear as ImportFormsDZOyear;
 use Illuminate\Http\Request;
 
 class VisualCenterController extends Controller
@@ -144,10 +145,6 @@ class VisualCenterController extends Controller
         $end = $request->timestampEnd;
         $period = (($end - $today) + (86400000 * 2));
         $todayback = $today - $period;
-
-
-        //  $period = ($request->timestampEnd-$request->timestampToday)-86400000; 
-
         //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
         return response()->json(ImportFormsDZOdaily::all(
             'fond_nagnetat_ef',
@@ -228,7 +225,7 @@ class VisualCenterController extends Controller
             'accident',
             'restrictions',
             'otheraccidents',
-                        'dzo',
+            'dzo',
             'oil_dlv_plan',
             'oil_dlv_fact',
             'prod_wells_work',
@@ -242,6 +239,21 @@ class VisualCenterController extends Controller
         )->where('__time', '>', $todayback)->where('__time', '<', $end + 86400000));
         //return response()->json(Vis2Form::all());//response()->json($array);
         //return  response()->json($request);
+    }
+
+
+    public function visualcenter3GetDataOpec()
+    {
+        return response()->json(ImportFormsDZOyear::all(
+            'date',
+            'oil_plan',
+            'dzo',
+            'ngdu'
+            // 'oil_dlv_opek_plan',
+            
+        )->where('date', '2020'));
+        //->where('__time', '>', $todayback)->where('__time', '<', $end + 86400000));
+
     }
 
     public function visualcenter4()
@@ -263,5 +275,4 @@ class VisualCenterController extends Controller
     {
         return view('visualcenter.visualcenter7');
     }
-
 }

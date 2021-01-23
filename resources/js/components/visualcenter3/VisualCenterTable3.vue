@@ -1099,6 +1099,13 @@
                         <img src="/img/icons/link.svg" />
                       </span>
                     </td>
+                      <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                      "
+                    >
+                      {{item.oil_planYear}}
+                      </td>
 
                     <td
                       :class="
