@@ -85,8 +85,8 @@ class DZOdailyImport implements ToModel
             'fond_nagnetat_okrs' => $row[65],
             'fond_nagnetat_well_survey' => $row[66],
             'fond_nagnetat_others' => $row[67],
-            'covid_recover' => $row[68],
-            'covid_total' => $row[69],
+            'tb_covid_recover' => $row[68],
+            'tb_covid_total' => $row[69],
         ]);
     }
 }
