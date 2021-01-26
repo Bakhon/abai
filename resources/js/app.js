@@ -98,6 +98,7 @@ Vue.component('well-fund', require('./components/reports/WellFund.vue').default)
 Vue.component('well-fund-block', require('./components/reports/WellFundBlock.vue').default);
 Vue.component('well-fund-field', require('./components/reports/WellFundField.vue').default);
 Vue.component('well-fund-inactive', require('./components/reports/WellFundInactive.vue').default);
+Vue.component('well-fund-revision-field', require('./components/reports/WellFundRevisionField.vue').default);
 Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
@@ -123,6 +124,7 @@ Vue.component('report-export', require('./components/reports/export.vue').defaul
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
+Vue.component('proto-form', require('./components/bigdata/Form.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);

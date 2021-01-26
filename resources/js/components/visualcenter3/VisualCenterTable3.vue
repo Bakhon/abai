@@ -38,7 +38,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}
+                    {{ formatVisTableNumber(oil_planDay) }}
+                   <!-- {{ new Intl.NumberFormat("ru-RU").format(oil_planDay) }}-->
                   </div>
                   <br />
 
@@ -100,7 +101,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_dlv_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}
+                     {{ formatVisTableNumber(oil_dlv_planDay) }}
+                    <!--{{ new Intl.NumberFormat("ru-RU").format(oil_dlv_planDay) }}-->
                   </div>
                   <br />
                   <div
@@ -168,7 +170,8 @@
                     }}%
                   </div>
                   <div class="plan-header" v-if="gas_planDay">
-                    {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}
+                   {{ formatVisTableNumber(gas_planDay) }}
+                   <!-- {{ new Intl.NumberFormat("ru-RU").format(gas_planDay) }}-->
                   </div>
 
                   <br />
@@ -1065,8 +1068,9 @@
               >
                 <div class="mt-3 text-center">Текст причины</div>
                 <div class="ml-3">
-                  <div class="mt-2">{{ item.opec }}</div>
+                  <div class="mt-2">{{ item.opec }}</div>                  
                   <div class="mt-2">{{ item.impulses }}</div>
+                  <div class="mt-2">{{ item.landing }}</div>
                   <div class="mt-2">{{ item.accident }}</div>
                   <div class="mt-2">{{ item.restrictions }}</div>
                   <div class="mt-2">{{ item.otheraccidents }}</div>
@@ -1215,13 +1219,33 @@
                       "
                     >
                       <div v-if="index === 0" class="center">
-                        Порывы/<br />посадка ЭЭ
+                        Порывы
                       </div>
                       <div
                         class="triangle"
                         :style="getAccident(item.impulses)"
                       ></div>
                     </td>
+
+                     <td
+                      v-if="
+                        (item2 == 'oil_fact' && oneDate == 1) ||
+                        (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                      :class="
+                        index % 2 === 0
+                          ? 'tdStyle width-accidnets '
+                          : 'tdNone width-accidnets '
+                      "
+                    >
+                      <div v-if="index === 0" class="center">
+                       Посадка ЭЭ
+                      </div>
+                      <div
+                        class="triangle"
+                        :style="getAccident(item.landing)"
+                      ></div>
+                    </td>                  
                     <td
                       v-if="
                         (item2 == 'oil_fact' && oneDate == 1) ||
@@ -1572,10 +1596,15 @@
               <div class="vis-table vis-table-small px-3">
                 <table v-if="innerWells.length" class="table4 w-100">
                   <tbody>
-                    <tr v-for="(item, index) in innerWells">
+                    <tr v-for="(item, index) in innerWells"
+                     @click="innerWellsSelectedRow = item.code">
                       <td
+                      @click="innerWellsSelectedRow = item.code"
                         class="w-50"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                         :class="{
+                          tdStyle: index % 2 === 0,
+                          selected: innerWellsSelectedRow === item.code,
+                        }"
                         style="cursor: pointer"
                       >
                         <span>
@@ -1583,6 +1612,7 @@
                         </span>
                       </td>
                       <td
+                      @click="innerWellsSelectedRow = item.code"
                         class="w-25 tdNumber"
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                         style="cursor: pointer"
@@ -1597,7 +1627,9 @@
                 </table>
               </div>
               <div class="col">
-                <visual-center3-wells></visual-center3-wells>
+                <visual-center3-wells
+                v-if="innerWellsNagDataForChart"
+                  :chartData="innerWellsNagDataForChart">  ></visual-center3-wells>
               </div>
             </div>
           </div>
@@ -1759,10 +1791,15 @@
               <div class="vis-table vis-table-small px-3">
                 <table v-if="innerWells2.length" class="table4 w-100">
                   <tbody>
-                    <tr v-for="(item, index) in innerWells2">
+                    <tr v-for="(item, index) in innerWells2"
+                      @click="innerWells2SelectedRow = item.code">
                       <td
-                        class="w-50"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                        @click="innerWells2SelectedRow = item.code"
+                        class="w-50"                 
+                        :class="{
+                          tdStyle: index % 2 === 0,
+                          selected: innerWells2SelectedRow === item.code,
+                        }"
                         style="cursor: pointer"
                       >
                         <span>
@@ -1770,8 +1807,11 @@
                         </span>
                       </td>
                       <td
-                        class="w-25 tdNumber"
-                        :class="index % 2 === 0 ? 'tdStyle' : ''"
+                      @click="innerWells2SelectedRow = item.code"
+                        class="w-25 text-center"
+                        :class="
+                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        "
                         style="cursor: pointer"
                       >
                         {{ item.value }}
@@ -1784,7 +1824,10 @@
                 </table>
               </div>
               <div class="col">
-                <visual-center3-wells></visual-center3-wells>
+                <visual-center3-wells
+                 v-if="innerWellsProd2DataForChart"
+                  :chartData="innerWellsProd2DataForChart">                  
+                </visual-center3-wells>
               </div>
             </div>
           </div>
@@ -2610,7 +2653,8 @@
         &:first-child {
           height: 50px;
           white-space: normal;
-          width: 215px;
+          //width: 215px;
+          width: 235px;
           span {
             font-weight: bold;
             img {
@@ -2657,7 +2701,7 @@
   }
 }
 .vis-table-small {
-  max-width: 48% !important;
+  max-width: 46% !important;
   tr {
     line-height: 4.2rem !important;
     font-size: 1.2rem !important;
