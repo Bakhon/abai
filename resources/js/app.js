@@ -72,10 +72,10 @@ Vue.component('chart2-component', require('./components/Economic/chart2.vue').de
 Vue.component('chart3-component', require('./components/Economic/chart3.vue').default);
 Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
-Vue.component('gno-incl-table', require('./components/gno/GnoInclTable.vue').default);
-Vue.component('gno-wells-repairs', require('./components/gno/GnoWellsRepairs.vue').default);
-Vue.component('gno-line-points-chart', require('./components/gno/GnoCurveTable.vue').default);
-Vue.component('gno-chart-bar', require('./components/gno/GnoChartBar.vue').default);
+Vue.component('inclinometria', require('./components/gno/components/Inclinometria.vue').default);
+Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);
+Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
+Vue.component('economic', require('./components/gno/components/Economic.vue').default);
 Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
 Vue.component('monitor-chart', require('./components/monitor/chart.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
