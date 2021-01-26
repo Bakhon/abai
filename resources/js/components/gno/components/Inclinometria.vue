@@ -192,7 +192,6 @@ export default {
         }
       }
     }
-    Plotly.newPlot(data, layout, {modeBarButtonsToRemove: ['toImage']})
   },
   // watch: {
   //   isLoading: function (newVal, oldVal) {

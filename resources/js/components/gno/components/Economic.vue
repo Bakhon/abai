@@ -12,7 +12,6 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
-import { eventBus } from "../../event-bus.js";
 
 Vue.component("apexchart", VueApexCharts);
 Vue.prototype.$eventBus = new Vue();
@@ -143,13 +142,5 @@ export default {
       ]
     };
   },
-
-
-
-
-
-
-
-
 }
 </script>
