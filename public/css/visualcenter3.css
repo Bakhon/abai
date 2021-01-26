@@ -768,9 +768,9 @@ canvas#line-chart {
     transform: rotate(180deg);
 }
 
-#app>.container-fluid {
+/*#app>.container-fluid {
     max-width: 100% !important;
-}
+}*/
 
 a.dropdown-link-vc3 {
     float: left;
@@ -975,6 +975,6 @@ a.dropdown-link-vc3 {
     cursor: pointer;
 }
 
-.width-accidnets {
-    width: 7em;
-}
+/*.width-accidnets {
+    width: 1em;
+}*/

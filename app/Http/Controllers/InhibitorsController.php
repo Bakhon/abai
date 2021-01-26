@@ -131,6 +131,23 @@ class InhibitorsController extends CrudController
             }
         }
 
+        if ($request->density) {
+            if ($inhibitor->densities->where('date_from', $request->date_from)->isNotEmpty()) {
+                $inhibitor->densities->where('date_from', $request->date_from)->update(['price' => $request->price]);
+            } else {
+                $oldDensity = $inhibitor->densities->whereNull('date_to')->first();
+                $oldDensity->date_to = \Carbon\Carbon::parse($request->date_from)->subDay()->startOfDay();
+                $oldDensity->save();
+
+                $inhibitor->densities()->create(
+                    [
+                        'density' => $request->density,
+                        'date_from' => $request->date_from
+                    ]
+                );
+            }
+        }
+
         return redirect()->route('inhibitors.index')->with('success', __('app.updated'));
     }
 
