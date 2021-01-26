@@ -276,17 +276,79 @@
           <a v-show="false" v-if="edit"></a>
 
 
+          <modal name="add_well" :width="1200" :height="400"  :adaptive="true" style="z-index:9900000;">
+            <div class="main_modals" style="background: #272953; width=900; height=400">
+                <div class="header_mod" style="color:white; display:flex">
+                    <h3>Добавление сквжин</h3>
+                    <button type="button" class="btn btn-secondary btn-sm">Закрыть</button>
+                </div>
+                <div class="body" style="background: #272953; display:flex;">
+                        <div>
+                          <select
+                            
+                            v-model="month"
+                            class="form-controll modalselect"
+                            id="companySelect"
+                            @change="onChangeMonth($event)"
+                          >
+                            <option value="1">сохраненные</option>
+                            <option value="2">не сохраненные</option>
+
+                          </select>
+                        </div>
+                        <div style="margin-left: 7px;">
+                          <select
+                            v-model="month"
+                            class="form-controll modalselect"
+                            id="companySelect"
+                            @change="onChangeMonth($event)"
+                          >
+                            <option value="1">Акшабулак Центральный</option>
+                            <option value="2">Акшабулак Южный</option>
+                            <option value="3">Акшабулак Восточный</option>
+                            <option value="4">Нуралы</option>
+                            <option value="5">Аксай</option>
+                          </select>
+                        </div>
+                        <div style="margin-left: 7px;">
+                          <select
+                            v-model="month"
+                            class="form-controll modalselect"
+                            id="companySelect"
+                            @change="onChangeMonth($event)"
+                          >
+                            <option value="1">В работе</option>
+                            <option value="2">В бездействии</option>
+
+                          </select>
+                        </div>
+                        <div style="margin-left: 7px;">
+                          <select
+                            v-model="month"
+                            class="form-controll modalselect"
+                            id="companySelect"
+                            @change="onChangeMonth($event)"
+                          >
+                            <option value="1">Акс5455</option>
+                            <option value="2">Акс455</option>
+                          </select>
+                        </div>
+                </div>
+            </div>
+
+          </modal>
 
 
           
           <button
             type="button" 
-            
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
             v-if="edit" 
+            @click="addpush()"
             style="background: #272953; border: none; margin-left: 10px;"
             title="Добавить скважины">
+            
             <svg 
                 width="24" 
                 height="24" 
@@ -304,19 +366,17 @@
                 stroke-width="1.5" 
                 stroke-linecap="round"/>
             </svg>
-
-            
           </button>
+            
+          
 
-          <!-- Modal -->
-          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000;"> 
+      
+          <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000;"> 
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content modalcont" style="width: 806px;">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLongTitle" style="color: white;">Скважины</h5>
-                  <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">Закрыть
-                    <span aria-hidden="true">&times;</span>
-                  </button> -->
+
                   <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
                 </div>
                 <div class="modal-body" style="display:flex">
@@ -423,8 +483,7 @@
 
                 </div>
                 <div class="modal-footer">
-                  <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button> -->
-                  <!-- <button type="button" class="btn btn-primary">Сохранить</button> -->
+
 
                   <table class="table" style="height: 93px;">
                     <thead>
@@ -435,6 +494,23 @@
                         <th scope="col">Горизонт</th>
                         <th scope="col">Обьект</th>
                         <th scope="col">Способ эксплуатации</th>
+                        <th scope="col">Тип скважины</th>
+                        <th scope="col">Блок</th>
+                        <th scope="col">Наружный диаметр э/к</th>
+                        <th scope="col">Внутренний диаметр э/к</th>
+                        <th scope="col">Н вд</th>
+                        <th scope="col">СЭ</th>
+                        <th scope="col">Тип насоса</th>
+                        <th scope="col">Тип СК</th>
+                        <th scope="col">Р буф</th>
+                        <th scope="col">Р л</th>
+                        <th scope="col">Р пластовое</th>
+                        <th scope="col">Н д</th>
+                        <th scope="col">P затр</th>
+                        <th scope="col">Плот-ть нефти</th>
+                        <th scope="col">Плот-ть воды</th>
+                        <th scope="col">Н перф</th>
+                        <th scope="col">Р заб замерное</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -445,13 +521,31 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
-          </div>
+          </div> --> 
 
           <a
             v-if="edit"
@@ -494,14 +588,6 @@
               />
             </svg>
           </a>
-
-          <!-- <a
-          @click="savetable()"
-          v-if="edit"
-          style="margin-right: 15px; line-height: 31px;"
-          class="col but-nav__link but trheadhight"
-          >Сохранить</a
-        > -->
 
           <a
             v-if="edit"
@@ -7184,6 +7270,11 @@ export default {
       if (status === "1") return "#ffff00";
       return "#ff0000";
     },
+    addpush(){
+        
+        this.$modal.show('add_well')
+    },
+
     handlerSearch(search) {
       this.searchString = search;
     },
