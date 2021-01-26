@@ -6,6 +6,8 @@ use App\Http\Middleware\LocaleMiddleware;
 use Illuminate\Support\ServiceProvider;
 use Level23\Druid\DruidClient;
 
+use Illuminate\Support\Facades\Schema;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -32,6 +34,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->observers();
         $this->setLanguages();
+
+        Schema::defaultStringLength(191);
     }
 
     private function observers()

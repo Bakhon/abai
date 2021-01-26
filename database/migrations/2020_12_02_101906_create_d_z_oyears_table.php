@@ -124,24 +124,24 @@ class CreateDZOyearsTable extends Migration
             $table->float("fond_nagnetat_neftedob_fls",32,8)->nullable();
             $table->float("fond_nagnetat_neftedob_konserv",32,8)->nullable();
 
-            // $table->integer("chem_prod_zakacka_demulg_amount")->nullable();
-            // $table->float("chem_prod_zakacka_demulg_plan",32,8)->nullable();
-            // $table->float("chem_prod_zakacka_demulg_fact",32,8)->nullable();
-            // $table->integer("chem_prod_zakacka_bakteracid_amount")->nullable();
-            // $table->float("chem_prod_zakacka_bakteracid_plan",32,8)->nullable();
-            // $table->float("chem_prod_zakacka_bakteracid_fact",32,8)->nullable();
-            // $table->integer("chem_prod_zakacka_ingibator_korrozin_amount")->nullable();
-            // $table->float("chem_prod_zakacka_ingibator_korrozin_plan",32,8)->nullable();
-            // $table->float("chem_prod_zakacka_ingibator_korrozin_fact",32,8)->nullable();
-            // $table->integer("chem_prod_zakacka_ingibator_soleotloj_amount")->nullable();
-            // $table->float("chem_prod_zakacka_ingibator_soleotloj_plan",32,8)->nullable();
-            // $table->float("chem_prod_zakacka_ingibator_soleotloj_fact",32,8)->nullable();
+            $table->integer("chem_prod_zakacka_demulg_amount")->nullable();
+            $table->float("chem_prod_zakacka_demulg_plan",32,8)->nullable();
+            $table->float("chem_prod_zakacka_demulg_fact",32,8)->nullable();
+            $table->integer("chem_prod_zakacka_bakteracid_amount")->nullable();
+            $table->float("chem_prod_zakacka_bakteracid_plan",32,8)->nullable();
+            $table->float("chem_prod_zakacka_bakteracid_fact",32,8)->nullable();
+            $table->integer("chem_prod_zakacka_ingibator_korrozin_amount")->nullable();
+            $table->float("chem_prod_zakacka_ingibator_korrozin_plan",32,8)->nullable();
+            $table->float("chem_prod_zakacka_ingibator_korrozin_fact",32,8)->nullable();
+            $table->integer("chem_prod_zakacka_ingibator_soleotloj_amount")->nullable();
+            $table->float("chem_prod_zakacka_ingibator_soleotloj_plan",32,8)->nullable();
+            $table->float("chem_prod_zakacka_ingibator_soleotloj_fact",32,8)->nullable();
 
             $table->integer("tb_personal_plan")->nullable();
             $table->integer("tb_personal_fact")->nullable();
             $table->integer("tb_accident_total")->nullable();
             $table->integer("tb_accident_death")->nullable();
-            $table->integer("tb_covid_prev_day")->nullable();
+            // $table->integer("tb_covid_prev_day")->nullable();
             $table->integer("tb_covid_total")->nullable();
             $table->integer("tb_covid_recover")->nullable();
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTempTable extends Migration
+class CreateTemp2Table extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class CreateTempTable extends Migration
      */
     public function up()
     {
-        Schema::create('temp', function (Blueprint $table) {
+        Schema::create('temp2', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->float("fond_nagnetat_neftedob_fls",32,8)->nullable();
+            $table->float("fond_nagnetat_neftedob_konserv",32,8)->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ class CreateTempTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temp');
+        Schema::dropIfExists('temp2');
     }
 }
