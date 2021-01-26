@@ -11,6 +11,8 @@ export default {
   },
   data: function () {
     return {
+      opecDataSummMonth: 0,
+      opecDataSumm: 0,
       opecData: 0,
       oilLast: 0,
       scroll: '',
@@ -1368,6 +1370,38 @@ export default {
           );
 
 
+          if (start === end) {
+
+            let dataWithMay2 = new Array();
+            dataWithMay2 = _.filter(data, function (item) {
+              return _.every([
+                _.inRange(
+                  item.__time,
+                  timestampToday - 2 * 86400000,
+                  timestampToday + 86400000
+                ),
+              ]);
+            });
+
+            dataWithMay2 = _.orderBy(
+              dataWithMay,
+              ["__time"],
+              ["asc"]
+            );
+            
+            var productionForChart = this.getProductionForChart(dataWithMay2, item6);
+
+          } else {
+
+            var productionForChart = this.getProductionForChart(dataWithMay, item6);
+          }
+
+        
+
+
+          console.log(dataWithMay);
+          console.log(productionForChart);
+
 
           //Summ plan and fact from dzo k1q for month!!!
           var productionPlanAndFactMonth = _(dataWithMay)
@@ -1407,30 +1441,7 @@ export default {
 
 
 
-          if (start === end) {
-
-            let dataWithMay = new Array();
-            dataWithMay = _.filter(data, function (item) {
-              return _.every([
-                _.inRange(
-                  item.__time,
-                  timestampToday - 2 * 86400000,
-                  timestampToday + 86400000
-                ),
-              ]);
-            });
-
-            dataWithMay = _.orderBy(
-              dataWithMay,
-              ["__time"],
-              ["asc"]
-            );
-            var productionForChart = this.getProductionForChart(dataWithMay, item6);
-
-          } else {
-
-            var productionForChart = this.getProductionForChart(dataWithMay, item6);
-          }
+    
           /*
             var productionForChart = _(dataWithMay)
               .groupBy("__time")
@@ -1455,7 +1466,7 @@ export default {
           var f = [];
           var p = [];
           var getMonthBigTable = [];
-         
+
 
 
           _.forEach(dataWithMay, function (item) {
@@ -1603,6 +1614,8 @@ export default {
             data = _.reject(data, _.iteratee({ dzo: "ПКК" }));
             data = _.reject(data, _.iteratee({ dzo: "ПКИ" }));
 
+         
+
           }
 
           if (this.buttonHover12 != '') {
@@ -1660,12 +1673,6 @@ export default {
           let accident = [];
           let restrictions = [];
           let otheraccidents = [];
-          
-         /* console.log(opecData);
-          _.forEach(opecData, function (item) { 
-            opecData.push({ dzo: item.dzo },{dzo: item.oil_planYear });
-          });*/
-          
 
           _.forEach(productionPlanAndFactMonth, function (item) { //k1q!!!
             factMonth.push({ factMonth: item.productionFactForChart });
@@ -1758,7 +1765,7 @@ export default {
             0
           );
 
-          this.covid = covid;         
+          this.covid = covid;
           var bigTable = _.zipWith(
             opec,
             impulses,
@@ -1805,14 +1812,9 @@ export default {
           );
 
 
-          let opecData=this.opecData;
 
 
-          bigTable = bigTable.map(function(e, i) {
-            return Object.assign({}, e, opecData[i])
-          })
-         // bigTable.push(opecData);
-         // console.log(result);
+
 
           let tmpArrayToSort = [
             'АО "Озенмунайгаз"',
@@ -1833,12 +1835,53 @@ export default {
             'Урихтау Оперейтинг',
           ]
 
+          /* opecData
+           .sort((a, b) => {
+             return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
+           }) */
+          let opecData = this.opecData;
+          if (this.buttonHover8) {
+            opecData = this.getOpecMonth(dataWithMay);
+          }
+          else {
+            opecData = this.opecData;
+          }
+
+          opecData = _.orderBy(
+            opecData,
+            ["dzoMonth"],
+            ["asc"]
+          );
+
+          bigTable = _.orderBy(
+            bigTable,
+            ["dzoMonth"],
+            ["asc"]
+          );
+
+          bigTable = opecData.map(function (e, i) {
+            return Object.assign({}, e, bigTable[i])
+          })
+
+
           bigTable
             .sort((a, b) => {
               return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
             })
 
+
+          //console.log(opecData);
+          //console.log(bigTable);
+
+          //this.opecData = opecData.filter(row => row.oil_planYear > 0)
+
+
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
+
+          // this.bigTable = bigTable;
+
+
+
 
           this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
 
@@ -2592,13 +2635,36 @@ export default {
       });
     },
 
-    getProductionForChart(dataWithMay, plan2) {
+    getProductionForChart(data, plan2) {
+      let dataWithMay=data;
+      if (this.buttonHover11 != '') {
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ТШО" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "НКО" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КПО" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ТП" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ПКК" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ПКИ" }));
+      }
+
+      if (this.buttonHover12 != '') {
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ЭМГ" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ОМГ" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ММГ" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КГМ" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КБМ" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КОА" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КТМ" }));
+        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "УО" }));
+      }
+
+
       let productionPlan = localStorage.getItem("production-plan");
       let productionFact = localStorage.getItem("production-fact");
       let productionForChart = _(dataWithMay)
         .groupBy("__time")
         .map((__time, id) => ({
           time: id,
+          dzo: 'dzo',
           productionFactForChart: _.round(_.sumBy(__time, productionFact), 0),
           productionPlanForChart: _.round(_.sumBy(__time, productionPlan), 0),
           productionPlanForChart2: _.round(_.sumBy(__time, plan2), 0),
@@ -2627,10 +2693,10 @@ export default {
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (data) {
-          
 
+          //if (this.buttonHover9){
           //Summ plan dzo year
-          var SummFromRange = _(data)
+          let SummFromRange = _(data)
             .groupBy("dzo")
             .map((dzo, id) => ({
               dzoMonth: id,
@@ -2639,13 +2705,58 @@ export default {
             }))
 
             .value();
-            this.opecData = SummFromRange;
-         // return SummFromRange;
-        // console.log(SummFromRange)
+
+          let opecDataSumm = _.reduce(
+            SummFromRange,
+            function (memo, item) {
+              return memo + item.oil_planYear;
+            },
+            0
+          );
+
+          this.opecData = SummFromRange;
+          this.opecDataSumm = opecDataSumm;
+          // }
+
 
         }
         else { console.log('Not opec data'); }
       });
+    },
+
+    getOpecMonth(data) {
+
+      let dataWithMay = _.filter(data, _.iteratee({ date: (this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + ' 00:00:00') }));
+      let oil;
+      if (this.opec === "ОПЕК+") {
+        oil = 'oil_opek_plan';
+      } else {
+        oil = 'oil_plan';
+      }
+
+      let SummFromRange = _(dataWithMay)
+        .groupBy("dzo")
+        .map((dzo, id) => ({
+          dzoMonth: id,
+          planMonthNew: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
+          // planMonthOpec: (_.sumBy(dzo, 'oil_opek_plan'))* moment().daysInMonth(),
+          //       oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
+        }))
+
+        .value();
+
+      let opecDataSumm = _.reduce(
+        SummFromRange,
+        function (memo, item) {
+          return memo + item.planMonthNew;
+        },
+        0
+      );
+
+      this.opecDataSummMonth = opecDataSumm;
+
+      return SummFromRange;
+
     },
 
     formatVisTableNumber(num) {
@@ -2665,6 +2776,8 @@ export default {
         }
         else if (num > 0) {
           num = 0.01
+        } else {
+          num = 0;
         }
         return new Intl.NumberFormat("ru-RU").format(num)
       }
@@ -2695,10 +2808,10 @@ export default {
 
 
       this.range = {
-        start: "2021-01-14T00:00:00+06:00",
-        end: "2021-01-14T17:59:00+06:00",
-        // start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        //  end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+        //start: "2021-01-14T00:00:00+06:00",
+        //end: "2021-01-14T17:59:00+06:00",
+        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     } else {

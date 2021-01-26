@@ -251,7 +251,7 @@ class VisualCenterController extends Controller
             'ngdu'
             // 'oil_dlv_opek_plan',
             
-        )->where('date', '2020'));
+        )->where('date', '2021'));
         //->where('__time', '>', $todayback)->where('__time', '<', $end + 86400000));
 
     }
