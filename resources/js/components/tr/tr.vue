@@ -168,7 +168,7 @@
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1900" :height="250"  :adaptive="true" style="z-index:9900000;">
+          <modal name="add_well" :width="1800" :height="250"  :adaptive="true" style="z-index:9900000;">
             <div class="main_modals" style="background: #272953; width=900; height=400">
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px;">
@@ -273,21 +273,21 @@
                       <tr >
                         <th scope="col">Место-ние</th>
                         <th scope="col">Состояние скв</th>
-                        <th scope="col">Номер скважины</th>
+                        <th scope="col">№ скв</th>
                         <th scope="col">Горизонт</th>
                         <th scope="col">Обьект</th>
                         <th scope="col">Способ эксп-ии</th>
-                        <th scope="col">Тип скважины</th>
+                        <th scope="col">Тип скв</th>
                         <th scope="col">Блок</th>
                         <th scope="col">Наружный диаметр э/к</th>
-                        <th scope="col">Внутренний диаметр э/к</th>
+                        <th scope="col">Внутр. диаметр э/к</th>
                         <th scope="col">Н вд</th>
                         <th scope="col">СЭ</th>
                         <th scope="col">Тип насоса</th>
                         <th scope="col">Тип СК</th>
                         <th scope="col">Р буф</th>
                         <th scope="col">Р л</th>
-                        <th scope="col">Р пластовое</th>
+                        <th scope="col">Р пласт.</th>
                         <th scope="col">Н д</th>
                         <th scope="col">P затр</th>
                         <th scope="col">Плот-ть нефти</th>
@@ -298,7 +298,7 @@
                     </thead>
                     <tbody>
                       <tr v-for="(row, row_index) in filteredWellData" :key="row_index">
-                        <td contenteditable='true'> {{row.field}}></td>
+                        <td contenteditable='true'> {{row.field}}</td>
                         <td contenteditable='true'>{{row.well_status_last_day}}</td>
                         <td contenteditable='true'>{{row.rus_wellname}}</td>
                         <td contenteditable='true'>{{row.horizon}}</td>
