@@ -172,7 +172,7 @@
             <div class="main_modals" style="background: #272953; width=900; height=400">
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 7px;">
-                        <h3>Добавление скважин</h3>
+                        <h5>Добавление скважин</h5>
                         <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
                     </div>
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px;">
