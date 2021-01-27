@@ -349,6 +349,7 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
     changeTable(change) {
+      this.company="all";
       this.Table1 = "display:none";
       this.Table2 = "display:none";
       this.Table3 = "display:none";
@@ -369,6 +370,7 @@ export default {
       if (change == "1") {
         this.Table1 = "display:block";
         this.tableHover1 = buttonHover2;
+        this.changeMenu2(1);
       } else if (change == "2") {
         this.Table2 = "display:block";
         this.tableHover2 = buttonHover2;
@@ -387,6 +389,13 @@ export default {
       } else if (change == "7") {
         this.Table7 = "display:block";
         this.tableHover7 = buttonHover2;
+      console.log('Table7');
+        this.range = {
+          start: this.ISODateString(new Date('2020-08-01T06:00:00+06:00')),
+          end: this.ISODateString(new Date('2020-08-31T06:00:00+06:00')),
+          formatInput: true,
+        };
+        this.changeDate();
       }
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
@@ -1384,7 +1393,7 @@ export default {
             });
 
             dataWithMay2 = _.orderBy(
-              dataWithMay,
+              dataWithMay2,
               ["__time"],
               ["asc"]
             );
@@ -1840,7 +1849,7 @@ export default {
              return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
            }) */
           let opecData = this.opecData;
-          if (this.buttonHover8) {
+          if (this.buttonHover8) {         
             opecData = this.getOpecMonth(dataWithMay);
           }
           else {
@@ -1953,7 +1962,7 @@ export default {
         ]);
       });
 
-      // dataDay = _.orderBy(dataDay, ["dzo"], ["desc"]);
+  
 
       var covid = _.reduce(
         dataWithMay,
@@ -2726,7 +2735,7 @@ export default {
 
     getOpecMonth(data) {
 
-      let dataWithMay = _.filter(data, _.iteratee({ date: (this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + ' 00:00:00') }));
+      let dataWithMay = _.filter(data, _.iteratee({ date: (this.year + '-' + this.pad(this.month) + '-01' + ' 00:00:00') }));
       let oil;
       if (this.opec === "ОПЕК+") {
         oil = 'oil_opek_plan';
@@ -2808,10 +2817,10 @@ export default {
 
 
       this.range = {
-        //start: "2021-01-14T00:00:00+06:00",
-        //end: "2021-01-14T17:59:00+06:00",
-        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+        start: "2021-01-14T00:00:00+06:00",
+        end: "2021-01-14T17:59:00+06:00",
+       // start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+        //end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     } else {
