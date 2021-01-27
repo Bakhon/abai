@@ -134,100 +134,7 @@
             >
           </div>
         </div>
-        <!-- <div>
-                <div>
-                    <label class="text-wrap" style="color:white;" for="companySelect">Выберите месяц</label>
-                    <select
-                        style="background-color:#20274e;border-color:#20274e;color:white;"
-                        class="form-control"
-                        id="companySelect"
-                        @change="onChangeMonth($event)"
-                    >
-                    <option>Выберите месяц</option>
-                        <option value="1">январь</option>
-                        <option value="2">февраль</option>
-                        <option value="3">март</option>
-                        <option value="4">апрель</option>
-                        <option value="5">май</option>
-                        <option value="6">июнь</option>
-                        <option value="7">июль</option>
-                        <option value="8">август</option>
-                        <option value="9">сентябрь</option>
-                        <option value="10">октябрь</option>
-                        <option value="11">ноябрь</option>
-                        <option value="12">декабрь</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-wrap" style="color:white;" for="companySelect">Выберите год</label>
-                    <select
-                        style="background-color:#20274e;border-color:#20274e;color:white;"
-                        class="form-control"
-                        id="companySelect"
-                        @change="onChangeYear($event)"
-                    >
-                    <option value=''> Выберите год </option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
-                        <option value="2015">2015</option>
-                        <option value="2014">2014</option>
-
-                    </select>
-                </div>
-
-            </div> -->
-        <!-- <a href="#" class="but-nav__link but">Выбор даты 2</a> -->
-        <!-- <a href="#" @click.prevent="chooseDt" class="but-nav__link but">Сформировать</a> -->
-        <!-- <a
-          @click="editable()"
-          v-if="!edit"
-          class="col but-nav__link but trheadhight"
-          style="margin-right: 13px; line-height: 31px;"
-          ><i style="margin-right: 10px">
-            <svg
-              width="19"
-              height="19"
-              viewBox="0 0 19 19"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1.10481 18.579C0.824148 18.5785 0.55658 18.4602 0.367405 18.253C0.174748 18.0475 0.0790152 17.7695 0.104259 17.489L0.349395 14.795L11.6737 3.481L15.2126 7.017L3.89136 18.33L1.19586 18.575C1.16485 18.578 1.13383 18.579 1.10481 18.579ZM15.919 6.31L12.3811 2.774L14.5032 0.653001C14.691 0.465221 14.9456 0.359711 15.2111 0.359711C15.4767 0.359711 15.7313 0.465221 15.919 0.653001L18.0412 2.774C18.2291 2.96157 18.3347 3.21609 18.3347 3.4815C18.3347 3.74691 18.2291 4.00143 18.0412 4.189L15.92 6.309L15.919 6.31Z"
-                fill="white"
-              />
-            </svg>
-          </i>
-          Редактировать</a
-        > -->
-        <!-- <a
-          @click="savetable()"
-          v-if="edit"
-          style="margin-right: 15px; line-height: 31px;"
-          class="col but-nav__link but trheadhight"
-          >Сохранить</a
-        > -->
-
-        <!-- <a href="http://172.20.103.51:7576/api/techregime/factor/download" download="Тех Режим.xlsx" class="but-nav__link but">Экспорт</a> -->
-
-        <!-- <div class="col trcol">
-          <div
-            class="input-group input-group-sm"
-            style="width: 422px !important"
-          >
-            <input
-              type="text"
-              placeholder="Поиск"
-              class="form-control fix-rounded-right"
-              required
-            />
-            <div class="input-group-prepend">
-              <button class="input-group-text">Поиск</button>
-            </div>
-          </div>
-        </div> -->
+        
         <div class="big-data-input-container">
           <search-form-refresh
             @input="handlerSearch"
@@ -250,22 +157,7 @@
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>{{trans('tr.htr')}} {{ dt }}</h5>
           </div>
-          <!-- <select
-            name="Company"
-            class="form-control tr-field-filter"
-            id="companySelect"
-            v-model="filter"
-            multiple
-            @change="chooseField"
-          >
-            <option value="Все месторождения">Все месторождения</option>
-            <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-            <option value="Акшабулак Южный">Акшабулак Южный</option>
-            <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-            <option value="Нуралы">Нуралы</option>
-            <option value="Аксай">Аксай</option>
-            <option value="Аксай Южный">Аксай Южный</option>
-          </select> -->
+
           <tr-multiselect
             :filter="filter"
             :selectedAllTag="true"
@@ -279,8 +171,8 @@
           <modal name="add_well" :width="1900" :height="400"  :adaptive="true" style="z-index:9900000;">
             <div class="main_modals" style="background: #272953; width=900; height=400">
               <div>
-                    <div class="header_mod" style="color:white; display:flex">
-                        <h3>Добавление сквжин</h3>
+                    <div class="header_mod" style="color:white; display:flex; margin-left: 7px;">
+                        <h3>Добавление скважин</h3>
                         <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
                     </div>
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px;">
@@ -295,7 +187,7 @@
                                 </option>
                               </select>
                             </div>
-                            <div style="margin-left: 7px;">
+                            <div style="margin-left: 7px; cursor: pointer;">
                               <select
                                 class="form-control"
                                 v-model="Filter_field"
@@ -306,7 +198,7 @@
                                 </option>
                               </select>
                             </div>
-                            <div style="margin-left: 7px;">
+                            <div style="margin-left: 7px; cursor: pointer;">
                               <select
                                 class="form-control"
                                 v-model="Filter_well"
@@ -318,7 +210,7 @@
                               </select>
                             </div>
 
-                            <div style="margin-left: 7px;">
+                            <div style="margin-left: 7px; cursor: pointer;">
                               <select
                                 class="form-control"
                                 v-model="Filter_well_type"
@@ -330,7 +222,7 @@
                               </select>
                             </div>
 
-                            <div style="margin-left: 7px;">
+                            <div style="margin-left: 7px; cursor: pointer;">
                               <select
                                 class="form-control"
                                 v-model="Filter_well_status"
@@ -344,22 +236,32 @@
 
                             <a
                               
-                              style="margin-left: 10px; cursor: pointer; color:white;"
+                              style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                               @click="savetable()"
-                              ><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-</svg>
+                              ><svg 
+                              width="16" 
+                              height="16" 
+                              viewBox="0 0 16 16" 
+                              fill="none" 
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                              <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                              </svg>
 
                             Добавить</a>
                             <a
                               
-                              style="margin-left: 10px; cursor: pointer; color:white;"
+                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="savetable()"
-                              ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.6567 17.6575L6.34294 6.34383" stroke="#787A93" stroke-width="1.4" stroke-linecap="round"/>
-<path d="M17.6556 6.34383L6.34188 17.6575" stroke="#787A93" stroke-width="1.4" stroke-linecap="round"/>
-</svg>
+                              ><svg width="24" 
+                              height="24" 
+                              viewBox="0 0 24 24" 
+                              fill="none" 
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                              <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                              </svg>
+
 
 
                             Отменить</a>
