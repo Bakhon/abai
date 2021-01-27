@@ -276,65 +276,144 @@
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1200" :height="400"  :adaptive="true" style="z-index:9900000;">
+          <modal name="add_well" :width="1900" :height="400"  :adaptive="true" style="z-index:9900000;">
             <div class="main_modals" style="background: #272953; width=900; height=400">
-                <div class="header_mod" style="color:white; display:flex">
-                    <h3>Добавление сквжин</h3>
-                    <button type="button" class="btn btn-secondary btn-sm">Закрыть</button>
+              <div>
+                    <div class="header_mod" style="color:white; display:flex">
+                        <h3>Добавление сквжин</h3>
+                        <button type="button" class="btn btn-secondary btn-sm">Закрыть</button>
+                    </div>
+                    <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px;">
+                            <div style="margin-left: 7px;">
+                              <select
+                                class="form-control"
+                                v-model="Filter_status"
+                                value="Статус"
+                              >
+                                <option v-for="(f, k) in statusFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите статус" : f }}
+                                </option>
+                              </select>
+                            </div>
+                            <div style="margin-left: 7px;">
+                              <select
+                                class="form-control"
+                                v-model="Filter_field"
+                                value="Месторождение"
+                              >
+                                <option v-for="(f, k) in fieldFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите месторождение" : f }}
+                                </option>
+                              </select>
+                            </div>
+                            <div style="margin-left: 7px;">
+                              <select
+                                class="form-control"
+                                v-model="Filter_well"
+                                value="Скважина"
+                              >
+                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите скважину" : f }}
+                                </option>
+                              </select>
+                            </div>
+                            <div style="margin-left: 7px;">
+                              <select
+                                class="form-control"
+                                v-model="Filter_well_status"
+                                value="Состояние"
+                              >
+                                <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите состояние" : f }}
+                                </option>
+                              </select>
+                            </div>
+                            <div style="margin-left: 7px;">
+                              <select
+                                v-model="month"
+                                class="form-controll modalselect"
+                                id="companySelect"
+                                @change="onChangeMonth($event)"
+                              >
+                                <option value="1">Акс5455</option>
+                                <option value="2">Акс455</option>
+                              </select>
+                            </div>
+              
                 </div>
-                <div class="body" style="background: #272953; display:flex;">
-                        <div>
-                          <select
-                            
-                            v-model="month"
-                            class="form-controll modalselect"
-                            id="companySelect"
-                            @change="onChangeMonth($event)"
-                          >
-                            <option value="1">сохраненные</option>
-                            <option value="2">не сохраненные</option>
+              </div>
+              <div class="table" style="padding-top: 21px;">
 
-                          </select>
-                        </div>
-                        <div style="margin-left: 7px;">
-                          <select
-                            v-model="month"
-                            class="form-controll modalselect"
-                            id="companySelect"
-                            @change="onChangeMonth($event)"
-                          >
-                            <option value="1">Акшабулак Центральный</option>
-                            <option value="2">Акшабулак Южный</option>
-                            <option value="3">Акшабулак Восточный</option>
-                            <option value="4">Нуралы</option>
-                            <option value="5">Аксай</option>
-                          </select>
-                        </div>
-                        <div style="margin-left: 7px;">
-                          <select
-                            v-model="month"
-                            class="form-controll modalselect"
-                            id="companySelect"
-                            @change="onChangeMonth($event)"
-                          >
-                            <option value="1">В работе</option>
-                            <option value="2">В бездействии</option>
 
-                          </select>
-                        </div>
-                        <div style="margin-left: 7px;">
-                          <select
-                            v-model="month"
-                            class="form-controll modalselect"
-                            id="companySelect"
-                            @change="onChangeMonth($event)"
-                          >
-                            <option value="1">Акс5455</option>
-                            <option value="2">Акс455</option>
-                          </select>
-                        </div>
-                </div>
+
+
+
+                    <table class="table" style="font-size: 12px; background: #454D7D;">
+                    <thead>
+                      <tr>
+                        <th scope="col">Место-ние</th>
+                        <th scope="col">Состояние скв</th>
+                        <th scope="col">Номер скважины</th>
+                        <th scope="col">Горизонт</th>
+                        <th scope="col">Обьект</th>
+                        <th scope="col">Способ эксп-ии</th>
+                        <th scope="col">Тип скважины</th>
+                        <th scope="col">Блок</th>
+                        <th scope="col">Наружный диаметр э/к</th>
+                        <th scope="col">Внутренний диаметр э/к</th>
+                        <th scope="col">Н вд</th>
+                        <th scope="col">СЭ</th>
+                        <th scope="col">Тип насоса</th>
+                        <th scope="col">Тип СК</th>
+                        <th scope="col">Р буф</th>
+                        <th scope="col">Р л</th>
+                        <th scope="col">Р пластовое</th>
+                        <th scope="col">Н д</th>
+                        <th scope="col">P затр</th>
+                        <th scope="col">Плот-ть нефти</th>
+                        <th scope="col">Плот-ть воды</th>
+                        <th scope="col">Н перф</th>
+                        <th scope="col">Р заб замерное</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+
+                      </tr>
+                    </tbody>
+                  </table>
+
+
+
+
+
+              </div>
             </div>
+            
+                  
 
           </modal>
 
@@ -346,6 +425,7 @@
             data-target="#exampleModalCenter" 
             v-if="edit" 
             @click="addpush()"
+            @click.prevent="wellAdd"
             style="background: #272953; border: none; margin-left: 10px;"
             title="Добавить скважины">
             
@@ -6986,6 +7066,76 @@ export default {
     TrMultiselect,
     // FadeLoader,
   },
+  computed: {
+    // фильтр месторождение
+    fieldFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.field) === -1 &&
+            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
+            (!this.Filter_status || el.is_saved === this.Filter_status)
+          ) {
+            filters = [...filters, el.field];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },
+    // фильтр по скважинам
+    wellFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.rus_wellname) === -1 &&
+            (!this.Filter_field || el.field === this.Filter_field) &&
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
+            (!this.Filter_status || el.is_saved === this.Filter_status)
+          ) {
+            filters = [...filters, el.rus_wellname];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },
+    // фильтр по сост.скв
+    wellStatusFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.well_status_last_day) === -1 &&
+            (!this.Filter_field || el.field === this.Filter_field) &&
+            (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
+            (!this.Filter_status || el.is_saved === this.Filter_status)
+          ) {
+            filters = [...filters, el.well_status_last_day];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },
+    // фильтр по статусам (сохраненные или не сохраненные)
+    statusFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.is_saved) === -1 &&
+            (!this.Filter_field || el.field === this.Filter_field) &&
+            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status)
+          ) {
+            filters = [...filters, el.is_saved];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },       
+  },
   beforeCreate: function () {},
   created() {
     this.$store.commit("globalloading/SET_LOADING", true);
@@ -7051,6 +7201,11 @@ export default {
       month: null,
       // isloading: true,
       isfulltable: false,
+      Filter_field: undefined,
+      allWells: [],
+      Filter_well_status: undefined,
+      Filter_status: undefined,
+      Filter_well: undefined,
     };
   },
   watch: {
@@ -7237,6 +7392,33 @@ export default {
           }
         });
     },
+
+    wellAdd() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      // this.isloading = true;
+      this.axios
+        .get(
+          "http://172.20.103.187:7576/api/techregime/new_wells/" 
+        )
+        .then((response) => {
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          let data = response.data;
+          if (data) {
+            this.searched = false;
+            this.$store.commit("tr/SET_SORTPARAM", "");
+            this.$store.commit("tr/SET_SEARCH", "");
+            this.sortParam = "";
+            this.searchString = "";
+            console.log(data);
+            // this.wells = data.data;
+            this.allWells = data.data;
+          } else {
+            console.log("No data");
+          }
+          
+        });
+    },
     // chooseField() {
     //   const { filter, fullWells } = this;
     //   console.log(filter);
@@ -7266,6 +7448,11 @@ export default {
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
     },
+    addwellData() {
+      
+    },
+
+    
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
