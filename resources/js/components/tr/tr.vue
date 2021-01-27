@@ -341,6 +341,28 @@
                                 </option>
                               </select>
                             </div>
+
+                            <a
+                              
+                              style="margin-left: 10px; cursor: pointer; color:white;"
+                              @click="savetable()"
+                              ><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+
+                            Добавить</a>
+                            <a
+                              
+                              style="margin-left: 10px; cursor: pointer; color:white;"
+                              @click="savetable()"
+                              ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.6567 17.6575L6.34294 6.34383" stroke="#787A93" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M17.6556 6.34383L6.34188 17.6575" stroke="#787A93" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
+
+
+                            Отменить</a>
                             
                 </div>
               </div>
@@ -453,181 +475,7 @@
           
 
       
-          <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="z-index:5000;"> 
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content modalcont" style="width: 806px;">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLongTitle" style="color: white;">Скважины</h5>
-
-                  <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Закрыть</button>
-                </div>
-                <div class="modal-body" style="display:flex">
-
-
-                       <div>
-                          <select
-                            
-                            v-model="month"
-                            class="form-controll modalselect"
-                            id="companySelect"
-                            @change="onChangeMonth($event)"
-                          >
-                            <option value="1">сохраненные</option>
-                            <option value="2">не сохраненные</option>
-
-                          </select>
-                        </div>
-                        <div style="margin-left: 7px;">
-                          <select
-                            v-model="month"
-                            class="form-controll modalselect"
-                            id="companySelect"
-                            @change="onChangeMonth($event)"
-                          >
-                            <option value="1">Акшабулак Центральный</option>
-                            <option value="2">Акшабулак Южный</option>
-                            <option value="3">Акшабулак Восточный</option>
-                            <option value="4">Нуралы</option>
-                            <option value="5">Аксай</option>
-                          </select>
-                        </div>
-                        <div style="margin-left: 7px;">
-                          <select
-                            v-model="month"
-                            class="form-controll modalselect"
-                            id="companySelect"
-                            @change="onChangeMonth($event)"
-                          >
-                            <option value="1">В работе</option>
-                            <option value="2">В бездействии</option>
-
-                          </select>
-                        </div>
-                        <div style="margin-left: 7px;">
-                          <select
-                            v-model="month"
-                            class="form-controll modalselect"
-                            id="companySelect"
-                            @change="onChangeMonth($event)"
-                          >
-                            <option value="1">Акс5455</option>
-                            <option value="2">Акс455</option>
-                          </select>
-                        </div>
-
-                        <a
-                            style="margin-left: 10px; cursor: pointer; color: white;"
-                            >
-                            <svg 
-                                width="24" 
-                                height="24" 
-                                viewBox="0 0 24 24"
-                                fill="none" 
-                                xmlns="http://www.w3.org/2000/svg">
-                              <path 
-                                d="M18.5 12L5.5 12" 
-                                stroke="white" 
-                                stroke-width="1.5" 
-                                stroke-linecap="round"/>
-                              <path 
-                                d="M12 5.5V18.5" 
-                                stroke="white" 
-                                stroke-width="1.5" 
-                                stroke-linecap="round"/>
-                            </svg>Добавить
-                          </a>
-
-                        <a
-                            style="margin-left: 3px; cursor: pointer; color: white;"
-                            >
-                            <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M17.6574 17.6575L6.34367 6.34383"
-                                  stroke="white"
-                                  stroke-width="1.4"
-                                  stroke-linecap="round"
-                                />
-                                <path
-                                  d="M17.6563 6.34383L6.34262 17.6575"
-                                  stroke="white"
-                                  stroke-width="1.4"
-                                  stroke-linecap="round"
-                                />
-                            </svg>Отмена
-                          </a>
-
-
-                </div>
-                <div class="modal-footer">
-
-
-                  <table class="table" style="height: 93px;">
-                    <thead>
-                      <tr>
-                        <th scope="col">Месторождение</th>
-                        <th scope="col">Состояние скважины</th>
-                        <th scope="col">Номер скважины</th>
-                        <th scope="col">Горизонт</th>
-                        <th scope="col">Обьект</th>
-                        <th scope="col">Способ эксплуатации</th>
-                        <th scope="col">Тип скважины</th>
-                        <th scope="col">Блок</th>
-                        <th scope="col">Наружный диаметр э/к</th>
-                        <th scope="col">Внутренний диаметр э/к</th>
-                        <th scope="col">Н вд</th>
-                        <th scope="col">СЭ</th>
-                        <th scope="col">Тип насоса</th>
-                        <th scope="col">Тип СК</th>
-                        <th scope="col">Р буф</th>
-                        <th scope="col">Р л</th>
-                        <th scope="col">Р пластовое</th>
-                        <th scope="col">Н д</th>
-                        <th scope="col">P затр</th>
-                        <th scope="col">Плот-ть нефти</th>
-                        <th scope="col">Плот-ть воды</th>
-                        <th scope="col">Н перф</th>
-                        <th scope="col">Р заб замерное</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div> --> 
+          
 
           <a
             v-if="edit"
