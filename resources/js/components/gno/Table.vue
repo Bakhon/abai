@@ -340,8 +340,8 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <gno-incl-table :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
-                    </gno-incl-table>
+                    <inclinometria :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    </inclinometria>
                   </div>
                 </div>
               </modal>
@@ -574,7 +574,7 @@
 				                  
                           <div class="col-6">
                             <h6 style="text-align: center;">{{trans('pgno.prichini_prs')}}</h6>
-			                      <gno-wells-repairs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></gno-wells-repairs>
+			                      <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></prs-crs>
                             <h6>{{trans('pgno.kolichestvo_remontov')}}: {{numberRepairs}}</h6>
                             <h6>ННО: {{numberNNO + ' сут'}}</h6>
                         	</div>
@@ -633,7 +633,7 @@
 
                   <div>
                     <div class="nno-graph">
-                      <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
+                      <economic :data="expAnalysisData"></economic>
                     </div>
 
                     <div class="nno-modal-button-wrapper">
@@ -1050,7 +1050,7 @@
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
                   <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
                 </div>
-                <gno-line-points-chart></gno-line-points-chart>
+                <inflow-curve></inflow-curve>
               </div>
 
               <div class="gno-shgn-wrapper" v-if="!visibleChart">
@@ -1518,7 +1518,7 @@
                   <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Скважина: {{field}}-{{wellNumber}}</div>
                   <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
                 </div>
-                <gno-line-points-chart></gno-line-points-chart>
+                <inflow-curve></inflow-curve>
               </div>
 
         <div class="gno-line-chart-well-old-clone" ref="gno-chart-new-old-well" v-if="visibleChart" style="background-color: #272953;">
@@ -1707,7 +1707,7 @@
         </div>
 
         <div class="gno-chart-clone col-10">
-          <gno-line-points-chart></gno-line-points-chart>
+          <inflow-curve></inflow-curve>
         </div>
 
         <div class="title-page-2 col-10">

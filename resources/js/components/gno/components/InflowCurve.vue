@@ -13,9 +13,7 @@
 </template>
 
 <script>
-import { Scatter } from 'vue-chartjs';
 import { Plotly } from "vue-plotly";
-import { eventBus } from "../../event-bus.js";
 
 Vue.prototype.$eventBus = new Vue();
 Vue.component("Plotly", Plotly);
