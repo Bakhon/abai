@@ -262,8 +262,6 @@
                               <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                               </svg>
 
-
-
                             Отменить</a>
                             
                 </div>
@@ -307,26 +305,25 @@
                         <td>{{row.field}}</td>
                         <td>{{row.well_status_last_day}}</td>
                         <td>{{row.rus_wellname}}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{row.horizon}}</td>
+                        <td>{{row.object}}</td>
+                        <td>{{row.exp_meth}}</td>
+                        <td>{{row.type_text}}</td>
+                        <td>{{row.block}}</td>
+                        <td>{{row.cas_OD}}</td>
+                        <td>{{row.cas_ID}}</td>
+                        <td>{{row.h_up_perf_md}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.rus_wellname}}</td>
 
                       </tr>
                     </tbody>
