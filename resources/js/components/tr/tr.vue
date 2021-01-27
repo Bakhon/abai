@@ -237,7 +237,7 @@
                             <a
                               
                               style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="savetable()"
+                              @click="showWells()"
                               ><svg 
                               width="16" 
                               height="16" 
@@ -274,9 +274,9 @@
 
 
 
-                    <table class="table" style="font-size: 12px; background: #454D7D;">
+                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff;">
                     <thead>
-                      <tr>
+                      <tr >
                         <th scope="col">Место-ние</th>
                         <th scope="col">Состояние скв</th>
                         <th scope="col">Номер скважины</th>
@@ -303,10 +303,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                      <tr v-for="(row, row_index) in awells" :key="row_index">
+                        <td>{{row.field}}</td>
+                        <td>{{row.well_status_last_day}}</td>
+                        <td>{{row.rus_wellname}}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -6840,7 +6840,7 @@ export default {
         }
       } else return false;
     },
-    // фильтр месторождение
+    // фильтр месторожд.
     fieldFilters() {
       if (this.allWells && this.allWells.length > 0) {
         let filters = [];
@@ -6997,6 +6997,7 @@ export default {
       isfulltable: false,
       Filter_field: undefined,
       allWells: [],
+      awells: [],
       Filter_well_status: undefined,
       Filter_status: undefined,
       Filter_well_type: undefined,
@@ -7085,6 +7086,9 @@ export default {
       this.edit = false;
       this.editedWells = [];
       this.searchWell();
+    },
+    showWells() {
+      this.awells = this.allWells[0];
     },
     editable() {
       this.edit = true;
