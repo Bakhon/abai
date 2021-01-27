@@ -168,10 +168,10 @@
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1900" :height="400"  :adaptive="true" style="z-index:9900000;">
+          <modal name="add_well" :width="1900" :height="250"  :adaptive="true" style="z-index:9900000;">
             <div class="main_modals" style="background: #272953; width=900; height=400">
               <div>
-                    <div class="header_mod" style="color:white; display:flex; margin-left: 7px;">
+                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px;">
                         <h5>Добавление скважин</h5>
                         <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
                     </div>
@@ -248,21 +248,17 @@
                               <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                               </svg>
 
-                            Добавить</a>
+                            Добавить/Отменить</a>
                             <a
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="savetable()"
-                              ><svg width="24" 
-                              height="24" 
-                              viewBox="0 0 24 24" 
-                              fill="none" 
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              </svg>
+                              ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
 
-                            Отменить</a>
+
+                            Сохранить/Удалить</a>
                             
                 </div>
               </div>
@@ -272,7 +268,7 @@
 
 
 
-                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff;" v-if="show_add">
+                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
                     <thead>
                       <tr >
                         <th scope="col">Место-ние</th>
@@ -302,27 +298,27 @@
                     </thead>
                     <tbody>
                       <tr v-for="(row, row_index) in filteredWellData" :key="row_index">
-                        <td>{{row.field}}</td>
-                        <td>{{row.well_status_last_day}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.horizon}}</td>
-                        <td>{{row.object}}</td>
-                        <td>{{row.exp_meth}}</td>
-                        <td>{{row.type_text}}</td>
-                        <td>{{row.block}}</td>
-                        <td>{{row.cas_OD}}</td>
-                        <td>{{row.cas_ID}}</td>
-                        <td>{{row.h_up_perf_md}}</td>
-                        <td>{{row.pump_type}}</td>
-                        <td>{{row.type_sr}}</td>
-                        <td>{{row.whp}}</td>
-                        <td>{{row.line_p}}</td>
-                        <td>{{row.p_res}}</td>
-                        <td>{{row.h_dyn}}</td>
-                        <td>{{row.p_annular}}</td>
-                        <td>{{row.dens_oil}}</td>
-                        <td>{{row.h_perf}}</td>
-                        <td>{{row.bhp_meter}}</td>
+                        <td contenteditable='true'> {{row.field}}></td>
+                        <td contenteditable='true'>{{row.well_status_last_day}}</td>
+                        <td contenteditable='true'>{{row.rus_wellname}}</td>
+                        <td contenteditable='true'>{{row.horizon}}</td>
+                        <td contenteditable='true'>{{row.object}}</td>
+                        <td contenteditable='true'>{{row.exp_meth}}</td>
+                        <td contenteditable='true'>{{row.type_text}}</td>
+                        <td contenteditable='true'>{{row.block}}</td>
+                        <td contenteditable='true'>{{row.cas_OD}}</td>
+                        <td contenteditable='true'>{{row.cas_ID}}</td>
+                        <td contenteditable='true'>{{row.h_up_perf_md}}</td>
+                        <td contenteditable='true'>{{row.pump_type}}</td>
+                        <td contenteditable='true'>{{row.type_sr}}</td>
+                        <td contenteditable='true'>{{row.whp}}</td>
+                        <td contenteditable='true'>{{row.line_p}}</td>
+                        <td contenteditable='true'>{{row.p_res}}</td>
+                        <td contenteditable='true'>{{row.h_dyn}}</td>
+                        <td contenteditable='true'>{{row.p_annular}}</td>
+                        <td contenteditable='true'>{{row.dens_oil}}</td>
+                        <td contenteditable='true'>{{row.h_perf}}</td>
+                        <td contenteditable='true'>{{row.bhp_meter}}</td>
 
                       </tr>
                     </tbody>
