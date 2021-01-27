@@ -237,8 +237,7 @@
                             <a
                               
                               style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="showWells()"
-                              @click.prevent="savetable()"
+                              @click="showWells"
                               ><svg 
                               width="16" 
                               height="16" 
@@ -273,7 +272,7 @@
 
 
 
-                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff;">
+                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff;" v-if="show_add">
                     <thead>
                       <tr >
                         <th scope="col">Место-ние</th>
@@ -302,7 +301,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(row, row_index) in awells" :key="row_index">
+                      <tr v-for="(row, row_index) in filteredWellData" :key="row_index">
                         <td>{{row.field}}</td>
                         <td>{{row.well_status_last_day}}</td>
                         <td>{{row.rus_wellname}}</td>
@@ -6819,17 +6818,19 @@ export default {
     // Добавление выбранных данных в таблицу
     addWellData() {
       if (this.allWells && this.allWells.length > 0) {
-        let rus_wellname = this.Filter_well;
         let is_saved = this.Filter_status;
         let field = this.Filter_field;
-        let well_status_last_day = this.Filter_well_status; 
-        let type_text = this.Filter_well_type; 
+        let rus_wellname = this.Filter_well;
+        let type_text = this.Filter_well_type;
+        let well_status_last_day = this.Filter_well_status;
         try {
           let filteredResult = this.allWells.filter(
             (row) =>
-              (!rus_wellname || row.rus_wellname === well) &&
               (!is_saved || row.is_saved === is_saved) &&
-              (!field || row.field === field)
+              (!field || row.field === field) &&
+              (!rus_wellname || row.rus_wellname === rus_wellname) &&
+              (!type_text || row.type_text === type_text) &&
+              (!well_status_last_day || row.well_status_last_day === well_status_last_day)
           );
           this.filteredWellData = filteredResult;
           console.log("filteredResult bat = ", filteredResult);
@@ -6984,6 +6985,7 @@ export default {
       editedWells: [],
       show_first: true,
       show_second: false,
+      show_add: false,
       edit: false,
       editdtm: null,
       editdty: null,
@@ -7000,6 +7002,7 @@ export default {
       Filter_well_status: undefined,
       Filter_status: undefined,
       Filter_well_type: undefined,
+      filteredWellData: [],
       Filter_well: undefined,
     };
   },
@@ -7087,7 +7090,12 @@ export default {
       this.searchWell();
     },
     showWells() {
-      this.awells = this.allWells[0];
+      if(this.filteredWellData.length === 1){
+        this.show_add = !this.show_add;
+      }
+      else{
+        this.show_add = this.show_add;
+      }
     },
     editable() {
       this.edit = true;
@@ -7246,11 +7254,7 @@ export default {
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
     },
-    addwellData() {
-      
-    },
 
-    
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
