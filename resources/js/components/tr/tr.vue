@@ -281,7 +281,7 @@
               <div>
                     <div class="header_mod" style="color:white; display:flex">
                         <h3>Добавление сквжин</h3>
-                        <button type="button" class="btn btn-secondary btn-sm">Закрыть</button>
+                        <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
                     </div>
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px;">
                             <div style="margin-left: 7px;">
@@ -317,6 +317,19 @@
                                 </option>
                               </select>
                             </div>
+
+                            <div style="margin-left: 7px;">
+                              <select
+                                class="form-control"
+                                v-model="Filter_well_type"
+                                value="Тип скв"
+                              >
+                                <option v-for="(f, k) in typeWellFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите тип скв" : f }}
+                                </option>
+                              </select>
+                            </div>
+
                             <div style="margin-left: 7px;">
                               <select
                                 class="form-control"
@@ -328,18 +341,7 @@
                                 </option>
                               </select>
                             </div>
-                            <div style="margin-left: 7px;">
-                              <select
-                                v-model="month"
-                                class="form-controll modalselect"
-                                id="companySelect"
-                                @change="onChangeMonth($event)"
-                              >
-                                <option value="1">Акс5455</option>
-                                <option value="2">Акс455</option>
-                              </select>
-                            </div>
-              
+                            
                 </div>
               </div>
               <div class="table" style="padding-top: 21px;">
@@ -7067,6 +7069,27 @@ export default {
     // FadeLoader,
   },
   computed: {
+    // Добавление выбранных данных в таблицу
+    addWellData() {
+      if (this.allWells && this.allWells.length > 0) {
+        let well = this.Filter_well;
+        let is_saved = this.Filter_status;
+        let field = this.Filter_field;
+        try {
+          let filteredResult = this.allWells.filter(
+            (row) =>
+              (!well || row.well === well) &&
+              (!is_saved || row.is_saved === is_saved) &&
+              (!field || row.field === field)
+          );
+          this.filteredWellData = filteredResult;
+          console.log("filteredResult bat = ", filteredResult);
+        } catch (err) {
+          console.error(err);
+          return false;
+        }
+      } else return false;
+    },
     // фильтр месторождение
     fieldFilters() {
       if (this.allWells && this.allWells.length > 0) {
@@ -7076,7 +7099,8 @@ export default {
             filters.indexOf(el.field) === -1 &&
             (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
             (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status)
+            (!this.Filter_status || el.is_saved === this.Filter_status) &&
+            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
           ) {
             filters = [...filters, el.field];
           }
@@ -7093,7 +7117,8 @@ export default {
             filters.indexOf(el.rus_wellname) === -1 &&
             (!this.Filter_field || el.field === this.Filter_field) &&
             (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status)
+            (!this.Filter_status || el.is_saved === this.Filter_status) &&
+            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
           ) {
             filters = [...filters, el.rus_wellname];
           }
@@ -7110,7 +7135,8 @@ export default {
             filters.indexOf(el.well_status_last_day) === -1 &&
             (!this.Filter_field || el.field === this.Filter_field) &&
             (!this.Filter_well || el.rus_wellname === this.Filter_well) &&
-            (!this.Filter_status || el.is_saved === this.Filter_status)
+            (!this.Filter_status || el.is_saved === this.Filter_status) &&
+            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
           ) {
             filters = [...filters, el.well_status_last_day];
           }
@@ -7127,14 +7153,32 @@ export default {
             filters.indexOf(el.is_saved) === -1 &&
             (!this.Filter_field || el.field === this.Filter_field) &&
             (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
-            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status)
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
+            (!this.Filter_well_type || el.type_text === this.Filter_well_type)
           ) {
             filters = [...filters, el.is_saved];
           }
         });
         return [undefined, ...filters];
       } else return [];
-    },       
+    },
+    typeWellFilters() {
+      if (this.allWells && this.allWells.length > 0) {
+        let filters = [];
+        this.allWells.forEach((el) => {
+          if (
+            filters.indexOf(el.type_text) === -1 &&
+            (!this.Filter_field || el.field === this.Filter_field) &&
+            (!this.Filter_well || el.rus_wellname === this.Filter_well)  &&
+            (!this.Filter_well_status || el.well_status_last_day === this.Filter_well_status) &&
+            (!this.Filter_status || el.is_saved === this.Filter_status)
+          ) {
+            filters = [...filters, el.type_text];
+          }
+        });
+        return [undefined, ...filters];
+      } else return [];
+    },          
   },
   beforeCreate: function () {},
   created() {
@@ -7205,6 +7249,7 @@ export default {
       allWells: [],
       Filter_well_status: undefined,
       Filter_status: undefined,
+      Filter_well_type: undefined,
       Filter_well: undefined,
     };
   },
