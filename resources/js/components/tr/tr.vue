@@ -341,7 +341,6 @@
             type="button" 
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
-            v-if="edit" 
             @click="addpush()"
             @click.prevent="wellAdd"
             style="background: #272953; border: none; margin-left: 10px;"
