@@ -252,7 +252,7 @@
                             <a
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="savetable()"
+                              @click="saveadd()"
                               ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
@@ -268,7 +268,7 @@
 
 
 
-                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
+                    <table class="table table-bordered" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
                     <thead>
                       <tr >
                         <th scope="col">Место-ние</th>
@@ -297,28 +297,28 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(row, row_index) in filteredWellData" :key="row_index">
-                        <td contenteditable='true'> {{row.field}}</td>
-                        <td contenteditable='true'>{{row.well_status_last_day}}</td>
-                        <td contenteditable='true'>{{row.rus_wellname}}</td>
-                        <td contenteditable='true'>{{row.horizon}}</td>
-                        <td contenteditable='true'>{{row.object}}</td>
-                        <td contenteditable='true'>{{row.exp_meth}}</td>
-                        <td contenteditable='true'>{{row.type_text}}</td>
-                        <td contenteditable='true'>{{row.block}}</td>
-                        <td contenteditable='true'>{{row.cas_OD}}</td>
-                        <td contenteditable='true'>{{row.cas_ID}}</td>
-                        <td contenteditable='true'>{{row.h_up_perf_md}}</td>
-                        <td contenteditable='true'>{{row.pump_type}}</td>
-                        <td contenteditable='true'>{{row.type_sr}}</td>
-                        <td contenteditable='true'>{{row.whp}}</td>
-                        <td contenteditable='true'>{{row.line_p}}</td>
-                        <td contenteditable='true'>{{row.p_res}}</td>
-                        <td contenteditable='true'>{{row.h_dyn}}</td>
-                        <td contenteditable='true'>{{row.p_annular}}</td>
-                        <td contenteditable='true'>{{row.dens_oil}}</td>
-                        <td contenteditable='true'>{{row.h_perf}}</td>
-                        <td contenteditable='true'>{{row.bhp_meter}}</td>
+                      <tr v-for="(row, row_index) in filteredWellData" :key="row_index" ref="editTable">
+                        <td><input data-key="field" :value="row.field"></td>
+                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day"></td>
+                        <td><input data-key="rus_wellname" :value="row.rus_wellname"></td>
+                        <td><input data-key="horizon" :value="row.horizon"></td>
+                        <td><input data-key="object" :value="row.object"></td>
+                        <td><input data-key="exp_meth" :value="row.exp_meth"></td>
+                        <td><input data-key="type_text" :value="row.type_text"></td>
+                        <td><input data-key="block" :value="row.block"></td>
+                        <td><input data-key="cas_OD" :value="row.cas_OD"></td>
+                        <td><input data-key="cas_ID" :value="row.cas_ID"></td>
+                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md"></td>
+                        <td><input data-key="pump_type" :value="row.pump_type"></td>
+                        <td><input data-key="type_sr" :value="row.type_sr"></td>
+                        <td><input data-key="whp" :value="row.whp"></td>
+                        <td><input data-key="line_p" :value="row.line_p"></td>
+                        <td><input data-key="p_res" :value="row.p_res"></td>
+                        <td><input data-key="h_dyn" :value="row.h_dyn"></td>
+                        <td><input data-key="p_annular" :value="row.p_annular"></td>
+                        <td><input data-key="dens_oil" :value="row.dens_oil"></td>
+                        <td><input data-key="h_perf" :value="row.h_perf"></td>
+                        <td><input data-key="bhp_meter" :value="row.bhp_meter"></td>
 
                       </tr>
                     </tbody>
@@ -7264,6 +7264,24 @@ export default {
     },
     handlerFilter(filter) {
       this.filter = filter;
+    },
+    saveadd() {
+      console.log(this.$refs.editTable);
+      //this.$refs.saveTable
+      let output = {}
+      console.log(this.$refs.editTable[0].children);
+      console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);
+      console.log(this.$refs.editTable[0].children[0].children[0].value);
+      this.$refs.editTable[0].children.forEach((el) => {
+        output[el.children[0].dataset.key] = el.children[0].value;
+      });
+      console.log(output)
+      this.axios
+        .post(
+          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
+          output).then((res) => {
+            console.log(res.data)
+          })
     },
     searchWell() {
       console.log("search = ", this.searchString);
