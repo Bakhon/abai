@@ -238,6 +238,7 @@
                               
                               style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                               @click="showWells()"
+                              @click.prevent="savetable()"
                               ><svg 
                               width="16" 
                               height="16" 
@@ -313,17 +314,16 @@
                         <td>{{row.cas_OD}}</td>
                         <td>{{row.cas_ID}}</td>
                         <td>{{row.h_up_perf_md}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
-                        <td>{{row.rus_wellname}}</td>
+                        <td>{{row.pump_type}}</td>
+                        <td>{{row.type_sr}}</td>
+                        <td>{{row.whp}}</td>
+                        <td>{{row.line_p}}</td>
+                        <td>{{row.p_res}}</td>
+                        <td>{{row.h_dyn}}</td>
+                        <td>{{row.p_annular}}</td>
+                        <td>{{row.dens_oil}}</td>
+                        <td>{{row.h_perf}}</td>
+                        <td>{{row.bhp_meter}}</td>
 
                       </tr>
                     </tbody>
@@ -6819,13 +6819,15 @@ export default {
     // Добавление выбранных данных в таблицу
     addWellData() {
       if (this.allWells && this.allWells.length > 0) {
-        let well = this.Filter_well;
+        let rus_wellname = this.Filter_well;
         let is_saved = this.Filter_status;
         let field = this.Filter_field;
+        let well_status_last_day = this.Filter_well_status; 
+        let type_text = this.Filter_well_type; 
         try {
           let filteredResult = this.allWells.filter(
             (row) =>
-              (!well || row.well === well) &&
+              (!rus_wellname || row.rus_wellname === well) &&
               (!is_saved || row.is_saved === is_saved) &&
               (!field || row.field === field)
           );
