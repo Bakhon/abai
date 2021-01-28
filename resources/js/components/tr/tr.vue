@@ -237,7 +237,7 @@
                             <a
                               
                               style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="showWells"
+                              @click="showWells()"
                               ><svg 
                               width="16" 
                               height="16" 
@@ -253,63 +253,67 @@
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
-                              ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-</svg>
-
-
-                            Сохранить</a>
-                             <a
+                              ><svg width="24" 
+                              height="24" 
+                              viewBox="0 0 24 24" 
+                              fill="none" 
+                              xmlns="http://www.w3.org/2000/svg">
+                              <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
+                              stroke-width="1.5" stroke-linecap="round"/>
+                              </svg>Сохранить</a>
                               
+                             <a
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="deleteWell()"
-                              ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-<path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-</svg>
-
-
-
-                            Удалить</a>
+                              @click="deleteWell"
+                              ><svg width="24"
+                               height="24" 
+                               viewBox="0 0 24 24" 
+                               fill="none" 
+                               xmlns="http://www.w3.org/2000/svg">
+                              <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                              <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                              </svg>Удалить</a>
                             
                 </div>
               </div>
-              <div class="table" style="padding-top: 21px; overflow-y: auto; height: calc(100vh - 235px);">
+              <div class="table table-bordered table-dark table-responsive trtable" style="padding-top: 21px; overflow-y: auto; height: calc(100vh - 235px);">
 
 
 
 
 
-                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
+                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
                     <thead>
                       <tr >
-                        <th scope="col">Место-ние</th>
-                        <th scope="col">Состояние скв</th>
-                        <th scope="col">№ скв</th>
-                        <th scope="col">Горизонт</th>
-                        <th scope="col">Обьект</th>
-                        <th scope="col">Способ эксп-ии</th>
-                        <th scope="col">Тип скв</th>
-                        <th scope="col">Блок</th>
-                        <th scope="col">Наружный диаметр э/к</th>
-                        <th scope="col">Внутр. диаметр э/к</th>
-                        <th scope="col">Н вд</th>
-                        <th scope="col">СЭ</th>
-                        <th scope="col">Тип насоса</th>
-                        <th scope="col">Тип СК</th>
-                        <th scope="col">Р буф</th>
-                        <th scope="col">Р л</th>
-                        <th scope="col">Р пласт.</th>
-                        <th scope="col">Н д</th>
-                        <th scope="col">P затр</th>
-                        <th scope="col">Плот-ть нефти</th>
-                        <th scope="col">Плот-ть воды</th>
-                        <th scope="col">Н перф</th>
-                        <th scope="col">Р заб замерное</th>
+                        <td scope="col">Место-ние</td>
+                        <td scope="col">Состояние скв</td>
+                        <td scope="col">№ скв</td>
+                        <td scope="col">Горизонт</td>
+                        <td scope="col">Обьект</td>
+                        <td scope="col">Способ эксп-ии</td>
+                        <td scope="col">Тип скв</td>
+                        <td scope="col">Блок</td>
+                        <td scope="col">Наружный диаметр э/к</td>
+                        <td scope="col">Внутр. диаметр э/к</td>
+                        <td scope="col">Н вд</td>
+                        <td scope="col">СЭ</td>
+                        <td scope="col">Тип насоса</td>
+                        <td scope="col">Тип СК</td>
+                        <td scope="col">Р буф</td>
+                        <td scope="col">Р л</td>
+                        <td scope="col">Р пласт.</td>
+                        <td scope="col">Н д</td>
+                        <td scope="col">P затр</td>
+                        <td scope="col">Плот-ть нефти</td>
+                        <td scope="col">Плот-ть воды</td>
+                        <td scope="col">Н перф</td>
+                        <td scope="col">Р заб замерное</td>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(row, row_index) in filteredWellData" :key="row_index" ref="editTable">
+                      <tr v-for="(row, row_index) in lonelywell" 
+                        :key="row_index"
+                        ref="editTable">
                         <td><input data-key="field" :value="row.field"></td>
                         <td><input data-key="well_status_last_day" :value="row.well_status_last_day"></td>
                         <td><input data-key="rus_wellname" :value="row.rus_wellname"></td>
@@ -6845,6 +6849,10 @@ export default {
           console.error(err);
           return false;
         }
+        if(this.filteredWellData.length === 1){
+          this.lonelywell = this.filteredWellData;
+        }
+        else return false;
       } else return false;
     },
     // фильтр месторожд.
@@ -6946,6 +6954,19 @@ export default {
     var today = new Date();
     var mm = today.getMonth() + 1;
     var yyyy = today.getFullYear();
+    var day = today.getDate();
+    if(day > 25 && mm < 12) {
+      var mm1 = today.getMonth() + 2;
+      var yyyy1 = today.getFullYear();
+    }
+    else if(day > 25 && mm === 12){
+      var mm1 = 1;
+      var yyyy1 = today.getFullYear() + 1;
+    }
+    else{
+      var mm1 = today.getMonth() + 1;
+      var yyyy1 = today.getFullYear();
+    }
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
     this.axios
@@ -6965,10 +6986,10 @@ export default {
           console.log("No data");
           
         }
-        if (mm < 10) {
-          this.dt = "01" + ".0" + mm + "." + yyyy;
+        if (mm1 < 10) {
+          this.dt = "01" + ".0" + mm1 + "." + yyyy1;
         } else {
-          this.dt = "01" + "." + mm + "." + yyyy;
+          this.dt = "01" + "." + mm1 + "." + yyyy1;
         }
       });
   },
@@ -7010,6 +7031,7 @@ export default {
       Filter_status: undefined,
       Filter_well_type: undefined,
       filteredWellData: [],
+      lonelywell: [],
       Filter_well: undefined,
     };
   },
@@ -7097,7 +7119,7 @@ export default {
       this.searchWell();
     },
     showWells() {
-      if(this.filteredWellData.length === 1){
+      if(this.lonelywell.length === 1){
         this.show_add = !this.show_add;
       }
       else{
@@ -7298,11 +7320,11 @@ export default {
     },
     // Удаление с модалки
     deleteWell() {
-      if(this.filteredWellData.length === 1 && this.filteredWellData[0].is_saved === "Cохранено"){
+      if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
         this.axios
           .get(
             "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
-            this.filteredWellData[0].well).then((res) => {
+            this.lonelywell[0].well).then((res) => {
               console.log(res.data)
             })
       }
