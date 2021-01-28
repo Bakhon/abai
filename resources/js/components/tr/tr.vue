@@ -168,10 +168,10 @@
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1900" :height="400"  :adaptive="true" style="z-index:9900000;">
+          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000;">
             <div class="main_modals" style="background: #272953; width=900; height=400">
               <div>
-                    <div class="header_mod" style="color:white; display:flex; margin-left: 7px;">
+                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px;">
                         <h5>Добавление скважин</h5>
                         <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
                     </div>
@@ -237,7 +237,7 @@
                             <a
                               
                               style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="savetable()"
+                              @click="showWells"
                               ><svg 
                               width="16" 
                               height="16" 
@@ -248,52 +248,58 @@
                               <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                               </svg>
 
-                            Добавить</a>
+                            Добавить/Отменить</a>
                             <a
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="savetable()"
-                              ><svg width="24" 
-                              height="24" 
-                              viewBox="0 0 24 24" 
-                              fill="none" 
-                              xmlns="http://www.w3.org/2000/svg">
-                              <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                              </svg>
+                              @click="saveadd()"
+                              ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+
+
+                            Сохранить</a>
+                             <a
+                              
+                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                              @click="deleteWell()"
+                              ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
 
 
 
-                            Отменить</a>
+                            Удалить</a>
                             
                 </div>
               </div>
-              <div class="table" style="padding-top: 21px;">
+              <div class="table" style="padding-top: 21px; overflow-y: auto; height: calc(100vh - 235px);">
 
 
 
 
 
-                    <table class="table" style="font-size: 12px; background: #454D7D;">
+                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
                     <thead>
-                      <tr>
+                      <tr >
                         <th scope="col">Место-ние</th>
                         <th scope="col">Состояние скв</th>
-                        <th scope="col">Номер скважины</th>
+                        <th scope="col">№ скв</th>
                         <th scope="col">Горизонт</th>
                         <th scope="col">Обьект</th>
                         <th scope="col">Способ эксп-ии</th>
-                        <th scope="col">Тип скважины</th>
+                        <th scope="col">Тип скв</th>
                         <th scope="col">Блок</th>
                         <th scope="col">Наружный диаметр э/к</th>
-                        <th scope="col">Внутренний диаметр э/к</th>
+                        <th scope="col">Внутр. диаметр э/к</th>
                         <th scope="col">Н вд</th>
                         <th scope="col">СЭ</th>
                         <th scope="col">Тип насоса</th>
                         <th scope="col">Тип СК</th>
                         <th scope="col">Р буф</th>
                         <th scope="col">Р л</th>
-                        <th scope="col">Р пластовое</th>
+                        <th scope="col">Р пласт.</th>
                         <th scope="col">Н д</th>
                         <th scope="col">P затр</th>
                         <th scope="col">Плот-ть нефти</th>
@@ -303,30 +309,28 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                      <tr v-for="(row, row_index) in filteredWellData" :key="row_index" ref="editTable">
+                        <td><input data-key="field" :value="row.field"></td>
+                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day"></td>
+                        <td><input data-key="rus_wellname" :value="row.rus_wellname"></td>
+                        <td><input data-key="horizon" :value="row.horizon"></td>
+                        <td><input data-key="object" :value="row.object"></td>
+                        <td><input data-key="exp_meth" :value="row.exp_meth"></td>
+                        <td><input data-key="type_text" :value="row.type_text"></td>
+                        <td><input data-key="block" :value="row.block"></td>
+                        <td><input data-key="cas_OD" :value="row.cas_OD"></td>
+                        <td><input data-key="cas_ID" :value="row.cas_ID"></td>
+                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md"></td>
+                        <td><input data-key="pump_type" :value="row.pump_type"></td>
+                        <td><input data-key="type_sr" :value="row.type_sr"></td>
+                        <td><input data-key="whp" :value="row.whp"></td>
+                        <td><input data-key="line_p" :value="row.line_p"></td>
+                        <td><input data-key="p_res" :value="row.p_res"></td>
+                        <td><input data-key="h_dyn" :value="row.h_dyn"></td>
+                        <td><input data-key="p_annular" :value="row.p_annular"></td>
+                        <td><input data-key="dens_oil" :value="row.dens_oil"></td>
+                        <td><input data-key="h_perf" :value="row.h_perf"></td>
+                        <td><input data-key="bhp_meter" :value="row.bhp_meter"></td>
 
                       </tr>
                     </tbody>
@@ -349,7 +353,6 @@
             type="button" 
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
-            v-if="edit" 
             @click="addpush()"
             @click.prevent="wellAdd"
             style="background: #272953; border: none; margin-left: 10px;"
@@ -6822,15 +6825,19 @@ export default {
     // Добавление выбранных данных в таблицу
     addWellData() {
       if (this.allWells && this.allWells.length > 0) {
-        let well = this.Filter_well;
         let is_saved = this.Filter_status;
         let field = this.Filter_field;
+        let rus_wellname = this.Filter_well;
+        let type_text = this.Filter_well_type;
+        let well_status_last_day = this.Filter_well_status;
         try {
           let filteredResult = this.allWells.filter(
             (row) =>
-              (!well || row.well === well) &&
               (!is_saved || row.is_saved === is_saved) &&
-              (!field || row.field === field)
+              (!field || row.field === field) &&
+              (!rus_wellname || row.rus_wellname === rus_wellname) &&
+              (!type_text || row.type_text === type_text) &&
+              (!well_status_last_day || row.well_status_last_day === well_status_last_day)
           );
           this.filteredWellData = filteredResult;
           console.log("filteredResult bat = ", filteredResult);
@@ -6840,7 +6847,7 @@ export default {
         }
       } else return false;
     },
-    // фильтр месторождение
+    // фильтр месторожд.
     fieldFilters() {
       if (this.allWells && this.allWells.length > 0) {
         let filters = [];
@@ -6985,6 +6992,7 @@ export default {
       editedWells: [],
       show_first: true,
       show_second: false,
+      show_add: false,
       edit: false,
       editdtm: null,
       editdty: null,
@@ -6997,9 +7005,11 @@ export default {
       isfulltable: false,
       Filter_field: undefined,
       allWells: [],
+      awells: [],
       Filter_well_status: undefined,
       Filter_status: undefined,
       Filter_well_type: undefined,
+      filteredWellData: [],
       Filter_well: undefined,
     };
   },
@@ -7085,6 +7095,14 @@ export default {
       this.edit = false;
       this.editedWells = [];
       this.searchWell();
+    },
+    showWells() {
+      if(this.filteredWellData.length === 1){
+        this.show_add = !this.show_add;
+      }
+      else{
+        this.show_add = this.show_add;
+      }
     },
     editable() {
       this.edit = true;
@@ -7243,11 +7261,7 @@ export default {
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
     },
-    addwellData() {
-      
-    },
 
-    
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
@@ -7262,6 +7276,39 @@ export default {
     },
     handlerFilter(filter) {
       this.filter = filter;
+    },
+    // Отправка данных с модалки в бэк
+    saveadd() {
+      console.log(this.$refs.editTable);
+      //this.$refs.saveTable
+      let output = {}
+      console.log(this.$refs.editTable[0].children);
+      console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);
+      console.log(this.$refs.editTable[0].children[0].children[0].value);
+      this.$refs.editTable[0].children.forEach((el) => {
+        output[el.children[0].dataset.key] = el.children[0].value;
+      });
+      console.log(output)
+      this.axios
+        .post(
+          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
+          output).then((res) => {
+            console.log(res.data)
+          })
+    },
+    // Удаление с модалки
+    deleteWell() {
+      if(this.filteredWellData.length === 1 && this.filteredWellData[0].is_saved === "Cохранено"){
+        this.axios
+          .get(
+            "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
+            this.filteredWellData[0].well).then((res) => {
+              console.log(res.data)
+            })
+      }
+      else{
+        return console.log("error")
+      }
     },
     searchWell() {
       console.log("search = ", this.searchString);
