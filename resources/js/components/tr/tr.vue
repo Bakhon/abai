@@ -168,7 +168,7 @@
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1800" :height="250"  :adaptive="true" style="z-index:9900000;">
+          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000;">
             <div class="main_modals" style="background: #272953; width=900; height=400">
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px;">
@@ -252,7 +252,7 @@
                             <a
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="saveadd()"
+                              @click="deleteWell"
                               ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
@@ -262,13 +262,13 @@
                             
                 </div>
               </div>
-              <div class="table" style="padding-top: 21px;">
+              <div class="table" style="padding-top: 21px; overflow-y: auto; height: calc(100vh - 235px);">
 
 
 
 
 
-                    <table class="table table-bordered" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
+                    <table class="table" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
                     <thead>
                       <tr >
                         <th scope="col">Место-ние</th>
@@ -7265,6 +7265,7 @@ export default {
     handlerFilter(filter) {
       this.filter = filter;
     },
+    // Отправка данных с модалки в бэк
     saveadd() {
       console.log(this.$refs.editTable);
       //this.$refs.saveTable
@@ -7282,6 +7283,20 @@ export default {
           output).then((res) => {
             console.log(res.data)
           })
+    },
+    // Удаление с модалки
+    deleteWell() {
+      if(this.filteredWellData.length === 1 && this.filteredWellData[0].is_saved === "Cохранено"){
+        this.axios
+          .get(
+            "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
+            this.filteredWellData[0].well).then((res) => {
+              console.log(res.data)
+            })
+      }
+      else{
+        return console.log("error")
+      }
     },
     searchWell() {
       console.log("search = ", this.searchString);
