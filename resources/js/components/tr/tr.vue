@@ -168,14 +168,14 @@
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000;">
+          <modal name="add_well" :width="1600" :height="210"  :adaptive="true" style="z-index:9900000;">
             <div class="main_modals" style="background: #272953; width=900; height=400">
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px;">
                         <h5>Добавление скважин</h5>
                         <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
                     </div>
-                    <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px;">
+                    <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
                             <div style="margin-left: 7px;">
                               <select
                                 class="form-control"
@@ -248,7 +248,7 @@
                               <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                               </svg>
 
-                            Добавить/Отменить</a>
+                            Добавить</a>
                             <a
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
@@ -276,7 +276,7 @@
                             
                 </div>
               </div>
-              <div class="table table-bordered table-dark table-responsive trtable" style="padding-top: 21px; overflow-y: auto; height: calc(100vh - 235px);">
+              <div class="table table-bordered table-dark table-responsive trtable" style="padding-top: 21px;  background: #454D7D;">
 
 
 
