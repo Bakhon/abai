@@ -252,13 +252,25 @@
                             <a
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
-                              @click="deleteWell"
+                              @click="saveadd()"
                               ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
 </svg>
 
 
-                            Сохранить/Удалить</a>
+                            Сохранить</a>
+                             <a
+                              
+                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                              @click="deleteWell()"
+                              ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
+
+
+
+                            Удалить</a>
                             
                 </div>
               </div>
