@@ -297,7 +297,7 @@
                 class="button1"
                 :style="`${buttonHover1}`"
                 
-              ><div class="button1-vc-inner"
+              ><div class="button1-vc-inner col-10"
                @click="
                   getProduction(
                     'oil_plan',
@@ -316,7 +316,7 @@
                 <button
                 :style="`${buttonHover1}`"
                 type="button"
-                class="btn btn-primary dropdown-toggle position-button-vc"
+                class="btn btn-primary dropdown-toggle position-button-vc col-2"
                 data-toggle="dropdown"
               ></button>
 
@@ -385,7 +385,7 @@
               <div
                 class="button1"
                 :style="`${buttonHover2}`">
-                <div class="button1-vc-inner"
+                <div class="button1-vc-inner col-10"
                 @click="
                   getProduction(
                     'oil_dlv_plan',
@@ -404,7 +404,7 @@
               </div>
                <button
                 type="button"
-                class="btn btn-primary dropdown-toggle position-button-vc"
+                class="btn btn-primary dropdown-toggle position-button-vc col-2"
                 data-toggle="dropdown"
               ></button>
               
@@ -467,7 +467,7 @@
               <div
                 class="button1"
                 :style="`${buttonHover3}`">
-                <div class="button1-vc-inner"
+                <div class="button1-vc-inner col-10"
                 @click="
                   getProduction(
                     'gas_plan',
@@ -486,7 +486,7 @@
               </div>
                  <button
                 type="button"
-                class="btn btn-primary dropdown-toggle position-button-vc"
+                class="btn btn-primary dropdown-toggle position-button-vc col-2"
                 data-toggle="dropdown"
               ></button>
               <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
@@ -641,7 +641,7 @@
               <div
                 class="button1"
                 :style="`${buttonHover5}`">
-                <div class="button1-vc-inner"
+                <div class="button1-vc-inner col-10"
                 @click="
                   getProduction(
                     'gk_plan',
@@ -660,7 +660,7 @@
               </div>
                <button
                 type="button"
-                class="btn btn-primary dropdown-toggle position-button-vc"
+                class="btn btn-primary dropdown-toggle position-button-vc col-2"
                 data-toggle="dropdown"
               ></button>
               <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
@@ -695,7 +695,7 @@
               <div
                 class="button1"
                 :style="`${buttonHover6}`">
-                <div class="button1-vc-inner"
+                <div class="button1-vc-inner col-10"
                 @click="
                   getProduction(
                     'liq_plan',
@@ -714,7 +714,7 @@
               </div>
                   <button
                 type="button"
-                class="btn btn-primary dropdown-toggle position-button-vc"
+                class="btn btn-primary dropdown-toggle position-button-vc col-2"
                 data-toggle="dropdown"
               ></button>
               <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
@@ -2140,16 +2140,8 @@
             </div>
 
             <div class="row px-4">
-              <div class="w-25 pr-2">
-                <div
-                  class="button2"
-                  :style="`${buttonHover7}`"
-                  @click="changeMenu2(1)"
-                >
-                  <!-- Суточная -->{{ trans("visualcenter.daily") }}
-                </div>
-              </div>
-              <div class="w-25 px-2">
+              
+              <div class="col px-2">
                 <div
                   class="button2"
                   :style="`${buttonHover8}`"
@@ -2158,7 +2150,7 @@
                   <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
-              <div class="w-25 px-2">
+              <div class="col px-2">
                 <div
                   class="button2"
                   :style="`${buttonHover9}`"
@@ -2167,7 +2159,7 @@
                   <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
-              <div class="w-25 px-2">
+              <div class="col px-2">
                 <div class="dropdown3">
                   <div
                     class="button2"
