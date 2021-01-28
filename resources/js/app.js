@@ -18,9 +18,11 @@ import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store';
+import VueSimpleAlert from "vue-simple-alert";
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
-import columnSortable from 'vue-column-sortable'
+import columnSortable from 'vue-column-sortable';
+
 
 
 require('./bootstrap');
@@ -29,7 +31,7 @@ window.Jquery = require('jquery');
 moment.locale('ru');
 Vue.prototype.$moment = moment
 
-Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar, columnSortable);
+Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar, columnSortable, VueSimpleAlert);
 
 /**
  * The following block of code may be used to automatically register your

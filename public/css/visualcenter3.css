@@ -260,13 +260,11 @@ td:last-of-type {
 }
 
 .icon-all {
-    position: relative;
+    float: left;
     height: 30px;
     width: 30px;
     border-radius: 25px;
-    left: 15px;
-    top: 8px;
-    float: left;
+    margin: 0.6em;
 }
 
 .icons1 {
@@ -289,13 +287,14 @@ td:last-of-type {
     background: white url(/img/visualcenter3/icon5.svg) 40% 45% no-repeat;
 }
 
+
 .txt5 {
-    /* position: relative; */
-    margin-left: 53px;
-    margin-top: 7px;
+    margin-left: 0.5em;
+    margin-top: 0.73rem;    
     overflow: hidden;
     font-size: 1.2em;
     margin-bottom: 12px;
+    display: inline-block;
 }
 
 .button2 {
@@ -346,6 +345,11 @@ td:last-of-type {
 
 .tdStyle3-total {
     background: #293688;
+    font-size: 0.9em;
+}
+
+.tdStyle3-total2{
+    background: #3f4c9c;
     font-size: 0.9em;
 }
 
@@ -643,6 +647,32 @@ td.small-td {
     cursor: pointer;
 }
 
+
+
+.dropdown4 ul {
+    position: absolute;
+    left: -5px;
+    top: 3em;
+    margin: 0;
+    padding: 5px;
+    list-style: none;
+    background: #fff;
+    z-index: 999;
+    min-width: 96%;
+    border-radius: 10px;
+    margin-left: 9px;
+    border: 2px solid #2743cb;
+    cursor: pointer;
+    color:black;
+}
+
+
+.dropdown4 a {
+    color: #373435;
+    font-weight: normal!important;
+    font-size: 1.1em;
+}
+
 ul.center-menu2 {
     top: 3em!important;
 }
@@ -656,6 +686,7 @@ ul.center-menu2 {
 .dropdown3:hover ul {
     display: inline-block;
 }
+
 
 .square-small2 {
     /* background: #237deb; */
@@ -975,6 +1006,34 @@ a.dropdown-link-vc3 {
     cursor: pointer;
 }
 
+.position-button-vc {
+    float: right;
+     margin-top: 1em;
+    margin-right: 0%;
+    position: relative;
+    z-index: 9999;
+    font-size: 1.2em!important;
+    box-shadow:unset!important;
+    background:unset!important;
+    border:unset!important;
+}
+
+.button1-vc-inner {
+    display: inline-block;
+}
+
+ul.dropdown-menu-vc {
+    margin-top: 1.2em;
+}
+
 /*.width-accidnets {
     width: 1em;
 }*/
+
+
+@media (max-width:1367px) {
+.txt5 {
+    font-size: 0.9em!important;
+
+}
+}
