@@ -197,6 +197,26 @@ body {
     padding: 0px 0px 10px 10px;
 }
 
+.table7 td {
+    overflow: hidden;
+    /* line-height: 44px; */
+    min-width: 5.3em;
+    padding: 0px 0px 10px 10px;
+    
+}
+
+.table7 td .selected {
+    background: #2e47c0 !important;
+  }
+
+
+.table7 {
+    max-width: 1510px!important;
+    overflow: hidden;
+    overflow-x: auto;
+    border-spacing: 0px!important;
+}
+
 .table4-2 td {
     overflow: hidden;
     min-width: 5.3em;
