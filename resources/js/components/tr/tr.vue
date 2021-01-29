@@ -237,7 +237,8 @@
                               <a
                                 
                                 style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                @click="showWells()"
+                                @click="addWellData"
+                                @click.prevent="showWells"
                                 ><svg 
                                 width="16" 
                                 height="16" 
@@ -248,7 +249,7 @@
                                 <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
 
-                              Показать</a>
+                              Добавить</a>
                             <a
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
@@ -282,7 +283,7 @@
 
 
 
-                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
+                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
                     <thead>
                       <tr >
                         <td scope="col">Место-ние</td>
@@ -6330,7 +6331,7 @@
                   </td>
 
                   <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit" contenteditable='true'><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="edit"><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
@@ -6854,6 +6855,7 @@ export default {
         }
         else return false;
       } else return false;
+      this.render++;
     },
     // фильтр месторожд.
     fieldFilters() {
@@ -7032,6 +7034,7 @@ export default {
       Filter_well_type: undefined,
       filteredWellData: [],
       lonelywell: [],
+      render: 0,
       Filter_well: undefined,
     };
   },
