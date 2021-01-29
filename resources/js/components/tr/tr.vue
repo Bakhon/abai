@@ -146,9 +146,6 @@
     </div>
     <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
-        <!-- <div class="fadee" v-if="isloading">
-          <fade-loader :loading="isloading"></fade-loader>
-        </div> -->
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>{{trans('tr.htr')}} {{ dt }}</h5>
@@ -187,6 +184,7 @@
                             <div style="margin-left: 7px;">
                               <select
                                 class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_status"
                                 value="Статус"
                               >
@@ -198,6 +196,7 @@
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
                                 class="select_mod form-control"
+                                style="background: #334296 !important"
                                 v-model="Filter_field"
                                 value="Месторождение"
                               >
@@ -209,6 +208,7 @@
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
                                 class="select_mod form-control"
+                                style="background: #334296 !important"
                                 v-model="Filter_well"
                                 value="Скважина"
                               >
@@ -221,6 +221,7 @@
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
                                 class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_well_type"
                                 value="Тип скв"
                               >
@@ -233,6 +234,7 @@
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
                                 class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_well_status"
                                 value="Состояние"
                               >
@@ -285,11 +287,7 @@
                             
                 </div>
               </div>
-              <div class="table" style="padding-top: 21px;  background: #454D7D;">
-
-
-
-
+              <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
 
                     <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
                     <thead>
