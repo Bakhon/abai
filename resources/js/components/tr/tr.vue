@@ -122,11 +122,7 @@
                 <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
-                <!-- <option value="2018">2018</option>
-                <option value="2017">2017</option>
-                <option value="2016">2016</option>
-                <option value="2015">2015</option>
-                <option value="2014">2014</option> -->
+
               </select>
             </div>
             <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
@@ -174,7 +170,7 @@
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                         <h5>Добавление скважин</h5>
-                        <a class="modal-close" title="Close" @click.prevent="cancelEdit" style="justify-content: right;">
+                        <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;">
                           <svg 
                             width="24" 
                             height="24" 
@@ -190,7 +186,7 @@
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
                             <div style="margin-left: 7px;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
                                 v-model="Filter_status"
                                 value="Статус"
                               >
@@ -201,7 +197,7 @@
                             </div>
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="select_mod form-control"
                                 v-model="Filter_field"
                                 value="Месторождение"
                               >
@@ -212,7 +208,7 @@
                             </div>
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="select_mod form-control"
                                 v-model="Filter_well"
                                 value="Скважина"
                               >
@@ -224,7 +220,7 @@
 
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
                                 v-model="Filter_well_type"
                                 value="Тип скв"
                               >
@@ -236,7 +232,7 @@
 
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
                                 v-model="Filter_well_status"
                                 value="Состояние"
                               >
@@ -7672,6 +7668,8 @@ table::-webkit-scrollbar-corner {
     -ms-flex-pack: justify;
     justify-content: space-between;
     padding: 15px;
-
+}
+.select_mod.select_mod.select_mod.select_mod {
+     background: #334296; 
 }
 </style>
