@@ -174,8 +174,10 @@
                             viewBox="0 0 24 24" 
                             fill="none" 
                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-                            <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                            <path d="M17.6567 17.6575L6.34294 6.34383" 
+                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                            <path d="M17.6556 6.34383L6.34188 17.6575" 
+                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                           </svg>
                         </a>
                     </div>
@@ -266,14 +268,14 @@
                                 style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                                 v-if="show_add"
                                 ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-<path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-</svg>
-
+                                  <path d="M17.6567 17.6575L6.34294 6.34383" 
+                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  <path d="M17.6556 6.34383L6.34188 17.6575" 
+                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  </svg>
                               Отмена</a> 
 
                             <a
-                              
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
                               ><svg width="24" 
