@@ -18,9 +18,11 @@ import 'bootstrap-select/dist/js/bootstrap-select.min.js';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store';
+import VueSimpleAlert from "vue-simple-alert";
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
-import columnSortable from 'vue-column-sortable'
+import columnSortable from 'vue-column-sortable';
+
 
 
 require('./bootstrap');
@@ -29,7 +31,7 @@ window.Jquery = require('jquery');
 moment.locale('ru');
 Vue.prototype.$moment = moment
 
-Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar, columnSortable);
+Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar, columnSortable, VueSimpleAlert);
 
 /**
  * The following block of code may be used to automatically register your
@@ -72,10 +74,10 @@ Vue.component('chart2-component', require('./components/Economic/chart2.vue').de
 Vue.component('chart3-component', require('./components/Economic/chart3.vue').default);
 Vue.component('chart4-component', require('./components/Economic/chart4.vue').default);
 Vue.component('gno-table', require('./components/gno/Table.vue').default);
-Vue.component('gno-incl-table', require('./components/gno/GnoInclTable.vue').default);
-Vue.component('gno-wells-repairs', require('./components/gno/GnoWellsRepairs.vue').default);
-Vue.component('gno-line-points-chart', require('./components/gno/GnoCurveTable.vue').default);
-Vue.component('gno-chart-bar', require('./components/gno/GnoChartBar.vue').default);
+Vue.component('inclinometria', require('./components/gno/components/Inclinometria.vue').default);
+Vue.component('prs-crs', require('./components/gno/components/PrsCrs.vue').default);
+Vue.component('inflow-curve', require('./components/gno/components/InflowCurve.vue').default);
+Vue.component('economic', require('./components/gno/components/Economic.vue').default);
 Vue.component('monitor-table', require('./components/monitor/MonitorTable.vue').default);
 Vue.component('monitor-chart', require('./components/monitor/chart.vue').default);
 Vue.component('monitor-chart-radialbar', require('./components/monitor/MonitorChartRadialBar.vue').default);
@@ -98,6 +100,7 @@ Vue.component('well-fund', require('./components/reports/WellFund.vue').default)
 Vue.component('well-fund-block', require('./components/reports/WellFundBlock.vue').default);
 Vue.component('well-fund-field', require('./components/reports/WellFundField.vue').default);
 Vue.component('well-fund-inactive', require('./components/reports/WellFundInactive.vue').default);
+Vue.component('well-fund-revision-field', require('./components/reports/WellFundRevisionField.vue').default);
 Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
 Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
@@ -123,6 +126,7 @@ Vue.component('report-export', require('./components/reports/export.vue').defaul
 Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
+Vue.component('proto-form', require('./components/bigdata/Form.vue').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);

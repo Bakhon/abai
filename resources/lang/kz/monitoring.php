@@ -237,8 +237,9 @@ return array (
     'fields' => 
     array (
       'title' => 'Аталуы',
-      'price' => 'баға',
+      'price' => 'Баға',
       'price_date' => 'Баға өзгеру уақыты',
+      'density' => 'Тығыздық',
     ),
   ),
   'map' => 
@@ -247,4 +248,5 @@ return array (
     'select_gu' => 'ТҚ таңдаңыз',
   ),
   'module_name' => 'Асқынулар мониторингі',
+  'close' => 'Жабу',
 );

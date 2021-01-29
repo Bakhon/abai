@@ -13,9 +13,7 @@
 </template>
 
 <script>
-import { Scatter } from 'vue-chartjs';
 import { Plotly } from "vue-plotly";
-import { eventBus } from "../../event-bus.js";
 
 Vue.prototype.$eventBus = new Vue();
 Vue.component("Plotly", Plotly);
@@ -37,6 +35,23 @@ export default {
       nameTR: "Текущий режим",
       nameCR: "Целевой режим",
       namePR: "Потенциальный режим",
+      hovertemplateKP: "<b>Кривая притока</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      hovertemplateGS: '<b>Газосодержание в насосе = %{y:.1f}%</b><extra></extra>',
+      hovertemplateTR:  "<b>Текущий режим</b><br><extra></extra>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм",
+      hovertemplateCR: "<b>Целевой режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      hovertemplatePR: "<b>Потенциальный режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",                  
       markers: [],
       buttonsToRemove: [
         'zoom2d',
@@ -172,10 +187,7 @@ export default {
           x: qo_points2,
           y: ipr_points2,
           text: q_oil2,
-          hovertemplate: "<b>Кривая притока</b><br>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplateKP, 
           marker: {
             x: 20,
             y: 60,
@@ -203,7 +215,7 @@ export default {
           x: qo_points2,
           y: freegas_points2,
           yaxis: 'y',
-          hovertemplate: '<b>Газосодержание в насосе = %{y:.1f}%</b><extra></extra>',
+          hovertemplate: this.hovertemplateGS, 
           marker: {
             size: "15",
             color: "#237DEB",
@@ -217,10 +229,7 @@ export default {
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Текущий режим</b><br><extra></extra>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм",
+          hovertemplate: this.hovertemplateTR,
           marker: {
             size: "15",
             color: "#00A0E3",
@@ -234,10 +243,7 @@ export default {
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Целевой режим</b><br>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplateCR,
           marker: {
             size: "15",
             color: "#13B062",
@@ -251,10 +257,7 @@ export default {
           y: [],
           text: [],
           mode: "markers",
-          hovertemplate:  "<b>Потенциальный режим</b><br>" +
-                          "Qж = %{x:.1f} м³/сут<br>" +
-                          "Qн = %{text:.1f} т/сут<br>" +
-                          "Pзаб = %{y:.1f} атм<extra></extra>",
+          hovertemplate: this.hovertemplatePR,
           marker: {
             size: "6",
             color: "#FBA409",
@@ -328,6 +331,23 @@ export default {
       this.nameTR = "Ағымдағы  режим"
       this.nameCR = "Мақсатты режим"
       this.namePR = "Потенциалдық  режим"
+      this.hovertemplateGS = "<b>Газ құрамы = %{y:.1f}%</b><extra></extra>",
+      this.hovertemplateKP = "<b>Ағын қисығы</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplateTR = "<b>Ағымдағы  режим</b><br><extra></extra>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм",
+      this.hovertemplateCR = "<b>Мақсатты режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplatePR = "<b>Потенциалдық  режим</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>"             
     } else {
       this.layout.xaxis.title = this.titleXEn
       this.layout.yaxis.title = this.titleYEn
@@ -337,6 +357,23 @@ export default {
       this.nameTR = "Current mode"
       this.nameCR = "Target mode"
       this.namePR = "Potential mode"
+      this.hovertemplateGS = "<b>Gas saturation = %{y:.1f}%</b><extra></extra>",
+      this.hovertemplateKP = "<b>Inflow curve</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplateTR = "<b>Current mode</b><br><extra></extra>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм",
+      this.hovertemplateCR = "<b>Target mode</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>",
+      this.hovertemplatePR =  "<b>Potential mode</b><br>" +
+                          "Qж = %{x:.1f} м³/сут<br>" +
+                          "Qн = %{text:.1f} т/сут<br>" +
+                          "Pзаб = %{y:.1f} атм<extra></extra>"             
     }
  
     

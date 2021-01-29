@@ -168,6 +168,7 @@
           <a v-show="false" v-if="edit"></a>
 
 
+<<<<<<< HEAD
           <modal name="add_well" :width="1900" :height="400"  :adaptive="true" style="z-index:9900000;">
             <div class="main_modals" style="background: #272953; width=900; height=400">
               <div>
@@ -176,6 +177,16 @@
                         <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
                     </div>
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px;">
+=======
+          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000;">
+            <div class="main_modals" style="background: #272953; width=900; height=400">
+              <div>
+                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px;">
+                        <h5>Добавление скважин</h5>
+                        <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
+                    </div>
+                    <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
                             <div style="margin-left: 7px;">
                               <select
                                 class="form-control"
@@ -233,6 +244,7 @@
                                 </option>
                               </select>
                             </div>
+<<<<<<< HEAD
 
                             <a
                               
@@ -255,11 +267,35 @@
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
                               @click.prevent="wellAdd(); addWellData()"
+=======
+                            
+                              <a
+                                
+                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                @click="addWellData"
+                                @click.prevent="showWells"
+                                ><svg 
+                                width="16" 
+                                height="16" 
+                                viewBox="0 0 16 16" 
+                                fill="none" 
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+
+                              Добавить</a>
+                            <a
+                              
+                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                              @click="saveadd()"
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
                               ><svg width="24" 
                               height="24" 
                               viewBox="0 0 24 24" 
                               fill="none" 
                               xmlns="http://www.w3.org/2000/svg">
+<<<<<<< HEAD
                               <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                               <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                               </svg>
@@ -269,11 +305,33 @@
                 </div>
               </div>
               <div class="table" style="padding-top: 21px;">
+=======
+                              <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
+                              stroke-width="1.5" stroke-linecap="round"/>
+                              </svg>Сохранить</a>
+                              
+                             <a
+                              style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
+                              @click="deleteWell"
+                              ><svg width="24"
+                               height="24" 
+                               viewBox="0 0 24 24" 
+                               fill="none" 
+                               xmlns="http://www.w3.org/2000/svg">
+                              <path d="M17.6567 17.6575L6.34294 6.34383" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                              <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                              </svg>Удалить</a>
+                            
+                </div>
+              </div>
+              <div class="table table-bordered table-dark table-responsive trtable" style="padding-top: 21px;  background: #454D7D;">
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
 
 
 
 
 
+<<<<<<< HEAD
                     <table class="table" style="font-size: 12px; background: #454D7D; color: #fff;" v-if="show_add" :key="render">
                     <thead>
                       <tr>
@@ -310,6 +368,42 @@
                       >
                         <td contenteditable="true"><input data-key="field" :value="row.field"></td>
                         <td contenteditable="true"><input data-key="well_status_last_day" :value="row.well_status_last_day"></td>
+=======
+                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
+                    <thead>
+                      <tr >
+                        <td scope="col">Место-ние</td>
+                        <td scope="col">Состояние скв</td>
+                        <td scope="col">№ скв</td>
+                        <td scope="col">Горизонт</td>
+                        <td scope="col">Обьект</td>
+                        <td scope="col">Способ эксп-ии</td>
+                        <td scope="col">Тип скв</td>
+                        <td scope="col">Блок</td>
+                        <td scope="col">Наружный диаметр э/к</td>
+                        <td scope="col">Внутр. диаметр э/к</td>
+                        <td scope="col">Н вд</td>
+                        <td scope="col">СЭ</td>
+                        <td scope="col">Тип насоса</td>
+                        <td scope="col">Тип СК</td>
+                        <td scope="col">Р буф</td>
+                        <td scope="col">Р л</td>
+                        <td scope="col">Р пласт.</td>
+                        <td scope="col">Н д</td>
+                        <td scope="col">P затр</td>
+                        <td scope="col">Плот-ть нефти</td>
+                        <td scope="col">Плот-ть воды</td>
+                        <td scope="col">Н перф</td>
+                        <td scope="col">Р заб замерное</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(row, row_index) in lonelywell" 
+                        :key="row_index"
+                        ref="editTable">
+                        <td><input data-key="field" :value="row.field"></td>
+                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day"></td>
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
                         <td><input data-key="rus_wellname" :value="row.rus_wellname"></td>
                         <td><input data-key="horizon" :value="row.horizon"></td>
                         <td><input data-key="object" :value="row.object"></td>
@@ -351,7 +445,10 @@
             type="button" 
             data-toggle="modal" 
             data-target="#exampleModalCenter" 
+<<<<<<< HEAD
             v-if="edit" 
+=======
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
             @click="addpush()"
             @click.prevent="wellAdd"
             style="background: #272953; border: none; margin-left: 10px;"
@@ -6325,7 +6422,7 @@
                   </td>
 
                   <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit" contenteditable='true'><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="edit"><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
@@ -6850,7 +6947,10 @@ export default {
         else return false;
       } else return false;
       this.render++;
+<<<<<<< HEAD
       this.render1++;
+=======
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
     },
     // фильтр месторожд.
     fieldFilters() {
@@ -7028,10 +7128,16 @@ export default {
       Filter_status: undefined,
       Filter_well_type: undefined,
       filteredWellData: [],
+<<<<<<< HEAD
       Filter_well: undefined,
       lonelywell: [],
       render: 1,
       render1: 1,
+=======
+      lonelywell: [],
+      render: 0,
+      Filter_well: undefined,
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
     };
   },
   watch: {
@@ -7142,6 +7248,7 @@ export default {
       else{
         this.show_add = this.show_add;
       }
+<<<<<<< HEAD
       // this.$refs.editTable.$forceUpdate();
     },
     deleteWell() {
@@ -7156,6 +7263,8 @@ export default {
       else{
         return console.log("error")
       }
+=======
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
     },
     editable() {
       this.edit = true;
@@ -7284,7 +7393,10 @@ export default {
           }
           
         });
+<<<<<<< HEAD
     this.render1++
+=======
+>>>>>>> f29fef8121242b0342fa994e434b39a7ce5276af
     },
     // chooseField() {
     //   const { filter, fullWells } = this;
@@ -7330,6 +7442,40 @@ export default {
     },
     handlerFilter(filter) {
       this.filter = filter;
+    },
+    // Отправка данных с модалки в бэк
+    saveadd() {
+      console.log(this.$refs.editTable);
+      //this.$refs.saveTable
+      let output = {}
+      console.log(this.$refs.editTable[0].children);
+      console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);
+      console.log(this.$refs.editTable[0].children[0].children[0].value);
+      this.$refs.editTable[0].children.forEach((el) => {
+        output[el.children[0].dataset.key] = el.children[0].value;
+      });
+      console.log(output)
+      this.axios
+        .post(
+          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
+          output).then((res) => {
+            console.log(res.data)
+          })
+
+    },
+    // Удаление с модалки
+    deleteWell() {
+      if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
+        this.axios
+          .get(
+            "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
+            this.lonelywell[0].well).then((res) => {
+              console.log(res.data)
+            })
+      }
+      else{
+        return console.log("error")
+      }
     },
     searchWell() {
       console.log("search = ", this.searchString);

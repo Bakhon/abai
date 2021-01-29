@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark-new">
     <a href="{{url('/')}}">
         <div class="logo"></div>
     </a>

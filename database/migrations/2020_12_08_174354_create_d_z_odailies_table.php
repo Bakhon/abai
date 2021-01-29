@@ -137,10 +137,16 @@ class CreateDZOdailiesTable extends Migration
             $table->text('__time');
             $table->float("gas_plan",32,8)->nullable();
             $table->float("gas_fact",32,8)->nullable();
-            $table->float("liq_plan",32,8)->nullable();
+            $table->float("liq_plan",32,8);
             $table->float("liq_fact",32,8)->nullable();
             $table->float("inj_wells_idle",32,8)->nullable();
             $table->float("prod_wells_idle",32,8)->nullable();  
+            $table->string("opec2",255)->nullable();
+            $table->string("accident",255)->nullable();
+            $table->string("restrictions",255)->nullable();
+            $table->string("otheraccidents",255)->nullable();
+            $table->string("impulses",255)->nullable(); 
+            $table->string("landing",255)->nullable();
             $table->timestamps();
         });
     }

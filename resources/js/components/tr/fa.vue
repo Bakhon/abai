@@ -1517,15 +1517,8 @@ width: 70%;
   align-self: center;
   width: 150px;
   margin-top: 5px;
-  /* display: flex;  */
-  /* justify-content: center */
+
 }
 
-/* .sortik[issorttobig="true"]::after {
-	content: "▼"
-}
 
-.sortik[issorttobig="false"]::after {
-	content: "▲"
-} */
 </style>

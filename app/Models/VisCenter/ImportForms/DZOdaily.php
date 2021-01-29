@@ -134,5 +134,11 @@ class DZOdaily extends Model
         "liq_fact",
         "inj_wells_idle",
         "prod_wells_idle",
+        "opec2",
+        "accident",
+        "restrictions",
+        "otheraccidents",
+        "impulses",
+        "landing"
     ];
 }
