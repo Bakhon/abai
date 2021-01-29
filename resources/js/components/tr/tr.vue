@@ -174,7 +174,7 @@
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                         <h5>Добавление скважин</h5>
-                        <a class="modal-close" @click.prevent="cancelEdit" style="justify-content: right;">
+                        <a class="modal-close" title="Close" @click.prevent="cancelEdit" style="justify-content: right;">
                           <svg 
                             width="24" 
                             height="24" 
@@ -185,7 +185,6 @@
                             <path d="M17.6556 6.34383L6.34188 17.6575" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                           </svg>
                         </a>
-                        <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
                     </div>
                     
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
@@ -353,16 +352,8 @@
                       </tr>
                     </tbody>
                   </table>
-
-
-
-
-
               </div>
             </div>
-            
-                  
-
           </modal>
 
 
@@ -7665,5 +7656,22 @@ table::-webkit-scrollbar-corner {
 .dropdown-menu.show {
   display: flex;
   flex-direction: column;
+}
+
+.header_mod {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 15px;
+
 }
 </style>
