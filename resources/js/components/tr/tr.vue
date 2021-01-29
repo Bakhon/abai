@@ -258,12 +258,12 @@
                                 <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
-
                               Добавить</a>
                             <a
                               
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
+                              @click.prevent="searchadd"
                               ><svg width="24" 
                               height="24" 
                               viewBox="0 0 24 24" 
@@ -272,7 +272,7 @@
                               <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
                               stroke-width="1.5" stroke-linecap="round"/>
                               </svg>Сохранить</a>
-                              
+
                              <a
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
@@ -380,10 +380,6 @@
             </svg>
           </button>
             
-          
-
-      
-          
 
           <a
             v-if="edit"
@@ -7033,6 +7029,7 @@ export default {
       filteredWellData: [],
       lonelywell: [],
       render: 0,
+      searchStringModel: "",
       Filter_well: undefined,
     };
   },
@@ -7138,6 +7135,14 @@ export default {
       this.edit = true;
       this.show_second = true;
       this.show_first = false;
+    },
+    searchadd() {
+      this.$emit();
+    },
+    clearClickadd() {
+      this.searchStringModel= "";
+      this.$emit();
+      this.searchadd();
     },
     sortBy(type) {
       this.sortParam = type;
