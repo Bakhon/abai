@@ -37,6 +37,10 @@ class UsersController extends Controller
                     'title' => 'Дата создания',
                     'type' => 'string',
                 ],
+                'last_authorized_at' => [
+                    'title' => 'Был в последний раз',
+                    'type' => 'string',
+                ],
             ],
         ];
 
