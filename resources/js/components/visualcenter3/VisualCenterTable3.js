@@ -524,8 +524,8 @@ export default {
 
         this.buttonHover7 = buttonHover;
         this.range = {
-          start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+          start: moment().startOf('day').subtract(1, "days").format(),
+          end: moment().endOf('day').subtract(1, "days").format(),           
           formatInput: true,
         };
 
@@ -538,8 +538,8 @@ export default {
       if (change == 2) {
         this.buttonHover8 = buttonHover;
         this.range = {
-          start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-01T06:00:00+06:00')),
-          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+          start: moment().startOf('month').format(),
+          end: moment().endOf('day').format(),      
           formatInput: true,
         };
 
@@ -552,8 +552,8 @@ export default {
       if (change == 3) {
         this.buttonHover9 = buttonHover;
         this.range = {
-          start: this.ISODateString(new Date(this.year + '-' + '01' + '-01T06:00:00+06:00')),
-          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+          start: moment().startOf('year').format(),
+          end: moment().endOf('day').format(),       
           formatInput: true,
         };
 
@@ -2839,21 +2839,24 @@ export default {
 
     if (window.location.host === 'dashboard') {
 
-
-      this.range = {
-        start: "2021-01-14T00:00:00+06:00",
-        end: "2021-01-14T17:59:00+06:00",
-       // start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        //end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+      console.log((this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'));
+      console.log(moment().format(),);
+     //let start=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00');
+     //let end=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00');
+      this.range = {         
+        //start: "2021-01-14T00:00:00+06:00",
+        //end: "2021-01-14T17:59:00+06:00",   
+        start: moment().startOf('day').subtract(1, "days").format(),
+        end: moment().endOf('day').subtract(1, "days").format(),
         formatInput: true,
       };
     } else {
       this.range = {
-        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
-        // start: moment().subtract(3, "day").startOf('day').toDate(),
-        // end: moment().subtract(1, "day").endOf('day').toDate(),
-        formatInput: true,
+        start: moment().startOf('day').subtract(1, "days").format(),
+        end: moment().endOf('day').subtract(1, "days").format(),
+        //start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+       // end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+       formatInput: true,
       };
     }
     localStorage.setItem("changeButton", "Yes");
