@@ -167,8 +167,8 @@
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                         <h5>Добавление скважин</h5>
-                        <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;">
-                          <svg 
+                        <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
+                          <!-- <svg 
                             width="24" 
                             height="24" 
                             viewBox="0 0 24 24" 
@@ -179,7 +179,7 @@
                             <path d="M17.6556 6.34383L6.34188 17.6575" 
                               stroke="white" stroke-width="1.4" stroke-linecap="round"/>
                           </svg>
-                        </a>
+                        </a> -->
                     </div>
                     
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
@@ -278,6 +278,7 @@
                             <a
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
+                              @click.prevent="reRender"
                               ><svg width="24" 
                               height="24" 
                               viewBox="0 0 24 24" 
@@ -290,6 +291,7 @@
                              <a
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
+                              @click.prevent="reRender"
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -364,8 +366,6 @@
             </div>
           </modal>
 
-
-          
           <button
             type="button" 
             data-toggle="modal" 
@@ -7135,7 +7135,50 @@ export default {
 
     },
     reRender() {
-      location.reload()
+      this.filteredWellData = [];
+      this.Filter_well_status = undefined;
+      this.Filter_status = undefined;
+      this.Filter_well_type = undefined;
+      this.Filter_well = undefined;
+      this.Filter_field = undefined;
+      
+    },
+    reRenderAll() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      var today = new Date();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var day = today.getDate();
+      if(day > 25 && mm < 12) {
+        var mm1 = today.getMonth() + 2;
+        var yyyy1 = today.getFullYear();
+      }
+      else if(day > 25 && mm === 12){
+        var mm1 = 1;
+        var yyyy1 = today.getFullYear() + 1;
+      }
+      else{
+        var mm1 = today.getMonth() + 1;
+        var yyyy1 = today.getFullYear();
+      }
+
+      this.axios
+        .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+        .then((response) => {
+          let data = response.data;
+
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          if (data) {
+            console.log(data);
+            this.wells = data.data;
+            this.fullWells = data.data;
+          } else {
+            console.log("No data");
+            
+          }
+
+        });
     },
     showWells() {
       if(this.lonelywell.length === 1){
@@ -7343,6 +7386,8 @@ export default {
           "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
           output).then((res) => {
             console.log(res.data)
+            this.wellAdd();
+            this.reRenderAll();
           })
 
     },
@@ -7354,6 +7399,8 @@ export default {
             "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
             this.lonelywell[0].well).then((res) => {
               console.log(res.data)
+              this.wellAdd();
+              this.reRenderAll();
             })
       }
       else{
