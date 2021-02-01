@@ -34,7 +34,7 @@
                   </div>
                   <div class="percent-header" v-if="oil_factDay">
                     {{
-                      getDiffProcentLastBigN(oil_factDayPercent, oil_factDay)
+                      getDiffProcentLastBigN(oil_factDay,oil_planDay)
                     }}%
                   </div>
                   <div class="plan-header" v-if="oil_planDay">
@@ -94,9 +94,9 @@
 
                   <div class="percent-header" v-if="oil_dlv_factDay">
                     {{
-                      getDiffProcentLastBigN(
-                        oil_dlv_factDayPercent,
-                        oil_dlv_factDay
+                      getDiffProcentLastBigN(                    
+                        oil_dlv_factDay,
+                        oil_dlv_planDay
                       )
                     }}%
                   </div>
@@ -166,7 +166,7 @@
 
                   <div class="percent-header" v-if="gas_factDay">
                     {{
-                      getDiffProcentLastBigN(gas_factDayPercent, gas_factDay)
+                      getDiffProcentLastBigN(gas_factDay,gas_planDay)
                     }}%
                   </div>
                   <div class="plan-header" v-if="gas_planDay">
@@ -1710,7 +1710,7 @@
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                         style="cursor: pointer"
                       >
-                        {{ item.value }}
+                        {{ formatVisTableNumber2(item.value) }}
                         <span>
                           <!-- скважин -->{{ trans("visualcenter.skv") }}
                         </span>
@@ -1912,7 +1912,7 @@
                         "
                         style="cursor: pointer"
                       >
-                        {{ item.value }}
+                         {{ formatVisTableNumber2(item.value) }}
                         <span>
                           <!-- скважин -->{{ trans("visualcenter.skv") }}
                         </span>
@@ -2067,10 +2067,10 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3">
+              <div class="vis-table vis-table-small2 px-3">
                 <table
                   v-if="otmData.length"
-                  class="table4 w-100"
+                  class="table7 w-100"
                   style="height: calc(100% - 20px)"
                 >
                   <tbody>
@@ -2106,8 +2106,64 @@
                         >
                           <!-- План -->{{ trans("visualcenter.plan") }}
                         </div>
-                        {{ item.fact }}
+
+                        
+                        {{ formatVisTableNumber2(item.plan) }} <span> скв.</span> 
                       </td>
+                        <td
+                        @click="otmSelectedRow = item.code"
+                        class="w-25 text-center"
+                        :class="
+                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                        "
+                        style="cursor: pointer; font-size: 30px"
+                      >
+                        <div
+                          v-if="index === 0"
+                          class="center"
+                          style="font-size: 12px; line-height: 1.2"
+                        >
+                          <!-- Факт -->{{ trans("visualcenter.fact") }}
+                        </div>
+                        {{formatVisTableNumber2( item.fact) }}
+                      </td>
+                     <td
+                      :class="
+                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                      "
+                    >
+                      <div v-if="index === 0" class="center">+/-</div>
+                      <div
+                        v-if="item.plan"
+                        class="triangle"
+                        :style="`${getColor(
+                          item.fact -
+                            item.plan
+                        )}`"
+                      ></div>
+                      <div
+                        class="dynamic font"
+                        v-if="item.plan"
+                      >
+                        {{
+                          new Intl.NumberFormat("ru-RU").format(
+                            Math.abs(
+                              item.fact -
+                                item.plan
+                            )
+                          )
+                        }}
+                        <div
+                          class="right"
+                          style="
+                            font-family: 'Harmonia-sans', sans-serif;
+                            opacity: 0.6;
+                          "
+                        >
+                         скв.
+                        </div>
+                      </div>
+                    </td>
                     </tr>
                   </tbody>
                 </table>
@@ -2282,11 +2338,13 @@
                         <div
                           v-if="index === 0"
                           class="center"
-                          style="font-size: 12px; line-height: 1.2"
+                         
                         >
-                          <!-- План -->{{ trans("visualcenter.plan") }}
+                          <!--
+                             style="font-size: 12px; line-height: 1.2" 
+                            План -->{{ trans("visualcenter.plan") }}
                         </div>
-                        {{ item.fact }}
+                       {{ formatVisTableNumber2(item.fact) }} тонн
                       </td>
                     </tr>
                   </tbody>
@@ -2807,8 +2865,87 @@
     }
   }
 }
+
+.vis-table-small2 {
+  max-width: 46% !important;
+  tr {
+   // line-height: 4.2rem !important;
+    font-size: 1.2rem !important;
+    font-family: Bold !important;
+  }
+  .tdNumber {
+    font-size: 1.6rem;
+    text-align: right;
+    span {
+      font-size: 0.7rem;
+      font-weight: normal;
+    }
+  }
+  
+}
+
+
+
 .vis-chart {
   flex: 0 0 44%;
   max-width: 44%;
 }
+
+ .table7 {
+    tr {
+      td {
+       padding: 0px 0px 0px 10px;
+        position: relative;
+        vertical-align: middle;
+        &:first-child {
+          height: 50px;
+          white-space: normal;
+          //width: 215px;
+          width: 235px;
+          span {
+            font-weight: bold;
+            img {
+              width: 9px;
+            }
+          }
+        }
+        &.selected {
+          background: #2e47c0 !important;
+        }
+        .font {
+          align-items: baseline;
+          display: flex;
+          justify-content: space-between;
+          font-size: 24px;
+          margin-left: 0;
+          &.dynamic {
+            padding-left: 17px;
+          }
+          .right {
+            font-size: 10px;
+            margin-right: 0;
+          }
+        }
+        .center {
+          font-size: 0.63em;
+          font-weight: bold;
+          left: 0;
+          margin: 0;
+          position: absolute;
+          text-align: center;
+          top: 4px;
+          width: 100%;
+        }
+        .triangle {
+          border: 6px solid transparent;
+          height: 6px;
+          margin-right: 5px;
+          position: absolute;
+          width: 6px;
+        }
+      }
+    }
+  }
+
+
 </style>

@@ -524,8 +524,8 @@ export default {
 
         this.buttonHover7 = buttonHover;
         this.range = {
-          start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+          start: moment().startOf('day').subtract(1, "days").format(),
+          end: moment().endOf('day').subtract(1, "days").format(),           
           formatInput: true,
         };
 
@@ -538,8 +538,8 @@ export default {
       if (change == 2) {
         this.buttonHover8 = buttonHover;
         this.range = {
-          start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-01T06:00:00+06:00')),
-          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+          start: moment().startOf('month').format(),
+          end: moment().endOf('day').format(),      
           formatInput: true,
         };
 
@@ -552,8 +552,8 @@ export default {
       if (change == 3) {
         this.buttonHover9 = buttonHover;
         this.range = {
-          start: this.ISODateString(new Date(this.year + '-' + '01' + '-01T06:00:00+06:00')),
-          end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+          start: moment().startOf('year').format(),
+          end: moment().endOf('day').format(),       
           formatInput: true,
         };
 
@@ -819,7 +819,7 @@ export default {
 
     getDiffProcentLastBigN(a, b) {
       if (a != '') {
-        return (100 - ((a / b - 1)) * 100).toFixed(2);
+        return ((a / b ) * 100).toFixed(2);
       } else { return 0 }
     },
 
@@ -2168,7 +2168,8 @@ export default {
         .groupBy("data")
         .map((__time, id) => ({
           __time: id,
-          fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
+         /*
+         fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
           fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
           fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
           fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
@@ -2180,6 +2181,20 @@ export default {
           fond_nagnetat_konv: _.round(_.sumBy(__time, 'fond_nagnetat_konv'), 0),
           fond_nagnetat_well_survey: _.round(_.sumBy(__time, 'fond_nagnetat_well_survey'), 0),
           fond_nagnetat_others: _.round(_.sumBy(__time, 'fond_nagnetat_others'), 0),
+          */
+
+         fond_nagnetat_ef: (_.sumBy(__time, 'fond_nagnetat_ef')) / this.quantityRange,
+         fond_nagnetat_df: (_.sumBy(__time, 'fond_nagnetat_df')) / this.quantityRange,
+         fond_nagnetat_bd: (_.sumBy(__time, 'fond_nagnetat_bd')) / this.quantityRange,
+         fond_nagnetat_ofls: (_.sumBy(__time, 'fond_nagnetat_ofls')) / this.quantityRange,
+         fond_nagnetat_prs: (_.sumBy(__time, 'fond_nagnetat_prs')) / this.quantityRange,
+         fond_nagnetat_oprs: (_.sumBy(__time, 'fond_nagnetat_oprs')) / this.quantityRange,
+         fond_nagnetat_krs: (_.sumBy(__time, 'fond_nagnetat_krs')) / this.quantityRange,
+         fond_nagnetat_okrs: (_.sumBy(__time, 'fond_nagnetat_okrs')) / this.quantityRange,
+         fond_nagnetat_osvoenie: (_.sumBy(__time, 'fond_nagnetat_osvoenie')) / this.quantityRange,
+         fond_nagnetat_konv: (_.sumBy(__time, 'fond_nagnetat_konv')) / this.quantityRange,
+         fond_nagnetat_well_survey: (_.sumBy(__time, 'fond_nagnetat_well_survey')) / this.quantityRange,
+         fond_nagnetat_others: (_.sumBy(__time, 'fond_nagnetat_others')) / this.quantityRange,
 
 
 
@@ -2257,7 +2272,7 @@ export default {
 
       let innerWells
       innerWells = _.groupBy(arr, item => {
-        return moment(parseInt(item.__time)).format("DD.MM.YY")//.format('D')            
+        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')            
       })
 
       let result = {}
@@ -2311,18 +2326,18 @@ export default {
         .groupBy("data")
         .map((__time, id) => ({
           __time: id,
-          fond_neftedob_ef: _.round(_.sumBy(__time, 'fond_neftedob_ef'), 0),
-          fond_neftedob_df: _.round(_.sumBy(__time, 'fond_neftedob_df'), 0),
-          fond_neftedob_bd: _.round(_.sumBy(__time, 'fond_neftedob_bd'), 0),
-          fond_neftedob_osvoenie: _.round(_.sumBy(__time, 'fond_neftedob_osvoenie'), 0),
-          fond_neftedob_ofls: _.round(_.sumBy(__time, 'fond_neftedob_ofls'), 0),
-          fond_neftedob_prs: _.round(_.sumBy(__time, 'fond_neftedob_prs'), 0),
-          fond_neftedob_oprs: _.round(_.sumBy(__time, 'fond_neftedob_oprs'), 0),
-          fond_neftedob_krs: _.round(_.sumBy(__time, 'fond_neftedob_krs'), 0),
-          fond_neftedob_okrs: _.round(_.sumBy(__time, 'fond_neftedob_okrs'), 0),
-          fond_neftedob_well_survey: _.round(_.sumBy(__time, 'fond_neftedob_well_survey'), 0),
-          fond_neftedob_nrs: _.round(_.sumBy(__time, 'fond_neftedob_nrs'), 0),
-          fond_neftedob_others: _.round(_.sumBy(__time, 'fond_neftedob_others'), 0),
+          fond_neftedob_ef: (_.sumBy(__time, 'fond_neftedob_ef'))/ this.quantityRange,
+          fond_neftedob_df: (_.sumBy(__time, 'fond_neftedob_df'))/ this.quantityRange,
+          fond_neftedob_bd: (_.sumBy(__time, 'fond_neftedob_bd'))/ this.quantityRange,
+          fond_neftedob_osvoenie: (_.sumBy(__time, 'fond_neftedob_osvoenie'))/ this.quantityRange,
+          fond_neftedob_ofls: (_.sumBy(__time, 'fond_neftedob_ofls'))/ this.quantityRange,
+          fond_neftedob_prs: (_.sumBy(__time, 'fond_neftedob_prs'))/ this.quantityRange,
+          fond_neftedob_oprs: (_.sumBy(__time, 'fond_neftedob_oprs'))/ this.quantityRange,
+          fond_neftedob_krs: (_.sumBy(__time, 'fond_neftedob_krs'))/ this.quantityRange,
+          fond_neftedob_okrs: (_.sumBy(__time, 'fond_neftedob_okrs'))/ this.quantityRange,
+          fond_neftedob_well_survey: (_.sumBy(__time, 'fond_neftedob_well_survey'))/ this.quantityRange,
+          fond_neftedob_nrs: (_.sumBy(__time, 'fond_neftedob_nrs'))/ this.quantityRange,
+          fond_neftedob_others: (_.sumBy(__time, 'fond_neftedob_others'))/ this.quantityRange,
         }))
         .value();
 
@@ -2395,7 +2410,7 @@ export default {
     innerWellsProdChartData(arr, a) {
       let innerWells2
       innerWells2 = _.groupBy(arr, item => {
-        return moment(parseInt(item.__time)).format("DD.MM.YY")//.format('D')            
+        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')            
       })
 
       let result = {}
@@ -2491,7 +2506,7 @@ export default {
        }
        else {*/
       otmData = _.groupBy(arr, item => {
-        return moment(parseInt(item.__time)).format("DD.MM.YY")//.format('D')            
+        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')            
       })
       /* otmData = _.orderBy(
          otmData,
@@ -2581,7 +2596,7 @@ export default {
       }
       else {*/
       chemistryData = _.groupBy(arr, item => {
-        return moment(parseInt(item.__time)).format("DD.MM.YY")//.format('D')
+        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
       //  }
 
@@ -2768,8 +2783,17 @@ export default {
 
     },
 
+    formatVisTableNumber2(num){
+      if (num == '') {
+        num=0;
+      }
+
+      return  (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
+
+    },
+
     formatVisTableNumber(num) {
-      if (this.quantityRange < 2) { this.thousand = ''; return new Intl.NumberFormat("ru-RU").format(num); } else {
+      if (this.quantityRange < 2) { this.thousand = ''; return new Intl.NumberFormat("ru-RU").format(Math.round(num)); } else {
         this.thousand =
           // 'тыс.';
           this.trans("visualcenter.thousand");
@@ -2815,21 +2839,24 @@ export default {
 
     if (window.location.host === 'dashboard') {
 
-
-      this.range = {
-        start: "2021-01-14T00:00:00+06:00",
-        end: "2021-01-14T17:59:00+06:00",
-       // start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        //end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+      console.log((this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'));
+      console.log(moment().format(),);
+     //let start=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00');
+     //let end=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00');
+      this.range = {         
+        //start: "2021-01-14T00:00:00+06:00",
+        //end: "2021-01-14T17:59:00+06:00",   
+        start: moment().startOf('day').subtract(1, "days").format(),
+        end: moment().endOf('day').subtract(1, "days").format(),
         formatInput: true,
       };
     } else {
       this.range = {
-        start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
-        // start: moment().subtract(3, "day").startOf('day').toDate(),
-        // end: moment().subtract(1, "day").endOf('day').toDate(),
-        formatInput: true,
+        start: moment().startOf('day').subtract(1, "days").format(),
+        end: moment().endOf('day').subtract(1, "days").format(),
+        //start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
+       // end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+       formatInput: true,
       };
     }
     localStorage.setItem("changeButton", "Yes");

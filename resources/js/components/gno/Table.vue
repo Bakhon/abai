@@ -2473,32 +2473,38 @@ export default {
     async ExpAnalysisMenu(){
       await this.NnoCalc()
       var langUrl = `${window.location.pathname}`.slice(1, 3);
+
       if(this.casOD < 127) {
         if(langUrl === 'ru') {
         Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
-      } else if(langUrl === 'kz') {
+        } else if(langUrl === 'kz') {
         Vue.prototype.$notifyError('Пайдалану колоннасында (ПК) 127 мм және одан төмен  ЭОТСҚ (Электрлік орталықтан тепкіш copaп қондырғысы) қолданылмайды2')
-      } else {
+        } else {
         Vue.prototype.$notifyError('Eng')
+       }
       }
+      
 
       if (this.qlCelValue.split(' ')[0] < 28) {
         if(langUrl === 'ru') {
-        Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
-      } else if(langUrl === 'kz') {
-        Vue.prototype.$notifyWarning('ЭОТСҚ қолдану төмен дебитті ұңғымаларда болмайды')
-      } else {
-        Vue.prototype.$notifyWarning('Eng')
+         Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
+        } else if(langUrl === 'kz') {
+         Vue.prototype.$notifyWarning('ЭОТСҚ қолдану төмен дебитті ұңғымаларда болмайды')
+        } else {
+         Vue.prototype.$notifyWarning('Eng')
+       }
       }
+
       if (this.qlCelValue.split(' ')[0] > 106) {
         if(langUrl === 'ru') {
-        Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
-      } else if(langUrl === 'kz') {
-        Vue.prototype.$notifyWarning("Аз дебитті бұрғылау ұңғымаларын пайдалану өндіріс әлеуетін шектейді");
-      } else {
-        Vue.prototype.$notifyWarning("Eng")
-      }
+         Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
+        } else if(langUrl === 'kz') {
+         Vue.prototype.$notifyWarning("Аз дебитті бұрғылау ұңғымаларын пайдалану өндіріс әлеуетін шектейді");
+        } else {
+         Vue.prototype.$notifyWarning("Eng")
+       }
       } 
+
       this.qZhExpEcn=this.qlCelValue.split(' ')[0]
       this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
 
@@ -2517,8 +2523,8 @@ export default {
       if(this.expAnalysisData.NNO1!=null) {
         await this.EconomParam();
       }
-      }
-      }
+      
+      
 
 
     },
