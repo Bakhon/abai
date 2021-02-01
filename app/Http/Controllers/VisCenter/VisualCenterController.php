@@ -14,6 +14,11 @@ use Illuminate\Http\Request;
 class VisualCenterController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('can:visualcenter view main')->only('visualcenter3', 'visualcenter4', 'visualcenter5', 'visualcenter6', 'visualcenter7');
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -250,7 +255,7 @@ class VisualCenterController extends Controller
             'dzo',
             'ngdu'
             // 'oil_dlv_opek_plan',
-            
+
         )->where('date', '2021'));
         //->where('__time', '>', $todayback)->where('__time', '<', $end + 86400000));
 

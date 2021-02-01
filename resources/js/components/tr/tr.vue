@@ -122,11 +122,7 @@
                 <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
-                <!-- <option value="2018">2018</option>
-                <option value="2017">2017</option>
-                <option value="2016">2016</option>
-                <option value="2015">2015</option>
-                <option value="2014">2014</option> -->
+
               </select>
             </div>
             <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
@@ -150,9 +146,6 @@
     </div>
     <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
-        <!-- <div class="fadee" v-if="isloading">
-          <fade-loader :loading="isloading"></fade-loader>
-        </div> -->
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
             <h5>{{trans('tr.htr')}} {{ dt }}</h5>
@@ -165,20 +158,35 @@
             @change-filter="handlerFilter"
             filterName="месторождения"
           />
+          
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000;">
-            <div class="main_modals" style="background: #272953; width=900; height=400">
+          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000; ">
+            <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
               <div>
-                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px;">
+                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                         <h5>Добавление скважин</h5>
-                        <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
+                        <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
+                          <!-- <svg 
+                            width="24" 
+                            height="24" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.6567 17.6575L6.34294 6.34383" 
+                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                            <path d="M17.6556 6.34383L6.34188 17.6575" 
+                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                          </svg>
+                        </a> -->
                     </div>
+                    
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
                             <div style="margin-left: 7px;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_status"
                                 value="Статус"
                               >
@@ -189,7 +197,8 @@
                             </div>
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="select_mod form-control"
+                                style="background: #334296 !important"
                                 v-model="Filter_field"
                                 value="Месторождение"
                               >
@@ -200,7 +209,8 @@
                             </div>
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="select_mod form-control"
+                                style="background: #334296 !important"
                                 v-model="Filter_well"
                                 value="Скважина"
                               >
@@ -212,7 +222,8 @@
 
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_well_type"
                                 value="Тип скв"
                               >
@@ -224,7 +235,8 @@
 
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_well_status"
                                 value="Состояние"
                               >
@@ -237,7 +249,9 @@
                               <a
                                 
                                 style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
-                                @click="showWells()"
+                                v-if="!show_add"
+                                @click="addWellData"
+                                @click.prevent="showWells"
                                 ><svg 
                                 width="16" 
                                 height="16" 
@@ -247,12 +261,24 @@
                                 <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
+                              Добавить</a>
 
-                              Показать</a>
+                              <a
+                                
+                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                v-if="show_add"
+                                ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M17.6567 17.6575L6.34294 6.34383" 
+                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  <path d="M17.6556 6.34383L6.34188 17.6575" 
+                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  </svg>
+                              Отмена</a> 
+
                             <a
-                              
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
+                              @click.prevent="reRender"
                               ><svg width="24" 
                               height="24" 
                               viewBox="0 0 24 24" 
@@ -261,10 +287,11 @@
                               <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
                               stroke-width="1.5" stroke-linecap="round"/>
                               </svg>Сохранить</a>
-                              
+
                              <a
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
+                              @click.prevent="reRender"
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -276,13 +303,9 @@
                             
                 </div>
               </div>
-              <div class="table table-bordered table-dark table-responsive trtable" style="padding-top: 21px;  background: #454D7D;">
+              <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
 
-
-
-
-
-                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add">
+                    <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
                     <thead>
                       <tr >
                         <td scope="col">Место-ние</td>
@@ -314,45 +337,35 @@
                       <tr v-for="(row, row_index) in lonelywell" 
                         :key="row_index"
                         ref="editTable">
-                        <td><input data-key="field" :value="row.field"></td>
-                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day"></td>
-                        <td><input data-key="rus_wellname" :value="row.rus_wellname"></td>
-                        <td><input data-key="horizon" :value="row.horizon"></td>
-                        <td><input data-key="object" :value="row.object"></td>
-                        <td><input data-key="exp_meth" :value="row.exp_meth"></td>
-                        <td><input data-key="type_text" :value="row.type_text"></td>
-                        <td><input data-key="block" :value="row.block"></td>
-                        <td><input data-key="cas_OD" :value="row.cas_OD"></td>
-                        <td><input data-key="cas_ID" :value="row.cas_ID"></td>
-                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md"></td>
-                        <td><input data-key="pump_type" :value="row.pump_type"></td>
-                        <td><input data-key="type_sr" :value="row.type_sr"></td>
-                        <td><input data-key="whp" :value="row.whp"></td>
-                        <td><input data-key="line_p" :value="row.line_p"></td>
-                        <td><input data-key="p_res" :value="row.p_res"></td>
-                        <td><input data-key="h_dyn" :value="row.h_dyn"></td>
-                        <td><input data-key="p_annular" :value="row.p_annular"></td>
-                        <td><input data-key="dens_oil" :value="row.dens_oil"></td>
-                        <td><input data-key="h_perf" :value="row.h_perf"></td>
-                        <td><input data-key="bhp_meter" :value="row.bhp_meter"></td>
+                        <td><input data-key="field" :value="row.field" class="input_edit"></td>
+                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit"></td>
+                        <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit"></td>
+                        <td><input data-key="horizon" :value="row.horizon" class="input_edit"></td>
+                        <td><input data-key="object" :value="row.object" class="input_edit"></td>
+                        <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit"></td>
+                        <td><input data-key="type_text" :value="row.type_text" class="input_edit"></td>
+                        <td><input data-key="block" :value="row.block" class="input_edit"></td>
+                        <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit"></td>
+                        <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit"></td>
+                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit"></td>
+                        <td><input data-key="pump_type" :value="row.pump_type" class="input_edit"></td>
+                        <td><input data-key="type_sr" :value="row.type_sr" class="input_edit"></td>
+                        <td><input data-key="whp" :value="row.whp" class="input_edit"></td>
+                        <td><input data-key="line_p" :value="row.line_p" class="input_edit"></td>
+                        <td><input data-key="p_res" :value="row.p_res" class="input_edit"></td>
+                        <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
+                        <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
+                        <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
+                        <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
+                        <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
 
                       </tr>
                     </tbody>
                   </table>
-
-
-
-
-
               </div>
             </div>
-            
-                  
-
           </modal>
 
-
-          
           <button
             type="button" 
             data-toggle="modal" 
@@ -381,10 +394,6 @@
             </svg>
           </button>
             
-          
-
-      
-          
 
           <a
             v-if="edit"
@@ -6330,7 +6339,7 @@
                   </td>
 
                   <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit" contenteditable='true'><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="edit"><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
@@ -6854,6 +6863,7 @@ export default {
         }
         else return false;
       } else return false;
+      this.render++;
     },
     // фильтр месторожд.
     fieldFilters() {
@@ -7032,6 +7042,8 @@ export default {
       Filter_well_type: undefined,
       filteredWellData: [],
       lonelywell: [],
+      render: 0,
+      searchStringModel: "",
       Filter_well: undefined,
     };
   },
@@ -7118,6 +7130,56 @@ export default {
       this.editedWells = [];
       this.searchWell();
     },
+    cancelPP() {
+      this.edit = false;
+
+    },
+    reRender() {
+      this.filteredWellData = [];
+      this.Filter_well_status = undefined;
+      this.Filter_status = undefined;
+      this.Filter_well_type = undefined;
+      this.Filter_well = undefined;
+      this.Filter_field = undefined;
+      
+    },
+    reRenderAll() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      var today = new Date();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var day = today.getDate();
+      if(day > 25 && mm < 12) {
+        var mm1 = today.getMonth() + 2;
+        var yyyy1 = today.getFullYear();
+      }
+      else if(day > 25 && mm === 12){
+        var mm1 = 1;
+        var yyyy1 = today.getFullYear() + 1;
+      }
+      else{
+        var mm1 = today.getMonth() + 1;
+        var yyyy1 = today.getFullYear();
+      }
+
+      this.axios
+        .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+        .then((response) => {
+          let data = response.data;
+
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          if (data) {
+            console.log(data);
+            this.wells = data.data;
+            this.fullWells = data.data;
+          } else {
+            console.log("No data");
+            
+          }
+
+        });
+    },
     showWells() {
       if(this.lonelywell.length === 1){
         this.show_add = !this.show_add;
@@ -7130,6 +7192,14 @@ export default {
       this.edit = true;
       this.show_second = true;
       this.show_first = false;
+    },
+    searchadd() {
+      this.$emit();
+    },
+    clearClickadd() {
+      this.searchStringModel= "";
+      this.$emit();
+      this.searchadd();
     },
     sortBy(type) {
       this.sortParam = type;
@@ -7316,6 +7386,8 @@ export default {
           "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
           output).then((res) => {
             console.log(res.data)
+            this.wellAdd();
+            this.reRenderAll();
           })
 
     },
@@ -7327,6 +7399,8 @@ export default {
             "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
             this.lonelywell[0].well).then((res) => {
               console.log(res.data)
+              this.wellAdd();
+              this.reRenderAll();
             })
       }
       else{
@@ -7642,5 +7716,24 @@ table::-webkit-scrollbar-corner {
 .dropdown-menu.show {
   display: flex;
   flex-direction: column;
+}
+
+.header_mod {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 15px;
+}
+.select_mod.select_mod.select_mod.select_mod {
+     background: #334296; 
 }
 </style>
