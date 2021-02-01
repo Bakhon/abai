@@ -162,8 +162,9 @@
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000; ">
+          <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
             <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
+              <notifications position="top"></notifications>
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                         <h5>Добавление скважин</h5>
@@ -6818,6 +6819,8 @@
   </div>
 </template>
 <script>
+import NotifyPlugin from "vue-easy-notify";
+import "vue-easy-notify/dist/vue-easy-notify.css";
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
@@ -6825,6 +6828,7 @@ import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
+Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
   components: {
@@ -7318,6 +7322,7 @@ export default {
             console.log(data);
             // this.wells = data.data;
             this.allWells = data.data;
+            
           } else {
             console.log("No data");
           }
@@ -7372,6 +7377,7 @@ export default {
     // Отправка данных с модалки в бэк
     saveadd() {
       console.log(this.$refs.editTable);
+      Vue.prototype.$notifySuccess ("Скважина сохранена");
       //this.$refs.saveTable
       let output = {}
       console.log(this.$refs.editTable[0].children);
@@ -7393,6 +7399,7 @@ export default {
     },
     // Удаление с модалки
     deleteWell() {
+      Vue.prototype.$notifyError("Скважина удалена");
       if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
         this.axios
           .get(
