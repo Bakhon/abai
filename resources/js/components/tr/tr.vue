@@ -7377,7 +7377,7 @@ export default {
     // Отправка данных с модалки в бэк
     saveadd() {
       console.log(this.$refs.editTable);
-      Vue.prototype.$notifySuccess ("Скважина сохранена");
+      Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
       //this.$refs.saveTable
       let output = {}
       console.log(this.$refs.editTable[0].children);
@@ -7399,7 +7399,8 @@ export default {
     },
     // Удаление с модалки
     deleteWell() {
-      Vue.prototype.$notifyError("Скважина удалена");
+      Vue.prototype.$notifyError (`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
+      this.$store.commit("globalloading/SET_LOADING", true);
       if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
         this.axios
           .get(
