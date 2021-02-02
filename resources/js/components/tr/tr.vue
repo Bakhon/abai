@@ -268,6 +268,7 @@
                                 
                                 style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                                 v-if="show_add"
+                                @click="showWells"
                                 ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.6567 17.6575L6.34294 6.34383" 
                                     stroke="white" stroke-width="1.4" stroke-linecap="round"/>
@@ -320,7 +321,6 @@
                         <td scope="col">Наружный диаметр э/к</td>
                         <td scope="col">Внутр. диаметр э/к</td>
                         <td scope="col">Н вд</td>
-                        <td scope="col">СЭ</td>
                         <td scope="col">Тип насоса</td>
                         <td scope="col">Тип СК</td>
                         <td scope="col">Р буф</td>
@@ -357,8 +357,10 @@
                         <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
                         <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
                         <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
+                        <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
                         <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
                         <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
+                        <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
 
                       </tr>
                     </tbody>
@@ -7377,7 +7379,7 @@ export default {
     // Отправка данных с модалки в бэк
     saveadd() {
       console.log(this.$refs.editTable);
-      Vue.prototype.$notifySuccess ("Скважина сохранена");
+      Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
       //this.$refs.saveTable
       let output = {}
       console.log(this.$refs.editTable[0].children);
@@ -7395,11 +7397,11 @@ export default {
             this.wellAdd();
             this.reRenderAll();
           })
-
     },
     // Удаление с модалки
     deleteWell() {
-      Vue.prototype.$notifyError("Скважина удалена");
+      Vue.prototype.$notifyError (`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
+      this.$store.commit("globalloading/SET_LOADING", true);
       if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
         this.axios
           .get(
