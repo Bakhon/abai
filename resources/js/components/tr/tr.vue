@@ -321,7 +321,6 @@
                         <td scope="col">Наружный диаметр э/к</td>
                         <td scope="col">Внутр. диаметр э/к</td>
                         <td scope="col">Н вд</td>
-                        <td scope="col">СЭ</td>
                         <td scope="col">Тип насоса</td>
                         <td scope="col">Тип СК</td>
                         <td scope="col">Р буф</td>
@@ -358,8 +357,10 @@
                         <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
                         <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
                         <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
+                        <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
                         <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
                         <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
+                        <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
 
                       </tr>
                     </tbody>
