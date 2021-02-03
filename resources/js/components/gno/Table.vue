@@ -340,8 +340,8 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <gno-incl-table :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
-                    </gno-incl-table>
+                    <inclinometria :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    </inclinometria>
                   </div>
                 </div>
               </modal>
@@ -574,7 +574,7 @@
 				                  
                           <div class="col-6">
                             <h6 style="text-align: center;">{{trans('pgno.prichini_prs')}}</h6>
-			                      <gno-wells-repairs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></gno-wells-repairs>
+			                      <prs-crs :wellNumber="wellNumber" :wellIncl="wellIncl" :field="field" :is-loading.sync="isLoading"></prs-crs>
                             <h6>{{trans('pgno.kolichestvo_remontov')}}: {{numberRepairs}}</h6>
                             <h6>ННО: {{numberNNO + ' сут'}}</h6>
                         	</div>
@@ -633,7 +633,7 @@
 
                   <div>
                     <div class="nno-graph">
-                      <gno-chart-bar :data="expAnalysisData"></gno-chart-bar>
+                      <economic :data="expAnalysisData"></economic>
                     </div>
 
                     <div class="nno-modal-button-wrapper">
@@ -1050,7 +1050,7 @@
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
                   <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
                 </div>
-                <gno-line-points-chart></gno-line-points-chart>
+                <inflow-curve></inflow-curve>
               </div>
 
               <div class="gno-shgn-wrapper" v-if="!visibleChart">
@@ -1518,7 +1518,7 @@
                   <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Скважина: {{field}}-{{wellNumber}}</div>
                   <div style="font-weight: bold; font-size: 20px; margin-left: 16px;  padding-top: 10px;">Дата формирования: {{new Date().toJSON().slice(0,10).replace(/-/g,'/')}}</div>
                 </div>
-                <gno-line-points-chart></gno-line-points-chart>
+                <inflow-curve></inflow-curve>
               </div>
 
         <div class="gno-line-chart-well-old-clone" ref="gno-chart-new-old-well" v-if="visibleChart" style="background-color: #272953;">
@@ -1707,7 +1707,7 @@
         </div>
 
         <div class="gno-chart-clone col-10">
-          <gno-line-points-chart></gno-line-points-chart>
+          <inflow-curve></inflow-curve>
         </div>
 
         <div class="title-page-2 col-10">
@@ -2277,7 +2277,7 @@ export default {
         this.wellIncl = data["Well Data"]["well"][0]
         this.hPerfND = data["Well Data"]["h_perf"][0]
         this.strokeLenDev = data["Well Data"]["stroke_len"][0]
-        let langUrl = `${window.location.pathname}`.slice(1, 3);
+        var langUrl = `${window.location.pathname}`.slice(1, 3);
         if (this.expMeth == 'ШГН') {
           if(langUrl === 'ru') {
             this.dNasosa = 'Диаметр насоса'
@@ -2472,17 +2472,39 @@ export default {
 
     async ExpAnalysisMenu(){
       await this.NnoCalc()
+      var langUrl = `${window.location.pathname}`.slice(1, 3);
 
       if(this.casOD < 127) {
+        if(langUrl === 'ru') {
         Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
+        } else if(langUrl === 'kz') {
+        Vue.prototype.$notifyError('Пайдалану колоннасында (ПК) 127 мм және одан төмен  ЭОТСҚ (Электрлік орталықтан тепкіш copaп қондырғысы) қолданылмайды2')
+        } else {
+        Vue.prototype.$notifyError('Eng')
+       }
       }
+      
 
       if (this.qlCelValue.split(' ')[0] < 28) {
-        Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
+        if(langUrl === 'ru') {
+         Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
+        } else if(langUrl === 'kz') {
+         Vue.prototype.$notifyWarning('ЭОТСҚ қолдану төмен дебитті ұңғымаларда болмайды')
+        } else {
+         Vue.prototype.$notifyWarning('Eng')
+       }
       }
+
       if (this.qlCelValue.split(' ')[0] > 106) {
-        Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
-      }
+        if(langUrl === 'ru') {
+         Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
+        } else if(langUrl === 'kz') {
+         Vue.prototype.$notifyWarning("Аз дебитті бұрғылау ұңғымаларын пайдалану өндіріс әлеуетін шектейді");
+        } else {
+         Vue.prototype.$notifyWarning("Eng")
+       }
+      } 
+
       this.qZhExpEcn=this.qlCelValue.split(' ')[0]
       this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
 
@@ -2501,6 +2523,8 @@ export default {
       if(this.expAnalysisData.NNO1!=null) {
         await this.EconomParam();
       }
+      
+      
 
 
     },
@@ -2670,6 +2694,7 @@ export default {
     getWellNumber(wellnumber) {
       this.visibleChart = true;
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
+      var langUrl = `${window.location.pathname}`.slice(1, 3);
       this.isLoading = true;
 
       this.axios.get(uri).then((response) => {
@@ -2677,9 +2702,23 @@ export default {
           this.method = 'MainMenu'
           if (data["Error"] == "NoData" || data["Error"] == 'data_error'){
             if(data["Error"] == "NoData") {
-              Vue.prototype.$notifyError("Указанная скважина отсутствует");
+              if(langUrl === 'ru'){
+                Vue.prototype.$notifyError("Указанная скважина отсутствует");
+              } else if(langUrl === 'kz') {
+                Vue.prototype.$notifyError("Көрсетілген ұңғыма жоқ");
+              } else {
+                Vue.prototype.$notifyError("Eng");
+              }
+              
             } else if(data["Error"] == 'data_error') {
-              Vue.prototype.$notifyError("Данные тех режима по скважине некорректны");
+              if(langUrl === 'ru') {
+                Vue.prototype.$notifyError("Данные тех режима по скважине некорректны");
+              } else if(langUrl === 'kz') {
+                Vue.prototype.$notifyError("Kz")
+              } else {
+                Vue.prototype.$notifyError("Eng")
+              }
+              
             }
 
             this.curveLineData = JSON.parse(data.LineData)["data"]
@@ -2765,13 +2804,27 @@ export default {
             this.densOil = data["Well Data"]["dens_oil"][0].toFixed(1)
             this.densWater = data["Well Data"]["dens_liq"][0].toFixed(1)
             this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + ' м'
+            var langUrl = `${window.location.pathname}`.slice(1, 3);
 
-            Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
+            if(langUrl === 'ru') {
+              Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
+            } else if(langUrl === 'kz') {
+              Vue.prototype.$notifyWarning("Түсу тереңдігі әдепкі қалпы бойынша перфорацияның жоғарғы тесіктерінен 150 м жоғары орнатылған")
+            } else {
+              Vue.prototype.$notifyWarning("Eng")
+            }
+            
 
 
 
-
-            Vue.prototype.$notifyWarning("Новая скважина");
+            if(langUrl === 'ru') {
+              Vue.prototype.$notifyWarning("Новая скважина");
+            } else if(langUrl === 'kz') {
+              Vue.prototype.$notifyWarning("Жаңа ұңғыма")
+            } else {
+              Vue.prototype.$notifyWarning("New well")
+            }
+            
 
             this.ngdu = 0
             this.sk = 0
@@ -2830,10 +2883,22 @@ export default {
           } else if (data["Age"] === false){
             this.setData(data)
             if(data["error_len"] == "error_len") {
-              Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущей длине хода")
+              if(langUrl === 'ru') {
+                Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущей длине хода")
+              } else if(langUrl === 'kz') {
+                Vue.prototype.$notifyWarning("Ұңғымадағы тербелмелі білдегінің (ТБ) түрі жүрістің ағымдағы ұзындығына сәйкес келмейді")
+              } else {
+                Vue.prototype.$notifyWarning("Eng")
+              }
             }
             if(data["error_spm"] == "error_spm") {
+              if(langUrl === 'ru') {
               Vue.prototype.$notifyWarning("Тип СК на скважине не соответствует текущему числу качании")
+              } else if(langUrl === 'kz') {
+              Vue.prototype.$notifyWarning("Ұңғымадағы ТБ түрі тербелістердің ағымдағы санына сәйкес келмейді")
+              } else {
+              Vue.prototype.$notifyWarning("Eng")
+              }
             }
           }
           this.$emit('LineData', this.curveLineData)
@@ -2851,6 +2916,7 @@ export default {
     postCurveData() {
       this.visibleChart = true;
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
+      var langUrl = `${window.location.pathname}`.slice(1, 3);
       // api/pgno/UZN/
       // KMB
       if (this.CelButton == 'ql') {
@@ -2899,14 +2965,34 @@ export default {
         this.isLoading = true;
 
       if(this.casOD < 127) {
-        Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
+        if(langUrl === 'ru') {
+         Vue.prototype.$notifyError('В ЭК Ø127 мм и ниже, применение УЭЦН с габаритами 5 и 5А невозможно')
+        } else if(langUrl === 'kz') {
+          Vue.prototype.$notifyError('Пайдалану колоннасында (ПК) 127 мм және одан төмен  ЭОТСҚ (Электрлік орталықтан тепкіш copaп қондырғысы) қолданылмайды')
+        } else {
+          Vue.prototype.$notifyError('Eng')
+        }
       }
 
       if (this.qlCelValue.split(' ')[0] < 28) {
-        Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
+        if(langUrl === 'ru') {
+          Vue.prototype.$notifyWarning("Применение УЭЦН не рекомендуется на низкодебитных скважинах");
+        } else if(langUrl === 'kz') {
+          Vue.prototype.$notifyWarning("ЭОТСҚ қолдану төмен дебитті ұңғымаларда болмайды")
+        } else {
+          Vue.prototype.$notifyWarning("Eng")
+        }
+        
       }
       if (this.qlCelValue.split(' ')[0] > 106) {
-        Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
+        if(langUrl === 'ru') {
+          Vue.prototype.$notifyWarning("Применение ШГН на высокодебитных скважинах ограничивает потенциал добычи");
+        } else if(langUrl === 'kz') {
+          Vue.prototype.$notifyWarning("Kz")
+        } else {
+          Vue.prototype.$notifyWarning("Eng")
+        }
+
       }
 
         this.axios.post(uri, jsonData).then((response) => {
@@ -2914,10 +3000,24 @@ export default {
           if (data) {
             this.method = "CurveSetting"
             if(data["Well Data"]["pi"][0] * 1 < 0) {
-              Vue.prototype.$notifyWarning("Pзаб не должно быть больше чем Рпл")
+              if(langUrl === 'ru') {
+                Vue.prototype.$notifyWarning("Pзаб не должно быть больше чем Рпл")
+              } else if(langUrl === 'kz') {
+                Vue.prototype.$notifyWarning("Кенжар қысымы қабаттық қысымнан артық болмауы тиіс")
+              } else {
+                Vue.prototype.$notifyWarning("Eng")
+              }
+              
             } else {
               if(this.hPumpValue.split(' ')[0] * 1 > this.hPerf * 1){
-                Vue.prototype.$notifyWarning("Насос установлен ниже перфорации")
+                if(langUrl === 'ru') {
+                  Vue.prototype.$notifyWarning("Насос установлен ниже перфорации")
+                } else if(langUrl === 'kz') {
+                  Vue.prototype.$notifyWarning("Сорғы перфорациядан төмен орнатылған")
+                } else {
+                  Vue.prototype.$notifyWarning("Eng")
+                }
+                
               }
               this.setData(data)
               this.$emit('LineData', this.curveLineData)
@@ -3091,7 +3191,15 @@ export default {
     },
 
     setGraphNew() {
-      Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
+      var langUrl = `${window.location.pathname}`.slice(1, 3);
+      if(langUrl === 'ru') {
+        Vue.prototype.$notifyWarning("Нсп установлено на 150м выше ВДП по умолчанию")
+      } else if(langUrl === 'kz') {
+        Vue.prototype.$notifyWarning("Түсу тереңдігі әдепкі қалпы бойынша перфорацияның жоғарғы тесіктерінен 150 м жоғары орнатылған")
+      } else {
+        Vue.prototype.$notifyWarning("Eng")
+      }
+      
       this.updateLine(this.newCurveLineData)
       this.setPoints(this.newPointsData)
       this.$modal.hide('modalNewWell');
@@ -3119,6 +3227,8 @@ export default {
     },
 
     onPgnoClick() {
+      var langUrl = `${window.location.pathname}`.slice(1, 3);
+
       if(this.qlPot * 1 < this.qlCelValue.split(' ')[0] * 1 && this.CelButton == 'ql'){
         Vue.prototype.$notifyError("Целевой режим превышает тех. потенциал")
       } else if(this.bhpPot * 1  > this.bhpCelValue.split(' ')[0] * 1  && this.CelButton == 'bhp'){
@@ -3148,10 +3258,23 @@ export default {
               var data = JSON.parse(response.data);
               if(data) {
                 if (data["error"] == "NoIntersection") {
-                  Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать не удалось, попробуйте изменить глубину спуска или ожидаемый дебит");
+                  if(langUrl === 'ru') {
+                   Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать не удалось, попробуйте изменить глубину спуска или ожидаемый дебит");
+                  } else if(langUrl === 'kz') {
+                    Vue.prototype.$notifyWarning("Таңдалған параметрлер бойынша сорғыны таңдау мүмкін болмады, түсу тереңдігін немесе күтілетін дебитті өзгертуге тырысыңыз")
+                  } else {
+                    Vue.prototype.$notifyWarning("Eng")
+                  }
                 } else {
                   if(this.sk == "ПШГН" || this.sk == "0") {
-                    Vue.prototype.$notifyWarning("Тип СК на скважине не определен")
+                    if(langUrl === 'ru') {
+                      Vue.prototype.$notifyWarning("Тип СК на скважине не определен")
+                    } else if(langUrl === 'kz') {
+                      Vue.prototype.$notifyWarning("Ұңғымадағы ТБ түрі анықталмаған")
+                    } else {
+                      Vue.prototype.$notifyWarning("Eng")
+                    }
+                    
                   }
                   this.shgnPumpType = data["pump_type"]
                   if(this.shgnPumpType == 70) {
@@ -3160,10 +3283,32 @@ export default {
                     this.shgnTubOD = this.tubOD
                   }
                   if(this.shgnPumpType == 70 && this.casOD * 1 < 115) {
-                    Vue.prototype.$notifyWarning('Применение НСН-70 на НКТ 89 мм ограничено в ЭК 114мм')
-                    Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать не удалось, попробуйте изменить глубину спуска или ожидаемый дебит");
+                    if(langUrl === 'ru') {
+                      Vue.prototype.$notifyWarning('Применение НСН-70 на НКТ 89 мм ограничено в ЭК 114мм')
+                    } else if(langUrl === 'kz') {
+                      Vue.prototype.$notifyWarning('89 мм сорғы компрессорлық құбырларында НСН - 70 қолдану 114 мм пайдалану бағанасында шектелген')
+                    } else {
+                      Vue.prototype.$notifyWarning('Eng')
+                    }
+                    
+                    if(langUrl === 'ru') {
+                      Vue.prototype.$notifyWarning("По выбранным параметрам насос подобрать не удалось, попробуйте изменить глубину спуска или ожидаемый дебит");
+                    } else if(langUrl === 'kz') {
+                      Vue.prototype.$notifyWarning("Таңдалған параметрлер бойынша сорғыны таңдау мүмкін болмады, түсу тереңдігін немесе күтілетін дебитті өзгертуге тырысыңыз")
+                    } else {
+                      Vue.prototype.$notifyWarning("Eng")
+                    }
+                    
                   } else {
-                    Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
+
+                    if(langUrl === 'ru') {
+                      Vue.prototype.$notifyWarning("Раздел 'Подбор ШГН' находится в разработке")
+                    } else if(langUrl === 'kz') {
+                      Vue.prototype.$notifyWarning("ШТС таңдау бөлімі әзірлену үстінде")
+                    } else {
+                      Vue.prototype.$notifyWarning("Eng")
+                    }
+                    
                     this.shgnSPM = data["spm"].toFixed(0)
                     this.shgnLen = data["stroke_len"]
                     this.shgnS1D = data["s1d"].toFixed(0)
@@ -3187,7 +3332,15 @@ export default {
 
           }
         } else {
-          Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
+
+          if(langUrl === 'ru') {
+            Vue.prototype.$notifyWarning("Раздел 'Подбор УЭЦН' не разработан")
+          } else if(langUrl === 'kz') {
+            Vue.prototype.$notifyWarning("ЭОТЦҚ таңдау бөлімі әзірленбеген")
+          } else {
+            Vue.prototype.$notifyWarning("Eng")
+          }
+          
         }
 
       }
@@ -3346,7 +3499,7 @@ export default {
     },
   },
   created() {
-    let langUrl = `${window.location.pathname}`.slice(1, 3);
+    var langUrl = `${window.location.pathname}`.slice(1, 3);
     if(langUrl === 'ru') {
       this.layout.xaxis.title = this.titleXRu
       this.layout.yaxis.title = this.titleYRu

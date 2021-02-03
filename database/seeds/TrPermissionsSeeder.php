@@ -13,11 +13,9 @@ class TrPermissionsSeeder extends Seeder
     public function run()
     {
         $permission = new Permission();
-        $permission->name = 'tr view main';
+        $permission->name = "tr view main";
         $permission->save();
 
-           
-            
         }  
     
 }

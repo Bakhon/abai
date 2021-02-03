@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'action_substance_of_co2' => 'Test',
+  'action_substance_of_co2' => 'Көмірқышқыл газының нақты мөлшері',
   'corrosion_monitoring' => 'ТҚ коррозия мониторингі - Кормасс',
   'kaznipi' => 'ҚазҒЗЖИ ОҒЗЗ',
   'wm_database' => 'Өндірістік сұйықтық пен газдар дерекқоры',
@@ -237,7 +237,7 @@ return array (
     'fields' => 
     array (
       'title' => 'Аталуы',
-      'price' => 'Баға',
+      'price' => 'баға',
       'price_date' => 'Баға өзгеру уақыты',
       'density' => 'Тығыздық',
     ),
