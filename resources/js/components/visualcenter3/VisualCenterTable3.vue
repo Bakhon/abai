@@ -2130,8 +2130,10 @@
                           <!-- План -->{{ trans("visualcenter.plan") }}
                         </div>
 
-                        
-                        {{ formatVisTableNumber2(item.plan) }} <span> скв.</span> 
+                        <div class="font">
+                        {{ formatVisTableNumber2(item.plan) }}</div> <div class="dynamic right name-ed-izmeren"
+                         
+                        > скв. </div>
                       </td>
                         <td
                         @click="otmSelectedRow = item.code"
@@ -2375,14 +2377,14 @@
                              style="font-size: 12px; line-height: 1.2" 
                             План -->{{ trans("visualcenter.plan") }}
                         </div>
-                       {{ formatVisTableNumber2(item.fact) }} тн.
+                       {{ formatVisTableNumber2(item.fact) }} т.
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="col">
-              <div  class="name-chart-left">Объём хим. реагента, тн.</div>
+              <div  class="name-chart-left">Объём хим. реагента, тонны</div>
                 <visual-center3-wells
                   v-if="chemistryDataForChart"
                   :chartData="chemistryDataForChart"
