@@ -25,6 +25,7 @@ class UserListResource extends JsonResource
             ],
             'links' => [
                 'edit' => route('admin.users.edit', $this->id),
+                'history' => route('admin.users.logs', $this->id),
             ]
         ];
     }
