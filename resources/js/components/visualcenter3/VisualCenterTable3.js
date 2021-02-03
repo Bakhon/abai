@@ -1076,6 +1076,7 @@ export default {
           0
         );
 
+   
         this.oil_factDayPercent = oil_factSumm;
         this.gas_factDayPercent = gas_factSumm;
         this.oil_dlv_factDayPercent = oil_dlv_factSumm;
@@ -1672,6 +1673,32 @@ if (company!='all')
 
 
           if (item5 === 'С учётом доли участия КМГ') {
+
+            let companyPercents = {
+              'АО "Каражанбасмунай"': 0.5,
+              'ТОО "Казгермунай"': 0.5,
+              'АО ПетроКазахстан Инк': 0.33,
+              '"ПетроКазахстан Инк."': 0.33,
+              'АО "Тургай-Петролеум"': 0.5 * 0.33,
+              "ТОО «Тенгизшевройл»": 0.2,
+              'АО "Мангистаумунайгаз"': 0.5,
+              'ТОО "Казахойл Актобе"': 0.5,
+              "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
+              "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
+            }
+
+            productionPlanAndFactMonth.map(item => {
+              if (typeof companyPercents[this.getNameDzoFull(item.dzo)] !== 'undefined') {
+                item.productionFactForChart = item.productionFactForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+                item.productionPlanForChart = item.productionPlanForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+              }
+              return item
+            })
+
+          }
+
+
+          if (item5 === 'С учётом доли участия КМГ' || item==="oil_opek_plan") {
 
             let companyPercents = {
               'АО "Каражанбасмунай"': 0.5,
