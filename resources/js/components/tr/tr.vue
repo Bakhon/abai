@@ -208,18 +208,6 @@
                                 </option>
                               </select>
                             </div>
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="select_mod form-control"
-                                style="background: #334296 !important"
-                                v-model="Filter_well"
-                                value="Скважина"
-                              >
-                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? "Выберите скважину" : f }}
-                                </option>
-                              </select>
-                            </div>
 
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
@@ -243,6 +231,19 @@
                               >
                                 <option v-for="(f, k) in wellStatusFilters" :key="k" :value="f">
                                   {{ f === undefined ? "Выберите состояние" : f }}
+                                </option>
+                              </select>
+                            </div>
+
+                            <div style="margin-left: 7px; cursor: pointer;">
+                              <select
+                                class="select_mod form-control"
+                                style="background: #334296 !important"
+                                v-model="Filter_well"
+                                value="Скважина"
+                              >
+                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите скважину" : f }}
                                 </option>
                               </select>
                             </div>
@@ -281,6 +282,7 @@
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
                               @click.prevent="reRender"
+                              v-show = checkers
                               ><svg width="24" 
                               height="24" 
                               viewBox="0 0 24 24" 
@@ -294,8 +296,8 @@
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
                               @click.prevent="reRender"
-                              
-                              
+                              v-show = checkersec
+
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -7428,7 +7430,8 @@ export default {
             console.log(res.data)
             this.wellAdd();
             this.reRenderAll();
- 
+            this.show_add=false;
+            this.checkers=false;
             
           })
     },
@@ -7444,6 +7447,8 @@ export default {
               console.log(res.data)
               this.wellAdd();
               this.reRenderAll();
+              this.show_add=false;
+              this.checkersec=false;
               
             })
       }
