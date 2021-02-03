@@ -64,7 +64,7 @@
              class="form-control datepicker filter-input"
              type="date"
              :disabled="isLoading"
-             v-model="year">
+             v-model="report_date">
     </div>
 
       <div class="form-group3 result-link">
@@ -72,7 +72,7 @@
       </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !end_date || !start_date || !year || !type_event || isLoading"
+      <button :disabled="!org || !end_date || !start_date || !report_date || !type_event || isLoading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -91,6 +91,8 @@
 
 <script>
 
+import moment from "moment";
+
 export default {
   components: {},
   data() {
@@ -99,7 +101,7 @@ export default {
       org: '',
       start_date: null,
       end_date: null,
-      year: '',
+      report_date: null,
       type_event: '',
       isLoading: false,
       resultLink: null
@@ -113,13 +115,19 @@ export default {
     updateData() {
       let uri = "http://172.20.103.157:8082/analyze/gtm/";
         // let uri = "http://0.0.0.0:8090/analyze/gtm/";
+
+      let dateFormat = 'YYYY-MM-DD HH:mm:ss';
+      let minOfDay = {hour:0, minute:0, second:0}
+      let startDate = moment(this.start_date).set(minOfDay).format(dateFormat);
+      let endDate = moment(this.end_date).set(minOfDay).format(dateFormat);
+      let reportDate = moment(this.report_date).set(minOfDay).format(dateFormat);
       let data = {
         period: 'days',
         dzo: this.org,
-        report_date_start: `${this.start_date}`.substr(0, 8).concat('01 00:00:00'),
-        report_date_end: `${this.end_date}`.concat(' 00:00:00'),
+        report_date_start: startDate,
+        report_date_end: endDate,
+        report_date: reportDate,
         type_event: `${this.type_event}`,
-        year: `${this.year}`.substr(0, 4),
       };
 
       let json_data = JSON.stringify(data);
