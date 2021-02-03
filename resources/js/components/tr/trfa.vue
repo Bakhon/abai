@@ -178,7 +178,7 @@
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
-              width="800"
+              width="1200"
               :options="chartBarOptions"
               :series="[{ name: '', data: barChartData }]"
             ></apexchart>

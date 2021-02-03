@@ -294,6 +294,8 @@
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
                               @click.prevent="reRender"
+                              
+                              
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -7033,12 +7035,9 @@ export default {
       edit: false,
       editdtm: null,
       editdty: null,
-      // sortField: null,
-      // currentSortDir: 'asc',
       year: null,
       selectYear: null,
       month: null,
-      // isloading: true,
       isfulltable: false,
       Filter_field: undefined,
       allWells: [],
@@ -7051,6 +7050,8 @@ export default {
       render: 0,
       searchStringModel: "",
       Filter_well: undefined,
+      checkers: false,
+      checkersec: false,
     };
   },
   watch: {
@@ -7189,6 +7190,14 @@ export default {
     showWells() {
       if(this.lonelywell.length === 1){
         this.show_add = !this.show_add;
+        if(this.lonelywell[0].is_saved === "Сохранено"){
+          this.checkers = false;
+          this.checkersec = true;
+        }
+        else{
+          this.checkers = true;
+          this.checkersec = false;
+        }
       }
       else{
         this.show_add = this.show_add;
@@ -7359,6 +7368,7 @@ export default {
       this.show_first = !this.show_first;
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
+
     },
 
     getColor(status) {
@@ -7376,7 +7386,29 @@ export default {
     handlerFilter(filter) {
       this.filter = filter;
     },
+    // deleteOrSave() {
+    //   if(this.lonelywell[0].is_saved === "Не сохранено"){
+    //         this.is_save=true
+    //   }
+    //   else{
+    //     return this.is_save=false
+    //   }
+    // },
     // Отправка данных с модалки в бэк
+
+    // deleteOrSave() {
+    //   if(this.lonelywell.length === 1){
+    //     this.save_check = !this.show_add;
+    //   }
+    //   else{
+    //     this.show_add = this.show_add;
+    //   }
+    // },
+
+
+
+
+
     saveadd() {
       console.log(this.$refs.editTable);
       Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
@@ -7396,6 +7428,8 @@ export default {
             console.log(res.data)
             this.wellAdd();
             this.reRenderAll();
+ 
+            
           })
     },
     // Удаление с модалки
@@ -7410,12 +7444,14 @@ export default {
               console.log(res.data)
               this.wellAdd();
               this.reRenderAll();
+              
             })
       }
       else{
         return console.log("error")
       }
     },
+
     searchWell() {
       console.log("search = ", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "");
