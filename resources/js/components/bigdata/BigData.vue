@@ -252,23 +252,9 @@ export default {
 
         if (this.favorites.length > 0) {
           this.showFavoriteReports()
-          this.sections.some(section => {
-            if (section.reports.length > 0) {
-              let selectedReport = section.reports.find(report => report.id === this.favorites[0])
-              if (selectedReport) {
-                this.selectedReport = selectedReport
-                return true
-              }
-            }
-          })
+          this.selectFavoritesFirstReport()
         } else {
-          this.sections.some(section => {
-            if (section.reports.length > 0) {
-              this.selectReportsSection(section)
-              this.selectedReport = section.reports[0]
-              return true
-            }
-          })
+          this.selectFirstAvailableReport()
         }
       })
 
@@ -384,6 +370,26 @@ export default {
       }
 
       self.searchResult = result;
+    },
+    selectFavoritesFirstReport() {
+      this.sections.some(section => {
+        if (section.reports.length > 0) {
+          let selectedReport = section.reports.find(report => report.id === this.favorites[0])
+          if (selectedReport) {
+            this.selectedReport = selectedReport
+            return true
+          }
+        }
+      })
+    },
+    selectFirstAvailableReport() {
+      this.sections.some(section => {
+        if (section.reports.length > 0) {
+          this.selectReportsSection(section)
+          this.selectedReport = section.reports[0]
+          return true
+        }
+      })
     }
   }
 }
