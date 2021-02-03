@@ -2,6 +2,7 @@ import { EventBus } from "../../event-bus.js";
 import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
+import { isString } from "lodash";
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 export default {
@@ -349,7 +350,7 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
     changeTable(change) {
-      this.company="all";
+      this.company = "all";
       this.Table1 = "display:none";
       this.Table2 = "display:none";
       this.Table3 = "display:none";
@@ -389,7 +390,7 @@ export default {
       } else if (change == "7") {
         this.Table7 = "display:block";
         this.tableHover7 = buttonHover2;
-      console.log('Table7');
+     
         this.range = {
           start: this.ISODateString(new Date('2020-08-01T06:00:00+06:00')),
           end: this.ISODateString(new Date('2020-08-31T06:00:00+06:00')),
@@ -525,7 +526,7 @@ export default {
         this.buttonHover7 = buttonHover;
         this.range = {
           start: moment().startOf('day').subtract(1, "days").format(),
-          end: moment().endOf('day').subtract(1, "days").format(),           
+          end: moment().endOf('day').subtract(1, "days").format(),
           formatInput: true,
         };
 
@@ -539,7 +540,7 @@ export default {
         this.buttonHover8 = buttonHover;
         this.range = {
           start: moment().startOf('month').format(),
-          end: moment().endOf('day').format(),      
+          end: moment().subtract(1, "days").endOf('day').format(),
           formatInput: true,
         };
 
@@ -553,7 +554,7 @@ export default {
         this.buttonHover9 = buttonHover;
         this.range = {
           start: moment().startOf('year').format(),
-          end: moment().endOf('day').format(),       
+          end: moment().endOf('day').format(),
           formatInput: true,
         };
 
@@ -819,7 +820,7 @@ export default {
 
     getDiffProcentLastBigN(a, b) {
       if (a != '') {
-        return ((a / b ) * 100).toFixed(2);
+        return ((a / b) * 100).toFixed(2);
       } else { return 0 }
     },
 
@@ -828,7 +829,7 @@ export default {
         if (a > b) { return 'Снижение' } else if (a < b) { return 'Рост' };
       } else {
         if (b == 0) { return 0 } else if (a == 0) { return 0 } {
-          if (a != '') return ((a / b - 1) * 100).toFixed(2)
+          if (a != '') return ((b / a - 1) * 100).toFixed(2)
           //else return 0;
         }
       }
@@ -1075,6 +1076,7 @@ export default {
           0
         );
 
+   
         this.oil_factDayPercent = oil_factSumm;
         this.gas_factDayPercent = gas_factSumm;
         this.oil_dlv_factDayPercent = oil_dlv_factSumm;
@@ -1183,6 +1185,8 @@ export default {
               ["asc"]
             );
 
+            
+
             this.getProductionPercentCovid(dataWithMay);
             let covid = _.reduce(
               dataWithMay,
@@ -1230,7 +1234,7 @@ export default {
               var productionForChart = this.getProductionForChart(arrdata, item6);
             }
 
-
+           
             /* var productionForChart = _(dataWithMay)
                .groupBy("__time")
                .map((__time, id) => ({
@@ -1256,7 +1260,24 @@ export default {
               this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
             }
 
-            summForTables = _(dataWithMay)
+
+      
+
+//console.log(rez);
+let accident;
+if (company!='all')
+{accident=_.filter(dataWithMay, _.iteratee({ dzo: company }))
+
+//accident=_.reject(accident, _.iteratee({ accident: null }));
+//accident= _.pickBy(accident, _.identity)
+//console.log('this');
+}
+ else if (company==='all') {accident =dataWithMay;}
+
+
+
+
+            summForTables = _(accident)
               .groupBy("dzo")
               .map((dzo, id) => ({
                 dzo: id,
@@ -1271,6 +1292,8 @@ export default {
               }))
               .value();
 
+
+          
             if (this.buttonHover12 != '') {
 
               /*  data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
@@ -1397,7 +1420,7 @@ export default {
               ["__time"],
               ["asc"]
             );
-            
+
             var productionForChart = this.getProductionForChart(dataWithMay2, item6);
 
           } else {
@@ -1405,11 +1428,9 @@ export default {
             var productionForChart = this.getProductionForChart(dataWithMay, item6);
           }
 
-        
 
 
-          console.log(dataWithMay);
-          console.log(productionForChart);
+
 
 
           //Summ plan and fact from dzo k1q for month!!!
@@ -1450,7 +1471,7 @@ export default {
 
 
 
-    
+
           /*
             var productionForChart = _(dataWithMay)
               .groupBy("__time")
@@ -1623,7 +1644,7 @@ export default {
             data = _.reject(data, _.iteratee({ dzo: "ПКК" }));
             data = _.reject(data, _.iteratee({ dzo: "ПКИ" }));
 
-         
+
 
           }
 
@@ -1652,6 +1673,32 @@ export default {
 
 
           if (item5 === 'С учётом доли участия КМГ') {
+
+            let companyPercents = {
+              'АО "Каражанбасмунай"': 0.5,
+              'ТОО "Казгермунай"': 0.5,
+              'АО ПетроКазахстан Инк': 0.33,
+              '"ПетроКазахстан Инк."': 0.33,
+              'АО "Тургай-Петролеум"': 0.5 * 0.33,
+              "ТОО «Тенгизшевройл»": 0.2,
+              'АО "Мангистаумунайгаз"': 0.5,
+              'ТОО "Казахойл Актобе"': 0.5,
+              "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
+              "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
+            }
+
+            productionPlanAndFactMonth.map(item => {
+              if (typeof companyPercents[this.getNameDzoFull(item.dzo)] !== 'undefined') {
+                item.productionFactForChart = item.productionFactForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+                item.productionPlanForChart = item.productionPlanForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+              }
+              return item
+            })
+
+          }
+
+
+          if (item5 === 'С учётом доли участия КМГ' || item==="oil_opek_plan") {
 
             let companyPercents = {
               'АО "Каражанбасмунай"': 0.5,
@@ -1849,7 +1896,7 @@ export default {
              return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
            }) */
           let opecData = this.opecData;
-          if (this.buttonHover8) {         
+          if (this.buttonHover8) {
             opecData = this.getOpecMonth(dataWithMay);
           }
           else {
@@ -1879,8 +1926,7 @@ export default {
             })
 
 
-          //console.log(opecData);
-          //console.log(bigTable);
+     
 
           //this.opecData = opecData.filter(row => row.oil_planYear > 0)
 
@@ -1962,7 +2008,7 @@ export default {
         ]);
       });
 
-  
+
 
       var covid = _.reduce(
         dataWithMay,
@@ -2168,33 +2214,33 @@ export default {
         .groupBy("data")
         .map((__time, id) => ({
           __time: id,
-         /*
-         fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
-          fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
-          fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
-          fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
-          fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
-          fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
-          fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
-          fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
-          fond_nagnetat_osvoenie: _.round(_.sumBy(__time, 'fond_nagnetat_osvoenie'), 0),
-          fond_nagnetat_konv: _.round(_.sumBy(__time, 'fond_nagnetat_konv'), 0),
-          fond_nagnetat_well_survey: _.round(_.sumBy(__time, 'fond_nagnetat_well_survey'), 0),
-          fond_nagnetat_others: _.round(_.sumBy(__time, 'fond_nagnetat_others'), 0),
-          */
+          /*
+          fond_nagnetat_ef: _.round(_.sumBy(__time, 'fond_nagnetat_ef'), 0),
+           fond_nagnetat_df: _.round(_.sumBy(__time, 'fond_nagnetat_df'), 0),
+           fond_nagnetat_bd: _.round(_.sumBy(__time, 'fond_nagnetat_bd'), 0),
+           fond_nagnetat_ofls: _.round(_.sumBy(__time, 'fond_nagnetat_ofls'), 0),
+           fond_nagnetat_prs: _.round(_.sumBy(__time, 'fond_nagnetat_prs'), 0),
+           fond_nagnetat_oprs: _.round(_.sumBy(__time, 'fond_nagnetat_oprs'), 0),
+           fond_nagnetat_krs: _.round(_.sumBy(__time, 'fond_nagnetat_krs'), 0),
+           fond_nagnetat_okrs: _.round(_.sumBy(__time, 'fond_nagnetat_okrs'), 0),
+           fond_nagnetat_osvoenie: _.round(_.sumBy(__time, 'fond_nagnetat_osvoenie'), 0),
+           fond_nagnetat_konv: _.round(_.sumBy(__time, 'fond_nagnetat_konv'), 0),
+           fond_nagnetat_well_survey: _.round(_.sumBy(__time, 'fond_nagnetat_well_survey'), 0),
+           fond_nagnetat_others: _.round(_.sumBy(__time, 'fond_nagnetat_others'), 0),
+           */
 
-         fond_nagnetat_ef: (_.sumBy(__time, 'fond_nagnetat_ef')) / this.quantityRange,
-         fond_nagnetat_df: (_.sumBy(__time, 'fond_nagnetat_df')) / this.quantityRange,
-         fond_nagnetat_bd: (_.sumBy(__time, 'fond_nagnetat_bd')) / this.quantityRange,
-         fond_nagnetat_ofls: (_.sumBy(__time, 'fond_nagnetat_ofls')) / this.quantityRange,
-         fond_nagnetat_prs: (_.sumBy(__time, 'fond_nagnetat_prs')) / this.quantityRange,
-         fond_nagnetat_oprs: (_.sumBy(__time, 'fond_nagnetat_oprs')) / this.quantityRange,
-         fond_nagnetat_krs: (_.sumBy(__time, 'fond_nagnetat_krs')) / this.quantityRange,
-         fond_nagnetat_okrs: (_.sumBy(__time, 'fond_nagnetat_okrs')) / this.quantityRange,
-         fond_nagnetat_osvoenie: (_.sumBy(__time, 'fond_nagnetat_osvoenie')) / this.quantityRange,
-         fond_nagnetat_konv: (_.sumBy(__time, 'fond_nagnetat_konv')) / this.quantityRange,
-         fond_nagnetat_well_survey: (_.sumBy(__time, 'fond_nagnetat_well_survey')) / this.quantityRange,
-         fond_nagnetat_others: (_.sumBy(__time, 'fond_nagnetat_others')) / this.quantityRange,
+          fond_nagnetat_ef: (_.sumBy(__time, 'fond_nagnetat_ef')) / this.quantityRange,
+          fond_nagnetat_df: (_.sumBy(__time, 'fond_nagnetat_df')) / this.quantityRange,
+          fond_nagnetat_bd: (_.sumBy(__time, 'fond_nagnetat_bd')) / this.quantityRange,
+          fond_nagnetat_ofls: (_.sumBy(__time, 'fond_nagnetat_ofls')) / this.quantityRange,
+          fond_nagnetat_prs: (_.sumBy(__time, 'fond_nagnetat_prs')) / this.quantityRange,
+          fond_nagnetat_oprs: (_.sumBy(__time, 'fond_nagnetat_oprs')) / this.quantityRange,
+          fond_nagnetat_krs: (_.sumBy(__time, 'fond_nagnetat_krs')) / this.quantityRange,
+          fond_nagnetat_okrs: (_.sumBy(__time, 'fond_nagnetat_okrs')) / this.quantityRange,
+          fond_nagnetat_osvoenie: (_.sumBy(__time, 'fond_nagnetat_osvoenie')) / this.quantityRange,
+          fond_nagnetat_konv: (_.sumBy(__time, 'fond_nagnetat_konv')) / this.quantityRange,
+          fond_nagnetat_well_survey: (_.sumBy(__time, 'fond_nagnetat_well_survey')) / this.quantityRange,
+          fond_nagnetat_others: (_.sumBy(__time, 'fond_nagnetat_others')) / this.quantityRange,
 
 
 
@@ -2326,18 +2372,18 @@ export default {
         .groupBy("data")
         .map((__time, id) => ({
           __time: id,
-          fond_neftedob_ef: (_.sumBy(__time, 'fond_neftedob_ef'))/ this.quantityRange,
-          fond_neftedob_df: (_.sumBy(__time, 'fond_neftedob_df'))/ this.quantityRange,
-          fond_neftedob_bd: (_.sumBy(__time, 'fond_neftedob_bd'))/ this.quantityRange,
-          fond_neftedob_osvoenie: (_.sumBy(__time, 'fond_neftedob_osvoenie'))/ this.quantityRange,
-          fond_neftedob_ofls: (_.sumBy(__time, 'fond_neftedob_ofls'))/ this.quantityRange,
-          fond_neftedob_prs: (_.sumBy(__time, 'fond_neftedob_prs'))/ this.quantityRange,
-          fond_neftedob_oprs: (_.sumBy(__time, 'fond_neftedob_oprs'))/ this.quantityRange,
-          fond_neftedob_krs: (_.sumBy(__time, 'fond_neftedob_krs'))/ this.quantityRange,
-          fond_neftedob_okrs: (_.sumBy(__time, 'fond_neftedob_okrs'))/ this.quantityRange,
-          fond_neftedob_well_survey: (_.sumBy(__time, 'fond_neftedob_well_survey'))/ this.quantityRange,
-          fond_neftedob_nrs: (_.sumBy(__time, 'fond_neftedob_nrs'))/ this.quantityRange,
-          fond_neftedob_others: (_.sumBy(__time, 'fond_neftedob_others'))/ this.quantityRange,
+          fond_neftedob_ef: (_.sumBy(__time, 'fond_neftedob_ef')) / this.quantityRange,
+          fond_neftedob_df: (_.sumBy(__time, 'fond_neftedob_df')) / this.quantityRange,
+          fond_neftedob_bd: (_.sumBy(__time, 'fond_neftedob_bd')) / this.quantityRange,
+          fond_neftedob_osvoenie: (_.sumBy(__time, 'fond_neftedob_osvoenie')) / this.quantityRange,
+          fond_neftedob_ofls: (_.sumBy(__time, 'fond_neftedob_ofls')) / this.quantityRange,
+          fond_neftedob_prs: (_.sumBy(__time, 'fond_neftedob_prs')) / this.quantityRange,
+          fond_neftedob_oprs: (_.sumBy(__time, 'fond_neftedob_oprs')) / this.quantityRange,
+          fond_neftedob_krs: (_.sumBy(__time, 'fond_neftedob_krs')) / this.quantityRange,
+          fond_neftedob_okrs: (_.sumBy(__time, 'fond_neftedob_okrs')) / this.quantityRange,
+          fond_neftedob_well_survey: (_.sumBy(__time, 'fond_neftedob_well_survey')) / this.quantityRange,
+          fond_neftedob_nrs: (_.sumBy(__time, 'fond_neftedob_nrs')) / this.quantityRange,
+          fond_neftedob_others: (_.sumBy(__time, 'fond_neftedob_others')) / this.quantityRange,
         }))
         .value();
 
@@ -2660,7 +2706,7 @@ export default {
     },
 
     getProductionForChart(data, plan2) {
-      let dataWithMay=data;
+      let dataWithMay = data;
       if (this.buttonHover11 != '') {
         dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ТШО" }));
         dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "НКО" }));
@@ -2783,12 +2829,12 @@ export default {
 
     },
 
-    formatVisTableNumber2(num){
+    formatVisTableNumber2(num) {
       if (num == '') {
-        num=0;
+        num = 0;
       }
 
-      return  (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
+      return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
 
     },
 
@@ -2839,13 +2885,12 @@ export default {
 
     if (window.location.host === 'dashboard') {
 
-      console.log((this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00'));
-      console.log(moment().format(),);
-     //let start=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00');
-     //let end=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00');
-      this.range = {         
-        //start: "2021-01-14T00:00:00+06:00",
-        //end: "2021-01-14T17:59:00+06:00",   
+  
+      //let start=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00');
+      //let end=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00');
+      this.range = {
+       // start: "2021-01-01T00:00:00+06:00",
+        //end: "2021-01-31T23:59:00+06:00",   
         start: moment().startOf('day').subtract(1, "days").format(),
         end: moment().endOf('day').subtract(1, "days").format(),
         formatInput: true,
@@ -2855,8 +2900,8 @@ export default {
         start: moment().startOf('day').subtract(1, "days").format(),
         end: moment().endOf('day').subtract(1, "days").format(),
         //start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-       // end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
-       formatInput: true,
+        // end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
+        formatInput: true,
       };
     }
     localStorage.setItem("changeButton", "Yes");

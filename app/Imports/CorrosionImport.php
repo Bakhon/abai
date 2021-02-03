@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\ComplicationMonitoring\Corrosion;
 use App\Models\Refs\Cdng;
+use App\Models\Refs\Field;
 use App\Models\Refs\Gu;
 use App\Models\Refs\Ngdu;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -17,13 +18,13 @@ class CorrosionImport implements ToModel
     */
     public function model(array $row)
     {
-        $field = ($row[0] == "Узень") ? 1 : 0;
+        $field = Field::where('name', $row[0])->first();
         $ngdu = Ngdu::where('name','=',$row[1])->first();
         $cdng = Cdng::where('name','=',$row[2])->first();
         $gu = Gu::where('name','=',$row[3])->first();
 
         return new Corrosion([
-            'field' => $field,
+            'field_id' => $field->id,
             'ngdu_id' => $ngdu->id,
             'cdng_id' => $cdng->id,
             'gu_id' => $gu->id,

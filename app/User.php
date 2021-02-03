@@ -40,10 +40,19 @@ class User extends Authenticatable
         'last_authorized_at' => 'datetime',
     ];
 
+
+    //relations
+
     public function org()
     {
         return $this->belongsTo(\App\Models\Refs\Org::class);
     }
+
+    public function pageViewLogs()
+    {
+        return $this->hasMany(\App\Models\LogPageView::class)->orderBy('created_at', 'desc');
+    }
+
 
     public function getOrganizations()
     {

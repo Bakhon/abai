@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Session;
 
 class UsersController extends Controller
 {
+
+    const LOGS_PER_PAGE = 20;
+
     public function index()
     {
         $params = [
@@ -98,6 +101,12 @@ class UsersController extends Controller
 
         $user->syncRoles($request->roles);
         return redirect()->route('admin.users.index')->with('success', __('app.updated'));
+    }
+
+    public function pageViewLogs(User $user)
+    {
+        $logs = $user->pageViewLogs()->paginate(self::LOGS_PER_PAGE);
+        return view('admin.users.log', compact('user', 'logs'));
     }
 
     protected function getFilteredQuery($filter, $query = null)

@@ -45,7 +45,7 @@
 
                   <div
                     :class="`${getColor2(
-                      getDiffProcentLastP(oil_factDayPercent, oil_factDay)
+                      getDiffProcentLastP(oil_factDay,oil_factDayPercent)
                     )}`"
                   ></div>
 
@@ -108,8 +108,8 @@
                   <div
                     :class="`${getColor2(
                       getDiffProcentLastP(
-                        oil_dlv_factDayPercent,
-                        oil_dlv_factDay
+                        oil_dlv_factDay,
+                        oil_dlv_factDayPercent
                       )
                     )}`"
                   ></div>
@@ -178,7 +178,7 @@
 
                   <div
                     :class="`${getColor2(
-                      getDiffProcentLastP(gas_factDayPercent, gas_factDay)
+                      getDiffProcentLastP(gas_factDay,gas_factDayPercent)
                     )}`"
                   ></div>
 
@@ -879,14 +879,14 @@
           <div class="row mt-3">
             <h5
               v-if="item2 == 'oil_fact'"
-              class="col assets4"
+              class="col-3 assets4"
               :style="`${buttonHover14}`"
               @click="changeAssets('b14')"
             >
               <!-- С учётом ограничения ОПЕК+ -->
               {{ trans("visualcenter.opek") }}
             </h5>
-            <h5
+            <h5 v-if="company=='all'"
               class="col assets4"
               :style="`${buttonHover11}`"
               @click="changeAssets('b11')"
@@ -894,7 +894,7 @@
               <!-- Операционные активы -->{{ trans("visualcenter.operactive") }}
             </h5>
 
-            <h5
+            <h5 v-if="company=='all'"
               class="col assets4"
               :style="`${buttonHover12}`"
               @click="changeAssets('b12')"
@@ -904,7 +904,7 @@
               }}
             </h5>
 
-            <h5
+            <h5 v-if="company=='all'"
               class="col assets4"
               :style="`${buttonHover13}`"
               @click="changeAssets('b13')"
@@ -1111,12 +1111,12 @@
               >
                 <div class="mt-3 text-center">Текст причины</div>
                 <div class="ml-3">
-                  <div class="mt-2" v-if="item.opec">{{ item.opec }}</div>
-                  <div class="mt-2" v-if="item.impulses">{{ item.impulses }}</div>
-                  <div class="mt-2" v-if="item.landing">{{ item.landing }}</div>
-                  <div class="mt-2" v-if="item.accident">{{ item.accident }}</div>
-                  <div class="mt-2" v-if="item.restrictions">{{ item.restrictions }}</div>
-                  <div class="mt-2" v-if="item.otheraccidents">{{ item.otheraccidents }}</div>
+                  <div class="mt-2" v-if="item.opec">{{ (item.opec) }}</div>
+                  <div class="mt-2" v-if="item.impulses">{{ (item.impulses) }}</div>
+                  <div class="mt-2" v-if="item.landing">{{ (item.landing) }}</div>
+                  <div class="mt-2" v-if="item.accident">{{ (item.accident) }}</div>
+                  <div class="mt-2" v-if="item.restrictions">{{ (item.restrictions) }}</div>
+                  <div class="mt-2" v-if="item.otheraccidents">{{ (item.otheraccidents) }}</div>
                 </div>
               </div>
             </div>
@@ -1585,10 +1585,17 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
+                   <span v-if="oneDate">
+                    <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      timeSelect
+                    }}]</span
+                  >
+                  <span v-else>
                     <!-- Период  -->{{ trans("visualcenter.period") }} [{{
                       timeSelect
                     }}
-                    - {{ timeSelectOld }}]
+                    - {{ timeSelectOld }}]</span
+                  >
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1630,10 +1637,10 @@
                     <!--<option value="">
                       <div class="float">Компания</div>
                     </option>-->
-                    <option value="all" v-if="company != 'all'">
+                    <!--<option value="all" v-if="company != 'all'">
                       {{ getNameDzoFull(company) }}
-                    </option>
-                    <option v-else>
+                    </option>-->
+                    <option value="all">
                       <!-- Все компании -->{{
                         trans("visualcenter.allCompany")
                       }}
@@ -1720,6 +1727,7 @@
                 </table>
               </div>
               <div class="col">
+                <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="innerWellsNagDataForChart"
                   :chartData="innerWellsNagDataForChart"
@@ -1785,10 +1793,17 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
+                                     <span v-if="oneDate">
+                    <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      timeSelect
+                    }}]</span
+                  >
+                  <span v-else>
                     <!-- Период  -->{{ trans("visualcenter.period") }} [{{
                       timeSelect
                     }}
-                    - {{ timeSelectOld }}]
+                    - {{ timeSelectOld }}]</span
+                  >
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -1829,11 +1844,11 @@
                   >
                     <!--<option value="">
                       <div class="float">Компания</div>
-                    </option>-->
+                    </option>
                     <option value="all" v-if="company != 'all'">
                       {{ getNameDzoFull(company) }}
-                    </option>
-                    <option v-else>
+                    </option>-->
+                   <option value="all">
                       <!-- Все компании -->{{
                         trans("visualcenter.allCompany")
                       }}
@@ -1922,6 +1937,7 @@
                 </table>
               </div>
               <div class="col">
+                <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="innerWellsProd2DataForChart"
                   :chartData="innerWellsProd2DataForChart"
@@ -1984,10 +2000,17 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
+                                   <span v-if="oneDate">
+                    <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      timeSelect
+                    }}]</span
+                  >
+                  <span v-else>
                     <!-- Период  -->{{ trans("visualcenter.period") }} [{{
                       timeSelect
                     }}
-                    - {{ timeSelectOld }}]
+                    - {{ timeSelectOld }}]</span
+                  >
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -2026,10 +2049,10 @@
                     id="OTMcompanySelect"
                     @change="innerWellsProdMetOnChange($event)"
                   >
-                    <option value="all" v-if="company != 'all'">
+                    <!--<option value="all" v-if="company != 'all'">
                       {{ getNameDzoFull(company) }}
-                    </option>
-                    <option v-else>
+                    </option>-->
+                     <option value="all">
                       <!-- Все компании -->{{
                         trans("visualcenter.allCompany")
                       }}
@@ -2107,8 +2130,10 @@
                           <!-- План -->{{ trans("visualcenter.plan") }}
                         </div>
 
-                        
-                        {{ formatVisTableNumber2(item.plan) }} <span> скв.</span> 
+                        <div class="font">
+                        {{ formatVisTableNumber2(item.plan) }}</div> <div class="dynamic right name-ed-izmeren"
+                         
+                        > скв. </div>
                       </td>
                         <td
                         @click="otmSelectedRow = item.code"
@@ -2169,6 +2194,7 @@
                 </table>
               </div>
               <div class="col">
+                <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="otmDataForChart"
                   :chartData="otmDataForChart"
@@ -2222,10 +2248,17 @@
                     :style="`${buttonHover10}`"
                     @click="changeMenu2(4)"
                   >
+                                   <span v-if="oneDate">
+                    <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      timeSelect
+                    }}]</span
+                  >
+                  <span v-else>
                     <!-- Период  -->{{ trans("visualcenter.period") }} [{{
                       timeSelect
                     }}
-                    - {{ timeSelectOld }}]
+                    - {{ timeSelectOld }}]</span
+                  >
                   </div>
                   <ul class="center-menu2 right-indent">
                     <li class="center-li">
@@ -2264,10 +2297,10 @@
                     id="ChemistryCompanySelect"
                     @change="innerWellsProdMetOnChange($event)"
                   >
-                    <option value="all" v-if="company != 'all'">
+                   <!-- <option value="all" v-if="company != 'all'">
                       {{ getNameDzoFull(company) }}
-                    </option>
-                    <option v-else>
+                    </option>-->
+                      <option value="all">
                       <!-- Все компании -->{{
                         trans("visualcenter.allCompany")
                       }}
@@ -2344,13 +2377,14 @@
                              style="font-size: 12px; line-height: 1.2" 
                             План -->{{ trans("visualcenter.plan") }}
                         </div>
-                       {{ formatVisTableNumber2(item.fact) }} тонн
+                       {{ formatVisTableNumber2(item.fact) }} т.
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="col">
+              <div  class="name-chart-left">Объём хим. реагента, тонны</div>
                 <visual-center3-wells
                   v-if="chemistryDataForChart"
                   :chartData="chemistryDataForChart"
@@ -2380,7 +2414,7 @@
                 </div>
                 <div
                   :class="`${getColor2(
-                    getDiffProcentLastP(prod_wells_workPercent, prod_wells_work)
+                    getDiffProcentLastP(prod_wells_work,prod_wells_workPercent)
                   )}`"
                 ></div>
 
@@ -2388,8 +2422,8 @@
                   {{
                     Math.abs(
                       getDiffProcentLastP(
-                        prod_wells_workPercent,
-                        prod_wells_work
+                        prod_wells_work,
+                        prod_wells_workPercent                        
                       )
                     )
                   }}%
@@ -2419,16 +2453,16 @@
                 </div>
                 <div
                   :class="`${getColor2(
-                    getDiffProcentLastP(prod_wells_idlePercent, prod_wells_idle)
+                    getDiffProcentLastP(prod_wells_idle,prod_wells_idlePercent)
                   )}`"
                 ></div>
 
                 <div class="txt2-2">
                   {{
                     Math.abs(
-                      getDiffProcentLastP(
-                        prod_wells_idlePercent,
-                        prod_wells_idle
+                      getDiffProcentLastP(                        
+                        prod_wells_idle,
+                        prod_wells_idlePercent
                       )
                     )
                   }}%
@@ -2474,7 +2508,7 @@
                   </div>
                   <div
                     :class="`${getColor2(
-                      getDiffProcentLastP(inj_wells_workPercent, inj_wells_work)
+                      getDiffProcentLastP(inj_wells_work, inj_wells_workPercent)
                     )}`"
                   ></div>
 
@@ -2482,8 +2516,8 @@
                     {{
                       Math.abs(
                         getDiffProcentLastP(
-                          inj_wells_workPercent,
-                          inj_wells_work
+                          inj_wells_work,
+                          inj_wells_workPercent                          
                         )
                       )
                     }}%
@@ -2515,7 +2549,7 @@
                   </div>
                   <div
                     :class="`${getColor2(
-                      getDiffProcentLastP(inj_wells_idlePercent, inj_wells_idle)
+                      getDiffProcentLastP(inj_wells_idle,inj_wells_idlePercent)
                     )}`"
                   ></div>
 
@@ -2523,8 +2557,9 @@
                     {{
                       Math.abs(
                         getDiffProcentLastP(
-                          inj_wells_idlePercent,
-                          inj_wells_idle
+                          inj_wells_idle,
+                          inj_wells_idlePercent
+                          
                         )
                       )
                     }}%
@@ -2862,6 +2897,7 @@
     span {
       font-size: 0.7rem;
       font-weight: normal;
+      opacity: 0.6;
     }
   }
 }
