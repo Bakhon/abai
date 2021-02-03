@@ -6344,7 +6344,7 @@
                   </td>
 
                   <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit"><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="edit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
