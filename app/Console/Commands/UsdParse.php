@@ -57,7 +57,7 @@ class UsdParse extends Command
 
                     if ($type == 'update') {
                         DB::table('usd_rate')
-                            ->where('data', '=', $date)
+                            ->where('date', '=', $date)
                             ->insert(
                                 [
                                     'value' => $item->description,
