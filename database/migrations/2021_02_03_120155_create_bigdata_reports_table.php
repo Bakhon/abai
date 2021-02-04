@@ -25,7 +25,7 @@ class CreateBigdataReportsTable extends Migration
                 $table->text('icon')->nullable();
                 $table->timestamps();
 
-                $table->foreign('bigdata_section_id')->references('id')->on('bigdata_sections')->onDelete('set null');
+                $table->foreign('bigdata_section_id')->references('id')->on('bigdata_sections')->onDelete('cascade');
             }
         );
 
