@@ -25,6 +25,8 @@ class CreateDZOdailiesTable extends Migration
             $table->float("oil_fact",32,8)->nullable();
             $table->float("gk_plan",32,8)->nullable();	
             $table->float("gk_fact",32,8)->nullable();	
+            $table->float("gk_dlv_plan",32,8)->nullable();	
+            $table->float("gk_dlv_fact",32,8)->nullable();
             $table->float("dobycha_zhidkosti_plan",32,8)->nullable();
             $table->float("dobycha_zhidkosti_fact",64,8)->nullable();
             $table->float("sdacha_nefti_kuun",32,8)->nullable();						
@@ -137,7 +139,7 @@ class CreateDZOdailiesTable extends Migration
             $table->text('__time');
             $table->float("gas_plan",32,8)->nullable();
             $table->float("gas_fact",32,8)->nullable();
-            $table->float("liq_plan",32,8);
+            $table->float("liq_plan",32,8)->nullable();
             $table->float("liq_fact",32,8)->nullable();
             $table->float("inj_wells_idle",32,8)->nullable();
             $table->float("prod_wells_idle",32,8)->nullable();  

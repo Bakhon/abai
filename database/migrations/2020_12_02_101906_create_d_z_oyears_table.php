@@ -141,7 +141,7 @@ class CreateDZOyearsTable extends Migration
             $table->integer("tb_personal_fact")->nullable();
             $table->integer("tb_accident_total")->nullable();
             $table->integer("tb_accident_death")->nullable();
-            // $table->integer("tb_covid_prev_day")->nullable();
+            $table->integer("tb_covid_prev_day")->nullable();
             $table->integer("tb_covid_total")->nullable();
             $table->integer("tb_covid_recover")->nullable();
 
