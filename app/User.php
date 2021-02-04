@@ -53,6 +53,10 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\LogPageView::class)->orderBy('created_at', 'desc');
     }
 
+    public function bigdataFavoriteReports()
+    {
+        return $this->belongsToMany(\App\Models\BigdataReport::class);
+    }
 
     public function getOrganizations()
     {
