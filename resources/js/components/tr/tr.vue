@@ -168,6 +168,8 @@
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                         <h5>Добавление скважин</h5>
+                        <button type="button" class="modal-bign-button" @click="closeModal('add_well')">Закрыть</button>
+
                         <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
                           <!-- <svg 
                             width="24" 
@@ -7218,6 +7220,9 @@ export default {
       this.$emit();
       this.searchadd();
     },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
+    },
     sortBy(type) {
       this.sortParam = type;
       this.$store.commit("tr/SET_SORTTYPE", this.sortType);
@@ -7376,6 +7381,13 @@ export default {
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
+    },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
+      this.show_add=false;
+      this.checkers=false;
+      this.checkersec=false;
+      this.reRender();
     },
     addpush(){
         
