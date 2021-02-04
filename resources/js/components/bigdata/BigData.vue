@@ -206,19 +206,19 @@
             {{ selectedReport.title }}
           </div>
         </div>
-        <monthly-production v-if="selectedReport.tag === 'monthly-production'"/>
-        <daily-production v-if="selectedReport.tag === 'daily-production'"/>
-        <daily-injection v-if="selectedReport.tag === 'daily-injection'"/>
-        <monthly-injection v-if="selectedReport.tag === 'monthly-injection'"/>
-        <well-stock-block v-if="selectedReport.tag === 'well-stock-block'"/>
-        <analyze-gtm v-if="selectedReport.tag === 'analyze-gtm'"/>
-        <dynamics-indicators v-if="selectedReport.tag === 'dynamics-indicators'"/>
-        <well-fund v-if="selectedReport.tag === 'well-fund'"/>
-        <well-fund-block v-if="selectedReport.tag === 'well-fund-block'"/>
-        <well-fund-field v-if="selectedReport.tag === 'well-fund-field'"/>
-        <well-fund-inactive v-if="selectedReport.tag === 'well-fund-inactive'"/>
-        <well-fund-revision v-if="selectedReport.tag === 'well-fund-revision'"/>
-        <well-fund-revision-field v-if="selectedReport.tag === 'well-fund-revision-field'"/>
+        <monthly-production v-if="selectedReport.tag === 'monthly-production'" :filtersData="filtersData"/>
+        <daily-production v-if="selectedReport.tag === 'daily-production'" :filtersData="filtersData"/>
+        <daily-injection v-if="selectedReport.tag === 'daily-injection'" :filtersData="filtersData"/>
+        <monthly-injection v-if="selectedReport.tag === 'monthly-injection'" :filtersData="filtersData"/>
+        <well-stock-block v-if="selectedReport.tag === 'well-stock-block'" :filtersData="filtersData"/>
+        <analyze-gtm v-if="selectedReport.tag === 'analyze-gtm'" :filtersData="filtersData"/>
+        <dynamics-indicators v-if="selectedReport.tag === 'dynamics-indicators'" :filtersData="filtersData"/>
+        <well-fund v-if="selectedReport.tag === 'well-fund'" :filtersData="filtersData"/>
+        <well-fund-block v-if="selectedReport.tag === 'well-fund-block'" :filtersData="filtersData"/>
+        <well-fund-field v-if="selectedReport.tag === 'well-fund-field'" :filtersData="filtersData"/>
+        <well-fund-inactive v-if="selectedReport.tag === 'well-fund-inactive'" :filtersData="filtersData"/>
+        <well-fund-revision v-if="selectedReport.tag === 'well-fund-revision'" :filtersData="filtersData"/>
+        <well-fund-revision-field v-if="selectedReport.tag === 'well-fund-revision-field'" :filtersData="filtersData"/>
       </div>
     </div>
   </div>
@@ -228,6 +228,7 @@
 import NewReportTable from '../reports/MonthlyProduction';
 import SearchForm from '../ui-kit/SearchForm';
 import BigDataReportButton from './BigDataReportButton';
+import moment from "moment";
 
 export default {
   components: {NewReportTable, SearchForm, BigDataReportButton},
@@ -241,25 +242,12 @@ export default {
       selectedReport: null,
       searchString: '',
       searchResult: [],
+      filtersData: null,
     }
   },
   mounted() {
-    this.axios.get(this.localeUrl('/bigdata/reports')).then(({data}) => {
-      this.sections = data.data
-
-      this.axios.get(this.localeUrl('/bigdata/reports/favorite')).then(({data}) => {
-        this.favorites = data
-
-        if (this.favorites.length > 0) {
-          this.showFavoriteReports()
-          this.selectFavoritesFirstReport()
-        } else {
-          this.selectFirstAvailableReport()
-        }
-      })
-
-    })
-
+    this.displayReports();
+    this.loadDataForFilters();
   },
   methods: {
     numWord(value, words) {
@@ -278,14 +266,23 @@ export default {
 
       return words[2];
     },
-    selectReportsSection(section) {
-      if (section.reports.length) {
-        this.favoritesShowed = false
-        this.searchResult = []
-        this.searchString = ''
-        this.selectedSection = section.tag
-        this.activeReports = section.reports
-      }
+    displayReports(){
+
+      this.axios.get(this.localeUrl('/bigdata/reports')).then(({data}) => {
+        this.sections = data.data
+
+        this.axios.get(this.localeUrl('/bigdata/reports/favorite')).then(({data}) => {
+          this.favorites = data
+
+          if (this.favorites.length > 0) {
+            this.showFavoriteReports()
+            this.selectFavoritesFirstReport()
+          } else {
+            this.selectFirstAvailableReport()
+          }
+        })
+
+      })
     },
     showFavoriteReports() {
 
@@ -302,6 +299,56 @@ export default {
         }
       })
 
+    },
+    selectFavoritesFirstReport() {
+      this.sections.some(section => {
+        if (section.reports.length > 0) {
+          let selectedReport = section.reports.find(report => report.id === this.favorites[0])
+          if (selectedReport) {
+            this.selectedReport = selectedReport
+            return true
+          }
+        }
+      })
+    },
+    selectFirstAvailableReport() {
+      this.sections.some(section => {
+        if (section.reports.length > 0) {
+          this.selectReportsSection(section)
+          this.selectedReport = section.reports[0]
+          return true
+        }
+      })
+    },
+    selectReportsSection(section) {
+      if (section.reports.length) {
+        this.favoritesShowed = false
+        this.searchResult = []
+        this.searchString = ''
+        this.selectedSection = section.tag
+        this.activeReports = section.reports
+      }
+    },
+    loadDataForFilters() {
+      //let uri = "http://172.20.103.157:8082/dzo_field_mapping/";
+      let uri = "http://0.0.0.0:8090/dzo_field_mapping/";
+
+      this.isLoading = true;
+
+      this.axios.get(uri, {
+        responseType:'json',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+          .then((response) => {
+            if (response.data) {
+              this.filtersData = response.data
+            } else {
+              console.log("No data");
+            }
+          })
+          .catch((error) => console.log(error));
     },
     selectReport(report, bySearchResult) {
       if (!bySearchResult) {
@@ -370,26 +417,6 @@ export default {
       }
 
       self.searchResult = result;
-    },
-    selectFavoritesFirstReport() {
-      this.sections.some(section => {
-        if (section.reports.length > 0) {
-          let selectedReport = section.reports.find(report => report.id === this.favorites[0])
-          if (selectedReport) {
-            this.selectedReport = selectedReport
-            return true
-          }
-        }
-      })
-    },
-    selectFirstAvailableReport() {
-      this.sections.some(section => {
-        if (section.reports.length > 0) {
-          this.selectReportsSection(section)
-          this.selectedReport = section.reports[0]
-          return true
-        }
-      })
     }
   }
 }
