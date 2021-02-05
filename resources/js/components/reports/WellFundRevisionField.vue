@@ -9,20 +9,9 @@
           :disabled="isLoading"
           v-model="geoStructure"
       >
-        <option value="Узень">Узень</option>
-        <option value="Карамандыбас">Карамандыбас</option>
-      </select>
-    </div>
-    <div class="form-group1 filter-group select">
-      <select
-          class="form-control filter-input select"
-          id="fieldSelect"
-          :disabled="isLoading"
-          v-model="field"
-      >
-        <option disabled value="">Выберите месторождение</option>
         <option disabled value="">Выберите геоструктуру</option>
         <template v-for="(fields, dzo) in filtersData" >
+          <option disabled :value="dzo">{{ dzo }}</option>
           <option v-for="field in fields" :value="field">{{ field }}</option>
         </template>
       </select>
@@ -61,7 +50,7 @@
     </div>
 
     <div class="form-group4">
-      <button :disabled="!fondType || !geoStructure || !end_date || isLoading || field"
+      <button :disabled="!fondType || !geoStructure || !end_date || isLoading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -98,7 +87,6 @@ export default {
     return {
       geoStructure: '',
       fondType: '',
-      field: '',
       end_date: null,
       isLoading: false,
       resultLink: null
@@ -130,7 +118,6 @@ export default {
         fond: fondTypeByFundId[this.fondType],
         report_date_start: `${this.end_date}`.concat(' 00:00:00'),
         report_date_end: `${this.end_date}`.concat(' 23:59:59'),
-        field: this.field
       };
 
       let json_data = JSON.stringify(data);
