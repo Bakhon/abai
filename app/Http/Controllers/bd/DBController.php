@@ -47,4 +47,28 @@ class DBController extends Controller
         return view('protodb.form');
     }
 
+    public function reports()
+    {
+        $sections = \App\Models\BigdataSection::all();
+        return \App\Http\Resources\BigdataSectionResource::collection($sections);
+    }
+
+    public function favoriteReports()
+    {
+        $reports = auth()->user()->bigdataFavoriteReports->pluck('id');
+        return $reports;
+    }
+
+    public function addReportToFavorites(\App\Models\BigdataReport $report)
+    {
+        auth()->user()->bigdataFavoriteReports()->attach($report);
+        return [];
+    }
+
+    public function removeReportFromFavorites(\App\Models\BigdataReport $report)
+    {
+        auth()->user()->bigdataFavoriteReports()->detach($report);
+        return [];
+    }
+
 }

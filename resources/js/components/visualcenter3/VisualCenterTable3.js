@@ -708,51 +708,6 @@ export default {
       });
     },
 
-    getCurrencyPeriod: function (dates, item2) {
-
-
-      this.usdChartIsLoading = true;
-
-      let uri =
-        this.localeUrl("/getcurrencyperiod?dates=") + dates + "&period=" + item2 + " ";
-      this.axios.get(uri).then((response) => {
-        let data = response.data;
-
-        if (data) {
-          let arrdata2 = {
-            for_chart: [],
-            for_table: []
-          };
-
-          _.forEach(data, function (item) {
-            arrdata2.for_table.push({
-              date_string: item.dates,
-              // date: new Date(item.dates.split('.').reverse().join('-')),
-              value: parseInt(item.description[0] * 10) / 10,
-              change: Math.abs(parseFloat(item.change[0])),
-              index: item.index[0] || null
-            });
-
-            arrdata2.for_chart.push([
-              new Date(item.dates.split('.').reverse().join('-')).getTime(),
-              parseInt(item.description[0] * 10) / 10,
-            ]);
-
-
-          });
-
-
-          this.currencyChartData = arrdata2;
-
-
-        } else {
-          console.log("No data");
-        }
-      }).finally(() => {
-        this.usdChartIsLoading = false;
-      });
-    },
-
     getOilNow(dates, period) {
       this.usdChartIsLoading = true;
       let oilRatesData = {
@@ -1076,6 +1031,7 @@ export default {
           0
         );
 
+   
         this.oil_factDayPercent = oil_factSumm;
         this.gas_factDayPercent = gas_factSumm;
         this.oil_dlv_factDayPercent = oil_dlv_factSumm;
@@ -1696,6 +1652,32 @@ if (company!='all')
 
           }
 
+
+          if (item5 === 'С учётом доли участия КМГ' || item==="oil_opek_plan") {
+
+            let companyPercents = {
+              'АО "Каражанбасмунай"': 0.5,
+              'ТОО "Казгермунай"': 0.5,
+              'АО ПетроКазахстан Инк': 0.33,
+              '"ПетроКазахстан Инк."': 0.33,
+              'АО "Тургай-Петролеум"': 0.5 * 0.33,
+              "ТОО «Тенгизшевройл»": 0.2,
+              'АО "Мангистаумунайгаз"': 0.5,
+              'ТОО "Казахойл Актобе"': 0.5,
+              "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
+              "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
+            }
+
+            productionPlanAndFactMonth.map(item => {
+              if (typeof companyPercents[this.getNameDzoFull(item.dzo)] !== 'undefined') {
+                item.productionFactForChart = item.productionFactForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+                item.productionPlanForChart = item.productionPlanForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+              }
+              return item
+            })
+
+          }
+
           let opec = [];
           let impulses = [];
           let landing = [];
@@ -2159,7 +2141,7 @@ if (company!='all')
       this.timeSelectOld = oldDate;
 
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
-      this.getCurrencyNow(this.timeSelect);
+      this.getCurrencyNow(new Date().toLocaleDateString());
       this.getOilNow(this.timeSelect, this.period);
 
 

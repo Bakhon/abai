@@ -88,13 +88,19 @@ Route::group(
                 Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
                 Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
                 Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
+                Route::get('/bigdata/reports', 'bd\DBController@reports')->name('bigdata.reports');
+                Route::get('/bigdata/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
+                Route::post('/bigdata/reports/favorite/{report}', 'bd\DBController@addReportToFavorites')->name('bigdata.reports.favorite.add');
+                Route::delete('/bigdata/reports/favorite/{report}', 'bd\DBController@removeReportFromFavorites')->name('bigdata.reports.favorite.remove');
                 Route::get('/protoform', 'bd\DBController@form')->name('protoform');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
+
+                //tr
                 Route::get('/tr', 'tr\TrController@tr')->name('tr');
                 Route::get('/export', 'HomeController@export');
                 Route::get('/fa', 'tr\TrController@fa')->name('fa');
                 Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
-                Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
+                Route::get('/tech_mode', 'tr\TrController@tech_mode')->name('tech_mode');
 
                 //gno economic
                 Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
