@@ -4,6 +4,23 @@
 
     <div class="form-group1 filter-group select">
       <select
+          class="form-control filter-input
+          select"
+          id="companySelect"
+          :disabled="isLoading"
+          v-model="org"
+      >
+        <option disabled value="">Выберите компанию</option>
+        <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
+        <option value="КБМ">АО «Каражанбасмунай»</option>
+        <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+        <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+        <option value="ММГ">АО «Мангистаумунайгаз»</option>
+      </select>
+    </div>
+
+    <div class="form-group1 filter-group select">
+      <select
           class="form-control filter-input select"
           id="geoStructureSelect"
           :disabled="isLoading"
@@ -11,8 +28,7 @@
       >
         <option disabled value="">Выберите геоструктуру</option>
         <template v-for="(fields, dzo) in filtersData" >
-          <option disabled :value="dzo">{{ dzo }}</option>
-          <option v-for="field in fields" :value="field">{{ field }}</option>
+          <option v-if="org===dzo" v-for="field in fields" :value="field">{{ field }}</option>
         </template>
       </select>
     </div>
@@ -87,6 +103,7 @@ export default {
     return {
       geoStructure: '',
       fondType: '',
+      org: '',
       end_date: null,
       isLoading: false,
       resultLink: null
