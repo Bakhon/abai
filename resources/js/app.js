@@ -127,6 +127,8 @@ Vue.component('viscenter2-create', require('./components/viscenter2/create.vue')
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Form.vue').default);
+Vue.component('bigdata-well-form', require('./components/bigdata/wells/form').default);
+Vue.component('bigdata-form-field', require('./components/bigdata/wells/field').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
