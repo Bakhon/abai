@@ -7068,6 +7068,7 @@ export default {
   },
   methods: {
     editrow(row, rowId) {
+      this.$store.commit("globalloading/SET_LOADING", false);
       console.log("row = ", row);
       console.log("rowId = ", rowId);
       row["index"] = 0;

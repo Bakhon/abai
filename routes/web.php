@@ -91,11 +91,13 @@ Route::group(
                 Route::get('/bigdata', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/protoform', 'bd\DBController@form')->name('protoform');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
+
+                //tr
                 Route::get('/tr', 'tr\TrController@tr')->name('tr');
                 Route::get('/export', 'HomeController@export');
                 Route::get('/fa', 'tr\TrController@fa')->name('fa');
                 Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
-                Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
+                Route::get('/tech_mode', 'tr\TrController@tech_mode')->name('tech_mode');
 
                 //gno economic
                 Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
