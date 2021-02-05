@@ -51,26 +51,27 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
         $guName = str_replace('GU-', 'ГУ-', $guName);
         $this->gu = \App\Models\Refs\Gu::where('name', $guName)->first();
 
-        if ($this->validateData($collection)) {
-            $collection = $collection->skip(1);
+        if (!$this->dataIsValid($collection)) {
+            return;
+        }
 
-            $well = null;
+        $collection = $collection->skip(1);
 
-            foreach ($collection as $row) {
+        $well = null;
 
-                $wellName = $row[19];
-                $well = \App\Models\Refs\Well::where('name', $wellName)->first();
-dump($well->name);
-                if(!empty($well)) {
-                    $well->lat = $row[3];
-                    $well->lon = $row[4];
-                    $well->save();
-                }
+        foreach ($collection as $row) {
+            $wellName = $row[19];
+            $well = \App\Models\Refs\Well::where('name', $wellName)->first();
+
+            if (!empty($well)) {
+                $well->lat = $row[3];
+                $well->lon = $row[4];
+                $well->save();
             }
         }
     }
 
-    private function validateData(Collection $collection)
+    private function dataIsValid(Collection $collection)
     {
         $header = $collection->first();
         if ($header[0] !== 'Well#') {
