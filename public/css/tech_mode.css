@@ -1,4 +1,4 @@
-td.fitwidth {
+/* td.fitwidth {
     width: 1px;
     white-space: nowrap;
 }
@@ -16,6 +16,7 @@ td.fitwidth {
     height: 77px;
     flex-wrap: initial;
 }
+
 
 .sizing {
     max-width: 92% !important;
@@ -187,4 +188,4 @@ table {
 .tr_page .main {
     padding: 0;
     margin: 0;
-}  
+}   */

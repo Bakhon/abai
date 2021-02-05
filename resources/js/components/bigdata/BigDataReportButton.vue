@@ -4,7 +4,7 @@
           :class="{'selected': selectedReport && selectedReport.tag === report.tag, 'disabled': !report.is_active}"
           @click="click()">
     <div class="report-btn-bd-content">
-      <span class="r-txt" v-html="report.svg_icon"></span>
+      <span class="r-txt" v-html="report.icon"></span>
       <div class="font-size report-btn-bd-title">
         {{ report.title }}
       </div>

@@ -711,51 +711,6 @@ export default {
       });
     },
 
-    getCurrencyPeriod: function (dates, item2) {
-
-
-      this.usdChartIsLoading = true;
-
-      let uri =
-        this.localeUrl("/getcurrencyperiod?dates=") + dates + "&period=" + item2 + " ";
-      this.axios.get(uri).then((response) => {
-        let data = response.data;
-
-        if (data) {
-          let arrdata2 = {
-            for_chart: [],
-            for_table: []
-          };
-
-          _.forEach(data, function (item) {
-            arrdata2.for_table.push({
-              date_string: item.dates,
-              // date: new Date(item.dates.split('.').reverse().join('-')),
-              value: parseInt(item.description[0] * 10) / 10,
-              change: Math.abs(parseFloat(item.change[0])),
-              index: item.index[0] || null
-            });
-
-            arrdata2.for_chart.push([
-              new Date(item.dates.split('.').reverse().join('-')).getTime(),
-              parseInt(item.description[0] * 10) / 10,
-            ]);
-
-
-          });
-
-
-          this.currencyChartData = arrdata2;
-
-
-        } else {
-          console.log("No data");
-        }
-      }).finally(() => {
-        this.usdChartIsLoading = false;
-      });
-    },
-
     getOilNow(dates, period) {
       this.usdChartIsLoading = true;
       let oilRatesData = {
@@ -2196,7 +2151,7 @@ this.company="all";
       this.timeSelectOld = oldDate;
 
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
-      this.getCurrencyNow(this.timeSelect);
+      this.getCurrencyNow(new Date().toLocaleDateString());
       this.getOilNow(this.timeSelect, this.period);
 
 
