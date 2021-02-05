@@ -271,11 +271,7 @@
                                 
                                 style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                                 v-if="show_add"
-<<<<<<< HEAD
-                                @click.prevent="showWells"
-=======
                                 @click="showWells"
->>>>>>> 9e529a3c4335298ad18286639a708805a06931c1
                                 ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.6567 17.6575L6.34294 6.34383" 
                                     stroke="white" stroke-width="1.4" stroke-linecap="round"/>
@@ -303,10 +299,6 @@
                               @click="deleteWell"
                               @click.prevent="reRender"
                               v-show = checkersec
-<<<<<<< HEAD
-=======
-
->>>>>>> 9e529a3c4335298ad18286639a708805a06931c1
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -374,10 +366,6 @@
                         <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
                         <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
                         <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
-<<<<<<< HEAD
-=======
-
->>>>>>> 9e529a3c4335298ad18286639a708805a06931c1
                       </tr>
                     </tbody>
                   </table>
@@ -1653,7 +1641,7 @@
                   <td v-if="!edit">
                     <span v-if="row.h_up_perf_md[0] != null">
                       {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
-                    </span>ок
+                    </span>
                   </td>
                   <td v-if="edit">
                     {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
@@ -7529,13 +7517,9 @@ export default {
               console.log(res.data)
               this.wellAdd();
               this.reRenderAll();
-<<<<<<< HEAD
-              this.show_add = this.show_add;
-=======
               this.show_add=false;
               this.checkersec=false;
               
->>>>>>> 9e529a3c4335298ad18286639a708805a06931c1
             })
       }
       else{
