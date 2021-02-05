@@ -299,7 +299,6 @@
                               @click="deleteWell"
                               @click.prevent="reRender"
                               v-show = checkersec
-
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -367,7 +366,6 @@
                         <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
                         <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
                         <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
-
                       </tr>
                     </tbody>
                   </table>
@@ -1643,7 +1641,7 @@
                   <td v-if="!edit">
                     <span v-if="row.h_up_perf_md[0] != null">
                       {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
-                    </span>ок
+                    </span>
                   </td>
                   <td v-if="edit">
                     {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
@@ -2799,7 +2797,7 @@
                       'cell-with-comment':
                         wells &&
                         wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
+                        wells[row_index].wct[1][0] !== '0',
                     }"
                   >
                     <span
@@ -2807,25 +2805,24 @@
                         'circle-err':
                           wells &&
                           wells[row_index] &&
-                          wells[row_index].gor[1][0] !== '0',
+                          wells[row_index].wct[1][0] !== '0',
                       }"
                       :style="`background :${getColor(
-                        wells[row_index].gor[1][0]
+                        wells[row_index].wct[1][0]
                       )}`"
                     >
                     </span>
                     <input
                       class="input_edit"
                       @change="editrow(row, row_index)"
-                      v-model="row.gor[0]"
+                      v-model="row.wct[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
+                    <!-- <span>{{Math.round(row.wct[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].gor[1][1] }}
+                      {{ wells[row_index].wct[1][1] }}
                     </span>
                   </td>
-
 
                   <!-- <td>{{row.well_status_last_day}}</td> -->
                   <td
@@ -7137,6 +7134,59 @@ export default {
           this.searched = searchParam ? true : false;
         });
     },
+    reRenderAll() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var day = today.getDate();
+      if(day > 25 && mm < 12) {
+        var mm1 = today.getMonth() + 2;
+        var yyyy1 = today.getFullYear();
+      }
+      else if(day > 25 && mm === 12){
+        var mm1 = 1;
+        var yyyy1 = today.getFullYear() + 1;
+      }
+      else{
+        var mm1 = today.getMonth() + 1;
+        var yyyy1 = today.getFullYear();
+      }
+      this.axios
+        .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+        .then((response) => {
+          let data = response.data;
+
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          if (data) {
+            console.log(data);
+            this.wells = data.data;
+            this.fullWells = data.data;
+          } else {
+            console.log("No data");
+            
+          }
+        });
+    },
+    saveadd() {
+      console.log(this.$refs.editTable);
+      //this.$refs.saveTable
+      let output = {}
+      console.log(this.$refs.editTable[0].children);
+      console.log(this.$refs.editTable[0].children[0].children[0].dataset.key);
+      console.log(this.$refs.editTable[0].children[0].children[0].value);
+      this.$refs.editTable[0].children.forEach((el) => {
+        output[el.children[0].dataset.key] = el.children[0].value;
+      });
+      console.log(output)
+      this.axios
+        .post(
+          "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
+          output).then((res) => {
+            console.log(res.data)
+            this.show_add = this.show_add;
+          })
+    },
     cancelEdit() {
       this.edit = false;
       this.editedWells = [];
@@ -7320,7 +7370,14 @@ export default {
           }
         });
     },
-
+    reRender() {
+      this.filteredWellData = [];
+      this.Filter_well_status = undefined;
+      this.Filter_status = undefined;
+      this.Filter_well_type = undefined;
+      this.Filter_well = undefined;
+      this.Filter_field = undefined;
+    },
     wellAdd() {
       this.$store.commit("globalloading/SET_LOADING", true);
       // this.isloading = true;

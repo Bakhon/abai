@@ -1299,7 +1299,7 @@ export default {
     console.log("dt1-month", this.$store.getters["tr/month"]);
     console.log("dt1-year", this.$store.getters["tr/year"]);
     var today = new Date();
-    var dd = 1;
+    var dd = today.getDate();
     const mm = this.$store.getters["tr/month"]
       ? this.$store.getters["tr/month"]
       : today.getMonth() + 1;
@@ -1307,6 +1307,33 @@ export default {
       ? this.$store.getters["tr/year"]
       : today.getFullYear();
     var prMm = mm;
+
+
+    if(dd > 25 && mm < 12 && mm != 1 && prMm < 12) {
+      var mm1 = today.getMonth() + 2;
+      var yyyy1 = today.getFullYear();
+      var pryyyy1 = today.getFullYear();
+      var prMm1 = today.getMonth() + 1;
+    }
+    else if(dd > 25 && mm === 12){
+      var mm1 = 1;
+      var yyyy1 = today.getFullYear() + 1;
+      var pryyyy1 = today.getFullYear();
+      var prMm1 = 12;
+    }
+    else if(dd >25 && mm === 1 && prMm === 12){
+      var mm1 = 2;
+      var yyyy1 = today.getFullYear();
+      var pryyyy1 = today.getFullYear()-1;
+      var prMm1 = 12;
+    }
+    else{
+      var mm1 = today.getMonth() + 1;
+      var yyyy1 = today.getFullYear();
+      var pryyyy1 = today.getFullYear();
+      var prMm1 = today.getMonth();
+    }
+
     if (mm == 1) {
       var prMm = 12;
       var pryyyy = yyyy - 1;
@@ -1332,13 +1359,13 @@ export default {
       )
       .then((response) => {
         let data = response.data;
-        this.editdtm = mm;
+        this.editdtm = mm1;
         console.log(this.editdtm);
-        this.editdty = yyyy;
+        this.editdty = yyyy1;
         console.log(this.editdty);
-        this.editdtprevm = prMm;
+        this.editdtprevm = prMm1;
         console.log(this.editdtprevm);
-        this.editdtprevy = pryyyy;
+        this.editdtprevy = pryyyy1;
         console.log(this.editdtprevy);
         this.$store.commit("globalloading/SET_LOADING", false);
         // this.isloading = false;
