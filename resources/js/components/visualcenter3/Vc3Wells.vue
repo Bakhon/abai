@@ -144,16 +144,16 @@ export default {
        
          
         
-          type: datetime,
+          
            lines: {
-              show: false,
+              show: true,
             },
           labels: {     
                 formatter: function (val) {
                   
-              return moment(val).format("DD MMM YYYY")  /*+ "%"*/;
+              return moment(val).format("DD / MMM / YYYY")  /*+ "%"*/;
             },  
-              
+              type: datetime,
             datetimeFormatter: {
               day: "dd MMM yy",
               month: "dd MMM yy",

@@ -1110,7 +1110,7 @@
                 "
               >
                 <div class="mt-3 text-center">Текст причины</div>
-                <div class="ml-3">
+                   <div class="ml-3">
                   <div class="mt-2" v-if="item.opec">{{ (item.opec) }}</div>
                   <div class="mt-2" v-if="item.impulses">{{ (item.impulses) }}</div>
                   <div class="mt-2" v-if="item.landing">{{ (item.landing) }}</div>
@@ -1153,6 +1153,15 @@
                       </div>
                       <div class="font">
                         {{ formatVisTableNumber(item.oil_planYear) }}
+                         <div
+                          class="right"
+                          style="
+                            font-family: 'Harmonia-sans', sans-serif;
+                            opacity: 0.6;
+                          "
+                        >
+                          {{ thousand }} {{ item4 }}
+                        </div>
                       </div>
                     </td>
 
@@ -1164,16 +1173,24 @@
                     >
                       <div v-if="index === 0" class="center">
                         <!--план-->{{ trans("visualcenter.plan") }} (месячный)
+                        
                       </div>
                       <div class="font">
-                        {{ formatVisTableNumber(item.planMonthNew) }}
+                        {{ formatVisTableNumber(item.planMonthNew) }} 
+                         <div
+                          class="right"
+                          style="
+                            font-family: 'Harmonia-sans', sans-serif;
+                            opacity: 0.6;
+                          "
+                        >
+                          {{ thousand }} {{ item4 }}
+                        </div>
                       </div>
                     </td>
 
                     <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                      :class="index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'"
                     >
                       <div v-if="index === 0" class="center">
                         <!--план-->{{ trans("visualcenter.plan") }} {{ opec }}

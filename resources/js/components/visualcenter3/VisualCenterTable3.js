@@ -12,6 +12,9 @@ export default {
   },
   data: function () {
     return {
+      noData: '',
+      tdStyle: "index % 2 === 0 ? 'tdStyle' : 'tdNone'",
+      tdStyleLight: "index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'",
       opecDataSummMonth: 0,
       opecDataSumm: 0,
       opecData: 0,
@@ -1292,6 +1295,13 @@ if (company!='all')
               }))
               .value();
 
+              console.log((summForTables['0']['productionFactForMonth']));
+              //console.log((summForTables['productionPlanForMonth']).length);
+
+              if ((summForTables['0']['productionFactForMonth'] +summForTables['0']['productionPlanForMonth'])===0)
+{this.noData = "Данных нет";
+this.company="all";
+} else {this.noData = "";}
 
           
             if (this.buttonHover12 != '') {
@@ -2199,12 +2209,14 @@ if (company!='all')
 
     buttonInnerWellsNag() {
       if (this.innerWellsButtonProstoi == 1) {
-        this.buttonHoverNagInnerWells = this.buttonHover;
+        this.buttonHoverNagInnerWells = '';
         this.innerWellsButtonProstoi = 0;
       }
       else {
         this.buttonHoverNagInnerWells = "";
         this.innerWellsButtonProstoi = 1;
+        this.buttonHoverNagInnerWells = this.buttonHover;
+        
       }
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
     },
@@ -2356,13 +2368,14 @@ if (company!='all')
 
 
     buttonInnerWellsProd() {
-      if (this.innerWellsButtonProstoi == 1) {
-        this.buttonHoverProdInnerWells = this.buttonHover;
+      if (this.innerWellsButtonProstoi2 == 1) {
+        this.buttonHoverProdInnerWells = '';
         this.innerWellsButtonProstoi2 = 0;
       }
       else {
         this.buttonHoverProdInnerWells = "";
         this.innerWellsButtonProstoi2 = 1;
+        this.buttonHoverProdInnerWells = this.buttonHover;
       }
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
     },
@@ -2889,10 +2902,10 @@ if (company!='all')
       //let start=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00');
       //let end=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00');
       this.range = {
-       // start: "2021-01-01T00:00:00+06:00",
-        //end: "2021-01-31T23:59:00+06:00",   
-        start: moment().startOf('day').subtract(1, "days").format(),
-        end: moment().endOf('day').subtract(1, "days").format(),
+      start: "2021-01-01T00:00:00+06:00",
+      end: "2021-01-31T23:59:00+06:00",   
+      //  start: moment().startOf('day').subtract(1, "days").format(),
+      //  end: moment().endOf('day').subtract(1, "days").format(),
         formatInput: true,
       };
     } else {
