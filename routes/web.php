@@ -101,7 +101,7 @@ Route::group(
                 Route::get('/export', 'HomeController@export');
                 Route::get('/fa', 'tr\TrController@fa')->name('fa');
                 Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
-                Route::get('/tech_mode', 'tr\TrController@tech_mode')->name('tech_mode');
+                Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
 
                 //gno economic
                 Route::resource('ecorefscompaniesids', 'EcoRefsCompaniesIdsController');
