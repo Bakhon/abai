@@ -268,6 +268,7 @@
                                 
                                 style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                                 v-if="show_add"
+                                @click.prevent="showWells"
                                 ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.6567 17.6575L6.34294 6.34383" 
                                     stroke="white" stroke-width="1.4" stroke-linecap="round"/>
@@ -280,6 +281,7 @@
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
                               @click.prevent="reRender"
+                              v-show = checkers
                               ><svg width="24" 
                               height="24" 
                               viewBox="0 0 24 24" 
@@ -293,6 +295,7 @@
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
                               @click.prevent="reRender"
+                              v-show = checkersec
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -359,7 +362,7 @@
                         <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
                         <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
                         <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
-
+                        <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
                       </tr>
                     </tbody>
                   </table>
@@ -2791,7 +2794,7 @@
                       'cell-with-comment':
                         wells &&
                         wells[row_index] &&
-                        wells[row_index].gor[1][0] !== '0',
+                        wells[row_index].wct[1][0] !== '0',
                     }"
                   >
                     <span
@@ -2799,25 +2802,24 @@
                         'circle-err':
                           wells &&
                           wells[row_index] &&
-                          wells[row_index].gor[1][0] !== '0',
+                          wells[row_index].wct[1][0] !== '0',
                       }"
                       :style="`background :${getColor(
-                        wells[row_index].gor[1][0]
+                        wells[row_index].wct[1][0]
                       )}`"
                     >
                     </span>
                     <input
                       class="input_edit"
                       @change="editrow(row, row_index)"
-                      v-model="row.gor[0]"
+                      v-model="row.wct[0]"
                       :disabled="!edit"
                     />
-                    <!-- <span>{{Math.round(row.gor[0]*10)/10}}</span> -->
+                    <!-- <span>{{Math.round(row.wct[0]*10)/10}}</span> -->
                     <span v-if="wells && wells[row_index]" class="cell-comment">
-                      {{ wells[row_index].gor[1][1] }}
+                      {{ wells[row_index].wct[1][1] }}
                     </span>
                   </td>
-
 
                   <!-- <td>{{row.well_status_last_day}}</td> -->
                   <td
@@ -6340,7 +6342,7 @@
                   </td>
 
                   <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit"><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="edit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
@@ -7049,6 +7051,8 @@ export default {
       render: 0,
       searchStringModel: "",
       Filter_well: undefined,
+      checkers: false,
+      checkersec: false,
     };
   },
   watch: {
@@ -7179,6 +7183,7 @@ export default {
           "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
           output).then((res) => {
             console.log(res.data)
+            this.show_add = this.show_add;
           })
     },
     cancelEdit() {
@@ -7239,6 +7244,14 @@ export default {
     showWells() {
       if(this.lonelywell.length === 1){
         this.show_add = !this.show_add;
+        if(this.lonelywell[0].is_saved === "Сохранено"){
+          this.checkers = false;
+          this.checkersec = true;
+        }
+        else{
+          this.checkers = true;
+          this.checkersec = false;
+        }
       }
       else{
         this.show_add = this.show_add;
@@ -7436,7 +7449,7 @@ export default {
     // Отправка данных с модалки в бэк
     saveadd() {
       console.log(this.$refs.editTable);
-      Vue.prototype.$notifySuccess ("Скважина сохранена");
+      Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
       //this.$refs.saveTable
       let output = {}
       console.log(this.$refs.editTable[0].children);
@@ -7452,10 +7465,7 @@ export default {
           output).then((res) => {
             console.log(res.data)
             this.wellAdd();
-<<<<<<< HEAD
-=======
             this.reRenderAll();
->>>>>>> 1819875fd1df503691e481bac8bb4b2f285a2b1d
           })
 
     },
@@ -7470,6 +7480,7 @@ export default {
               console.log(res.data)
               this.wellAdd();
               this.reRenderAll();
+              this.show_add = this.show_add;
             })
       }
       else{
