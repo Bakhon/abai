@@ -10,6 +10,7 @@ use App\Models\VisCenter\ImportForms\DZOstaff;
 use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
 use App\Models\VisCenter\ImportForms\DZOyear as ImportFormsDZOyear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VisualCenterController extends Controller
 {
@@ -78,15 +79,12 @@ class VisualCenterController extends Controller
 
     public function getCurrency(Request $request)
     {
-        $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $request->fdate;
-        $dataObj = simplexml_load_file($url);
-        if ($dataObj) {
-            foreach ($dataObj as $item) {
-                if ($item->title == 'USD') {
-                    return response()->json($item);
-                }
-            }
-        }
+        $date = date('Y-m-d', strtotime($request->fdate));
+        $udsRate = DB::table('usd_rate')
+            ->where('date', '=', $date)
+            ->select('value as description', 'change', 'index', 'date')
+            ->first();
+        return response()->json($udsRate);
     }
 
     function getCurrencyPeriod(Request $request)

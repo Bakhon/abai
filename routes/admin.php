@@ -11,6 +11,7 @@ Route::group(['namespace' => 'Admin'], function () {
         Route::get('/', 'HomeController@index');
 
         Route::get('users/list', 'UsersController@list')->name('admin.users.list');
+        Route::get('users/{user}/logs', 'UsersController@pageViewLogs')->name('admin.users.logs');
         Route::resource('users','UsersController', ['as' => 'admin'])
             ->only(['index', 'show', 'edit', 'update']);
 
