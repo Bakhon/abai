@@ -89,6 +89,10 @@ Route::group(
                 Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
                 Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
                 Route::get('/bigdata', 'bd\DBController@bigdata')->name('bigdata');
+                Route::get('/bigdata/reports', 'bd\DBController@reports')->name('bigdata.reports');
+                Route::get('/bigdata/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
+                Route::post('/bigdata/reports/favorite/{report}', 'bd\DBController@addReportToFavorites')->name('bigdata.reports.favorite.add');
+                Route::delete('/bigdata/reports/favorite/{report}', 'bd\DBController@removeReportFromFavorites')->name('bigdata.reports.favorite.remove');
                 Route::get('/protoform', 'bd\DBController@form')->name('protoform');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
