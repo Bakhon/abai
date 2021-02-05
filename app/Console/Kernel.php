@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('parse-usd:cron')->dailyAt('16:00');
-        $schedule->command('parse-usd:cron')->dailyAt('18:00');
+        $schedule->command('parse-usd:cron')->dailyAt('14:33')->timezone('Europe/Kiev');
+        $schedule->command('parse-usd:cron')->dailyAt('12:05')->timezone('Europe/Kiev');
     }
 
     /**

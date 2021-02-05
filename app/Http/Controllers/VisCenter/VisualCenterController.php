@@ -84,27 +84,6 @@ class VisualCenterController extends Controller
             ->where('date', '=', $date)
             ->select('value as description', 'change', 'index', 'date')
             ->first();
-        if (!$udsRate) {
-            $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $request->fdate;
-            $dataObj = simplexml_load_file($url);
-            if ($dataObj) {
-                foreach ($dataObj as $item) {
-                    if ($item->title == 'USD') {
-                        if ($item->description && $item->change && $item->index) {
-                            DB::table('usd_rate')->insert(
-                                [
-                                    'value' => $item->description,
-                                    'change' => $item->change,
-                                    'index' => $item->index,
-                                    'date' => $date,
-                                ]
-                            );
-                        }
-                        return response()->json($item);
-                    }
-                }
-            }
-        }
         return response()->json($udsRate);
     }
 
