@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\UsdParse::class
     ];
 
     /**
@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('parse:usd')->cron('10 16 * * *');
+        $schedule->command('parse-usd:cron')->dailyAt('16:00');
     }
 
     /**
