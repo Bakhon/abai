@@ -729,6 +729,7 @@ export default {
           this.oilPeriod = this.defaultOilPeriod;
         }
         this.oilRatesData.for_chart = this.oilRatesData.for_chart.slice(this.oilPeriod * -1);
+        this.usdChartIsLoading = false;
       });
     },
 
