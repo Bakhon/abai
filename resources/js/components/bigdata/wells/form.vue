@@ -50,7 +50,7 @@
         <button type="button" class="btn btn-success" @click="submit">
           {{ trans('app.save') }}
         </button>
-        <button type="reset" class="btn btn-info" @click="submit">
+        <button type="reset" class="btn btn-info">
           {{ trans('app.cancel') }}
         </button>
       </div>
