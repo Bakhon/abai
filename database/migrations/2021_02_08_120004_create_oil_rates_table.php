@@ -11,6 +11,7 @@ class CreateOilRatesTable extends Migration
      *
      * @return void
      */
+
     public function up()
     {
         Schema::create('oil_rates', function (Blueprint $table) {

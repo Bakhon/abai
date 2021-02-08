@@ -20,7 +20,7 @@ class OilParse extends Command
      *
      * @var string
      */
-    protected $description = 'This command is designed to parse the oil rate from the data of the Yandex quote';
+    protected $description = 'This command is designed to parse the oil rate from the data of the Yandex quote news';
 
     /**
      * Create a new command instance.

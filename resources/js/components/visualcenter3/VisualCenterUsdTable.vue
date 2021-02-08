@@ -127,6 +127,7 @@ export default {
 }
 </script>
 
+
 <style scoped>
   .oil-table {
     max-height: 590px;

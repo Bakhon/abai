@@ -79,10 +79,10 @@ class VisualCenterController extends Controller
     }
 
     public function getOilRates() {
-      $data = OilRate::query()
+      $oilRatesData = OilRate::query()
           ->get()
           ->toArray();
-      return response()->json($data);
+      return response()->json($oilRatesData);
     }
 
     public function getCurrency(Request $request)

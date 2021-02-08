@@ -229,11 +229,11 @@
                 <div class="percent-currency">
                   <div
                     class="arrow"
-                    v-if="dailyCurrencyChangeIndexOil === 'UP'"
+                    v-if="dailyOilPriceChange === 'UP'"
                   ></div>
                   <div
                     class="arrow2"
-                    v-if="dailyCurrencyChangeIndexOil === 'DOWN'"
+                    v-if="dailyOilPriceChange === 'DOWN'"
                   ></div>
                   <div
                     :class="`${

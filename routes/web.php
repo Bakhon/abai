@@ -49,6 +49,7 @@ Route::group(
                     'geteconomicpivotdata'
                 );
                 Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
+
                 // visual center
                 Route::get('/visualcenter', 'VisCenter\VisualCenterController@visualcenter')->name('visualcenter');
                 Route::get('/visualcenter2', 'VisCenter\VisualCenterController@visualcenter2')->name('visualcenter2');

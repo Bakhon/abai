@@ -341,7 +341,7 @@ export default {
       timestampEnd: "",
       dailyCurrencyChangeUsd: 0,
       dailyCurrencyChangeIndexUsd: '',
-      dailyCurrencyChangeIndexOil: '',
+      dailyOilPriceChange: '',
       usdChartIsLoading: false,
       oilChartIsLoading: false,
       currencyTimeSelect: new Date().toLocaleDateString()
@@ -719,11 +719,7 @@ export default {
         this.oilLast = oilNow[1];
         this.oilRatesData = oilRatesData;
 
-        if (this.oilNow > this.oilLast[1]) {
-          this.dailyCurrencyChangeIndexOil = 'UP';
-        } else {
-          this.dailyCurrencyChangeIndexOil = 'DOWN';
-        }
+        setDailyOilPriceChange(this.oilNow,this.oilLast[1])
 
         if (this.period === 0) {
           this.oilPeriod = this.defaultOilPeriod;
@@ -731,6 +727,11 @@ export default {
         this.oilRatesData.for_chart = this.oilRatesData.for_chart.slice(this.oilPeriod * -1);
         this.usdChartIsLoading = false;
       });
+    },
+
+    setDailyOilPriceChange(currentPrice, previousPrice){
+      if (currentPrice > previousPrice) return this.dailyOilPriceChange = 'UP';
+      return this.dailyOilPriceChange = 'DOWN';
     },
 
     getUsdRatesData() {
