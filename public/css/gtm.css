@@ -1,0 +1,20 @@
+.gtm-menu-block {
+    margin: 0 1rem;
+}
+
+.gtm-menu div {
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 3.2rem;
+    color: #656A8A;
+}
+
+.gtm-menu div:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.gtm-menu div.active {
+    color: white;
+    border-bottom: 0.2rem solid white;
+}
