@@ -27,7 +27,6 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
     public function collection(Collection $collection)
     {
         if (strpos($this->sheetName, 'GU-') === 0) {
-            dump($this->sheetName);
             $this->importGu($this->sheetName, $collection);
         }
     }
@@ -43,7 +42,7 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
 
     public function endColumn(): string
     {
-        return 'T';
+        return 'W';
     }
 
     private function importGu(string $guName, Collection $collection)
@@ -58,16 +57,50 @@ class GuWellsImport implements ToCollection, WithEvents, WithColumnLimit, WithSt
         $collection = $collection->skip(1);
 
         $well = null;
+        $prevWellName = '';
+        $wells = [];
 
         foreach ($collection as $row) {
-            $wellName = $row[19];
-            $well = \App\Models\Refs\Well::where('name', $wellName)->first();
 
-            if (!empty($well)) {
+            if(!in_array($row[19], $wells)) {
+                $well = \App\Models\Refs\Well::where('name', $row[19])->first();
                 $well->lat = $row[3];
                 $well->lon = $row[4];
                 $well->save();
+
+                $wells[] = $row[19];
             }
+
+            if(!empty($prevWellName) && $prevWellName !== $row[19] && !empty($coords)) {
+                $well = \App\Models\Refs\Well::where('name', $prevWellName)->first();
+
+                $coords = array_map(function($item){
+                    return [$item[1], $item[0]];
+                }, $coords);
+
+                if (!empty($well)) {
+
+                    $zuWellPipe = \App\Models\Pipes\ZuWellPipe::where('well_id', $well->id)->first();
+                    if(empty($zuWellPipe)) {
+                        if(empty($well->zu)) continue;
+                        \App\Models\Pipes\ZuWellPipe::create(
+                            [
+                                'gu_id' => $well->zu->gu_id,
+                                'zu_id' => $well->zu_id,
+                                'well_id' => $well->id,
+                                'coordinates' => $coords
+                            ]
+                        );
+                    }
+                    else {
+                        $zuWellPipe->coordinates = $coords;
+                        $zuWellPipe->save();
+                    }
+                }
+            }
+
+            $coords = json_decode($row[21]);
+            $prevWellName = $row[19];
         }
     }
 
