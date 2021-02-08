@@ -101,7 +101,7 @@ export default {
     'period',
     'periodSelectFunc',
     'currencyChartData',
-    'usdChartIsLoading',
+    'isPricesChartLoading',
     'mainTitle',
     'secondTitle',
     'tableData'

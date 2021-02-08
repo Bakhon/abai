@@ -204,14 +204,10 @@
                 @click="changeTable('2')"
                 :style="`${tableHover2}`"
               >
-                <!--              <td class="vc-select-table"-->
-                <!--                  style="width: 200px; border-left: 10px solid #0f1430"-->
-                <!--                  :style="`${tableHover2}`"-->
-                <!--              >-->
                 <div class="nu">
                   <div class="number d-flex justify-content-between">
                     <div>
-                      {{ oilNow }}
+                      {{ prices['oil']['current'] }}
                     </div>
                     <div class="mt-1">
                       <img src="/img/icons/link.svg" />
@@ -237,15 +233,15 @@
                   ></div>
                   <div
                     :class="`${
-                      getDifferenceOilRate(oilLast[1], oilNow)
+                      getDifferenceOilRate(prices['oil']['previous'], prices['oil']['current'])
                     }`"
                   ></div>
                   <div class="txt2-2">
-                    {{ Math.abs(getDiffProcentLastP(oilLast[1], oilNow)) }} %
+                    {{ Math.abs(getDiffProcentLastP(prices['oil']['previous'], prices['oil']['current'])) }} %
                   </div>
                   <div class="txt3">
-                    <!-- vs сентябрь -->{{ trans("visualcenter.vsSept") }}
-                    {{ new Date(oilLast[0]).toLocaleDateString() }}
+                    {{ trans("visualcenter.vsSept") }}
+                    {{ new Date(prices['oil']['previousFetchDate']).toLocaleDateString() }}
                   </div>
                 </div>
               </td>
@@ -283,8 +279,8 @@
                   ></div>
                   <div class="txt2-2">{{ dailyCurrencyChangeUsd }}%</div>
                   <div class="txt3">
-                    <!-- vs вчера  -->{{ trans("visualcenter.vsSept") }}
-                    {{ new Date(usdLast[0]).toLocaleDateString() }}
+                    {{ trans("visualcenter.vsSept") }}
+                    {{ new Date(prices['usd']['previousFetchDate']).toLocaleDateString() }}
                   </div>
                 </div>
               </td>
@@ -1522,9 +1518,9 @@
         :period-select-func.sync="periodSelectFunc"
         :currency-chart-data.sync="currencyChartData"
         :table-data.sync="oilRatesDataTableForCurrentPeriod"
-        :usd-chart-is-loading.sync="usdChartIsLoading"
+        :usd-chart-is-loading.sync="isPricesChartLoading"
         @period-select-usd="
-          getOilNow(timeSelect, periodSelect(selectedOilPeriod))
+          updateCurrentOilPrices(timeSelect, periodSelect(selectedOilPeriod))
         "
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.oilPricedynamic')"
@@ -1539,7 +1535,7 @@
         :period-select-func.sync="periodSelectFunc"
         :currency-chart-data.sync="currencyChartData"
         :table-data.sync="usdRatesDataTableForCurrentPeriod"
-        :usd-chart-is-loading.sync="usdChartIsLoading"
+        :usd-chart-is-loading.sync="isPricesChartLoading"
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.kursHeader')"
         :second-title="'USD НБ РК'"

@@ -32,15 +32,14 @@ class OilParse extends Command
         parent::__construct();
     }
 
-    public function getLastDayRate($searchDate)
+    public function getOilRates()
     {
       $this->deleteOldRates();
 
       $url = "https://yandex.ru/news/quotes/graph_1006.json";
-      $dataObj = json_decode(file_get_contents($url), true);
-      if (!$dataObj) return;
-
-      $oilPricesByDate = array_values($dataObj['prices']);
+      $data = json_decode(file_get_contents($url), true);
+      if (!$data) return;
+      $oilPricesByDate = array_values($data['prices']);
       foreach($oilPricesByDate as $item) {
         list($date,$price) = $item;
         $this->insertOilRatesInDB($price,$date);
@@ -56,19 +55,17 @@ class OilParse extends Command
 
     public function insertOilRatesInDB ($price, $date)
     {
-      $priceDate = $this->formatDate($date, 'Y.m.d');
-        DB::table('oil_rate')->insert(
-          [
-              'value' => $price,
-              'date' => $priceDate,
-          ]
-        );
+      OilRate::create([
+        'value' => $price,
+        'date' => $this->formatDate($date),
+      ]);
     }
 
-    public function formatDate($dateInMs, $format)
+    public function formatDate($dateInMs)
     {
-      $seconds = $dateInMs / 1000;
-      return date($format, $seconds);
+      $msInThreeHours = 3 * 60 * 60 * 1000;
+      $seconds = ($dateInMs - $msInThreeHours) / 1000;
+      return date('Y-m-d H:i:s', $seconds);
     }
 
     /**
@@ -78,7 +75,6 @@ class OilParse extends Command
      */
      public function handle()
      {
-         $dateYesterday = date('Y.m.d', strtotime('-1 days'));
-         $this->getLastDayRate($dateYesterday);
+         $this->getOilRates();
      }
 }
