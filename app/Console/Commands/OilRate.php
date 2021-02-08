@@ -75,10 +75,6 @@ class OilParse extends Command
      */
      public function handle()
      {
-<<<<<<< HEAD
          $this->getOilRates();
-=======
-         $this->getLastDayRate();
->>>>>>> 7598df6dc00ddc2a0bc5a17d7ff888c86c2d9164
      }
 }
