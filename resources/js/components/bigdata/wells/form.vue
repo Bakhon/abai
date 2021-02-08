@@ -193,6 +193,7 @@ export default {
             title: 'Проект бурения',
             blocks: [
               {
+                title: 'Скважина',
                 items: [
                   {
                     code: 'date_start_drilling',
@@ -356,6 +357,9 @@ export default {
       border-left: 1px solid #454D7D;
       height: 600px;
       width: 50%;
+      &_full{
+        width: 100%;
+      }
 
       &:first-child {
         border-left: none;

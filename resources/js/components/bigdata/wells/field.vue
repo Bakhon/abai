@@ -134,6 +134,8 @@ export default {
 </script>
 <style lang="scss">
 .bd-form-field {
+  max-width: 600px;
+
 
   input.form-control {
     background: #1F2142;
