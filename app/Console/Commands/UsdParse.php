@@ -15,7 +15,7 @@ class UsdParse extends Command
      *
      * @var string
      */
-    protected $signature = 'parse:usd';
+    protected $signature = 'parse-usd:cron';
 
     /**
      * The console command description.

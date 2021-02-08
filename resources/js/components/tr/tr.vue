@@ -1643,7 +1643,7 @@
                   <td v-if="!edit">
                     <span v-if="row.h_up_perf_md[0] != null">
                       {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
-                    </span>ок
+                    </span>
                   </td>
                   <td v-if="edit">
                     {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
