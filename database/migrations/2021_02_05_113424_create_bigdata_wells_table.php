@@ -32,7 +32,7 @@ class CreateBigdataWellsTable extends Migration
             $table->timestamp('date_end_drilling')->nullable();
             $table->unsignedBigInteger('company')->nullable();
             $table->string('agreement_num');
-            $table->timestamp('agreement_date');
+            $table->timestamp('agreement_date')->nullable();
             $table->string('planned_depth')->nullable();
             $table->string('avg_gasoil_ratio')->nullable();
             $table->string('planned_liquid_rate')->nullable();
