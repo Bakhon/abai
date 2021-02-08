@@ -32,7 +32,7 @@ class OilParse extends Command
         parent::__construct();
     }
 
-    public function getLastDayRate()
+    public function getOilRates()
     {
       $this->deleteOldRates();
 
@@ -78,6 +78,6 @@ class OilParse extends Command
      */
      public function handle()
      {
-         $this->getLastDayRate();
+         $this->getOilRates();
      }
 }
