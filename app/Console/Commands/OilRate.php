@@ -32,7 +32,7 @@ class OilParse extends Command
         parent::__construct();
     }
 
-    public function getLastDayRate($searchDate)
+    public function getLastDayRate()
     {
       $this->deleteOldRates();
 
@@ -78,7 +78,6 @@ class OilParse extends Command
      */
      public function handle()
      {
-         $dateYesterday = date('Y.m.d', strtotime('-1 days'));
-         $this->getLastDayRate($dateYesterday);
+         $this->getLastDayRate();
      }
 }
