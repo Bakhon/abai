@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \App\Console\Commands\UsdParse::class
+        \App\Console\Commands\UsdParse::class,
+        \App\Console\Commands\OilParse::class,
     ];
 
     /**
@@ -24,8 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('parse-usd:cron')->dailyAt('14:33')->timezone('Europe/Kiev');
-        $schedule->command('parse-usd:cron')->dailyAt('12:05')->timezone('Europe/Kiev');
+        $schedule->command('parse-usd:cron')->dailyAt('15:33')->timezone('Europe/Moscow');
+        $schedule->command('parse-usd:cron')->dailyAt('13:05')->timezone('Europe/Moscow');
+        $schedule->command('parse-oil:cron')->dailyAt('06:30')->timezone('Europe/Moscow');
     }
 
     /**

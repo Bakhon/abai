@@ -94,7 +94,7 @@
 
                   <div class="percent-header" v-if="oil_dlv_factDay">
                     {{
-                      getDiffProcentLastBigN(                    
+                      getDiffProcentLastBigN(
                         oil_dlv_factDay,
                         oil_dlv_planDay
                       )
@@ -228,9 +228,17 @@
 
                 <div class="percent-currency">
                   <div
-                    :class="`${getColor2(
-                      getDiffProcentLastP(oilLast[1], oilNow)
-                    )}`"
+                    class="arrow"
+                    v-if="dailyCurrencyChangeIndexOil === 'UP'"
+                  ></div>
+                  <div
+                    class="arrow2"
+                    v-if="dailyCurrencyChangeIndexOil === 'DOWN'"
+                  ></div>
+                  <div
+                    :class="`${
+                      getDifferenceOilRate(oilLast[1], oilNow)
+                    }`"
                   ></div>
                   <div class="txt2-2">
                     {{ Math.abs(getDiffProcentLastP(oilLast[1], oilNow)) }} %
@@ -275,7 +283,8 @@
                   ></div>
                   <div class="txt2-2">{{ dailyCurrencyChangeUsd }}%</div>
                   <div class="txt3">
-                    <!-- vs вчера  -->{{ trans("visualcenter.vsYest") }}
+                    <!-- vs вчера  -->{{ trans("visualcenter.vsSept") }}
+                    {{ new Date(usdLast[0]).toLocaleDateString() }}
                   </div>
                 </div>
               </td>
@@ -292,11 +301,11 @@
           <div class="row px-4 mt-3">
             <div class="col dropdown dropdown4 font-weight">
                  <!--<input type="checkbox" id="menu" />-->
-              
+
               <div
                 class="button1"
                 :style="`${buttonHover1}`"
-                
+
               ><div class="button1-vc-inner col-10"
                @click="
                   getProduction(
@@ -379,7 +388,7 @@
                  </label>-->
               </div>
 
-              
+
             </div>
             <div class="col dropdown dropdown4 font-weight">
               <div
@@ -407,7 +416,7 @@
                 class="btn btn-primary dropdown-toggle position-button-vc col-2"
                 data-toggle="dropdown"
               ></button>
-              
+
 
               <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                 <li class="center-li row px-4" @click="changeMenu('102')">
@@ -1506,22 +1515,26 @@
 
       <visual-center-usd-table
         :style="`${Table2}`"
+        :period.sync="period"
         :selected-usd-period.sync="selectedOilPeriod"
         :usd-rates-data.sync="oilRatesData"
+        :chart-data.sync="oilRatesDataChartForCurrentPeriod"
+        :period-select-func.sync="periodSelectFunc"
+        :currency-chart-data.sync="currencyChartData"
+        :table-data.sync="oilRatesDataTableForCurrentPeriod"
+        :usd-chart-is-loading.sync="usdChartIsLoading"
         @period-select-usd="
           getOilNow(timeSelect, periodSelect(selectedOilPeriod))
         "
-        :period-select-func.sync="periodSelectFunc"
-        :currency-chart-data.sync="currencyChartData"
-        :usd-chart-is-loading.sync="usdChartIsLoading"
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.oilPricedynamic')"
-        :second-title="''"
+        :second-title="'USD Yandex quote'"
       />
       <!-- 'Динамика цены на нефть' -->
       <visual-center-usd-table
         :style="`${Table3}`"
         :period.sync="period"
+        :selected-usd-period.sync="selectedOilPeriod"
         :usd-rates-data.sync="usdRatesData"
         :period-select-func.sync="periodSelectFunc"
         :currency-chart-data.sync="currencyChartData"
@@ -2132,7 +2145,7 @@
 
                         <div class="font">
                         {{ formatVisTableNumber2(item.plan) }}</div> <div class="dynamic right name-ed-izmeren"
-                         
+
                         > скв. </div>
                       </td>
                         <td
@@ -2222,7 +2235,7 @@
             </div>
 
             <div class="row px-4">
-              
+
               <div class="col px-2">
                 <div
                   class="button2"
@@ -2371,10 +2384,10 @@
                         <div
                           v-if="index === 0"
                           class="center"
-                         
+
                         >
                           <!--
-                             style="font-size: 12px; line-height: 1.2" 
+                             style="font-size: 12px; line-height: 1.2"
                             План -->{{ trans("visualcenter.plan") }}
                         </div>
                        {{ formatVisTableNumber2(item.fact) }} т.
@@ -2423,7 +2436,7 @@
                     Math.abs(
                       getDiffProcentLastP(
                         prod_wells_work,
-                        prod_wells_workPercent                        
+                        prod_wells_workPercent
                       )
                     )
                   }}%
@@ -2460,7 +2473,7 @@
                 <div class="txt2-2">
                   {{
                     Math.abs(
-                      getDiffProcentLastP(                        
+                      getDiffProcentLastP(
                         prod_wells_idle,
                         prod_wells_idlePercent
                       )
@@ -2517,7 +2530,7 @@
                       Math.abs(
                         getDiffProcentLastP(
                           inj_wells_work,
-                          inj_wells_workPercent                          
+                          inj_wells_workPercent
                         )
                       )
                     }}%
@@ -2559,7 +2572,7 @@
                         getDiffProcentLastP(
                           inj_wells_idle,
                           inj_wells_idlePercent
-                          
+
                         )
                       )
                     }}%
@@ -2917,7 +2930,7 @@
       font-weight: normal;
     }
   }
-  
+
 }
 
 
