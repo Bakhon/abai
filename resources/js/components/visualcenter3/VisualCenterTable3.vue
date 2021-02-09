@@ -240,7 +240,7 @@
                     {{ Math.abs(getDiffProcentLastP(prices['oil']['previous'], prices['oil']['current'])) }} %
                   </div>
                   <div class="txt3">
-                    {{ trans("visualcenter.vsSept") }}
+                    {{ trans("visualcenter.vsSeparator") }}
                     {{ new Date(prices['oil']['previousFetchDate']).toLocaleDateString() }}
                   </div>
                 </div>
@@ -279,7 +279,7 @@
                   ></div>
                   <div class="txt2-2">{{ dailyCurrencyChangeUsd }}%</div>
                   <div class="txt3">
-                    {{ trans("visualcenter.vsSept") }}
+                    {{ trans("visualcenter.vsSeparator") }}
                     {{ new Date(prices['usd']['previousFetchDate']).toLocaleDateString() }}
                   </div>
                 </div>
@@ -1700,7 +1700,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3">
+              <div class="vis-table vis-table-small px-3 col-sm-5">
                 <table v-if="innerWells.length" class="table4 w-100">
                   <tbody>
                     <tr
@@ -1735,7 +1735,7 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col">
+              <div class="col-sm-5">
                 <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="innerWellsNagDataForChart"
@@ -1908,7 +1908,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3">
+              <div class="vis-table vis-table-small px-3 col-sm-5">
                 <table v-if="innerWells2.length" class="table4 w-100">
                   <tbody>
                     <tr
@@ -1945,7 +1945,7 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col">
+              <div class="col-sm-5">
                 <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="innerWellsProd2DataForChart"
@@ -2099,7 +2099,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small2 px-3">
+              <div class="vis-table vis-table-small2 px-3 col-sm-5">
                 <table
                   v-if="otmData.length"
                   class="table7 w-100"
@@ -2142,7 +2142,7 @@
                         <div class="font">
                         {{ formatVisTableNumber2(item.plan) }}</div> <div class="dynamic right name-ed-izmeren"
 
-                        > скв. </div>
+                        > {{item.metricSystem}} </div>
                       </td>
                         <td
                         @click="otmSelectedRow = item.code"
@@ -2194,7 +2194,7 @@
                             opacity: 0.6;
                           "
                         >
-                         скв.
+                         {{item.metricSystem}}
                         </div>
                       </div>
                     </td>
@@ -2202,7 +2202,7 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col">
+              <div class="col-sm-5">
                 <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="otmDataForChart"
@@ -2347,7 +2347,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3">
+              <div class="vis-table vis-table-small px-3 col-sm-5">
                 <table
                   v-if="chemistryData.length"
                   class="table4 w-100"
@@ -2392,7 +2392,7 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col">
+              <div class="col-sm-5">
               <div  class="name-chart-left">Объём хим. реагента, тонны</div>
                 <visual-center3-wells
                   v-if="chemistryDataForChart"

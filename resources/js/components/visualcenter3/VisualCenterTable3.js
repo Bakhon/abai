@@ -2527,6 +2527,7 @@ if (company!='all')
           code: 'otm_iz_burenia_skv_fact',
           plan: otmData[0]['otm_iz_burenia_skv_plan'],
           fact: otmData[0]['otm_iz_burenia_skv_fact'],
+          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
         },
         {
           name:
@@ -2535,6 +2536,7 @@ if (company!='all')
           code: 'otm_burenie_prohodka_fact',
           plan: otmData[0]['otm_burenie_prohodka_plan'],
           fact: otmData[0]['otm_burenie_prohodka_fact'],
+          metricSystem: this.trans("visualcenter.otm_metric_system_meter"),
         },
         {
           name:
@@ -2543,6 +2545,7 @@ if (company!='all')
           code: 'otm_krs_skv_fact',
           plan: otmData[0]['otm_krs_skv_plan'],
           fact: otmData[0]['otm_krs_skv_fact'],
+          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
         },
         {
           name:
@@ -2551,6 +2554,7 @@ if (company!='all')
           code: 'otm_prs_skv_fact',
           plan: otmData[0]['otm_prs_skv_plan'],
           fact: otmData[0]['otm_prs_skv_fact'],
+          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
         },
       )
 
