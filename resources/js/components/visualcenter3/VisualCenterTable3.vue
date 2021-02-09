@@ -1274,6 +1274,7 @@
                           ? 'tdStyleLight width-accidnets'
                           : 'tdStyleLight2 width-accidnets '
                       "
+
                     >
                       <div v-if="index === 0" class="center">ОПЕК+</div>
                       <!--123-->
@@ -1287,6 +1288,7 @@
                         (item2 == 'oil_fact' && oneDate == 1) ||
                         (item2 == 'oil_dlv_fact' && oneDate == 1)
                       "
+                      colspan="8"
                       :class="
                         index % 2 === 0
                           ? 'tdStyle width-accidnets '
@@ -1700,7 +1702,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3 col-sm-5">
+              <div class="vis-table px-3 col-sm-7">
                 <table v-if="innerWells.length" class="table4 w-100">
                   <tbody>
                     <tr
@@ -1709,34 +1711,36 @@
                     >
                       <td
                         @click="innerWellsSelectedRow = item.code"
-                        class="w-50"
+                        class="width-40"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: innerWellsSelectedRow === item.code,
                         }"
                         style="cursor: pointer"
                       >
-                        <span>
+                        <span class="data-titles">
                           {{ item.name }}
                         </span>
                       </td>
                       <td
                         @click="innerWellsSelectedRow = item.code"
-                        class="w-25 tdNumber"
+                        class="width-20 tdNumber"
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                         style="cursor: pointer"
                       >
+                      <div class="data-values">
                         {{ formatVisTableNumber2(item.value) }}
-                        <span>
-                          <!-- скважин -->{{ trans("visualcenter.skv") }}
+                        <span class="data-metrics">
+                          {{ trans("visualcenter.skv") }}
                         </span>
+                      </div>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="col-sm-5">
-                <div  class="name-chart-left">Кол-во скважин</div>
+                <div  class="name-chart-left">{{trans("visualcenter.wells_count")}}</div>
                 <visual-center3-wells
                   v-if="innerWellsNagDataForChart"
                   :chartData="innerWellsNagDataForChart"
@@ -1908,7 +1912,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3 col-sm-5">
+              <div class="vis-table px-3 col-sm-7">
                 <table v-if="innerWells2.length" class="table4 w-100">
                   <tbody>
                     <tr
@@ -1917,29 +1921,31 @@
                     >
                       <td
                         @click="innerWells2SelectedRow = item.code"
-                        class="w-50"
+                        class="width-40"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: innerWells2SelectedRow === item.code,
                         }"
                         style="cursor: pointer"
                       >
-                        <span>
+                        <span class="data-titles">
                           {{ item.name }}
                         </span>
                       </td>
                       <td
                         @click="innerWells2SelectedRow = item.code"
-                        class="w-25 text-center"
+                        class="width-20 text-center"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
                         style="cursor: pointer"
                       >
-                         {{ formatVisTableNumber2(item.value) }}
-                        <span>
-                          <!-- скважин -->{{ trans("visualcenter.skv") }}
+                      <div class="data-values">
+                        {{ formatVisTableNumber2(item.value) }}
+                        <span class="data-metrics">
+                          {{trans("visualcenter.otm_metric_system_wells")}}
                         </span>
+                      </div>
                       </td>
                     </tr>
                   </tbody>
@@ -2119,7 +2125,7 @@
                         }"
                         style="cursor: pointer"
                       >
-                        <span class="otm-data-titles">
+                        <span class="data-titles">
                           {{ item.name }}
                         </span>
                       </td>
@@ -2139,9 +2145,9 @@
                           <!-- План -->{{ trans("visualcenter.plan") }}
                         </div>
 
-                        <div class="otm-data-values">
+                        <div class="data-values">
                           {{ formatVisTableNumber2(item.plan) }}
-                          <span class="otm-data-metrics">
+                          <span class="data-metrics">
                             {{item.metricSystem}}
                           </span>
                         </div>
@@ -2161,7 +2167,7 @@
                         >
                           <!-- Факт -->{{ trans("visualcenter.fact") }}
                         </div>
-                        <div class="otm-data-values">
+                        <div class="data-values">
                           {{formatVisTableNumber2(item.fact) }}
                         </div>
                         </td>
@@ -2173,10 +2179,10 @@
                         >
                       <div v-if="index === 0" class="center">+/-</div>
 
-                      <div class="otm-data-values" v-if="item.plan">
+                      <div class="data-values" v-if="item.plan">
                         <span
                           v-if="item.plan"
-                          class="otm-triangle"
+                          class="otm-triangle-responsive"
                           :style="`${getColor(
                             item.fact -
                               item.plan
@@ -2190,7 +2196,7 @@
                             )
                           )
                         }}
-                        <span class="otm-data-metrics">
+                        <span class="data-metrics">
                           {{item.metricSystem}}
                         </span>
                       </div>
@@ -2344,7 +2350,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3 col-sm-5">
+              <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="chemistryData.length"
                   class="table4 w-100"
@@ -2357,18 +2363,20 @@
                     >
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="w-50"
+                        class="width-40"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: chemistrySelectedRow === item.code,
                         }"
                         style="cursor: pointer"
                       >
+                      <span class="data-titles">
                         {{ item.name }}
+                      </span>
                       </td>
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="w-25 text-center"
+                        class="width-20 text-center"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
@@ -2379,11 +2387,16 @@
                           class="center"
 
                         >
-                          <!--
-                             style="font-size: 12px; line-height: 1.2"
-                            План -->{{ trans("visualcenter.plan") }}
+                        <span class="data-column-name">
+                          {{ trans("visualcenter.plan") }}
+                        </span>
                         </div>
-                       {{ formatVisTableNumber2(item.fact) }} т.
+                        <div class="data-values">
+                          {{ formatVisTableNumber2(item.fact) }}
+                          <span class="data-metrics">
+                            {{item.metricSystem}}
+                          </span>
+                       </div>
                       </td>
                     </tr>
                   </tbody>
@@ -2995,30 +3008,33 @@
   .width-20 {
     width: 20% !important;
   }
-  .otm-data-titles {
+  .data-titles {
     font-family: "HarmoniaSansProCyr-Regular"!important;
     font-style: normal;
     font-size: 16px;
   }
-  .otm-data-values {
+  .data-values {
     font-family: "Bold";
     font-style: normal;
     font-size: 24px;
   }
-  .otm-data-metrics {
+  .data-metrics {
     font-family: "Harmonia-sans, sans-serif";
     font-style: normal;
     font-size: 10px;
     margin-left: 2%;
   }
-  .otm-triangle {
+  .data-column-name {
+    font-size: 12px;
+    font-family: "Harmonia-sans, sans-serif";
+    font-style: normal;
+  }
+  .otm-triangle-responsive {
     border: 6px solid transparent;
     height: 6px;
-    margin-top:13px !important;
     margin-right: 5px;
     width: 6px;
     float: left;
   }
-
 
 </style>
