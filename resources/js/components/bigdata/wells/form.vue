@@ -1,5 +1,6 @@
 <template>
   <div class="bd-main-block">
+    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">Текущие замеры по ГДИС</p>
       <div class="block-three-fullscreen">
@@ -263,34 +264,32 @@ export default {
   },
   methods: {
     submit() {
-      if (this.$refs.form.checkValidity()) {
 
-        this.axios.post(this.action, this.formValues)
-            .then(data => {
-              this.errors = []
-              this.formValues.map(item => '')
-              this.$refs.form.reset()
-              alert('Ваша форма успешно отправлена')
-            })
-            .catch(error => {
-              this.errors = error.response.data.errors
+      this.axios.post(this.action, this.formValues)
+          .then(data => {
+            this.errors = []
+            this.formValues.map(item => '')
+            this.$refs.form.reset()
+            Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
+          })
+          .catch(error => {
+            this.errors = error.response.data.errors
 
-              for(const [tabIndex, tab] of Object.entries(this.form.tabs)) {
-                for(const block of tab.blocks) {
-                  for(const item of block.items) {
-                    if(typeof this.errors[item.code] !== 'undefined') {
-                      this.activeTab = parseInt(tabIndex)
-                      return false
-                    }
+            Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+
+            for (const [tabIndex, tab] of Object.entries(this.form.tabs)) {
+              for (const block of tab.blocks) {
+                for (const item of block.items) {
+                  if (typeof this.errors[item.code] !== 'undefined') {
+                    this.activeTab = parseInt(tabIndex)
+                    return false
                   }
                 }
               }
+            }
 
-            })
+          })
 
-      } else {
-        this.$refs.form.reportValidity()
-      }
     },
     changeTab(index) {
       this.activeTab = index
@@ -357,7 +356,8 @@ export default {
       border-left: 1px solid #454D7D;
       height: 600px;
       width: 50%;
-      &_full{
+
+      &_full {
         width: 100%;
       }
 
@@ -384,15 +384,19 @@ export default {
         &::-webkit-scrollbar {
           width: 4px;
         }
+
         &::-webkit-scrollbar-track {
           background: #20274F;
         }
+
         &::-webkit-scrollbar-thumb {
           background: #656A8A;
         }
+
         &::-webkit-scrollbar-thumb:hover {
           background: #656A8A;
         }
+
         &::-webkit-scrollbar-corner {
           background: #20274F;
         }
