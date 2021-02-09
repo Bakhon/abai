@@ -227,4 +227,7 @@ return array (
   'skvs' => 'скважины',
   'rent' => 'рентабельные',
   'nerent' => 'нерентабельные',
+  'vsSeparator' => 'vs',
+  'otm_metric_system_meter' => 'м.',
+  'otm_metric_system_wells' => 'скв.',
 );
