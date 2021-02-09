@@ -240,7 +240,7 @@
                     {{ Math.abs(getDiffProcentLastP(prices['oil']['previous'], prices['oil']['current'])) }} %
                   </div>
                   <div class="txt3">
-                    {{ trans("visualcenter.vsSept") }}
+                    {{ trans("visualcenter.vsSeparator") }}
                     {{ new Date(prices['oil']['previousFetchDate']).toLocaleDateString() }}
                   </div>
                 </div>
@@ -279,7 +279,7 @@
                   ></div>
                   <div class="txt2-2">{{ dailyCurrencyChangeUsd }}%</div>
                   <div class="txt3">
-                    {{ trans("visualcenter.vsSept") }}
+                    {{ trans("visualcenter.vsSeparator") }}
                     {{ new Date(prices['usd']['previousFetchDate']).toLocaleDateString() }}
                   </div>
                 </div>
