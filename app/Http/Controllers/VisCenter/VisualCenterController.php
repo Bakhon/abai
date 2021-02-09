@@ -5,6 +5,7 @@ namespace App\Http\Controllers\VisCenter;
 use App\Http\Controllers\Controller;
 use App\Models\DZO\DZOcalc;
 use App\Models\UsdRate;
+use App\Models\OilRate;
 use App\Models\VisCenter\ImportForms\DZOcalc as ImportFormsDZOcalc;
 use App\Models\VisCenter\ImportForms\DZOstaff;
 use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
@@ -77,11 +78,17 @@ class VisualCenterController extends Controller
         return response()->json($data);
     }
 
+    public function getOilRates() {
+      $oilRatesData = OilRate::query()
+          ->get()
+          ->toArray();
+      return response()->json($oilRatesData);
+    }
+
     public function getCurrency(Request $request)
     {
-        $date = date('Y-m-d', strtotime($request->fdate));
         $udsRate = DB::table('usd_rate')
-            ->where('date', '=', $date)
+            ->orderBy('id', 'DESC')
             ->select('value as description', 'change', 'index', 'date')
             ->first();
         return response()->json($udsRate);

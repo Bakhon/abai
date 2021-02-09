@@ -49,6 +49,7 @@ Route::group(
                     'geteconomicpivotdata'
                 );
                 Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
+
                 // visual center
                 Route::get('/visualcenter', 'VisCenter\VisualCenterController@visualcenter')->name('visualcenter');
                 Route::get('/visualcenter2', 'VisCenter\VisualCenterController@visualcenter2')->name('visualcenter2');
@@ -67,6 +68,7 @@ Route::group(
                 Route::get("/getcurrency", "VisCenter\VisualCenterController@getCurrency");
                 Route::get("/getcurrencyperiod", "VisCenter\VisualCenterController@getCurrencyPeriod");
                 Route::get("/get-usd-rates", "VisCenter\VisualCenterController@getUsdRates");
+                Route::get("/get-oil-rates", "VisCenter\VisualCenterController@getOilRates");
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
