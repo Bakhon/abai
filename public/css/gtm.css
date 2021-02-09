@@ -1,7 +1,3 @@
-.gtm-menu-block {
-    margin: 0 1rem;
-}
-
 .gtm-menu div {
     font-size: 1.2rem;
     font-weight: 700;
@@ -18,3 +14,70 @@
     color: white;
     border-bottom: 0.2rem solid white;
 }
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.block-header {
+    background: #454D7D 32%;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 2.4rem;
+}
+
+.gtm-map-img {
+    height: 350px;
+}
+
+/*mobile*/
+@media screen and (max-width : 1600px) {
+    .gtm-map-img {
+        height: 320px;
+    }
+}
+
+@media screen and (max-width : 1500px) {
+    .gtm-map-img {
+        height: 300px;
+    }
+}
+
+@media screen and (max-width : 1400px) {
+    .gtm-menu div {
+        font-size: 1rem;
+        line-height: 2.8rem;
+    }
+
+    .gtm-map-img {
+        height: 280px;
+    }
+}
+
+@media screen and (max-width : 1300px) {
+    .gtm-map-img {
+        height: 240px;
+    }
+}
+
+@media screen and (max-width : 1200px) {
+    .gtm-menu div {
+        font-size: 0.8rem;
+        line-height: 2.4rem;
+    }
+
+    .gtm-map-img {
+        height: 210px;
+    }
+}
+
+@media screen and (max-width : 991px) {
+    .gtm-menu {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width : 768px) {
+}
+

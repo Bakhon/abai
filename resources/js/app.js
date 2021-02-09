@@ -88,6 +88,11 @@ Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('gu-form', require('./components/gu/form.vue').default);
 Vue.component('zu-form', require('./components/zu/form.vue').default);
 
+Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
+Vue.component('gtm-podbor-gtm', require('./components/GTM/podborGTM.vue').default);
+Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
+
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
 Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
