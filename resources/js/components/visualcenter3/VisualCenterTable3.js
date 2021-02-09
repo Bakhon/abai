@@ -677,6 +677,7 @@ export default {
       this.oilPeriod = period;
       let uri = this.localeUrl("/get-oil-rates");
       this.setOilDataAndChart(uri);
+      this.isPricesChartLoading = false;
     },
 
     setOilDataAndChart(uri,oilRatesData) {
@@ -689,7 +690,6 @@ export default {
         let oilRatesData = this.getOilRatesData(data);
         this.setQuotes('oil',oilRatesData.for_chart);
         this.setOilPlacements(oilRatesData);
-        this.isPricesChartLoading = false;
       });
     },
 
