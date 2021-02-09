@@ -733,17 +733,10 @@ export default {
     },
 
     setQuotes(type,chartData) {
-      if (type == 'oil') {
-        let sortedData = this.getSortedQuotesData(chartData);
-        this.setPrices(type,'current',sortedData[0][1]);
-        this.setPrices(type,'previous',sortedData[1][1]);
-        this.setPrices(type,'previousFetchDate',sortedData[1][0]);
-      } else {
-        let sortedData = this.getSortedQuotesData(chartData);
-        this.setPrices(type,'current',sortedData[0][1]);
-        this.setPrices(type,'previous',sortedData[1][1]);
-        this.setPrices(type,'previousFetchDate',sortedData[1][0]);
-      }
+      let sortedData = this.getSortedQuotesData(chartData);
+      this.setPrices(type,'current',sortedData[0][1]);
+      this.setPrices(type,'previous',sortedData[1][1]);
+      this.setPrices(type,'previousFetchDate',sortedData[1][0]);
     },
 
     setPrices(type, pricesKey, value) {
