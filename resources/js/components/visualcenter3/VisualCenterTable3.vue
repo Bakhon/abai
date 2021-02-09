@@ -289,26 +289,26 @@
               <tr>-->
           <div class="row px-4 mt-3">
             <div class="col dropdown dropdown4 font-weight">
-                 <!--<input type="checkbox" id="menu" />-->
+              <!--<input type="checkbox" id="menu" />-->
 
-              <div
-                class="button1"
-                :style="`${buttonHover1}`"
-
-              ><div class="button1-vc-inner col-10"
-               @click="
-                  getProduction(
-                    'oil_plan',
-                    'oil_fact',
-                    `${oilChartHeadName}`,
-                    ' тонн',
-                    trans('visualcenter.getoil')
-                  )
-                ">
-                <!-- <label for="menu">-->
-                <div class="icon-all icons1"></div>
-                <div class="txt5">
-                  <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
+              <div class="button1" :style="`${buttonHover1}`">
+                <div
+                  class="button1-vc-inner col-10"
+                  @click="
+                    getProduction(
+                      'oil_plan',
+                      'oil_fact',
+                      `${oilChartHeadName}`,
+                      ' тонн',
+                      trans('visualcenter.getoil')
+                    )
+                  "
+                >
+                  <!-- <label for="menu">-->
+                  <div class="icon-all icons1"></div>
+                  <div class="txt5">
+                    <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
+                  </div>
                 </div>
                 <button
                   :style="`${buttonHover1}`"
@@ -398,14 +398,11 @@
                   </div>
                   <!--  <div class="txt6"> тонн</div>-->
                 </div>
-                <!--  <div class="txt6"> тонн</div>-->
-              </div>
-               <button
-                type="button"
-                class="btn btn-primary dropdown-toggle position-button-vc col-2"
-                data-toggle="dropdown"
-              ></button>
-
+                <button
+                  type="button"
+                  class="btn btn-primary dropdown-toggle position-button-vc col-2"
+                  data-toggle="dropdown"
+                ></button>
 
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                   <li class="center-li row px-4" @click="changeMenu('102')">
