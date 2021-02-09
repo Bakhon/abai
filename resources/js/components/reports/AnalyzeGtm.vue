@@ -94,6 +94,12 @@
 import moment from "moment";
 
 export default {
+  props: {
+    filtersData: {
+      type: Object,
+      required: true
+    }
+  },
   components: {},
   data() {
 

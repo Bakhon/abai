@@ -7,6 +7,7 @@ use App\Http\Controllers\VisCenter\ImportForms\DZOyearController;
 use App\Imports\DZOyearImport;
 use App\Models\DZO\DZOcalc;
 use App\Models\UsdRate;
+use App\Models\OilRate;
 use App\Models\VisCenter\ImportForms\DZOcalc as ImportFormsDZOcalc;
 use App\Models\VisCenter\ImportForms\DZOstaff;
 use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
@@ -79,34 +80,19 @@ class VisualCenterController extends Controller
         return response()->json($data);
     }
 
+    public function getOilRates() {
+      $oilRatesData = OilRate::query()
+          ->get()
+          ->toArray();
+      return response()->json($oilRatesData);
+    }
+
     public function getCurrency(Request $request)
     {
-        $date = date('Y-m-d', strtotime($request->fdate));
         $udsRate = DB::table('usd_rate')
-            ->where('date', '=', $date)
+            ->orderBy('id', 'DESC')
             ->select('value as description', 'change', 'index', 'date')
             ->first();
-        if (!$udsRate) {
-            $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $request->fdate;
-            $dataObj = simplexml_load_file($url);
-            if ($dataObj) {
-                foreach ($dataObj as $item) {
-                    if ($item->title == 'USD') {
-                        if ($item->description && $item->change && $item->index) {
-                            DB::table('usd_rate')->insert(
-                                [
-                                    'value' => $item->description,
-                                    'change' => $item->change,
-                                    'index' => $item->index,
-                                    'date' => $date,
-                                ]
-                            );
-                        }
-                        return response()->json($item);
-                    }
-                }
-            }
-        }
         return response()->json($udsRate);
     }
 

@@ -4,14 +4,32 @@
 
     <div class="form-group1 filter-group select">
       <select
+          class="form-control filter-input
+          select"
+          id="companySelect"
+          :disabled="isLoading"
+          v-model="org"
+      >
+        <option disabled value="">Выберите компанию</option>
+        <option value="АО ОМГ">АО «ОзенМунайГаз»</option>
+        <option value="КБМ">АО «Каражанбасмунай»</option>
+        <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+        <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+        <option value="ММГ">АО «Мангистаумунайгаз»</option>
+      </select>
+    </div>
+
+    <div class="form-group1 filter-group select">
+      <select
           class="form-control filter-input select"
           id="geoStructureSelect"
           :disabled="isLoading"
           v-model="geoStructure"
       >
         <option disabled value="">Выберите геоструктуру</option>
-        <option value="Узень">Узень</option>
-        <option value="Карамандыбас">Карамандыбас</option>
+        <template v-for="(fields, dzo) in filtersData" >
+          <option v-if="org===dzo" v-for="field in fields" :value="field">{{ field }}</option>
+        </template>
       </select>
     </div>
     <div class="form-group1 filter-group select">
@@ -73,12 +91,19 @@
 <script>
 
 export default {
+  props: {
+    filtersData: {
+      type: Object,
+      required: true
+    }
+  },
   components: {},
   data() {
 
     return {
       geoStructure: '',
       fondType: '',
+      org: '',
       end_date: null,
       isLoading: false,
       resultLink: null
@@ -109,7 +134,7 @@ export default {
         geo_structure: this.geoStructure,
         fond: fondTypeByFundId[this.fondType],
         report_date_start: `${this.end_date}`.concat(' 00:00:00'),
-        report_date_end: `${this.end_date}`.concat(' 23:59:59')
+        report_date_end: `${this.end_date}`.concat(' 23:59:59'),
       };
 
       let json_data = JSON.stringify(data);

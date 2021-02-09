@@ -197,14 +197,10 @@
                 @click="changeTable('2')"
                 :style="`${tableHover2}`"
               >
-                <!--              <td class="vc-select-table"-->
-                <!--                  style="width: 200px; border-left: 10px solid #0f1430"-->
-                <!--                  :style="`${tableHover2}`"-->
-                <!--              >-->
                 <div class="nu">
                   <div class="number d-flex justify-content-between">
                     <div>
-                      {{ oilNow }}
+                      {{ prices['oil']['current'] }}
                     </div>
                     <div class="mt-1">
                       <img src="/img/icons/link.svg" />
@@ -221,16 +217,24 @@
 
                 <div class="percent-currency">
                   <div
-                    :class="`${getColor2(
-                      getDiffProcentLastP(oilLast[1], oilNow)
-                    )}`"
+                    class="arrow"
+                    v-if="dailyOilPriceChange === 'UP'"
+                  ></div>
+                  <div
+                    class="arrow2"
+                    v-if="dailyOilPriceChange === 'DOWN'"
+                  ></div>
+                  <div
+                    :class="`${
+                      getDifferenceOilRate(prices['oil']['previous'], prices['oil']['current'])
+                    }`"
                   ></div>
                   <div class="txt2-2">
-                    {{ Math.abs(getDiffProcentLastP(oilLast[1], oilNow)) }} %
+                    {{ Math.abs(getDiffProcentLastP(prices['oil']['previous'], prices['oil']['current'])) }} %
                   </div>
                   <div class="txt3">
-                    <!-- vs сентябрь -->{{ trans("visualcenter.vsSept") }}
-                    {{ new Date(oilLast[0]).toLocaleDateString() }}
+                    {{ trans("visualcenter.vsSeparator") }}
+                    {{ new Date(prices['oil']['previousFetchDate']).toLocaleDateString() }}
                   </div>
                 </div>
               </td>
@@ -268,7 +272,8 @@
                   ></div>
                   <div class="txt2-2">{{ dailyCurrencyChangeUsd }}%</div>
                   <div class="txt3">
-                    <!-- vs вчера  -->{{ trans("visualcenter.vsYest") }}
+                    {{ trans("visualcenter.vsSeparator") }}
+                    {{ new Date(prices['usd']['previousFetchDate']).toLocaleDateString() }}
                   </div>
                 </div>
               </td>
@@ -284,26 +289,26 @@
               <tr>-->
           <div class="row px-4 mt-3">
             <div class="col dropdown dropdown4 font-weight">
-              <!--<input type="checkbox" id="menu" />-->
+                 <!--<input type="checkbox" id="menu" />-->
 
-              <div class="button1" :style="`${buttonHover1}`">
-                <div
-                  class="button1-vc-inner col-10"
-                  @click="
-                    getProduction(
-                      'oil_plan',
-                      'oil_fact',
-                      `${oilChartHeadName}`,
-                      ' тонн',
-                      trans('visualcenter.getoil')
-                    )
-                  "
-                >
-                  <!-- <label for="menu">-->
-                  <div class="icon-all icons1"></div>
-                  <div class="txt5">
-                    <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
-                  </div>
+              <div
+                class="button1"
+                :style="`${buttonHover1}`"
+
+              ><div class="button1-vc-inner col-10"
+               @click="
+                  getProduction(
+                    'oil_plan',
+                    'oil_fact',
+                    `${oilChartHeadName}`,
+                    ' тонн',
+                    trans('visualcenter.getoil')
+                  )
+                ">
+                <!-- <label for="menu">-->
+                <div class="icon-all icons1"></div>
+                <div class="txt5">
+                  <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
                 </div>
                 <button
                   :style="`${buttonHover1}`"
@@ -393,11 +398,14 @@
                   </div>
                   <!--  <div class="txt6"> тонн</div>-->
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-primary dropdown-toggle position-button-vc col-2"
-                  data-toggle="dropdown"
-                ></button>
+                <!--  <div class="txt6"> тонн</div>-->
+              </div>
+               <button
+                type="button"
+                class="btn btn-primary dropdown-toggle position-button-vc col-2"
+                data-toggle="dropdown"
+              ></button>
+
 
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                   <li class="center-li row px-4" @click="changeMenu('102')">
@@ -1541,27 +1549,31 @@
 
       <visual-center-usd-table
         :style="`${Table2}`"
+        :period.sync="period"
         :selected-usd-period.sync="selectedOilPeriod"
         :usd-rates-data.sync="oilRatesData"
-        @period-select-usd="
-          getOilNow(timeSelect, periodSelect(selectedOilPeriod))
-        "
+        :chart-data.sync="oilRatesDataChartForCurrentPeriod"
         :period-select-func.sync="periodSelectFunc"
         :currency-chart-data.sync="currencyChartData"
-        :usd-chart-is-loading.sync="usdChartIsLoading"
+        :table-data.sync="oilRatesDataTableForCurrentPeriod"
+        :usd-chart-is-loading.sync="isPricesChartLoading"
+        @period-select-usd="
+          updateCurrentOilPrices(timeSelect, periodSelect(selectedOilPeriod))
+        "
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.oilPricedynamic')"
-        :second-title="''"
+        :second-title="'USD Yandex quote'"
       />
       <!-- 'Динамика цены на нефть' -->
       <visual-center-usd-table
         :style="`${Table3}`"
         :period.sync="period"
+        :selected-usd-period.sync="selectedOilPeriod"
         :usd-rates-data.sync="usdRatesData"
         :period-select-func.sync="periodSelectFunc"
         :currency-chart-data.sync="currencyChartData"
         :table-data.sync="usdRatesDataTableForCurrentPeriod"
-        :usd-chart-is-loading.sync="usdChartIsLoading"
+        :usd-chart-is-loading.sync="isPricesChartLoading"
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.kursHeader')"
         :second-title="'USD НБ РК'"
@@ -1726,7 +1738,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3">
+              <div class="vis-table vis-table-small px-3 col-sm-5">
                 <table v-if="innerWells.length" class="table4 w-100">
                   <tbody>
                     <tr
@@ -1761,8 +1773,8 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col">
-                <div class="name-chart-left">Кол-во скважин</div>
+              <div class="col-sm-5">
+                <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="innerWellsNagDataForChart"
                   :chartData="innerWellsNagDataForChart"
@@ -1934,7 +1946,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3">
+              <div class="vis-table vis-table-small px-3 col-sm-5">
                 <table v-if="innerWells2.length" class="table4 w-100">
                   <tbody>
                     <tr
@@ -1971,8 +1983,8 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col">
-                <div class="name-chart-left">Кол-во скважин</div>
+              <div class="col-sm-5">
+                <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="innerWellsProd2DataForChart"
                   :chartData="innerWellsProd2DataForChart"
@@ -2125,7 +2137,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small2 px-3">
+              <div class="vis-table vis-table-small2 px-3 col-sm-5">
                 <table
                   v-if="otmData.length"
                   class="table7 w-100"
@@ -2166,9 +2178,9 @@
                         </div>
 
                         <div class="font">
-                          {{ formatVisTableNumber2(item.plan) }}
-                        </div>
-                        <div class="dynamic right name-ed-izmeren">скв.</div>
+                        {{ formatVisTableNumber2(item.plan) }}</div> <div class="dynamic right name-ed-izmeren"
+
+                        > {{item.metricSystem}} </div>
                       </td>
                       <td
                         @click="otmSelectedRow = item.code"
@@ -2194,33 +2206,21 @@
                       >
                         <div v-if="index === 0" class="center">+/-</div>
                         <div
-                          v-if="item.plan"
-                          class="triangle"
-                          :style="`${getColor(item.fact - item.plan)}`"
-                        ></div>
-                        <div class="dynamic font" v-if="item.plan">
-                          {{
-                            new Intl.NumberFormat("ru-RU").format(
-                              Math.abs(item.fact - item.plan)
-                            )
-                          }}
-                          <div
-                            class="right"
-                            style="
-                              font-family: 'Harmonia-sans', sans-serif;
-                              opacity: 0.6;
-                            "
-                          >
-                            скв.
-                          </div>
+                          class="right"
+                          style="
+                            font-family: 'Harmonia-sans', sans-serif;
+                            opacity: 0.6;
+                          "
+                        >
+                         {{item.metricSystem}}
                         </div>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div class="col">
-                <div class="name-chart-left">Кол-во скважин</div>
+              <div class="col-sm-5">
+                <div  class="name-chart-left">Кол-во скважин</div>
                 <visual-center3-wells
                   v-if="otmDataForChart"
                   :chartData="otmDataForChart"
@@ -2363,7 +2363,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3">
+              <div class="vis-table vis-table-small px-3 col-sm-5">
                 <table
                   v-if="chemistryData.length"
                   class="table4 w-100"
@@ -2393,9 +2393,13 @@
                         "
                         style="cursor: pointer; font-size: 30px"
                       >
-                        <div v-if="index === 0" class="center">
+                        <div
+                          v-if="index === 0"
+                          class="center"
+
+                        >
                           <!--
-                             style="font-size: 12px; line-height: 1.2" 
+                             style="font-size: 12px; line-height: 1.2"
                             План -->{{ trans("visualcenter.plan") }}
                         </div>
                         {{ formatVisTableNumber2(item.fact) }} т.
@@ -2404,8 +2408,8 @@
                   </tbody>
                 </table>
               </div>
-              <div class="col">
-                <div class="name-chart-left">Объём хим. реагента, тонны</div>
+              <div class="col-sm-5">
+              <div  class="name-chart-left">Объём хим. реагента, тонны</div>
                 <visual-center3-wells
                   v-if="chemistryDataForChart"
                   :chartData="chemistryDataForChart"

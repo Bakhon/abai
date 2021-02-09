@@ -49,6 +49,7 @@ Route::group(
                     'geteconomicpivotdata'
                 );
                 Route::get('/getoilpivotdata', 'EconomicController@getOilPivotData')->name('getoilpivotdata');
+
                 // visual center
                 Route::get('/visualcenter', 'VisCenter\VisualCenterController@visualcenter')->name('visualcenter');
                 Route::get('/visualcenter2', 'VisCenter\VisualCenterController@visualcenter2')->name('visualcenter2');
@@ -68,6 +69,7 @@ Route::group(
                 Route::get("/getcurrency", "VisCenter\VisualCenterController@getCurrency");
                 Route::get("/getcurrencyperiod", "VisCenter\VisualCenterController@getCurrencyPeriod");
                 Route::get("/get-usd-rates", "VisCenter\VisualCenterController@getUsdRates");
+                Route::get("/get-oil-rates", "VisCenter\VisualCenterController@getOilRates");
                 Route::get('/podborgno', 'gno\GNOController@index')->name('gno');
                 Route::get('/production', 'DruidController@production')->name('production');
                 Route::get('/gtmscor', 'DruidController@gtmscor')->name('gtmscor');
@@ -89,7 +91,6 @@ Route::group(
                 Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
                 Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
                 Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
-                Route::get('/bigdata', 'bd\DBController@bigdata')->name('bigdata');
                 Route::get('/bigdata/reports', 'bd\DBController@reports')->name('bigdata.reports');
                 Route::get('/bigdata/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
                 Route::post('/bigdata/reports/favorite/{report}', 'bd\DBController@addReportToFavorites')->name('bigdata.reports.favorite.add');
@@ -102,6 +103,7 @@ Route::group(
                 Route::get('/export', 'HomeController@export');
                 Route::get('/fa', 'tr\TrController@fa')->name('fa');
                 Route::get('/trfa', 'tr\TrController@trfa')->name('trfa');
+                Route::get('/tr_charts', 'tr\TrController@tr_charts')->name('tr_charts');
                 Route::get('/tech_mode', 'tr\TrController@tech_mode')->name('tech_mode');
 
                 //gno economic

@@ -20,7 +20,6 @@ export default {
       opecDataSummMonth: 0,
       opecDataSumm: 0,
       opecData: 0,
-      oilLast: 0,
       scroll: '',
       opec: 'утв.',
       quarter1: 0,
@@ -168,11 +167,15 @@ export default {
       selectedUsdPeriod: 0,
       selectedDMY: 0,
       periodSelectOil: "",
-      oilPeriod: "",
+      oilPeriod: 7,
+      defaultOilPeriod: 7,
       period: 0,
       // periodUSD: 7,
       timeSelect: "",
-      oilNow: "",
+      prices: {
+        'oil': {},
+        'usd': {}
+      },
       oilChart: "",
       //oil and currency up
       index: "",
@@ -219,14 +222,8 @@ export default {
       currentMonth: [],
       ChartTable: "График",
       date2: new Date().toLocaleString("ru", {
-        /*year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-  weekday: 'long',
-  timezone: 'UTC',*/
-        hour: "numeric",
-        minute: "numeric",
-        //second: 'numeric'
+      hour: "numeric",
+      minute: "numeric",
       }),
 
       date3: new Date().toLocaleString("ru", {
@@ -344,8 +341,8 @@ export default {
       timestampEnd: "",
       dailyCurrencyChangeUsd: 0,
       dailyCurrencyChangeIndexUsd: '',
-      usdChartIsLoading: false,
-      oilChartIsLoading: false,
+      dailyOilPriceChange: '',
+      isPricesChartLoading: false,
       currencyTimeSelect: new Date().toLocaleDateString()
     };
   },
@@ -680,6 +677,100 @@ export default {
       });
     },
 
+    updateCurrentOilPrices(dates,period) {
+      this.isPricesChartLoading = true;
+      this.oilPeriod = period;
+      let uri = this.localeUrl("/get-oil-rates");
+      this.setOilDataAndChart(uri);
+      this.isPricesChartLoading = false;
+    },
+
+    setOilDataAndChart(uri,oilRatesData) {
+      this.axios.get(uri).then((response) => {
+        let data = response.data;
+        if (!data) {
+          console.log("No data");
+          return;
+        }
+        let oilRatesData = this.getOilRatesData(data);
+        this.setQuotes('oil',oilRatesData.for_chart);
+        this.setOilPlacements(oilRatesData);
+      });
+    },
+
+    getOilRatesData(data) {
+      var oilRatesData = {
+        for_chart: [],
+        for_table: []
+      };
+      let previousPrice = 0.00;
+      let self = this;
+      _.forEach(data, function (item) {
+        let changeValue = parseFloat(((item['value'] - previousPrice) / item['value']) * 100).toFixed(2);
+        self.pushOilData(oilRatesData,item,changeValue);
+        self.pushOilChart(oilRatesData,item);
+        previousPrice = parseFloat(item['value']);
+      });
+      return oilRatesData;
+    },
+
+    pushOilData(oilRatesData,item,changeValue) {
+      oilRatesData.for_table.push({
+        date_string: this.$moment(item['date']).format('DD.MM.YYYY'),
+        value: parseFloat(item['value']),
+        change: Math.abs(changeValue),
+        index: changeValue > 0 ? 'UP' : 'DOWN'
+      });
+    },
+
+    pushOilChart(oilRatesData,item) {
+      oilRatesData.for_chart.push([
+        new Date(item['date']).getTime(),
+        parseFloat(item['value']),
+      ]);
+    },
+
+    getSortedQuotesData(chartData) {
+      return _.orderBy(
+        chartData,
+        [0],
+        ["desc"]
+      );
+    },
+
+    setQuotes(type,chartData) {
+      let sortedData = this.getSortedQuotesData(chartData);
+      this.setPrices(type,'current',sortedData[0][1]);
+      this.setPrices(type,'previous',sortedData[1][1]);
+      this.setPrices(type,'previousFetchDate',sortedData[1][0]);
+    },
+
+    setPrices(type, pricesKey, value) {
+      this.prices[type][pricesKey] = value;
+    },
+
+    setDailyOilPriceChange(currentPrice, previousPrice){
+      if (currentPrice > previousPrice){
+        this.dailyOilPriceChange = 'UP';
+      } else {
+        this.dailyOilPriceChange = 'DOWN';
+      }
+    },
+
+    setOilPlacements(oilRatesData) {
+      this.oilRatesData = oilRatesData;
+      this.setDailyOilPriceChange(this.prices['oil']['current'],this.prices['oil']['previous']);
+      if (this.period === 0) {
+        this.oilPeriod = this.defaultOilPeriod;
+      }
+      this.oilRatesData.for_chart = this.oilRatesDataChartForCurrentPeriod();
+    },
+
+    oilRatesDataChartForCurrentPeriod() {
+      return this.oilRatesData.for_chart.slice(this.oilPeriod * -1);
+    },
+
+
     getUsdRatesData() {
       let url = this.localeUrl("/get-usd-rates");
 
@@ -706,6 +797,7 @@ export default {
             ]);
           });
 
+          this.setQuotes('usd',usdRatesData.for_chart);
           this.usdRatesData = usdRatesData;
         } else {
           console.log('No data.');
@@ -713,49 +805,6 @@ export default {
       });
     },
 
-    getOilNow(dates, period) {
-      this.usdChartIsLoading = true;
-      let oilRatesData = {
-        for_chart: [],
-        for_table: []
-      };
-      let uri = "/js/json/graph_1006.json";
-      //let uri =        "https://cors-anywhere.herokuapp.com/" +        "https://yandex.ru/news/quotes/graph_1006.json";
-      this.axios.get(uri).then((response) => {
-        let data = response.data;
-        let self = this;
-        if (data) {
-          let prevValue = 0.00;
-          _.forEach(data.prices, function (item) {
-            let changeValue = parseFloat(((item[1] - prevValue) / item[1]) * 100).toFixed(2);
-            oilRatesData.for_table.push({
-              date_string: self.$moment(item[0]).format('DD.MM.YYYY'),
-              value: parseInt(item[1] * 10) / 10,
-              change: Math.abs(changeValue),
-              index: changeValue > 0 ? 'UP' : 'DOWN'
-            });
-
-            oilRatesData.for_chart.push([
-              new Date(item[0]).getTime(),
-              parseInt(item[1] * 10) / 10,
-            ]);
-            prevValue = item[1];
-          });
-          let oilNow = _.orderBy(
-            oilRatesData.for_chart,
-            [0],
-            ["desc"]
-          );
-
-          this.oilNow = oilNow[0][1];//_.last(oilRatesData.for_chart)[1];
-          this.oilLast = oilNow[1];
-          this.oilRatesData = oilRatesData;
-        } else {
-          console.log("No data");
-        }
-        this.usdChartIsLoading = false;
-      });
-    },
     //currency and oil up
     pushBign(bign) {
       // @click="pushBign('bign1')"
@@ -795,6 +844,12 @@ export default {
       }
     },
 
+    getDifferenceOilRate(currentRate, previousRate) {
+      if (currentRate && previousRate) {
+        return ((previousRate / currentRate - 1) * 100).toFixed(2);
+      }
+    },
+
     getColor2(i) {
       if (i < 0) return "arrow";
       if (i > 0) return "arrow2";
@@ -816,7 +871,6 @@ export default {
       }
       if (this.selectedOilPeriod != undefined) {
       }
-
       localStorage.setItem("selectedOilPeriod", this.selectedOilPeriod);
 
       return menuDMY;
@@ -1045,13 +1099,13 @@ export default {
 
       /* if (change == "b14") {
          let hover = this.buttonHover14;
-         if (hover) {       
+         if (hover) {
            this.opec = 'утв.';
- 
-         } else {       
+
+         } else {
            this.opec = 'ОПЕК+';
          }
-      
+
        }*/
 
 
@@ -2110,6 +2164,10 @@ export default {
       this.getCurrencyNow(new Date().toLocaleDateString());
       this.getOilNow(this.timeSelect, this.period);
       this.getAccidentTotal();
+      this.updateCurrentOilPrices(this.timeSelect,this.period);
+
+
+
     },
 
 
@@ -2180,27 +2238,27 @@ export default {
       if (i != 1) {
         productionPlanAndFactMonthWellsName.push(
           {
-            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name:   // 'Эксплуатационный фонд' 
+            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name:   // 'Эксплуатационный фонд'
               this.trans("visualcenter.fond_nagnetat_ef"), code: 'fond_nagnetat_ef'
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name:  // 'Действующий фонд' 
+            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name:  // 'Действующий фонд'
               this.trans("visualcenter.fond_nagnetat_df"), code: 'fond_nagnetat_df'
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name:  // 'Бездействующий фонд скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name:  // 'Бездействующий фонд скважин'
               this.trans("visualcenter.fond_nagnetat_bd"), code: 'fond_nagnetat_bd'
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name:  // 'Освоение' 
+            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name:  // 'Освоение'
               this.trans("visualcenter.fond_nagnetat_osvoenie"), code: 'fond_nagnetat_osvoenie'
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name:  // 'Ожидание физической ликвидации скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name:  // 'Ожидание физической ликвидации скважин'
               this.trans("visualcenter.fond_nagnetat_ofls"), code: 'fond_nagnetat_ofls'
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name:   // 'Консервация' 
+            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name:   // 'Консервация'
               this.trans("visualcenter.fond_nagnetat_konv"), code: 'fond_nagnetat_konv'
           },
 
@@ -2219,11 +2277,11 @@ export default {
               this.trans("visualcenter.fond_nagnetat_oprs"), code: 'fond_nagnetat_oprs'
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name:   // 'Капитальный ремонт скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name:   // 'Капитальный ремонт скважин'
               this.trans("visualcenter.fond_nagnetat_krs"), code: 'fond_nagnetat_krs'
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name:    // 'Ожидание капитального ремонта скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name:    // 'Ожидание капитального ремонта скважин'
               this.trans("visualcenter.fond_nagnetat_okrs"), code: 'fond_nagnetat_okrs'
           },
           {
@@ -2246,7 +2304,7 @@ export default {
 
       let innerWells
       innerWells = _.groupBy(arr, item => {
-        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')            
+        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
 
       let result = {}
@@ -2325,11 +2383,11 @@ export default {
               this.trans("visualcenter.fond_nagnetat_ef"), code: 'fond_neftedob_ef',
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name:     // 'Действующий фонд' 
+            value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name:     // 'Действующий фонд'
               this.trans("visualcenter.fond_nagnetat_df"), code: 'fond_neftedob_df',
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name:  // 'Бездействующий фонд скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name:  // 'Бездействующий фонд скважин'
               this.trans("visualcenter.fond_nagnetat_bd"), code: 'fond_neftedob_bd',
           },
           {
@@ -2337,7 +2395,7 @@ export default {
               this.trans("visualcenter.fond_nagnetat_osvoenie"), code: 'fond_neftedob_osvoenie',
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_neftedob_ofls'], name: // Ожидание физической ликвидации скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_neftedob_ofls'], name: // Ожидание физической ликвидации скважин'
               this.trans("visualcenter.fond_nagnetat_ofls"), code: 'fond_neftedob_ofls',
           }
 
@@ -2351,23 +2409,23 @@ export default {
               this.trans("visualcenter.fond_nagnetat_prs"), code: 'fond_neftedob_prs',
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_neftedob_oprs'], name:   // 'Ожидание подземного ремонта скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_neftedob_oprs'], name:   // 'Ожидание подземного ремонта скважин'
               this.trans("visualcenter.fond_nagnetat_oprs"), code: 'fond_neftedob_oprs',
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_neftedob_krs'], name:   // 'Капитальный ремонт скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_neftedob_krs'], name:   // 'Капитальный ремонт скважин'
               this.trans("visualcenter.fond_nagnetat_krs"), code: 'fond_neftedob_krs',
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_neftedob_okrs'], name:   // 'Ожидание капитального ремонта скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_neftedob_okrs'], name:   // 'Ожидание капитального ремонта скважин'
               this.trans("visualcenter.fond_nagnetat_okrs"), code: 'fond_neftedob_okrs',
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_neftedob_well_survey'], name:  // 'Исследование скважин' 
+            value: productionPlanAndFactMonthWells[0]['fond_neftedob_well_survey'], name:  // 'Исследование скважин'
               this.trans("visualcenter.fond_nagnetat_well_survey"), code: 'fond_neftedob_well_survey',
           },
           {
-            value: productionPlanAndFactMonthWells[0]['fond_neftedob_nrs'], name:   // 'Нерентабельные скважины' 
+            value: productionPlanAndFactMonthWells[0]['fond_neftedob_nrs'], name:   // 'Нерентабельные скважины'
               this.trans("visualcenter.fond_neftedob_nrs"), code: 'fond_neftedob_nrs',
           },
           {
@@ -2385,7 +2443,7 @@ export default {
     innerWellsProdChartData(arr, a) {
       let innerWells2
       innerWells2 = _.groupBy(arr, item => {
-        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')            
+        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
 
       let result = {}
@@ -2442,6 +2500,7 @@ export default {
           code: 'otm_iz_burenia_skv_fact',
           plan: otmData[0]['otm_iz_burenia_skv_plan'],
           fact: otmData[0]['otm_iz_burenia_skv_fact'],
+          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
         },
         {
           name:
@@ -2450,6 +2509,7 @@ export default {
           code: 'otm_burenie_prohodka_fact',
           plan: otmData[0]['otm_burenie_prohodka_plan'],
           fact: otmData[0]['otm_burenie_prohodka_fact'],
+          metricSystem: this.trans("visualcenter.otm_metric_system_meter"),
         },
         {
           name:
@@ -2458,6 +2518,7 @@ export default {
           code: 'otm_krs_skv_fact',
           plan: otmData[0]['otm_krs_skv_plan'],
           fact: otmData[0]['otm_krs_skv_fact'],
+          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
         },
         {
           name:
@@ -2466,6 +2527,7 @@ export default {
           code: 'otm_prs_skv_fact',
           plan: otmData[0]['otm_prs_skv_plan'],
           fact: otmData[0]['otm_prs_skv_fact'],
+          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
         },
       )
 
@@ -2481,7 +2543,7 @@ export default {
        }
        else {*/
       otmData = _.groupBy(arr, item => {
-        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')            
+        return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
       /* otmData = _.orderBy(
          otmData,
@@ -2842,10 +2904,10 @@ export default {
       //let start=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00');
       //let end=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00');
       this.range = {
-        start: "2021-01-01T00:00:00+06:00",
-        end: "2021-01-31T23:59:00+06:00",
-        //  start: moment().startOf('day').subtract(1, "days").format(),
-        //  end: moment().endOf('day').subtract(1, "days").format(),
+       // start: "2021-01-01T00:00:00+06:00",
+        //end: "2021-01-31T23:59:00+06:00",
+        start: moment().startOf('day').subtract(1, "days").format(),
+        end: moment().endOf('day').subtract(1, "days").format(),
         formatInput: true,
       };
     } else {
@@ -2871,7 +2933,7 @@ export default {
 
     localStorage.setItem("selectedOilPeriod", "undefined");
     this.getCurrencyNow(this.timeSelect);
-    this.getOilNow(this.timeSelect, this.period);
+    this.updateCurrentOilPrices(this.timeSelect,this.period);
     // this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
     this.changeAssets('b13');
     // this.getProductionOilandGasPercent();
@@ -2902,9 +2964,9 @@ export default {
     //currency and oil down
     periodSelectFunc() {
       let DMY = [
-        // "Неделя", 
+        // "Неделя",
         this.trans("visualcenter.week"),
-        // "Месяц", 
+        // "Месяц",
         this.trans("visualcenter.Month"),
         // "Квартал",
         this.trans("visualcenter.Quarter"),
@@ -2954,6 +3016,10 @@ export default {
     },
     usdRatesDataTableForCurrentPeriod() {
       return this.usdRatesData.for_table.slice(this.periodUSD * -1);
+    },
+    oilRatesDataTableForCurrentPeriod() {
+      this.sortOilRatesDataForTable;
+      return this.oilRatesData.for_table.slice(0, this.oilPeriod);
     },
 
     innerWellsNagDataForChart() {
@@ -3008,6 +3074,11 @@ export default {
         series: series,
         labels: labels
       }
+    },
+    sortOilRatesDataForTable() {
+        this.oilRatesData.for_table.sort( ( a, b) => {
+            return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
+        });
     }
   },
 };
