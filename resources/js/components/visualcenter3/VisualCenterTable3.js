@@ -675,12 +675,9 @@ export default {
     updateCurrentOilPrices(dates,period) {
       this.isPricesChartLoading = true;
       this.oilPeriod = period;
-      let oilRatesData = {
-        for_chart: [],
-        for_table: []
-      };
       let uri = this.localeUrl("/get-oil-rates");
-      this.setOilDataAndChart(uri,oilRatesData);
+      this.setOilDataAndChart(uri);
+      this.isPricesChartLoading = false;
     },
 
     setOilDataAndChart(uri,oilRatesData) {
@@ -690,14 +687,17 @@ export default {
           console.log("No data");
           return;
         }
-        this.processOilDataResponse(data,oilRatesData);
+        let oilRatesData = this.getOilRatesData(data);
         this.setQuotes('oil',oilRatesData.for_chart);
         this.setOilPlacements(oilRatesData);
-        this.isPricesChartLoading = false;
       });
     },
 
-    processOilDataResponse(data,oilRatesData) {
+    getOilRatesData(data) {
+      var oilRatesData = {
+        for_chart: [],
+        for_table: []
+      };
       let previousPrice = 0.00;
       let self = this;
       _.forEach(data, function (item) {
@@ -706,6 +706,7 @@ export default {
         self.pushOilChart(oilRatesData,item);
         previousPrice = parseFloat(item['value']);
       });
+      return oilRatesData;
     },
 
     pushOilData(oilRatesData,item,changeValue) {
@@ -733,17 +734,10 @@ export default {
     },
 
     setQuotes(type,chartData) {
-      if (type == 'oil') {
-        let sortedData = this.getSortedQuotesData(chartData);
-        this.setPrices(type,'current',sortedData[0][1]);
-        this.setPrices(type,'previous',sortedData[1][1]);
-        this.setPrices(type,'previousFetchDate',sortedData[1][0]);
-      } else {
-        let sortedData = this.getSortedQuotesData(chartData);
-        this.setPrices(type,'current',sortedData[0][1]);
-        this.setPrices(type,'previous',sortedData[1][1]);
-        this.setPrices(type,'previousFetchDate',sortedData[1][0]);
-      }
+      let sortedData = this.getSortedQuotesData(chartData);
+      this.setPrices(type,'current',sortedData[0][1]);
+      this.setPrices(type,'previous',sortedData[1][1]);
+      this.setPrices(type,'previousFetchDate',sortedData[1][0]);
     },
 
     setPrices(type, pricesKey, value) {
