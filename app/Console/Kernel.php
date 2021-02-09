@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('parse-usd:cron')->dailyAt('15:33')->timezone('Europe/Moscow');
         $schedule->command('parse-usd:cron')->dailyAt('13:05')->timezone('Europe/Moscow');
-        $schedule->command('parse-oil:cron')->dailyAt('09:05')->timezone('Europe/Moscow');
+        $schedule->command('parse-oil:cron')->dailyAt('09:30')->timezone('Europe/Moscow');
     }
 
     /**
