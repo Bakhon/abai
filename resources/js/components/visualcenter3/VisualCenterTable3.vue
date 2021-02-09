@@ -2099,7 +2099,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small2 px-3 col-sm-5">
+              <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="otmData.length"
                   class="table7 w-100"
@@ -2112,22 +2112,22 @@
                     >
                       <td
                         @click="otmSelectedRow = item.code"
-                        class="w-50"
+                        class="width-40"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: otmSelectedRow === item.code,
                         }"
                         style="cursor: pointer"
                       >
-                        <span>
+                        <span class="otm-data-titles">
                           {{ item.name }}
                         </span>
                       </td>
                       <td
                         @click="otmSelectedRow = item.code"
-                        class="w-25 text-center"
+                        class="width-20 text-center"
                         :class="
-                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                          index % 2 === 0 ? 'tdStyleLight width-20' : 'tdStyleLight2'
                         "
                         style="cursor: pointer; font-size: 30px"
                       >
@@ -2139,19 +2139,21 @@
                           <!-- План -->{{ trans("visualcenter.plan") }}
                         </div>
 
-                        <div class="font">
-                        {{ formatVisTableNumber2(item.plan) }}</div> <div class="dynamic right name-ed-izmeren"
-
-                        > {{item.metricSystem}} </div>
+                        <div class="otm-data-values">
+                          {{ formatVisTableNumber2(item.plan) }}
+                          <span class="otm-data-metrics">
+                            {{item.metricSystem}}
+                          </span>
+                        </div>
                       </td>
                         <td
-                        @click="otmSelectedRow = item.code"
-                        class="w-25 text-center"
-                        :class="
-                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                        "
-                        style="cursor: pointer; font-size: 30px"
-                      >
+                          @click="otmSelectedRow = item.code"
+                          class="width-20 text-center"
+                          :class="
+                            index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                          "
+                          style="cursor: pointer; font-size: 30px"
+                        >
                         <div
                           v-if="index === 0"
                           class="center"
@@ -2159,26 +2161,27 @@
                         >
                           <!-- Факт -->{{ trans("visualcenter.fact") }}
                         </div>
-                        {{formatVisTableNumber2( item.fact) }}
-                      </td>
-                     <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
-                    >
+                        <div class="otm-data-values">
+                          {{formatVisTableNumber2(item.fact) }}
+                        </div>
+                        </td>
+                       <td
+                          class="width-20 text-center"
+                          :class="
+                            index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
+                          "
+                        >
                       <div v-if="index === 0" class="center">+/-</div>
-                      <div
-                        v-if="item.plan"
-                        class="triangle"
-                        :style="`${getColor(
-                          item.fact -
-                            item.plan
-                        )}`"
-                      ></div>
-                      <div
-                        class="dynamic font"
-                        v-if="item.plan"
-                      >
+
+                      <div class="otm-data-values" v-if="item.plan">
+                        <span
+                          v-if="item.plan"
+                          class="otm-triangle"
+                          :style="`${getColor(
+                            item.fact -
+                              item.plan
+                          )}`"
+                        ></span>
                         {{
                           new Intl.NumberFormat("ru-RU").format(
                             Math.abs(
@@ -2187,15 +2190,9 @@
                             )
                           )
                         }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                         {{item.metricSystem}}
-                        </div>
+                        <span class="otm-data-metrics">
+                          {{item.metricSystem}}
+                        </span>
                       </div>
                     </td>
                     </tr>
@@ -2815,7 +2812,6 @@
 .vis-table {
   flex: 0 0 56%;
   height: 500px;
-  max-width: 56%;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 3px;
@@ -2886,7 +2882,7 @@
           border: 6px solid transparent;
           height: 6px;
           margin-right: 5px;
-          position: absolute;
+
           width: 6px;
         }
       }
@@ -2939,7 +2935,8 @@
  .table7 {
     tr {
       td {
-       padding: 0px 0px 0px 10px;
+        min-width: initial !important;
+        padding: 0px 0px 0px 10px;
         position: relative;
         vertical-align: middle;
         &:first-child {
@@ -2990,6 +2987,37 @@
         }
       }
     }
+  }
+
+  .width-40 {
+    width: 40% !important;
+  }
+  .width-20 {
+    width: 20% !important;
+  }
+  .otm-data-titles {
+    font-family: "HarmoniaSansProCyr-Regular"!important;
+    font-style: normal;
+    font-size: 16px;
+  }
+  .otm-data-values {
+    font-family: "Bold";
+    font-style: normal;
+    font-size: 24px;
+  }
+  .otm-data-metrics {
+    font-family: "Harmonia-sans, sans-serif";
+    font-style: normal;
+    font-size: 10px;
+    margin-left: 2%;
+  }
+  .otm-triangle {
+    border: 6px solid transparent;
+    height: 6px;
+    margin-top:13px !important;
+    margin-right: 5px;
+    width: 6px;
+    float: left;
   }
 
 
