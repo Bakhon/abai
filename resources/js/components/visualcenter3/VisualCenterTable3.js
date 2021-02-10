@@ -2154,7 +2154,6 @@ export default {
       this.timeSelectOld = oldDate;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
       this.getCurrencyNow(new Date().toLocaleDateString());
-      this.getOilNow(this.timeSelect, this.period);
       this.getAccidentTotal();
       this.updateCurrentOilPrices(this.timeSelect,this.period);
 
@@ -2492,7 +2491,7 @@ export default {
           code: 'otm_iz_burenia_skv_fact',
           plan: otmData[0]['otm_iz_burenia_skv_plan'],
           fact: otmData[0]['otm_iz_burenia_skv_fact'],
-          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
+          metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
         {
           name:
@@ -2501,7 +2500,7 @@ export default {
           code: 'otm_burenie_prohodka_fact',
           plan: otmData[0]['otm_burenie_prohodka_plan'],
           fact: otmData[0]['otm_burenie_prohodka_fact'],
-          metricSystem: this.trans("visualcenter.otm_metric_system_meter"),
+          metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
         },
         {
           name:
@@ -2510,7 +2509,7 @@ export default {
           code: 'otm_krs_skv_fact',
           plan: otmData[0]['otm_krs_skv_plan'],
           fact: otmData[0]['otm_krs_skv_fact'],
-          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
+          metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
         {
           name:
@@ -2519,7 +2518,7 @@ export default {
           code: 'otm_prs_skv_fact',
           plan: otmData[0]['otm_prs_skv_plan'],
           fact: otmData[0]['otm_prs_skv_fact'],
-          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
+          metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
       )
 
@@ -2587,7 +2586,7 @@ export default {
           code: 'chem_prod_zakacka_demulg_fact',
           plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
-          metricSystem: this.trans("visualcenter.chemistry_metric_ton"),
+          metricSystem: this.trans("visualcenter.chemistryMetricTon"),
         },
         {
           name:
@@ -2596,7 +2595,7 @@ export default {
           code: 'chem_prod_zakacka_bakteracid_fact',
           plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
-          metricSystem: this.trans("visualcenter.chemistry_metric_ton"),
+          metricSystem: this.trans("visualcenter.chemistryMetricTon"),
         },
         {
           name:
@@ -2605,7 +2604,7 @@ export default {
           code: 'chem_prod_zakacka_ingibator_korrozin_fact',
           plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
-          metricSystem: this.trans("visualcenter.chemistry_metric_ton"),
+          metricSystem: this.trans("visualcenter.chemistryMetricTon"),
         },
         {
           name:
@@ -2614,7 +2613,7 @@ export default {
           code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
           plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
-          metricSystem: this.trans("visualcenter.chemistry_metric_ton"),
+          metricSystem: this.trans("visualcenter.chemistryMetricTon"),
         },
       )
 

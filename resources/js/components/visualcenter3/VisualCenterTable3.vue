@@ -1986,7 +1986,7 @@
                       <div class="data-values">
                         {{ formatVisTableNumber2(item.value) }}
                         <span class="data-metrics">
-                          {{trans("visualcenter.otm_metric_system_wells")}}
+                          {{trans("visualcenter.otmMetricSystemWells")}}
                         </span>
                       </div>
                       </td>
