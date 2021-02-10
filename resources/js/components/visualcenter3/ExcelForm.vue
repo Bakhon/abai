@@ -1,8 +1,5 @@
 <template>
-  <hot-table :data="data" :colHeaders='true' :rowHeaders='true' width="600" height="600" licenseKey='non-commercial-and-evaluation'>
-      <hot-column title="First column header">
-      </hot-column>
-  </hot-table>
+  <hot-table :data="data" :colHeaders='true' :settings='hotSettings' :rowHeaders='true' licenseKey='non-commercial-and-evaluation'></hot-table>
 </template>
  
 <script>
@@ -12,7 +9,7 @@
     data: function() {
     return {
       hotSettings: {
-        data: Handsontable.helper.createSpreadsheetData(10, 5),
+        data: Handsontable.helper.createSpreadsheetData(50, 30),
         colHeaders: true,
         contextMenu: {
           items: {
