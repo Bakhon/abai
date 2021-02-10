@@ -226,5 +226,7 @@ return array (
   'rent' => 'рентабельные2',
   'nerent' => 'нерентабельные2',
   'vsSeparator' => 'vs',
-  'otm_metric_system' => 'м.',
+  'otmMetricSystemMeter' => 'м.',
+  'otmMetricSystemWells' => 'скв.',
+  'chemistryMetricTon' => 'т.',
 );
