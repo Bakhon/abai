@@ -24,7 +24,6 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 
 
-
 require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
@@ -124,7 +123,8 @@ Vue.component('tr_mode-table', require('./components/tr/tech_mode.vue').default)
 
 
 
-Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
+Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
+Vue.component('visualcenter3-excelform', require('./components/visualcenter3/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
