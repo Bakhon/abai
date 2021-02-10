@@ -1236,11 +1236,9 @@ export default {
 
             let accident;
             if (company != 'all') {
-              accident = _.filter(dataWithMay, _.iteratee({ dzo: company }))
-
-              //accident=_.reject(accident, _.iteratee({ accident: null }));
-              //accident= _.pickBy(accident, _.identity)
-              //console.log('this');
+              accident=_.filter(dataWithMay, function(item) {
+                return (item.dzo == company && item.accident !== null);
+              })
             }
             else if (company === 'all') { accident = dataWithMay; }
 
