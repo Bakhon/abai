@@ -171,6 +171,7 @@ export default {
   .v-select {
     background: #334296;
     height: 28px;
+    min-width: 100%;
 
     .vs__search, .vs__selected {
       font-size: 14px;

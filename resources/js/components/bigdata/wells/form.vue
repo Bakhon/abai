@@ -1,5 +1,6 @@
 <template>
   <div class="bd-main-block">
+    <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">Текущие замеры по ГДИС</p>
       <div class="block-three-fullscreen">
@@ -263,34 +264,32 @@ export default {
   },
   methods: {
     submit() {
-      if (this.$refs.form.checkValidity()) {
 
-        this.axios.post(this.action, this.formValues)
-            .then(data => {
-              this.errors = []
-              this.formValues.map(item => '')
-              this.$refs.form.reset()
-              alert('Ваша форма успешно отправлена')
-            })
-            .catch(error => {
-              this.errors = error.response.data.errors
+      this.axios.post(this.action, this.formValues)
+          .then(data => {
+            this.errors = []
+            this.formValues.map(item => '')
+            this.$refs.form.reset()
+            Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
+          })
+          .catch(error => {
+            this.errors = error.response.data.errors
 
-              for(const [tabIndex, tab] of Object.entries(this.form.tabs)) {
-                for(const block of tab.blocks) {
-                  for(const item of block.items) {
-                    if(typeof this.errors[item.code] !== 'undefined') {
-                      this.activeTab = parseInt(tabIndex)
-                      return false
-                    }
+            Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
+
+            for (const [tabIndex, tab] of Object.entries(this.form.tabs)) {
+              for (const block of tab.blocks) {
+                for (const item of block.items) {
+                  if (typeof this.errors[item.code] !== 'undefined') {
+                    this.activeTab = parseInt(tabIndex)
+                    return false
                   }
                 }
               }
+            }
 
-            })
+          })
 
-      } else {
-        this.$refs.form.reportValidity()
-      }
     },
     changeTab(index) {
       this.activeTab = index
@@ -322,16 +321,20 @@ export default {
         justify-content: flex-start;
 
         &-tab {
+          align-items: center;
           background: #31335f;
           border-top-left-radius: 3px;
           border-top-right-radius: 3px;
           color: #8389AF;
+          display: flex;
           font-size: 14px;
           font-weight: 600;
           height: 28px;
-          line-height: 28px;
           margin-right: 15px;
           padding: 0 45px;
+          @media (max-width: 768px) {
+              padding: 0 15px;
+          }
 
           &:hover {
             color: #fff;
@@ -341,6 +344,10 @@ export default {
             background: #363b68;
             color: #fff;
           }
+
+          p{
+            margin-bottom: 0;
+          }
         }
       }
     }
@@ -348,6 +355,7 @@ export default {
     &-tab {
       background: #363b68;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       padding: 10px;
     }
@@ -357,7 +365,13 @@ export default {
       border-left: 1px solid #454D7D;
       height: 600px;
       width: 50%;
-      &_full{
+      @media (max-width: 767px) {
+        border-left: none;
+        height: auto;
+        width: 100%;
+      }
+
+      &_full {
         width: 100%;
       }
 
@@ -380,19 +394,26 @@ export default {
         height: calc(100% - 50px);
         overflow-y: auto;
         padding: 20px 55px 10px 43px;
+        @media (max-width: 767px) {
+          height: auto;
+        }
 
         &::-webkit-scrollbar {
           width: 4px;
         }
+
         &::-webkit-scrollbar-track {
           background: #20274F;
         }
+
         &::-webkit-scrollbar-thumb {
           background: #656A8A;
         }
+
         &::-webkit-scrollbar-thumb:hover {
           background: #656A8A;
         }
+
         &::-webkit-scrollbar-corner {
           background: #20274F;
         }

@@ -2222,27 +2222,17 @@
                         "
                       >
                         <div v-if="index === 0" class="center">+/-</div>
-                        <div class="data-values" v-if="item.plan">
-                          <span
-                            v-if="item.plan"
-                            :class="
-                              [(item.fact - item.plan) < 0 ?
-                               'fall-indicator' : 'growth-indicator',
-                               'triangle-responsive']
-                            "
-                          ></span>
-                          {{
-                            new Intl.NumberFormat("ru-RU").format(
-                              Math.abs(
-                                item.fact -
-                                  item.plan
-                              )
-                            )
-                          }}
-                          <span class="data-metrics">
-                            {{item.metricSystem}}
-                          </span>
-                      </div>
+                        <div
+                          class="right"
+                          style="
+                            font-family: 'Harmonia-sans', sans-serif;
+                            opacity: 0.6;
+                          "
+                        >
+                        <span class="data-metrics">
+                          {{item.metricSystem}}
+                        </span>
+                        </div>
                       </td>
                     </tr>
                   </tbody>

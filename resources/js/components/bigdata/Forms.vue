@@ -1,7 +1,6 @@
 <template>
-  <!-- <div class="container-fluid"> -->
-  <div class="row">
-    <div class="col-md-9 col-sm-12">
+  <div class="row align-items-stretch">
+    <div class="col-xl-9 col-sm-12">
       <div class="row">
         <div class="col-12 blueblock one">
           <div class="d-flex">
@@ -16,7 +15,7 @@
               Форма ввода
             </div>
           </div>
-          <div class="d-flex">
+          <div class="d-flex overflow-auto scrollable justify-content-between">
             <div>
               <div class="block-one-icon">
                 <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -197,88 +196,90 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3 col-sm-12 blueblock four">
-      <div class="report-filter-content-wrapper">
+    <div class="col-xl-3 col-md-12 four">
+      <div class="report-filter-content-wrapper blueblock">
         <div class="report-filter-title block-four-title">
           Фильтр
         </div>
-        <div class="form-group1 filter-group select">
-          <select
-              class="form-control filter-input select"
-              id="companySelect"
-          >
-            <option disabled value="">Выберите компанию</option>
-            <option value="АО ОМГ">МАНГИСТАУМУНАЙГАЗ</option>
-            <option value="КБМ">АО «Каражанбасмунай»</option>
-            <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-            <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-            <option value="ММГ">АО «Мангистаумунайгаз»</option>
-          </select>
-        </div>
-        <div class="form-group1 filter-group select">
-          <select
-              class="form-control filter-input select"
-              id="companySelect"
-          >
-            <option disabled value="">Выберите компанию</option>
-            <option value="АО ОМГ">ПУ “ЖЕТЫБАЙМУНАЙГАЗ”</option>
-            <option value="КБМ">АО «Каражанбасмунай»</option>
-            <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-            <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-            <option value="ММГ">АО «Мангистаумунайгаз»</option>
-          </select>
-        </div>
-        <div class="form-group1 filter-group select">
-          <select
-              class="form-control filter-input select"
-              id="companySelect"
-          >
-            <option disabled value="">Выберите компанию</option>
-            <option value="АО ОМГ">ЦДНГ-01</option>
-            <option value="КБМ">АО «Каражанбасмунай»</option>
-            <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-            <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-            <option value="ММГ">АО «Мангистаумунайгаз»</option>
-          </select>
-        </div>
-        <div class="form-group1 filter-group select">
-          <select
-              class="form-control filter-input select"
-              id="companySelect"
-          >
-            <option disabled value="">Выберите компанию</option>
-            <option value="АО ОМГ">ЦДНГ-01</option>
-            <option value="КБМ">АО «Каражанбасмунай»</option>
-            <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-            <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-            <option value="ММГ">АО «Мангистаумунайгаз»</option>
-          </select>
-        </div>
-        <div class="form-group1 filter-group select">
-          <select
-              class="form-control filter-input select"
-              id="companySelect"
-          >
-            <option disabled value="">Выберите компанию</option>
-            <option value="АО ОМГ">АЙРАНТАКЫР</option>
-            <option value="КБМ">АО «Каражанбасмунай»</option>
-            <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-            <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-            <option value="ММГ">АО «Мангистаумунайгаз»</option>
-          </select>
-        </div>
-        <div class="form-group1 filter-group select">
-          <select
-              class="form-control filter-input select"
-              id="companySelect"
-          >
-            <option disabled value="">Выберите компанию</option>
-            <option value="АО ОМГ">ГУ-522</option>
-            <option value="КБМ">АО «Каражанбасмунай»</option>
-            <option value="КазГерМунай">ТОО «КазГерМунай»</option>
-            <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
-            <option value="ММГ">АО «Мангистаумунайгаз»</option>
-          </select>
+        <div class="report-filter-items">
+          <div class="filter-group select">
+            <select
+                class="form-control filter-input select"
+                id="companySelect"
+            >
+              <option disabled value="">Выберите компанию</option>
+              <option value="АО ОМГ">МАНГИСТАУМУНАЙГАЗ</option>
+              <option value="КБМ">АО «Каражанбасмунай»</option>
+              <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+              <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+              <option value="ММГ">АО «Мангистаумунайгаз»</option>
+            </select>
+          </div>
+          <div class="filter-group select">
+            <select
+                class="form-control filter-input select"
+                id="companySelect"
+            >
+              <option disabled value="">Выберите компанию</option>
+              <option value="АО ОМГ">ПУ “ЖЕТЫБАЙМУНАЙГАЗ”</option>
+              <option value="КБМ">АО «Каражанбасмунай»</option>
+              <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+              <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+              <option value="ММГ">АО «Мангистаумунайгаз»</option>
+            </select>
+          </div>
+          <div class="filter-group select">
+            <select
+                class="form-control filter-input select"
+                id="companySelect"
+            >
+              <option disabled value="">Выберите компанию</option>
+              <option value="АО ОМГ">ЦДНГ-01</option>
+              <option value="КБМ">АО «Каражанбасмунай»</option>
+              <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+              <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+              <option value="ММГ">АО «Мангистаумунайгаз»</option>
+            </select>
+          </div>
+          <div class="filter-group select">
+            <select
+                class="form-control filter-input select"
+                id="companySelect"
+            >
+              <option disabled value="">Выберите компанию</option>
+              <option value="АО ОМГ">ЦДНГ-01</option>
+              <option value="КБМ">АО «Каражанбасмунай»</option>
+              <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+              <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+              <option value="ММГ">АО «Мангистаумунайгаз»</option>
+            </select>
+          </div>
+          <div class="filter-group select">
+            <select
+                class="form-control filter-input select"
+                id="companySelect"
+            >
+              <option disabled value="">Выберите компанию</option>
+              <option value="АО ОМГ">АЙРАНТАКЫР</option>
+              <option value="КБМ">АО «Каражанбасмунай»</option>
+              <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+              <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+              <option value="ММГ">АО «Мангистаумунайгаз»</option>
+            </select>
+          </div>
+          <div class="filter-group select">
+            <select
+                class="form-control filter-input select"
+                id="companySelect"
+            >
+              <option disabled value="">Выберите компанию</option>
+              <option value="АО ОМГ">ГУ-522</option>
+              <option value="КБМ">АО «Каражанбасмунай»</option>
+              <option value="КазГерМунай">ТОО «КазГерМунай»</option>
+              <option value="АО ЭМГ">АО «ЭмбаМунайГаз»</option>
+              <option value="ММГ">АО «Мангистаумунайгаз»</option>
+            </select>
+          </div>
         </div>
         <div class="protobutton">
           <button class="btn get-report-button">
@@ -288,7 +289,6 @@
       </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -298,14 +298,10 @@ export default {
   components: {BigdataWellForm}
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 .blueblock {
   background-color: #272953 !important;
   margin: 7px;
-}
-
-.one {
-  height: 184px
 }
 
 .two {
@@ -314,19 +310,16 @@ export default {
 
 .three {
   height: 760px;
-  padding: 0 24px;
-}
-
-.four {
-  height: 960px;
-  max-width: 23%;
-  margin-left: 20px;
+  padding: 0 24px 15px;
+  @media (max-width: 1200px) {
+    height: auto;
+  }
 }
 
 .protobutton {
   position: absolute;
-  bottom: 30px;
-  width: 100%;
+  bottom: 15px;
+  width: calc(100% - 30px);
 }
 
 .icon-one {
@@ -341,7 +334,7 @@ export default {
 }
 
 .block-one-icon {
-  margin: 20px 34px 12px 34px;
+  margin: 20px 32px 12px;
 }
 
 .block-one-title {
@@ -395,9 +388,64 @@ export default {
 }
 
 .block-four-title {
-  margin-top: 20px;
   margin-bottom: 30px;
   font-size: 22px;
   font-weight: 700;
+}
+
+.report-filter {
+  &-content {
+    &-wrapper {
+      color: white;
+      height: calc(100% - 14px);
+      margin-right: -7px;
+      position: relative;
+      padding: 20px 15px 100px;
+      @media (max-width: 768px) {
+        margin: 0 -20px 0 -7px;
+      }
+    }
+  }
+
+  &-items {
+    @media(max-width: 1200px) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .filter-group {
+      @media (max-width: 1200px) {
+        width: 32%;
+      }
+      @media (max-width: 768px) {
+        width: 48%;
+      }
+    }
+  }
+}
+
+
+.scrollable {
+  &::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #40467E;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #656A8A;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #656A8A;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #20274F;
+  }
 }
 </style>

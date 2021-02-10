@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\VisCenter;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\VisCenter\ImportForms\DZOyearController;
+use App\Imports\DZOyearImport;
 use App\Models\DZO\DZOcalc;
 use App\Models\UsdRate;
 use App\Models\OilRate;
@@ -147,6 +149,11 @@ class VisualCenterController extends Controller
     public function visualcenter3GetDataStaff(Request $request)
     {
         return response()->json(DZOstaff::all());
+    }
+
+    public function visualcenter3GetDataAccident(Request $request)
+    {
+        return response()->json(ImportFormsDZOyear::all('date','tb_accident_total')->where('date', '=', $request->year)->where('tb_accident_total', '>', '0'));
     }
 
     public function visualcenter3GetData(Request $request)
