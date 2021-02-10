@@ -598,9 +598,9 @@ td.small-td {
 }
 
 .triangle {
-    border: 8px solid transparent;
-    width: 10px;
-    height: 10px;
+    border: 6px solid transparent;
+    width: 6px;
+    height: 6px;
     float: left;
     position: absolute;
 }

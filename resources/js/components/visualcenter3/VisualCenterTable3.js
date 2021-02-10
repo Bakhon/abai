@@ -2837,6 +2837,16 @@ if (company!='all')
 
     },
 
+    formatVisTableNumber3(a, b) {
+      if (a && b){
+        return new Intl.NumberFormat("ru-RU").format(Math.abs(((a - b) / b) * 100).toFixed(1))
+      }
+      else {
+      return 0
+    }
+    },
+
+
     formatVisTableNumber2(num) {
       if (num == '') {
         num = 0;
