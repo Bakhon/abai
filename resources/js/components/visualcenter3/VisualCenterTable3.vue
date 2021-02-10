@@ -1069,15 +1069,16 @@
                       "
                     >
                       <div v-if="index === 0" class="center">+/-</div>
-                      <div                       
-                        class="triangle"
-                        :style="`${getColor(
+                      <div
+                        :class="
                           item.productionFactForMonth -
-                            item.productionPlanForMonth
-                        )}`"
+                          item.productionPlanForMonth < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div
-                        class="dynamic font"                       
+                        class="dynamic font"
                       >
                         {{
                           new Intl.NumberFormat("ru-RU").format(
@@ -1100,23 +1101,24 @@
                     </td>
                     <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
                       <div v-if="index === 0" class="center">%</div>
-                      <div                      
-                        class="triangle"
-                        :style="`${getColor(
+                      <div
+                        v-if="item.productionFactForMonth"
+                        :class="
                           ((item.productionFactForMonth -
                             item.productionPlanForMonth) /
-                            item.productionPlanForMonth) *
-                            100
-                        )}`"
+                            item.productionPlanForMonth) * 100 < 0 ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                        "
                       ></div>
-                      <div class="dynamic font">                    
+                      <div class="dynamic font">
                            {{
                         formatVisTableNumber3 (item.productionFactForMonth , item.productionPlanForMonth)
-                        }}                     
+                        }}
                         %
-            
-                      
-                       
+
+
+
                       </div>
                     </td>
                   </tr>
@@ -1264,8 +1266,11 @@
                       <div v-if="index === 0" class="center">+/-</div>
                       <div
                         v-if="item.factMonth"
-                        class="triangle"
-                        :style="`${getColor(item.factMonth - item.planMonth)}`"
+                        :class="
+                          item.factMonth - item.planMonth < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="font dynamic" >
                         {{
@@ -1288,16 +1293,17 @@
                       <div v-if="index === 0" class="center">%</div>
                       <div
                         v-if="item.factMonth"
-                        class="triangle"
-                        :style="`${getColor(
-                          ((item.factMonth - item.planMonth) / item.planMonth) *
-                            100
-                        )}`"
+                        :class="
+                          ((item.factMonth - item.planMonth) /
+                          item.planMonth) * 100 < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="font dynamic">
                         {{
                         formatVisTableNumber3 (item.factMonth , item.planMonth)
-                        }}                     
+                        }}
                         %
                       </div>
                     </td>
@@ -1478,8 +1484,11 @@
                     >
                       <div
                         v-if="factMonthSumm"
-                        class="triangle"
-                        :style="`${getColor(factMonthSumm - planMonthSumm)}`"
+                        :class="
+                          factMonthSumm - planMonthSumm < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="font dynamic">
                         {{
@@ -1501,11 +1510,12 @@
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                       <div
                         v-if="factMonthSumm"
-                        class="triangle"
-                        :style="`${getColor(
+                        :class="
                           ((factMonthSumm - planMonthSumm) / planMonthSumm) *
-                            100
-                        )}`"
+                          100 < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="font dynamic" v-if="factMonthSumm">
                         {{
@@ -1735,7 +1745,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3 col-sm-5">
+              <div class="vis-table px-3 col-sm-7">
                 <table v-if="innerWells.length" class="table4 w-100">
                   <tbody>
                     <tr
@@ -1744,16 +1754,16 @@
                     >
                       <td
                         @click="innerWellsSelectedRow = item.code"
-                        class="w-50"
+                        class="width-40"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: innerWellsSelectedRow === item.code,
                         }"
                         style="cursor: pointer"
                       >
-                        <span>
-                          {{ item.name }}
-                        </span>
+                      <span class="data-titles">
+                        {{ item.name }}
+                      </span>
                       </td>
                       <td
                         @click="innerWellsSelectedRow = item.code"
@@ -1761,10 +1771,12 @@
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                         style="cursor: pointer"
                       >
+                      <div class="data-values">
                         {{ formatVisTableNumber2(item.value) }}
-                        <span>
-                          <!-- скважин -->{{ trans("visualcenter.skv") }}
+                        <span class="data-metrics">
+                          {{ trans("visualcenter.skv") }}
                         </span>
+                      </div>
                       </td>
                     </tr>
                   </tbody>
@@ -1943,7 +1955,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3 col-sm-5">
+              <div class="vis-table px-3 col-sm-7">
                 <table v-if="innerWells2.length" class="table4 w-100">
                   <tbody>
                     <tr
@@ -1952,16 +1964,16 @@
                     >
                       <td
                         @click="innerWells2SelectedRow = item.code"
-                        class="w-50"
+                        class="width-40"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: innerWells2SelectedRow === item.code,
                         }"
                         style="cursor: pointer"
                       >
-                        <span>
-                          {{ item.name }}
-                        </span>
+                      <span class="data-titles">
+                        {{ item.name }}
+                      </span>
                       </td>
                       <td
                         @click="innerWells2SelectedRow = item.code"
@@ -1971,10 +1983,12 @@
                         "
                         style="cursor: pointer"
                       >
+                      <div class="data-values">
                         {{ formatVisTableNumber2(item.value) }}
-                        <span>
-                          <!-- скважин -->{{ trans("visualcenter.skv") }}
+                        <span class="data-metrics">
+                          {{trans("visualcenter.otmMetricSystemWells")}}
                         </span>
+                      </div>
                       </td>
                     </tr>
                   </tbody>
@@ -2134,7 +2148,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small2 px-3 col-sm-5">
+              <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="otmData.length"
                   class="table7 w-100"
@@ -2147,24 +2161,23 @@
                     >
                       <td
                         @click="otmSelectedRow = item.code"
-                        class="w-50"
+                        class="width-40"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: otmSelectedRow === item.code,
                         }"
                         style="cursor: pointer"
                       >
-                        <span>
-                          {{ item.name }}
-                        </span>
+                      <span class="data-titles">
+                        {{ item.name }}
+                      </span>
                       </td>
                       <td
                         @click="otmSelectedRow = item.code"
-                        class="w-25 text-center"
+                        class="width-20 text-center data-pointer"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
-                        style="cursor: pointer; font-size: 30px"
                       >
                         <div
                           v-if="index === 0"
@@ -2174,18 +2187,19 @@
                           <!-- План -->{{ trans("visualcenter.plan") }}
                         </div>
 
-                        <div class="font">
-                        {{ formatVisTableNumber2(item.plan) }}</div> <div class="dynamic right name-ed-izmeren"
-
-                        > {{item.metricSystem}} </div>
+                        <div class="data-values">
+                          {{ formatVisTableNumber2(item.plan) }}
+                          <span class="data-metrics">
+                            {{item.metricSystem}}
+                          </span>
+                        </div>
                       </td>
                       <td
                         @click="otmSelectedRow = item.code"
-                        class="w-25 text-center"
+                        class="width-20 text-center data-pointer"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
-                        style="cursor: pointer; font-size: 30px"
                       >
                         <div
                           v-if="index === 0"
@@ -2194,9 +2208,15 @@
                         >
                           <!-- Факт -->{{ trans("visualcenter.fact") }}
                         </div>
-                        {{ formatVisTableNumber2(item.fact) }}
+                        <div class="data-values">
+                          {{formatVisTableNumber2(item.fact) }}
+                          <span class="data-metrics">
+                            {{item.metricSystem}}
+                          </span>
+                        </div>
                       </td>
                       <td
+                        class="width-20 text-center data-pointer"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
@@ -2209,7 +2229,9 @@
                             opacity: 0.6;
                           "
                         >
-                         {{item.metricSystem}}
+                        <span class="data-metrics">
+                          {{item.metricSystem}}
+                        </span>
                         </div>
                       </td>
                     </tr>
@@ -2360,7 +2382,7 @@
             </div>
             <br />
             <div class="row container-fluid">
-              <div class="vis-table vis-table-small px-3 col-sm-5">
+              <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="chemistryData.length"
                   class="table4 w-100"
@@ -2373,33 +2395,39 @@
                     >
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="w-50"
+                        class="width-40"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: chemistrySelectedRow === item.code,
                         }"
                         style="cursor: pointer"
                       >
-                        {{ item.name }}
+                        <span class="data-titles">
+                          {{ item.name }}
+                        </span>
                       </td>
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="w-25 text-center"
+                        class="width-20 text-center data-pointer"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
-                        style="cursor: pointer; font-size: 30px"
                       >
                         <div
                           v-if="index === 0"
                           class="center"
 
                         >
-                          <!--
-                             style="font-size: 12px; line-height: 1.2"
-                            План -->{{ trans("visualcenter.plan") }}
+                          <span class="data-column-name">
+                            {{ trans("visualcenter.plan") }}
+                          </span>
                         </div>
-                        {{ formatVisTableNumber2(item.fact) }} т.
+                        <div class="data-values">
+                          {{ formatVisTableNumber2(item.fact) }}
+                          <span class="data-metrics">
+                            {{item.metricSystem}}
+                          </span>
+                       </div>
                       </td>
                     </tr>
                   </tbody>
@@ -2544,7 +2572,7 @@
                   <div class="txt4 d-flex justify-content-between">
                     <div>
                       {{
-                        formatVisTableNumber2(inj_wells_idle)                        
+                        formatVisTableNumber2(inj_wells_idle)
                       }}
                     </div>
                     <div class="mt-1">
@@ -2727,9 +2755,9 @@
               <!--<td>
                 <div class="number">0</div>
                 <div class="near-number">
-              
+
                   <div class="column-1">
-                  
+
                     <div class="in-idle">
                     {{ trans("visualcenter.from_begin") }}
                     </div>
@@ -2841,7 +2869,6 @@
         &:first-child {
           height: 50px;
           white-space: normal;
-          //width: 215px;
           width: 235px;
           span {
             font-weight: bold;
@@ -2876,13 +2903,6 @@
           text-align: center;
           top: 4px;
           width: 100%;
-        }
-        .triangle {
-          border: 6px solid transparent;
-          height: 6px;
-          margin-right: 5px;
-          position: absolute;
-          width: 6px;
         }
       }
     }
@@ -2937,7 +2957,6 @@
       &:first-child {
         height: 50px;
         white-space: normal;
-        //width: 215px;
         width: 235px;
         span {
           font-weight: bold;
@@ -2983,4 +3002,59 @@
     }
   }
 }
+
+.width-40 {
+    width: 40%;
+  }
+  .width-20 {
+    width: 20%;
+  }
+  .data-titles {
+    font-family: "HarmoniaSansProCyr-Regular";
+    font-style: normal;
+    font-size: 16px;
+  }
+  .data-values {
+    font-family: "Bold";
+    font-style: normal;
+    font-size: 24px;
+  }
+  .data-metrics {
+    font-family: "Harmonia-sans, sans-serif";
+    font-style: normal;
+    font-size: 10px;
+    margin-left: 2%;
+  }
+  .data-column-name {
+    font-size: 12px;
+    font-family: "Harmonia-sans, sans-serif";
+    font-style: normal;
+  }
+  .triangle-responsive {
+    border: 6px solid transparent;
+    height: 6px;
+    margin-right: 5px;
+    width: 6px;
+    float: left;
+  }
+  .data-pointer {
+    cursor: pointer;
+    font-size: 30px;
+  }
+  .growth-indicator {
+    margin-top: 7px;
+    border-bottom: 6px solid #009846;
+  }
+  .fall-indicator {
+    margin-top: 13px;
+    border-top: 6px solid #e31e24;
+  }
+  .growth-indicator-production-data {
+    margin-top: 16px;
+    border-bottom: 6px solid #009846;
+  }
+  .fall-indicator-production-data {
+    margin-top: 23px;
+    border-top: 6px solid #e31e24;
+  }
 </style>
