@@ -2154,7 +2154,6 @@ export default {
       this.timeSelectOld = oldDate;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
       this.getCurrencyNow(new Date().toLocaleDateString());
-      this.getOilNow(this.timeSelect, this.period);
       this.getAccidentTotal();
       this.updateCurrentOilPrices(this.timeSelect,this.period);
 
