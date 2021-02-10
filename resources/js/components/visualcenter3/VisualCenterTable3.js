@@ -3015,8 +3015,16 @@ export default {
       return this.periodSelect();
     },
     usdRatesDataTableForCurrentPeriod() {
+      this.sortUsdRatesDataForTable;
       return this.usdRatesData.for_table.slice(this.periodUSD * -1);
     },
+
+    sortUsdRatesDataForTable() {
+        this.usdRatesData.for_table.sort( ( a, b) => {
+            return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
+        });
+    },
+
     oilRatesDataTableForCurrentPeriod() {
       this.sortOilRatesDataForTable;
       return this.oilRatesData.for_table.slice(0, this.oilPeriod);
@@ -3079,6 +3087,6 @@ export default {
         this.oilRatesData.for_table.sort( ( a, b) => {
             return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
         });
-    }
+    },
   },
 };
