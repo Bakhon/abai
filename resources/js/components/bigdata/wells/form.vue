@@ -321,16 +321,20 @@ export default {
         justify-content: flex-start;
 
         &-tab {
+          align-items: center;
           background: #31335f;
           border-top-left-radius: 3px;
           border-top-right-radius: 3px;
           color: #8389AF;
+          display: flex;
           font-size: 14px;
           font-weight: 600;
           height: 28px;
-          line-height: 28px;
           margin-right: 15px;
           padding: 0 45px;
+          @media (max-width: 768px) {
+              padding: 0 15px;
+          }
 
           &:hover {
             color: #fff;
@@ -340,6 +344,10 @@ export default {
             background: #363b68;
             color: #fff;
           }
+
+          p{
+            margin-bottom: 0;
+          }
         }
       }
     }
@@ -347,6 +355,7 @@ export default {
     &-tab {
       background: #363b68;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       padding: 10px;
     }
@@ -356,6 +365,11 @@ export default {
       border-left: 1px solid #454D7D;
       height: 600px;
       width: 50%;
+      @media (max-width: 767px) {
+        border-left: none;
+        height: auto;
+        width: 100%;
+      }
 
       &_full {
         width: 100%;
@@ -380,6 +394,9 @@ export default {
         height: calc(100% - 50px);
         overflow-y: auto;
         padding: 20px 55px 10px 43px;
+        @media (max-width: 767px) {
+          height: auto;
+        }
 
         &::-webkit-scrollbar {
           width: 4px;
