@@ -8,8 +8,6 @@ return array (
   'chekslines' => 'проверкастроки',
   'wells1' => 'Фонд нагнетательных скважин2',
   'usdKurs' => 'Курс доллара2',
-  'vsYest' => 'vs вчера2',
-  'vsSept' => 'vs2',
   'dolyaUchast' => 'С учётом доли участия КМГ2',
   'ostatokNefti' => 'Товарный остаток нефти2',
   'prirodGazdlv' => 'Сдача природного газа2',
@@ -227,7 +225,6 @@ return array (
   'skvs' => 'скважины2',
   'rent' => 'рентабельные2',
   'nerent' => 'нерентабельные2',
-  'vs1' => 'vs',
   'vsSeparator' => 'vs',
   'otm_metric_system' => 'м.',
 );

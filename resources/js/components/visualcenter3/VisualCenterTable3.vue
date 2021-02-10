@@ -1048,11 +1048,12 @@
                       <div v-if="index === 0" class="center">+/-</div>
                       <div
                         v-if="item.productionFactForMonth"
-                        class="triangle"
-                        :style="`${getColor(
+                        :class="
                           item.productionFactForMonth -
-                            item.productionPlanForMonth
-                        )}`"
+                          item.productionPlanForMonth < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                          "
                       ></div>
                       <div
                         class="dynamic font"
@@ -1081,13 +1082,13 @@
                       <div v-if="index === 0" class="center">%</div>
                       <div
                         v-if="item.productionFactForMonth"
-                        class="triangle"
-                        :style="`${getColor(
+                        :class="
                           ((item.productionFactForMonth -
                             item.productionPlanForMonth) /
-                            item.productionPlanForMonth) *
-                            100
-                        )}`"
+                            item.productionPlanForMonth) * 100 < 0 ?
+                            'triangle fall-indicator-production-data' :
+                            'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="dynamic font">
                         {{
@@ -1221,8 +1222,11 @@
                       <div v-if="index === 0" class="center">+/-</div>
                       <div
                         v-if="item.factMonth"
-                        class="triangle"
-                        :style="`${getColor(item.factMonth - item.planMonth)}`"
+                        :class="
+                          item.factMonth - item.planMonth < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="font dynamic" v-if="item.factMonth">
                         {{
@@ -1245,11 +1249,12 @@
                       <div v-if="index === 0" class="center">%</div>
                       <div
                         v-if="item.factMonth"
-                        class="triangle"
-                        :style="`${getColor(
-                          ((item.factMonth - item.planMonth) / item.planMonth) *
-                            100
-                        )}`"
+                        :class="
+                          ((item.factMonth - item.planMonth) /
+                          item.planMonth) * 100 < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="font dynamic" v-if="item.factMonth">
                         {{
@@ -1445,8 +1450,11 @@
                     >
                       <div
                         v-if="factMonthSumm"
-                        class="triangle"
-                        :style="`${getColor(factMonthSumm - planMonthSumm)}`"
+                        :class="
+                          factMonthSumm - planMonthSumm < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="font dynamic">
                         {{
@@ -1468,11 +1476,12 @@
                     <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
                       <div
                         v-if="factMonthSumm"
-                        class="triangle"
-                        :style="`${getColor(
+                        :class="
                           ((factMonthSumm - planMonthSumm) / planMonthSumm) *
-                            100
-                        )}`"
+                          100 < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'
+                        "
                       ></div>
                       <div class="font dynamic" v-if="factMonthSumm">
                         {{
@@ -2131,11 +2140,11 @@
                       </td>
                       <td
                         @click="otmSelectedRow = item.code"
-                        class="width-20 text-center"
+                        class="width-20 text-center data-pointer"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight width-20' : 'tdStyleLight2'
                         "
-                        style="cursor: pointer; font-size: 30px"
+
                       >
                         <div
                           v-if="index === 0"
@@ -2154,11 +2163,10 @@
                       </td>
                         <td
                           @click="otmSelectedRow = item.code"
-                          class="width-20 text-center"
+                          class="width-20 text-center data-pointer"
                           :class="
                             index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                           "
-                          style="cursor: pointer; font-size: 30px"
                         >
                         <div
                           v-if="index === 0"
@@ -2169,6 +2177,9 @@
                         </div>
                         <div class="data-values">
                           {{formatVisTableNumber2(item.fact) }}
+                          <span class="data-metrics">
+                            {{item.metricSystem}}
+                          </span>
                         </div>
                         </td>
                        <td
@@ -2182,11 +2193,11 @@
                       <div class="data-values" v-if="item.plan">
                         <span
                           v-if="item.plan"
-                          class="otm-triangle-responsive"
-                          :style="`${getColor(
-                            item.fact -
-                              item.plan
-                          )}`"
+                          :class="
+                            [(item.fact - item.plan) < 0 ?
+                             'fall-indicator' : 'growth-indicator',
+                             'triangle-responsive']
+                          "
                         ></span>
                         {{
                           new Intl.NumberFormat("ru-RU").format(
@@ -2376,11 +2387,10 @@
                       </td>
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="width-20 text-center"
+                        class="width-20 text-center data-pointer"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
-                        style="cursor: pointer; font-size: 30px"
                       >
                         <div
                           v-if="index === 0"
@@ -2891,13 +2901,6 @@
           top: 4px;
           width: 100%;
         }
-        .triangle {
-          border: 6px solid transparent;
-          height: 6px;
-          margin-right: 5px;
-
-          width: 6px;
-        }
       }
     }
   }
@@ -2994,6 +2997,7 @@
         .triangle {
           border: 6px solid transparent;
           height: 6px;
+          position: absolute;
           margin-right: 5px;
           position: absolute;
           width: 6px;
@@ -3003,13 +3007,13 @@
   }
 
   .width-40 {
-    width: 40% !important;
+    width: 40%;
   }
   .width-20 {
-    width: 20% !important;
+    width: 20%;
   }
   .data-titles {
-    font-family: "HarmoniaSansProCyr-Regular"!important;
+    font-family: "HarmoniaSansProCyr-Regular";
     font-style: normal;
     font-size: 16px;
   }
@@ -3029,12 +3033,32 @@
     font-family: "Harmonia-sans, sans-serif";
     font-style: normal;
   }
-  .otm-triangle-responsive {
+  .triangle-responsive {
     border: 6px solid transparent;
     height: 6px;
     margin-right: 5px;
     width: 6px;
     float: left;
+  }
+  .data-pointer {
+    cursor: pointer;
+    font-size: 30px;
+  }
+  .growth-indicator {
+    margin-top: 7px;
+    border-bottom: 6px solid #009846;
+  }
+  .fall-indicator {
+    margin-top: 13px;
+    border-top: 6px solid #e31e24;
+  }
+  .growth-indicator-production-data {
+    margin-top: 16px;
+    border-bottom: 6px solid #009846;
+  }
+  .fall-indicator-production-data {
+    margin-top: 23px;
+    border-top: 6px solid #e31e24;
   }
 
 </style>

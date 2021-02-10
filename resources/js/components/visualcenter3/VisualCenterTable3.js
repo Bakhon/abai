@@ -814,14 +814,6 @@ export default {
       return this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
 
-    getColor(status) {
-      if (status < "0") return "margin-top: 13px; border-top: 6px solid #e31e24";
-      if (status == "0") return "";
-      return "margin-top: 7px; border-bottom: 6px solid #009846";
-    },
-
-
-
     getDiffProcentLastBigN(a, b) {
       if (a != '') {
         return ((a / b) * 100).toFixed(2);
