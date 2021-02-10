@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class OilRate extends Model
 {
-  protected $table = 'oil_rate';
+  protected $table = 'oil_rates';
 
   protected $guarded = ['id'];
 
