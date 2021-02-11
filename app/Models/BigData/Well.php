@@ -2,10 +2,10 @@
 
 namespace App\Models\BigData;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\TBDModel;
 
-class Well extends Model
+class Well extends TBDModel
 {
-    protected $table = 'bigdata_wells';
+    protected $table = 'dict.well';
     protected $guarded = ['id'];
 }
