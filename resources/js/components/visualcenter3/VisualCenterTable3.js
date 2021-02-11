@@ -1889,8 +1889,8 @@ export default {
 
     },
 
-    filterDzoInputForSeparateCompany(dataWithMay,company) {
-        return _.filter(dataWithMay, function(item) {
+    filterDzoInputForSeparateCompany(data,company) {
+        return _.filter(data, function(item) {
           return (item.dzo === company && item.accident !== null);
         })
     },
