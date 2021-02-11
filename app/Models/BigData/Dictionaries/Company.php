@@ -2,9 +2,7 @@
 
 namespace App\Models\BigData\Dictionaries;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Company extends Model
+class Company extends \App\Models\TBDModel
 {
-    protected $table = 'bigdata_companies';
+    protected $table = 'dict.company';
 }
