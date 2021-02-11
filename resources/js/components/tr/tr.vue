@@ -125,9 +125,39 @@
 
               </select>
             </div>
-            <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
+
+
+
+
+      
+
+
+
+
+            <div class="button_time" style="display:flex; justify-content: center;">
+              <a 
+                href="#" 
+                @click.prevent="chooseDt" 
+                class="btn btn-sm button_form"
+                
               >{{trans('tr.sf')}}</a
-            >
+              >
+              <a 
+                @click="calendarDynamic"
+                class="btn btn-sm button_form" 
+                style="width: fit-content;"
+                :title="is_dynamic_calendar ? 'Фиксированный календарь' : 'Динамический календарь'"
+                data-toggle="tooltip"
+                data-placement="top"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 8.72824V7.30031C1 4.98073 2.88039 3.10034 5.19996 3.10034H14.2999V3.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M12.8997 1L14.9289 3.02927C14.968 3.06832 14.968 3.13164 14.9289 3.17069L12.8997 5.19996" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M14.9996 7.28613V8.71407C14.9996 11.0336 13.1192 12.914 10.7996 12.914H1.69971V12.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+<path d="M3.09998 15L1.07071 12.9707C1.03166 12.9317 1.03166 12.8684 1.07071 12.8293L3.09998 10.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
+
+</a
+              >
+            </div>
           </div>
         </div>
         
@@ -723,7 +753,7 @@
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}Р заб</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
@@ -7056,6 +7086,7 @@ export default {
       Filter_well: undefined,
       checkers: false,
       checkersec: false,
+      is_dynamic_calendar: false,
     };
   },
   watch: {
@@ -7377,6 +7408,10 @@ export default {
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
 
+
+    },
+    calendarDynamic() {
+      this.is_dynamic_calendar = !this.is_dynamic_calendar
     },
 
     getColor(status) {
@@ -7421,6 +7456,15 @@ export default {
     // },
 
 
+
+    toggleOn() {
+    $('#toggle-trigger').bootstrapToggle('on')
+    this.is_dynamic_calendar=false
+    },
+
+    toggleOff() {
+    $('#toggle-trigger').bootstrapToggle('off')  
+    },
 
 
 
