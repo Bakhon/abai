@@ -1162,6 +1162,39 @@
           <div class="row container-fluid" :style="`${displayHeadTables}`">
             <div class="vis-table px-3" :style="scroll">
               <table v-if="bigTable.length" class="table4 w-100">
+                <thead>
+                  <tr>
+                    <th>ДЗО</th>
+                    <th
+                            v-if="buttonHover8"
+                    >
+                      План мес.
+                      тыс. тонн
+                    </th>
+                    <th
+                            v-if="buttonHover9"
+                    >
+                      План год.
+                      тыс. тонн
+                    </th>
+                    <th>
+                      План утв.
+                      тыс. тонн
+                    </th>
+                    <th>
+                      Факт<br>
+                      тыс. тонн
+                    </th>
+                    <th>
+                      +/-<br>
+                      тыс. тонн
+                    </th>
+                    <th>
+                      %<br>
+                      тыс. тонн
+                    </th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr v-for="(item, index) in bigTable">
                     <td
@@ -1225,9 +1258,7 @@
                         index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-                      <div v-if="index === 0" class="center">
-                        <!--план-->{{ trans("visualcenter.plan") }} {{ opec }}
-                      </div>
+
                       <div class="font">
                         {{ formatVisTableNumber(item.planMonth) }}
                         <div
@@ -2837,7 +2868,7 @@
 <style scoped lang="scss">
 .vis-table {
   flex: 0 0 56%;
-  height: 500px;
+  height: 600px;
   max-width: 56%;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -2862,16 +2893,20 @@
 
   .table4 {
     tr {
+      height: 31px;
       td {
         padding: 5px 5px 5px 10px;
         position: relative;
         vertical-align: middle;
+        min-width: 71px;
         &:first-child {
-          height: 50px;
+          height: 37.5px;
+          display: inline-block;
           white-space: normal;
-          width: 235px;
+          width: 327px;
           span {
             font-weight: bold;
+            font-size: 15px;
             img {
               width: 9px;
             }
@@ -2884,7 +2919,7 @@
           align-items: baseline;
           display: flex;
           justify-content: space-between;
-          font-size: 24px;
+          font-size: 15px;
           margin-left: 0;
           &.dynamic {
             padding-left: 17px;
@@ -2892,9 +2927,11 @@
           .right {
             font-size: 10px;
             margin-right: 0;
+            display: none;
           }
         }
         .center {
+          display: none;
           font-size: 0.63em;
           font-weight: bold;
           left: 0;
@@ -2906,8 +2943,34 @@
         }
       }
     }
+    tr:after {
+      content: ' ';
+      display: block;
+      visibility: hidden;
+      clear: both;
+    }
+    tr:first-child .th {
+      background: inherit;
+      top: -1px;
+      z-index: 3000;
+    }
+    th {
+      border: 0.5px solid #272953;
+      width: 71px;
+      position: sticky;
+      font-family: Bold;
+      font-size: 12px;
+      background: #353EA1;
+      text-align: center;
+      &:first-child {
+        width: 322px;
+        padding-top: 5px;
+        font-size: 16px;
+      }
+    }
   }
 }
+
 .vis-table-small {
   max-width: 46% !important;
   tr {
@@ -3042,7 +3105,7 @@
     font-size: 30px;
   }
   .growth-indicator {
-    margin-top: 7px;
+    margin-top: 6px;
     border-bottom: 6px solid #009846;
   }
   .fall-indicator {
@@ -3050,11 +3113,11 @@
     border-top: 6px solid #e31e24;
   }
   .growth-indicator-production-data {
-    margin-top: 16px;
+    margin-top: 8px;
     border-bottom: 6px solid #009846;
   }
   .fall-indicator-production-data {
-    margin-top: 23px;
+    margin-top: 13px;
     border-top: 6px solid #e31e24;
   }
 </style>
