@@ -347,6 +347,45 @@ export default {
     };
   },
   methods: {
+    getDzoColumnsClass(rowIndex, column) {
+      if (column == 'plan' || column == 'difference') {
+        return this.getCellClassForEvenRow(rowIndex);
+      } else {
+        return this.getCellClassForOddRow(rowIndex);
+      }
+    },
+
+    getCellClassForEvenRow(rowIndex) {
+      if (this.buttonHover8 || this.buttonHover9) {
+        return this.getDarkColor(rowIndex);
+      } else {
+        return this.getLightColor(rowIndex);
+      }
+    },
+    getCellClassForOddRow(rowIndex) {
+      if (this.buttonHover8 || this.buttonHover9) {
+        return this.getLightColor(rowIndex);
+      } else {
+        return this.getDarkColor(rowIndex);
+      }
+    },
+
+    getDarkColor(rowIndex) {
+      if (rowIndex % 2 === 0) {
+        return 'tdStyle'
+      } else {
+        return 'tdNone'
+      }
+    },
+
+    getLightColor(rowIndex) {
+      if (rowIndex % 2 === 0) {
+        return 'tdStyleLight'
+      } else {
+        return 'tdStyleLight2'
+      }
+    },
+
     saveCompany(com) {
       this.company = com;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
@@ -2877,7 +2916,6 @@ export default {
 
   },
 
-
   created() {
 
     if (window.location.host === 'dashboard') {
@@ -3085,5 +3123,5 @@ export default {
             return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
         });
     },
-  },
+},
 };

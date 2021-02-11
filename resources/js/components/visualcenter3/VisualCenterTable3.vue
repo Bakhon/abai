@@ -4,7 +4,7 @@
   >
     <div class="left-side flex-grow-1 pr-2">
       <div class="first-string">
-        <div class="table-responsive">
+        <div class="table-responsive right-side-block">
           <table class="table table1">
             <tr>
               <td>
@@ -975,10 +975,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -990,10 +986,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -1004,10 +996,6 @@
                         {{ new Intl.NumberFormat("ru-RU").format(item.plan) }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }} {{ item4 }}
                         </div>
@@ -1025,10 +1013,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -1040,10 +1024,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -1054,10 +1034,6 @@
                         {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -1090,10 +1066,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }} {{ item4 }}
                         </div>
@@ -1164,34 +1136,34 @@
               <table v-if="bigTable.length" class="table4 w-100">
                 <thead>
                   <tr>
-                    <th>ДЗО</th>
+                    <th>{{ trans("visualcenter.dzo") }}</th>
                     <th
                             v-if="buttonHover8"
                     >
-                      План мес.
-                      тыс. тонн
+                      {{ trans("visualcenter.dzoMonthlyPlan") }}
+                      {{ trans("visualcenter.dzoThousandTon") }}
                     </th>
                     <th
                             v-if="buttonHover9"
                     >
-                      План год.
-                      тыс. тонн
+                      {{ trans("visualcenter.dzoYearlyPlan") }}
+                      {{ trans("visualcenter.dzoThousandTon") }}
                     </th>
                     <th>
-                      План утв.
-                      тыс. тонн
+                      {{ trans("visualcenter.plan") }}
+                      {{ trans("visualcenter.dzoThousandTon") }}
                     </th>
                     <th>
-                      Факт<br>
-                      тыс. тонн
+                      {{ trans("visualcenter.fact") }}<br>
+                      {{ trans("visualcenter.dzoThousandTon") }}
                     </th>
                     <th>
-                      +/-<br>
-                      тыс. тонн
+                      {{ trans("visualcenter.dzoDifference") }}<br>
+                      {{ trans("visualcenter.dzoThousandTon") }}
                     </th>
                     <th>
-                      %<br>
-                      тыс. тонн
+                      {{ trans("visualcenter.dzoPercent") }}<br>
+                      {{ trans("visualcenter.dzoThousandTon") }}
                     </th>
                   </tr>
                 </thead>
@@ -1210,91 +1182,44 @@
                     <td
                       v-if="buttonHover9"
                       :class="
-                        index % 2 === 0 ? 'tdStyle3-total2' : 'tdStyle3-total'
+                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-                      <div v-if="index === 0" class="center">
-                        <!--план-->{{ trans("visualcenter.plan") }} (годовой)
-                      </div>
                       <div class="font">
                         {{ formatVisTableNumber(item.oil_planYear) }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
                       </div>
                     </td>
 
                     <td
                       v-if="buttonHover8"
                       :class="
-                        index % 2 === 0 ? 'tdStyle3-total2' : 'tdStyle3-total'
+                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                       "
                     >
-                      <div v-if="index === 0" class="center">
-                        <!--план-->{{ trans("visualcenter.plan") }} (месячный)
-                      </div>
                       <div class="font">
                         {{ formatVisTableNumber(item.planMonthNew) }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
                       </div>
                     </td>
 
                     <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                            :class="`${getDzoColumnsClass(index,'plan')}`"
                     >
 
                       <div class="font">
                         {{ formatVisTableNumber(item.planMonth) }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }}{{ item4 }}
-                        </div>
                       </div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div v-if="index === 0" class="center">
-                        <!-- факт -->{{ trans("visualcenter.fact") }}
-                      </div>
+
+                    <td
+                            :class="`${getDzoColumnsClass(index,'fact')}`"
+                    >
                       <div class="font">
                         {{ formatVisTableNumber(item.factMonth) }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
                       </div>
                     </td>
                     <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                            :class="`${getDzoColumnsClass(index,'difference')}`"
                     >
-                      <div v-if="index === 0" class="center">+/-</div>
                       <div
                         v-if="item.factMonth"
                         :class="
@@ -1309,19 +1234,11 @@
                             Math.abs(item.factMonth - item.planMonth)
                           )
                         }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
                       </div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div v-if="index === 0" class="center">%</div>
+                    <td
+                            :class="`${getDzoColumnsClass(index,'percent')}`"
+                    >
                       <div
                         v-if="item.factMonth"
                         :class="
@@ -1335,7 +1252,6 @@
                         {{
                         formatVisTableNumber3 (item.factMonth , item.planMonth)
                         }}
-                        %
                       </div>
                     </td>
                     <td
@@ -1484,10 +1400,6 @@
                         {{ formatVisTableNumber(planMonthSumm) }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }} {{ item4 }}
                         </div>
@@ -1499,10 +1411,6 @@
                         {{ formatVisTableNumber(factMonthSumm) }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }} {{ item4 }}
                         </div>
@@ -1529,10 +1437,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -2255,10 +2159,6 @@
                         <div v-if="index === 0" class="center">+/-</div>
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                         <span class="data-metrics">
                           {{item.metricSystem}}
@@ -2478,7 +2378,7 @@
     </div>
     <div class="right-side2 flex-grow-1 pl-1">
       <div class="first-string">
-        <div class="table-responsive">
+        <div class="table-responsive right-side-block">
           <table class="table table1-2">
             <tr class="cursor-pointer">
               <td
@@ -2561,7 +2461,7 @@
           <!-- <div class="line-bottom"></div>-->
         </div>
         <div class="first-string first-string2">
-          <div class="table-responsive">
+          <div class="table-responsive right-side-block">
             <table class="table table1-2">
               <tr class="cursor-pointer">
                 <td
@@ -2651,8 +2551,8 @@
         </div>
 
         <div class="first-string first-string2">
-          <div class="table-responsive">
-            <table class="table table5">
+          <div class="table-responsive right-side-block">
+            <table class="table table5 splitted-side-block">
               <tr class="cursor-pointer">
                 <td
                   class="w-50"
@@ -2688,7 +2588,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div class="table-responsive right-side-block">
           <table class="table">
             <tr>
               <td class="w-50 px-2">
@@ -2739,7 +2639,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div class="table-responsive right-side-block">
           <table class="table">
             <tr>
               <td class="w-50 px-2">
@@ -2780,7 +2680,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div class="table-responsive right-side-block">
           <table class="table table1-2">
             <tr>
               <!--<td>
@@ -2830,7 +2730,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div class="table-responsive right-side-block">
           <table class="table">
             <tr>
               <td class="size-td">
@@ -2868,7 +2768,7 @@
 <style scoped lang="scss">
 .vis-table {
   flex: 0 0 56%;
-  height: 600px;
+  height: 650px;
   max-width: 56%;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -2903,7 +2803,7 @@
           height: 37.5px;
           display: inline-block;
           white-space: normal;
-          width: 327px;
+          min-width: 327px;
           span {
             font-weight: bold;
             font-size: 15px;
@@ -2928,10 +2828,11 @@
             font-size: 10px;
             margin-right: 0;
             display: none;
+            font-family: 'Harmonia-sans', sans-serif;
+            opacity: 0.6;
           }
         }
         .center {
-          display: none;
           font-size: 0.63em;
           font-weight: bold;
           left: 0;
@@ -2955,6 +2856,10 @@
       z-index: 3000;
     }
     th {
+      position: sticky;
+      position: --webkit-sticky;
+      top: 0;
+      z-index: 2;
       border: 0.5px solid #272953;
       width: 71px;
       position: sticky;
@@ -3120,4 +3025,19 @@
     margin-top: 13px;
     border-top: 6px solid #e31e24;
   }
+  .splitted-side-block {
+    tr {
+      height: 136px;
+    }
+  }
+
+  .right-side-block {
+
+  }
+
+@media (min-width:1680px) {
+  .right-side-block {
+    min-height: 139px;
+  }
+}
 </style>
