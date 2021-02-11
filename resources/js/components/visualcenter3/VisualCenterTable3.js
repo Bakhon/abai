@@ -819,14 +819,6 @@ export default {
       return this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
 
-    getColor(status) {
-      if (status < "0") return "margin-top: 23px; border-top: 6px solid #e31e24";
-      if (status == "0") return "";
-      return "margin-top: 16px; border-bottom: 6px solid #009846";
-    },
-
-
-
     getDiffProcentLastBigN(a, b) {
       if (a != '') {
         return ((a / b) * 100).toFixed(2);
@@ -1537,7 +1529,7 @@ export default {
               );
               this.inj_wells_idle = inj_wells_idle;
             }
-  
+
             if (inj_wells_work) {
               inj_wells_work = _.reduce(
                 dataDay,
@@ -1548,7 +1540,7 @@ export default {
               );
               this.inj_wells_work = inj_wells_work;
             }
-  
+
             if (prod_wells_work) {
               prod_wells_work = _.reduce(
                 dataDay,
@@ -1559,7 +1551,7 @@ export default {
               );
               this.prod_wells_work = prod_wells_work;
             }
-  
+
             if (prod_wells_idle) {
               prod_wells_idle = _.reduce(
                 dataDay,
@@ -1568,7 +1560,7 @@ export default {
                 },
                 0
               );
-  
+
               this.prod_wells_idle = prod_wells_idle;
             }*/
 
@@ -2016,8 +2008,8 @@ export default {
            ),
          ]);
        });
- 
- 
+
+
          if (inj_wells_idle) {
          inj_wells_idle = _.reduce(
            dataWithMay,
@@ -2028,7 +2020,7 @@ export default {
          );
          this.inj_wells_idlePercent = inj_wells_idle;
        }
- 
+
        if (inj_wells_work) {
          inj_wells_work = _.reduce(
            dataWithMay,
@@ -2039,7 +2031,7 @@ export default {
          );
          this.inj_wells_workPercent = inj_wells_work;
        }
- 
+
        if (prod_wells_work) {
          prod_wells_work = _.reduce(
            dataWithMay,
@@ -2050,7 +2042,7 @@ export default {
          );
          this.prod_wells_workPercent = prod_wells_work;
        }
- 
+
        if (prod_wells_idle) {
          prod_wells_idle = _.reduce(
            dataWithMay,
@@ -2059,10 +2051,10 @@ export default {
            },
            0
          );
- 
+
          this.prod_wells_idlePercent = prod_wells_idle;
        }
- 
+
        */
     },
 
@@ -2162,7 +2154,6 @@ export default {
       this.timeSelectOld = oldDate;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
       this.getCurrencyNow(new Date().toLocaleDateString());
-      this.getOilNow(this.timeSelect, this.period);
       this.getAccidentTotal();
       this.updateCurrentOilPrices(this.timeSelect,this.period);
 
@@ -2500,7 +2491,7 @@ export default {
           code: 'otm_iz_burenia_skv_fact',
           plan: otmData[0]['otm_iz_burenia_skv_plan'],
           fact: otmData[0]['otm_iz_burenia_skv_fact'],
-          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
+          metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
         {
           name:
@@ -2509,7 +2500,7 @@ export default {
           code: 'otm_burenie_prohodka_fact',
           plan: otmData[0]['otm_burenie_prohodka_plan'],
           fact: otmData[0]['otm_burenie_prohodka_fact'],
-          metricSystem: this.trans("visualcenter.otm_metric_system_meter"),
+          metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
         },
         {
           name:
@@ -2518,7 +2509,7 @@ export default {
           code: 'otm_krs_skv_fact',
           plan: otmData[0]['otm_krs_skv_plan'],
           fact: otmData[0]['otm_krs_skv_fact'],
-          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
+          metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
         {
           name:
@@ -2527,7 +2518,7 @@ export default {
           code: 'otm_prs_skv_fact',
           plan: otmData[0]['otm_prs_skv_plan'],
           fact: otmData[0]['otm_prs_skv_fact'],
-          metricSystem: this.trans("visualcenter.otm_metric_system_wells"),
+          metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
       )
 
@@ -2591,34 +2582,38 @@ export default {
         {
           name:
             // 'Деэмульгатор',
-            this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
+          this.trans("visualcenter.chem_prod_zakacka_demulg_fact"),
           code: 'chem_prod_zakacka_demulg_fact',
           plan: chemistryData[0]['chem_prod_zakacka_demulg_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_demulg_fact'],
+          metricSystem: this.trans("visualcenter.chemistryMetricTon"),
         },
         {
           name:
             // 'Бактерицид',
-            this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
+          this.trans("visualcenter.chem_prod_zakacka_bakteracid_fact"),
           code: 'chem_prod_zakacka_bakteracid_fact',
           plan: chemistryData[0]['chem_prod_zakacka_bakteracid_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_bakteracid_fact'],
+          metricSystem: this.trans("visualcenter.chemistryMetricTon"),
         },
         {
           name:
             // 'Ингибитор коррозии',
-            this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
+          this.trans("visualcenter.chem_prod_zakacka_ingibator_korrozin_fact"),
           code: 'chem_prod_zakacka_ingibator_korrozin_fact',
           plan: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_ingibator_korrozin_fact'],
+          metricSystem: this.trans("visualcenter.chemistryMetricTon"),
         },
         {
           name:
             // 'Ингибитор солеотложения',
-            this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
+          this.trans("visualcenter.chem_prod_zakacka_ingibator_soleotloj_fact"),
           code: 'chem_prod_zakacka_ingibator_soleotloj_fact',
           plan: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_plan'],
           fact: chemistryData[0]['chem_prod_zakacka_ingibator_soleotloj_fact'],
+          metricSystem: this.trans("visualcenter.chemistryMetricTon"),
         },
       )
 
@@ -2844,6 +2839,7 @@ export default {
     }
     },
 
+
     formatVisTableNumber2(num) {
       if (num == '') {
         num = 0;
@@ -3015,8 +3011,16 @@ export default {
       return this.periodSelect();
     },
     usdRatesDataTableForCurrentPeriod() {
+      this.sortUsdRatesDataForTable;
       return this.usdRatesData.for_table.slice(this.periodUSD * -1);
     },
+
+    sortUsdRatesDataForTable() {
+        this.usdRatesData.for_table.sort( ( a, b) => {
+            return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
+        });
+    },
+
     oilRatesDataTableForCurrentPeriod() {
       this.sortOilRatesDataForTable;
       return this.oilRatesData.for_table.slice(0, this.oilPeriod);
@@ -3079,6 +3083,6 @@ export default {
         this.oilRatesData.for_table.sort( ( a, b) => {
             return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
         });
-    }
+    },
   },
 };

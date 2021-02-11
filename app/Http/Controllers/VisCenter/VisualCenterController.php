@@ -292,4 +292,9 @@ class VisualCenterController extends Controller
     {
         return view('visualcenter.visualcenter7');
     }
+
+    public function excelform()
+    {
+        return view('visualcenter.excelform');
+    }
 }
