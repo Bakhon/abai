@@ -1236,9 +1236,7 @@ export default {
 
             let accident;
             if (company != 'all') {
-              accident=_.filter(dataWithMay, function(item) {
-                return (item.dzo == company && item.accident !== null);
-              })
+              accident = this.filterDzoInputForSeparateCompany(dataWithMay,company);
             }
             else if (company === 'all') { accident = dataWithMay; }
 
@@ -1891,6 +1889,11 @@ export default {
 
     },
 
+    filterDzoInputForSeparateCompany(dataWithMay,company) {
+        return _.filter(dataWithMay, function(item) {
+          return (item.dzo === company && item.accident !== null);
+        })
+    },
 
     getProductionPercentOneDzo(data) {
       var timestampToday = this.timestampToday;
