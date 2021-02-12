@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\BigData\Forms;
 
 use App\Models\BigData\Well;
 
 class WellRegister extends BaseForm
 {
-    public function submit(\Illuminate\Http\Request $request)
+    public function submit(\Illuminate\Http\Request $request): \Illuminate\Database\Eloquent\Model
     {
         $well = Well::create($request->all());
-        return $well;
+        return $well->toArray();
     }
 
-    protected function params()
+    protected function params(): array
     {
         return [
             'tabs' => [

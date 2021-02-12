@@ -1,24 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services\BigData\Forms;
 
 use Illuminate\Http\Request;
 
 abstract class BaseForm
 {
-    public function send(Request $request)
+    public function send(Request $request): \Illuminate\Database\Eloquent\Model
     {
         $this->validate($request);
-        $this->submit($request);
+        return $this->submit($request);
     }
 
-    private function validate(Request $request)
+    private function validate(Request $request): void
     {
-        $rules = $this->prepareValidationRules();
+        $rules = $this->getValidationRules();
         $request->validate($rules, [], $this->getValidationAttributeNames());
     }
 
-    private function prepareValidationRules()
+    private function getValidationRules(): array
     {
         $params = $this->params();
         $rules = [];
@@ -34,7 +36,7 @@ abstract class BaseForm
         return $rules;
     }
 
-    abstract protected function params();
+    abstract protected function params(): array;
 
     private function getValidationAttributeNames(): array
     {
@@ -52,9 +54,9 @@ abstract class BaseForm
         return $attributes;
     }
 
-    abstract public function submit(Request $request);
+    abstract public function submit(Request $request): \Illuminate\Database\Eloquent\Model;
 
-    public function getFormatedParams()
+    public function getFormatedParams(): array
     {
         $params = $this->params();
         $fieldValues = $this->getFieldValues($params);
@@ -65,7 +67,7 @@ abstract class BaseForm
         ];
     }
 
-    private function getFieldValues($params)
+    private function getFieldValues($params): array
     {
         $fields = [];
 
