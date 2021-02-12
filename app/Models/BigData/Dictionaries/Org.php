@@ -2,9 +2,9 @@
 
 namespace App\Models\BigData\Dictionaries;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\TBDModel;
 
-class Org extends Model
+class Org extends TBDModel
 {
-    protected $table = 'bigdata_orgs';
+    protected $table = 'dict.org';
 }

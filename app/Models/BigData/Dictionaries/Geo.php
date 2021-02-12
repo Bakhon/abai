@@ -2,9 +2,9 @@
 
 namespace App\Models\BigData\Dictionaries;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\TBDModel;
 
-class Geo extends Model
+class Geo extends TBDModel
 {
-    protected $table = 'bigdata_geos';
+    protected $table = 'dict.geo';
 }
