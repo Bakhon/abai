@@ -1,0 +1,558 @@
+{
+  "field_name": "Узень",
+  "date_range_model": {
+    "min_date": "1900-01-01",
+    "max_date": "2100-01-01",
+    "begin_date": "1900-01-01",
+    "end_date": "2100-01-01",
+    "before_day_dbeg": 10,
+    "after_day_dbeg": 10,
+    "before_day_dend": 10,
+    "after_day_dend": 10
+  },
+  "finder_model": {
+    "name": "root",
+    "children": [
+      {
+        "name": "Добыча нефти:",
+        "children": [
+          {
+            "name": "Добыча жидкости:",
+            "children": [
+              {
+                "name": "Забойное давление:",
+                "children": [],
+                "setting_model": {
+                  "name": "root",
+                  "children": [
+                    {
+                      "name": "Конечные значения",
+                      "children": [
+                        {
+                          "name": "Потери добычи нефти выше (абс. значение)",
+                          "children": [],
+                          "checkable": true,
+                          "check_state": true,
+                          "value": 100.0
+                        },
+                        {
+                          "name": "Потери добычи нефти выше (относит. значение)",
+                          "children": [],
+                          "checkable": true,
+                          "check_state": true,
+                          "value": 0.4
+                        }
+                      ],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "Пластовое давление:",
+                "children": [],
+                "setting_model": {
+                  "name": "root",
+                  "children": [
+                    {
+                      "name": "Конечные значения",
+                      "children": [
+                        {
+                          "name": "Потери добычи нефти выше (абс. значение)",
+                          "children": [],
+                          "checkable": true,
+                          "check_state": true,
+                          "value": 100.0
+                        },
+                        {
+                          "name": "Потери добычи нефти выше (относит. значение)",
+                          "children": [],
+                          "checkable": true,
+                          "check_state": true,
+                          "value": 0.4
+                        }
+                      ],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": null
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "Кпрод. жидкости:",
+                "children": [],
+                "setting_model": {
+                  "name": "root",
+                  "children": [
+                    {
+                      "name": "Конечные значения",
+                      "children": [
+                        {
+                          "name": "Потери добычи нефти выше (абс. значение)",
+                          "children": [],
+                          "checkable": true,
+                          "check_state": true,
+                          "value": 100.0
+                        },
+                        {
+                          "name": "Потери добычи нефти выше (относит. значение)",
+                          "children": [],
+                          "checkable": true,
+                          "check_state": true,
+                          "value": 0.4
+                        }
+                      ],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": null
+                    }
+                  ]
+                },
+                "ioi_finder_model": {
+                  "name": "root",
+                  "children": [
+                    {
+                      "name": "ГРП",
+                      "children": [],
+                      "setting_model": {
+                        "name": "root",
+                        "children": [
+                          {
+                            "name": "Макc. дебит жидкости",
+                            "children": [],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 20.0
+                          },
+                          {
+                            "name": "Макс. обводненность",
+                            "children": [],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 0.5
+                          },
+                          {
+                            "name": "Макс. обводненность соседних скв.",
+                            "children": [
+                              {
+                                "name": "Радиус поиска",
+                                "children": [],
+                                "checkable": true,
+                                "check_state": true,
+                                "value": 300.0
+                              }
+                            ],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 0.5
+                          },
+                          {
+                            "name": "Мин. расстояния до доб. скважин",
+                            "children": [
+                              {
+                                "name": "Учитывать транзитные",
+                                "children": [],
+                                "checkable": true,
+                                "check_state": true,
+                                "value": null
+                              }
+                            ],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 300.0
+                          },
+                          {
+                            "name": "Мин. расстояния до нагн. скважин",
+                            "children": [
+                              {
+                                "name": "Учитывать транзитные",
+                                "children": [],
+                                "checkable": true,
+                                "check_state": true,
+                                "value": null
+                              }
+                            ],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 300.0
+                          },
+                          {
+                            "name": "Мин. вскр. нефт. нас. толщина",
+                            "children": [],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 3.0
+                          },
+                          {
+                            "name": "Мин. мощность перекрывающих экранов (перемычек)",
+                            "children": [
+                              {
+                                "name": "Горизонт",
+                                "children": [],
+                                "checkable": true,
+                                "check_state": true,
+                                "value": null
+                              }
+                            ],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 6.0
+                          },
+                          {
+                            "name": "Мин. мощность подстилающих экранов (перемычек)",
+                            "children": [
+                              {
+                                "name": "Горизонт",
+                                "children": [],
+                                "checkable": true,
+                                "check_state": true,
+                                "value": null
+                              }
+                            ],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 6.0
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "Реперфорация",
+                      "children": [],
+                      "setting_model": {
+                        "name": "root",
+                        "children": [
+                          {
+                            "name": "Кол-во перфорации текущих интервалов",
+                            "children": [
+                              {
+                                "name": "Макс.",
+                                "children": [],
+                                "checkable": true,
+                                "check_state": true,
+                                "value": 3
+                              },
+                              {
+                                "name": "Средн.",
+                                "children": [],
+                                "checkable": true,
+                                "check_state": true,
+                                "value": 3
+                              }
+                            ],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": null
+                          },
+                          {
+                            "name": "Мин срок текущей перфорации",
+                            "children": [],
+                            "checkable": true,
+                            "check_state": true,
+                            "value": 6
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "ОПЗ",
+                      "children": []
+                    }
+                  ]
+                }
+              }
+            ],
+            "setting_model": {
+              "name": "root",
+              "children": [
+                {
+                  "name": "Конечные значения",
+                  "children": [
+                    {
+                      "name": "Потери добычи нефти выше (абс. значение)",
+                      "children": [],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": 100.0
+                    },
+                    {
+                      "name": "Потери добычи нефти выше (относит. значение)",
+                      "children": [],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": 0.4
+                    },
+                    {
+                      "name": "Дебит жидкости на конец периода выше",
+                      "children": [],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": 20.0
+                    }
+                  ],
+                  "checkable": true,
+                  "check_state": true,
+                  "value": null
+                }
+              ]
+            }
+          },
+          {
+            "name": "Обводненность:",
+            "children": [],
+            "setting_model": {
+              "name": "root",
+              "children": [
+                {
+                  "name": "Конечные значения",
+                  "children": [
+                    {
+                      "name": "Потери добычи нефти выше (абс. значение)",
+                      "children": [],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": 100.0
+                    },
+                    {
+                      "name": "Потери добычи нефти выше (относит. значение)",
+                      "children": [],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": 0.4
+                    },
+                    {
+                      "name": "Обводненность на конец периода выше",
+                      "children": [],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": 0.6
+                    }
+                  ],
+                  "checkable": true,
+                  "check_state": true,
+                  "value": null
+                }
+              ]
+            }
+          },
+          {
+            "name": "Отработанные дни:",
+            "children": [],
+            "setting_model": {
+              "name": "root",
+              "children": [
+                {
+                  "name": "Конечные значения",
+                  "children": [
+                    {
+                      "name": "Потери добычи нефти выше (абс. значение)",
+                      "children": [],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": 100.0
+                    },
+                    {
+                      "name": "Потери добычи нефти выше (относит. значение)",
+                      "children": [],
+                      "checkable": true,
+                      "check_state": true,
+                      "value": 0.4
+                    }
+                  ],
+                  "checkable": true,
+                  "check_state": true,
+                  "value": null
+                }
+              ]
+            }
+          }
+        ],
+        "setting_model": {
+          "name": "root",
+          "children": [
+            {
+              "name": "Конечные значения",
+              "children": [
+                {
+                  "name": "Отклонение",
+                  "children": [],
+                  "checkable": false,
+                  "check_state": true,
+                  "value": 0.5
+                },
+                {
+                  "name": "Шаги осреднения",
+                  "children": [],
+                  "checkable": false,
+                  "check_state": true,
+                  "value": 1
+                }
+              ],
+              "checkable": true,
+              "check_state": true,
+              "value": null
+            },
+            {
+              "name": "Накопленная",
+              "children": [
+                {
+                  "name": "Отклонение",
+                  "children": [],
+                  "checkable": false,
+                  "check_state": true,
+                  "value": 0.4
+                },
+                {
+                  "name": "Кподения переходящих скв",
+                  "children": [],
+                  "checkable": false,
+                  "check_state": true,
+                  "value": 0.13
+                },
+                {
+                  "name": "Кподения новых скв",
+                  "children": [],
+                  "checkable": false,
+                  "check_state": true,
+                  "value": 0.07
+                }
+              ],
+              "checkable": true,
+              "check_state": true,
+              "value": null
+            },
+            {
+              "name": "Тренд",
+              "children": [
+                {
+                  "name": "Угол падения",
+                  "children": [],
+                  "checkable": false,
+                  "check_state": true,
+                  "value": 35
+                }
+              ],
+              "checkable": true,
+              "check_state": true,
+              "value": null
+            }
+          ]
+        }
+      },
+      {
+        "name": "Интервалы для дострела:",
+        "children": [],
+        "setting_model": {
+          "name": "root",
+          "children": [
+            {
+              "name": "Фонд",
+              "children": [
+                {
+                  "name": "Добывающий",
+                  "children": [
+                    {
+                      "name": "Макс. дебит нефти",
+                      "children": [],
+                      "checkable": false,
+                      "check_state": true,
+                      "value": 5.0
+                    }
+                  ],
+                  "checkable": true,
+                  "check_state": true,
+                  "value": null
+                },
+                {
+                  "name": "Нагнетательный",
+                  "children": [],
+                  "checkable": true,
+                  "check_state": false,
+                  "value": null
+                }
+              ],
+              "checkable": false,
+              "check_state": true,
+              "value": null
+            },
+            {
+              "name": "Расположение относительно текущ инт. перф.",
+              "children": [
+                {
+                  "name": "Выше",
+                  "children": [],
+                  "checkable": true,
+                  "check_state": true,
+                  "value": null
+                },
+                {
+                  "name": "Между",
+                  "children": [],
+                  "checkable": true,
+                  "check_state": true,
+                  "value": null
+                },
+                {
+                  "name": "Ниже",
+                  "children": [],
+                  "checkable": true,
+                  "check_state": false,
+                  "value": null
+                }
+              ],
+              "checkable": false,
+              "check_state": true,
+              "value": null
+            },
+            {
+              "name": "Тип насщения",
+              "children": [
+                {
+                  "name": "Газ",
+                  "children": [],
+                  "checkable": true,
+                  "check_state": false,
+                  "value": null
+                },
+                {
+                  "name": "Нефть",
+                  "children": [],
+                  "checkable": true,
+                  "check_state": true,
+                  "value": null
+                },
+                {
+                  "name": "Вода",
+                  "children": [],
+                  "checkable": true,
+                  "check_state": false,
+                  "value": null
+                }
+              ],
+              "checkable": false,
+              "check_state": true,
+              "value": null
+            },
+            {
+              "name": "Мин. нефтенасыщенность",
+              "children": [],
+              "checkable": true,
+              "check_state": true,
+              "value": 0.5
+            },
+            {
+              "name": "Мин. пористость",
+              "children": [],
+              "checkable": true,
+              "check_state": true,
+              "value": 0.1
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
