@@ -44,7 +44,7 @@
                     <div class="block-header text-center">
                         Таблица данных скважин
                     </div>
-                    <div class="bg-dark table-responsive table-scroll" style="height: 400px;">
+                    <div class="bg-dark table-responsive table-scroll" style="max-height: 400px;">
                         <table class="table table-striped table-borderless text-center text-white">
                             <tbody>
                             <tr class="near-wells-table-item" v-for="item in wellsData">
@@ -67,7 +67,7 @@
                 <div class="block-header text-center">
                     Поиск потенциала
                 </div>
-                <div class="bg-dark" style="height: 324px;">
+                <div class="bg-dark" style="max-height: 324px;">
                     <b-tree-view
                         :data="treeData"
                         :contextMenu="false"
