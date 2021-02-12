@@ -24,9 +24,7 @@ package.json
 public/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.svg
 public/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.svg
 public/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.svg
-public/webfonts/fa-brands-400.svg
-public/webfonts/fa-regular-400.svg
-public/webfonts/fa-solid-900.svg
+public/webfonts
 
 public/test2.php
 public/test1.php
