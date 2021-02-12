@@ -60,75 +60,109 @@
             </i>
             {{trans('tr.dt')}}
           </button>
-
-          <div
-            class="dropdown-menu fadropmenu"
-            style="
-              background: #40467e;
-              height: 117px;
-              flex-direction: column;
-              width: calc(100% - 26px);
-              margin-top: 4px;
-            "
-            aria-labelledby="dropdownMenuButton"
-            data-toggle="dropdown"
-            @click.prevent.stop="() => {}"
-          >
-            <div>
-              <select
-                v-model="month"
-                style="
-                  background-color: #40467e;
-                  border-color: #40467e;
-                  color: white;
-                  width: 100%;
-                  padding: 8px;
-                "
-                class="form-controll"
-                id="companySelect"
-                @change="onChangeMonth($event)"
-              >
-                <option value="1">{{trans('tr.jan')}}</option>
-                <option value="2">{{trans('tr.feb')}}</option>
-                <option value="3">{{trans('tr.mar')}}</option>
-                <option value="4">{{trans('tr.apr')}}</option>
-                <option value="5">{{trans('tr.may')}}</option>
-                <option value="6">{{trans('tr.jun')}}</option>
-                <option value="7">{{trans('tr.jul')}}</option>
-                <option value="8">{{trans('tr.aug')}}</option>
-                <option value="9">{{trans('tr.sep')}}</option>
-                <option value="10">{{trans('tr.oct')}}</option>
-                <option value="11">{{trans('tr.nov')}}</option>
-                <option value="12">{{trans('tr.dec')}}</option>
-              </select>
-            </div>
-            <div>
-              <select
-                v-model="selectYear"
-                style="
-                  background-color: #40467E ;
-                  border-color: #40467E;
-                  color: white;
-                  width: 100%;
-                  padding: 8px;
-                  border: none
-                  height: 35px !important;
-                  color: white !important;
-                "
-                class="form-controll"
-                id="companySelect"
-                @change="onChangeYear($event)"
-              >
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-                <option value="2019">2019</option>
-
-              </select>
-            </div>
-            <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
-              >{{trans('tr.sf')}}</a
+          <div class="fix calendar" v-if="show_calendar_first">
+            <div
+              class="dropdown-menu fadropmenu"
+              style="
+                background: #40467e;
+                height: 117px;
+                flex-direction: column;
+                width: calc(100% - 26px);
+                margin-top: 4px;
+              "
+              aria-labelledby="dropdownMenuButton"
+              data-toggle="dropdown"
+              @click.prevent.stop="() => {}"
             >
-          </div>
+              <div>
+                <select
+                  v-model="month"
+                  style="
+                    background-color: #40467e;
+                    border-color: #40467e;
+                    color: white;
+                    width: 100%;
+                    padding: 8px;
+                  "
+                  class="form-controll"
+                  id="companySelect"
+                  @change="onChangeMonth($event)"
+                >
+                  <option value="1">{{trans('tr.jan')}}</option>
+                  <option value="2">{{trans('tr.feb')}}</option>
+                  <option value="3">{{trans('tr.mar')}}</option>
+                  <option value="4">{{trans('tr.apr')}}</option>
+                  <option value="5">{{trans('tr.may')}}</option>
+                  <option value="6">{{trans('tr.jun')}}</option>
+                  <option value="7">{{trans('tr.jul')}}</option>
+                  <option value="8">{{trans('tr.aug')}}</option>
+                  <option value="9">{{trans('tr.sep')}}</option>
+                  <option value="10">{{trans('tr.oct')}}</option>
+                  <option value="11">{{trans('tr.nov')}}</option>
+                  <option value="12">{{trans('tr.dec')}}</option>
+                </select>
+              </div>
+              <div>
+                <select
+                  v-model="selectYear"
+                  style="
+                    background-color: #40467E ;
+                    border-color: #40467E;
+                    color: white;
+                    width: 100%;
+                    padding: 8px;
+                    border: none
+                    height: 35px !important;
+                    color: white !important;
+                  "
+                  class="form-controll"
+                  id="companySelect"
+                  @change="onChangeYear($event)"
+                >
+                  <option value="2021">2021</option>
+                  <option value="2020">2020</option>
+                  <option value="2019">2019</option>
+
+                </select>
+              </div>
+
+
+
+              <div class="button_time" style="display:flex; justify-content: center;">
+                <a 
+                  href="#" 
+                  @click.prevent="chooseDt" 
+                  class="btn btn-sm button_form"
+                  
+                >{{trans('tr.sf')}}</a
+                >
+                <a 
+                  @click="calendarDynamic"
+                  class="btn btn-sm button_form" 
+                  style="width: fit-content;"
+                  :title="is_dynamic_calendar ? 'Фиксированный календарь' : 'Динамический календарь'"
+                  data-toggle="tooltip"
+                  data-placement="top">
+                  <svg 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 16 16" 
+                    fill="none" 
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 8.72824V7.30031C1 4.98073 2.88039 3.10034 5.19996 3.10034H14.2999V3.10034" 
+                      stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M12.8997 1L14.9289 3.02927C14.968 3.06832 14.968 3.13164 14.9289 3.17069L12.8997 5.19996" 
+                      stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M14.9996 7.28613V8.71407C14.9996 11.0336 13.1192 12.914 10.7996 12.914H1.69971V12.914" 
+                      stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    <path d="M3.09998 15L1.07071 12.9707C1.03166 12.9317 1.03166 12.8684 1.07071 12.8293L3.09998 10.8" 
+                      stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  </svg>
+
+                </a>
+              </div>
+            </div>
+          </div>  
         </div>
         
         <div class="big-data-input-container">
@@ -723,7 +757,7 @@
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}Р заб</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
@@ -7056,6 +7090,9 @@ export default {
       Filter_well: undefined,
       checkers: false,
       checkersec: false,
+      is_dynamic_calendar: false,
+      show_calendar_first: true,
+      show_calendar_second: true,
     };
   },
   watch: {
@@ -7377,6 +7414,12 @@ export default {
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
 
+
+    },
+    calendarDynamic() {
+      this.is_dynamic_calendar = !this.is_dynamic_calendar
+      this.show_calendar_first = !this.show_calendar_first
+      this.show_calendar_second = !this.show_calendar_second
     },
 
     getColor(status) {
@@ -7421,6 +7464,15 @@ export default {
     // },
 
 
+
+    toggleOn() {
+    $('#toggle-trigger').bootstrapToggle('on')
+    this.is_dynamic_calendar=false
+    },
+
+    toggleOff() {
+    $('#toggle-trigger').bootstrapToggle('off')  
+    },
 
 
 
