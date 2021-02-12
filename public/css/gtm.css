@@ -24,7 +24,7 @@
     color: white;
     font-size: 1rem;
     font-weight: 600;
-    line-height: 2.4rem;
+    line-height: 1.8rem;
 }
 
 .gtm-map-img {
@@ -35,11 +35,11 @@
     height: 400px
 }
 
-.near-wells-table-block::-webkit-scrollbar {
+.table-scroll::-webkit-scrollbar {
     width: 0.2rem;
 }
 
-.near-wells-table-block::-webkit-scrollbar-thumb
+.table-scroll::-webkit-scrollbar-thumb
 {
     background-color: #3951CE;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
@@ -63,6 +63,23 @@
 .near-wells-table-item td:not(:last-child) {
     border-right: 1px solid !important;
     border-color: #454D7D !important;
+}
+
+.schemaTable {
+    font-size: 0.6rem;
+}
+
+.schemaTHead {
+    background-color: #3951CE;
+}
+
+.schemaTHead th {
+    padding: 0;
+}
+
+.schemaTHead th {
+    border-right: 1px solid !important;
+    border-color: #3C4270 !important;
 }
 
 /*mobile*/
