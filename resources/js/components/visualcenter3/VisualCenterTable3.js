@@ -763,10 +763,8 @@ export default {
     },
 
     pushOilChart(oilRatesData,item) {
-      let quoteDate = new Date(item['date']);
-      quoteDate = quoteDate.setHours(quoteDate.getHours() + 3);
       oilRatesData.for_chart.push([
-        quoteDate,
+        new Date(item['date']).getTime(),
         parseFloat(item['value']),
       ]);
     },
