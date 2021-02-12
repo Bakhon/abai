@@ -12,10 +12,40 @@
             :placeholder="trans('monitoring.map.select_gu')"
         >
         </v-select>
+        <b-button @click="openGuModal">+ ГУ</b-button>
       </div>
     </div>
     <div id="map"></div>
     <canvas id="deck-canvas"></canvas>
+
+    <b-modal id="gu-modal" title="Новый Гу">
+      <b-form-group
+            label="Имя ГУ"
+            label-for="gu-name"
+        >
+          <b-form-input
+              id="gu-name"
+              v-model="formGu.name"
+              required
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Координаты X" label-for="coord-x">
+          <b-form-input
+              id="coord-x"
+              v-model="formGu.x"
+              required
+          ></b-form-input>
+        </b-form-group>
+
+        <b-form-group label="Координаты y" label-for="coord-y">
+          <b-form-input
+              id="coord-x"
+              v-model="formGu.y"
+              required
+          ></b-form-input>
+        </b-form-group>
+    </b-modal>
   </div>
 </template>
 
@@ -35,6 +65,11 @@ export default {
   ],
   data() {
     return {
+      formGu: {
+        name: '',
+        x: '',
+        y: '',
+      },
       gu: null,
       pipes: [],
       zuPoints: [],
@@ -77,6 +112,18 @@ export default {
       this.mapObj = params.map
 
     },
+    openGuModal (gu = null) {
+      if (gu) {
+        this.formGu = gu;
+      } else {
+        this.formGu = {
+          name: '',
+          x: '',
+          y: '',
+        }
+      }
+      this.$bvModal.show('gu-modal');
+    },
     centerToGu() {
       let center = this.guPoints.find((point) => {
         return point.id === this.gu
@@ -118,6 +165,7 @@ export default {
       this.wellPoints = []
       this.guPoints = []
       this.axios.get(this.localeUrl("/gu-map/pipes"), {params: {gu: this.gu}}).then((response) => {
+        console.log(response);
         this.pipes = response.data.pipes
         this.zuPoints = response.data.zuPoints
         this.wellPoints = response.data.wellPoints
@@ -148,6 +196,8 @@ export default {
           initialViewState: this.viewState,
           controller: true,
           onViewStateChange: ({viewState}) => {
+            console.log('onViewStateChange');
+            console.log('viewState', viewState);
             this.map.jumpTo({
               center: [viewState.longitude, viewState.latitude],
               zoom: viewState.zoom,
