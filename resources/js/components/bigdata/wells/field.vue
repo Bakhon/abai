@@ -90,7 +90,7 @@
         </template>
       </datetime>
     </template>
-    <div class="text-danger error" v-if="error">{{ showError(error) }}</div>
+    <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
 </template>
 
