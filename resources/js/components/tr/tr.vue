@@ -162,11 +162,14 @@
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000; ">
+          <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
             <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
+              <notifications position="top"></notifications>
               <div>
                     <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                         <h5>Добавление скважин</h5>
+                        <button type="button" class="modal-bign-button" @click="closeModal('add_well')">Закрыть</button>
+
                         <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
                           <!-- <svg 
                             width="24" 
@@ -207,18 +210,6 @@
                                 </option>
                               </select>
                             </div>
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="select_mod form-control"
-                                style="background: #334296 !important"
-                                v-model="Filter_well"
-                                value="Скважина"
-                              >
-                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? "Выберите скважину" : f }}
-                                </option>
-                              </select>
-                            </div>
 
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
@@ -245,6 +236,19 @@
                                 </option>
                               </select>
                             </div>
+
+                            <div style="margin-left: 7px; cursor: pointer;">
+                              <select
+                                class="select_mod form-control"
+                                style="background: #334296 !important"
+                                v-model="Filter_well"
+                                value="Скважина"
+                              >
+                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите скважину" : f }}
+                                </option>
+                              </select>
+                            </div>
                             
                               <a
                                 
@@ -267,6 +271,7 @@
                                 
                                 style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
                                 v-if="show_add"
+                                @click="showWells"
                                 ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                   <path d="M17.6567 17.6575L6.34294 6.34383" 
                                     stroke="white" stroke-width="1.4" stroke-linecap="round"/>
@@ -279,6 +284,7 @@
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
                               @click.prevent="reRender"
+                              v-show = checkers
                               ><svg width="24" 
                               height="24" 
                               viewBox="0 0 24 24" 
@@ -292,6 +298,8 @@
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
                               @click.prevent="reRender"
+                              v-show = checkersec
+
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -319,7 +327,6 @@
                         <td scope="col">Наружный диаметр э/к</td>
                         <td scope="col">Внутр. диаметр э/к</td>
                         <td scope="col">Н вд</td>
-                        <td scope="col">СЭ</td>
                         <td scope="col">Тип насоса</td>
                         <td scope="col">Тип СК</td>
                         <td scope="col">Р буф</td>
@@ -356,8 +363,10 @@
                         <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
                         <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
                         <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
+                        <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
                         <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
                         <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
+                        <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
 
                       </tr>
                     </tbody>
@@ -1634,7 +1643,7 @@
                   <td v-if="!edit">
                     <span v-if="row.h_up_perf_md[0] != null">
                       {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
-                    </span>ок
+                    </span>
                   </td>
                   <td v-if="edit">
                     {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
@@ -6339,7 +6348,7 @@
                   </td>
 
                   <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit"><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="edit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
@@ -6818,6 +6827,8 @@
   </div>
 </template>
 <script>
+import NotifyPlugin from "vue-easy-notify";
+import "vue-easy-notify/dist/vue-easy-notify.css";
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
@@ -6825,6 +6836,7 @@ import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
+Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
   components: {
@@ -7027,12 +7039,9 @@ export default {
       edit: false,
       editdtm: null,
       editdty: null,
-      // sortField: null,
-      // currentSortDir: 'asc',
       year: null,
       selectYear: null,
       month: null,
-      // isloading: true,
       isfulltable: false,
       Filter_field: undefined,
       allWells: [],
@@ -7045,6 +7054,8 @@ export default {
       render: 0,
       searchStringModel: "",
       Filter_well: undefined,
+      checkers: false,
+      checkersec: false,
     };
   },
   watch: {
@@ -7057,6 +7068,7 @@ export default {
   },
   methods: {
     editrow(row, rowId) {
+      this.$store.commit("globalloading/SET_LOADING", false);
       console.log("row = ", row);
       console.log("rowId = ", rowId);
       row["index"] = 0;
@@ -7183,6 +7195,14 @@ export default {
     showWells() {
       if(this.lonelywell.length === 1){
         this.show_add = !this.show_add;
+        if(this.lonelywell[0].is_saved === "Сохранено"){
+          this.checkers = false;
+          this.checkersec = true;
+        }
+        else{
+          this.checkers = true;
+          this.checkersec = false;
+        }
       }
       else{
         this.show_add = this.show_add;
@@ -7200,6 +7220,9 @@ export default {
       this.searchStringModel= "";
       this.$emit();
       this.searchadd();
+    },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
     },
     sortBy(type) {
       this.sortParam = type;
@@ -7318,6 +7341,7 @@ export default {
             console.log(data);
             // this.wells = data.data;
             this.allWells = data.data;
+            
           } else {
             console.log("No data");
           }
@@ -7352,11 +7376,19 @@ export default {
       this.show_first = !this.show_first;
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
+
     },
 
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
+    },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
+      this.show_add=false;
+      this.checkers=false;
+      this.checkersec=false;
+      this.reRender();
     },
     addpush(){
         
@@ -7369,9 +7401,32 @@ export default {
     handlerFilter(filter) {
       this.filter = filter;
     },
+    // deleteOrSave() {
+    //   if(this.lonelywell[0].is_saved === "Не сохранено"){
+    //         this.is_save=true
+    //   }
+    //   else{
+    //     return this.is_save=false
+    //   }
+    // },
     // Отправка данных с модалки в бэк
+
+    // deleteOrSave() {
+    //   if(this.lonelywell.length === 1){
+    //     this.save_check = !this.show_add;
+    //   }
+    //   else{
+    //     this.show_add = this.show_add;
+    //   }
+    // },
+
+
+
+
+
     saveadd() {
       console.log(this.$refs.editTable);
+      Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
       //this.$refs.saveTable
       let output = {}
       console.log(this.$refs.editTable[0].children);
@@ -7388,11 +7443,15 @@ export default {
             console.log(res.data)
             this.wellAdd();
             this.reRenderAll();
+            this.show_add=false;
+            this.checkers=false;
+            
           })
-
     },
     // Удаление с модалки
     deleteWell() {
+      Vue.prototype.$notifyError (`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
+      this.$store.commit("globalloading/SET_LOADING", true);
       if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
         this.axios
           .get(
@@ -7401,12 +7460,16 @@ export default {
               console.log(res.data)
               this.wellAdd();
               this.reRenderAll();
+              this.show_add=false;
+              this.checkersec=false;
+              
             })
       }
       else{
         return console.log("error")
       }
     },
+
     searchWell() {
       console.log("search = ", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "");

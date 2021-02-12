@@ -35,7 +35,7 @@
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-3 oil-table">
             <div class="vc-chart-block-subheader">
               {{ activeTitle }}
             </div>
@@ -101,7 +101,7 @@ export default {
     'period',
     'periodSelectFunc',
     'currencyChartData',
-    'usdChartIsLoading',
+    'isPricesChartLoading',
     'mainTitle',
     'secondTitle',
     'tableData'
@@ -126,3 +126,10 @@ export default {
   },
 }
 </script>
+
+
+<style scoped>
+  .oil-table {
+    max-height: 590px;
+  }
+</style>
