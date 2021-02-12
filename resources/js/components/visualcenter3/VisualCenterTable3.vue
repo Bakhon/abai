@@ -4,7 +4,7 @@
   >
     <div class="left-side flex-grow-1 pr-2">
       <div class="first-string">
-        <div class="table-responsive right-side-block">
+        <div class="table-responsive">
           <table class="table table1">
             <tr>
               <td>
@@ -1162,8 +1162,50 @@
                       {{ trans("visualcenter.dzoThousandTon") }}
                     </th>
                     <th>
-                      {{ trans("visualcenter.dzoPercent") }}<br>
-                      {{ trans("visualcenter.dzoThousandTon") }}
+                      {{ trans("visualcenter.dzoPercent") }}
+                    </th>
+                    <th
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                    >
+                      {{ trans("visualcenter.dzoOpec") }}
+                    </th>
+                    <th
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                    >
+                      {{ trans("visualcenter.dzoImpulses") }}
+                    </th>
+                    <th
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                    >
+                      {{ trans("visualcenter.dzoLanding") }}
+                    </th>
+                    <th
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                    >
+                      {{ trans("visualcenter.dzoAlarmFirst") }}<br>
+                      {{ trans("visualcenter.dzoAlarmSecond") }}
+                    </th>
+                    <th
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                    >
+                      {{ trans("visualcenter.dzoRestrictions") }}
+                    </th>
+                    <th
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
+                      "
+                    >
+                      {{ trans("visualcenter.dzoOthers") }}
                     </th>
                   </tr>
                 </thead>
@@ -1211,7 +1253,7 @@
                     </td>
 
                     <td
-                            :class="`${getDzoColumnsClass(index,'fact')}`"
+                            :class="[`${getDzoColumnsClass(index,'fact')}`,'fact']"
                     >
                       <div class="font">
                         {{ formatVisTableNumber(item.factMonth) }}
@@ -1265,11 +1307,8 @@
                           : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">ОПЕК+</div>
-                      <!--123-->
                       <div
-                        class="triangle"
-                        :style="getAccident(item.opec)"
+                              :class="item.impulses ? 'is-accident triangle' : 'not-accident triangle'"
                       ></div>
                     </td>
                     <td
@@ -1283,10 +1322,8 @@
                           : 'tdNone width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Порывы</div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.impulses)"
+                              :class="item.impulses ? 'is-accident triangle' : 'not-accident triangle'"
                       ></div>
                     </td>
 
@@ -1301,10 +1338,8 @@
                           : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Посадка ЭЭ</div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.landing)"
+                              :class="item.landing ? 'is-accident triangle' : 'not-accident triangle'"
                       ></div>
                     </td>
                     <td
@@ -1318,13 +1353,8 @@
                           : 'tdNone width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">
-                        Авария в <br />
-                        системе СиП
-                      </div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.accident)"
+                              :class="item.accident ? 'is-accident triangle' : 'not-accident triangle'"
                       ></div>
                     </td>
                     <td
@@ -1338,12 +1368,8 @@
                           : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">
-                        Ограничения <br />КТО
-                      </div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.restrictions)"
+                              :class="item.restrictions ? 'is-accident triangle' : 'not-accident triangle'"
                       ></div>
                     </td>
                     <td
@@ -1357,10 +1383,8 @@
                           : 'tdNone width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Прочие</div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.otheraccidents)"
+                              :class="item.otheraccidents ? 'is-accident triangle' : 'not-accident triangle'"
                       ></div>
                     </td>
                   </tr>
@@ -1462,9 +1486,39 @@
                             ).toFixed(1)
                           )
                         }}
-                        %
                       </div>
                     </td>
+                    <td
+                            :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                    >
+                    </td>
+                    <td
+                            :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'"
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                    ></td>
+                    <td
+                            :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                    ></td>
+                    <td
+                            :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'"
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                    ></td>
+                    <td
+                            :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                    ></td>
+                    <td
+                            :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'"
+                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
+                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                    ></td>
                   </tr>
                 </tbody>
               </table>
@@ -1681,7 +1735,7 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells.length" class="table4 w-100">
+                <table v-if="innerWells.length" class="table7 w-100">
                   <tbody>
                     <tr
                       v-for="(item, index) in innerWells"
@@ -1891,7 +1945,7 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells2.length" class="table4 w-100">
+                <table v-if="innerWells2.length" class="table7 w-100">
                   <tbody>
                     <tr
                       v-for="(item, index) in innerWells2"
@@ -2316,7 +2370,7 @@
               <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="chemistryData.length"
-                  class="table4 w-100"
+                  class="table7 w-100"
                   style="height: calc(100% - 20px)"
                 >
                   <tbody>
@@ -2378,7 +2432,7 @@
     </div>
     <div class="right-side2 flex-grow-1 pl-1">
       <div class="first-string">
-        <div class="table-responsive right-side-block">
+        <div class="table-responsive">
           <table class="table table1-2">
             <tr class="cursor-pointer">
               <td
@@ -2461,7 +2515,7 @@
           <!-- <div class="line-bottom"></div>-->
         </div>
         <div class="first-string first-string2">
-          <div class="table-responsive right-side-block">
+          <div class="table-responsive">
             <table class="table table1-2">
               <tr class="cursor-pointer">
                 <td
@@ -2551,8 +2605,8 @@
         </div>
 
         <div class="first-string first-string2">
-          <div class="table-responsive right-side-block">
-            <table class="table table5 splitted-side-block">
+          <div class="table-responsive">
+            <table class="table table5">
               <tr class="cursor-pointer">
                 <td
                   class="w-50"
@@ -2588,7 +2642,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive right-side-block">
+        <div class="table-responsive">
           <table class="table">
             <tr>
               <td class="w-50 px-2">
@@ -2639,7 +2693,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive right-side-block">
+        <div class="table-responsive">
           <table class="table">
             <tr>
               <td class="w-50 px-2">
@@ -2680,7 +2734,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive right-side-block">
+        <div class="table-responsive">
           <table class="table table1-2">
             <tr>
               <!--<td>
@@ -2730,7 +2784,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive right-side-block">
+        <div class="table-responsive">
           <table class="table">
             <tr>
               <td class="size-td">
@@ -2768,7 +2822,6 @@
 <style scoped lang="scss">
 .vis-table {
   flex: 0 0 56%;
-  height: 650px;
   max-width: 56%;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -2793,23 +2846,26 @@
 
   .table4 {
     tr {
-      height: 31px;
       td {
         padding: 5px 5px 5px 10px;
         position: relative;
         vertical-align: middle;
         min-width: 71px;
         &:first-child {
-          height: 37.5px;
           display: inline-block;
           white-space: normal;
           min-width: 327px;
+          width: 100%;
+          font-weight: bold;
+          font-size: 15px;
+          min-height: 32px;
           span {
-            font-weight: bold;
-            font-size: 15px;
             img {
               width: 9px;
             }
+          }
+          div .data-titles {
+            height: 50px;
           }
         }
         &.selected {
@@ -2858,10 +2914,10 @@
     th {
       position: sticky;
       position: --webkit-sticky;
-      top: 0;
+      top: -1;
       z-index: 2;
       border: 0.5px solid #272953;
-      width: 71px;
+      width: 81px;
       position: sticky;
       font-family: Bold;
       font-size: 12px;
@@ -2981,6 +3037,7 @@
     font-family: "HarmoniaSansProCyr-Regular";
     font-style: normal;
     font-size: 16px;
+    height: 50px;
   }
   .data-values {
     font-family: "Bold";
@@ -3018,26 +3075,26 @@
     border-top: 6px solid #e31e24;
   }
   .growth-indicator-production-data {
-    margin-top: 8px;
     border-bottom: 6px solid #009846;
   }
   .fall-indicator-production-data {
-    margin-top: 13px;
+    margin-top: 8px;
     border-top: 6px solid #e31e24;
   }
-  .splitted-side-block {
-    tr {
-      height: 136px;
-    }
+
+  .is-accident {
+    border-top: 6px solid rgb(227, 30, 36);
+    margin-left: 30%;
+  }
+  .not-accident {
+    position: relative;
+    width: 14px;
+    height: 5px;
+    background: #9da0b7;
+    border: unset;
+    margin-left: 30%;
   }
 
-  .right-side-block {
 
-  }
 
-@media (min-width:1680px) {
-  .right-side-block {
-    min-height: 139px;
-  }
-}
 </style>

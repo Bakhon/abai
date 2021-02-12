@@ -55,7 +55,6 @@ body {
     font-family: "Bold";
     font-size: 0.9em;
     margin-left: 0.1em;
-    margin-top: 0.5em;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -622,10 +621,15 @@ td.small-td {
 .big-area {
     /* overflow: hidden; */
     width: 100%;
-    height: 70%;
+    height: 80%;
     background: #272953;
     /* margin-left: 15px; */
     /* width: 75vw; */
+}
+@media (min-width: 1900px) {
+    .big-area {
+        height: 65%;
+    }
 }
 
 .end2 {
@@ -795,7 +799,7 @@ li.center-li {
 canvas#line-chart {
     /* height: 535px!important; */
     margin-top: 10px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .name-chart-head {

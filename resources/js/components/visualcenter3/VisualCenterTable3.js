@@ -763,8 +763,10 @@ export default {
     },
 
     pushOilChart(oilRatesData,item) {
+      let quoteDate = new Date(item['date']);
+      quoteDate = quoteDate.setHours(quoteDate.getHours() + 3);
       oilRatesData.for_chart.push([
-        new Date(item['date']).getTime(),
+        quoteDate,
         parseFloat(item['value']),
       ]);
     },
@@ -2786,16 +2788,6 @@ export default {
           this.accidentTotal = accidentTotal[0];
         } else { console.log('No data Accident') }
       });
-    },
-
-
-    getAccident(a) {
-      if (a) {
-        return "margin-top: 3px;border-top: 6px solid rgb(227, 30, 36); margin: 10px 48px 0px;";
-      } else {
-
-        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 25px 48px 0px;"
-      }
     },
 
     getOpec() {
