@@ -38,11 +38,21 @@
     </div>
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
-      <input id="end_date"
-             class="form-control datepicker filter-input"
-             type="date"
-             :disabled="isLoading"
-             v-model="end_date">
+      <datetime
+          id="end_date"
+          type="date"
+          v-model="end_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="dd LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month', 'date']"
+      >
+      </datetime>
+
     </div>
 
     <div class="form-group3 result-link">
@@ -75,8 +85,16 @@
 
 <script>
 
+import Vue from "vue";
+import {Datetime} from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from './FormatDate.js'
+
+Vue.use(Datetime)
+
 export default {
   components: {},
+
   data() {
 
     return {
@@ -111,8 +129,8 @@ export default {
         period: 'days',
         dzo: this.org,
         fond: fondTypeByFundId[this.fondType],
-        report_date_start: `${this.end_date}`.concat(' 00:00:00'),
-        report_date_end: `${this.end_date}`.concat(' 23:59:59')
+        report_date_start: formatDate.format_to_min_of_day(this.end_date),
+        report_date_end: formatDate.format_to_max_of_day(this.end_date)
       };
 
       let json_data = JSON.stringify(data);
@@ -122,7 +140,6 @@ export default {
       this.axios.post(uri, json_data, {
         responseType: 'json',
         headers: {
-          // Overwrite Axios's automatically set Content-Type
           'Content-Type': 'application/json'
         }
       })

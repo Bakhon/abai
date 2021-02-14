@@ -42,29 +42,56 @@
 
     <div class="form-group2 filter-group">
       <label for="start_date">Выберите начальную дату</label>
-      <input id="start_date"
-             class="form-control datepicker filter-input"
-             type="date"
-             :disabled="isLoading"
-             v-model="start_date">
+      <datetime
+          id="start_date"
+          type="date"
+          v-model="start_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="dd LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month', 'date']"
+      >
+      </datetime>
     </div>
 
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
-      <input id="end_date"
-             class="form-control datepicker filter-input"
-             type="date"
-             :disabled="isLoading"
-             v-model="end_date">
+      <datetime
+          id="end_date"
+          type="date"
+          v-model="end_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="dd LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month', 'date']"
+      >
+      </datetime>
     </div>
 
     <div class="form-group2 filter-group">
-      <label for="start_date">Выберите дату отчета</label>
-      <input id="yearSelect"
-             class="form-control datepicker filter-input"
-             type="date"
-             :disabled="isLoading"
-             v-model="report_date">
+      <label for="report_date">Выберите дату отчета</label>
+      <datetime
+          id="report_date"
+          type="date"
+          v-model="report_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="dd LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month', 'date']"
+      >
+      </datetime>
     </div>
 
       <div class="form-group3 result-link">
@@ -91,10 +118,16 @@
 
 <script>
 
-import moment from "moment";
+import Vue from "vue";
+import {Datetime} from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from './FormatDate.js'
+
+Vue.use(Datetime)
 
 export default {
   components: {},
+
   data() {
 
     return {
@@ -116,17 +149,12 @@ export default {
       let uri = "http://172.20.103.157:8082/analyze/gtm/";
         // let uri = "http://0.0.0.0:8090/analyze/gtm/";
 
-      let dateFormat = 'YYYY-MM-DD HH:mm:ss';
-      let minOfDay = {hour:0, minute:0, second:0}
-      let startDate = moment(this.start_date).set(minOfDay).format(dateFormat);
-      let endDate = moment(this.end_date).set(minOfDay).format(dateFormat);
-      let reportDate = moment(this.report_date).set(minOfDay).format(dateFormat);
       let data = {
         period: 'days',
         dzo: this.org,
-        report_date_start: startDate,
-        report_date_end: endDate,
-        report_date: reportDate,
+        report_date_start: formatDate.format_to_min_of_day(this.start_date),
+        report_date_end: formatDate.format_to_min_of_day(this.end_date),
+        report_date: formatDate.format_to_min_of_day(this.report_date),
         type_event: `${this.type_event}`,
       };
 
@@ -135,10 +163,8 @@ export default {
       this.isLoading = true;
 
       this.axios.post(uri, json_data, {
-        // responseType:'arraybuffer',
           responseType:'json',
           headers: {
-            // Overwrite Axios's automatically set Content-Type
             'Content-Type': 'application/json'
           }
       })

@@ -79,14 +79,15 @@
 
 import Vue from "vue";
 import {Datetime} from 'vue-datetime';
-import moment from 'moment';
 import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from './FormatDate.js'
 
 Vue.use(Datetime)
 
 export default {
   components: {
   },
+
   data() {
 
     return {
@@ -101,38 +102,24 @@ export default {
   methods: {
     createDownloadLink(response) {
         this.resultLink = response.data.report_link
-
-      // let blob = new Blob([response.data], {type:'application/*'})
-      // let link = document.createElement('a')
-      // link.href = window.URL.createObjectURL(blob)
-      // link.download = `${this.start_date}_${this.end_date}_exportTable.xls`
-      // link.click();
-      // link.remove();
     },
     updateData() {
-      // this.$store.commit("globalloading/SET_LOADING", true);
       this.isLoading = true;
 
       let uri = "http://172.20.103.157:8082/monthly/production/";
         // let uri = "http://0.0.0.0:8090/monthly/production/";
-      let dateFormat = 'YYYY-MM-DD HH:mm:ss';
-      let minOfDay = {hour:0, minute:0, second:0}
-      let startDate = moment(this.start_date).set(minOfDay).set('date', 1).format(dateFormat);
-      let endDate = moment(this.end_date).set(minOfDay).set('date', 1).format(dateFormat);
       let data = {
         dzo: this.org,
         period: 'monthly',
-        report_date_start: startDate,
-        report_date_end: endDate
+        report_date_start: formatDate.format_to_first_day_of_month(this.start_date),
+        report_date_end: formatDate.format_to_first_day_of_month(this.endDate)
       };
 
       let json_data = JSON.stringify(data);
 
       this.axios.post(uri, json_data, {
-        // responseType:'arraybuffer',
           responseType:'json',
           headers: {
-            // Overwrite Axios's automatically set Content-Type
             'Content-Type': 'application/json'
           }
       })

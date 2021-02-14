@@ -19,23 +19,42 @@
 
     <div class="form-group2 filter-group">
       <label for="start_date">Выберите начальную дату</label>
-      <input id="start_date"
-             class="form-control datepicker filter-input"
-             type="month"
-             :disabled="isLoading"
-             v-model="start_date">
+      <datetime
+          id="start_date"
+          type="date"
+          v-model="start_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month']"
+      >
+      </datetime>
     </div>
 
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
-      <input id="end_date"
-             class="form-control datepicker filter-input"
-             type="month"
-             :disabled="isLoading"
-             v-model="end_date">
+      <datetime
+          id="end_date"
+          type="date"
+          v-model="end_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month']"
+      >
+      </datetime>
+
     </div>
 
-      <div class="form-group3 result-link text-center">
+    <div class="form-group3 result-link text-center">
           <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
       </div>
 
@@ -59,9 +78,15 @@
 
 <script>
 
+import {Datetime} from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
+Vue.use(Datetime)
+import {formatDate} from './FormatDate.js'
+
 export default {
   components: {
   },
+
   data() {
 
     return {
@@ -76,13 +101,6 @@ export default {
   methods: {
     createDownloadLink(response) {
         this.resultLink = response.data.report_link
-
-      // let blob = new Blob([response.data], {type:'application/*'})
-      // let link = document.createElement('a')
-      // link.href = window.URL.createObjectURL(blob)
-      // link.download = `${this.start_date}_${this.end_date}_exportTable.xls`
-      // link.click();
-      // link.remove();
     },
     updateData() {
       let uri = "http://172.20.103.157:8082/monthly/injection/";
@@ -90,8 +108,8 @@ export default {
       let data = {
         dzo: this.org,
         period: 'monthly',
-        report_date_start: `${this.start_date}`.concat('-01 00:00:00'),
-        report_date_end: `${this.end_date}`.concat('-01 00:00:00')
+        report_date_start: formatDate.format_to_first_day_of_month(this.start_date),
+        report_date_end: formatDate.format_to_first_day_of_month(this.endDate)
       };
 
       let json_data = JSON.stringify(data);
@@ -99,10 +117,8 @@ export default {
       this.isLoading = true;
 
       this.axios.post(uri, json_data, {
-        // responseType:'arraybuffer',
           responseType:'json',
           headers: {
-            // Overwrite Axios's automatically set Content-Type
             'Content-Type': 'application/json'
           }
       })
