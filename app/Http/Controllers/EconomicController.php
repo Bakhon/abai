@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Refs\Org;
 use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 use Level23\Druid\Context\GroupByV2QueryContext;
@@ -166,6 +167,8 @@ class EconomicController extends Controller
             })
             ->select('profitability')
             ->sum('liquid')
+            ->sum('bsw')
+            ->count('uwi')
             ->where('status', '=', 'В работе');
 
         if ($org->druid_id) {
@@ -363,11 +366,20 @@ class EconomicController extends Controller
                 array_push($dataChart4['dt'], $item['dt']);
             }
             if ($item['profitability'] == 'profitable') {
-                array_push($dataChart4['profitable'], $item['liquid']/1000);
+                $bsw_round = round(($item['bsw']/1000)/($item['uwi']/1000));
+                $liquid_round = round($item['liquid']/1000);
+                $profitable = "{$liquid_round}.{$bsw_round}";
+                array_push($dataChart4['profitable'], $profitable);
             } elseif ($item['profitability'] == 'profitless_cat_2') {
-                array_push($dataChart4['profitless_cat_2'], $item['liquid']/1000);
+                $bsw_round = round(($item['bsw']/1000)/($item['uwi']/1000));
+                $liquid_round = round($item['liquid']/1000);
+                $profitless_cat_2 = "{$liquid_round}.{$bsw_round}";
+                array_push($dataChart4['profitless_cat_2'], $profitless_cat_2);
             } elseif ($item['profitability'] == 'profitless_cat_1') {
-                array_push($dataChart4['profitless_cat_1'], $item['liquid']/1000);
+                $bsw_round = round(($item['bsw']/1000)/($item['uwi']/1000));
+                $liquid_round = round($item['liquid']/1000);
+                $profitless_cat_1 = "{$liquid_round}.{$bsw_round}";
+                array_push($dataChart4['profitless_cat_1'], $profitless_cat_1);
             }
         }
 

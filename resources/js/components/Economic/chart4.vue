@@ -11,11 +11,8 @@ export default {
   data: function() {
     return {
       chartOptions: {
-        chart: {
-          stacked: false,
-        },
         stroke: {
-          width: [0, 2, 5],
+          width: 4,
           curve: 'smooth'
         },
         colors:['#13B062', '#F7BB2E', '#AB130E'],
@@ -40,7 +37,7 @@ export default {
         yaxis: {
           labels: {
             formatter: function (value) {
-                return Math.round(value);
+                return Math.floor(value);  // Remove distortion from BSW data
             }
           },
           title: {
@@ -54,7 +51,13 @@ export default {
           y: {
             formatter: function(y) {
               if (typeof y !== "undefined") {
-                return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + " тыс. тонн";
+                // return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + " тыс. тонн";
+                let liquid = y.toString().split('.');
+                if (liquid.length > 1) {
+                  return `${liquid[0]} тыс. тонн, обв: ${liquid[1]}%`;
+                } else {
+                  return `${liquid[0]} тыс. тонн`;
+                }
               }
               return y;
             }
