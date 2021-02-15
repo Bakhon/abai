@@ -879,7 +879,7 @@
                     <div class="month-day">
                       <div class="">
                         <date-picker
-                          v-if="selectedOilPeriod == 0"
+                          v-if="selectedPeriod == 0"
                           mode="range"
                           v-model="range"
                           is-range
@@ -1543,18 +1543,15 @@
         </div>
       </div>
 
-      <visual-center-usd-table
+      <visual-center-oil-table
         :style="`${Table2}`"
         :period.sync="period"
-        :selected-usd-period.sync="selectedOilPeriod"
-        :usd-rates-data.sync="oilRatesData"
-        :chart-data.sync="oilRatesDataChartForCurrentPeriod"
+        :oil-rates-data.sync="oilRatesData"
         :period-select-func.sync="periodSelectFunc"
-        :currency-chart-data.sync="currencyChartData"
         :table-data.sync="oilRatesDataTableForCurrentPeriod"
         :usd-chart-is-loading.sync="isPricesChartLoading"
         @period-select-usd="
-          updateCurrentOilPrices(timeSelect, periodSelect(selectedOilPeriod))
+          updatePrices(periodSelect(selectedPeriod))
         "
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.oilPricedynamic')"
@@ -1564,12 +1561,13 @@
       <visual-center-usd-table
         :style="`${Table3}`"
         :period.sync="period"
-        :selected-usd-period.sync="selectedOilPeriod"
         :usd-rates-data.sync="usdRatesData"
         :period-select-func.sync="periodSelectFunc"
-        :currency-chart-data.sync="currencyChartData"
         :table-data.sync="usdRatesDataTableForCurrentPeriod"
         :usd-chart-is-loading.sync="isPricesChartLoading"
+        @period-select-usd="
+          updatePrices(periodSelect(selectedPeriod))
+        "
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.kursHeader')"
         :second-title="'USD НБ РК'"
@@ -1647,7 +1645,7 @@
                       <div class="month-day">
                         <div>
                           <date-picker
-                            v-if="selectedOilPeriod == 0"
+                            v-if="selectedPeriod == 0"
                             mode="range"
                             v-model="range"
                             is-range

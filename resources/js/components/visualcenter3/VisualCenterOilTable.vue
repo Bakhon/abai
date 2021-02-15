@@ -30,7 +30,7 @@
                 </button>
               </div>
 
-              <visual-center-chart-area-usd3 :chart-data.sync="usdRatesData.for_chart"
+              <visual-center-chart-area-oil3 :chart-data.sync="oilRatesData.for_chart"
                                              :table-data.sync="tableData"/>
             </div>
           </div>
@@ -97,9 +97,10 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 export default {
   components: { PerfectScrollbar },
   props: [
-    'usdRatesData',
+    'oilRatesData',
     'period',
     'periodSelectFunc',
+    'currencyChartData',
     'isPricesChartLoading',
     'mainTitle',
     'secondTitle',

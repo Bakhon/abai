@@ -152,9 +152,6 @@ export default {
 
       this.chartOptions = {
         ...this.chartOptions, ...{
-          xaxis: {
-            min: value[0][0]
-          },
           tooltip: {
             x: {
               formatter: function (value) {
@@ -183,7 +180,6 @@ export default {
     },
     updateZoom() {
       let self = this;
-
       setTimeout(() => {
         self.$refs.chart.zoomX(
             self.tableData[0].timestamp,

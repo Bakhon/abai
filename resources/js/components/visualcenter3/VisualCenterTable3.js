@@ -168,9 +168,9 @@ export default {
       selectedDMY: 0,
       periodSelectOil: "",
       oilPeriod: 7,
+      usdPeriod: 7,
       defaultOilPeriod: 7,
       period: 0,
-      // periodUSD: 7,
       timeSelect: "",
       prices: {
         'oil': {},
@@ -319,7 +319,7 @@ export default {
       selectedDay: undefined,
       selectedMonth: undefined,
       selectedYear: undefined,
-      selectedOilPeriod: 0,
+      selectedPeriod: 0,
 
       wells: [""],
       wells2: [""],
@@ -688,11 +688,6 @@ export default {
       if (this.period === 4) {
         return null;
       }
-
-
-
-      // return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-      // return this.getCurrencyPeriod(new Date().toLocaleDateString(), this.periodUSD);
     },
 
     getCurrencyNow(dates) {
@@ -716,29 +711,35 @@ export default {
       });
     },
 
-    updateCurrentOilPrices(dates,period) {
+    updateCurrentOilPrices(period) {
       this.isPricesChartLoading = true;
       this.oilPeriod = period;
+      this.usdPeriod = period;
       let uri = this.localeUrl("/get-oil-rates");
-      this.setOilDataAndChart(uri);
+      this.setDataAndChart(uri,'oil');
       this.isPricesChartLoading = false;
     },
 
-    setOilDataAndChart(uri,oilRatesData) {
+    setDataAndChart(uri,type) {
+      let ratesData;
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (!data) {
           console.log("No data");
           return;
         }
-        let oilRatesData = this.getOilRatesData(data);
-        this.setQuotes('oil',oilRatesData.for_chart);
-        this.setOilPlacements(oilRatesData);
+        ratesData = this.getRatesData(data,ratesData);
+        this.setQuotes(type,ratesData.for_chart);
+        if (type ==='oil') {
+          this.setOilPlacements(ratesData);
+        } else {
+          this.setUsdPlacements(ratesData);
+        }
       });
     },
 
-    getOilRatesData(data) {
-      var oilRatesData = {
+    getRatesData(data,ratesData) {
+      ratesData = {
         for_chart: [],
         for_table: []
       };
@@ -746,15 +747,15 @@ export default {
       let self = this;
       _.forEach(data, function (item) {
         let changeValue = parseFloat(((item['value'] - previousPrice) / item['value']) * 100).toFixed(2);
-        self.pushOilData(oilRatesData,item,changeValue);
-        self.pushOilChart(oilRatesData,item);
+        self.pushRatesData(ratesData,item,changeValue,ratesData);
+        self.pushRatesChart(ratesData,item,ratesData);
         previousPrice = parseFloat(item['value']);
       });
-      return oilRatesData;
+      return ratesData;
     },
 
-    pushOilData(oilRatesData,item,changeValue) {
-      oilRatesData.for_table.push({
+    pushRatesData(oilRatesData,item,changeValue,ratesData) {
+      ratesData.for_table.push({
         date_string: this.$moment(item['date']).format('DD.MM.YYYY'),
         value: parseFloat(item['value']),
         change: Math.abs(changeValue),
@@ -762,8 +763,8 @@ export default {
       });
     },
 
-    pushOilChart(oilRatesData,item) {
-      oilRatesData.for_chart.push([
+    pushRatesChart(oilRatesData,item,ratesData) {
+      ratesData.for_chart.push([
         new Date(item['date']).getTime(),
         parseFloat(item['value']),
       ]);
@@ -796,8 +797,8 @@ export default {
       }
     },
 
-    setOilPlacements(oilRatesData) {
-      this.oilRatesData = oilRatesData;
+    setOilPlacements(ratesData) {
+      this.oilRatesData = ratesData;
       this.setDailyOilPriceChange(this.prices['oil']['current'],this.prices['oil']['previous']);
       if (this.period === 0) {
         this.oilPeriod = this.defaultOilPeriod;
@@ -805,43 +806,33 @@ export default {
       this.oilRatesData.for_chart = this.oilRatesDataChartForCurrentPeriod();
     },
 
+    setUsdPlacements(ratesData) {
+      this.usdRatesData = ratesData;
+      if (this.period === 0) {
+        this.usdPeriod = this.defaultOilPeriod;
+      }
+      this.usdRatesData.for_chart = this.usdRatesDataChartForCurrentPeriod();
+    },
+
     oilRatesDataChartForCurrentPeriod() {
       return this.oilRatesData.for_chart.slice(this.oilPeriod * -1);
     },
 
+    usdRatesDataChartForCurrentPeriod() {
+      return this.usdRatesData.for_chart.slice(this.usdPeriod * -1);
+    },
 
-    getUsdRatesData() {
-      let url = this.localeUrl("/get-usd-rates");
+    updatePrices(period) {
+      this.updateCurrentUsdPrices(period);
+      this.updateCurrentOilPrices(period);
+    },
 
-      this.axios.get(url).then((response) => {
-        if (response.data) {
-          let usdRatesData = {
-            for_chart: [],
-            for_table: []
-          };
-
-          let self = this;
-          response.data.forEach((item) => {
-            usdRatesData.for_table.push({
-              date_string: self.$moment(item.date).format('DD.MM.YYYY'),
-              timestamp: new Date(item.date).getTime(),
-              value: parseInt(item.value * 10) / 10,
-              change: Math.abs(parseFloat(item.change)),
-              index: item.index || null
-            });
-
-            usdRatesData.for_chart.push([
-              new Date(item.date).getTime(),
-              parseInt(item.value * 10) / 10,
-            ]);
-          });
-
-          this.setQuotes('usd',usdRatesData.for_chart);
-          this.usdRatesData = usdRatesData;
-        } else {
-          console.log('No data.');
-        }
-      });
+    updateCurrentUsdPrices(period) {
+      this.isPricesChartLoading = true;
+      this.usdPeriod = period;
+      let uri = this.localeUrl("/get-usd-rates");
+      this.setDataAndChart(uri,'usd');
+      this.isPricesChartLoading = false;
     },
 
     //currency and oil up
@@ -895,15 +886,14 @@ export default {
         var a = { index: i, id: i };
         a.DMY = DMY[i];
         menuDMY.push(a);
-        if (this.selectedOilPeriod == i) {
+        if (this.selectedPeriod == i) {
           a.current = "#1D70B7";
           this.DMY = menuDMY[i]["DMY"];
         }
       }
-      if (this.selectedOilPeriod != undefined) {
+      if (this.selectedPeriod != undefined) {
       }
-      localStorage.setItem("selectedOilPeriod", this.selectedOilPeriod);
-
+      localStorage.setItem("selectedPeriod", this.selectedPeriod);
       return menuDMY;
     },
     pad(n) {
@@ -2195,9 +2185,9 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
       this.getCurrencyNow(new Date().toLocaleDateString());
       this.getAccidentTotal();
-      this.updateCurrentOilPrices(this.timeSelect,this.period);
-
-
+      // this.updateCurrentOilPrices(this.period);
+      // this.updateCurrentUsdPrices(this.period);
+      this.updatePrices(this.period);
 
     },
 
@@ -2818,8 +2808,6 @@ export default {
           this.opecData = SummFromRange;
           this.opecDataSumm = opecDataSumm;
           // }
-
-
         }
         else { console.log('Not opec data'); }
       });
@@ -2956,14 +2944,15 @@ export default {
     //var productionPlan = localStorage.getItem("production-plan");
     //var productionFact = localStorage.getItem("production-fact");
 
-    localStorage.setItem("selectedOilPeriod", "undefined");
+    localStorage.setItem("selectedPeriod", "undefined");
     this.getCurrencyNow(this.timeSelect);
-    this.updateCurrentOilPrices(this.timeSelect,this.period);
-    // this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    this.updatePrices(this.period);
+    // this.updateCurrentOilPrices(this.period);
+    // this.updateCurrentUsdPrices(this.period);
     this.changeAssets('b13');
     // this.getProductionOilandGasPercent();
+    //this.getUsdRatesData();
 
-    this.getUsdRatesData();
     this.changeMenu2();
     this.getStaff();
 
@@ -3036,12 +3025,9 @@ export default {
 
       return menuDMY;
     },
-    periodUSD() {
-      return this.periodSelect();
-    },
     usdRatesDataTableForCurrentPeriod() {
       this.sortUsdRatesDataForTable;
-      return this.usdRatesData.for_table.slice(this.periodUSD * -1);
+      return this.usdRatesData.for_table.slice(0, this.usdPeriod);
     },
 
     sortUsdRatesDataForTable() {
