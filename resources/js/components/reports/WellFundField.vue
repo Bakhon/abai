@@ -51,7 +51,7 @@
 
     <div class="form-group3 result-link">
       <a v-if="resultLink !== null && !isLoading" :href="resultLink" target="_blank"
-         class="download_report text-center">Скачать отчёт</a>
+         class="download-report text-center">Скачать отчёт</a>
     </div>
 
     <div class="form-group4">
@@ -158,62 +158,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.underHeader {
-  position: relative;
-  Width: 1795px;
-  Height: 866px;
-}
-
-.underHeader > .col-sm1 {
-  width: 438px;
-  right: 1500px;
-}
-
-.bootstrap-table .fixed-table-container .table {
-  color: white;
-}
-
-.table-hover tbody tr:hover {
-  color: #d4d4d4 !important;
-  background-color: rgba(0, 0, 0, 0.075);
-}
-
-.float {
-  float: left;
-}
-
-/*.form-control {*/
-/*  padding: unset!important;*/
-/*}*/
-
-.margin-top {
-  margin-top: 5px;
-}
-
-.select-month {
-  background: rgb(51, 57, 117);
-  border-color: rgb(32, 39, 78);
-  width: 41vh !important;
-}
-
-.report-btn2 {
-  background: #2d4fe6;
-  color: white;
-  border-radius: unset;
-  width: 100%;
-  height: 36px;
-
-}
-
-.margin-top {
-  padding: 15px;
-}
-
-.download_report {
-  color: white;
-  font-size: 28px;
-  text-decoration: underline;
-  font-weight: bold;
-}
-</style>
