@@ -197,10 +197,7 @@ class WellRegister extends BaseForm
         }
 
         $coord = "({$this->request->get($coordXField)},{$this->request->get($coordYField)})";
-        if (!$this->validator->validateCoords($coord, $this->request->get('geo'))) {
-            return false;
-        }
 
-        return true;
+        return $this->validator->isValidCoordinates($coord, $this->request->get('geo'));
     }
 }
