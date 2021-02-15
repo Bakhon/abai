@@ -17,6 +17,19 @@
       </select>
     </div>
 
+    <div class="form-group1 filter-group select">
+      <select
+          class="form-control filter-input select"
+          id="geoStructureSelect"
+          :disabled="isLoading"
+          v-model="geoStructure"
+      >
+        <option disabled value="">Выберите геоструктуру</option>
+        <template v-for="(fields, dzo) in filtersData" >
+          <option v-if="org===dzo" v-for="field in fields" :value="field">{{ field }}</option>
+        </template>
+      </select>
+    </div>
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
       <datetime
@@ -42,7 +55,7 @@
     </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !end_date || isLoading"
+      <button :disabled="!org || !end_date || isLoading || !geoStructure "
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -74,12 +87,19 @@ import {formatDate} from './FormatDate.js'
 Vue.use(Datetime)
 
 export default {
+  props: {
+    filtersData: {
+      type: Object,
+      required: true
+    }
+  },
   components: {},
 
   data() {
 
     return {
       org: '',
+      geoStructure: '',
       end_date: null,
       isLoading: false,
       resultLink: null
@@ -96,6 +116,7 @@ export default {
       let data = {
         type: 'well_fund_field',
         period: 'days',
+        geo_structure: this.geoStructure,
         dzo: this.org,
         report_date_start: formatDate.formatToMinOfDay(this.end_date),
         report_date_end: formatDate.formatToMaxOfDay(this.end_date)

@@ -63,6 +63,21 @@ return [
             ]) : [],
         ],
 
+        'tbd' => [
+            'driver' => 'pgsql',
+            'url' => env('TBD_DATABASE_URL'),
+            'host' => env('TBD_DB_HOST', '127.0.0.1'),
+            'port' => env('TBD_DB_PORT', '5432'),
+            'database' => env('TBD_DB_DATABASE', 'forge'),
+            'username' => env('TBD_DB_USERNAME', 'forge'),
+            'password' => env('TBD_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

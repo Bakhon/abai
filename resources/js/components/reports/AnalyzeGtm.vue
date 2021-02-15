@@ -126,6 +126,12 @@ import {formatDate} from './FormatDate.js'
 Vue.use(Datetime)
 
 export default {
+  props: {
+    filtersData: {
+      type: Object,
+      required: true
+    }
+  },
   components: {},
 
   data() {

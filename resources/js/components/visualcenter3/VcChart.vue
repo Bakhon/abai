@@ -43,7 +43,7 @@ export default {
         this.trans("visualcenter.dec"),
       ];
 
-      console.log(value[0]["productionForChart"]);
+      //console.log(value[0]["productionForChart"]);
       _.forEach(value[0]["productionForChart"], function (item, key) {
         let date = new Date(Number(item.time));
         labels.push(

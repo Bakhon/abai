@@ -24,7 +24,6 @@ import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
 
 
-
 require('./bootstrap');
 window.Vue = require('vue');
 window.Jquery = require('jquery');
@@ -88,6 +87,11 @@ Vue.component('omgngdu-form', require('./components/omgngdu/form.vue').default);
 Vue.component('gu-form', require('./components/gu/form.vue').default);
 Vue.component('zu-form', require('./components/zu/form.vue').default);
 
+Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
+Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
+Vue.component('gtm-podbor-gtm', require('./components/GTM/podborGTM.vue').default);
+Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
+
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);
 Vue.component('monthly-production', require('./components/reports/MonthlyProduction.vue').default);
@@ -120,13 +124,17 @@ Vue.component('tr-sidebar-export', require('./components/tr/TrSidebarExport.vue'
 Vue.component('cat-loader', require('./components/ui-kit/CatLoader.vue').default);
 Vue.component('pagination', require('laravel-vue-pagination'));
 Vue.component('report-export', require('./components/reports/export.vue').default);
+Vue.component('tr_mode-table', require('./components/tr/tech_mode.vue').default);
 
 
 
-Vue.component('viscenter2-create', require('./components/viscenter2/create.vue').default);
+Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2/create.vue').default);
+Vue.component('visualcenter3-excelform', require('./components/visualcenter3/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
-Vue.component('proto-form', require('./components/bigdata/Form.vue').default);
+Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
+Vue.component('bigdata-form', require('./components/bigdata/wells/form').default);
+Vue.component('bigdata-form-field', require('./components/bigdata/wells/field').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);

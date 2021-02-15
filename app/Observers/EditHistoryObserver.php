@@ -25,6 +25,7 @@ class EditHistoryObserver
 
     protected function save(Model $model, array $payload)
     {
+        if(!auth()->check()) return;
         $historyItem = new \App\EditHistory([
             'user' => auth()->user()->name,
             'entity_id' => $model->id,
