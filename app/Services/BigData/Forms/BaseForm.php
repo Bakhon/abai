@@ -22,10 +22,6 @@ abstract class BaseForm
         return $this->submit($request);
     }
 
-    private function validateSingleField(Request $request)
-    {
-    }
-
     private function validate(Request $request): void
     {
         $errors = $this->customValidation($request);
@@ -87,7 +83,7 @@ abstract class BaseForm
         return $fields;
     }
 
-    protected function customValidation(Request $request): array
+    protected function getCustomValidationErrors(Request $request): array
     {
         return [];
     }

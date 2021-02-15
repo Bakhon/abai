@@ -173,26 +173,34 @@ class WellRegister extends BaseForm
         ];
     }
 
-    protected function customValidation(\Illuminate\Http\Request $request): array
+    protected function getCustomValidationErrors(\Illuminate\Http\Request $request): array
     {
         $errors = [];
 
-        if ($request->get('geo')) {
-            if ($request->get('coord_mouth_x') && $request->get('coord_mouth_y')) {
-                $coord = "({$request->get('coord_mouth_x')},{$request->get('coord_mouth_y')})";
-                if (!$this->validator->validateCoords($coord, $request->get('geo'))) {
-                    $errors['coord_mouth_x'][] = trans('bd.validation.coords_mouth');
-                    $errors['coord_mouth_y'][] = trans('bd.validation.coords_mouth');
-                }
-            }
+        $errors = array_merge_recursive(
+            $errors,
+            $this->validateCoords($request, 'coord_mouth_x', 'coord_mouth_y', trans('bd.validation.coords_mouth'))
+        );
+        $errors = array_merge_recursive(
+            $errors,
+            $this->validateCoords($request, 'coord_bottom_x', 'coord_bottom_y', trans('bd.validation.coords_bottom'))
+        );
 
-            if ($request->get('coord_bottom_x') && $request->get('coord_bottom_x')) {
-                $coord = "({$request->get('coord_bottom_x')},{$request->get('coord_bottom_y')})";
-                if (!$this->validator->validateCoords($coord, $request->get('geo'))) {
-                    $errors['coord_bottom_x'][] = trans('bd.validation.coords_bottom');
-                    $errors['coord_bottom_y'][] = trans('bd.validation.coords_bottom');
-                }
-            }
+        return $errors;
+    }
+
+    protected function validateCoords($request, $coordXField, $coordYField, $msg)
+    {
+        $errors = [];
+
+        if (empty($request->get('geo')) || empty($request->get($coordXField)) || empty($request->get($coordYField))) {
+            return $errors;
+        }
+
+        $coord = "({$request->get($coordXField)},{$request->get($coordYField)})";
+        if (!$this->validator->validateCoords($coord, $request->get('geo'))) {
+            $errors[$coordXField][] = $msg;
+            $errors[$coordYField][] = $msg;
         }
 
         return $errors;
