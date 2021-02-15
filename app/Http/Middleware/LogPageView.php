@@ -23,7 +23,7 @@ class LogPageView
         ];
 
         foreach($excludedUrls as $url) {
-            if(preg_match("#{$url}#", $request->path())) {
+            if(preg_match("#^{$url}$#", $request->path())) {
                 return $next($request);
             }
         }
@@ -34,6 +34,7 @@ class LogPageView
                 'url' => $request->path()
             ]);
         }
+
         return $next($request);
     }
 }

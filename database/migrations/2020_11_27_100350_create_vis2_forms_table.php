@@ -70,6 +70,15 @@ class CreateVis2FormsTable extends Migration
             $table->float('mining_wells_restriction',8,4)->nullable();
             $table->float('others',8,4)->nullable();
 
+            $table->float("oil_plan",32,8)->nullable();
+            $table->float("gk_plan",32,8)->nullable();	
+            $table->float("liq_plan",32,8)->nullable();
+            $table->float("gas_plan",32,8)->nullable();
+            $table->float("inj_plan",32,8)->nullable();
+            $table->float("oil_dlv_plan",32,8)->nullable();
+            $table->float("liq_fact",32,8)->nullable();
+            $table->float("inj_fact",32,8)->nullable();
+
             $table->timestamps();
         });
     }

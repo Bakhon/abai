@@ -15,7 +15,7 @@ class UsdParse extends Command
      *
      * @var string
      */
-    protected $signature = 'parse:usd';
+    protected $signature = 'parse-usd:cron';
 
     /**
      * The console command description.
@@ -57,8 +57,8 @@ class UsdParse extends Command
 
                     if ($type == 'update') {
                         DB::table('usd_rate')
-                            ->where('data', '=', $date)
-                            ->insert(
+                            ->where('date', '=', $date)
+                            ->update(
                                 [
                                     'value' => $item->description,
                                     'change' => $item->change,

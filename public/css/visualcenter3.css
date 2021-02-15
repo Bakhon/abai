@@ -36,7 +36,7 @@ ol, ul, dl {
     float: left;
     font-size: 0.9em;
     margin-left: 0em;
-    margin-top: -5px; 
+    margin-top: -5px;
 }
 
 .txt2-2 {
@@ -202,7 +202,7 @@ body {
     /* line-height: 44px; */
     min-width: 5.3em;
     padding: 0px 0px 10px 10px;
-    
+
 }
 
 .table7 td .selected {
@@ -310,7 +310,7 @@ td:last-of-type {
 
 .txt5 {
     margin-left: 0.5em;
-    margin-top: 0.73rem;    
+    margin-top: 0.73rem;
     overflow: hidden;
     font-size: 1.2em;
     margin-bottom: 12px;
@@ -598,13 +598,11 @@ td.small-td {
 }
 
 .triangle {
-    border: 8px solid transparent;
-    width: 10px;
-    height: 10px;
+    border: 6px solid transparent;
+    width: 6px;
+    height: 6px;
     float: left;
-    /* margin-top: 8px; */
-    /* margin-left: 5px; */
-    /* flex-flow: row; */
+    position: absolute;
 }
 
 .triangle2 {
@@ -711,7 +709,7 @@ ul.center-menu2 {
 .square-small2 {
     /* background: #237deb; */
     border-radius: 5px;
-    border: 1px solid #237deb; 
+    border: 1px solid #237deb;
     width: 22px;
     height: 22px;
     /* position: relative; */
