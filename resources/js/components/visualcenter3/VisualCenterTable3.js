@@ -180,7 +180,6 @@ export default {
       //oil and currency up
       index: "",
       widthProgress: "90",
-      //showTableItem: "No",]
       DMY: "День",
       item: "oil_plan",
       item2: "oil_fact",
@@ -202,8 +201,8 @@ export default {
       buttonHover8: "",
       buttonHover9: "",
       buttonHover10: "",
-      buttonHover11: "color: #fff;",//this.changeMenuButton,
-      buttonHover12: "",//this.changeMenuButton,
+      buttonHover11: "color: #fff;",
+      buttonHover12: "",
       buttonHover13: "",
       buttonHover14: "",
       buttonHoverNagInnerWells: "",
@@ -837,10 +836,8 @@ export default {
 
     //currency and oil up
     pushBign(bign) {
-      // @click="pushBign('bign1')"
       switch (bign) {
         case "bign1":
-          //  this.params.data = this.wellsList;
           break;
       }
       this.$modal.show(bign);
@@ -861,7 +858,6 @@ export default {
       } else {
         if (b == 0) { return 0 } else if (a == 0) { return 0 } {
           if (a != '') return ((b / a - 1) * 100).toFixed(2)
-          //else return 0;
         }
       }
     },
@@ -921,7 +917,7 @@ export default {
             ),
           ]);
         });
-        //this.quantityGetProductionOilandGas = Object.keys(dataWithMay).length;//k1q
+
         var quantityGetProductionOilandGas = Object.keys(_.filter(dataWithMay, _.iteratee({ dzo: dataWithMay[0].dzo }))).length;//k1q
         this.quantityGetProductionOilandGas = quantityGetProductionOilandGas;
 
@@ -1011,7 +1007,6 @@ export default {
         if (gas_factSumm || gas_planSumm) { this.gas_factDayProgressBar = (gas_factSumm / gas_planSumm) * 100; }
 
       }
-      //});
     },
     getProductionOilandGasPercent(data) {
       if (data) {
@@ -1104,7 +1099,6 @@ export default {
         this.oil_dlv_factDayPercent = oil_dlv_factSumm;
 
       }
-      // });
     },
 
     getProduction(item, item2, item3, item4, item5, item6) {
@@ -1194,7 +1188,6 @@ export default {
               return _.every([
                 _.inRange(
                   item.__time,
-                  // 1588291200000, // May 2020
                   timestampToday,
                   timestampEnd + 10//86400000 //* dayInMonth
                 ),
@@ -1255,11 +1248,9 @@ export default {
 
             var dataWithMayLast = [];
             this.getProductionPercentWells(arrdata);
-            // dataWithMayLast = _.last(dataWithMay);
 
             if (this.company != "all") {
               this.$store.commit('globalloading/SET_LOADING', false);
-              // this.$emit("data", productionForChart); //k1q new
               this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
             }
 
@@ -1284,8 +1275,6 @@ export default {
               }))
               .value();
 
-            console.log((summForTables['0']['productionFactForMonth']));
-            //console.log((summForTables['productionPlanForMonth']).length);
 
             if ((summForTables['0']['productionFactForMonth'] + summForTables['0']['productionPlanForMonth']) === 0) {
               this.noData = "Данных нет";
@@ -1356,30 +1345,10 @@ export default {
           var dataYear = [];
           var dzo = [];
           dataDay = data;
-          //dataYear = data2;
           var factYear = [];
           var planYear = [];
           var dataMonth = [];
           var dzoYear = [];
-          /*dataMonth = _.filter(
-            data2,
-            _.iteratee({ period: "2020 (с начала года)" })
-          );*/
-
-          /*  dataMonth = _.orderBy(dataMonth, ["dzo"], ["desc"]);
-
-            _.forEach(dataMonth, function (item) {
-              var e = [];
-              e = { dzoYear: item.dzo };
-              dzoYear.push(e);
-
-              var f = [];
-              f = { factYear: Math.ceil(item[productionFact]) };
-              factYear.push(f);
-              var p = [];
-              p = { planYear: Math.ceil(item[productionPlan]) };
-              planYear.push(p);
-            });*/
 
           var dataWithMay = new Array();
           dataWithMay = _.filter(data, function (item) {
@@ -1544,50 +1513,6 @@ export default {
 
           this.getProductionPercentWells(data);
 
-          /*  if (inj_wells_idle) {
-              inj_wells_idle = _.reduce(
-                dataDay,
-                function (memo, item) {
-                  return memo + item.inj_wells_idle;
-                },
-                0
-              );
-              this.inj_wells_idle = inj_wells_idle;
-            }
-
-            if (inj_wells_work) {
-              inj_wells_work = _.reduce(
-                dataDay,
-                function (memo, item) {
-                  return memo + item.inj_wells_work;
-                },
-                0
-              );
-              this.inj_wells_work = inj_wells_work;
-            }
-
-            if (prod_wells_work) {
-              prod_wells_work = _.reduce(
-                dataDay,
-                function (memo, item) {
-                  return memo + item.prod_wells_work;
-                },
-                0
-              );
-              this.prod_wells_work = prod_wells_work;
-            }
-
-            if (prod_wells_idle) {
-              prod_wells_idle = _.reduce(
-                dataDay,
-                function (memo, item) {
-                  return memo + item.prod_wells_idle;
-                },
-                0
-              );
-
-              this.prod_wells_idle = prod_wells_idle;
-            }*/
 
           var dzoMonth = [];
           var factMonth = [];
@@ -1696,7 +1621,7 @@ export default {
           let restrictions = [];
           let otheraccidents = [];
 
-          _.forEach(productionPlanAndFactMonth, function (item) { //k1q!!!
+          _.forEach(productionPlanAndFactMonth, function (item) {
             factMonth.push({ factMonth: item.productionFactForChart });
             planMonth.push({ planMonth: item.productionPlanForChart });
             dzoMonth.push({ dzoMonth: item.dzo });
@@ -1708,10 +1633,6 @@ export default {
             otheraccidents.push({ otheraccidents: item.otheraccidents });
           });
 
-
-
-
-          //summ table value
           var factYearSumm = _.reduce(
             factYear,
             function (memo, item) {
@@ -1891,18 +1812,7 @@ export default {
               return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
             })
 
-
-
-
-          //this.opecData = opecData.filter(row => row.oil_planYear > 0)
-
-
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
-
-          // this.bigTable = bigTable;
-
-
-
 
           this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
 
@@ -2161,7 +2071,7 @@ export default {
           this.displayTable = "d-flex;";
           this.displayHeadTables = "display: none";
         }
-        this.showTableOn = ""; //colour button
+        this.showTableOn = "";
       } else if (showTableItem == "No") {
         this.displayTable = "display:none;";
         this.displayHeadTables = "display: none";
@@ -2172,7 +2082,7 @@ export default {
         this.showTableOn = showTableOn; //colour button
       }
     },
-    //When we change date
+
     changeDate() {
       this.selectedDay = 0;
       this.timestampToday = new Date(this.range.start).getTime();
@@ -2185,8 +2095,6 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
       this.getCurrencyNow(new Date().toLocaleDateString());
       this.getAccidentTotal();
-      // this.updateCurrentOilPrices(this.period);
-      // this.updateCurrentUsdPrices(this.period);
       this.updatePrices(this.period);
 
     },
@@ -2230,7 +2138,6 @@ export default {
       this.prod_wells_work = productionPlanAndFactMonthWells[0]['prod_wells_work'];
       this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
 
-      //  return productionPlanAndFactMonthWellsName;
     },
 
 
@@ -2557,22 +2464,9 @@ export default {
 
     getOtmChartData(arr) {
       let otmData
-      /* if (this.buttonHover9) {
-         otmData = _.groupBy(arr, item => {
-           return moment(parseInt(item.__time)).format('MMM')
-         })
-       }
-       else {*/
       otmData = _.groupBy(arr, item => {
         return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
-      /* otmData = _.orderBy(
-         otmData,
-         ["__time"],
-         ["asc"]
-       );*/
-
-      // }
 
       let result = {}
 
@@ -2650,17 +2544,10 @@ export default {
       return result
     },
     getChemistryChartData(arr) {
-      let chemistryData
-      /*if (this.buttonHover9) {
-        chemistryData = _.groupBy(arr, item => {
-          return moment(parseInt(item.__time)).format('MMM')
-        })
-      }
-      else {*/
+      let chemistryData;
       chemistryData = _.groupBy(arr, item => {
         return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
-      //  }
 
       let result = {}
 
@@ -2785,14 +2672,12 @@ export default {
         let data = response.data;
         if (data) {
 
-          //if (this.buttonHover9){
           //Summ plan dzo year
           let SummFromRange = _(data)
             .groupBy("dzo")
             .map((dzo, id) => ({
               dzoMonth: id,
               oil_planYear: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-              //       oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
             }))
 
             .value();
@@ -2807,7 +2692,6 @@ export default {
 
           this.opecData = SummFromRange;
           this.opecDataSumm = opecDataSumm;
-          // }
         }
         else { console.log('Not opec data'); }
       });
@@ -2828,8 +2712,6 @@ export default {
         .map((dzo, id) => ({
           dzoMonth: id,
           planMonthNew: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
-          // planMonthOpec: (_.sumBy(dzo, 'oil_opek_plan'))* moment().daysInMonth(),
-          //       oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
         }))
 
         .value();
@@ -2896,29 +2778,14 @@ export default {
 
   created() {
 
-    if (window.location.host === 'dashboard') {
-
-      // this.Table6 = "display:block";
-      // this.Table1 = "display:none";
-    }
-
   },
-
-
-
 
   async mounted() {
     this.getOpec();
     this.item3 = this.oilChartHeadName;
 
     if (window.location.host === 'dashboard') {
-
-
-      //let start=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00');
-      //let end=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00');
       this.range = {
-       // start: "2021-01-01T00:00:00+06:00",
-        //end: "2021-01-31T23:59:00+06:00",
         start: moment().startOf('day').subtract(1, "days").format(),
         end: moment().endOf('day').subtract(1, "days").format(),
         formatInput: true,
@@ -2927,8 +2794,6 @@ export default {
       this.range = {
         start: moment().startOf('day').subtract(1, "days").format(),
         end: moment().endOf('day').subtract(1, "days").format(),
-        //start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        // end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     }
@@ -2941,17 +2806,11 @@ export default {
     if (this.company == "all") {
     }
     this.selectedYear = this.year;
-    //var productionPlan = localStorage.getItem("production-plan");
-    //var productionFact = localStorage.getItem("production-fact");
 
     localStorage.setItem("selectedPeriod", "undefined");
     this.getCurrencyNow(this.timeSelect);
     this.updatePrices(this.period);
-    // this.updateCurrentOilPrices(this.period);
-    // this.updateCurrentUsdPrices(this.period);
     this.changeAssets('b13');
-    // this.getProductionOilandGasPercent();
-    //this.getUsdRatesData();
 
     this.changeMenu2();
     this.getStaff();

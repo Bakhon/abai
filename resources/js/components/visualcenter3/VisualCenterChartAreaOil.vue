@@ -43,8 +43,6 @@
             colors: ['#1956e5']
           },
           chart: {
-            // height: '450px',
-            // width: '100%',
             locales: [{
               "name": "ru",
               "options": {
@@ -71,9 +69,6 @@
           annotations: {
             yaxis: [{
               y: 30,
-              // label: {
-              //   show: false,
-              // }
             }],
             xaxis: [{
               x: new Date().getTime(),

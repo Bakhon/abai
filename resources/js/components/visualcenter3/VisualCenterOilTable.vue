@@ -46,15 +46,13 @@
                   <thead>
                   <tr>
                     <th>
-                      <!-- Дата -->
                       {{this.trans("visualcenter.date")}}
                       </th>
                     <th>
-                      <!-- Курс -->
                       {{this.trans("visualcenter.kurs")}}
                       </th>
                     <th>
-                      <!-- Изменение -->{{this.trans("visualcenter.change")}}
+                      {{this.trans("visualcenter.change")}}
                       </th>
                   </tr>
                   </thead>

@@ -879,7 +879,7 @@
                     <div class="month-day">
                       <div class="">
                         <date-picker
-                          v-if="selectedPeriod == 0"
+                          v-if="selectedPeriod === 0"
                           mode="range"
                           v-model="range"
                           is-range
@@ -1645,7 +1645,7 @@
                       <div class="month-day">
                         <div>
                           <date-picker
-                            v-if="selectedPeriod == 0"
+                            v-if="selectedPeriod === 0"
                             mode="range"
                             v-model="range"
                             is-range
@@ -2816,6 +2816,7 @@
     </div>
   </div>
 </template>
+
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
 .vis-table {
