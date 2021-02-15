@@ -1223,9 +1223,7 @@
                     </td>
                     <td
                       v-if="buttonHover9"
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                      :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
                     >
                       <div class="font">
                         {{ formatVisTableNumber(item.oil_planYear) }}
@@ -1234,9 +1232,7 @@
 
                     <td
                       v-if="buttonHover8"
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                      :class="`${getDzoColumnsClass(index,'yearlyPlan')}`"
                     >
                       <div class="font">
                         {{ formatVisTableNumber(item.planMonthNew) }}
@@ -1308,7 +1304,7 @@
                       "
                     >
                       <div
-                              :class="item.impulses ? 'is-accident triangle' : 'not-accident triangle'"
+                              :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                     <td
@@ -1323,7 +1319,7 @@
                       "
                     >
                       <div
-                              :class="item.impulses ? 'is-accident triangle' : 'not-accident triangle'"
+                              :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
 
@@ -1339,7 +1335,7 @@
                       "
                     >
                       <div
-                              :class="item.landing ? 'is-accident triangle' : 'not-accident triangle'"
+                              :class="item.landing ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                     <td
@@ -1354,7 +1350,7 @@
                       "
                     >
                       <div
-                              :class="item.accident ? 'is-accident triangle' : 'not-accident triangle'"
+                              :class="item.accident ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                     <td
@@ -1369,7 +1365,7 @@
                       "
                     >
                       <div
-                              :class="item.restrictions ? 'is-accident triangle' : 'not-accident triangle'"
+                              :class="item.restrictions ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                     <td
@@ -1384,7 +1380,7 @@
                       "
                     >
                       <div
-                              :class="item.otheraccidents ? 'is-accident triangle' : 'not-accident triangle'"
+                              :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                   </tr>
@@ -3081,11 +3077,11 @@
     border-top: 6px solid #e31e24;
   }
 
-  .is-accident {
+  .accident-triangle {
     border-top: 6px solid rgb(227, 30, 36);
     margin-left: 30%;
   }
-  .not-accident {
+  .no-accident-triangle {
     position: relative;
     width: 14px;
     height: 5px;

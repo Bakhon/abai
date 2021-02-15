@@ -342,31 +342,26 @@ export default {
       dailyCurrencyChangeIndexUsd: '',
       dailyOilPriceChange: '',
       isPricesChartLoading: false,
-      currencyTimeSelect: new Date().toLocaleDateString()
+      currencyTimeSelect: new Date().toLocaleDateString(),
+      currentDzoList: 'daily',
+      dzoColumns: {
+        daily: ['companyName','plan','fact', 'difference', 'percent'],
+        monthly: ['companyName','monthlyPlan','plan','fact', 'difference', 'percent'],
+        yearly: ['companyName','yearlyPlan','plan','fact', 'difference', 'percent'],
+      },
     };
   },
   methods: {
-    getDzoColumnsClass(rowIndex, column) {
-      if (column == 'plan' || column == 'difference') {
-        return this.getCellClassForEvenRow(rowIndex);
+    getDzoColumnsClass(rowIndex, columnName) {
+      if (this.getColumnIndex(columnName) % 2 === 0) {
+        return this.getDarkColor(rowIndex);
       } else {
-        return this.getCellClassForOddRow(rowIndex);
+        return this.getLightColor(rowIndex);
       }
     },
 
-    getCellClassForEvenRow(rowIndex) {
-      if (this.buttonHover8 || this.buttonHover9) {
-        return this.getDarkColor(rowIndex);
-      } else {
-        return this.getLightColor(rowIndex);
-      }
-    },
-    getCellClassForOddRow(rowIndex) {
-      if (this.buttonHover8 || this.buttonHover9) {
-        return this.getLightColor(rowIndex);
-      } else {
-        return this.getDarkColor(rowIndex);
-      }
+    getColumnIndex(columnName) {
+      return this.dzoColumns[this.currentDzoList].indexOf(columnName);
     },
 
     getDarkColor(rowIndex) {
@@ -562,7 +557,7 @@ export default {
 
       var buttonHover = this.buttonHover;
       if (change == 1) {
-
+        this.currentDzoList = 'daily';
         this.buttonHover7 = buttonHover;
         this.range = {
           start: moment().startOf('day').subtract(1, "days").format(),
@@ -578,6 +573,7 @@ export default {
 
       if (change == 2) {
         this.buttonHover8 = buttonHover;
+        this.currentDzoList = 'monthly';
         this.range = {
           start: moment().startOf('month').format(),
           end: moment().subtract(1, "days").endOf('day').format(),
@@ -592,6 +588,7 @@ export default {
 
       if (change == 3) {
         this.buttonHover9 = buttonHover;
+        this.currentDzoList = 'yearly';
         this.range = {
           start: moment().startOf('year').format(),
           end: moment().endOf('day').format(),
@@ -746,14 +743,14 @@ export default {
       let self = this;
       _.forEach(data, function (item) {
         let changeValue = parseFloat(((item['value'] - previousPrice) / item['value']) * 100).toFixed(2);
-        self.pushRatesData(ratesData,item,changeValue,ratesData);
-        self.pushRatesChart(ratesData,item,ratesData);
+        self.pushRatesData(item,changeValue,ratesData);
+        self.pushRatesChart(item,ratesData);
         previousPrice = parseFloat(item['value']);
       });
       return ratesData;
     },
 
-    pushRatesData(oilRatesData,item,changeValue,ratesData) {
+    pushRatesData(item,changeValue,ratesData) {
       ratesData.for_table.push({
         date_string: this.$moment(item['date']).format('DD.MM.YYYY'),
         value: parseFloat(item['value']),
@@ -762,7 +759,7 @@ export default {
       });
     },
 
-    pushRatesChart(oilRatesData,item,ratesData) {
+    pushRatesChart(item,ratesData) {
       ratesData.for_chart.push([
         new Date(item['date']).getTime(),
         parseFloat(item['value']),
