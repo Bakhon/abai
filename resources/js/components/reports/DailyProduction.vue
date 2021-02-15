@@ -97,8 +97,8 @@ export default {
         type: 'daily_dynamic_well_production',
         period: 'days',
         dzo: this.org,
-        report_date_start: formatDate.format_to_first_day_of_month(this.end_date),
-        report_date_end: formatDate.format_to_max_of_day(this.end_date)
+        report_date_start: formatDate.formatToFirstDayOfMonth(this.end_date),
+        report_date_end: formatDate.formatToMaxOfDay(this.end_date)
       };
 
       let json_data = JSON.stringify(data);

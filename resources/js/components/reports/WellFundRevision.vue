@@ -129,8 +129,8 @@ export default {
         period: 'days',
         dzo: this.org,
         fond: fondTypeByFundId[this.fondType],
-        report_date_start: formatDate.format_to_min_of_day(this.end_date),
-        report_date_end: formatDate.format_to_max_of_day(this.end_date)
+        report_date_start: formatDate.formatToMinOfDay(this.end_date),
+        report_date_end: formatDate.formatToMaxOfDay(this.end_date)
       };
 
       let json_data = JSON.stringify(data);
