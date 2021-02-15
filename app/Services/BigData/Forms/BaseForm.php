@@ -9,24 +9,48 @@ use Illuminate\Http\Request;
 abstract class BaseForm
 {
 
+    protected $request;
+
     protected $validator;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
+        $this->request = $request;
         $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    public function send(Request $request): \Illuminate\Database\Eloquent\Model
+    abstract public function submit(): \Illuminate\Database\Eloquent\Model;
+
+    abstract protected function params(): array;
+
+    public function send(): \Illuminate\Database\Eloquent\Model
     {
-        $this->validate($request);
-        return $this->submit($request);
+        $this->validate();
+        return $this->submit();
     }
 
-    private function validate(Request $request): void
+    public function getFormatedParams(): array
     {
-        $errors = $this->getCustomValidationErrors($request);
+        return [
+            'params' => $this->params(),
+            'fields' => $this->getFields()->pluck('', 'code')->toArray()
+        ];
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        return [];
+    }
+
+    public function validateSingleField(string $field): void
+    {
+    }
+
+    private function validate(): void
+    {
+        $errors = $this->getCustomValidationErrors();
         $this->validator->validate(
-            $request,
+            $this->request,
             $this->getValidationRules(),
             $this->getValidationAttributeNames(),
             $errors
@@ -35,7 +59,6 @@ abstract class BaseForm
 
     private function getValidationRules(): array
     {
-        $params = $this->params();
         $rules = [];
 
         foreach ($this->getFields() as $field) {
@@ -44,8 +67,6 @@ abstract class BaseForm
 
         return $rules;
     }
-
-    abstract protected function params(): array;
 
     private function getValidationAttributeNames(): array
     {
@@ -56,16 +77,6 @@ abstract class BaseForm
         }
 
         return $attributes;
-    }
-
-    abstract public function submit(Request $request): \Illuminate\Database\Eloquent\Model;
-
-    public function getFormatedParams(): array
-    {
-        return [
-            'params' => $this->params(),
-            'fields' => $this->getFields()->pluck('', 'code')->toArray()
-        ];
     }
 
     private function getFields(): \Illuminate\Support\Collection
@@ -81,10 +92,5 @@ abstract class BaseForm
         }
 
         return $fields;
-    }
-
-    protected function getCustomValidationErrors(Request $request): array
-    {
-        return [];
     }
 }
