@@ -1539,10 +1539,10 @@
         </div>
       </div>
 
-      <visual-center-oil-table
+      <visual-center-usd-table
         :style="`${Table2}`"
         :period.sync="period"
-        :oil-rates-data.sync="oilRatesData"
+        :usd-rates-data.sync="oilRatesData"
         :period-select-func.sync="periodSelectFunc"
         :table-data.sync="oilRatesDataTableForCurrentPeriod"
         :usd-chart-is-loading.sync="isPricesChartLoading"
