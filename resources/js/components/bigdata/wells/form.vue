@@ -61,8 +61,8 @@
 
 <script>
 export default {
-  name: "bigdata-well-form",
-  props: ['action'],
+  name: "bigdata-form",
+  props: ['formName'],
   data: function () {
     return {
       errors: {},
@@ -90,185 +90,25 @@ export default {
         planned_liquid_rate: '',
         planned_watering: '',
       },
-      form: {
-        tabs: [
-          {
-            title: 'Основное',
-            blocks: [
-              {
-                title: 'Скважина',
-                items: [
-                  {
-                    code: 'name',
-                    type: 'text',
-                    title: 'Номер скважины',
-                    required: true,
-                  },
-                  {
-                    code: 'date_create',
-                    type: 'date',
-                    title: 'Дата создания проекта',
-                    required: true
-                  },
-                  {
-                    code: 'category',
-                    type: 'dict',
-                    title: 'Категория скважины',
-                    required: true,
-                    dict: 'well_categories'
-                  },
-                  {
-                    code: 'org',
-                    type: 'dict_tree',
-                    title: 'Оргструктура',
-                    required: true,
-                    dict: 'orgs'
-                  },
-                  {
-                    code: 'geo',
-                    type: 'dict_tree',
-                    title: 'Геоструктура',
-                    required: true,
-                    dict: 'geos'
-                  }
-                ]
-              },
-              {
-                title: 'Свойства скважины',
-                items: [
-                  {
-                    code: 'altitude',
-                    type: 'numeric',
-                    title: 'Альтитуда',
-                    required: false,
-                  },
-                  {
-                    code: 'rotor_table',
-                    type: 'numeric',
-                    title: 'Превышение стола ротора',
-                    required: false
-                  },
-                  {
-                    code: 'coord_type',
-                    type: 'radio',
-                    title: 'Координатная система',
-                    required: true,
-                    values: ['WGS-84', 'Пулково-42']
-                  },
-                  {
-                    code: 'coord_mouth_x',
-                    type: 'numeric',
-                    title: 'Координаты устья X',
-                    required: false
-                  },
-                  {
-                    code: 'coord_mouth_y',
-                    type: 'numeric',
-                    title: 'Координаты устья Y',
-                    required: false
-                  },
-                  {
-                    code: 'type',
-                    type: 'dict',
-                    title: 'Вид скважины',
-                    required: true,
-                    dict: 'well_types'
-                  },
-                  {
-                    code: 'coord_bottom_x',
-                    type: 'numeric',
-                    title: 'Координаты забоя X',
-                    required: false
-                  },
-                  {
-                    code: 'coord_bottom_y',
-                    type: 'numeric',
-                    title: 'Координаты забоя Y',
-                    required: false
-                  },
-                ]
-              }
-            ]
-          },
-          {
-            title: 'Проект бурения',
-            blocks: [
-              {
-                title: 'Скважина',
-                items: [
-                  {
-                    code: 'date_start_drilling',
-                    type: 'date',
-                    title: 'Дата начала бурения',
-                    required: false
-                  },
-                  {
-                    code: 'date_end_drilling',
-                    type: 'date',
-                    title: 'Дата окончания бурения',
-                    required: false
-                  },
-                  {
-                    code: 'company',
-                    type: 'dict',
-                    title: 'Подрядчик',
-                    required: false,
-                    dict: 'companies'
-                  },
-                  {
-                    code: 'agreement_num',
-                    type: 'numeric',
-                    title: 'Номер договора',
-                    required: true
-                  },
-                  {
-                    code: 'agreement_date',
-                    type: 'date',
-                    title: 'Дата договора',
-                    required: true
-                  },
-                  {
-                    code: 'planned_depth',
-                    type: 'numeric',
-                    title: 'Проектная глубина, м',
-                    required: false
-                  },
-                  {
-                    code: 'avg_gasoil_ratio',
-                    type: 'numeric',
-                    title: 'Средний газовый фактор',
-                    required: false
-                  },
-                  {
-                    code: 'planned_liquid_rate',
-                    type: 'numeric',
-                    title: 'Ожидаемый дебит жидкости',
-                    required: false
-                  },
-                  {
-                    code: 'planned_watering',
-                    type: 'numeric',
-                    title: 'Ожидаемая обводненность',
-                    required: false
-                  },
-                ]
-              }
-            ]
-          }
-        ],
-      },
+      form: {},
       activeTab: 0
     }
   },
   mounted() {
+
+    this.axios.get(this.localeUrl('/bigdata/form/' + this.formName)).then(({data}) => {
+      this.form = data.params
+      this.formValues = data.formValues
+    })
+
   },
   methods: {
     submit() {
 
-      this.axios.post(this.action, this.formValues)
+      this.axios.post(this.localeUrl('/bigdata/form/' + this.formName), this.formValues)
           .then(data => {
             this.errors = []
-            this.formValues.map(item => '')
+            this.formValues.map(value => '')
             this.$refs.form.reset()
             Vue.prototype.$notifySuccess('Ваша форма успешно отправлена')
           })
