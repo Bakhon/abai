@@ -86,8 +86,16 @@
     height: 324px;
 }
 
+.mh-324 {
+    max-height: 324px;
+}
+
 .h-400 {
     height: 400px;
+}
+
+.mh-400 {
+    max-height: 400px;
 }
 
 /*mobile*/

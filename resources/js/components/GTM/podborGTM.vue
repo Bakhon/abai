@@ -44,7 +44,7 @@
                     <div class="block-header text-center">
                         Таблица данных скважин
                     </div>
-                    <div class="bg-dark table-responsive table-scroll h-400">
+                    <div class="bg-dark table-responsive table-scroll mh-400">
                         <table class="table table-striped table-borderless text-center text-white">
                             <tbody>
                             <tr class="near-wells-table-item" v-for="item in wellsData">
@@ -67,7 +67,7 @@
                 <div class="block-header text-center">
                     Поиск потенциала
                 </div>
-                <div class="bg-dark h-324">
+                <div class="bg-dark mh-324">
                     <b-tree-view
                         :data="treeData"
                         :contextMenu="false"
