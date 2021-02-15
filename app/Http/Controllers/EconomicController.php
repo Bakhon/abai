@@ -366,7 +366,7 @@ class EconomicController extends Controller
                 array_push($dataChart4['dt'], $item['dt']);
             }
 
-            array_push($dataChart4[$item['profitability']], self::itemFormat($item));
+            array_push($dataChart4[$item['profitability']], self::profitabilityFormat($item));
         }
 
         $averageProfitlessCat1Month = count($array4);
@@ -404,7 +404,7 @@ class EconomicController extends Controller
         return response()->json($vdata);
     }
 
-    static function itemFormat($item){
+    static function profitabilityFormat($item){
         $bsw_round = round(($item['bsw']/1000)/($item['uwi']/1000));
         $liquid_round = round($item['liquid']/1000);
         return "{$liquid_round}.{$bsw_round}";
