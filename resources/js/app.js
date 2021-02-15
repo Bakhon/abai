@@ -91,6 +91,7 @@ Vue.component('gtm-main', require('./components/GTM/Main.vue').default);
 Vue.component('gtm-aegtm', require('./components/GTM/Aegtm.vue').default);
 Vue.component('gtm-podbor-gtm', require('./components/GTM/podborGTM.vue').default);
 Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
+Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
 
 Vue.component('reports-table2', require('./components/reportsGTM/ReportsGTMTable.vue').default);
 Vue.component('reports-table3', require('./components/reportDob/RepDobTable.vue').default);

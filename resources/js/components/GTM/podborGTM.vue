@@ -67,14 +67,12 @@
                 <div class="block-header text-center">
                     Поиск потенциала
                 </div>
-                <div class="bg-dark" style="height: 324px;">
-                    <b-tree-view
-                        :data="treeData"
-                        :contextMenu="false"
-                        :renameNodeOnDblClick="false"
-                        :contextMenuItems="contextMenuItems"
-                        :nodeSelect="nodeSelect"
-                    ></b-tree-view>
+                <div class="bg-dark ml-4">
+                    <gtm-tree
+                        v-for="treeDataChild in treeData"
+                        :node="treeDataChild"
+                        :key="treeDataChild.name"
+                    ></gtm-tree>
                 </div>
             </div>
             <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0 mt-0 mt-md-2">
@@ -124,12 +122,8 @@
 </template>
 
 <script>
-import { bTreeView } from 'bootstrap-vue-treeview'
 import structureMain from './structure_main.json'
 export default {
-    components: {
-        bTreeView
-    },
     data: function () {
         return {
             nearWellsData: [
