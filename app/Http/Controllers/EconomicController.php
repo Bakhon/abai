@@ -365,22 +365,8 @@ class EconomicController extends Controller
             if (!in_array($item['dt'], $dataChart4['dt'])) {
                 array_push($dataChart4['dt'], $item['dt']);
             }
-            if ($item['profitability'] == 'profitable') {
-                $bsw_round = round(($item['bsw']/1000)/($item['uwi']/1000));
-                $liquid_round = round($item['liquid']/1000);
-                $profitable = "{$liquid_round}.{$bsw_round}";
-                array_push($dataChart4['profitable'], $profitable);
-            } elseif ($item['profitability'] == 'profitless_cat_2') {
-                $bsw_round = round(($item['bsw']/1000)/($item['uwi']/1000));
-                $liquid_round = round($item['liquid']/1000);
-                $profitless_cat_2 = "{$liquid_round}.{$bsw_round}";
-                array_push($dataChart4['profitless_cat_2'], $profitless_cat_2);
-            } elseif ($item['profitability'] == 'profitless_cat_1') {
-                $bsw_round = round(($item['bsw']/1000)/($item['uwi']/1000));
-                $liquid_round = round($item['liquid']/1000);
-                $profitless_cat_1 = "{$liquid_round}.{$bsw_round}";
-                array_push($dataChart4['profitless_cat_1'], $profitless_cat_1);
-            }
+
+            array_push($dataChart4[$item['profitability']], self::itemFormat($item));
         }
 
         $averageProfitlessCat1Month = count($array4);
@@ -416,6 +402,12 @@ class EconomicController extends Controller
 
 
         return response()->json($vdata);
+    }
+
+    static function itemFormat($item){
+        $bsw_round = round(($item['bsw']/1000)/($item['uwi']/1000));
+        $liquid_round = round($item['liquid']/1000);
+        return "{$liquid_round}.{$bsw_round}";
     }
 
     static function moneyFotmat($digit){

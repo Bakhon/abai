@@ -51,7 +51,6 @@ export default {
           y: {
             formatter: function(y) {
               if (typeof y !== "undefined") {
-                // return new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(y.toFixed(0)) + " тыс. тонн";
                 let liquid = y.toString().split('.');
                 if (liquid.length > 1) {
                   return `${liquid[0]} тыс. тонн, обв: ${liquid[1]}%`;
