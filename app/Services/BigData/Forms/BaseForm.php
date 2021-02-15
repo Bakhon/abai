@@ -24,7 +24,7 @@ abstract class BaseForm
 
     private function validate(Request $request): void
     {
-        $errors = $this->customValidation($request);
+        $errors = $this->getCustomValidationErrors($request);
         $this->validator->validate(
             $request,
             $this->getValidationRules(),
