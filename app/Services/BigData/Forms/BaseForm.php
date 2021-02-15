@@ -44,6 +44,14 @@ abstract class BaseForm
 
     public function validateSingleField(string $field): void
     {
+        $errors = $this->getCustomValidationErrors();
+        $this->validator->validateSingleField(
+            $this->request,
+            $this->getValidationRules(),
+            $this->getValidationAttributeNames(),
+            $field,
+            $errors
+        );
     }
 
     private function validate(): void

@@ -40,6 +40,7 @@
                     :item="item"
                     v-model="formValues[item.code]"
                     :error="errors[item.code]"
+                    v-on:change="validateField($event, item)"
                 >
                 </bigdata-form-field>
               </div>
@@ -110,6 +111,20 @@ export default {
     },
     changeTab(index) {
       this.activeTab = index
+    },
+    validateField(e, formItem) {
+
+      this.axios.post(
+          this.localeUrl('/bigdata/form/' + this.formName + '/validate/' + formItem.code),
+          this.formValues
+      )
+          .then(data => {
+            Vue.set(this.errors, formItem.code, null)
+          })
+          .catch(error => {
+            Vue.set(this.errors, formItem.code, error.response.data.errors)
+          })
+
     }
   },
 };
