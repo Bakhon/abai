@@ -25,6 +25,20 @@ class WellRegister extends BaseForm
                             'title' => 'Скважина',
                             'items' => [
                                 [
+                                    'code' => 'org',
+                                    'type' => 'dict_tree',
+                                    'title' => 'Оргструктура',
+                                    'validation' => 'required|exists:tbd.dict.org,id',
+                                    'dict' => 'orgs'
+                                ],
+                                [
+                                    'code' => 'geo',
+                                    'type' => 'dict_tree',
+                                    'title' => 'Геоструктура',
+                                    'validation' => 'required|exists:tbd.dict.geo,id',
+                                    'dict' => 'geos'
+                                ],
+                                [
                                     'code' => 'name',
                                     'type' => 'text',
                                     'title' => 'Номер скважины',
@@ -40,23 +54,9 @@ class WellRegister extends BaseForm
                                     'code' => 'category',
                                     'type' => 'dict',
                                     'title' => 'Категория скважины',
-                                    'validation' => 'required|exists:tbd.dict.well_category',
+                                    'validation' => 'required|exists:tbd.dict.well_category,id',
                                     'dict' => 'well_categories'
                                 ],
-                                [
-                                    'code' => 'org',
-                                    'type' => 'dict_tree',
-                                    'title' => 'Оргструктура',
-                                    'validation' => 'required|exists:tbd.dict.org',
-                                    'dict' => 'orgs'
-                                ],
-                                [
-                                    'code' => 'geo',
-                                    'type' => 'dict_tree',
-                                    'title' => 'Геоструктура',
-                                    'validation' => 'required|exists:tbd.dict.geo',
-                                    'dict' => 'geos'
-                                ]
                             ]
                         ],
                         [
@@ -98,7 +98,7 @@ class WellRegister extends BaseForm
                                     'type' => 'dict',
                                     'title' => 'Вид скважины',
                                     'dict' => 'well_types',
-                                    'validation' => 'required|exists:tbd.dict.well_type',
+                                    'validation' => 'required|exists:tbd.dict.well_type,id',
                                 ],
                                 [
                                     'code' => 'coord_bottom_x',
@@ -171,5 +171,30 @@ class WellRegister extends BaseForm
                 ]
             ]
         ];
+    }
+
+    protected function customValidation(\Illuminate\Http\Request $request): array
+    {
+        $errors = [];
+
+        if ($request->get('geo')) {
+            if ($request->get('coord_mouth_x') && $request->get('coord_mouth_y')) {
+                $coord = "({$request->get('coord_mouth_x')},{$request->get('coord_mouth_y')})";
+                if (!$this->validator->validateCoords($coord, $request->get('geo'))) {
+                    $errors['coord_mouth_x'][] = trans('bd.validation.coords_mouth');
+                    $errors['coord_mouth_y'][] = trans('bd.validation.coords_mouth');
+                }
+            }
+
+            if ($request->get('coord_bottom_x') && $request->get('coord_bottom_x')) {
+                $coord = "({$request->get('coord_bottom_x')},{$request->get('coord_bottom_y')})";
+                if (!$this->validator->validateCoords($coord, $request->get('geo'))) {
+                    $errors['coord_bottom_x'][] = trans('bd.validation.coords_bottom');
+                    $errors['coord_bottom_y'][] = trans('bd.validation.coords_bottom');
+                }
+            }
+        }
+
+        return $errors;
     }
 }
