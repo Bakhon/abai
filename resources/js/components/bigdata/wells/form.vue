@@ -2,7 +2,7 @@
   <div class="bd-main-block">
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
-      <p class="bd-main-block__header-title">Текущие замеры по ГДИС</p>
+      <p class="bd-main-block__header-title">{{ formTitle }}</p>
       <div class="block-three-fullscreen">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -62,7 +62,7 @@
 <script>
 export default {
   name: "bigdata-form",
-  props: ['formName'],
+  props: ['formName', 'formTitle'],
   data: function () {
     return {
       errors: {},
