@@ -64,7 +64,7 @@
             class="dropdown-menu fadropmenu"
             style="
               background: #40467e;
-              height: 117px;
+              height: 125px;
               flex-direction: column;
               width: calc(100% - 26px);
               margin-top: 4px;
@@ -125,24 +125,20 @@
               </select>
             </div>
             <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-              <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
+              <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form" style="width: 80%;"
                 >{{trans('tr.sf')}}</a
               >
-              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 9px;"><svg 
-                    width="16" 
-                    height="16" 
-                    viewBox="0 0 16 16" 
-                    fill="none" 
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 8.72824V7.30031C1 4.98073 2.88039 3.10034 5.19996 3.10034H14.2999V3.10034" 
-                      stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                    <path d="M12.8997 1L14.9289 3.02927C14.968 3.06832 14.968 3.13164 14.9289 3.17069L12.8997 5.19996" 
-                      stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                    <path d="M14.9996 7.28613V8.71407C14.9996 11.0336 13.1192 12.914 10.7996 12.914H1.69971V12.914" 
-                      stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                    <path d="M3.09998 15L1.07071 12.9707C1.03166 12.9317 1.03166 12.8684 1.07071 12.8293L3.09998 10.8" 
-                      stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                  </svg></a>
+              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px;">
+                <svg 
+                  width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                  <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+
+              </a>
             </div>
         </div>
           <div v-if="datepicker2"
@@ -159,29 +155,27 @@
               
                 <!-- <form class="form-group but-nav__link"> -->
                 <label for="inputDate" style="margin-left: 8px;">Введите начальную дату::</label>
-                <input type="date" class="form-control" v-model="date2" />
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
                 <!-- <form class="form-group but-nav__link"> -->
                 <label for="inputDate" style="margin-left: 8px;">Введите конечную дату::</label>
-                <input type="date" class="form-control" v-model="date1" />
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
             <!-- </div> -->
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-                  <a href="#" @click.prevent="chooseDt1" class="btn btn-sm button_form"
+                  <a href="#" @click.prevent="chooseDt1" class="btn btn-sm button_form" style="width: 80%;"
                     >{{trans('tr.sf')}}</a
                   >
-                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 9px;"><svg 
-                      width="16" 
-                      height="16" 
-                      viewBox="0 0 16 16" 
+                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px;">
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
                       fill="none" 
                       xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 8.72824V7.30031C1 4.98073 2.88039 3.10034 5.19996 3.10034H14.2999V3.10034" 
-                        stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                      <path d="M12.8997 1L14.9289 3.02927C14.968 3.06832 14.968 3.13164 14.9289 3.17069L12.8997 5.19996" 
-                        stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                      <path d="M14.9996 7.28613V8.71407C14.9996 11.0336 13.1192 12.914 10.7996 12.914H1.69971V12.914" 
-                        stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
-                      <path d="M3.09998 15L1.07071 12.9707C1.03166 12.9317 1.03166 12.8684 1.07071 12.8293L3.09998 10.8" 
-                        stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
                     </svg></a>
                 </div>
           </div>
