@@ -55,7 +55,7 @@
     </div>
 
     <div class="form-group3 result-link text-center">
-          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
+          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download-report">Скачать отчёт</a>
       </div>
 
     <div class="form-group4">
@@ -79,14 +79,15 @@
 
 import Vue from "vue";
 import {Datetime} from 'vue-datetime';
-import moment from 'moment';
 import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from './FormatDate.js'
 
 Vue.use(Datetime)
 
 export default {
   components: {
   },
+
   data() {
 
     return {
@@ -101,38 +102,24 @@ export default {
   methods: {
     createDownloadLink(response) {
         this.resultLink = response.data.report_link
-
-      // let blob = new Blob([response.data], {type:'application/*'})
-      // let link = document.createElement('a')
-      // link.href = window.URL.createObjectURL(blob)
-      // link.download = `${this.start_date}_${this.end_date}_exportTable.xls`
-      // link.click();
-      // link.remove();
     },
     updateData() {
-      // this.$store.commit("globalloading/SET_LOADING", true);
       this.isLoading = true;
 
       let uri = "http://172.20.103.157:8082/monthly/production/";
         // let uri = "http://0.0.0.0:8090/monthly/production/";
-      let dateFormat = 'YYYY-MM-DD HH:mm:ss';
-      let minOfDay = {hour:0, minute:0, second:0}
-      let startDate = moment(this.start_date).set(minOfDay).set('date', 1).format(dateFormat);
-      let endDate = moment(this.end_date).set(minOfDay).set('date', 1).format(dateFormat);
       let data = {
         dzo: this.org,
         period: 'monthly',
-        report_date_start: startDate,
-        report_date_end: endDate
+        report_date_start: formatDate.formatToFirstDayOfMonth(this.start_date),
+        report_date_end: formatDate.formatToFirstDayOfMonth(this.endDate)
       };
 
       let json_data = JSON.stringify(data);
 
       this.axios.post(uri, json_data, {
-        // responseType:'arraybuffer',
           responseType:'json',
           headers: {
-            // Overwrite Axios's automatically set Content-Type
             'Content-Type': 'application/json'
           }
       })
@@ -158,62 +145,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.underHeader {
-  position: relative;
-  Width: 1795px;
-  Height: 866px;
-}
-
-.underHeader>.col-sm1 {
-  width: 438px;
-  right: 1500px;
-}
-
-.bootstrap-table .fixed-table-container .table {
-  color: white;
-}
-
-.table-hover tbody tr:hover {
-  color: #d4d4d4 !important;
-  background-color: rgba(0, 0, 0, 0.075);
-}
-
-.float {
-  float: left;
-}
-
-/*.form-control {*/
-/*  padding: unset!important;*/
-/*}*/
-
-.margin-top {
-  margin-top: 5px;
-}
-
-.select-month{
-  background: rgb(51, 57, 117);
-  border-color: rgb(32, 39, 78);
-  width: 41vh!important;
-}
-
-.report-btn2 {
-  background: #2d4fe6;
-  color: white;
-  border-radius: unset;
-  width:100%;
-  height: 36px;
-
-}
-
-.margin-top {
-  padding: 15px;
-}
-.download_report {
-  color: white;
-  font-size: 28px;
-  text-decoration: underline;
-  font-weight: bold;
-}
-</style>

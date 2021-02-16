@@ -2,9 +2,9 @@
 
 namespace App\Models\BigData\Dictionaries;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\TBDModel;
 
-class WellCategory extends Model
+class WellCategory extends TBDModel
 {
-    protected $table = 'bigdata_well_categories';
+    protected $table = 'dict.well_category_type';
 }

@@ -11,11 +11,8 @@ export default {
   data: function() {
     return {
       chartOptions: {
-        chart: {
-          stacked: false,
-        },
         stroke: {
-          width: [0, 2, 5],
+          width: 4,
           curve: 'smooth'
         },
         colors:['#13B062', '#F7BB2E', '#AB130E'],
