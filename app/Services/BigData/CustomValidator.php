@@ -34,7 +34,7 @@ class CustomValidator
         }
     }
 
-    public function validateCoords($coord, $fieldId)
+    public function isValidCoordinates($coord, $fieldId)
     {
         $pointInPolygon = (bool)DB::connection('tbd')
             ->table('dict.geo')
