@@ -1236,11 +1236,7 @@ export default {
 
             let accident;
             if (company != 'all') {
-              accident = _.filter(dataWithMay, _.iteratee({ dzo: company }))
-
-              //accident=_.reject(accident, _.iteratee({ accident: null }));
-              //accident= _.pickBy(accident, _.identity)
-              //console.log('this');
+              accident = this.filterDzoInputForSeparateCompany(dataWithMay,company);
             }
             else if (company === 'all') { accident = dataWithMay; }
 
@@ -1893,6 +1889,11 @@ export default {
 
     },
 
+    filterDzoInputForSeparateCompany(data,company) {
+        return _.filter(data, function(item) {
+          return (item.dzo === company && item.accident !== null);
+        })
+    },
 
     getProductionPercentOneDzo(data) {
       var timestampToday = this.timestampToday;
