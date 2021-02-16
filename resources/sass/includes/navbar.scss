@@ -152,8 +152,8 @@
         }
     }
     &__dropdown{
-        background: #333975;
-        border: 0.4px solid #2E50E9;
+        background: $main4;
+        border: 0.4px solid $blue;
         border-radius: 8px;
         display: none;
         position: absolute;
@@ -168,7 +168,7 @@
             padding: 0 19px;
             height: 32px;
             &:hover{
-                background: #2E50E9;
+                background: $blue;
                 color: #fff;
                 text-decoration: none;
             }

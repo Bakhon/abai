@@ -21,9 +21,7 @@ public/js/json/gno/line_points — копия.json
 package-lock.json
 package.json
 .vscode/formatter.json
-public/fonts/vendor/@fortawesome/fontawesome-free/webfa-brands-400.svg
-public/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.svg
-public/fonts/vendor/@fortawesome/fontawesome-free/webfa-solid-900.svg
+public/fonts/vendor/
 public/webfonts
 
 public/test2.php

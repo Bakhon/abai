@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Pipes\GuZuPipe;
+use App\Services\MapService;
+use App\Models\Refs\Gu;
+use App\Models\Refs\Zu;
+use App\Models\Refs\Cdng;
+use App\Models\Pipes\ZuWellPipe;
+use App\Models\Refs\Well;
+use App\Services\DruidService;
 
 class MapsController extends Controller
 {
     protected $mapService;
 
-    public function __construct(\App\Services\MapService $mapService)
+    public function __construct(MapService $mapService)
     {
         $this->middleware('can:monitoring view pipes map');
 
@@ -18,23 +26,29 @@ class MapsController extends Controller
     public function guMap()
     {
 
-        $gus = \App\Models\Refs\Gu::query()
-            ->whereHas('zuPipes')
-            ->orWhereHas('wellPipes')
-            ->select('name', 'id')
+        $gus = Gu::query()
+//            ->whereHas('zuPipes')
+//            ->orWhereHas('wellPipes')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
             //dirty hack for alphanumeric sort but other solutions doesn't work
             ->orderByRaw('lpad(name, 10, 0) asc')
             ->get();
 
-        return view('maps.gu_map', compact('gus'));
+        $cdngs = Cdng::all();
+
+        return view('maps.gu_map', compact('cdngs','gus'));
     }
 
-    public function guPipes(Request $request, \App\Services\DruidService $druidService)
+    public function guPipes(Request $request, DruidService $druidService)
     {
-        $gus = \App\Models\Refs\Gu::all();
+        $gus = Gu::query()
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
 
         $coordinates = [];
-        $zuPipes = \App\Models\Pipes\GuZuPipe::query()
+        $zuPipes = GuZuPipe::query()
             ->whereHas('gu')
             ->get()
             ->map(
@@ -65,7 +79,7 @@ class MapsController extends Controller
                 }
             );
 
-        $wellPipes = \App\Models\Pipes\ZuWellPipe::query()
+        $wellPipes = ZuWellPipe::query()
             ->whereHas('gu')
             ->get()
             ->map(
@@ -104,7 +118,7 @@ class MapsController extends Controller
 
 
         $wellOilInfo = $this->getWellOilInfo($druidService);
-        $wellPoints = \App\Models\Refs\Well::query()
+        $wellPoints = Well::query()
             ->whereHas('zu.gu')
             ->whereNotNull('wells.lat')
             ->whereNotNull('wells.lon')
@@ -124,7 +138,7 @@ class MapsController extends Controller
                 }
             );
 
-        $zuPoints = \App\Models\Refs\Zu::query()
+        $zuPoints = Zu::query()
             ->whereHas('gu')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
@@ -144,7 +158,10 @@ class MapsController extends Controller
                 $guPoints[] = [
                     'id' => $gu->id,
                     'name' => $gu->name,
-                    'coords' => [(float)$gu->lon, (float)$gu->lat]
+                    'coords' => [(float)$gu->lon, (float)$gu->lat],
+                    'lon' => (float)$gu->lon,
+                    'lat' => (float)$gu->lat,
+                    'cdng_id' => $gu->cdng_id
                 ];
             }
         }
@@ -167,6 +184,21 @@ class MapsController extends Controller
             $result[$row['uwi']] = $row['oil'];
         }
         return $result;
+    }
+
+    public function storeGu (Request $request) {
+        $gu_input = $request->input('gu');
+        $gu = $gu_input['id'] ? Gu::find($gu_input['id']) : new Gu;
+
+        $gu->fill($gu_input);
+        $gu->save();
+
+        return response()->json(
+            [
+                'gu' => $gu,
+                'status' => 'success',
+            ]
+        );
     }
 
 }

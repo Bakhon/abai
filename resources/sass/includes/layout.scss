@@ -1,4 +1,31 @@
 .container-main {
-  max-width: calc(100% - 66px);
-  padding: 10px 0 0 10px;
+  max-width: calc(100% - 66px) !important;
+  padding: 10px 0 0 10px !important;
+}
+
+body {
+  background: linear-gradient(
+                  0deg
+          , rgba(13, 43, 77, 0) 48%, rgba(13, 43, 77, 1) 50%, rgba(13, 43, 77, 0) 52%), linear-gradient(
+                  -90deg
+          , rgba(13, 43, 77, 0) 48%, rgba(13, 43, 77, 1) 50%, rgba(13, 43, 77, 0) 52%) !important;
+  background-size: 3em 3em !important;
+  background-color: #0F1430 !important;
+}
+
+.minw-fit-c
+{
+  min-width: fit-content;
+}
+
+@each $name, $color in $colors-list {
+  .bg-#{$name} {
+    background-color: $color !important;
+  }
+
+  .btn-#{$name} {
+    color: #fff !important;
+    background-color: $color !important;
+    border-color: $color !important;
+  }
 }

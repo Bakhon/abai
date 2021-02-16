@@ -11,7 +11,7 @@ import Vue from 'vue';
 
 import BootstrapVue from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
@@ -36,7 +36,13 @@ window.Jquery = require('jquery');
 moment.locale('ru');
 Vue.prototype.$moment = moment
 
-Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar, columnSortable, VueSimpleAlert);
+Vue.use(VueAxios, axios)
+Vue.use(VueTableDynamic);
+Vue.use(VueMomentLib);
+Vue.use(ElementUI);
+Vue.use(PerfectScrollbar);
+Vue.use(columnSortable);
+Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
 /**
  * The following block of code may be used to automatically register your
