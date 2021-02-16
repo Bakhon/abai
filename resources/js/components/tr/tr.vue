@@ -128,7 +128,7 @@
               <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form" style="width: 80%;"
                 >{{trans('tr.sf')}}</a
               >
-              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px;">
+              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
                 <svg 
                   width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
@@ -164,7 +164,7 @@
                   <a href="#" @click.prevent="chooseDt1" class="btn btn-sm button_form" style="width: 80%;"
                     >{{trans('tr.sf')}}</a
                   >
-                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px;">
+                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
                     <svg 
                       width="32" 
                       height="28" 
@@ -6874,6 +6874,7 @@
         </div>
       </div>
     </div>
+    <notifications position="top"></notifications>
   </div>
 </template>
 <script>
@@ -7338,49 +7339,54 @@ export default {
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
     chooseDt1() {
-      this.$store.commit("globalloading/SET_LOADING", true);
+      
       // this.isloading = true;
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
       var choosenSecDt = date2.split("-");
+      const dd = choosenDt[2];
+      const prdd = choosenSecDt[2];
       const mm = choosenDt[1];
       const prMm = choosenSecDt[1];
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
-      const dd = choosenDt[2];
-      const prdd = choosenSecDt[2];
-      this.axios
-        .get(
-          "http://172.20.103.187:7576/api/techregime/dynamic/" +
-            // this.selectYear +
-            // "/" +
-            // this.month +
-            // "/"
-             pryyyy + "/" + prMm + "/" + prdd + "/" + yyyy + "/" + mm + "/" + dd + "/"
-        )
-        .then((response) => {
-          this.$store.commit("globalloading/SET_LOADING", false);
-          // this.isloading = false;
-          let data = response.data;
-          if (data) {
-            this.searched = false;
-            this.$store.commit("tr/SET_SORTPARAM", "");
-            this.$store.commit("tr/SET_SEARCH", "");
-            this.sortParam = "";
-            this.searchString = "";
-            console.log(data);
-            // this.wells = data.data;
-            this.fullWells = data.data;
-          } else {
-            console.log("No data");
-          }
-          if (this.month < 10) {
-            this.dt = "01" + ".0" + this.month + "." + this.selectYear;
-          } else {
-            this.dt = "01" + "." + this.month + "." + this.selectYear;
-          }
-        });
+      if (choosenDt[2] <= choosenDt[1] || choosenSecDt[1] < choosenDt[1] || choosenSecDt[0] < choosenDt[0]) {
+        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+      } else {
+        this.$store.commit("globalloading/SET_LOADING", true);
+        this.axios
+          .get(
+            "http://172.20.103.187:7576/api/techregime/dynamic/" +
+              // this.selectYear +
+              // "/" +
+              // this.month +
+              // "/"
+              pryyyy + "/" + prMm + "/" + prdd + "/" + yyyy + "/" + mm + "/" + dd + "/"
+          )
+          .then((response) => {
+            this.$store.commit("globalloading/SET_LOADING", false);
+            // this.isloading = false;
+            let data = response.data;
+            if (data) {
+              this.searched = false;
+              this.$store.commit("tr/SET_SORTPARAM", "");
+              this.$store.commit("tr/SET_SEARCH", "");
+              this.sortParam = "";
+              this.searchString = "";
+              console.log(data);
+              // this.wells = data.data;
+              this.fullWells = data.data;
+            } else {
+              console.log("No data");
+            }
+            if (this.month < 10) {
+              this.dt = "01" + ".0" + this.month + "." + this.selectYear;
+            } else {
+              this.dt = "01" + "." + this.month + "." + this.selectYear;
+            }
+          });
+        }
     },
 
     chooseDt() {
