@@ -57,10 +57,9 @@
       <treeselect
           v-bind:value="value || null"
           v-on:input="$emit('input', $event); $emit('change', $event)"
-      "
-      :multiple="false"
-      :options="dict"
-      placeholer="Выберите..."
+          :multiple="false"
+          :options="dict"
+          placeholer="Выберите..."
       />
     </template>
     <template v-else-if="item.type === 'date'">
@@ -231,7 +230,7 @@ export default {
 
     &__menu {
       background: #40467E;
-      border: none!important;
+      border: none !important;
 
       &::-webkit-scrollbar {
         width: 4px;
