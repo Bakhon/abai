@@ -190,17 +190,17 @@ export default {
       showTable2: "Yes",
       displayChart: "display: none;",
       showTableOn: "",
-      buttonHover: "border: none;" + " background: #2E50E9;color:white",
+      buttonNormalTab: "button-tab-highlighted",
       buttonHover1: "",
       buttonHover2: "",
       buttonHover3: "",
       buttonHover4: "",
       buttonHover5: "",
       buttonHover6: "",
-      buttonHover7: "border: none; background: #2E50E9;color:white",
-      buttonHover8: "",
-      buttonHover9: "",
-      buttonHover10: "",
+      buttonDailyTab: "button-tab-highlighted",
+      buttonMonthlyTab: "",
+      buttonYearlyTab: "",
+      buttonPeriodTab: "",
       buttonHover11: "color: #fff;",
       buttonHover12: "",
       buttonHover13: "",
@@ -352,11 +352,12 @@ export default {
     };
   },
   methods: {
+
     getDzoColumnsClass(rowIndex, columnName) {
       if (this.getColumnIndex(columnName) % 2 === 0) {
-        return this.getDarkColor(rowIndex);
+        return this.getDarkColorClass(rowIndex);
       } else {
-        return this.getLightColor(rowIndex);
+        return this.getLightColorClass(rowIndex);
       }
     },
 
@@ -364,7 +365,7 @@ export default {
       return this.dzoColumns[this.currentDzoList].indexOf(columnName);
     },
 
-    getDarkColor(rowIndex) {
+    getDarkColorClass(rowIndex) {
       if (rowIndex % 2 === 0) {
         return 'tdStyle'
       } else {
@@ -372,9 +373,25 @@ export default {
       }
     },
 
-    getLightColor(rowIndex) {
+    getLightColorClass(rowIndex) {
       if (rowIndex % 2 === 0) {
         return 'tdStyleLight'
+      } else {
+        return 'tdStyleLight2'
+      }
+    },
+
+    getDarkerClass(rowIndex) {
+      if (rowIndex % 2 === 0) {
+        return 'tdStyle3'
+      } else {
+        return 'tdNone'
+      }
+    },
+
+    getLighterClass(rowIndex) {
+      if (rowIndex % 2 === 0) {
+        return 'tdStyleLight3'
       } else {
         return 'tdStyleLight2'
       }
@@ -554,59 +571,51 @@ export default {
     },
 
     changeMenu2(change) {
-
-      var buttonHover = this.buttonHover;
-      if (change == 1) {
+      if (change === 1) {
         this.currentDzoList = 'daily';
-        this.buttonHover7 = buttonHover;
+        this.buttonDailyTab = this.buttonNormalTab;
         this.range = {
           start: moment().startOf('day').subtract(1, "days").format(),
           end: moment().endOf('day').subtract(1, "days").format(),
           formatInput: true,
         };
-
         this.changeDate();
-
       } else {
-        this.buttonHover7 = "";
+        this.buttonDailyTab = "";
       }
 
-      if (change == 2) {
-        this.buttonHover8 = buttonHover;
+      if (change === 2) {
+        this.buttonMonthlyTab = this.buttonNormalTab;
         this.currentDzoList = 'monthly';
         this.range = {
           start: moment().startOf('month').format(),
           end: moment().subtract(1, "days").endOf('day').format(),
           formatInput: true,
         };
-
-
         this.changeDate();
       } else {
-        this.buttonHover8 = "";
+        this.buttonMonthlyTab = "";
       }
 
-      if (change == 3) {
-        this.buttonHover9 = buttonHover;
+      if (change === 3) {
+        this.buttonYearlyTab = this.buttonNormalTab;
         this.currentDzoList = 'yearly';
         this.range = {
           start: moment().startOf('year').format(),
           end: moment().endOf('day').format(),
           formatInput: true,
         };
-
         this.changeDate();
       } else {
-        this.buttonHover9 = "";
+        this.buttonYearlyTab = "";
       }
 
-      if (change == 4) {
-        this.buttonHover10 = buttonHover;
+      if (change === 4) {
+        this.buttonPeriodTab = this.buttonNormalTab;
       } else {
-        this.buttonHover10 = "";
+        this.buttonPeriodTab = "";
       }
     },
-
 
     changeAssets(change) {
       let changeMenuButton = 'color:#fff';
@@ -615,7 +624,6 @@ export default {
         this.buttonHover12 = "";
         this.buttonHover13 = "";
       }
-      //this.buttonHover14 = "";
 
       if (change == "b11") {
         this.buttonHover11 = changeMenuButton;
@@ -884,8 +892,7 @@ export default {
           this.DMY = menuDMY[i]["DMY"];
         }
       }
-      if (this.selectedPeriod != undefined) {
-      }
+
       localStorage.setItem("selectedPeriod", this.selectedPeriod);
       return menuDMY;
     },
@@ -1109,18 +1116,6 @@ export default {
         }
       }
 
-      /* if (change == "b14") {
-         let hover = this.buttonHover14;
-         if (hover) {
-           this.opec = 'утв.';
-
-         } else {
-           this.opec = 'ОПЕК+';
-         }
-
-       }*/
-
-
       this.$store.commit('globalloading/SET_LOADING', true);
       let start = new Date(this.range.start).toLocaleString("ru", {
         year: 'numeric',
@@ -1279,53 +1274,41 @@ export default {
               this.getProduction(item, item2, item3, item4, item5, this.nameChartLeft);
             } else { this.noData = ""; }
 
-            if (this.buttonHover12 != '') {
-
-              /*  data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
-                data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
-                data = _.reject(data, _.iteratee({ dzo: "ММГ" }));
-                data = _.reject(data, _.iteratee({ dzo: "КТМ" }));
-                data = _.reject(data, _.iteratee({ dzo: "КБМ" }));
-                data = _.reject(data, _.iteratee({ dzo: "КОА" }));*/
-
-            }
             this.tables = summForTables;
           }
 
-
-          var buttonHover = this.buttonHover;
           if ((productionPlan == "oil_plan") || (productionPlan == "oil_opek_plan")) {
-            this.buttonHover1 = buttonHover;
+            this.buttonHover1 = this.buttonNormalTab;
           } else {
             this.buttonHover1 = "";
           }
 
           if (productionPlan == "oil_dlv_plan") {
-            this.buttonHover2 = buttonHover;
+            this.buttonHover2 = this.buttonNormalTab;
           } else {
             this.buttonHover2 = "";
           }
 
           if (productionPlan == "gas_plan") {
-            this.buttonHover3 = buttonHover;
+            this.buttonHover3 = this.buttonNormalTab;
           } else {
             this.buttonHover3 = "";
           }
 
           if (productionPlan == "liq_plan") {
-            this.buttonHover4 = buttonHover;
+            this.buttonHover4 = this.buttonNormalTab;
           } else {
             this.buttonHover4 = "";
           }
 
           if (productionPlan == "gk_plan") {
-            this.buttonHover5 = buttonHover;
+            this.buttonHover5 = this.buttonNormalTab;
           } else {
             this.buttonHover5 = "";
           }
 
           if (productionPlan == "liq_plan") {//inj_plan
-            this.buttonHover6 = buttonHover;
+            this.buttonHover6 = this.buttonNormalTab;
           } else {
             this.buttonHover6 = "";
           }
@@ -1775,12 +1758,8 @@ export default {
             'Урихтау Оперейтинг',
           ]
 
-          /* opecData
-           .sort((a, b) => {
-             return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
-           }) */
           let opecData = this.opecData;
-          if (this.buttonHover8) {
+          if (this.buttonMonthlyTab) {
             opecData = this.getOpecMonth(dataWithMay);
           }
           else {
@@ -2107,7 +2086,7 @@ export default {
       else {
         this.buttonHoverNagInnerWells = "";
         this.innerWellsButtonProstoi = 1;
-        this.buttonHoverNagInnerWells = this.buttonHover;
+        this.buttonHoverNagInnerWells = this.buttonNormalTab;
 
       }
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
@@ -2274,7 +2253,7 @@ export default {
       else {
         this.buttonHoverProdInnerWells = "";
         this.innerWellsButtonProstoi2 = 1;
-        this.buttonHoverProdInnerWells = this.buttonHover;
+        this.buttonHoverProdInnerWells = this.buttonNormalTab;
       }
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
     },
@@ -2541,8 +2520,7 @@ export default {
       return result
     },
     getChemistryChartData(arr) {
-      let chemistryData;
-      chemistryData = _.groupBy(arr, item => {
+      let chemistryData = _.groupBy(arr, item => {
         return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
 
@@ -2826,12 +2804,18 @@ export default {
     this.changeMenuButton11Flag = flagOff;
     this.changeMenuButton12Flag = flagOff;
     this.changeMenuButton13Flag = flagOff;
-    this.buttonHover7 = "border: none; background: #2E50E9;color:white";
+    this.buttonDailyTab = "button-daily-tab";
     this.getAccidentTotal();
   },
   watch: {},
   computed: {
-    //currency and oil down
+    exactDateSelected() {
+      console.log(this.item2 === 'oil_fact')
+      console.log(this.item2 === 'oil_div_fact')
+      console.log(this.oneDate === 1)
+      return ((this.item2 === 'oil_fact' || this.item2 === 'oil_div_fact') && this.oneDate === 1);
+    },
+
     periodSelectFunc() {
       let DMY = [
         // "Неделя",

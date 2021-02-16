@@ -828,17 +828,15 @@
           <div class="row px-4 mt-3">
             <div class="col">
               <div
-                class="button2"
-                :style="`${buttonHover7}`"
-                @click="changeMenu2(1)"
+                      :class="[`${buttonDailyTab}`,'button2']"
+                      @click="changeMenu2(1)"
               >
                 <!-- Суточная -->{{ trans("visualcenter.daily") }}
               </div>
             </div>
             <div class="col">
               <div
-                class="button2"
-                :style="`${buttonHover8}`"
+                      :class="[`${buttonMonthlyTab}`,'button2']"
                 @click="changeMenu2(2)"
               >
                 <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
@@ -846,9 +844,8 @@
             </div>
             <div class="col">
               <div
-                class="button2"
-                :style="`${buttonHover9}`"
-                @click="changeMenu2(3)"
+                      :class="[`${buttonYearlyTab}`,'button2']"
+                      @click="changeMenu2(3)"
               >
                 <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
               </div>
@@ -856,9 +853,8 @@
             <div class="col">
               <div class="dropdown3">
                 <div
-                  class="button2"
-                  :style="`${buttonHover10}`"
-                  @click="changeMenu2(4)"
+                        :class="[`${buttonPeriodTab}`,'button2']"
+                        @click="changeMenu2(4)"
                 >
                   <span v-if="oneDate">
                     <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
@@ -1138,13 +1134,13 @@
                   <tr>
                     <th>{{ trans("visualcenter.dzo") }}</th>
                     <th
-                            v-if="buttonHover8"
+                            v-if="buttonMonthlyTab"
                     >
                       {{ trans("visualcenter.dzoMonthlyPlan") }}
                       {{ trans("visualcenter.dzoThousandTon") }}
                     </th>
                     <th
-                            v-if="buttonHover9"
+                            v-if="buttonYearlyTab"
                     >
                       {{ trans("visualcenter.dzoYearlyPlan") }}
                       {{ trans("visualcenter.dzoThousandTon") }}
@@ -1165,45 +1161,33 @@
                       {{ trans("visualcenter.dzoPercent") }}
                     </th>
                     <th
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                     >
                       {{ trans("visualcenter.dzoOpec") }}
                     </th>
                     <th
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                     >
                       {{ trans("visualcenter.dzoImpulses") }}
                     </th>
                     <th
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                     >
                       {{ trans("visualcenter.dzoLanding") }}
                     </th>
                     <th
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                     >
                       {{ trans("visualcenter.dzoAlarmFirst") }}<br>
                       {{ trans("visualcenter.dzoAlarmSecond") }}
                     </th>
                     <th
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                     >
                       {{ trans("visualcenter.dzoRestrictions") }}
                     </th>
                     <th
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                  (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                     >
                       {{ trans("visualcenter.dzoOthers") }}
                     </th>
@@ -1222,7 +1206,7 @@
                       </span>
                     </td>
                     <td
-                      v-if="buttonHover9"
+                      v-if="buttonYearlyTab"
                       :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
                     >
                       <div class="font">
@@ -1231,7 +1215,7 @@
                     </td>
 
                     <td
-                      v-if="buttonHover8"
+                      v-if="buttonMonthlyTab"
                       :class="`${getDzoColumnsClass(index,'yearlyPlan')}`"
                     >
                       <div class="font">
@@ -1293,10 +1277,7 @@
                       </div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                      v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyleLight width-accidnets'
@@ -1308,10 +1289,7 @@
                       ></div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                      v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyle width-accidnets '
@@ -1324,10 +1302,7 @@
                     </td>
 
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyleLight width-accidnets '
@@ -1339,10 +1314,7 @@
                       ></div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyle width-accidnets '
@@ -1354,10 +1326,7 @@
                       ></div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyleLight width-accidnets '
@@ -1369,10 +1338,7 @@
                       ></div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyle width-accidnets '
@@ -1390,7 +1356,7 @@
                     </td>
 
                     <td
-                      v-if="buttonHover9"
+                      v-if="buttonYearlyTab"
                       :class="
                         index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'
                       "
@@ -1401,7 +1367,7 @@
                     </td>
 
                     <td
-                      v-if="buttonHover8"
+                      v-if="buttonMonthlyTab"
                       :class="
                         index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'
                       "
@@ -1426,7 +1392,9 @@
                       </div>
                     </td>
 
-                    <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <td
+                            :class="`${getDarkerClass(index)}`"
+                    >
                       <div class="font">
                         {{ formatVisTableNumber(factMonthSumm) }}
                         <div
@@ -1462,7 +1430,7 @@
                         </div>
                       </div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <td :class="`${getDarkerClass(index)}`">
                       <div
                         v-if="factMonthSumm"
                         :class="
@@ -1485,35 +1453,29 @@
                       </div>
                     </td>
                     <td
-                            :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                            :class="`${getLighterClass(index)}`"
+                            v-if="exactDateSelected"
                     >
                     </td>
                     <td
-                            :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'"
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                            :class="`${getDarkerClass(index)}`"
+                            v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                            :class="`${getLighterClass(index)}`"
+                            v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'"
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                            :class="`${getDarkerClass(index)}`"
+                            v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="index % 2 === 0 ? 'tdStyleLight3' : 'tdStyleLight2'"
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                            :class="`${getLighterClass(index)}`"
+                            v-if="exactDateSelected"
                     ></td>
                     <td
-                            :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'"
-                            v-if="(item2 == 'oil_fact' && oneDate == 1) ||
-                                (item2 == 'oil_dlv_fact' && oneDate == 1)"
+                            :class="`${getDarkerClass(index)}`"
+                            v-if="exactDateSelected"
                     ></td>
                   </tr>
                 </tbody>
@@ -1590,27 +1552,24 @@
             <div class="row px-4">
               <div class="w-25 pr-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover7}`"
-                  @click="changeMenu2(1)"
+                        :class="[`${buttonDailyTab}`,'button2']"
+                        @click="changeMenu2(1)"
                 >
                   <!-- Суточная -->{{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover8}`"
-                  @click="changeMenu2(2)"
+                        :class="[`${buttonMonthlyTab}`,'button2']"
+                        @click="changeMenu2(2)"
                 >
                   <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover9}`"
-                  @click="changeMenu2(3)"
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
                 >
                   <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
                 </div>
@@ -1618,9 +1577,8 @@
               <div class="w-25 px-2">
                 <div class="dropdown3">
                   <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
                   >
                     <span v-if="oneDate">
                       <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
@@ -1800,17 +1758,15 @@
             <div class="row px-4">
               <div class="w-25 pr-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover7}`"
-                  @click="changeMenu2(1)"
+                        :class="[`${buttonDailyTab}`,'button2']"
+                        @click="changeMenu2(1)"
                 >
                   <!-- Суточная -->{{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover8}`"
+                        :class="[`${buttonMonthlyTab}`,'button2']"
                   @click="changeMenu2(2)"
                 >
                   <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
@@ -1818,19 +1774,17 @@
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover9}`"
-                  @click="changeMenu2(3)"
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
                 >
-                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
+                  {{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div class="dropdown3">
                   <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
                   >
                     <span v-if="oneDate">
                       <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
@@ -2009,40 +1963,36 @@
             <div class="row px-4">
               <div class="w-25 pr-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover7}`"
-                  @click="changeMenu2(1)"
+                        :class="[`${buttonDailyTab}`,'button2']"
+                        @click="changeMenu2(1)"
                 >
-                  <!-- Суточная -->{{ trans("visualcenter.daily") }}
+                  {{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover8}`"
+                  :class="[`${buttonMonthlyTab}`,'button2']"
                   @click="changeMenu2(2)"
                 >
-                  <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
+                  {{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover9}`"
-                  @click="changeMenu2(3)"
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
                 >
-                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
+                  {{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div class="dropdown3">
                   <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
                   >
                     <span v-if="oneDate">
-                      <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      {{ trans("visualcenter.date") }} [{{
                         timeSelect
                       }}]</span
                     >
@@ -2248,36 +2198,33 @@
             <div class="row px-4">
               <div class="col px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover8}`"
-                  @click="changeMenu2(2)"
+                        :class="[`${buttonMonthlyTab}`,'button2']"
+                        @click="changeMenu2(2)"
                 >
-                  <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
+                  {{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="col px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover9}`"
-                  @click="changeMenu2(3)"
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
                 >
-                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
+                  {{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="col px-2">
                 <div class="dropdown3">
                   <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
                   >
                     <span v-if="oneDate">
-                      <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      {{ trans("visualcenter.date") }} [{{
                         timeSelect
                       }}]</span
                     >
                     <span v-else>
-                      <!-- Период  -->{{ trans("visualcenter.period") }} [{{
+                      {{ trans("visualcenter.period") }} [{{
                         timeSelect
                       }}
                       - {{ timeSelectOld }}]</span
@@ -3089,7 +3036,9 @@
     border: unset;
     margin-left: 30%;
   }
-
-
-
+  .button-tab-highlighted {
+    border: none;
+    background: #2E50E9;
+    color:white;
+  }
 </style>
