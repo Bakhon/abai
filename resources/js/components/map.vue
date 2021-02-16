@@ -426,8 +426,6 @@ export default {
             layers: this.layers
           });
         });
-
-        console.log('this.deck', this.deck);
       });
     },
     mapClickHandle(e) {
