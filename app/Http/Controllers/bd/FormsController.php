@@ -26,7 +26,7 @@ class FormsController extends Controller
     public function submit(Request $request, string $formName)
     {
         $form = $this->getForm($formName);
-        return $form->send($request);
+        return $form->send();
     }
 
 }

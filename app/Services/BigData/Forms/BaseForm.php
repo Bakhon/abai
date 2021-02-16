@@ -8,73 +8,85 @@ use Illuminate\Http\Request;
 
 abstract class BaseForm
 {
-    public function send(Request $request): \Illuminate\Database\Eloquent\Model
+
+    protected $request;
+
+    protected $validator;
+
+    public function __construct(Request $request)
     {
-        $this->validate($request);
-        return $this->submit($request);
+        $this->request = $request;
+        $this->validator = app()->make(\App\Services\BigData\CustomValidator::class);
     }
 
-    private function validate(Request $request): void
+    abstract public function submit(): \Illuminate\Database\Eloquent\Model;
+
+    abstract protected function params(): array;
+
+    public function send(): \Illuminate\Database\Eloquent\Model
     {
-        $rules = $this->getValidationRules();
-        $request->validate($rules, [], $this->getValidationAttributeNames());
+        $this->validate();
+        return $this->submit();
+    }
+
+    public function getFormatedParams(): array
+    {
+        return [
+            'params' => $this->params(),
+            'fields' => $this->getFields()->pluck('', 'code')->toArray()
+        ];
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        return [];
+    }
+
+    public function validateSingleField(string $field): void
+    {
+    }
+
+    private function validate(): void
+    {
+        $errors = $this->getCustomValidationErrors();
+        $this->validator->validate(
+            $this->request,
+            $this->getValidationRules(),
+            $this->getValidationAttributeNames(),
+            $errors
+        );
     }
 
     private function getValidationRules(): array
     {
-        $params = $this->params();
         $rules = [];
 
-        foreach ($params['tabs'] as $tab) {
-            foreach ($tab['blocks'] as $block) {
-                foreach ($block['items'] as $item) {
-                    $rules[$item['code']] = $item['validation'];
-                }
-            }
+        foreach ($this->getFields() as $field) {
+            $rules[$field['code']] = $field['validation'];
         }
 
         return $rules;
     }
 
-    abstract protected function params(): array;
-
     private function getValidationAttributeNames(): array
     {
         $attributes = [];
-        $params = $this->params();
 
-        foreach ($params['tabs'] as $tab) {
-            foreach ($tab['blocks'] as $block) {
-                foreach ($block['items'] as $item) {
-                    $attributes[$item['code']] = $item['title'];
-                }
-            }
+        foreach ($this->getFields() as $field) {
+            $attributes[$field['code']] = $field['title'];
         }
 
         return $attributes;
     }
 
-    abstract public function submit(Request $request): \Illuminate\Database\Eloquent\Model;
-
-    public function getFormatedParams(): array
+    private function getFields(): \Illuminate\Support\Collection
     {
-        $params = $this->params();
-        $fieldValues = $this->getFieldValues($params);
+        $fields = collect();
 
-        return [
-            'params' => $params,
-            'formValues' => $fieldValues
-        ];
-    }
-
-    private function getFieldValues($params): array
-    {
-        $fields = [];
-
-        foreach ($params['tabs'] as $tab) {
+        foreach ($this->params()['tabs'] as $tab) {
             foreach ($tab['blocks'] as $block) {
                 foreach ($block['items'] as $item) {
-                    $fields[$item['code']] = '';
+                    $fields[] = $item;
                 }
             }
         }
