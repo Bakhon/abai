@@ -8,9 +8,9 @@ use App\Models\BigData\Well;
 
 class WellRegister extends BaseForm
 {
-    public function submit(\Illuminate\Http\Request $request): \Illuminate\Database\Eloquent\Model
+    public function submit(): \Illuminate\Database\Eloquent\Model
     {
-        $well = Well::create($request->all());
+        $well = Well::create($this->request->all());
         return $well->toArray();
     }
 
@@ -24,6 +24,20 @@ class WellRegister extends BaseForm
                         [
                             'title' => 'Скважина',
                             'items' => [
+                                [
+                                    'code' => 'org',
+                                    'type' => 'dict_tree',
+                                    'title' => 'Оргструктура',
+                                    'validation' => 'required|exists:tbd.dict.org,id',
+                                    'dict' => 'orgs'
+                                ],
+                                [
+                                    'code' => 'geo',
+                                    'type' => 'dict_tree',
+                                    'title' => 'Геоструктура',
+                                    'validation' => 'required|exists:tbd.dict.geo,id',
+                                    'dict' => 'geos'
+                                ],
                                 [
                                     'code' => 'name',
                                     'type' => 'text',
@@ -40,23 +54,9 @@ class WellRegister extends BaseForm
                                     'code' => 'category',
                                     'type' => 'dict',
                                     'title' => 'Категория скважины',
-                                    'validation' => 'required|exists:tbd.dict.well_category',
+                                    'validation' => 'required|exists:tbd.dict.well_category,id',
                                     'dict' => 'well_categories'
                                 ],
-                                [
-                                    'code' => 'org',
-                                    'type' => 'dict_tree',
-                                    'title' => 'Оргструктура',
-                                    'validation' => 'required|exists:tbd.dict.org',
-                                    'dict' => 'orgs'
-                                ],
-                                [
-                                    'code' => 'geo',
-                                    'type' => 'dict_tree',
-                                    'title' => 'Геоструктура',
-                                    'validation' => 'required|exists:tbd.dict.geo',
-                                    'dict' => 'geos'
-                                ]
                             ]
                         ],
                         [
@@ -98,7 +98,7 @@ class WellRegister extends BaseForm
                                     'type' => 'dict',
                                     'title' => 'Вид скважины',
                                     'dict' => 'well_types',
-                                    'validation' => 'required|exists:tbd.dict.well_type',
+                                    'validation' => 'required|exists:tbd.dict.well_type,id',
                                 ],
                                 [
                                     'code' => 'coord_bottom_x',
@@ -171,5 +171,33 @@ class WellRegister extends BaseForm
                 ]
             ]
         ];
+    }
+
+    protected function getCustomValidationErrors(): array
+    {
+        $errors = [];
+
+        if (!$this->isValidCoordinates('coord_mouth_x', 'coord_mouth_y')) {
+            $errors['coord_mouth_x'][] = trans('bd.validation.coords_mouth');
+            $errors['coord_mouth_y'][] = trans('bd.validation.coords_mouth');
+        }
+
+        if (!$this->isValidCoordinates('coord_bottom_x', 'coord_bottom_y')) {
+            $errors['coord_bottom_x'][] = trans('bd.validation.coords_bottom');
+            $errors['coord_bottom_y'][] = trans('bd.validation.coords_bottom');
+        }
+
+        return $errors;
+    }
+
+    private function isValidCoordinates($coordXField, $coordYField): bool
+    {
+        if (!($this->request->filled(['geo', $coordXField, $coordYField]))) {
+            return true;
+        }
+
+        $coord = "({$this->request->get($coordXField)},{$this->request->get($coordYField)})";
+
+        return $this->validator->isValidCoordinates($coord, $this->request->get('geo'));
     }
 }

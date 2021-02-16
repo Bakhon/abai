@@ -66,30 +66,7 @@ export default {
   data: function () {
     return {
       errors: {},
-      formValues: {
-        name: '',
-        date_create: '',
-        category: '',
-        org: '',
-        geo: '',
-        altitude: '',
-        rotor_table: '',
-        coord_type: '',
-        coord_mouth_x: '',
-        coord_mouth_y: '',
-        type: '',
-        coord_bottom_x: '',
-        coord_bottom_y: '',
-        date_start_drilling: '',
-        date_end_drilling: '',
-        company: '',
-        agreement_num: '',
-        agreement_date: '',
-        planned_depth: '',
-        avg_gasoil_ratio: '',
-        planned_liquid_rate: '',
-        planned_watering: '',
-      },
+      formValues: {},
       form: {},
       activeTab: 0
     }
@@ -98,7 +75,7 @@ export default {
 
     this.axios.get(this.localeUrl('/bigdata/form/' + this.formName)).then(({data}) => {
       this.form = data.params
-      this.formValues = data.formValues
+      this.formValues = data.fields
     })
 
   },
@@ -173,7 +150,7 @@ export default {
           margin-right: 15px;
           padding: 0 45px;
           @media (max-width: 768px) {
-              padding: 0 15px;
+            padding: 0 15px;
           }
 
           &:hover {
@@ -185,7 +162,7 @@ export default {
             color: #fff;
           }
 
-          p{
+          p {
             margin-bottom: 0;
           }
         }
