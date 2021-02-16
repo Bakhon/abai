@@ -12,7 +12,13 @@
             :placeholder="trans('monitoring.map.select_gu')"
         >
         </v-select>
-        <b-form-checkbox v-model="guEditMode" name="add-gu" class="ml-2" switch>+ ГУ</b-form-checkbox>
+        <b-button
+            :pressed="guEditMode"
+            variant="main2"
+            class="ml-2 w-space-nowrap minw-fit-c"
+            block
+            @click="guEditMode = !guEditMode">{{ btnGuText }}
+        </b-button>
       </div>
     </div>
     <div id="map" ></div>
@@ -154,6 +160,9 @@ export default {
 
       return options;
     },
+    btnGuText () {
+      return this.guEditMode ? 'ГУ редактор вкл' : 'ГУ редактор выкл';
+    }
   },
   methods: {
     colorToRGBArray(color) {

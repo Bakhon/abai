@@ -5,17 +5,26 @@
 
 body {
   background: linear-gradient(
-                  0deg
-          , rgba(13, 43, 77, 0) 48%, rgba(13, 43, 77, 1) 50%, rgba(13, 43, 77, 0) 52%), linear-gradient(
-                  -90deg
-          , rgba(13, 43, 77, 0) 48%, rgba(13, 43, 77, 1) 50%, rgba(13, 43, 77, 0) 52%) !important;
+                  0deg, rgba(13, 43, 77, 0) 48%, rgba(13, 43, 77, 1) 50%, rgba(13, 43, 77, 0) 52%), linear-gradient(
+                  -90deg, rgba(13, 43, 77, 0) 48%, rgba(13, 43, 77, 1) 50%, rgba(13, 43, 77, 0) 52%) !important;
   background-size: 3em 3em !important;
   background-color: #0F1430 !important;
 }
 
-.minw-fit-c
-{
+.minw-fit-c {
   min-width: fit-content;
+}
+
+.w-space-nowrap {
+  white-space: nowrap;
+}
+
+.btn-main2:not(:disabled):not(.disabled).active,
+.btn-main2:not(:disabled):not(.disabled):active,
+.show>.btn-main2.dropdown-toggle {
+  color: #fff !important;
+  background-color:  $main2-active !important;
+  border-color:  $main2-active-border !important;
 }
 
 @each $name, $color in $colors-list {
@@ -28,4 +37,10 @@ body {
     background-color: $color !important;
     border-color: $color !important;
   }
+
+  //.btn-#{$name}:not(:disabled):not(.disabled).active,
+  //.btn-#{$name}:not(:disabled):not(.disabled):active,
+  //.show>.btn-#{$name}.dropdown-toggle {
+  //
+  //}
 }
