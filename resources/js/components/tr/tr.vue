@@ -125,7 +125,7 @@
               </select>
             </div>
             <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-              <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form" style="width: 80%;"
+              <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form" style="width: 80%;"
                 >{{trans('tr.sf')}}</a
               >
               <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
@@ -161,7 +161,7 @@
                 <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
             <!-- </div> -->
                 <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
-                  <a href="#" @click.prevent="chooseDt1" class="btn btn-sm button_form" style="width: 80%;"
+                  <a href="#" @click.prevent="chooseDt1" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
                     >{{trans('tr.sf')}}</a
                   >
                   <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
@@ -198,7 +198,8 @@
       <div class="maintable-level2" style="position: relative">
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
-            <h5>{{trans('tr.htr')}} {{ dt }}</h5>
+            <h5 v-if="date_fix">{{trans('tr.htr')}} {{ dt }}</h5>
+            <h5 v-if="!date_fix">{{trans('tr.htr')}} {{ dt3 }}</h5>
           </div>
 
           <tr-multiselect
@@ -7109,6 +7110,8 @@ export default {
       checkersec: false,
       datepicker1: true,
       datepicker2: false,
+      date_fix: true,
+      // date_dyn: false,
     };
   },
   watch: {
@@ -7370,6 +7373,7 @@ export default {
             let data = response.data;
             if (data) {
               this.searched = false;
+              this.date_fix = false;
               this.$store.commit("tr/SET_SORTPARAM", "");
               this.$store.commit("tr/SET_SEARCH", "");
               this.sortParam = "";
@@ -7381,9 +7385,9 @@ export default {
               console.log("No data");
             }
             if (this.month < 10) {
-              this.dt = "01" + ".0" + this.month + "." + this.selectYear;
+              this.dt3 = prdd + "." + prMm+ "." + pryyyy + ' по ' + dd+ "." + mm+ "." + yyyy;
             } else {
-              this.dt = "01" + "." + this.month + "." + this.selectYear;
+              this.dt3 = prdd + "." + prMm+ "." + pryyyy + ' по ' + dd+ "." + mm+ "." + yyyy;
             }
           });
         }
@@ -7406,6 +7410,7 @@ export default {
           let data = response.data;
           if (data) {
             this.searched = false;
+            
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
@@ -7486,6 +7491,10 @@ export default {
       this.datepicker1 = !this.datepicker1
       this.datepicker2 = !this.datepicker2
     },
+    // calendarDate() {
+    //   this.date_fix = !this.date_fix
+    //   this.date_dyn = !this.date_dyn
+    // },
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
