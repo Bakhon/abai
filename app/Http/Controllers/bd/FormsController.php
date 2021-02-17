@@ -16,6 +16,18 @@ class FormsController extends Controller
         return $form->getFormatedParams();
     }
 
+    public function validateField(string $formName, string $field)
+    {
+        $form = $this->getForm($formName);
+        $form->validateSingleField($field);
+    }
+
+    public function submit(string $formName)
+    {
+        $form = $this->getForm($formName);
+        return $form->send();
+    }
+
     private function getForm(string $formName): BaseForm
     {
         if (empty(config("bigdata_forms.{$formName}"))) {

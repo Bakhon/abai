@@ -6,6 +6,7 @@
           :name="item.code"
           v-bind:value="value"
           v-on:input="$emit('input', $event.target.value)"
+          v-on:change="$emit('change', $event.target.value)"
           class="form-control"
           :class="{'error': error}"
           placeholder=""
@@ -13,7 +14,7 @@
     </template>
     <template v-else-if="item.type === 'list'">
       <v-select
-          v-on:input="$emit('input', $event.id)"
+          v-on:input="$emit('input', $event.id); $emit('change', $event.id)"
           :options="item.values"
           :name="item.code"
       >
@@ -30,7 +31,7 @@
         <input
             :name="item.code"
             v-bind:value="value"
-            v-on:input="$emit('input', $event.target.value)"
+            v-on:input="$emit('input', $event.target.value); $emit('change', $event.target.value)"
             type="radio"
             :id="`${item.code}_${value}`"
         >
@@ -39,7 +40,7 @@
     </template>
     <template v-else-if="item.type === 'dict'">
       <v-select
-          v-on:input="$emit('input', $event.id)"
+          v-on:input="$emit('input', $event.id); $emit('change', $event.id)"
           label="name"
           :options="dict"
           :name="item.code"
@@ -55,7 +56,7 @@
     <template v-else-if="item.type === 'dict_tree'">
       <treeselect
           v-bind:value="value || null"
-          v-on:input="$emit('input', $event)"
+          v-on:input="$emit('input', $event); $emit('change', $event)"
           :multiple="false"
           :options="dict"
           :auto-load-root-options="false"
@@ -138,7 +139,9 @@ export default {
     },
     changeDate(date) {
       if (date) {
-        this.$emit('input', moment(date).format('YYYY-MM-DD HH:MM:SS'))
+        let formatedDate = moment(date).format('YYYY-MM-DD HH:MM:SS')
+        this.$emit('input', formatedDate)
+        this.$emit('change', formatedDate)
       }
     },
     showError(err) {

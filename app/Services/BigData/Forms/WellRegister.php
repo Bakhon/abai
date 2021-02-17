@@ -60,7 +60,7 @@ class WellRegister extends BaseForm
                                     'code' => 'category',
                                     'type' => 'dict',
                                     'title' => 'Категория скважины',
-                                    'validation' => 'required|exists:tbd.dict.well_category,id',
+                                    'validation' => 'required|exists:tbd.prod.well_category,id',
                                     'dict' => 'well_categories'
                                 ],
                             ]
@@ -85,19 +85,19 @@ class WellRegister extends BaseForm
                                     'type' => 'radio',
                                     'title' => 'Координатная система',
                                     'values' => ['WGS-84', 'Пулково-42'],
-                                    'validation' => 'required|date'
+                                    'validation' => 'required'
                                 ],
                                 [
                                     'code' => 'coord_mouth_x',
                                     'type' => 'numeric',
                                     'title' => 'Координаты устья X',
-                                    'validation' => 'nullable|numeric|min:41|max:43'
+                                    'validation' => 'nullable|numeric'
                                 ],
                                 [
                                     'code' => 'coord_mouth_y',
                                     'type' => 'numeric',
                                     'title' => 'Координаты устья Y',
-                                    'validation' => 'nullable|numeric|min:50|max:55'
+                                    'validation' => 'nullable|numeric'
                                 ],
                                 [
                                     'code' => 'type',
@@ -110,13 +110,13 @@ class WellRegister extends BaseForm
                                     'code' => 'coord_bottom_x',
                                     'type' => 'numeric',
                                     'title' => 'Координаты забоя X',
-                                    'validation' => 'nullable|numeric|min:41|max:43'
+                                    'validation' => 'nullable|numeric'
                                 ],
                                 [
                                     'code' => 'coord_bottom_y',
                                     'type' => 'numeric',
                                     'title' => 'Координаты забоя Y',
-                                    'validation' => 'nullable|numeric|min:50|max:55'
+                                    'validation' => 'nullable|numeric'
                                 ],
                             ]
                         ]

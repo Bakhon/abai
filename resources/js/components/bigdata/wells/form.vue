@@ -40,6 +40,7 @@
                     :item="item"
                     v-model="formValues[item.code]"
                     :error="errors[item.code]"
+                    v-on:change="validateField($event, item)"
                     v-on:input="callback($event, item)"
                 >
                 </bigdata-form-field>
@@ -146,6 +147,20 @@ export default {
           }
         }
       })
+    },
+    validateField(e, formItem) {
+
+      this.axios.post(
+          this.localeUrl('/bigdata/form/' + this.formName + '/validate/' + formItem.code),
+          this.formValues
+      )
+          .then(data => {
+            Vue.set(this.errors, formItem.code, null)
+          })
+          .catch(error => {
+            Vue.set(this.errors, formItem.code, error.response.data.errors)
+          })
+
     }
   },
 };
