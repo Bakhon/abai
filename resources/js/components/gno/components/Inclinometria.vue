@@ -107,10 +107,35 @@
         </perfect-scrollbar>
       </div>
 
-      <div class="col-6 gno-plotly-graph">
+      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 545px;">
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
+        <div class="col-12" >
+          <div class="col-12" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса</div>
+        </div>
+        <div class="col-12">
+          <div class="col-12" style="float: left; text-align: left; color: white; height: 25px;">
+            Нсп 800м
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="col-12"  style="font-weight: bold; font-size: 14px; text-align: left; color: white;">
+            Максимальный темп набора кривизны
+          </div> 
+        </div>
+        <div class="col-12">
+          <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
+            в месте установки насоса 0.3гр/10м в интервале глубины спуска 0.5 гр/10м
+          </div> 
+        </div>
+        <div class="col-12">
+          <div class="col-6" style="font-size: 14px; text-align: left; color: white; float: left;"><b>Максимальный зенитный угол</b></div>
+          <button type="button" class="old_well_button_incl">Применить выбранную НГЛ</button>
+        </div>
+
 
       </div>
+
+      
     </div>
   </div>
 </template>
@@ -131,8 +156,8 @@ export default {
       data: null,
       chart: null,
       layout: {
-        plot_bgcolor: "#20274e",
-        paper_bgcolor: "#20274e",
+        plot_bgcolor: "#272953",
+        paper_bgcolor: "#2b2e5e",
         margin: {
           l: 0,
           r: 0,
@@ -140,7 +165,7 @@ export default {
           t: 0,
           pad: 0
         },
-        height: 500,
+        height: 350,
         gridcolor: "white",
         font: {color: "white"},
         // xaxis: {
@@ -250,8 +275,38 @@ export default {
     }).finally(() => {
       this.$emit('update:isLoading', false);
     })
-  }
+  },
 
 }
 
 </script>
+<style scoped>
+.old_well_button_incl {
+    width: 200px;
+    height: 60px;
+    background: #293688;
+    border-radius: 8px;
+    display: block;
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    outline: none !important;
+    box-shadow: none;
+    border: none;
+    margin-top: 7px;
+    margin-left: 10px;
+    line-height: 14px;
+    vertical-align: middle;
+}
+
+.old_well_button_incl:hover {
+    background: #222d74;
+}
+
+.old_well_button_incl:active {
+    outline: none !important;
+    background: #1a225e;
+}
+</style>
