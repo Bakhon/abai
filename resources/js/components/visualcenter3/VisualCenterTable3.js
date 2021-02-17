@@ -349,9 +349,117 @@ export default {
         monthly: ['companyName','monthlyPlan','plan','fact', 'difference', 'percent'],
         yearly: ['companyName','yearlyPlan','plan','fact', 'difference', 'percent'],
       },
+      dzoCompanyList: [
+        {companyName: this.trans("visualcenter.emg"),
+          selected: false,
+          ticker:'ЭМГ'},
+        {companyName: this.trans("visualcenter.pki"),
+          selected: false,
+          ticker:'ПКИ'},
+        {companyName: this.trans("visualcenter.omg"),
+          selected: false,
+          ticker:'ОМГ'},
+        {companyName: this.trans("visualcenter.kbm"),
+          selected: false,
+          ticker:'КБМ'},
+        {companyName: this.trans("visualcenter.kgm"),
+          selected: false,
+          ticker:'КГМ'},
+        {companyName: this.trans("visualcenter.pkk"),
+          selected: false,
+          ticker:'ПКК'},
+        {companyName: this.trans("visualcenter.tp"),
+          selected: false,
+          ticker:'ТП'},
+        {companyName: this.trans("visualcenter.tsho"),
+          selected: false,
+          ticker:'ТШО'},
+        {companyName: this.trans("visualcenter.mmg"),
+          selected: false,
+          ticker:'ММГ'},
+        {companyName: this.trans("visualcenter.koa"),
+          selected: false,
+          ticker:'КОА'},
+        {companyName: this.trans("visualcenter.ktm"),
+          selected: false,
+          ticker:'КТМ'},
+        {companyName: this.trans("visualcenter.kpo"),
+          selected: false,
+          ticker:'КПО'},
+        {companyName: this.trans("visualcenter.nko"),
+          selected: false,
+          ticker:'НКО'},
+        {companyName: this.trans("visualcenter.uo"),
+          selected: false,
+          ticker:'УО'},
+      ],
+      dzoCompanyAllSelected: false,
+      buttonDzoDropdown: "",
+      dzoCompanyData: this.bigTable,
+      dzoCompanyTotalData: {
+        plan: 0,
+        periodPlan: 0,
+        fact: 0,
+        difference: 0,
+        percent: 0,
+      },
+      dzoCompanyListVisibility: false,
     };
   },
   methods: {
+    changeDzoCompanyListVisibility() {
+      this.dzoCompanyListVisibility = !this.dzoCompanyListVisibility;
+    },
+
+    selectAllDzoCompany() {
+      let self = this;
+      self.dzoCompanyAllSelected = !self.dzoCompanyAllSelected;
+      self.buttonDzoDropdown = self.buttonNormalTab;
+      _.map(this.dzoCompanyList, function(company) {
+        company.selected = self.dzoCompanyAllSelected;
+      });
+      self.dzoCompanyData = self.bigTable;
+      self.calculateTotalSum();
+    },
+
+    selectDzoCompany(inputStatus,companyTicker) {
+      this.dzoCompanyAllSelected = false;
+      _.map(this.dzoCompanyList, function(company) {
+        if (company.ticker === companyTicker) {
+          company.selected = !company.selected;
+        }
+      });
+      let selectedCompanies = this.dzoCompanyList.filter(row => row.selected === true).map(row => row.ticker);
+      this.dzoCompanyData = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
+      this.calculateTotalSum();
+    },
+
+    nullDzoTotalData() {
+      this.changeObjValues(this.dzoCompanyTotalData,0);
+    },
+
+    changeObjValues(data,newProperty) {
+      Object.keys(data).forEach(function(key){ data[key] = newProperty });
+    },
+
+    calculateTotalSum() {
+      this.nullDzoTotalData();
+      let self = this;
+      _.map(this.dzoCompanyData, function(company) {
+        self.dzoCompanyTotalData.plan += company.planMonth;
+        self.dzoCompanyTotalData.fact += company.factMonth;
+        self.dzoCompanyTotalData.periodPlan += company.periodPlan;
+      });
+
+      self.dzoCompanyTotalData.difference = self.formatDigitToThousand(
+          self.dzoCompanyTotalData.plan - self.dzoCompanyTotalData.fact);
+      self.dzoCompanyTotalData.percent = new Intl.NumberFormat("ru-RU")
+          .format(Math.abs((self.dzoCompanyTotalData.plan - self.dzoCompanyTotalData.fact) /
+          self.dzoCompanyTotalData.fact * 100).toFixed(1));
+      self.dzoCompanyTotalData.plan = self.formatDigitToThousand(self.dzoCompanyTotalData.plan);
+      self.dzoCompanyTotalData.fact = self.formatDigitToThousand(self.dzoCompanyTotalData.fact);
+      self.dzoCompanyTotalData.periodPlan = self.formatDigitToThousand(self.dzoCompanyTotalData.periodPlan);
+    },
 
     getDzoColumnsClass(rowIndex, columnName) {
       if (this.getColumnIndex(columnName) % 2 === 0) {
@@ -580,6 +688,7 @@ export default {
           formatInput: true,
         };
         this.changeDate();
+        this.calculateTotalSum();
       } else {
         this.buttonDailyTab = "";
       }
@@ -2652,21 +2761,21 @@ export default {
             .groupBy("dzo")
             .map((dzo, id) => ({
               dzoMonth: id,
-              oil_planYear: _.round(_.sumBy(dzo, 'oil_plan'), 0),
+              periodPlan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
             }))
 
             .value();
-
           let opecDataSumm = _.reduce(
             SummFromRange,
             function (memo, item) {
-              return memo + item.oil_planYear;
+              return memo + item.periodPlan;
             },
             0
           );
 
           this.opecData = SummFromRange;
           this.opecDataSumm = opecDataSumm;
+
         }
         else { console.log('Not opec data'); }
       });
@@ -2686,7 +2795,7 @@ export default {
         .groupBy("dzo")
         .map((dzo, id) => ({
           dzoMonth: id,
-          planMonthNew: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
+          periodPlan: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
         }))
 
         .value();
@@ -2694,7 +2803,7 @@ export default {
       let opecDataSumm = _.reduce(
         SummFromRange,
         function (memo, item) {
-          return memo + item.planMonthNew;
+          return memo + item.periodPlan;
         },
         0
       );
@@ -2702,7 +2811,6 @@ export default {
       this.opecDataSummMonth = opecDataSumm;
 
       return SummFromRange;
-
     },
 
     formatVisTableNumber3(a, b) {
@@ -2724,12 +2832,11 @@ export default {
 
     },
 
-    formatVisTableNumber(num) {
-      if (this.quantityRange < 2) { this.thousand = ''; return new Intl.NumberFormat("ru-RU").format(Math.round(num)); } else {
-        this.thousand =
-          // 'тыс.';
-          this.trans("visualcenter.thousand");
-        let initNum = num
+    formatDigitToThousand(num) {
+      if (this.quantityRange < 2) { this.thousand = '';
+        return new Intl.NumberFormat("ru-RU").format(Math.round(num));
+      } else {
+        this.thousand = this.trans("visualcenter.thousand");
         if (num >= 1000) {
           num = (num / 1000).toFixed(0)
         }
@@ -2746,9 +2853,7 @@ export default {
         }
         return new Intl.NumberFormat("ru-RU").format(num)
       }
-
     }
-
   },
 
   created() {
@@ -2807,12 +2912,14 @@ export default {
     this.buttonDailyTab = "button-daily-tab";
     this.getAccidentTotal();
   },
-  watch: {},
+  watch: {
+    bigTable: function() {
+      this.dzoCompanyData = this.bigTable;
+      this.calculateTotalSum();
+    }
+  },
   computed: {
     exactDateSelected() {
-      console.log(this.item2 === 'oil_fact')
-      console.log(this.item2 === 'oil_div_fact')
-      console.log(this.oneDate === 1)
       return ((this.item2 === 'oil_fact' || this.item2 === 'oil_div_fact') && this.oneDate === 1);
     },
 
