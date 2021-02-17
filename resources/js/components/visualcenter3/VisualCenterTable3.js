@@ -3,6 +3,7 @@ import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import { isString } from "lodash";
+import dzoListData from './dzo_company_list.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 export default {
@@ -349,50 +350,7 @@ export default {
         monthly: ['companyName','monthlyPlan','plan','fact', 'difference', 'percent'],
         yearly: ['companyName','yearlyPlan','plan','fact', 'difference', 'percent'],
       },
-      dzoCompanyList: [
-        {companyName: this.trans("visualcenter.emg"),
-          selected: false,
-          ticker:'ЭМГ'},
-        {companyName: this.trans("visualcenter.pki"),
-          selected: false,
-          ticker:'ПКИ'},
-        {companyName: this.trans("visualcenter.omg"),
-          selected: false,
-          ticker:'ОМГ'},
-        {companyName: this.trans("visualcenter.kbm"),
-          selected: false,
-          ticker:'КБМ'},
-        {companyName: this.trans("visualcenter.kgm"),
-          selected: false,
-          ticker:'КГМ'},
-        {companyName: this.trans("visualcenter.pkk"),
-          selected: false,
-          ticker:'ПКК'},
-        {companyName: this.trans("visualcenter.tp"),
-          selected: false,
-          ticker:'ТП'},
-        {companyName: this.trans("visualcenter.tsho"),
-          selected: false,
-          ticker:'ТШО'},
-        {companyName: this.trans("visualcenter.mmg"),
-          selected: false,
-          ticker:'ММГ'},
-        {companyName: this.trans("visualcenter.koa"),
-          selected: false,
-          ticker:'КОА'},
-        {companyName: this.trans("visualcenter.ktm"),
-          selected: false,
-          ticker:'КТМ'},
-        {companyName: this.trans("visualcenter.kpo"),
-          selected: false,
-          ticker:'КПО'},
-        {companyName: this.trans("visualcenter.nko"),
-          selected: false,
-          ticker:'НКО'},
-        {companyName: this.trans("visualcenter.uo"),
-          selected: false,
-          ticker:'УО'},
-      ],
+      dzoCompanyList: dzoListData,
       dzoCompanyAllSelected: false,
       buttonDzoDropdown: "",
       dzoCompanyData: this.bigTable,
@@ -413,6 +371,7 @@ export default {
 
     selectAllDzoCompany() {
       let self = this;
+      console.log(JSON.stringify(this.dzoCompanyList));
       self.dzoCompanyAllSelected = !self.dzoCompanyAllSelected;
       self.buttonDzoDropdown = self.buttonNormalTab;
       _.map(this.dzoCompanyList, function(company) {
@@ -2833,7 +2792,8 @@ export default {
     },
 
     formatDigitToThousand(num) {
-      if (this.quantityRange < 2) { this.thousand = '';
+      if (this.quantityRange < 2) {
+        this.thousand = '';
         return new Intl.NumberFormat("ru-RU").format(Math.round(num));
       } else {
         this.thousand = this.trans("visualcenter.thousand");

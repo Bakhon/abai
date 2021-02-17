@@ -4,7 +4,7 @@
   >
     <div class="left-side flex-grow-1 pr-2">
       <div class="first-string">
-        <div class="table-responsive">
+        <div>
           <table class="table table1">
             <tr>
               <td>
@@ -279,14 +279,8 @@
       </div>
       <div class="first-table big-area" :style="`${Table1}`">
         <div class="first-string first-string2">
-          <!--<div class="container-fluid">
-            class="table-responsive"-->
-          <!--<table class="table table2">
-              <tr>-->
           <div class="row px-4 mt-3">
             <div class="col dropdown dropdown4 font-weight">
-              <!--<input type="checkbox" id="menu" />-->
-
               <div class="button1" :style="`${buttonHover1}`">
                 <div
                   class="button1-vc-inner col-10"
@@ -300,7 +294,6 @@
                     )
                   "
                 >
-                  <!-- <label for="menu">-->
                   <div class="icon-all icons1"></div>
                   <div class="txt5">
                     <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
@@ -851,7 +844,7 @@
                               :checked=company.selected
                               @change="`${selectDzoCompany($event.target.checked,company.ticker)}`"
                       ></input>
-                      {{company.companyName}}
+                      {{trans(company.companyName)}}
                     </div>
                   </li>
                 </ul>
@@ -2364,7 +2357,7 @@
     </div>
     <div class="right-side2 flex-grow-1 pl-1">
       <div class="first-string">
-        <div class="table-responsive">
+        <div>
           <table class="table table1-2">
             <tr class="cursor-pointer">
               <td
@@ -2447,7 +2440,7 @@
           <!-- <div class="line-bottom"></div>-->
         </div>
         <div class="first-string first-string2">
-          <div class="table-responsive">
+          <div>
             <table class="table table1-2">
               <tr class="cursor-pointer">
                 <td
@@ -2537,7 +2530,7 @@
         </div>
 
         <div class="first-string first-string2">
-          <div class="table-responsive">
+          <div>
             <table class="table table5">
               <tr class="cursor-pointer">
                 <td
@@ -2574,7 +2567,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div>
           <table class="table">
             <tr>
               <td class="w-50 px-2">
@@ -2625,7 +2618,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div>
           <table class="table">
             <tr>
               <td class="w-50 px-2">
@@ -2666,25 +2659,9 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div>
           <table class="table table1-2">
             <tr>
-              <!--<td>
-                <div class="number">0</div>
-                <div class="near-number">
-
-                  <div class="column-1">
-
-                    <div class="in-idle">
-                    {{ trans("visualcenter.from_begin") }}
-                    </div>
-                    <div class="in-idle">
-                     {{ trans("visualcenter.month") }}
-                    </div>
-                  </div>
-                </div>
-              </td>-->
-
               <td>
                 <div class="number">{{ accidentTotal }}</div>
                 <div class="near-number">
@@ -2716,7 +2693,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div>
           <table class="table">
             <tr>
               <td class="size-td">
@@ -3033,7 +3010,7 @@
     color:white;
   }
   .dzo-company-list ul {
-    height: 500px;
+    height: 450px;
     position: absolute;
     left: -0.5px;
     background: #40467E;
