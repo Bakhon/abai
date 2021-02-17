@@ -97,6 +97,7 @@ Route::group(
                 Route::get('/gu-map', 'MapsController@guMap')->name('maps.gu');
                 Route::get('/gu-map/pipes', 'MapsController@guPipes')->name('maps.gu_pipes');
                 Route::post('/gu-map/storegu', 'MapsController@storeGu')->name('maps.store_gu');
+                Route::post('/gu-map/storezu', 'MapsController@storeZu')->name('maps.store_zu');
 
                 Route::get('/monitor/reports', 'ReportsController@index')->name('monitor.reports');
                 Route::get('/monitor/reports/generate', 'ReportsController@generateReport');

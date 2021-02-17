@@ -118,6 +118,21 @@ class MapsController extends Controller
         );
     }
 
+    public function storeZu (Request $request) {
+        $zu_input = $request->input('zu');
+        $zu = $zu_input['id'] ? Zu::find($zu_input['id']) : new Zu;
+
+        $zu->fill($zu_input);
+        $zu->save();
+
+        return response()->json(
+            [
+                'zu' => $zu,
+                'status' => 'success',
+            ]
+        );
+    }
+
     private function getGuPipesWithCoords(&$coordinates)
     {
         return GuZuPipe::query()

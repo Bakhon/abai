@@ -124,7 +124,7 @@ Vue.component('pipe-form', require('./components/pipes/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
-Vue.component('gu-map', require('./components/map.vue').default);
+Vue.component('gu-map', require('./components/map/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
 Vue.component('fa-table', require('./components/tr/fa.vue').default);

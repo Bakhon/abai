@@ -5,7 +5,7 @@
       <div v-if="gus" class="d-flex">
         <v-select
             v-model="gu"
-            @input="centerToGu"
+            @input="centerTo"
             :options="gus"
             :reduce="option => option.id"
             label="name"
@@ -13,11 +13,16 @@
         >
         </v-select>
         <b-button
-            :pressed="guEditMode"
+            :pressed="editMode == 'gu'"
             variant="main2"
             class="ml-2 w-space-nowrap minw-fit-c"
-            block
-            @click="guEditMode = !guEditMode">{{ btnGuText }}
+            @click="switchEditMode('gu')">{{ btnGuText }}
+        </b-button>
+        <b-button
+            :pressed="editMode == 'zu'"
+            variant="main2"
+            class="ml-2 w-space-nowrap minw-fit-c"
+            @click="switchEditMode('zu')">{{ btnZuText }}
         </b-button>
       </div>
     </div>
@@ -29,50 +34,17 @@
         header-text-variant="light"
         footer-bg-variant="main4"
         centered
-        id="gu-modal"
+        id="add-object-modal"
         title="Новый ГУ">
-      <b-form-group
-            label="Имя ГУ"
-            label-for="gu-name"
-        >
-          <b-form-input
-              id="gu-name"
-              v-model="formGu.name"
-              required
-          ></b-form-input>
-        </b-form-group>
 
-      <b-form-group
-          label="ЦДНГ"
-          label-for="cdng">
-        <b-form-select
-            id="cdng"
-            v-model="formGu.cdng_id"
-            :options="cdngOptions"
-        ></b-form-select>
-      </b-form-group>
-
-      <b-form-group label="Широта" label-for="coord-x">
-        <b-form-input
-            id="coord-y"
-            v-model="formGu.lat"
-            required
-        ></b-form-input>
-      </b-form-group>
-
-        <b-form-group label="Долгота" label-for="coord-y">
-          <b-form-input
-              id="coord-x"
-              v-model="formGu.lon"
-              required
-          ></b-form-input>
-        </b-form-group>
+      <map-gu-form :formGu="addObjectform" :cdngs="cdngs" v-if="editMode == 'gu'"></map-gu-form>
+      <map-zu-form :formZu="addObjectform" :gus="gus" v-if="editMode == 'zu'"></map-zu-form>
 
       <template #modal-footer="{ cancel }">
         <div class="w-100">
           <b-button
               variant="secondary"
-              class="float-right"
+              class="float-right ml-3"
               @click="cancel()"
           >
             Отмена
@@ -80,7 +52,7 @@
           <b-button
               variant="primary"
               class="float-right"
-              @click="addGu"
+              @click="addMapObject"
           >
             Добавить
           </b-button>
@@ -96,11 +68,15 @@ import {Deck} from '@deck.gl/core';
 import {PathLayer, IconLayer} from '@deck.gl/layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
+import mapGuForm from "./mapGuForm";
+import mapZuForm from "./mapZuForm";
 
 export default {
   name: "gu-map",
   components: {
-    vSelect
+    vSelect,
+    'map-gu-form': mapGuForm,
+    'map-zu-form': mapZuForm
   },
   props: {
     gus: Array,
@@ -108,12 +84,11 @@ export default {
   },
   data() {
     return {
-      formGu: {
+      addObjectform: {
         id: null,
         name: '',
         lat: null,
-        lon: null,
-        cdng_id: null
+        lon: null
       },
       gu: null,
       pipes: [],
@@ -129,7 +104,7 @@ export default {
       guPoint: null,
       map: null,
       deck: null,
-      guEditMode: false,
+      editMode: null,
       viewState: {
         latitude: null,
         longitude: null,
@@ -150,18 +125,11 @@ export default {
     this.initMap();
   },
   computed: {
-    cdngOptions: function () {
-      let options = [];
-      this.cdngs.forEach((item) => {
-        options.push(
-          { value: item.id, text: item.name }
-        );
-      });
-
-      return options;
-    },
     btnGuText () {
-      return this.guEditMode ? 'ГУ редактор вкл' : 'ГУ редактор выкл';
+      return this.editMode == 'gu' ? 'ГУ редактор вкл' : 'ГУ редактор выкл';
+    },
+    btnZuText () {
+      return this.editMode == 'zu' ? 'ЗУ редактор вкл' : 'ЗУ редактор выкл';
     }
   },
   methods: {
@@ -175,28 +143,51 @@ export default {
       const c = rgb(color);
       return [c.r, c.g, c.b, 255];
     },
-    onLoadMap(params) {
-      this.mapObj = params.map
+    switchEditMode(mode){
+      this.editMode = this.editMode == mode ? null : mode;
     },
-    resetGuForm () {
-      this.formGu = {
+    resetForm () {
+      this.addObjectform = {
         id: null,
-            name: '',
-            lat: null,
-            lon: null,
-            cdng_id: null
+        name: '',
+        lat: null,
+        lon: null
       }
     },
     storeGu (){
-      return this.axios.post(this.localeUrl("/gu-map/storegu"), {gu: this.formGu}).then((response) => {
+      return this.axios.post(this.localeUrl("/gu-map/storegu"), {gu: this.addObjectform}).then((response) => {
         if (response.data.status == 'success') {
-          let gu = response.data.gu;
-          gu.coords = [gu.lon, gu.lat];
-          return gu;
+          return response.data.gu;
         } else {
           console.log('error save Gu in DB');
         }
       });
+    },
+    storeZu (){
+      return this.axios.post(this.localeUrl("/gu-map/storezu"), {zu: this.addObjectform}).then((response) => {
+        if (response.data.status == 'success') {
+          return response.data.zu;
+        } else {
+          console.log('error save Zu in DB');
+        }
+      });
+    },
+    updateLayers(){
+      let tempLayers = [];
+      this.layers.forEach((layer) => {
+        tempLayers.push(layer);
+      });
+
+      this.layers = tempLayers;
+    },
+    addMapObject () {
+      if (this.editMode == 'gu') {
+        this.addGu();
+      }
+
+      if (this.editMode == 'zu') {
+        this.addZu();
+      }
     },
     async addGu () {
       let gu = await this.storeGu();
@@ -205,15 +196,9 @@ export default {
       this.guPointsIndexes.push(gu.id);
       this.gus.push(gu);
       this.gu = gu;
-      this.$bvModal.hide('gu-modal');
-      this.resetGuForm();
-
-      let tempLayers = [];
-      this.layers.forEach((layer) => {
-        tempLayers.push(layer);
-      });
-
-      this.layers = tempLayers;
+      this.$bvModal.hide('add-object-modal');
+      this.resetForm();
+      this.updateLayers();
 
       this.layers.push(
           new IconLayer({
@@ -226,7 +211,7 @@ export default {
             },
             getIcon: d => 'marker',
             sizeScale: 30,
-            getPosition: d => d.coords,
+            getPosition: d => [parseFloat(d.lon), parseFloat(d.lat)],
             sizeUnits: 'meters',
             getSize: d => 2,
             onClick: (event) => {
@@ -238,7 +223,39 @@ export default {
       let deck = this.deck;
       this.map.addLayer(new MapboxLayer({id: 'icon-layer-gu_' + gu.id, deck}));
       this.deck.setProps({layers: this.layers});
-      this.centerToGu(gu);
+      this.centerTo(gu);
+    },
+    async addZu () {
+      let zu = await this.storeZu();
+      this.zuPoints.push(zu);
+      this.$bvModal.hide('add-object-modal');
+      this.resetForm();
+      this.updateLayers();
+
+      this.layers.push(
+          new IconLayer({
+            id: 'icon-layer-zu_' + zu.id,
+            data: [zu],
+            pickable: true,
+            iconAtlas: '/img/icons/barrel.png',
+            iconMapping: {
+              marker: {x: 0, y: 0, width: 24, height: 36, mask: true}
+            },
+            getIcon: d => 'marker',
+            sizeScale: 20,
+            getPosition: (d) => [parseFloat(d.lon), parseFloat(d.lat)],
+            sizeUnits: 'meters',
+            getSize: d => 2,
+            onClick: (info, event) => {
+              console.log('icon-layer-zu_' + zu.id, event, info)
+            },
+          })
+      );
+
+      let deck = this.deck;
+      this.map.addLayer(new MapboxLayer({id: 'icon-layer-zu_' + zu.id, deck}));
+      this.deck.setProps({layers: this.layers});
+      this.centerTo(zu);
     },
     prepareLayers () {
       let pipesLayer = new PathLayer({
@@ -325,20 +342,20 @@ export default {
         this.guPointsIndexes[index] = gu.id;
       });
     },
-    centerToGu(guPoint = null) {
-      if (guPoint == null) {
+    centerTo(point = null) {
+      if (point == null) {
         return false;
       }
 
-      if (!(typeof guPoint === 'object')) {
-        let index = this.guPointsIndexes.indexOf(guPoint);
-        guPoint = this.guPoints[index];
+      if (!(typeof point === 'object')) {
+        let index = this.guPointsIndexes.indexOf(point);
+        point = this.guPoints[index];
       }
 
       this.deck.setProps({
         initialViewState: {
-          longitude: parseFloat(guPoint.lon),
-          latitude: parseFloat(guPoint.lat),
+          longitude: parseFloat(point.lon),
+          latitude: parseFloat(point.lat),
           zoom: 15,
           bearing: 0,
           pitch: 30
@@ -349,8 +366,8 @@ export default {
       if (!this.firstCentered) {
         this.deck.setProps({
           initialViewState: {
-            longitude: parseFloat(guPoint.lon),
-            latitude: parseFloat(guPoint.lat),
+            longitude: parseFloat(point.lon),
+            latitude: parseFloat(point.lat),
             zoom: 15,
             bearing: 0,
             pitch: 30
@@ -360,7 +377,7 @@ export default {
       }
 
       this.map.jumpTo({
-        center: [parseFloat(guPoint.lon), parseFloat(guPoint.lat)],
+        center: [parseFloat(point.lon), parseFloat(point.lat)],
         zoom: 15,
         bearing: 0,
         pitch: 30
@@ -436,14 +453,11 @@ export default {
       });
     },
     mapClickHandle(e) {
-      if (this.guEditMode) {
-        this.formGu = {
-          id: null,
-          name: '',
-          lon: e.lngLat.lng,
-          lat: e.lngLat.lat
-        }
-        this.$bvModal.show('gu-modal');
+      if (this.editMode) {
+        this.addObjectform.lon = e.lngLat.lng
+        this.addObjectform.lat = e.lngLat.lat;
+
+        this.$bvModal.show('add-object-modal');
       }
     }
   }
