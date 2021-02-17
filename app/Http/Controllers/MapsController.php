@@ -118,7 +118,8 @@ class MapsController extends Controller
         );
     }
 
-    public function storeZu (Request $request) {
+    public function storeZu(Request $request)
+    {
         $zu_input = $request->input('zu');
         $zu = $zu_input['id'] ? Zu::find($zu_input['id']) : new Zu;
 
@@ -128,6 +129,22 @@ class MapsController extends Controller
         return response()->json(
             [
                 'zu' => $zu,
+                'status' => 'success',
+            ]
+        );
+    }
+
+    public function storeWell(Request $request)
+    {
+        $well_input = $request->input('well');
+        $well = $well_input['id'] ? Well::find($well_input['id']) : new Well;
+
+        $well->fill($well_input);
+        $well->save();
+
+        return response()->json(
+            [
+                'well' => $well,
                 'status' => 'success',
             ]
         );

@@ -43,8 +43,14 @@
 export default {
   name: "mapGuForm",
   props: {
-    formGu: Object,
-    cdngs: Array
+    formGu: {
+      type: Object,
+      required: true,
+    },
+    cdngs: {
+      type: Array,
+      required: true,
+    }
   },
   computed: {
     cdngOptions: function () {

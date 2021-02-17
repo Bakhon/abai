@@ -12,17 +12,20 @@
             :placeholder="trans('monitoring.map.select_gu')"
         >
         </v-select>
+        <v-select
+            v-model="editMode"
+            :options="editOptions"
+            :reduce="option => option.code"
+            label="name"
+            class="ml-2 w-space-nowrap minw-fit-c"
+            placeholder="Режим редактирования"
+        >
+        </v-select>
         <b-button
-            :pressed="editMode == 'gu'"
+            :pressed="editModeStatus"
             variant="main2"
             class="ml-2 w-space-nowrap minw-fit-c"
-            @click="switchEditMode('gu')">{{ btnGuText }}
-        </b-button>
-        <b-button
-            :pressed="editMode == 'zu'"
-            variant="main2"
-            class="ml-2 w-space-nowrap minw-fit-c"
-            @click="switchEditMode('zu')">{{ btnZuText }}
+            @click="editModeStatus = !editModeStatus">{{ btnEditModeText }}
         </b-button>
       </div>
     </div>
@@ -39,6 +42,7 @@
 
       <map-gu-form :formGu="addObjectform" :cdngs="cdngs" v-if="editMode == 'gu'"></map-gu-form>
       <map-zu-form :formZu="addObjectform" :gus="gus" v-if="editMode == 'zu'"></map-zu-form>
+      <map-well-form :formZu="addObjectform" :gus="zuPoints" v-if="editMode == 'well'"></map-well-form>
 
       <template #modal-footer="{ cancel }">
         <div class="w-100">
@@ -70,17 +74,25 @@ import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
 import mapGuForm from "./mapGuForm";
 import mapZuForm from "./mapZuForm";
+import mapWellForm from "./mapWellForm";
 
 export default {
   name: "gu-map",
   components: {
     vSelect,
     'map-gu-form': mapGuForm,
-    'map-zu-form': mapZuForm
+    'map-zu-form': mapZuForm,
+    'map-well-form': mapWellForm
   },
   props: {
-    gus: Array,
-    cdngs: Array
+    gus: {
+      type: Array,
+      required: true,
+    },
+    cdngs: {
+      type: Array,
+      required: true,
+    }
   },
   data() {
     return {
@@ -90,6 +102,22 @@ export default {
         lat: null,
         lon: null
       },
+      editOptions: [
+        {
+          name: 'ГУ редактор',
+          code: 'gu'
+        },
+        {
+          name: 'ЗУ редактор',
+          code: 'zu'
+        },
+        {
+          name: 'Редактор скважин',
+          code: 'well'
+        },
+      ],
+      editModeStatus: false,
+      gu: null,
       pipes: [],
       zuPoints: [],
       wellPoints: [],
@@ -119,11 +147,8 @@ export default {
     this.initMap();
   },
   computed: {
-    btnGuText () {
-      return this.editMode == 'gu' ? 'ГУ редактор вкл' : 'ГУ редактор выкл';
-    },
-    btnZuText () {
-      return this.editMode == 'zu' ? 'ЗУ редактор вкл' : 'ЗУ редактор выкл';
+    btnEditModeText () {
+      return this.editModeStatus ? 'ВКЛ' : 'ВЫКЛ';
     }
   },
   methods: {
@@ -136,9 +161,6 @@ export default {
       }
       const c = rgb(color);
       return [c.r, c.g, c.b, 255];
-    },
-    switchEditMode(mode){
-      this.editMode = this.editMode == mode ? null : mode;
     },
     resetForm () {
       this.addObjectform = {
@@ -166,6 +188,15 @@ export default {
         }
       });
     },
+    storeWell () {
+      return this.axios.post(this.localeUrl("/gu-map/storewell"), {well: this.addObjectform}).then((response) => {
+        if (response.data.status == 'success') {
+          return response.data.well;
+        } else {
+          console.log('error save Well in DB');
+        }
+      });
+    },
     updateLayers(){
       let tempLayers = [];
       this.layers.forEach((layer) => {
@@ -182,13 +213,17 @@ export default {
       if (this.editMode == 'zu') {
         this.addZu();
       }
+
+      if (this.editMode == 'well') {
+        this.addWell();
+      }
     },
     async addGu () {
       let gu = await this.storeGu();
-
       this.guPoints.push(gu);
       this.guPointsIndexes.push(gu.id);
       this.gus.push(gu);
+      this.gu = gu;
       this.$bvModal.hide('add-object-modal');
       this.resetForm();
       this.updateLayers();
@@ -249,6 +284,38 @@ export default {
       this.map.addLayer(new MapboxLayer({id: 'icon-layer-zu_' + zu.id, deck}));
       this.deck.setProps({layers: this.layers});
       this.centerTo(zu);
+    },
+    async addWell () {
+      let well = await this.storeWell();
+      this.wellPoints.push(well);
+      this.$bvModal.hide('add-object-modal');
+      this.resetForm();
+      this.updateLayers();
+
+      this.layers.push(
+          new IconLayer({
+            id: 'icon-layer-well_' + well.id,
+            data: [well],
+            pickable: true,
+            iconAtlas: '/img/icons/well.png',
+            iconMapping: {
+              marker: {x: 0, y: 0, width: 52, height: 48, mask: true}
+            },
+            getIcon: d => 'marker',
+            sizeScale: 20,
+            getPosition: d => [parseFloat(d.lon), parseFloat(d.lat)],
+            sizeUnits: 'meters',
+            getSize: d => 2,
+            onClick: (info, event) => {
+              console.log('icon-layer-well_' + well.id, event, info)
+            },
+          })
+      );
+
+      let deck = this.deck;
+      this.map.addLayer(new MapboxLayer({id: 'icon-layer-well_' + well.id, deck}));
+      this.deck.setProps({layers: this.layers});
+      this.centerTo(well);
     },
     prepareLayers () {
       let pipesLayer = new PathLayer({
@@ -446,7 +513,7 @@ export default {
       });
     },
     mapClickHandle(e) {
-      if (this.editMode) {
+      if (this.editMode && this.editModeStatus) {
         this.addObjectform.lon = e.lngLat.lng
         this.addObjectform.lat = e.lngLat.lat;
 
@@ -479,7 +546,7 @@ h1 {
     }
 
     .v-select{
-      min-width: 200px;
+      min-width: 240px;
     }
     .vs__dropdown-toggle{
       padding-bottom: 0;

@@ -1,30 +1,30 @@
 <template>
   <div>
     <b-form-group
-        label="Имя ЗУ"
-        label-for="zu-name"
+        label="Имя Скважины"
+        label-for="well-name"
     >
       <b-form-input
-          id="zu-name"
-          v-model="formZu.name"
+          id="well-name"
+          v-model="formWell.name"
           required
       ></b-form-input>
     </b-form-group>
 
     <b-form-group
-        label="ГУ"
-        label-for="gus">
+        label="ЗУ"
+        label-for="zus">
       <b-form-select
-          id="gus"
-          v-model="formZu.gu_id"
-          :options="guOptions"
+          id="zus"
+          v-model="formWell.zu_id"
+          :options="zuOptions"
       ></b-form-select>
     </b-form-group>
 
     <b-form-group label="Широта" label-for="coord-x">
       <b-form-input
           id="coord-y"
-          v-model="formZu.lat"
+          v-model="formWell.lat"
           required
       ></b-form-input>
     </b-form-group>
@@ -32,7 +32,7 @@
     <b-form-group label="Долгота" label-for="coord-y">
       <b-form-input
           id="coord-x"
-          v-model="formZu.lon"
+          v-model="formWell.lon"
           required
       ></b-form-input>
     </b-form-group>
@@ -41,24 +41,26 @@
 
 <script>
 export default {
-  name: "mapZuForm",
+  name: "mapWellForm",
   props: {
-    formZu: {
+    formWell: {
       type: Object,
       required: true,
     },
-    gus: {
+    zus: {
       type: Array,
       required: true,
     }
   },
   computed: {
-    guOptions: function () {
+    zuOptions: function () {
       let options = [];
-      this.gus.forEach((item) => {
-        options.push(
-            { value: item.id, text: item.name }
-        );
+      this.zus.forEach((item) => {
+        if (item.gu_id) {
+          options.push(
+              { value: item.id, text: item.name }
+          );
+        }
       });
 
       return options;
