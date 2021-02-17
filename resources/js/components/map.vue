@@ -2,7 +2,7 @@
   <div class="gu-map">
     <div class="gu-map__controls">
       <h1>{{ trans('monitoring.map.title') }}</h1>
-      <div v-if="gus">
+      <div v-if="gus" class="d-flex">
         <v-select
             v-model="gu"
             @input="centerToGu"
@@ -12,10 +12,81 @@
             :placeholder="trans('monitoring.map.select_gu')"
         >
         </v-select>
+        <b-button
+            :pressed="guEditMode"
+            variant="main2"
+            class="ml-2 w-space-nowrap minw-fit-c"
+            block
+            @click="guEditMode = !guEditMode">{{ btnGuText }}
+        </b-button>
       </div>
     </div>
-    <div id="map"></div>
-    <canvas id="deck-canvas"></canvas>
+    <div id="map" ></div>
+
+    <b-modal
+        header-bg-variant="main4"
+        body-bg-variant="main1"
+        header-text-variant="light"
+        footer-bg-variant="main4"
+        centered
+        id="gu-modal"
+        title="Новый ГУ">
+      <b-form-group
+            label="Имя ГУ"
+            label-for="gu-name"
+        >
+          <b-form-input
+              id="gu-name"
+              v-model="formGu.name"
+              required
+          ></b-form-input>
+        </b-form-group>
+
+      <b-form-group
+          label="ЦДНГ"
+          label-for="cdng">
+        <b-form-select
+            id="cdng"
+            v-model="formGu.cdng_id"
+            :options="cdngOptions"
+        ></b-form-select>
+      </b-form-group>
+
+      <b-form-group label="Широта" label-for="coord-x">
+        <b-form-input
+            id="coord-y"
+            v-model="formGu.lat"
+            required
+        ></b-form-input>
+      </b-form-group>
+
+        <b-form-group label="Долгота" label-for="coord-y">
+          <b-form-input
+              id="coord-x"
+              v-model="formGu.lon"
+              required
+          ></b-form-input>
+        </b-form-group>
+
+      <template #modal-footer="{ cancel }">
+        <div class="w-100">
+          <b-button
+              variant="secondary"
+              class="float-right"
+              @click="cancel()"
+          >
+            Отмена
+          </b-button>
+          <b-button
+              variant="primary"
+              class="float-right"
+              @click="addGu"
+          >
+            Добавить
+          </b-button>
+        </div>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -23,6 +94,7 @@
 import mapboxgl from "mapbox-gl";
 import {Deck} from '@deck.gl/core';
 import {PathLayer, IconLayer} from '@deck.gl/layers';
+import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
 
 export default {
@@ -30,11 +102,19 @@ export default {
   components: {
     vSelect
   },
-  props: [
-    'gus'
-  ],
+  props: {
+    gus: Array,
+    cdngs: Array
+  },
   data() {
     return {
+      formGu: {
+        id: null,
+        name: '',
+        lat: null,
+        lon: null,
+        cdng_id: null
+      },
       gu: null,
       pipes: [],
       zuPoints: [],
@@ -49,6 +129,7 @@ export default {
       guPoint: null,
       map: null,
       deck: null,
+      guEditMode: false,
       viewState: {
         latitude: null,
         longitude: null,
@@ -56,11 +137,32 @@ export default {
         bearing: null,
         pitch: null
       },
-      firstCentered: false
+      firstCentered: false,
+      guPointsIndexes: [],
+      zuPointsLayer: null,
+      pipesLayer: null,
+      guPointsLayer: null,
+      wellPointsLayer: null,
+      layers: [],
     };
   },
   created() {
-    this.initMap()
+    this.initMap();
+  },
+  computed: {
+    cdngOptions: function () {
+      let options = [];
+      this.cdngs.forEach((item) => {
+        options.push(
+          { value: item.id, text: item.name }
+        );
+      });
+
+      return options;
+    },
+    btnGuText () {
+      return this.guEditMode ? 'ГУ редактор вкл' : 'ГУ редактор выкл';
+    }
   },
   methods: {
     colorToRGBArray(color) {
@@ -75,17 +177,168 @@ export default {
     },
     onLoadMap(params) {
       this.mapObj = params.map
-
     },
-    centerToGu() {
-      let center = this.guPoints.find((point) => {
-        return point.id === this.gu
-      }).coords
+    resetGuForm () {
+      this.formGu = {
+        id: null,
+            name: '',
+            lat: null,
+            lon: null,
+            cdng_id: null
+      }
+    },
+    storeGu (){
+      return this.axios.post(this.localeUrl("/gu-map/storegu"), {gu: this.formGu}).then((response) => {
+        if (response.data.status == 'success') {
+          let gu = response.data.gu;
+          gu.coords = [gu.lon, gu.lat];
+          return gu;
+        } else {
+          console.log('error save Gu in DB');
+        }
+      });
+    },
+    async addGu () {
+      let gu = await this.storeGu();
+
+      this.guPoints.push(gu);
+      this.guPointsIndexes.push(gu.id);
+      this.gus.push(gu);
+      this.gu = gu;
+      this.$bvModal.hide('gu-modal');
+      this.resetGuForm();
+
+      let tempLayers = [];
+      this.layers.forEach((layer) => {
+        tempLayers.push(layer);
+      });
+
+      this.layers = tempLayers;
+
+      this.layers.push(
+          new IconLayer({
+            id: 'icon-layer-gu_' + gu.id,
+            data: [gu],
+            pickable: true,
+            iconAtlas: '/img/icons/barrel.png',
+            iconMapping: {
+              marker: {x: 0, y: 0, width: 24, height: 36, mask: true}
+            },
+            getIcon: d => 'marker',
+            sizeScale: 30,
+            getPosition: d => d.coords,
+            sizeUnits: 'meters',
+            getSize: d => 2,
+            onClick: (event) => {
+              console.log('icon-layer-gu_' + gu.id, event)
+            }
+          })
+      );
+
+      let deck = this.deck;
+      this.map.addLayer(new MapboxLayer({id: 'icon-layer-gu_' + gu.id, deck}));
+      this.deck.setProps({layers: this.layers});
+      this.centerToGu(gu);
+    },
+    prepareLayers () {
+      let pipesLayer = new PathLayer({
+        id: 'path-layer',
+        data: this.pipes,
+        pickable: true,
+        widthScale: 2,
+        widthMinPixels: 1,
+        autoHighlight: true,
+        getPath: d => d.path,
+        getColor: d => this.colorToRGBArray(d.color),
+        getWidth: d => 3,
+        onClick: (info, event) => {
+          console.log('path-layer', event, info)
+        },
+        parameters: {
+          depthTest: false
+        }
+      });
+
+      let guPointsLayer = new IconLayer({
+        id: 'icon-layer-gu',
+        data: this.guPoints,
+        pickable: true,
+        iconAtlas: '/img/icons/barrel.png',
+        iconMapping: {
+          marker: {x: 0, y: 0, width: 24, height: 36, mask: true}
+        },
+        getIcon: d => 'marker',
+        sizeScale: 30,
+        getPosition: (d) => [parseFloat(d.lon), parseFloat(d.lat)],
+        sizeUnits: 'meters',
+        getSize: d => 2,
+        onClick: (info, event) => {
+          console.log('onClick icon-layer-gu', event, info)
+        }
+      });
+
+      let zuPointsLayer = new IconLayer({
+        id: 'icon-layer-zu',
+        data: this.zuPoints,
+        pickable: true,
+        iconAtlas: '/img/icons/barrel.png',
+        iconMapping: {
+          marker: {x: 0, y: 0, width: 24, height: 36, mask: true}
+        },
+        getIcon: d => 'marker',
+        sizeScale: 20,
+        getPosition: (d) => [parseFloat(d.lon), parseFloat(d.lat)],
+        sizeUnits: 'meters',
+        getSize: d => 2,
+        onClick: (info, event) => {
+          console.log('icon-layer-zu', event, info)
+        },
+      });
+
+      let wellPointsLayer = new IconLayer({
+        id: 'icon-layer-well',
+        data: this.wellPoints,
+        pickable: true,
+        iconAtlas: '/img/icons/well.png',
+        iconMapping: {
+          marker: {x: 0, y: 0, width: 52, height: 48, mask: true}
+        },
+        getIcon: d => 'marker',
+        sizeScale: 20,
+        getPosition: d => [parseFloat(d.lon), parseFloat(d.lat)],
+        sizeUnits: 'meters',
+        getSize: d => 2,
+        onClick: (info, event) => {
+          console.log('icon-layer-well', event, info)
+        },
+      });
+
+      this.layers = [
+        pipesLayer,
+        guPointsLayer,
+        zuPointsLayer,
+        wellPointsLayer,
+      ];
+    },
+    indexingGuPoints(){
+      this.guPoints.forEach((gu, index) => {
+        this.guPointsIndexes[index] = gu.id;
+      });
+    },
+    centerToGu(guPoint = null) {
+      if (guPoint == null) {
+        return false;
+      }
+
+      if (!(typeof guPoint === 'object')) {
+        let index = this.guPointsIndexes.indexOf(guPoint);
+        guPoint = this.guPoints[index];
+      }
 
       this.deck.setProps({
         initialViewState: {
-          longitude: parseFloat(center[0]),
-          latitude: parseFloat(center[1]),
+          longitude: parseFloat(guPoint.lon),
+          latitude: parseFloat(guPoint.lat),
           zoom: 15,
           bearing: 0,
           pitch: 30
@@ -96,8 +349,8 @@ export default {
       if (!this.firstCentered) {
         this.deck.setProps({
           initialViewState: {
-            longitude: parseFloat(center[0]),
-            latitude: parseFloat(center[1]),
+            longitude: parseFloat(guPoint.lon),
+            latitude: parseFloat(guPoint.lat),
             zoom: 15,
             bearing: 0,
             pitch: 30
@@ -107,7 +360,7 @@ export default {
       }
 
       this.map.jumpTo({
-        center: [parseFloat(center[0]), parseFloat(center[1])],
+        center: [parseFloat(guPoint.lon), parseFloat(guPoint.lat)],
         zoom: 15,
         bearing: 0,
         pitch: 30
@@ -118,11 +371,13 @@ export default {
       this.wellPoints = []
       this.guPoints = []
       this.axios.get(this.localeUrl("/gu-map/pipes"), {params: {gu: this.gu}}).then((response) => {
-        this.pipes = response.data.pipes
-        this.zuPoints = response.data.zuPoints
-        this.wellPoints = response.data.wellPoints
-        this.guPoints = response.data.guPoints
-        this.guCenters = response.data.guCenters
+        this.pipes = response.data.pipes;
+        this.zuPoints = response.data.zuPoints;
+        this.wellPoints = response.data.wellPoints;
+        this.guPoints = response.data.guPoints;
+        this.guCenters = response.data.guCenters;
+
+        this.indexingGuPoints();
 
         this.viewState = {
           latitude: response.data.center[1],
@@ -132,7 +387,7 @@ export default {
           pitch: 30
         };
 
-        this.map = new mapboxgl.Map({
+        let map = this.map = new mapboxgl.Map({
           container: 'map',
           style: this.mapStyle,
           interactive: false,
@@ -140,11 +395,17 @@ export default {
           zoom: this.viewState.zoom,
           bearing: this.viewState.bearing,
           pitch: this.viewState.pitch,
-          accessToken: this.accessToken,
+          accessToken: this.accessToken
         });
 
-        this.deck = new Deck({
-          canvas: 'deck-canvas',
+        this.map.on('click',  (e) => {
+          this.mapClickHandle(e);
+        });
+
+        this.prepareLayers();
+
+        let deck = this.deck = new Deck({
+          gl: map.painter.context.gl,
           initialViewState: this.viewState,
           controller: true,
           onViewStateChange: ({viewState}) => {
@@ -156,78 +417,35 @@ export default {
             });
           },
           getTooltip: ({object}) => object && object.name,
-          layers: [
-            new PathLayer({
-              id: 'path-layer',
-              data: this.pipes,
-              pickable: true,
-              widthScale: 2,
-              widthMinPixels: 1,
-              autoHighlight: true,
-              getPath: d => d.path,
-              getColor: d => this.colorToRGBArray(d.color),
-              getWidth: d => 3,
-              parameters: {
-                depthTest: false
-              }
-            }),
-            new IconLayer({
-              id: 'icon-layer-gu',
-              data: this.guPoints,
-              pickable: true,
-              iconAtlas: '/img/icons/barrel.png',
-              iconMapping: {
-                marker: {x: 0, y: 0, width: 24, height: 36, mask: true}
-              },
-              getIcon: d => 'marker',
-              sizeScale: 30,
-              getPosition: d => d.coords,
-              sizeUnits: 'meters',
-              getSize: d => 2,
-              onClick: (event) => {
-                console.log(event)
-              }
-            }),
-            new IconLayer({
-              id: 'icon-layer-zu',
-              data: this.zuPoints,
-              pickable: true,
-              iconAtlas: '/img/icons/barrel.png',
-              iconMapping: {
-                marker: {x: 0, y: 0, width: 24, height: 36, mask: true}
-              },
-              getIcon: d => 'marker',
-              sizeScale: 20,
-              getPosition: d => d.coords,
-              sizeUnits: 'meters',
-              getSize: d => 2,
-              onClick: (event) => {
-                console.log(event)
-              }
-            }),
-            new IconLayer({
-              id: 'icon-layer-well',
-              data: this.wellPoints,
-              pickable: true,
-              iconAtlas: '/img/icons/well.png',
-              iconMapping: {
-                marker: {x: 0, y: 0, width: 52, height: 48, mask: true}
-              },
-              getIcon: d => 'marker',
-              sizeScale: 20,
-              getPosition: d => d.coords,
-              sizeUnits: 'meters',
-              getSize: d => 2,
-              onClick: (event) => {
-                console.log(event)
-              }
-            })
-          ]
+          layers: this.layers,
         });
 
+        // wait for map to be ready
+        this.map.on('load', () => {
+          // add to mapbox
+          this.map.addLayer(new MapboxLayer({id: 'path-layer', deck}));
+          this.map.addLayer(new MapboxLayer({id: 'icon-layer-gu', deck}));
+          this.map.addLayer(new MapboxLayer({id: 'icon-layer-zu', deck}));
+          this.map.addLayer(new MapboxLayer({id: 'icon-layer-well', deck}));
 
+          // update the layers
+          this.deck.setProps({
+            layers: this.layers
+          });
+        });
       });
     },
+    mapClickHandle(e) {
+      if (this.guEditMode) {
+        this.formGu = {
+          id: null,
+          name: '',
+          lon: e.lngLat.lng,
+          lat: e.lngLat.lat
+        }
+        this.$bvModal.show('gu-modal');
+      }
+    }
   }
 }
 </script>
