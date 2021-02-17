@@ -36,12 +36,6 @@ class FormsController extends Controller
         return app()->make(config("bigdata_forms.{$formName}"));
     }
 
-    public function submit(Request $request, string $formName)
-    {
-        $form = $this->getForm($formName);
-        return $form->send();
-    }
-
     public function getWellPrefix(Request $request)
     {
         $prefix = '';
