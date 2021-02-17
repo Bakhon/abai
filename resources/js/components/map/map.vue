@@ -90,7 +90,6 @@ export default {
         lat: null,
         lon: null
       },
-      gu: null,
       pipes: [],
       zuPoints: [],
       wellPoints: [],
@@ -101,7 +100,6 @@ export default {
       pipePopupText: null,
       pipePopupCoords: [0, 0],
       pipePopupShow: false,
-      guPoint: null,
       map: null,
       deck: null,
       editMode: null,
@@ -114,10 +112,6 @@ export default {
       },
       firstCentered: false,
       guPointsIndexes: [],
-      zuPointsLayer: null,
-      pipesLayer: null,
-      guPointsLayer: null,
-      wellPointsLayer: null,
       layers: [],
     };
   },
@@ -195,7 +189,6 @@ export default {
       this.guPoints.push(gu);
       this.guPointsIndexes.push(gu.id);
       this.gus.push(gu);
-      this.gu = gu;
       this.$bvModal.hide('add-object-modal');
       this.resetForm();
       this.updateLayers();
