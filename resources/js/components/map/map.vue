@@ -42,7 +42,7 @@
 
       <map-gu-form :formGu="addObjectform" :cdngs="cdngs" v-if="editMode == 'gu'"></map-gu-form>
       <map-zu-form :formZu="addObjectform" :gus="gus" v-if="editMode == 'zu'"></map-zu-form>
-      <map-well-form :formZu="addObjectform" :gus="zuPoints" v-if="editMode == 'well'"></map-well-form>
+      <map-well-form :formWell="addObjectform" :zus="zuPoints" v-if="editMode == 'well'"></map-well-form>
 
       <template #modal-footer="{ cancel }">
         <div class="w-100">
