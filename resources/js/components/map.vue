@@ -269,7 +269,7 @@ export default {
         },
         getIcon: d => 'marker',
         sizeScale: 30,
-        getPosition: d => d.coords,
+        getPosition: (d) => [parseFloat(d.lon), parseFloat(d.lat)],
         sizeUnits: 'meters',
         getSize: d => 2,
         onClick: (info, event) => {
@@ -287,7 +287,7 @@ export default {
         },
         getIcon: d => 'marker',
         sizeScale: 20,
-        getPosition: d => d.coords,
+        getPosition: (d) => [parseFloat(d.lon), parseFloat(d.lat)],
         sizeUnits: 'meters',
         getSize: d => 2,
         onClick: (info, event) => {
@@ -305,7 +305,7 @@ export default {
         },
         getIcon: d => 'marker',
         sizeScale: 20,
-        getPosition: d => d.coords,
+        getPosition: d => [parseFloat(d.lon), parseFloat(d.lat)],
         sizeUnits: 'meters',
         getSize: d => 2,
         onClick: (info, event) => {

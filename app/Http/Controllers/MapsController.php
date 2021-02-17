@@ -25,7 +25,6 @@ class MapsController extends Controller
 
     public function guMap()
     {
-
         $gus = Gu::query()
             ->whereNotNull('lat')
             ->whereNotNull('lon')
@@ -34,7 +33,7 @@ class MapsController extends Controller
 
         $cdngs = Cdng::all();
 
-        return view('maps.gu_map', compact('cdngs','gus'));
+        return view('maps.gu_map', compact('cdngs', 'gus'));
     }
 
     public function guPipes(Request $request, DruidService $druidService)
@@ -50,9 +49,18 @@ class MapsController extends Controller
 
         $center = $this->mapService->calculateCenterOfCoordinates($guCenters);
 
-        $wellPoints = $this->getWellPointsWithCoords($druidService);
-        $zuPoints = $this->getZuPointsWithCoords();
-        $guPoints = $this->getGuPointsWithCoords();
+        $wellPoints = $this->getWellPointsWithInfo($druidService);
+
+        $zuPoints = Zu::query()
+            ->whereHas('gu')
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
+
+        $guPoints = Gu::query()
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
 
         return [
             'pipes' => $wellPipes->merge($zuPipes),
@@ -67,13 +75,14 @@ class MapsController extends Controller
     private function getWellOilInfo($druidService)
     {
         $wellOil = $druidService->getWellOil();
-        foreach($wellOil as $row) {
+        foreach ($wellOil as $row) {
             $result[$row['uwi']] = $row['oil'];
         }
         return $result;
     }
 
-    private function getWellPointsWithCoords ($druidService) {
+    private function getWellPointsWithInfo($druidService)
+    {
         $wellOilInfo = $this->getWellOilInfo($druidService);
         return Well::query()
             ->whereHas('zu.gu')
@@ -81,22 +90,20 @@ class MapsController extends Controller
             ->whereNotNull('wells.lon')
             ->get()
             ->map(
-                function ($well) use($wellOilInfo) {
-
-                    $name = 'Скважина: '.$well->name."\n";
-                    if(array_key_exists($well->name, $wellOilInfo)) {
+                function ($well) use ($wellOilInfo) {
+                    $name = 'Скважина: ' . $well->name . "\n";
+                    if (array_key_exists($well->name, $wellOilInfo)) {
                         $name .= 'Добыча за 01.07.2020: ' . $wellOilInfo[$well->name] . "\n";
                     }
 
-                    return [
-                        'name' => $name,
-                        'coords' => [(float)$well->lon, (float)$well->lat],
-                    ];
+                    $well->name = $name;
+                    return $well;
                 }
             );
     }
 
-    public function storeGu (Request $request) {
+    public function storeGu(Request $request)
+    {
         $gu_input = $request->input('gu');
         $gu = $gu_input['id'] ? Gu::find($gu_input['id']) : new Gu;
 
@@ -111,7 +118,8 @@ class MapsController extends Controller
         );
     }
 
-    private function getGuPipesWithCoords (&$coordinates) {
+    private function getGuPipesWithCoords(&$coordinates)
+    {
         return GuZuPipe::query()
             ->whereHas('gu')
             ->get()
@@ -144,7 +152,8 @@ class MapsController extends Controller
             );
     }
 
-    private function getZuWellPipesWithCoords (&$coordinates) {
+    private function getZuWellPipesWithCoords(&$coordinates)
+    {
         return ZuWellPipe::query()
             ->whereHas('gu')
             ->get()
@@ -176,44 +185,4 @@ class MapsController extends Controller
                 }
             );
     }
-
-    private function getZuPointsWithCoords () {
-        return Zu::query()
-            ->whereHas('gu')
-            ->whereNotNull('lat')
-            ->whereNotNull('lon')
-            ->get()
-            ->map(
-                function ($zu) {
-                    return [
-                        'name' => $zu->name,
-                        'coords' => [(float)$zu->lon, (float)$zu->lat],
-                    ];
-                }
-            );
-    }
-
-    private function  getGuPointsWithCoords () {
-        $gus = Gu::query()
-            ->whereNotNull('lat')
-            ->whereNotNull('lon')
-            ->get();
-
-        $guPoints = [];
-        foreach ($gus as $gu) {
-            if ($gu->lat && $gu->lon) {
-                $guPoints[] = [
-                    'id' => $gu->id,
-                    'name' => $gu->name,
-                    'coords' => [(float)$gu->lon, (float)$gu->lat],
-                    'lon' => (float)$gu->lon,
-                    'lat' => (float)$gu->lat,
-                    'cdng_id' => $gu->cdng_id
-                ];
-            }
-        }
-
-        return $guPoints;
-    }
-
 }
