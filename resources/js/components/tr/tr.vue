@@ -199,7 +199,7 @@
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
             <h5 v-if="date_fix">{{trans('tr.htr')}} {{ dt }}</h5>
-            <h5 v-if="!date_fix">{{trans('tr.htr')}} {{ dt3 }}</h5>
+            <h5 v-if="!date_fix">Технологический режим {{ dt3 }}</h5>
           </div>
 
           <tr-multiselect
@@ -7385,9 +7385,9 @@ export default {
               console.log("No data");
             }
             if (this.month < 10) {
-              this.dt3 = prdd + "." + prMm+ "." + pryyyy + ' по ' + dd+ "." + mm+ "." + yyyy;
+              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
             } else {
-              this.dt3 = prdd + "." + prMm+ "." + pryyyy + ' по ' + dd+ "." + mm+ "." + yyyy;
+              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
             }
           });
         }
