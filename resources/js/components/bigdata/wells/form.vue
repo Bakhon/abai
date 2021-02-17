@@ -2,7 +2,7 @@
   <div class="bd-main-block">
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
-      <p class="bd-main-block__header-title">Текущие замеры по ГДИС</p>
+      <p class="bd-main-block__header-title">{{ formTitle }}</p>
       <div class="block-three-fullscreen">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -40,6 +40,8 @@
                     :item="item"
                     v-model="formValues[item.code]"
                     :error="errors[item.code]"
+                    v-on:change="validateField($event, item)"
+                    v-on:input="callback($event, item)"
                 >
                 </bigdata-form-field>
               </div>
@@ -62,7 +64,16 @@
 <script>
 export default {
   name: "bigdata-form",
-  props: ['formName'],
+  props: {
+    formName: {
+      type: String,
+      required: true
+    },
+    formTitle: {
+      type: String,
+      required: true
+    },
+  },
   data: function () {
     return {
       errors: {},
@@ -104,12 +115,63 @@ export default {
                 }
               }
             }
-
           })
 
     },
     changeTab(index) {
       this.activeTab = index
+    },
+    callback(e, formItem) {
+      if (typeof formItem.callbacks === 'undefined') return
+
+      for (let callback in formItem.callbacks) {
+        if (typeof this[callback] === 'undefined') continue
+        this[callback](formItem.code, formItem.callbacks[callback])
+      }
+    },
+    //callbacks
+    setWellPrefix(triggerFieldCode, changeFieldCode) {
+      this.axios.get(this.localeUrl(`/bigdata/form/${this.formName}/well-prefix`), {
+        params: {
+          geo: this.formValues[triggerFieldCode]
+        }
+      }).then(({data}) => {
+        this.formValues[changeFieldCode] = data.prefix
+      })
+    },
+    filterGeoByDZO(triggerFieldCode, changeFieldCode) {
+
+      let dictName
+      this.formValues[changeFieldCode] = null
+      for (const tab of this.form.tabs) {
+        for (const block of tab.blocks) {
+          for (const item of block.items) {
+            if (item.code === changeFieldCode) {
+              dictName = item.dict
+            }
+          }
+        }
+      }
+
+      this.$store.dispatch('bd/getGeoDictByDZO', {
+        dzo: this.formValues[triggerFieldCode],
+        code: dictName
+      })
+
+    },
+    validateField(e, formItem) {
+
+      this.axios.post(
+          this.localeUrl('/bigdata/form/' + this.formName + '/validate/' + formItem.code),
+          this.formValues
+      )
+          .then(data => {
+            Vue.set(this.errors, formItem.code, null)
+          })
+          .catch(error => {
+            Vue.set(this.errors, formItem.code, error.response.data.errors)
+          })
+
     }
   },
 };
