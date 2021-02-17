@@ -208,14 +208,12 @@ export default {
       this.$bvModal.hide('gu-modal');
       this.resetGuForm();
 
-      //dirty hack for update layers array but other solutions doesn't work, don't know why yet
       let tempLayers = [];
       this.layers.forEach((layer) => {
         tempLayers.push(layer);
       });
 
       this.layers = tempLayers;
-      //end hack
 
       this.layers.push(
           new IconLayer({

@@ -19,28 +19,19 @@ body {
   white-space: nowrap;
 }
 
-.btn-main2:not(:disabled):not(.disabled).active,
-.btn-main2:not(:disabled):not(.disabled):active,
-.show>.btn-main2.dropdown-toggle {
-  color: #fff !important;
-  background-color:  $main2-active !important;
-  border-color:  $main2-active-border !important;
-}
-
 @each $name, $color in $colors-list {
+
+  .btn.btn-#{$name} {
+    @include button-variant($color, darken($color, 7.5%), darken($color, 12%), lighten($color,5%), lighten($color, 10%), darken($color,20%));
+  }
+
+  .btn-outline-primary {
+    @include button-outline-variant($color, darken($color,4%), lighten($color,5%), $color);
+  }
+
+
   .bg-#{$name} {
-    background-color: $color !important;
+    background-color: $color;
   }
 
-  .btn-#{$name} {
-    color: #fff !important;
-    background-color: $color !important;
-    border-color: $color !important;
-  }
-
-  //.btn-#{$name}:not(:disabled):not(.disabled).active,
-  //.btn-#{$name}:not(:disabled):not(.disabled):active,
-  //.show>.btn-#{$name}.dropdown-toggle {
-  //
-  //}
 }

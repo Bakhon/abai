@@ -27,11 +27,8 @@ class MapsController extends Controller
     {
 
         $gus = Gu::query()
-//            ->whereHas('zuPipes')
-//            ->orWhereHas('wellPipes')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
-            //dirty hack for alphanumeric sort but other solutions doesn't work
             ->orderByRaw('lpad(name, 10, 0) asc')
             ->get();
 
@@ -42,13 +39,80 @@ class MapsController extends Controller
 
     public function guPipes(Request $request, DruidService $druidService)
     {
-        $gus = Gu::query()
-            ->whereNotNull('lat')
-            ->whereNotNull('lon')
-            ->get();
-
         $coordinates = [];
-        $zuPipes = GuZuPipe::query()
+        $zuPipes = $this->getGuPipesWithCoords($coordinates);
+
+        $wellPipes = $this->getZuWellPipesWithCoords($coordinates);
+
+        foreach ($coordinates as $guId => $coords) {
+            $guCenters[$guId] = !empty($coords) ? $this->mapService->calculateCenterOfCoordinates($coords) : null;
+        }
+
+        $center = $this->mapService->calculateCenterOfCoordinates($guCenters);
+
+        $wellPoints = $this->getWellPointsWithCoords($druidService);
+        $zuPoints = $this->getZuPointsWithCoords();
+        $guPoints = $this->getGuPointsWithCoords();
+
+        return [
+            'pipes' => $wellPipes->merge($zuPipes),
+            'wellPoints' => $wellPoints,
+            'zuPoints' => $zuPoints,
+            'guPoints' => $guPoints,
+            'guCenters' => $guCenters,
+            'center' => $center,
+        ];
+    }
+
+    private function getWellOilInfo($druidService)
+    {
+        $wellOil = $druidService->getWellOil();
+        foreach($wellOil as $row) {
+            $result[$row['uwi']] = $row['oil'];
+        }
+        return $result;
+    }
+
+    private function getWellPointsWithCoords ($druidService) {
+        $wellOilInfo = $this->getWellOilInfo($druidService);
+        return Well::query()
+            ->whereHas('zu.gu')
+            ->whereNotNull('wells.lat')
+            ->whereNotNull('wells.lon')
+            ->get()
+            ->map(
+                function ($well) use($wellOilInfo) {
+
+                    $name = 'Скважина: '.$well->name."\n";
+                    if(array_key_exists($well->name, $wellOilInfo)) {
+                        $name .= 'Добыча за 01.07.2020: ' . $wellOilInfo[$well->name] . "\n";
+                    }
+
+                    return [
+                        'name' => $name,
+                        'coords' => [(float)$well->lon, (float)$well->lat],
+                    ];
+                }
+            );
+    }
+
+    public function storeGu (Request $request) {
+        $gu_input = $request->input('gu');
+        $gu = $gu_input['id'] ? Gu::find($gu_input['id']) : new Gu;
+
+        $gu->fill($gu_input);
+        $gu->save();
+
+        return response()->json(
+            [
+                'gu' => $gu,
+                'status' => 'success',
+            ]
+        );
+    }
+
+    private function getGuPipesWithCoords (&$coordinates) {
+        return GuZuPipe::query()
             ->whereHas('gu')
             ->get()
             ->map(
@@ -78,8 +142,10 @@ class MapsController extends Controller
                     ];
                 }
             );
+    }
 
-        $wellPipes = ZuWellPipe::query()
+    private function getZuWellPipesWithCoords (&$coordinates) {
+        return ZuWellPipe::query()
             ->whereHas('gu')
             ->get()
             ->map(
@@ -109,36 +175,10 @@ class MapsController extends Controller
                     ];
                 }
             );
+    }
 
-        foreach ($coordinates as $guId => $coords) {
-            $guCenters[$guId] = !empty($coords) ? $this->mapService->calculateCenterOfCoordinates($coords) : null;
-        }
-
-        $center = $this->mapService->calculateCenterOfCoordinates($guCenters);
-
-
-        $wellOilInfo = $this->getWellOilInfo($druidService);
-        $wellPoints = Well::query()
-            ->whereHas('zu.gu')
-            ->whereNotNull('wells.lat')
-            ->whereNotNull('wells.lon')
-            ->get()
-            ->map(
-                function ($well) use($wellOilInfo) {
-
-                    $name = 'Скважина: '.$well->name."\n";
-                    if(array_key_exists($well->name, $wellOilInfo)) {
-                        $name .= 'Добыча за 01.07.2020: ' . $wellOilInfo[$well->name] . "\n";
-                    }
-
-                    return [
-                        'name' => $name,
-                        'coords' => [(float)$well->lon, (float)$well->lat],
-                    ];
-                }
-            );
-
-        $zuPoints = Zu::query()
+    private function getZuPointsWithCoords () {
+        return Zu::query()
             ->whereHas('gu')
             ->whereNotNull('lat')
             ->whereNotNull('lon')
@@ -151,6 +191,13 @@ class MapsController extends Controller
                     ];
                 }
             );
+    }
+
+    private function  getGuPointsWithCoords () {
+        $gus = Gu::query()
+            ->whereNotNull('lat')
+            ->whereNotNull('lon')
+            ->get();
 
         $guPoints = [];
         foreach ($gus as $gu) {
@@ -166,39 +213,7 @@ class MapsController extends Controller
             }
         }
 
-
-        return [
-            'pipes' => $wellPipes->merge($zuPipes),
-            'wellPoints' => $wellPoints,
-            'zuPoints' => $zuPoints,
-            'guPoints' => $guPoints,
-            'guCenters' => $guCenters,
-            'center' => $center,
-        ];
-    }
-
-    private function getWellOilInfo($druidService)
-    {
-        $wellOil = $druidService->getWellOil();
-        foreach($wellOil as $row) {
-            $result[$row['uwi']] = $row['oil'];
-        }
-        return $result;
-    }
-
-    public function storeGu (Request $request) {
-        $gu_input = $request->input('gu');
-        $gu = $gu_input['id'] ? Gu::find($gu_input['id']) : new Gu;
-
-        $gu->fill($gu_input);
-        $gu->save();
-
-        return response()->json(
-            [
-                'gu' => $gu,
-                'status' => 'success',
-            ]
-        );
+        return $guPoints;
     }
 
 }
