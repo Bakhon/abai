@@ -828,17 +828,15 @@
           <div class="row px-4 mt-3">
             <div class="col">
               <div
-                class="button2"
-                :style="`${buttonHover7}`"
-                @click="changeMenu2(1)"
+                      :class="[`${buttonDailyTab}`,'button2']"
+                      @click="changeMenu2(1)"
               >
                 <!-- Суточная -->{{ trans("visualcenter.daily") }}
               </div>
             </div>
             <div class="col">
               <div
-                class="button2"
-                :style="`${buttonHover8}`"
+                      :class="[`${buttonMonthlyTab}`,'button2']"
                 @click="changeMenu2(2)"
               >
                 <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
@@ -846,9 +844,8 @@
             </div>
             <div class="col">
               <div
-                class="button2"
-                :style="`${buttonHover9}`"
-                @click="changeMenu2(3)"
+                      :class="[`${buttonYearlyTab}`,'button2']"
+                      @click="changeMenu2(3)"
               >
                 <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
               </div>
@@ -856,9 +853,8 @@
             <div class="col">
               <div class="dropdown3">
                 <div
-                  class="button2"
-                  :style="`${buttonHover10}`"
-                  @click="changeMenu2(4)"
+                        :class="[`${buttonPeriodTab}`,'button2']"
+                        @click="changeMenu2(4)"
                 >
                   <span v-if="oneDate">
                     <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
@@ -879,7 +875,7 @@
                     <div class="month-day">
                       <div class="">
                         <date-picker
-                          v-if="selectedOilPeriod == 0"
+                          v-if="selectedPeriod === 0"
                           mode="range"
                           v-model="range"
                           is-range
@@ -975,10 +971,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -990,10 +982,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -1004,10 +992,6 @@
                         {{ new Intl.NumberFormat("ru-RU").format(item.plan) }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }} {{ item4 }}
                         </div>
@@ -1025,10 +1009,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -1040,10 +1020,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -1054,10 +1030,6 @@
                         {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
@@ -1090,10 +1062,6 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }} {{ item4 }}
                         </div>
@@ -1162,6 +1130,69 @@
           <div class="row container-fluid" :style="`${displayHeadTables}`">
             <div class="vis-table px-3" :style="scroll">
               <table v-if="bigTable.length" class="table4 w-100">
+                <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.dzo") }}</th>
+                    <th
+                            v-if="buttonMonthlyTab"
+                    >
+                      {{ trans("visualcenter.dzoMonthlyPlan") }}
+                      {{ trans("visualcenter.dzoThousandTon") }}
+                    </th>
+                    <th
+                            v-if="buttonYearlyTab"
+                    >
+                      {{ trans("visualcenter.dzoYearlyPlan") }}
+                      {{ trans("visualcenter.dzoThousandTon") }}
+                    </th>
+                    <th>
+                      {{ trans("visualcenter.plan") }}
+                      {{ trans("visualcenter.dzoThousandTon") }}
+                    </th>
+                    <th>
+                      {{ trans("visualcenter.fact") }}<br>
+                      {{ trans("visualcenter.dzoThousandTon") }}
+                    </th>
+                    <th>
+                      {{ trans("visualcenter.dzoDifference") }}<br>
+                      {{ trans("visualcenter.dzoThousandTon") }}
+                    </th>
+                    <th>
+                      {{ trans("visualcenter.dzoPercent") }}
+                    </th>
+                    <th
+                            v-if="exactDateSelected"
+                    >
+                      {{ trans("visualcenter.dzoOpec") }}
+                    </th>
+                    <th
+                            v-if="exactDateSelected"
+                    >
+                      {{ trans("visualcenter.dzoImpulses") }}
+                    </th>
+                    <th
+                            v-if="exactDateSelected"
+                    >
+                      {{ trans("visualcenter.dzoLanding") }}
+                    </th>
+                    <th
+                            v-if="exactDateSelected"
+                    >
+                      {{ trans("visualcenter.dzoAlarmFirst") }}<br>
+                      {{ trans("visualcenter.dzoAlarmSecond") }}
+                    </th>
+                    <th
+                            v-if="exactDateSelected"
+                    >
+                      {{ trans("visualcenter.dzoRestrictions") }}
+                    </th>
+                    <th
+                            v-if="exactDateSelected"
+                    >
+                      {{ trans("visualcenter.dzoOthers") }}
+                    </th>
+                  </tr>
+                </thead>
                 <tbody>
                   <tr v-for="(item, index) in bigTable">
                     <td
@@ -1175,95 +1206,42 @@
                       </span>
                     </td>
                     <td
-                      v-if="buttonHover9"
-                      :class="
-                        index % 2 === 0 ? 'tdStyle3-total2' : 'tdStyle3-total'
-                      "
+                      v-if="buttonYearlyTab"
+                      :class="`${getDzoColumnsClass(index,'monthlyPlan')}`"
                     >
-                      <div v-if="index === 0" class="center">
-                        <!--план-->{{ trans("visualcenter.plan") }} (годовой)
-                      </div>
                       <div class="font">
                         {{ formatVisTableNumber(item.oil_planYear) }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
                       </div>
                     </td>
 
                     <td
-                      v-if="buttonHover8"
-                      :class="
-                        index % 2 === 0 ? 'tdStyle3-total2' : 'tdStyle3-total'
-                      "
+                      v-if="buttonMonthlyTab"
+                      :class="`${getDzoColumnsClass(index,'yearlyPlan')}`"
                     >
-                      <div v-if="index === 0" class="center">
-                        <!--план-->{{ trans("visualcenter.plan") }} (месячный)
-                      </div>
                       <div class="font">
                         {{ formatVisTableNumber(item.planMonthNew) }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
                       </div>
                     </td>
 
                     <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                            :class="`${getDzoColumnsClass(index,'plan')}`"
                     >
-                      <div v-if="index === 0" class="center">
-                        <!--план-->{{ trans("visualcenter.plan") }} {{ opec }}
-                      </div>
+
                       <div class="font">
                         {{ formatVisTableNumber(item.planMonth) }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }}{{ item4 }}
-                        </div>
                       </div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div v-if="index === 0" class="center">
-                        <!-- факт -->{{ trans("visualcenter.fact") }}
-                      </div>
+
+                    <td
+                            :class="[`${getDzoColumnsClass(index,'fact')}`,'fact']"
+                    >
                       <div class="font">
                         {{ formatVisTableNumber(item.factMonth) }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
                       </div>
                     </td>
                     <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
+                            :class="`${getDzoColumnsClass(index,'difference')}`"
                     >
-                      <div v-if="index === 0" class="center">+/-</div>
                       <div
                         v-if="item.factMonth"
                         :class="
@@ -1278,19 +1256,11 @@
                             Math.abs(item.factMonth - item.planMonth)
                           )
                         }}
-                        <div
-                          class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
                       </div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div v-if="index === 0" class="center">%</div>
+                    <td
+                            :class="`${getDzoColumnsClass(index,'percent')}`"
+                    >
                       <div
                         v-if="item.factMonth"
                         :class="
@@ -1304,116 +1274,79 @@
                         {{
                         formatVisTableNumber3 (item.factMonth , item.planMonth)
                         }}
-                        %
                       </div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                      v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyleLight width-accidnets'
                           : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">ОПЕК+</div>
-                      <!--123-->
                       <div
-                        class="triangle"
-                        :style="getAccident(item.opec)"
+                              :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                      v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyle width-accidnets '
                           : 'tdNone width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Порывы</div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.impulses)"
+                              :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
 
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyleLight width-accidnets '
                           : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Посадка ЭЭ</div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.landing)"
+                              :class="item.landing ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyle width-accidnets '
                           : 'tdNone width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">
-                        Авария в <br />
-                        системе СиП
-                      </div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.accident)"
+                              :class="item.accident ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyleLight width-accidnets '
                           : 'tdStyleLight2 width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">
-                        Ограничения <br />КТО
-                      </div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.restrictions)"
+                              :class="item.restrictions ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                     <td
-                      v-if="
-                        (item2 == 'oil_fact' && oneDate == 1) ||
-                        (item2 == 'oil_dlv_fact' && oneDate == 1)
-                      "
+                            v-if="exactDateSelected"
                       :class="
                         index % 2 === 0
                           ? 'tdStyle width-accidnets '
                           : 'tdNone width-accidnets '
                       "
                     >
-                      <div v-if="index === 0" class="center">Прочие</div>
                       <div
-                        class="triangle"
-                        :style="getAccident(item.otheraccidents)"
+                              :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
                       ></div>
                     </td>
                   </tr>
@@ -1423,7 +1356,7 @@
                     </td>
 
                     <td
-                      v-if="buttonHover9"
+                      v-if="buttonYearlyTab"
                       :class="
                         index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'
                       "
@@ -1434,7 +1367,7 @@
                     </td>
 
                     <td
-                      v-if="buttonHover8"
+                      v-if="buttonMonthlyTab"
                       :class="
                         index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'
                       "
@@ -1453,25 +1386,19 @@
                         {{ formatVisTableNumber(planMonthSumm) }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }} {{ item4 }}
                         </div>
                       </div>
                     </td>
 
-                    <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <td
+                            :class="`${getDarkerClass(index)}`"
+                    >
                       <div class="font">
                         {{ formatVisTableNumber(factMonthSumm) }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }} {{ item4 }}
                         </div>
@@ -1498,16 +1425,12 @@
                         }}
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                           {{ thousand }}{{ item4 }}
                         </div>
                       </div>
                     </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle3' : 'tdNone'">
+                    <td :class="`${getDarkerClass(index)}`">
                       <div
                         v-if="factMonthSumm"
                         :class="
@@ -1527,9 +1450,33 @@
                             ).toFixed(1)
                           )
                         }}
-                        %
                       </div>
                     </td>
+                    <td
+                            :class="`${getLighterClass(index)}`"
+                            v-if="exactDateSelected"
+                    >
+                    </td>
+                    <td
+                            :class="`${getDarkerClass(index)}`"
+                            v-if="exactDateSelected"
+                    ></td>
+                    <td
+                            :class="`${getLighterClass(index)}`"
+                            v-if="exactDateSelected"
+                    ></td>
+                    <td
+                            :class="`${getDarkerClass(index)}`"
+                            v-if="exactDateSelected"
+                    ></td>
+                    <td
+                            :class="`${getLighterClass(index)}`"
+                            v-if="exactDateSelected"
+                    ></td>
+                    <td
+                            :class="`${getDarkerClass(index)}`"
+                            v-if="exactDateSelected"
+                    ></td>
                   </tr>
                 </tbody>
               </table>
@@ -1557,15 +1504,12 @@
       <visual-center-usd-table
         :style="`${Table2}`"
         :period.sync="period"
-        :selected-usd-period.sync="selectedOilPeriod"
         :usd-rates-data.sync="oilRatesData"
-        :chart-data.sync="oilRatesDataChartForCurrentPeriod"
         :period-select-func.sync="periodSelectFunc"
-        :currency-chart-data.sync="currencyChartData"
         :table-data.sync="oilRatesDataTableForCurrentPeriod"
         :usd-chart-is-loading.sync="isPricesChartLoading"
         @period-select-usd="
-          updateCurrentOilPrices(timeSelect, periodSelect(selectedOilPeriod))
+          updatePrices(periodSelect(selectedPeriod))
         "
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.oilPricedynamic')"
@@ -1575,12 +1519,13 @@
       <visual-center-usd-table
         :style="`${Table3}`"
         :period.sync="period"
-        :selected-usd-period.sync="selectedOilPeriod"
         :usd-rates-data.sync="usdRatesData"
         :period-select-func.sync="periodSelectFunc"
-        :currency-chart-data.sync="currencyChartData"
         :table-data.sync="usdRatesDataTableForCurrentPeriod"
         :usd-chart-is-loading.sync="isPricesChartLoading"
+        @period-select-usd="
+          updatePrices(periodSelect(selectedPeriod))
+        "
         @change-table="changeTable('1')"
         :main-title="trans('visualcenter.kursHeader')"
         :second-title="'USD НБ РК'"
@@ -1607,27 +1552,24 @@
             <div class="row px-4">
               <div class="w-25 pr-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover7}`"
-                  @click="changeMenu2(1)"
+                        :class="[`${buttonDailyTab}`,'button2']"
+                        @click="changeMenu2(1)"
                 >
                   <!-- Суточная -->{{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover8}`"
-                  @click="changeMenu2(2)"
+                        :class="[`${buttonMonthlyTab}`,'button2']"
+                        @click="changeMenu2(2)"
                 >
                   <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover9}`"
-                  @click="changeMenu2(3)"
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
                 >
                   <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
                 </div>
@@ -1635,9 +1577,8 @@
               <div class="w-25 px-2">
                 <div class="dropdown3">
                   <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
                   >
                     <span v-if="oneDate">
                       <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
@@ -1658,7 +1599,7 @@
                       <div class="month-day">
                         <div>
                           <date-picker
-                            v-if="selectedOilPeriod == 0"
+                            v-if="selectedPeriod === 0"
                             mode="range"
                             v-model="range"
                             is-range
@@ -1746,7 +1687,7 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells.length" class="table4 w-100">
+                <table v-if="innerWells.length" class="table7 w-100">
                   <tbody>
                     <tr
                       v-for="(item, index) in innerWells"
@@ -1817,17 +1758,15 @@
             <div class="row px-4">
               <div class="w-25 pr-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover7}`"
-                  @click="changeMenu2(1)"
+                        :class="[`${buttonDailyTab}`,'button2']"
+                        @click="changeMenu2(1)"
                 >
                   <!-- Суточная -->{{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover8}`"
+                        :class="[`${buttonMonthlyTab}`,'button2']"
                   @click="changeMenu2(2)"
                 >
                   <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
@@ -1835,19 +1774,17 @@
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover9}`"
-                  @click="changeMenu2(3)"
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
                 >
-                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
+                  {{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div class="dropdown3">
                   <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
                   >
                     <span v-if="oneDate">
                       <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
@@ -1956,7 +1893,7 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells2.length" class="table4 w-100">
+                <table v-if="innerWells2.length" class="table7 w-100">
                   <tbody>
                     <tr
                       v-for="(item, index) in innerWells2"
@@ -2026,40 +1963,36 @@
             <div class="row px-4">
               <div class="w-25 pr-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover7}`"
-                  @click="changeMenu2(1)"
+                        :class="[`${buttonDailyTab}`,'button2']"
+                        @click="changeMenu2(1)"
                 >
-                  <!-- Суточная -->{{ trans("visualcenter.daily") }}
+                  {{ trans("visualcenter.daily") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover8}`"
+                  :class="[`${buttonMonthlyTab}`,'button2']"
                   @click="changeMenu2(2)"
                 >
-                  <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
+                  {{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover9}`"
-                  @click="changeMenu2(3)"
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
                 >
-                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
+                  {{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="w-25 px-2">
                 <div class="dropdown3">
                   <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
                   >
                     <span v-if="oneDate">
-                      <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      {{ trans("visualcenter.date") }} [{{
                         timeSelect
                       }}]</span
                     >
@@ -2224,10 +2157,6 @@
                         <div v-if="index === 0" class="center">+/-</div>
                         <div
                           class="right"
-                          style="
-                            font-family: 'Harmonia-sans', sans-serif;
-                            opacity: 0.6;
-                          "
                         >
                         <span class="data-metrics">
                           {{item.metricSystem}}
@@ -2269,36 +2198,33 @@
             <div class="row px-4">
               <div class="col px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover8}`"
-                  @click="changeMenu2(2)"
+                        :class="[`${buttonMonthlyTab}`,'button2']"
+                        @click="changeMenu2(2)"
                 >
-                  <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
+                  {{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
               <div class="col px-2">
                 <div
-                  class="button2"
-                  :style="`${buttonHover9}`"
-                  @click="changeMenu2(3)"
+                        :class="[`${buttonYearlyTab}`,'button2']"
+                        @click="changeMenu2(3)"
                 >
-                  <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
+                  {{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
               <div class="col px-2">
                 <div class="dropdown3">
                   <div
-                    class="button2"
-                    :style="`${buttonHover10}`"
-                    @click="changeMenu2(4)"
+                          :class="[`${buttonPeriodTab}`,'button2']"
+                          @click="changeMenu2(4)"
                   >
                     <span v-if="oneDate">
-                      <!-- Дата  -->{{ trans("visualcenter.date") }} [{{
+                      {{ trans("visualcenter.date") }} [{{
                         timeSelect
                       }}]</span
                     >
                     <span v-else>
-                      <!-- Период  -->{{ trans("visualcenter.period") }} [{{
+                      {{ trans("visualcenter.period") }} [{{
                         timeSelect
                       }}
                       - {{ timeSelectOld }}]</span
@@ -2385,7 +2311,7 @@
               <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="chemistryData.length"
-                  class="table4 w-100"
+                  class="table7 w-100"
                   style="height: calc(100% - 20px)"
                 >
                   <tbody>
@@ -2833,11 +2759,11 @@
     </div>
   </div>
 </template>
+
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
 .vis-table {
   flex: 0 0 56%;
-  height: 500px;
   max-width: 56%;
   overflow-y: auto;
   &::-webkit-scrollbar {
@@ -2866,15 +2792,22 @@
         padding: 5px 5px 5px 10px;
         position: relative;
         vertical-align: middle;
+        min-width: 71px;
         &:first-child {
-          height: 50px;
+          display: inline-block;
           white-space: normal;
-          width: 235px;
+          min-width: 327px;
+          width: 100%;
+          font-weight: bold;
+          font-size: 15px;
+          min-height: 32px;
           span {
-            font-weight: bold;
             img {
               width: 9px;
             }
+          }
+          div .data-titles {
+            height: 50px;
           }
         }
         &.selected {
@@ -2884,7 +2817,7 @@
           align-items: baseline;
           display: flex;
           justify-content: space-between;
-          font-size: 24px;
+          font-size: 15px;
           margin-left: 0;
           &.dynamic {
             padding-left: 17px;
@@ -2892,6 +2825,9 @@
           .right {
             font-size: 10px;
             margin-right: 0;
+            display: none;
+            font-family: 'Harmonia-sans', sans-serif;
+            opacity: 0.6;
           }
         }
         .center {
@@ -2906,8 +2842,38 @@
         }
       }
     }
+    tr:after {
+      content: ' ';
+      display: block;
+      visibility: hidden;
+      clear: both;
+    }
+    tr:first-child .th {
+      background: inherit;
+      top: -1px;
+      z-index: 3000;
+    }
+    th {
+      position: sticky;
+      position: --webkit-sticky;
+      top: -1;
+      z-index: 2;
+      border: 0.5px solid #272953;
+      width: 81px;
+      position: sticky;
+      font-family: Bold;
+      font-size: 12px;
+      background: #353EA1;
+      text-align: center;
+      &:first-child {
+        width: 322px;
+        padding-top: 5px;
+        font-size: 16px;
+      }
+    }
   }
 }
+
 .vis-table-small {
   max-width: 46% !important;
   tr {
@@ -3013,6 +2979,7 @@
     font-family: "HarmoniaSansProCyr-Regular";
     font-style: normal;
     font-size: 16px;
+    height: 50px;
   }
   .data-values {
     font-family: "Bold";
@@ -3042,7 +3009,7 @@
     font-size: 30px;
   }
   .growth-indicator {
-    margin-top: 7px;
+    margin-top: 6px;
     border-bottom: 6px solid #009846;
   }
   .fall-indicator {
@@ -3050,11 +3017,28 @@
     border-top: 6px solid #e31e24;
   }
   .growth-indicator-production-data {
-    margin-top: 16px;
     border-bottom: 6px solid #009846;
   }
   .fall-indicator-production-data {
-    margin-top: 23px;
+    margin-top: 8px;
     border-top: 6px solid #e31e24;
+  }
+
+  .accident-triangle {
+    border-top: 6px solid rgb(227, 30, 36);
+    margin-left: 30%;
+  }
+  .no-accident-triangle {
+    position: relative;
+    width: 14px;
+    height: 5px;
+    background: #9da0b7;
+    border: unset;
+    margin-left: 30%;
+  }
+  .button-tab-highlighted {
+    border: none;
+    background: #2E50E9;
+    color:white;
   }
 </style>
