@@ -40,6 +40,7 @@
                     :item="item"
                     v-model="formValues[item.code]"
                     :error="errors[item.code]"
+                    v-on:input="callback($event, item)"
                 >
                 </bigdata-form-field>
               </div>
@@ -104,12 +105,47 @@ export default {
                 }
               }
             }
-
           })
 
     },
     changeTab(index) {
       this.activeTab = index
+    },
+    callback(e, formItem) {
+      if (typeof formItem.callbacks === 'undefined') return
+
+      for (let callback in formItem.callbacks) {
+        if (typeof this[callback] === 'undefined') continue
+        this[callback](formItem.code, formItem.callbacks[callback])
+      }
+    },
+    //callbacks
+    setWellPrefix(triggerFieldCode, changeFieldCode) {
+      this.axios.get(this.localeUrl(`/bigdata/form/${this.formName}/well-prefix`), {
+        params: {
+          geo: this.formValues[triggerFieldCode]
+        }
+      }).then(({data}) => {
+        this.formValues[changeFieldCode] = data.prefix
+      })
+    },
+    filterGeoByDZO(triggerFieldCode, changeFieldCode) {
+
+      this.axios.get(this.localeUrl(`/bigdata/dict/geos/${this.formValues[triggerFieldCode]}`)).then(({data}) => {
+        for (const tab of this.form.tabs) {
+          for (const block of tab.blocks) {
+            for (const item of block.items) {
+              if (item.code === changeFieldCode) {
+                this.$store.commit("bd/SAVE_DICT", {
+                  code: item.dict,
+                  items: data
+                });
+                this.formValues[changeFieldCode] = null
+              }
+            }
+          }
+        }
+      })
     }
   },
 };

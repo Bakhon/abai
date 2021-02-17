@@ -58,6 +58,8 @@
           v-on:input="$emit('input', $event)"
           :multiple="false"
           :options="dict"
+          :auto-load-root-options="false"
+          :loading="true"
           placeholer="Выберите..."
       />
     </template>
@@ -113,8 +115,11 @@ export default {
     'error'
   ],
   data: function () {
-    return {
-      dict: []
+    return {}
+  },
+  computed: {
+    dict() {
+      return this.$store.getters['bd/dict'](this.item.dict);
     }
   },
   mounted() {
@@ -125,7 +130,10 @@ export default {
   methods: {
     loadDict() {
       this.axios.get(this.localeUrl('/bigdata/dict/' + this.item.dict)).then(data => {
-        this.dict = data.data
+        this.$store.commit("bd/SAVE_DICT", {
+          code: this.item.dict,
+          items: data.data
+        });
       })
     },
     changeDate(date) {
@@ -227,7 +235,7 @@ export default {
 
     &__menu {
       background: #40467E;
-      border: none!important;
+      border: none !important;
 
       &::-webkit-scrollbar {
         width: 4px;

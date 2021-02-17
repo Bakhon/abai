@@ -5,6 +5,7 @@ import tr from './modules/tr';
 import fa from './modules/fa';
 import pgno from './modules/pgno';
 import globalloading from './modules/globalloading';
+import bd from './modules/bd';
 
 Vue.use(Vuex);
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
     tr,
     fa,
     globalloading,
-    pgno
+    pgno,
+    bd
   },
 
   state: {
