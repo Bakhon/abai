@@ -774,7 +774,7 @@
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}Р заб</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
