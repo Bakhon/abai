@@ -8,11 +8,13 @@
 font-family: "Bold";
 src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 }
-// Variables
-@import "variables";
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
+
+// Variables
+@import "variables";
+
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/regular";
 @import "~@fortawesome/fontawesome-free/scss/solid";
@@ -28,3 +30,5 @@ src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 
 @import 'modules/monitoring';
 @import 'modules/bigdata';
+
+

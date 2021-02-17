@@ -6,7 +6,7 @@ $font-family: 'Harmonia Sans Light';
 $font-size-base: 0.9rem;
 
 // Colors
-$blue: #3490dc;
+$blue: #2E50E9;
 $indigo: #6574cd;
 $purple: #9561e2;
 $pink: #f66d9b;
@@ -17,3 +17,32 @@ $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
 $dark: #15509D;
+
+$main1: #272953;
+$main2: #41488b;
+$main3: #40467E;
+$main4: #333975;
+
+$main2-active: #212558;
+$main2-active-border: #17193a;
+
+$main-light: #656A8A;
+
+$colors-list: (
+        'indigo': $indigo,
+        'blue': $blue,
+        'purple': $purple,
+        'pink': $pink,
+        'red': $red,
+        'orange': $orange,
+        'yellow': $yellow,
+        'green': $green,
+        'teal': $teal,
+        'cyan': $cyan,
+        'dark': $dark,
+        'main1': $main1,
+        'main2': $main2,
+        'main3': $main3,
+        'main4': $main4,
+        'main-light': $main-light
+);
