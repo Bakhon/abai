@@ -64,7 +64,16 @@
 <script>
 export default {
   name: "bigdata-form",
-  props: ['formName', 'formTitle'],
+  props: {
+    formName: {
+      type: String,
+      required: true
+    },
+    formTitle: {
+      type: String,
+      required: true
+    },
+  },
   data: function () {
     return {
       errors: {},
@@ -132,21 +141,23 @@ export default {
     },
     filterGeoByDZO(triggerFieldCode, changeFieldCode) {
 
-      this.axios.get(this.localeUrl(`/bigdata/dict/geos/${this.formValues[triggerFieldCode]}`)).then(({data}) => {
-        for (const tab of this.form.tabs) {
-          for (const block of tab.blocks) {
-            for (const item of block.items) {
-              if (item.code === changeFieldCode) {
-                this.$store.commit("bd/SAVE_DICT", {
-                  code: item.dict,
-                  items: data
-                });
-                this.formValues[changeFieldCode] = null
-              }
+      let dictName
+      this.formValues[changeFieldCode] = null
+      for (const tab of this.form.tabs) {
+        for (const block of tab.blocks) {
+          for (const item of block.items) {
+            if (item.code === changeFieldCode) {
+              dictName = item.dict
             }
           }
         }
+      }
+
+      this.$store.dispatch('bd/getGeoDictByDZO', {
+        dzo: this.formValues[triggerFieldCode],
+        code: dictName
       })
+
     },
     validateField(e, formItem) {
 

@@ -4,25 +4,30 @@
 namespace App\Services\BigData;
 
 use App\Exceptions\DictionaryNotFound;
+use App\Models\BigData\Dictionaries\Company;
+use App\Models\BigData\Dictionaries\Org;
+use App\Models\BigData\Dictionaries\WellCategory;
+use App\Models\BigData\Dictionaries\WellType;
+use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
 
 class DictionaryService
 {
     const DICTIONARIES = [
-        'well_categories' => \App\Models\BigData\Dictionaries\WellCategory::class,
-        'well_types' => \App\Models\BigData\Dictionaries\WellType::class,
-        'companies' => \App\Models\BigData\Dictionaries\Company::class
+        'well_categories' => WellCategory::class,
+        'well_types' => WellType::class,
+        'companies' => Company::class
     ];
 
     const TREE_DICTIONARIES = [
-        'orgs' => \App\Models\BigData\Dictionaries\Org::class
+        'orgs' => Org::class
     ];
 
     const CACHE_TTL = 60;
 
     protected $cache;
 
-    public function __construct(\Illuminate\Cache\Repository $cache)
+    public function __construct(Repository $cache)
     {
         $this->cache = $cache;
     }
