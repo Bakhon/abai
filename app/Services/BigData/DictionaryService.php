@@ -8,6 +8,7 @@ use App\Models\BigData\Dictionaries\Company;
 use App\Models\BigData\Dictionaries\Org;
 use App\Models\BigData\Dictionaries\WellCategory;
 use App\Models\BigData\Dictionaries\WellType;
+use Carbon\Carbon;
 use Illuminate\Cache\Repository;
 use Illuminate\Support\Facades\DB;
 
@@ -54,7 +55,7 @@ class DictionaryService
             }
         }
 
-        $this->cache->set($cacheKey, $dict, \Carbon\Carbon::now()->addMinutes(self::CACHE_TTL));
+        $this->cache->set($cacheKey, $dict, Carbon::now()->addMinutes(self::CACHE_TTL));
         return $dict;
     }
 
