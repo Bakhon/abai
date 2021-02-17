@@ -26,8 +26,8 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
-        "@deck.gl/core": "^8.4.5",
-        "@deck.gl/layers": "^8.4.5",
+        "@deck.gl/core": "^8.4.6",
+        "@deck.gl/layers": "^8.4.6",
         "@deck.gl/mapbox": "^8.4.5",
         "@fortawesome/fontawesome-free": "^5.15.2",
         "@handsontable/vue": "^5.1.0",
@@ -35,8 +35,8 @@
         "apexcharts": "^3.25.0",
         "bootstrap-select": "^1.13.18",
         "bootstrap-table": "^1.18.2",
-        "bootstrap-vue-treeview": "^1.0.8",
         "bootstrap-vue": "^2.21.2",
+        "bootstrap-vue-treeview": "^1.0.8",
         "chart.js": "^2.9.4",
         "dependencies": "0.0.1",
         "element-ui": "^2.15.0",
