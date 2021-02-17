@@ -371,7 +371,6 @@ export default {
 
     selectAllDzoCompany() {
       let self = this;
-      console.log(JSON.stringify(this.dzoCompanyList));
       self.dzoCompanyAllSelected = !self.dzoCompanyAllSelected;
       self.buttonDzoDropdown = self.buttonNormalTab;
       _.map(this.dzoCompanyList, function(company) {
