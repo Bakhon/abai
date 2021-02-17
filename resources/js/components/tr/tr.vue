@@ -7354,7 +7354,7 @@ export default {
       const prMm = choosenSecDt[1];
       const yyyy = choosenDt[0];
       const pryyyy = choosenSecDt[0];
-      if (choosenDt[2] <= choosenDt[1] || choosenSecDt[1] < choosenDt[1] || choosenSecDt[0] < choosenDt[0]) {
+      if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
         this.$store.commit("globalloading/SET_LOADING", true);
