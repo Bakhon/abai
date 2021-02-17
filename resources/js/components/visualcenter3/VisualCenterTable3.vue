@@ -4,7 +4,7 @@
   >
     <div class="left-side flex-grow-1 pr-2">
       <div class="first-string">
-        <div class="table-responsive">
+        <div>
           <table class="table table1">
             <tr>
               <td>
@@ -2373,7 +2373,7 @@
     </div>
     <div class="right-side2 flex-grow-1 pl-1">
       <div class="first-string">
-        <div class="table-responsive">
+        <div>
           <table class="table table1-2">
             <tr class="cursor-pointer">
               <td
@@ -2456,7 +2456,7 @@
           <!-- <div class="line-bottom"></div>-->
         </div>
         <div class="first-string first-string2">
-          <div class="table-responsive">
+          <div>
             <table class="table table1-2">
               <tr class="cursor-pointer">
                 <td
@@ -2546,7 +2546,7 @@
         </div>
 
         <div class="first-string first-string2">
-          <div class="table-responsive">
+          <div>
             <table class="table table5">
               <tr class="cursor-pointer">
                 <td
@@ -2583,7 +2583,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div>
           <table class="table">
             <tr>
               <td class="w-50 px-2">
@@ -2634,7 +2634,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div>
           <table class="table">
             <tr>
               <td class="w-50 px-2">
@@ -2675,25 +2675,9 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div>
           <table class="table table1-2">
             <tr>
-              <!--<td>
-                <div class="number">0</div>
-                <div class="near-number">
-
-                  <div class="column-1">
-
-                    <div class="in-idle">
-                    {{ trans("visualcenter.from_begin") }}
-                    </div>
-                    <div class="in-idle">
-                     {{ trans("visualcenter.month") }}
-                    </div>
-                  </div>
-                </div>
-              </td>-->
-
               <td>
                 <div class="number">{{ accidentTotal }}</div>
                 <div class="near-number">
@@ -2725,7 +2709,7 @@
       </div>
 
       <div class="first-string first-string2">
-        <div class="table-responsive">
+        <div>
           <table class="table">
             <tr>
               <td class="size-td">
