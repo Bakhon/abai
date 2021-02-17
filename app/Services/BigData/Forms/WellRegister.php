@@ -29,20 +29,26 @@ class WellRegister extends BaseForm
                                     'type' => 'dict_tree',
                                     'title' => 'Оргструктура',
                                     'validation' => 'required|exists:tbd.dict.org,id',
-                                    'dict' => 'orgs'
+                                    'dict' => 'orgs',
+                                    'callbacks' => [
+                                        'filterGeoByDZO' => 'geo'
+                                    ]
                                 ],
                                 [
                                     'code' => 'geo',
                                     'type' => 'dict_tree',
                                     'title' => 'Геоструктура',
                                     'validation' => 'required|exists:tbd.dict.geo,id',
-                                    'dict' => 'geos'
+                                    'dict' => 'geos',
+                                    'callbacks' => [
+                                        'setWellPrefix' => 'name'
+                                    ]
                                 ],
                                 [
                                     'code' => 'name',
                                     'type' => 'text',
                                     'title' => 'Номер скважины',
-                                    'validation' => 'required|max:255'
+                                    'validation' => 'required|max:255',
                                 ],
                                 [
                                     'code' => 'date_create',

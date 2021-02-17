@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\bd;
 
 use App\Http\Controllers\Controller;
+use App\Models\BigData\Dictionaries\Geo;
 use App\Services\BigData\Forms\BaseForm;
+use Illuminate\Http\Request;
 
 class FormsController extends Controller
 {
@@ -34,4 +36,22 @@ class FormsController extends Controller
         return app()->make(config("bigdata_forms.{$formName}"));
     }
 
+    public function getWellPrefix(Request $request)
+    {
+        $prefix = '';
+        $geo = Geo::find($request->get('geo'));
+        while (true) {
+            if (empty($geo)) {
+                break;
+            }
+
+            if ($geo->field_code) {
+                $prefix = $geo->field_code . '_';
+                break;
+            }
+            $geo = $geo->parent();
+        }
+
+        return ['prefix' => $prefix];
+    }
 }
