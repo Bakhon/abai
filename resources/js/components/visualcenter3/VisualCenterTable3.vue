@@ -821,15 +821,15 @@
               ></div>
               <div>
                 <ul
-                        :class="dzoCompaniesVisibility === true ? 'show-company-list' : 'hide-company-list'"
+                        :class="isDzoCompaniesListSelectorOpened ? 'show-company-list' : 'hide-company-list'"
                   >
                   <li
                           class="px-4"
                   >
                     <div>
                       <input
-                              :disabled="dzoCompanyAllSelected"
-                              :checked="dzoCompanyAllSelected"
+                              :disabled="isAllDzoCompaniesSelected"
+                              :checked="isAllDzoCompaniesSelected"
                               type="checkbox"
                               @click="`${selectDzoCompanies()}`"
                       ></input>
@@ -1082,7 +1082,7 @@
                 <tbody>
                   <tr v-for="(item, index) in dzoCompanySummary">
                     <td
-                            @click="dzoCompanyDecomposition === true ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
+                            @click="isMultipleDzoCompaniesSelected ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
                             :class="index % 2 === 0 ? 'tdStyle' : ''"
                             style="cursor: pointer"
                     >
@@ -1213,7 +1213,7 @@
                     </td>
                   </tr>
                   <tr
-                          v-if="dzoCompanyDecomposition"
+                          v-if="isMultipleDzoCompaniesSelected"
                   >
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ NameDzoFull[0] }}</div>
@@ -1330,7 +1330,7 @@
               </table>
 
               <div
-                      v-if="!dzoCompanyDecomposition"
+                      v-if="!isMultipleDzoCompaniesSelected"
                       v-for="(item) in dzoCompanySummary"
                       colspan="5"
                       class="dzo-company-reason"

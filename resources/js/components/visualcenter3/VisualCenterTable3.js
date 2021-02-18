@@ -350,7 +350,7 @@ export default {
         yearly: ['companyName','yearlyPlan','plan','fact', 'difference', 'percent'],
       },
       dzoCompanies: dzoCompaniesInitial,
-      dzoCompanyAllSelected: false,
+      isAllDzoCompaniesSelected: false,
       buttonDzoDropdown: "",
       dzoCompanySummary: this.bigTable,
       dzoCompaniesSummaryInitial: {
@@ -361,14 +361,14 @@ export default {
         percent: 0,
       },
       dzoCompaniesSummary: {},
-      dzoCompaniesVisibility: false,
-      dzoCompanyDecomposition: true,
+      isDzoCompaniesListSelectorOpened: false,
+      isMultipleDzoCompaniesSelected: true,
       dzoCompaniesSummaryForChart: {},
     };
   },
   methods: {
     changeDzoCompaniesVisibility() {
-      this.dzoCompaniesVisibility = !this.dzoCompaniesVisibility;
+      this.isDzoCompaniesListSelectorOpened = !this.isDzoCompaniesListSelectorOpened;
     },
 
     selectAllDzoCompanies() {
@@ -377,8 +377,8 @@ export default {
 
     selectDzoCompanies() {
       this.selectCompany('all');
-      this.dzoCompanyDecomposition = true;
-      this.dzoCompanyAllSelected = true;
+      this.isMultipleDzoCompaniesSelected = true;
+      this.isAllDzoCompaniesSelected = true;
       this.buttonDzoDropdown = this.buttonNormalTab;
       _.map(this.dzoCompanies, function(company) {
         company.selected = true;
@@ -420,7 +420,7 @@ export default {
 
     selectDzoCompany(companyTicker) {
       this.selectCompany(companyTicker);
-      this.dzoCompanyAllSelected = false;
+      this.isAllDzoCompaniesSelected = false;
       _.map(this.dzoCompanies, function(company) {
         if (company.ticker === companyTicker) {
           company.selected = !company.selected;
@@ -428,10 +428,10 @@ export default {
       });
       let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
       this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
-      if (this.dzoCompanySummary.length === 1) {
-        this.dzoCompanyDecomposition = false;
+      if (this.dzoCompanySummary.length < 2) {
+        this.isMultipleDzoCompaniesSelected = false;
       } else {
-        this.dzoCompanyDecomposition = true;
+        this.isMultipleDzoCompaniesSelected = true;
       }
       this.calculateDzoCompaniesSummary();
     },
