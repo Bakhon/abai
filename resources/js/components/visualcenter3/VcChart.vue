@@ -57,6 +57,9 @@ export default {
         productionPlanForChart.push(item.productionPlanForChart);
         productionPlanForChart2.push(item.productionPlanForChart2);
       });
+      console.log('productionFactForChart ' + JSON.stringify(productionFactForChart));
+        console.log('productionFactForChart ' + JSON.stringify(productionPlanForChart));
+        console.log('productionFactForChart ' + JSON.stringify(productionPlanForChart2));
       // productionPlanForChart = [30000, 43000, 23000, 43000];
       // productionFactForChart = [25000, 65000, 12000, 64000];
       // labels = ['Сен / 2020', 'Окт / 2020', 'Ноя / 2020', 'Дек / 2020'];

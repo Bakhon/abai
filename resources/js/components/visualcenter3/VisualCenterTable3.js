@@ -3,7 +3,7 @@ import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import { isString } from "lodash";
-import dzoListData from './dzo_company_list.json';
+import dzoCompaniesInitial from './dzo_company_list.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 export default {
@@ -350,74 +350,74 @@ export default {
         monthly: ['companyName','monthlyPlan','plan','fact', 'difference', 'percent'],
         yearly: ['companyName','yearlyPlan','plan','fact', 'difference', 'percent'],
       },
-      dzoCompanyList: dzoListData,
+      dzoCompanies: dzoCompaniesInitial,
       dzoCompanyAllSelected: false,
       buttonDzoDropdown: "",
-      dzoCompanyData: this.bigTable,
-      dzoCompanyTotalData: {
+      dzoCompanySummary: this.bigTable,
+      dzoCompaniesSummary: {
         plan: 0,
         periodPlan: 0,
         fact: 0,
         difference: 0,
         percent: 0,
       },
-      dzoCompanyListVisibility: false,
+      dzoCompaniesVisibility: false,
     };
   },
   methods: {
-    changeDzoCompanyListVisibility() {
-      this.dzoCompanyListVisibility = !this.dzoCompanyListVisibility;
+    changeDzoCompaniesVisibility() {
+      this.dzoCompaniesVisibility = !this.dzoCompaniesVisibility;
     },
 
-    selectAllDzoCompany() {
+    selectDzoCompanies() {
       let self = this;
-      console.log(JSON.stringify(this.dzoCompanyList));
       self.dzoCompanyAllSelected = !self.dzoCompanyAllSelected;
       self.buttonDzoDropdown = self.buttonNormalTab;
-      _.map(this.dzoCompanyList, function(company) {
+      _.map(this.dzoCompanies, function(company) {
         company.selected = self.dzoCompanyAllSelected;
       });
-      self.dzoCompanyData = self.bigTable;
-      self.calculateTotalSum();
+      self.dzoCompanySummary = self.bigTable;
+      self.calculateDzoCompaniesSummary();
     },
 
     selectDzoCompany(inputStatus,companyTicker) {
       this.dzoCompanyAllSelected = false;
-      _.map(this.dzoCompanyList, function(company) {
+      _.map(this.dzoCompanies, function(company) {
         if (company.ticker === companyTicker) {
           company.selected = !company.selected;
         }
       });
-      let selectedCompanies = this.dzoCompanyList.filter(row => row.selected === true).map(row => row.ticker);
-      this.dzoCompanyData = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
-      this.calculateTotalSum();
+      let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
+      this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
+      this.calculateDzoCompaniesSummary();
     },
 
-    nullDzoTotalData() {
-      this.changeObjValues(this.dzoCompanyTotalData,0);
+    setInitialDzoCompaniesSummary() {
+      this.setObjValues(this.dzoCompaniesSummary,0);
     },
 
-    changeObjValues(data,newProperty) {
+    setObjValues(data,newProperty) {
       Object.keys(data).forEach(function(key){ data[key] = newProperty });
     },
 
-    calculateTotalSum() {
-      this.nullDzoTotalData();
-      let self = this;
-      _.map(this.dzoCompanyData, function(company) {
-        self.dzoCompanyTotalData.plan += company.planMonth;
-        self.dzoCompanyTotalData.fact += company.factMonth;
-        self.dzoCompanyTotalData.periodPlan += company.periodPlan;
+    calculateDzoCompaniesSummary() {
+      this.setInitialDzoCompaniesSummary();
+      let dzoCompaniesSummaryTemporary = this.dzoCompaniesSummary;
+      _.map(this.dzoCompanySummary, function(company) {
+        dzoCompaniesSummaryTemporary.plan += company.planMonth;
+        dzoCompaniesSummaryTemporary.fact += company.factMonth;
+        dzoCompaniesSummaryTemporary.periodPlan += company.periodPlan;
       });
 
-      self.dzoCompanyTotalData.difference = self.formatDigitToThousand(
-          self.dzoCompanyTotalData.plan - self.dzoCompanyTotalData.fact);
-      self.dzoCompanyTotalData.percent = new Intl.NumberFormat("ru-RU")
-          .format(Math.abs((self.dzoCompanyTotalData.plan - self.dzoCompanyTotalData.fact) /
-          self.dzoCompanyTotalData.fact * 100).toFixed(1));
-      self.dzoCompanyTotalData.plan = self.formatDigitToThousand(self.dzoCompanyTotalData.plan);
-      self.dzoCompanyTotalData.fact = self.formatDigitToThousand(self.dzoCompanyTotalData.fact);
-      self.dzoCompanyTotalData.periodPlan = self.formatDigitToThousand(self.dzoCompanyTotalData.periodPlan);
+      dzoCompaniesSummaryTemporary.difference = this.formatDigitToThousand(
+          dzoCompaniesSummaryTemporary.plan - dzoCompaniesSummaryTemporary.fact);
+      dzoCompaniesSummaryTemporary.percent = new Intl.NumberFormat("ru-RU")
+          .format(Math.abs((dzoCompaniesSummaryTemporary.plan - dzoCompaniesSummaryTemporary.fact) /
+              dzoCompaniesSummaryTemporary.fact * 100).toFixed(1));
+      dzoCompaniesSummaryTemporary.plan = this.formatDigitToThousand(dzoCompaniesSummaryTemporary.plan);
+      dzoCompaniesSummaryTemporary.fact = this.formatDigitToThousand(dzoCompaniesSummaryTemporary.fact);
+      dzoCompaniesSummaryTemporary.periodPlan = this.formatDigitToThousand(dzoCompaniesSummaryTemporary.periodPlan);
+      this.dzoCompaniesSummary = dzoCompaniesSummaryTemporary;
     },
 
     getDzoColumnsClass(rowIndex, columnName) {
@@ -647,7 +647,7 @@ export default {
           formatInput: true,
         };
         this.changeDate();
-        this.calculateTotalSum();
+        this.calculateDzoCompaniesSummary();
       } else {
         this.buttonDailyTab = "";
       }
@@ -1306,6 +1306,8 @@ export default {
               var productionForChart = this.getProductionForChart(dataWithMay, item6);
             }
 
+          //TODO вывод данных в таблицу и на чарт
+
             var dataWithMayLast = [];
             this.getProductionPercentWells(arrdata);
 
@@ -1439,6 +1441,8 @@ export default {
 
             var productionForChart = this.getProductionForChart(dataWithMay, item6);
           }
+
+          //TODO заполнение таблицы и чарта для одного ДЗО datawithmay - период за который вывести
 
           //Summ plan and fact from dzo k1q for month!!!
           var productionPlanAndFactMonth = _(dataWithMay)
@@ -1981,65 +1985,6 @@ export default {
       this.inj_wells_workPercent = productionPlanAndFactMonthWells[0]['inj_wells_work'];
       this.prod_wells_workPercent = productionPlanAndFactMonthWells[0]['prod_wells_work'];
       this.prod_wells_idlePercent = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
-
-      /*
-       dataWithMay = _.filter(data, function (item) {
-         return _.every([
-           _.inRange(
-             item.__time,
-             timestampToday - quantityRange * 86400000,
-             (timestampToday - (quantityRange * 86400000)) + 86400000
-           ),
-         ]);
-       });
-
-
-         if (inj_wells_idle) {
-         inj_wells_idle = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.inj_wells_idle;
-           },
-           0
-         );
-         this.inj_wells_idlePercent = inj_wells_idle;
-       }
-
-       if (inj_wells_work) {
-         inj_wells_work = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.inj_wells_work;
-           },
-           0
-         );
-         this.inj_wells_workPercent = inj_wells_work;
-       }
-
-       if (prod_wells_work) {
-         prod_wells_work = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.prod_wells_work;
-           },
-           0
-         );
-         this.prod_wells_workPercent = prod_wells_work;
-       }
-
-       if (prod_wells_idle) {
-         prod_wells_idle = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.prod_wells_idle;
-           },
-           0
-         );
-
-         this.prod_wells_idlePercent = prod_wells_idle;
-       }
-
-       */
     },
 
 
@@ -2874,8 +2819,8 @@ export default {
   },
   watch: {
     bigTable: function() {
-      this.dzoCompanyData = this.bigTable;
-      this.calculateTotalSum();
+      this.dzoCompanySummary = this.bigTable;
+      this.calculateDzoCompaniesSummary();
     }
   },
   computed: {

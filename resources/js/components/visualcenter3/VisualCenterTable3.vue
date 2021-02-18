@@ -817,11 +817,11 @@
               {{ trans("visualcenter.dzoAllCompany") }}
               <div
                       class="arrow-down"
-                      @click="`${changeDzoCompanyListVisibility()}`"
+                      @click="`${changeDzoCompaniesVisibility()}`"
               ></div>
               <div>
                 <ul
-                        :class="dzoCompanyListVisibility === true ? 'show-company-list' : 'hide-company-list'"
+                        :class="dzoCompaniesVisibility === true ? 'show-company-list' : 'hide-company-list'"
                   >
                   <li
                           class="px-4"
@@ -829,13 +829,13 @@
                     <div>
                       <input
                               type="checkbox"
-                              @click="`${selectAllDzoCompany()}`"
+                              @click="`${selectDzoCompanies()}`"
                       ></input>
                       {{trans("visualcenter.dzoAllCompany")}}
                     </div>
                   </li>
                   <li
-                          v-for="(company) in dzoCompanyList"
+                          v-for="(company) in dzoCompanies"
                           class="px-4"
                   >
                     <div>
@@ -1218,7 +1218,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(item, index) in dzoCompanyData">
+                  <tr v-for="(item, index) in dzoCompanySummary">
                     <td
                       @click="saveCompany(item.dzoMonth)"
                       :class="index % 2 === 0 ? 'tdStyle' : ''"
@@ -1362,7 +1362,7 @@
                       "
                     >
                       <div class="font">
-                        {{dzoCompanyTotalData.periodPlan}}
+                        {{dzoCompaniesSummary.periodPlan}}
                       </div>
                     </td>
 
@@ -1373,7 +1373,7 @@
                       "
                     >
                       <div class="font">
-                        {{dzoCompanyTotalData.periodPlan}}
+                        {{dzoCompaniesSummary.periodPlan}}
                       </div>
                     </td>
 
@@ -1381,7 +1381,7 @@
                       :class="`${getLighterClass(index)}`"
                     >
                       <div class="font">
-                        {{dzoCompanyTotalData.plan}}
+                        {{dzoCompaniesSummary.plan}}
                         <div
                           class="right"
                         >
@@ -1394,7 +1394,7 @@
                             :class="`${getDarkerClass(index)}`"
                     >
                       <div class="font">
-                        {{dzoCompanyTotalData.fact}}
+                        {{dzoCompaniesSummary.fact}}
                         <div
                           class="right"
                         >
@@ -1414,7 +1414,7 @@
                         "
                       ></div>
                       <div class="font dynamic">
-                        {{dzoCompanyTotalData.difference}}
+                        {{dzoCompaniesSummary.difference}}
                         <div
                           class="right"
                         >
@@ -1433,7 +1433,7 @@
                         "
                       ></div>
                       <div class="font dynamic" v-if="factMonthSumm">
-                        {{dzoCompanyTotalData.percent}}
+                        {{dzoCompaniesSummary.percent}}
                       </div>
                     </td>
                     <td
