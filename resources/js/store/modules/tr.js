@@ -33,6 +33,26 @@ const tr = {
     SET_SORTPARAM: (state, val) => {
       state.sortParam = val;
     },
+
+
+    SET_DYN_YEAR_START: (state, val) => {
+      state.year_dyn_start = val;
+    },
+    SET_DYN_YEAR_END: (state, val) => {
+      state.year_dyn_end = val;
+    },
+    SET_DYN_MONTH_START: (state, val) => {
+      state.month_dyn_start = val;
+    },
+    SET_DYN_MONTH_END: (state, val) => {
+      state.month_dyn_end = val;
+    },
+    SET_DYN_DAY_START: (state, val) => {
+      state.day_dyn_start = val;
+    },
+    SET_DYN_DAY_END: (state, val) => {
+      state.day_dyn_end = val;
+    },
   },
 
   actions: {

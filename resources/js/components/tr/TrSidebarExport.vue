@@ -55,6 +55,12 @@ export default {
           filter: this.$store.getters["tr/filter"],
           sortType: this.$store.getters["tr/sortType"],
           sortParam: this.$store.getters["tr/sortParam"],
+          year_dyn_start: this.$store.getters["tr/year_dyn_start"],
+          year_dyn_end:  this.$store.getters["tr/year_dyn_end"],
+          month_dyn_start: this.$store.getters["tr/month_dyn_start"],
+          month_dyn_end:  this.$store.getters["tr/month_dyn_end"],
+          day_dyn_start: this.$store.getters["tr/day_dyn_start"],
+          day_dyn_end:  this.$store.getters["tr/day_dyn_end"],
         }
       );
     },
