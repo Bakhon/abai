@@ -8,7 +8,7 @@ use App\Models\BigData\Well;
 
 class WellRegister extends BaseForm
 {
-    protected $json = 'well_register';
+    protected $configurationFileName = 'well_register';
 
     public function submit(): \Illuminate\Database\Eloquent\Model
     {
