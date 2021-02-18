@@ -113,7 +113,7 @@ class MapsController extends Controller
         return response()->json(
             [
                 'gu' => $gu,
-                'status' => 'success',
+                'status' => config('response.status.success'),
             ]
         );
     }
@@ -129,7 +129,7 @@ class MapsController extends Controller
         return response()->json(
             [
                 'zu' => $zu,
-                'status' => 'success',
+                'status' => config('response.status.success'),
             ]
         );
     }
@@ -153,7 +153,7 @@ class MapsController extends Controller
         return response()->json(
             [
                 'well' => $well,
-                'status' => 'success',
+                'status' => config('response.status.success'),
             ]
         );
     }
