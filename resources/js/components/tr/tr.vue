@@ -7358,6 +7358,13 @@ export default {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
         this.$store.commit("globalloading/SET_LOADING", true);
+        this.$store.commit("fa/SET_DYN_MONTH_END", mm);
+        this.$store.commit("fa/SET_DYN_YEAR_END", yyyy);
+        this.$store.commit("fa/SET_DYN_DAY_END", dd);
+        this.$store.commit("fa/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("fa/SET_DYN_YEAR_START", pryyyy);
+        this.$store.commit("fa/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("fa/SET_DYN_DAY_START", prdd);
         this.axios
           .get(
             "http://172.20.103.187:7576/api/techregime/dynamic/" +

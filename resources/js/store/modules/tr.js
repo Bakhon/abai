@@ -9,6 +9,12 @@ const tr = {
     filter: "Все месторождения",
     sortType: "asc",
     sortParam: "",
+    year_dyn_start: false,
+    year_dyn_end: false,
+    month_dyn_start: false,
+    month_dyn_end: false,
+    day_dyn_start: false,
+    day_dyn_end: false,
   },
 
   mutations: {
@@ -32,9 +38,7 @@ const tr = {
     },
     SET_SORTPARAM: (state, val) => {
       state.sortParam = val;
-    },
-
-
+    },  
     SET_DYN_YEAR_START: (state, val) => {
       state.year_dyn_start = val;
     },
@@ -66,6 +70,14 @@ const tr = {
     filter: (state) => state.filter,
     sortType: (state) => state.sortType,
     sortParam: (state) => state.sortParam,
+
+
+    year_dyn_start: (state) => state.year_dyn_start,
+    year_dyn_end: (state) => state.year_dyn_end,
+    month_dyn_start: (state) => state.month_dyn_start,
+    month_dyn_end: (state) => state.month_dyn_end,
+    day_dyn_start: (state) => state.day_dyn_start,
+    day_dyn_end: (state) => state.day_dyn_end,
   },
 };
 
