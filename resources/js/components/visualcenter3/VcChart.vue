@@ -4,59 +4,59 @@ const { reactiveProp } = mixins;
 
 export default {
   extends: Line,
+    data: function () {
+      return {
+          monthMapping : [
+              // "Янв",
+              this.trans("visualcenter.jan"),
+              // "Фев",
+              this.trans("visualcenter.feb"),
+              // "Мар",
+              this.trans("visualcenter.mar"),
+              // "Апр",
+              this.trans("visualcenter.apr"),
+              // "Май",
+              this.trans("visualcenter.may"),
+              // "Июн",
+              this.trans("visualcenter.june"),
+              // "Июл",
+              this.trans("visualcenter.july"),
+              // "Авг",
+              this.trans("visualcenter.aug"),
+              // "Сен",
+              this.trans("visualcenter.sept"),
+              // "Окт",
+              this.trans("visualcenter.oct"),
+              // "Ноя",
+              this.trans("visualcenter.nov"),
+              // "Дек",
+              this.trans("visualcenter.dec"),
+          ],
+      }
+    },
   methods: {
-    setValue: function (value) {
-      let opec = value[1]["opec"];
+      updateChartOptions: function (chartSummary) {
+      let opec = chartSummary.opec;
       let color1;
       let color2;
       let plan1;
       let plan2;
-      let productionFactForChart = [];
-      let productionPlanForChart = [];
-      let productionPlanForChart2 = [];
-      let labels = [];
       let datasets;
-      const monthNames = [
-        // "Янв",
-        this.trans("visualcenter.jan"),
-        // "Фев",
-        this.trans("visualcenter.feb"),
-        // "Мар",
-        this.trans("visualcenter.mar"),
-        // "Апр",
-        this.trans("visualcenter.apr"),
-        // "Май",
-        this.trans("visualcenter.may"),
-        // "Июн",
-        this.trans("visualcenter.june"),
-        // "Июл",
-        this.trans("visualcenter.july"),
-        // "Авг",
-        this.trans("visualcenter.aug"),
-        // "Сен",
-        this.trans("visualcenter.sept"),
-        // "Окт",
-        this.trans("visualcenter.oct"),
-        // "Ноя",
-        this.trans("visualcenter.nov"),
-        // "Дек",
-        this.trans("visualcenter.dec"),
-      ];
 
-      //console.log(value[0]["productionForChart"]);
-      _.forEach(value[0]["productionForChart"], function (item, key) {
-        let date = new Date(Number(item.time));
-        labels.push(
-          date.getDate() +
-            " / " +
-            monthNames[date.getMonth()] +
-            " / " +
-            date.getFullYear()
-        );
-        productionFactForChart.push(item.productionFactForChart);
-        productionPlanForChart.push(item.productionPlanForChart);
-        productionPlanForChart2.push(item.productionPlanForChart2);
+      let formattedChartSummary = {
+          plan: [],
+          fact: [],
+          planOpec: [],
+          labels: []
+      };
+      let self = this;
+      _.forEach(chartSummary.dzoCompaniesSummaryForChart, function (item) {
+          formattedChartSummary.labels.push(self.getFormattedDate(item.time));
+          formattedChartSummary.plan.push(item.productionPlanForChart);
+          formattedChartSummary.fact.push(item.productionFactForChart);
+          formattedChartSummary.planOpec.push(item.productionPlanForChart2);
       });
+
       let canvas = document.getElementById("line-chart");
       let ctx = canvas.getContext("2d", { antialias: false, depth: false });
       ctx.fillStyle = "transparent";
@@ -86,7 +86,6 @@ export default {
 
         return ctx.createPattern(tmpCanvas, "repeat");
       })();
-      // console.log("test");
 
       if (opec === "ОПЕК+") {
         color1 = "#fff";
@@ -109,45 +108,45 @@ export default {
         plan2 = this.trans("visualcenter.planOPEK");
         // "План ОПЕК+";
       }
-      let datasets1 = {
+      let planChartOptions = {
         label: plan1,
         borderColor: color1,
         fill: 1,
         backgroundColor: fillPattern,
         showLine: true,
-        data: productionPlanForChart,
+        data: formattedChartSummary.plan,
         pointRadius: 0,
       };
-      let datasets2 = {
+      let factChartOptions = {
         label: this.trans("visualcenter.Fact"),
         // "Факт",
         borderColor: "#9EA4C9",
         fill: false,
         showLine: true,
-        data: productionFactForChart,
+        data: formattedChartSummary.fact,
         pointRadius: 0,
       };
 
-      let datasets3 = {
+      let planOpecChartOptions = {
         label: plan2,
         borderColor: color2,
         fill: false,
         backgroundColor: fillPattern,
         showLine: true,
-        data: productionPlanForChart2,
+        data: formattedChartSummary.planOpec,
         pointRadius: 0,
       };
 
       if (opec === "ОПЕК+") {
-        datasets = [datasets1, datasets2, datasets3];
+          datasets = [planChartOptions, factChartOptions, planOpecChartOptions];
       } else {
-        datasets = [datasets1, datasets2];
+          datasets = [planChartOptions, factChartOptions];
       }
 
       this.renderChart(
         {
-          labels: labels,
-          datasets,
+          labels: formattedChartSummary.labels,
+            datasets,
         },
         {
           responsive: true,
@@ -197,8 +196,6 @@ export default {
                       num = 0;
                     }
                     return new Intl.NumberFormat("ru-RU").format(num);
-
-                    // return Math.round(value / 100);
                   },
                 },
               },
@@ -214,9 +211,13 @@ export default {
         }
       );
     },
+      getFormattedDate(timestamp) {
+          let date = new Date(Number(timestamp));
+          return date.getDate() + " / " + this.monthMapping[date.getMonth()] + " / " + date.getFullYear();
+      },
   },
   created: function () {
-    this.$parent.$on("data", this.setValue);
+    this.$parent.$on("data", this.updateChartOptions);
   },
 };
 </script>

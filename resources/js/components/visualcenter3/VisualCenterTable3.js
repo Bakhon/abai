@@ -3,7 +3,7 @@ import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import { isString } from "lodash";
-import dzoCompaniesInitial from './dzo_company_list.json';
+import dzoCompaniesInitial from './dzo_companies_initial.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 export default {
@@ -186,7 +186,6 @@ export default {
       item2: "oil_fact",
       item3: "Добыча нефти",
       item4: "тонн",
-      productionForChart: "",
       tables: "",
       showTable2: "Yes",
       displayChart: "display: none;",
@@ -354,14 +353,17 @@ export default {
       dzoCompanyAllSelected: false,
       buttonDzoDropdown: "",
       dzoCompanySummary: this.bigTable,
-      dzoCompaniesSummary: {
+      dzoCompaniesSummaryInitial: {
         plan: 0,
         periodPlan: 0,
         fact: 0,
         difference: 0,
         percent: 0,
       },
+      dzoCompaniesSummary: {},
       dzoCompaniesVisibility: false,
+      dzoCompanyDecomposition: true,
+      dzoCompaniesSummaryForChart: {},
     };
   },
   methods: {
@@ -369,18 +371,55 @@ export default {
       this.dzoCompaniesVisibility = !this.dzoCompaniesVisibility;
     },
 
-    selectDzoCompanies() {
-      let self = this;
-      self.dzoCompanyAllSelected = !self.dzoCompanyAllSelected;
-      self.buttonDzoDropdown = self.buttonNormalTab;
-      _.map(this.dzoCompanies, function(company) {
-        company.selected = self.dzoCompanyAllSelected;
-      });
-      self.dzoCompanySummary = self.bigTable;
-      self.calculateDzoCompaniesSummary();
+    selectAllDzoCompanies() {
+      this.selectDzoCompanies();
     },
 
-    selectDzoCompany(inputStatus,companyTicker) {
+    selectDzoCompanies() {
+      this.selectCompany('all');
+      this.dzoCompanyDecomposition = true;
+      this.dzoCompanyAllSelected = true;
+      this.buttonDzoDropdown = this.buttonNormalTab;
+      _.map(this.dzoCompanies, function(company) {
+        company.selected = true;
+      });
+      this.dzoCompanySummary = this.bigTable;
+      this.calculateDzoCompaniesSummary();
+    },
+
+    calculateDzoCompaniesSummary() {
+      let summary = this.dzoCompaniesSummaryInitial;
+      _.map(this.dzoCompanySummary, function(company) {
+        summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
+        summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
+        summary.periodPlan = parseInt(summary.periodPlan) + parseInt(company.periodPlan);
+      });
+      summary.difference = this.formatDigitToThousand(
+          summary.plan - summary.fact);
+      summary.percent = new Intl.NumberFormat("ru-RU")
+          .format(((summary.plan - summary.fact) /
+              summary.fact * 100).toFixed(1));
+      summary.plan = this.formatDigitToThousand(summary.plan);
+      summary.fact = this.formatDigitToThousand(summary.fact);
+      summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
+      this.dzoCompaniesSummary = summary;
+    },
+
+    selectOneDzoCompany(companyTicker) {
+      this.disableDzoCompaniesVisibility();
+      this.selectDzoCompany(companyTicker);
+    },
+
+    disableDzoCompaniesVisibility() {
+      _.forEach(this.dzoCompanies, function (dzo) {
+        _.set(dzo, 'selected', false);
+      });
+    },
+
+
+
+    selectDzoCompany(companyTicker) {
+      this.selectCompany(companyTicker);
       this.dzoCompanyAllSelected = false;
       _.map(this.dzoCompanies, function(company) {
         if (company.ticker === companyTicker) {
@@ -389,35 +428,13 @@ export default {
       });
       let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
       this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
+      if (this.dzoCompanySummary.length === 1) {
+        this.dzoCompanyDecomposition = false;
+      } else {
+        this.dzoCompanyDecomposition = true;
+      }
+      console.log(JSON.stringify(this.dzoCompanySummary));
       this.calculateDzoCompaniesSummary();
-    },
-
-    setInitialDzoCompaniesSummary() {
-      this.setObjValues(this.dzoCompaniesSummary,0);
-    },
-
-    setObjValues(data,newProperty) {
-      Object.keys(data).forEach(function(key){ data[key] = newProperty });
-    },
-
-    calculateDzoCompaniesSummary() {
-      this.setInitialDzoCompaniesSummary();
-      let dzoCompaniesSummaryTemporary = this.dzoCompaniesSummary;
-      _.map(this.dzoCompanySummary, function(company) {
-        dzoCompaniesSummaryTemporary.plan += company.planMonth;
-        dzoCompaniesSummaryTemporary.fact += company.factMonth;
-        dzoCompaniesSummaryTemporary.periodPlan += company.periodPlan;
-      });
-
-      dzoCompaniesSummaryTemporary.difference = this.formatDigitToThousand(
-          dzoCompaniesSummaryTemporary.plan - dzoCompaniesSummaryTemporary.fact);
-      dzoCompaniesSummaryTemporary.percent = new Intl.NumberFormat("ru-RU")
-          .format(Math.abs((dzoCompaniesSummaryTemporary.plan - dzoCompaniesSummaryTemporary.fact) /
-              dzoCompaniesSummaryTemporary.fact * 100).toFixed(1));
-      dzoCompaniesSummaryTemporary.plan = this.formatDigitToThousand(dzoCompaniesSummaryTemporary.plan);
-      dzoCompaniesSummaryTemporary.fact = this.formatDigitToThousand(dzoCompaniesSummaryTemporary.fact);
-      dzoCompaniesSummaryTemporary.periodPlan = this.formatDigitToThousand(dzoCompaniesSummaryTemporary.periodPlan);
-      this.dzoCompaniesSummary = dzoCompaniesSummaryTemporary;
     },
 
     getDzoColumnsClass(rowIndex, columnName) {
@@ -464,7 +481,7 @@ export default {
       }
     },
 
-    saveCompany(com) {
+    selectCompany(com) {
       this.company = com;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
@@ -1218,7 +1235,6 @@ export default {
 
 
 
-
       this.circleMenu = item3;
 
       var company = this.company;
@@ -1232,7 +1248,7 @@ export default {
 
       this.axios.get(uri).then((response) => {
         let data = response.data;
-        if (data) {
+        if (Object.keys(data).length > 0) {
           var NameDzoFull = this.NameDzoFull;
           var company = this.company;
           var summForTables = [];
@@ -1240,7 +1256,6 @@ export default {
           if (company != "all") {
             var arrdata = new Array();
             arrdata = _.filter(data, _.iteratee({ dzo: company }));
-
 
             //get data by Month
             var dataWithMay = new Array();
@@ -1261,7 +1276,6 @@ export default {
             );
 
 
-
             this.getProductionPercentCovid(dataWithMay);
             let covid = _.reduce(
               dataWithMay,
@@ -1272,7 +1286,6 @@ export default {
             );
 
             this.covid = covid;
-
             this.WellsDataAll = this.WellsData(dataWithMay);
             this.innerWells = this.innerWellsNagData(dataWithMay, this.innerWellsButtonProstoi);
             this.innerWellsChartData = this.innerWellsNagChartData(dataWithMay, this.innerWellsButtonProstoi);
@@ -1300,20 +1313,19 @@ export default {
                 ["__time"],
                 ["asc"]
               );
-              var productionForChart = this.getProductionForChart(dataWithMay3, item6);
 
+              this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay3, item6);
             } else {
-              var productionForChart = this.getProductionForChart(dataWithMay, item6);
+
+              this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay, item6);
             }
 
-          //TODO вывод данных в таблицу и на чарт
-
             var dataWithMayLast = [];
+
             this.getProductionPercentWells(arrdata);
 
             if (this.company != "all") {
-              this.$store.commit('globalloading/SET_LOADING', false);
-              this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
+              this.exportDzoCompaniesSummaryForChart();
             }
 
             let accident;
@@ -1337,13 +1349,13 @@ export default {
               }))
               .value();
 
-
             if ((summForTables['0']['productionFactForMonth'] + summForTables['0']['productionPlanForMonth']) === 0) {
               this.noData = "Данных нет";
               this.company = "all";
               this.getProduction(item, item2, item3, item4, item5, this.nameChartLeft);
-            } else { this.noData = ""; }
-
+            } else {
+              this.noData = "";
+            }
             this.tables = summForTables;
           }
 
@@ -1382,15 +1394,14 @@ export default {
           } else {
             this.buttonHover6 = "";
           }
-
         } else {
           console.log("No data");
         }
-
         //bigtable
         //year
+
+        this.$store.commit('globalloading/SET_LOADING', false);
         if (this.company == "all") {
-          this.$store.commit('globalloading/SET_LOADING', false);
           var dataDay = [];
           var dataYear = [];
           var dzo = [];
@@ -1435,14 +1446,10 @@ export default {
               ["asc"]
             );
 
-            var productionForChart = this.getProductionForChart(dataWithMay2, item6);
-
+            this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay2, item6);
           } else {
-
-            var productionForChart = this.getProductionForChart(dataWithMay, item6);
+            this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay, item6);
           }
-
-          //TODO заполнение таблицы и чарта для одного ДЗО datawithmay - период за который вывести
 
           //Summ plan and fact from dzo k1q for month!!!
           var productionPlanAndFactMonth = _(dataWithMay)
@@ -1741,7 +1748,6 @@ export default {
           this.planDaySumm = planDaySumm;
 
 
-
           let personalFact = _.reduce(
             dataDay,
             function (memo, item) {
@@ -1861,65 +1867,35 @@ export default {
             })
 
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
-
-          this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
-
-          productionForChart = { data: productionForChart };
-          this.productionForChart = productionForChart;
+          this.clearNullAccidentCases();
+          this.exportDzoCompaniesSummaryForChart();
         }
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
 
       });
-      this.showTable(localStorage.getItem("changeButton"));
+    },
 
+    clearNullAccidentCases() {
+      _.forEach(this.bigTable, function(item) {
+        item.accident = item.accident.replace(/null/g,'');
+        item.restrictions = item.restrictions.replace(/null/g,'');
+      })
+    },
 
+    exportDzoCompaniesSummaryForChart() {
+      this.$store.commit('globalloading/SET_LOADING', false);
+      this.$emit("data", {
+        dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
+        opec: this.opec,
+      });
     },
 
     filterDzoInputForSeparateCompany(data,company) {
         return _.filter(data, function(item) {
-          return (item.dzo === company && item.accident !== null);
+          return (item.dzo === company);
         })
     },
-
-    getProductionPercentOneDzo(data) {
-      var timestampToday = this.timestampToday;
-      var timestampEnd = this.timestampEnd
-      var quantityRange = this.quantityRange;
-
-
-      var productionPlan = localStorage.getItem("production-plan");
-      var productionFact = localStorage.getItem("production-fact");
-
-
-
-
-      var dataWithMay = new Array();
-      dataWithMay = _.filter(data, function (item) {
-        return _.every([
-          _.inRange(
-            item.__time,
-            timestampToday - quantityRange * 86400000,
-            timestampToday
-          ),
-        ]);
-      });
-
-
-      var productionForChart = _(dataWithMay)
-        .groupBy("dzo")
-        .map((dzo, id) => ({
-          dzoPercent: id,
-          productionFactPercent: _.round(_.sumBy(dzo, productionFact), 0),
-          productionPlanPercent: _.round(_.sumBy(dzo, productionPlan), 0),
-        }))
-        .value();
-      this.productionFactPercentOneDzo = productionForChart[0]['productionFactPercent'];
-
-    },
-
-
-
 
     getProductionPercentCovid(data) {
       var timestampToday = this.timestampToday;
@@ -2015,7 +1991,7 @@ export default {
       });
 
 
-      var productionForChart = _(dataWithMay)
+      return _(dataWithMay)
         .groupBy("dzo")
         .map((dzo, id) => ({
           dzoPercent: id,
@@ -2023,7 +1999,6 @@ export default {
           productionPlanPercent: _.round(_.sumBy(dzo, productionPlan), 0),
         }))
         .value();
-      return productionForChart;
     },
 
     changeButton(showTableItem, changeButton) {
@@ -2054,7 +2029,6 @@ export default {
         this.displayChart = "display:none;";
 
         if (this.company == "all") {
-          this.displayHeadTables = "d-flex";
           this.displayTable = "display:none;";
         } else {
           this.displayTable = "d-flex;";
@@ -2063,7 +2037,6 @@ export default {
         this.showTableOn = "";
       } else if (showTableItem == "No") {
         this.displayTable = "display:none;";
-        this.displayHeadTables = "display: none";
         this.displayChart = "display:block;";
         this.ChartTable = "Таблица";
 
@@ -2119,13 +2092,12 @@ export default {
           prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
         }))
         .value();
-
       var productionPlanAndFactMonthWellsName = [];
 
-      this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
-      this.inj_wells_work = productionPlanAndFactMonthWells[0]['inj_wells_work'];
-      this.prod_wells_work = productionPlanAndFactMonthWells[0]['prod_wells_work'];
-      this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
+      // this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
+      // this.inj_wells_work = productionPlanAndFactMonthWells[0]['inj_wells_work'];
+      // this.prod_wells_work = productionPlanAndFactMonthWells[0]['prod_wells_work'];
+      // this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
 
     },
 
@@ -2620,7 +2592,8 @@ export default {
 
       let productionPlan = localStorage.getItem("production-plan");
       let productionFact = localStorage.getItem("production-fact");
-      let productionForChart = _(dataWithMay)
+
+      return _(dataWithMay)
         .groupBy("__time")
         .map((__time, id) => ({
           time: id,
@@ -2630,7 +2603,6 @@ export default {
           productionPlanForChart2: _.round(_.sumBy(__time, plan2), 0),
         }))
         .value();
-      return productionForChart;
     },
 
     getQuarter(d) {
@@ -2821,7 +2793,7 @@ export default {
     bigTable: function() {
       this.dzoCompanySummary = this.bigTable;
       this.calculateDzoCompaniesSummary();
-    }
+    },
   },
   computed: {
     exactDateSelected() {

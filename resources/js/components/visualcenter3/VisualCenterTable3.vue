@@ -828,6 +828,8 @@
                   >
                     <div>
                       <input
+                              :disabled="dzoCompanyAllSelected"
+                              :checked="dzoCompanyAllSelected"
                               type="checkbox"
                               @click="`${selectDzoCompanies()}`"
                       ></input>
@@ -841,8 +843,8 @@
                     <div>
                       <input
                               type="checkbox"
-                              :checked=company.selected
-                              @change="`${selectDzoCompany($event.target.checked,company.ticker)}`"
+                              :checked="company.selected"
+                              @change="`${selectDzoCompany(company.ticker)}`"
                       ></input>
                       {{trans(company.companyName)}}
                     </div>
@@ -965,193 +967,8 @@
        </div>-->
           </div>
 
-          <div class="row container-fluid" :style="`${displayTable}`">
-            <div class="vis-table px-3">
-              <table class="table4 w-100">
-                <tbody>
-                  <tr v-for="(item, index) in tables">
-                    <td
-                      @click="saveCompany('all')"
-                      :class="index % 2 === 0 ? 'tdStyle' : 'tdNone first-td'"
-                      style="cursor: pointer"
-                    >
-                      <span>{{ getNameDzoFull(item.dzo) }}</span>
-                    </td>
 
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
-                    >
-                      <div v-if="index === 0" class="center">
-                        <!--план-->{{ trans("visualcenter.plan") }} {{ opec }}
-                      </div>
-                      <!--old date-->
-                      <div class="font">
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            item.productionPlanForMonth
-                          )
-                        }}
-                        <div
-                          class="right"
-                        >
-                          {{ thousand }}{{ item4 }}
-                        </div>
-                      </div>
-
-                      <div class="font" v-if="item.planYear">
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(item.planYear)
-                        }}
-                        <div
-                          class="right"
-                        >
-                          {{ thousand }}{{ item4 }}
-                        </div>
-                      </div>
-                      <!--old date-->
-
-                      <div class="font" v-if="item.plan">
-                        {{ new Intl.NumberFormat("ru-RU").format(item.plan) }}
-                        <div
-                          class="right"
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
-                      </div>
-                    </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div v-if="index === 0" class="center">
-                        <!-- факт -->{{ trans("visualcenter.fact") }}
-                      </div>
-                      <div class="font">
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            item.productionFactForMonth
-                          )
-                        }}
-                        <div
-                          class="right"
-                        >
-                          {{ thousand }}{{ item4 }}
-                        </div>
-                      </div>
-
-                      <div class="font" v-if="item.factYear">
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(item.factYear)
-                        }}
-                        <div
-                          class="right"
-                        >
-                          {{ thousand }}{{ item4 }}
-                        </div>
-                      </div>
-                      <!--old date-->
-
-                      <div class="font" v-if="item.fact">
-                        {{ new Intl.NumberFormat("ru-RU").format(item.fact) }}
-                        <div
-                          class="right"
-                        >
-                          {{ thousand }}{{ item4 }}
-                        </div>
-                      </div>
-                    </td>
-                    <td
-                      :class="
-                        index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                      "
-                    >
-                      <div v-if="index === 0" class="center">+/-</div>
-                      <div
-                        :class="
-                          item.productionFactForMonth -
-                          item.productionPlanForMonth < 0 ?
-                          'triangle fall-indicator-production-data' :
-                          'triangle growth-indicator-production-data'
-                        "
-                      ></div>
-                      <div
-                        class="dynamic font"
-                      >
-                        {{
-                          new Intl.NumberFormat("ru-RU").format(
-                            Math.abs(
-                              item.productionFactForMonth -
-                                item.productionPlanForMonth
-                            )
-                          )
-                        }}
-                        <div
-                          class="right"
-                        >
-                          {{ thousand }} {{ item4 }}
-                        </div>
-                      </div>
-                    </td>
-                    <td :class="index % 2 === 0 ? 'tdStyle' : 'tdNone'">
-                      <div v-if="index === 0" class="center">%</div>
-                      <div
-                        v-if="item.productionFactForMonth"
-                        :class="
-                          ((item.productionFactForMonth -
-                            item.productionPlanForMonth) /
-                            item.productionPlanForMonth) * 100 < 0 ?
-                            'triangle fall-indicator-production-data' :
-                            'triangle growth-indicator-production-data'
-                        "
-                      ></div>
-                      <div class="dynamic font">
-                           {{
-                        formatVisTableNumber3 (item.productionFactForMonth , item.productionPlanForMonth)
-                        }}
-                        %
-
-
-
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div
-                v-for="(item, index) in tables"
-                colspan="5"
-                style="
-                  background: rgb(54, 59, 104);
-                  height: 35em;
-                  border-top: 5px solid #272953;
-                "
-              >
-                <div class="mt-3 text-center">Текст причины</div>
-                <div class="ml-3">
-                  <div class="mt-2" v-if="item.opec">{{ item.opec }}</div>
-                  <div class="mt-2" v-if="item.impulses">
-                    {{ item.impulses }}
-                  </div>
-                  <div class="mt-2" v-if="item.landing">{{ item.landing }}</div>
-                  <div class="mt-2" v-if="item.accident">
-                    {{ item.accident }}
-                  </div>
-                  <div class="mt-2" v-if="item.restrictions">
-                    {{ item.restrictions }}
-                  </div>
-                  <div class="mt-2" v-if="item.otheraccidents">
-                    {{ item.otheraccidents }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="vis-chart pl-3">
-              <div class="name-chart-left">{{ nameChartLeft }}</div>
-              <div class="name-chart-head">{{ item3 }}</div>
-              <vc-chart v-if="company != 'all'"> </vc-chart>
-            </div>
-          </div>
-          <div class="row container-fluid" :style="`${displayHeadTables}`">
+          <div class="row container-fluid mh-60">
             <div class="vis-table px-3" :style="scroll">
               <table v-if="bigTable.length" class="table4 w-100">
                 <thead>
@@ -1161,25 +978,70 @@
                             v-if="buttonMonthlyTab"
                     >
                       {{ trans("visualcenter.dzoMonthlyPlan") }}
-                      {{ trans("visualcenter.dzoThousandTon") }}
+                      <div
+                              v-if="currentDzoList !== 'daily'"
+                      >
+                        {{ trans("visualcenter.dzoThousandTon") }}
+                      </div>
+                      <div
+                              v-if="currentDzoList === 'daily'"
+                      >
+                        {{ trans("visualcenter.chemistryMetricTon") }}
+                      </div>
                     </th>
                     <th
                             v-if="buttonYearlyTab"
                     >
                       {{ trans("visualcenter.dzoYearlyPlan") }}
-                      {{ trans("visualcenter.dzoThousandTon") }}
+                      <div
+                              v-if="currentDzoList !== 'daily'"
+                      >
+                        {{ trans("visualcenter.dzoThousandTon") }}
+                      </div>
+                      <div
+                              v-if="currentDzoList === 'daily'"
+                      >
+                        {{ trans("visualcenter.chemistryMetricTon") }}
+                      </div>
                     </th>
                     <th>
                       {{ trans("visualcenter.plan") }}
-                      {{ trans("visualcenter.dzoThousandTon") }}
+                      <div
+                              v-if="currentDzoList !== 'daily'"
+                      >
+                        {{ trans("visualcenter.dzoThousandTon") }}
+                      </div>
+                      <div
+                              v-if="currentDzoList === 'daily'"
+                      >
+                        {{ trans("visualcenter.chemistryMetricTon") }}
+                      </div>
                     </th>
                     <th>
-                      {{ trans("visualcenter.fact") }}<br>
-                      {{ trans("visualcenter.dzoThousandTon") }}
+                      {{ trans("visualcenter.fact") }}
+                      <div
+                              v-if="currentDzoList !== 'daily'"
+                      >
+                        {{ trans("visualcenter.dzoThousandTon") }}
+                      </div>
+                      <div
+                              v-if="currentDzoList === 'daily'"
+                      >
+                        {{ trans("visualcenter.chemistryMetricTon") }}
+                      </div>
                     </th>
                     <th>
-                      {{ trans("visualcenter.dzoDifference") }}<br>
-                      {{ trans("visualcenter.dzoThousandTon") }}
+                      {{ trans("visualcenter.dzoDifference") }}
+                      <div
+                              v-if="currentDzoList !== 'daily'"
+                      >
+                        {{ trans("visualcenter.dzoThousandTon") }}
+                      </div>
+                      <div
+                              v-if="currentDzoList === 'daily'"
+                      >
+                        {{ trans("visualcenter.chemistryMetricTon") }}
+                      </div>
                     </th>
                     <th>
                       {{ trans("visualcenter.dzoPercent") }}
@@ -1220,9 +1082,9 @@
                 <tbody>
                   <tr v-for="(item, index) in dzoCompanySummary">
                     <td
-                      @click="saveCompany(item.dzoMonth)"
-                      :class="index % 2 === 0 ? 'tdStyle' : ''"
-                      style="cursor: pointer"
+                            @click="dzoCompanyDecomposition === true ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
+                            :class="index % 2 === 0 ? 'tdStyle' : ''"
+                            style="cursor: pointer"
                     >
                       <span>
                         {{ getNameDzoFull(item.dzoMonth) }}
@@ -1350,7 +1212,9 @@
                       ></div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr
+                          v-if="dzoCompanyDecomposition"
+                  >
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                       <div class="">{{ NameDzoFull[0] }}</div>
                     </td>
@@ -1464,8 +1328,34 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
 
+              <div
+                      v-if="!dzoCompanyDecomposition"
+                      v-for="(item) in dzoCompanySummary"
+                      colspan="5"
+                      class="dzo-company-reason"
+              >
+                <div class="mt-3 text-center">Текст причины</div>
+                <div class="ml-3">
+                  <div class="mt-2" v-if="item.opec">{{ item.opec }}</div>
+                  <div class="mt-2" v-if="item.impulses">
+                    {{ item.impulses }}
+                  </div>
+                  <div class="mt-2" v-if="item.landing">{{ item.landing }}</div>
+                  <div class="mt-2" v-if="item.accident">
+                    {{ item.accident }}
+                  </div>
+                  <div class="mt-2" v-if="item.restrictions">
+                    {{ item.restrictions }}
+                  </div>
+                  <div class="mt-2" v-if="item.otheraccidents">
+                    {{ item.otheraccidents }}
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
             <div
               class="vis-chart pl-3"
               v-if="
@@ -1479,7 +1369,7 @@
                 {{ nameChartLeft }}, {{ thousand }} {{ item4 }}
               </div>
               <div class="name-chart-head">{{ item3 }}</div>
-              <vc-chart :height="465" v-if="company == 'all'"> </vc-chart>
+              <vc-chart :height="465"> </vc-chart>
             </div>
           </div>
         </div>
@@ -3072,5 +2962,15 @@
     margin-top: 20px;
     margin-right: 15px;
   }
+  .dzo-company-reason {
+    background: rgb(54, 59, 104);
+    min-height: 60%;
+    width: 100%;
+    border-top: 5px solid #272953;
+  }
+  .mh-60 {
+    min-height: 60%;
+  }
+
 
 </style>
