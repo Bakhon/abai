@@ -1,23 +1,20 @@
 @extends('layouts.app')
 @section('content')
 <div class="col p-4">
-    <div class="fon">
+    <h1>Оперативная информация по ДЗО для АО "НК "КазМунайГаз""</h1>
+    <form action="{{ route('excelform2.store') }}" method="POST">
+        @csrf
         <visualcenter3-excelform></visualcenter3-excelform>
-        <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@handsontable/vue/dist/vue-handsontable.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
-    </div>
-    <input type="submit" name="upload" class="btn btn-primary" value="Загрузить">
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@handsontable/vue/dist/vue-handsontable.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" rel="stylesheet">
 </div>
 @endsection
 <style>
-    .fon {
-        background-color: white;
-    }
     .p-4 {
         background-color: #0F1430;
     }
-
     .level1-tab {
         width: 390px;
         height: 25px;
