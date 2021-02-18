@@ -428,10 +428,10 @@ export default {
       });
       let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
       this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
-      if (this.dzoCompanySummary.length < 2) {
-        this.isMultipleDzoCompaniesSelected = false;
-      } else {
+      if (this.dzoCompanySummary.length > 1) {
         this.isMultipleDzoCompaniesSelected = true;
+      } else {
+        this.isMultipleDzoCompaniesSelected = false;
       }
       this.calculateDzoCompaniesSummary();
     },
