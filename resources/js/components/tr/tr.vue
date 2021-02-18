@@ -7043,6 +7043,8 @@ export default {
     }
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
+    this.is_dynamic = false;
+    this.$store.commit("tr/SET_IS_DYNAMIC", "false");
     this.axios
       .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
       .then((response) => {
@@ -7111,6 +7113,7 @@ export default {
       datepicker1: true,
       datepicker2: false,
       date_fix: true,
+      is_dynamic: false,
       // date_dyn: false,
     };
   },
@@ -7358,13 +7361,13 @@ export default {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
         this.$store.commit("globalloading/SET_LOADING", true);
-        this.$store.commit("fa/SET_DYN_MONTH_END", mm);
-        this.$store.commit("fa/SET_DYN_YEAR_END", yyyy);
-        this.$store.commit("fa/SET_DYN_DAY_END", dd);
-        this.$store.commit("fa/SET_DYN_MONTH_START", prMm);
-        this.$store.commit("fa/SET_DYN_YEAR_START", pryyyy);
-        this.$store.commit("fa/SET_DYN_MONTH_START", prMm);
-        this.$store.commit("fa/SET_DYN_DAY_START", prdd);
+        this.$store.commit("tr/SET_DYN_MONTH_END", mm);
+        this.$store.commit("tr/SET_DYN_YEAR_END", yyyy);
+        this.$store.commit("tr/SET_DYN_DAY_END", dd);
+        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("tr/SET_DYN_YEAR_START", pryyyy);
+        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("tr/SET_DYN_DAY_START", prdd);
         this.axios
           .get(
             "http://172.20.103.187:7576/api/techregime/dynamic/" +
@@ -7381,6 +7384,8 @@ export default {
             if (data) {
               this.searched = false;
               this.date_fix = false;
+              this.is_dynamic = true;
+              this.$store.commit("tr/SET_IS_DYNAMIC", "true");
               this.$store.commit("tr/SET_SORTPARAM", "");
               this.$store.commit("tr/SET_SEARCH", "");
               this.sortParam = "";
@@ -7417,7 +7422,8 @@ export default {
           let data = response.data;
           if (data) {
             this.searched = false;
-            
+            this.is_dynamic = false;
+            this.$store.commit("tr/SET_IS_DYNAMIC", "false");
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";

@@ -15,6 +15,7 @@ const tr = {
     month_dyn_end: false,
     day_dyn_start: false,
     day_dyn_end: false,
+    is_dynamic: "false",
   },
 
   mutations: {
@@ -57,6 +58,9 @@ const tr = {
     SET_DYN_DAY_END: (state, val) => {
       state.day_dyn_end = val;
     },
+    SET_IS_DYNAMIC: (state, val) => {
+      state.is_dynamic = val;
+    },
   },
 
   actions: {
@@ -70,14 +74,13 @@ const tr = {
     filter: (state) => state.filter,
     sortType: (state) => state.sortType,
     sortParam: (state) => state.sortParam,
-
-
     year_dyn_start: (state) => state.year_dyn_start,
     year_dyn_end: (state) => state.year_dyn_end,
     month_dyn_start: (state) => state.month_dyn_start,
     month_dyn_end: (state) => state.month_dyn_end,
     day_dyn_start: (state) => state.day_dyn_start,
     day_dyn_end: (state) => state.day_dyn_end,
+    is_dynamic: (state) => state.is_dynamic,
   },
 };
 

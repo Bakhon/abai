@@ -61,6 +61,7 @@ export default {
           month_dyn_end:  this.$store.getters["tr/month_dyn_end"],
           day_dyn_start: this.$store.getters["tr/day_dyn_start"],
           day_dyn_end:  this.$store.getters["tr/day_dyn_end"],
+          is_dynamic:  this.$store.getters["tr/is_dynamic"],
         }
       );
     },
