@@ -10,8 +10,6 @@ import VueTableDynamic from 'vue-table-dynamic';
 import Vue from 'vue';
 
 import BootstrapVue from 'bootstrap-vue';
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'

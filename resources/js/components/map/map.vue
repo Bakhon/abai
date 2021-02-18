@@ -23,7 +23,7 @@
         </v-select>
       </div>
     </div>
-    <div id="map" ></div>
+    <div id="map"></div>
 
     <b-modal
         header-bg-variant="main4"
@@ -37,14 +37,14 @@
       <map-gu-form :gu="addObjectform" :cdngs="cdngs" v-if="editMode == 'gu'"></map-gu-form>
       <map-zu-form :zu="addObjectform" :gus="gus" v-if="editMode == 'zu'"></map-zu-form>
       <map-well-form :well="addObjectform" :zus="zuPoints" v-if="editMode == 'well'"></map-well-form>
-      <map-pipe-form :pipe="newPipe" :zus="zuPoints" :gus="gus" v-if="editMode == 'pipe'"></map-pipe-form>
+      <map-pipe-form :pipe="newPipe" :zus="zuPoints" :gus="gus" v-if="editMode == 'pipe' && newPipe"></map-pipe-form>
 
-      <template #modal-footer="{ cancel }">
+      <template #modal-footer>
         <div class="w-100">
           <b-button
               variant="secondary"
               class="float-right ml-3"
-              @click="cancel()"
+              @click="cancelAddObject()"
           >
             Отмена
           </b-button>
@@ -117,6 +117,7 @@ export default {
           code: 'pipe'
         },
       ],
+      isHovering: false,
       newPipe: null,
       gu: null,
       pipeLayerId: 1,
@@ -149,8 +150,8 @@ export default {
     this.initMap();
   },
   computed: {
-    addObjectModalTitle () {
-      switch(this.editMode) {
+    addObjectModalTitle() {
+      switch (this.editMode) {
         case 'gu':
           return "Новый ГУ"
           break;
@@ -184,7 +185,7 @@ export default {
       const c = rgb(color);
       return [c.r, c.g, c.b, 255];
     },
-    resetForm () {
+    resetForm() {
       this.addObjectform = {
         id: null,
         name: '',
@@ -192,7 +193,28 @@ export default {
         lon: null
       }
     },
-    storeGu (){
+    cancelAddObject() {
+      this.resetForm();
+
+      if (this.newPipe) {
+        let layerIndex = this.layers.findIndex(layer => layer.id == 'path-layer-' + this.pipeLayerId);
+
+        if (layerIndex != -1) {
+          this.layers.splice(layerIndex, 1);
+        }
+
+        this.updateLayers();
+        if (this.map.getLayer('path-layer-' + this.pipeLayerId)) {
+          this.map.removeLayer('path-layer-' + this.pipeLayerId);
+        }
+
+        this.deck.setProps({layers: this.layers});
+        this.$bvModal.hide('add-object-modal');
+        this.newPipe = null;
+
+      }
+    },
+    storeGu() {
       return this.axios.post(this.localeUrl("/gu-map/storegu"), {gu: this.addObjectform}).then((response) => {
         if (response.data.status == 'success') {
           return response.data.gu;
@@ -201,7 +223,7 @@ export default {
         }
       });
     },
-    storeZu (){
+    storeZu() {
       return this.axios.post(this.localeUrl("/gu-map/storezu"), {zu: this.addObjectform}).then((response) => {
         if (response.data.status == 'success') {
           return response.data.zu;
@@ -210,7 +232,7 @@ export default {
         }
       });
     },
-    storeWell () {
+    storeWell() {
       return this.axios.post(this.localeUrl("/gu-map/storewell"), {well: this.addObjectform}).then((response) => {
         if (response.data.status == 'success') {
           return response.data.well;
@@ -219,7 +241,16 @@ export default {
         }
       });
     },
-    updateLayers(){
+    storePipe() {
+      return this.axios.post(this.localeUrl("/gu-map/storepipe"), {pipe: this.newPipe}).then((response) => {
+        if (response.data.status == 'success') {
+          return response.data.pipe;
+        } else {
+          console.log('error save Pipe in DB');
+        }
+      });
+    },
+    updateLayers() {
       let tempLayers = [];
       this.layers.forEach((layer) => {
         tempLayers.push(layer);
@@ -227,20 +258,11 @@ export default {
 
       this.layers = tempLayers;
     },
-    addMapObject () {
-      if (this.editMode == 'gu') {
-        this.addGu();
-      }
-
-      if (this.editMode == 'zu') {
-        this.addZu();
-      }
-
-      if (this.editMode == 'well') {
-        this.addWell();
-      }
+    addMapObject() {
+      let method = 'add' + this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
+      this[method]();
     },
-    async addGu () {
+    async addGu() {
       let gu = await this.storeGu();
       this.guPoints.push(gu);
       this.guPointsIndexes.push(gu.id);
@@ -264,8 +286,8 @@ export default {
             getPosition: d => [parseFloat(d.lon), parseFloat(d.lat)],
             sizeUnits: 'meters',
             getSize: d => 2,
-            onClick: (event) => {
-              console.log('icon-layer-gu_' + gu.id, event)
+            onClick: (info, event) => {
+
             }
           })
       );
@@ -275,7 +297,7 @@ export default {
       this.deck.setProps({layers: this.layers});
       this.centerTo(gu);
     },
-    async addZu () {
+    async addZu() {
       let zu = await this.storeZu();
       this.zuPoints.push(zu);
       this.$bvModal.hide('add-object-modal');
@@ -297,7 +319,7 @@ export default {
             sizeUnits: 'meters',
             getSize: d => 2,
             onClick: (info, event) => {
-              console.log('icon-layer-zu_' + zu.id, event, info)
+
             },
           })
       );
@@ -307,7 +329,7 @@ export default {
       this.deck.setProps({layers: this.layers});
       this.centerTo(zu);
     },
-    async addWell () {
+    async addWell() {
       let well = await this.storeWell();
       this.wellPoints.push(well);
       this.$bvModal.hide('add-object-modal');
@@ -329,7 +351,7 @@ export default {
             sizeUnits: 'meters',
             getSize: d => 2,
             onClick: (info, event) => {
-              console.log('icon-layer-well_' + well.id, event, info)
+
             },
           })
       );
@@ -339,7 +361,14 @@ export default {
       this.deck.setProps({layers: this.layers});
       this.centerTo(well);
     },
-    prepareLayers () {
+    async addPipe() {
+      let pipe = await this.storePipe();
+      this.pipes.push(pipe);
+      this.$bvModal.hide('add-object-modal');
+      this.newPipe = null;
+      this.pipeLayerId++;
+    },
+    prepareLayers() {
       let pipesLayer = new PathLayer({
         id: 'path-layer',
         data: this.pipes,
@@ -347,11 +376,11 @@ export default {
         widthScale: 2,
         widthMinPixels: 1,
         autoHighlight: true,
-        getPath: d => d.path,
+        getPath: d => d.coordinates,
         getColor: d => this.colorToRGBArray(d.color),
         getWidth: d => 3,
         onClick: (info, event) => {
-          console.log('path-layer', event, info)
+
         },
         parameters: {
           depthTest: false
@@ -372,7 +401,6 @@ export default {
         sizeUnits: 'meters',
         getSize: d => 2,
         onClick: (info, event) => {
-          console.log('onClick icon-layer-gu', event, info)
           this.mapObjectClickHandle('gu', info);
         }
       });
@@ -391,7 +419,6 @@ export default {
         sizeUnits: 'meters',
         getSize: d => 2,
         onClick: (info, event) => {
-          console.log('icon-layer-zu', event, info)
           this.mapObjectClickHandle('zu', info);
         },
       });
@@ -410,7 +437,6 @@ export default {
         sizeUnits: 'meters',
         getSize: d => 2,
         onClick: (info, event) => {
-          console.log('icon-layer-well', event, info)
           this.mapObjectClickHandle('well', info);
         },
       });
@@ -422,7 +448,7 @@ export default {
         wellPointsLayer,
       ];
     },
-    indexingGuPoints(){
+    indexingGuPoints() {
       this.guPoints.forEach((gu, index) => {
         this.guPointsIndexes[index] = gu.id;
       });
@@ -500,7 +526,7 @@ export default {
           accessToken: this.accessToken
         });
 
-        this.map.on('click',  (e) => {
+        this.map.on('click', (e) => {
           this.mapClickHandle(e);
         });
 
@@ -518,6 +544,8 @@ export default {
               pitch: viewState.pitch
             });
           },
+          onHover: ({object}) => (this.isHovering = Boolean(object)),
+          getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
           getTooltip: ({object}) => object && object.name,
           layers: this.layers,
         });
@@ -538,28 +566,26 @@ export default {
       });
     },
     mapClickHandle(e) {
-      if (this.editMode != 'pipe') {
+      if (this.editMode && this.editMode != 'pipe') {
         this.addObjectform.lon = e.lngLat.lng
         this.addObjectform.lat = e.lngLat.lat;
 
         this.$bvModal.show('add-object-modal');
       } else if (this.editMode == 'pipe' && this.newPipe) {
-        console.log('pipe new point');
-        this.newPipe.path.push([e.lngLat.lng, e.lngLat.lat]);
+        this.newPipe.coordinates.push([e.lngLat.lng, e.lngLat.lat]);
         this.renderPipe();
       }
     },
     mapObjectClickHandle(type, info) {
-      console.log('mapObjectClickHandle', type, info);
       if (this.editMode == 'pipe') {
 
         //start point
         if ((type == 'zu' || type == 'well') && !this.newPipe) {
           this.newPipe = {
-            type: type,
-            color: type == 'zu' ? [255, 0, 0] : [0, 255, 0],
+            id: null,
+            type: type == 'zu' ? 'GuZu' : 'ZuWell',
             name: '',
-            path: [info.coordinate],
+            coordinates: [info.coordinate],
           };
 
           if (type == 'zu') {
@@ -572,9 +598,9 @@ export default {
             this.newPipe.color = [0, 255, 0];
           }
 
-        //end point
+          //end point
         } else if ((type == 'zu' || type == 'gu') && this.newPipe) {
-          this.newPipe.path.push(info.coordinate);
+          this.newPipe.coordinates.push(info.coordinate);
 
           if (type == 'gu') {
             this.newPipe.gu_id = info.object.id;
@@ -586,14 +612,12 @@ export default {
           }
 
           this.renderPipe();
-          console.log(this.newPipe);
           this.$bvModal.show('add-object-modal');
-          //open pipe modal
         }
 
       }
     },
-    renderPipe () {
+    renderPipe() {
       let layerIndex = this.layers.findIndex(layer => layer.id == 'path-layer-' + this.pipeLayerId);
 
       if (layerIndex != -1) {
@@ -609,11 +633,11 @@ export default {
         widthScale: 2,
         widthMinPixels: 1,
         autoHighlight: true,
-        getPath: d => d.path,
+        getPath: d => d.coordinates,
         getColor: d => this.colorToRGBArray(d.color),
         getWidth: d => 3,
         onClick: (info, event) => {
-          console.log('path-layer-' + this.pipeLayerId, event, info)
+
         },
         parameters: {
           depthTest: false
@@ -652,10 +676,11 @@ h1 {
       font-size: 28px;
     }
 
-    .v-select{
-      min-width: 240px;
+    .v-select {
+      min-width: 260px;
     }
-    .vs__dropdown-toggle{
+
+    .vs__dropdown-toggle {
       padding-bottom: 0;
     }
   }

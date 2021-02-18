@@ -24,21 +24,21 @@
 
     <h5>Координаты трубопровода</h5>
 
-    <b-row v-for="(coord, index) in pipe.path" :key="index">
+    <b-row v-for="(coord, index) in pipe.coordinates" :key="index">
       <b-col cols="12" sm="6">
-        <b-form-group label="Широта" label-for="coord-x">
+        <b-form-group label="Широта" :label-for="'coord-x'+index">
           <b-form-input
-              id="coord-y"
-              v-model="pipe.path[index][0]"
+              :id="'coord-x'+index"
+              v-model="pipe.coordinates[index][1]"
               required
           ></b-form-input>
         </b-form-group>
       </b-col>
       <b-col cols="12" sm="6">
-        <b-form-group label="Долгота" label-for="coord-y">
+        <b-form-group label="Долгота" :label-for="'coord-y'+index">
           <b-form-input
-              id="coord-x"
-              v-model="pipe.path[index][1]"
+              :id="'coord-y'+index"
+              v-model="pipe.coordinates[index][0]"
               required
           ></b-form-input>
         </b-form-group>
