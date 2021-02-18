@@ -8,10 +8,13 @@ use Illuminate\Http\Request;
 
 abstract class BaseForm
 {
+    protected $configurationFileName;
 
     protected $request;
 
     protected $validator;
+
+    protected $configurationPath = 'resources/params/bd/forms';
 
     public function __construct(Request $request)
     {
@@ -21,7 +24,14 @@ abstract class BaseForm
 
     abstract public function submit(): \Illuminate\Database\Eloquent\Model;
 
-    abstract protected function params(): array;
+    protected function params(): array
+    {
+        $jsonFile = base_path($this->configurationPath) . "/{$this->configurationFileName}.json";
+        if (!\Illuminate\Support\Facades\File::exists($jsonFile)) {
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+        return json_decode(file_get_contents($jsonFile), true);
+    }
 
     public function send(): \Illuminate\Database\Eloquent\Model
     {
