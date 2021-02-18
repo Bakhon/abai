@@ -3,7 +3,7 @@ import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import { isString } from "lodash";
-import dzoCompaniesInitial from './dzo_company_list.json';
+import dzoCompaniesInitial from './dzo_companies_initial.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 export default {
