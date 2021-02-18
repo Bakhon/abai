@@ -1,6 +1,6 @@
 <template>
-  <hot-table :data="data" id="example1" :colHeaders='true' :rowHeaders='true' licenseKey='non-commercial-and-evaluation'>
-    <button type="submit" class="btn btn-primary" id="demo_btn">Сохранить</button>
+  <hot-table :data="data" id="h_table" :colHeaders='true' :rowHeaders='true' licenseKey='non-commercial-and-evaluation'>
+    <button type="submit" class="btn btn-primary" id="submit_btn">Сохранить</button>
     <input type="hidden" id="oil_plan" name='oil_plan'>
     <input type="hidden" id="oil_fact" name='oil_fact'>
     <input type="hidden" id="oil_dlv_plan" name='oil_dlv_plan'>
@@ -12,13 +12,11 @@
     <input type="hidden" id="fond_neftedob_ef" name='fond_neftedob_ef'>
     <input type="hidden" id="fond_neftedob_df" name='fond_neftedob_df'>
     <input type="hidden" id="prod_wells_idle" name='prod_wells_idle'>
-    <!-- <input type="hidden" id="prod_wells_work" name='prod_wells_work'> -->
     <input type="hidden" id="fond_neftedob_bd" name='fond_neftedob_bd'>
     <input type="hidden" id="fond_neftedob_osvoenie" name='fond_neftedob_osvoenie'>
     <input type="hidden" id="fond_nagnetat_ef" name='fond_nagnetat_ef'>
     <input type="hidden" id="fond_nagnetat_df" name='fond_nagnetat_df'>
     <input type="hidden" id="inj_wells_idle" name='inj_wells_idle'>
-    <!-- <input type="hidden" id="inj_wells_work" name='inj_wells_work'> -->
     <input type="hidden" id="fond_nagnetat_bd" name='fond_nagnetat_bd'>
     <input type="hidden" id="fond_nagnetat_osvoenie" name='fond_nagnetat_osvoenie'>
     <input type="hidden" id="fond_neftedob_prs" name='fond_neftedob_prs'>
@@ -39,24 +37,56 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
 
-  var example1 = document.getElementById('example1');
+  var h_table = document.getElementById('h_table');
 
-  var hot1 = new Handsontable(example1, {
+  var hot1 = new Handsontable(h_table, {
+    data:
+          [
+            ['                           СУТОЧНЫЙ РАПОРТ  АО"КАРАЖАНБАСМУНАЙ"  ЗА 			', ' ', ' ', ' ', '13.02.2021', ' ', ' ', ' '],
+            ['НЕФТЬ /OIL', ' ДОБЫЧА, тонн 						'],
+            [ , 'ГРАФИК на месяц ', 'СУТОЧНАЯ 		', ' ', ' ', 'С НАЧАЛА МЕСЯЦА		'],
+            [ , , 'План ', 'Факт', '(+,-)', 'План', 'Факт ', '(+,-)'],
+            ['АО "КАРАЖАНБАСМУНАЙ"  '],
+          ],
     colHeaders: true,
     rowHeaders: true,
     contextMenu: true,
+    readOnly: true,
+    className: "htCenter htMiddle",
+    stretchH: 'all',
+    mergeCells: [
+    {row: 0, col: 0, rowspan: 1, colspan: 4}, 
+    {row: 1, col: 0, rowspan: 3, colspan: 1},
+    {row: 1, col: 1, rowspan: 1, colspan: 7},
+    {row: 2, col: 1, rowspan: 2, colspan: 1},
+    {row: 2, col: 2, rowspan: 1, colspan: 3},
+    {row: 2, col: 5, rowspan: 1, colspan: 3},
+  ],
     startCols: 30,
     startRows: 50,
     formulas: true,
-    licenseKey: 'non-commercial-and-evaluation'
+    licenseKey: 'non-commercial-and-evaluation',
+    cells: function(row, col, prop) {
+      var cellProperties = {};
+
+      if (row === 4) {
+        cellProperties.readOnly = false;
+      }
+
+      if (col > 0) {
+    	  if (row === 4) {
+          cellProperties.type = 'numeric';
+          cellProperties.allowEmpty =  false;
+      }
+      }
+
+      return cellProperties;
+    },
   });
 
-  document.getElementById("demo_btn").onclick = function() {myFunction()};
+  document.getElementById("submit_btn").onclick = function() {getHandsontableData()};
   
-  // var alldata = hot1.getData();
-  // console.log(alldata[0]);
-  
-  function myFunction() {
+  function getHandsontableData() {
     document.getElementById("oil_plan").value = hot1.getData()[4][2];
     document.getElementById("oil_fact").value = hot1.getData()[4][3];
     document.getElementById("oil_dlv_plan").value = hot1.getData()[4][9];
