@@ -433,7 +433,6 @@ export default {
       } else {
         this.dzoCompanyDecomposition = true;
       }
-      console.log(JSON.stringify(this.dzoCompanySummary));
       this.calculateDzoCompaniesSummary();
     },
 
@@ -1248,7 +1247,7 @@ export default {
 
       this.axios.get(uri).then((response) => {
         let data = response.data;
-        if (Object.keys(data).length > 0) {
+        if (data && Object.keys(data).length > 0) {
           var NameDzoFull = this.NameDzoFull;
           var company = this.company;
           var summForTables = [];
@@ -1878,8 +1877,12 @@ export default {
 
     clearNullAccidentCases() {
       _.forEach(this.bigTable, function(item) {
-        item.accident = item.accident.replace(/null/g,'');
-        item.restrictions = item.restrictions.replace(/null/g,'');
+        if (typeof(item.accident) !== 'number') {
+          item.accident = item.accident.replace(/null/g,'');
+        }
+        if (typeof(item.restrictions) !== 'number') {
+          item.restrictions = item.restrictions.replace(/null/g,'');
+        }
       })
     },
 
@@ -2094,10 +2097,10 @@ export default {
         .value();
       var productionPlanAndFactMonthWellsName = [];
 
-      // this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
-      // this.inj_wells_work = productionPlanAndFactMonthWells[0]['inj_wells_work'];
-      // this.prod_wells_work = productionPlanAndFactMonthWells[0]['prod_wells_work'];
-      // this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
+      this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
+      this.inj_wells_work = productionPlanAndFactMonthWells[0]['inj_wells_work'];
+      this.prod_wells_work = productionPlanAndFactMonthWells[0]['prod_wells_work'];
+      this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
 
     },
 
