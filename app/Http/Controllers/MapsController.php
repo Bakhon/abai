@@ -113,7 +113,47 @@ class MapsController extends Controller
         return response()->json(
             [
                 'gu' => $gu,
-                'status' => 'success',
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function storeZu(Request $request)
+    {
+        $zu_input = $request->input('zu');
+        $zu = $zu_input['id'] ? Zu::find($zu_input['id']) : new Zu;
+
+        $zu->fill($zu_input);
+        $zu->save();
+
+        return response()->json(
+            [
+                'zu' => $zu,
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
+    public function storeWell(Request $request, DruidService $druidService)
+    {
+        $well_input = $request->input('well');
+        $well = $well_input['id'] ? Well::find($well_input['id']) : new Well;
+
+        $well->fill($well_input);
+        $well->save();
+
+        $wellOilInfo = $this->getWellOilInfo($druidService);
+        $name = 'Скважина: ' . $well->name . "\n";
+        if (array_key_exists($well->name, $wellOilInfo)) {
+            $name .= 'Добыча за 01.07.2020: ' . $wellOilInfo[$well->name] . "\n";
+        }
+
+        $well->name = $name;
+
+        return response()->json(
+            [
+                'well' => $well,
+                'status' => config('response.status.success'),
             ]
         );
     }

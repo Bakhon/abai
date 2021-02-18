@@ -1,7 +1,7 @@
 .checkered-bg {
     background: #0F1430;
-    background-image: linear-gradient(#0D2B4D 1px, transp
-    arent 0), linear-gradient(90deg, #0D2B4D 1px, transparent 0);
+    background-image: linear-gradient(#0D2B4D 1px, transparent 0),
+    linear-gradient(90deg, #0D2B4D 1px, transparent 0);
     background-size: 38.4px 38.4px;
 }
 

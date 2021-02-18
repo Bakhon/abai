@@ -5,19 +5,27 @@
       <div v-if="gus" class="d-flex">
         <v-select
             v-model="gu"
-            @input="centerToGu"
+            @input="centerTo"
             :options="gus"
             :reduce="option => option.id"
             label="name"
             :placeholder="trans('monitoring.map.select_gu')"
         >
         </v-select>
+        <v-select
+            v-model="editMode"
+            :options="editOptions"
+            :reduce="option => option.code"
+            label="name"
+            class="ml-2 w-space-nowrap minw-fit-c"
+            placeholder="Режим редактирования"
+        >
+        </v-select>
         <b-button
-            :pressed="guEditMode"
+            :pressed="editModeStatus"
             variant="main2"
             class="ml-2 w-space-nowrap minw-fit-c"
-            block
-            @click="guEditMode = !guEditMode">{{ btnGuText }}
+            @click="editModeStatus = !editModeStatus">{{ btnEditModeText }}
         </b-button>
       </div>
     </div>
@@ -29,50 +37,18 @@
         header-text-variant="light"
         footer-bg-variant="main4"
         centered
-        id="gu-modal"
+        id="add-object-modal"
         title="Новый ГУ">
-      <b-form-group
-            label="Имя ГУ"
-            label-for="gu-name"
-        >
-          <b-form-input
-              id="gu-name"
-              v-model="formGu.name"
-              required
-          ></b-form-input>
-        </b-form-group>
 
-      <b-form-group
-          label="ЦДНГ"
-          label-for="cdng">
-        <b-form-select
-            id="cdng"
-            v-model="formGu.cdng_id"
-            :options="cdngOptions"
-        ></b-form-select>
-      </b-form-group>
-
-      <b-form-group label="Широта" label-for="coord-x">
-        <b-form-input
-            id="coord-y"
-            v-model="formGu.lat"
-            required
-        ></b-form-input>
-      </b-form-group>
-
-        <b-form-group label="Долгота" label-for="coord-y">
-          <b-form-input
-              id="coord-x"
-              v-model="formGu.lon"
-              required
-          ></b-form-input>
-        </b-form-group>
+      <map-gu-form :formGu="addObjectform" :cdngs="cdngs" v-if="editMode == 'gu'"></map-gu-form>
+      <map-zu-form :formZu="addObjectform" :gus="gus" v-if="editMode == 'zu'"></map-zu-form>
+      <map-well-form :formWell="addObjectform" :zus="zuPoints" v-if="editMode == 'well'"></map-well-form>
 
       <template #modal-footer="{ cancel }">
         <div class="w-100">
           <b-button
               variant="secondary"
-              class="float-right"
+              class="float-right ml-3"
               @click="cancel()"
           >
             Отмена
@@ -80,7 +56,7 @@
           <b-button
               variant="primary"
               class="float-right"
-              @click="addGu"
+              @click="addMapObject"
           >
             Добавить
           </b-button>
@@ -96,25 +72,51 @@ import {Deck} from '@deck.gl/core';
 import {PathLayer, IconLayer} from '@deck.gl/layers';
 import {MapboxLayer} from '@deck.gl/mapbox';
 import vSelect from "vue-select";
+import mapGuForm from "./mapGuForm";
+import mapZuForm from "./mapZuForm";
+import mapWellForm from "./mapWellForm";
 
 export default {
   name: "gu-map",
   components: {
-    vSelect
+    vSelect,
+    'map-gu-form': mapGuForm,
+    'map-zu-form': mapZuForm,
+    'map-well-form': mapWellForm
   },
   props: {
-    gus: Array,
-    cdngs: Array
+    gus: {
+      type: Array,
+      required: true,
+    },
+    cdngs: {
+      type: Array,
+      required: true,
+    }
   },
   data() {
     return {
-      formGu: {
+      addObjectform: {
         id: null,
         name: '',
         lat: null,
-        lon: null,
-        cdng_id: null
+        lon: null
       },
+      editOptions: [
+        {
+          name: 'ГУ редактор',
+          code: 'gu'
+        },
+        {
+          name: 'ЗУ редактор',
+          code: 'zu'
+        },
+        {
+          name: 'Редактор скважин',
+          code: 'well'
+        },
+      ],
+      editModeStatus: false,
       gu: null,
       pipes: [],
       zuPoints: [],
@@ -126,10 +128,9 @@ export default {
       pipePopupText: null,
       pipePopupCoords: [0, 0],
       pipePopupShow: false,
-      guPoint: null,
       map: null,
       deck: null,
-      guEditMode: false,
+      editMode: null,
       viewState: {
         latitude: null,
         longitude: null,
@@ -139,10 +140,6 @@ export default {
       },
       firstCentered: false,
       guPointsIndexes: [],
-      zuPointsLayer: null,
-      pipesLayer: null,
-      guPointsLayer: null,
-      wellPointsLayer: null,
       layers: [],
     };
   },
@@ -150,18 +147,8 @@ export default {
     this.initMap();
   },
   computed: {
-    cdngOptions: function () {
-      let options = [];
-      this.cdngs.forEach((item) => {
-        options.push(
-          { value: item.id, text: item.name }
-        );
-      });
-
-      return options;
-    },
-    btnGuText () {
-      return this.guEditMode ? 'ГУ редактор вкл' : 'ГУ редактор выкл';
+    btnEditModeText () {
+      return this.editModeStatus ? 'ВКЛ' : 'ВЫКЛ';
     }
   },
   methods: {
@@ -175,45 +162,71 @@ export default {
       const c = rgb(color);
       return [c.r, c.g, c.b, 255];
     },
-    onLoadMap(params) {
-      this.mapObj = params.map
-    },
-    resetGuForm () {
-      this.formGu = {
+    resetForm () {
+      this.addObjectform = {
         id: null,
-            name: '',
-            lat: null,
-            lon: null,
-            cdng_id: null
+        name: '',
+        lat: null,
+        lon: null
       }
     },
     storeGu (){
-      return this.axios.post(this.localeUrl("/gu-map/storegu"), {gu: this.formGu}).then((response) => {
+      return this.axios.post(this.localeUrl("/gu-map/storegu"), {gu: this.addObjectform}).then((response) => {
         if (response.data.status == 'success') {
-          let gu = response.data.gu;
-          gu.coords = [gu.lon, gu.lat];
-          return gu;
+          return response.data.gu;
         } else {
           console.log('error save Gu in DB');
         }
       });
     },
-    async addGu () {
-      let gu = await this.storeGu();
-
-      this.guPoints.push(gu);
-      this.guPointsIndexes.push(gu.id);
-      this.gus.push(gu);
-      this.gu = gu;
-      this.$bvModal.hide('gu-modal');
-      this.resetGuForm();
-
+    storeZu (){
+      return this.axios.post(this.localeUrl("/gu-map/storezu"), {zu: this.addObjectform}).then((response) => {
+        if (response.data.status == 'success') {
+          return response.data.zu;
+        } else {
+          console.log('error save Zu in DB');
+        }
+      });
+    },
+    storeWell () {
+      return this.axios.post(this.localeUrl("/gu-map/storewell"), {well: this.addObjectform}).then((response) => {
+        if (response.data.status == 'success') {
+          return response.data.well;
+        } else {
+          console.log('error save Well in DB');
+        }
+      });
+    },
+    updateLayers(){
       let tempLayers = [];
       this.layers.forEach((layer) => {
         tempLayers.push(layer);
       });
 
       this.layers = tempLayers;
+    },
+    addMapObject () {
+      if (this.editMode == 'gu') {
+        this.addGu();
+      }
+
+      if (this.editMode == 'zu') {
+        this.addZu();
+      }
+
+      if (this.editMode == 'well') {
+        this.addWell();
+      }
+    },
+    async addGu () {
+      let gu = await this.storeGu();
+      this.guPoints.push(gu);
+      this.guPointsIndexes.push(gu.id);
+      this.gus.push(gu);
+      this.gu = gu;
+      this.$bvModal.hide('add-object-modal');
+      this.resetForm();
+      this.updateLayers();
 
       this.layers.push(
           new IconLayer({
@@ -226,7 +239,7 @@ export default {
             },
             getIcon: d => 'marker',
             sizeScale: 30,
-            getPosition: d => d.coords,
+            getPosition: d => [parseFloat(d.lon), parseFloat(d.lat)],
             sizeUnits: 'meters',
             getSize: d => 2,
             onClick: (event) => {
@@ -238,7 +251,71 @@ export default {
       let deck = this.deck;
       this.map.addLayer(new MapboxLayer({id: 'icon-layer-gu_' + gu.id, deck}));
       this.deck.setProps({layers: this.layers});
-      this.centerToGu(gu);
+      this.centerTo(gu);
+    },
+    async addZu () {
+      let zu = await this.storeZu();
+      this.zuPoints.push(zu);
+      this.$bvModal.hide('add-object-modal');
+      this.resetForm();
+      this.updateLayers();
+
+      this.layers.push(
+          new IconLayer({
+            id: 'icon-layer-zu_' + zu.id,
+            data: [zu],
+            pickable: true,
+            iconAtlas: '/img/icons/barrel.png',
+            iconMapping: {
+              marker: {x: 0, y: 0, width: 24, height: 36, mask: true}
+            },
+            getIcon: d => 'marker',
+            sizeScale: 20,
+            getPosition: (d) => [parseFloat(d.lon), parseFloat(d.lat)],
+            sizeUnits: 'meters',
+            getSize: d => 2,
+            onClick: (info, event) => {
+              console.log('icon-layer-zu_' + zu.id, event, info)
+            },
+          })
+      );
+
+      let deck = this.deck;
+      this.map.addLayer(new MapboxLayer({id: 'icon-layer-zu_' + zu.id, deck}));
+      this.deck.setProps({layers: this.layers});
+      this.centerTo(zu);
+    },
+    async addWell () {
+      let well = await this.storeWell();
+      this.wellPoints.push(well);
+      this.$bvModal.hide('add-object-modal');
+      this.resetForm();
+      this.updateLayers();
+
+      this.layers.push(
+          new IconLayer({
+            id: 'icon-layer-well_' + well.id,
+            data: [well],
+            pickable: true,
+            iconAtlas: '/img/icons/well.png',
+            iconMapping: {
+              marker: {x: 0, y: 0, width: 52, height: 48, mask: true}
+            },
+            getIcon: d => 'marker',
+            sizeScale: 20,
+            getPosition: d => [parseFloat(d.lon), parseFloat(d.lat)],
+            sizeUnits: 'meters',
+            getSize: d => 2,
+            onClick: (info, event) => {
+              console.log('icon-layer-well_' + well.id, event, info)
+            },
+          })
+      );
+
+      let deck = this.deck;
+      this.map.addLayer(new MapboxLayer({id: 'icon-layer-well_' + well.id, deck}));
+      this.deck.setProps({layers: this.layers});
+      this.centerTo(well);
     },
     prepareLayers () {
       let pipesLayer = new PathLayer({
@@ -325,20 +402,20 @@ export default {
         this.guPointsIndexes[index] = gu.id;
       });
     },
-    centerToGu(guPoint = null) {
-      if (guPoint == null) {
+    centerTo(point = null) {
+      if (point == null) {
         return false;
       }
 
-      if (!(typeof guPoint === 'object')) {
-        let index = this.guPointsIndexes.indexOf(guPoint);
-        guPoint = this.guPoints[index];
+      if (!(typeof point === 'object')) {
+        let index = this.guPointsIndexes.indexOf(point);
+        point = this.guPoints[index];
       }
 
       this.deck.setProps({
         initialViewState: {
-          longitude: parseFloat(guPoint.lon),
-          latitude: parseFloat(guPoint.lat),
+          longitude: parseFloat(point.lon),
+          latitude: parseFloat(point.lat),
           zoom: 15,
           bearing: 0,
           pitch: 30
@@ -349,8 +426,8 @@ export default {
       if (!this.firstCentered) {
         this.deck.setProps({
           initialViewState: {
-            longitude: parseFloat(guPoint.lon),
-            latitude: parseFloat(guPoint.lat),
+            longitude: parseFloat(point.lon),
+            latitude: parseFloat(point.lat),
             zoom: 15,
             bearing: 0,
             pitch: 30
@@ -360,7 +437,7 @@ export default {
       }
 
       this.map.jumpTo({
-        center: [parseFloat(guPoint.lon), parseFloat(guPoint.lat)],
+        center: [parseFloat(point.lon), parseFloat(point.lat)],
         zoom: 15,
         bearing: 0,
         pitch: 30
@@ -436,14 +513,11 @@ export default {
       });
     },
     mapClickHandle(e) {
-      if (this.guEditMode) {
-        this.formGu = {
-          id: null,
-          name: '',
-          lon: e.lngLat.lng,
-          lat: e.lngLat.lat
-        }
-        this.$bvModal.show('gu-modal');
+      if (this.editMode && this.editModeStatus) {
+        this.addObjectform.lon = e.lngLat.lng
+        this.addObjectform.lat = e.lngLat.lat;
+
+        this.$bvModal.show('add-object-modal');
       }
     }
   }
@@ -472,7 +546,7 @@ h1 {
     }
 
     .v-select{
-      min-width: 200px;
+      min-width: 240px;
     }
     .vs__dropdown-toggle{
       padding-bottom: 0;
