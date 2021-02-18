@@ -10,6 +10,32 @@ use Illuminate\Http\Request;
 class FormsController extends Controller
 {
 
+    public function getMobileFormValues()
+    {
+        $file = storage_path() . '/mobile_form.json';
+
+        if (!\Illuminate\Support\Facades\File::exists($file)) {
+            $values = [
+                'casing_pressure' => 1.12,
+                'wellhead_pressure' => 1,
+                'casing_pressure1' => 1.12,
+                'wellhead_pressure1' => 1.12,
+                'casing_pressure2' => 1.12,
+                'wellhead_pressure2' => 1.12,
+            ];
+            \Illuminate\Support\Facades\File::put(storage_path() . '/mobile_form.json', json_encode($values));
+        }
+
+        return json_decode(\Illuminate\Support\Facades\File::get($file), 1);
+    }
+
+    public function mobileFormSave(Request $request)
+    {
+        $values = $this->getMobileFormValues();
+        $values[$request->get('code')] = $request->get('value');
+        \Illuminate\Support\Facades\File::put(storage_path() . '/mobile_form.json', json_encode($values));
+    }
+
     public function getParams(string $formName): array
     {
         $form = $this->getForm($formName);

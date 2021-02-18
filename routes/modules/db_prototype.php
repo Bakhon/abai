@@ -8,6 +8,20 @@ Route::group(
             function () {
                 Route::get('/', 'bd\DBController@bigdata')->name('bigdata');
 
+                Route::get('/reports', 'bd\DBController@reports')->name('bigdata.reports');
+                Route::get('/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
+                Route::post('/reports/favorite/{report}', 'bd\DBController@addReportToFavorites')->name(
+                    'bigdata.reports.favorite.add'
+                );
+                Route::delete('/reports/favorite/{report}', 'bd\DBController@removeReportFromFavorites')->name(
+                    'bigdata.reports.favorite.remove'
+                );
+
+                Route::get('/protoform', 'bd\DBController@form')->name('protoform');
+                Route::get('/mobileform', 'bd\DBController@mobileForm')->name('bigdata.form.mobile');
+                Route::post('/mobileform', 'bd\FormsController@mobileFormSave');
+                Route::get('/mobileform/values', 'bd\FormsController@getMobileFormValues');
+
                 Route::get('form/{form}', 'bd\FormsController@getParams')->name('bigdata.form.params');
                 Route::post('form/{form}', 'bd\FormsController@submit')->name('bigdata.form.send');
                 Route::get('form/{form}/well-prefix', 'bd\FormsController@getWellPrefix');
