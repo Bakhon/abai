@@ -9,11 +9,11 @@ font-family: "Bold";
 src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 }
 
+@import "variables";
+
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
-
-// Variables
-@import "variables";
+@import '~bootstrap-vue/src/index';
 
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
 @import "~@fortawesome/fontawesome-free/scss/regular";
@@ -30,5 +30,10 @@ src: url("/fonts/HarmoniaSansProCyr-Bold.ttf") format("truetype");
 
 @import 'modules/monitoring';
 @import 'modules/bigdata';
+
+
+
+
+
 
 
