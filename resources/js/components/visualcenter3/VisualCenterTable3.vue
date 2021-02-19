@@ -281,7 +281,9 @@
         <div class="first-string first-string2">
           <div class="row px-4 mt-3">
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover1}`">
+              <div
+                      :class="[`${oilProductionButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
@@ -300,23 +302,19 @@
                   </div>
                 </div>
                 <button
-                  :style="`${buttonHover1}`"
                   type="button"
                   class="btn btn-primary dropdown-toggle position-button-vc col-2"
                   data-toggle="dropdown"
                 ></button>
-
-                <!-- <div class="dropdown">-->
                 <div>
                   <ul
                     class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
                   >
-                    <li class="center-li row px-4" @click="changeMenu('101')">
+                    <li class="center-li row px-4" @click="processSwitchingMainMenu('oilProductionButton','kmgParticipation')">
                       <div
                         class="col-1 mt-2"
-                        v-html="changeMenuButton1Flag"
+                        v-html="`${getMainMenuButtonFlag('oilProductionButton','kmgParticipation')}`"
                       ></div>
-
                       <a
                         class="col-9 px-2"
                         @click="
@@ -329,46 +327,32 @@
                           )
                         "
                       >
-                        <!-- С учётом доли участия КМГ -->{{
-                          trans("visualcenter.dolyaUchast")
-                        }}
+                        {{trans("visualcenter.dolyaUchast")}}
                       </a>
-                      <!--<div class="col-2 mt-2">
-                    <div class="square-small2" :style="`${changeMenuButton1}`">
-                      &#10003;
-                    </div>
-                  </div>-->
                     </li>
-
-                    <!--<li class="center-li row px-4">
-                  <a
-                    class="col-10"
-                    @click="
-                      getProduction(
-                        'tb_personal_fact',
-                        'tb_personal_fact',
-                        `${oilChartHeadName}`,
-                        ' тонн',
-                        'Численость персонала'
-                      )
-                    "
-                    >Численость персонала</a
-                  >
-                  <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton1}`">
-                      &#10003;
-                    </div>
-                  </div>
-                </li>-->
+                    <li
+                            class="center-li row px-4"
+                            @click="processSwitchingMainMenu('oilProductionButton','opecRestriction')"
+                    >
+                    <div
+                            class="col-1 mt-2"
+                            v-html="`${getMainMenuButtonFlag('oilProductionButton','opecRestriction')}`"
+                    ></div>
+                    <a
+                            @click="changeAssets('b14')"
+                            class="col-9 px-2"
+                    >
+                      {{trans("visualcenter.opek")}}
+                    </a>
+                    </li>
                   </ul>
                 </div>
-
-                <!--  <div class="txt6"> тонн</div>
-                 </label>-->
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover2}`">
+              <div
+                      :class="[`${oilDeliveryButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
@@ -385,7 +369,6 @@
                   <div class="txt5">
                     <!-- Сдача нефти  -->{{ trans("visualcenter.oildlv") }}
                   </div>
-                  <!--  <div class="txt6"> тонн</div>-->
                 </div>
                 <button
                   type="button"
@@ -416,18 +399,12 @@
                         trans("visualcenter.dolyaUchast")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton2}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
                   <li class="center-li row px-4" @click="changeMenu('103')">
                     <div
                       class="col-1 mt-2"
                       v-html="changeMenuButton3Flag"
                     ></div>
-
                     <a
                       class="col-9 px-2"
                       @click="
@@ -444,17 +421,14 @@
                         trans("visualcenter.ostatokNefti")
                       }}
                     </a>
-                    <!-- <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton3}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
                 </ul>
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover3}`">
+              <div
+                      :class="[`${gasProductionButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
@@ -471,7 +445,6 @@
                   <div class="txt5">
                     <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
                   </div>
-                  <!--  <div class="txt6"> м³</div>-->
                 </div>
                 <button
                   type="button"
@@ -500,11 +473,6 @@
                         trans("visualcenter.prirodGazdlv")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton4}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
 
                   <li class="center-li row px-4" @click="changeMenu('105')">
@@ -528,33 +496,7 @@
                         trans("visualcenter.raskhodprirodGaz")
                       }}
                     </a>
-                    <!--<div class="col-2 mt-2">
-                    <div class="square-small2" :style="`${changeMenuButton5}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
-                  <!--<li class="center-li row px-4" @click="changeMenu('106')">
-                  <a
-                    class="col-10"
-                    @click="
-                      getProduction(
-                        'pererabotka_gaza_prirod_plan',
-                        'pererabotka_gaza_prirod_fact',
-                        'Динамика переработки природного газа',
-                        ' м³',
-                        'Переработка природного газа'
-                      )
-                    "
-                    >Переработка природного газа</a
-                  >
-                  <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton6}`">
-                      ✓
-                    </div>
-                  </div>
-                </li>-->
-
                   <li class="center-li row px-4" @click="changeMenu('108')">
                     <div
                       class="col-1 mt-2"
@@ -576,11 +518,6 @@
                         trans("visualcenter.poputGazdlv")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton8}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
 
                   <li class="center-li row px-4" @click="changeMenu('103')">
@@ -604,13 +541,7 @@
                         trans("visualcenter.raskhodpoputGaz")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                   <div class="square-small2" :style="`${changeMenuButton3}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
-
                   <li class="center-li row px-4" @click="changeMenu('107')">
                     <div
                       class="col-1 mt-2"
@@ -632,17 +563,14 @@
                         trans("visualcenter.pererabotkapoputGaz")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                   <div class="square-small2" :style="`${changeMenuButton7}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
                 </ul>
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover5}`">
+              <div
+                      :class="[`${condensateProductionButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
@@ -659,7 +587,6 @@
                   <div class="txt5">
                     <!-- Добыча конденсата -->{{ trans("visualcenter.getgk") }}
                   </div>
-                  <!-- <div class="txt6"> тонн</div>-->
                 </div>
                 <button
                   type="button"
@@ -688,17 +615,14 @@
                         trans("visualcenter.dolyaUchast")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton13}`">
-                      &#10003;
-                    </div>
-                  </div>-->
                   </li>
                 </ul>
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover6}`">
+              <div
+                      :class="[`${waterInjectionButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
@@ -715,7 +639,6 @@
                   <div class="txt5">
                     <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
                   </div>
-                  <!-- <div class="txt6"> м³</div>-->
                 </div>
                 <button
                   type="button"
@@ -744,11 +667,6 @@
                         trans("visualcenter.liqOcean")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton9}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
 
                   <li class="center-li row px-4" @click="changeMenu('110')">
@@ -772,11 +690,6 @@
                         trans("visualcenter.liqStochnaya")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton10}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
 
                   <li class="center-li row px-4" @click="changeMenu('111')">
@@ -800,11 +713,6 @@
                         trans("visualcenter.liqAlbsen")
                       }}
                     </a>
-                    <!--  <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton11}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
                 </ul>
               </div>
@@ -2899,6 +2807,12 @@
     background: #2E50E9;
     color:white;
   }
+  .main-menu-button-highlighted {
+    color: #fff;
+    background: #237deb;
+    font-weight:bold;
+  }
+
   .dzo-company-list ul {
     height: 450px;
     position: absolute;

@@ -4,6 +4,7 @@ import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import { isString } from "lodash";
 import dzoCompaniesInitial from './dzo_companies_initial.json';
+import mainMenuConfiguration from './main_menu_configuration.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 export default {
@@ -140,6 +141,7 @@ export default {
       changeMenuButton11: "",
       changeMenuButton12: "",
       changeMenuButton13: "",
+      changeMenuButtonOpecParticipation: "",
 
       changeMenuButton1Flag: "",
       changeMenuButton2Flag: "",
@@ -154,6 +156,7 @@ export default {
       changeMenuButton11Flag: "",
       changeMenuButton12Flag: "",
       changeMenuButton13Flag: "",
+      changeMenuOpecParticipationFlag: "",
       Table1: "display:block;",
       Table2: "display:none;",
       Table3: "display:none;",
@@ -190,13 +193,13 @@ export default {
       showTable2: "Yes",
       displayChart: "display: none;",
       showTableOn: "",
-      buttonNormalTab: "button-tab-highlighted",
-      buttonHover1: "",
-      buttonHover2: "",
-      buttonHover3: "",
-      buttonHover4: "",
-      buttonHover5: "",
-      buttonHover6: "",
+      buttonNormalTab: "",
+      highlightedButton: "button-tab-highlighted",
+      oilProductionButton: "",
+      oilDeliveryButton: "",
+      gasProductionButton: "",
+      condensateProductionButton: "",
+      waterInjectionButton: "",
       buttonDailyTab: "button-tab-highlighted",
       buttonMonthlyTab: "",
       buttonYearlyTab: "",
@@ -364,6 +367,8 @@ export default {
       isDzoCompaniesListSelectorOpened: false,
       isMultipleDzoCompaniesSelected: true,
       dzoCompaniesSummaryForChart: {},
+      mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
+      mainMenuButtonElementOptions: {},
     };
   },
   methods: {
@@ -379,7 +384,7 @@ export default {
       this.selectCompany('all');
       this.isMultipleDzoCompaniesSelected = true;
       this.isAllDzoCompaniesSelected = true;
-      this.buttonDzoDropdown = this.buttonNormalTab;
+      this.buttonDzoDropdown = "";
       _.map(this.dzoCompanies, function(company) {
         company.selected = true;
       });
@@ -421,6 +426,7 @@ export default {
     selectDzoCompany(companyTicker) {
       this.selectCompany(companyTicker);
       this.isAllDzoCompaniesSelected = false;
+      this.buttonDzoDropdown = this.highlightedButton;
       _.map(this.dzoCompanies, function(company) {
         if (company.ticker === companyTicker) {
           company.selected = !company.selected;
@@ -536,6 +542,21 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
 
+    processSwitchingMainMenu(parentButton,childButton) {
+      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
+      let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
+      buttonOptions.buttonClass = this.mainMenuButtonHighlighted;
+      buttonOptions.flag = "flagOn";
+    },
+
+    getMainMenuButtonFlag(parentButton,childButton) {
+      if (!this.mainMenuButtonElementOptions[parentButton]) {
+        return this.flagOff;
+      }
+      let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
+      return this[buttonOptions.flag];
+    },
+
     changeMenu(change) {
       let changeMenuButton = this.changeMenuButton;
       let flagOn = this.flagOn;
@@ -553,6 +574,7 @@ export default {
       this.changeMenuButton11 = '';
       this.changeMenuButton12 = '';
       this.changeMenuButton13 = '';
+      this.changeMenuButtonOpecParticipation = '';
 
       this.changeMenuButton1Flag = flagOff;
       this.changeMenuButton2Flag = flagOff;
@@ -567,9 +589,7 @@ export default {
       this.changeMenuButton11Flag = flagOff;
       this.changeMenuButton12Flag = flagOff;
       this.changeMenuButton13Flag = flagOff;
-
-
-
+      this.changeMenuOpecParticipationFlag = flagOff;
 
       if (change == "101") {
         this.changeMenuButton1 = changeMenuButton;
@@ -636,6 +656,10 @@ export default {
         this.changeMenuButton13 = changeMenuButton;
         this.changeMenuButton13Flag = flagOn;
       }
+      if (change == "opecParticipation") {
+        this.changeMenuButtonOpecParticipation = changeMenuButton;
+        this.changeMenuOpecParticipationFlag = flagOn;
+      }
 
     },
 
@@ -656,7 +680,7 @@ export default {
     changeMenu2(change) {
       if (change === 1) {
         this.currentDzoList = 'daily';
-        this.buttonDailyTab = this.buttonNormalTab;
+        this.buttonDailyTab = this.highlightedButton;
         this.range = {
           start: moment().startOf('day').subtract(1, "days").format(),
           end: moment().endOf('day').subtract(1, "days").format(),
@@ -669,7 +693,7 @@ export default {
       }
 
       if (change === 2) {
-        this.buttonMonthlyTab = this.buttonNormalTab;
+        this.buttonMonthlyTab = this.highlightedButton;
         this.currentDzoList = 'monthly';
         this.range = {
           start: moment().startOf('month').format(),
@@ -682,7 +706,7 @@ export default {
       }
 
       if (change === 3) {
-        this.buttonYearlyTab = this.buttonNormalTab;
+        this.buttonYearlyTab = this.highlightedButton;
         this.currentDzoList = 'yearly';
         this.range = {
           start: moment().startOf('year').format(),
@@ -695,7 +719,7 @@ export default {
       }
 
       if (change === 4) {
-        this.buttonPeriodTab = this.buttonNormalTab;
+        this.buttonPeriodTab = this.highlightedButton;
       } else {
         this.buttonPeriodTab = "";
       }
@@ -1357,42 +1381,7 @@ export default {
             }
             this.tables = summForTables;
           }
-
-          if ((productionPlan == "oil_plan") || (productionPlan == "oil_opek_plan")) {
-            this.buttonHover1 = this.buttonNormalTab;
-          } else {
-            this.buttonHover1 = "";
-          }
-
-          if (productionPlan == "oil_dlv_plan") {
-            this.buttonHover2 = this.buttonNormalTab;
-          } else {
-            this.buttonHover2 = "";
-          }
-
-          if (productionPlan == "gas_plan") {
-            this.buttonHover3 = this.buttonNormalTab;
-          } else {
-            this.buttonHover3 = "";
-          }
-
-          if (productionPlan == "liq_plan") {
-            this.buttonHover4 = this.buttonNormalTab;
-          } else {
-            this.buttonHover4 = "";
-          }
-
-          if (productionPlan == "gk_plan") {
-            this.buttonHover5 = this.buttonNormalTab;
-          } else {
-            this.buttonHover5 = "";
-          }
-
-          if (productionPlan == "liq_plan") {//inj_plan
-            this.buttonHover6 = this.buttonNormalTab;
-          } else {
-            this.buttonHover6 = "";
-          }
+          this.setColorToMainMenuButtons(productionPlan);
         } else {
           console.log("No data");
         }
@@ -1873,6 +1862,21 @@ export default {
         this.getProductionOilandGasPercent(data);
 
       });
+    },
+
+    setColorToMainMenuButtons(productionPlan) {
+      let self = this;
+      _.forEach(Object.keys(this.mainMenuButtonElementOptions), function(button) {
+        self[button] = self.getButtonClassForMainMenu(productionPlan, button);
+      });
+    },
+
+    getButtonClassForMainMenu(productionPlan, buttonType) {
+      if (this.mainMenuButtonElementOptions[buttonType].tags.includes(productionPlan)) {
+        return this.highlightedButton;
+      } else {
+        return  "";
+      }
     },
 
     clearNullAccidentCases() {
@@ -2789,8 +2793,10 @@ export default {
     this.changeMenuButton11Flag = flagOff;
     this.changeMenuButton12Flag = flagOff;
     this.changeMenuButton13Flag = flagOff;
+    this.changeMenuOpecParticipationFlag = flagOff;
     this.buttonDailyTab = "button-daily-tab";
     this.getAccidentTotal();
+    this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
   },
   watch: {
     bigTable: function() {
