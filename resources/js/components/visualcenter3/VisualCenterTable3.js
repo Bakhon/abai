@@ -1748,10 +1748,10 @@ export default {
     clearNullAccidentCases() {
       _.forEach(this.bigTable, function(item) {
         if (item.accident && typeof(item.accident) !== 'number') {
-          item.accident = item.accident.replace(/null/g,'');
+          item.accident = item.accident.toString().replace(/null/g,'');
         }
         if (item.restrictions && typeof(item.restrictions) !== 'number') {
-          item.restrictions = item.restrictions.replace(/null/g,'');
+          item.restrictions = item.restrictions.toString().replace(/null/g,'');
         }
       })
     },
