@@ -3,13 +3,7 @@
 namespace App\Http\Controllers\bd;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Level23\Druid\DruidClient;
-use Level23\Druid\Types\Granularity;
-use Level23\Druid\Extractions\ExtractionBuilder;
 use App\Models\DZO\DZOdaily;
-use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
-use App\Models\VisCenter\ImportForms\DZOstaff;
 
 class DBController extends Controller
 {
@@ -42,6 +36,7 @@ class DBController extends Controller
     {
         return view('reports.gtm');
     }
+
     public function dob()
     {
         return view('reports.dob');
@@ -50,6 +45,11 @@ class DBController extends Controller
     public function form()
     {
         return view('protodb.form');
+    }
+
+    public function mobileForm()
+    {
+        return view('protodb.form_mobile');
     }
 
     public function reports()
