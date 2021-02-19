@@ -10,6 +10,11 @@
 </template>
 
 <script>
+
+const INTEGER_PART = 0
+const FRACTIONAL_PART = 1
+
+
 export default {
   props: {
     value: {
@@ -39,44 +44,37 @@ export default {
     }
   },
   beforeMount() {
-    this.init()
+    this.setupSmoothPickerValue()
   },
   methods: {
-    init() {
+    setupSmoothPickerValue() {
+
       let value = this.value.toString().split('.')
 
-      this.data[0].list = []
-      let index = 0
-      for (let i = this.item.min; i < this.item.max; i++) {
-
-        let itemValue = i.toString()
-
-        if (itemValue === value[0]) {
-          this.data[0].currentIndex = index
-        }
-        this.data[0].list.push(itemValue)
-
-        index++
-      }
-
-      this.data[1].list = []
-      index = 0
-      for (let i = 0; i < 100; i++) {
-
-        let itemValue = i.toString().padStart(2, '0')
-
-        if (itemValue === value[1]) {
-          this.data[1].currentIndex = index
-        }
-        this.data[1].list.push(itemValue)
-        index++
-      }
+      this.setupIntegerPart(value)
+      this.setupFractionalPart(value)
 
       this.pickerValue = [
-        this.data[0].list[this.data[0].currentIndex],
-        this.data[1].list[this.data[1].currentIndex]
+        this.data[INTEGER_PART].list[this.data[INTEGER_PART].currentIndex],
+        this.data[FRACTIONAL_PART].list[this.data[FRACTIONAL_PART].currentIndex]
       ]
 
+    },
+    setupIntegerPart(value) {
+      let integerValues = _.range(this.item.min, this.item.max).map((itemValue, index) => {
+        return itemValue.toString()
+      })
+
+      this.data[INTEGER_PART].list = integerValues
+      this.data[INTEGER_PART].currentIndex = integerValues.findIndex(item => item === value[INTEGER_PART])
+    },
+    setupFractionalPart(value) {
+      let fractionalValues = _.range(0, 100).map((itemValue, index) => {
+        return itemValue.toString().padStart(2, '0')
+      })
+
+      this.data[FRACTIONAL_PART].list = fractionalValues
+      this.data[FRACTIONAL_PART].currentIndex = fractionalValues.findIndex(item => item === value[FRACTIONAL_PART])
     },
     change(listIndex, valueIndex) {
       this.pickerValue[listIndex] = this.data[listIndex].list[valueIndex]
@@ -101,7 +99,7 @@ export default {
     &-ico {
       margin-right: 37px;
       @media (max-width: 768px) {
-        margin-right: 3.5vw 0;
+        margin-right: 3.5vw;
       }
 
       svg {

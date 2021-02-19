@@ -19,7 +19,7 @@ Route::group(
 
                 Route::get('/protoform', 'bd\DBController@form')->name('protoform');
                 Route::get('/mobileform', 'bd\DBController@mobileForm')->name('bigdata.form.mobile');
-                Route::post('/mobileform', 'bd\FormsController@mobileFormSave');
+                Route::post('/mobileform', 'bd\FormsController@saveMobileForm');
                 Route::get('/mobileform/values', 'bd\FormsController@getMobileFormValues');
 
                 Route::get('form/{form}', 'bd\FormsController@getParams')->name('bigdata.form.params');
