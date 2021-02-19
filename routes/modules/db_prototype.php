@@ -17,7 +17,7 @@ Route::group(
                     'bigdata.reports.favorite.remove'
                 );
 
-                Route::get('/protoform', 'bd\DBController@form')->name('protoform');
+                Route::get('/protoform', 'bd\DBController@form')->name('bigdata.protoform');
                 Route::get('/mobileform', 'bd\DBController@mobileForm')->name('bigdata.form.mobile');
                 Route::post('/mobileform', 'bd\FormsController@saveMobileForm');
                 Route::get('/mobileform/values', 'bd\FormsController@getMobileFormValues');
