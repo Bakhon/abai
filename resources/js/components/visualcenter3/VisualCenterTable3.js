@@ -3,6 +3,7 @@ import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import { isString } from "lodash";
+import dzoCompaniesInitial from './dzo_companies_initial.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 export default {
@@ -185,7 +186,6 @@ export default {
       item2: "oil_fact",
       item3: "Добыча нефти",
       item4: "тонн",
-      productionForChart: "",
       tables: "",
       showTable2: "Yes",
       displayChart: "display: none;",
@@ -349,9 +349,92 @@ export default {
         monthly: ['companyName','monthlyPlan','plan','fact', 'difference', 'percent'],
         yearly: ['companyName','yearlyPlan','plan','fact', 'difference', 'percent'],
       },
+      dzoCompanies: dzoCompaniesInitial,
+      isAllDzoCompaniesSelected: false,
+      buttonDzoDropdown: "",
+      dzoCompanySummary: this.bigTable,
+      dzoCompaniesSummaryInitial: {
+        plan: 0,
+        periodPlan: 0,
+        fact: 0,
+        difference: 0,
+        percent: 0,
+      },
+      dzoCompaniesSummary: {},
+      isDzoCompaniesListSelectorOpened: false,
+      isMultipleDzoCompaniesSelected: true,
+      dzoCompaniesSummaryForChart: {},
     };
   },
   methods: {
+    changeDzoCompaniesVisibility() {
+      this.isDzoCompaniesListSelectorOpened = !this.isDzoCompaniesListSelectorOpened;
+    },
+
+    selectAllDzoCompanies() {
+      this.selectDzoCompanies();
+    },
+
+    selectDzoCompanies() {
+      this.selectCompany('all');
+      this.isMultipleDzoCompaniesSelected = true;
+      this.isAllDzoCompaniesSelected = true;
+      this.buttonDzoDropdown = this.buttonNormalTab;
+      _.map(this.dzoCompanies, function(company) {
+        company.selected = true;
+      });
+      this.dzoCompanySummary = this.bigTable;
+      this.calculateDzoCompaniesSummary();
+    },
+
+    calculateDzoCompaniesSummary() {
+      let summary = this.dzoCompaniesSummaryInitial;
+      _.map(this.dzoCompanySummary, function(company) {
+        summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
+        summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
+        summary.periodPlan = parseInt(summary.periodPlan) + parseInt(company.periodPlan);
+      });
+      summary.difference = this.formatDigitToThousand(
+          summary.plan - summary.fact);
+      summary.percent = new Intl.NumberFormat("ru-RU")
+          .format(((summary.plan - summary.fact) /
+              summary.fact * 100).toFixed(1));
+      summary.plan = this.formatDigitToThousand(summary.plan);
+      summary.fact = this.formatDigitToThousand(summary.fact);
+      summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
+      this.dzoCompaniesSummary = summary;
+    },
+
+    selectOneDzoCompany(companyTicker) {
+      this.disableDzoCompaniesVisibility();
+      this.selectDzoCompany(companyTicker);
+    },
+
+    disableDzoCompaniesVisibility() {
+      _.forEach(this.dzoCompanies, function (dzo) {
+        _.set(dzo, 'selected', false);
+      });
+    },
+
+
+
+    selectDzoCompany(companyTicker) {
+      this.selectCompany(companyTicker);
+      this.isAllDzoCompaniesSelected = false;
+      _.map(this.dzoCompanies, function(company) {
+        if (company.ticker === companyTicker) {
+          company.selected = !company.selected;
+        }
+      });
+      let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
+      this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
+      if (this.dzoCompanySummary.length > 1) {
+        this.isMultipleDzoCompaniesSelected = true;
+      } else {
+        this.isMultipleDzoCompaniesSelected = false;
+      }
+      this.calculateDzoCompaniesSummary();
+    },
 
     getDzoColumnsClass(rowIndex, columnName) {
       if (this.getColumnIndex(columnName) % 2 === 0) {
@@ -397,7 +480,7 @@ export default {
       }
     },
 
-    saveCompany(com) {
+    selectCompany(com) {
       this.company = com;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
@@ -580,6 +663,7 @@ export default {
           formatInput: true,
         };
         this.changeDate();
+        this.calculateDzoCompaniesSummary();
       } else {
         this.buttonDailyTab = "";
       }
@@ -1150,7 +1234,6 @@ export default {
 
 
 
-
       this.circleMenu = item3;
 
       var company = this.company;
@@ -1164,7 +1247,7 @@ export default {
 
       this.axios.get(uri).then((response) => {
         let data = response.data;
-        if (data) {
+        if (data && Object.keys(data).length > 0) {
           var NameDzoFull = this.NameDzoFull;
           var company = this.company;
           var summForTables = [];
@@ -1172,7 +1255,6 @@ export default {
           if (company != "all") {
             var arrdata = new Array();
             arrdata = _.filter(data, _.iteratee({ dzo: company }));
-
 
             //get data by Month
             var dataWithMay = new Array();
@@ -1193,7 +1275,6 @@ export default {
             );
 
 
-
             this.getProductionPercentCovid(dataWithMay);
             let covid = _.reduce(
               dataWithMay,
@@ -1204,7 +1285,6 @@ export default {
             );
 
             this.covid = covid;
-
             this.WellsDataAll = this.WellsData(dataWithMay);
             this.innerWells = this.innerWellsNagData(dataWithMay, this.innerWellsButtonProstoi);
             this.innerWellsChartData = this.innerWellsNagChartData(dataWithMay, this.innerWellsButtonProstoi);
@@ -1232,18 +1312,19 @@ export default {
                 ["__time"],
                 ["asc"]
               );
-              var productionForChart = this.getProductionForChart(dataWithMay3, item6);
 
+              this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay3, item6);
             } else {
-              var productionForChart = this.getProductionForChart(dataWithMay, item6);
+
+              this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay, item6);
             }
 
             var dataWithMayLast = [];
+
             this.getProductionPercentWells(arrdata);
 
             if (this.company != "all") {
-              this.$store.commit('globalloading/SET_LOADING', false);
-              this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
+              this.exportDzoCompaniesSummaryForChart();
             }
 
             let accident;
@@ -1267,13 +1348,13 @@ export default {
               }))
               .value();
 
-
             if ((summForTables['0']['productionFactForMonth'] + summForTables['0']['productionPlanForMonth']) === 0) {
               this.noData = "Данных нет";
               this.company = "all";
               this.getProduction(item, item2, item3, item4, item5, this.nameChartLeft);
-            } else { this.noData = ""; }
-
+            } else {
+              this.noData = "";
+            }
             this.tables = summForTables;
           }
 
@@ -1312,15 +1393,14 @@ export default {
           } else {
             this.buttonHover6 = "";
           }
-
         } else {
           console.log("No data");
         }
-
         //bigtable
         //year
+
+        this.$store.commit('globalloading/SET_LOADING', false);
         if (this.company == "all") {
-          this.$store.commit('globalloading/SET_LOADING', false);
           var dataDay = [];
           var dataYear = [];
           var dzo = [];
@@ -1365,11 +1445,9 @@ export default {
               ["asc"]
             );
 
-            var productionForChart = this.getProductionForChart(dataWithMay2, item6);
-
+            this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay2, item6);
           } else {
-
-            var productionForChart = this.getProductionForChart(dataWithMay, item6);
+            this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay, item6);
           }
 
           //Summ plan and fact from dzo k1q for month!!!
@@ -1669,7 +1747,6 @@ export default {
           this.planDaySumm = planDaySumm;
 
 
-
           let personalFact = _.reduce(
             dataDay,
             function (memo, item) {
@@ -1789,65 +1866,39 @@ export default {
             })
 
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
-
-          this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
-
-          productionForChart = { data: productionForChart };
-          this.productionForChart = productionForChart;
+          this.clearNullAccidentCases();
+          this.exportDzoCompaniesSummaryForChart();
         }
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
 
       });
-      this.showTable(localStorage.getItem("changeButton"));
+    },
 
+    clearNullAccidentCases() {
+      _.forEach(this.bigTable, function(item) {
+        if (typeof(item.accident) !== 'number') {
+          item.accident = item.accident.replace(/null/g,'');
+        }
+        if (typeof(item.restrictions) !== 'number') {
+          item.restrictions = item.restrictions.replace(/null/g,'');
+        }
+      })
+    },
 
+    exportDzoCompaniesSummaryForChart() {
+      this.$store.commit('globalloading/SET_LOADING', false);
+      this.$emit("data", {
+        dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
+        opec: this.opec,
+      });
     },
 
     filterDzoInputForSeparateCompany(data,company) {
         return _.filter(data, function(item) {
-          return (item.dzo === company && item.accident !== null);
+          return (item.dzo === company);
         })
     },
-
-    getProductionPercentOneDzo(data) {
-      var timestampToday = this.timestampToday;
-      var timestampEnd = this.timestampEnd
-      var quantityRange = this.quantityRange;
-
-
-      var productionPlan = localStorage.getItem("production-plan");
-      var productionFact = localStorage.getItem("production-fact");
-
-
-
-
-      var dataWithMay = new Array();
-      dataWithMay = _.filter(data, function (item) {
-        return _.every([
-          _.inRange(
-            item.__time,
-            timestampToday - quantityRange * 86400000,
-            timestampToday
-          ),
-        ]);
-      });
-
-
-      var productionForChart = _(dataWithMay)
-        .groupBy("dzo")
-        .map((dzo, id) => ({
-          dzoPercent: id,
-          productionFactPercent: _.round(_.sumBy(dzo, productionFact), 0),
-          productionPlanPercent: _.round(_.sumBy(dzo, productionPlan), 0),
-        }))
-        .value();
-      this.productionFactPercentOneDzo = productionForChart[0]['productionFactPercent'];
-
-    },
-
-
-
 
     getProductionPercentCovid(data) {
       var timestampToday = this.timestampToday;
@@ -1913,65 +1964,6 @@ export default {
       this.inj_wells_workPercent = productionPlanAndFactMonthWells[0]['inj_wells_work'];
       this.prod_wells_workPercent = productionPlanAndFactMonthWells[0]['prod_wells_work'];
       this.prod_wells_idlePercent = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
-
-      /*
-       dataWithMay = _.filter(data, function (item) {
-         return _.every([
-           _.inRange(
-             item.__time,
-             timestampToday - quantityRange * 86400000,
-             (timestampToday - (quantityRange * 86400000)) + 86400000
-           ),
-         ]);
-       });
-
-
-         if (inj_wells_idle) {
-         inj_wells_idle = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.inj_wells_idle;
-           },
-           0
-         );
-         this.inj_wells_idlePercent = inj_wells_idle;
-       }
-
-       if (inj_wells_work) {
-         inj_wells_work = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.inj_wells_work;
-           },
-           0
-         );
-         this.inj_wells_workPercent = inj_wells_work;
-       }
-
-       if (prod_wells_work) {
-         prod_wells_work = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.prod_wells_work;
-           },
-           0
-         );
-         this.prod_wells_workPercent = prod_wells_work;
-       }
-
-       if (prod_wells_idle) {
-         prod_wells_idle = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.prod_wells_idle;
-           },
-           0
-         );
-
-         this.prod_wells_idlePercent = prod_wells_idle;
-       }
-
-       */
     },
 
 
@@ -2002,7 +1994,7 @@ export default {
       });
 
 
-      var productionForChart = _(dataWithMay)
+      return _(dataWithMay)
         .groupBy("dzo")
         .map((dzo, id) => ({
           dzoPercent: id,
@@ -2010,7 +2002,6 @@ export default {
           productionPlanPercent: _.round(_.sumBy(dzo, productionPlan), 0),
         }))
         .value();
-      return productionForChart;
     },
 
     changeButton(showTableItem, changeButton) {
@@ -2041,7 +2032,6 @@ export default {
         this.displayChart = "display:none;";
 
         if (this.company == "all") {
-          this.displayHeadTables = "d-flex";
           this.displayTable = "display:none;";
         } else {
           this.displayTable = "d-flex;";
@@ -2050,7 +2040,6 @@ export default {
         this.showTableOn = "";
       } else if (showTableItem == "No") {
         this.displayTable = "display:none;";
-        this.displayHeadTables = "display: none";
         this.displayChart = "display:block;";
         this.ChartTable = "Таблица";
 
@@ -2106,7 +2095,6 @@ export default {
           prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
         }))
         .value();
-
       var productionPlanAndFactMonthWellsName = [];
 
       this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
@@ -2607,7 +2595,8 @@ export default {
 
       let productionPlan = localStorage.getItem("production-plan");
       let productionFact = localStorage.getItem("production-fact");
-      let productionForChart = _(dataWithMay)
+
+      return _(dataWithMay)
         .groupBy("__time")
         .map((__time, id) => ({
           time: id,
@@ -2617,7 +2606,6 @@ export default {
           productionPlanForChart2: _.round(_.sumBy(__time, plan2), 0),
         }))
         .value();
-      return productionForChart;
     },
 
     getQuarter(d) {
@@ -2652,21 +2640,21 @@ export default {
             .groupBy("dzo")
             .map((dzo, id) => ({
               dzoMonth: id,
-              oil_planYear: _.round(_.sumBy(dzo, 'oil_plan'), 0),
+              periodPlan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
             }))
 
             .value();
-
           let opecDataSumm = _.reduce(
             SummFromRange,
             function (memo, item) {
-              return memo + item.oil_planYear;
+              return memo + item.periodPlan;
             },
             0
           );
 
           this.opecData = SummFromRange;
           this.opecDataSumm = opecDataSumm;
+
         }
         else { console.log('Not opec data'); }
       });
@@ -2686,7 +2674,7 @@ export default {
         .groupBy("dzo")
         .map((dzo, id) => ({
           dzoMonth: id,
-          planMonthNew: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
+          periodPlan: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
         }))
 
         .value();
@@ -2694,7 +2682,7 @@ export default {
       let opecDataSumm = _.reduce(
         SummFromRange,
         function (memo, item) {
-          return memo + item.planMonthNew;
+          return memo + item.periodPlan;
         },
         0
       );
@@ -2702,7 +2690,6 @@ export default {
       this.opecDataSummMonth = opecDataSumm;
 
       return SummFromRange;
-
     },
 
     formatVisTableNumber3(a, b) {
@@ -2724,12 +2711,12 @@ export default {
 
     },
 
-    formatVisTableNumber(num) {
-      if (this.quantityRange < 2) { this.thousand = ''; return new Intl.NumberFormat("ru-RU").format(Math.round(num)); } else {
-        this.thousand =
-          // 'тыс.';
-          this.trans("visualcenter.thousand");
-        let initNum = num
+    formatDigitToThousand(num) {
+      if (this.quantityRange < 2) {
+        this.thousand = '';
+        return new Intl.NumberFormat("ru-RU").format(Math.round(num));
+      } else {
+        this.thousand = this.trans("visualcenter.thousand");
         if (num >= 1000) {
           num = (num / 1000).toFixed(0)
         }
@@ -2746,9 +2733,7 @@ export default {
         }
         return new Intl.NumberFormat("ru-RU").format(num)
       }
-
     }
-
   },
 
   created() {
@@ -2807,12 +2792,14 @@ export default {
     this.buttonDailyTab = "button-daily-tab";
     this.getAccidentTotal();
   },
-  watch: {},
+  watch: {
+    bigTable: function() {
+      this.dzoCompanySummary = this.bigTable;
+      this.calculateDzoCompaniesSummary();
+    },
+  },
   computed: {
     exactDateSelected() {
-      console.log(this.item2 === 'oil_fact')
-      console.log(this.item2 === 'oil_div_fact')
-      console.log(this.oneDate === 1)
       return ((this.item2 === 'oil_fact' || this.item2 === 'oil_div_fact') && this.oneDate === 1);
     },
 
