@@ -47,6 +47,9 @@
                 });
 
                 let canvas = document.getElementById("line-chart");
+                if (!canvas) {
+                    return;
+                }
                 let ctx = canvas.getContext("2d", {antialias: false, depth: false});
                 ctx.fillStyle = "transparent";
                 let fillPattern = (function () {
