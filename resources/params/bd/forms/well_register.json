@@ -30,7 +30,8 @@
               "code": "name",
               "type": "text",
               "title": "Номер скважины",
-              "validation": "required|max:255"
+              "validation": "required|max:255",
+              "prefix": ""
             },
             {
               "code": "date_create",
@@ -117,13 +118,13 @@
               "code": "date_start_drilling",
               "type": "date",
               "title": "Дата начала бурения",
-              "validation": "nullable|date"
+              "validation": "nullable|date|before_or_equal:today"
             },
             {
               "code": "date_end_drilling",
               "type": "date",
               "title": "Дата окончания бурения",
-              "validation": "nullable|date"
+              "validation": "nullable|date|before_or_equal:today|after:date_start_drilling"
             },
             {
               "code": "company",

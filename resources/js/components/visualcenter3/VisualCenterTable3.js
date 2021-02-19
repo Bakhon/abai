@@ -1869,6 +1869,7 @@ export default {
           this.clearNullAccidentCases();
           this.exportDzoCompaniesSummaryForChart();
         }
+
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
 
@@ -1877,11 +1878,11 @@ export default {
 
     clearNullAccidentCases() {
       _.forEach(this.bigTable, function(item) {
-        if (typeof(item.accident) !== 'number') {
-          item.accident = item.accident.replace(/null/g,'');
+        if (item.accident && typeof(item.accident) !== 'number') {
+          item.accident = item.accident.toString().replace(/null/g,'');
         }
-        if (typeof(item.restrictions) !== 'number') {
-          item.restrictions = item.restrictions.replace(/null/g,'');
+        if (item.restrictions && typeof(item.restrictions) !== 'number') {
+          item.restrictions = item.restrictions.toString().replace(/null/g,'');
         }
       })
     },
