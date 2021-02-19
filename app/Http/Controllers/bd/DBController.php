@@ -29,6 +29,11 @@ class DBController extends Controller
         return view('reports.bigdata');
     }
 
+    public function las()
+    {
+        return view('reports.las');
+    }
+
     public function constructor()
     {
         return view('reports.constructor');
