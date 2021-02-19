@@ -136,7 +136,15 @@ export default {
           geo: this.formValues[triggerFieldCode]
         }
       }).then(({data}) => {
-        this.formValues[changeFieldCode] = data.prefix
+        for (const tab of this.form.tabs) {
+          for (const block of tab.blocks) {
+            for (const item of block.items) {
+              if (item.code === changeFieldCode) {
+                item.prefix = data.prefix
+              }
+            }
+          }
+        }
       })
     },
     filterGeoByDZO(triggerFieldCode, changeFieldCode) {
