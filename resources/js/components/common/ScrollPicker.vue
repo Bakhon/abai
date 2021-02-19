@@ -69,8 +69,8 @@ export default {
       this.data[INTEGER_PART].currentIndex = integerValues.findIndex(item => item === value[INTEGER_PART])
     },
     setupFractionalPart(value) {
-      let fractionalValues = _.range(0, 100).map((itemValue, index) => {
-        return itemValue.toString().padStart(2, '0')
+      let fractionalValues = _.range(0, 10).map((itemValue, index) => {
+        return itemValue.toString()
       })
 
       this.data[FRACTIONAL_PART].list = fractionalValues
