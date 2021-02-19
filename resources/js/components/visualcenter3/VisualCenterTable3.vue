@@ -816,11 +816,13 @@
             >
               {{ trans("visualcenter.dzoAllCompany") }}
               <div
+                      v-click-outside="defocusDzoCompanies"
                       class="arrow-down"
                       @click="`${changeDzoCompaniesVisibility()}`"
               ></div>
               <div>
                 <ul
+
                         :class="isDzoCompaniesListSelectorOpened ? 'show-company-list' : 'hide-company-list'"
                   >
                   <li
