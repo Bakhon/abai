@@ -1,14 +1,14 @@
 <template>
   <div class="table-container">
     <cat-loader v-show="isloading"/>
-    <div class="parameter__name required">file<span>&nbsp;*</span>
+    <div>file<span>&nbsp;*</span>
     </div>
     <div class="container">
       <input type="file" id="file" ref="file" title="Файл" @change="handleFileUpload()">
       <button id="experimentUploadButton a" @click="submitFile()">Загрузить</button>
     </div>
     <div class="container info pt-5">
-      <p v-if="experiments_id">ID измерения {{ experiments_id }}</p>
+      <p v-if="experimentsId">ID измерения {{ experimentsId }}</p>
     </div>
     <div class="container pt-5">
       <input id="experiment" v-model="experimentId" placeholder="id эксперимента">
@@ -37,7 +37,7 @@ export default {
       file: '',
       isLoading: false,
       experimentId: null,
-      experiments_id: null,
+      experimentsId: null,
       baseUrl: 'http://172.20.103.157:8083/',
       experimentInfo: null
     }
@@ -51,7 +51,7 @@ export default {
       formData.append('file', this.file);
 
       this.isLoading = true;
-      this.experiments_id = null;
+      this.experimentsId = null;
 
       this.axios.post(this.baseUrl + 'upload/', formData, {
         responseType: 'json',
@@ -60,7 +60,7 @@ export default {
         }
       }).then((response) => {
         if (response.data) {
-          this.experiments_id = response.data.experiments_id
+          this.experimentsId = response.data.experiments_id
         }
       }).catch((error) => console.log(error)
       ).finally(() => this.isLoading = false);
@@ -85,9 +85,6 @@ export default {
 </script>
 
 <style>
-.bootstrap-table .fixed-table-container .table {
-  color: white;
-}
 .info {
   color: white
 }
