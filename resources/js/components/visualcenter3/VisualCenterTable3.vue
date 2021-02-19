@@ -377,7 +377,10 @@
                 ></button>
 
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="processSwitchingMainMenu('oilDeliveryButton','kmgParticipation')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('oilDeliveryButton','kmgParticipation')"
+                  >
                     <div
                       class="col-1 mt-2"
                       v-html="`${getMainMenuButtonFlag('oilDeliveryButton','kmgParticipation')}`"
@@ -400,7 +403,10 @@
                       }}
                     </a>
                   </li>
-                  <li class="center-li row px-4" @click="processSwitchingMainMenu('oilDeliveryButton','oilResidue')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('oilDeliveryButton','oilResidue')"
+                  >
                     <div
                       class="col-1 mt-2"
                       v-html="`${getMainMenuButtonFlag('oilDeliveryButton','oilResidue')}`"
@@ -452,7 +458,10 @@
                   data-toggle="dropdown"
                 ></button>
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="processSwitchingMainMenu('gasProductionButton','deliveryNaturalGas')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('gasProductionButton','deliveryNaturalGas')"
+                  >
                     <div
                       class="col-1 mt-2"
                       v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
@@ -475,7 +484,10 @@
                     </a>
                   </li>
 
-                  <li class="center-li row px-4" @click="processSwitchingMainMenu('gasProductionButton','gasConsumptionForNeeds')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('gasProductionButton','gasConsumptionForNeeds')"
+                  >
                     <div
                       class="col-1 mt-2"
                       v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
@@ -497,10 +509,13 @@
                       }}
                     </a>
                   </li>
-                  <li class="center-li row px-4" @click="changeMenu('108')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('gasProductionButton','deliveryAssociatedGas')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton8Flag"
+                      v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryAssociatedGas')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
@@ -520,10 +535,13 @@
                     </a>
                   </li>
 
-                  <li class="center-li row px-4" @click="changeMenu('103')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton3Flag"
+                      v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasConsumptionForNeeds')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
@@ -542,10 +560,13 @@
                       }}
                     </a>
                   </li>
-                  <li class="center-li row px-4" @click="changeMenu('107')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('gasProductionButton','associatedGasProcessing')"
+                  >
                     <div
-                      class="col-1 mt-2"
-                      v-html="changeMenuButton7Flag"
+                          class="col-1 mt-2"
+                          v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasProcessing')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
@@ -594,10 +615,13 @@
                   data-toggle="dropdown"
                 ></button>
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="changeMenu('113')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('condensateProductionButton','kmgParticipation')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton13Flag"
+                      v-html="`${getMainMenuButtonFlag('condensateProductionButton','kmgParticipation')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
@@ -646,10 +670,13 @@
                   data-toggle="dropdown"
                 ></button>
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="changeMenu('109')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('waterInjectionButton','seaWaterInjection')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton9Flag"
+                      v-html="`${getMainMenuButtonFlag('waterInjectionButton','seaWaterInjection')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
@@ -669,10 +696,13 @@
                     </a>
                   </li>
 
-                  <li class="center-li row px-4" @click="changeMenu('110')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('waterInjectionButton','wasteWaterInjection')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton10Flag"
+                      v-html="`${getMainMenuButtonFlag('waterInjectionButton','wasteWaterInjection')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
@@ -692,10 +722,13 @@
                     </a>
                   </li>
 
-                  <li class="center-li row px-4" @click="changeMenu('111')">
+                  <li
+                          class="center-li row px-4"
+                          @click="processSwitchingMainMenu('waterInjectionButton','albsenWaterInjection')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton11Flag"
+                      v-html="`${getMainMenuButtonFlag('waterInjectionButton','albsenWaterInjection')}`"
                     ></div>
                     <a
                       class="col-9 px-2"

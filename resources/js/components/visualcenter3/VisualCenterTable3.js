@@ -7,6 +7,7 @@ import dzoCompaniesInitial from './dzo_companies_initial.json';
 import mainMenuConfiguration from './main_menu_configuration.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
+
 export default {
   components: {
     Calendar,
@@ -127,36 +128,6 @@ export default {
       tableHover4: "",
       tableHover5: "",
       tableHover6: "",
-      changeMenuButton: "color: #fff;background: #237deb;font-weight:bold;",
-      changeMenuButton1: "",
-      changeMenuButton2: "",
-      changeMenuButton3: "",
-      changeMenuButton4: "",
-      changeMenuButton5: "",
-      changeMenuButton6: "",
-      changeMenuButton7: "",
-      changeMenuButton8: "",
-      changeMenuButton9: "",
-      changeMenuButton10: "",
-      changeMenuButton11: "",
-      changeMenuButton12: "",
-      changeMenuButton13: "",
-      changeMenuButtonOpecParticipation: "",
-
-      changeMenuButton1Flag: "",
-      changeMenuButton2Flag: "",
-      changeMenuButton3Flag: "",
-      changeMenuButton4Flag: "",
-      changeMenuButton5Flag: "",
-      changeMenuButton6Flag: "",
-      changeMenuButton7Flag: "",
-      changeMenuButton8Flag: "",
-      changeMenuButton9Flag: "",
-      changeMenuButton10Flag: "",
-      changeMenuButton11Flag: "",
-      changeMenuButton12Flag: "",
-      changeMenuButton13Flag: "",
-      changeMenuOpecParticipationFlag: "",
       Table1: "display:block;",
       Table2: "display:none;",
       Table3: "display:none;",
@@ -393,7 +364,7 @@ export default {
     },
 
     calculateDzoCompaniesSummary() {
-      let summary = this.dzoCompaniesSummaryInitial;
+      let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
       _.map(this.dzoCompanySummary, function(company) {
         summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
         summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
@@ -555,112 +526,6 @@ export default {
       }
       let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
       return this[buttonOptions.flag];
-    },
-
-    changeMenu(change) {
-      let changeMenuButton = this.changeMenuButton;
-      let flagOn = this.flagOn;
-      let flagOff = this.flagOff;
-      this.changeMenuButton1 = '';
-      this.changeMenuButton2 = '';
-      this.changeMenuButton3 = '';
-      this.changeMenuButton4 = '';
-      this.changeMenuButton5 = '';
-      this.changeMenuButton6 = '';
-      this.changeMenuButton7 = '';
-      this.changeMenuButton8 = '';
-      this.changeMenuButton9 = '';
-      this.changeMenuButton10 = '';
-      this.changeMenuButton11 = '';
-      this.changeMenuButton12 = '';
-      this.changeMenuButton13 = '';
-      this.changeMenuButtonOpecParticipation = '';
-
-      this.changeMenuButton1Flag = flagOff;
-      this.changeMenuButton2Flag = flagOff;
-      this.changeMenuButton3Flag = flagOff;
-      this.changeMenuButton4Flag = flagOff;
-      this.changeMenuButton5Flag = flagOff;
-      this.changeMenuButton6Flag = flagOff;
-      this.changeMenuButton7Flag = flagOff;
-      this.changeMenuButton8Flag = flagOff;
-      this.changeMenuButton9Flag = flagOff;
-      this.changeMenuButton10Flag = flagOff;
-      this.changeMenuButton11Flag = flagOff;
-      this.changeMenuButton12Flag = flagOff;
-      this.changeMenuButton13Flag = flagOff;
-      this.changeMenuOpecParticipationFlag = flagOff;
-
-      if (change == "101") {
-        this.changeMenuButton1 = changeMenuButton;
-        this.changeMenuButton1Flag = flagOn;
-      }
-
-      if (change == "102") {
-        this.changeMenuButton2 = changeMenuButton;
-        this.changeMenuButton2Flag = flagOn;
-      }
-
-      if (change == "103") {
-        this.changeMenuButton3 = changeMenuButton;
-        this.changeMenuButton3Flag = flagOn;
-      }
-
-      if (change == "104") {
-        this.changeMenuButton4 = changeMenuButton;
-        this.changeMenuButton4Flag = flagOn;
-      }
-
-      if (change == "105") {
-        this.changeMenuButton5 = changeMenuButton;
-        this.changeMenuButton5Flag = flagOn;
-      }
-
-
-      if (change == "106") {
-        this.changeMenuButton6 = changeMenuButton;
-        this.changeMenuButton6Flag = flagOn;
-      }
-
-      if (change == "107") {
-        this.changeMenuButton7 = changeMenuButton;
-        this.changeMenuButton7Flag = flagOn;
-      }
-
-      if (change == "108") {
-        this.changeMenuButton8 = changeMenuButton;
-        this.changeMenuButton8Flag = flagOn;
-      }
-
-      if (change == "109") {
-        this.changeMenuButton9 = changeMenuButton;
-        this.changeMenuButton9Flag = flagOn;
-      }
-
-      if (change == "110") {
-        this.changeMenuButton10 = changeMenuButton;
-        this.changeMenuButton10Flag = flagOn;
-      }
-
-      if (change == "111") {
-        this.changeMenuButton11 = changeMenuButton;
-        this.changeMenuButton11Flag = flagOn;
-      }
-
-      if (change == "112") {
-        this.changeMenuButton12 = changeMenuButton;
-        this.changeMenuButton12Flag = flagOn;
-      }
-
-      if (change == "113") {
-        this.changeMenuButton13 = changeMenuButton;
-        this.changeMenuButton13Flag = flagOn;
-      }
-      if (change == "opecParticipation") {
-        this.changeMenuButtonOpecParticipation = changeMenuButton;
-        this.changeMenuOpecParticipationFlag = flagOn;
-      }
-
     },
 
     dayClicked() {
@@ -1214,6 +1079,7 @@ export default {
     },
 
     getProduction(item, item2, item3, item4, item5, item6) {
+      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
       if (this.opec === "ОПЕК+") {
         if (item != "oil_opek_plan") {
           this.opec = 'утв.';
@@ -2716,6 +2582,9 @@ export default {
     },
 
     formatDigitToThousand(num) {
+      if (num === null) {
+        return 0;
+      }
       if (this.quantityRange < 2) {
         this.thousand = '';
         return new Intl.NumberFormat("ru-RU").format(Math.round(num));
@@ -2779,21 +2648,6 @@ export default {
     this.changeMenu2();
     this.getStaff();
 
-    let flagOff = this.flagOff;
-    this.changeMenuButton1Flag = flagOff;
-    this.changeMenuButton2Flag = flagOff;
-    this.changeMenuButton3Flag = flagOff;
-    this.changeMenuButton4Flag = flagOff;
-    this.changeMenuButton5Flag = flagOff;
-    this.changeMenuButton6Flag = flagOff;
-    this.changeMenuButton7Flag = flagOff;
-    this.changeMenuButton8Flag = flagOff;
-    this.changeMenuButton9Flag = flagOff;
-    this.changeMenuButton10Flag = flagOff;
-    this.changeMenuButton11Flag = flagOff;
-    this.changeMenuButton12Flag = flagOff;
-    this.changeMenuButton13Flag = flagOff;
-    this.changeMenuOpecParticipationFlag = flagOff;
     this.buttonDailyTab = "button-daily-tab";
     this.getAccidentTotal();
     this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
