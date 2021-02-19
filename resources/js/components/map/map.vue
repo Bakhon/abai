@@ -34,9 +34,9 @@
         id="add-object-modal"
         :title="addObjectModalTitle">
 
-      <map-gu-form :gu="addObjectform" :cdngs="cdngs" v-if="editMode == 'gu'"></map-gu-form>
-      <map-zu-form :zu="addObjectform" :gus="gus" v-if="editMode == 'zu'"></map-zu-form>
-      <map-well-form :well="addObjectform" :zus="zuPoints" v-if="editMode == 'well'"></map-well-form>
+      <map-gu-form :gu="objectData" :cdngs="cdngs" v-if="editMode == 'gu'"></map-gu-form>
+      <map-zu-form :zu="objectData" :gus="gus" v-if="editMode == 'zu'"></map-zu-form>
+      <map-well-form :well="objectData" :zus="zuPoints" v-if="editMode == 'well'"></map-well-form>
       <map-pipe-form :pipe="newPipe" :zus="zuPoints" :gus="gus" v-if="editMode == 'pipe' && newPipe"></map-pipe-form>
 
       <template #modal-footer>
@@ -71,6 +71,8 @@ import mapGuForm from "./mapGuForm";
 import mapZuForm from "./mapZuForm";
 import mapWellForm from "./mapWellForm";
 import mapPipeForm from "./mapPipeForm";
+import {guMapState, guMapMutations, guMapActions} from '@store/helpers';
+
 
 export default {
   name: "gu-map",
@@ -93,12 +95,6 @@ export default {
   },
   data() {
     return {
-      addObjectform: {
-        id: null,
-        name: '',
-        lat: null,
-        lon: null
-      },
       editOptions: [
         {
           name: 'ГУ редактор',
@@ -117,16 +113,16 @@ export default {
           code: 'pipe'
         },
       ],
+      objectData: {
+        id: null,
+        name: '',
+        lat: null,
+        lon: null
+      },
       isHovering: false,
       newPipe: null,
       gu: null,
-      pipeLayerId: 1,
-      pipes: [],
-      zuPoints: [],
-      wellPoints: [],
-      guPoints: [],
-      centers: [],
-      accessToken: 'pk.eyJ1IjoibWFja2V5c2kiLCJhIjoiY2sxZ2JwdzF1MDk4eDNubDhraHNxNTluaCJ9.5VnpUHKLM0rdx1pYjpNYPw', // your access token. Needed if you using Mapbox maps
+      mapBoxToken: process.env.MIX_MAPBOX_TOKEN,
       mapStyle: 'mapbox://styles/mapbox/satellite-v9?optimize=true',
       pipePopupText: null,
       pipePopupCoords: [0, 0],
@@ -142,7 +138,6 @@ export default {
         pitch: null
       },
       firstCentered: false,
-      guPointsIndexes: [],
       layers: [],
     };
   },
@@ -150,6 +145,16 @@ export default {
     this.initMap();
   },
   computed: {
+    ...guMapState([
+      'pipes',
+      'zuPoints',
+      'wellPoints',
+      'guPoints',
+      'guCenters',
+      'guPointsIndexes',
+      'mapCenter',
+      'pipeLayerId'
+    ]),
     addObjectModalTitle() {
       switch (this.editMode) {
         case 'gu':
@@ -175,6 +180,14 @@ export default {
     }
   },
   methods: {
+    ...guMapMutations([]),
+    ...guMapActions([
+      'getPipes',
+      'storeGu',
+      'storeZu',
+      'storeWell',
+      'storePipe'
+    ]),
     colorToRGBArray(color) {
       if (!color) {
         return [255, 255, 255, 0];
@@ -186,7 +199,7 @@ export default {
       return [c.r, c.g, c.b, 255];
     },
     resetForm() {
-      this.addObjectform = {
+      this.objectData = {
         id: null,
         name: '',
         lat: null,
@@ -213,44 +226,7 @@ export default {
         this.newPipe = null;
 
       }
-    },
-    storeGu() {
-      return this.axios.post(this.localeUrl("/gu-map/storegu"), {gu: this.addObjectform}).then((response) => {
-        if (response.data.status == 'success') {
-          return response.data.gu;
-        } else {
-          console.log('error save Gu in DB');
-        }
-      });
-    },
-    storeZu() {
-      return this.axios.post(this.localeUrl("/gu-map/storezu"), {zu: this.addObjectform}).then((response) => {
-        if (response.data.status == 'success') {
-          return response.data.zu;
-        } else {
-          console.log('error save Zu in DB');
-        }
-      });
-    },
-    storeWell() {
-      return this.axios.post(this.localeUrl("/gu-map/storewell"), {well: this.addObjectform}).then((response) => {
-        if (response.data.status == 'success') {
-          return response.data.well;
-        } else {
-          console.log('error save Well in DB');
-        }
-      });
-    },
-    storePipe() {
-      return this.axios.post(this.localeUrl("/gu-map/storepipe"), {pipe: this.newPipe}).then((response) => {
-        if (response.data.status == 'success') {
-          return response.data.pipe;
-        } else {
-          console.log('error save Pipe in DB');
-        }
-      });
-    },
-    updateLayers() {
+    },updateLayers() {
       let tempLayers = [];
       this.layers.forEach((layer) => {
         tempLayers.push(layer);
@@ -263,9 +239,7 @@ export default {
       this[method]();
     },
     async addGu() {
-      let gu = await this.storeGu();
-      this.guPoints.push(gu);
-      this.guPointsIndexes.push(gu.id);
+      let gu = await this.storeGu(this.objectData);
       this.gus.push(gu);
       this.gu = gu;
       this.$bvModal.hide('add-object-modal');
@@ -298,8 +272,7 @@ export default {
       this.centerTo(gu);
     },
     async addZu() {
-      let zu = await this.storeZu();
-      this.zuPoints.push(zu);
+      let zu = await this.storeZu(this.objectData);
       this.$bvModal.hide('add-object-modal');
       this.resetForm();
       this.updateLayers();
@@ -330,8 +303,7 @@ export default {
       this.centerTo(zu);
     },
     async addWell() {
-      let well = await this.storeWell();
-      this.wellPoints.push(well);
+      let well = await this.storeWell(this.objectData);
       this.$bvModal.hide('add-object-modal');
       this.resetForm();
       this.updateLayers();
@@ -362,11 +334,9 @@ export default {
       this.centerTo(well);
     },
     async addPipe() {
-      let pipe = await this.storePipe();
-      this.pipes.push(pipe);
+      await this.storePipe(this.newPipe);
       this.$bvModal.hide('add-object-modal');
       this.newPipe = null;
-      this.pipeLayerId++;
     },
     prepareLayers() {
       let pipesLayer = new PathLayer({
@@ -448,11 +418,6 @@ export default {
         wellPointsLayer,
       ];
     },
-    indexingGuPoints() {
-      this.guPoints.forEach((gu, index) => {
-        this.guPointsIndexes[index] = gu.id;
-      });
-    },
     centerTo(point = null) {
       if (point == null) {
         return false;
@@ -494,81 +459,71 @@ export default {
         pitch: 30
       });
     },
-    initMap() {
-      this.zuPoints = []
-      this.wellPoints = []
-      this.guPoints = []
-      this.axios.get(this.localeUrl("/gu-map/pipes"), {params: {gu: this.gu}}).then((response) => {
-        this.pipes = response.data.pipes;
-        this.zuPoints = response.data.zuPoints;
-        this.wellPoints = response.data.wellPoints;
-        this.guPoints = response.data.guPoints;
-        this.guCenters = response.data.guCenters;
+    async initMap() {
+      await this.getPipes(this.gu);
 
-        this.indexingGuPoints();
+      this.viewState = {
+        latitude: this.mapCenter.latitude,
+        longitude: this.mapCenter.longitude,
+        zoom: 11,
+        bearing: 0,
+        pitch: 30
+      };
 
-        this.viewState = {
-          latitude: response.data.center[1],
-          longitude: response.data.center[0],
-          zoom: 11,
-          bearing: 0,
-          pitch: 30
-        };
+      let map = this.map = new mapboxgl.Map({
+        container: 'map',
+        style: this.mapStyle,
+        interactive: false,
+        center: [this.viewState.longitude, this.viewState.latitude],
+        zoom: this.viewState.zoom,
+        bearing: this.viewState.bearing,
+        pitch: this.viewState.pitch,
+        accessToken: this.mapBoxToken
+      });
 
-        let map = this.map = new mapboxgl.Map({
-          container: 'map',
-          style: this.mapStyle,
-          interactive: false,
-          center: [this.viewState.longitude, this.viewState.latitude],
-          zoom: this.viewState.zoom,
-          bearing: this.viewState.bearing,
-          pitch: this.viewState.pitch,
-          accessToken: this.accessToken
-        });
+      this.map.on('click', (e) => {
+        this.mapClickHandle(e);
+      });
 
-        this.map.on('click', (e) => {
-          this.mapClickHandle(e);
-        });
+      this.prepareLayers();
 
-        this.prepareLayers();
-
-        let deck = this.deck = new Deck({
-          gl: map.painter.context.gl,
-          initialViewState: this.viewState,
-          controller: true,
-          onViewStateChange: ({viewState}) => {
-            this.map.jumpTo({
-              center: [viewState.longitude, viewState.latitude],
-              zoom: viewState.zoom,
-              bearing: viewState.bearing,
-              pitch: viewState.pitch
-            });
-          },
-          onHover: ({object}) => (this.isHovering = Boolean(object)),
-          getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
-          getTooltip: ({object}) => object && object.name,
-          layers: this.layers,
-        });
-
-        // wait for map to be ready
-        this.map.on('load', () => {
-          // add to mapbox
-          this.map.addLayer(new MapboxLayer({id: 'path-layer', deck}));
-          this.map.addLayer(new MapboxLayer({id: 'icon-layer-gu', deck}));
-          this.map.addLayer(new MapboxLayer({id: 'icon-layer-zu', deck}));
-          this.map.addLayer(new MapboxLayer({id: 'icon-layer-well', deck}));
-
-          // update the layers
-          this.deck.setProps({
-            layers: this.layers
+      let deck = this.deck = new Deck({
+        gl: map.painter.context.gl,
+        initialViewState: this.viewState,
+        controller: true,
+        onViewStateChange: ({viewState}) => {
+          this.map.jumpTo({
+            center: [viewState.longitude, viewState.latitude],
+            zoom: viewState.zoom,
+            bearing: viewState.bearing,
+            pitch: viewState.pitch
           });
+        },
+        onHover: ({object}) => (this.isHovering = Boolean(object)),
+        getCursor: ({isDragging}) => (isDragging ? 'grabbing' : (this.isHovering ? 'pointer' : 'grab')),
+        getTooltip: ({object}) => object && object.name,
+        layers: this.layers,
+      });
+
+      // wait for map to be ready
+      this.map.on('load', () => {
+        // add to mapbox
+        this.map.addLayer(new MapboxLayer({id: 'path-layer', deck}));
+        this.map.addLayer(new MapboxLayer({id: 'icon-layer-gu', deck}));
+        this.map.addLayer(new MapboxLayer({id: 'icon-layer-zu', deck}));
+        this.map.addLayer(new MapboxLayer({id: 'icon-layer-well', deck}));
+
+        // update the layers
+        this.deck.setProps({
+          layers: this.layers
         });
       });
+      // });
     },
     mapClickHandle(e) {
       if (this.editMode && this.editMode != 'pipe') {
-        this.addObjectform.lon = e.lngLat.lng
-        this.addObjectform.lat = e.lngLat.lat;
+        this.objectData.lon = e.lngLat.lng;
+        this.objectData.lat = e.lngLat.lat;
 
         this.$bvModal.show('add-object-modal');
       } else if (this.editMode == 'pipe' && this.newPipe) {

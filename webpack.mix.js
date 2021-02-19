@@ -11,6 +11,14 @@ const mix = require('laravel-mix');
  |
  */
 
+mix.webpackConfig({
+   resolve: {
+      alias: {
+         '@store': path.resolve(__dirname, 'resources/js/store/'),
+      }
+   }
+});
+
 mix.js('resources/js/app.js', 'public/js')
    mix.sass('resources/sass/app.scss', 'public/css')
    .copyDirectory('resources/sass/font', 'public/fonts')
