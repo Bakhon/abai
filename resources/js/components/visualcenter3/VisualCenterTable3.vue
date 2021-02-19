@@ -377,10 +377,10 @@
                 ></button>
 
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="changeMenu('102')">
+                  <li class="center-li row px-4" @click="processSwitchingMainMenu('oilDeliveryButton','kmgParticipation')">
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton2Flag"
+                      v-html="`${getMainMenuButtonFlag('oilDeliveryButton','kmgParticipation')}`"
                     ></div>
 
                     <a
@@ -400,10 +400,10 @@
                       }}
                     </a>
                   </li>
-                  <li class="center-li row px-4" @click="changeMenu('103')">
+                  <li class="center-li row px-4" @click="processSwitchingMainMenu('oilDeliveryButton','oilResidue')">
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton3Flag"
+                      v-html="`${getMainMenuButtonFlag('oilDeliveryButton','oilResidue')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
@@ -452,10 +452,10 @@
                   data-toggle="dropdown"
                 ></button>
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="changeMenu('104')">
+                  <li class="center-li row px-4" @click="processSwitchingMainMenu('gasProductionButton','deliveryNaturalGas')">
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton4Flag"
+                      v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
@@ -475,10 +475,10 @@
                     </a>
                   </li>
 
-                  <li class="center-li row px-4" @click="changeMenu('105')">
+                  <li class="center-li row px-4" @click="processSwitchingMainMenu('gasProductionButton','gasConsumptionForNeeds')">
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton5Flag"
+                      v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
