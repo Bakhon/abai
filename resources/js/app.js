@@ -141,6 +141,7 @@ Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
+Vue.component('las', require('./components/bigdata/Las.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('bigdata-form', require('./components/bigdata/wells/form').default);
 Vue.component('bigdata-form-field', require('./components/bigdata/wells/field').default);
