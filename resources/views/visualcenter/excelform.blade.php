@@ -6,7 +6,7 @@
         @csrf
         <visualcenter3-excelform></visualcenter3-excelform>
     </form>
-    <link href="{{ asset('css/visualcenter/handsontable.full.min.css')}}" rel="stylesheet">    
-    <script src="{{ asset('js/visualcenter/handsontable.full.min.js')}}"></script>      
+  
+    
 </div>
 @endsection
