@@ -42,7 +42,7 @@ if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru
 
     @include('layouts.head-sidebar')
 
-    <div class="container-fluid col m-1 container-main">
+    <div class="container-fluid col mx-5px pt-10px container-main">
         @yield('content')
     </div>
 </div>
