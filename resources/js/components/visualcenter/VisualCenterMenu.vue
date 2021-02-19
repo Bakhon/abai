@@ -272,28 +272,11 @@
         :style="{
           color: menuDMY.current2,
         }"
-        v-on:click="periodSelectUSD"
+        v-on:click="periodSelect"
       >
         <div>{{ menuDMY.DMY }}</div>
       </div>
 
-      <!--<div class="period" @click="periodSelectUSD('7')">7 дней</div>
-      <div class="period" @click="periodSelectUSD('30')">1 мес</div>
-      <div class="period" @click="periodSelectUSD('133')">6 мес</div>
-      <div class="period" @click="periodSelectUSD('365')">1 год</div>
-      <div class="period" @click="periodSelectUSD('1825')">5 лет</div>-->
-      <!--<ul class="oil-string-all">
-        <li class="oil-string one2 width-price">1 казахстанский тенге равно</li>
-        <li class="oil-string two2">1</li>
-        <li class="oil-string three2">Тенге</li>
-      </ul>
-      <ul class="oil-string-all">
-        <li class="oil-string one2-2 width-price">Доллар США</li>
-        <li class="oil-string two2">
-          {{ currencyNowUsd }}
-        </li>
-        <li class="oil-string three2">Доллар</li>
-      </ul>-->
       <visual-center-chart-area-usd
         v-for="(serial2, index) in currencyChart"
         v-bind:postTitles="serial2"
@@ -400,7 +383,7 @@ export default {
       return this.getOilNow(this.timeSelect, this.period);
     },
 
-    periodSelectUSD: function (event) {
+    periodSelect: function (event) {
       if (this.selectedDMY2 == 0) {
         this.periodUSD = 7;
       }

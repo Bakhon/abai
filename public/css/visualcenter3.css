@@ -55,7 +55,6 @@ body {
     font-family: "Bold";
     font-size: 0.9em;
     margin-left: 0.1em;
-    margin-top: 0.5em;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -627,6 +626,11 @@ td.small-td {
     /* margin-left: 15px; */
     /* width: 75vw; */
 }
+@media (min-width: 1900px) {
+    .big-area {
+        height: 65%;
+    }
+}
 
 .end2 {
     position: absolute;
@@ -689,6 +693,7 @@ td.small-td {
     color: #373435;
     font-weight: normal!important;
     font-size: 1.1em;
+    margin-left: 10%;
 }
 
 ul.center-menu2 {
@@ -795,7 +800,7 @@ li.center-li {
 canvas#line-chart {
     /* height: 535px!important; */
     margin-top: 10px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .name-chart-head {
@@ -1044,16 +1049,17 @@ ul.dropdown-menu-vc {
     margin-top: 1.2em;
 }
 
-/*.width-accidnets {
-    width: 1em;
-}*/
-
-
 @media (max-width:1367px) {
 .txt5 {
     font-size: 0.9em!important;
 
 }
+}
+@media (max-width:1680px) {
+    .txt5 {
+        font-size: 1.0em!important;
+
+    }
 }
 
 .name-ed-izmeren{
