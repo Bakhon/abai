@@ -1869,7 +1869,7 @@ export default {
           this.clearNullAccidentCases();
           this.exportDzoCompaniesSummaryForChart();
         }
-        console.log('getproduction gas and oil 1872');
+
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
 
