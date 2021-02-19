@@ -152,6 +152,7 @@ Route::group(
                 Route::get('kpiList', 'VisCenter\KPI\Marab2Controller@kpiList');
 
                 Route::resource('viscenter2', 'VisCenter\InputForm\Vis2FormController');
+                Route::resource('excelform2', 'VisCenter\InputForm\ExcelFormController');
 
                 Route::get('/import_hist', 'VisCenter\ImportForms\DZOdayController@importExcel');
                 Route::post('/import_h', 'VisCenter\ImportForms\DZOdayController@import')->name('import_h');
