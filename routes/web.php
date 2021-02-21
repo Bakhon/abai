@@ -117,6 +117,7 @@ Route::group(
                 Route::resource('ecorefsrenttax', 'EcoRefsRentTaxController');
                 Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
                 Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
+                Route::resource('ecorefscost', 'EcoRefsCostController');
                 Route::resource('ecorefsbranchid', 'EcoRefsBrachIdController');
                 Route::resource('ecorefsrentequipelectservcost', 'EcoRefsRentEquipElectServCostController');
                 Route::resource('ecorefsservicetime', 'EcoRefsServiceTimeController');
