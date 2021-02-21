@@ -1,3 +1,7 @@
+.gtm-dark {
+    background: #272953;
+}
+
 .gtm-menu div {
     font-size: 1.2rem;
     font-weight: 700;
@@ -20,7 +24,15 @@
 }
 
 .block-header {
-    background: #454D7D 32%;
+    background: rgba(69,77,125,0.32);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.8rem;
+}
+
+.block-header-light {
+    background: rgba(130, 144, 224, 0.32);
     color: white;
     font-size: 1rem;
     font-weight: 600;
@@ -28,7 +40,7 @@
 }
 
 .gtm-map-img {
-    height: 350px;
+    height: 280px;
 }
 
 .near-wells-table-block {
@@ -95,16 +107,52 @@
     cursor: pointer;
 }
 
+.tree-setting-block {
+    left: 19.6rem;
+    z-index: 1;
+}
+
+.tree-setting-block .block-header {
+    padding: 0 1rem;
+}
+
+.gtm-setting-checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.gtm-setting-checkbox-div {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+.gtm-setting-custom-checkbox::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid rgba(35, 125, 235, 0.3);
+    border-radius: 0.25em;
+    margin: 0 0.2rem;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+
 /*mobile*/
 @media screen and (max-width : 1600px) {
     .gtm-map-img {
-        height: 320px;
+        height: 280px;
     }
 }
 
 @media screen and (max-width : 1500px) {
     .gtm-map-img {
-        height: 300px;
+        height: 260px;
     }
 }
 
@@ -115,13 +163,13 @@
     }
 
     .gtm-map-img {
-        height: 280px;
+        height: 240px;
     }
 }
 
 @media screen and (max-width : 1300px) {
     .gtm-map-img {
-        height: 240px;
+        height: 220px;
     }
 }
 
@@ -132,7 +180,7 @@
     }
 
     .gtm-map-img {
-        height: 210px;
+        height: 190px;
     }
 }
 

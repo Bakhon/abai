@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="col no-margin">
-            <div class="bg-dark row text-center gtm-menu">
+            <div class="gtm-dark row text-center gtm-menu">
                 <div
                     v-bind:class="[{active: visibleBlock === 0}, 'col-4']"
                     @click="visibleBlock = 0">

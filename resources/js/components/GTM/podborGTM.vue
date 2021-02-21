@@ -1,11 +1,11 @@
 <template>
     <div class="row mx-0 mt-lg-2">
         <div class="row col-12 p-0 m-0">
-            <div class="bg-dark col-12 col-md-4 col-lg-2 p-0">
+            <div class="gtm-dark col-12 col-md-4 col-lg-2 p-0">
                 <div class="block-header text-center">
                     Соседние скважины
                 </div>
-                <div class="bg-dark table-responsive near-wells-table-block table-scroll">
+                <div class="gtm-dark table-responsive near-wells-table-block table-scroll">
                     <table class="table table-striped table-borderless text-center text-white near-wells">
                         <tbody>
                         <tr>
@@ -30,21 +30,21 @@
                 </div>
             </div>
             <div class="d-none d-lg-block col-lg-5 p-0 pl-2 gtm-map-block">
-                <div class="bg-dark text-center h-100">
+                <div class="gtm-dark text-center h-100">
                     <div class="block-header">
                         Карты
                     </div>
-                    <div class="bg-dark p-3">
+                    <div class="gtm-dark p-3">
                         <img src="/img/GTM/map.svg" class="gtm-map-img">
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0">
-                <div class="bg-dark h-100">
+                <div class="gtm-dark h-100">
                     <div class="block-header text-center">
                         Таблица данных скважин
                     </div>
-                    <div class="bg-dark table-responsive table-scroll" style="height: 400px;">
+                    <div class="gtm-dark table-responsive table-scroll" style="height: 400px;">
                         <table class="table table-striped table-borderless text-center text-white">
                             <tbody>
                             <tr class="near-wells-table-item" v-for="item in wellsData">
@@ -63,24 +63,31 @@
             </div>
         </div>
         <div class="row col-12 p-0 m-0">
-            <div class="bg-dark col-12 col-md-4 col-lg-2 p-0 mt-2">
+            <div class="gtm-dark col-12 col-md-4 col-lg-2 p-0 mt-2">
                 <div class="block-header text-center">
                     Поиск потенциала
                 </div>
-                <div class="bg-dark ml-4">
+                <div class="gtm-dark">
                     <gtm-tree
                         v-for="treeDataChild in treeData"
-                        :node="treeDataChild"
+                        :treeData="treeDataChild"
                         :key="treeDataChild.name"
+                        @node-click="nodeClick"
                     ></gtm-tree>
                 </div>
             </div>
+            <keep-alive>
+                <component v-bind:is="treeChildrenComponent" class="gtm-dark position-absolute mt-2 tree-setting-block"></component>
+            </keep-alive>
+            <keep-alive>
+                <component v-bind:is="treeSettingComponent" class="gtm-dark position-absolute mt-2 tree-setting-block"></component>
+            </keep-alive>
             <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0 mt-0 mt-md-2">
-                <div class="bg-dark h-100">
+                <div class="gtm-dark h-100">
                     <div class="block-header text-center">
                         Тип диаграммы
                     </div>
-                    <div class="bg-dark">
+                    <div class="gtm-dark">
                         <div class="text-center text-white">
                             Распределение потерь нефти по факторам
                         </div>
@@ -89,11 +96,11 @@
                 </div>
             </div>
             <div class="col-12 col-lg-5 p-0 pl-lg-2 pt-2 pt-md-0 mt-0 mt-md-2">
-                <div class="bg-dark h-100">
+                <div class="gtm-dark h-100">
                     <div class="block-header text-center">
                         Планшет/кор.схема
                     </div>
-                    <div class="bg-dark table-responsive table-scroll" style="height: 324px;">
+                    <div class="gtm-dark table-responsive table-scroll" style="height: 324px;">
                         <table cellspacing="0" class="table text-center text-white schemaTable">
                             <thead class="schemaTHead">
                             <th>Вид ГТМ</th>
@@ -165,9 +172,6 @@ export default {
             ],
             treeData: structureMain.finder_model.children,
             contextMenuItems: [],
-            nodeSelect: (item) => {
-                console.log(item);
-            },
             series: [{
                 type: 'bar',
                 stroke: {
@@ -213,9 +217,47 @@ export default {
                         }
                     }
                 },
-            }
+            },
+            treeSettingHeader: '',
+            treeSettingBody: '',
+            treeSettingComponent: null,
+            treeChildrenComponent: null,
         };
-    }
+    },
+    methods: {
+        nodeClick (node) {
+            if (node.ioi_finder_model) {
+                this.treeChildrenComponent = {
+                    name: 'gtm-tree-setting',
+                    data: function () {
+                        return {
+                            treeData: {
+                                children: node.ioi_finder_model.children
+                            },
+                        }
+                    },
+                    template: '<div><div class="block-header text-center">'+ node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
+                    methods: {
+                        nodeClick: this.nodeClick
+                    }
+                };
+            }
+            this.treeSettingComponent = {
+                name: 'gtm-tree-setting',
+                data: function () {
+                    return {
+                        treeData: {
+                            children: node.setting_model.children
+                        },
+                    }
+                },
+                template: '<div><div class="block-header text-center">'+ node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
+                methods: {
+                    nodeClick: this.nodeClick
+                }
+            };
+        },
+    },
 }
 </script>
 <style>
