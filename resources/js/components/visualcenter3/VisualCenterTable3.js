@@ -354,10 +354,10 @@ export default {
       mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
       mainMenuButtonElementOptions: {},
       dzoCompaniesAssetsInitial: {
-        allAssets: true,
-        operating: false,
-        nonOperating: false,
-        opecRestriction: false,
+        isAllAssets: true,
+        isOperating: false,
+        isNonOperating: false,
+        isOpecRestriction: false,
         assetTitle: this.trans("visualcenter.totalAllactives"),
       },
       dzoCompaniesAssets: {},
@@ -427,7 +427,7 @@ export default {
 
     selectDzoCompany(companyTicker) {
       this.selectCompany(companyTicker);
-      this.dzoCompaniesAssets['allAssets'] = false;
+      this.dzoCompaniesAssets['isAllAssets'] = false;
       this.buttonDzoDropdown = this.highlightedButton;
       _.map(this.dzoCompanies, function(company) {
         if (company.ticker === companyTicker) {
@@ -637,7 +637,7 @@ export default {
       }
 
       this.dzoCompaniesAssets[type] = true;
-      this.dzoCompaniesAssets['allAssets'] = false;
+      this.dzoCompaniesAssets['isAllAssets'] = false;
       this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
 
       this.changeDate();
@@ -1081,7 +1081,7 @@ export default {
       if (this.opec === "ОПЕК+") {
         if (item != "oil_opek_plan") {
           this.opec = 'утв.';
-          this.dzoCompaniesAssets['opecRestriction'] = false;
+          this.dzoCompaniesAssets['isOpecRestriction'] = false;
           //this.buttonHover14 = "";
         } else {
           this.opec = 'ОПЕК+';
@@ -1432,7 +1432,7 @@ export default {
 
           //delete after paste data for dzo
 
-          if (this.dzoCompaniesAssets['operating']) {
+          if (this.dzoCompaniesAssets['isOperating']) {
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШО" }));
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "НКО" }));
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КПО" }));
@@ -1451,7 +1451,7 @@ export default {
 
           }
 
-          if (this.dzoCompaniesAssets['nonOperating']) {
+          if (this.dzoCompaniesAssets['isNonOperating']) {
 
             let dzoToShow = [
               "ТОО «Тенгизшевройл»",
@@ -2626,7 +2626,7 @@ export default {
     this.getCurrencyNow(this.timeSelect);
     this.updatePrices(this.period);
     this.dzoCompaniesAssets = this.dzoCompaniesAssetsInitial;
-    this.changeAssets('allAssets');
+    this.changeAssets('isAllAssets');
 
     this.changeMenu2();
     this.getStaff();

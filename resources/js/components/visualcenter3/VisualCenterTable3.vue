@@ -772,8 +772,8 @@
                   >
                     <div>
                       <input
-                              :disabled="dzoCompaniesAssets['allAssets']"
-                              :checked="dzoCompaniesAssets['allAssets']"
+                              :disabled="dzoCompaniesAssets['isAllAssets']"
+                              :checked="dzoCompaniesAssets['isAllAssets']"
                               type="checkbox"
                               @click="`${selectDzoCompanies()}`"
                       ></input>
@@ -786,8 +786,8 @@
                     <div>
                       <input
                               type="checkbox"
-                              :checked="dzoCompaniesAssets['operating']"
-                              @click="`${changeAssets('operating')}`"
+                              :checked="dzoCompaniesAssets['isOperating']"
+                              @click="`${changeAssets('isOperating')}`"
                       ></input>
                       {{trans("visualcenter.operactive")}}
                     </div>
@@ -798,8 +798,8 @@
                     <div>
                       <input
                               type="checkbox"
-                              :checked="dzoCompaniesAssets['nonOperating']"
-                              @click="`${changeAssets('nonOperating')}`"
+                              :checked="dzoCompaniesAssets['isNonOperating']"
+                              @click="`${changeAssets('isNonOperating')}`"
                       ></input>
                       {{trans("visualcenter.neoperactive")}}
                     </div>
