@@ -11,28 +11,16 @@ import Vue from "vue";
 
 Vue.directive('click-outside',{
   bind: function (el, binding, vnode) {
-    el.eventSetDrag = function () {
-      el.setAttribute('data-dragging', 'yes');
-    }
-    el.eventClearDrag = function () {
-      el.removeAttribute('data-dragging');
-    }
     el.eventOnClick = function (event) {
       let dragging = el.getAttribute('data-dragging');
-      if (!(el === event.target || el.contains(event.target)) && !dragging) {
+      if (!el.contains(event.target)  && !dragging) {
         vnode.context[binding.expression](event);
       }
     };
-    document.addEventListener('touchstart', el.eventClearDrag);
-    document.addEventListener('touchmove', el.eventSetDrag);
     document.addEventListener('click', el.eventOnClick);
-    document.addEventListener('touchend', el.eventOnClick);
   },
   unbind: function (el) {
-    document.removeEventListener('touchstart', el.eventClearDrag);
-    document.removeEventListener('touchmove', el.eventSetDrag);
     document.removeEventListener('click', el.eventOnClick);
-    document.removeEventListener('touchend', el.eventOnClick);
     el.removeAttribute('data-dragging');
   },
 });
@@ -205,10 +193,6 @@ export default {
       buttonMonthlyTab: "",
       buttonYearlyTab: "",
       buttonPeriodTab: "",
-      buttonHover11: "color: #fff;",
-      buttonHover12: "",
-      buttonHover13: "",
-      buttonHover14: "",
       buttonHoverNagInnerWells: "",
       buttonHoverProdInnerWells: "",
 
@@ -354,7 +338,6 @@ export default {
         yearly: ['companyName','yearlyPlan','plan','fact', 'difference', 'percent'],
       },
       dzoCompanies: dzoCompaniesInitial,
-      isAllDzoCompaniesSelected: false,
       buttonDzoDropdown: "",
       dzoCompanySummary: this.bigTable,
       dzoCompaniesSummaryInitial: {
@@ -370,6 +353,20 @@ export default {
       dzoCompaniesSummaryForChart: {},
       mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
       mainMenuButtonElementOptions: {},
+      dzoCompaniesAssetsInitial: {
+        allAssets: true,
+        operating: false,
+        nonOperating: false,
+        opecRestriction: false,
+        assetTitle: this.trans("visualcenter.totalAllactives"),
+      },
+      dzoCompaniesAssets: {},
+      selectedDzoCompanies: [],
+      assetTitleMapping: {
+        operating: this.trans("visualcenter.totalOperactives"),
+        nonOperating: this.trans("visualcenter.totalNeoperactives"),
+        allAssets: this.trans("visualcenter.totalAllactives"),
+      }
     };
   },
   methods: {
@@ -389,7 +386,8 @@ export default {
     selectDzoCompanies() {
       this.selectCompany('all');
       this.isMultipleDzoCompaniesSelected = true;
-      this.isAllDzoCompaniesSelected = true;
+      this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+
       this.buttonDzoDropdown = "";
       _.map(this.dzoCompanies, function(company) {
         company.selected = true;
@@ -429,7 +427,7 @@ export default {
 
     selectDzoCompany(companyTicker) {
       this.selectCompany(companyTicker);
-      this.isAllDzoCompaniesSelected = false;
+      this.dzoCompaniesAssets = false;
       this.buttonDzoDropdown = this.highlightedButton;
       _.map(this.dzoCompanies, function(company) {
         if (company.ticker === companyTicker) {
@@ -438,11 +436,7 @@ export default {
       });
       let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
       this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
-      if (this.dzoCompanySummary.length > 1) {
-        this.isMultipleDzoCompaniesSelected = true;
-      } else {
-        this.isMultipleDzoCompaniesSelected = false;
-      }
+      this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
       this.calculateDzoCompaniesSummary();
     },
 
@@ -623,63 +617,34 @@ export default {
       }
     },
 
-    changeAssets(change) {
-      let changeMenuButton = 'color:#fff';
-      if (change != "b14") {
-        this.buttonHover11 = "";
-        this.buttonHover12 = "";
-        this.buttonHover13 = "";
-      }
-
-      if (change == "b11") {
-        this.buttonHover11 = changeMenuButton;
-        this.NameDzoFull[0] = this.trans("visualcenter.totalOperactives");
-        // 'Итого по операционным активам:';
-        this.changeDate();
-      }
-
-      if (change == "b12") {
-        this.buttonHover12 = changeMenuButton;
-        this.NameDzoFull[0] = this.trans("visualcenter.totalNeoperactives");
-        // 'Итого по неоперационным активам:';
-        this.changeDate();
-      }
-
-      if (change == "b13") {
-        this.buttonHover13 = changeMenuButton;
-        this.NameDzoFull[0] = this.trans("visualcenter.totalAllactives");
-        // 'Итого по всем активам:';
-        this.changeDate();
-      }
-
-      if (change == "b14") {
-        let hover = this.buttonHover14;
-        if (hover) {
-          this.buttonHover14 = "";
-          this.getProduction(
-            'oil_plan',
-            'oil_fact',
-            this.oilChartHeadName,
-            ' тонн',
-            'Добыча нефти'
-          )
-          this.opec = 'утв.';
-
-        } else {
-          this.buttonHover14 = changeMenuButton;
-          this.getProduction(
+    changeAssets(type) {
+      if (type === "opecRestiction") {
+        this.opec = 'ОПЕК+';
+        this.getProduction(
             'oil_opek_plan',
             'oil_fact',
             this.oilChartHeadName,
             ' тонн',
             'Добыча нефти',
             'oil_plan'
-          )
-          this.opec = 'ОПЕК+';
-        }
-
+        );
+      } else {
+        this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
+        _.map(this.dzoCompanies, function(company) {
+          company.selected = false;
+        });
+        this.selectedDzoCompanies = this.getSelectedDzoCompanies(type);
       }
 
+      this.dzoCompaniesAssets[type] = true;
+      this.dzoCompaniesAssets['allAssets'] = false;
+      this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
+
+      this.changeDate();
+    },
+
+    getSelectedDzoCompanies(type) {
+      return _.cloneDeep(dzoCompaniesInitial).filter(company => company.type === type).map(company => company.ticker);
     },
 
     periodSelect() {
@@ -1116,7 +1081,8 @@ export default {
       if (this.opec === "ОПЕК+") {
         if (item != "oil_opek_plan") {
           this.opec = 'утв.';
-          this.buttonHover14 = "";
+          this.dzoCompaniesAssets['opecRestriction'] = false;
+          //this.buttonHover14 = "";
         } else {
           this.opec = 'ОПЕК+';
           item6 = 'oil_plan';
@@ -1466,7 +1432,7 @@ export default {
 
           //delete after paste data for dzo
 
-          if (this.buttonHover11 != '') {
+          if (this.dzoCompaniesAssets['operating']) {
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "ТШО" }));
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "НКО" }));
             productionPlanAndFactMonth = _.reject(productionPlanAndFactMonth, _.iteratee({ dzo: "КПО" }));
@@ -1485,7 +1451,7 @@ export default {
 
           }
 
-          if (this.buttonHover12 != '') {
+          if (this.dzoCompaniesAssets['nonOperating']) {
 
             let dzoToShow = [
               "ТОО «Тенгизшевройл»",
@@ -2475,32 +2441,14 @@ export default {
     },
 
     getProductionForChart(data, plan2) {
-      let dataWithMay = data;
-      if (this.buttonHover11 != '') {
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ТШО" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "НКО" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КПО" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ТП" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ПКК" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ПКИ" }));
+      let summary = data.filter(row => this.selectedDzoCompanies.includes(row.dzo));
+      if (summary.length == 0) {
+        summary = data;
       }
-
-      if (this.buttonHover12 != '') {
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ЭМГ" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ОМГ" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "ММГ" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КГМ" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КБМ" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КОА" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "КТМ" }));
-        dataWithMay = _.reject(dataWithMay, _.iteratee({ dzo: "УО" }));
-      }
-
-
       let productionPlan = localStorage.getItem("production-plan");
       let productionFact = localStorage.getItem("production-fact");
 
-      return _(dataWithMay)
+      return _(summary)
         .groupBy("__time")
         .map((__time, id) => ({
           time: id,
@@ -2677,7 +2625,8 @@ export default {
     localStorage.setItem("selectedPeriod", "undefined");
     this.getCurrencyNow(this.timeSelect);
     this.updatePrices(this.period);
-    this.changeAssets('b13');
+    this.dzoCompaniesAssets = this.dzoCompaniesAssetsInitial;
+    this.changeAssets('allAssets');
 
     this.changeMenu2();
     this.getStaff();
