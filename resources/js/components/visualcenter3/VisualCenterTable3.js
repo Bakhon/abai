@@ -4,6 +4,7 @@ import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import { isString } from "lodash";
 import dzoCompaniesInitial from './dzo_companies_initial.json';
+import mainMenuConfiguration from './main_menu_configuration.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 import Vue from "vue";
@@ -157,34 +158,6 @@ export default {
       tableHover4: "",
       tableHover5: "",
       tableHover6: "",
-      changeMenuButton: "color: #fff;background: #237deb;font-weight:bold;",
-      changeMenuButton1: "",
-      changeMenuButton2: "",
-      changeMenuButton3: "",
-      changeMenuButton4: "",
-      changeMenuButton5: "",
-      changeMenuButton6: "",
-      changeMenuButton7: "",
-      changeMenuButton8: "",
-      changeMenuButton9: "",
-      changeMenuButton10: "",
-      changeMenuButton11: "",
-      changeMenuButton12: "",
-      changeMenuButton13: "",
-
-      changeMenuButton1Flag: "",
-      changeMenuButton2Flag: "",
-      changeMenuButton3Flag: "",
-      changeMenuButton4Flag: "",
-      changeMenuButton5Flag: "",
-      changeMenuButton6Flag: "",
-      changeMenuButton7Flag: "",
-      changeMenuButton8Flag: "",
-      changeMenuButton9Flag: "",
-      changeMenuButton10Flag: "",
-      changeMenuButton11Flag: "",
-      changeMenuButton12Flag: "",
-      changeMenuButton13Flag: "",
       Table1: "display:block;",
       Table2: "display:none;",
       Table3: "display:none;",
@@ -221,13 +194,13 @@ export default {
       showTable2: "Yes",
       displayChart: "display: none;",
       showTableOn: "",
-      buttonNormalTab: "button-tab-highlighted",
-      buttonHover1: "",
-      buttonHover2: "",
-      buttonHover3: "",
-      buttonHover4: "",
-      buttonHover5: "",
-      buttonHover6: "",
+      buttonNormalTab: "",
+      highlightedButton: "button-tab-highlighted",
+      oilProductionButton: "",
+      oilDeliveryButton: "",
+      gasProductionButton: "",
+      condensateProductionButton: "",
+      waterInjectionButton: "",
       buttonDailyTab: "button-tab-highlighted",
       buttonMonthlyTab: "",
       buttonYearlyTab: "",
@@ -395,6 +368,8 @@ export default {
       isDzoCompaniesListSelectorOpened: false,
       isMultipleDzoCompaniesSelected: true,
       dzoCompaniesSummaryForChart: {},
+      mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
+      mainMenuButtonElementOptions: {},
     };
   },
   methods: {
@@ -415,7 +390,7 @@ export default {
       this.selectCompany('all');
       this.isMultipleDzoCompaniesSelected = true;
       this.isAllDzoCompaniesSelected = true;
-      this.buttonDzoDropdown = this.buttonNormalTab;
+      this.buttonDzoDropdown = "";
       _.map(this.dzoCompanies, function(company) {
         company.selected = true;
       });
@@ -424,7 +399,7 @@ export default {
     },
 
     calculateDzoCompaniesSummary() {
-      let summary = this.dzoCompaniesSummaryInitial;
+      let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
       _.map(this.dzoCompanySummary, function(company) {
         summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
         summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
@@ -452,11 +427,10 @@ export default {
       });
     },
 
-
-
     selectDzoCompany(companyTicker) {
       this.selectCompany(companyTicker);
       this.isAllDzoCompaniesSelected = false;
+      this.buttonDzoDropdown = this.highlightedButton;
       _.map(this.dzoCompanies, function(company) {
         if (company.ticker === companyTicker) {
           company.selected = !company.selected;
@@ -572,107 +546,19 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
 
-    changeMenu(change) {
-      let changeMenuButton = this.changeMenuButton;
-      let flagOn = this.flagOn;
-      let flagOff = this.flagOff;
-      this.changeMenuButton1 = '';
-      this.changeMenuButton2 = '';
-      this.changeMenuButton3 = '';
-      this.changeMenuButton4 = '';
-      this.changeMenuButton5 = '';
-      this.changeMenuButton6 = '';
-      this.changeMenuButton7 = '';
-      this.changeMenuButton8 = '';
-      this.changeMenuButton9 = '';
-      this.changeMenuButton10 = '';
-      this.changeMenuButton11 = '';
-      this.changeMenuButton12 = '';
-      this.changeMenuButton13 = '';
+    switchMainMenu(parentButton, childButton) {
+      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
+      let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
+      buttonOptions.buttonClass = this.mainMenuButtonHighlighted;
+      buttonOptions.flag = "flagOn";
+    },
 
-      this.changeMenuButton1Flag = flagOff;
-      this.changeMenuButton2Flag = flagOff;
-      this.changeMenuButton3Flag = flagOff;
-      this.changeMenuButton4Flag = flagOff;
-      this.changeMenuButton5Flag = flagOff;
-      this.changeMenuButton6Flag = flagOff;
-      this.changeMenuButton7Flag = flagOff;
-      this.changeMenuButton8Flag = flagOff;
-      this.changeMenuButton9Flag = flagOff;
-      this.changeMenuButton10Flag = flagOff;
-      this.changeMenuButton11Flag = flagOff;
-      this.changeMenuButton12Flag = flagOff;
-      this.changeMenuButton13Flag = flagOff;
-
-
-
-
-      if (change == "101") {
-        this.changeMenuButton1 = changeMenuButton;
-        this.changeMenuButton1Flag = flagOn;
+    getMainMenuButtonFlag(parentButton,childButton) {
+      if (!this.mainMenuButtonElementOptions[parentButton]) {
+        return this.flagOff;
       }
-
-      if (change == "102") {
-        this.changeMenuButton2 = changeMenuButton;
-        this.changeMenuButton2Flag = flagOn;
-      }
-
-      if (change == "103") {
-        this.changeMenuButton3 = changeMenuButton;
-        this.changeMenuButton3Flag = flagOn;
-      }
-
-      if (change == "104") {
-        this.changeMenuButton4 = changeMenuButton;
-        this.changeMenuButton4Flag = flagOn;
-      }
-
-      if (change == "105") {
-        this.changeMenuButton5 = changeMenuButton;
-        this.changeMenuButton5Flag = flagOn;
-      }
-
-
-      if (change == "106") {
-        this.changeMenuButton6 = changeMenuButton;
-        this.changeMenuButton6Flag = flagOn;
-      }
-
-      if (change == "107") {
-        this.changeMenuButton7 = changeMenuButton;
-        this.changeMenuButton7Flag = flagOn;
-      }
-
-      if (change == "108") {
-        this.changeMenuButton8 = changeMenuButton;
-        this.changeMenuButton8Flag = flagOn;
-      }
-
-      if (change == "109") {
-        this.changeMenuButton9 = changeMenuButton;
-        this.changeMenuButton9Flag = flagOn;
-      }
-
-      if (change == "110") {
-        this.changeMenuButton10 = changeMenuButton;
-        this.changeMenuButton10Flag = flagOn;
-      }
-
-      if (change == "111") {
-        this.changeMenuButton11 = changeMenuButton;
-        this.changeMenuButton11Flag = flagOn;
-      }
-
-      if (change == "112") {
-        this.changeMenuButton12 = changeMenuButton;
-        this.changeMenuButton12Flag = flagOn;
-      }
-
-      if (change == "113") {
-        this.changeMenuButton13 = changeMenuButton;
-        this.changeMenuButton13Flag = flagOn;
-      }
-
+      let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
+      return this[buttonOptions.flag];
     },
 
     dayClicked() {
@@ -692,7 +578,7 @@ export default {
     changeMenu2(change) {
       if (change === 1) {
         this.currentDzoList = 'daily';
-        this.buttonDailyTab = this.buttonNormalTab;
+        this.buttonDailyTab = this.highlightedButton;
         this.range = {
           start: moment().startOf('day').subtract(1, "days").format(),
           end: moment().endOf('day').subtract(1, "days").format(),
@@ -705,7 +591,7 @@ export default {
       }
 
       if (change === 2) {
-        this.buttonMonthlyTab = this.buttonNormalTab;
+        this.buttonMonthlyTab = this.highlightedButton;
         this.currentDzoList = 'monthly';
         this.range = {
           start: moment().startOf('month').format(),
@@ -718,7 +604,7 @@ export default {
       }
 
       if (change === 3) {
-        this.buttonYearlyTab = this.buttonNormalTab;
+        this.buttonYearlyTab = this.highlightedButton;
         this.currentDzoList = 'yearly';
         this.range = {
           start: moment().startOf('year').format(),
@@ -731,7 +617,7 @@ export default {
       }
 
       if (change === 4) {
-        this.buttonPeriodTab = this.buttonNormalTab;
+        this.buttonPeriodTab = this.highlightedButton;
       } else {
         this.buttonPeriodTab = "";
       }
@@ -1226,6 +1112,7 @@ export default {
     },
 
     getProduction(item, item2, item3, item4, item5, item6) {
+      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
       if (this.opec === "ОПЕК+") {
         if (item != "oil_opek_plan") {
           this.opec = 'утв.';
@@ -1393,42 +1280,7 @@ export default {
             }
             this.tables = summForTables;
           }
-
-          if ((productionPlan == "oil_plan") || (productionPlan == "oil_opek_plan")) {
-            this.buttonHover1 = this.buttonNormalTab;
-          } else {
-            this.buttonHover1 = "";
-          }
-
-          if (productionPlan == "oil_dlv_plan") {
-            this.buttonHover2 = this.buttonNormalTab;
-          } else {
-            this.buttonHover2 = "";
-          }
-
-          if (productionPlan == "gas_plan") {
-            this.buttonHover3 = this.buttonNormalTab;
-          } else {
-            this.buttonHover3 = "";
-          }
-
-          if (productionPlan == "liq_plan") {
-            this.buttonHover4 = this.buttonNormalTab;
-          } else {
-            this.buttonHover4 = "";
-          }
-
-          if (productionPlan == "gk_plan") {
-            this.buttonHover5 = this.buttonNormalTab;
-          } else {
-            this.buttonHover5 = "";
-          }
-
-          if (productionPlan == "liq_plan") {//inj_plan
-            this.buttonHover6 = this.buttonNormalTab;
-          } else {
-            this.buttonHover6 = "";
-          }
+          this.setColorToMainMenuButtons(productionPlan);
         } else {
           console.log("No data");
         }
@@ -1910,6 +1762,21 @@ export default {
         this.getProductionOilandGasPercent(data);
 
       });
+    },
+
+    setColorToMainMenuButtons(productionPlan) {
+      let self = this;
+      _.forEach(Object.keys(this.mainMenuButtonElementOptions), function(button) {
+        self[button] = self.getButtonClassForMainMenu(productionPlan, button);
+      });
+    },
+
+    getButtonClassForMainMenu(productionPlan, buttonType) {
+      if (this.mainMenuButtonElementOptions[buttonType].tags.includes(productionPlan)) {
+        return this.highlightedButton;
+      } else {
+        return  "";
+      }
     },
 
     clearNullAccidentCases() {
@@ -2749,6 +2616,9 @@ export default {
     },
 
     formatDigitToThousand(num) {
+      if (num == null) {
+        return 0;
+      }
       if (this.quantityRange < 2) {
         this.thousand = '';
         return new Intl.NumberFormat("ru-RU").format(Math.round(num));
@@ -2812,22 +2682,9 @@ export default {
     this.changeMenu2();
     this.getStaff();
 
-    let flagOff = this.flagOff;
-    this.changeMenuButton1Flag = flagOff;
-    this.changeMenuButton2Flag = flagOff;
-    this.changeMenuButton3Flag = flagOff;
-    this.changeMenuButton4Flag = flagOff;
-    this.changeMenuButton5Flag = flagOff;
-    this.changeMenuButton6Flag = flagOff;
-    this.changeMenuButton7Flag = flagOff;
-    this.changeMenuButton8Flag = flagOff;
-    this.changeMenuButton9Flag = flagOff;
-    this.changeMenuButton10Flag = flagOff;
-    this.changeMenuButton11Flag = flagOff;
-    this.changeMenuButton12Flag = flagOff;
-    this.changeMenuButton13Flag = flagOff;
     this.buttonDailyTab = "button-daily-tab";
     this.getAccidentTotal();
+    this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
   },
   watch: {
     bigTable: function() {
