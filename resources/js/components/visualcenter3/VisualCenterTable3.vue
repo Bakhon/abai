@@ -310,7 +310,7 @@
                   <ul
                     class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
                   >
-                    <li class="center-li row px-4" @click="processSwitchingMainMenu('oilProductionButton','kmgParticipation')">
+                    <li class="center-li row px-4" @click="switchMainMenu('oilProductionButton','kmgParticipation')">
                       <div
                         class="col-1 mt-2"
                         v-html="`${getMainMenuButtonFlag('oilProductionButton','kmgParticipation')}`"
@@ -332,7 +332,7 @@
                     </li>
                     <li
                             class="center-li row px-4"
-                            @click="processSwitchingMainMenu('oilProductionButton','opecRestriction')"
+                            @click="switchMainMenu('oilProductionButton','opecRestriction')"
                     >
                     <div
                             class="col-1 mt-2"
@@ -379,7 +379,7 @@
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('oilDeliveryButton','kmgParticipation')"
+                          @click="switchMainMenu('oilDeliveryButton','kmgParticipation')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -405,7 +405,7 @@
                   </li>
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('oilDeliveryButton','oilResidue')"
+                          @click="switchMainMenu('oilDeliveryButton','oilResidue')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -460,7 +460,7 @@
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('gasProductionButton','deliveryNaturalGas')"
+                          @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -486,7 +486,7 @@
 
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('gasProductionButton','gasConsumptionForNeeds')"
+                          @click="switchMainMenu('gasProductionButton','gasConsumptionForNeeds')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -511,7 +511,7 @@
                   </li>
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('gasProductionButton','deliveryAssociatedGas')"
+                          @click="switchMainMenu('gasProductionButton','deliveryAssociatedGas')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -537,7 +537,7 @@
 
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
+                          @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -562,7 +562,7 @@
                   </li>
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('gasProductionButton','associatedGasProcessing')"
+                          @click="switchMainMenu('gasProductionButton','associatedGasProcessing')"
                   >
                     <div
                           class="col-1 mt-2"
@@ -617,7 +617,7 @@
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('condensateProductionButton','kmgParticipation')"
+                          @click="switchMainMenu('condensateProductionButton','kmgParticipation')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -672,7 +672,7 @@
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('waterInjectionButton','seaWaterInjection')"
+                          @click="switchMainMenu('waterInjectionButton','seaWaterInjection')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -698,7 +698,7 @@
 
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('waterInjectionButton','wasteWaterInjection')"
+                          @click="switchMainMenu('waterInjectionButton','wasteWaterInjection')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -724,7 +724,7 @@
 
                   <li
                           class="center-li row px-4"
-                          @click="processSwitchingMainMenu('waterInjectionButton','albsenWaterInjection')"
+                          @click="switchMainMenu('waterInjectionButton','albsenWaterInjection')"
                   >
                     <div
                       class="col-1 mt-2"
@@ -757,6 +757,7 @@
             >
               {{ trans("visualcenter.dzoAllCompany") }}
               <div
+                      v-click-outside="defocusDzoCompanies"
                       class="arrow-down"
                       @click="`${changeDzoCompaniesVisibility()}`"
               ></div>
@@ -2586,6 +2587,7 @@
   }
 
   .table4 {
+    min-width: 683px;
     tr {
       td {
         padding: 5px 5px 5px 10px;
@@ -2912,6 +2914,7 @@
   .dzo-company-reason {
     background: rgb(54, 59, 104);
     min-height: 60%;
+    min-width: 683px;
     width: 100%;
     border-top: 5px solid #272953;
   }

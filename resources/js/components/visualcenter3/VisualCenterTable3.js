@@ -7,6 +7,36 @@ import dzoCompaniesInitial from './dzo_companies_initial.json';
 import mainMenuConfiguration from './main_menu_configuration.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
+import Vue from "vue";
+
+Vue.directive('click-outside',{
+  bind: function (el, binding, vnode) {
+    el.eventSetDrag = function () {
+      el.setAttribute('data-dragging', 'yes');
+    }
+    el.eventClearDrag = function () {
+      el.removeAttribute('data-dragging');
+    }
+    el.eventOnClick = function (event) {
+      let dragging = el.getAttribute('data-dragging');
+      if (!(el === event.target || el.contains(event.target)) && !dragging) {
+        vnode.context[binding.expression](event);
+      }
+    };
+    document.addEventListener('touchstart', el.eventClearDrag);
+    document.addEventListener('touchmove', el.eventSetDrag);
+    document.addEventListener('click', el.eventOnClick);
+    document.addEventListener('touchend', el.eventOnClick);
+  },
+  unbind: function (el) {
+    document.removeEventListener('touchstart', el.eventClearDrag);
+    document.removeEventListener('touchmove', el.eventSetDrag);
+    document.removeEventListener('click', el.eventOnClick);
+    document.removeEventListener('touchend', el.eventOnClick);
+    el.removeAttribute('data-dragging');
+  },
+});
+
 
 export default {
   components: {
@@ -392,7 +422,11 @@ export default {
       });
     },
 
-
+    defocusDzoCompanies() {
+      if (this.isDzoCompaniesListSelectorOpened) {
+        this.isDzoCompaniesListSelectorOpened = false;
+      }
+    },
 
     selectDzoCompany(companyTicker) {
       this.selectCompany(companyTicker);
@@ -513,7 +547,7 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
 
-    processSwitchingMainMenu(parentButton,childButton) {
+    switchMainMenu(parentButton, childButton) {
       this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
       let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
       buttonOptions.buttonClass = this.mainMenuButtonHighlighted;
@@ -2582,7 +2616,7 @@ export default {
     },
 
     formatDigitToThousand(num) {
-      if (num === null) {
+      if (num == null) {
         return 0;
       }
       if (this.quantityRange < 2) {
