@@ -60,12 +60,11 @@
             </i>
             {{trans('tr.dt')}}
           </button>
-
-          <div
+          <div v-if="datepicker1"
             class="dropdown-menu fadropmenu"
             style="
               background: #40467e;
-              height: 117px;
+              height: 125px;
               flex-direction: column;
               width: calc(100% - 26px);
               margin-top: 4px;
@@ -125,9 +124,60 @@
 
               </select>
             </div>
-            <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
-              >{{trans('tr.sf')}}</a
-            >
+            <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
+              <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form" style="width: 80%;"
+                >{{trans('tr.sf')}}</a
+              >
+              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
+                <svg 
+                  width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                  <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+
+              </a>
+            </div>
+        </div>
+          <div v-if="datepicker2"
+            class="dropdown-menu fadropmenu"
+            style="
+              background: #40467e;
+              height: 174px;
+              flex-direction: column;
+              width: calc(100% - 26px);
+              margin-top: 4px;
+            "
+            aria-labelledby="dropdownMenuLink"
+          >
+              
+                <!-- <form class="form-group but-nav__link"> -->
+                <label for="inputDate" style="margin-left: 8px;">Введите начальную дату::</label>
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
+                <!-- <form class="form-group but-nav__link"> -->
+                <label for="inputDate" style="margin-left: 8px;">Введите конечную дату::</label>
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
+            <!-- </div> -->
+                <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
+                  <a href="#" @click.prevent="chooseDt1" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
+                    >{{trans('tr.sf')}}</a
+                  >
+                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
           </div>
         </div>
         
@@ -148,7 +198,8 @@
       <div class="maintable-level2" style="position: relative">
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
-            <h5>{{trans('tr.htr')}} {{ dt }}</h5>
+            <h5 v-if="date_fix">{{trans('tr.htr')}} {{ dt }}</h5>
+            <h5 v-if="!date_fix">Технологический режим {{ dt3 }}</h5>
           </div>
 
           <tr-multiselect
@@ -723,7 +774,7 @@
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}Р заб</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
@@ -6824,6 +6875,7 @@
         </div>
       </div>
     </div>
+    <notifications position="top"></notifications>
   </div>
 </template>
 <script>
@@ -6991,6 +7043,8 @@ export default {
     }
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
+    this.is_dynamic = false;
+    this.$store.commit("tr/SET_IS_DYNAMIC", "false");
     this.axios
       .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
       .then((response) => {
@@ -7056,6 +7110,11 @@ export default {
       Filter_well: undefined,
       checkers: false,
       checkersec: false,
+      datepicker1: true,
+      datepicker2: false,
+      date_fix: true,
+      is_dynamic: false,
+      // date_dyn: false,
     };
   },
   watch: {
@@ -7285,6 +7344,66 @@ export default {
       this.year = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
+    chooseDt1() {
+      
+      // this.isloading = true;
+      const { date1, date2 } = this;
+      console.log("dt1-", date1, " dt2-", date2);
+      var choosenDt = date1.split("-");
+      var choosenSecDt = date2.split("-");
+      const dd = choosenDt[2];
+      const prdd = choosenSecDt[2];
+      const mm = choosenDt[1];
+      const prMm = choosenSecDt[1];
+      const yyyy = choosenDt[0];
+      const pryyyy = choosenSecDt[0];
+      if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
+        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+      } else {
+        this.$store.commit("globalloading/SET_LOADING", true);
+        this.$store.commit("tr/SET_DYN_MONTH_END", mm);
+        this.$store.commit("tr/SET_DYN_YEAR_END", yyyy);
+        this.$store.commit("tr/SET_DYN_DAY_END", dd);
+        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("tr/SET_DYN_YEAR_START", pryyyy);
+        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("tr/SET_DYN_DAY_START", prdd);
+        this.axios
+          .get(
+            "http://172.20.103.187:7576/api/techregime/dynamic/" +
+              // this.selectYear +
+              // "/" +
+              // this.month +
+              // "/"
+              pryyyy + "/" + prMm + "/" + prdd + "/" + yyyy + "/" + mm + "/" + dd + "/"
+          )
+          .then((response) => {
+            this.$store.commit("globalloading/SET_LOADING", false);
+            // this.isloading = false;
+            let data = response.data;
+            if (data) {
+              this.searched = false;
+              this.date_fix = false;
+              this.is_dynamic = true;
+              this.$store.commit("tr/SET_IS_DYNAMIC", "true");
+              this.$store.commit("tr/SET_SORTPARAM", "");
+              this.$store.commit("tr/SET_SEARCH", "");
+              this.sortParam = "";
+              this.searchString = "";
+              console.log(data);
+              // this.wells = data.data;
+              this.fullWells = data.data;
+            } else {
+              console.log("No data");
+            }
+            if (this.month < 10) {
+              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
+            } else {
+              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
+            }
+          });
+        }
+    },
 
     chooseDt() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -7303,6 +7422,8 @@ export default {
           let data = response.data;
           if (data) {
             this.searched = false;
+            this.is_dynamic = false;
+            this.$store.commit("tr/SET_IS_DYNAMIC", "false");
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
@@ -7378,7 +7499,15 @@ export default {
       this.isfulltable = !this.isfulltable;
 
     },
-
+    calendarDynamic() {
+      this.is_dynamic_calendar = !this.is_dynamic_calendar
+      this.datepicker1 = !this.datepicker1
+      this.datepicker2 = !this.datepicker2
+    },
+    // calendarDate() {
+    //   this.date_fix = !this.date_fix
+    //   this.date_dyn = !this.date_dyn
+    // },
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";

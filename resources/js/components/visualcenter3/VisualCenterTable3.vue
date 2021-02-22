@@ -1,8 +1,8 @@
 <template>
   <div
-    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height px-2"
+    class="d-flex flex-column flex-sm-row justify-content-between w-sm-100 all-height"
   >
-    <div class="left-side flex-grow-1 pr-2">
+    <div class="left-side flex-grow-1 pr-10px">
       <div class="first-string">
         <div>
           <table class="table table1">
@@ -757,11 +757,13 @@
             >
               {{ trans("visualcenter.dzoAllCompany") }}
               <div
+                      v-click-outside="defocusDzoCompanies"
                       class="arrow-down"
                       @click="`${changeDzoCompaniesVisibility()}`"
               ></div>
               <div>
                 <ul
+
                         :class="isDzoCompaniesListSelectorOpened ? 'show-company-list' : 'hide-company-list'"
                   >
                   <li
@@ -2186,7 +2188,7 @@
         </div>
       </div>
     </div>
-    <div class="right-side2 flex-grow-1 pl-1">
+    <div class="right-side2 flex-grow-1">
       <div class="first-string">
         <div>
           <table class="table table1-2">

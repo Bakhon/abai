@@ -8,6 +8,8 @@ return array (
   'chekslines' => 'проверкастроки',
   'wells1' => 'Фонд нагнетательных скважин2',
   'usdKurs' => 'Курс доллара2',
+  'vsYest' => 'vs вчера2',
+  'vsSept' => 'vs2',
   'dolyaUchast' => 'С учётом доли участия КМГ2',
   'ostatokNefti' => 'Товарный остаток нефти2',
   'prirodGazdlv' => 'Сдача природного газа2',

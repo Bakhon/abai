@@ -18,7 +18,7 @@ class WellsController extends Controller
         return view('bigdata.wells.create');
     }
 
-    public function store(WellCreateRequest $request): \App\Models\BigData\Well
+    public function store(WellCreateRequest $request): WellResource
     {
         $well = \App\Models\BigData\Well::create($request->all());
         return $well;

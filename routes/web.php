@@ -54,6 +54,7 @@ Route::group(
                 Route::get('/visualcenter', 'VisCenter\VisualCenterController@visualcenter')->name('visualcenter');
                 Route::get('/visualcenter2', 'VisCenter\VisualCenterController@visualcenter2')->name('visualcenter2');
                 Route::get('/visualcenter3', 'VisCenter\VisualCenterController@visualcenter3')->name('visualcenter3');
+                Route::get('/excelform', 'VisCenter\VisualCenterController@excelform')->name('excelform');
                 Route::get('/visualcenter3GetData', 'VisCenter\VisualCenterController@visualcenter3GetData');
                 Route::get('/visualcenter3GetDataOpec', 'VisCenter\VisualCenterController@visualcenter3GetDataOpec');
                 Route::get('/visualcenter3GetDataStaff', 'VisCenter\VisualCenterController@visualcenter3GetDataStaff');
@@ -91,11 +92,6 @@ Route::group(
                 Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
                 Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
                 Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
-                Route::get('/bigdata/reports', 'bd\DBController@reports')->name('bigdata.reports');
-                Route::get('/bigdata/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
-                Route::post('/bigdata/reports/favorite/{report}', 'bd\DBController@addReportToFavorites')->name('bigdata.reports.favorite.add');
-                Route::delete('/bigdata/reports/favorite/{report}', 'bd\DBController@removeReportFromFavorites')->name('bigdata.reports.favorite.remove');
-                Route::get('/protoform', 'bd\DBController@form')->name('protoform');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
                 //tr
@@ -151,6 +147,7 @@ Route::group(
                 Route::get('kpiList', 'VisCenter\KPI\Marab2Controller@kpiList');
 
                 Route::resource('viscenter2', 'VisCenter\InputForm\Vis2FormController');
+                Route::resource('excelform2', 'VisCenter\InputForm\ExcelFormController');
 
                 Route::get('/import_hist', 'VisCenter\ImportForms\DZOdayController@importExcel');
                 Route::post('/import_h', 'VisCenter\ImportForms\DZOdayController@import')->name('import_h');

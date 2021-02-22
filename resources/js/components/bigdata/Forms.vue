@@ -192,7 +192,7 @@
       </div>
       <div class="row">
         <div class="col-12 blueblock three">
-          <BigdataWellForm action="/ru/bigdata/wells"></BigdataWellForm>
+          <BigDataForm form-name="well_register" form-title="Регистрация новой скважины"></BigDataForm>
         </div>
       </div>
     </div>
@@ -292,10 +292,10 @@
 </template>
 
 <script>
-import BigdataWellForm from './wells/form'
+import BigDataForm from './wells/form'
 
 export default {
-  components: {BigdataWellForm}
+  components: {BigDataForm}
 }
 </script>
 <style scoped lang="scss">
