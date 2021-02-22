@@ -427,7 +427,7 @@ export default {
 
     selectDzoCompany(companyTicker) {
       this.selectCompany(companyTicker);
-      this.dzoCompaniesAssets = false;
+      this.dzoCompaniesAssets['allAssets'] = false;
       this.buttonDzoDropdown = this.highlightedButton;
       _.map(this.dzoCompanies, function(company) {
         if (company.ticker === companyTicker) {
