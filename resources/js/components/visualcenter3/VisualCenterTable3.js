@@ -427,12 +427,6 @@ export default {
       });
     },
 
-    defocusDzoCompanies() {
-      if (this.isDzoCompaniesListSelectorOpened) {
-        this.isDzoCompaniesListSelectorOpened = false;
-      }
-    },
-
     selectDzoCompany(companyTicker) {
       this.selectCompany(companyTicker);
       this.isAllDzoCompaniesSelected = false;
