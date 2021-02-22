@@ -4,8 +4,9 @@
       <input
           :type="item.type === 'numeric' ? 'number' : 'text'"
           :name="item.code"
-          v-bind:value="value"
+          v-bind:value="formatValue(value)"
           v-on:input="$emit('input', $event.target.value)"
+          v-on:change="$emit('change', $event.target.value)"
           class="form-control"
           :class="{'error': error}"
           placeholder=""
@@ -13,7 +14,7 @@
     </template>
     <template v-else-if="item.type === 'list'">
       <v-select
-          v-on:input="$emit('input', $event.id)"
+          v-on:input="$emit('input', $event.id); $emit('change', $event.id)"
           :options="item.values"
           :name="item.code"
       >
@@ -30,7 +31,7 @@
         <input
             :name="item.code"
             v-bind:value="value"
-            v-on:input="$emit('input', $event.target.value)"
+            v-on:input="$emit('input', $event.target.value); $emit('change', $event.target.value)"
             type="radio"
             :id="`${item.code}_${value}`"
         >
@@ -39,7 +40,7 @@
     </template>
     <template v-else-if="item.type === 'dict'">
       <v-select
-          v-on:input="$emit('input', $event.id)"
+          v-on:input="$emit('input', $event.id); $emit('change', $event.id)"
           label="name"
           :options="dict"
           :name="item.code"
@@ -55,9 +56,11 @@
     <template v-else-if="item.type === 'dict_tree'">
       <treeselect
           v-bind:value="value || null"
-          v-on:input="$emit('input', $event)"
+          v-on:input="$emit('input', $event); $emit('change', $event)"
           :multiple="false"
           :options="dict"
+          :auto-load-root-options="false"
+          :loading="true"
           placeholer="Выберите..."
       />
     </template>
@@ -90,7 +93,7 @@
         </template>
       </datetime>
     </template>
-    <div class="text-danger error" v-if="error">{{ showError(error) }}</div>
+    <div v-if="error" class="text-danger error" v-html="showError(error)"></div>
   </div>
 </template>
 
@@ -113,8 +116,11 @@ export default {
     'error'
   ],
   data: function () {
-    return {
-      dict: []
+    return {}
+  },
+  computed: {
+    dict() {
+      return this.$store.getters['bd/dict'](this.item.dict);
     }
   },
   mounted() {
@@ -125,16 +131,35 @@ export default {
   methods: {
     loadDict() {
       this.axios.get(this.localeUrl('/bigdata/dict/' + this.item.dict)).then(data => {
-        this.dict = data.data
+        this.$store.commit("bd/SAVE_DICT", {
+          code: this.item.dict,
+          items: data.data
+        });
       })
     },
     changeDate(date) {
       if (date) {
-        this.$emit('input', moment(date).format('YYYY-MM-DD HH:MM:SS'))
+        let formatedDate = moment(date).format('YYYY-MM-DD HH:MM:SS')
+        this.$emit('input', formatedDate)
+        this.$emit('change', formatedDate)
       }
     },
     showError(err) {
       return err.join('<br>')
+    },
+    formatValue(value) {
+
+      if (this.item.prefix) {
+        if (value && value.length <= this.item.prefix.length) return this.item.prefix
+
+        if (value && value.indexOf(this.item.prefix) === 0) {
+          value = value.replace(this.item.prefix, '')
+        }
+
+        return this.item.prefix + (value || '')
+      }
+
+      return value
     }
   },
 };
@@ -227,7 +252,7 @@ export default {
 
     &__menu {
       background: #40467E;
-      border: none!important;
+      border: none !important;
 
       &::-webkit-scrollbar {
         width: 4px;

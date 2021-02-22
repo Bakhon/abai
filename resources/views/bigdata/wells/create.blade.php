@@ -12,17 +12,21 @@
             @endif
             <div class="x_panel">
                 <h1>Бурение скважины</h1>
-                <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i class="fas fa-arrow-left"></i></a>
+                <a class="btn btn-primary float-left" href="{{ url()->previous() }}"><i
+                            class="fas fa-arrow-left"></i></a>
                 <div class="row">
-                    <bigdata-well-form type="create" action="{{ route('bigdata.wells.store') }}"></bigdata-well-form>
+                    <bigdata-form action="{{ route('bigdata.wells.store') }}"></bigdata-form>
                 </div>
             </div>
         </div>
     </div>
 @endsection
 <style>
-    body{color: white !important;}
-    .table{
+    body {
+        color: white !important;
+    }
+
+    .table {
         color: white !important;
     }
 </style>

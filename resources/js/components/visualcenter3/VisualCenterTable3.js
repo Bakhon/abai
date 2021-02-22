@@ -376,6 +376,11 @@ export default {
     changeDzoCompaniesVisibility() {
       this.isDzoCompaniesListSelectorOpened = !this.isDzoCompaniesListSelectorOpened;
     },
+    defocusDzoCompanies() {
+      if (this.isDzoCompaniesListSelectorOpened) {
+        this.isDzoCompaniesListSelectorOpened = false;
+      }
+    },
 
     selectAllDzoCompanies() {
       this.selectDzoCompanies();
@@ -1758,6 +1763,7 @@ export default {
           this.clearNullAccidentCases();
           this.exportDzoCompaniesSummaryForChart();
         }
+
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
 
@@ -2820,5 +2826,5 @@ export default {
             return moment(b.date_string, 'DD.MM.YYYY') - moment(a.date_string, 'DD.MM.YYYY');
         });
     },
-},
+  },
 };
