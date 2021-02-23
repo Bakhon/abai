@@ -358,14 +358,14 @@ export default {
         isOperating: false,
         isNonOperating: false,
         isOpecRestriction: false,
-        assetTitle: this.trans("visualcenter.totalAllactives"),
+        assetTitle: this.trans("visualcenter.summaryAssets"),
       },
       dzoCompaniesAssets: {},
       selectedDzoCompanies: [],
       assetTitleMapping: {
-        isOperating: this.trans("visualcenter.totalOperactives"),
-        isNonOperating: this.trans("visualcenter.totalNeoperactives"),
-        isAllAssets: this.trans("visualcenter.totalAllactives"),
+        isOperating: this.trans("visualcenter.summaryOperatingAssets"),
+        isNonOperating: this.trans("visualcenter.summaryNonOperatingAssets"),
+        isAllAssets: this.trans("visualcenter.summaryAssets"),
       }
     };
   },
