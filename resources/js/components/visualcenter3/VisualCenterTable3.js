@@ -355,12 +355,7 @@ export default {
       mainMenuButtonElementOptions: {},
       oilProductionDoubleFilter: {
         isOilProductionFilterActive: false,
-        isSecondOptionEnabled: false,
-        previousOption: '',
         options: ['kmgParticipation','opecRestriction'],
-        categoryName: 'oilProductionButton',
-        isParticipationKmgActive: false,
-        isOpecRestrictionActive: false,
         previousParent: '',
         previousChild: '',
       },
