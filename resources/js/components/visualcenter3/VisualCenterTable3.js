@@ -361,6 +361,8 @@ export default {
         categoryName: 'oilProductionButton',
         isParticipationKmgActive: false,
         isOpecRestrictionActive: false,
+        previousParent: '',
+        previousChild: '',
       },
       dzoCompaniesAssetsInitial: {
         isAllAssets: true,
@@ -563,50 +565,31 @@ export default {
 
     switchMainMenu(parentButton, childButton) {
       let self = this;
-      let secondFilterOption = this.getSecondFilterOption(parentButton,childButton);
+      let previousOptions = _.cloneDeep(this.oilProductionDoubleFilter);
       _.forEach(Object.keys(this.mainMenuButtonElementOptions), function(button) {
         if (self.mainMenuButtonElementOptions[button]['childItems']) {
           self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
         }
       });
-
-      let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-      this.setChildOptions(buttonOptions);
-
-      let isDoubleFilter = this.isDoubleFilter(parentButton,childButton);
-      if (secondFilterOption !== null && isDoubleFilter) {
+      if (previousOptions.options.includes(childButton) &&
+          previousOptions.options.includes(previousOptions.previousChild) &&
+          parentButton === previousOptions.previousParent) {
         this.oilProductionDoubleFilter.isOilProductionFilterActive = true;
-        let secondChildOptions = this.mainMenuButtonElementOptions[parentButton].childItems[secondFilterOption];
-        this.setChildOptions(secondChildOptions);
+        let previousFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[previousOptions.previousChild];
+        this.setChildOptions(previousFilterOptions);
       } else {
         this.oilProductionDoubleFilter.isOilProductionFilterActive = false;
       }
-      this.oilProductionDoubleFilter.previousOption = childButton;
-    },
 
-    getSecondFilterOption(parentButton,childButton) {
-      let oilProductionButton = this.oilProductionDoubleFilter.categoryName;
-      let oilProductionChilds = _.cloneDeep(this.oilProductionDoubleFilter.options);
-      if (parentButton === oilProductionButton && oilProductionChilds.includes(childButton)) {
-        let childButtonIndex = oilProductionChilds.indexOf(childButton);
-        oilProductionChilds.splice(childButtonIndex, 1);
-        return oilProductionChilds[0];
-      } else {
-        return null;
-      }
+      let currentFilterOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
+      this.setChildOptions(currentFilterOptions);
+      this.oilProductionDoubleFilter.previousParent = parentButton;
+      this.oilProductionDoubleFilter.previousChild = childButton;
     },
 
     setChildOptions(elementOptions) {
       elementOptions.buttonClass = this.mainMenuButtonHighlighted;
       elementOptions.flag = "flagOn";
-    },
-
-    isDoubleFilter(parentButton,childButton) {
-      let oilProductionButton = this.oilProductionDoubleFilter.categoryName;
-      let oilProductionChilds = this.oilProductionDoubleFilter.options;
-      let previousChildOption = this.oilProductionDoubleFilter.previousOption;
-      return parentButton === oilProductionButton &&
-          (previousChildOption !== childButton && oilProductionChilds.includes(previousChildOption));
     },
 
     disableMainMenuFlags(menuCategory) {
