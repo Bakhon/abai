@@ -1475,8 +1475,12 @@
 
                               <div class="col-2">
                                 <label class="label-for-celevoi">ØНКТ</label>
-                                <input  type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" />
+                                  <select class="input-box-gno podbor" v-model="nkt">
+                                  <option value="38">38</option>
+                                  <option value="44">44</option>
+                                  <option value="57">57</option>
+                                  <option value="70">70</option>
+                                  </select>
                               </div>
 
                               <div class="col-2">
