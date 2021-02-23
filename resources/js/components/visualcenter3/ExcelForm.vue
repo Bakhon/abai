@@ -1,17 +1,23 @@
 <template>
-  <hot-table
-    :data="data"
-    :colHeaders="true"
-    :settings="hotSettings"
-    :rowHeaders="true"
-    licenseKey="non-commercial-and-evaluation"
-  >
-    <input type="hidden" name="oil_plan" v-model="oil_plan" />
-    <input type="hidden" name="oil_fact" v-model="oil_fact" />
-    <button @click="save()" class="btn btn-primary" id="submit_btn">
-      Сохранить
-    </button>   
-  </hot-table>
+  <div>
+    <hot-table
+      :data="data"
+      :colHeaders="true"
+      :settings="hotSettings"
+      :rowHeaders="true"
+      licenseKey="non-commercial-and-evaluation"
+      ref="myTable"
+    >
+      <input type="hidden" name="oil_plan" v-model="oil_plan" />
+      <input type="hidden" name="oil_fact" v-model="oil_fact" />
+      <button @click="changeData()" class="btn btn-primary" id="submit_btn">
+        Сохранить
+      </button>
+      <div @click="changeData()" class="btn btn-primary" id="submit_btn">
+        Проверить ошибки
+      </div>
+    </hot-table>
+  </div>
 </template>
  
 <script>
@@ -43,7 +49,7 @@ export default {
         rowHeaders: true,
         contextMenu: true,
         readOnly: true,
-        className: "htCenter htMiddle",
+        className: "first-class",
         stretchH: "all",
         mergeCells: [
           { row: 0, col: 0, rowspan: 1, colspan: 4 },
@@ -77,9 +83,28 @@ export default {
     };
   },
   methods: {
-    save() {
+    changeData: function () {
       this.oil_plan = this.data[4][2];
       this.oil_fact = this.data[4][3];
+      if (this.oil_plan * 2 < this.oil_fact) {
+        this.$refs.myTable.hotInstance.setCellMeta(
+          4,
+          3,
+          "className",
+          "bg-danger text-white"
+        ); 
+        this.$refs.myTable.hotInstance.render(); 
+      } else {
+        this.$refs.myTable.hotInstance.setCellMeta(
+          4,
+          3,
+          "className",
+          "first-class"
+        );
+        this.$refs.myTable.hotInstance.render();
+        alert("Ошибок нет")
+
+      }
     },
   },
   components: {
