@@ -233,8 +233,7 @@ return array (
   'otm_metric_system_wells' => 'скв.',
   'otmMetricSystemMeter' => 'м.',
   'otmMetricSystemWells' => 'скв.',
-  'chemistryMetricTon' => 'т.',
-  'otmMetricSystem' => 'м.',
+  'chemistryMetricTon' => 'тонн',
   'dzoMonthlyPlan' => 'План мес.',
   'dzoYearlyPlan' => 'План год.',
   'dzoDifference' => '+/-',
@@ -249,4 +248,5 @@ return array (
   'dzoRestrictions' => 'Ограничения КТО',
   'dzoOthers' => 'Прочие',
   'dzoAllCompany' => 'Все компании',
+  'otmMetricSystem' => 'м.',
 );

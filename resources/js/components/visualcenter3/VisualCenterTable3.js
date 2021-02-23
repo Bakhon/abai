@@ -363,9 +363,9 @@ export default {
       dzoCompaniesAssets: {},
       selectedDzoCompanies: [],
       assetTitleMapping: {
-        operating: this.trans("visualcenter.totalOperactives"),
-        nonOperating: this.trans("visualcenter.totalNeoperactives"),
-        allAssets: this.trans("visualcenter.totalAllactives"),
+        isOperating: this.trans("visualcenter.totalOperactives"),
+        isNonOperating: this.trans("visualcenter.totalNeoperactives"),
+        isAllAssets: this.trans("visualcenter.totalAllactives"),
       }
     };
   },
@@ -541,10 +541,22 @@ export default {
     },
 
     switchMainMenu(parentButton, childButton) {
-      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
+      let self = this;
+      _.forEach(Object.keys(this.mainMenuButtonElementOptions), function(button) {
+        if (self.mainMenuButtonElementOptions[button]['childItems']) {
+          self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
+        }
+      });
       let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
       buttonOptions.buttonClass = this.mainMenuButtonHighlighted;
       buttonOptions.flag = "flagOn";
+    },
+
+    disableMainMenuFlags(parentButton) {
+      _.forEach(Object.keys(parentButton.childItems), function (childButton) {
+          parentButton.childItems[childButton]['flag'] = 'flagOff';
+          parentButton.childItems[childButton]['button'] = '';
+      });
     },
 
     getMainMenuButtonFlag(parentButton,childButton) {
@@ -1077,12 +1089,10 @@ export default {
     },
 
     getProduction(item, item2, item3, item4, item5, item6) {
-      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
       if (this.opec === "ОПЕК+") {
         if (item != "oil_opek_plan") {
           this.opec = 'утв.';
           this.dzoCompaniesAssets['isOpecRestriction'] = false;
-          //this.buttonHover14 = "";
         } else {
           this.opec = 'ОПЕК+';
           item6 = 'oil_plan';
@@ -2596,6 +2606,7 @@ export default {
   },
 
   async mounted() {
+    this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
     this.getOpec();
     this.item3 = this.oilChartHeadName;
 
@@ -2618,14 +2629,13 @@ export default {
     // this.timeSelect = new Date().toLocaleDateString();
     this.timestampToday = new Date(this.range.start).getTime();
     this.timestampEnd = new Date(this.range.end).getTime();
-    if (this.company == "all") {
-    }
+
     this.selectedYear = this.year;
 
     localStorage.setItem("selectedPeriod", "undefined");
     this.getCurrencyNow(this.timeSelect);
     this.updatePrices(this.period);
-    this.dzoCompaniesAssets = this.dzoCompaniesAssetsInitial;
+
     this.changeAssets('isAllAssets');
 
     this.changeMenu2();

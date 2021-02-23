@@ -606,41 +606,9 @@
                 >
                   <div class="icon-all icons4"></div>
                   <div class="txt5">
-                    <!-- Добыча конденсата -->{{ trans("visualcenter.getgk") }}
+                    {{ trans("visualcenter.getgk") }}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-primary dropdown-toggle position-button-vc col-2"
-                  data-toggle="dropdown"
-                ></button>
-                <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li
-                          class="center-li row px-4"
-                          @click="switchMainMenu('condensateProductionButton','kmgParticipation')"
-                  >
-                    <div
-                      class="col-1 mt-2"
-                      v-html="`${getMainMenuButtonFlag('condensateProductionButton','kmgParticipation')}`"
-                    ></div>
-                    <a
-                      class="col-9 px-2"
-                      @click="
-                        getProduction(
-                          'gk_plan',
-                          'gk_fact',
-                          trans('visualcenter.getgkDynamic'),
-                          ' тонн',
-                          trans('visualcenter.dolyaUchast')
-                        )
-                      "
-                    >
-                      <!-- С учётом доли участия КМГ -->{{
-                        trans("visualcenter.dolyaUchast")
-                      }}
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
@@ -888,7 +856,7 @@
 
           <div class="row mh-60 mt-3 px-4">
             <div class="col-sm-7 vis-table" :style="scroll">
-              <table v-if="bigTable.length" class="table4 w-100">
+              <table v-if="bigTable.length" class="table4 w-100 mh-100">
                 <thead>
                   <tr>
                     <th>{{ trans("visualcenter.dzo") }}</th>
@@ -1248,7 +1216,7 @@
               </table>
 
               <div
-                      v-if="!isMultipleDzoCompaniesSelected"
+                      v-if="!isMultipleDzoCompaniesSelected && buttonDailyTab"
                       v-for="(item) in dzoCompanySummary"
                       colspan="5"
                       class="dzo-company-reason"
@@ -1277,10 +1245,10 @@
             <div
               class="pl-3 col-sm-5"
               v-if="
-                (item != 'oil_plan' &&
+                ((item != 'oil_plan' &&
                   item != 'oil_dlv_plan' &&
                   item != 'oil_opek_plan') ||
-                oneDate != 1
+                oneDate != 1) && !buttonDailyTab
               "
             >
               <div class="name-chart-left">
@@ -2569,7 +2537,6 @@
         vertical-align: middle;
         min-width: 71px;
         &:first-child {
-          display: inline-block;
           white-space: normal;
           min-width: 327px;
           width: 100%;
@@ -2888,6 +2855,9 @@
   }
   .mh-60 {
     min-height: 60%;
+  }
+  .mh-100 {
+    min-height: 100%;
   }
 
 
