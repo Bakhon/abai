@@ -248,4 +248,5 @@ return array (
   'dzoAlarmSecond' => 'системе СиП',
   'dzoRestrictions' => 'Ограничения КТО',
   'dzoOthers' => 'Прочие',
+  'dzoAllCompany' => 'Все компании',
 );

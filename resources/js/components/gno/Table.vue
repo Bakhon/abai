@@ -12,6 +12,7 @@
                 <select class="select-gno2" v-model="field">
                   <option value="UZN">Узень</option>
                   <option value="KMB">Карамандыбас</option>
+                  <option value="JET">Жетыбай</option>
                 </select>
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
@@ -1440,7 +1441,7 @@
                             <div class="row">
                               <div style="height: 5px;"></div>
                             </div>
-                            <div class="row pt-2">
+                            <div class="row pt-2" style="height: 50px;">
                               <div class="col-2 pr-0">
                                 <div>
                                   <label class="label-for-celevoi">
@@ -1466,19 +1467,19 @@
                               </div>
 
                               <div class="table-border-gno col-2">
-                                <label class="label-for-celevoi pl-3">Рбуф</label>
+                                <label class="label-for-celevoi">Рбуф</label>
                                 <input type="text" onfocus="this.value=''" 
                                   class="input-box-gno podbor" />
                               </div>
 
                               <div class="col-2">
-                                <label class="label-for-celevoi pl-3">ØНКТ</label>
+                                <label class="label-for-celevoi">ØНКТ</label>
                                 <input  type="text" onfocus="this.value=''" 
                                   class="input-box-gno podbor" />
                               </div>
 
                               <div class="col-2">
-                                <label class="label-for-celevoi pl-3">Нсп</label>
+                                <label class="label-for-celevoi">Нсп</label>
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" onfocus="this.value=''" 
                                   class="input-box-gno podbor" />
                               </div>
@@ -1486,17 +1487,19 @@
                             </div>
 
                             <div class="row">
-                              <div style="height: 17px; padding-left: 15px;">Общий коэффициент сепарации</div>
+                              <div style="height: 20px; padding-left: 15px;">Общий коэффициент сепарации</div>
                             </div>
 
-                            <div class="row">
-                              <div style="padding-top: 10px;">
-                                  <label style="width: 100px; padding-left: 15px; " class="label-for-celevoi"><input class="checkbox3"
-                                      checked="true"
-                                      type="radio" name="gno10"/>Расчет</label>
-                                </div>
+                            <div class="row" style="padding-top: 3px;">
+                              <!-- <div class="col-2 pr-0" style="padding-top: 10px;">
+                                  <label style="width: 100px; padding-left: 15px; " class="label-for-celevoi">
+                                    <input class="checkbox3" checked="true" type="radio" name="gno10"/>
+                                    Расчет
+                                  </label>
+                              </div>
+
                               <div class="col-2  pr-0">
-                                <div style="padding-top: 10px;">
+                                <div style="padding-top: 10px; padding-left: 15px;">
                                   <label style="width: 100px;" class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
                                        checked="true"
                                       type="radio" name="gno10"/><input type="text" onfocus="this.value=''" 
@@ -1504,13 +1507,35 @@
                                 </div>
                               </div>
 
-                              <div class="col-4 pr-0">
-                                <div class="pt-3">
-                                  &nbsp;
+                              <div class="row">
+                                <div class="col-12">
+                                  asdasd
                                 </div>
+                              </div> -->
+
+                              <div class="col-4">
+                                <label style="width: 100px;" class="label-for-celevoi">
+                                    <input class="checkbox3" checked="true" type="radio" name="gno10"/>
+                                    Расчет
+                                </label>
                               </div>
+                              <div class="col-8 table-border-gno"><input type="checkbox" checked>Естественная сепарация</div>
+                              
+
+                            
                             </div>
-                            <div class="table-border-gno-top">
+
+                            <div class="row">
+                              <div class="col-4">
+                                <label style="width: 100px;" class="label-for-celevoi">
+                                  <input class="checkbox3" value="ЭЦН" checked="true" type="radio" name="gno10"/>
+                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" /></label>
+                              </div>
+                              <div class="col-8 table-border-gno"><input type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" onfocus="this.value=''" class="input-box-gno podbor" /></div>
+                            </div>
+                              
+
+                            <div class="table-border-gno-top" style="padding-bottom: 0;">
                               <div class="row">
                                 <div class="col-4 pr-0">
                                   <div class="table-border-gno-right pt-2 pb-3 podbor-bottom-title-line text-ellipsis">
