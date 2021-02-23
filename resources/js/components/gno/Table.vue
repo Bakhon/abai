@@ -1461,7 +1461,8 @@
                                <div class="col-2 pr-0">
                                 <div>
                                   <label class="label-for-celevoi">
-                                    <input class="checkbox3" value="ШГН"
+                                    <input class="checkbox3" value="ФОН"
+                                      v-model="expChoose" @change="postCurveData()" :checked="expChoose === 'ФОН'"
                                        type="radio" name="gno10" />ФОН</label>
                                 </div>
                               </div>
@@ -2434,13 +2435,19 @@ export default {
 
         if (this.expMeth == "ШГН") {
           this.expChoose = "ШГН"
-        } else {
+        } else if (this.expMeth == "ЭЦН") {
           this.expChoose = "ЭЦН"
+        } else if (this.expMeth == "ФОН") {
+          this.expChoose = "ФОН"
         }
         if (this.age === true) {
           this.curveSelect = 'pi'
         } else {
-          this.curveSelect = 'hdyn'
+          if (this.expMeth == "ФОН"){
+            this.curveSelect = "whp"
+          } else {
+            this.curveSelect = 'hdyn'
+          }
         }
 
         this.piButton = true
@@ -2721,7 +2728,7 @@ export default {
       }
     },
     async NnoCalc(){
-      let uri = "http://172.20.103.187:7575/api/nno/";
+      let uri = "http://172.20.103.187:7574/api/nno/";
 
       this.eco_param=null;
 
@@ -2810,7 +2817,7 @@ export default {
 
     getWellNumber(wellnumber) {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
+      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + wellnumber + "/";
       this.isLoading = true;
 
       this.axios.get(uri).then((response) => {
@@ -3032,7 +3039,7 @@ export default {
 
     postCurveData() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
+      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
       var langUrl = `${window.location.pathname}`.slice(1, 3);
       // api/pgno/UZN/
       // KMB
@@ -3159,7 +3166,7 @@ export default {
 
     postAnalysisOld() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/";
+      let uri = "http://172.20.103.187:7574/api/pgno/" + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -3221,7 +3228,7 @@ export default {
 
     postAnalysisNew() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
+      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -3355,7 +3362,7 @@ export default {
       } else {
         if(this.expChoose == 'ШГН'){
           if(this.visibleChart) {
-            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
+            let uri = "http://172.20.103.187:7574/api/pgno/shgn";
             let jsonData = JSON.stringify(
               {
                 "ql_cel": this.qlCelValue.split(' ')[0],
@@ -3483,7 +3490,7 @@ export default {
     onPrsButtonClick() {
       this.$modal.show('modal-prs')
       let krsTable = [];
-      let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
+      let uriPrsKrs = "http://172.20.103.187:7574/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
       this.axios.get(uriPrsKrs).then((response) => {
         let krs = response['data']['krs']
         this.numberRepairs = response['data']['prs']['prs']
