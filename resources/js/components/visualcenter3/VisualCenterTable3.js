@@ -353,6 +353,15 @@ export default {
       dzoCompaniesSummaryForChart: {},
       mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
       mainMenuButtonElementOptions: {},
+      oilProductionDoubleFilter: {
+        isOilProductionFilterActive: false,
+        isSecondOptionEnabled: false,
+        previousOption: '',
+        options: ['kmgParticipation','opecRestriction'],
+        categoryName: 'oilProductionButton',
+        isParticipationKmgActive: false,
+        isOpecRestrictionActive: false,
+      },
       dzoCompaniesAssetsInitial: {
         isAllAssets: true,
         isOperating: false,
@@ -366,6 +375,18 @@ export default {
         isOperating: this.trans("visualcenter.totalOperactives"),
         isNonOperating: this.trans("visualcenter.totalNeoperactives"),
         isAllAssets: this.trans("visualcenter.totalAllactives"),
+      },
+      kmgParticipationPercent: {
+        'АО "Каражанбасмунай"': 0.5,
+        'ТОО "Казгермунай"': 0.5,
+        'АО ПетроКазахстан Инк': 0.33,
+        'ПетроКазахстан Инк.': 0.33,
+        'АО "Тургай-Петролеум"': 0.5 * 0.33,
+        "ТОО «Тенгизшевройл»": 0.2,
+        'АО "Мангистаумунайгаз"': 0.5,
+        'ТОО "Казахойл Актобе"': 0.5,
+        "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
+        "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
       }
     };
   },
@@ -542,20 +563,56 @@ export default {
 
     switchMainMenu(parentButton, childButton) {
       let self = this;
+      let secondFilterOption = this.getSecondFilterOption(parentButton,childButton);
       _.forEach(Object.keys(this.mainMenuButtonElementOptions), function(button) {
         if (self.mainMenuButtonElementOptions[button]['childItems']) {
           self.disableMainMenuFlags(self.mainMenuButtonElementOptions[button]);
         }
       });
+
       let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
-      buttonOptions.buttonClass = this.mainMenuButtonHighlighted;
-      buttonOptions.flag = "flagOn";
+      this.setChildOptions(buttonOptions);
+
+      let isDoubleFilter = this.isDoubleFilter(parentButton,childButton);
+      if (secondFilterOption !== null && isDoubleFilter) {
+        this.oilProductionDoubleFilter.isOilProductionFilterActive = true;
+        let secondChildOptions = this.mainMenuButtonElementOptions[parentButton].childItems[secondFilterOption];
+        this.setChildOptions(secondChildOptions);
+      } else {
+        this.oilProductionDoubleFilter.isOilProductionFilterActive = false;
+      }
+      this.oilProductionDoubleFilter.previousOption = childButton;
     },
 
-    disableMainMenuFlags(parentButton) {
-      _.forEach(Object.keys(parentButton.childItems), function (childButton) {
-          parentButton.childItems[childButton]['flag'] = 'flagOff';
-          parentButton.childItems[childButton]['button'] = '';
+    getSecondFilterOption(parentButton,childButton) {
+      let oilProductionButton = this.oilProductionDoubleFilter.categoryName;
+      let oilProductionChilds = _.cloneDeep(this.oilProductionDoubleFilter.options);
+      if (parentButton === oilProductionButton && oilProductionChilds.includes(childButton)) {
+        let childButtonIndex = oilProductionChilds.indexOf(childButton);
+        oilProductionChilds.splice(childButtonIndex, 1);
+        return oilProductionChilds[0];
+      } else {
+        return null;
+      }
+    },
+
+    setChildOptions(elementOptions) {
+      elementOptions.buttonClass = this.mainMenuButtonHighlighted;
+      elementOptions.flag = "flagOn";
+    },
+
+    isDoubleFilter(parentButton,childButton) {
+      let oilProductionButton = this.oilProductionDoubleFilter.categoryName;
+      let oilProductionChilds = this.oilProductionDoubleFilter.options;
+      let previousChildOption = this.oilProductionDoubleFilter.previousOption;
+      return parentButton === oilProductionButton &&
+          (previousChildOption !== childButton && oilProductionChilds.includes(previousChildOption));
+    },
+
+    disableMainMenuFlags(menuCategory) {
+      _.forEach(Object.keys(menuCategory.childItems), function (childButton) {
+          menuCategory.childItems[childButton]['flag'] = 'flagOff';
+          menuCategory.childItems[childButton]['button'] = '';
       });
     },
 
@@ -1088,9 +1145,11 @@ export default {
       }
     },
 
-    getProduction(item, item2, item3, item4, item5, item6) {
+    getProduction(productionPlan, productionFact, item3, item4, item5, item6) {
+      this.oilProductionDoubleFilter.isOilProductionFilterActive = false;
+      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
       if (this.opec === "ОПЕК+") {
-        if (item != "oil_opek_plan") {
+        if (productionPlan !== "oil_opek_plan") {
           this.opec = 'утв.';
           this.dzoCompaniesAssets['isOpecRestriction'] = false;
         } else {
@@ -1111,7 +1170,7 @@ export default {
         month: 'numeric',
         day: 'numeric',
       });
-      if (start == end) {
+      if (start === end) {
         this.oneDate = 1;
         this.scroll = " flex: unset!important; max-height80%; max-width: 100%!important; overflow:hidden; overflow: auto;";
       } else { this.oneDate = ''; this.scroll = ""; }
@@ -1119,21 +1178,16 @@ export default {
       var timestampEnd = this.timestampEnd;
 
 
-      this.item = item;
-      this.item2 = item2;
+      this.item = productionPlan;
+      this.item2 = productionFact;
       this.item3 = item3;
       this.item4 = item4;
       this.nameChartLeft = item5;
-
-      localStorage.setItem("production-plan", item);
-      localStorage.setItem("production-fact", item2);
-
-      var productionPlan = localStorage.getItem("production-plan");
-      var productionFact = localStorage.getItem("production-fact");
-
-
-
       this.circleMenu = item3;
+
+      localStorage.setItem("production-plan", productionPlan);
+      localStorage.setItem("production-fact", productionFact);
+
 
       var company = this.company;
 
@@ -1175,7 +1229,7 @@ export default {
 
 
             this.getProductionPercentCovid(dataWithMay);
-            let covid = _.reduce(
+            this.covid = _.reduce(
               dataWithMay,
               function (memo, item) {
                 return memo + item['tb_covid_total'];
@@ -1183,7 +1237,6 @@ export default {
               0
             );
 
-            this.covid = covid;
             this.WellsDataAll = this.WellsData(dataWithMay);
             this.innerWells = this.innerWellsNagData(dataWithMay, this.innerWellsButtonProstoi);
             this.innerWellsChartData = this.innerWellsNagChartData(dataWithMay, this.innerWellsButtonProstoi);
@@ -1250,7 +1303,7 @@ export default {
             if ((summForTables['0']['productionFactForMonth'] + summForTables['0']['productionPlanForMonth']) === 0) {
               this.noData = "Данных нет";
               this.company = "all";
-              this.getProduction(item, item2, item3, item4, item5, this.nameChartLeft);
+              this.getProduction(productionPlan, productionFact, item3, item4, item5, this.nameChartLeft);
             } else {
               this.noData = "";
             }
@@ -1314,27 +1367,7 @@ export default {
             this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay, item6);
           }
 
-          //Summ plan and fact from dzo k1q for month!!!
-          var productionPlanAndFactMonth = _(dataWithMay)
-            .groupBy("dzo")
-            .map((dzo, id) => ({
-              dzo: id,
-              opec: _.sumBy(dzo, 'opec2'),
-              impulses: _.sumBy(dzo, 'impulses'),
-              landing: _.sumBy(dzo, 'landing'),
-              accident: _.sumBy(dzo, 'accident'),
-              restrictions: _.sumBy(dzo, 'restrictions'),
-              otheraccidents: _.sumBy(dzo, 'otheraccidents'),
-              productionFactForChart: _.round(_.sumBy(dzo, productionFact), 0),
-              productionPlanForChart: _.round(_.sumBy(dzo, productionPlan), 0),
-            }))
-            .value();
-
-          productionPlanAndFactMonth = _.orderBy(
-            productionPlanAndFactMonth,
-            ["dzo"],
-            ["desc"]
-          );
+          let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay,productionPlan,productionFact);
 
           this.WellsDataAll = this.WellsData(dataWithMay);
           this.innerWells = this.innerWellsNagData(dataWithMay, this.innerWellsButtonProstoi);
@@ -1467,9 +1500,6 @@ export default {
               "ТОО «Тенгизшевройл»",
               "«Карачаганак Петролеум Оперейтинг б.в.»",
               "«Норт Каспиан Оперейтинг Компани н.в.»"
-              /*"ТШ",
-              "КПО",
-              "НКО"*/
             ]
 
             productionPlanAndFactMonth = productionPlanAndFactMonth.filter(item => {
@@ -1484,56 +1514,14 @@ export default {
 
           }
 
-
-          if (item5 === 'С учётом доли участия КМГ') {
-
-            let companyPercents = {
-              'АО "Каражанбасмунай"': 0.5,
-              'ТОО "Казгермунай"': 0.5,
-              'АО ПетроКазахстан Инк': 0.33,
-              'ПетроКазахстан Инк.': 0.33,
-              'АО "Тургай-Петролеум"': 0.5 * 0.33,
-              "ТОО «Тенгизшевройл»": 0.2,
-              'АО "Мангистаумунайгаз"': 0.5,
-              'ТОО "Казахойл Актобе"': 0.5,
-              "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
-              "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
-            }
-
+          if (item5 === this.trans('visualcenter.dolyaUchast') || productionPlan === "oil_opek_plan") {
             productionPlanAndFactMonth.map(item => {
-              if (typeof companyPercents[this.getNameDzoFull(item.dzo)] !== 'undefined') {
-                item.productionFactForChart = item.productionFactForChart * companyPercents[this.getNameDzoFull(item.dzo)]
-                item.productionPlanForChart = item.productionPlanForChart * companyPercents[this.getNameDzoFull(item.dzo)]
+              if (typeof this.kmgParticipationPercent[this.getNameDzoFull(item.dzo)] !== 'undefined') {
+                item.productionFactForChart = item.productionFactForChart * this.kmgParticipationPercent[this.getNameDzoFull(item.dzo)]
+                item.productionPlanForChart = item.productionPlanForChart * this.kmgParticipationPercent[this.getNameDzoFull(item.dzo)]
               }
-              return item
-            })
-
-          }
-
-
-          if (item5 === 'С учётом доли участия КМГ' || item === "oil_opek_plan") {
-
-            let companyPercents = {
-              'АО "Каражанбасмунай"': 0.5,
-              'ТОО "Казгермунай"': 0.5,
-              'АО ПетроКазахстан Инк': 0.33,
-              'ПетроКазахстан Инк.': 0.33,
-              'АО "Тургай-Петролеум"': 0.5 * 0.33,
-              "ТОО «Тенгизшевройл»": 0.2,
-              'АО "Мангистаумунайгаз"': 0.5,
-              'ТОО "Казахойл Актобе"': 0.5,
-              "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
-              "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
-            }
-
-            productionPlanAndFactMonth.map(item => {
-              if (typeof companyPercents[this.getNameDzoFull(item.dzo)] !== 'undefined') {
-                item.productionFactForChart = item.productionFactForChart * companyPercents[this.getNameDzoFull(item.dzo)]
-                item.productionPlanForChart = item.productionPlanForChart * companyPercents[this.getNameDzoFull(item.dzo)]
-              }
-              return item
-            })
-
+              return item;
+            });
           }
 
           let opec = [];
@@ -1611,17 +1599,16 @@ export default {
           this.planDaySumm = planDaySumm;
 
 
-          let personalFact = _.reduce(
+          this.personalFact = _.reduce(
             dataDay,
             function (memo, item) {
               return memo + item['tb_personal_fact'];
             },
             0
           );
-          this.personalFact = personalFact;
 
           this.getProductionPercentCovid(data);
-          let covid = _.reduce(
+          this.covid = _.reduce(
             dataDay,
             function (memo, item) {
               return memo + item['tb_covid_total'];
@@ -1629,7 +1616,6 @@ export default {
             0
           );
 
-          this.covid = covid;
           var bigTable = _.zipWith(
             opec,
             impulses,
@@ -1699,35 +1685,24 @@ export default {
             'Урихтау Оперейтинг',
           ]
 
-          let opecData = this.opecData;
-          if (this.buttonMonthlyTab) {
-            opecData = this.getOpecMonth(dataWithMay);
-          }
-          else {
-            opecData = this.opecData;
-          }
-
-          opecData = _.orderBy(
-            opecData,
-            ["dzoMonth"],
-            ["asc"]
-          );
-
           bigTable = _.orderBy(
-            bigTable,
-            ["dzoMonth"],
-            ["asc"]
+              bigTable,
+              ["dzoMonth"],
+              ["asc"]
           );
 
-          bigTable = opecData.map(function (e, i) {
-            return Object.assign({}, e, bigTable[i])
-          })
 
+
+          bigTable = this.getOpecData(dataWithMay,bigTable)
 
           bigTable
             .sort((a, b) => {
               return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
-            })
+            });
+
+          if (this.oilProductionDoubleFilter.isOilProductionFilterActive) {
+            bigTable = this.calculateMainTableDataForDoubleFilter(bigTable);
+          }
 
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
           this.clearNullAccidentCases();
@@ -1738,6 +1713,58 @@ export default {
         this.getProductionOilandGasPercent(data);
 
       });
+    },
+
+    calculateMainTableDataForDoubleFilter(bigTable) {
+      let self = this;
+      return bigTable = _.forEach(bigTable, function(dzo) {
+        if (typeof self.kmgParticipationPercent[self.getNameDzoFull(dzo.dzoMonth)] !== 'undefined') {
+          dzo.factMonth = dzo.factMonth * self.kmgParticipationPercent[self.getNameDzoFull(dzo.dzoMonth)]
+          dzo.planMonth = dzo.planMonth * self.kmgParticipationPercent[self.getNameDzoFull(dzo.dzoMonth)]
+        }
+      });
+    },
+
+    getOpecData(inputData,mainTableData) {
+      let opecData = this.opecData;
+      if (this.buttonMonthlyTab) {
+        opecData = this.getOpecMonth(inputData);
+      } else {
+        opecData = this.opecData;
+      }
+
+      opecData = _.orderBy(
+          opecData,
+          ["dzoMonth"],
+          ["asc"]
+      );
+
+      return opecData.map(function (e, i) {
+        return Object.assign({}, e, mainTableData[i])
+      })
+    },
+
+    getProductionPlanAndFactForMonth(inputData,productionPlan,productionFact) {
+      let productionData = _(inputData)
+          .groupBy("dzo")
+          .map((dzo, id) => ({
+            dzo: id,
+            opec: _.sumBy(dzo, 'opec2'),
+            impulses: _.sumBy(dzo, 'impulses'),
+            landing: _.sumBy(dzo, 'landing'),
+            accident: _.sumBy(dzo, 'accident'),
+            restrictions: _.sumBy(dzo, 'restrictions'),
+            otheraccidents: _.sumBy(dzo, 'otheraccidents'),
+            productionFactForChart: _.round(_.sumBy(dzo, productionFact), 0),
+            productionPlanForChart: _.round(_.sumBy(dzo, productionPlan), 0),
+          }))
+          .value();
+
+      return _.orderBy(
+          productionData,
+          ["dzo"],
+          ["desc"]
+      );
     },
 
     setColorToMainMenuButtons(productionPlan) {
@@ -1798,14 +1825,13 @@ export default {
 
 
 
-      var covid = _.reduce(
+      this.covidPercent = _.reduce(
         dataWithMay,
         function (memo, item) {
           return memo + item['tb_covid_total'];
         },
         0
       );
-      this.covidPercent = covid;
     },
 
 
@@ -2452,7 +2478,7 @@ export default {
 
     getProductionForChart(data, plan2) {
       let summary = data.filter(row => this.selectedDzoCompanies.includes(row.dzo));
-      if (summary.length == 0) {
+      if (summary.length === 0) {
         summary = data;
       }
       let productionPlan = localStorage.getItem("production-plan");
