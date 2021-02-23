@@ -92,9 +92,8 @@ export default {
           3,
           "className",
           "bg-danger text-white"
-        ); //select class
-        //  this.data[4][3] = "Ford"; //select value
-        this.$refs.myTable.hotInstance.render(); //accept
+        ); 
+        this.$refs.myTable.hotInstance.render(); 
       } else {
         this.$refs.myTable.hotInstance.setCellMeta(
           4,
@@ -102,7 +101,7 @@ export default {
           "className",
           "first-class"
         );
-        this.$refs.myTable.hotInstance.render(); //accept
+        this.$refs.myTable.hotInstance.render();
         alert("Ошибок нет")
 
       }
