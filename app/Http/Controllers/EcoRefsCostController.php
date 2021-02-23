@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EcoRefsCompaniesId;
 use App\Models\Refs\EcoRefsScFa;
-use App\Models\EcoRefsDirectionId;
-use App\Models\EcoRefsCost;
-use App\Models\EcoRefsRoutesId;
+use App\Models\Refs\EcoRefsCost;
 use Illuminate\Http\Request;
 
 class EcoRefsCostController extends Controller
@@ -19,7 +17,7 @@ class EcoRefsCostController extends Controller
     public function index()
     {
 
-        $ecorefscost = EcoRefsCost::latest()->with('scfa')->with('company')->with('direction')->with('route')->paginate(5);
+        $ecorefscost = EcoRefsCost::latest()->with('scfa')->with('company')->paginate(5);
 
         return view('ecorefscost.index',compact('ecorefscost'))
             ->with('i', (request()->input('page', 1) - 1) * 5);

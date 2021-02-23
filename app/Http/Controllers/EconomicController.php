@@ -38,21 +38,21 @@ class EconomicController extends Controller
 
         $org = \App\Models\Refs\Org::find($request->org);
 
-        $builder = $this->druidClient->query('economic_2020v4', Granularity::YEAR);
-        $builder2 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
-        $builder3 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
-        $builder4 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
-        $builder5 = $this->druidClient->query('economic_2020v4', Granularity::YEAR);
-        $builder6 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
-        $builder7 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
-        $builder8 = $this->druidClient->query('economic_2020v4', Granularity::MONTH);
-        $builder9 = $this->druidClient->query('economic_2020v4', Granularity::YEAR);
-        $builder10 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
-        $builder11 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
-        $builder12 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
-        $builder13 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
-        $builder14 = $this->druidClient->query('economic_2020v4', Granularity::YEAR);
-        $builder15 = $this->druidClient->query('economic_2020v4', Granularity::DAY);
+        $builder = $this->druidClient->query('economic_2020v5', Granularity::YEAR);
+        $builder2 = $this->druidClient->query('economic_2020v5', Granularity::MONTH);
+        $builder3 = $this->druidClient->query('economic_2020v5', Granularity::MONTH);
+        $builder4 = $this->druidClient->query('economic_2020v5', Granularity::MONTH);
+        $builder5 = $this->druidClient->query('economic_2020v5', Granularity::YEAR);
+        $builder6 = $this->druidClient->query('economic_2020v5', Granularity::MONTH);
+        $builder7 = $this->druidClient->query('economic_2020v5', Granularity::DAY);
+        $builder8 = $this->druidClient->query('economic_2020v5', Granularity::MONTH);
+        $builder9 = $this->druidClient->query('economic_2020v5', Granularity::YEAR);
+        $builder10 = $this->druidClient->query('economic_2020v5', Granularity::DAY);
+        $builder11 = $this->druidClient->query('economic_2020v5', Granularity::DAY);
+        $builder12 = $this->druidClient->query('economic_2020v5', Granularity::DAY);
+        $builder13 = $this->druidClient->query('economic_2020v5', Granularity::DAY);
+        $builder14 = $this->druidClient->query('economic_2020v5', Granularity::YEAR);
+        $builder15 = $this->druidClient->query('economic_2020v5', Granularity::DAY);
 
         $builder
             ->interval('2019-01-01T00:00:00+00:00/2020-08-31T00:00:00+00:00')
@@ -443,7 +443,7 @@ class EconomicController extends Controller
 
     public function getEconomicPivotData(){
 
-        $builder = $this->druidClient->query('economic_2020v4', Granularity::DAY);
+        $builder = $this->druidClient->query('economic_2020v5', Granularity::DAY);
 
         $builder
         ->interval('2020-01-01T00:00:00+00:00/2020-08-01T00:00:00+00:00')
@@ -467,7 +467,7 @@ class EconomicController extends Controller
 
     public function getOilPivotData(){
 
-        $response = $this->druidClient->query('economic_2020v4', Granularity::ALL)
+        $response = $this->druidClient->query('economic_2020v5', Granularity::ALL)
             ->interval('2020-07-30T18:00:00+00:00/2020-07-31T18:00:00+00:00')
             ->execute();
 
