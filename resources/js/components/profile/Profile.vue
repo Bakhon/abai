@@ -78,6 +78,7 @@
 
 <script>
 import ProfileField from './Field'
+import params from '../../json/profile.json'
 
 export default {
   name: "profile",
@@ -92,16 +93,10 @@ export default {
   },
   data() {
     return {
-      fields: {},
-      tabs: {},
+      fields: params.fields,
+      tabs: params.tabs,
       activeTab: 'profile'
     }
-  },
-  mounted() {
-    this.axios.get('/js/json/profile.json').then(({data}) => {
-      this.fields = data.fields
-      this.tabs = data.tabs
-    })
   },
   methods: {}
 }
