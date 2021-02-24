@@ -44,8 +44,7 @@
                     <div class="block-header text-center">
                         Таблица данных скважин
                     </div>
-                    <div class="gtm-dark table-responsive table-scroll" style="height: 400px;">
-                    <div class="bg-dark table-responsive table-scroll mh-400">
+                    <div class="gtm-dark table-responsive table-scroll mh-400">
                         <table class="table table-striped table-borderless text-center text-white">
                             <tbody>
                             <tr class="near-wells-table-item" v-for="item in wellsData">
@@ -103,8 +102,7 @@
                     <div class="block-header text-center">
                         Планшет/кор.схема
                     </div>
-                    <div class="gtm-dark table-responsive table-scroll" style="height: 324px;">
-                    <div class="bg-dark table-responsive table-scroll h-324">
+                    <div class="gtm-dark table-responsive table-scroll h-324">
                         <table cellspacing="0" class="table text-center text-white schemaTable">
                             <thead class="schemaTHead">
                             <th>Вид ГТМ</th>
