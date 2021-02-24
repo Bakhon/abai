@@ -969,8 +969,7 @@
                   <tr v-for="(item, index) in dzoCompanySummary">
                     <td
                             @click="isMultipleDzoCompaniesSelected ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
-                            :class="index % 2 === 0 ? 'tdStyle' : ''"
-                            style="cursor: pointer"
+                            :class="index % 2 === 0 ? 'tdStyle cursor-pointer' : 'cursor-pointer'"
                     >
                       <span>
                         {{ getNameDzoFull(item.dzoMonth) }}
@@ -1455,12 +1454,11 @@
                     >
                       <td
                         @click="innerWellsSelectedRow = item.code"
-                        class="width-40"
+                        class="width-40 cursor-pointer"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: innerWellsSelectedRow === item.code,
                         }"
-                        style="cursor: pointer"
                       >
                       <span class="data-titles">
                         {{ item.name }}
@@ -1468,9 +1466,8 @@
                       </td>
                       <td
                         @click="innerWellsSelectedRow = item.code"
-                        class="w-25 tdNumber"
+                        class="w-25 tdNumber cursor-pointer"
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
-                        style="cursor: pointer"
                       >
                       <div class="data-values">
                         {{ formatVisTableNumber2(item.value) }}
@@ -1661,12 +1658,11 @@
                     >
                       <td
                         @click="innerWells2SelectedRow = item.code"
-                        class="width-40"
+                        class="width-40 cursor-pointer"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: innerWells2SelectedRow === item.code,
                         }"
-                        style="cursor: pointer"
                       >
                       <span class="data-titles">
                         {{ item.name }}
@@ -1674,11 +1670,10 @@
                       </td>
                       <td
                         @click="innerWells2SelectedRow = item.code"
-                        class="w-25 text-center"
+                        class="w-25 text-center cursor-pointer"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
-                        style="cursor: pointer"
                       >
                       <div class="data-values">
                         {{ formatVisTableNumber2(item.value) }}
@@ -1844,9 +1839,16 @@
               <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="otmData.length"
-                  class="table7 w-100"
-                  style="height: calc(100% - 20px)"
+                  class="table4 w-100 chemistry-table"
                 >
+                  <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.otmColumnTitle") }}</th>
+                    <th>{{ trans("visualcenter.Plan") }}</th>
+                    <th>{{ trans("visualcenter.Fact") }}</th>
+                    <th>{{ trans("visualcenter.dzoDifference") }}</th>
+                  </tr>
+                  </thead>
                   <tbody>
                     <tr
                       v-for="(item, index) in otmData"
@@ -1854,33 +1856,23 @@
                     >
                       <td
                         @click="otmSelectedRow = item.code"
-                        class="width-40"
+                        class="width-40 cursor-pointer"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: otmSelectedRow === item.code,
                         }"
-                        style="cursor: pointer"
                       >
-                      <span class="data-titles">
+                      <span>
                         {{ item.name }}
                       </span>
                       </td>
                       <td
                         @click="otmSelectedRow = item.code"
                         class="width-20 text-center data-pointer"
-                        :class="
-                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                        "
+                        :class="`${getDzoColumnsClass(index,'plan')}`"
                       >
-                        <div
-                          v-if="index === 0"
-                          class="center"
-                          style="font-size: 12px; line-height: 1.2"
-                        >
-                          <!-- План -->{{ trans("visualcenter.plan") }}
-                        </div>
 
-                        <div class="data-values">
+                        <div class="font">
                           {{ formatVisTableNumber2(item.plan) }}
                           <span class="data-metrics">
                             {{item.metricSystem}}
@@ -1890,18 +1882,9 @@
                       <td
                         @click="otmSelectedRow = item.code"
                         class="width-20 text-center data-pointer"
-                        :class="
-                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                        "
+                        :class="`${getDzoColumnsClass(index,'fact')}`"
                       >
-                        <div
-                          v-if="index === 0"
-                          class="center"
-                          style="font-size: 12px; line-height: 1.2"
-                        >
-                          <!-- Факт -->{{ trans("visualcenter.fact") }}
-                        </div>
-                        <div class="data-values">
+                        <div class="font">
                           {{formatVisTableNumber2(item.fact) }}
                           <span class="data-metrics">
                             {{item.metricSystem}}
@@ -1910,17 +1893,19 @@
                       </td>
                       <td
                         class="width-20 text-center data-pointer"
-                        :class="
-                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                        "
+                        :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
-                        <div v-if="index === 0" class="center">+/-</div>
                         <div
-                          class="right"
-                        >
-                        <span class="data-metrics">
-                          {{item.metricSystem}}
-                        </span>
+                                v-if="item.factMonth"
+                                :class="item.difference < 0 ?
+                          'triangle fall-indicator-production-data' :
+                          'triangle growth-indicator-production-data'"
+                        ></div>
+                        <div class="font dynamic" >
+                          {{formatDigitToThousand(item.difference)}}
+                          <span class="data-metrics">
+                            {{item.metricSystem}}
+                          </span>
                         </div>
                       </td>
                     </tr>
@@ -1945,12 +1930,12 @@
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
                 <div class="ml-4 bold">
-                  <!-- Химизация -->{{ trans("visualcenter.chem") }}
+                  {{ trans("visualcenter.chemistryCategory") }}
                 </div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">
-                  <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                  {{ trans("visualcenter.close") }}
                 </div>
               </div>
             </div>
@@ -2071,9 +2056,17 @@
               <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="chemistryData.length"
-                  class="table7 w-100"
-                  style="height: calc(100% - 20px)"
+                  class="table4 w-100 chemistry-table"
                 >
+                  <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.productionChemicalization") }}</th>
+                    <th>
+                      {{ trans("visualcenter.Plan") }}<br>
+                      {{ trans("visualcenter.chemistryMetricTon") }}
+                    </th>
+                  </tr>
+                  </thead>
                   <tbody>
                     <tr
                       v-for="(item, index) in chemistryData"
@@ -2081,20 +2074,19 @@
                     >
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="width-40"
+                        class="width-40 cursor-pointer"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: chemistrySelectedRow === item.code,
                         }"
-                        style="cursor: pointer"
                       >
-                        <span class="data-titles">
+                        <span>
                           {{ item.name }}
                         </span>
                       </td>
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="width-20 text-center data-pointer"
+                        class="width-20 text-center"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
@@ -2102,17 +2094,10 @@
                         <div
                           v-if="index === 0"
                           class="center"
-
                         >
-                          <span class="data-column-name">
-                            {{ trans("visualcenter.plan") }}
-                          </span>
                         </div>
-                        <div class="data-values">
+                        <div class="font">
                           {{ formatVisTableNumber2(item.fact) }}
-                          <span class="data-metrics">
-                            {{item.metricSystem}}
-                          </span>
                        </div>
                       </td>
                     </tr>
@@ -2333,7 +2318,7 @@
                   </div>
                   <div class="him"></div>
                   <div class="txt2">
-                    <!-- Химизация -->{{ trans("visualcenter.chem") }}
+                    {{ trans("visualcenter.chemistryCategory") }}
                   </div>
                 </td>
               </tr>
@@ -2715,13 +2700,14 @@
   .data-titles {
     font-family: "HarmoniaSansProCyr-Regular";
     font-style: normal;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 15px;
     height: 50px;
   }
   .data-values {
     font-family: "Bold";
     font-style: normal;
-    font-size: 24px;
+    font-size: 15px;
   }
   .data-metrics {
     font-family: "Harmonia-sans, sans-serif";
@@ -2858,6 +2844,12 @@
   }
   .mh-100 {
     min-height: 100%;
+  }
+  .chemistry-table {
+    height: calc(100% - 20px);
+  }
+  .cursor-pointer {
+    cursor: pointer;
   }
 
 

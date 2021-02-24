@@ -248,5 +248,8 @@ return array (
   'dzoRestrictions' => 'Ограничения КТО',
   'dzoOthers' => 'Прочие',
   'dzoAllCompany' => 'Все компании',
+  'chemistryCategory' => 'Химизация',
   'otmMetricSystem' => 'м.',
+  'productionChemicalization' => 'Химизация производства',
+  'otmColumnTitle' => 'Организационно-технические мероприятия',
 );

@@ -2270,39 +2270,35 @@ export default {
 
       result.push(
         {
-          name:
-            // 'Скважин из бурения',
-            this.trans("visualcenter.otm_iz_burenia_skv_fact"),
+          name: this.trans("visualcenter.otm_iz_burenia_skv_fact"),
           code: 'otm_iz_burenia_skv_fact',
           plan: otmData[0]['otm_iz_burenia_skv_plan'],
           fact: otmData[0]['otm_iz_burenia_skv_fact'],
+          difference: otmData[0]['otm_iz_burenia_skv_fact'] - otmData[0]['otm_iz_burenia_skv_plan'],
           metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
         {
-          name:
-            // 'Бурение проходка',
-            this.trans("visualcenter.otm_burenie_prohodka_fact"),
+          name: this.trans("visualcenter.otm_burenie_prohodka_fact"),
           code: 'otm_burenie_prohodka_fact',
           plan: otmData[0]['otm_burenie_prohodka_plan'],
           fact: otmData[0]['otm_burenie_prohodka_fact'],
+          difference: otmData[0]['otm_burenie_prohodka_fact'] - otmData[0]['otm_burenie_prohodka_plan'],
           metricSystem: this.trans("visualcenter.otmMetricSystemMeter"),
         },
         {
-          name:
-            // 'КРС',
-            this.trans("visualcenter.otm_krs_skv_fact"),
+          name: this.trans("visualcenter.otm_krs_skv_fact"),
           code: 'otm_krs_skv_fact',
           plan: otmData[0]['otm_krs_skv_plan'],
           fact: otmData[0]['otm_krs_skv_fact'],
+          difference: otmData[0]['otm_krs_skv_fact'] - otmData[0]['otm_krs_skv_plan'],
           metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
         {
-          name:
-            // 'ПРС',
-            this.trans("visualcenter.otm_prs_skv_fact"),
+          name: this.trans("visualcenter.otm_prs_skv_fact"),
           code: 'otm_prs_skv_fact',
           plan: otmData[0]['otm_prs_skv_plan'],
           fact: otmData[0]['otm_prs_skv_fact'],
+          difference: otmData[0]['otm_prs_skv_fact'] - otmData[0]['otm_prs_skv_plan'],
           metricSystem: this.trans("visualcenter.otmMetricSystemWells"),
         },
       )
