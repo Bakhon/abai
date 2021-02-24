@@ -15,7 +15,9 @@ export default {
             this.showChildren = !this.showChildren;
         },
         handleClick (node) {
-            this.$emit('node-click', node);
+            if ((node.children && node.children.length > 0) || (node.setting_model && node.setting_model.children)) {
+                this.$emit('node-click', {node: node, hideIoiMenu: true});
+            }
         }
     },
 }

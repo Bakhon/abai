@@ -76,14 +76,16 @@
                     ></gtm-tree>
                 </div>
             </div>
-            <keep-alive>
-                <component v-bind:is="treeChildrenComponent" class="gtm-dark position-absolute mt-2 tree-setting-block"></component>
-            </keep-alive>
-            <keep-alive>
-                <component v-bind:is="treeSettingComponent" class="gtm-dark position-absolute mt-2 tree-setting-block"></component>
-            </keep-alive>
+            <div class="position-absolute tree-setting-block d-flex">
+                <keep-alive>
+                    <component v-bind:is="treeChildrenComponent" class="gtm-dark mt-2 mr-2 h-100" @node-click="nodeClick"></component>
+                </keep-alive>
+                <keep-alive>
+                    <component v-bind:is="treeSettingComponent" class="gtm-dark mt-2 h-100"></component>
+                </keep-alive>
+            </div>
             <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0 mt-0 mt-md-2">
-                <div class="gtm-dark h-100">
+                <div class="gtm-dark">
                     <div class="block-header text-center">
                         Тип диаграммы
                     </div>
@@ -96,7 +98,7 @@
                 </div>
             </div>
             <div class="col-12 col-lg-5 p-0 pl-lg-2 pt-2 pt-md-0 mt-0 mt-md-2">
-                <div class="gtm-dark h-100">
+                <div class="gtm-dark">
                     <div class="block-header text-center">
                         Планшет/кор.схема
                     </div>
@@ -225,7 +227,8 @@ export default {
         };
     },
     methods: {
-        nodeClick (node) {
+        nodeClick (data) {
+            let node = data.node;
             if (node.ioi_finder_model) {
                 this.treeChildrenComponent = {
                     name: 'gtm-tree-setting',
@@ -236,11 +239,15 @@ export default {
                             },
                         }
                     },
-                    template: '<div><div class="block-header text-center">'+ node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
+                    template: '<div><div class="block-header text-center">'+ node.name + '</div><gtm-tree :treeData="treeData" @node-click="handleClick"></gtm-tree></div>',
                     methods: {
-                        nodeClick: this.nodeClick
+                        handleClick (data) {
+                            this.$emit('node-click', {node: data.node, hideIoiMenu: false});
+                        }
                     }
                 };
+            } else if (data.hideIoiMenu){
+                this.treeChildrenComponent = null;
             }
             this.treeSettingComponent = {
                 name: 'gtm-tree-setting',
@@ -252,16 +259,8 @@ export default {
                     }
                 },
                 template: '<div><div class="block-header text-center">'+ node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
-                methods: {
-                    nodeClick: this.nodeClick
-                }
             };
         },
     },
 }
 </script>
-<style>
-.tree-branch {
-    color: white;
-}
-</style>

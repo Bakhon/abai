@@ -4,14 +4,13 @@
             v-if="node.name"
             v-bind:class="{ 'cursor-pointer': pointerClass }"
             @click.stop="handleClick(node)">
-            <span v-if="node.children.length === 0 && !node.setting_model && this.checkable !== undefined">
+            <span v-if="this.checkable !== undefined">
                 <span v-if="this.checkState">
+                    <img width="20" height="20" :src="'/img/GTM/flag_active.svg'">
+                </span>
+                <span v-else>
                     <img width="20" height="20" :src="'/img/GTM/flag.svg'">
                 </span>
-                <div v-else class="gtm-setting-checkbox-div">
-                    <input type="checkbox" class="gtm-setting-checkbox"></input>
-                    <span class="gtm-setting-custom-checkbox"></span>
-                </div>
             </span>
             <span @click="toggleCheckState()">{{ node.name }}</span>
             <span v-if="node.value" class="text-right">{{ node.value }}</span>
