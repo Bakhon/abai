@@ -44,7 +44,7 @@
 }
 
 .near-wells-table-block {
-    height: 400px
+    max-height: 400px
 }
 
 .table-scroll::-webkit-scrollbar {
@@ -143,16 +143,34 @@
     background-size: 50% 50%;
 }
 
+.h-324 {
+    height: 324px;
+}
+
+.mh-324 {
+    max-height: 324px;
+}
+
+.h-400 {
+    height: 400px;
+}
+
+.mh-400 {
+    max-height: 400px;
+}
+
 /*mobile*/
 @media screen and (max-width : 1600px) {
     .gtm-map-img {
         height: 280px;
+        max-height: 320px;
     }
 }
 
 @media screen and (max-width : 1500px) {
     .gtm-map-img {
         height: 260px;
+        max-height: 300px;
     }
 }
 
@@ -164,12 +182,14 @@
 
     .gtm-map-img {
         height: 240px;
+        max-height: 280px;
     }
 }
 
 @media screen and (max-width : 1300px) {
     .gtm-map-img {
         height: 220px;
+        max-height: 240px;
     }
 }
 
@@ -181,6 +201,7 @@
 
     .gtm-map-img {
         height: 190px;
+        max-height: 210px;
     }
 }
 

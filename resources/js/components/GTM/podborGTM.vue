@@ -45,6 +45,7 @@
                         Таблица данных скважин
                     </div>
                     <div class="gtm-dark table-responsive table-scroll" style="height: 400px;">
+                    <div class="bg-dark table-responsive table-scroll mh-400">
                         <table class="table table-striped table-borderless text-center text-white">
                             <tbody>
                             <tr class="near-wells-table-item" v-for="item in wellsData">
@@ -93,7 +94,7 @@
                         <div class="text-center text-white">
                             Распределение потерь нефти по факторам
                         </div>
-                        <apexchart type="bar" height="290" style="margin-top:0px;" :options="chartOptions" :series="series"></apexchart>
+                        <apexchart type="bar" height="290" class="mt-0" :options="chartOptions" :series="series"></apexchart>
                     </div>
                 </div>
             </div>
@@ -103,6 +104,7 @@
                         Планшет/кор.схема
                     </div>
                     <div class="gtm-dark table-responsive table-scroll" style="height: 324px;">
+                    <div class="bg-dark table-responsive table-scroll h-324">
                         <table cellspacing="0" class="table text-center text-white schemaTable">
                             <thead class="schemaTHead">
                             <th>Вид ГТМ</th>

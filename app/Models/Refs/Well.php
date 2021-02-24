@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Well extends Model
 {
+    protected $guarded = ['id'];
+
     public function zu()
     {
         return $this->belongsTo(Zu::class);

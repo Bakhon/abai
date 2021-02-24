@@ -3,8 +3,41 @@ import moment from "moment";
 import Calendar from "v-calendar/lib/components/calendar.umd";
 import DatePicker from "v-calendar/lib/components/date-picker.umd";
 import { isString } from "lodash";
+import dzoCompaniesInitial from './dzo_companies_initial.json';
+import mainMenuConfiguration from './main_menu_configuration.json';
 Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
+import Vue from "vue";
+
+Vue.directive('click-outside',{
+  bind: function (el, binding, vnode) {
+    el.eventSetDrag = function () {
+      el.setAttribute('data-dragging', 'yes');
+    }
+    el.eventClearDrag = function () {
+      el.removeAttribute('data-dragging');
+    }
+    el.eventOnClick = function (event) {
+      let dragging = el.getAttribute('data-dragging');
+      if (!(el === event.target || el.contains(event.target)) && !dragging) {
+        vnode.context[binding.expression](event);
+      }
+    };
+    document.addEventListener('touchstart', el.eventClearDrag);
+    document.addEventListener('touchmove', el.eventSetDrag);
+    document.addEventListener('click', el.eventOnClick);
+    document.addEventListener('touchend', el.eventOnClick);
+  },
+  unbind: function (el) {
+    document.removeEventListener('touchstart', el.eventClearDrag);
+    document.removeEventListener('touchmove', el.eventSetDrag);
+    document.removeEventListener('click', el.eventOnClick);
+    document.removeEventListener('touchend', el.eventOnClick);
+    el.removeAttribute('data-dragging');
+  },
+});
+
+
 export default {
   components: {
     Calendar,
@@ -125,34 +158,6 @@ export default {
       tableHover4: "",
       tableHover5: "",
       tableHover6: "",
-      changeMenuButton: "color: #fff;background: #237deb;font-weight:bold;",
-      changeMenuButton1: "",
-      changeMenuButton2: "",
-      changeMenuButton3: "",
-      changeMenuButton4: "",
-      changeMenuButton5: "",
-      changeMenuButton6: "",
-      changeMenuButton7: "",
-      changeMenuButton8: "",
-      changeMenuButton9: "",
-      changeMenuButton10: "",
-      changeMenuButton11: "",
-      changeMenuButton12: "",
-      changeMenuButton13: "",
-
-      changeMenuButton1Flag: "",
-      changeMenuButton2Flag: "",
-      changeMenuButton3Flag: "",
-      changeMenuButton4Flag: "",
-      changeMenuButton5Flag: "",
-      changeMenuButton6Flag: "",
-      changeMenuButton7Flag: "",
-      changeMenuButton8Flag: "",
-      changeMenuButton9Flag: "",
-      changeMenuButton10Flag: "",
-      changeMenuButton11Flag: "",
-      changeMenuButton12Flag: "",
-      changeMenuButton13Flag: "",
       Table1: "display:block;",
       Table2: "display:none;",
       Table3: "display:none;",
@@ -168,9 +173,9 @@ export default {
       selectedDMY: 0,
       periodSelectOil: "",
       oilPeriod: 7,
+      usdPeriod: 7,
       defaultOilPeriod: 7,
       period: 0,
-      // periodUSD: 7,
       timeSelect: "",
       prices: {
         'oil': {},
@@ -180,30 +185,28 @@ export default {
       //oil and currency up
       index: "",
       widthProgress: "90",
-      //showTableItem: "No",]
       DMY: "День",
       item: "oil_plan",
       item2: "oil_fact",
       item3: "Добыча нефти",
       item4: "тонн",
-      productionForChart: "",
       tables: "",
       showTable2: "Yes",
       displayChart: "display: none;",
       showTableOn: "",
-      buttonHover: "border: none;" + " background: #2E50E9;color:white",
-      buttonHover1: "",
-      buttonHover2: "",
-      buttonHover3: "",
-      buttonHover4: "",
-      buttonHover5: "",
-      buttonHover6: "",
-      buttonHover7: "border: none; background: #2E50E9;color:white",
-      buttonHover8: "",
-      buttonHover9: "",
-      buttonHover10: "",
-      buttonHover11: "color: #fff;",//this.changeMenuButton,
-      buttonHover12: "",//this.changeMenuButton,
+      buttonNormalTab: "",
+      highlightedButton: "button-tab-highlighted",
+      oilProductionButton: "",
+      oilDeliveryButton: "",
+      gasProductionButton: "",
+      condensateProductionButton: "",
+      waterInjectionButton: "",
+      buttonDailyTab: "button-tab-highlighted",
+      buttonMonthlyTab: "",
+      buttonYearlyTab: "",
+      buttonPeriodTab: "",
+      buttonHover11: "color: #fff;",
+      buttonHover12: "",
       buttonHover13: "",
       buttonHover14: "",
       buttonHoverNagInnerWells: "",
@@ -319,7 +322,7 @@ export default {
       selectedDay: undefined,
       selectedMonth: undefined,
       selectedYear: undefined,
-      selectedOilPeriod: 0,
+      selectedPeriod: 0,
 
       wells: [""],
       wells2: [""],
@@ -343,11 +346,151 @@ export default {
       dailyCurrencyChangeIndexUsd: '',
       dailyOilPriceChange: '',
       isPricesChartLoading: false,
-      currencyTimeSelect: new Date().toLocaleDateString()
+      currencyTimeSelect: new Date().toLocaleDateString(),
+      currentDzoList: 'daily',
+      dzoColumns: {
+        daily: ['companyName','plan','fact', 'difference', 'percent'],
+        monthly: ['companyName','monthlyPlan','plan','fact', 'difference', 'percent'],
+        yearly: ['companyName','yearlyPlan','plan','fact', 'difference', 'percent'],
+      },
+      dzoCompanies: dzoCompaniesInitial,
+      isAllDzoCompaniesSelected: false,
+      buttonDzoDropdown: "",
+      dzoCompanySummary: this.bigTable,
+      dzoCompaniesSummaryInitial: {
+        plan: 0,
+        periodPlan: 0,
+        fact: 0,
+        difference: 0,
+        percent: 0,
+      },
+      dzoCompaniesSummary: {},
+      isDzoCompaniesListSelectorOpened: false,
+      isMultipleDzoCompaniesSelected: true,
+      dzoCompaniesSummaryForChart: {},
+      mainMenuButtonHighlighted: "color: #fff;background: #237deb;font-weight:bold;",
+      mainMenuButtonElementOptions: {},
     };
   },
   methods: {
-    saveCompany(com) {
+    changeDzoCompaniesVisibility() {
+      this.isDzoCompaniesListSelectorOpened = !this.isDzoCompaniesListSelectorOpened;
+    },
+    defocusDzoCompanies() {
+      if (this.isDzoCompaniesListSelectorOpened) {
+        this.isDzoCompaniesListSelectorOpened = false;
+      }
+    },
+
+    selectAllDzoCompanies() {
+      this.selectDzoCompanies();
+    },
+
+    selectDzoCompanies() {
+      this.selectCompany('all');
+      this.isMultipleDzoCompaniesSelected = true;
+      this.isAllDzoCompaniesSelected = true;
+      this.buttonDzoDropdown = "";
+      _.map(this.dzoCompanies, function(company) {
+        company.selected = true;
+      });
+      this.dzoCompanySummary = this.bigTable;
+      this.calculateDzoCompaniesSummary();
+    },
+
+    calculateDzoCompaniesSummary() {
+      let summary = _.cloneDeep(this.dzoCompaniesSummaryInitial);
+      _.map(this.dzoCompanySummary, function(company) {
+        summary.plan = parseInt(summary.plan) + parseInt(company.planMonth);
+        summary.fact = parseInt(summary.fact) + parseInt(company.factMonth);
+        summary.periodPlan = parseInt(summary.periodPlan) + parseInt(company.periodPlan);
+      });
+      summary.difference = this.formatDigitToThousand(
+          summary.plan - summary.fact);
+      summary.percent = new Intl.NumberFormat("ru-RU")
+          .format(((summary.plan - summary.fact) /
+              summary.fact * 100).toFixed(1));
+      summary.plan = this.formatDigitToThousand(summary.plan);
+      summary.fact = this.formatDigitToThousand(summary.fact);
+      summary.periodPlan = this.formatDigitToThousand(summary.periodPlan);
+      this.dzoCompaniesSummary = summary;
+    },
+
+    selectOneDzoCompany(companyTicker) {
+      this.disableDzoCompaniesVisibility();
+      this.selectDzoCompany(companyTicker);
+    },
+
+    disableDzoCompaniesVisibility() {
+      _.forEach(this.dzoCompanies, function (dzo) {
+        _.set(dzo, 'selected', false);
+      });
+    },
+
+    selectDzoCompany(companyTicker) {
+      this.selectCompany(companyTicker);
+      this.isAllDzoCompaniesSelected = false;
+      this.buttonDzoDropdown = this.highlightedButton;
+      _.map(this.dzoCompanies, function(company) {
+        if (company.ticker === companyTicker) {
+          company.selected = !company.selected;
+        }
+      });
+      let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
+      this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
+      if (this.dzoCompanySummary.length > 1) {
+        this.isMultipleDzoCompaniesSelected = true;
+      } else {
+        this.isMultipleDzoCompaniesSelected = false;
+      }
+      this.calculateDzoCompaniesSummary();
+    },
+
+    getDzoColumnsClass(rowIndex, columnName) {
+      if (this.getColumnIndex(columnName) % 2 === 0) {
+        return this.getDarkColorClass(rowIndex);
+      } else {
+        return this.getLightColorClass(rowIndex);
+      }
+    },
+
+    getColumnIndex(columnName) {
+      return this.dzoColumns[this.currentDzoList].indexOf(columnName);
+    },
+
+    getDarkColorClass(rowIndex) {
+      if (rowIndex % 2 === 0) {
+        return 'tdStyle'
+      } else {
+        return 'tdNone'
+      }
+    },
+
+    getLightColorClass(rowIndex) {
+      if (rowIndex % 2 === 0) {
+        return 'tdStyleLight'
+      } else {
+        return 'tdStyleLight2'
+      }
+    },
+
+    getDarkerClass(rowIndex) {
+      if (rowIndex % 2 === 0) {
+        return 'tdStyle3'
+      } else {
+        return 'tdNone'
+      }
+    },
+
+    getLighterClass(rowIndex) {
+      if (rowIndex % 2 === 0) {
+        return 'tdStyleLight3'
+      } else {
+        return 'tdStyleLight2'
+      }
+    },
+
+    selectCompany(com) {
       this.company = com;
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
@@ -403,107 +546,19 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameLeftChart);
     },
 
-    changeMenu(change) {
-      let changeMenuButton = this.changeMenuButton;
-      let flagOn = this.flagOn;
-      let flagOff = this.flagOff;
-      this.changeMenuButton1 = '';
-      this.changeMenuButton2 = '';
-      this.changeMenuButton3 = '';
-      this.changeMenuButton4 = '';
-      this.changeMenuButton5 = '';
-      this.changeMenuButton6 = '';
-      this.changeMenuButton7 = '';
-      this.changeMenuButton8 = '';
-      this.changeMenuButton9 = '';
-      this.changeMenuButton10 = '';
-      this.changeMenuButton11 = '';
-      this.changeMenuButton12 = '';
-      this.changeMenuButton13 = '';
+    switchMainMenu(parentButton, childButton) {
+      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
+      let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
+      buttonOptions.buttonClass = this.mainMenuButtonHighlighted;
+      buttonOptions.flag = "flagOn";
+    },
 
-      this.changeMenuButton1Flag = flagOff;
-      this.changeMenuButton2Flag = flagOff;
-      this.changeMenuButton3Flag = flagOff;
-      this.changeMenuButton4Flag = flagOff;
-      this.changeMenuButton5Flag = flagOff;
-      this.changeMenuButton6Flag = flagOff;
-      this.changeMenuButton7Flag = flagOff;
-      this.changeMenuButton8Flag = flagOff;
-      this.changeMenuButton9Flag = flagOff;
-      this.changeMenuButton10Flag = flagOff;
-      this.changeMenuButton11Flag = flagOff;
-      this.changeMenuButton12Flag = flagOff;
-      this.changeMenuButton13Flag = flagOff;
-
-
-
-
-      if (change == "101") {
-        this.changeMenuButton1 = changeMenuButton;
-        this.changeMenuButton1Flag = flagOn;
+    getMainMenuButtonFlag(parentButton,childButton) {
+      if (!this.mainMenuButtonElementOptions[parentButton]) {
+        return this.flagOff;
       }
-
-      if (change == "102") {
-        this.changeMenuButton2 = changeMenuButton;
-        this.changeMenuButton2Flag = flagOn;
-      }
-
-      if (change == "103") {
-        this.changeMenuButton3 = changeMenuButton;
-        this.changeMenuButton3Flag = flagOn;
-      }
-
-      if (change == "104") {
-        this.changeMenuButton4 = changeMenuButton;
-        this.changeMenuButton4Flag = flagOn;
-      }
-
-      if (change == "105") {
-        this.changeMenuButton5 = changeMenuButton;
-        this.changeMenuButton5Flag = flagOn;
-      }
-
-
-      if (change == "106") {
-        this.changeMenuButton6 = changeMenuButton;
-        this.changeMenuButton6Flag = flagOn;
-      }
-
-      if (change == "107") {
-        this.changeMenuButton7 = changeMenuButton;
-        this.changeMenuButton7Flag = flagOn;
-      }
-
-      if (change == "108") {
-        this.changeMenuButton8 = changeMenuButton;
-        this.changeMenuButton8Flag = flagOn;
-      }
-
-      if (change == "109") {
-        this.changeMenuButton9 = changeMenuButton;
-        this.changeMenuButton9Flag = flagOn;
-      }
-
-      if (change == "110") {
-        this.changeMenuButton10 = changeMenuButton;
-        this.changeMenuButton10Flag = flagOn;
-      }
-
-      if (change == "111") {
-        this.changeMenuButton11 = changeMenuButton;
-        this.changeMenuButton11Flag = flagOn;
-      }
-
-      if (change == "112") {
-        this.changeMenuButton12 = changeMenuButton;
-        this.changeMenuButton12Flag = flagOn;
-      }
-
-      if (change == "113") {
-        this.changeMenuButton13 = changeMenuButton;
-        this.changeMenuButton13Flag = flagOn;
-      }
-
+      let buttonOptions = this.mainMenuButtonElementOptions[parentButton].childItems[childButton];
+      return this[buttonOptions.flag];
     },
 
     dayClicked() {
@@ -521,57 +576,52 @@ export default {
     },
 
     changeMenu2(change) {
-
-      var buttonHover = this.buttonHover;
-      if (change == 1) {
-
-        this.buttonHover7 = buttonHover;
+      if (change === 1) {
+        this.currentDzoList = 'daily';
+        this.buttonDailyTab = this.highlightedButton;
         this.range = {
           start: moment().startOf('day').subtract(1, "days").format(),
           end: moment().endOf('day').subtract(1, "days").format(),
           formatInput: true,
         };
-
         this.changeDate();
-
+        this.calculateDzoCompaniesSummary();
       } else {
-        this.buttonHover7 = "";
+        this.buttonDailyTab = "";
       }
 
-      if (change == 2) {
-        this.buttonHover8 = buttonHover;
+      if (change === 2) {
+        this.buttonMonthlyTab = this.highlightedButton;
+        this.currentDzoList = 'monthly';
         this.range = {
           start: moment().startOf('month').format(),
           end: moment().subtract(1, "days").endOf('day').format(),
           formatInput: true,
         };
-
-
         this.changeDate();
       } else {
-        this.buttonHover8 = "";
+        this.buttonMonthlyTab = "";
       }
 
-      if (change == 3) {
-        this.buttonHover9 = buttonHover;
+      if (change === 3) {
+        this.buttonYearlyTab = this.highlightedButton;
+        this.currentDzoList = 'yearly';
         this.range = {
           start: moment().startOf('year').format(),
           end: moment().endOf('day').format(),
           formatInput: true,
         };
-
         this.changeDate();
       } else {
-        this.buttonHover9 = "";
+        this.buttonYearlyTab = "";
       }
 
-      if (change == 4) {
-        this.buttonHover10 = buttonHover;
+      if (change === 4) {
+        this.buttonPeriodTab = this.highlightedButton;
       } else {
-        this.buttonHover10 = "";
+        this.buttonPeriodTab = "";
       }
     },
-
 
     changeAssets(change) {
       let changeMenuButton = 'color:#fff';
@@ -580,7 +630,6 @@ export default {
         this.buttonHover12 = "";
         this.buttonHover13 = "";
       }
-      //this.buttonHover14 = "";
 
       if (change == "b11") {
         this.buttonHover11 = changeMenuButton;
@@ -649,11 +698,6 @@ export default {
       if (this.period === 4) {
         return null;
       }
-
-
-
-      // return this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
-      // return this.getCurrencyPeriod(new Date().toLocaleDateString(), this.periodUSD);
     },
 
     getCurrencyNow(dates) {
@@ -677,29 +721,35 @@ export default {
       });
     },
 
-    updateCurrentOilPrices(dates,period) {
+    updateCurrentOilPrices(period) {
       this.isPricesChartLoading = true;
       this.oilPeriod = period;
+      this.usdPeriod = period;
       let uri = this.localeUrl("/get-oil-rates");
-      this.setOilDataAndChart(uri);
+      this.setDataAndChart(uri,'oil');
       this.isPricesChartLoading = false;
     },
 
-    setOilDataAndChart(uri,oilRatesData) {
+    setDataAndChart(uri,type) {
+      let ratesData;
       this.axios.get(uri).then((response) => {
         let data = response.data;
         if (!data) {
           console.log("No data");
           return;
         }
-        let oilRatesData = this.getOilRatesData(data);
-        this.setQuotes('oil',oilRatesData.for_chart);
-        this.setOilPlacements(oilRatesData);
+        ratesData = this.getRatesData(data,ratesData);
+        this.setQuotes(type,ratesData.for_chart);
+        if (type ==='oil') {
+          this.setOilPlacements(ratesData);
+        } else {
+          this.setUsdPlacements(ratesData);
+        }
       });
     },
 
-    getOilRatesData(data) {
-      var oilRatesData = {
+    getRatesData(data,ratesData) {
+      ratesData = {
         for_chart: [],
         for_table: []
       };
@@ -707,15 +757,15 @@ export default {
       let self = this;
       _.forEach(data, function (item) {
         let changeValue = parseFloat(((item['value'] - previousPrice) / item['value']) * 100).toFixed(2);
-        self.pushOilData(oilRatesData,item,changeValue);
-        self.pushOilChart(oilRatesData,item);
+        self.pushRatesData(item,changeValue,ratesData);
+        self.pushRatesChart(item,ratesData);
         previousPrice = parseFloat(item['value']);
       });
-      return oilRatesData;
+      return ratesData;
     },
 
-    pushOilData(oilRatesData,item,changeValue) {
-      oilRatesData.for_table.push({
+    pushRatesData(item,changeValue,ratesData) {
+      ratesData.for_table.push({
         date_string: this.$moment(item['date']).format('DD.MM.YYYY'),
         value: parseFloat(item['value']),
         change: Math.abs(changeValue),
@@ -723,8 +773,8 @@ export default {
       });
     },
 
-    pushOilChart(oilRatesData,item) {
-      oilRatesData.for_chart.push([
+    pushRatesChart(item,ratesData) {
+      ratesData.for_chart.push([
         new Date(item['date']).getTime(),
         parseFloat(item['value']),
       ]);
@@ -757,8 +807,8 @@ export default {
       }
     },
 
-    setOilPlacements(oilRatesData) {
-      this.oilRatesData = oilRatesData;
+    setOilPlacements(ratesData) {
+      this.oilRatesData = ratesData;
       this.setDailyOilPriceChange(this.prices['oil']['current'],this.prices['oil']['previous']);
       if (this.period === 0) {
         this.oilPeriod = this.defaultOilPeriod;
@@ -766,51 +816,39 @@ export default {
       this.oilRatesData.for_chart = this.oilRatesDataChartForCurrentPeriod();
     },
 
+    setUsdPlacements(ratesData) {
+      this.usdRatesData = ratesData;
+      if (this.period === 0) {
+        this.usdPeriod = this.defaultOilPeriod;
+      }
+      this.usdRatesData.for_chart = this.usdRatesDataChartForCurrentPeriod();
+    },
+
     oilRatesDataChartForCurrentPeriod() {
       return this.oilRatesData.for_chart.slice(this.oilPeriod * -1);
     },
 
+    usdRatesDataChartForCurrentPeriod() {
+      return this.usdRatesData.for_chart.slice(this.usdPeriod * -1);
+    },
 
-    getUsdRatesData() {
-      let url = this.localeUrl("/get-usd-rates");
+    updatePrices(period) {
+      this.updateCurrentUsdPrices(period);
+      this.updateCurrentOilPrices(period);
+    },
 
-      this.axios.get(url).then((response) => {
-        if (response.data) {
-          let usdRatesData = {
-            for_chart: [],
-            for_table: []
-          };
-
-          let self = this;
-          response.data.forEach((item) => {
-            usdRatesData.for_table.push({
-              date_string: self.$moment(item.date).format('DD.MM.YYYY'),
-              timestamp: new Date(item.date).getTime(),
-              value: parseInt(item.value * 10) / 10,
-              change: Math.abs(parseFloat(item.change)),
-              index: item.index || null
-            });
-
-            usdRatesData.for_chart.push([
-              new Date(item.date).getTime(),
-              parseInt(item.value * 10) / 10,
-            ]);
-          });
-
-          this.setQuotes('usd',usdRatesData.for_chart);
-          this.usdRatesData = usdRatesData;
-        } else {
-          console.log('No data.');
-        }
-      });
+    updateCurrentUsdPrices(period) {
+      this.isPricesChartLoading = true;
+      this.usdPeriod = period;
+      let uri = this.localeUrl("/get-usd-rates");
+      this.setDataAndChart(uri,'usd');
+      this.isPricesChartLoading = false;
     },
 
     //currency and oil up
     pushBign(bign) {
-      // @click="pushBign('bign1')"
       switch (bign) {
         case "bign1":
-          //  this.params.data = this.wellsList;
           break;
       }
       this.$modal.show(bign);
@@ -831,7 +869,6 @@ export default {
       } else {
         if (b == 0) { return 0 } else if (a == 0) { return 0 } {
           if (a != '') return ((b / a - 1) * 100).toFixed(2)
-          //else return 0;
         }
       }
     },
@@ -856,15 +893,13 @@ export default {
         var a = { index: i, id: i };
         a.DMY = DMY[i];
         menuDMY.push(a);
-        if (this.selectedOilPeriod == i) {
+        if (this.selectedPeriod == i) {
           a.current = "#1D70B7";
           this.DMY = menuDMY[i]["DMY"];
         }
       }
-      if (this.selectedOilPeriod != undefined) {
-      }
-      localStorage.setItem("selectedOilPeriod", this.selectedOilPeriod);
 
+      localStorage.setItem("selectedPeriod", this.selectedPeriod);
       return menuDMY;
     },
     pad(n) {
@@ -892,7 +927,7 @@ export default {
             ),
           ]);
         });
-        //this.quantityGetProductionOilandGas = Object.keys(dataWithMay).length;//k1q
+
         var quantityGetProductionOilandGas = Object.keys(_.filter(dataWithMay, _.iteratee({ dzo: dataWithMay[0].dzo }))).length;//k1q
         this.quantityGetProductionOilandGas = quantityGetProductionOilandGas;
 
@@ -982,7 +1017,6 @@ export default {
         if (gas_factSumm || gas_planSumm) { this.gas_factDayProgressBar = (gas_factSumm / gas_planSumm) * 100; }
 
       }
-      //});
     },
     getProductionOilandGasPercent(data) {
       if (data) {
@@ -1075,10 +1109,10 @@ export default {
         this.oil_dlv_factDayPercent = oil_dlv_factSumm;
 
       }
-      // });
     },
 
     getProduction(item, item2, item3, item4, item5, item6) {
+      this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
       if (this.opec === "ОПЕК+") {
         if (item != "oil_opek_plan") {
           this.opec = 'утв.';
@@ -1088,18 +1122,6 @@ export default {
           item6 = 'oil_plan';
         }
       }
-
-      /* if (change == "b14") {
-         let hover = this.buttonHover14;
-         if (hover) {
-           this.opec = 'утв.';
-
-         } else {
-           this.opec = 'ОПЕК+';
-         }
-
-       }*/
-
 
       this.$store.commit('globalloading/SET_LOADING', true);
       let start = new Date(this.range.start).toLocaleString("ru", {
@@ -1135,7 +1157,6 @@ export default {
 
 
 
-
       this.circleMenu = item3;
 
       var company = this.company;
@@ -1149,7 +1170,7 @@ export default {
 
       this.axios.get(uri).then((response) => {
         let data = response.data;
-        if (data) {
+        if (data && Object.keys(data).length > 0) {
           var NameDzoFull = this.NameDzoFull;
           var company = this.company;
           var summForTables = [];
@@ -1158,14 +1179,12 @@ export default {
             var arrdata = new Array();
             arrdata = _.filter(data, _.iteratee({ dzo: company }));
 
-
             //get data by Month
             var dataWithMay = new Array();
             dataWithMay = _.filter(arrdata, function (item) {
               return _.every([
                 _.inRange(
                   item.__time,
-                  // 1588291200000, // May 2020
                   timestampToday,
                   timestampEnd + 10//86400000 //* dayInMonth
                 ),
@@ -1179,7 +1198,6 @@ export default {
             );
 
 
-
             this.getProductionPercentCovid(dataWithMay);
             let covid = _.reduce(
               dataWithMay,
@@ -1190,7 +1208,6 @@ export default {
             );
 
             this.covid = covid;
-
             this.WellsDataAll = this.WellsData(dataWithMay);
             this.innerWells = this.innerWellsNagData(dataWithMay, this.innerWellsButtonProstoi);
             this.innerWellsChartData = this.innerWellsNagChartData(dataWithMay, this.innerWellsButtonProstoi);
@@ -1218,20 +1235,19 @@ export default {
                 ["__time"],
                 ["asc"]
               );
-              var productionForChart = this.getProductionForChart(dataWithMay3, item6);
 
+              this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay3, item6);
             } else {
-              var productionForChart = this.getProductionForChart(dataWithMay, item6);
+
+              this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay, item6);
             }
 
             var dataWithMayLast = [];
+
             this.getProductionPercentWells(arrdata);
-            // dataWithMayLast = _.last(dataWithMay);
 
             if (this.company != "all") {
-              this.$store.commit('globalloading/SET_LOADING', false);
-              // this.$emit("data", productionForChart); //k1q new
-              this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
+              this.exportDzoCompaniesSummaryForChart();
             }
 
             let accident;
@@ -1255,102 +1271,32 @@ export default {
               }))
               .value();
 
-            console.log((summForTables['0']['productionFactForMonth']));
-            //console.log((summForTables['productionPlanForMonth']).length);
-
             if ((summForTables['0']['productionFactForMonth'] + summForTables['0']['productionPlanForMonth']) === 0) {
               this.noData = "Данных нет";
               this.company = "all";
               this.getProduction(item, item2, item3, item4, item5, this.nameChartLeft);
-            } else { this.noData = ""; }
-
-            if (this.buttonHover12 != '') {
-
-              /*  data = _.reject(data, _.iteratee({ dzo: "ОМГ" }));
-                data = _.reject(data, _.iteratee({ dzo: "КГМ" }));
-                data = _.reject(data, _.iteratee({ dzo: "ММГ" }));
-                data = _.reject(data, _.iteratee({ dzo: "КТМ" }));
-                data = _.reject(data, _.iteratee({ dzo: "КБМ" }));
-                data = _.reject(data, _.iteratee({ dzo: "КОА" }));*/
-
+            } else {
+              this.noData = "";
             }
             this.tables = summForTables;
           }
-
-
-          var buttonHover = this.buttonHover;
-          if ((productionPlan == "oil_plan") || (productionPlan == "oil_opek_plan")) {
-            this.buttonHover1 = buttonHover;
-          } else {
-            this.buttonHover1 = "";
-          }
-
-          if (productionPlan == "oil_dlv_plan") {
-            this.buttonHover2 = buttonHover;
-          } else {
-            this.buttonHover2 = "";
-          }
-
-          if (productionPlan == "gas_plan") {
-            this.buttonHover3 = buttonHover;
-          } else {
-            this.buttonHover3 = "";
-          }
-
-          if (productionPlan == "liq_plan") {
-            this.buttonHover4 = buttonHover;
-          } else {
-            this.buttonHover4 = "";
-          }
-
-          if (productionPlan == "gk_plan") {
-            this.buttonHover5 = buttonHover;
-          } else {
-            this.buttonHover5 = "";
-          }
-
-          if (productionPlan == "liq_plan") {//inj_plan
-            this.buttonHover6 = buttonHover;
-          } else {
-            this.buttonHover6 = "";
-          }
-
+          this.setColorToMainMenuButtons(productionPlan);
         } else {
           console.log("No data");
         }
-
         //bigtable
         //year
+
+        this.$store.commit('globalloading/SET_LOADING', false);
         if (this.company == "all") {
-          this.$store.commit('globalloading/SET_LOADING', false);
           var dataDay = [];
           var dataYear = [];
           var dzo = [];
           dataDay = data;
-          //dataYear = data2;
           var factYear = [];
           var planYear = [];
           var dataMonth = [];
           var dzoYear = [];
-          /*dataMonth = _.filter(
-            data2,
-            _.iteratee({ period: "2020 (с начала года)" })
-          );*/
-
-          /*  dataMonth = _.orderBy(dataMonth, ["dzo"], ["desc"]);
-
-            _.forEach(dataMonth, function (item) {
-              var e = [];
-              e = { dzoYear: item.dzo };
-              dzoYear.push(e);
-
-              var f = [];
-              f = { factYear: Math.ceil(item[productionFact]) };
-              factYear.push(f);
-              var p = [];
-              p = { planYear: Math.ceil(item[productionPlan]) };
-              planYear.push(p);
-            });*/
 
           var dataWithMay = new Array();
           dataWithMay = _.filter(data, function (item) {
@@ -1387,11 +1333,9 @@ export default {
               ["asc"]
             );
 
-            var productionForChart = this.getProductionForChart(dataWithMay2, item6);
-
+            this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay2, item6);
           } else {
-
-            var productionForChart = this.getProductionForChart(dataWithMay, item6);
+            this.dzoCompaniesSummaryForChart = this.getProductionForChart(dataWithMay, item6);
           }
 
           //Summ plan and fact from dzo k1q for month!!!
@@ -1515,50 +1459,6 @@ export default {
 
           this.getProductionPercentWells(data);
 
-          /*  if (inj_wells_idle) {
-              inj_wells_idle = _.reduce(
-                dataDay,
-                function (memo, item) {
-                  return memo + item.inj_wells_idle;
-                },
-                0
-              );
-              this.inj_wells_idle = inj_wells_idle;
-            }
-
-            if (inj_wells_work) {
-              inj_wells_work = _.reduce(
-                dataDay,
-                function (memo, item) {
-                  return memo + item.inj_wells_work;
-                },
-                0
-              );
-              this.inj_wells_work = inj_wells_work;
-            }
-
-            if (prod_wells_work) {
-              prod_wells_work = _.reduce(
-                dataDay,
-                function (memo, item) {
-                  return memo + item.prod_wells_work;
-                },
-                0
-              );
-              this.prod_wells_work = prod_wells_work;
-            }
-
-            if (prod_wells_idle) {
-              prod_wells_idle = _.reduce(
-                dataDay,
-                function (memo, item) {
-                  return memo + item.prod_wells_idle;
-                },
-                0
-              );
-
-              this.prod_wells_idle = prod_wells_idle;
-            }*/
 
           var dzoMonth = [];
           var factMonth = [];
@@ -1667,7 +1567,7 @@ export default {
           let restrictions = [];
           let otheraccidents = [];
 
-          _.forEach(productionPlanAndFactMonth, function (item) { //k1q!!!
+          _.forEach(productionPlanAndFactMonth, function (item) {
             factMonth.push({ factMonth: item.productionFactForChart });
             planMonth.push({ planMonth: item.productionPlanForChart });
             dzoMonth.push({ dzoMonth: item.dzo });
@@ -1679,10 +1579,6 @@ export default {
             otheraccidents.push({ otheraccidents: item.otheraccidents });
           });
 
-
-
-
-          //summ table value
           var factYearSumm = _.reduce(
             factYear,
             function (memo, item) {
@@ -1737,7 +1633,6 @@ export default {
           this.factMonthSumm = factMonthSumm;
           this.factDaySumm = factDaySumm;
           this.planDaySumm = planDaySumm;
-
 
 
           let personalFact = _.reduce(
@@ -1828,12 +1723,8 @@ export default {
             'Урихтау Оперейтинг',
           ]
 
-          /* opecData
-           .sort((a, b) => {
-             return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
-           }) */
           let opecData = this.opecData;
-          if (this.buttonHover8) {
+          if (this.buttonMonthlyTab) {
             opecData = this.getOpecMonth(dataWithMay);
           }
           else {
@@ -1862,77 +1753,56 @@ export default {
               return tmpArrayToSort.indexOf(this.getNameDzoFull(a.dzoMonth)) > tmpArrayToSort.indexOf(this.getNameDzoFull(b.dzoMonth)) ? 1 : -1
             })
 
-
-
-
-          //this.opecData = opecData.filter(row => row.oil_planYear > 0)
-
-
           this.bigTable = bigTable.filter(row => row.factMonth > 0 || row.planMonth > 0)
-
-          // this.bigTable = bigTable;
-
-
-
-
-          this.$emit("data", [{ productionForChart }, { opec: this.opec }]);
-
-          productionForChart = { data: productionForChart };
-          this.productionForChart = productionForChart;
+          this.clearNullAccidentCases();
+          this.exportDzoCompaniesSummaryForChart();
         }
+
         this.getProductionOilandGas(data);
         this.getProductionOilandGasPercent(data);
 
       });
-      this.showTable(localStorage.getItem("changeButton"));
+    },
 
+    setColorToMainMenuButtons(productionPlan) {
+      let self = this;
+      _.forEach(Object.keys(this.mainMenuButtonElementOptions), function(button) {
+        self[button] = self.getButtonClassForMainMenu(productionPlan, button);
+      });
+    },
 
+    getButtonClassForMainMenu(productionPlan, buttonType) {
+      if (this.mainMenuButtonElementOptions[buttonType].tags.includes(productionPlan)) {
+        return this.highlightedButton;
+      } else {
+        return  "";
+      }
+    },
+
+    clearNullAccidentCases() {
+      _.forEach(this.bigTable, function(item) {
+        if (item.accident && typeof(item.accident) !== 'number') {
+          item.accident = item.accident.toString().replace(/null/g,'');
+        }
+        if (item.restrictions && typeof(item.restrictions) !== 'number') {
+          item.restrictions = item.restrictions.toString().replace(/null/g,'');
+        }
+      })
+    },
+
+    exportDzoCompaniesSummaryForChart() {
+      this.$store.commit('globalloading/SET_LOADING', false);
+      this.$emit("data", {
+        dzoCompaniesSummaryForChart: this.dzoCompaniesSummaryForChart,
+        opec: this.opec,
+      });
     },
 
     filterDzoInputForSeparateCompany(data,company) {
         return _.filter(data, function(item) {
-          return (item.dzo === company && item.accident !== null);
+          return (item.dzo === company);
         })
     },
-
-    getProductionPercentOneDzo(data) {
-      var timestampToday = this.timestampToday;
-      var timestampEnd = this.timestampEnd
-      var quantityRange = this.quantityRange;
-
-
-      var productionPlan = localStorage.getItem("production-plan");
-      var productionFact = localStorage.getItem("production-fact");
-
-
-
-
-      var dataWithMay = new Array();
-      dataWithMay = _.filter(data, function (item) {
-        return _.every([
-          _.inRange(
-            item.__time,
-            timestampToday - quantityRange * 86400000,
-            timestampToday
-          ),
-        ]);
-      });
-
-
-      var productionForChart = _(dataWithMay)
-        .groupBy("dzo")
-        .map((dzo, id) => ({
-          dzoPercent: id,
-          productionFactPercent: _.round(_.sumBy(dzo, productionFact), 0),
-          productionPlanPercent: _.round(_.sumBy(dzo, productionPlan), 0),
-        }))
-        .value();
-      this.productionFactPercentOneDzo = productionForChart[0]['productionFactPercent'];
-
-    },
-
-
-
 
     getProductionPercentCovid(data) {
       var timestampToday = this.timestampToday;
@@ -1998,65 +1868,6 @@ export default {
       this.inj_wells_workPercent = productionPlanAndFactMonthWells[0]['inj_wells_work'];
       this.prod_wells_workPercent = productionPlanAndFactMonthWells[0]['prod_wells_work'];
       this.prod_wells_idlePercent = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
-
-      /*
-       dataWithMay = _.filter(data, function (item) {
-         return _.every([
-           _.inRange(
-             item.__time,
-             timestampToday - quantityRange * 86400000,
-             (timestampToday - (quantityRange * 86400000)) + 86400000
-           ),
-         ]);
-       });
-
-
-         if (inj_wells_idle) {
-         inj_wells_idle = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.inj_wells_idle;
-           },
-           0
-         );
-         this.inj_wells_idlePercent = inj_wells_idle;
-       }
-
-       if (inj_wells_work) {
-         inj_wells_work = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.inj_wells_work;
-           },
-           0
-         );
-         this.inj_wells_workPercent = inj_wells_work;
-       }
-
-       if (prod_wells_work) {
-         prod_wells_work = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.prod_wells_work;
-           },
-           0
-         );
-         this.prod_wells_workPercent = prod_wells_work;
-       }
-
-       if (prod_wells_idle) {
-         prod_wells_idle = _.reduce(
-           dataWithMay,
-           function (memo, item) {
-             return memo + item.prod_wells_idle;
-           },
-           0
-         );
-
-         this.prod_wells_idlePercent = prod_wells_idle;
-       }
-
-       */
     },
 
 
@@ -2087,7 +1898,7 @@ export default {
       });
 
 
-      var productionForChart = _(dataWithMay)
+      return _(dataWithMay)
         .groupBy("dzo")
         .map((dzo, id) => ({
           dzoPercent: id,
@@ -2095,7 +1906,6 @@ export default {
           productionPlanPercent: _.round(_.sumBy(dzo, productionPlan), 0),
         }))
         .value();
-      return productionForChart;
     },
 
     changeButton(showTableItem, changeButton) {
@@ -2126,16 +1936,14 @@ export default {
         this.displayChart = "display:none;";
 
         if (this.company == "all") {
-          this.displayHeadTables = "d-flex";
           this.displayTable = "display:none;";
         } else {
           this.displayTable = "d-flex;";
           this.displayHeadTables = "display: none";
         }
-        this.showTableOn = ""; //colour button
+        this.showTableOn = "";
       } else if (showTableItem == "No") {
         this.displayTable = "display:none;";
-        this.displayHeadTables = "display: none";
         this.displayChart = "display:block;";
         this.ChartTable = "Таблица";
 
@@ -2143,7 +1951,7 @@ export default {
         this.showTableOn = showTableOn; //colour button
       }
     },
-    //When we change date
+
     changeDate() {
       this.selectedDay = 0;
       this.timestampToday = new Date(this.range.start).getTime();
@@ -2156,9 +1964,7 @@ export default {
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft, this.item6);
       this.getCurrencyNow(new Date().toLocaleDateString());
       this.getAccidentTotal();
-      this.updateCurrentOilPrices(this.timeSelect,this.period);
-
-
+      this.updatePrices(this.period);
 
     },
 
@@ -2173,7 +1979,7 @@ export default {
       else {
         this.buttonHoverNagInnerWells = "";
         this.innerWellsButtonProstoi = 1;
-        this.buttonHoverNagInnerWells = this.buttonHover;
+        this.buttonHoverNagInnerWells = this.buttonNormalTab;
 
       }
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
@@ -2193,7 +1999,6 @@ export default {
           prod_wells_idle: (_.sumBy(__time, 'prod_wells_idle')) / this.quantityRange,
         }))
         .value();
-
       var productionPlanAndFactMonthWellsName = [];
 
       this.inj_wells_idle = productionPlanAndFactMonthWells[0]['inj_wells_idle'];
@@ -2201,7 +2006,6 @@ export default {
       this.prod_wells_work = productionPlanAndFactMonthWells[0]['prod_wells_work'];
       this.prod_wells_idle = productionPlanAndFactMonthWells[0]['prod_wells_idle'];
 
-      //  return productionPlanAndFactMonthWellsName;
     },
 
 
@@ -2341,7 +2145,7 @@ export default {
       else {
         this.buttonHoverProdInnerWells = "";
         this.innerWellsButtonProstoi2 = 1;
-        this.buttonHoverProdInnerWells = this.buttonHover;
+        this.buttonHoverProdInnerWells = this.buttonNormalTab;
       }
       this.getProduction(this.item, this.item2, this.item3, this.item4, this.nameChartLeft);
     },
@@ -2528,22 +2332,9 @@ export default {
 
     getOtmChartData(arr) {
       let otmData
-      /* if (this.buttonHover9) {
-         otmData = _.groupBy(arr, item => {
-           return moment(parseInt(item.__time)).format('MMM')
-         })
-       }
-       else {*/
       otmData = _.groupBy(arr, item => {
         return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
-      /* otmData = _.orderBy(
-         otmData,
-         ["__time"],
-         ["asc"]
-       );*/
-
-      // }
 
       let result = {}
 
@@ -2621,17 +2412,9 @@ export default {
       return result
     },
     getChemistryChartData(arr) {
-      let chemistryData
-      /*if (this.buttonHover9) {
-        chemistryData = _.groupBy(arr, item => {
-          return moment(parseInt(item.__time)).format('MMM')
-        })
-      }
-      else {*/
-      chemistryData = _.groupBy(arr, item => {
+      let chemistryData = _.groupBy(arr, item => {
         return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
       })
-      //  }
 
       let result = {}
 
@@ -2716,7 +2499,8 @@ export default {
 
       let productionPlan = localStorage.getItem("production-plan");
       let productionFact = localStorage.getItem("production-fact");
-      let productionForChart = _(dataWithMay)
+
+      return _(dataWithMay)
         .groupBy("__time")
         .map((__time, id) => ({
           time: id,
@@ -2726,7 +2510,6 @@ export default {
           productionPlanForChart2: _.round(_.sumBy(__time, plan2), 0),
         }))
         .value();
-      return productionForChart;
     },
 
     getQuarter(d) {
@@ -2749,16 +2532,6 @@ export default {
       });
     },
 
-
-    getAccident(a) {
-      if (a) {
-        return "margin-top: 3px;border-top: 6px solid rgb(227, 30, 36); margin: 10px 48px 0px;";
-      } else {
-
-        return "    position: relative;  width: 14px;  height: 5px; background: #9da0b7; border: unset; margin: 25px 48px 0px;"
-      }
-    },
-
     getOpec() {
       let uri = this.localeUrl("/visualcenter3GetDataOpec");
 
@@ -2766,30 +2539,25 @@ export default {
         let data = response.data;
         if (data) {
 
-          //if (this.buttonHover9){
           //Summ plan dzo year
           let SummFromRange = _(data)
             .groupBy("dzo")
             .map((dzo, id) => ({
               dzoMonth: id,
-              oil_planYear: _.round(_.sumBy(dzo, 'oil_plan'), 0),
-              //       oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
+              periodPlan: _.round(_.sumBy(dzo, 'oil_plan'), 0),
             }))
 
             .value();
-
           let opecDataSumm = _.reduce(
             SummFromRange,
             function (memo, item) {
-              return memo + item.oil_planYear;
+              return memo + item.periodPlan;
             },
             0
           );
 
           this.opecData = SummFromRange;
           this.opecDataSumm = opecDataSumm;
-          // }
-
 
         }
         else { console.log('Not opec data'); }
@@ -2810,9 +2578,7 @@ export default {
         .groupBy("dzo")
         .map((dzo, id) => ({
           dzoMonth: id,
-          planMonthNew: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
-          // planMonthOpec: (_.sumBy(dzo, 'oil_opek_plan'))* moment().daysInMonth(),
-          //       oil_dlv_plan: _.round(_.sumBy(dzo, 'oil_dlv_plan'), 0),
+          periodPlan: (_.sumBy(dzo, oil)) * moment().daysInMonth(),
         }))
 
         .value();
@@ -2820,7 +2586,7 @@ export default {
       let opecDataSumm = _.reduce(
         SummFromRange,
         function (memo, item) {
-          return memo + item.planMonthNew;
+          return memo + item.periodPlan;
         },
         0
       );
@@ -2828,7 +2594,6 @@ export default {
       this.opecDataSummMonth = opecDataSumm;
 
       return SummFromRange;
-
     },
 
     formatVisTableNumber3(a, b) {
@@ -2850,12 +2615,15 @@ export default {
 
     },
 
-    formatVisTableNumber(num) {
-      if (this.quantityRange < 2) { this.thousand = ''; return new Intl.NumberFormat("ru-RU").format(Math.round(num)); } else {
-        this.thousand =
-          // 'тыс.';
-          this.trans("visualcenter.thousand");
-        let initNum = num
+    formatDigitToThousand(num) {
+      if (num == null) {
+        return 0;
+      }
+      if (this.quantityRange < 2) {
+        this.thousand = '';
+        return new Intl.NumberFormat("ru-RU").format(Math.round(num));
+      } else {
+        this.thousand = this.trans("visualcenter.thousand");
         if (num >= 1000) {
           num = (num / 1000).toFixed(0)
         }
@@ -2872,37 +2640,19 @@ export default {
         }
         return new Intl.NumberFormat("ru-RU").format(num)
       }
-
     }
-
   },
-
 
   created() {
 
-    if (window.location.host === 'dashboard') {
-
-      // this.Table6 = "display:block";
-      // this.Table1 = "display:none";
-    }
-
   },
-
-
-
 
   async mounted() {
     this.getOpec();
     this.item3 = this.oilChartHeadName;
 
     if (window.location.host === 'dashboard') {
-
-
-      //let start=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00');
-      //let end=(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00');
       this.range = {
-       // start: "2021-01-01T00:00:00+06:00",
-        //end: "2021-01-31T23:59:00+06:00",
         start: moment().startOf('day').subtract(1, "days").format(),
         end: moment().endOf('day').subtract(1, "days").format(),
         formatInput: true,
@@ -2911,8 +2661,6 @@ export default {
       this.range = {
         start: moment().startOf('day').subtract(1, "days").format(),
         end: moment().endOf('day').subtract(1, "days").format(),
-        //start: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T06:00:00+06:00')),
-        // end: this.ISODateString(new Date(this.year + '-' + this.pad(this.month) + '-' + this.pad(this.date.getDate() - 1) + 'T23:59:00+06:00')),
         formatInput: true,
       };
     }
@@ -2925,40 +2673,30 @@ export default {
     if (this.company == "all") {
     }
     this.selectedYear = this.year;
-    //var productionPlan = localStorage.getItem("production-plan");
-    //var productionFact = localStorage.getItem("production-fact");
 
-    localStorage.setItem("selectedOilPeriod", "undefined");
+    localStorage.setItem("selectedPeriod", "undefined");
     this.getCurrencyNow(this.timeSelect);
-    this.updateCurrentOilPrices(this.timeSelect,this.period);
-    // this.getCurrencyPeriod(this.timeSelect, this.periodUSD);
+    this.updatePrices(this.period);
     this.changeAssets('b13');
-    // this.getProductionOilandGasPercent();
 
-    this.getUsdRatesData();
     this.changeMenu2();
     this.getStaff();
 
-    let flagOff = this.flagOff;
-    this.changeMenuButton1Flag = flagOff;
-    this.changeMenuButton2Flag = flagOff;
-    this.changeMenuButton3Flag = flagOff;
-    this.changeMenuButton4Flag = flagOff;
-    this.changeMenuButton5Flag = flagOff;
-    this.changeMenuButton6Flag = flagOff;
-    this.changeMenuButton7Flag = flagOff;
-    this.changeMenuButton8Flag = flagOff;
-    this.changeMenuButton9Flag = flagOff;
-    this.changeMenuButton10Flag = flagOff;
-    this.changeMenuButton11Flag = flagOff;
-    this.changeMenuButton12Flag = flagOff;
-    this.changeMenuButton13Flag = flagOff;
-    this.buttonHover7 = "border: none; background: #2E50E9;color:white";
+    this.buttonDailyTab = "button-daily-tab";
     this.getAccidentTotal();
+    this.mainMenuButtonElementOptions = _.cloneDeep(mainMenuConfiguration);
   },
-  watch: {},
+  watch: {
+    bigTable: function() {
+      this.dzoCompanySummary = this.bigTable;
+      this.calculateDzoCompaniesSummary();
+    },
+  },
   computed: {
-    //currency and oil down
+    exactDateSelected() {
+      return ((this.item2 === 'oil_fact' || this.item2 === 'oil_div_fact') && this.oneDate === 1);
+    },
+
     periodSelectFunc() {
       let DMY = [
         // "Неделя",
@@ -3008,12 +2746,9 @@ export default {
 
       return menuDMY;
     },
-    periodUSD() {
-      return this.periodSelect();
-    },
     usdRatesDataTableForCurrentPeriod() {
       this.sortUsdRatesDataForTable;
-      return this.usdRatesData.for_table.slice(this.periodUSD * -1);
+      return this.usdRatesData.for_table.slice(0, this.usdPeriod);
     },
 
     sortUsdRatesDataForTable() {

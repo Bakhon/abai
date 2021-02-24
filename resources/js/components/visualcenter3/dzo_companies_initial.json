@@ -1,0 +1,72 @@
+[
+  {
+    "companyName": "visualcenter.emg",
+    "selected": false,
+    "ticker":"ЭМГ"
+  },
+  {
+    "companyName": "visualcenter.pki",
+    "selected": false,
+    "ticker":"ПКИ"
+  },
+  {
+    "companyName": "visualcenter.omg",
+    "selected": false,
+    "ticker":"ОМГ"
+  },
+  {
+    "companyName": "visualcenter.kbm",
+    "selected": false,
+    "ticker":"КБМ"
+  },
+  {
+    "companyName": "visualcenter.kgm",
+    "selected": false,
+    "ticker":"КГМ"
+  },
+  {
+    "companyName": "visualcenter.pkk",
+    "selected": false,
+    "ticker":"ПКК"
+  },
+  {
+    "companyName": "visualcenter.tp",
+    "selected": false,
+    "ticker":"ТП"
+  },
+  {
+    "companyName": "visualcenter.tsho",
+    "selected": false,
+    "ticker":"ТШО"
+  },
+  {
+    "companyName": "visualcenter.mmg",
+    "selected": false,
+    "ticker":"ММГ"
+  },
+  {
+    "companyName": "visualcenter.koa",
+    "selected": false,
+    "ticker":"КОА"
+  },
+  {
+    "companyName": "visualcenter.ktm",
+    "selected": false,
+    "ticker":"КТМ"
+  },
+  {
+    "companyName": "visualcenter.kpo",
+    "selected": false,
+    "ticker":"КПО"
+  },
+  {
+    "companyName": "visualcenter.nko",
+    "selected": false,
+    "ticker":"НКО"
+  },
+  {
+    "companyName": "visualcenter.uo",
+    "selected": false,
+    "ticker":"УО"
+  }
+]

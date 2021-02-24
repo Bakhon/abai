@@ -14,7 +14,7 @@ class VisCenterPermissionsSeeder extends Seeder
        \Spatie\Permission\Models\Permission::create(
            [
                 'name' => 'visualcenter view main',
-                'guard_name' => 'web'
+               // 'guard_name' => 'web'
             ]
         );
     }

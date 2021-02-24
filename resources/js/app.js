@@ -8,13 +8,17 @@ import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueTableDynamic from 'vue-table-dynamic';
 import Vue from 'vue';
+
+import BootstrapVue from 'bootstrap-vue';
+
 import 'bootstrap-table/dist/bootstrap-table.js';
 import 'bootstrap-table/dist/locale/bootstrap-table-ru-RU.js'
 import 'bootstrap-table/dist/extensions/export/bootstrap-table-export.js';
-import VueMomentLib from 'vue-moment-lib';
-import moment from 'moment';
 import 'bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.js';
 import 'bootstrap-select/dist/js/bootstrap-select.min.js';
+
+import VueMomentLib from 'vue-moment-lib';
+import moment from 'moment';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import store from './store';
@@ -22,6 +26,7 @@ import VueSimpleAlert from "vue-simple-alert";
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
+import SmoothPicker from 'vue-smooth-picker'
 
 
 require('./bootstrap');
@@ -30,8 +35,15 @@ window.Jquery = require('jquery');
 moment.locale('ru');
 Vue.prototype.$moment = moment
 
-Vue.use(VueAxios, axios, VueTableDynamic, VueMomentLib, ElementUI, PerfectScrollbar, columnSortable, VueSimpleAlert);
-
+Vue.use(VueAxios, axios)
+Vue.use(VueTableDynamic);
+Vue.use(VueMomentLib);
+Vue.use(ElementUI);
+Vue.use(PerfectScrollbar);
+Vue.use(columnSortable);
+Vue.use(VueSimpleAlert);
+Vue.use(BootstrapVue);
+Vue.use(SmoothPicker);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -54,7 +66,6 @@ Vue.component('visual-center-table4', require('./components/visualcenter3/Visual
 Vue.component('visual-center-table5', require('./components/visualcenter3/VisualCenterTable5.vue').default);
 Vue.component('visual-center-table6', require('./components/visualcenter3/VisualCenterTable6.vue').default);
 Vue.component('visual-center-table7', require('./components/visualcenter3/VisualCenterTable7.vue').default);
-Vue.component('visual-center-chart-area-oil3', require('./components/visualcenter3/VisualCenterChartAreaOil.vue').default);
 Vue.component('visual-center-chart-area-usd3', require('./components/visualcenter3/VisualCenterChartAreaUSD.vue').default);
 Vue.component('visual-center-usd-table', require('./components/visualcenter3/VisualCenterUsdTable.vue').default);
 Vue.component('visual-center-speedometer', require('./components/visualcenter3/VCSpeedometer.vue').default);
@@ -114,7 +125,7 @@ Vue.component('pipe-form', require('./components/pipes/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
 Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
-Vue.component('gu-map', require('./components/map.vue').default);
+Vue.component('gu-map', require('./components/map/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
 Vue.component('fa-table', require('./components/tr/fa.vue').default);
@@ -134,7 +145,9 @@ Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
+Vue.component('las', require('./components/bigdata/Las.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
+Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('bigdata-form', require('./components/bigdata/wells/form').default);
 Vue.component('bigdata-form-field', require('./components/bigdata/wells/field').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
@@ -142,6 +155,8 @@ Vue.component('bigdata-report-button', require('./components/bigdata/BigDataRepo
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
+
+Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
