@@ -199,7 +199,7 @@ export default {
     font-size: 32px;
     font-weight: bold;
     justify-content: center;
-    line-height: 38px;
+    line-height: 1.2;
     margin-top: 60px;
     padding: 10px 95px;
     height: 180px;
