@@ -2564,8 +2564,8 @@ export default {
     },
 
 
-    formatVisTableNumber2(num) {
-      if (num == '') {
+    getIntegerNumber(num) {
+      if (num == null) {
         num = 0;
       }
 

@@ -1437,7 +1437,7 @@
                       :style="`${buttonHoverNagInnerWells}`"
                       @click="buttonInnerWellsNag()"
                     >
-                      <!-- В простое -->{{ trans("visualcenter.in_idle") }}
+                      {{ trans("visualcenter.in_idle") }}
                     </div>
                   </div>
                 </div>
@@ -1446,7 +1446,15 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells.length" class="table7 w-100">
+                <table v-if="innerWells.length" class="table4 w-100 mh-100">
+                  <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.idle_wells") }}</th>
+                    <th>
+                      {{ trans("visualcenter.otmMetricSystemWells") }}
+                    </th>
+                  </tr>
+                  </thead>
                   <tbody>
                     <tr
                       v-for="(item, index) in innerWells"
@@ -1460,7 +1468,7 @@
                           selected: innerWellsSelectedRow === item.code,
                         }"
                       >
-                      <span class="data-titles">
+                      <span>
                         {{ item.name }}
                       </span>
                       </td>
@@ -1469,11 +1477,8 @@
                         class="w-25 tdNumber cursor-pointer"
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                       >
-                      <div class="data-values">
-                        {{ formatVisTableNumber2(item.value) }}
-                        <span class="data-metrics">
-                          {{ trans("visualcenter.skv") }}
-                        </span>
+                      <div class="font">
+                        {{ getIntegerNumber(item.value) }}
                       </div>
                       </td>
                     </tr>
@@ -1481,7 +1486,7 @@
                 </table>
               </div>
               <div class="col-sm-5">
-                <div  class="name-chart-left">Кол-во скважин</div>
+                <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
                 <visual-center3-wells
                   v-if="innerWellsNagDataForChart"
                   :chartData="innerWellsNagDataForChart"
@@ -1650,7 +1655,15 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells2.length" class="table7 w-100">
+                <table v-if="innerWells2.length" class="table4 w-100 mh-100">
+                  <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.prod_wells") }}</th>
+                    <th>
+                      {{ trans("visualcenter.otmMetricSystemWells") }}
+                    </th>
+                  </tr>
+                  </thead>
                   <tbody>
                     <tr
                       v-for="(item, index) in innerWells2"
@@ -1664,7 +1677,7 @@
                           selected: innerWells2SelectedRow === item.code,
                         }"
                       >
-                      <span class="data-titles">
+                      <span>
                         {{ item.name }}
                       </span>
                       </td>
@@ -1675,11 +1688,8 @@
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
                       >
-                      <div class="data-values">
-                        {{ formatVisTableNumber2(item.value) }}
-                        <span class="data-metrics">
-                          {{trans("visualcenter.otmMetricSystemWells")}}
-                        </span>
+                      <div class="font">
+                        {{ getIntegerNumber(item.value) }}
                       </div>
                       </td>
                     </tr>
@@ -1687,7 +1697,7 @@
                 </table>
               </div>
               <div class="col-sm-5">
-                <div  class="name-chart-left">Кол-во скважин</div>
+                <div  class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
                 <visual-center3-wells
                   v-if="innerWellsProd2DataForChart"
                   :chartData="innerWellsProd2DataForChart"
@@ -1873,7 +1883,7 @@
                       >
 
                         <div class="font">
-                          {{ formatVisTableNumber2(item.plan) }}
+                          {{ getIntegerNumber(item.plan) }}
                           <span class="data-metrics">
                             {{item.metricSystem}}
                           </span>
@@ -1885,7 +1895,7 @@
                         :class="`${getDzoColumnsClass(index,'fact')}`"
                       >
                         <div class="font">
-                          {{formatVisTableNumber2(item.fact) }}
+                          {{getIntegerNumber(item.fact) }}
                           <span class="data-metrics">
                             {{item.metricSystem}}
                           </span>
@@ -1913,7 +1923,7 @@
                 </table>
               </div>
               <div class="col-sm-5">
-                <div  class="name-chart-left">Кол-во скважин</div>
+                <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
                 <visual-center3-wells
                   v-if="otmDataForChart"
                   :chartData="otmDataForChart"
@@ -2097,8 +2107,8 @@
                         >
                         </div>
                         <div class="font">
-                          {{ formatVisTableNumber2(item.fact) }}
-                       </div>
+                          {{ getIntegerNumber(item.fact) }}
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -2127,7 +2137,7 @@
                 :style="`${tableHover4}`"
               >
                 <div class="txt4">
-                  {{ formatVisTableNumber2(prod_wells_work) }}
+                  {{ getIntegerNumber(prod_wells_work) }}
                 </div>
                 <div class="in-work">
                   <!-- В работе -->{{ trans("visualcenter.in_work") }}
@@ -2157,7 +2167,7 @@
               >
                 <div class="txt4 d-flex justify-content-between">
                   <div>
-                    {{ formatVisTableNumber2(prod_wells_idle) }}
+                    {{ getIntegerNumber(prod_wells_idle) }}
                   </div>
                   <div class="mt-1">
                     <img src="/img/icons/link.svg" />
@@ -2211,7 +2221,7 @@
                 >
                   <div class="txt4">
                     {{
-                  formatVisTableNumber2(inj_wells_work)
+                    getIntegerNumber(inj_wells_work)
                     }}
                   </div>
                   <div class="in-work">
@@ -2243,7 +2253,7 @@
                   <div class="txt4 d-flex justify-content-between">
                     <div>
                       {{
-                        formatVisTableNumber2(inj_wells_idle)
+                      getIntegerNumber(inj_wells_idle)
                       }}
                     </div>
                     <div class="mt-1">
@@ -2542,7 +2552,6 @@
         }
         .font {
           align-items: baseline;
-          display: flex;
           justify-content: space-between;
           font-size: 15px;
           margin-left: 0;
@@ -2636,61 +2645,6 @@
   }
 }
 
-.table7 {
-  tr {
-    td {
-      padding: 0px 0px 0px 10px;
-      position: relative;
-      vertical-align: middle;
-      &:first-child {
-        height: 50px;
-        white-space: normal;
-        width: 235px;
-        span {
-          font-weight: bold;
-          img {
-            width: 9px;
-          }
-        }
-      }
-      &.selected {
-        background: #2e47c0 !important;
-      }
-      .font {
-        align-items: baseline;
-        display: flex;
-        justify-content: space-between;
-        font-size: 24px;
-        margin-left: 0;
-        &.dynamic {
-          padding-left: 17px;
-        }
-        .right {
-          font-size: 10px;
-          margin-right: 0;
-        }
-      }
-      .center {
-        font-size: 0.63em;
-        font-weight: bold;
-        left: 0;
-        margin: 0;
-        position: absolute;
-        text-align: center;
-        top: 4px;
-        width: 100%;
-      }
-      .triangle {
-        border: 6px solid transparent;
-        height: 6px;
-        margin-right: 5px;
-        position: absolute;
-        width: 6px;
-      }
-    }
-  }
-}
-
 .width-40 {
     width: 40%;
   }
@@ -2704,21 +2658,11 @@
     font-size: 15px;
     height: 50px;
   }
-  .data-values {
-    font-family: "Bold";
-    font-style: normal;
-    font-size: 15px;
-  }
   .data-metrics {
     font-family: "Harmonia-sans, sans-serif";
     font-style: normal;
     font-size: 10px;
     margin-left: 2%;
-  }
-  .data-column-name {
-    font-size: 12px;
-    font-family: "Harmonia-sans, sans-serif";
-    font-style: normal;
   }
   .triangle-responsive {
     border: 6px solid transparent;

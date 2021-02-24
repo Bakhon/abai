@@ -9,8 +9,6 @@ return array (
   'wells1' => 'Фонд нагнетательных скважин',
   'wells2' => 'Фонд нагнетательных скважин23',
   'usdKurs' => 'Курс доллара',
-  'vsYest' => 'vs вчера',
-  'vsSept' => 'vs',
   'dolyaUchast' => 'С учётом доли участия КМГ',
   'ostatokNefti' => 'Товарный остаток нефти',
   'prirodGazdlv' => 'Сдача природного газа',
@@ -229,8 +227,6 @@ return array (
   'rent' => 'рентабельные',
   'nerent' => 'нерентабельные',
   'vsSeparator' => 'vs',
-  'otm_metric_system_meter' => 'м.',
-  'otm_metric_system_wells' => 'скв.',
   'otmMetricSystemMeter' => 'м.',
   'otmMetricSystemWells' => 'скв.',
   'chemistryMetricTon' => 'тонн',
@@ -252,4 +248,5 @@ return array (
   'otmMetricSystem' => 'м.',
   'productionChemicalization' => 'Химизация производства',
   'otmColumnTitle' => 'Организационно-технические мероприятия',
+  'wellsNumber' => 'Кол-во скважин',
 );
