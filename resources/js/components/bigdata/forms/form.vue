@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import BigdataFormField from './field'
+
 export default {
   name: "bigdata-form",
   props: {
@@ -70,6 +72,9 @@ export default {
       form: {},
       activeTab: 0
     }
+  },
+  components: {
+    BigdataFormField
   },
   mounted() {
 
