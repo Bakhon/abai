@@ -753,7 +753,7 @@
                               :checked="dzoCompaniesAssets['isOperating']"
                               @click="`${changeAssets('isOperating')}`"
                       ></input>
-                      {{trans("visualcenter.operactive")}}
+                      {{trans("visualcenter.isOperating")}}
                     </div>
                   </li>
                   <li class="px-4">
@@ -763,7 +763,7 @@
                               :checked="dzoCompaniesAssets['isNonOperating']"
                               @click="`${changeAssets('isNonOperating')}`"
                       ></input>
-                      {{trans("visualcenter.neoperactive")}}
+                      {{trans("visualcenter.isNonOperating")}}
                     </div>
                   </li>
                   <li
