@@ -287,7 +287,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'oil_plan',
                       'oil_fact',
                       `${oilChartHeadName}`,
@@ -318,7 +318,7 @@
                       <a
                         class="col-9 px-2"
                         @click="
-                          getProduction(
+                          updateProductionData(
                             'oil_plan',
                             'oil_fact',
                             `${oilChartHeadName}`,
@@ -356,7 +356,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'oil_dlv_plan',
                       'oil_dlv_fact',
                       trans('visualcenter.dlvoildynamic'),
@@ -389,7 +389,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'oil_dlv_plan',
                           'oil_dlv_fact',
                           trans('visualcenter.dlvoildynamic'),
@@ -414,7 +414,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'tovarnyi_ostatok_nefti_prev_day',
                           'tovarnyi_ostatok_nefti_today',
                           `${oilChartHeadName}`,
@@ -438,7 +438,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'gas_plan',
                       'gas_fact',
                       trans('visualcenter.getgasdynamic'),
@@ -469,7 +469,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'sdacha_gaza_prirod_plan',
                           'sdacha_gaza_prirod_fact',
                           trans('visualcenter.dlvPrirodGasldynamic'),
@@ -495,7 +495,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'raskhod_prirod_plan',
                           'raskhod_prirod_fact',
                           trans('visualcenter.raskhodprirodGazDynamic'),
@@ -520,7 +520,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'sdacha_gaza_poput_plan',
                           'sdacha_gaza_poput_fact',
                           trans('visualcenter.poputGazdlvDynamic'),
@@ -546,7 +546,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'raskhod_poput_plan',
                           'raskhod_poput_fact',
                           trans('visualcenter.raskhodpoputGazDynamic'),
@@ -571,7 +571,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'pererabotka_gaza_poput_plan',
                           'pererabotka_gaza_poput_fact',
                           trans('visualcenter.pererabotkapoputGazDynamic'),
@@ -595,7 +595,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'gk_plan',
                       'gk_fact',
                       trans('visualcenter.getgkDynamic'),
@@ -618,7 +618,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'liq_plan',
                       'liq_fact',
                       trans('visualcenter.liqDynamic'),
@@ -649,7 +649,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_morskoi_vody_plan',
                           'ppd_zakachka_morskoi_vody_fact',
                           trans('visualcenter.liqOceanDynamic'),
@@ -675,7 +675,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_stochnoi_vody_plan',
                           'ppd_zakachka_stochnoi_vody_fact',
                           trans('visualcenter.liqStochnayaDynamic'),
@@ -701,7 +701,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_albsen_vody_plan',
                           'ppd_zakachka_albsen_vody_fact',
                           trans('visualcenter.liqAlbsenDynamic'),
@@ -1135,7 +1135,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }} {{ item4 }}
+                          {{ thousand }} {{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1148,7 +1148,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }} {{ item4 }}
+                          {{ thousand }} {{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1168,7 +1168,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }}{{ item4 }}
+                          {{ thousand }}{{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1245,16 +1245,16 @@
             <div
               class="pl-3 col-sm-5"
               v-if="
-                ((item != 'oil_plan' &&
-                  item != 'oil_dlv_plan' &&
-                  item != 'oil_opek_plan') ||
+                ((planFieldName != 'oil_plan' &&
+                  planFieldName != 'oil_dlv_plan' &&
+                  planFieldName != 'oil_opek_plan') ||
                 oneDate != 1) && !buttonDailyTab
               "
             >
               <div class="name-chart-left">
-                {{ nameChartLeft }}, {{ thousand }} {{ item4 }}
+                {{ chartSecondaryName }}, {{ thousand }} {{ metricName }}
               </div>
-              <div class="name-chart-head">{{ item3 }}</div>
+              <div class="name-chart-head">{{ chartHeadName }}</div>
               <vc-chart :height="465"> </vc-chart>
             </div>
           </div>
