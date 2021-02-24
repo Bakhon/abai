@@ -4,12 +4,12 @@
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
-    <form class="bd-main-block__form" style="width: 100%" ref="form">
+    <form ref="form" class="bd-main-block__form" style="width: 100%">
       <div class="bd-main-block__form-tabs-header">
         <template v-for="(tab, index) in form.tabs">
           <div
-              class="bd-main-block__form-tabs-header-tab"
               :class="{'active': index === activeTab}"
+              class="bd-main-block__form-tabs-header-tab"
               @click="changeTab(index)"
           >
             <p>{{ tab.title }}</p>
@@ -17,22 +17,22 @@
         </template>
       </div>
       <template v-for="(tab, index) in form.tabs">
-        <div class="bd-main-block__form-tab" v-show="index === activeTab">
+        <div v-show="index === activeTab" class="bd-main-block__form-tab">
           <div
-              class="bd-main-block__form-block"
-              :class="{'bd-main-block__form-block_full': tab.blocks.length === 1}"
               v-for="block in tab.blocks"
+              :class="{'bd-main-block__form-block_full': tab.blocks.length === 1}"
+              class="bd-main-block__form-block"
           >
-            <p class="bd-main-block__form-block-title" v-if="block.title">{{ block.title }}</p>
+            <p v-if="block.title" class="bd-main-block__form-block-title">{{ block.title }}</p>
             <div class="bd-main-block__form-block-content">
               <div
                   v-for="item in block.items"
               >
                 <label>{{ item.title }}</label>
                 <bigdata-form-field
-                    :item="item"
                     v-model="formValues[item.code]"
                     :error="errors[item.code]"
+                    :item="item"
                     v-on:change="validateField($event, item)"
                     v-on:input="callback($event, item)"
                 >
@@ -43,10 +43,10 @@
         </div>
       </template>
       <div class="bd-main-block__form-buttons">
-        <button type="button" class="btn btn-success" @click="submit">
+        <button class="btn btn-success" type="button" @click="submit">
           {{ trans('app.save') }}
         </button>
-        <button type="reset" class="btn btn-info">
+        <button class="btn btn-info" type="reset">
           {{ trans('app.cancel') }}
         </button>
       </div>

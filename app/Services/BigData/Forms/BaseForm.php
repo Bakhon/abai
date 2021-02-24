@@ -97,7 +97,7 @@ abstract class BaseForm
         return $attributes;
     }
 
-    private function getFields(): \Illuminate\Support\Collection
+    protected function getFields(): \Illuminate\Support\Collection
     {
         $fields = collect();
 

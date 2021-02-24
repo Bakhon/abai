@@ -1,5 +1,9 @@
 <?php
 
+use App\Services\BigData\Forms\FluidProduction;
+use App\Services\BigData\Forms\WellRegister;
+
 return [
-    'well_register' => \App\Services\BigData\Forms\WellRegister::class
+    'well_register' => WellRegister::class,
+    'fluid_production' => FluidProduction::class,
 ];
