@@ -154,6 +154,8 @@ Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vu
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
 
+Vue.component('profile', require('./components/profile/Profile.vue').default);
+
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;
 Vue.prototype.localeUrl = string => `/${window.current_lang}/${string[0] === '/' ? string.substr(1) : string}`;
