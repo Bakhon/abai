@@ -11,7 +11,7 @@
       <span class="scroll-picker__title-name">{{ item.name }}</span>
     </div>
     <smooth-picker ref="smoothPicker" :change="change" :data="data"/>
-    <button v-if="valueChanged" class="scroll-picker__button" @click.prevent="save">OK</button>
+    <button v-if="isValueChanged" class="scroll-picker__button" @click.prevent="save">OK</button>
   </div>
 </template>
 
@@ -52,7 +52,7 @@ export default {
         },
       ],
       pickerValue: [],
-      valueChanged: false
+      isValueChanged: false
     }
   },
   beforeMount() {
@@ -90,7 +90,7 @@ export default {
     },
     change(listIndex, valueIndex) {
       this.pickerValue[listIndex] = this.data[listIndex].list[valueIndex]
-      this.valueChanged = this.value !== Number(this.pickerValue.join('.'))
+      this.isValueChanged = this.value !== Number(this.pickerValue.join('.'))
     },
     save() {
       this.$emit('input', Number(this.pickerValue.join('.')))
