@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\EcoRefsCompaniesId;
 use App\Models\Refs\EcoRefsScFa;
-use App\Models\Refs\EcoRefsCost;
+use App\Models\EcoRefsCost;
 use Illuminate\Http\Request;
 
 class EcoRefsCostController extends Controller
@@ -47,14 +47,14 @@ class EcoRefsCostController extends Controller
             'sc_fa' => 'required',
             'company_id' => 'required',
             'date' => 'required',
-            'variable' => 'required',
-            'fix_noWRpayroll' => 'required',
-            'fix_nopayroll' => 'required',
-            'fix' => 'required',
-            'gaoverheads' => 'required',
-            'wr_nopayroll' => 'required',
-            'wr_payroll' => 'required',
-            'wo' => 'required',
+            'variable' => 'nullable|numeric',
+            'fix_noWRpayroll' => 'nullable|numeric',
+            'fix_nopayroll' => 'nullable|numeric',
+            'fix' => 'nullable|numeric',
+            'gaoverheads' => 'nullable|numeric',
+            'wr_nopayroll' => 'nullable|numeric',
+            'wr_payroll' => 'nullable|numeric',
+            'wo' => 'nullable|numeric',
         ]);
 
         EcoRefsCost::create($request->all());
@@ -85,8 +85,7 @@ class EcoRefsCostController extends Controller
         $sc_fa = EcoRefsScFa::get();
         $company = EcoRefsCompaniesId::get();
 
-        return view('ecorefscost.edit',
-            compact('sc_fa', 'row', 'company'));
+        return view('ecorefscost.edit', compact('sc_fa', 'row', 'company'));
 
     }
 
@@ -104,14 +103,14 @@ class EcoRefsCostController extends Controller
             'sc_fa' => 'required',
             'company_id' => 'required',
             'date' => 'required',
-            'variable' => 'required',
-            'fix_noWRpayroll' => 'required',
-            'fix_nopayroll' => 'required',
-            'fix' => 'required',
-            'gaoverheads' => 'required',
-            'wr_nopayroll' => 'required',
-            'wr_payroll' => 'required',
-            'wo' => 'required',
+            'variable' => 'nullable|numeric',
+            'fix_noWRpayroll' => 'nullable|numeric',
+            'fix_nopayroll' => 'nullable|numeric',
+            'fix' => 'nullable|numeric',
+            'gaoverheads' => 'nullable|numeric',
+            'wr_nopayroll' => 'nullable|numeric',
+            'wr_payroll' => 'nullable|numeric',
+            'wo' => 'nullable|numeric',
         ]);
 
         $EcoRefsCost->update($request->all());

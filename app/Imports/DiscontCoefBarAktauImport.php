@@ -2,12 +2,14 @@
 
 namespace App\Imports;
 
-use App\Models\Refs\ImportForms\CostYear;
+use App\Models\EcoRefsDirectionId;
+use App\Models\EcoRefsRoutesId;
+use App\Models\Refs\ImportForms\DiscontCoefBarYear;
 use App\Models\Refs\EcoRefsScFa;
 use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\EcoRefsCompaniesId;
 
-class EcoRefsCostImport implements ToModel
+class DiscontCoefBarAktauImport implements ToModel
 {
     /**
      * @param array $row
@@ -22,23 +24,24 @@ class EcoRefsCostImport implements ToModel
         }
 
         $source_name = 'EXCEL 2020 ДБиЭИ';
+        $direction_name  = 'ЭКСПОРТ';
+        $route_name = 'Актау';
 
         $sc_fa = EcoRefsScFa::where('name', '=', $source_name)->first();
         $company = EcoRefsCompaniesId::where('name', '=', $row[0])->first();
+        $direction = EcoRefsDirectionId::where('name', '=', $direction_name)->first();
+        $route = EcoRefsRoutesId::where('name', '=', $route_name)->first();
 
-        return new CostYear([
+        return new DiscontCoefBarYear([
             "sc_fa" => $sc_fa -> id,
             "company_id" => $company -> id,
+            "direction_id" => $direction -> id,
+            "route_id" => $route -> id,
             "date" => $row[2],
-            "variable" => round($row[56], 2),
-            "fix_noWRpayroll" => round($row[57], 2),
-            "fix_payroll" => round($row[58], 2),
-            "fix_nopayroll" => round($row[59], 2),
-            "fix" => round($row[60], 2),
-            "gaoverheads" => round($row[61], 2),
-            "wr_nopayroll" => round($row[62], 2),
-            "wr_payroll" => round($row[63], 2),
-            "wo" => round($row[65], 2)
+            "barr_coef" => round($row[7], 2),
+            "discont" => round($row[39], 2),
+            "oil_cost" => round($row[19], 2),
+            "macro" => 0,
         ]);
     }
 }

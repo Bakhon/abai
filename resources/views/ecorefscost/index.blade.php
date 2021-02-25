@@ -3,6 +3,12 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
+            <a href="{{ route('eco_refs_list') }}" class="btn btn-info">
+                Вернуться в справочник</a>
+        </div>
+    </div>
+{{--    <div class="container">--}}
+        <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -63,5 +69,5 @@
                 </div>
             </div>
         </div>
-    </div>
+{{--    </div>--}}
 @endsection
