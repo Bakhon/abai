@@ -158,6 +158,44 @@ class MapsController extends Controller
         );
     }
 
+    public function storePipe (Request $request) {
+        $pipe_input = $request->input('pipe');
+        if ($pipe_input['type'] == 'GuZu') {
+            $pipe = $pipe_input['id'] ? GuZuPipe::find($pipe_input['id']) : new GuZuPipe;
+        }
+
+        if ($pipe_input['type'] == 'ZuWell') {
+            $pipe = $pipe_input['id'] ? ZuWellPipe::find($pipe_input['id']) : new ZuWellPipe;
+        }
+
+        $coords = $pipe_input['coordinates'];
+        $pipe_input['coordinates'] = array_map(
+            function ($coord) {
+                return [
+                    round($coord[1], 8),
+                    round($coord[0], 8),
+                ];
+            },
+            $pipe_input['coordinates']
+        );
+
+
+
+        $pipe->fill($pipe_input);
+        $pipe->save();
+
+        return response()->json(
+            [
+                'pipe' => [
+                    'color' => $pipe_input['type'] == 'GuZu' ?  [255, 0, 0] : [0, 255, 0],
+                    'name' => (string)$pipe->id,
+                    'coordinates' => $coords
+                ],
+                'status' => config('response.status.success'),
+            ]
+        );
+    }
+
     private function getGuPipesWithCoords(&$coordinates)
     {
         return GuZuPipe::query()
@@ -172,8 +210,8 @@ class MapsController extends Controller
                     $coords = array_map(
                         function ($coord) {
                             return [
-                                round($coord[1], 6),
-                                round($coord[0], 6),
+                                round($coord[1], 8),
+                                round($coord[0], 8),
                             ];
                         },
                         $pipe->coordinates
@@ -186,7 +224,7 @@ class MapsController extends Controller
                     return [
                         'color' => [255, 0, 0],
                         'name' => (string)$pipe->id,
-                        'path' => $coords
+                        'coordinates' => $coords
                     ];
                 }
             );
@@ -206,8 +244,8 @@ class MapsController extends Controller
                     $coords = array_map(
                         function ($coord) {
                             return [
-                                round($coord[1], 6),
-                                round($coord[0], 6),
+                                round($coord[1], 8),
+                                round($coord[0], 8),
                             ];
                         },
                         $pipe->coordinates
@@ -220,7 +258,7 @@ class MapsController extends Controller
                     return [
                         'color' => [0, 255, 0],
                         'name' => (string)$pipe->id,
-                        'path' => $coords
+                        'coordinates' => $coords
                     ];
                 }
             );

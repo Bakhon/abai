@@ -623,12 +623,10 @@ td.small-td {
     width: 100%;
     height: 80%;
     background: #272953;
-    /* margin-left: 15px; */
-    /* width: 75vw; */
 }
 @media (min-width: 1900px) {
     .big-area {
-        height: 65%;
+        height: 75%;
     }
 }
 
@@ -693,6 +691,7 @@ td.small-td {
     color: #373435;
     font-weight: normal!important;
     font-size: 1.1em;
+    margin-left: 10%;
 }
 
 ul.center-menu2 {
@@ -1047,11 +1046,6 @@ a.dropdown-link-vc3 {
 ul.dropdown-menu-vc {
     margin-top: 1.2em;
 }
-
-/*.width-accidnets {
-    width: 1em;
-}*/
-
 
 @media (max-width:1367px) {
 .txt5 {

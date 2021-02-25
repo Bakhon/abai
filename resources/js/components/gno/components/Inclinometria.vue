@@ -109,27 +109,28 @@
 
       <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 545px;">
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
-        <div class="col-12" >
-          <div class="col-12" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса</div>
-        </div>
-        <div class="col-12">
-          <div class="col-12" style="float: left; text-align: left; color: white; height: 25px;">
+        <div class="col-12" style="padding-bottom: 10px;">
+          <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп <input  type="text" onfocus="this.value=''" 
+                                  class="input-box-gno podbor"/></div>
+          <!-- <div class="col-6" style="float: left; text-align: left; color: white; height: 25px;">
             Нсп 800м
-          </div>
+          </div> -->
+          <button type="button" class="old_well_button_incl">Применить выбранную Нсп</button>
         </div>
-        <div class="col-12">
-          <div class="col-12"  style="font-weight: bold; font-size: 14px; text-align: left; color: white;">
-            Максимальный темп набора кривизны
+        <div class="col-12" style="padding-bottom: 10px;">
+          <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
+            <b>Максимальный темп набора кривизны</b> в месте установки насоса 0.3гр/10м в интервале глубины спуска 0.5 гр/10м
           </div> 
         </div>
-        <div class="col-12">
+        <!-- <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
             в месте установки насоса 0.3гр/10м в интервале глубины спуска 0.5 гр/10м
           </div> 
-        </div>
-        <div class="col-12">
-          <div class="col-6" style="font-size: 14px; text-align: left; color: white; float: left;"><b>Максимальный зенитный угол</b></div>
-          <button type="button" class="old_well_button_incl">Применить выбранную НГЛ</button>
+        </div> -->
+        <div class="col-12" style="padding-bottom: 10px;">
+          <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;"><b>Максимальный зенитный угол</b> в месте установки насоса 2 гр/10м в интервале глубины спуска 3 гр/10м
+          </div>
+          <!-- <button type="button" class="old_well_button_incl">Применить выбранную НГЛ</button> -->
         </div>
 
 
@@ -150,7 +151,7 @@ Vue.component("Plotly", Plotly);
 
 export default {
   components: { PerfectScrollbar },
-  props: ["wellNumber", "wellIncl", "isLoading"],
+  props: ["wellNumber", "wellIncl", "isLoading", "hPumpSet"],
   data: function () {
     return {
       data: null,
@@ -227,6 +228,7 @@ export default {
     var wi = this.wellIncl.split('_');
     let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
     this.$emit('update:isLoading', true);
+    // this.$emit(this.hPumpSet)
 
     this.axios.get(uri).then((response) => {
 
@@ -283,7 +285,7 @@ export default {
 <style scoped>
 .old_well_button_incl {
     width: 200px;
-    height: 60px;
+    height: 45px;
     background: #293688;
     border-radius: 8px;
     display: block;
@@ -308,5 +310,19 @@ export default {
 .old_well_button_incl:active {
     outline: none !important;
     background: #1a225e;
+}
+
+.input-box-gno {
+    background: #494AA5;
+    border: 1px solid #272953;
+    outline: none;
+    width: 50px;
+    height: 22px;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 2px;
+    line-height: 25px !important;
+    padding-right: 5px;
+    padding-left: 5px;
 }
 </style>

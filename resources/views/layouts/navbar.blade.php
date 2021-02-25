@@ -42,8 +42,8 @@
                 </li>
                 <li class="nav-item2 active dropdown2">
                     <a href="{{ route('profile') }}" class="nav-avatar-wrap">
-                        @if(auth()->user()->thumb)
-                            <img src="{{ auth()->user()->thumb }}">
+                        @if(auth()->user()->profile && auth()->user()->profile->thumb)
+                            <img src="{{ auth()->user()->profile->thumb }}">
                         @else
                             <img src="{{ asset('img/level1/icon_user.svg') }}">
                         @endif

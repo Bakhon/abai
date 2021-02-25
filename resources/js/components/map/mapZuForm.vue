@@ -6,7 +6,7 @@
     >
       <b-form-input
           id="zu-name"
-          v-model="formZu.name"
+          v-model="zu.name"
           required
       ></b-form-input>
     </b-form-group>
@@ -16,7 +16,7 @@
         label-for="gus">
       <b-form-select
           id="gus"
-          v-model="formZu.gu_id"
+          v-model="zu.gu_id"
           :options="guOptions"
       ></b-form-select>
     </b-form-group>
@@ -24,7 +24,7 @@
     <b-form-group label="Широта" label-for="coord-x">
       <b-form-input
           id="coord-y"
-          v-model="formZu.lat"
+          v-model="zu.lat"
           required
       ></b-form-input>
     </b-form-group>
@@ -32,7 +32,7 @@
     <b-form-group label="Долгота" label-for="coord-y">
       <b-form-input
           id="coord-x"
-          v-model="formZu.lon"
+          v-model="zu.lon"
           required
       ></b-form-input>
     </b-form-group>
@@ -43,7 +43,7 @@
 export default {
   name: "mapZuForm",
   props: {
-    formZu: {
+    zu: {
       type: Object,
       required: true,
     },

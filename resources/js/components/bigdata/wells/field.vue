@@ -4,7 +4,7 @@
       <input
           :type="item.type === 'numeric' ? 'number' : 'text'"
           :name="item.code"
-          v-bind:value="value"
+          v-bind:value="formatValue(value)"
           v-on:input="$emit('input', $event.target.value)"
           v-on:change="$emit('change', $event.target.value)"
           class="form-control"
@@ -146,6 +146,20 @@ export default {
     },
     showError(err) {
       return err.join('<br>')
+    },
+    formatValue(value) {
+
+      if (this.item.prefix) {
+        if (value && value.length <= this.item.prefix.length) return this.item.prefix
+
+        if (value && value.indexOf(this.item.prefix) === 0) {
+          value = value.replace(this.item.prefix, '')
+        }
+
+        return this.item.prefix + (value || '')
+      }
+
+      return value
     }
   },
 };

@@ -19,6 +19,7 @@ $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
 $dark: #15509D;
+$white: #fff;
 
 $main1: #272953;
 $main2: #41488b;
@@ -50,3 +51,24 @@ $colors-list: (
 );
 
 
+$headings-color: $white;
+
+$spacer: 1rem;
+$spacer-px: 5px;
+$spacers: ();
+$spacers: map-merge(
+                (
+                        0: 0,
+                        1: ($spacer * .25),
+                        2: ($spacer * .5),
+                        3: $spacer,
+                        4: ($spacer * 1.5),
+                        5: ($spacer * 3),
+                        5px: ($spacer-px),
+                        10px: ($spacer-px * 2),
+                        15px: ($spacer-px * 3),
+                        20px: ($spacer-px * 4),
+                        25px: ($spacer-px * 5),
+                ),
+                $spacers
+);
