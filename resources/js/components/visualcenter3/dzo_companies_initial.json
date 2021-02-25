@@ -2,71 +2,85 @@
   {
     "companyName": "visualcenter.emg",
     "selected": false,
-    "ticker":"ЭМГ"
+    "ticker":"ЭМГ",
+    "type": "nonOperating"
   },
   {
     "companyName": "visualcenter.pki",
     "selected": false,
-    "ticker":"ПКИ"
+    "ticker":"ПКИ",
+    "type": "operating"
   },
   {
     "companyName": "visualcenter.omg",
     "selected": false,
-    "ticker":"ОМГ"
+    "ticker":"ОМГ",
+    "type": "nonOperating"
   },
   {
     "companyName": "visualcenter.kbm",
     "selected": false,
-    "ticker":"КБМ"
+    "ticker":"КБМ",
+    "type": "nonOperating"
   },
   {
     "companyName": "visualcenter.kgm",
     "selected": false,
-    "ticker":"КГМ"
+    "ticker":"КГМ",
+    "type": "nonOperating"
   },
   {
     "companyName": "visualcenter.pkk",
     "selected": false,
-    "ticker":"ПКК"
+    "ticker":"ПКК",
+    "type": "operating"
   },
   {
     "companyName": "visualcenter.tp",
     "selected": false,
-    "ticker":"ТП"
+    "ticker":"ТП",
+    "type": "operating"
   },
   {
     "companyName": "visualcenter.tsho",
     "selected": false,
-    "ticker":"ТШО"
+    "ticker":"ТШО",
+    "type": "operating"
   },
   {
     "companyName": "visualcenter.mmg",
     "selected": false,
-    "ticker":"ММГ"
+    "ticker":"ММГ",
+    "type": "nonOperating"
   },
   {
     "companyName": "visualcenter.koa",
     "selected": false,
-    "ticker":"КОА"
+    "ticker":"КОА",
+    "type": "nonOperating"
   },
   {
     "companyName": "visualcenter.ktm",
     "selected": false,
-    "ticker":"КТМ"
+    "ticker":"КТМ",
+    "type": "nonOperating"
   },
   {
     "companyName": "visualcenter.kpo",
     "selected": false,
-    "ticker":"КПО"
+    "ticker":"КПО",
+    "type": "operating"
   },
   {
     "companyName": "visualcenter.nko",
     "selected": false,
-    "ticker":"НКО"
+    "ticker":"НКО",
+    "type": "operating"
   },
   {
     "companyName": "visualcenter.uo",
     "selected": false,
-    "ticker":"УО"
+    "ticker":"УО",
+    "type": "nonOperating"
   }
 ]
