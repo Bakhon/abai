@@ -2557,13 +2557,8 @@ export default {
         },
 
 
-        getIntegerNumber(num) {
-            if (num == null) {
-                num = 0;
-            }
-
+        getFormattedNumber(num) {
             return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
-
         },
 
         formatDigitToThousand(num) {
