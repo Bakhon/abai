@@ -3058,7 +3058,7 @@ export default {
           }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-          this.$emit('hPumpSet', this.hPumpSet)
+          // this.$emit('hPumpSet', this.hPumpSet)
           //this.NnoCalc();
         }
       ).finally((response) => {
