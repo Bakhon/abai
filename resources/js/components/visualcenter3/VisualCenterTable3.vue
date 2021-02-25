@@ -339,7 +339,7 @@
                             v-html="`${getMainMenuButtonFlag('oilProductionButton','opecRestriction')}`"
                     ></div>
                     <a
-                            @click="changeAssets('b14')"
+                            @click="changeAssets('opecRestiction')"
                             class="col-9 px-2"
                     >
                       {{trans("visualcenter.opek")}}
@@ -606,41 +606,9 @@
                 >
                   <div class="icon-all icons4"></div>
                   <div class="txt5">
-                    <!-- Добыча конденсата -->{{ trans("visualcenter.getgk") }}
+                    {{ trans("visualcenter.getgk") }}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-primary dropdown-toggle position-button-vc col-2"
-                  data-toggle="dropdown"
-                ></button>
-                <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li
-                          class="center-li row px-4"
-                          @click="switchMainMenu('condensateProductionButton','kmgParticipation')"
-                  >
-                    <div
-                      class="col-1 mt-2"
-                      v-html="`${getMainMenuButtonFlag('condensateProductionButton','kmgParticipation')}`"
-                    ></div>
-                    <a
-                      class="col-9 px-2"
-                      @click="
-                        getProduction(
-                          'gk_plan',
-                          'gk_fact',
-                          trans('visualcenter.getgkDynamic'),
-                          ' тонн',
-                          trans('visualcenter.dolyaUchast')
-                        )
-                      "
-                    >
-                      <!-- С учётом доли участия КМГ -->{{
-                        trans("visualcenter.dolyaUchast")
-                      }}
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
@@ -753,11 +721,12 @@
           </div>
           <div class="row px-4 mt-3">
             <div
+                    v-click-outside="defocusDzoCompanies"
                     :class="[`${buttonDzoDropdown}`,'col dropdown dzo-company-list button2']"
             >
               {{ trans("visualcenter.dzoAllCompany") }}
               <div
-                      v-click-outside="defocusDzoCompanies"
+
                       class="arrow-down"
                       @click="`${changeDzoCompaniesVisibility()}`"
               ></div>
@@ -766,17 +735,35 @@
 
                         :class="isDzoCompaniesListSelectorOpened ? 'show-company-list' : 'hide-company-list'"
                   >
-                  <li
-                          class="px-4"
-                  >
+                  <li class="px-4">
                     <div>
                       <input
-                              :disabled="isAllDzoCompaniesSelected"
-                              :checked="isAllDzoCompaniesSelected"
+                              :disabled="dzoCompaniesAssets['isAllAssets']"
+                              :checked="dzoCompaniesAssets['isAllAssets']"
                               type="checkbox"
                               @click="`${selectDzoCompanies()}`"
                       ></input>
                       {{trans("visualcenter.dzoAllCompany")}}
+                    </div>
+                  </li>
+                  <li class="px-4">
+                    <div>
+                      <input
+                              type="checkbox"
+                              :checked="dzoCompaniesAssets['isOperating']"
+                              @click="`${changeAssets('isOperating')}`"
+                      ></input>
+                      {{trans("visualcenter.isOperating")}}
+                    </div>
+                  </li>
+                  <li class="px-4">
+                    <div>
+                      <input
+                              type="checkbox"
+                              :checked="dzoCompaniesAssets['isNonOperating']"
+                              @click="`${changeAssets('isNonOperating')}`"
+                      ></input>
+                      {{trans("visualcenter.isNonOperating")}}
                     </div>
                   </li>
                   <li
@@ -861,59 +848,9 @@
             </div>
           </div>
 
-          <!--   <div class="container-fluid">
-            <table class="table table2">
-                        <tr>
-                <td>-->
-
-          <div class="row mt-3">
-            <h5
-              v-if="item2 == 'oil_fact'"
-              class="col-3 assets4"
-              :style="`${buttonHover14}`"
-              @click="changeAssets('b14')"
-            >
-              <!-- С учётом ограничения ОПЕК+ -->
-              {{ trans("visualcenter.opek") }}
-            </h5>
-            <h5
-              v-if="company == 'all'"
-              class="col assets4"
-              :style="`${buttonHover11}`"
-              @click="changeAssets('b11')"
-            >
-              <!-- Операционные активы -->{{ trans("visualcenter.operactive") }}
-            </h5>
-
-            <h5
-              v-if="company == 'all'"
-              class="col assets4"
-              :style="`${buttonHover12}`"
-              @click="changeAssets('b12')"
-            >
-              <!-- Неоперационные активы -->{{
-                trans("visualcenter.neoperactive")
-              }}
-            </h5>
-
-            <h5
-              v-if="company == 'all'"
-              class="col assets4"
-              :style="`${buttonHover13}`"
-              @click="changeAssets('b13')"
-            >
-              <!-- Все активы КМГ -->{{ trans("visualcenter.allkmg") }}
-            </h5>
-
-            <!-- </tr>
-
-       </div>-->
-          </div>
-
-
-          <div class="row container-fluid mh-60">
-            <div class="vis-table px-3" :style="scroll">
-              <table v-if="bigTable.length" class="table4 w-100">
+          <div class="row mh-60 mt-3 px-4">
+            <div class="col-sm-7 vis-table" :style="scroll">
+              <table v-if="bigTable.length" class="table4 w-100 mh-100">
                 <thead>
                   <tr>
                     <th>{{ trans("visualcenter.dzo") }}</th>
@@ -1159,7 +1096,7 @@
                           v-if="isMultipleDzoCompaniesSelected"
                   >
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
-                      <div class="">{{ NameDzoFull[0] }}</div>
+                      <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                     </td>
 
                     <td
@@ -1273,7 +1210,7 @@
               </table>
 
               <div
-                      v-if="!isMultipleDzoCompaniesSelected"
+                      v-if="!isMultipleDzoCompaniesSelected && buttonDailyTab"
                       v-for="(item) in dzoCompanySummary"
                       colspan="5"
                       class="dzo-company-reason"
@@ -1300,12 +1237,12 @@
 
             </div>
             <div
-              class="vis-chart pl-3"
+              class="pl-3 col-sm-5"
               v-if="
-                (item != 'oil_plan' &&
+                ((item != 'oil_plan' &&
                   item != 'oil_dlv_plan' &&
                   item != 'oil_opek_plan') ||
-                oneDate != 1
+                oneDate != 1) && !buttonDailyTab
               "
             >
               <div class="name-chart-left">
@@ -2564,8 +2501,6 @@
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
 .vis-table {
-  flex: 0 0 56%;
-  max-width: 56%;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 3px;
@@ -2596,7 +2531,6 @@
         vertical-align: middle;
         min-width: 71px;
         &:first-child {
-          display: inline-block;
           white-space: normal;
           min-width: 327px;
           width: 100%;
@@ -2709,11 +2643,6 @@
       font-weight: normal;
     }
   }
-}
-
-.vis-chart {
-  flex: 0 0 44%;
-  max-width: 44%;
 }
 
 .table7 {
@@ -2915,12 +2844,14 @@
   .dzo-company-reason {
     background: rgb(54, 59, 104);
     min-height: 60%;
-    min-width: 683px;
     width: 100%;
     border-top: 5px solid #272953;
   }
   .mh-60 {
     min-height: 60%;
+  }
+  .mh-100 {
+    min-height: 100%;
   }
 
 

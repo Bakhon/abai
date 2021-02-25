@@ -66,13 +66,7 @@
   "condensateProductionButton": {
     "tags": [
       "gk_plan"
-    ],
-    "childItems": {
-      "kmgParticipation": {
-        "buttonClass": "",
-        "flag": "flagOff"
-      }
-    }
+    ]
   },
   "waterInjectionButton": {
     "tags": [
