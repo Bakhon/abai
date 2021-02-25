@@ -1460,15 +1460,6 @@ li.left-menu-li {
     margin-left: 10px;
 }
 
-.bg-dark{
- background: #272953!important;
- z-index: 9999;
-}
-
-.bg-dark-new{
- background: #20274f!important;
- z-index: 9999;
-}
 
 #sidebar-container2 .left-panel .left-menu-li .dropdown-child {
     background-color: #20274f;

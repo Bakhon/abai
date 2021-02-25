@@ -6,7 +6,7 @@
     >
       <b-form-input
           id="well-name"
-          v-model="well.name"
+          v-model="well.origName"
           required
       ></b-form-input>
     </b-form-group>
