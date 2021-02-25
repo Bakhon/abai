@@ -4,16 +4,21 @@
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
-    <datetime
-        v-model="date"
-        :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-        :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
-        auto
-        type="date"
-        value-zone="Asia/Almaty"
-        zone="Asia/Almaty"
-    >
-    </datetime>
+    <div class="bd-main-block__date">
+      <span>Дата:</span>
+      <datetime
+          v-model="date"
+          :flow="['year', 'month', 'date']"
+          :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
+          :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+          auto
+          input-class="form-control"
+          type="date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+      >
+      </datetime>
+    </div>
     <form ref="form" class="bd-main-block__form" style="width: 100%">
       <div class="table-page">
         <table class="table">
@@ -31,14 +36,14 @@
                 :class="{'editable': column.editable}"
                 @dblclick="editCell(row, column)"
             >
-              <a v-if="column.type === 'link'" href="#">{{ row[column.code] }}</a>
+              <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
               <template v-else-if="column.type === 'text'">
                 <div v-if="isCellEdited(row, column)" class="input-wrap">
-                  <input v-model="row[column.code]" type="text">
+                  <input v-model="row[column.code].value" class="form-control" type="text">
                   <button type="button" @click.prevent="saveCell()">OK</button>
                 </div>
                 <span v-else>
-                  {{ row[column.code] }}
+                  {{ row[column.code].value }}
                 </span>
               </template>
             </td>
@@ -141,6 +146,16 @@ export default {
       font-size: 20px;
       line-height: 24px;
       margin: 0;
+    }
+  }
+
+  &__date {
+    align-items: center;
+    display: flex;
+
+    span {
+      color: #fff;
+      margin-right: 10px;
     }
   }
 
@@ -287,6 +302,9 @@ export default {
   }
 
   .table-page {
+    margin: 20px 0 0;
+    padding: 0;
+
     .table {
       td {
         height: 52px;
@@ -319,12 +337,13 @@ export default {
           display: inline-block;
           position: relative;
 
-          input[type="text"] {
+          input.form-control {
             background: #1F2142;
             border: 0.5px solid #454FA1;
             border-radius: 4px;
             color: #fff;
             font-size: 14px;
+            outline: none;
             padding: 0 34px 0 10px;
             height: 28px;
           }

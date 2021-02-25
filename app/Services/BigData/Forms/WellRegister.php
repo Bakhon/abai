@@ -10,7 +10,7 @@ class WellRegister extends BaseForm
 {
     protected $configurationFileName = 'well_register';
 
-    public function submit(): \Illuminate\Database\Eloquent\Model
+    public function submit(): array
     {
         $well = Well::create($this->request->all());
         return $well->toArray();
