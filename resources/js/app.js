@@ -26,7 +26,6 @@ import VueSimpleAlert from "vue-simple-alert";
 import PerfectScrollbar from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
 import columnSortable from 'vue-column-sortable';
-import SmoothPicker from 'vue-smooth-picker'
 
 
 require('./bootstrap');
@@ -43,7 +42,6 @@ Vue.use(PerfectScrollbar);
 Vue.use(columnSortable);
 Vue.use(VueSimpleAlert);
 Vue.use(BootstrapVue);
-Vue.use(SmoothPicker);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -153,6 +151,8 @@ Vue.component('bigdata-report-button', require('./components/bigdata/BigDataRepo
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
+
+Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;

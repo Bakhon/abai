@@ -735,9 +735,7 @@
 
                         :class="isDzoCompaniesListSelectorOpened ? 'show-company-list' : 'hide-company-list'"
                   >
-                  <li
-                          class="px-4"
-                  >
+                  <li class="px-4">
                     <div>
                       <input
                               :disabled="dzoCompaniesAssets['isAllAssets']"
@@ -748,28 +746,24 @@
                       {{trans("visualcenter.dzoAllCompany")}}
                     </div>
                   </li>
-                  <li
-                          class="px-4"
-                  >
+                  <li class="px-4">
                     <div>
                       <input
                               type="checkbox"
                               :checked="dzoCompaniesAssets['isOperating']"
                               @click="`${changeAssets('isOperating')}`"
                       ></input>
-                      {{trans("visualcenter.operactive")}}
+                      {{trans("visualcenter.isOperating")}}
                     </div>
                   </li>
-                  <li
-                          class="px-4"
-                  >
+                  <li class="px-4">
                     <div>
                       <input
                               type="checkbox"
                               :checked="dzoCompaniesAssets['isNonOperating']"
                               @click="`${changeAssets('isNonOperating')}`"
                       ></input>
-                      {{trans("visualcenter.neoperactive")}}
+                      {{trans("visualcenter.isNonOperating")}}
                     </div>
                   </li>
                   <li
