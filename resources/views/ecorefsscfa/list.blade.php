@@ -32,7 +32,7 @@
                     <a href="{{url('/')}}/ru/ecorefsavgprs" class="list-group-item list-group-item-action"> Средняя продолжительность 1 ПРС, сут</a>
                     <a href="{{url('/')}}/ru/ecorefsavgprs" class="list-group-item list-group-item-action"> Средняя продолжительность 1 ПРС, сут</a>
                     <a href="{{ route('ecorefscost.index') }}" class="list-group-item list-group-item-action">
-                        Условно постоянно-переменные расходы</a>
+                        Входные параметры для модуля Ibrahim </a>
                 </div>
             </div>
         </div>
