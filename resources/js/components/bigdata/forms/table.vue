@@ -21,35 +21,38 @@
     </div>
     <form ref="form" class="bd-main-block__form" style="width: 100%">
       <div class="table-page">
-        <table class="table">
-          <thead>
-          <tr>
-            <th v-for="column in columns">
-              {{ column.name }}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(row, rowIndex) in rows.data">
-            <td
-                v-for="column in columns"
-                :class="{'editable': column.editable}"
-                @dblclick="editCell(row, column)"
-            >
-              <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
-              <template v-else-if="column.type === 'text'">
-                <div v-if="isCellEdited(row, column)" class="input-wrap">
-                  <input v-model="row[column.code].value" class="form-control" type="text">
-                  <button type="button" @click.prevent="saveCell()">OK</button>
-                </div>
-                <span v-else>
+        <div class="table-wrap scrollable">
+          <table class="table">
+            <thead>
+            <tr>
+              <th v-for="column in columns">
+                {{ column.name }}
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(row, rowIndex) in rows.data">
+              <td
+                  v-for="column in columns"
+                  :class="{'editable': column.editable}"
+                  @dblclick="editCell(row, column)"
+              >
+                <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
+                <template v-else-if="column.type === 'text'">
+                  <div v-if="isCellEdited(row, column)" class="input-wrap">
+                    <input v-model="row[column.code].value" class="form-control" type="text">
+                    <button type="button" @click.prevent="saveCell()">OK</button>
+                  </div>
+                  <span v-else>
                   {{ row[column.code].value }}
                 </span>
-              </template>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+                </template>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <pagination v-if="rows" :data="rows" :limit="3" @pagination-change-page="changePage"></pagination>
       </div>
     </form>
   </div>
@@ -77,6 +80,7 @@ export default {
       form: {},
       activeTab: 0,
       date: moment().toISOString(),
+      currentPage: 1,
       rows: [],
       columns: [],
       editableCell: {
@@ -101,6 +105,7 @@ export default {
     getData() {
       this.axios.get(this.localeUrl('/bigdata/form/' + this.params.code), {
         params: {
+          page: this.currentPage,
           date: this.date
         }
       }).then(({data}) => {
@@ -125,7 +130,11 @@ export default {
         row: null,
         cell: null
       }
-    }
+    },
+    changePage(page = 1) {
+      this.currentPage = page
+      this.getData()
+    },
   },
 };
 </script>
@@ -304,6 +313,12 @@ export default {
   .table-page {
     margin: 20px 0 0;
     padding: 0;
+
+    .table-wrap {
+      max-height: calc(100% - 150px);
+      margin: 0 0 10px;
+      overflow-y: auto;
+    }
 
     .table {
       td {
