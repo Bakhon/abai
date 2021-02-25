@@ -79,24 +79,8 @@ body {
     margin-bottom: unset!important;
 }
 
-/*.left-side {
-    float: left;
-    overflow: hidden;
-    margin-top: -13px;
-}
-
-.right-side2 {
-    float: left;
-    overflow: hidden;
-    margin-top: -13px;
-}*/
-
 .first-string {
     background: #272953;
-}
-
-.nu {
-    /* height: 60px; */
 }
 
 .number {
@@ -119,13 +103,6 @@ body {
 .txt1 {
     font-family: Bold;
 }
-
-/*.txt2 {
-    font-family: Bold;
-    float: left;
-    font-size: 18px;
-    margin-top: -1px;
-}*/
 
 .txt3 {
     color: #82BAFF;
@@ -244,6 +221,31 @@ td:last-of-type {
     font-size: 34px;
     font-weight: 550;
 }
+@media (max-width:1368px) {
+    .txt4 {
+        font-size: 20px;
+    }
+    .number {
+        font-size: 20px;
+    }
+    .txt1 {
+        font-size: 0.9rem;
+    }
+}
+@media (max-width:814px) {
+    .txt4 {
+        font-size: 18px;
+    }
+    .number {
+        font-size: 18px;
+    }
+    .txt1 {
+        font-size: 0.8rem;
+    }
+    .unit-vc {
+        font-size: 10px;
+    }
+}
 
 .in-work {
     color: #82BAFF
@@ -257,7 +259,6 @@ td:last-of-type {
 .in-idle2 {
     color: #9FA5C7;
     font-size: 14px;
-    margin-top: -8px;
     margin-left: 5px;
 }
 
@@ -765,7 +766,6 @@ li.center-li {
 .plan-header {
     color: #82BAFF;
     font-size: 12px;
-    margin-top: -12px;
     text-align: right;
     margin-bottom: -5px;
 }
@@ -773,7 +773,6 @@ li.center-li {
 .first-td-header {
     float: left;
     margin-left: 10%;
-    width: 80%;
 }
 
 .second-td-header {
