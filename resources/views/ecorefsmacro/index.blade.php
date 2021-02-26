@@ -23,6 +23,7 @@
                                 <th>Курс доллара, тенге:</th>
                                 <th>Курс рубля, тенге:</th>
                                 <th>Инфляция, в % на конец периода:</th>
+                                <th>Мировая стоимость барреля нефти, доллар:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($ecorefsmacro as $item)
@@ -33,6 +34,7 @@
                                     <td>{{ $item->ex_rate_dol }}</td>
                                     <td>{{ $item->ex_rate_rub }}</td>
                                     <td>{{ $item->inf_end }}</td>
+                                    <td>{{ $item->barrel_world_price }}</td>
                                     <td>
                                         <form action="{{ route('ecorefsmacro.destroy',$item->id) }}" method="POST">
                                             <a class="btn btn-primary" href="{{ route('ecorefsmacro.edit',$item->id) }}">{{__('app.edit')}}</a>

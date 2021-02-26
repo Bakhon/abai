@@ -4,7 +4,6 @@ namespace App\Imports;
 
 use App\Models\EcoRefsDirectionId;
 use App\Models\EcoRefsRoutesId;
-use App\Models\Refs\ImportForms\EmpPer;
 use App\Models\Refs\EcoRefsScFa;
 use App\Models\Refs\ImportForms\TarifyTns;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -42,7 +41,7 @@ class EcoRefsTarifyTnsAnpzImport implements ToModel
             "exc_id" => 0,
             "route_tn_id" => 0,
             "date" => $row[2],
-            "tn_rate" => round($row[51], 7),
+            "tn_rate" => round($row[51], 2),
             "extent" => 0,
         ]);
     }

@@ -42,7 +42,7 @@ class EcoRefsTarifyTnsSamaraImport implements ToModel
             "exc_id" => 0,
             "route_tn_id" => 0,
             "date" => $row[2],
-            "tn_rate" => round($row[48], 7),
+            "tn_rate" => round($row[48], 2),
             "extent" => 0,
         ]);
     }

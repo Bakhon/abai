@@ -42,7 +42,7 @@ class EcoRefsTarifyTnsLocalOtherImport implements ToModel
             "exc_id" => 0,
             "route_tn_id" => 0,
             "date" => $row[2],
-            "tn_rate" => round($row[55], 7),
+            "tn_rate" => round($row[55], 2),
             "extent" => 0,
         ]);
     }

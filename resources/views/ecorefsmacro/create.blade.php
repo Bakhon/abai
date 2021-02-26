@@ -49,6 +49,12 @@
                                         <input type="integer" name="inf_end" class="form-control" placeholder="Пример: 0.15">
                                     </div>
                                 </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>Мировая стоимость барреля нефти, доллар:</strong>
+                                        <input type="number" name="barrel_world_price" class="form-control" placeholder="Пример: 45">
+                                    </div>
+                                </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                                     <button type="submit" class="btn btn-primary">{{__('app.submit')}}</button>
                                 </div>
