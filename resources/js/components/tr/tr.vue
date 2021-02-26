@@ -2797,7 +2797,7 @@
                       'cell-with-comment':
                         wells &&
                         wells[row_index] &&
-                        wells[row_index].wct[1][0] !== '0',
+                        wells[row_index].gor[1][0] !== '0',
                     }"
                   >
                     <span
