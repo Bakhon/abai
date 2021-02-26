@@ -67,7 +67,7 @@ export default {
   methods: {
     setupSmoothPickerValue() {
 
-      let value = this.value ? this.value.toString().split('.') : null
+      let value = typeof this.value !== "undefined" ? this.value.toString().split('.') : null
 
       this.setupIntegerPart(value)
       this.setupFractionalPart(value)
@@ -81,7 +81,7 @@ export default {
 
     },
     setupIntegerPart(value) {
-      let integerValues = _.range(this.item.min, this.item.max).map((itemValue, index) => {
+      let integerValues = _.range(this.item.min, this.item.max + 1).map((itemValue, index) => {
         return itemValue.toString()
       })
 
@@ -94,7 +94,7 @@ export default {
 
       if (decimalPoints > 0) {
 
-        let fractionalValues = _.range(0, 10 ^ decimalPoints - 1).map((itemValue, index) => {
+        let fractionalValues = _.range(0, Math.pow(10, decimalPoints)).map((itemValue, index) => {
           return itemValue.toString()
         })
 
