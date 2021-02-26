@@ -10,9 +10,9 @@
               <div class="choosing-well-data  col-7">{{trans('pgno.mestorozhdenie')}}</div>
               <div class="choosing-well-data table-border-gno cell4-gno-second  col-5">
                 <select class="select-gno2" v-model="field">
-                  <option value="UZN">Узень</option>
-                  <option value="KMB">Карамандыбас</option>
-                  <option value="JET">Жетыбай</option>
+                  <option v-for="org in this.orgs" :value="org.short_name" :key="org.id">
+                  {{org.full_name}}
+                  </option>
                 </select>
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
@@ -344,7 +344,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometria @onHpumpSet='onGetHpumSet' :hPumpSet="hPumpSet" :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <inclinometria :hPumpSet="hPumpSet" :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
                     </inclinometria>
                   </div>
                 </div>
@@ -1478,12 +1478,10 @@
                               <div class="col-2">
                                 <label class="label-for-celevoi">ØНКТ</label>
                                   <select class="input-box-gno podbor" v-model="nkt">
-                                  <option value="50,3">60x5</option>
-                                  <option value="62">73x5,5</option>
-                                  <option value="59,3">73x7</option>
-                                  <option value="75,9">89x6,5</option>
-                                  <option value="83,6">102x6,5</option>
-                                  <option value="100,3">114x7</option>
+                                  <option value="38">38</option>
+                                  <option value="44">44</option>
+                                  <option value="57">57</option>
+                                  <option value="70">70</option>
                                   </select>
                               </div>
 
@@ -1524,12 +1522,12 @@
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                    <input value="raschet" v-model="es" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expMeth === 'ФОН'"/>
+                                    <input value="raschet" v-model="es" class="checkbox34" checked="true" type="radio" name="gno20"/>
                                     Расчет
                                 </label>
                               </div>
                               <div class="col-8 table-border-gno">
-                                <input value="realSep" type="checkbox" checked="true" :disabled="es ==='raschet2' || expMeth === 'ФОН'">Естественная сепарация</div>
+                                <input value="realSep" type="checkbox" checked="true" :disabled="es ==='raschet2'">Естественная сепарация</div>
                               
 
                             
@@ -1539,9 +1537,9 @@
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
                                   <input class="checkbox3" v-model="es" value="raschet2" checked="true" type="radio" name="gno20"/>
-                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" :disabled="expMeth === 'ФОН'"/></label>
+                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" /></label>
                               </div>
-                              <div class="col-8 table-border-gno"><input value="mechSep" checked="true" :disabled="es ==='raschet2' || expMeth === 'ФОН'" type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" :disabled="es ==='raschet2' || expMeth === 'ФОН'" onfocus="this.value=''" class="input-box-gno podbor" /></div>
+                              <div class="col-8 table-border-gno"><input value="mechSep" checked="true" v-model="esSeparation" :disabled="es ==='raschet2'" type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" :disabled="es ==='raschet2'" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
 
@@ -1580,10 +1578,10 @@
                               </div>
                               <div class="col-4 pdo-bottom-cell">
                                 <label class="label-for-celevoi">
-                                  <input v-model="CelButton" class="checkbox3" value="pin" type="radio" :disabled="expMeth === 'ФОН'"
+                                  <input v-model="CelButton" class="checkbox3" value="pin" type="radio"
                                     name="gno11" />Pnp
                                 </label>
-                                <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin' || expMeth === 'ФОН'"
+                                <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin'"
                                   type="text" onfocus="this.value=''" class="square3 podbor" />
                               </div>
                             </div>
@@ -2194,7 +2192,36 @@ export default {
       analysisBox5: true,
       analysisBox6: true,
       analysisBox7: true,
-
+      nk_fields: [
+        {
+          short_name: "UZN",
+          full_name: "Узень",
+          id: 0
+        },
+        {
+          short_name: "KMB",
+          full_name: "Карамандыбас",
+          id: 1
+        },
+        {
+          short_name: "JET",
+          full_name: "Жетыбай",
+          id: 2
+        }],
+      omg_fields: [
+        {
+          short_name: "UZN",
+          full_name: "Узень",
+        },
+        {
+          short_name: "KMB",
+          full_name: "Карамандыбас",
+        }],
+      mmg_fields: [
+        {
+          short_name: "JET",
+          full_name: "Жетыбай",
+        }],
       analysisBox8: true,
       shgnTubOD: null,
       menu: "MainMenu",
@@ -2253,7 +2280,7 @@ export default {
       es: 'raschet',
       pBuf: null,
       ao: null,
-      nkt: null,
+      orgs: null,
     };
 
   },
@@ -2280,7 +2307,22 @@ export default {
     },
       
   },
+  beforeCreate: function () {
+    this.axios.get('/ru/organizations').then(({data}) => {
+      console.log(data.organizations)
+      this.organization = data.organizations[0]["name"]
+      if (this.organization == "АО «ОзенМунайГаз»") {
+        this.orgs = this.omg_fields
+      } else if (this.organization == "НК КазМунайГаз") {
+        this.orgs = this.nk_fields
+      } else if (this.organization == "АО «Мангистаумунайгаз»"){
+        this.orgs = this.mmg_fields
+      }
+    })
+    
+  },
   created() {
+    console.log(this.orgs)
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
     });
@@ -2839,11 +2881,6 @@ export default {
       } else {
         this.$modal.show('modalIncl')
       }
-    },
-
-    onGetHpumSet(data) {
-      closeModal('modalIncl')
-      console.log(data);
     },
 
     getWellNumber(wellnumber) {
