@@ -6,7 +6,7 @@
     </div>
     <form class="bd-main-block__form" style="width: 100%" ref="form">
       <div class="bd-main-block__form-tabs-header">
-        <template v-for="(tab, index) in form.tabs">
+        <template v-for="(tab, index) in formParams.tabs">
           <div
               class="bd-main-block__form-tabs-header-tab"
               :class="{'active': index === activeTab}"
@@ -16,7 +16,7 @@
           </div>
         </template>
       </div>
-      <template v-for="(tab, index) in form.tabs">
+      <template v-for="(tab, index) in formParams.tabs">
         <div class="bd-main-block__form-tab" v-show="index === activeTab">
           <div
               class="bd-main-block__form-block"
@@ -56,9 +56,13 @@
 
 <script>
 import BigdataFormField from './field'
+import {bdFormActions, bdFormState} from '@store/helpers'
 
 export default {
   name: "bigdata-form",
+  components: {
+    BigdataFormField
+  },
   props: {
     params: {
       type: Object,
@@ -68,26 +72,34 @@ export default {
   data() {
     return {
       errors: {},
-      formValues: {},
-      form: {},
-      activeTab: 0
+      activeTab: 0,
+      formValues: {}
     }
   },
-  components: {
-    BigdataFormField
+  computed: {
+    ...bdFormState([
+      'formParams'
+    ]),
   },
   mounted() {
 
-    this.axios.get(this.localeUrl('/bigdata/form/' + this.params.code)).then(({data}) => {
-      this.form = data.params
-      this.formValues = data.fields
-    })
+    this.getForm(this.params.code)
 
   },
   methods: {
+    ...bdFormActions([
+      'getGeoDictByDZO',
+      'getForm',
+      'submitForm',
+      'getWellPrefix',
+      'getValidationErrors'
+    ]),
     submit() {
 
-      this.axios.post(this.localeUrl('/bigdata/form/' + this.params.code), this.formValues)
+      this.submitForm({
+        code: this.params.code,
+        values: this.formValues
+      })
           .then(data => {
             this.errors = []
             this.formValues.map(value => '')
@@ -99,7 +111,7 @@ export default {
 
             Vue.prototype.$notifyWarning('Некоторые поля заполнены некорректно')
 
-            for (const [tabIndex, tab] of Object.entries(this.form.tabs)) {
+            for (const [tabIndex, tab] of Object.entries(this.formParams.tabs)) {
               for (const block of tab.blocks) {
                 for (const item of block.items) {
                   if (typeof this.errors[item.code] !== 'undefined') {
@@ -125,27 +137,24 @@ export default {
     },
     //callbacks
     setWellPrefix(triggerFieldCode, changeFieldCode) {
-      this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/well-prefix`), {
-        params: {
-          geo: this.formValues[triggerFieldCode]
-        }
-      }).then(({data}) => {
-        for (const tab of this.form.tabs) {
-          for (const block of tab.blocks) {
-            for (const item of block.items) {
-              if (item.code === changeFieldCode) {
-                item.prefix = data.prefix
+      this.getWellPrefix({code: this.params.code, geo: this.formValues[triggerFieldCode]})
+          .then(({data}) => {
+            for (const tab of this.formParams.tabs) {
+              for (const block of tab.blocks) {
+                for (const item of block.items) {
+                  if (item.code === changeFieldCode) {
+                    item.prefix = data.prefix
+                  }
+                }
               }
             }
-          }
-        }
-      })
+          })
     },
     filterGeoByDZO(triggerFieldCode, changeFieldCode) {
 
       let dictName
       this.formValues[changeFieldCode] = null
-      for (const tab of this.form.tabs) {
+      for (const tab of this.formParams.tabs) {
         for (const block of tab.blocks) {
           for (const item of block.items) {
             if (item.code === changeFieldCode) {
@@ -155,7 +164,7 @@ export default {
         }
       }
 
-      this.$store.dispatch('bd/getGeoDictByDZO', {
+      this.$store.dispatch('bdform/getGeoDictByDZO', {
         dzo: this.formValues[triggerFieldCode],
         code: dictName
       })
@@ -163,10 +172,7 @@ export default {
     },
     validateField(e, formItem) {
 
-      this.axios.post(
-          this.localeUrl('/bigdata/form/' + this.params.code + '/validate/' + formItem.code),
-          this.formValues
-      )
+      this.getValidationErrors({formCode: this.params.code, fieldCode: formItem.code, values: this.formValues})
           .then(data => {
             Vue.set(this.errors, formItem.code, null)
           })
