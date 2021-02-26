@@ -903,12 +903,6 @@ export default {
             }
         },
 
-        getDifferenceOilRate(currentRate, previousRate) {
-            if (currentRate && previousRate) {
-                return ((previousRate / currentRate - 1) * 100).toFixed(2);
-            }
-        },
-
         getColor2(i) {
             if (i < 0) return "arrow";
             if (i > 0) return "arrow2";

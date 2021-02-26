@@ -1,23 +1,23 @@
 <template>
   <div class="visualcenter-page-wrapper">
     <div class="row visualcenter-page-container">
-      <div class="left-side pr-10px col-lg-10 middle-block-columns">
+      <div class="left-side col-lg-10 middle-block-columns">
         <div class="first-string">
           <div>
             <table class="table table1">
               <tr>
-                <div class="row">
-                  <div class="col-12 col-sm-8">
+                  <div class="row upper-block">
+                  <div class="col-12 col-lg-8">
                     <div class="row">
-                      <td class="col-4 col-sm-4">
+                      <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
-                          <div class="d-flex oil-block">
-                            <div class="number col-9">
+                          <div class="row oil-block">
+                            <div class="number col-8 col-md-6 ml-3">
                               {{ formatDigitToThousand(oil_factDay) }}
                             </div>
-                            <div class="unit-vc col-3 ml-1">{{ thousand }} тонн</div>
+                            <div class="unit-vc col-6 col-md-1 ml-3">{{ thousand }} тонн</div>
                           </div>
-                          <div class="txt1 col-12">
+                          <div class="txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
                           </div>
                           <br />
@@ -68,15 +68,15 @@
                           <div class="vert-line"></div>
                         </div>
                       </td>
-                      <td class="col-4 col-sm-4">
+                      <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
-                          <div class="d-flex oil-block">
-                            <div class="number col-9">
+                          <div class="row oil-block ml-2">
+                            <div class="number col-8 col-md-7">
                               {{ formatDigitToThousand(oil_dlv_factDay) }}
                             </div>
-                            <div class="unit-vc col-3 ml-1">{{ thousand }} тонн</div>
+                            <div class="unit-vc col-6 col-md-2 ml-1">{{ thousand }} тонн</div>
                           </div>
-                          <div class="txt1 col-12">
+                          <div class="txt1 col-6 col-md-12 ml-3">
                             {{ trans("visualcenter.oildlv") }}
                           </div>
                           <br />
@@ -135,17 +135,17 @@
                           <div class="vert-line"></div>
                         </div>
                       </td>
-                      <td class="col-4 col-sm-4">
+                      <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
-                          <div class="d-flex oil-block">
-                            <div class="number col-9">
+                          <div class="row oil-block">
+                            <div class="number col-8 col-md-9">
                               {{ formatDigitToThousand(gas_factDay) }}
                             </div>
-                            <div class="unit-vc col-3 ml-2">
+                            <div class="unit-vc col-6 col-md-1 ml-2">
                               {{ thousand }} м³
                             </div>
                           </div>
-                          <div class="txt1 col-12">
+                          <div class="txt1 col-6 col-md-12 ml-3">
                             {{ trans("visualcenter.getgaz") }}
                           </div>
                           <br />
@@ -197,10 +197,10 @@
                     </td>
                     </div>
                   </div>
-                  <div class="col-4 col-sm-4">
-                    <div class="row">
+                  <div class="col-12 col-lg-4">
+                    <div class="row rates-block__row">
                       <td
-                        class="vc-select-table col-sm-6 rates-block"
+                        class="vc-select-table col-6 col-lg-6 rates-block"
                         @click="changeTable('2')"
                         :style="`${tableHover2}`"
                       >
@@ -215,11 +215,10 @@
                           </div>
                           <div class="unit-vc col-12">$ / bbl</div>
                         </div>
-                        <br />
                         <div class="txt1 col-12">
                           {{trans("visualcenter.oilPrice")}}
                         </div>
-
+                        <br />
                         <div class="percent-currency col-12">
                           <div
                             class="arrow"
@@ -228,11 +227,6 @@
                           <div
                             class="arrow2"
                             v-if="dailyOilPriceChange === 'DOWN'"
-                          ></div>
-                          <div
-                            :class="`${
-                              getDifferenceOilRate(prices['oil']['previous'], prices['oil']['current'])
-                            }`"
                           ></div>
                           <div class="txt2-2">
                             {{ Math.abs(getDiffProcentLastP(prices['oil']['previous'], prices['oil']['current'])) }} %
@@ -244,13 +238,13 @@
                         </div>
                       </td>
                       <td
-                      class="vc-select-table col-sm-5 rates-block"
+                      class="vc-select-table col-6 col-lg-6 rates-block"
                       @click="changeTable('3')"
                       :style="`${tableHover3}`"
                     >
                       <div>
                         <div class="number d-flex">
-                          <div class="col-10">
+                          <div class="col-9">
                             {{ currencyNow }}
                           </div>
                           <div class="col-2 mt-1">
@@ -259,7 +253,6 @@
                         </div>
                         <div class="unit-vc col-12">kzt / $</div>
                       </div>
-                      <br />
                       <div class="txt1 col-12">
                         {{ trans("visualcenter.usdKurs") }}
                       </div>
@@ -289,8 +282,8 @@
         </div>
         <div class="first-table big-area" :style="`${Table1}`">
           <div class="first-string first-string2">
-            <div class="row px-4 mt-3">
-              <div class="col dropdown dropdown4 font-weight">
+            <div class="d-flex px-4 mt-3 middle-block__list-x-scroll">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight">
                 <div
                         :class="[`${oilProductionButton}`, 'button1']"
                 >
@@ -359,7 +352,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col dropdown dropdown4 font-weight">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight">
                 <div
                         :class="[`${oilDeliveryButton}`, 'button1']"
                 >
@@ -441,7 +434,7 @@
                   </ul>
                 </div>
               </div>
-              <div class="col dropdown dropdown4 font-weight">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight">
                 <div
                         :class="[`${gasProductionButton}`, 'button1']"
                 >
@@ -598,7 +591,7 @@
                   </ul>
                 </div>
               </div>
-              <div class="col dropdown dropdown4 font-weight">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight">
                 <div
                         :class="[`${condensateProductionButton}`, 'button1']"
                 >
@@ -621,7 +614,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col dropdown dropdown4 font-weight">
+              <div class="col-12 col-lg dropdown dropdown4 font-weight">
                 <div
                         :class="[`${waterInjectionButton}`, 'button1']"
                 >
@@ -729,10 +722,10 @@
                 </div>
               </div>
             </div>
-            <div class="row px-4 mt-3">
+            <div class="d-flex px-4 mt-3 middle-block__list-x-scroll">
               <div
                       v-click-outside="defocusDzoCompanies"
-                      :class="[`${buttonDzoDropdown}`,'col dropdown dzo-company-list button2']"
+                      :class="[`${buttonDzoDropdown}`,'col-8 col-lg dropdown dzo-company-list button2']"
               >
                 {{ trans("visualcenter.dzoAllCompany") }}
                 <div
@@ -792,7 +785,7 @@
                   </ul>
                 </div>
               </div>
-              <div class="col">
+              <div class="col-8 col-lg">
                 <div
                         :class="[`${buttonDailyTab}`,'button2']"
                         @click="changeMenu2(1)"
@@ -800,7 +793,7 @@
                   {{ trans("visualcenter.daily") }}
                 </div>
               </div>
-              <div class="col">
+              <div class="col-8 col-lg">
                 <div
                         :class="[`${buttonMonthlyTab}`,'button2']"
                   @click="changeMenu2(2)"
@@ -808,7 +801,7 @@
                   {{ trans("visualcenter.monthBegin") }}
                 </div>
               </div>
-              <div class="col">
+              <div class="col-8 col-lg">
                 <div
                         :class="[`${buttonYearlyTab}`,'button2']"
                         @click="changeMenu2(3)"
@@ -816,7 +809,7 @@
                   {{ trans("visualcenter.yearBegin") }}
                 </div>
               </div>
-              <div class="col">
+              <div class="col-8 col-lg">
                 <div class="dropdown3">
                   <div
                           :class="[`${buttonPeriodTab}`,'button2']"
@@ -2483,6 +2476,9 @@
 
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
+  .middle-block__list-x-scroll {
+    overflow-x: auto;
+  }
   .rates-block {
     border-left: 10px solid #0f1430;
   }
@@ -2537,10 +2533,10 @@
         min-width: 71px;
         &:first-child {
           white-space: normal;
-          min-width: 327px;
+          min-width: 290px;
           width: 100%;
           font-weight: bold;
-          font-size: 15px;
+          font-size: 13px;
           min-height: 32px;
           span {
             img {
@@ -2557,7 +2553,7 @@
         .font {
           align-items: baseline;
           justify-content: space-between;
-          font-size: 15px;
+          font-size: 13px;
           margin-left: 0;
           &.dynamic {
             padding-left: 17px;
@@ -2613,6 +2609,26 @@
     }
   }
 }
+
+  @media (max-width:1368px) {
+    .vis-table {
+      .table4 {
+        min-width: 0;
+        th {
+          font-size: 11px;
+        }
+        th:first-child {
+            font-size: 12px;
+        }
+        tr td {
+          min-width: 65px;
+        }
+      }
+    }
+    .dropdown3 .button2 span {
+      font-size: 12px;
+    }
+  }
 
 .vis-table-small {
   max-width: 46% !important;
@@ -2804,5 +2820,25 @@
     max-height: 80%;
     max-width: 100%;
     overflow: auto;
+  }
+  @media (max-width:376px) {
+    .upper-block {
+      max-width: 380px;
+    }
+    .rates-block {
+      border-left: 0;
+      border-top: 10px solid #0f1430 !important;
+      &:last-child {
+        border-left: 10px solid #0f1430 !important;
+      }
+    }
+  }
+  .rates-block__row {
+    height: 200px;
+  }
+  @media (max-width:1400px) {
+    .rates-block__row {
+      height: auto;
+    }
   }
 </style>
