@@ -1181,7 +1181,7 @@ export default {
             });
             if (start === end) {
                 this.oneDate = 1;
-                this.scroll = " flex: unset!important; max-height80%; max-width: 100%!important; overflow:hidden; overflow: auto;";
+                this.scroll = "main-table__scroll";
             } else {
                 this.oneDate = '';
                 this.scroll = "";
@@ -2557,13 +2557,8 @@ export default {
         },
 
 
-        formatVisTableNumber2(num) {
-            if (num == '') {
-                num = 0;
-            }
-
+        getFormattedNumber(num) {
             return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
-
         },
 
         formatDigitToThousand(num) {
