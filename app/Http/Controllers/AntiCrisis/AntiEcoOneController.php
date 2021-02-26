@@ -4,7 +4,7 @@ namespace App\Http\Controllers\AntiCrisis;
 
 use App\Http\Controllers\Controller;
 use App\Models\EcoRefsCompaniesId;
-use use App\Models\Refs\EcoRefsScFa;
+use App\Models\Refs\EcoRefsScFa;
 use App\Models\AntiRefs\AntiEcoOne;
 use Illuminate\Http\Request;
 

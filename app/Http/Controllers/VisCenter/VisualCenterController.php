@@ -11,7 +11,7 @@ use App\Models\OilRate;
 use App\Models\VisCenter\ImportForms\DZOcalc as ImportFormsDZOcalc;
 use App\Models\VisCenter\ImportForms\DZOstaff;
 use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
-use App\Models\VisCenter\ImportForms\CostYear as ImportFormsDZOyear;
+use App\Models\VisCenter\ImportForms\DZOyear as ImportFormsDZOyear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
