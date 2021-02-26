@@ -10,7 +10,12 @@
       <span class="scroll-picker__title-ico" v-html="item.ico"></span>
       <span class="scroll-picker__title-name">{{ item.name }}</span>
     </div>
-    <smooth-picker ref="smoothPicker" :change="change" :data="data"/>
+    <div
+        :class="{'scroll-picker__body_decimal': item.decimal_points > 0}"
+        class="scroll-picker__body"
+    >
+      <smooth-picker v-if="showPicker" ref="smoothPicker" :change="change" :data="data"/>
+    </div>
     <button v-if="isValueChanged" class="scroll-picker__button" @click.prevent="save">OK</button>
   </div>
 </template>
@@ -52,7 +57,8 @@ export default {
         },
       ],
       pickerValue: [],
-      isValueChanged: false
+      isValueChanged: false,
+      showPicker: false
     }
   },
   beforeMount() {
@@ -61,15 +67,17 @@ export default {
   methods: {
     setupSmoothPickerValue() {
 
-      let value = this.value.toString().split('.')
+      let value = this.value ? this.value.toString().split('.') : null
 
       this.setupIntegerPart(value)
       this.setupFractionalPart(value)
 
       this.pickerValue = [
         this.data[INTEGER_PART].list[this.data[INTEGER_PART].currentIndex],
-        this.data[FRACTIONAL_PART].list[this.data[FRACTIONAL_PART].currentIndex]
+        this.data[FRACTIONAL_PART] ? this.data[FRACTIONAL_PART].list[this.data[FRACTIONAL_PART].currentIndex] : 0
       ]
+
+      this.showPicker = true
 
     },
     setupIntegerPart(value) {
@@ -78,15 +86,24 @@ export default {
       })
 
       this.data[INTEGER_PART].list = integerValues
-      this.data[INTEGER_PART].currentIndex = integerValues.findIndex(item => item === value[INTEGER_PART])
+      this.data[INTEGER_PART].currentIndex = value ? integerValues.findIndex(item => item === value[INTEGER_PART]) : 0
     },
     setupFractionalPart(value) {
-      let fractionalValues = _.range(0, 10).map((itemValue, index) => {
-        return itemValue.toString()
-      })
 
-      this.data[FRACTIONAL_PART].list = fractionalValues
-      this.data[FRACTIONAL_PART].currentIndex = fractionalValues.findIndex(item => item === value[FRACTIONAL_PART])
+      let decimalPoints = this.item.decimal_points
+
+      if (decimalPoints > 0) {
+
+        let fractionalValues = _.range(0, 10 ^ decimalPoints - 1).map((itemValue, index) => {
+          return itemValue.toString()
+        })
+
+        this.data[FRACTIONAL_PART].list = fractionalValues
+        this.data[FRACTIONAL_PART].currentIndex = value ? fractionalValues.findIndex(item => item === value[FRACTIONAL_PART]) : 0
+
+      } else {
+        this.data.splice(FRACTIONAL_PART, 1)
+      }
     },
     change(listIndex, valueIndex) {
       this.pickerValue[listIndex] = this.data[listIndex].list[valueIndex]
@@ -107,7 +124,7 @@ export default {
     align-items: center;
     color: #fff;
     display: flex;
-    justify-content: center;
+    margin: 0 0 0 130px;
 
     &-ico {
       margin-right: 37px;
@@ -146,4 +163,22 @@ export default {
     }
   }
 }
+
+.scroll-picker__body_decimal {
+  .smooth-picker .smooth-handle-layer .smooth-middle {
+
+    &:after {
+      background: url(/img/bd/comma.svg) no-repeat;
+      bottom: 22px;
+      content: "";
+      height: 18px;
+      left: 50%;
+      position: absolute;
+      transform: translatex(-50%);
+      width: 15px;
+    }
+
+  }
+}
+
 </style>
