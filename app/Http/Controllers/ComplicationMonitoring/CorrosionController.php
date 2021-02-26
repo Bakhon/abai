@@ -30,60 +30,8 @@ class CorrosionController extends CrudController
             ],
             'title' => trans('monitoring.corrosion.title'),
             'fields' => [
-                'field' => [
-                    'title' => trans('monitoring.field'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Field::whereHas('corrosion')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'ngdu' => [
-                    'title' => trans('monitoring.ngdu'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Ngdu::whereHas('corrosion')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
-                'cdng' => [
-                    'title' => trans('monitoring.cdng'),
-                    'type' => 'select',
-                    'filter' => [
-                        'values' => \App\Models\Refs\Cdng::whereHas('corrosion')
-                            ->orderBy('name', 'asc')
-                            ->get()
-                            ->map(
-                                function ($item) {
-                                    return [
-                                        'id' => $item->id,
-                                        'name' => $item->name,
-                                    ];
-                                }
-                            )
-                            ->toArray()
-                    ]
-                ],
+                
+                
                 'gu' => [
                     'title' => trans('monitoring.gu'),
                     'type' => 'select',
@@ -156,7 +104,7 @@ class CorrosionController extends CrudController
             $params['links']['export'] = route('corrosioncrud.export');
         }
 
-        return view('сomplicationMonitoring.corrosion.index', compact('params'));
+        return view('complicationMonitoring.corrosion.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -195,7 +143,7 @@ class CorrosionController extends CrudController
     public function create()
     {
         $validationParams = $this->getValidationParams('corrosioncrud');
-        return view('сomplicationMonitoring.corrosion.create', compact('validationParams'));
+        return view('complicationMonitoring.corrosion.create', compact('validationParams'));
     }
 
     /**
@@ -220,7 +168,7 @@ class CorrosionController extends CrudController
      */
     public function show(Corrosion $corrosioncrud)
     {
-        return view('сomplicationMonitoring.corrosion.show', ['corrosion' => $corrosioncrud]);
+        return view('complicationMonitoring.corrosion.show', ['corrosion' => $corrosioncrud]);
     }
 
     /**
@@ -232,7 +180,7 @@ class CorrosionController extends CrudController
     public function history(Corrosion $corrosion)
     {
         $corrosion->load('history');
-        return view('сomplicationMonitoring.corrosion.history', compact('corrosion'));
+        return view('complicationMonitoring.corrosion.history', compact('corrosion'));
     }
 
     /**
@@ -244,7 +192,7 @@ class CorrosionController extends CrudController
     public function edit(Corrosion $corrosioncrud)
     {
         $validationParams = $this->getValidationParams('corrosioncrud');
-        return view('сomplicationMonitoring.corrosion.edit', [
+        return view('complicationMonitoring.corrosion.edit', [
             'corrosion' => $corrosioncrud,
             'validationParams' => $validationParams
         ]);

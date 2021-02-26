@@ -4,7 +4,7 @@
       <div class="container-fluid vc-oil-usd-wrapper">
         <div class="close2"
              @click="changeTable()">
-          Закрыть
+          <!-- Закрыть -->{{trans("visualcenter.close")}}
         </div>
 
         <div class="vc-chart-block-header">
@@ -35,7 +35,7 @@
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-3 oil-table">
             <div class="vc-chart-block-subheader">
               {{ activeTitle }}
             </div>
@@ -45,9 +45,17 @@
                 <table class="vc-charts-table">
                   <thead>
                   <tr>
-                    <th>Дата</th>
-                    <th>Курс</th>
-                    <th>Изменение</th>
+                    <th>
+                      <!-- Дата -->
+                      {{this.trans("visualcenter.date")}}
+                      </th>
+                    <th>
+                      <!-- Курс -->
+                      {{this.trans("visualcenter.kurs")}}
+                      </th>
+                    <th>
+                      <!-- Изменение -->{{this.trans("visualcenter.change")}}
+                      </th>
                   </tr>
                   </thead>
 
@@ -92,8 +100,7 @@ export default {
     'usdRatesData',
     'period',
     'periodSelectFunc',
-    'currencyChartData',
-    'usdChartIsLoading',
+    'isPricesChartLoading',
     'mainTitle',
     'secondTitle',
     'tableData'
@@ -118,3 +125,10 @@ export default {
   },
 }
 </script>
+
+
+<style scoped>
+  .oil-table {
+    max-height: 590px;
+  }
+</style>

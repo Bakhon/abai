@@ -19,24 +19,43 @@
 
     <div class="form-group2 filter-group">
       <label for="start_date">Выберите начальную дату</label>
-      <input id="start_date"
-             class="form-control datepicker filter-input"
-             type="month"
-             :disabled="isLoading"
-             v-model="start_date">
+      <datetime
+          id="start_date"
+          type="date"
+          v-model="start_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month']"
+      >
+      </datetime>
     </div>
 
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
-      <input id="end_date"
-             class="form-control datepicker filter-input"
-             type="month"
-             :disabled="isLoading"
-             v-model="end_date">
+        <datetime
+            id="end_date"
+            type="date"
+            v-model="end_date"
+            value-zone="Asia/Almaty"
+            zone="Asia/Almaty"
+            input-class="form-control filter-input"
+            format="LLLL yyyy"
+            :phrases="{ok: '', cancel: ''}"
+            :disabled="isLoading"
+            auto
+            :flow="['year', 'month']"
+        >
+        </datetime>
+
     </div>
 
-      <div class="form-group3 result-link text-center">
-          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report">Скачать отчёт</a>
+    <div class="form-group3 result-link text-center">
+          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download-report">Скачать отчёт</a>
       </div>
 
     <div class="form-group4">
@@ -58,9 +77,17 @@
 
 <script>
 
+import Vue from "vue";
+import {Datetime} from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from './FormatDate.js'
+
+Vue.use(Datetime)
+
 export default {
   components: {
   },
+
   data() {
 
     return {
@@ -75,16 +102,8 @@ export default {
   methods: {
     createDownloadLink(response) {
         this.resultLink = response.data.report_link
-
-      // let blob = new Blob([response.data], {type:'application/*'})
-      // let link = document.createElement('a')
-      // link.href = window.URL.createObjectURL(blob)
-      // link.download = `${this.start_date}_${this.end_date}_exportTable.xls`
-      // link.click();
-      // link.remove();
     },
     updateData() {
-      // this.$store.commit("globalloading/SET_LOADING", true);
       this.isLoading = true;
 
       let uri = "http://172.20.103.157:8082/monthly/production/";
@@ -92,18 +111,15 @@ export default {
       let data = {
         dzo: this.org,
         period: 'monthly',
-        // TODO: 'input type="month"' в Chrome возвращает год-месяц, а в Firefox: день.месяц.год
-        report_date_start: `${this.start_date}`.concat('-01 00:00:00'),
-        report_date_end: `${this.end_date}`.concat('-01 00:00:00')
+        report_date_start: formatDate.formatToFirstDayOfMonth(this.start_date),
+        report_date_end: formatDate.formatToFirstDayOfMonth(this.endDate)
       };
 
       let json_data = JSON.stringify(data);
 
       this.axios.post(uri, json_data, {
-        // responseType:'arraybuffer',
           responseType:'json',
           headers: {
-            // Overwrite Axios's automatically set Content-Type
             'Content-Type': 'application/json'
           }
       })
@@ -129,62 +145,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.underHeader {
-  position: relative;
-  Width: 1795px;
-  Height: 866px;
-}
-
-.underHeader>.col-sm1 {
-  width: 438px;
-  right: 1500px;
-}
-
-.bootstrap-table .fixed-table-container .table {
-  color: white;
-}
-
-.table-hover tbody tr:hover {
-  color: #d4d4d4 !important;
-  background-color: rgba(0, 0, 0, 0.075);
-}
-
-.float {
-  float: left;
-}
-
-/*.form-control {*/
-/*  padding: unset!important;*/
-/*}*/
-
-.margin-top {
-  margin-top: 5px;
-}
-
-.select-month{
-  background: rgb(51, 57, 117);
-  border-color: rgb(32, 39, 78);
-  width: 41vh!important;
-}
-
-.report-btn2 {
-  background: #2d4fe6;
-  color: white;
-  border-radius: unset;
-  width:100%;
-  height: 36px;
-
-}
-
-.margin-top {
-  padding: 15px;
-}
-.download_report {
-  color: white;
-  font-size: 28px;
-  text-decoration: underline;
-  font-weight: bold;
-}
-</style>

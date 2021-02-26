@@ -2,55 +2,60 @@
     <table class="table table-bordered table-dark table-responsive trkrtableborderedtabledarktableresponsive" style="background: #0D1E63; margin-bottom: 0;">
         <thead>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="4" class="th" style="background: #333975;">№ скв</td>
-                <td rowspan="4" class="th">Тип скважины</td>
-                <td rowspan="4" class="th">Горизонт</td>
-                <td rowspan="4" class="th">Блок</td>
-                <td rowspan="4" class="th">Наружный диаметр э/к</td>
-                <td rowspan="4" class="th">Наружный диаметр НКТ</td>
-                <td rowspan="4" class="th">Диаметр штуцера</td>
-                <td rowspan="4" class="th">Нвдп</td>
-                <td rowspan="4" class="th">Способ эксплуатации</td>
-                <td rowspan="4" class="th">Тип насоса</td>
-                <td rowspan="4" class="th">Частота работы насоса или число оборотов</td>
-                <td rowspan="4" class="th">Н сп насоса</td>
-                <td rowspan="4" class="th">Р пл</td>
-                <td rowspan="4" class="th">Н дин</td>
-                <td rowspan="4" class="th">Р затр</td>
-                <td class="colspan th" colspan="4">Фактический режим</td>
-                <td rowspan="4" class="th">Состояние на конец месяца</td>
-                <td rowspan="4" class="th">ГФ</td>
-                <td rowspan="4" class="th">Кпрод</td>
-                <td class="colspan th" colspan="7">Расчет технологического потенциала от ИДН</td>
-                <td class="colspan th" colspan="4">Намечаемый режим</td>
+                <td rowspan="4" class="th" style="background: #333975;">{{trans('tr.tr1')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr2')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr3')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr4')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr5')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr6')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr7')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr8')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr9')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr10')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr11')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr12')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr13')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr14')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr15')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr16')}}</td>
+                <td class="colspan th" colspan="5">{{trans('tr.tr17')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr25')}}</td>
+                <td rowspan="4" class="th">{{trans('tr.tr26')}}</td>
+                <td class="colspan th" colspan="7">{{trans('tr.tr18')}}</td>
+                <td class="colspan th" colspan="6">{{trans('tr.tr19')}}</td>
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="3" class="th" style="background: #333975;">P заб</td>
-                <td rowspan="3" class="th">Q н</td>
-                <td rowspan="3" class="th" style="background: #333975;">Q ж</td>
-                <td rowspan="3" class="th">Обводненность</td>
-                <td rowspan="3" class="th">P заб</td>
-                <td class="colspan th" colspan="2">ИДН</td>
-                <td rowspan="3" class="th">Кпрод от стимуляции</td>
-                <td class="colspan th" colspan="2">ГРП</td>
-                <td rowspan="3" class="th">Общий прирост Q н</td>
+                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.tr20')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr21')}}</td>
+                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.tr22')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr23')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr24')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr20')}}</td>
+                <td class="colspan th" colspan="2">{{trans('tr.tr27')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr33')}}</td>
+                <td class="colspan th" colspan="2">{{trans('tr.tr28')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr29')}}</td>
 
-                <td rowspan="3" class="th">Диаметр штуцера</td>
-                <td rowspan="3" class="th">Q н</td>
-                <td rowspan="3" class="th" style="background: #333975;">Q ж</td>
-                <td rowspan="3" class="th">Обводненность</td>
+                <td rowspan="3" class="th">{{trans('tr.tr30')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr21')}}</td>
+                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.tr22')}}</td>
+                <td rowspan="3" class="th" style="background: #333975;">{{trans('tr.tr31')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr23')}}</td>
+                <td rowspan="3" class="th">{{trans('tr.tr24')}}</td>
+
             </tr>
             <tr class="headerColumn trkrheadercolumn" style="background: #333975;">
-                <td rowspan="2" class="th" style="background: #333975;">Q ж</td>
-                <td rowspan="2" class="th" style="background: #333975;">Прирост Q н</td>
-                <td rowspan="2" class="th" style="background: #333975;">Q ж</td>
-                <td rowspan="2" class="th">Прирост Q н</td>
+                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.tr22')}}</td>
+                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.tr32')}}</td>
+                <td rowspan="2" class="th" style="background: #333975;">{{trans('tr.tr22')}}</td>
+                <td rowspan="2" class="th">{{trans('tr.tr32')}}</td>
             </tr>
             <tr></tr>
             <tr class="subHeaderColumn" style="background: #333975; cursor: pointer;">
                 <td @click="sortBy('well')" class="th" style="background: #333975;"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('well_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('horizon')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('object')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('block')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('cas_OD')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
                 <td @click="sortBy('tub_OD')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
@@ -58,34 +63,36 @@
                 <td @click="sortBy('h_up_perf_md')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
                 <td @click="sortBy('exp_meth')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('pump_type')" class="th"><i class="fa fa-fw fa-sort"></i></td>
-                <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>Гц, об/мин</td>
+                <td @click="sortBy('freq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr1')}}</td>
                 <td @click="sortBy('h_pump_set')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
                 <td @click="sortBy('p_res')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
                 <td @click="sortBy('h_dyn')" class="th"><i class="fa fa-fw fa-sort"></i>м</td>
                 <td @click="sortBy('p_annular')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
                 <td @click="sortBy('bhp')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('q_o')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('q_l')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                <td @click="sortBy('q_o')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
+                <td @click="sortBy('q_l')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}</td>
                 <td @click="sortBy('wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
-                <td @click="sortBy('well_status_last_day')" class="th"><i class="fa fa-fw fa-sort"></i></td>
                 <td @click="sortBy('gor')" class="th"><i class="fa fa-fw fa-sort"></i>м3/т</td>
-                <td @click="sortBy('pi')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
+                <td @click="sortBy('well_status_last_day')" class="th"><i class="fa fa-fw fa-sort"></i></td>
+                <td @click="sortBy('pi')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}</td>
                 <td @click="sortBy('tp_idn_bhp')" class="th"><i class="fa fa-fw fa-sort"></i>атм</td>
-                <td @click="sortBy('tp_idn_liq')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-                <td @click="sortBy('tp_idn_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('tp_idn_pi_after')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут/атм</td>
-                <td @click="sortBy('tp_idn_grp_q_liq')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
-                <td @click="sortBy('tp_idn_grp_q_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('gt_total_inc')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
+                <td @click="sortBy('tp_idn_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}</td>
+                <td @click="sortBy('tp_idn_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
+                <td @click="sortBy('tp_idn_pi_after')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr4')}}</td>
+                <td @click="sortBy('tp_idn_grp_q_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}</td>
+                <td @click="sortBy('tp_idn_grp_q_oil_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
+                <td @click="sortBy('gt_total_inc')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
                 <td @click="sortBy('planned_choke')" class="th"><i class="fa fa-fw fa-sort"></i>мм</td>
-                <td @click="sortBy('planned_oil')" class="th"><i class="fa fa-fw fa-sort"></i>т/сут</td>
-                <td @click="sortBy('planned_liq')" class="th"><i class="fa fa-fw fa-sort"></i>м3/сут</td>
+                <td @click="sortBy('planned_oil')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}</td>
+                <td @click="sortBy('planned_liq')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}</td>
+                <td @click="sortBy('planned_gas')" class="th"><i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr5')}}</td>
                 <td @click="sortBy('planned_wct')" class="th"><i class="fa fa-fw fa-sort"></i>%</td>
+                <td @click="sortBy('planned_gor')" class="th"><i class="fa fa-fw fa-sort"></i>м3/т</td>
             </tr>
         </thead>
         <tbody class="table_tbody">
             <tr v-for="(row, row_index) in wells" :key="row_index" class="trtablerow">
-                <td class="fixcol">{{row.well}} </td>
+                <td class="fixcol">{{row.rus_wellname}} </td>
                 <!-- <td>{{row.well_type}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].well_type[1][0] !== '0'}" td class="fixcol">
@@ -109,6 +116,10 @@
                         {{ wells[row_index].horizon[1][1]}}
                     </span>
                 </td>
+
+
+                <td class="fixcol">{{row.object}} </td>
+
 
                 <!-- <td>{{row.block}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -300,6 +311,17 @@
                     </span>
                 </td>
 
+                <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
+                <td :class="{'cell-with-comment': wells && wells[row_index] &&
+                wells[row_index].gor[1][0] !== '0'}">
+                    <span :class="{'circle-err': wells && wells[row_index] &&
+                wells[row_index].gor[1][0] !== '0'}" :style="`background :${getColor(
+                wells[row_index].gor[1][0])}`"> </span>
+                    <span v-if="row.gor[0]!=null">{{Math.round(row.gor[0]*10)/10}}</span>
+                    <span v-if="wells && wells[row_index]" class="cell-comment">
+                        {{ wells[row_index].gor[1][1]}}
+                    </span>
+                </td>
                 <!-- <td>{{row.well_status_last_day[0]}}</td> -->
 
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -313,17 +335,6 @@
                     </span>
                 </td>
 
-                <!-- <td>{{Math.round(row.gor*10)/10}}</td> -->
-                <td :class="{'cell-with-comment': wells && wells[row_index] &&
-                wells[row_index].gor[1][0] !== '0'}">
-                    <span :class="{'circle-err': wells && wells[row_index] &&
-                wells[row_index].gor[1][0] !== '0'}" :style="`background :${getColor(
-                wells[row_index].gor[1][0])}`"> </span>
-                    <span v-if="row.gor[0]!=null">{{Math.round(row.gor[0]*10)/10}}</span>
-                    <span v-if="wells && wells[row_index]" class="cell-comment">
-                        {{ wells[row_index].gor[1][1]}}
-                    </span>
-                </td>
 
                 <!-- <td>{{Math.round(row.pi*10)/10}}</td> -->
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
@@ -444,6 +455,9 @@
                     </span>
                 </td>
 
+                <td class="fixcol">{{Math.round(row.planned_gas*10)/10}} </td>
+
+
                 <td :class="{'cell-with-comment': wells && wells[row_index] &&
                 wells[row_index].planned_wct[1][0] !== '0'}">
                     <span :class="{'circle-err': wells && wells[row_index] &&
@@ -454,6 +468,8 @@
                         {{ wells[row_index].planned_wct[1][1]}}
                     </span>
                 </td>
+
+                <td class="fixcol">{{Math.round(row.planned_gor*10)/10}} </td>
 
             </tr>
         </tbody>

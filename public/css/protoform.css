@@ -1,0 +1,401 @@
+span.brtxt {
+    position: absolute;
+    max-width: 365px;
+}
+
+span.r-txt svg {
+    margin-right: 10px !important;
+}
+
+div.r-txt2 {
+    margin-top: 8px;
+    font-family: "Bold";
+}
+
+.r-txt {
+    margin: 10px !important;
+}
+
+.r-txt.f-right {
+    float: right;
+}
+
+.row {
+    top: 20px;
+}
+
+.center-content {
+    width: 1822px;
+    height: 364px;
+}
+
+.p-4 {
+    background-color: #0F1430;
+    position: relative;
+    left: 18px;
+    width: 2300px;
+}
+
+.title, .subtitle {
+    color: white;
+}
+
+.top {
+    display: none;
+}
+
+/* Change values to match the radius of your form control */
+.fix-rounded-right {
+    border-top-right-radius: .2rem !important;
+    border-bottom-right-radius: .2rem !important;
+}
+
+.big-data-input-container {
+    padding: 18px 22px 16px 20px;
+}
+
+.right-title {
+    font-size: 20px;
+    padding-top: 15px;
+}
+
+.center-content {
+    background: #272953;
+    left: 15px;
+}
+
+.btn-blocks {
+    background: #333975;
+    fill: #9EA4C9 !important;
+    margin: 25px;
+    text-align: center;
+    height: 180px;
+    border-radius: 20px;
+    color: white;
+}
+
+.section__content.disabled {
+    opacity: 0.3;
+}
+
+.section__content.disabled:hover {
+    fill: #9EA4C9 !important;
+    color: white;
+}
+
+.section__content.selected {
+    background: #3366FF;
+}
+
+.section__content.selected svg {
+    fill: #FEFEFE !important;
+}
+
+.section__content:hover {
+    background: #334296;
+    fill: #FEFEFE !important;
+}
+
+.btn-blocks-icon {
+    fill: #393D75;
+}
+
+.btn-blocks-icon:hover {
+    fill: #FEFEFE;
+}
+
+.btn-blocks-txt {
+    text-align: center;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+.btn-clk {
+    cursor: pointer;
+    user-select: none;
+}
+
+.section {
+    min-width: 150px;
+    min-height: 150px;
+}
+
+.section__wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+}
+
+.section__content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #333975;
+    fill: #9EA4C9 !important;
+    text-align: center;
+    border-radius: 20px;
+    color: white;
+}
+.section__content:before {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    content: "";
+}
+.section_icon{
+    margin-bottom: 5px;
+}
+.pading-b-40 {
+    padding-bottom: 40px;
+}
+
+.empty-reports-list {
+    width: 100%;
+    padding: 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    flex-direction: column;
+}
+
+.empty-search-message {
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.report-filter-container {
+    width: 380px;
+    height: auto;
+    color: white;
+    padding: 15px;
+}
+
+.report-filter-title {
+    font-size: 22px;
+}
+
+.report-filter-favor-star {
+    text-align: right;
+    cursor: pointer;
+}
+
+.report-filter-title-description {
+    font-size: 16px;
+}
+
+.big-data-page-content {
+    padding-right: 0;
+}
+
+.with-opened-filter {
+    flex: 0 0 calc(100% - 380px) !important;
+    padding-right: 15px;
+}
+
+.report-btn-list {
+    display: flex;
+    justify-content: center;
+}
+
+.report-btn-bd {
+    border-radius: 20px !important;
+    background: #1F2142 !important;
+    padding: 10px !important;
+    color: white !important;
+    margin: 5px !important;
+    text-align: left !important;
+    width: 24%;
+}
+
+.report-btn-bd.selected {
+    background: #3366FF !important;
+}
+
+.report-btn-bd.selected:hover {
+    background: #3366FF !important;
+}
+
+.report-btn-bd.selected svg {
+    fill: #FEFEFE !important;
+}
+
+.report-btn-bd-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.report-btn-bd-title {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    align-items: center;
+    line-height: 22px;
+}
+
+.report-btn-bd:hover {
+    background: #333975 !important;
+}
+
+.report-btn-bd span svg {
+    fill: #9EA4C9 !important;
+}
+
+.report-btn-bd:hover span svg {
+    fill: #FEFEFE !important;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.fixed-columns {
+    left: 0;
+    background: #20274e !important;
+}
+
+.p-4 {
+    background-color: #0F1430;
+}
+
+.fixed-table-container {
+    background: #20274e;
+}
+
+.bootstrap-table .fixed-table-container .table {
+
+    color: white;
+}
+
+/*.main {*/
+/*    !*background-color: #0F1430;*!*/
+/*    !* background-image: url({{ asset('img/level1/grid.svg') }});*!*/
+/*    !* border: 1px solid #0D2B4D; *!*/
+/*    !* margin-left: 0px !important; *!*/
+/*    !* padding-top: 20px; *!*/
+/*}*/
+
+.title, .subtitle {
+    color: white;
+}
+
+.top {
+    display: none;
+}
+
+.table-hover tbody tr:hover {
+    color: #d4d4d4 !important;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.contentTitle {
+    font-size: 20px;
+    color: #FFFFFF;
+    display: flex;
+    width: 30px;
+    height: 15px;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 35px !important;
+}
+
+.reportsBut {
+    background-color: #272953;
+}
+
+.height-center {
+    margin-top: 5vh;
+}
+
+.bold {
+    font-family: "Bold";
+    /*margin-top: 17px;*/
+    font-size: 17px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+span.height-center svg {
+    height: 32px;
+    margin-top: 5vh;
+}
+
+.font-size {
+    font-size: 18px;
+}
+
+.col-md-12.btn-blocks-txt {
+    color: #ffffff;
+    font-size: 22px;
+}
+
+.font-size2 {
+    font-size: 16px;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.filter-container {
+    margin-top: 20px;
+}
+
+.filter-input {
+    background-color: #333975 !important;
+    border-color: #333975 !important;
+    color: white !important;
+    height: 72px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    position: relative;
+}
+
+.filter-input.select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: relative;
+    cursor: pointer;
+}
+
+.filter-group.select:before {
+    content: "▼";
+    display: inline-block;
+    position: absolute;
+    color: white;
+    right: 30px;
+    top: 25px;
+    z-index: 2;
+    width: 0;
+    height: 0;
+    text-align: center;
+    line-height: 26px;
+    cursor: pointer;
+}
+
+.get-report-button {
+    width: 100%;
+    height: 64px;
+    color: white !important;
+    background: #2C44BD !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    display: flex;
+    align-items: center;
+    margin: 20px 0 0 0 !important;
+    cursor: pointer;
+}
+
+.get-report-button:hover {
+    background: #5c607d !important;
+}

@@ -18,7 +18,7 @@
               fill="white"
             /></svg
         ></i>
-        Технологический режим</a
+        {{trans('tr.btr')}}</a
       >
 
       <div class="col dropdown" style="padding: 0px; margin: 0 13px">
@@ -45,7 +45,7 @@
               />
             </svg>
           </i>
-          Выберите даты
+          {{trans('tr.fadt')}}
         </button>
 
         <div
@@ -54,13 +54,13 @@
           aria-labelledby="dropdownMenuLink"
         >
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate" style="margin-left: 8px;">Введите опорную дату:</label>
+          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt1')}}:</label>
           <input type="date" class="form-control" v-model="date1" />
           <!-- <form class="form-group but-nav__link"> -->
-          <label for="inputDate" style="margin-left: 8px;">Введите дату для сравнения:</label>
+          <label for="inputDate" style="margin-left: 8px;">{{trans('tr.fadt2')}}:</label>
           <input type="date" class="form-control" v-model="date2" />
           <a href="#" class="btn btn-sm button_form" @click.prevent="chooseDt"
-            >Сформировать</a
+            >{{trans('tr.sf')}}</a
           >
         </div>
       </div>
@@ -105,22 +105,14 @@
       class="tech tr-table-header"
       style="display: flex; background: #272953; margin-left: 0px !important"
     >
-      <h5 style="margin-left: 14px">Факторный анализ</h5>
-      <select
-        name="Company"
-        class="form-control tr-field-filter"
-        id="companySelect"
-        v-model="filter"
-        @change="chooseField"
-      >
-        <option value="Все месторождения">Все месторождения</option>
-        <option value="Акшабулак Центральный">Акшабулак Центральный</option>
-        <option value="Акшабулак Южный">Акшабулак Южный</option>
-        <option value="Акшабулак Восточный">Акшабулак Восточный</option>
-        <option value="Нуралы">Нуралы</option>
-        <option value="Аксай">Аксай</option>
-        <option value="Аксай Южный">Аксай Южный</option>
-      </select>
+      <h3 style="margin-left: 14px">{{trans('tr.hfa')}}</h3>
+      <tr-multiselect
+        :filter="filter"
+        :selectedAllTag="true"
+        :fieldFilterOptions="fieldFilterOptions"
+        @change-filter="handlerFilter"
+        filterName="месторождения"
+      />
       <a
         class="but-nav__link but"
         href="trfa"
@@ -147,69 +139,67 @@
       </div> -->
       <table
         class="table table-bordered table-dark table-responsive fakrtableborderedtable"
-        style="
-          background: #0d1e63;
-          margin-bottom: 0;
-        "
+        style="background: #0d1e63"
       >
         <tr class="headerColumn">
-          <td rowspan="3" style="background: #12135c"><span>Скважина</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.fa1')}}</span></td>
           <td rowspan="3" style="background: #12135c; min-width: 120px;">
-            <span>Месторождение</span>
+            <span>{{trans('tr.fa2')}}</span>
           </td>
-          <td rowspan="3" style="background: #12135c"><span>Горизонт</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.tr3')}}</span></td>
+          <td rowspan="3" style="background: #12135c"><span>{{trans('tr.tr4')}}</span></td>
           <td rowspan="3" style="background: #12135c">
-            <span>Способ Эксплуатации</span>
+            <span>{{trans('tr.tr10')}}</span>
           </td>
           <td class="colspan" colspan="6" style="background: #2c3379">
-            Фактические данные на {{ dt }}
+            {{trans('tr.fa3')}} {{ dt }}
           </td>
           <td class="colspan" colspan="6" style="background: #1a2370">
-            Фактические данные на {{ dt2 }}
+            {{trans('tr.fa3')}} {{ dt2 }}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
-            Отклон. Qн
+            {{trans('tr.fa4')}}
           </td>
           <td class="colspan" colspan="1" style="background: #12135C">
-            Технологические
+            {{trans('tr.fa5')}}
           </td>
           <td class="colspan" colspan="3" style="background: #12135C">
-            Геологические
+            {{trans('tr.fa6')}}
           </td>
           <td rowspan="3" style="background: #12135C
 ; min-width:248px;">
-            <span>Основное отклонение в ТР</span>
+            <span>{{trans('tr.fa7')}}</span>
           </td>
         </tr>
         <tr class="headerColumn">
-          <td rowspan="2" style="background: #2c3379"><span>Qж</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>Qн</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr22')}}</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr21')}}</span></td>
           <td rowspan="2" style="background: #2c3379">
-            <span>Обводненность</span>
+            <span>{{trans('tr.tr23')}}</span>
           </td>
-          <td rowspan="2" style="background: #2c3379"><span>Pзаб</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>Pпл</span></td>
-          <td rowspan="2" style="background: #2c3379"><span>Кпрод</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Qж</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Qн</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr20')}}</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr14')}}</span></td>
+          <td rowspan="2" style="background: #2c3379"><span>{{trans('tr.tr26')}}</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr22')}}</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr21')}}</span></td>
           <td rowspan="2" style="background: #1a2370">
-            <span>Обводненность</span>
+            <span>{{trans('tr.tr23')}}</span>
           </td>
-          <td rowspan="2" style="background: #1a2370"><span>Pзаб</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Pпл</span></td>
-          <td rowspan="2" style="background: #1a2370"><span>Кпрод</span></td>
-          <td rowspan="2" style="background: #12135C"><span>dQн</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr20')}}</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr14')}}</span></td>
+          <td rowspan="2" style="background: #1a2370"><span>{{trans('tr.tr26')}}</span></td>
+          <td rowspan="2" style="background: #12135C"><span>{{trans('tr.fa8')}}</span></td>
           <td rowspan="2" style="background: #12135C">
-            <span>Недостижение режимного Pзаб</span>
-          </td>
-          <td rowspan="2" style="background: #12135C">
-            <span>Рост обводненности</span>
+            <span>{{trans('tr.fa9')}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>Снижение Pпл</span>
+            <span>{{trans('tr.fa10')}}</span>
           </td>
           <td rowspan="2" style="background: #12135C">
-            <span>Снижение Kпрод</span>
+            <span>{{trans('tr.fa11')}}</span>
+          </td>
+          <td rowspan="2" style="background: #12135C">
+            <span>{{trans('tr.trs58')}}</span>
           </td>
         </tr>
         <tr></tr>
@@ -280,12 +270,10 @@
           <td @click="sortBy('Main_problem')" style="background: #272953">
             <i class="fa fa-fw fa-sort"></i>
           </td> -->
-          <td @click="sortBy('well')" style="background: #12135c">
+          <td @click="sortBy('rus_wellname')"  style="background: #12135c" class="sortik">
+            <!-- <i class="fas fa-sort-down" v-if="issorttobig"></i>
+            <i class="fas fa-sort-up" v-if="!issorttobig"></i> -->
             <i class="fa fa-fw fa-sort"></i>
-
-            <!-- сортировка -->
-            <!-- <i class="fas fa-sort-down" v-if="issorttosmall"></i>
-            <i class="fas fa-sort-up" v-if="!issorttosmall"></i> -->
           </td>
           <td @click="sortBy('field')" style="background: #12135c; min-width: 120px;">
             <i class="fa fa-fw fa-sort"></i>
@@ -293,14 +281,17 @@
           <td @click="sortBy('horizon')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
+          <td @click="sortBy('object')" style="background: #12135c">
+            <i class="fa fa-fw fa-sort"></i>
+          </td>
           <td @click="sortBy('exp_meth')" style="background: #12135c">
             <i class="fa fa-fw fa-sort"></i>
           </td>
           <td @click="sortBy('q_l_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>м3/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
           </td>
           <td @click="sortBy('q_o_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('wct_1')" style="background: #2c3379">
             <i class="fa fa-fw fa-sort"></i>%
@@ -312,13 +303,13 @@
             <i class="fa fa-fw fa-sort"></i>атм
           </td>
           <td @click="sortBy('pi_1')" style="background: #2c3379">
-            <i class="fa fa-fw fa-sort"></i>т/сут/атм
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtrfa1')}}
           </td>
           <td @click="sortBy('q_l_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>м3/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr2')}}
           </td>
           <td @click="sortBy('q_o_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('wct_2')" style="background: #1a2370">
             <i class="fa fa-fw fa-sort"></i>%
@@ -330,35 +321,36 @@
             <i class="fa fa-fw fa-sort"></i>атм
           </td>
           <td @click="sortBy('pi_2')" style="background: #1a2370">
-            <i class="fa fa-fw fa-sort"></i>т/сут/атм
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtrfa1')}}
           </td>
           <td @click="sortBy('dqn')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('Pbh')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('wct')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('p_res')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('PI')" style="background: #12135C">
-            <i class="fa fa-fw fa-sort"></i>т/сут
+            <i class="fa fa-fw fa-sort"></i>{{trans('tr.mtr3')}}
           </td>
           <td @click="sortBy('Main_problem')" style="background: #12135C; min-width:248px;">
             <i class="fa fa-fw fa-sort"></i>
           </td>
         </tr>
         <tr v-for="(row, row_index) in wells" :key="row.well">
-          <td style="background: #12135c">{{ row.well }}</td>
+          <td style="background: #12135c">{{ row.rus_wellname }}</td>
           <td style="background: #12135c; min-width: 120px;">{{ row.field }}</td>
           <td style="background: #12135c">{{ row.horizon }}</td>
+          <td style="background: #12135c">{{ row.object }}</td>
           <td style="background: #12135c">{{ row.exp_meth }}</td>
 
           <td
-            style="background: #2c3379"
+            style="background: #2c3379;"
             :class="{
               'cell-with-comment':
                 wells &&
@@ -913,7 +905,10 @@ import { VueMomentLib } from "vue-moment-lib";
 import moment from "moment";
 import Vue from "vue";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
+import columnSortable from 'vue-column-sortable'
 // import FadeLoader from "vue-spinner/src/FadeLoader.vue";
+import { fields } from "./constants.js";
+import TrMultiselect from "./TrMultiselect.vue";
 
 Vue.use(NotifyPlugin, VueMomentLib);
 export default {
@@ -921,10 +916,11 @@ export default {
   components: {
     // FadeLoader,
     SearchFormRefresh,
+    TrMultiselect,
   },
   data: function () {
     return {
-      // issorttosmall: false, сортировка
+      // issorttobig: false,
       pieChartRerender: true,
       wells: [],
       searchString: "",
@@ -936,7 +932,14 @@ export default {
       date1: null,
       date2: null,
       fullWells: [],
-      filter: "Все месторождения",
+      // filter: "Все месторождения",
+      filter: [...fields],
+      fieldFilterOptions: [
+        {
+          group: "Все месторождения",
+          fields: [...fields],
+        },
+      ],
       editdtm: null,
       editdty: null,
       editdtprevm: null,
@@ -1055,6 +1058,9 @@ export default {
     fullWells() {
       this.chooseField();
     },
+    filter() {
+      this.chooseField();
+    },
   },
   methods: {
     sortBy(type) {
@@ -1133,7 +1139,7 @@ export default {
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
-        this.$store.commit("globalloading/SET_LOADING", false);
+        this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("fa/SET_MONTH", mm);
         this.$store.commit("fa/SET_YEAR", yyyy);
         this.$store.commit("fa/SET_PR_MONTH", prMm);
@@ -1154,6 +1160,7 @@ export default {
           .then((response) => {
             this.searched = false;
             this.$store.commit("globalloading/SET_LOADING", false);
+            
             // this.isloading = false;
             let data = response.data;
             this.editdtm = choosenDt[1];
@@ -1177,16 +1184,28 @@ export default {
           });
       }
     },
+    // chooseField() {
+    //   const { filter, fullWells } = this;
+    //   console.log(filter);
+    //   console.log(fullWells);
+    //   // if (!filter || filter == "Казгермунай") {
+    //   this.$store.commit("fa/SET_FILTER", filter);
+    //   if (!filter || filter == "Все месторождения") {
+    //     this.wells = fullWells;
+    //   } else {
+    //     this.wells = fullWells.filter((e) => e.field === filter);
+    //   }
+    // },
     chooseField() {
       const { filter, fullWells } = this;
-      console.log(filter);
+      console.log("filter = ", filter);
       console.log(fullWells);
       // if (!filter || filter == "Казгермунай") {
       this.$store.commit("fa/SET_FILTER", filter);
-      if (!filter || filter == "Все месторождения") {
+      if (!filter) {
         this.wells = fullWells;
       } else {
-        this.wells = fullWells.filter((e) => e.field === filter);
+        this.wells = fullWells.filter((e) => filter.indexOf(e.field) !== -1);
       }
     },
     pushBign(bign) {
@@ -1197,10 +1216,8 @@ export default {
       }
       this.$modal.show(bign);
     },
-    // сортировка
     // swap() {
-
-    //   this.issorttosmall = !this.issorttosmall;
+    //   this.issorttobig = !this.issorttobig;
     // },
     getColor(status, ...values) {
       if (status < "0" && status === Math.min(status, ...values))
@@ -1217,6 +1234,9 @@ export default {
     },
     handlerSearch(search) {
       this.searchString = search;
+    },
+    handlerFilter(filter) {
+      this.filter = filter;
     },
     searchWell() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -1279,7 +1299,7 @@ export default {
     console.log("dt1-month", this.$store.getters["tr/month"]);
     console.log("dt1-year", this.$store.getters["tr/year"]);
     var today = new Date();
-    var dd = 1;
+    var dd = today.getDate();
     const mm = this.$store.getters["tr/month"]
       ? this.$store.getters["tr/month"]
       : today.getMonth() + 1;
@@ -1287,6 +1307,33 @@ export default {
       ? this.$store.getters["tr/year"]
       : today.getFullYear();
     var prMm = mm;
+
+
+    if(dd > 25 && mm < 12 && mm != 1 && prMm < 12) {
+      var mm1 = today.getMonth() + 2;
+      var yyyy1 = today.getFullYear();
+      var pryyyy1 = today.getFullYear();
+      var prMm1 = today.getMonth() + 1;
+    }
+    else if(dd > 25 && mm === 12){
+      var mm1 = 1;
+      var yyyy1 = today.getFullYear() + 1;
+      var pryyyy1 = today.getFullYear();
+      var prMm1 = 12;
+    }
+    else if(dd >25 && mm === 1 && prMm === 12){
+      var mm1 = 2;
+      var yyyy1 = today.getFullYear();
+      var pryyyy1 = today.getFullYear()-1;
+      var prMm1 = 12;
+    }
+    else{
+      var mm1 = today.getMonth() + 1;
+      var yyyy1 = today.getFullYear();
+      var pryyyy1 = today.getFullYear();
+      var prMm1 = today.getMonth();
+    }
+
     if (mm == 1) {
       var prMm = 12;
       var pryyyy = yyyy - 1;
@@ -1312,13 +1359,13 @@ export default {
       )
       .then((response) => {
         let data = response.data;
-        this.editdtm = mm;
+        this.editdtm = mm1;
         console.log(this.editdtm);
-        this.editdty = yyyy;
+        this.editdty = yyyy1;
         console.log(this.editdty);
-        this.editdtprevm = prMm;
+        this.editdtprevm = prMm1;
         console.log(this.editdtprevm);
-        this.editdtprevy = pryyyy;
+        this.editdtprevy = pryyyy1;
         console.log(this.editdtprevy);
         this.$store.commit("globalloading/SET_LOADING", false);
         // this.isloading = false;
@@ -1360,6 +1407,9 @@ export default {
 <style  scoped>
 body {
   color: white !important;
+}
+#app .multiselect {
+  max-width: 300px;
 }
 .but-nav__link {
   font-weight: inherit;
@@ -1421,8 +1471,9 @@ body {
 .table {
   overflow: scroll;
   height: calc(100vh - 205px);
+  margin: 0;
 }
-.table tr:nth-child(-n+4) td {
+.table tr:nth-child(-n + 4) td {
   position: sticky;
   background: rgb(51, 57, 117);
   top: 75px;
@@ -1454,7 +1505,6 @@ body {
   height: 40px;
 }
 
-
 .fakrtableborderedtable {
   font-size: 9px;
   padding: unset;
@@ -1462,7 +1512,7 @@ body {
 
 /* width */
 table::-webkit-scrollbar {
-  width: 10px;
+  width: 13px;
 }
 
 /* Track */
@@ -1477,11 +1527,11 @@ table::-webkit-scrollbar-thumb {
 
 /* Handle on hover */
 table::-webkit-scrollbar-thumb:hover {
-  background: #272953;
+  background: #656A8A;
 
 }
 /* уголок скролла  */
-table::-webkit-scrollbar-corner  {
+table::-webkit-scrollbar-corner {
   background: #333975;
 }
 .fadropmenu {
@@ -1494,7 +1544,8 @@ width: 70%;
   align-self: center;
   width: 150px;
   margin-top: 5px;
-  /* display: flex;  */
-  /* justify-content: center */
+
 }
+
+
 </style>

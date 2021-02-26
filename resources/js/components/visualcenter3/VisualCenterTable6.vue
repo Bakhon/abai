@@ -9,7 +9,9 @@
                 <div class="d-flex flex-row mb-2">
                     <div class="flex-grow-1 first-string">
                         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center p-2">
-                            <h5 class="font-weight-bold m-0">КПД Блока стратегии</h5>
+                            <h5 class="font-weight-bold m-0">
+                                <!-- КПД Блока стратегии -->{{ trans("visualcenter.strategyKPI") }}
+                                </h5>
                             <div class="w-75">
                                 <div class="progress2">
                                     <div
@@ -26,25 +28,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="close2 d-none d-sm-block">Закрыть</div>
+                            <div class="close2 d-none d-sm-block">
+                                <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                                </div>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex flex-column flex-sm-row mb-sm-3 vc-speedometer-line" v-if="isEnableSpeedometers">
                     <vc-speedometer-block
-                        v-bind:title="'Заключение/реализация контрактов на недропользование'"
+                        v-bind:title="trans('visualcenter.KPIstrategy1')" 
                         v-bind:mainValue="t1"
-                        v-bind:units="'кол-во проектов'"
+                        v-bind:units="trans('visualcenter.projectAmount')"
                         v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
-                        v-bind:title="'Привлечение стратегических партнеров'"
+                        v-bind:title="trans('visualcenter.KPIstrategy2')" 
                         v-bind:mainValue="t2"
-                        v-bind:units="'кол-во проектов'"
+                        v-bind:units="trans('visualcenter.projectAmount')"
                         v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
-                        v-bind:title="'ESG рейтинг'"
+                        v-bind:title="trans('visualcenter.ESGrating')"
                         v-bind:mainValue="t3"
                         v-bind:units="'%'"
                         v-bind:isLastBlock="true"
@@ -53,29 +57,29 @@
                 </div>
                 <div class="d-flex flex-column flex-sm-row mb-1 mb-sm-2 vc-speedometer-line" v-if="isEnableSpeedometers">
                     <vc-speedometer-block
-                        v-bind:title="'Оптимизированный Инвестиционный портфель'"
-                        v-bind:mainTitle="'Октябрь'"
+                        v-bind:title="trans('visualcenter.KPIstrategy4')" 
+                        v-bind:mainTitle="trans('visualcenter.October')"
                         v-bind:mainValue="t4"
-                        v-bind:toolTipPorog="'Ноябрь'"
-                        v-bind:toolTipAim="'Октябрь'"
-                        v-bind:toolTipVizov="'Сентябрь'"
-                        v-bind:units="'дата'"
+                        v-bind:toolTipPorog="trans('visualcenter.November')"
+                        v-bind:toolTipAim="trans('visualcenter.October')"
+                        v-bind:toolTipVizov="trans('visualcenter.September')"
+                        v-bind:units="trans('visualcenter.date2')"
                         v-bind:planWeight="'25'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
-                        v-bind:title="'Мероприятия по реструктуризации активов'"
+                        v-bind:title="trans('visualcenter.KPIstrategy5')" 
                         v-bind:mainValue="t5"
                         v-bind:units="'%'"
                         v-bind:planWeight="'20'"
                     ></vc-speedometer-block>
                     <vc-speedometer-block
-                        v-bind:title="'Мероприятия по передаче КазТрансГаз в Самрук-Казына'"
-                        v-bind:mainTitle="'Декабрь'"
+                        v-bind:title="trans('visualcenter.KPIstrategy6')"
+                        v-bind:mainTitle="trans('visualcenter.December')"
                         v-bind:toolTipPorog="'-'"
-                        v-bind:toolTipAim="'Декабрь'"
+                        v-bind:toolTipAim="trans('visualcenter.December')"
                         v-bind:toolTipVizov="'-'"
                         v-bind:mainValue="t6"
-                        v-bind:units="'дата'"
+                        v-bind:units="trans('visualcenter.date2')"
                         v-bind:isLastBlock="true"
                         v-bind:planWeight="'5'"
                     ></vc-speedometer-block>

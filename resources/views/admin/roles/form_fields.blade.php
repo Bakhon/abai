@@ -16,6 +16,11 @@
         <nav class="navbar navbar-light justify-content-start mb-3">
             <button class="btn btn-outline-secondary active" type="button" data-tab="monitoring">Модуль мониторинг</button>
             <button class="btn btn-outline-secondary ml-3" type="button" data-tab="economic">Модуль экономика</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="bigdata">Модуль Прототип БД</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="tr">Модуль ТР</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="viscenter">Модуль центр визуализации</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="podborGno">Модуль Подбор ГНО</button>
+            <button class="btn btn-outline-secondary ml-3" type="button" data-tab="podborGtm">Модуль Подбор ГТМ</button>
         </nav>
         <div class="tabs tab-monitoring active">
             <div class="form-check">
@@ -99,6 +104,84 @@
                     страницы</label>
             </div>
         </div>
+        
+        <div class="tabs tab-podborGno">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('podborGno view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('podborGno view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('podborGno view main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('podborGno view main')->id}}">Просмотр главной
+                    страницы</label>
+            </div>
+        </div>
+
+        <div class="tabs tab-podborGtm">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('podborGtm view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('podborGtm view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('podborGtm view main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('podborGtm view main')->id}}">Просмотр главной
+                    страницы</label>
+            </div>
+        </div>
+        <div class="tabs tab-bigdata">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('bigdata view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('bigdata view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('bigdata view main')->id)->isNotEmpty() ? 'checked' : ''}}>
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной
+                       for="permission_{{$permissions->get('bigdata view main')->id}}">Просмотр главной</label>
+            </div>
+        </div>
+        <div class="tabs tab-tr">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('tr view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('tr view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('tr view main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('tr view main')->id}}">Просмотр главной
+                    страницы</label>
+            </div>
+        </div>
+
+        <div class="tabs tab-viscenter">
+            <div class="form-check">
+                <input
+                        class="form-check-input"
+                        id="permission_{{$permissions->get('visualcenter view main')->id}}"
+                        type="checkbox"
+                        name="permissions[]"
+                        value="{{$permissions->get('visualcenter view main')->id}}"
+                        {{!empty($role) && $role->permissions->where('id', $permissions->get('visualcenter view main')->id)->isNotEmpty() ? 'checked' : ''}}
+                >
+                <label class="form-check-label"
+                       for="permission_{{$permissions->get('visualcenter view main')->id}}">Просмотр главной
+                    страницы</label>
+            </div>
+        </div>
+
     </div>
     <div class="col-12 mt-3 text-center">
         <button type="submit" class="btn btn-success">Сохранить</button>

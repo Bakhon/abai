@@ -7,15 +7,32 @@ use Level23\Druid\DruidClient;
 use Level23\Druid\Types\Granularity;
 use Level23\Druid\Extractions\ExtractionBuilder;
 use App\Models\DZO\DZOdaily;
+use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
+use App\Models\VisCenter\ImportForms\DZOstaff;
 
 class DruidController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('can:visualcenter3 dobycha')->only('visualcenter3');
+    //     $this->middleware('can:visualcenter4 corpKPI')->only('visualcenter4');
+    //     $this->middleware('can:visualcenter5 economic')->only('visualcenter5');
+    //     $this->middleware('can:visualcenter6 strategyKPI')->only('visualcenter6');
+    //     $this->middleware('can:visualcenter7 dobychaKPI')->only('visualcenter7');
+    // }
 
     protected $druidClient;
 
     public function __construct(DruidClient $druidClient)
     {
         $this->middleware('can:monitoring view main', ['only' => ['monitor']]);
+
+        $this->middleware('can:visualcenter view main')->only('visualcenter3','visualcenter4','visualcenter5','visualcenter6','visualcenter7');
+        // $this->middleware('can:visualcenter4 corpKPI')->only('visualcenter4');
+        // $this->middleware('can:visualcenter5 economic')->only('visualcenter5');
+        // $this->middleware('can:visualcenter6 strategyKPI')->only('visualcenter6');
+        // $this->middleware('can:visualcenter7 dobychaKPI')->only('visualcenter7');
+
         $this->druidClient = $druidClient;
     }
 
@@ -25,7 +42,7 @@ class DruidController extends Controller
             ->interval('2014-01-01 20:00:00', '2020-10-20 22:00:00')
             ->count('totalNrRecords')
             ->execute();
-return $response;
+        return $response;
     }
 
     public function getOilPrice(Request $request)
@@ -53,107 +70,7 @@ return $response;
         }
     }
 
-    public function visualcenter()
-    {
-        return view('visualcenter.visualcenter');
-    }
-
-    public function visualcenter2()
-    {
-        return view('visualcenter.visualcenter2');
-    }
-
-    public function visualcenter3()
-    {
-        return view('visualcenter.visualcenter3');
-    }
-
-    public function visualcenter3GetData(Request $request)  
-    {$period = ($request->timestampEnd-$request->timestampToday)-86400000; 
-
-        //return response()->json(DZOday::all('oil_plan','oil_fact','__time'));//->value('oil_plan'));
-        return response()->json(DZOdaily::all('fond_nagnetat_ef','fond_nagnetat_df','fond_nagnetat_bd','fond_nagnetat_ofls','fond_nagnetat_prs','fond_nagnetat_oprs','fond_nagnetat_krs','fond_nagnetat_okrs',
-            'oil_plan','oil_fact','gas_plan','gas_fact','__time',
-            'tovarnyi_ostatok_nefti_prev_day',
-            'tovarnyi_ostatok_nefti_today',
-            'sdacha_gaza_prirod_plan',
-            'sdacha_gaza_prirod_fact',
-            'raskhod_prirod_plan',
-            'raskhod_prirod_fact',
-            'pererabotka_gaza_prirod_plan',
-            'pererabotka_gaza_prirod_fact',
-            'pererabotka_gaza_poput_plan',
-            'pererabotka_gaza_poput_fact',
-            'sdacha_gaza_poput_plan',
-            'sdacha_gaza_poput_fact',
-            'raskhod_poput_plan',
-            'raskhod_poput_fact',
-            'ppd_zakachka_morskoi_vody_plan',
-            'ppd_zakachka_morskoi_vody_fact',
-            'ppd_zakachka_stochnoi_vody_plan',
-            'ppd_zakachka_stochnoi_vody_fact',
-            'ppd_zakachka_albsen_vody_plan',
-            'ppd_zakachka_albsen_vody_fact',
-            'fond_nagnetat_osvoenie',
-            'fond_nagnetat_konv',
-            'fond_nagnetat_well_survey',
-            'fond_nagnetat_others',
-
-            'otm_iz_burenia_skv_plan',
-            'otm_iz_burenia_skv_fact',
-            'otm_burenie_prohodka_plan',
-            'otm_burenie_prohodka_fact',
-            'otm_krs_skv_plan',
-            'otm_krs_skv_fact',
-            'otm_prs_skv_plan',
-            'otm_prs_skv_fact',
-
-            'chem_prod_zakacka_demulg_plan',
-            'chem_prod_zakacka_demulg_fact',
-            'chem_prod_zakacka_bakteracid_plan',
-            'chem_prod_zakacka_bakteracid_fact',
-            'chem_prod_zakacka_ingibator_korrozin_plan',
-            'chem_prod_zakacka_ingibator_korrozin_fact',
-            'chem_prod_zakacka_ingibator_soleotloj_plan',
-            'chem_prod_zakacka_ingibator_soleotloj_fact',
-
-            'fond_neftedob_ef',  
-            'fond_neftedob_df',
-            'fond_neftedob_bd',
-            'fond_neftedob_osvoenie',
-            'fond_neftedob_ofls',
-            'fond_neftedob_prs',
-            'fond_neftedob_oprs',
-            'fond_neftedob_krs',
-            'fond_neftedob_okrs',
-            'fond_neftedob_well_survey',
-            'fond_neftedob_nrs',
-            'fond_neftedob_others',
-        'dzo','oil_dlv_plan','oil_dlv_fact','prod_wells_work','prod_wells_idle','inj_wells_idle',
-        'inj_wells_work','gk_plan','gk_fact','liq_plan','liq_fact')->where('__time', '>', $period-$request->timestampToday)->where('__time', '<', $request->timestampEnd+86400000));
-        //return response()->json(Vis2Form::all());//response()->json($array);
-        //return  response()->json($request);
-    }
-
-    public function visualcenter4()
-    {
-        return view('visualcenter.visualcenter4');
-    }
-
-    public function visualcenter5()
-    {
-        return view('visualcenter.visualcenter5');
-    }
-
-    public function visualcenter6()
-    {
-        return view('visualcenter.visualcenter6');
-    }
-
-    public function visualcenter7()
-    {
-        return view('visualcenter.visualcenter7');
-    }
+    
 
     public function production()
     {
@@ -271,12 +188,6 @@ return $response;
     {
         return view('reports.dob');
     }
-
-    public function gno()
-    {
-        return view('gno.gno');
-    }
-
     public function monitor()
     {
         return view('monitor.monitor');
@@ -360,45 +271,45 @@ return $response;
             //Gravitational acceleration
             $g = 9.81; // m2/s
             // $h = $request->h;
-//          Liquid-only properties, for calculation of E, dP_lo
-//          Calculate velocity
-            $v_lo = $m_dot/$rhol/(pi()/4*$d**2);
-//          Calculate Reynolds number
+            //          Liquid-only properties, for calculation of E, dP_lo
+            //          Calculate velocity
+            $v_lo = $m_dot / $rhol / (pi() / 4 * $d ** 2);
+            //          Calculate Reynolds number
             $Re_lo = $v_lo * $d * $rhol / $mul; // m/s * m * kg/m3 / (kg/(m.s))
-            $A = pow(2.457 * log(1 / (pow(7/$Re_lo,0.9)+(0.27 * $roughness / $d))),16);
-            $B = pow(37530 / $Re_lo,16);
-//          Calculate Friction factor
-            $f_lo = 8 * pow(pow(8 / $Re_lo,12) + 1 / (pow($A+$B,1.5)),1 / 12);
-            $dP_lo = $f_lo*$l/$d*(0.5*$rhol*$v_lo**2);
+            $A = pow(2.457 * log(1 / (pow(7 / $Re_lo, 0.9) + (0.27 * $roughness / $d))), 16);
+            $B = pow(37530 / $Re_lo, 16);
+            //          Calculate Friction factor
+            $f_lo = 8 * pow(pow(8 / $Re_lo, 12) + 1 / (pow($A + $B, 1.5)), 1 / 12);
+            $dP_lo = $f_lo * $l / $d * (0.5 * $rhol * $v_lo ** 2);
 
-//          Gas-only properties, for calculation of E
-            $v_go = $m_dot/$rhog/(pi()/4*$d**2);
+            //          Gas-only properties, for calculation of E
+            $v_go = $m_dot / $rhog / (pi() / 4 * $d ** 2);
             $Re_go = $v_go * $d * $rhog / $mug;
-            $A_g = pow(2.457 * log(1 / (pow(7/$Re_go,0.9)+(0.27 * $roughness / $d))),16);
-            $B_g= pow(37530 / $Re_go,16);
-            $f_go = 8 * pow(pow(8 / $Re_go,12) + 1 / (pow($A_g+$B_g,1.5)),1 / 12);
+            $A_g = pow(2.457 * log(1 / (pow(7 / $Re_go, 0.9) + (0.27 * $roughness / $d))), 16);
+            $B_g = pow(37530 / $Re_go, 16);
+            $f_go = 8 * pow(pow(8 / $Re_go, 12) + 1 / (pow($A_g + $B_g, 1.5)), 1 / 12);
 
-            $F = $x**0.78*(1-$x)**0.224;
-            $H = ($rhol/$rhog)**0.91*($mug/$mul)**0.19*(1 - $mug/$mul)**0.7;
-            $E = (1-$x)**2 + $x**2*($rhol*$f_go/($rhog*$f_lo));
+            $F = $x ** 0.78 * (1 - $x) ** 0.224;
+            $H = ($rhol / $rhog) ** 0.91 * ($mug / $mul) ** 0.19 * (1 - $mug / $mul) ** 0.7;
+            $E = (1 - $x) ** 2 + $x ** 2 * ($rhol * $f_go / ($rhog * $f_lo));
 
-//          Homogeneous properties, for Froude/Weber numbers
-//          Calculate voidage
+            //          Homogeneous properties, for Froude/Weber numbers
+            //          Calculate voidage
             $eh = 1 / (1 + (1 - $x) * $rhog / $x / $rhol);
-            $rho_h = $rhol*(1-$eh) + $rhog*$eh;
-            $Q_h = $m_dot/$rho_h;
-            $v_h = $Q_h/(pi()/4*$d**2);
+            $rho_h = $rhol * (1 - $eh) + $rhog * $eh;
+            $Q_h = $m_dot / $rho_h;
+            $v_h = $Q_h / (pi() / 4 * $d ** 2);
 
-//          Fr = Froude(m, D, rho=rho_h) # checked with (m/(pi/4*D**2))**2/g/D/rho_h**2
-            $Fr = $m_dot**2 / ($g * $d * $rho_h**2);
-//          We = Weber(m=m, D=D, rho=rho_h, sigma=sigma) # checked with (m/(pi/4*D**2))**2*D/sigma/rho_h
-            $W = $m_dot**2 * $d / $sigma / $rho_h;
-            $phi_lo2 = $E + 3.24*$F*$H/($Fr**0.0454*$W**0.035);
-            $dP = $phi_lo2*$dP_lo;
-//          return result
+            //          Fr = Froude(m, D, rho=rho_h) # checked with (m/(pi/4*D**2))**2/g/D/rho_h**2
+            $Fr = $m_dot ** 2 / ($g * $d * $rho_h ** 2);
+            //          We = Weber(m=m, D=D, rho=rho_h, sigma=sigma) # checked with (m/(pi/4*D**2))**2*D/sigma/rho_h
+            $W = $m_dot ** 2 * $d / $sigma / $rho_h;
+            $phi_lo2 = $E + 3.24 * $F * $H / ($Fr ** 0.0454 * $W ** 0.035);
+            $dP = $phi_lo2 * $dP_lo;
+            //          return result
 
-// dP =  Friedel(m, x, rhol, rhog, mul, mug, sigma, D, roughness, L)
-            $P_final = $P - $dP/100000;
+            // dP =  Friedel(m, x, rhol, rhog, mul, mug, sigma, D, roughness, L)
+            $P_final = $P - $dP / 100000;
 
             //TEMPERATURE CALCULATIONS TO BE ADDED LATER!!! 12.10.2010
             //These variables are constant for only ONE simulation
@@ -430,7 +341,7 @@ return $response;
             //heat capacity Cp fluid in J/kg*K
             $c_p = 4184.4;
             //Stefan-Boltzmann constant
-            $sigma_s = 5.678 * pow(10,-8); # W/m^2 K
+            $sigma_s = 5.678 * pow(10, -8); # W/m^2 K
             //print("sigma_s = ", sigma_s)
             //Emissivity of pipe material mild steel @ 20 C
             $epsilon = 0.12;
@@ -444,23 +355,23 @@ return $response;
             // calculate the mass flow rate
             //$m_dot = $flow * $density;
             //calculate the cross sectional area of the inner pipe
-            $ax = ($di**2) * pi() / 4;
+            $ax = ($di ** 2) * pi() / 4;
             //Heat transfer coefficient outside pipe in W/(m^2*K)
             $Z = 1; #depth of pipe in ground
-            $h_o = 2 * $k_g / $do / log(2*$Z + sqrt(4*$Z**2 - $do**2) / $do);
+            $h_o = 2 * $k_g / $do / log(2 * $Z + sqrt(4 * $Z ** 2 - $do ** 2) / $do);
             //calculate the heat transfer coefficient inside pipe
-            $h_i = 0.023*$c_p*$m_dot/ $ax / pow(($c_p*$viscosity/$k_f),2/3) / pow(($di*$m_dot/$ax/$viscosity),0.2);
+            $h_i = 0.023 * $c_p * $m_dot / $ax / pow(($c_p * $viscosity / $k_f), 2 / 3) / pow(($di * $m_dot / $ax / $viscosity), 0.2);
             // U - the overall heat transfer coefficient for bare pipe that accounts for all the resistances involved
             // Assume little or no wind affects the pipe heat loss and we'll estimate the heat loss from the bare pipe
             $R_in = $do / ($h_i * $di);
-            $R_1 = 0.5*$do * log($do/$di) / $k;
+            $R_1 = 0.5 * $do * log($do / $di) / $k;
             $R_out = 1 / $h_o;
             $U = 1 / ($R_in + $R_1 + $R_out);
             // Now, we'll estimate the radiant heat losses:
             $A = pi() * $do;
-            $diff_t = $ti**4 - $to**4;
+            $diff_t = $ti ** 4 - $to ** 4;
             //qwerty = l * sigma_s * A * epsilon
-            $Q_rad = $l* $sigma_s * $A * $epsilon * (($ti**4)-($to**4));
+            $Q_rad = $l * $sigma_s * $A * $epsilon * (($ti ** 4) - ($to ** 4));
             //Now, we'll estimate the losses due to convection:
             $Q_conv = $U * $A * $l * ($ti - $to);
             //Add all these together to arrive at the total heat loss for the bare pipe
@@ -552,13 +463,13 @@ return $response;
             $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa
             $ratio = $pCO2 / $pH2S;
 
-            if ($pCO2 / $pH2S >= 20){
-            //if ($pH2S < 0.3){// in kPa
-                $x = 7.96 - 2320 / ($t+273);
-                $y = $t * 5.55 * pow(10,-3);
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S < 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
                 $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
-                $r_a = pow(10,$omega);
+                $r_a = pow(10, $omega);
                 ob_start(); //Start output buffer
                 echo "CO2";
                 $environment_a = "CO2";
@@ -566,9 +477,9 @@ return $response;
                 ob_end_clean(); //Discard output buffer
                 //return $r;
             }
-                //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
             else if ($pCO2 / $pH2S < 20) {
-            //else if ($pH2S > 0.3){
+                //else if ($pH2S > 0.3){
                 //$r_a = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
                 //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
                 $r_a = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; // Partial pressure was calculated in bar
@@ -580,59 +491,56 @@ return $response;
                 //return $r;
             }
 
-            if  ($r_a > 0.125) {
+            if ($r_a > 0.125) {
                 if ($conH2S < 17) {
                     $dose_a = 14.177 * log($r_a) + 35.222;
                     //return $dose;
-                }
-                else if ($conH2S > 17) {
+                } else if ($conH2S > 17) {
                     $dose_a = 13.137 * log($r_a) + 26.859;
                     //return $dose;
                 }
-            }
-
-            else {
+            } else {
                 $dose_a = 0;
             }
             // //************************************************//
             // //LOCAL CORROSION CALCULATION IN POINT A*//
             // //************************************************//
-                //H2O water concentration in %
-                $H2O = $request->H2O; // БД ОМГ НГДУ
-                //Please enter T temperature in C
-                $T = 25; //
-                //Pressure in bar [convert to psi]
-                $P = $P_bufer * 14.503773773; //БД ОМГ НГДУ
-                //pH2S partial pressure kPa [convert to psi]
-                $pH2S = $pH2S * 0.1450377377;
-                //pCO2 partial pressure kPa [convert to psi]
-                $pCO2 = $pCO2 * 0.1450377377;
-                //SO4 content in mg/dm3
-                $SO4 = $request->SO4; // БД Лабораторная по жидкости
-                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
-                //HCO3 content in mg/dm3
-                $HCO3 = $request->HCO3; // БД Лабораторная по жидкости
-                $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
-                //CL content in mg/dm3
-                $Cl = $request->Cl; // БД Лабораторная по жидкости
-                $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
+            //H2O water concentration in %
+            $H2O = $request->H2O; // БД ОМГ НГДУ
+            //Please enter T temperature in C
+            $T = 25; //
+            //Pressure in bar [convert to psi]
+            $P = $P_bufer * 14.503773773; //БД ОМГ НГДУ
+            //pH2S partial pressure kPa [convert to psi]
+            $pH2S = $pH2S * 0.1450377377;
+            //pCO2 partial pressure kPa [convert to psi]
+            $pCO2 = $pCO2 * 0.1450377377;
+            //SO4 content in mg/dm3
+            $SO4 = $request->SO4; // БД Лабораторная по жидкости
+            $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
+            //HCO3 content in mg/dm3
+            $HCO3 = $request->HCO3; // БД Лабораторная по жидкости
+            $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
+            //CL content in mg/dm3
+            $Cl = $request->Cl; // БД Лабораторная по жидкости
+            $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
 
-                //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
+            //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
 
-                //PAPAVINASAM Corrosion rate
-                $pcr_W = 0.54 * $H2O + 12.13;
-                $pcr_T = 0.57 * $T + 20;
-                $pcr_P = -0.081 * $P + 88;
-                $pcr_H2S = -0.54 * $pH2S + 67;
-                $pcr_CO2 = -0.63 * $pCO2 + 74;
-                $pcr_SO4 = -0.013 * $SO4 + 57;
-                $pcr_HCO3 = -0.014 * $HCO3 + 81;
-                $pcr_Cl = -0.0007 * $Cl + 9.2;
+            //PAPAVINASAM Corrosion rate
+            $pcr_W = 0.54 * $H2O + 12.13;
+            $pcr_T = 0.57 * $T + 20;
+            $pcr_P = -0.081 * $P + 88;
+            $pcr_H2S = -0.54 * $pH2S + 67;
+            $pcr_CO2 = -0.63 * $pCO2 + 74;
+            $pcr_SO4 = -0.013 * $SO4 + 57;
+            $pcr_HCO3 = -0.014 * $HCO3 + 81;
+            $pcr_Cl = -0.0007 * $Cl + 9.2;
 
-                $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
-                $PCR = array_sum($arr)/8; // mpy
-                // Local corrosion rate in point A
-                $PCR_A = 0.0254  * $PCR; // convert mpy => mm per year
+            $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
+            $PCR = array_sum($arr) / 8; // mpy
+            // Local corrosion rate in point A
+            $PCR_A = 0.0254  * $PCR; // convert mpy => mm per year
 
 
             //Calculating the corrosion rate as per de Waard and Milliams, which is used in Royal Dutch Shell
@@ -675,21 +583,21 @@ return $response;
             $pH2S = $p * $conH2S_frac / 100; // partial pressure H2S in kPa//
             $ratio = $pCO2 / $pH2S;
 
-            if ($pCO2 / $pH2S >= 20){
-            //if ($pH2S < 0.3){// in kPa
-                $x = 7.96 - 2320 / ($t+273);
-                $y = $t * 5.55 * pow(10,-3);
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S < 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
                 $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
-                $r_e = pow(10,$omega);
+                $r_e = pow(10, $omega);
                 ob_start(); //Start output buffer///
                 echo "CO2";
                 $output_e = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
             }
-                //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
             else if ($pCO2 / $pH2S < 20) {
-            //else if ($pH2S > 0.3){// in kPa
+                //else if ($pH2S > 0.3){// in kPa
                 //$r_e = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
                 //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
                 $r_e = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
@@ -699,59 +607,56 @@ return $response;
                 ob_end_clean(); //Discard output buffer
             }
 
-            if  ($r_e > 0.125) {
-                if ($conH2S < 17 ) {
+            if ($r_e > 0.125) {
+                if ($conH2S < 17) {
                     $dose_e = 14.177 * log($r_e) + 35.222;
                     //return $dose;
-                }
-                else if ($conH2S > 17) {
+                } else if ($conH2S > 17) {
                     $dose_e = 13.137 * log($r_e) + 26.859;
                     //return $dose;
                 }
-            }
-
-            else {
+            } else {
                 $dose_e = 0;
             }
             //************************************************//
             //LOCAL CORROSION CALCULATION IN POINT E PIPELINE*//
             //************************************************//
-                //H2O water concentration in %
-                $H2O = $request->H2O; // БД ОМГ НГДУ
-                //Please enter T temperature in C
-                $T = $t_heater; // БД ОМГ НГДУ
-                //Pressure in bar [convert to psi]
-                $P = $P_pump * 14.503773773; //БД ОМГ НГДУ
-                //pH2S partial pressure kPa [convert to psi]
-                $pH2S = $pH2S * 0.1450377377;
-                //pCO2 partial pressure kPa [convert to psi]
-                $pCO2 = $pCO2 * 0.1450377377;
-                //SO4 content in mg/dm3
-                $SO4 = $request->SO4; // БД Лабораторная по жидкости
-                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
-                //HCO3 content in mg/dm3
-                $HCO3 = $request->HCO3; // БД Лабораторная по жидкости
-                $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
-                //CL content in mg/dm3
-                $Cl = $request->Cl; // БД Лабораторная по жидкости
-                $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
+            //H2O water concentration in %
+            $H2O = $request->H2O; // БД ОМГ НГДУ
+            //Please enter T temperature in C
+            $T = $t_heater; // БД ОМГ НГДУ
+            //Pressure in bar [convert to psi]
+            $P = $P_pump * 14.503773773; //БД ОМГ НГДУ
+            //pH2S partial pressure kPa [convert to psi]
+            $pH2S = $pH2S * 0.1450377377;
+            //pCO2 partial pressure kPa [convert to psi]
+            $pCO2 = $pCO2 * 0.1450377377;
+            //SO4 content in mg/dm3
+            $SO4 = $request->SO4; // БД Лабораторная по жидкости
+            $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
+            //HCO3 content in mg/dm3
+            $HCO3 = $request->HCO3; // БД Лабораторная по жидкости
+            $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
+            //CL content in mg/dm3
+            $Cl = $request->Cl; // БД Лабораторная по жидкости
+            $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
 
-                //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
+            //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
 
-                //PAPAVINASAM Corrosion rate
-                $pcr_W = 0.54 * $H2O + 12.13;
-                $pcr_T = 0.57 * $T + 20;
-                $pcr_P = -0.081 * $P + 88;
-                $pcr_H2S = -0.54 * $pH2S + 67;
-                $pcr_CO2 = -0.63 * $pCO2 + 74;
-                $pcr_SO4 = -0.013 * $SO4 + 57;
-                $pcr_HCO3 = -0.014 * $HCO3 + 81;
-                $pcr_Cl = -0.0007 * $Cl + 9.2;
+            //PAPAVINASAM Corrosion rate
+            $pcr_W = 0.54 * $H2O + 12.13;
+            $pcr_T = 0.57 * $T + 20;
+            $pcr_P = -0.081 * $P + 88;
+            $pcr_H2S = -0.54 * $pH2S + 67;
+            $pcr_CO2 = -0.63 * $pCO2 + 74;
+            $pcr_SO4 = -0.013 * $SO4 + 57;
+            $pcr_HCO3 = -0.014 * $HCO3 + 81;
+            $pcr_Cl = -0.0007 * $Cl + 9.2;
 
-                $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
-                $PCR = array_sum($arr)/8; // mpy
-                // Local corrosion rate in point G pipeline
-                $PCR_E = 0.0254  * $PCR; // convert mpy => mm per year
+            $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
+            $PCR = array_sum($arr) / 8; // mpy
+            // Local corrosion rate in point G pipeline
+            $PCR_E = 0.0254  * $PCR; // convert mpy => mm per year
 
 
             //***********************************//
@@ -791,21 +696,21 @@ return $response;
             $ratio = $pCO2 / $pH2S;
             //$r_f = 0;
 
-            if ($pCO2 / $pH2S >= 20){
-            //if ($pH2S <= 0.3){// in kPa
-                $x = 7.96 - 2320 / ($t+273);
-                $y = $t * 5.55 * pow(10,-3);
+            if ($pCO2 / $pH2S >= 20) {
+                //if ($pH2S <= 0.3){// in kPa
+                $x = 7.96 - 2320 / ($t + 273);
+                $y = $t * 5.55 * pow(10, -3);
                 $z = 0.67 * log10($co2);
                 $omega = $x - $y + $z;
-                $r_f = pow(10,$omega);
+                $r_f = pow(10, $omega);
                 ob_start(); //Start output buffer
                 echo "CO2";
                 $output_f = ob_get_contents(); //Grab output
                 ob_end_clean(); //Discard output buffer
             }
-                //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
+            //r = pow(10, (7.96 - 2320 / (t + 273) - 5.55 * 10**(-3) * t + 0.67 * math.log10(co2))
             else if ($pCO2 / $pH2S < 20) {
-            //else if ($pH2S > 0.3){// in kPa
+                //else if ($pH2S > 0.3){// in kPa
                 //$r_f = -0.6274 + 0.01318 * $conCO2 + 0.02397 * $conH2S;
                 //Скорость корр = -0,6274+16,9875*p(H2S)+12,0596*p(CO2)
                 $r_f = -0.6274 + 16.9875 * $pH2S / 100 + 12.0596 * $pCO2 / 100; //Partial pressure calculated in bar
@@ -815,134 +720,113 @@ return $response;
                 ob_end_clean(); //Discard output buffer
             }
 
-            if  ($r_f > 0.125) {
-                if ($conH2S < 17 ) {
+            if ($r_f > 0.125) {
+                if ($conH2S < 17) {
                     $dose_f = 14.177 * log($r_f) + 35.222;
                     //return $dose;
-                }
-                else if ($conH2S > 17) {
+                } else if ($conH2S > 17) {
                     $dose_f = 13.137 * log($r_f) + 26.859;
                     //return $dose;
                 }
-            }
-
-            else {
+            } else {
                 $dose_f = 0;
             }
 
             //************************************************//
             //LOCAL CORROSION CALCULATION IN POINT F PIPELINE*//
             //************************************************//
-                //H2O water concentration in %
-                $H2O = $request->H2O; // БД ОМГ НГДУ
-                //Please enter T temperature in C
-                $T = $t_final - 273; //
-                //Pressure in bar [convert to psi]
-                $P = $P_final * 14.503773773;
-                //pH2S partial pressure kPa [convert to psi]
-                $pH2S = $pH2S * 0.1450377377;
-                //pCO2 partial pressure kPa [convert to psi]
-                $pCO2 = $pCO2 * 0.1450377377;
-                //SO4 content in mg/dm3
-                $SO4 = $request->SO4; // БД Лабараторная по жидкости
-                $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
-                //HCO3 content in mg/dm3
-                $HCO3 = $request->HCO3; // БД Лабараторная по жидкости
-                $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
-                //CL content in mg/dm3
-                $Cl = $request->Cl; // БД Лабараторная по жидкости
-                $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
+            //H2O water concentration in %
+            $H2O = $request->H2O; // БД ОМГ НГДУ
+            //Please enter T temperature in C
+            $T = $t_final - 273; //
+            //Pressure in bar [convert to psi]
+            $P = $P_final * 14.503773773;
+            //pH2S partial pressure kPa [convert to psi]
+            $pH2S = $pH2S * 0.1450377377;
+            //pCO2 partial pressure kPa [convert to psi]
+            $pCO2 = $pCO2 * 0.1450377377;
+            //SO4 content in mg/dm3
+            $SO4 = $request->SO4; // БД Лабараторная по жидкости
+            $SO4 = $SO4 * 0.0208; // convert from mg/l => mgEq/l
+            //HCO3 content in mg/dm3
+            $HCO3 = $request->HCO3; // БД Лабараторная по жидкости
+            $HCO3 = $HCO3 * 0.0164; // convert from mg/l => mgEq/l
+            //CL content in mg/dm3
+            $Cl = $request->Cl; // БД Лабараторная по жидкости
+            $Cl = $Cl * 0.0282; // convert from mg/l => mgEq/l
 
-                //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
+            //def corrosion_rate(H2O,P,T,pH2S,pCO2,HCO3,Cl):
 
-                //PAPAVINASAM Corrosion rate
-                $pcr_W = 0.54 * $H2O + 12.13;
-                $pcr_T = 0.57 * $T + 20;
-                $pcr_P = -0.081 * $P + 88;
-                $pcr_H2S = -0.54 * $pH2S + 67;
-                $pcr_CO2 = -0.63 * $pCO2 + 74;
-                $pcr_SO4 = -0.013 * $SO4 + 57;
-                $pcr_HCO3 = -0.014 * $HCO3 + 81;
-                $pcr_Cl = -0.0007 * $Cl + 9.2;
+            //PAPAVINASAM Corrosion rate
+            $pcr_W = 0.54 * $H2O + 12.13;
+            $pcr_T = 0.57 * $T + 20;
+            $pcr_P = -0.081 * $P + 88;
+            $pcr_H2S = -0.54 * $pH2S + 67;
+            $pcr_CO2 = -0.63 * $pCO2 + 74;
+            $pcr_SO4 = -0.013 * $SO4 + 57;
+            $pcr_HCO3 = -0.014 * $HCO3 + 81;
+            $pcr_Cl = -0.0007 * $Cl + 9.2;
 
-                $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
-                $PCR = array_sum($arr)/8; // mpy
-                // Local corrosion rate in point F
-                $PCR_F = 0.0254  * $PCR; // convert mpy => mm per year
-
-
-                /////////////////////////////////
-                //MAX DOSE
-                $max_dose = max($dose_a, $dose_e, $dose_f);
-                /////////////////////////////////
-
-        $vdata = [
-            'flow_velocity_meter_per_sec' => round($v_lo,1),
-            'm_dot' => round($m_dot,2),
-            'final_pressure_bar_point_F' => round($P_final,2),
-            'corrosion_rate_mm_per_y_point_A' => round($r_a,1),
-            'corrosion_rate_mm_per_y_point_E' => round($r_e,1),
-            'corrosion_rate_mm_per_y_point_F' => round($r_f,1),
-            'dose_mg_per_l_point_A' => round($dose_a,2),
-            'dose_mg_per_l_point_E' => round($dose_e,2),
-            'dose_mg_per_l_point_F' => round($dose_f,2),
-            'max_dose' => round($max_dose,2),
-            //'warning' => $warning,
-            'GOR1' => $GOR1,
-            'GOR' => $GOR,
-            'q_o' => round($q_o,4),
-            'q_g_sib' => round($q_g_sib,4),
-            'q_l' => round($q_l,4),
-            'q_g' => round($q_g,4),
-            //'Q_h' => round($Q_h,4),
-            //'dP' => round($dP,4),
-            //'d' => round($d,4),
-            //'GOR' => round($GOR,4),
-            //'Re_lo' => round($Re_lo,4),
-            //'Re_go' => round($Re_go,4),
-            //'rho_h' => round($rho_h,4),
-            //'mdotl' => round($m_dotl,4),
-            //'mdotg' => round($m_dotg,4),
-            't_final_celsius_point_F' => round($t_final,1),
-            't_final_celsius_point_E' => round($t_heater,1),
-            //'corrosion_mm_per_year' => round($r,4),
-            'pCO2_kPa' => round($pCO2,2),
-            'pH2S_kPa' => round($pH2S,2),
-            //'dose_mg_per_l' => round($dose,4),
-            //'H2S_mg_per_l' => round($H2S,4),
-            //'CO2_mg_perl' => round($CO2,4),
-            //'environment_point_A' => $environment_a,
-            'environment_point_A' => $output_a,
-            'environment_point_E' => $output_e,
-            'environment_point_F' => $output_f,
-            //'pCO2_per_pH2S' => $ratio,
-            'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A,2),
-            'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E,2),
-            'papavinasam_corrosion_mm_per_y_point_F' => round($PCR_F,2),
-        ];
+            $arr = array($pcr_W, $pcr_T, $pcr_P, $pcr_H2S, $pcr_CO2, $pcr_SO4, $pcr_HCO3, $pcr_Cl);
+            $PCR = array_sum($arr) / 8; // mpy
+            // Local corrosion rate in point F
+            $PCR_F = 0.0254  * $PCR; // convert mpy => mm per year
 
 
-        return response()->json($vdata);
+            /////////////////////////////////
+            //MAX DOSE
+            $max_dose = max($dose_a, $dose_e, $dose_f);
+            /////////////////////////////////
+
+            $vdata = [
+                'flow_velocity_meter_per_sec' => round($v_lo, 1),
+                'm_dot' => round($m_dot, 2),
+                'final_pressure_bar_point_F' => round($P_final, 2),
+                'corrosion_rate_mm_per_y_point_A' => round($r_a, 1),
+                'corrosion_rate_mm_per_y_point_E' => round($r_e, 1),
+                'corrosion_rate_mm_per_y_point_F' => round($r_f, 1),
+                'dose_mg_per_l_point_A' => round($dose_a, 2),
+                'dose_mg_per_l_point_E' => round($dose_e, 2),
+                'dose_mg_per_l_point_F' => round($dose_f, 2),
+                'max_dose' => round($max_dose, 2),
+                //'warning' => $warning,
+                'GOR1' => $GOR1,
+                'GOR' => $GOR,
+                'q_o' => round($q_o, 4),
+                'q_g_sib' => round($q_g_sib, 4),
+                'q_l' => round($q_l, 4),
+                'q_g' => round($q_g, 4),
+                //'Q_h' => round($Q_h,4),
+                //'dP' => round($dP,4),
+                //'d' => round($d,4),
+                //'GOR' => round($GOR,4),
+                //'Re_lo' => round($Re_lo,4),
+                //'Re_go' => round($Re_go,4),
+                //'rho_h' => round($rho_h,4),
+                //'mdotl' => round($m_dotl,4),
+                //'mdotg' => round($m_dotg,4),
+                't_final_celsius_point_F' => round($t_final, 1),
+                't_final_celsius_point_E' => round($t_heater, 1),
+                //'corrosion_mm_per_year' => round($r,4),
+                'pCO2_kPa' => round($pCO2, 2),
+                'pH2S_kPa' => round($pH2S, 2),
+                //'dose_mg_per_l' => round($dose,4),
+                //'H2S_mg_per_l' => round($H2S,4),
+                //'CO2_mg_perl' => round($CO2,4),
+                //'environment_point_A' => $environment_a,
+                'environment_point_A' => $output_a,
+                'environment_point_E' => $output_e,
+                'environment_point_F' => $output_f,
+                //'pCO2_per_pH2S' => $ratio,
+                'papavinasam_corrosion_mm_per_y_point_A' => round($PCR_A, 2),
+                'papavinasam_corrosion_mm_per_y_point_E' => round($PCR_E, 2),
+                'papavinasam_corrosion_mm_per_y_point_F' => round($PCR_F, 2),
+            ];
 
 
+            return response()->json($vdata);
         } else {
             return "Error. Invalid url";
         }
     }
-    public function tr()
-    {
-        return view('tr.tr');
-    }    ///
-    public function fa()
-    {
-        return view('fa.fa');
-    }    ///
-    public function trfa()
-    {
-        return view('trfa.trfa');
-    }    ///
-    public function tr_charts()
-    {
-        return view('tr_charts.tr_charts');
-    }    ///
 }

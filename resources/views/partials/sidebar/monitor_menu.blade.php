@@ -1,10 +1,10 @@
-<a href="{{route('monitor.reports')}}" class="bg-dark list-group-item list-group-item-action">
+<a href="{{route('monitor.reports')}}" class="bg-dark-new list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <img src="/img/gno/download.png" width="25" height="25" class="companyLogo">
         <span class="menu-collapsed companyName d-none"></span>
     </div>
 </a>
-<a href="#" class="bg-dark list-group-item list-group-item-action">
+<a href="#" class="bg-dark-new list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-start align-items-center">
         <svg width="27" height="23" viewBox="0 0 27 23" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"

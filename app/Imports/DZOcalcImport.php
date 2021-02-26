@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\DZO\DZOcalc;
+use App\Models\VisCenter\ImportForms\DZOcalc;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class DZOcalcImport implements ToModel
