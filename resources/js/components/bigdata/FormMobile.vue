@@ -93,6 +93,10 @@ export default {
   &__blocks {
     padding: 124px 0;
     @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100% - 60px);
       padding: 11vw 0;
     }
   }
