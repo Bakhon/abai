@@ -3,23 +3,23 @@
         <div class="row col-12 p-0 m-0">
             <div class="gtm-dark col-12 col-md-4 col-lg-2 p-0">
                 <div class="block-header text-center">
-                    Соседние скважины
+                    {{ trans("paegtm.nearWells") }}
                 </div>
                 <div class="gtm-dark table-responsive near-wells-table-block table-scroll">
                     <table class="table table-striped table-borderless text-center text-white near-wells">
                         <tbody>
                         <tr>
-                            <td class="align-middle text-left pl-3">Соседние скважины</td>
-                            <td class="align-middle">Расстояние,м</td>
-                            <td class="align-middle">Горизонты</td>
+                            <td class="align-middle text-left pl-3">{{ trans("paegtm.nearWells") }}</td>
+                            <td class="align-middle">{{ trans("paegtm.distance") }}</td>
+                            <td class="align-middle">{{ trans("paegtm.horizons") }}</td>
                         </tr>
-                        <tr><td colspan="3" class="text-center near-wells-big">Добывающие</td></tr>
+                        <tr><td colspan="3" class="text-center near-wells-big">{{ trans("paegtm.mining") }}</td></tr>
                         <tr class="near-wells-table-item" v-for="item in nearWellsData">
                             <td class="text-left p-2 pl-3">{{ item.name }}</td>
                             <td>{{ item.distance }}</td>
                             <td>{{ item.horizons }}</td>
                         </tr>
-                        <tr><td colspan="3" class="text-center near-wells-big">Нагнетательные</td></tr>
+                        <tr><td colspan="3" class="text-center near-wells-big">{{ trans("paegtm.delivery") }}</td></tr>
                         <tr class="near-wells-table-item" v-for="item in nearWellsData">
                             <td class="text-left p-2 pl-3">{{ item.name }}</td>
                             <td>{{ item.distance }}</td>
@@ -32,7 +32,7 @@
             <div class="d-none d-lg-block col-lg-5 p-0 pl-2 gtm-map-block">
                 <div class="gtm-dark text-center h-100">
                     <div class="block-header">
-                        Карты
+                        {{ trans("paegtm.maps") }}
                     </div>
                     <div class="gtm-dark p-3">
                         <img src="/img/GTM/map.svg" class="gtm-map-img">
@@ -42,9 +42,9 @@
             <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0">
                 <div class="gtm-dark h-100">
                     <div class="block-header text-center">
-                        Таблица данных скважин
+                        {{ trans("paegtm.wellDataTable") }}
                     </div>
-                    <div class="gtm-dark table-responsive table-scroll mh-400">
+                    <div class="gtm-dark table-responsive table-scroll mh-400 mb-0">
                         <table class="table table-striped table-borderless text-center text-white">
                             <tbody>
                             <tr class="near-wells-table-item" v-for="item in wellsData">
@@ -62,10 +62,10 @@
                 </div>
             </div>
         </div>
-        <div class="row col-12 p-0 m-0">
-            <div class="gtm-dark col-12 col-md-4 col-lg-2 p-0 mt-2">
+        <div class="row col-12 p-0 m-0 mt-2">
+            <div class="gtm-dark col-12 col-md-4 col-lg-2 p-0">
                 <div class="block-header text-center">
-                    Поиск потенциала
+                    {{ trans("paegtm.potentialSearch") }}
                 </div>
                 <div class="gtm-dark">
                     <gtm-tree
@@ -76,7 +76,7 @@
                     ></gtm-tree>
                 </div>
             </div>
-            <div class="position-absolute tree-setting-block d-flex">
+            <div class="position-absolute tree-setting-block d-flex ">
                 <keep-alive>
                     <component v-bind:is="treeChildrenComponent" class="gtm-dark mt-2 mr-2 h-100" @node-click="nodeClick"></component>
                 </keep-alive>
@@ -84,38 +84,38 @@
                     <component v-bind:is="treeSettingComponent" class="gtm-dark mt-2 h-100"></component>
                 </keep-alive>
             </div>
-            <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0 mt-0 mt-md-2">
-                <div class="gtm-dark">
+            <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0 mt-0 h-100">
+                <div class="gtm-dark h-100">
                     <div class="block-header text-center">
-                        Тип диаграммы
+                        {{ trans("paegtm.chartType") }}
                     </div>
                     <div class="gtm-dark">
                         <div class="text-center text-white">
-                            Распределение потерь нефти по факторам
+                            {{ trans("paegtm.distributionOfOilLossesByFactors") }}
                         </div>
                         <apexchart type="bar" height="290" class="mt-0" :options="chartOptions" :series="series"></apexchart>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-5 p-0 pl-lg-2 pt-2 pt-md-0 mt-0 mt-md-2">
-                <div class="gtm-dark">
+            <div class="col-12 col-lg-5 p-0 pl-lg-2 pt-2 pt-md-0 mt-0 h-100">
+                <div class="gtm-dark h-100">
                     <div class="block-header text-center">
-                        Планшет/кор.схема
+                        {{ trans("paegtm.tablet") }}
                     </div>
                     <div class="gtm-dark table-responsive table-scroll h-324">
                         <table cellspacing="0" class="table text-center text-white schemaTable">
                             <thead class="schemaTHead">
-                            <th>Вид ГТМ</th>
-                            <th>Ед.</th>
-                            <th>План</th>
-                            <th>Факт</th>
-                            <th>Откл.</th>
-                            <th>Участвует в анализе</th>
-                            <th>Экономически не рентаб.</th>
-                            <th>Доля не успешных ГТМ</th>
-                            <th>КВЛ общий</th>
-                            <th>КВЛ не рентаб.</th>
-                            <th>Доля, %</th>
+                            <th>{{ trans("paegtm.gtmType") }}</th>
+                            <th>{{ trans("paegtm.unit") }}</th>
+                            <th>{{ trans("paegtm.plan") }}</th>
+                            <th>{{ trans("paegtm.fact") }}</th>
+                            <th>{{ trans("paegtm.deviation") }}</th>
+                            <th>{{ trans("paegtm.participatesInTheAnalysis") }}</th>
+                            <th>{{ trans("paegtm.notProfitable") }}</th>
+                            <th>{{ trans("paegtm.unsuccessfulGtm") }}</th>
+                            <th>{{ trans("paegtm.mainKvl") }}</th>
+                            <th>{{ trans("paegtm.unsuccessfulKvl") }}</th>
+                            <th>{{ trans("paegtm.share") }}</th>
                             </thead>
                             <tbody>
                             <tr class="near-wells-table-item" v-for="schemaItem in schemaData">
