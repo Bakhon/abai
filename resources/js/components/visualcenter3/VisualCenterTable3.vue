@@ -853,7 +853,10 @@
               <div
                       class="col-sm-7 vis-table"
                       :class="scroll">
-                <table v-if="bigTable.length" class="table4 w-100 mh-100">
+                <table
+                        v-if="bigTable.length"
+                        :class="buttonDailyTab ? 'table4 w-100' : 'table4 w-100 mh-30'"
+                >
                   <thead>
                     <tr>
                       <th>{{ trans("visualcenter.dzo") }}</th>
@@ -2784,8 +2787,8 @@
   .mh-60 {
     min-height: 60%;
   }
-  .mh-100 {
-    min-height: 100%;
+  .mh-30 {
+    min-height: 30%;
   }
   .chemistry-table {
     height: calc(100% - 20px);
@@ -2868,6 +2871,13 @@
     }
     .vis-table .table4 {
       min-width: 0;
+    }
+  }
+  @media (max-width:2000px) {
+    .table4 {
+      tr td {
+        min-width: 5.3em !important;
+      }
     }
   }
 </style>
