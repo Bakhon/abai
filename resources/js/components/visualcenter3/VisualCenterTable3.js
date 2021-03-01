@@ -1937,12 +1937,7 @@ export default {
             this.timestampToday = new Date(this.range.start).getTime();
             this.timestampEnd = new Date(this.range.end).getTime();
             let differenceBetweenDates = this.timestampEnd - this.timestampToday;
-            if (differenceBetweenDates > 0) {
-                this.quantityRange = Math.trunc((differenceBetweenDates / 86400000) + 1);
-            } else {
-                this.quantityRange = Math.trunc((Math.abs(differenceBetweenDates) / 86400000) + 1);
-            }
-
+            this.quantityRange = Math.trunc((Math.abs(differenceBetweenDates) / 86400000) + 1);
             let nowDate = new Date(this.range.start).toLocaleDateString();
             let oldDate = new Date(this.range.end).toLocaleDateString();
             this.timeSelect = nowDate;
@@ -2544,8 +2539,9 @@ export default {
 
             let dataWithMay = _.filter(data, _.iteratee({date: (this.year + '-' + this.pad(this.month) + '-01' + ' 00:00:00')}));
             if (dataWithMay.length === 0) {
+                let dateFormat = 'YYYY-MM-DD HH:mm:ss';
                 let lastWorkingDay = this.getPreviousWorkday();
-                let lastSynchronizeDay = moment(lastWorkingDay).startOf('day').add(1, "days").format('YYYY-MM-DD') + ' 00:00:00';
+                let lastSynchronizeDay = moment(lastWorkingDay).startOf('day').add(1, "days").format(dateFormat);
                 dataWithMay = _.filter(data, _.iteratee({date: lastSynchronizeDay}));
             }
             let oil;
