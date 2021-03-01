@@ -2460,9 +2460,7 @@ export default {
             if (summary.length === 0) {
                 summary = data;
             }
-            if (!plan2) {
-                plan2 = 'oil_plan';
-            }
+
             let productionPlan = this.planFieldName;
             let productionFact = this.factFieldName;
 
