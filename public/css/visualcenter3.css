@@ -658,9 +658,9 @@ td.small-td {
     list-style: none;
     background: #fff;
     z-index: 999;
-    min-width: 96%;
+    min-width: 90%;
     border-radius: 10px;
-    margin-left: 9px;
+    margin-left: 35px;
     border: 2px solid #2743cb;
     cursor: pointer;
     color:black;
@@ -1052,7 +1052,11 @@ ul.dropdown-menu-vc {
         width: 25px;
     }
     .button2 {
-        font-size: 12px;
+        font-size: 10px;
+    }
+    .dropdown4 a {
+        display: inline-block;
+        margin-left: 0;
     }
 }
 @media (max-width: 400px) {
@@ -1060,4 +1064,9 @@ ul.dropdown-menu-vc {
         padding: 10px !important;
         margin: 0 !important;
     }
+    .first-td-header {
+        margin-left: 0;
+        width: 100%;
+    }
+
 }

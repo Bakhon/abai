@@ -2,8 +2,8 @@
   <div class="visualcenter-page-wrapper">
     <div class="row visualcenter-page-container">
       <div class="left-side col-lg-10 middle-block-columns">
-        <div class="first-string">
-          <div>
+        <div class="first-string px-2">
+          <div class="px-2">
             <table class="table table1">
               <tr>
                   <div class="row upper-block">
@@ -12,12 +12,12 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-6 ml-3">
+                            <div class="number col-8 col-md-6 col-lg-7">
                               {{ formatDigitToThousand(oil_factDay) }}
                             </div>
-                            <div class="unit-vc col-6 col-md-1 ml-3">{{ thousand }} тонн</div>
+                            <div class="unit-vc col-12 col-md-5">{{ thousand }} тонн</div>
                           </div>
-                          <div class="txt1 col-6 col-md-12">
+                          <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
                           </div>
                           <br />
@@ -34,8 +34,8 @@
                               :aria-valuemax="oil_factDay"
                             ></div>
                           </div>
-                          <div class="d-flex">
-                            <div class="percent-header col-6" v-if="oil_factDay">
+                          <div class="row">
+                            <div class="percent-header col-5 col-md-6" v-if="oil_factDay">
                               {{ getDiffProcentLastBigN(oil_factDay, oil_planDay) }}%
                             </div>
                             <div class="plan-header col-6" v-if="oil_planDay">
@@ -70,13 +70,13 @@
                       </td>
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
-                          <div class="row oil-block ml-2">
-                            <div class="number col-8 col-md-7">
+                          <div class="row oil-block">
+                            <div class="number col-8 col-md-7 col-lg-7">
                               {{ formatDigitToThousand(oil_dlv_factDay) }}
                             </div>
-                            <div class="unit-vc col-6 col-md-2 ml-1">{{ thousand }} тонн</div>
+                            <div class="unit-vc col-12 col-md-5">{{ thousand }} тонн</div>
                           </div>
-                          <div class="txt1 col-6 col-md-12 ml-3">
+                          <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oildlv") }}
                           </div>
                           <br />
@@ -93,8 +93,8 @@
                               :aria-valuemax="oil_dlv_planDay"
                             ></div>
                           </div>
-                          <div class="d-flex">
-                            <div class="percent-header col-6" v-if="oil_dlv_factDay">
+                          <div class="row">
+                            <div class="percent-header col-5 col-md-6" v-if="oil_dlv_factDay">
                               {{
                                 getDiffProcentLastBigN(oil_dlv_factDay, oil_dlv_planDay)
                               }}%
@@ -138,14 +138,14 @@
                       <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-9">
+                            <div class="number col-8 col-md-7">
                               {{ formatDigitToThousand(gas_factDay) }}
                             </div>
-                            <div class="unit-vc col-6 col-md-1 ml-2">
+                            <div class="unit-vc col-12 col-md-5">
                               {{ thousand }} м³
                             </div>
                           </div>
-                          <div class="txt1 col-6 col-md-12 ml-3">
+                          <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getgaz") }}
                           </div>
                           <br />
@@ -163,8 +163,8 @@
                               :aria-valuemax="gas_planDay"
                             ></div>
                           </div>
-                          <div class="d-flex">
-                            <div class="percent-header col-6" v-if="gas_factDay">
+                          <div class="row">
+                            <div class="percent-header col-5 col-md-6" v-if="gas_factDay">
                               {{ getDiffProcentLastBigN(gas_factDay, gas_planDay) }}%
                             </div>
                             <div class="plan-header col-6" v-if="gas_planDay">
@@ -282,7 +282,7 @@
         </div>
         <div class="first-table big-area" :style="`${Table1}`">
           <div class="first-string first-string2">
-            <div class="d-flex px-4 mt-3 middle-block__list-x-scroll">
+            <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-12 col-lg dropdown dropdown4 font-weight">
                 <div
                         :class="[`${oilProductionButton}`, 'button1']"
@@ -722,67 +722,65 @@
                 </div>
               </div>
             </div>
-            <div class="d-flex px-4 mt-3 middle-block__list-x-scroll">
-              <div
-                      v-click-outside="defocusDzoCompanies"
-                      :class="[`${buttonDzoDropdown}`,'col-8 col-lg dropdown dzo-company-list button2']"
-              >
-                {{ trans("visualcenter.dzoAllCompany") }}
-                <div
-
-                        class="arrow-down"
-                        @click="`${changeDzoCompaniesVisibility()}`"
-                ></div>
-                <div>
-                  <ul
-
-                          :class="isDzoCompaniesListSelectorOpened ? 'show-company-list' : 'hide-company-list'"
-                    >
-                    <li class="px-4">
-                      <div>
-                        <input
-                                :disabled="dzoCompaniesAssets['isAllAssets']"
-                                :checked="dzoCompaniesAssets['isAllAssets']"
-                                type="checkbox"
-                                @click="`${selectDzoCompanies()}`"
-                        ></input>
-                        {{trans("visualcenter.dzoAllCompany")}}
-                      </div>
-                    </li>
-                    <li class="px-4">
-                      <div>
-                        <input
-                                type="checkbox"
-                                :checked="dzoCompaniesAssets['isOperating']"
-                                @click="`${changeAssets('isOperating')}`"
-                        ></input>
-                        {{trans("visualcenter.isOperating")}}
-                      </div>
-                    </li>
-                    <li class="px-4">
-                      <div>
-                        <input
-                                type="checkbox"
-                                :checked="dzoCompaniesAssets['isNonOperating']"
-                                @click="`${changeAssets('isNonOperating')}`"
-                        ></input>
-                        {{trans("visualcenter.isNonOperating")}}
-                      </div>
-                    </li>
-                    <li
-                            v-for="(company) in dzoCompanies"
-                            class="px-4"
-                    >
-                      <div>
-                        <input
-                                type="checkbox"
-                                :checked="company.selected"
-                                @change="`${selectDzoCompany(company.ticker)}`"
-                        ></input>
-                        {{trans(company.companyName)}}
-                      </div>
-                    </li>
-                  </ul>
+            <div class="row px-4 mt-3 middle-block__list-x-scroll">
+              <div class="col-12 col-lg dropdown">
+                <div :class="[`${buttonDzoDropdown}`, 'button2']">
+                  <div class="button2">
+                    {{ trans("visualcenter.dzoAllCompany") }}
+                    <button
+                            type="button"
+                            class="btn btn-primary dropdown-toggle dzo-company-list__button_position"
+                            data-toggle="dropdown"
+                    ></button>
+                    <div class="dzo-company-list">
+                      <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
+                        <li class="px-4">
+                          <div>
+                            <input
+                                    :disabled="dzoCompaniesAssets['isAllAssets']"
+                                    :checked="dzoCompaniesAssets['isAllAssets']"
+                                    type="checkbox"
+                                    @click="`${selectDzoCompanies()}`"
+                            ></input>
+                            {{trans("visualcenter.dzoAllCompany")}}
+                          </div>
+                        </li>
+                        <li class="px-4">
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="dzoCompaniesAssets['isOperating']"
+                                    @click="`${changeAssets('isOperating')}`"
+                            ></input>
+                            {{trans("visualcenter.isOperating")}}
+                          </div>
+                        </li>
+                        <li class="px-4">
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="dzoCompaniesAssets['isNonOperating']"
+                                    @click="`${changeAssets('isNonOperating')}`"
+                            ></input>
+                            {{trans("visualcenter.isNonOperating")}}
+                          </div>
+                        </li>
+                        <li
+                                v-for="(company) in dzoCompanies"
+                                class="px-4"
+                        >
+                          <div>
+                            <input
+                                    type="checkbox"
+                                    :checked="company.selected"
+                                    @change="`${selectDzoCompany(company.ticker)}`"
+                            ></input>
+                            {{trans(company.companyName)}}
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="col-8 col-lg">
@@ -2113,7 +2111,7 @@
           </div>
         </div>
       </div>
-      <div class="right-side2 col-lg-2 middle-block-columns">
+      <div class="right-side2 col-12 col-lg-2 middle-block-columns">
         <div class="col-md-12 second-column-container">
           <div class="first-string">
             <div>
@@ -2154,7 +2152,7 @@
                     :style="`${tableHover4}`"
                   >
                     <div class="txt4 d-flex">
-                      <div class="col-10">
+                      <div class="col-10 col-lg-9">
                         {{ getIntegerNumber(prod_wells_idle) }}
                       </div>
                       <div class="mt-1 col-2">
@@ -2237,7 +2235,7 @@
                       :style="`${tableHover5}`"
                     >
                       <div class="txt4 d-flex">
-                        <div class="col-10">
+                        <div class="col-10 col-lg-9">
                           {{
                           getIntegerNumber(inj_wells_idle)
                           }}
@@ -2476,14 +2474,28 @@
 
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
+  .dzo-company-list__button_position {
+    float: right;
+    margin-top: 0.8em;
+    margin-right: 0%;
+    position: relative;
+    z-index: 9999;
+    font-size: 1.2em!important;
+    box-shadow:unset!important;
+    background:unset!important;
+    border:unset!important;
+  }
   .middle-block__list-x-scroll {
-    overflow-x: auto;
+    overflow-x: inherit;
   }
   .rates-block {
     border-left: 10px solid #0f1430;
   }
   .oil-block {
     align-items: baseline;
+  }
+  .additional-header {
+    margin-left: -15px;
   }
 
   .visualcenter-page-container {
@@ -2494,8 +2506,8 @@
     position: relative;
   }
   .second-column-container {
-    padding-left: 10px !important;
-    padding-right: 0 !important;
+    padding-left: 10px;
+    padding-right: 0;
   }
   .middle-block-columns {
     padding-left: 0 !important;
@@ -2534,9 +2546,8 @@
         &:first-child {
           white-space: normal;
           min-width: 290px;
-          width: 100%;
           font-weight: bold;
-          font-size: 13px;
+          font-size: 15px;
           min-height: 32px;
           span {
             img {
@@ -2609,26 +2620,6 @@
     }
   }
 }
-
-  @media (max-width:1368px) {
-    .vis-table {
-      .table4 {
-        min-width: 0;
-        th {
-          font-size: 11px;
-        }
-        th:first-child {
-            font-size: 12px;
-        }
-        tr td {
-          min-width: 65px;
-        }
-      }
-    }
-    .dropdown3 .button2 span {
-      font-size: 12px;
-    }
-  }
 
 .vis-table-small {
   max-width: 46% !important;
@@ -2735,21 +2726,19 @@
   }
 
   .dzo-company-list ul {
+    margin: 10px 0 0 0;
     height: 450px;
     position: absolute;
     left: -0.5px;
     background: #40467E;
     top: 3em;
-    margin-top: 10px;
     padding: 5px;
     list-style: none;
     z-index: 999;
     cursor: pointer;
     color:white;
     border-radius: inherit;
-    overflow: hidden;
     overflow: auto;
-    max-width: 252.45px;
     &::-webkit-scrollbar {
       width: 3px;
     }
@@ -2821,7 +2810,7 @@
     max-width: 100%;
     overflow: auto;
   }
-  @media (max-width:376px) {
+  @media (max-width:400px) {
     .upper-block {
       max-width: 380px;
     }
@@ -2832,6 +2821,28 @@
         border-left: 10px solid #0f1430 !important;
       }
     }
+    .middle-block__list-x-scroll {
+      flex-wrap: unset;
+    }
+    .second-column-container {
+      padding-left: 0;
+    }
+    .table4 {
+      min-width: 0 !important;
+      font-size: 10px !important;
+      th {
+        font-size: inherit !important;
+        width: 5% !important;
+      }
+      tr td {
+        width: 0;
+        min-width: 55px !important;
+        font-size: inherit !important;
+        .font {
+          font-size: inherit !important;
+        }
+      }
+    }
   }
   .rates-block__row {
     height: 200px;
@@ -2839,6 +2850,9 @@
   @media (max-width:1400px) {
     .rates-block__row {
       height: auto;
+    }
+    .dzo-company-list li {
+      font-size: 12px;
     }
   }
 </style>
