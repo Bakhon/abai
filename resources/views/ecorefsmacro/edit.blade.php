@@ -40,13 +40,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Курс доллара:</strong>
+                                        <strong>Курс доллара, тенге:</strong>
                                         <input type="integer" name="ex_rate_dol" class="form-control" placeholder="" value="{{$row->ex_rate_dol}}">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Курс рубля:</strong>
+                                        <strong>Курс рубля, тенге:</strong>
                                         <input type="integer" name="ex_rate_rub" class="form-control" placeholder="" value="{{$row->ex_rate_rub}}">
                                     </div>
                                 </div>
@@ -54,6 +54,13 @@
                                     <div class="form-group">
                                         <strong>Инфляция, в % на конец периода:</strong>
                                         <input type="integer" name="inf_end" class="form-control" placeholder="" value="{{$row->inf_end}}">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>Мировая стоимость барреля нефти, доллар:</strong>
+                                        <input type="number" name="barrel_world_price" class="form-control"
+                                               placeholder="{{$row->barrel_world_price}}">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

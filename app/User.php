@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Models\Refs\Org;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -42,6 +41,11 @@ class User extends Authenticatable
 
 
     //relations
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class)->withDefault();
+    }
 
     public function org()
     {

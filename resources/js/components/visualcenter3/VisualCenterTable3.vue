@@ -287,7 +287,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'oil_plan',
                       'oil_fact',
                       `${oilChartHeadName}`,
@@ -318,7 +318,7 @@
                       <a
                         class="col-9 px-2"
                         @click="
-                          getProduction(
+                          updateProductionData(
                             'oil_plan',
                             'oil_fact',
                             `${oilChartHeadName}`,
@@ -356,7 +356,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'oil_dlv_plan',
                       'oil_dlv_fact',
                       trans('visualcenter.dlvoildynamic'),
@@ -389,7 +389,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'oil_dlv_plan',
                           'oil_dlv_fact',
                           trans('visualcenter.dlvoildynamic'),
@@ -414,7 +414,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'tovarnyi_ostatok_nefti_prev_day',
                           'tovarnyi_ostatok_nefti_today',
                           `${oilChartHeadName}`,
@@ -438,7 +438,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'gas_plan',
                       'gas_fact',
                       trans('visualcenter.getgasdynamic'),
@@ -469,7 +469,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'sdacha_gaza_prirod_plan',
                           'sdacha_gaza_prirod_fact',
                           trans('visualcenter.dlvPrirodGasldynamic'),
@@ -495,7 +495,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'raskhod_prirod_plan',
                           'raskhod_prirod_fact',
                           trans('visualcenter.raskhodprirodGazDynamic'),
@@ -520,7 +520,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'sdacha_gaza_poput_plan',
                           'sdacha_gaza_poput_fact',
                           trans('visualcenter.poputGazdlvDynamic'),
@@ -546,7 +546,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'raskhod_poput_plan',
                           'raskhod_poput_fact',
                           trans('visualcenter.raskhodpoputGazDynamic'),
@@ -571,7 +571,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'pererabotka_gaza_poput_plan',
                           'pererabotka_gaza_poput_fact',
                           trans('visualcenter.pererabotkapoputGazDynamic'),
@@ -595,7 +595,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'gk_plan',
                       'gk_fact',
                       trans('visualcenter.getgkDynamic'),
@@ -618,7 +618,7 @@
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'liq_plan',
                       'liq_fact',
                       trans('visualcenter.liqDynamic'),
@@ -649,7 +649,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_morskoi_vody_plan',
                           'ppd_zakachka_morskoi_vody_fact',
                           trans('visualcenter.liqOceanDynamic'),
@@ -675,7 +675,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_stochnoi_vody_plan',
                           'ppd_zakachka_stochnoi_vody_fact',
                           trans('visualcenter.liqStochnayaDynamic'),
@@ -701,7 +701,7 @@
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_albsen_vody_plan',
                           'ppd_zakachka_albsen_vody_fact',
                           trans('visualcenter.liqAlbsenDynamic'),
@@ -735,9 +735,7 @@
 
                         :class="isDzoCompaniesListSelectorOpened ? 'show-company-list' : 'hide-company-list'"
                   >
-                  <li
-                          class="px-4"
-                  >
+                  <li class="px-4">
                     <div>
                       <input
                               :disabled="dzoCompaniesAssets['isAllAssets']"
@@ -748,28 +746,24 @@
                       {{trans("visualcenter.dzoAllCompany")}}
                     </div>
                   </li>
-                  <li
-                          class="px-4"
-                  >
+                  <li class="px-4">
                     <div>
                       <input
                               type="checkbox"
                               :checked="dzoCompaniesAssets['isOperating']"
                               @click="`${changeAssets('isOperating')}`"
                       ></input>
-                      {{trans("visualcenter.operactive")}}
+                      {{trans("visualcenter.isOperating")}}
                     </div>
                   </li>
-                  <li
-                          class="px-4"
-                  >
+                  <li class="px-4">
                     <div>
                       <input
                               type="checkbox"
                               :checked="dzoCompaniesAssets['isNonOperating']"
                               @click="`${changeAssets('isNonOperating')}`"
                       ></input>
-                      {{trans("visualcenter.neoperactive")}}
+                      {{trans("visualcenter.isNonOperating")}}
                     </div>
                   </li>
                   <li
@@ -855,7 +849,9 @@
           </div>
 
           <div class="row mh-60 mt-3 px-4">
-            <div class="col-sm-7 vis-table" :style="scroll">
+            <div
+                    class="col-sm-7 vis-table"
+                    :class="scroll">
               <table v-if="bigTable.length" class="table4 w-100 mh-100">
                 <thead>
                   <tr>
@@ -1134,7 +1130,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }} {{ item4 }}
+                          {{ thousand }} {{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1147,7 +1143,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }} {{ item4 }}
+                          {{ thousand }} {{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1167,7 +1163,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }}{{ item4 }}
+                          {{ thousand }}{{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1244,16 +1240,16 @@
             <div
               class="pl-3 col-sm-5"
               v-if="
-                ((item != 'oil_plan' &&
-                  item != 'oil_dlv_plan' &&
-                  item != 'oil_opek_plan') ||
+                ((planFieldName != 'oil_plan' &&
+                  planFieldName != 'oil_dlv_plan' &&
+                  planFieldName != 'oil_opek_plan') ||
                 oneDate != 1) && !buttonDailyTab
               "
             >
               <div class="name-chart-left">
-                {{ nameChartLeft }}, {{ thousand }} {{ item4 }}
+                {{ chartSecondaryName }}, {{ thousand }} {{ metricName }}
               </div>
-              <div class="name-chart-head">{{ item3 }}</div>
+              <div class="name-chart-head">{{ chartHeadName }}</div>
               <vc-chart :height="465"> </vc-chart>
             </div>
           </div>
@@ -1446,7 +1442,7 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells.length" class="table4 w-100 mh-100">
+                <table v-if="innerWells.length" class="table4 w-100 chemistry-table">
                   <thead>
                   <tr>
                     <th>{{ trans("visualcenter.idle_wells") }}</th>
@@ -1477,9 +1473,9 @@
                         class="w-25 tdNumber cursor-pointer"
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
                       >
-                      <div class="font">
-                        {{ getIntegerNumber(item.value) }}
-                      </div>
+                        <div class="font">
+                          {{ getFormattedNumber(item.value) }}
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -1490,9 +1486,7 @@
                 <visual-center3-wells
                   v-if="innerWellsNagDataForChart"
                   :chartData="innerWellsNagDataForChart"
-                >
-                  ></visual-center3-wells
-                >
+                ></visual-center3-wells>
               </div>
             </div>
           </div>
@@ -1655,13 +1649,11 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells2.length" class="table4 w-100 mh-100">
+                <table v-if="innerWells2.length" class="table4 w-100 chemistry-table">
                   <thead>
                   <tr>
                     <th>{{ trans("visualcenter.prod_wells") }}</th>
-                    <th>
-                      {{ trans("visualcenter.otmMetricSystemWells") }}
-                    </th>
+                    <th>{{ trans("visualcenter.otmMetricSystemWells") }}</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -1689,7 +1681,7 @@
                         "
                       >
                       <div class="font">
-                        {{ getIntegerNumber(item.value) }}
+                        {{ getFormattedNumber(item.value) }}
                       </div>
                       </td>
                     </tr>
@@ -1859,6 +1851,7 @@
                     <th>{{ trans("visualcenter.dzoDifference") }}</th>
                   </tr>
                   </thead>
+
                   <tbody>
                     <tr
                       v-for="(item, index) in otmData"
@@ -1881,9 +1874,8 @@
                         class="width-20 text-center data-pointer"
                         :class="`${getDzoColumnsClass(index,'plan')}`"
                       >
-
                         <div class="font">
-                          {{ getIntegerNumber(item.plan) }}
+                          {{ getFormattedNumber(item.plan) }}
                           <span class="data-metrics">
                             {{item.metricSystem}}
                           </span>
@@ -1895,7 +1887,7 @@
                         :class="`${getDzoColumnsClass(index,'fact')}`"
                       >
                         <div class="font">
-                          {{getIntegerNumber(item.fact) }}
+                          {{getFormattedNumber(item.fact) }}
                           <span class="data-metrics">
                             {{item.metricSystem}}
                           </span>
@@ -1905,13 +1897,7 @@
                         class="width-20 text-center data-pointer"
                         :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
-                        <div
-                                v-if="item.factMonth"
-                                :class="item.difference < 0 ?
-                          'triangle fall-indicator-production-data' :
-                          'triangle growth-indicator-production-data'"
-                        ></div>
-                        <div class="font dynamic" >
+                        <div class="font dynamic">
                           {{formatDigitToThousand(item.difference)}}
                           <span class="data-metrics">
                             {{item.metricSystem}}
@@ -2101,13 +2087,10 @@
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
                       >
-                        <div
-                          v-if="index === 0"
-                          class="center"
-                        >
+                        <div v-if="index === 0" class="center">
                         </div>
                         <div class="font">
-                          {{ getIntegerNumber(item.fact) }}
+                          {{ getFormattedNumber(item.fact) }}
                         </div>
                       </td>
                     </tr>
@@ -2137,7 +2120,7 @@
                 :style="`${tableHover4}`"
               >
                 <div class="txt4">
-                  {{ getIntegerNumber(prod_wells_work) }}
+                  {{ getFormattedNumber(prod_wells_work) }}
                 </div>
                 <div class="in-work">
                   <!-- В работе -->{{ trans("visualcenter.in_work") }}
@@ -2167,7 +2150,7 @@
               >
                 <div class="txt4 d-flex justify-content-between">
                   <div>
-                    {{ getIntegerNumber(prod_wells_idle) }}
+                    {{ getFormattedNumber(prod_wells_idle) }}
                   </div>
                   <div class="mt-1">
                     <img src="/img/icons/link.svg" />
@@ -2221,7 +2204,7 @@
                 >
                   <div class="txt4">
                     {{
-                    getIntegerNumber(inj_wells_work)
+                    getFormattedNumber(inj_wells_work)
                     }}
                   </div>
                   <div class="in-work">
@@ -2253,7 +2236,7 @@
                   <div class="txt4 d-flex justify-content-between">
                     <div>
                       {{
-                      getIntegerNumber(inj_wells_idle)
+                      getFormattedNumber(inj_wells_idle)
                       }}
                     </div>
                     <div class="mt-1">
@@ -2658,6 +2641,7 @@
     font-size: 15px;
     height: 50px;
   }
+
   .data-metrics {
     font-family: "Harmonia-sans, sans-serif";
     font-style: normal;
@@ -2795,6 +2779,10 @@
   .cursor-pointer {
     cursor: pointer;
   }
-
-
+  .main-table__scroll {
+    flex: unset;
+    max-height: 80%;
+    max-width: 100%;
+    overflow: auto;
+  }
 </style>
