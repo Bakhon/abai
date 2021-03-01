@@ -44,9 +44,10 @@ class EcoRefsMacroController extends Controller
         $request->validate([
             'sc_fa' => 'required',
             'date' => 'required',
-            'ex_rate_dol' => 'required',
-            'ex_rate_rub' => 'required',
-            'inf_end' => 'required',
+            'ex_rate_dol' => 'nullable|numeric',
+            'ex_rate_rub' => 'nullable|numeric',
+            'inf_end' => 'nullable|numeric',
+            'barrel_world_price' => 'nullable|numeric'
             ]);
 
         EcoRefsMacro::create($request->all());
@@ -91,9 +92,10 @@ class EcoRefsMacroController extends Controller
         $request->validate([
             'sc_fa' => 'required',
             'date' => 'required',
-            'ex_rate_dol' => 'required',
-            'ex_rate_rub' => 'required',
-            'inf_end' => 'required',
+            'ex_rate_dol' => 'nullable|numeric',
+            'ex_rate_rub' => 'nullable|numeric',
+            'inf_end' => 'nullable|numeric',
+            'barrel_world_price' => 'nullable|numeric'
         ]);
 
         $EcoRefsMacro->update($request->all());

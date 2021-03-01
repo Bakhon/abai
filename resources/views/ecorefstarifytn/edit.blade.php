@@ -154,7 +154,7 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Тариф:</strong>
+                                        <strong>Тариф за тонну:</strong>
                                         <input type="float" name="tn_rate" value={{$row->tn_rate}} class="form-control" placeholder="Пример: 128">
                                     </div>
                                 </div>
