@@ -5,20 +5,17 @@
             v-bind:class="{ 'cursor-pointer': pointerClass }"
             @click.stop="handleClick(node)">
             <span v-if="this.checkable !== undefined">
-                <span v-if="this.checkState">
-                    <img width="20" height="20" :src="'/img/GTM/flag_active.svg'">
-                </span>
-                <span v-else>
-                    <img width="20" height="20" :src="'/img/GTM/flag.svg'">
+                <span>
+                    <img width="20" height="20" :src="this.checkState ? '/img/GTM/flag_active.svg' : '/img/GTM/flag.svg'" >
                 </span>
             </span>
             <span @click="toggleCheckState()">{{ node.name }}</span>
             <span v-if="node.value" class="text-right">{{ node.value }}</span>
-            <span v-if="node.children && node.children.length" @click.stop="toggleUl()">
+            <span v-if="nodeHasChildren" @click.stop="toggleUl()">
                 <img width="20" height="20" :src="showChildren ? '/img/GTM/arrow_down.svg' : '/img/GTM/arrow_right.svg'">
             </span>
         </div>
-        <ul class="treeUl" v-if="node.children && node.children.length && showChildren">
+        <ul class="treeUl" v-if="nodeHasChildren && showChildren">
             <node
                 v-for="child in node.children"
                 :node="child"
@@ -56,6 +53,9 @@ export default {
     computed: {
         pointerClass: function () {
             return (this.node.setting_model && this.node.setting_model.children.length > 0) || this.node.checkable
+        },
+        nodeHasChildren: function () {
+            return this.node.children && this.node.children.length;
         }
     }
 }
