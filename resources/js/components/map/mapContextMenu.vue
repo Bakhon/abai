@@ -63,13 +63,13 @@ export default {
       if (this.clickedObject) {
         let options = [
           {
-            name: 'Редактировать ' + this.clickedObject.name,
+            name: this.trans('app.edit') + ' ' + this.clickedObject.name,
             mapObject: this.clickedObject,
             type: 'edit',
             editMode: this.clickedObject.type
           },
           {
-            name: 'Удалить ' + this.clickedObject.name,
+            name: this.trans('app.delete') + ' ' + this.clickedObject.name,
             mapObject: this.clickedObject,
             editMode: this.clickedObject.type,
             type: 'delete',
@@ -78,7 +78,7 @@ export default {
 
         if (this.clickedObject.type == 'zu' || this.clickedObject.type == 'well') {
           options.push({
-            name: 'Добавить трубовровод',
+            name: this.trans('monitoring.pipe.add'),
             mapObject: this.clickedObject,
             type: 'add',
             editMode: 'pipe'
@@ -90,19 +90,19 @@ export default {
 
       return [
         {
-          name: 'Добавить ГУ',
+          name: this.trans('app.create') + ' ' + this.trans('monitoring.gu'),
           lngLat: this.lngLat,
           type: 'add',
           editMode: 'gu'
         },
         {
-          name: 'Добавить ЗУ',
+          name: this.trans('app.create') + ' ' + this.trans('monitoring.zu'),
           lngLat: this.lngLat,
           type: 'add',
           editMode: 'zu'
         },
         {
-          name: 'Добавить скважину',
+          name: this.trans('app.create') + ' ' + this.trans('monitoring.well_vinit'),
           lngLat: this.lngLat,
           type: 'add',
           editMode: 'well'

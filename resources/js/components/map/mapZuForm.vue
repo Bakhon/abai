@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-group
-        label="Имя ЗУ"
+        :label="trans('monitoring.zu.name')"
         label-for="zu-name"
     >
       <b-form-input
@@ -12,7 +12,7 @@
     </b-form-group>
 
     <b-form-group
-        label="ГУ"
+        :label="trans('monitoring.gu')"
         label-for="gus">
       <b-form-select
           id="gus"
@@ -21,7 +21,7 @@
       ></b-form-select>
     </b-form-group>
 
-    <b-form-group label="Широта" label-for="coord-x">
+    <b-form-group :label="trans('monitoring.latitude')" label-for="coord-x">
       <b-form-input
           id="coord-y"
           v-model="zu.lat"
@@ -29,7 +29,7 @@
       ></b-form-input>
     </b-form-group>
 
-    <b-form-group label="Долгота" label-for="coord-y">
+    <b-form-group :label="trans('monitoring.longitude')" label-for="coord-y">
       <b-form-input
           id="coord-x"
           v-model="zu.lon"

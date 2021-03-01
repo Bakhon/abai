@@ -166,24 +166,13 @@ class MapsController extends Controller
         $pipe_input = $request->input('pipe');
         $pipe = $pipe_input['type'] == 'GuZu' ? new GuZuPipe : new ZuWellPipe;
 
-        $coords = $pipe_input['coordinates'];
-        $pipe_input['coordinates'] = array_map(
-            function ($coord) {
-                return [
-                    round($coord[1], 8),
-                    round($coord[0], 8),
-                ];
-            },
-            $pipe_input['coordinates']
-        );
-
-
         $pipe->fill($pipe_input);
+        $pipe->coordinates = $this->switchCoords($pipe_input['coordinates']);
         $pipe->save();
 
         $pipe->color = $pipe_input['type'] == 'GuZu' ? [255, 0, 0] : [0, 255, 0];
         $pipe->name = (string)$pipe->id;
-        $pipe->coordinates = $coords;
+        $pipe->coordinates = $pipe_input['coordinates'];
 
         return response()->json(
             [
@@ -193,10 +182,9 @@ class MapsController extends Controller
         );
     }
 
-    public function updateGu(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
+    public function updateGu(Request $request, Gu $gu): \Symfony\Component\HttpFoundation\Response
     {
         $gu_input = $request->input('gu');
-        $gu = Gu::find($id);
 
         $gu->fill($gu_input);
         $gu->save();
@@ -209,10 +197,9 @@ class MapsController extends Controller
         );
     }
 
-    public function updateZu(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
+    public function updateZu(Request $request, Zu $zu): \Symfony\Component\HttpFoundation\Response
     {
         $zu_input = $request->input('zu');
-        $zu = Zu::find($id);
 
         $zu->fill($zu_input);
         $zu->save();
@@ -225,10 +212,9 @@ class MapsController extends Controller
         );
     }
 
-    public function updateWell(Request $request, int $id): \Symfony\Component\HttpFoundation\Response
+    public function updateWell(Request $request, Well $well): \Symfony\Component\HttpFoundation\Response
     {
         $well_input = $request->input('well');
-        $well = Well::find($id);
 
         $well->fill($well_input);
         $well->save();
@@ -252,24 +238,13 @@ class MapsController extends Controller
             $pipe = GuZuPipe::find($id);
         }
 
-        $coords = $pipe_input['coordinates'];
-        $pipe_input['coordinates'] = array_map(
-            function ($coord) {
-                return [
-                    round($coord[1], 8),
-                    round($coord[0], 8),
-                ];
-            },
-            $pipe_input['coordinates']
-        );
-
-
         $pipe->fill($pipe_input);
+        $pipe->coordinates = $this->switchCoords($pipe_input['coordinates']);
         $pipe->save();
 
         $pipe->color = $type == 'GuZu' ? [255, 0, 0] : [0, 255, 0];
         $pipe->name = (string)$pipe->id;
-        $pipe->coordinates = $coords;
+        $pipe->coordinates = $pipe_input['coordinates'];
 
         return response()->json(
             [
@@ -279,9 +254,8 @@ class MapsController extends Controller
         );
     }
 
-    public function deleteGu(int $id): \Symfony\Component\HttpFoundation\Response
+    public function deleteGu(Gu $gu): \Symfony\Component\HttpFoundation\Response
     {
-        $gu = Gu::find($id);
         $gu->delete();
 
         return response()->json(
@@ -291,9 +265,8 @@ class MapsController extends Controller
         );
     }
 
-    public function deleteZu(int $id): \Symfony\Component\HttpFoundation\Response
+    public function deleteZu(Zu $zu): \Symfony\Component\HttpFoundation\Response
     {
-        $zu = Zu::find($id);
         $zu->delete();
 
         return response()->json(
@@ -303,9 +276,8 @@ class MapsController extends Controller
         );
     }
 
-    public function deleteWell(int $id): \Symfony\Component\HttpFoundation\Response
+    public function deleteWell(Well $well): \Symfony\Component\HttpFoundation\Response
     {
-        $well = Well::find($id);
         $well->delete();
 
         return response()->json(
@@ -343,15 +315,7 @@ class MapsController extends Controller
                         $coordinates[$pipe->gu_id] = [];
                     }
 
-                    $coords = array_map(
-                        function ($coord) {
-                            return [
-                                round($coord[1], 8),
-                                round($coord[0], 8),
-                            ];
-                        },
-                        $pipe->coordinates
-                    );
+                    $coords = $this->switchCoords($pipe->coordinates);
 
                     $coordinates[$pipe->gu_id] = array_merge(
                         $coordinates[$pipe->gu_id],
@@ -377,15 +341,7 @@ class MapsController extends Controller
                         $coordinates[$pipe->gu_id] = [];
                     }
 
-                    $coords = array_map(
-                        function ($coord) {
-                            return [
-                                round($coord[1], 8),
-                                round($coord[0], 8),
-                            ];
-                        },
-                        $pipe->coordinates
-                    );
+                    $coords = $this->switchCoords($pipe->coordinates);
 
                     $coordinates[$pipe->gu_id] = array_merge(
                         $coordinates[$pipe->gu_id],
@@ -398,5 +354,18 @@ class MapsController extends Controller
                     return $pipe;
                 }
             );
+    }
+
+    private function switchCoords($coords)
+    {
+        return array_map(
+            function ($coord) {
+                return [
+                    round($coord[1], 8),
+                    round($coord[0], 8),
+                ];
+            },
+            $coords
+        );
     }
 }

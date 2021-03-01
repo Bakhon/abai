@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-group
-        label="ГУ"
+        :label="trans('monitoring.gu')"
         label-for="gu"
         v-if="pipe.gu_id"
     >
@@ -13,7 +13,7 @@
     </b-form-group>
 
     <b-form-group
-        label="ЗУ"
+        :label="trans('monitoring.zu')"
         label-for="zu">
       <b-form-select
           id="gu"
@@ -22,11 +22,11 @@
       ></b-form-select>
     </b-form-group>
 
-    <h5>Координаты трубопровода</h5>
+    <h5>{{ trans('monitoring.pipe.coords') }}</h5>
 
     <b-row v-for="(coord, index) in pipe.coordinates" :key="index">
       <b-col cols="12" sm="6">
-        <b-form-group label="Широта" :label-for="'coord-x'+index">
+        <b-form-group :label="trans('monitoring.latitude')" :label-for="'coord-x'+index">
           <b-form-input
               :id="'coord-x'+index"
               v-model="pipe.coordinates[index][1]"
@@ -35,7 +35,7 @@
         </b-form-group>
       </b-col>
       <b-col cols="12" sm="6">
-        <b-form-group label="Долгота" :label-for="'coord-y'+index">
+        <b-form-group :label="trans('monitoring.longitude')" :label-for="'coord-y'+index">
           <b-form-input
               :id="'coord-y'+index"
               v-model="pipe.coordinates[index][0]"

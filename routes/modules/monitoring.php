@@ -102,14 +102,14 @@ Route::group(
                 Route::post('/gu-map/storewell', 'MapsController@storeWell')->name('maps.store_well');
                 Route::post('/gu-map/storepipe', 'MapsController@storePipe')->name('maps.store_pipe');
 
-                Route::put('/gu-map/updategu/{id}', 'MapsController@updateGu')->name('maps.update_gu');
-                Route::put('/gu-map/updatezu/{id}', 'MapsController@updateZu')->name('maps.update_zu');
-                Route::put('/gu-map/updatewell/{id}', 'MapsController@updateWell')->name('maps.update_well');
+                Route::put('/gu-map/updategu/{gu}', 'MapsController@updateGu')->name('maps.update_gu');
+                Route::put('/gu-map/updatezu/{zu}', 'MapsController@updateZu')->name('maps.update_zu');
+                Route::put('/gu-map/updatewell/{well}', 'MapsController@updateWell')->name('maps.update_well');
                 Route::put('/gu-map/updatepipe/{id}', 'MapsController@updatePipe')->name('maps.update_pipe');
 
-                Route::delete('/gu-map/deletegu/{id}', 'MapsController@deleteGu')->name('maps.delete_gu');
-                Route::delete('/gu-map/deletezu/{id}', 'MapsController@deleteZu')->name('maps.delete_zu');
-                Route::delete('/gu-map/deletewell/{id}', 'MapsController@deleteWell')->name('maps.delete_well');
+                Route::delete('/gu-map/deletegu/{gu}', 'MapsController@deleteGu')->name('maps.delete_gu');
+                Route::delete('/gu-map/deletezu/{zu}', 'MapsController@deleteZu')->name('maps.delete_zu');
+                Route::delete('/gu-map/deletewell/{well}', 'MapsController@deleteWell')->name('maps.delete_well');
                 Route::delete('/gu-map/deletepipe/{id}/{type}', 'MapsController@deletePipe')->name('maps.delete_pipe');
 
 

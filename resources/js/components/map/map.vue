@@ -96,24 +96,6 @@ export default {
   },
   data() {
     return {
-      editOptions: [
-        {
-          name: 'ГУ редактор',
-          code: 'gu'
-        },
-        {
-          name: 'ЗУ редактор',
-          code: 'zu'
-        },
-        {
-          name: 'Редактор скважин',
-          code: 'well'
-        },
-        {
-          name: 'Редактор трубопровода',
-          code: 'pipe'
-        },
-      ],
       showContextMenu: false,
       clickedObject: null,
       objectData: {
@@ -163,19 +145,19 @@ export default {
     addObjectModalTitle() {
       switch (this.editMode) {
         case 'gu':
-          return this.formType == 'add' ? "Новый ГУ" : 'Редактирование ГУ'
+          return this.formType == 'add' ? this.trans('monitoring.gus.create_title') : this.trans('monitoring.gus.edit_title')
           break;
 
         case 'zu':
-          return this.formType == 'add' ? "Новый ЗУ" : 'Редактирование ЗУ'
+          return this.formType == 'add' ? this.trans('monitoring.zus.create_title') : this.trans('monitoring.zus.edit_title')
           break;
 
         case 'well':
-          return this.formType == 'add' ? "Новая скважина" : 'Редактирование скважины'
+          return this.formType == 'add' ? this.trans('monitoring.well.create_title') : this.trans('monitoring.well.edit_title')
           break;
 
         case 'pipe':
-          return this.formType == 'add' ? "Новый трубопровод" : 'Редактирование трубопровода'
+          return this.formType == 'add' ? this.trans('monitoring.pipe.create_title') : this.trans('monitoring.pipe.edit_title')
           break;
 
         default:
@@ -184,7 +166,7 @@ export default {
       }
     },
     okBtntext() {
-      return this.formType == 'add' ? 'Добавить' : 'Обновить'
+      return this.formType == 'add' ? this.trans('app.create') : this.trans('app.update')
     }
   },
   methods: {
@@ -260,7 +242,7 @@ export default {
         this.objectData = option.mapObject.object;
         this.objectData.index = option.mapObject.index;
 
-        let title = 'Вы действительно хотите удалить ' + this.getObjectName(this.editMode) + '?';
+        let title = this.trans('app.delete_confirm') + this.getObjectName(this.editMode) + '?';
         this.confirmDelete(title);
       }
 
@@ -394,7 +376,8 @@ export default {
       this.centerTo(gu);
       this.resetForm();
 
-      this.showToast('ГУ добавлен', 'Успешно', 'success');
+      let $message = this.trans('monitoring.gu') + ' ' + this.trans('app.added');
+      this.showToast($message, this.trans('app.success'), 'success');
     },
     async addZu() {
       let zu = await this.storeZu(this.objectData);
@@ -405,7 +388,8 @@ export default {
       this.centerTo(zu);
       this.resetForm();
 
-      this.showToast('ЗУ добавлен', 'Успешно', 'success');
+      let $message = this.trans('monitoring.zu') + ' ' + this.trans('app.added');
+      this.showToast($message, this.trans('app.success'), 'success');
     },
     async addWell() {
       let well = await this.storeWell(this.objectData);
@@ -416,7 +400,8 @@ export default {
       this.centerTo(well);
       this.resetForm();
 
-      this.showToast('Скважина добавлена', 'Успешно', 'success');
+      let $message = this.trans('monitoring.well.added');
+      this.showToast($message, this.trans('app.success'), 'success');
     },
     async addPipe() {
       await this.storePipe(this.pipeObject);
@@ -425,7 +410,8 @@ export default {
       this.removeTempPipeLayer();
       this.layerReDraw('path-layer', 'pipe', this.pipes);
 
-      this.showToast('Трубопровод добавлен', 'Успешно', 'success');
+      let $message = this.trans('monitoring.pipe') + ' ' + this.trans('app.added');
+      this.showToast($message, this.trans('app.success'), 'success');
     },
     async editGu() {
       let gu = await this.updateGu(this.objectData);
@@ -444,7 +430,8 @@ export default {
       this.centerTo(gu);
       this.resetForm();
 
-      this.showToast('ГУ обновлен', 'Успешно', 'success');
+      let $message = this.trans('monitoring.gu') + ' ' + this.trans('app.updated');
+      this.showToast($message, this.trans('app.success'), 'success');
     },
     async editZu() {
       let zu = await this.updateZu(this.objectData);
@@ -455,7 +442,8 @@ export default {
       this.centerTo(zu);
       this.resetForm();
 
-      this.showToast('ЗУ обновлен', 'Успешно', 'success');
+      let $message = this.trans('monitoring.zu') + ' ' + this.trans('app.updated');
+      this.showToast($message, this.trans('app.success'), 'success');
     },
     async editWell() {
       let well = await this.updateWell(this.objectData);
@@ -466,7 +454,8 @@ export default {
       this.centerTo(well);
       this.resetForm();
 
-      this.showToast('Скважина обновленна', 'Успешно', 'success');
+      let $message = this.trans('monitoring.well.updated');
+      this.showToast($message, this.trans('app.success'), 'success');
     },
     async editPipe() {
       await this.updatePipe(this.pipeObject);
@@ -475,7 +464,8 @@ export default {
       this.layerReDraw('path-layer', 'pipe', this.pipes);
       this.resetForm();
 
-      this.showToast('Трубопровод обновлен', 'Успешно', 'success');
+      let $message = this.trans('monitoring.pipe.updated');
+      this.showToast($message, this.trans('app.success'), 'success');
     },
     async removeGu() {
       let result = await this.deleteGu(this.objectData);
@@ -491,9 +481,11 @@ export default {
         this.resetForm();
         this.layerReDraw(layerId, 'gu', this.guPoints);
 
-        this.showToast('ГУ удален', 'Успешно', 'success');
+        let $message = this.trans('monitoring.gu.deleted');
+        this.showToast($message, this.trans('app.success'), 'success');
       } else {
-        this.showToast('Ошибка при удалении ГУ', 'Ошибка', 'danger');
+        let $message = this.trans('monitoring.gu.deleting_error');
+        this.showToast($message, this.trans('app.error'), 'danger');
       }
     },
     async removeZu() {
@@ -504,9 +496,11 @@ export default {
         this.resetForm();
         this.layerReDraw(layerId, 'zu', this.zuPoints);
 
-        this.showToast('ЗУ удален', 'Успешно', 'success');
+        let $message = this.trans('monitoring.zu.deleted');
+        this.showToast($message, this.trans('app.success'), 'success');
       } else {
-        this.showToast('Ошибка при удалении ЗУ', 'Ошибка', 'danger');
+        let $message = this.trans('monitoring.zu.deleting_error');
+        this.showToast($message, this.trans('app.error'), 'danger');
       }
     },
     async removeWell() {
@@ -517,9 +511,11 @@ export default {
         this.resetForm();
         this.layerReDraw(layerId, 'well', this.wellPoints);
 
-        this.showToast('Скважина удалена', 'Успешно', 'success');
+        let $message = this.trans('monitoring.well.deleted');
+        this.showToast($message, this.trans('app.success'), 'success');
       } else {
-        this.showToast('Ошибка при удалении Скважины', 'Ошибка', 'danger');
+        let $message = this.trans('monitoring.well.deleting_error');
+        this.showToast($message, this.trans('app.error'), 'danger');
       }
     },
     async removePipe() {
@@ -530,9 +526,11 @@ export default {
         this.layerReDraw('path-layer', 'pipe', this.pipes);
         this.resetForm();
 
-        this.showToast('Трубопровод удален', 'Успешно', 'success');
+        let $message = this.trans('monitoring.pipe.deleted');
+        this.showToast($message, this.trans('app.success'), 'success');
       } else {
-        this.showToast('Ошибка при удалении трубопровода', 'Ошибка', 'danger');
+        let $message = this.trans('monitoring.pipe.deleting_error');
+        this.showToast($message, this.trans('app.error'), 'danger');
       }
     },
     layerReDraw(layerId, type, data) {
@@ -553,10 +551,10 @@ export default {
     },
     confirmDelete(message) {
       this.$bvModal.msgBoxConfirm(message, {
-        title: 'Удаление',
+        title: this.trans('app.delete_titie'),
         headerBgVariant: 'danger',
-        okTitle: 'Удалить',
-        cancelTitle: 'Отменить',
+        okTitle: this.trans('app.delete'),
+        cancelTitle: this.trans('app.cancel'),
       })
           .then(value => {
             let method = 'remove' + this.editMode.charAt(0).toUpperCase() + this.editMode.slice(1);
@@ -754,19 +752,19 @@ export default {
     getObjectName(type) {
       switch (type) {
         case 'gu':
-          return "ГУ"
+          return this.trans('monitoring.gu')
           break;
 
         case 'zu':
-          return "ЗУ"
+          return this.trans('monitoring.zu')
           break;
 
         case 'well':
-          return "Cкважину"
+          return this.trans('monitoring.well_vinit')
           break;
 
         case 'pipe':
-          return "Трубопровод"
+          return this.trans('monitoring.pipe')
           break;
 
         default:
