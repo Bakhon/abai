@@ -1068,5 +1068,8 @@ ul.dropdown-menu-vc {
         margin-left: 0;
         width: 100%;
     }
+    .big-area.usd-chart {
+        max-height: 76%
+    }
 
 }
