@@ -1060,10 +1060,6 @@ ul.dropdown-menu-vc {
     }
 }
 @media (max-width: 400px) {
-    #app > .container-fluid {
-        padding: 10px !important;
-        margin: 0 !important;
-    }
     .first-td-header {
         margin-left: 0;
         width: 100%;

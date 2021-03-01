@@ -2,7 +2,7 @@
   <div class="visualcenter-page-wrapper">
     <div class="row visualcenter-page-container">
       <div class="left-side col-lg-10 middle-block-columns">
-        <div class="first-string px-2">
+        <div class="first-string px-2 middle-block__table">
           <div class="px-2">
             <table class="table table1">
               <tr>
@@ -12,10 +12,10 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-6 col-lg-7">
+                            <div class="number col-8 col-md-6 col-lg-8">
                               {{ formatDigitToThousand(oil_factDay) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5">{{ thousand }} тонн</div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-2">{{ thousand }} тонн</div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.getoil") }}
@@ -71,10 +71,10 @@
                       <td class="col-4 col-lg-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7 col-lg-7">
+                            <div class="number col-8 col-md-7 col-lg-8">
                               {{ formatDigitToThousand(oil_dlv_factDay) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5">{{ thousand }} тонн</div>
+                            <div class="unit-vc col-12 col-md-5 col-lg-2">{{ thousand }} тонн</div>
                           </div>
                           <div class="additional-header txt1 col-6 col-md-12">
                             {{ trans("visualcenter.oildlv") }}
@@ -138,10 +138,10 @@
                       <td class="col-4 col-sm-4 d-flex">
                         <div class="first-td-header">
                           <div class="row oil-block">
-                            <div class="number col-8 col-md-7">
+                            <div class="number col-8 col-md-7 col-lg-9">
                               {{ formatDigitToThousand(gas_factDay) }}
                             </div>
-                            <div class="unit-vc col-12 col-md-5">
+                            <div class="unit-vc col-12 col-md-5 col-lg-2">
                               {{ thousand }} м³
                             </div>
                           </div>
@@ -723,13 +723,13 @@
               </div>
             </div>
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
-              <div class="col-12 col-lg dropdown">
-                <div :class="[`${buttonDzoDropdown}`, 'button2']">
-                  <div class="button2">
+              <div class="col-8 col-lg dropdown">
+                <div :class="[`${buttonDzoDropdown}`, 'button2 dzocompanylist__button']">
+                  <div class="button2 dzocompanylist__button">
                     {{ trans("visualcenter.dzoAllCompany") }}
                     <button
                             type="button"
-                            class="btn btn-primary dropdown-toggle dzo-company-list__button_position"
+                            class="btn btn-primary dropdown-toggle position-button-vc"
                             data-toggle="dropdown"
                     ></button>
                     <div class="dzo-company-list">
@@ -1307,34 +1307,34 @@
               </div>
 
               <div class="row px-4">
-                <div class="w-25 pr-2">
+                <div class="col-3 pr-2">
                   <div
-                          :class="[`${buttonDailyTab}`,'button2']"
+                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(1)"
                   >
                     <!-- Суточная -->{{ trans("visualcenter.daily") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-3 px-2">
                   <div
-                          :class="[`${buttonMonthlyTab}`,'button2']"
+                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(2)"
                   >
                     <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-3 px-2">
                   <div
-                          :class="[`${buttonYearlyTab}`,'button2']"
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(3)"
                   >
                     <!-- С начала года -->{{ trans("visualcenter.yearBegin") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-3 px-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${buttonPeriodTab}`,'button2']"
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
                             @click="changeMenu2(4)"
                     >
                       <span v-if="oneDate">
@@ -1514,34 +1514,34 @@
               </div>
 
               <div class="row px-4">
-                <div class="w-25 pr-2">
+                <div class="col-3 pr-2">
                   <div
-                          :class="[`${buttonDailyTab}`,'button2']"
+                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(1)"
                   >
                     <!-- Суточная -->{{ trans("visualcenter.daily") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-3 px-2">
                   <div
-                          :class="[`${buttonMonthlyTab}`,'button2']"
+                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
                     @click="changeMenu2(2)"
                   >
                     <!-- С начала месяца -->{{ trans("visualcenter.monthBegin") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-3 px-2">
                   <div
-                          :class="[`${buttonYearlyTab}`,'button2']"
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(3)"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-3 px-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${buttonPeriodTab}`,'button2']"
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
                             @click="changeMenu2(4)"
                     >
                       <span v-if="oneDate">
@@ -1720,34 +1720,34 @@
               </div>
 
               <div class="row px-4">
-                <div class="w-25 pr-2">
+                <div class="col-4 pr-2">
                   <div
-                          :class="[`${buttonDailyTab}`,'button2']"
+                          :class="[`${buttonDailyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(1)"
                   >
                     {{ trans("visualcenter.daily") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-4 px-2 ">
                   <div
-                    :class="[`${buttonMonthlyTab}`,'button2']"
+                    :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
                     @click="changeMenu2(2)"
                   >
                     {{ trans("visualcenter.monthBegin") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-4 px-2">
                   <div
-                          :class="[`${buttonYearlyTab}`,'button2']"
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(3)"
                   >
                     {{ trans("visualcenter.yearBegin") }}
                   </div>
                 </div>
-                <div class="w-25 px-2">
+                <div class="col-4 px-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${buttonPeriodTab}`,'button2']"
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
                             @click="changeMenu2(4)"
                     >
                       <span v-if="oneDate">
@@ -1941,7 +1941,7 @@
               <div class="row px-4">
                 <div class="col px-2">
                   <div
-                          :class="[`${buttonMonthlyTab}`,'button2']"
+                          :class="[`${buttonMonthlyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(2)"
                   >
                     {{ trans("visualcenter.monthBegin") }}
@@ -1949,7 +1949,7 @@
                 </div>
                 <div class="col px-2">
                   <div
-                          :class="[`${buttonYearlyTab}`,'button2']"
+                          :class="[`${buttonYearlyTab}`,'button2 side-tables__main-menu-button']"
                           @click="changeMenu2(3)"
                   >
                     {{ trans("visualcenter.yearBegin") }}
@@ -1958,7 +1958,7 @@
                 <div class="col px-2">
                   <div class="dropdown3">
                     <div
-                            :class="[`${buttonPeriodTab}`,'button2']"
+                            :class="[`${buttonPeriodTab}`,'button2 side-tables__main-menu-button']"
                             @click="changeMenu2(4)"
                     >
                       <span v-if="oneDate">
@@ -2474,17 +2474,6 @@
 
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
-  .dzo-company-list__button_position {
-    float: right;
-    margin-top: 0.8em;
-    margin-right: 0%;
-    position: relative;
-    z-index: 9999;
-    font-size: 1.2em!important;
-    box-shadow:unset!important;
-    background:unset!important;
-    border:unset!important;
-  }
   .middle-block__list-x-scroll {
     overflow-x: inherit;
   }
@@ -2823,9 +2812,12 @@
     }
     .middle-block__list-x-scroll {
       flex-wrap: unset;
+      overflow-x: scroll;
     }
     .second-column-container {
-      padding-left: 0;
+      padding-left: 10px;
+      padding-right: 10px;
+      border-top: 10px solid #0f1430;
     }
     .table4 {
       min-width: 0 !important;
@@ -2835,13 +2827,33 @@
         width: 5% !important;
       }
       tr td {
-        width: 0;
-        min-width: 55px !important;
+        width: 100%;
+        min-width: 62px !important;
         font-size: inherit !important;
         .font {
           font-size: inherit !important;
         }
       }
+
+    }
+    .middle-block-columns {
+      border-top: 10px solid #0f1430;
+    }
+    .side-tables__main-menu-button {
+      line-height: 20px;
+    }
+    .middle-block__table {
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    .first-string {
+      position: relative;
+    }
+    .dropdown {
+      position: static;
+    }
+    .dzocompanylist__button {
+      position: static;
     }
   }
   .rates-block__row {
@@ -2853,6 +2865,9 @@
     }
     .dzo-company-list li {
       font-size: 12px;
+    }
+    .vis-table .table4 {
+      min-width: 0;
     }
   }
 </style>
