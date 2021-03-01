@@ -47,6 +47,7 @@ class Pipes extends Command
     {
 
         $gus = \App\Models\Refs\Gu::query()
+            ->whereNull('lat')
             ->whereHas('zuPipes')
             ->orWhereHas('wellPipes')
             ->get();

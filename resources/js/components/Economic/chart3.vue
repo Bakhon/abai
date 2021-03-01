@@ -13,12 +13,15 @@ export default {
         plotOptions: {
           bar: {
             horizontal: true,
-            endingShape: 'rounded',
-            columnWidth: '55%',
+            barHeight: '30%',
+            borderRadius: 7,
+            radiusOnLastStackedBar: false
           },
         },
         chart: {
-            stacked: false,
+          type: 'bar',
+          height: 440,
+          stacked: true,
             foreColor: '#FFFFFF'
         },
         colors:['#AB130E','#13B062'],
@@ -27,7 +30,6 @@ export default {
         },
         stroke: {
           show: true,
-          width: 2,
           colors: ['transparent']
         },
         xaxis: {

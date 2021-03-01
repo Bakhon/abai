@@ -1,12 +1,14 @@
 // Body
-$body-bg: #f8fafc;
+$body-bg: #0F1430;
 
 // Typography
-$font-family: 'Harmonia Sans Light';
+$font-family: 'Harmonia-sans';
+$font-family-light: 'Harmonia Sans Light';
 $font-size-base: 0.9rem;
+$font-family-sans-serif: $font-family;
 
 // Colors
-$blue: #3490dc;
+$blue: #2E50E9;
 $indigo: #6574cd;
 $purple: #9561e2;
 $pink: #f66d9b;
@@ -17,3 +19,56 @@ $green: #38c172;
 $teal: #4dc0b5;
 $cyan: #6cb2eb;
 $dark: #15509D;
+$white: #fff;
+
+$main1: #272953;
+$main2: #41488b;
+$main3: #40467E;
+$main4: #333975;
+
+$main2-active: #212558;
+$main2-active-border: #17193a;
+
+$main-light: #656A8A;
+
+$colors-list: (
+        'indigo': $indigo,
+        'blue': $blue,
+        'purple': $purple,
+        'pink': $pink,
+        'red': $red,
+        'orange': $orange,
+        'yellow': $yellow,
+        'green': $green,
+        'teal': $teal,
+        'cyan': $cyan,
+        'dark': $dark,
+        'main1': $main1,
+        'main2': $main2,
+        'main3': $main3,
+        'main4': $main4,
+        'main-light': $main-light
+);
+
+
+$headings-color: $white;
+
+$spacer: 1rem;
+$spacer-px: 5px;
+$spacers: ();
+$spacers: map-merge(
+                (
+                        0: 0,
+                        1: ($spacer * .25),
+                        2: ($spacer * .5),
+                        3: $spacer,
+                        4: ($spacer * 1.5),
+                        5: ($spacer * 3),
+                        5px: ($spacer-px),
+                        10px: ($spacer-px * 2),
+                        15px: ($spacer-px * 3),
+                        20px: ($spacer-px * 4),
+                        25px: ($spacer-px * 5),
+                ),
+                $spacers
+);

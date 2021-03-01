@@ -36,7 +36,7 @@ ol, ul, dl {
     float: left;
     font-size: 0.9em;
     margin-left: 0em;
-    margin-top: -5px; 
+    margin-top: -5px;
 }
 
 .txt2-2 {
@@ -55,7 +55,6 @@ body {
     font-family: "Bold";
     font-size: 0.9em;
     margin-left: 0.1em;
-    margin-top: 0.5em;
     white-space: nowrap;
     overflow: hidden;
 }
@@ -202,7 +201,7 @@ body {
     /* line-height: 44px; */
     min-width: 5.3em;
     padding: 0px 0px 10px 10px;
-    
+
 }
 
 .table7 td .selected {
@@ -310,7 +309,7 @@ td:last-of-type {
 
 .txt5 {
     margin-left: 0.5em;
-    margin-top: 0.73rem;    
+    margin-top: 0.73rem;
     overflow: hidden;
     font-size: 1.2em;
     margin-bottom: 12px;
@@ -598,13 +597,11 @@ td.small-td {
 }
 
 .triangle {
-    border: 8px solid transparent;
-    width: 10px;
-    height: 10px;
+    border: 6px solid transparent;
+    width: 6px;
+    height: 6px;
     float: left;
-    /* margin-top: 8px; */
-    /* margin-left: 5px; */
-    /* flex-flow: row; */
+    position: absolute;
 }
 
 .triangle2 {
@@ -626,8 +623,11 @@ td.small-td {
     width: 100%;
     height: 80%;
     background: #272953;
-    /* margin-left: 15px; */
-    /* width: 75vw; */
+}
+@media (min-width: 1900px) {
+    .big-area {
+        height: 75%;
+    }
 }
 
 .end2 {
@@ -691,6 +691,7 @@ td.small-td {
     color: #373435;
     font-weight: normal!important;
     font-size: 1.1em;
+    margin-left: 10%;
 }
 
 ul.center-menu2 {
@@ -711,7 +712,7 @@ ul.center-menu2 {
 .square-small2 {
     /* background: #237deb; */
     border-radius: 5px;
-    border: 1px solid #237deb; 
+    border: 1px solid #237deb;
     width: 22px;
     height: 22px;
     /* position: relative; */
@@ -797,7 +798,7 @@ li.center-li {
 canvas#line-chart {
     /* height: 535px!important; */
     margin-top: 10px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .name-chart-head {
@@ -1046,16 +1047,17 @@ ul.dropdown-menu-vc {
     margin-top: 1.2em;
 }
 
-/*.width-accidnets {
-    width: 1em;
-}*/
-
-
 @media (max-width:1367px) {
 .txt5 {
     font-size: 0.9em!important;
 
 }
+}
+@media (max-width:1680px) {
+    .txt5 {
+        font-size: 1.0em!important;
+
+    }
 }
 
 .name-ed-izmeren{

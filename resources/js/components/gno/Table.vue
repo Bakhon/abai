@@ -12,6 +12,7 @@
                 <select class="select-gno2" v-model="field">
                   <option value="UZN">Узень</option>
                   <option value="KMB">Карамандыбас</option>
+                  <option value="JET">Жетыбай</option>
                 </select>
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
@@ -19,6 +20,7 @@
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 <input v-model="wellNumber" onfocus="this.value=''" type="text"  @change="getWellNumber(wellNumber)" class="square2" />
+                <!-- <input :value="wellNum" type="text"  @change="updateWellNum" class="square2" /> -->
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.new_well')}}
@@ -54,7 +56,9 @@
                 {{ ngdu }}
               </div>
               <div class="choosing-well-data cell4-gno-second  col-5" >
-                <div v-if="ngdu">АО "ОМГ"</div>
+                <div>
+                  {{ao}}
+                </div>
               </div>
             </div>
             <!-- Выбор скважины end -->
@@ -340,7 +344,7 @@
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometria :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <inclinometria :hPumpSet="hPumpSet" :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
                     </inclinometria>
                   </div>
                 </div>
@@ -1048,10 +1052,39 @@
 
               <div class="gno-line-chart"  v-if="visibleChart">
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
-                  <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg>
+                  <!-- <button class="download-curve-button" @click="takePhoto()">Скачать фото</button>
+                  <select class="select-download-button">
+                    <option hidden value="default">Скачать</option>
+                    <option>MS-Excel</option>
+                    <option>Photo</option>
+                  </select> -->
+                  <div class="dropdown">
+                    <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
+                        <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
+                        <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
+                        </svg>
+                      Скачать
+                      
+                      <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+</svg>
+
+                    </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
+    <a class="dropdown-item" href="#">MS Excel</a>
+  </div>
+</div>
+                  <!-- <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg> -->
                 </div>
-                <inflow-curve></inflow-curve>
+                <inflow-curve>
+                </inflow-curve>
+                
               </div>
+
 
               <div class="gno-shgn-wrapper" v-if="!visibleChart">
                 <div class="gno-shgn-block-title">
@@ -1408,43 +1441,109 @@
                           </div>
                           <div class="select-params">
                             <div class="row">
-                              <div class="col-11 pt-3 pb-3">ГНО</div>
+                              <div style="height: 5px;"></div>
                             </div>
-                            <div class="row pt-2">
-                              <div class="col-4 pr-0">
-                                <div class="table-border-gno-right">
+                            <div class="row pt-2" style="height: 50px;">
+                              <div class="col-2 pr-0">
+                                <div>
                                   <label class="label-for-celevoi">
                                     <input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()"
                                       :checked="expChoose === 'ШГН'" type="radio" name="gno10" />ШГН</label>
                                 </div>
                               </div>
 
-                              <div class="col-4  pr-0">
-                                <div class="table-border-gno-right">
+                              <div class="col-2  pr-0">
+                                <div>
                                   <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
                                       v-model="expChoose" @change="postCurveData()" :checked="expChoose === 'ЭЦН'"
                                       type="radio" name="gno10" />ЭЦН</label>
                                 </div>
                               </div>
-                              <div class="col-4">
-                                <label class="label-for-celevoi pl-3">Нсп</label>
+
+                               <div class="col-2 pr-0">
+                                <div>
+                                  <label class="label-for-celevoi">
+                                    <input class="checkbox3" value="ФОН"
+                                      v-model="expChoose" @change="postCurveData()" :checked="expChoose === 'ФОН'"
+                                       type="radio" name="gno10" />ФОН</label>
+                                </div>
+                              </div>
+
+                              <div class="table-border-gno col-2">
+                                <label class="label-for-celevoi">Рбуф</label>
+                                <input type="text" v-model="pBuf" onfocus="this.value=''" 
+                                  class="input-box-gno podbor" />
+                              </div>
+
+                              <div class="col-2">
+                                <label class="label-for-celevoi">ØНКТ</label>
+                                  <select class="input-box-gno podbor" v-model="nkt">
+                                  <option value="38">38</option>
+                                  <option value="44">44</option>
+                                  <option value="57">57</option>
+                                  <option value="70">70</option>
+                                  </select>
+                              </div>
+
+                              <div class="col-2">
+                                <label class="label-for-celevoi">Нсп</label>
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" onfocus="this.value=''" 
-                                  class="square3 podbor" />
+                                  class="input-box-gno podbor" />
                               </div>
+
                             </div>
+
                             <div class="row">
-                              <div class="col-4 pr-0">
-                                <div class="table-border-gno-right pt-3">
-                                  &nbsp;
-                                </div>
-                              </div>
-                              <div class="col-4 pr-0">
-                                <div class="table-border-gno-right pt-3">
-                                  &nbsp;
-                                </div>
-                              </div>
+                              <div style="height: 20px; padding-left: 15px;">Общий коэффициент сепарации</div>
                             </div>
-                            <div class="table-border-gno-top">
+
+                            <div class="row" style="padding-top: 3px;"> 
+                              <!-- <div class="col-2 pr-0" style="padding-top: 10px;">
+                                  <label style="width: 100px; padding-left: 15px; " class="label-for-celevoi">
+                                    <input class="checkbox3" checked="true" type="radio" name="gno10"/>
+                                    Расчет
+                                  </label>
+                              </div>
+
+                              <div class="col-2  pr-0">
+                                <div style="padding-top: 10px; padding-left: 15px;">
+                                  <label style="width: 100px;" class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
+                                       checked="true"
+                                      type="radio" name="gno10"/><input type="text" onfocus="this.value=''" 
+                                  class="input-box-gno podbor" /></label>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-12">
+                                  asdasd
+                                </div>
+                              </div> -->
+
+                              <div class="col-4">
+                                <label style="width: 100px;" class="label-for-celevoi">
+                                    <input value="raschet" v-model="es" class="checkbox34" checked="true" type="radio" name="gno20"/>
+                                    Расчет
+                                </label>
+                              </div>
+                              <div class="col-8 table-border-gno">
+                                <input value="realSep" type="checkbox" checked="true" :disabled="es ==='raschet2'">Естественная сепарация</div>
+                              
+
+                            
+                            </div>
+
+                            <div class="row">
+                              <div class="col-4">
+                                <label style="width: 100px;" class="label-for-celevoi">
+                                  <input class="checkbox3" v-model="es" value="raschet2" checked="true" type="radio" name="gno20"/>
+                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" /></label>
+                              </div>
+                              <div class="col-8 table-border-gno"><input value="mechSep" checked="true" v-model="esSeparation" :disabled="es ==='raschet2'" type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" :disabled="es ==='raschet2'" onfocus="this.value=''" class="input-box-gno podbor" /></div>
+                            </div>
+                              
+
+                            <div class="table-border-gno-top" style="padding-bottom: 0;">
                               <div class="row">
                                 <div class="col-4 pr-0">
                                   <div class="table-border-gno-right pt-2 pb-3 podbor-bottom-title-line text-ellipsis">
@@ -1493,7 +1592,7 @@
                           </div>
                         </div>
                         <div class="col-12 px-2 gno-main-green-button">
-                          <div class="tables-string-gno6 col-12" @click="onPgnoClick()">
+                          <div class="button-podbor-gno col-12" @click="onPgnoClick()">
                             {{ getOnPgnoButtonTitle }}
                           </div>
                         </div>
@@ -1882,6 +1981,7 @@
 </template>
 
 <script>
+import {mapMutations, mapState} from 'vuex'
 import { Plotly } from "vue-plotly";
 import { eventBus } from "../../event-bus.js";
 import NotifyPlugin from "vue-easy-notify";
@@ -2147,6 +2247,10 @@ export default {
       numberRepairs: null,
       numberNNO: null,
       langUrl: '',
+      separation: null,
+      es: 'raschet',
+      pBuf: null,
+      ao: null,
     };
 
   },
@@ -2164,12 +2268,34 @@ export default {
         this.curveSelect = 'hdyn';
       }
     },
+    es(newVal) {
+      if(newVal === 'raschet'){
+        this.separation = null;
+      } else {
+        this.separation = 'raschet2'
+      }
+    },
+      
   },
+  created() {
+    window.addEventListener("resize", () => {
+      this.windowWidth = window.innerWidth;
+    });
+  },
+  mounted() {
+    this.windowWidth = window.innerWidth;
 
+    if (this.windowWidth <= 1300 && this.windowWidth > 991) {
+      this.activeRightTabName = 'devices';
+    }
+  },
   computed: {
+    wellNum() {
+      return this.$store.state.wellNum
+    },
     getOnPgnoButtonTitle() {
      var langUrl = `${window.location.pathname}`.slice(1, 3);
-      if (this.visibleChart) {
+            if(this.visibleChart) {
         if(langUrl === 'ru') {
           return 'Подбор ГНО'
         } else if(langUrl === 'kz') {
@@ -2188,21 +2314,17 @@ export default {
         }
       }
     },
-    
-  },
-  created() {
-    window.addEventListener("resize", () => {
-      this.windowWidth = window.innerWidth;
-    });
-  },
-  mounted() {
-    this.windowWidth = window.innerWidth;
-
-    if (this.windowWidth <= 1300 && this.windowWidth > 991) {
-      this.activeRightTabName = 'devices';
-    }
+    wellType() {
+      return this.$store.state.wellType
+    },
+    // ...mapMutations([wellNum]),
+    ...mapState(['wells'])
   },
   methods: {
+    updateWellNum(event) {
+      this.$store.commit('UPDATE_MESSAGE', event.target.value)
+      this.$store.dispatch('loadWells')
+    },
     closeModal(modalName) {
       this.$modal.hide(modalName)
     },
@@ -2210,10 +2332,11 @@ export default {
       this.$modal.hide('tablePGNO')
       this.$modal.show('modalExpAnalysis')
     },
+    
     setData: function(data) {
       if (this.method == "CurveSetting") {
         this.pResInput = data["Well Data"]["p_res"][0] + ' атм'
-        this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/ат'
+        this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/атм'
         this.qLInput = data["Well Data"]["q_l"][0].toFixed(0) + ' м³/сут'
         this.wctInput = data["Well Data"]["wct"][0] + ' %'
         this.hPumpValue = data["Well Data"]["h_pump_set"][0].toFixed(0) + ' м'
@@ -2269,6 +2392,7 @@ export default {
         this.hDyn = data["Well Data"]["h_dyn"][0].toFixed(0)
         this.pAnnular = data["Well Data"]["p_annular"][0].toFixed(0)
         this.whp = data["Well Data"]["whp"][0].toFixed(0)
+        this.pBuf = data["Well Data"]["whp"][0].toFixed(0)
         this.lineP = data["Well Data"]["line_p"][0].toFixed(0)
         this.piInput = data["Well Data"]["pi"][0].toFixed(2) + ' м³/сут/ат'
         this.curr = data["Well Data"]["curr_bh"][0].toFixed(0)
@@ -2326,13 +2450,19 @@ export default {
 
         if (this.expMeth == "ШГН") {
           this.expChoose = "ШГН"
-        } else {
+        } else if (this.expMeth == "ЭЦН") {
           this.expChoose = "ЭЦН"
+        } else if (this.expMeth == "ФОН") {
+          this.expChoose = "ФОН"
         }
         if (this.age === true) {
           this.curveSelect = 'pi'
         } else {
-          this.curveSelect = 'hdyn'
+          if (this.expMeth === "ФОН"){
+            this.curveSelect = "whp"
+          } else {
+            this.curveSelect = 'hdyn'
+          }
         }
 
         this.piButton = true
@@ -2421,6 +2551,14 @@ export default {
         labels: qo_points2,
       };
     },
+
+    // getNgduParam() {
+    //   if(field === "JET"){
+    //     return 'АО "ММГ"'
+    //   } else {
+    //     return 'АО "ОМГ"'
+    //   }
+    // },
     updateLine:  function (value) {
       var ipr_points = [];
       var qo_points = [];
@@ -2480,7 +2618,7 @@ export default {
         } else if(langUrl === 'kz') {
         Vue.prototype.$notifyError('Пайдалану колоннасында (ПК) 127 мм және одан төмен  ЭОТСҚ (Электрлік орталықтан тепкіш copaп қондырғысы) қолданылмайды2')
         } else {
-        Vue.prototype.$notifyError('Eng')
+        Vue.prototype.$notifyError('The using of ESP units with dimensions 5 and 5A is not possible in a production casing with a diameter of 127 mm and below')
        }
       }
       
@@ -2491,7 +2629,7 @@ export default {
         } else if(langUrl === 'kz') {
          Vue.prototype.$notifyWarning('ЭОТСҚ қолдану төмен дебитті ұңғымаларда болмайды')
         } else {
-         Vue.prototype.$notifyWarning('Eng')
+         Vue.prototype.$notifyWarning('ESP application is not recommended for low-rate wells')
        }
       }
 
@@ -2501,7 +2639,7 @@ export default {
         } else if(langUrl === 'kz') {
          Vue.prototype.$notifyWarning("Аз дебитті бұрғылау ұңғымаларын пайдалану өндіріс әлеуетін шектейді");
         } else {
-         Vue.prototype.$notifyWarning("Eng")
+         Vue.prototype.$notifyWarning("The use of sucker-rod pumping units in high-flow wells limits production potential")
        }
       } 
 
@@ -2613,7 +2751,7 @@ export default {
       }
     },
     async NnoCalc(){
-      let uri = "http://172.20.103.187:7575/api/nno/";
+      let uri = "http://172.20.103.187:7574/api/nno/";
 
       this.eco_param=null;
 
@@ -2683,8 +2821,17 @@ export default {
     },
 
     InclMenu() {
+      
       if (this.age === true) {
-        Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
+        var langUrl = `${window.location.pathname}`.slice(1, 3);
+        if(langUrl === 'ru') {
+          Vue.prototype.$notifyWarning("Данные инклинометрии новой скважины отсутствуют");
+        } else if(langUrl === 'kz') {
+          Vue.prototype.$notifyWarning("Ұңғыманын инклинометрия жоқ")
+        } else {
+          Vue.prototype.$notifyWarning("New well inclinometry data not available")
+        }
+        
 
       } else {
         this.$modal.show('modalIncl')
@@ -2692,22 +2839,28 @@ export default {
     },
 
     getWellNumber(wellnumber) {
+      if(this.field == "JET") {
+              this.ao = 'АО "ММГ"'
+            } else {
+              this.ao = 'АО "ОМГ"'
+            }
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + wellnumber + "/";
-      var langUrl = `${window.location.pathname}`.slice(1, 3);
+      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + wellnumber + "/";
       this.isLoading = true;
 
       this.axios.get(uri).then((response) => {
           var data = response.data;
+          
           this.method = 'MainMenu'
           if (data["Error"] == "NoData" || data["Error"] == 'data_error'){
             if(data["Error"] == "NoData") {
+              var langUrl = `${window.location.pathname}`.slice(1, 3);
               if(langUrl === 'ru'){
                 Vue.prototype.$notifyError("Указанная скважина отсутствует");
               } else if(langUrl === 'kz') {
                 Vue.prototype.$notifyError("Көрсетілген ұңғыма жоқ");
               } else {
-                Vue.prototype.$notifyError("Eng");
+                Vue.prototype.$notifyError("The specified well is missing");
               }
               
             } else if(data["Error"] == 'data_error') {
@@ -2716,10 +2869,12 @@ export default {
               } else if(langUrl === 'kz') {
                 Vue.prototype.$notifyError("Kz")
               } else {
-                Vue.prototype.$notifyError("Eng")
+                Vue.prototype.$notifyError("Well operating practices data is incorrect")
               }
               
             }
+
+            
 
             this.curveLineData = JSON.parse(data.LineData)["data"]
             this.curvePointsData = JSON.parse(data.PointsData)["data"]
@@ -2811,7 +2966,7 @@ export default {
             } else if(langUrl === 'kz') {
               Vue.prototype.$notifyWarning("Түсу тереңдігі әдепкі қалпы бойынша перфорацияның жоғарғы тесіктерінен 150 м жоғары орнатылған")
             } else {
-              Vue.prototype.$notifyWarning("Eng")
+              Vue.prototype.$notifyWarning("Pump run depth is set 150 meters above the top perforation holes by default")
             }
             
 
@@ -2888,7 +3043,7 @@ export default {
               } else if(langUrl === 'kz') {
                 Vue.prototype.$notifyWarning("Ұңғымадағы тербелмелі білдегінің (ТБ) түрі жүрістің ағымдағы ұзындығына сәйкес келмейді")
               } else {
-                Vue.prototype.$notifyWarning("Eng")
+                Vue.prototype.$notifyWarning("The pumping unit type on the well does not match the current stroke length")
               }
             }
             if(data["error_spm"] == "error_spm") {
@@ -2897,12 +3052,13 @@ export default {
               } else if(langUrl === 'kz') {
               Vue.prototype.$notifyWarning("Ұңғымадағы ТБ түрі тербелістердің ағымдағы санына сәйкес келмейді")
               } else {
-              Vue.prototype.$notifyWarning("Eng")
+              Vue.prototype.$notifyWarning("The type of pumping unit on the well does not correspond to the current pump rate")
               }
             }
           }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
+          // this.$emit('hPumpSet', this.hPumpSet)
           //this.NnoCalc();
         }
       ).finally((response) => {
@@ -2915,7 +3071,7 @@ export default {
 
     postCurveData() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
+      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
       var langUrl = `${window.location.pathname}`.slice(1, 3);
       // api/pgno/UZN/
       // KMB
@@ -2970,7 +3126,7 @@ export default {
         } else if(langUrl === 'kz') {
           Vue.prototype.$notifyError('Пайдалану колоннасында (ПК) 127 мм және одан төмен  ЭОТСҚ (Электрлік орталықтан тепкіш copaп қондырғысы) қолданылмайды')
         } else {
-          Vue.prototype.$notifyError('Eng')
+          Vue.prototype.$notifyError('The using of ESP units with dimensions 5 and 5A is not possible in a production casing with a diameter of 127 mm and below')
         }
       }
 
@@ -2980,7 +3136,7 @@ export default {
         } else if(langUrl === 'kz') {
           Vue.prototype.$notifyWarning("ЭОТСҚ қолдану төмен дебитті ұңғымаларда болмайды")
         } else {
-          Vue.prototype.$notifyWarning("Eng")
+          Vue.prototype.$notifyWarning("ESP application is not recommended for low-rate wells")
         }
         
       }
@@ -2990,7 +3146,7 @@ export default {
         } else if(langUrl === 'kz') {
           Vue.prototype.$notifyWarning("Kz")
         } else {
-          Vue.prototype.$notifyWarning("Eng")
+          Vue.prototype.$notifyWarning("The use of sucker-rod pumping units in high-flow wells limits production potential")
         }
 
       }
@@ -3005,7 +3161,7 @@ export default {
               } else if(langUrl === 'kz') {
                 Vue.prototype.$notifyWarning("Кенжар қысымы қабаттық қысымнан артық болмауы тиіс")
               } else {
-                Vue.prototype.$notifyWarning("Eng")
+                Vue.prototype.$notifyWarning("Bottomhole pressure should not be more than reservoir pressure")
               }
               
             } else {
@@ -3015,7 +3171,7 @@ export default {
                 } else if(langUrl === 'kz') {
                   Vue.prototype.$notifyWarning("Сорғы перфорациядан төмен орнатылған")
                 } else {
-                  Vue.prototype.$notifyWarning("Eng")
+                  Vue.prototype.$notifyWarning("The pump is installed below the perforation")
                 }
                 
               }
@@ -3042,7 +3198,7 @@ export default {
 
     postAnalysisOld() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/" + this.field + "/" + this.wellNumber + "/";
+      let uri = "http://172.20.103.187:7574/api/pgno/" + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -3104,7 +3260,7 @@ export default {
 
     postAnalysisNew() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
+      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -3197,7 +3353,7 @@ export default {
       } else if(langUrl === 'kz') {
         Vue.prototype.$notifyWarning("Түсу тереңдігі әдепкі қалпы бойынша перфорацияның жоғарғы тесіктерінен 150 м жоғары орнатылған")
       } else {
-        Vue.prototype.$notifyWarning("Eng")
+        Vue.prototype.$notifyWarning("Pump run depth is set 150 meters above the top perforation holes by default")
       }
       
       this.updateLine(this.newCurveLineData)
@@ -3238,7 +3394,7 @@ export default {
       } else {
         if(this.expChoose == 'ШГН'){
           if(this.visibleChart) {
-            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
+            let uri = "http://172.20.103.187:7574/api/pgno/shgn";
             let jsonData = JSON.stringify(
               {
                 "ql_cel": this.qlCelValue.split(' ')[0],
@@ -3263,7 +3419,7 @@ export default {
                   } else if(langUrl === 'kz') {
                     Vue.prototype.$notifyWarning("Таңдалған параметрлер бойынша сорғыны таңдау мүмкін болмады, түсу тереңдігін немесе күтілетін дебитті өзгертуге тырысыңыз")
                   } else {
-                    Vue.prototype.$notifyWarning("Eng")
+                    Vue.prototype.$notifyWarning("It was not possible to pick up the pump according to the selected parameters, try changing the lowering depth or the expected flow rate")
                   }
                 } else {
                   if(this.sk == "ПШГН" || this.sk == "0") {
@@ -3272,7 +3428,7 @@ export default {
                     } else if(langUrl === 'kz') {
                       Vue.prototype.$notifyWarning("Ұңғымадағы ТБ түрі анықталмаған")
                     } else {
-                      Vue.prototype.$notifyWarning("Eng")
+                      Vue.prototype.$notifyWarning("The type of pumping unit on the well is not defined")
                     }
                     
                   }
@@ -3296,7 +3452,7 @@ export default {
                     } else if(langUrl === 'kz') {
                       Vue.prototype.$notifyWarning("Таңдалған параметрлер бойынша сорғыны таңдау мүмкін болмады, түсу тереңдігін немесе күтілетін дебитті өзгертуге тырысыңыз")
                     } else {
-                      Vue.prototype.$notifyWarning("Eng")
+                      Vue.prototype.$notifyWarning("It was not possible to pick up the pump according to the selected parameters, try changing the lowering depth or the expected flow rate")
                     }
                     
                   } else {
@@ -3306,7 +3462,7 @@ export default {
                     } else if(langUrl === 'kz') {
                       Vue.prototype.$notifyWarning("ШТС таңдау бөлімі әзірлену үстінде")
                     } else {
-                      Vue.prototype.$notifyWarning("Eng")
+                      Vue.prototype.$notifyWarning("Section 'Selection of sucker rod pumps' is under development")
                     }
                     
                     this.shgnSPM = data["spm"].toFixed(0)
@@ -3338,7 +3494,7 @@ export default {
           } else if(langUrl === 'kz') {
             Vue.prototype.$notifyWarning("ЭОТЦҚ таңдау бөлімі әзірленбеген")
           } else {
-            Vue.prototype.$notifyWarning("Eng")
+            Vue.prototype.$notifyWarning("The section 'ESP selection' is not developed")
           }
           
         }
@@ -3366,7 +3522,7 @@ export default {
     onPrsButtonClick() {
       this.$modal.show('modal-prs')
       let krsTable = [];
-      let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
+      let uriPrsKrs = "http://172.20.103.187:7574/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
       this.axios.get(uriPrsKrs).then((response) => {
         let krs = response['data']['krs']
         this.numberRepairs = response['data']['prs']['prs']
@@ -3560,4 +3716,109 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.select-download-button {
+outline: none;
+text-align: center;
+width: 114px;
+height: 24px;
+font-size: 14px;
+color: white;
+border: 0.4px solid #222452;
+box-sizing: border-box;
+border-radius: 4px;
+-moz-appearance: none;
+-webkit-appearance: none;
+appearance: none;
+background: #323370 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat;
+background-position: right 5px top 50%;
+}
+
+.download-curve-button {
+position: relative;
+text-align: center;
+width: 114px;
+height: 24px;
+font-size: 14px;
+color: white;
+border: 0.4px solid #222452;
+box-sizing: border-box;
+border-radius: 4px;
+background: #323370;
+outline: none;
+left: 20px;
+top: 8px;
+}
+
+.select-gno2 {
+outline: none;
+width: 95px;
+height: 24px;
+color: white;
+border: 0.4px solid #222452;
+box-sizing: border-box;
+-moz-appearance: none;
+-webkit-appearance: none;
+margin-top: -2px;
+margin-right: 1px;
+appearance: none;
+background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat;
+background-position: right 5px top 50%;
+}
+
+
+.input-box-gno {
+    background: #494AA5;
+    border: 1px solid #272953;
+    outline: none;
+    width: 100%;
+    height: 22px;
+    color: white;
+    box-sizing: border-box;
+    border-radius: 2px;
+    line-height: 25px !important;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.input-box-gno:focus {
+    background: #5657c7;
+}
+
+.input-box-gno:disabled {
+    color: #928f8f;
+    background: #353e70;
+}
+
+.input-box-gno.podbor {
+    width: 57px;
+    margin-bottom: 10px;
+}
+
+.button-podbor-gno {
+    float: left;
+    font-size: 16px;
+    font-weight: bold;
+    position: relative;
+    padding: 15px 15px;
+    height: 44px;
+    background: rgba(19, 176, 98, 0.8);
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 0;
+    line-height: 18px;
+    cursor: pointer;
+}
+
+.button-podbor-gno:active {
+    background-color: #144079;
+    box-shadow: 0 2px #666;
+    transform: translateY(0.02px);
+    filter: blur(0.3px);
+}
+
+.button-podbor-gno:hover {
+    background-color: #484749;
+}
+
+</style>
