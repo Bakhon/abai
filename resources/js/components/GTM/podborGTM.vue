@@ -124,12 +124,8 @@
 </template>
 
 <script>
-import { bTreeView } from 'bootstrap-vue-treeview'
 import structureMain from './structure_main.json'
 export default {
-    components: {
-        bTreeView
-    },
     data: function () {
         return {
             nearWellsData: [
