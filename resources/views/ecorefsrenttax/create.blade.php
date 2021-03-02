@@ -27,13 +27,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Мировая цена, от:</strong>
+                                        <strong>Мировая цена ($/баррель), от:</strong>
                                         <input type="integer" name="world_price_beg" class="form-control" placeholder="Пример: 0">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Мировая цена, до:</strong>
+                                        <strong>Мировая цена ($/баррель), до:</strong>
                                         <input type="integer" name="world_price_end" class="form-control" placeholder="Пример: 20">
                                     </div>
                                 </div>

@@ -59,13 +59,6 @@ body {
     overflow: hidden;
 }
 
-.col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
-    position: relative;
-    width: 100%;
-    padding-right: 5px!important;
-    padding-left: 5px!important;
-}
-
 .p-4 {
     padding: 15px !important;
 }
@@ -79,24 +72,8 @@ body {
     margin-bottom: unset!important;
 }
 
-/*.left-side {
-    float: left;
-    overflow: hidden;
-    margin-top: -13px;
-}
-
-.right-side2 {
-    float: left;
-    overflow: hidden;
-    margin-top: -13px;
-}*/
-
 .first-string {
     background: #272953;
-}
-
-.nu {
-    /* height: 60px; */
 }
 
 .number {
@@ -119,13 +96,6 @@ body {
 .txt1 {
     font-family: Bold;
 }
-
-/*.txt2 {
-    font-family: Bold;
-    float: left;
-    font-size: 18px;
-    margin-top: -1px;
-}*/
 
 .txt3 {
     color: #82BAFF;
@@ -245,6 +215,21 @@ td:last-of-type {
     font-weight: 550;
 }
 
+@media (max-width:814px) {
+    .txt4 {
+        font-size: 18px;
+    }
+    .number {
+        font-size: 18px;
+    }
+    .txt1 {
+        font-size: 0.8rem;
+    }
+    .unit-vc {
+        font-size: 10px;
+    }
+}
+
 .in-work {
     color: #82BAFF
 }
@@ -257,7 +242,6 @@ td:last-of-type {
 .in-idle2 {
     color: #9FA5C7;
     font-size: 14px;
-    margin-top: -8px;
     margin-left: 5px;
 }
 
@@ -322,7 +306,7 @@ td:last-of-type {
     /* width: 100%; */
     height: 40px;
     text-align: center;
-    line-height: 42px;
+    line-height: 40px;
     color: #9EA4C9;
 }
 
@@ -497,10 +481,6 @@ td.size-td {
     margin-left: 12px;
 }
 
-.table th, .table td {
-    /* padding: 0.5rem!important; */
-}
-
 .column-1 {
     display: flow-root;
 }
@@ -623,12 +603,10 @@ td.small-td {
     width: 100%;
     height: 80%;
     background: #272953;
-    /* margin-left: 15px; */
-    /* width: 75vw; */
 }
 @media (min-width: 1900px) {
     .big-area {
-        height: 65%;
+        height: 80%;
     }
 }
 
@@ -680,9 +658,9 @@ td.small-td {
     list-style: none;
     background: #fff;
     z-index: 999;
-    min-width: 96%;
+    min-width: 90%;
     border-radius: 10px;
-    margin-left: 9px;
+    margin-left: 35px;
     border: 2px solid #2743cb;
     cursor: pointer;
     color:black;
@@ -693,6 +671,7 @@ td.small-td {
     color: #373435;
     font-weight: normal!important;
     font-size: 1.1em;
+    margin-left: 10%;
 }
 
 ul.center-menu2 {
@@ -766,15 +745,12 @@ li.center-li {
 .plan-header {
     color: #82BAFF;
     font-size: 12px;
-    margin-top: -12px;
     text-align: right;
     margin-bottom: -5px;
 }
 
 .first-td-header {
-    float: left;
     margin-left: 10%;
-    width: 80%;
 }
 
 .second-td-header {
@@ -782,8 +758,6 @@ li.center-li {
 }
 
 .vert-line {
-    /*width: 2px;
-    height: 165px;*/
     background: url(/img/visualcenter3/line.png) no-repeat;
     margin-left: 3%;
     position: absolute;
@@ -1048,26 +1022,44 @@ ul.dropdown-menu-vc {
     margin-top: 1.2em;
 }
 
-/*.width-accidnets {
-    width: 1em;
-}*/
-
-
-@media (max-width:1367px) {
-.txt5 {
-    font-size: 0.9em!important;
-
-}
-}
-@media (max-width:1680px) {
+@media (max-width:1368px) {
+    .txt4 {
+        font-size: 20px;
+    }
+    .number {
+        font-size: 20px;
+    }
+    .txt1 {
+        font-size: 0.9rem;
+    }
+    .table th, .table td {
+        padding: 0.4rem!important;
+    }
+    .percent-currency {
+        margin-top: 15px;
+    }
     .txt5 {
-        font-size: 1.0em!important;
-
+        font-size: 12px;
+    }
+    .icon-all {
+        height: 60%;
+        width: 25px;
+    }
+    .button2 {
+        font-size: 10px;
+    }
+    .dropdown4 a {
+        display: inline-block;
+        margin-left: 0;
     }
 }
+@media (max-width: 400px) {
+    .first-td-header {
+        margin-left: 0;
+        width: 100%;
+    }
+    .big-area.usd-chart {
+        max-height: 76%
+    }
 
-.name-ed-izmeren{
- font-family: 'Harmonia-sans', sans-serif;
-  opacity: 0.6;
-  font-size:10px;
 }

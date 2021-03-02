@@ -1,0 +1,93 @@
+{
+  "oilProductionButton": {
+    "tags": [
+      "oil_plan",
+      "oil_opek_plan"
+    ],
+    "childItems": {
+      "kmgParticipation": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "opecRestriction": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      }
+    }
+  },
+  "oilDeliveryButton": {
+    "tags": [
+      "oil_dlv_plan",
+      "tovarnyi_ostatok_nefti_prev_day"
+    ],
+    "childItems": {
+      "kmgParticipation": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "oilResidue": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      }
+    }
+  },
+  "gasProductionButton": {
+    "tags": [
+      "sdacha_gaza_prirod_plan",
+      "gas_plan",
+      "raskhod_prirod_plan",
+      "sdacha_gaza_poput_plan",
+      "raskhod_poput_plan",
+      "pererabotka_gaza_poput_plan"
+    ],
+    "childItems": {
+      "deliveryNaturalGas": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "gasConsumptionForNeeds": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "deliveryAssociatedGas": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "associatedGasConsumptionForNeeds": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "associatedGasProcessing": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      }
+    }
+  },
+  "condensateProductionButton": {
+    "tags": [
+      "gk_plan"
+    ]
+  },
+  "waterInjectionButton": {
+    "tags": [
+      "liq_plan",
+      "ppd_zakachka_morskoi_vody_plan",
+      "ppd_zakachka_stochnoi_vody_plan",
+      "ppd_zakachka_albsen_vody_plan"
+    ],
+    "childItems": {
+      "seaWaterInjection": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "wasteWaterInjection": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      },
+      "albsenWaterInjection": {
+        "buttonClass": "",
+        "flag": "flagOff"
+      }
+    }
+  }
+}

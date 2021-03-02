@@ -141,7 +141,9 @@ Vue.component('viscenter2-create', require('./components/visualcenter/viscenter2
 Vue.component('visualcenter3-excelform', require('./components/visualcenter3/ExcelForm.vue').default);
 
 Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
+Vue.component('las', require('./components/bigdata/Las.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
+Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
 Vue.component('bigdata-form', require('./components/bigdata/wells/form').default);
 Vue.component('bigdata-form-field', require('./components/bigdata/wells/field').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
@@ -149,6 +151,8 @@ Vue.component('bigdata-report-button', require('./components/bigdata/BigDataRepo
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
 
 Vue.component('main-page', require('./components/mainpage.vue').default);
+
+Vue.component('profile', require('./components/profile/Profile.vue').default);
 
 
 Vue.prototype.trans = string => _.get(window.i18n, string) || string;

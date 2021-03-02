@@ -92,11 +92,6 @@ Route::group(
                 Route::post('/protodata', 'ProtoDBController@getProtoOtchet1')->name('protodata');
                 Route::post('/gtm1', 'DBgtmController@gtm1')->name('gtm1');
                 Route::post('/dob1', 'DBdobController@dob1')->name('dob1');
-                Route::get('/bigdata/reports', 'bd\DBController@reports')->name('bigdata.reports');
-                Route::get('/bigdata/reports/favorite', 'bd\DBController@favoriteReports')->name('bigdata.reports.favorite');
-                Route::post('/bigdata/reports/favorite/{report}', 'bd\DBController@addReportToFavorites')->name('bigdata.reports.favorite.add');
-                Route::delete('/bigdata/reports/favorite/{report}', 'bd\DBController@removeReportFromFavorites')->name('bigdata.reports.favorite.remove');
-                Route::get('/protoform', 'bd\DBController@form')->name('protoform');
                 Route::get('/constructor', 'DruidController@constructor')->name('constructor');
 
                 //tr
@@ -117,6 +112,7 @@ Route::group(
                 Route::resource('ecorefsrenttax', 'EcoRefsRentTaxController');
                 Route::resource('ecorefsavgmarketprice', 'EcoRefsAvgMarketPriceController');
                 Route::resource('ecorefsdiscontcoefbar', 'EcoRefsDiscontCoefBarController');
+                Route::resource('ecorefscost', 'EcoRefsCostController');
                 Route::resource('ecorefsbranchid', 'EcoRefsBrachIdController');
                 Route::resource('ecorefsrentequipelectservcost', 'EcoRefsRentEquipElectServCostController');
                 Route::resource('ecorefsservicetime', 'EcoRefsServiceTimeController');
@@ -127,7 +123,7 @@ Route::group(
                 Route::post('/getkormass', 'ComplicationMonitoring\OmgNGDUController@getKormass');
                 Route::resource('ecorefsempper', 'Refs\EcoRefsEmpPerController');
                 Route::resource('ecorefsscfa', 'Refs\EcoRefsScFaController');
-                Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList');
+                Route::get('ecorefslist', 'Refs\EcoRefsScFaController@refsList')->name('eco_refs_list');
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('ecorefsexc', 'EcoRefsExcController');
                 Route::resource('antiecoone', 'AntiCrisis\AntiEcoOneController');
@@ -152,6 +148,7 @@ Route::group(
                 Route::get('kpiList', 'VisCenter\KPI\Marab2Controller@kpiList');
 
                 Route::resource('viscenter2', 'VisCenter\InputForm\Vis2FormController');
+                Route::resource('excelform2', 'VisCenter\InputForm\ExcelFormController');
 
                 Route::get('/import_hist', 'VisCenter\ImportForms\DZOdayController@importExcel');
                 Route::post('/import_h', 'VisCenter\ImportForms\DZOdayController@import')->name('import_h');
