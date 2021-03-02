@@ -373,6 +373,32 @@ export default {
                 isProductionIdleButtonActive: false,
                 isInjectionIdleButtonActive: false,
             },
+            fondsMapping: {
+                'fond_neftedob_df': 'operatingFond',
+                'fond_neftedob_bd': 'nonOperatingFond',
+                'fond_neftedob_osvoenie': 'masteringFond',
+                'fond_neftedob_ofls': 'liquidationFond',
+                'fond_neftedob_konv': 'conservationFond',
+                'fond_neftedob_prs': 'undergroundRepairFond',
+                'fond_neftedob_oprs': 'waitingUndergroundRepairFond',
+                'fond_neftedob_krs': 'overhaulFond',
+                'fond_neftedob_okrs': 'waitingOverhaulFond',
+                'fond_neftedob_well_survey': 'researchFond',
+                'fond_neftedob_others': 'othersFond',
+                'fond_neftedob_ef': 'exploitationFond',
+                'fond_nagnetat_df': 'operatingFond',
+                'fond_nagnetat_bd': 'nonOperatingFond',
+                'fond_nagnetat_osvoenie': 'masteringFond',
+                'fond_nagnetat_ofls': 'liquidationFond',
+                'fond_nagnetat_konv': 'conservationFond',
+                'fond_nagnetat_prs': 'undergroundRepairFond',
+                'fond_nagnetat_oprs': 'waitingUndergroundRepairFond',
+                'fond_nagnetat_krs': 'overhaulFond',
+                'fond_nagnetat_okrs': 'waitingOverhaulFond',
+                'fond_nagnetat_well_survey': 'researchFond',
+                'fond_nagnetat_others': 'othersFond',
+                'fond_nagnetat_ef': 'exploitationFond',
+            },
             productionFonds: [
                 'fond_neftedob_ef',
                 'fond_neftedob_df',
@@ -401,6 +427,7 @@ export default {
                 'fond_nagnetat_well_survey',
                 'fond_nagnetat_others'
             ],
+
         };
     },
     methods: {
@@ -1262,9 +1289,9 @@ export default {
 
             this.WellsDataAll = this.WellsData(dataWithMay);
             this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,this.injectionFonds)
-            this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay, this.wellStockIdleButtons.isInjectionIdleButtonActive);
+            this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
             this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,this.productionFonds);
-            this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive);
+            this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
@@ -2033,7 +2060,7 @@ export default {
                 productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
             }
             _.forEach(productionFondsForIterations, function(fondName) {
-                let translationName = "visualcenter." + fondName;
+                let translationName = "visualcenter." + self.fondsMapping[fondName];
                 productionFondsSummary.push(
                     {
                         value: productionPlanAndFactMonthWells[0][fondName],
