@@ -27,13 +27,13 @@
                             </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Объем годовой добычи, от:</strong>
+                                        <strong>Объем годовой добычи (тонн), от::</strong>
                                         <input type="integer" name="annual_prod_volume_beg" class="form-control" placeholder="Пример: 0">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Объем годовой добычи, до:</strong>
+                                        <strong>Объем годовой добычи (тонн), до:</strong>
                                         <input type="integer" name="annual_prod_volume_end" class="form-control" placeholder="Пример: 250 000 тонн">
                                     </div>
                                 </div>

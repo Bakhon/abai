@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: 'smooth-picker1',
+  name: 'smooth-picker',
   props: {
     data: {
       type: Array,
@@ -389,18 +389,6 @@ export default {
   background: rgba(0, 0, 0, 0.24);
   height: 120px;
   position: relative;
-
-  &:after {
-    background: url(/img/bd/comma.svg) no-repeat;
-    bottom: 22px;
-    content: "";
-    height: 18px;
-    left: 50%;
-    position: absolute;
-    transform: translatex(-50%);
-    width: 15px;
-  }
-
 }
 
 .smooth-picker .smooth-handle-layer .smooth-bottom {

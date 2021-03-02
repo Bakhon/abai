@@ -533,7 +533,6 @@
                         }}
                       </a>
                     </li>
-
                     <li
                             class="center-li row px-4"
                             @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
@@ -1401,7 +1400,7 @@
                           :class="index % 2 === 0 ? 'tdStyle' : ''"
                         >
                           <div class="font">
-                            {{ getIntegerNumber(item.value) }}
+                            {{ getFormattedNumber(item.value) }}
                           </div>
                         </td>
                       </tr>
@@ -1419,7 +1418,6 @@
             </div>
           </div>
         </div>
-
         <div class="third-table big-area" :style="`${Table4}`">
           <div class="first-string first-string2">
             <div class="container-fluid">
@@ -1437,7 +1435,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="row px-4">
                 <div class="col-3 pr-2">
                   <div
@@ -1602,7 +1599,7 @@
                           "
                         >
                         <div class="font">
-                          {{ getIntegerNumber(item.value) }}
+                          {{ getFormattedNumber(item.value) }}
                         </div>
                         </td>
                       </tr>
@@ -1637,7 +1634,6 @@
                   </div>
                 </div>
               </div>
-
               <div class="row px-4">
                 <div class="col-4 pr-2">
                   <div
@@ -1793,7 +1789,7 @@
                           :class="`${getDzoColumnsClass(index,'plan')}`"
                         >
                           <div class="font">
-                            {{ getIntegerNumber(item.plan) }}
+                            {{ getFormattedNumber(item.plan) }}
                             <span class="data-metrics">
                               {{item.metricSystem}}
                             </span>
@@ -1805,7 +1801,7 @@
                           :class="`${getDzoColumnsClass(index,'fact')}`"
                         >
                           <div class="font">
-                            {{getIntegerNumber(item.fact) }}
+                            {{getFormattedNumber(item.fact) }}
                             <span class="data-metrics">
                               {{item.metricSystem}}
                             </span>
@@ -2005,7 +2001,7 @@
                           <div v-if="index === 0" class="center">
                           </div>
                           <div class="font">
-                            {{ getIntegerNumber(item.fact) }}
+                            {{ getFormattedNumber(item.fact) }}
                          </div>
                         </td>
                       </tr>
@@ -2036,7 +2032,7 @@
                     :style="`${tableHover4}`"
                   >
                     <div class="txt4">
-                      {{ getIntegerNumber(prod_wells_work) }}
+                      {{ getFormattedNumber(prod_wells_work) }}
                     </div>
                     <div class="in-work">
                       {{ trans("visualcenter.in_work") }}
@@ -2066,7 +2062,7 @@
                   >
                     <div class="txt4 d-flex">
                       <div class="col-10 col-lg-9">
-                        {{ getIntegerNumber(prod_wells_idle) }}
+                        {{ getFormattedNumber(prod_wells_idle) }}
                       </div>
                       <div class="mt-1 col-2">
                         <img src="/img/icons/link.svg" />
@@ -2117,9 +2113,7 @@
                       :style="`${tableHover5}`"
                     >
                       <div class="txt4">
-                        {{
-                        getIntegerNumber(inj_wells_work)
-                        }}
+                        {{getFormattedNumber(inj_wells_work)}}
                       </div>
                       <div class="in-work">
                         {{ trans("visualcenter.in_work") }}
@@ -2149,9 +2143,7 @@
                     >
                       <div class="txt4 d-flex">
                         <div class="col-10 col-lg-9">
-                          {{
-                          getIntegerNumber(inj_wells_idle)
-                          }}
+                          {{getFormattedNumber(inj_wells_idle)}}
                         </div>
                         <div class="mt-1 col-2">
                           <img src="/img/icons/link.svg" />
@@ -2567,7 +2559,8 @@
   .data-titles {
     font-family: "HarmoniaSansProCyr-Regular";
     font-style: normal;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 15px;
     height: 50px;
   }
 

@@ -123,7 +123,7 @@
                                     <div class="unit-vc">тг/$</div>
                                 </div>
                                 <br>
-                                <div class="txt1">Курс доллара</div>
+                                <div class="txt1">Курс доллара, тенге</div>
                                 <div class="percent-currency">
                                     <div class="arrow2" style="position: relative; top: 5px"></div>
                                     <div class="txt2">0,1%</div>

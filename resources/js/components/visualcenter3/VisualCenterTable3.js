@@ -641,11 +641,17 @@ export default {
             if (change === 2) {
                 this.buttonMonthlyTab = this.highlightedButton;
                 this.currentDzoList = 'monthly';
+                let periodStart = moment().startOf('month').format();
+                let periodEnd = moment().subtract(1, "days").endOf('day').format();
+                if (periodStart > periodEnd) {
+                    periodStart = this.getPreviousWorkday();
+                }
                 this.range = {
-                    start: moment().startOf('month').format(),
-                    end: moment().subtract(1, "days").endOf('day').format(),
+                    start: periodStart,
+                    end: periodEnd,
                     formatInput: true,
                 };
+
                 this.changeDate();
             } else {
                 this.buttonMonthlyTab = "";
@@ -1325,12 +1331,13 @@ export default {
             var planYear = [];
 
             var dataWithMay = new Array();
+
             dataWithMay = _.filter(data, function (item) {
                 return _.every([
                     _.inRange(
                         item.__time,
                         timestampToday,
-                        timestampEnd + 10// 86400000
+                        timestampEnd
                     ),
                 ]);
             });
@@ -1375,7 +1382,6 @@ export default {
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
             this.chemistryChartData = this.getChemistryChartData(dataWithMay)
-
 
             var dzo2 = [];
             var planMonth = [];
@@ -1678,6 +1684,7 @@ export default {
             );
 
 
+
             bigTable = this.getOpecData(dataWithMay, bigTable)
 
             bigTable
@@ -1823,6 +1830,7 @@ export default {
                 ]);
             });
 
+
             let productionPlanAndFactMonthWells = _(dataWithMay)
                 .groupBy("data")
                 .map((__time, id) => ({
@@ -1922,7 +1930,8 @@ export default {
             this.selectedDay = 0;
             this.timestampToday = new Date(this.range.start).getTime();
             this.timestampEnd = new Date(this.range.end).getTime();
-            this.quantityRange = Math.trunc(((this.timestampEnd - this.timestampToday) / 86400000) + 1);
+            let differenceBetweenDates = this.timestampEnd - this.timestampToday;
+            this.quantityRange = Math.trunc((Math.abs(differenceBetweenDates) / 86400000) + 1);
             let nowDate = new Date(this.range.start).toLocaleDateString();
             let oldDate = new Date(this.range.end).toLocaleDateString();
             this.timeSelect = nowDate;
@@ -2440,6 +2449,7 @@ export default {
             if (summary.length === 0) {
                 summary = data;
             }
+
             let productionPlan = this.planFieldName;
             let productionFact = this.factFieldName;
 
@@ -2509,10 +2519,25 @@ export default {
                 }
             });
         },
+        getPreviousWorkday(){
+            let workday = moment();
+            let day = workday.day();
+            let diff = 1;
+            if (day === 0 || day === 1){
+                diff = day + 2;
+            }
+            return workday.subtract(diff, 'days').format();
+        },
 
         getOpecMonth(data) {
 
             let dataWithMay = _.filter(data, _.iteratee({date: (this.year + '-' + this.pad(this.month) + '-01' + ' 00:00:00')}));
+            if (dataWithMay.length === 0) {
+                let dateFormat = 'YYYY-MM-DD HH:mm:ss';
+                let lastWorkingDay = this.getPreviousWorkday();
+                let lastSynchronizeDay = moment(lastWorkingDay).startOf('day').add(1, "days").format(dateFormat);
+                dataWithMay = _.filter(data, _.iteratee({date: lastSynchronizeDay}));
+            }
             let oil;
             if (this.opec === "ОПЕК+") {
                 oil = 'oil_opek_plan';
@@ -2551,13 +2576,8 @@ export default {
         },
 
 
-        getIntegerNumber(num) {
-            if (num == null) {
-                num = 0;
-            }
-
+        getFormattedNumber(num) {
             return (new Intl.NumberFormat("ru-RU").format(Math.round(num)))
-
         },
 
         formatDigitToThousand(num) {

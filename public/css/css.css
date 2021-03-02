@@ -925,23 +925,19 @@ ul.dropdown-child {
 #sidebar-container .list-group a {
     height: 47px!important;
 }
-
-/*.row {
-    width:1525px;
-    width: 100%;
-    margin-right: unset;
-    margin-left: unset;
-}*/
-
 .logo {
     position: relative;
     float: left;
     width: 155px;
     height: 48px;
     left: 6px;
-    /* top: 14px; */
     margin-right: 82px;
     background: url(../img/level1/logo.svg);
+}
+@media (max-width: 992px) {
+    .logo {
+        margin-right: 35px;
+    }
 }
 
 .tables {

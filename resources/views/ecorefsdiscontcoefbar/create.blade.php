@@ -78,13 +78,13 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Дисконт:</strong>
+                                        <strong>Дисконт ($/баррель):</strong>
                                         <input type="float" name="discont" class="form-control" placeholder="Пример: 2.7">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Стоимость нефти:</strong>
+                                        <strong>Стоимость нефти (экспорт - $/баррель, внутренний рынок - тенге/тонна):</strong>
                                         <input type="float" name="macro" class="form-control" placeholder="Пример: 70">
                                     </div>
                                 </div>
