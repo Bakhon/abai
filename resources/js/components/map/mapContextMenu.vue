@@ -19,6 +19,7 @@
 <script>
 import Vue from 'vue'
 import vClickOutside from 'v-click-outside'
+
 Vue.use(vClickOutside)
 
 export default {
@@ -59,75 +60,77 @@ export default {
         this.$emit('input', val)
       }
     },
-    options () {
-      if (this.clickedObject) {
-        let options = [
-          {
-            name: this.trans('app.edit') + ' ' + this.clickedObject.name,
-            mapObject: this.clickedObject,
-            type: 'edit',
-            editMode: this.clickedObject.type
-          },
-          {
-            name: this.trans('app.delete') + ' ' + this.clickedObject.name,
-            mapObject: this.clickedObject,
-            editMode: this.clickedObject.type,
-            type: 'delete',
-          }
-        ]
-
-        if (this.clickedObject.type == 'zu' || this.clickedObject.type == 'well') {
-          options.push({
-            name: this.trans('monitoring.pipe.add'),
-            mapObject: this.clickedObject,
-            type: 'add',
-            editMode: 'pipe'
-          });
-        }
-
-        return options;
-      }
-
+    defaultOptions() {
       return [
         {
-          name: this.trans('app.create') + ' ' + this.trans('monitoring.gu'),
+          name: this.trans('app.create') + ' ' + this.trans('monitoring.gu.gu'),
           lngLat: this.lngLat,
-          type: 'add',
+          type: 'create',
           editMode: 'gu'
         },
         {
-          name: this.trans('app.create') + ' ' + this.trans('monitoring.zu'),
+          name: this.trans('app.create') + ' ' + this.trans('monitoring.zu.zu'),
           lngLat: this.lngLat,
-          type: 'add',
+          type: 'create',
           editMode: 'zu'
         },
         {
           name: this.trans('app.create') + ' ' + this.trans('monitoring.well_vinit'),
           lngLat: this.lngLat,
-          type: 'add',
+          type: 'create',
           editMode: 'well'
         },
       ]
+    },
+    optionsForSelectedObject() {
+      let options =  [
+        {
+          name: this.trans('app.edit') + ' ' + this.clickedObject.name,
+          mapObject: this.clickedObject,
+          type: 'edit',
+          editMode: this.clickedObject.type
+        },
+        {
+          name: this.trans('app.delete') + ' ' + this.clickedObject.name,
+          mapObject: this.clickedObject,
+          editMode: this.clickedObject.type,
+          type: 'delete',
+        }
+      ];
+
+      if (this.clickedObject.type == 'zu' || this.clickedObject.type == 'well') {
+        options.push({
+          name: this.trans('monitoring.pipe.add'),
+          mapObject: this.clickedObject,
+          type: 'create',
+          editMode: 'pipe'
+        });
+      }
+
+      return options;
+    },
+    options() {
+      return this.clickedObject ? this.optionsForSelectedObject : this.defaultOptions;
     }
   },
   methods: {
-    showMenu (coords){
+    showMenu(coords) {
       this.point = coords.point;
       this.lngLat = coords.lngLat;
       this.showContextMenu = true;
     },
-    hideContextMenu () {
+    hideContextMenu() {
       this.clickedObject = null;
       this.showContextMenu = false;
     },
-    onClickOutside () {
+    onClickOutside() {
       this.hideContextMenu()
     },
-    optionClicked (option) {
+    optionClicked(option) {
       this.hideContextMenu();
       this.$emit('option-clicked', option)
     },
-    onEscKeyRelease (event) {
+    onEscKeyRelease(event) {
       if (event.keyCode === 27) {
         this.hideContextMenu();
       }

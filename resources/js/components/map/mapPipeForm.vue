@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form-group
-        :label="trans('monitoring.gu')"
+        :label="trans('monitoring.gu.gu')"
         label-for="gu"
         v-if="pipe.gu_id"
     >
@@ -13,7 +13,7 @@
     </b-form-group>
 
     <b-form-group
-        :label="trans('monitoring.zu')"
+        :label="trans('monitoring.zu.zu')"
         label-for="zu">
       <b-form-select
           id="gu"

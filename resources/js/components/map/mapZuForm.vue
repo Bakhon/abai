@@ -12,7 +12,7 @@
     </b-form-group>
 
     <b-form-group
-        :label="trans('monitoring.gu')"
+        :label="trans('monitoring.gu.gu')"
         label-for="gus">
       <b-form-select
           id="gus"
@@ -63,6 +63,11 @@ export default {
 
       return options;
     },
+    test () {
+      console.log('trans', this.trans());
+      console.log(this.trans('monitoring.gu.gu'));
+      return this.trans('monitoring.gu.gu');
+    }
   },
 }
 </script>

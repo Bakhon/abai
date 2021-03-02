@@ -30,7 +30,7 @@
         footer-bg-variant="main4"
         centered
         id="object-modal"
-        :title="addObjectModalTitle">
+        :title="modalTitle">
 
       <map-gu-form :gu="objectData" :cdngs="cdngs" v-if="editMode == 'gu'"></map-gu-form>
       <map-zu-form :zu="objectData" :gus="gus" v-if="editMode == 'zu'"></map-zu-form>
@@ -105,7 +105,7 @@ export default {
         lon: null
       },
       layersIds: [],
-      formType: 'add',
+      formType: 'create',
       isHovering: false,
       pipeObject: null,
       gu: null,
@@ -142,31 +142,12 @@ export default {
       'guPointsIndexes',
       'mapCenter'
     ]),
-    addObjectModalTitle() {
-      switch (this.editMode) {
-        case 'gu':
-          return this.formType == 'add' ? this.trans('monitoring.gus.create_title') : this.trans('monitoring.gus.edit_title')
-          break;
-
-        case 'zu':
-          return this.formType == 'add' ? this.trans('monitoring.zus.create_title') : this.trans('monitoring.zus.edit_title')
-          break;
-
-        case 'well':
-          return this.formType == 'add' ? this.trans('monitoring.well.create_title') : this.trans('monitoring.well.edit_title')
-          break;
-
-        case 'pipe':
-          return this.formType == 'add' ? this.trans('monitoring.pipe.create_title') : this.trans('monitoring.pipe.edit_title')
-          break;
-
-        default:
-          return ""
-          break;
-      }
+    modalTitle() {
+      let transCode = 'monitoring.' + this.editMode + '.' + this.formType + '_title';
+      return this.trans(transCode);
     },
     okBtntext() {
-      return this.formType == 'add' ? this.trans('app.create') : this.trans('app.update')
+      return this.formType == 'create' ? this.trans('app.create') : this.trans('app.update')
     }
   },
   methods: {
@@ -190,63 +171,61 @@ export default {
       this.clickedObject = null;
       this.$refs.contextMenu.showMenu(event);
     },
+    onEdit(option) {
+      if (option.editMode == 'pipe') {
+        this.pipeObject = option.mapObject.object;
+      }
+
+      this.objectData = option.mapObject.object;
+      this.objectData.index = option.mapObject.index;
+      this.$bvModal.show('object-modal');
+    },
+    onCreate(option) {
+      //pipe start point
+      if (option.editMode == 'pipe') {
+        this.pipeObject = {
+          id: null,
+          type: option.mapObject.type == 'zu' ? 'GuZu' : 'ZuWell',
+          name: '',
+          coordinates: [],
+        };
+
+        if (option.mapObject.type == 'zu') {
+          this.pipeObject.zu_id = option.mapObject.object.id;
+          this.pipeObject.color = [255, 0, 0];
+        }
+
+        if (option.mapObject.type == 'well') {
+          this.pipeObject.well_id = option.mapObject.object.id;
+          this.pipeObject.color = [0, 255, 0];
+        }
+
+
+        option.lngLat = {
+          lng: parseFloat(option.mapObject.object.lon),
+          lat: parseFloat(option.mapObject.object.lat),
+        };
+      }
+
+      this.mapClickHandle(option);
+    },
+    onDelete(option) {
+      if (option.editMode == 'pipe') {
+        this.pipeObject = option.mapObject.object;
+      }
+
+      this.objectData = option.mapObject.object;
+      this.objectData.index = option.mapObject.index;
+
+      let title = this.trans('app.delete_confirm') + this.getObjectName(this.editMode) + '?';
+      this.confirmDelete(title);
+    },
     optionClicked(option) {
       this.editMode = option.editMode;
-
-      if (option.type == 'add') {
-
-        //pipe start point
-        if (option.editMode == 'pipe') {
-          this.pipeObject = {
-            id: null,
-            type: option.mapObject.type == 'zu' ? 'GuZu' : 'ZuWell',
-            name: '',
-            coordinates: [],
-          };
-
-          if (option.mapObject.type == 'zu') {
-            this.pipeObject.zu_id = option.mapObject.object.id;
-            this.pipeObject.color = [255, 0, 0];
-          }
-
-          if (option.mapObject.type == 'well') {
-            this.pipeObject.well_id = option.mapObject.object.id;
-            this.pipeObject.color = [0, 255, 0];
-          }
-
-
-          option.lngLat = {
-            lng: parseFloat(option.mapObject.object.lon),
-            lat: parseFloat(option.mapObject.object.lat),
-          };
-        }
-
-        this.mapClickHandle(option);
-      }
-
-      if (option.type == 'edit') {
-        if (option.editMode == 'pipe') {
-          this.pipeObject = option.mapObject.object;
-        }
-
-        this.objectData = option.mapObject.object;
-        this.objectData.index = option.mapObject.index;
-        this.$bvModal.show('object-modal');
-      }
-
-      if (option.type == 'delete') {
-        if (option.editMode == 'pipe') {
-          this.pipeObject = option.mapObject.object;
-        }
-
-        this.objectData = option.mapObject.object;
-        this.objectData.index = option.mapObject.index;
-
-        let title = this.trans('app.delete_confirm') + this.getObjectName(this.editMode) + '?';
-        this.confirmDelete(title);
-      }
-
       this.formType = option.type;
+
+      let method = 'on' + option.type.charAt(0).toUpperCase() + option.type.slice(1);
+      this[method](option);
     },
     colorToRGBArray(color) {
       if (!color) {
@@ -372,11 +351,11 @@ export default {
       this.gu = gu;
       this.$bvModal.hide('object-modal');
 
-      this.layerReDraw(layerId, 'gu', this.guPoints);
+      this.layerRedraw(layerId, 'gu', this.guPoints);
       this.centerTo(gu);
       this.resetForm();
 
-      let $message = this.trans('monitoring.gu') + ' ' + this.trans('app.added');
+      let $message = this.trans('monitoring.gu.gu') + ' ' + this.trans('app.added');
       this.showToast($message, this.trans('app.success'), 'success');
     },
     async addZu() {
@@ -384,11 +363,11 @@ export default {
       let layerId = 'icon-layer-zu';
       this.$bvModal.hide('object-modal');
 
-      this.layerReDraw(layerId, 'zu', this.zuPoints);
+      this.layerRedraw(layerId, 'zu', this.zuPoints);
       this.centerTo(zu);
       this.resetForm();
 
-      let $message = this.trans('monitoring.zu') + ' ' + this.trans('app.added');
+      let $message = this.trans('monitoring.zu.zu') + ' ' + this.trans('app.added');
       this.showToast($message, this.trans('app.success'), 'success');
     },
     async addWell() {
@@ -396,7 +375,7 @@ export default {
       let layerId = 'icon-layer-well';
       this.$bvModal.hide('object-modal');
 
-      this.layerReDraw(layerId, 'well', this.wellPoints);
+      this.layerRedraw(layerId, 'well', this.wellPoints);
       this.centerTo(well);
       this.resetForm();
 
@@ -408,7 +387,7 @@ export default {
       this.$bvModal.hide('object-modal');
       this.resetForm();
       this.removeTempPipeLayer();
-      this.layerReDraw('path-layer', 'pipe', this.pipes);
+      this.layerRedraw('path-layer', 'pipe', this.pipes);
 
       let $message = this.trans('monitoring.pipe') + ' ' + this.trans('app.added');
       this.showToast($message, this.trans('app.success'), 'success');
@@ -426,11 +405,11 @@ export default {
       let layerId = 'icon-layer-gu';
 
 
-      this.layerReDraw(layerId, 'gu', this.guPoints);
+      this.layerRedraw(layerId, 'gu', this.guPoints);
       this.centerTo(gu);
       this.resetForm();
 
-      let $message = this.trans('monitoring.gu') + ' ' + this.trans('app.updated');
+      let $message = this.trans('monitoring.gu.gu') + ' ' + this.trans('app.updated');
       this.showToast($message, this.trans('app.success'), 'success');
     },
     async editZu() {
@@ -438,11 +417,11 @@ export default {
       let layerId = 'icon-layer-zu';
       this.$bvModal.hide('object-modal');
 
-      this.layerReDraw(layerId, 'zu', this.zuPoints);
+      this.layerRedraw(layerId, 'zu', this.zuPoints);
       this.centerTo(zu);
       this.resetForm();
 
-      let $message = this.trans('monitoring.zu') + ' ' + this.trans('app.updated');
+      let $message = this.trans('monitoring.zu.zu') + ' ' + this.trans('app.updated');
       this.showToast($message, this.trans('app.success'), 'success');
     },
     async editWell() {
@@ -450,7 +429,7 @@ export default {
       let layerId = 'icon-layer-well';
       this.$bvModal.hide('object-modal');
 
-      this.layerReDraw(layerId, 'well', this.wellPoints);
+      this.layerRedraw(layerId, 'well', this.wellPoints);
       this.centerTo(well);
       this.resetForm();
 
@@ -461,7 +440,7 @@ export default {
       await this.updatePipe(this.pipeObject);
       this.$bvModal.hide('object-modal');
 
-      this.layerReDraw('path-layer', 'pipe', this.pipes);
+      this.layerRedraw('path-layer', 'pipe', this.pipes);
       this.resetForm();
 
       let $message = this.trans('monitoring.pipe.updated');
@@ -479,7 +458,7 @@ export default {
 
         let layerId = 'icon-layer-gu';
         this.resetForm();
-        this.layerReDraw(layerId, 'gu', this.guPoints);
+        this.layerRedraw(layerId, 'gu', this.guPoints);
 
         let $message = this.trans('monitoring.gu.deleted');
         this.showToast($message, this.trans('app.success'), 'success');
@@ -494,7 +473,7 @@ export default {
         let layerId = 'icon-layer-zu';
 
         this.resetForm();
-        this.layerReDraw(layerId, 'zu', this.zuPoints);
+        this.layerRedraw(layerId, 'zu', this.zuPoints);
 
         let $message = this.trans('monitoring.zu.deleted');
         this.showToast($message, this.trans('app.success'), 'success');
@@ -509,7 +488,7 @@ export default {
         let layerId = 'icon-layer-well';
 
         this.resetForm();
-        this.layerReDraw(layerId, 'well', this.wellPoints);
+        this.layerRedraw(layerId, 'well', this.wellPoints);
 
         let $message = this.trans('monitoring.well.deleted');
         this.showToast($message, this.trans('app.success'), 'success');
@@ -519,11 +498,11 @@ export default {
       }
     },
     async removePipe() {
-      this.pipeObject.type = typeof this.pipeObject.well_id != 'undefined' && this.pipeObject.well_id ? 'ZuWell' : 'GuZu';
+      this.pipeObject.type = typeof this.pipeObject.well_id !== 'undefined' && this.pipeObject.well_id ? 'ZuWell' : 'GuZu';
       let result = await this.deletePipe(this.pipeObject);
 
       if (result == 'success') {
-        this.layerReDraw('path-layer', 'pipe', this.pipes);
+        this.layerRedraw('path-layer', 'pipe', this.pipes);
         this.resetForm();
 
         let $message = this.trans('monitoring.pipe.deleted');
@@ -533,7 +512,7 @@ export default {
         this.showToast($message, this.trans('app.error'), 'danger');
       }
     },
-    layerReDraw(layerId, type, data) {
+    layerRedraw(layerId, type, data) {
       let layerIndex = this.layers.findIndex((layer) => {
         return layer.id == layerId;
       });
@@ -752,11 +731,11 @@ export default {
     getObjectName(type) {
       switch (type) {
         case 'gu':
-          return this.trans('monitoring.gu')
+          return this.trans('monitoring.gu.gu')
           break;
 
         case 'zu':
-          return this.trans('monitoring.zu')
+          return this.trans('monitoring.zu.zu')
           break;
 
         case 'well':

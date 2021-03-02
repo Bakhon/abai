@@ -12,7 +12,7 @@
     </b-form-group>
 
     <b-form-group
-        :label="trans('monitoring.zu')"
+        :label="trans('monitoring.zu.zu')"
         label-for="zus">
       <b-form-select
           id="zus"
