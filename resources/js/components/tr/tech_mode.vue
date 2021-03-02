@@ -583,7 +583,7 @@
                                 style="width: 100%; background: black">
                                 <el-table-column
                                     prop="date"
-                                    label="Date"
+                                    label="Date1111"
                                     width="180">
                                 </el-table-column>
                                 <el-table-column
