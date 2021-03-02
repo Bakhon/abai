@@ -39,7 +39,7 @@ if (strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visual
 
     @include('layouts.head-sidebar')
 
-    <div class="container-fluid col pt-10px mx-10px px-0 container-main">
+    <div class="container-fluid col pt-md-10px mx-md-10px px-0 container-main">
         @yield('content')
     </div>
 </div>
