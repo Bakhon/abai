@@ -100,7 +100,7 @@ const guMap = {
         },
 
         storeGu({state, commit}, objectData) {
-            return axios.post(this._vm.localeUrl("/gu-map/storegu"), {gu: objectData}).then((response) => {
+            return axios.post(this._vm.localeUrl("/gu-map/gu"), {gu: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_GU_POINT', response.data.gu);
                     commit('ADD_GU_POINT_INDEX', response.data.gu.id);
@@ -112,7 +112,7 @@ const guMap = {
         },
 
         storeZu({state, commit}, objectData) {
-            return axios.post(this._vm.localeUrl("/gu-map/storezu"), {zu: objectData}).then((response) => {
+            return axios.post(this._vm.localeUrl("/gu-map/zu"), {zu: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_ZU_POINT', response.data.zu);
                     return response.data.zu;
@@ -123,7 +123,7 @@ const guMap = {
         },
 
         storeWell({state, commit}, objectData) {
-            return axios.post(this._vm.localeUrl("/gu-map/storewell"), {well: objectData}).then((response) => {
+            return axios.post(this._vm.localeUrl("/gu-map/well"), {well: objectData}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_WELL_POINT', response.data.well);
                     return response.data.well;
@@ -134,7 +134,7 @@ const guMap = {
         },
 
         storePipe({state, commit}, newPipe) {
-            return axios.post(this._vm.localeUrl("/gu-map/storepipe"), {pipe: newPipe}).then((response) => {
+            return axios.post(this._vm.localeUrl("/gu-map/pipe"), {pipe: newPipe}).then((response) => {
                 if (response.data.status == 'success') {
                     commit('ADD_PIPE', response.data.pipe);
                     return response.data.pipe;
@@ -145,7 +145,7 @@ const guMap = {
         },
 
         updateGu({state, commit}, gu) {
-            return axios.put(this._vm.localeUrl("/gu-map/updategu/" + gu.id), {gu: gu}).then((response) => {
+            return axios.put(this._vm.localeUrl("/gu-map/gu/" + gu.id), {gu: gu}).then((response) => {
                 if (response.data.status == 'success') {
                     let guIndex = state.guPoints.findIndex((guPoint) => {
                         return guPoint.id == gu.id;
@@ -159,7 +159,7 @@ const guMap = {
         },
 
         updateZu({state, commit}, zu) {
-            return axios.put(this._vm.localeUrl("/gu-map/updatezu/" + zu.id), {zu: zu}).then((response) => {
+            return axios.put(this._vm.localeUrl("/gu-map/zu/" + zu.id), {zu: zu}).then((response) => {
                 if (response.data.status == 'success') {
                     let zuIndex = state.zuPoints.findIndex((zuPoint) => {
                         return zuPoint.id == zu.id;
@@ -173,7 +173,7 @@ const guMap = {
         },
 
         updateWell({state, commit}, well) {
-            return axios.put(this._vm.localeUrl("/gu-map/updatewell/" + well.id), {well: well}).then((response) => {
+            return axios.put(this._vm.localeUrl("/gu-map/well/" + well.id), {well: well}).then((response) => {
                 if (response.data.status == 'success') {
                     let wellIndex = state.zuPoints.findIndex((wellPoint) => {
                         return wellPoint.id == well.id;
@@ -187,7 +187,7 @@ const guMap = {
         },
 
         updatePipe({state, commit}, pipe) {
-            return axios.put(this._vm.localeUrl("/gu-map/updatepipe/" + pipe.id), {pipe: pipe}).then((response) => {
+            return axios.put(this._vm.localeUrl("/gu-map/pipe/" + pipe.id), {pipe: pipe}).then((response) => {
                 if (response.data.status == 'success') {
                     let pipeIndex = state.pipes.findIndex((pipeItem) => {
                         return pipeItem.id == pipe.id;
@@ -201,7 +201,7 @@ const guMap = {
         },
 
         deleteGu({state, commit}, gu) {
-            return axios.delete(this._vm.localeUrl("/gu-map/deletegu/" + gu.id)).then((response) => {
+            return axios.delete(this._vm.localeUrl("/gu-map/gu/" + gu.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_GU', gu.index);
                     return response.data.status
@@ -211,7 +211,7 @@ const guMap = {
             });
         },
         deleteZu({state, commit}, zu) {
-            return axios.delete(this._vm.localeUrl("/gu-map/deletezu/" + zu.id)).then((response) => {
+            return axios.delete(this._vm.localeUrl("/gu-map/zu/" + zu.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_ZU', zu.index);
                     return response.data.status
@@ -221,7 +221,7 @@ const guMap = {
             });
         },
         deleteWell({state, commit}, well) {
-            return axios.delete(this._vm.localeUrl("/gu-map/deletewell/" + well.id)).then((response) => {
+            return axios.delete(this._vm.localeUrl("/gu-map/well/" + well.id)).then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_WELL', well.index);
                     return response.data.status
@@ -231,7 +231,7 @@ const guMap = {
             });
         },
         deletePipe ({state, commit}, pipe) {
-            return axios.delete(this._vm.localeUrl("/gu-map/deletepipe/" + pipe.id + '/' + pipe.type))
+            return axios.delete(this._vm.localeUrl("/gu-map/pipe/" + pipe.id + '/' + pipe.type))
                 .then((response) => {
                 if (response.data.status == 'success') {
                     commit('DELETE_PIPE', pipe.index);
