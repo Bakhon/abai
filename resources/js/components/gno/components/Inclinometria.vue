@@ -111,7 +111,7 @@
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп <input  type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" /></div>
+                                  class="input-box-gno podbor"/></div>
           <!-- <div class="col-6" style="float: left; text-align: left; color: white; height: 25px;">
             Нсп 800м
           </div> -->
@@ -151,7 +151,7 @@ Vue.component("Plotly", Plotly);
 
 export default {
   components: { PerfectScrollbar },
-  props: ["wellNumber", "wellIncl", "isLoading"],
+  props: ["wellNumber", "wellIncl", "isLoading", "hPumpSet"],
   data: function () {
     return {
       data: null,
@@ -228,6 +228,7 @@ export default {
     var wi = this.wellIncl.split('_');
     let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
     this.$emit('update:isLoading', true);
+    // this.$emit(this.hPumpSet)
 
     this.axios.get(uri).then((response) => {
 

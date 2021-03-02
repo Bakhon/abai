@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class EcoRefsMacro extends Model
 {
     protected $fillable = [
-        'sc_fa', 'date', 'ex_rate_dol', 'ex_rate_rub', 'inf_end'
+        'sc_fa', 'date', 'ex_rate_dol', 'ex_rate_rub', 'inf_end', 'barrel_world_price'
     ];
     public function scfa()
     {

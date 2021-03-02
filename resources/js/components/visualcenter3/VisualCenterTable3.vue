@@ -281,11 +281,13 @@
         <div class="first-string first-string2">
           <div class="row px-4 mt-3">
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover1}`">
+              <div
+                      :class="[`${oilProductionButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'oil_plan',
                       'oil_fact',
                       `${oilChartHeadName}`,
@@ -300,27 +302,23 @@
                   </div>
                 </div>
                 <button
-                  :style="`${buttonHover1}`"
                   type="button"
                   class="btn btn-primary dropdown-toggle position-button-vc col-2"
                   data-toggle="dropdown"
                 ></button>
-
-                <!-- <div class="dropdown">-->
                 <div>
                   <ul
                     class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
                   >
-                    <li class="center-li row px-4" @click="changeMenu('101')">
+                    <li class="center-li row px-4" @click="switchMainMenu('oilProductionButton','kmgParticipation')">
                       <div
                         class="col-1 mt-2"
-                        v-html="changeMenuButton1Flag"
+                        v-html="`${getMainMenuButtonFlag('oilProductionButton','kmgParticipation')}`"
                       ></div>
-
                       <a
                         class="col-9 px-2"
                         @click="
-                          getProduction(
+                          updateProductionData(
                             'oil_plan',
                             'oil_fact',
                             `${oilChartHeadName}`,
@@ -329,50 +327,36 @@
                           )
                         "
                       >
-                        <!-- С учётом доли участия КМГ -->{{
-                          trans("visualcenter.dolyaUchast")
-                        }}
+                        {{trans("visualcenter.dolyaUchast")}}
                       </a>
-                      <!--<div class="col-2 mt-2">
-                    <div class="square-small2" :style="`${changeMenuButton1}`">
-                      &#10003;
-                    </div>
-                  </div>-->
                     </li>
-
-                    <!--<li class="center-li row px-4">
-                  <a
-                    class="col-10"
-                    @click="
-                      getProduction(
-                        'tb_personal_fact',
-                        'tb_personal_fact',
-                        `${oilChartHeadName}`,
-                        ' тонн',
-                        'Численость персонала'
-                      )
-                    "
-                    >Численость персонала</a
-                  >
-                  <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton1}`">
-                      &#10003;
-                    </div>
-                  </div>
-                </li>-->
+                    <li
+                            class="center-li row px-4"
+                            @click="switchMainMenu('oilProductionButton','opecRestriction')"
+                    >
+                    <div
+                            class="col-1 mt-2"
+                            v-html="`${getMainMenuButtonFlag('oilProductionButton','opecRestriction')}`"
+                    ></div>
+                    <a
+                            @click="changeAssets('opecRestiction')"
+                            class="col-9 px-2"
+                    >
+                      {{trans("visualcenter.opek")}}
+                    </a>
+                    </li>
                   </ul>
                 </div>
-
-                <!--  <div class="txt6"> тонн</div>
-                 </label>-->
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover2}`">
+              <div
+                      :class="[`${oilDeliveryButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'oil_dlv_plan',
                       'oil_dlv_fact',
                       trans('visualcenter.dlvoildynamic'),
@@ -385,7 +369,6 @@
                   <div class="txt5">
                     <!-- Сдача нефти  -->{{ trans("visualcenter.oildlv") }}
                   </div>
-                  <!--  <div class="txt6"> тонн</div>-->
                 </div>
                 <button
                   type="button"
@@ -394,16 +377,19 @@
                 ></button>
 
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="changeMenu('102')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('oilDeliveryButton','kmgParticipation')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton2Flag"
+                      v-html="`${getMainMenuButtonFlag('oilDeliveryButton','kmgParticipation')}`"
                     ></div>
 
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'oil_dlv_plan',
                           'oil_dlv_fact',
                           trans('visualcenter.dlvoildynamic'),
@@ -416,22 +402,19 @@
                         trans("visualcenter.dolyaUchast")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton2}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
-                  <li class="center-li row px-4" @click="changeMenu('103')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('oilDeliveryButton','oilResidue')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton3Flag"
+                      v-html="`${getMainMenuButtonFlag('oilDeliveryButton','oilResidue')}`"
                     ></div>
-
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'tovarnyi_ostatok_nefti_prev_day',
                           'tovarnyi_ostatok_nefti_today',
                           `${oilChartHeadName}`,
@@ -444,21 +427,18 @@
                         trans("visualcenter.ostatokNefti")
                       }}
                     </a>
-                    <!-- <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton3}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
                 </ul>
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover3}`">
+              <div
+                      :class="[`${gasProductionButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'gas_plan',
                       'gas_fact',
                       trans('visualcenter.getgasdynamic'),
@@ -471,7 +451,6 @@
                   <div class="txt5">
                     <!-- Добыча газа -->{{ trans("visualcenter.getgaz") }}
                   </div>
-                  <!--  <div class="txt6"> м³</div>-->
                 </div>
                 <button
                   type="button"
@@ -479,15 +458,18 @@
                   data-toggle="dropdown"
                 ></button>
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="changeMenu('104')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('gasProductionButton','deliveryNaturalGas')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton4Flag"
+                      v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryNaturalGas')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'sdacha_gaza_prirod_plan',
                           'sdacha_gaza_prirod_fact',
                           trans('visualcenter.dlvPrirodGasldynamic'),
@@ -500,22 +482,20 @@
                         trans("visualcenter.prirodGazdlv")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton4}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
 
-                  <li class="center-li row px-4" @click="changeMenu('105')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('gasProductionButton','gasConsumptionForNeeds')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton5Flag"
+                      v-html="`${getMainMenuButtonFlag('gasProductionButton','gasConsumptionForNeeds')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'raskhod_prirod_plan',
                           'raskhod_prirod_fact',
                           trans('visualcenter.raskhodprirodGazDynamic'),
@@ -528,42 +508,19 @@
                         trans("visualcenter.raskhodprirodGaz")
                       }}
                     </a>
-                    <!--<div class="col-2 mt-2">
-                    <div class="square-small2" :style="`${changeMenuButton5}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
-                  <!--<li class="center-li row px-4" @click="changeMenu('106')">
-                  <a
-                    class="col-10"
-                    @click="
-                      getProduction(
-                        'pererabotka_gaza_prirod_plan',
-                        'pererabotka_gaza_prirod_fact',
-                        'Динамика переработки природного газа',
-                        ' м³',
-                        'Переработка природного газа'
-                      )
-                    "
-                    >Переработка природного газа</a
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('gasProductionButton','deliveryAssociatedGas')"
                   >
-                  <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton6}`">
-                      ✓
-                    </div>
-                  </div>
-                </li>-->
-
-                  <li class="center-li row px-4" @click="changeMenu('108')">
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton8Flag"
+                      v-html="`${getMainMenuButtonFlag('gasProductionButton','deliveryAssociatedGas')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'sdacha_gaza_poput_plan',
                           'sdacha_gaza_poput_fact',
                           trans('visualcenter.poputGazdlvDynamic'),
@@ -576,22 +533,20 @@
                         trans("visualcenter.poputGazdlv")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton8}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
 
-                  <li class="center-li row px-4" @click="changeMenu('103')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('gasProductionButton','associatedGasConsumptionForNeeds')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton3Flag"
+                      v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasConsumptionForNeeds')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'raskhod_poput_plan',
                           'raskhod_poput_fact',
                           trans('visualcenter.raskhodpoputGazDynamic'),
@@ -604,22 +559,19 @@
                         trans("visualcenter.raskhodpoputGaz")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                   <div class="square-small2" :style="`${changeMenuButton3}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
-
-                  <li class="center-li row px-4" @click="changeMenu('107')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('gasProductionButton','associatedGasProcessing')"
+                  >
                     <div
-                      class="col-1 mt-2"
-                      v-html="changeMenuButton7Flag"
+                          class="col-1 mt-2"
+                          v-html="`${getMainMenuButtonFlag('gasProductionButton','associatedGasProcessing')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'pererabotka_gaza_poput_plan',
                           'pererabotka_gaza_poput_fact',
                           trans('visualcenter.pererabotkapoputGazDynamic'),
@@ -632,21 +584,18 @@
                         trans("visualcenter.pererabotkapoputGaz")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                   <div class="square-small2" :style="`${changeMenuButton7}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
                 </ul>
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover5}`">
+              <div
+                      :class="[`${condensateProductionButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'gk_plan',
                       'gk_fact',
                       trans('visualcenter.getgkDynamic'),
@@ -657,52 +606,19 @@
                 >
                   <div class="icon-all icons4"></div>
                   <div class="txt5">
-                    <!-- Добыча конденсата -->{{ trans("visualcenter.getgk") }}
+                    {{ trans("visualcenter.getgk") }}
                   </div>
-                  <!-- <div class="txt6"> тонн</div>-->
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-primary dropdown-toggle position-button-vc col-2"
-                  data-toggle="dropdown"
-                ></button>
-                <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="changeMenu('113')">
-                    <div
-                      class="col-1 mt-2"
-                      v-html="changeMenuButton13Flag"
-                    ></div>
-                    <a
-                      class="col-9 px-2"
-                      @click="
-                        getProduction(
-                          'gk_plan',
-                          'gk_fact',
-                          trans('visualcenter.getgkDynamic'),
-                          ' тонн',
-                          trans('visualcenter.dolyaUchast')
-                        )
-                      "
-                    >
-                      <!-- С учётом доли участия КМГ -->{{
-                        trans("visualcenter.dolyaUchast")
-                      }}
-                    </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton13}`">
-                      &#10003;
-                    </div>
-                  </div>-->
-                  </li>
-                </ul>
               </div>
             </div>
             <div class="col dropdown dropdown4 font-weight">
-              <div class="button1" :style="`${buttonHover6}`">
+              <div
+                      :class="[`${waterInjectionButton}`, 'button1']"
+              >
                 <div
                   class="button1-vc-inner col-10"
                   @click="
-                    getProduction(
+                    updateProductionData(
                       'liq_plan',
                       'liq_fact',
                       trans('visualcenter.liqDynamic'),
@@ -715,7 +631,6 @@
                   <div class="txt5">
                     <!-- Закачка воды -->{{ trans("visualcenter.liq") }}
                   </div>
-                  <!-- <div class="txt6"> м³</div>-->
                 </div>
                 <button
                   type="button"
@@ -723,15 +638,18 @@
                   data-toggle="dropdown"
                 ></button>
                 <ul class="dropdown-menu-vc dropdown-menu dropdown-menu-right">
-                  <li class="center-li row px-4" @click="changeMenu('109')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('waterInjectionButton','seaWaterInjection')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton9Flag"
+                      v-html="`${getMainMenuButtonFlag('waterInjectionButton','seaWaterInjection')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_morskoi_vody_plan',
                           'ppd_zakachka_morskoi_vody_fact',
                           trans('visualcenter.liqOceanDynamic'),
@@ -744,22 +662,20 @@
                         trans("visualcenter.liqOcean")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton9}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
 
-                  <li class="center-li row px-4" @click="changeMenu('110')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('waterInjectionButton','wasteWaterInjection')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton10Flag"
+                      v-html="`${getMainMenuButtonFlag('waterInjectionButton','wasteWaterInjection')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_stochnoi_vody_plan',
                           'ppd_zakachka_stochnoi_vody_fact',
                           trans('visualcenter.liqStochnayaDynamic'),
@@ -772,22 +688,20 @@
                         trans("visualcenter.liqStochnaya")
                       }}
                     </a>
-                    <!--<div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton10}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
 
-                  <li class="center-li row px-4" @click="changeMenu('111')">
+                  <li
+                          class="center-li row px-4"
+                          @click="switchMainMenu('waterInjectionButton','albsenWaterInjection')"
+                  >
                     <div
                       class="col-1 mt-2"
-                      v-html="changeMenuButton11Flag"
+                      v-html="`${getMainMenuButtonFlag('waterInjectionButton','albsenWaterInjection')}`"
                     ></div>
                     <a
                       class="col-9 px-2"
                       @click="
-                        getProduction(
+                        updateProductionData(
                           'ppd_zakachka_albsen_vody_plan',
                           'ppd_zakachka_albsen_vody_fact',
                           trans('visualcenter.liqAlbsenDynamic'),
@@ -800,11 +714,6 @@
                         trans("visualcenter.liqAlbsen")
                       }}
                     </a>
-                    <!--  <div class="col-2">
-                    <div class="square-small2" :style="`${changeMenuButton11}`">
-                      ✓
-                    </div>
-                  </div>-->
                   </li>
                 </ul>
               </div>
@@ -812,11 +721,12 @@
           </div>
           <div class="row px-4 mt-3">
             <div
+                    v-click-outside="defocusDzoCompanies"
                     :class="[`${buttonDzoDropdown}`,'col dropdown dzo-company-list button2']"
             >
               {{ trans("visualcenter.dzoAllCompany") }}
               <div
-                      v-click-outside="defocusDzoCompanies"
+
                       class="arrow-down"
                       @click="`${changeDzoCompaniesVisibility()}`"
               ></div>
@@ -825,17 +735,35 @@
 
                         :class="isDzoCompaniesListSelectorOpened ? 'show-company-list' : 'hide-company-list'"
                   >
-                  <li
-                          class="px-4"
-                  >
+                  <li class="px-4">
                     <div>
                       <input
-                              :disabled="isAllDzoCompaniesSelected"
-                              :checked="isAllDzoCompaniesSelected"
+                              :disabled="dzoCompaniesAssets['isAllAssets']"
+                              :checked="dzoCompaniesAssets['isAllAssets']"
                               type="checkbox"
                               @click="`${selectDzoCompanies()}`"
                       ></input>
                       {{trans("visualcenter.dzoAllCompany")}}
+                    </div>
+                  </li>
+                  <li class="px-4">
+                    <div>
+                      <input
+                              type="checkbox"
+                              :checked="dzoCompaniesAssets['isOperating']"
+                              @click="`${changeAssets('isOperating')}`"
+                      ></input>
+                      {{trans("visualcenter.isOperating")}}
+                    </div>
+                  </li>
+                  <li class="px-4">
+                    <div>
+                      <input
+                              type="checkbox"
+                              :checked="dzoCompaniesAssets['isNonOperating']"
+                              @click="`${changeAssets('isNonOperating')}`"
+                      ></input>
+                      {{trans("visualcenter.isNonOperating")}}
                     </div>
                   </li>
                   <li
@@ -920,59 +848,11 @@
             </div>
           </div>
 
-          <!--   <div class="container-fluid">
-            <table class="table table2">
-                        <tr>
-                <td>-->
-
-          <div class="row mt-3">
-            <h5
-              v-if="item2 == 'oil_fact'"
-              class="col-3 assets4"
-              :style="`${buttonHover14}`"
-              @click="changeAssets('b14')"
-            >
-              <!-- С учётом ограничения ОПЕК+ -->
-              {{ trans("visualcenter.opek") }}
-            </h5>
-            <h5
-              v-if="company == 'all'"
-              class="col assets4"
-              :style="`${buttonHover11}`"
-              @click="changeAssets('b11')"
-            >
-              <!-- Операционные активы -->{{ trans("visualcenter.operactive") }}
-            </h5>
-
-            <h5
-              v-if="company == 'all'"
-              class="col assets4"
-              :style="`${buttonHover12}`"
-              @click="changeAssets('b12')"
-            >
-              <!-- Неоперационные активы -->{{
-                trans("visualcenter.neoperactive")
-              }}
-            </h5>
-
-            <h5
-              v-if="company == 'all'"
-              class="col assets4"
-              :style="`${buttonHover13}`"
-              @click="changeAssets('b13')"
-            >
-              <!-- Все активы КМГ -->{{ trans("visualcenter.allkmg") }}
-            </h5>
-
-            <!-- </tr>
-
-       </div>-->
-          </div>
-
-
-          <div class="row container-fluid mh-60">
-            <div class="vis-table px-3" :style="scroll">
-              <table v-if="bigTable.length" class="table4 w-100">
+          <div class="row mh-60 mt-3 px-4">
+            <div
+                    class="col-sm-7 vis-table"
+                    :class="scroll">
+              <table v-if="bigTable.length" class="table4 w-100 mh-100">
                 <thead>
                   <tr>
                     <th>{{ trans("visualcenter.dzo") }}</th>
@@ -1085,8 +965,7 @@
                   <tr v-for="(item, index) in dzoCompanySummary">
                     <td
                             @click="isMultipleDzoCompaniesSelected ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
-                            :class="index % 2 === 0 ? 'tdStyle' : ''"
-                            style="cursor: pointer"
+                            :class="index % 2 === 0 ? 'tdStyle cursor-pointer' : 'cursor-pointer'"
                     >
                       <span>
                         {{ getNameDzoFull(item.dzoMonth) }}
@@ -1218,7 +1097,7 @@
                           v-if="isMultipleDzoCompaniesSelected"
                   >
                     <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
-                      <div class="">{{ NameDzoFull[0] }}</div>
+                      <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                     </td>
 
                     <td
@@ -1251,7 +1130,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }} {{ item4 }}
+                          {{ thousand }} {{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1264,7 +1143,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }} {{ item4 }}
+                          {{ thousand }} {{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1284,7 +1163,7 @@
                         <div
                           class="right"
                         >
-                          {{ thousand }}{{ item4 }}
+                          {{ thousand }}{{ metricName }}
                         </div>
                       </div>
                     </td>
@@ -1332,7 +1211,7 @@
               </table>
 
               <div
-                      v-if="!isMultipleDzoCompaniesSelected"
+                      v-if="!isMultipleDzoCompaniesSelected && buttonDailyTab"
                       v-for="(item) in dzoCompanySummary"
                       colspan="5"
                       class="dzo-company-reason"
@@ -1359,18 +1238,18 @@
 
             </div>
             <div
-              class="vis-chart pl-3"
+              class="pl-3 col-sm-5"
               v-if="
-                (item != 'oil_plan' &&
-                  item != 'oil_dlv_plan' &&
-                  item != 'oil_opek_plan') ||
-                oneDate != 1
+                ((planFieldName != 'oil_plan' &&
+                  planFieldName != 'oil_dlv_plan' &&
+                  planFieldName != 'oil_opek_plan') ||
+                oneDate != 1) && !buttonDailyTab
               "
             >
               <div class="name-chart-left">
-                {{ nameChartLeft }}, {{ thousand }} {{ item4 }}
+                {{ chartSecondaryName }}, {{ thousand }} {{ metricName }}
               </div>
-              <div class="name-chart-head">{{ item3 }}</div>
+              <div class="name-chart-head">{{ chartHeadName }}</div>
               <vc-chart :height="465"> </vc-chart>
             </div>
           </div>
@@ -1554,7 +1433,7 @@
                       :style="`${buttonHoverNagInnerWells}`"
                       @click="buttonInnerWellsNag()"
                     >
-                      <!-- В простое -->{{ trans("visualcenter.in_idle") }}
+                      {{ trans("visualcenter.in_idle") }}
                     </div>
                   </div>
                 </div>
@@ -1563,7 +1442,15 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells.length" class="table7 w-100">
+                <table v-if="innerWells.length" class="table4 w-100 chemistry-table">
+                  <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.idle_wells") }}</th>
+                    <th>
+                      {{ trans("visualcenter.otmMetricSystemWells") }}
+                    </th>
+                  </tr>
+                  </thead>
                   <tbody>
                     <tr
                       v-for="(item, index) in innerWells"
@@ -1571,42 +1458,35 @@
                     >
                       <td
                         @click="innerWellsSelectedRow = item.code"
-                        class="width-40"
+                        class="width-40 cursor-pointer"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: innerWellsSelectedRow === item.code,
                         }"
-                        style="cursor: pointer"
                       >
-                      <span class="data-titles">
+                      <span>
                         {{ item.name }}
                       </span>
                       </td>
                       <td
                         @click="innerWellsSelectedRow = item.code"
-                        class="w-25 tdNumber"
+                        class="w-25 tdNumber cursor-pointer"
                         :class="index % 2 === 0 ? 'tdStyle' : ''"
-                        style="cursor: pointer"
                       >
-                      <div class="data-values">
-                        {{ formatVisTableNumber2(item.value) }}
-                        <span class="data-metrics">
-                          {{ trans("visualcenter.skv") }}
-                        </span>
-                      </div>
+                        <div class="font">
+                          {{ getFormattedNumber(item.value) }}
+                        </div>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="col-sm-5">
-                <div  class="name-chart-left">Кол-во скважин</div>
+                <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
                 <visual-center3-wells
                   v-if="innerWellsNagDataForChart"
                   :chartData="innerWellsNagDataForChart"
-                >
-                  ></visual-center3-wells
-                >
+                ></visual-center3-wells>
               </div>
             </div>
           </div>
@@ -1769,7 +1649,13 @@
             <br />
             <div class="row container-fluid">
               <div class="vis-table px-3 col-sm-7">
-                <table v-if="innerWells2.length" class="table7 w-100">
+                <table v-if="innerWells2.length" class="table4 w-100 chemistry-table">
+                  <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.prod_wells") }}</th>
+                    <th>{{ trans("visualcenter.otmMetricSystemWells") }}</th>
+                  </tr>
+                  </thead>
                   <tbody>
                     <tr
                       v-for="(item, index) in innerWells2"
@@ -1777,30 +1663,25 @@
                     >
                       <td
                         @click="innerWells2SelectedRow = item.code"
-                        class="width-40"
+                        class="width-40 cursor-pointer"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: innerWells2SelectedRow === item.code,
                         }"
-                        style="cursor: pointer"
                       >
-                      <span class="data-titles">
+                      <span>
                         {{ item.name }}
                       </span>
                       </td>
                       <td
                         @click="innerWells2SelectedRow = item.code"
-                        class="w-25 text-center"
+                        class="w-25 text-center cursor-pointer"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
-                        style="cursor: pointer"
                       >
-                      <div class="data-values">
-                        {{ formatVisTableNumber2(item.value) }}
-                        <span class="data-metrics">
-                          {{trans("visualcenter.otmMetricSystemWells")}}
-                        </span>
+                      <div class="font">
+                        {{ getFormattedNumber(item.value) }}
                       </div>
                       </td>
                     </tr>
@@ -1808,7 +1689,7 @@
                 </table>
               </div>
               <div class="col-sm-5">
-                <div  class="name-chart-left">Кол-во скважин</div>
+                <div  class="name-chart-left">{{ trans('visualcenter.wellsNumber') }}</div>
                 <visual-center3-wells
                   v-if="innerWellsProd2DataForChart"
                   :chartData="innerWellsProd2DataForChart"
@@ -1960,9 +1841,17 @@
               <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="otmData.length"
-                  class="table7 w-100"
-                  style="height: calc(100% - 20px)"
+                  class="table4 w-100 chemistry-table"
                 >
+                  <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.otmColumnTitle") }}</th>
+                    <th>{{ trans("visualcenter.Plan") }}</th>
+                    <th>{{ trans("visualcenter.Fact") }}</th>
+                    <th>{{ trans("visualcenter.dzoDifference") }}</th>
+                  </tr>
+                  </thead>
+
                   <tbody>
                     <tr
                       v-for="(item, index) in otmData"
@@ -1970,34 +1859,23 @@
                     >
                       <td
                         @click="otmSelectedRow = item.code"
-                        class="width-40"
+                        class="width-40 cursor-pointer"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: otmSelectedRow === item.code,
                         }"
-                        style="cursor: pointer"
                       >
-                      <span class="data-titles">
+                      <span>
                         {{ item.name }}
                       </span>
                       </td>
                       <td
                         @click="otmSelectedRow = item.code"
                         class="width-20 text-center data-pointer"
-                        :class="
-                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                        "
+                        :class="`${getDzoColumnsClass(index,'plan')}`"
                       >
-                        <div
-                          v-if="index === 0"
-                          class="center"
-                          style="font-size: 12px; line-height: 1.2"
-                        >
-                          <!-- План -->{{ trans("visualcenter.plan") }}
-                        </div>
-
-                        <div class="data-values">
-                          {{ formatVisTableNumber2(item.plan) }}
+                        <div class="font">
+                          {{ getFormattedNumber(item.plan) }}
                           <span class="data-metrics">
                             {{item.metricSystem}}
                           </span>
@@ -2006,19 +1884,10 @@
                       <td
                         @click="otmSelectedRow = item.code"
                         class="width-20 text-center data-pointer"
-                        :class="
-                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                        "
+                        :class="`${getDzoColumnsClass(index,'fact')}`"
                       >
-                        <div
-                          v-if="index === 0"
-                          class="center"
-                          style="font-size: 12px; line-height: 1.2"
-                        >
-                          <!-- Факт -->{{ trans("visualcenter.fact") }}
-                        </div>
-                        <div class="data-values">
-                          {{formatVisTableNumber2(item.fact) }}
+                        <div class="font">
+                          {{getFormattedNumber(item.fact) }}
                           <span class="data-metrics">
                             {{item.metricSystem}}
                           </span>
@@ -2026,17 +1895,13 @@
                       </td>
                       <td
                         class="width-20 text-center data-pointer"
-                        :class="
-                          index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
-                        "
+                        :class="`${getDzoColumnsClass(index,'difference')}`"
                       >
-                        <div v-if="index === 0" class="center">+/-</div>
-                        <div
-                          class="right"
-                        >
-                        <span class="data-metrics">
-                          {{item.metricSystem}}
-                        </span>
+                        <div class="font dynamic">
+                          {{formatDigitToThousand(item.difference)}}
+                          <span class="data-metrics">
+                            {{item.metricSystem}}
+                          </span>
                         </div>
                       </td>
                     </tr>
@@ -2044,7 +1909,7 @@
                 </table>
               </div>
               <div class="col-sm-5">
-                <div  class="name-chart-left">Кол-во скважин</div>
+                <div  class="name-chart-left">{{ trans("visualcenter.wellsNumber") }}</div>
                 <visual-center3-wells
                   v-if="otmDataForChart"
                   :chartData="otmDataForChart"
@@ -2061,12 +1926,12 @@
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
                 <div class="ml-4 bold">
-                  <!-- Химизация -->{{ trans("visualcenter.chem") }}
+                  {{ trans("visualcenter.chemistryCategory") }}
                 </div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">
-                  <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                  {{ trans("visualcenter.close") }}
                 </div>
               </div>
             </div>
@@ -2187,9 +2052,17 @@
               <div class="vis-table px-3 col-sm-7">
                 <table
                   v-if="chemistryData.length"
-                  class="table7 w-100"
-                  style="height: calc(100% - 20px)"
+                  class="table4 w-100 chemistry-table"
                 >
+                  <thead>
+                  <tr>
+                    <th>{{ trans("visualcenter.productionChemicalization") }}</th>
+                    <th>
+                      {{ trans("visualcenter.Plan") }}<br>
+                      {{ trans("visualcenter.chemistryMetricTon") }}
+                    </th>
+                  </tr>
+                  </thead>
                   <tbody>
                     <tr
                       v-for="(item, index) in chemistryData"
@@ -2197,39 +2070,28 @@
                     >
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="width-40"
+                        class="width-40 cursor-pointer"
                         :class="{
                           tdStyle: index % 2 === 0,
                           selected: chemistrySelectedRow === item.code,
                         }"
-                        style="cursor: pointer"
                       >
-                        <span class="data-titles">
+                        <span>
                           {{ item.name }}
                         </span>
                       </td>
                       <td
                         @click="chemistrySelectedRow = item.code"
-                        class="width-20 text-center data-pointer"
+                        class="width-20 text-center"
                         :class="
                           index % 2 === 0 ? 'tdStyleLight' : 'tdStyleLight2'
                         "
                       >
-                        <div
-                          v-if="index === 0"
-                          class="center"
-
-                        >
-                          <span class="data-column-name">
-                            {{ trans("visualcenter.plan") }}
-                          </span>
+                        <div v-if="index === 0" class="center">
                         </div>
-                        <div class="data-values">
-                          {{ formatVisTableNumber2(item.fact) }}
-                          <span class="data-metrics">
-                            {{item.metricSystem}}
-                          </span>
-                       </div>
+                        <div class="font">
+                          {{ getFormattedNumber(item.fact) }}
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -2258,7 +2120,7 @@
                 :style="`${tableHover4}`"
               >
                 <div class="txt4">
-                  {{ formatVisTableNumber2(prod_wells_work) }}
+                  {{ getFormattedNumber(prod_wells_work) }}
                 </div>
                 <div class="in-work">
                   <!-- В работе -->{{ trans("visualcenter.in_work") }}
@@ -2288,7 +2150,7 @@
               >
                 <div class="txt4 d-flex justify-content-between">
                   <div>
-                    {{ formatVisTableNumber2(prod_wells_idle) }}
+                    {{ getFormattedNumber(prod_wells_idle) }}
                   </div>
                   <div class="mt-1">
                     <img src="/img/icons/link.svg" />
@@ -2342,7 +2204,7 @@
                 >
                   <div class="txt4">
                     {{
-                  formatVisTableNumber2(inj_wells_work)
+                    getFormattedNumber(inj_wells_work)
                     }}
                   </div>
                   <div class="in-work">
@@ -2374,7 +2236,7 @@
                   <div class="txt4 d-flex justify-content-between">
                     <div>
                       {{
-                        formatVisTableNumber2(inj_wells_idle)
+                      getFormattedNumber(inj_wells_idle)
                       }}
                     </div>
                     <div class="mt-1">
@@ -2449,7 +2311,7 @@
                   </div>
                   <div class="him"></div>
                   <div class="txt2">
-                    <!-- Химизация -->{{ trans("visualcenter.chem") }}
+                    {{ trans("visualcenter.chemistryCategory") }}
                   </div>
                 </td>
               </tr>
@@ -2623,8 +2485,6 @@
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
 .vis-table {
-  flex: 0 0 56%;
-  max-width: 56%;
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 3px;
@@ -2647,6 +2507,7 @@
   }
 
   .table4 {
+    min-width: 683px;
     tr {
       td {
         padding: 5px 5px 5px 10px;
@@ -2654,7 +2515,6 @@
         vertical-align: middle;
         min-width: 71px;
         &:first-child {
-          display: inline-block;
           white-space: normal;
           min-width: 327px;
           width: 100%;
@@ -2675,7 +2535,6 @@
         }
         .font {
           align-items: baseline;
-          display: flex;
           justify-content: space-between;
           font-size: 15px;
           margin-left: 0;
@@ -2769,66 +2628,6 @@
   }
 }
 
-.vis-chart {
-  flex: 0 0 44%;
-  max-width: 44%;
-}
-
-.table7 {
-  tr {
-    td {
-      padding: 0px 0px 0px 10px;
-      position: relative;
-      vertical-align: middle;
-      &:first-child {
-        height: 50px;
-        white-space: normal;
-        width: 235px;
-        span {
-          font-weight: bold;
-          img {
-            width: 9px;
-          }
-        }
-      }
-      &.selected {
-        background: #2e47c0 !important;
-      }
-      .font {
-        align-items: baseline;
-        display: flex;
-        justify-content: space-between;
-        font-size: 24px;
-        margin-left: 0;
-        &.dynamic {
-          padding-left: 17px;
-        }
-        .right {
-          font-size: 10px;
-          margin-right: 0;
-        }
-      }
-      .center {
-        font-size: 0.63em;
-        font-weight: bold;
-        left: 0;
-        margin: 0;
-        position: absolute;
-        text-align: center;
-        top: 4px;
-        width: 100%;
-      }
-      .triangle {
-        border: 6px solid transparent;
-        height: 6px;
-        margin-right: 5px;
-        position: absolute;
-        width: 6px;
-      }
-    }
-  }
-}
-
 .width-40 {
     width: 40%;
   }
@@ -2838,24 +2637,16 @@
   .data-titles {
     font-family: "HarmoniaSansProCyr-Regular";
     font-style: normal;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 15px;
     height: 50px;
   }
-  .data-values {
-    font-family: "Bold";
-    font-style: normal;
-    font-size: 24px;
-  }
+
   .data-metrics {
     font-family: "Harmonia-sans, sans-serif";
     font-style: normal;
     font-size: 10px;
     margin-left: 2%;
-  }
-  .data-column-name {
-    font-size: 12px;
-    font-family: "Harmonia-sans, sans-serif";
-    font-style: normal;
   }
   .triangle-responsive {
     border: 6px solid transparent;
@@ -2901,6 +2692,12 @@
     background: #2E50E9;
     color:white;
   }
+  .main-menu-button-highlighted {
+    color: #fff;
+    background: #237deb;
+    font-weight:bold;
+  }
+
   .dzo-company-list ul {
     height: 450px;
     position: absolute;
@@ -2973,6 +2770,19 @@
   .mh-60 {
     min-height: 60%;
   }
-
-
+  .mh-100 {
+    min-height: 100%;
+  }
+  .chemistry-table {
+    height: calc(100% - 20px);
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .main-table__scroll {
+    flex: unset;
+    max-height: 80%;
+    max-width: 100%;
+    overflow: auto;
+  }
 </style>
