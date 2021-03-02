@@ -11,6 +11,8 @@ use App\Models\Refs\Cdng;
 use App\Models\Pipes\ZuWellPipe;
 use App\Models\Refs\Well;
 use App\Services\DruidService;
+use App\Http\Resources\GuZuPipeResource;
+use App\Http\Resources\ZuWellPipeResource;
 
 class MapsController extends Controller
 {
@@ -170,9 +172,7 @@ class MapsController extends Controller
         $pipe->coordinates = $this->switchCoords($pipe_input['coordinates']);
         $pipe->save();
 
-        $pipe->color = $pipe_input['type'] == 'GuZu' ? [255, 0, 0] : [0, 255, 0];
-        $pipe->name = (string)$pipe->id;
-        $pipe->coordinates = $pipe_input['coordinates'];
+        $pipe = $pipe_input['type'] == 'GuZu' ? new GuZuPipeResource($pipe) : new ZuWellPipeResource($pipe);
 
         return response()->json(
             [
@@ -242,9 +242,7 @@ class MapsController extends Controller
         $pipe->coordinates = $this->switchCoords($pipe_input['coordinates']);
         $pipe->save();
 
-        $pipe->color = $type == 'GuZu' ? [255, 0, 0] : [0, 255, 0];
-        $pipe->name = (string)$pipe->id;
-        $pipe->coordinates = $pipe_input['coordinates'];
+        $pipe = $type == 'GuZu' ? new GuZuPipeResource($pipe) : new ZuWellPipeResource($pipe);
 
         return response()->json(
             [
