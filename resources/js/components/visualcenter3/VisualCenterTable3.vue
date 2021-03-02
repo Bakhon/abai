@@ -736,6 +736,7 @@
                                     @click="`${selectDzoCompanies()}`"
                             ></input>
                             {{trans("visualcenter.dzoAllCompany")}}
+                            <div class="dzocompanies-dropdown__divider"></div>
                           </div>
                         </li>
                         <li class="px-4">
@@ -756,6 +757,7 @@
                                     @click="`${changeAssets('isNonOperating')}`"
                             ></input>
                             {{trans("visualcenter.isNonOperating")}}
+                            <div class="dzocompanies-dropdown__divider"></div>
                           </div>
                         </li>
                         <li
@@ -2385,6 +2387,9 @@
 
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
+  .dzocompanies-dropdown__divider {
+    border-bottom: 2px solid #656A8A;
+  }
   .middle-block__list-x-scroll {
     overflow-x: inherit;
   }
