@@ -284,9 +284,7 @@
           <div class="first-string first-string2">
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-12 col-lg dropdown dropdown4 font-weight">
-                <div
-                        :class="[`${oilProductionButton}`, 'button1']"
-                >
+                <div :class="[`${oilProductionButton}`, 'button1']">
                   <div
                     class="button1-vc-inner"
                     @click="
@@ -353,9 +351,7 @@
                 </div>
               </div>
               <div class="col-12 col-lg dropdown dropdown4 font-weight">
-                <div
-                        :class="[`${oilDeliveryButton}`, 'button1']"
-                >
+                <div :class="[`${oilDeliveryButton}`, 'button1']">
                   <div
                     class="button1-vc-inner"
                     @click="
@@ -592,9 +588,7 @@
                 </div>
               </div>
               <div class="col-12 col-lg dropdown dropdown4 font-weight">
-                <div
-                        :class="[`${condensateProductionButton}`, 'button1']"
-                >
+                <div :class="[`${condensateProductionButton}`, 'button1']">
                   <div
                     class="button1-vc-inner"
                     @click="
@@ -794,7 +788,7 @@
               <div class="col-8 col-lg">
                 <div
                         :class="[`${buttonMonthlyTab}`,'button2']"
-                  @click="changeMenu2(2)"
+                        @click="changeMenu2(2)"
                 >
                   {{ trans("visualcenter.monthBegin") }}
                 </div>
@@ -860,107 +854,71 @@
                   <thead>
                     <tr>
                       <th>{{ trans("visualcenter.dzo") }}</th>
-                      <th
-                              v-if="buttonMonthlyTab"
-                      >
+                      <th v-if="buttonMonthlyTab" >
                         {{ trans("visualcenter.dzoMonthlyPlan") }}
-                        <div
-                                v-if="currentDzoList !== 'daily'"
-                        >
+                        <div v-if="currentDzoList !== 'daily'">
                           {{ trans("visualcenter.dzoThousandTon") }}
                         </div>
-                        <div
-                                v-if="currentDzoList === 'daily'"
-                        >
+                        <div v-if="currentDzoList === 'daily'">
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
                       </th>
-                      <th
-                              v-if="buttonYearlyTab"
-                      >
+                      <th v-if="buttonYearlyTab">
                         {{ trans("visualcenter.dzoYearlyPlan") }}
-                        <div
-                                v-if="currentDzoList !== 'daily'"
-                        >
+                        <div v-if="currentDzoList !== 'daily'">
                           {{ trans("visualcenter.dzoThousandTon") }}
                         </div>
-                        <div
-                                v-if="currentDzoList === 'daily'"
-                        >
+                        <div v-if="currentDzoList === 'daily'">
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
                       </th>
                       <th>
                         {{ trans("visualcenter.plan") }}
-                        <div
-                                v-if="currentDzoList !== 'daily'"
-                        >
+                        <div v-if="currentDzoList !== 'daily'">
                           {{ trans("visualcenter.dzoThousandTon") }}
                         </div>
-                        <div
-                                v-if="currentDzoList === 'daily'"
-                        >
+                        <div v-if="currentDzoList === 'daily'">
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
                       </th>
                       <th>
                         {{ trans("visualcenter.fact") }}
-                        <div
-                                v-if="currentDzoList !== 'daily'"
-                        >
+                        <div v-if="currentDzoList !== 'daily'">
                           {{ trans("visualcenter.dzoThousandTon") }}
                         </div>
-                        <div
-                                v-if="currentDzoList === 'daily'"
-                        >
+                        <div v-if="currentDzoList === 'daily'">
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
                       </th>
                       <th>
                         {{ trans("visualcenter.dzoDifference") }}
-                        <div
-                                v-if="currentDzoList !== 'daily'"
-                        >
+                        <div v-if="currentDzoList !== 'daily'">
                           {{ trans("visualcenter.dzoThousandTon") }}
                         </div>
-                        <div
-                                v-if="currentDzoList === 'daily'"
-                        >
+                        <div v-if="currentDzoList === 'daily'">
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
                       </th>
                       <th>
                         {{ trans("visualcenter.dzoPercent") }}
                       </th>
-                      <th
-                              v-if="exactDateSelected"
-                      >
+                      <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoOpec") }}
                       </th>
-                      <th
-                              v-if="exactDateSelected"
-                      >
+                      <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoImpulses") }}
                       </th>
-                      <th
-                              v-if="exactDateSelected"
-                      >
+                      <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoLanding") }}
                       </th>
-                      <th
-                              v-if="exactDateSelected"
-                      >
+                      <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoAlarmFirst") }}<br>
                         {{ trans("visualcenter.dzoAlarmSecond") }}
                       </th>
-                      <th
-                              v-if="exactDateSelected"
-                      >
+                      <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoRestrictions") }}
                       </th>
-                      <th
-                              v-if="exactDateSelected"
-                      >
+                      <th v-if="exactDateSelected">
                         {{ trans("visualcenter.dzoOthers") }}
                       </th>
                     </tr>
@@ -995,25 +953,19 @@
                         </div>
                       </td>
 
-                      <td
-                              :class="`${getDzoColumnsClass(index,'plan')}`"
-                      >
+                      <td :class="`${getDzoColumnsClass(index,'plan')}`">
 
                         <div class="font">
                           {{ formatDigitToThousand(item.planMonth) }}
                         </div>
                       </td>
 
-                      <td
-                              :class="[`${getDzoColumnsClass(index,'fact')}`,'fact']"
-                      >
+                      <td :class="[`${getDzoColumnsClass(index,'fact')}`,'fact']">
                         <div class="font">
                           {{ formatDigitToThousand(item.factMonth) }}
                         </div>
                       </td>
-                      <td
-                              :class="`${getDzoColumnsClass(index,'difference')}`"
-                      >
+                      <td :class="`${getDzoColumnsClass(index,'difference')}`">
                         <div
                           v-if="item.factMonth"
                           :class="
@@ -1030,9 +982,7 @@
                           }}
                         </div>
                       </td>
-                      <td
-                              :class="`${getDzoColumnsClass(index,'percent')}`"
-                      >
+                      <td :class="`${getDzoColumnsClass(index,'percent')}`">
                         <div
                           v-if="item.factMonth"
                           :class="
@@ -1052,55 +1002,47 @@
                         v-if="exactDateSelected"
                         :class="`${getLightColorClass(index)}`"
                       >
-                        <div
-                                :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
-                        ></div>
+                        <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
                       </td>
                       <td
                         v-if="exactDateSelected"
                         :class="`${getDarkColorClass(index)}`"
                       >
-                        <div
-                                :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
-                        ></div>
+                        <div :class="item.impulses ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
                       </td>
 
                       <td
                               v-if="exactDateSelected"
                               :class="`${getLightColorClass(index)}`"
                       >
-                        <div
-                                :class="item.landing ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
-                        ></div>
+                        <div :class="item.landing ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
                       </td>
                       <td
                               v-if="exactDateSelected"
                               :class="`${getDarkColorClass(index)}`"
                       >
-                        <div
-                                :class="item.accident ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
-                        ></div>
+                        <div :class="item.accident ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
                       </td>
                       <td
                               v-if="exactDateSelected"
                               :class="`${getLightColorClass(index)}`"
                       >
-                        <div
-                                :class="item.restrictions ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
-                        ></div>
+                        <div :class="item.restrictions ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
                       </td>
                       <td
                               v-if="exactDateSelected"
                               :class="`${getDarkColorClass(index)}`"
                       >
-                        <div
-                                :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'"
-                        ></div>
+                        <div :class="item.otheraccidents ? 'accident-triangle triangle' : 'no-accident-triangle triangle'">
+                        </div>
                       </td>
                     </tr>
-                    <tr
-                            v-if="isMultipleDzoCompaniesSelected"
-                    >
+                    <tr v-if="isMultipleDzoCompaniesSelected">
                       <td :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdNone'">
                         <div class="">{{ dzoCompaniesAssets['assetTitle'] }}</div>
                       </td>
@@ -1118,43 +1060,31 @@
 
                       <td
                         v-if="buttonMonthlyTab"
-                        :class="
-                          index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'
-                        "
+                        :class="index % 2 === 0 ? 'tdStyle3-total' : 'tdStyle3-total'"
                       >
                         <div class="font">
                           {{dzoCompaniesSummary.periodPlan}}
                         </div>
                       </td>
 
-                      <td
-                        :class="`${getLighterClass(index)}`"
-                      >
+                      <td :class="`${getLighterClass(index)}`">
                         <div class="font">
                           {{dzoCompaniesSummary.plan}}
-                          <div
-                            class="right"
-                          >
+                          <div class="right">
                             {{ thousand }} {{ metricName }}
                           </div>
                         </div>
                       </td>
 
-                      <td
-                              :class="`${getDarkerClass(index)}`"
-                      >
+                      <td :class="`${getDarkerClass(index)}`">
                         <div class="font">
                           {{dzoCompaniesSummary.fact}}
-                          <div
-                            class="right"
-                          >
+                          <div class="right">
                             {{ thousand }} {{ metricName }}
                           </div>
                         </div>
                       </td>
-                      <td
-                              :class="`${getLighterClass(index)}`"
-                      >
+                      <td :class="`${getLighterClass(index)}`">
                         <div
                           v-if="factMonthSumm"
                           :class="
@@ -1165,9 +1095,7 @@
                         ></div>
                         <div class="font dynamic">
                           {{dzoCompaniesSummary.difference}}
-                          <div
-                            class="right"
-                          >
+                          <div class="right">
                             {{ thousand }}{{ metricName }}
                           </div>
                         </div>
@@ -1389,12 +1317,6 @@
                       id="companySelect"
                       @change="innerWellsNagMetOnChange($event)"
                     >
-                      <!--<option value="">
-                        <div class="float">Компания</div>
-                      </option>-->
-                      <!--<option value="all" v-if="company != 'all'">
-                        {{ getNameDzoFull(company) }}
-                      </option>-->
                       <option value="all">
                         <!-- Все компании -->{{
                           trans("visualcenter.allCompany")
@@ -1596,12 +1518,6 @@
                       id="companySelect"
                       @change="innerWellsProdMetOnChange($event)"
                     >
-                      <!--<option value="">
-                        <div class="float">Компания</div>
-                      </option>
-                      <option value="all" v-if="company != 'all'">
-                        {{ getNameDzoFull(company) }}
-                      </option>-->
                       <option value="all">
                         <!-- Все компании -->{{
                           trans("visualcenter.allCompany")
@@ -1802,9 +1718,6 @@
                       id="OTMcompanySelect"
                       @change="innerWellsProdMetOnChange($event)"
                     >
-                      <!--<option value="all" v-if="company != 'all'">
-                        {{ getNameDzoFull(company) }}
-                      </option>-->
                       <option value="all">
                         <!-- Все компании -->{{
                           trans("visualcenter.allCompany")
@@ -2013,9 +1926,6 @@
                       id="ChemistryCompanySelect"
                       @change="innerWellsProdMetOnChange($event)"
                     >
-                      <!-- <option value="all" v-if="company != 'all'">
-                        {{ getNameDzoFull(company) }}
-                      </option>-->
                       <option value="all">
                         <!-- Все компании -->{{
                           trans("visualcenter.allCompany")
