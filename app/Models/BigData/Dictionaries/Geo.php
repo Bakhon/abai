@@ -3,20 +3,32 @@
 namespace App\Models\BigData\Dictionaries;
 
 use App\Models\TBDModel;
-use Illuminate\Support\Facades\DB;
 
 class Geo extends TBDModel
 {
-    protected $table = 'dict.geo';
+    protected $table = 'tbdi.geo';
 
     public function parent()
     {
-        $result = DB::connection($this->connection)
-            ->table('dict.geo_parent')
-            ->select('parent')
-            ->where('geo_id', $this->id)
-            ->first();
+        return $this->belongsTo(Geo::class, 'parent_id', 'id');
+    }
 
-        return $result ? Geo::find($result->parent) : null;
+    public function getParentIds()
+    {
+        $result = [];
+
+        $item = $this;
+
+        while (true) {
+            $parent = $item->parent;
+            if (empty($parent)) {
+                break;
+            }
+
+            $result[] = $parent->id;
+            $item = $parent;
+        }
+
+        return $result;
     }
 }

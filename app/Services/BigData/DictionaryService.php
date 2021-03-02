@@ -104,15 +104,15 @@ class DictionaryService
     private function getGeoDict(): array
     {
         $items = DB::connection('tbd')
-            ->table('dict.geo as g')
-            ->select('g.id', 'g.name_ru as label', 'gp.parent as parent_id')
+            ->table('tbdi.geo as g')
+            ->select('g.id', 'g.name as label', 'gp.id as parent_id')
             ->distinct()
             ->orderBy('parent_id', 'asc')
             ->orderBy('label', 'asc')
             ->leftJoin(
-                'dict.geo_parent as gp',
+                'tbdi.geo as gp',
                 function ($join) {
-                    $join->on('gp.geo_id', '=', 'g.id');
+                    $join->on('gp.id', '=', 'g.parent_id');
                     $join->on('gp.dbeg', '<=', DB::raw("NOW()"));
                     $join->on('gp.dend', '>=', DB::raw("NOW()"));
                 }

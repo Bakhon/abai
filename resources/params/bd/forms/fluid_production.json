@@ -1,45 +1,104 @@
 {
   "type": "table",
-  "fields": [
+  "columns": [
     {
-      "code": "org",
-      "type": "dict_tree",
-      "title": "Оргструктура",
-      "validation": "required|exists:tbd.dict.org,id",
-      "dict": "orgs",
-      "callbacks": {
-        "filterGeoByDZO": "geo"
-      }
-    },
-    {
-      "code": "geo",
-      "type": "dict_tree",
-      "title": "Геоструктура",
-      "validation": "required|exists:tbd.dict.geo,id",
-      "dict": "geos",
-      "callbacks": {
-        "setWellPrefix": "name"
-      }
-    },
-    {
-      "code": "name",
-      "type": "text",
       "title": "Номер скважины",
-      "validation": "required|max:255",
-      "prefix": ""
+      "code": "uwi",
+      "type": "link",
+      "editable": false
     },
     {
-      "code": "date_create",
-      "type": "date",
-      "title": "Дата создания проекта",
-      "validation": "required|date"
+      "title": "Совместные скважины",
+      "code": "other_uwi",
+      "type": "text",
+      "editable": false
     },
     {
-      "code": "category",
-      "type": "dict",
-      "title": "Категория скважины",
-      "validation": "required|exists:tbd.prod.well_category,id",
-      "dict": "well_categories"
+      "title": "Отработанное время",
+      "code": "worktime",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Способ эксплуатации",
+      "code": "exp_type",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Отвод",
+      "code": "lease",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Геоструктура",
+      "code": "geo",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Дебит жидк. по тех.режиму, м³/сут",
+      "code": "debit_fluid_tech",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Дебит нефти по тех. режиму, тн.",
+      "code": "debit_oil_tech",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Обводн. по тех.режиму, %",
+      "code": "bsw_tech",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Добыча жидкости, м3",
+      "code": "liquid_val",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Добыча нефти, тн",
+      "code": "oil_val",
+      "type": "text",
+      "editable": false
+    },
+    {
+      "title": "Дебит жидк., м³/сут",
+      "code": "liquid_debit",
+      "table": "tbdi.liquid_prod",
+      "column": "liquid_val",
+      "type": "text",
+      "editable": true,
+      "validation": "numeric|min:0"
+    },
+    {
+      "title": "Тек. обводненность, %",
+      "code": "bsw",
+      "table": "tbdi.bsw_prod",
+      "column": "bsw_val",
+      "type": "text",
+      "editable": true
+    },
+    {
+      "title": "Рбуфф.",
+      "code": "p_buf",
+      "table": "tbdic.meas_log_cut",
+      "column": "p_buf",
+      "type": "text",
+      "editable": true
+    },
+    {
+      "title": "Рзатр",
+      "code": "p_zatr",
+      "table": "tbdic.meas_log_cut",
+      "column": "p_zatr",
+      "type": "text",
+      "editable": true
     }
   ]
 }
