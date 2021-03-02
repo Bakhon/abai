@@ -164,7 +164,7 @@ export default {
         }
       }
 
-      this.$store.dispatch('bdform/getGeoDictByDZO', {
+      this.getGeoDictByDZO({
         dzo: this.formValues[triggerFieldCode],
         code: dictName
       })

@@ -5,12 +5,12 @@
       <p class="bd-main-block__header-title">{{ params.title }}</p>
     </div>
     <div class="bd-main-block__date">
-      <span>Дата:</span>
+      <span>{{ trans('bd.date') }}:</span>
       <datetime
           v-model="date"
           :flow="['year', 'month', 'date']"
           :format="{ year: 'numeric', month: 'numeric', day: 'numeric'}"
-          :phrases="{ok: 'Выбрать', cancel: 'Выход'}"
+          :phrases="{ok: trans('bd.select'), cancel: trans('bd.exit')}"
           auto
           input-class="form-control"
           type="date"
@@ -62,6 +62,7 @@
 import moment from 'moment'
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
+import {bdFormActions, bdFormState} from '@store/helpers'
 
 Vue.use(Datetime)
 
@@ -89,31 +90,23 @@ export default {
       }
     }
   },
-  watch: {
-    date(newValue, oldValue) {
-      if (!moment(newValue).isSame(moment(oldValue), 'day')) {
-        this.getData()
-      }
-    }
+  computed: {
+    ...bdFormState([
+      'formParams'
+    ]),
   },
   mounted() {
 
-    this.getData()
+    this.getForm(this.params.code).then(data => {
+      this.rows = data.rows
+      this.columns = data.columns
+    })
 
   },
   methods: {
-    getData() {
-      this.axios.get(this.localeUrl('/bigdata/form/' + this.params.code), {
-        params: {
-          page: this.currentPage,
-          date: this.date
-        }
-      }).then(({data}) => {
-        this.form = data.params
-        this.rows = data.rows
-        this.columns = data.columns
-      })
-    },
+    ...bdFormActions([
+      'getForm'
+    ]),
     editCell(row, column) {
       this.editableCell.row = row
       this.editableCell.column = column

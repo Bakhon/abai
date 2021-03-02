@@ -42,13 +42,7 @@ class FluidProduction extends TableForm
             ->orderBy('uwi')
             ->paginate($this->rowsPerPage);
 
-        $fluidProduction = \App\Models\BigData\FluidProduction::query()
-            ->select('id', 'well_id', 'liquid_val')
-            ->whereIn('well_id', $wells->pluck('id')->toArray())
-            ->whereDate('dbeg', '<=', $this->request->get('date'))
-            ->whereDate('dend', '>=', $this->request->get('date'))
-            ->get()
-            ->groupBy('well_id');
+        $fluidProduction = collect();
 
         $wells->getCollection()->transform(
             function ($item) use ($fluidProduction) {
