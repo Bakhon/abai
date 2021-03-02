@@ -109,13 +109,14 @@
 
       <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 545px;">
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
-        <div class="col-12" style="padding-bottom: 10px;">
-          <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп <input  type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor"/></div>
+        <div class="col-12" style="padding-bottom: 10px; margin-top: 50px;">
+          <div class="col-12" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп 
+            <input style="width: 100px;" v-model="hPumpFromIncl" @change="updateHpump" type="text" onfocus="this.value=''" class="input-box-gno podbor"/>
+            </div>
           <!-- <div class="col-6" style="float: left; text-align: left; color: white; height: 25px;">
             Нсп 800м
           </div> -->
-          <button type="button" class="old_well_button_incl">Применить выбранную Нсп</button>
+          <!-- <button type="button" class="old_well_button_incl" @click="onClickHpump">Применить выбранную Нсп</button> -->
         </div>
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
@@ -146,15 +147,21 @@
 import {Plotly} from "vue-plotly";
 import {PerfectScrollbar} from "vue2-perfect-scrollbar";
 import "vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css";
+import { mapState } from 'vuex';
 
 Vue.component("Plotly", Plotly);
 
 export default {
   components: { PerfectScrollbar },
-  props: ["wellNumber", "wellIncl", "isLoading", "hPumpSet"],
+  props: ["wellNumber", "wellIncl", "isLoading", "hPumpValue"],
   data: function () {
     return {
-      data: null,
+      data () {
+        return {
+          hPumpFromIncl: null,
+          buttonHpump: false,
+        }
+      },
       chart: null,
       layout: {
         plot_bgcolor: "#272953",
@@ -219,16 +226,22 @@ export default {
       }
     }
   },
-  // watch: {
-  //   isLoading: function (newVal, oldVal) {
-  //     this.$emit('update:isLoading', newVal);
-  //   },
-  // },
+
+  methods: {
+   updateHpump(event) {
+     this.$store.commit('UPDATE_HPUMP', event.target.value)
+   },
+   onClickHpump(){
+     this.buttonHpump = true
+     this.$store.commit('UPDATE_HPUMP_BUTTON', this.buttonHpump)
+   }
+  },
   mounted() {
+    this.hPumpFromIncl = this.$store.getters.getHpump
     var wi = this.wellIncl.split('_');
     let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
     this.$emit('update:isLoading', true);
-    // this.$emit(this.hPumpSet)
+    this.hPumpFromIncl = this.$store.getters.getHpump
 
     this.axios.get(uri).then((response) => {
 
@@ -278,6 +291,8 @@ export default {
       this.$emit('update:isLoading', false);
     })
   },
+
+   
 
 }
 
