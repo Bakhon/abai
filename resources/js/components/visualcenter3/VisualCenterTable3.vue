@@ -965,8 +965,7 @@
                   <tr v-for="(item, index) in dzoCompanySummary">
                     <td
                             @click="isMultipleDzoCompaniesSelected ? `${selectOneDzoCompany(item.dzoMonth)}` : `${selectAllDzoCompanies()}`"
-                            :class="index % 2 === 0 ? 'tdStyle' : ''"
-                            style="cursor: pointer"
+                            :class="index % 2 === 0 ? 'tdStyle cursor-pointer' : 'cursor-pointer'"
                     >
                       <span>
                         {{ getNameDzoFull(item.dzoMonth) }}
@@ -1434,7 +1433,7 @@
                       :style="`${buttonHoverNagInnerWells}`"
                       @click="buttonInnerWellsNag()"
                     >
-                      <!-- В простое -->{{ trans("visualcenter.in_idle") }}
+                      {{ trans("visualcenter.in_idle") }}
                     </div>
                   </div>
                 </div>
@@ -1927,12 +1926,12 @@
             <div class="area-6-name row mt-3 mb-3 px-2">
               <div class="col">
                 <div class="ml-4 bold">
-                  <!-- Химизация -->{{ trans("visualcenter.chem") }}
+                  {{ trans("visualcenter.chemistryCategory") }}
                 </div>
               </div>
               <div class="col px-4">
                 <div class="close2" @click="changeTable('1')">
-                  <!-- Закрыть -->{{ trans("visualcenter.close") }}
+                  {{ trans("visualcenter.close") }}
                 </div>
               </div>
             </div>
@@ -2312,7 +2311,7 @@
                   </div>
                   <div class="him"></div>
                   <div class="txt2">
-                    <!-- Химизация -->{{ trans("visualcenter.chem") }}
+                    {{ trans("visualcenter.chemistryCategory") }}
                   </div>
                 </td>
               </tr>
@@ -2638,7 +2637,8 @@
   .data-titles {
     font-family: "HarmoniaSansProCyr-Regular";
     font-style: normal;
-    font-size: 16px;
+    font-weight: bold;
+    font-size: 15px;
     height: 50px;
   }
 
