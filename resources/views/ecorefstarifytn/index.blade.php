@@ -26,7 +26,7 @@
                                 <th>Маршрут ТН:</th>
                                 <th>Валюта:</th>
                                 <th>Дата:</th>
-                                <th>Тариф:</th>
+                                <th>Тариф за тонну:</th>
                                 <th width="220px">{{__('app.action')}}</th>
                             </tr>
                             @foreach ($ecorefstarifytn as $item)
