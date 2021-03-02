@@ -1,10 +1,7 @@
 <?php
 
 $user = Auth::user()->username;
-if (strpos($user, 'Almukhan_test') !== false && $_SERVER['REQUEST_URI'] !== '/ru/bigdata') {
-    header('HTTP/1.1 200 OK');
-    header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/bigdata');
-} elseif (strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visualcenter3') {
+if (strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visualcenter3') {
     header('HTTP/1.1 200 OK');
     header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/visualcenter3');
 } elseif (strpos($user, 'gnouser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/podborgno') {
