@@ -60,13 +60,11 @@ export default {
                 for_chart: [],
                 for_table: []
             },
-            innerWellsButtonProstoi: 0,
-            innerWellsButtonProstoi2: 0,
             chartSecondaryName: this.trans('visualcenter.getoil'),
             // 'Добыча нефти',
             oilChartHeadName: this.trans('visualcenter.getoildynamic'),
             // 'Динамика добычи нефти',
-            innerWells: [
+            injectionWells: [
                 {name: "ЭФ", value: 603, value2: 101},
                 {name: "ДФ", value: 98, value2: 56},
                 {name: "В работе добывающие скважины", value: 45, value2: 31},
@@ -75,7 +73,7 @@ export default {
                 {name: "ОФЛС", value: 98, value2: 36},
                 {name: "Простой добывающих скважин", value: 86, value2: 54}
             ],
-            innerWells2: '',
+            productionWells: '',
             innerWells2SelectedRow: 'fond_neftedob_ef',
             innerWells2ChartData: [],
             innerWellsSelectedRow: 'fond_nagnetat_ef',
@@ -180,7 +178,6 @@ export default {
             buttonMonthlyTab: "",
             buttonYearlyTab: "",
             buttonPeriodTab: "",
-            buttonHoverNagInnerWells: "",
             buttonHoverProdInnerWells: "",
 
             tableHover7: "",
@@ -372,6 +369,38 @@ export default {
                 "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
             },
             isOpecFilterActive: false,
+            wellStockIdleButtons: {
+                isProductionIdleButtonActive: false,
+                isInjectionIdleButtonActive: false,
+            },
+            productionFonds: [
+                'fond_neftedob_ef',
+                'fond_neftedob_df',
+                'fond_neftedob_bd',
+                'fond_neftedob_osvoenie',
+                'fond_neftedob_ofls',
+                'fond_neftedob_prs',
+                'fond_neftedob_oprs',
+                'fond_neftedob_krs',
+                'fond_neftedob_okrs',
+                'fond_neftedob_well_survey',
+                'fond_neftedob_nrs',
+                'fond_neftedob_others'
+            ],
+            injectionFonds: [
+                'fond_nagnetat_ef',
+                'fond_nagnetat_df',
+                'fond_nagnetat_bd',
+                'fond_nagnetat_osvoenie',
+                'fond_nagnetat_ofls',
+                'fond_nagnetat_konv',
+                'fond_nagnetat_prs',
+                'fond_nagnetat_oprs',
+                'fond_nagnetat_krs',
+                'fond_nagnetat_okrs',
+                'fond_nagnetat_well_survey',
+                'fond_nagnetat_others'
+            ],
         };
     },
     methods: {
@@ -1232,10 +1261,10 @@ export default {
             );
 
             this.WellsDataAll = this.WellsData(dataWithMay);
-            this.innerWells = this.innerWellsNagData(dataWithMay, this.innerWellsButtonProstoi);
-            this.innerWellsChartData = this.innerWellsNagChartData(dataWithMay, this.innerWellsButtonProstoi);
-            this.innerWells2 = this.innerWellsProdData(dataWithMay, this.innerWellsButtonProstoi2);
-            this.innerWells2ChartData = this.innerWellsProdChartData(dataWithMay, this.innerWellsButtonProstoi2);
+            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,this.injectionFonds)
+            this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay, this.wellStockIdleButtons.isInjectionIdleButtonActive);
+            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,this.productionFonds);
+            this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive);
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
@@ -1354,10 +1383,10 @@ export default {
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay, planFieldName, factFieldName);
 
             this.WellsDataAll = this.WellsData(dataWithMay);
-            this.innerWells = this.innerWellsNagData(dataWithMay, this.innerWellsButtonProstoi);
-            this.innerWellsChartData = this.innerWellsNagChartData(dataWithMay, this.innerWellsButtonProstoi);
-            this.innerWells2 = this.innerWellsProdData(dataWithMay, this.innerWellsButtonProstoi2);
-            this.innerWells2ChartData = this.innerWellsProdChartData(dataWithMay, this.innerWellsButtonProstoi2);
+            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,_.cloneDeep(this.injectionFonds));
+            this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
+            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,_.cloneDeep(this.productionFonds));
+            this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
             this.chemistryData = this.getChemistryData(dataWithMay)
@@ -1924,16 +1953,8 @@ export default {
         },
 
 
-        buttonInnerWellsNag() {
-            if (this.innerWellsButtonProstoi == 1) {
-                this.buttonHoverNagInnerWells = '';
-                this.innerWellsButtonProstoi = 0;
-            } else {
-                this.buttonHoverNagInnerWells = "";
-                this.innerWellsButtonProstoi = 1;
-                this.buttonHoverNagInnerWells = this.buttonNormalTab;
-
-            }
+        calculateInjectionWellsData() {
+            this.wellStockIdleButtons.isInjectionIdleButtonActive = !this.wellStockIdleButtons.isInjectionIdleButtonActive;
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
@@ -1958,101 +1979,12 @@ export default {
 
         },
 
+        getSummaryInjectionWellsForChart(inputData) {
+            let innerWells = _.groupBy(inputData, item => {
+                return moment(parseInt(item.__time)).format("YYYY-MM-DD");
+            });
 
-        innerWellsNagData(arr, i) {
-            var productionPlanAndFactMonthWells = _(arr)
-                .groupBy("data")
-                .map((__time, id) => ({
-                    __time: id,
-                    fond_nagnetat_ef: (_.sumBy(__time, 'fond_nagnetat_ef')) / this.quantityRange,
-                    fond_nagnetat_df: (_.sumBy(__time, 'fond_nagnetat_df')) / this.quantityRange,
-                    fond_nagnetat_bd: (_.sumBy(__time, 'fond_nagnetat_bd')) / this.quantityRange,
-                    fond_nagnetat_ofls: (_.sumBy(__time, 'fond_nagnetat_ofls')) / this.quantityRange,
-                    fond_nagnetat_prs: (_.sumBy(__time, 'fond_nagnetat_prs')) / this.quantityRange,
-                    fond_nagnetat_oprs: (_.sumBy(__time, 'fond_nagnetat_oprs')) / this.quantityRange,
-                    fond_nagnetat_krs: (_.sumBy(__time, 'fond_nagnetat_krs')) / this.quantityRange,
-                    fond_nagnetat_okrs: (_.sumBy(__time, 'fond_nagnetat_okrs')) / this.quantityRange,
-                    fond_nagnetat_osvoenie: (_.sumBy(__time, 'fond_nagnetat_osvoenie')) / this.quantityRange,
-                    fond_nagnetat_konv: (_.sumBy(__time, 'fond_nagnetat_konv')) / this.quantityRange,
-                    fond_nagnetat_well_survey: (_.sumBy(__time, 'fond_nagnetat_well_survey')) / this.quantityRange,
-                    fond_nagnetat_others: (_.sumBy(__time, 'fond_nagnetat_others')) / this.quantityRange,
-                }))
-                .value();
-
-            var productionPlanAndFactMonthWellsName = [];
-
-            if (i != 1) {
-                productionPlanAndFactMonthWellsName.push(
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ef'], name:   // 'Эксплуатационный фонд'
-                            this.trans("visualcenter.fond_nagnetat_ef"), code: 'fond_nagnetat_ef'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_df'], name:  // 'Действующий фонд'
-                            this.trans("visualcenter.fond_nagnetat_df"), code: 'fond_nagnetat_df'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_bd'], name:  // 'Бездействующий фонд скважин'
-                            this.trans("visualcenter.fond_nagnetat_bd"), code: 'fond_nagnetat_bd'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_osvoenie'], name:  // 'Освоение'
-                            this.trans("visualcenter.fond_nagnetat_osvoenie"), code: 'fond_nagnetat_osvoenie'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_ofls'], name:  // 'Ожидание физической ликвидации скважин'
-                            this.trans("visualcenter.fond_nagnetat_ofls"), code: 'fond_nagnetat_ofls'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_konv'], name:   // 'Консервация'
-                            this.trans("visualcenter.fond_nagnetat_konv"), code: 'fond_nagnetat_konv'
-                    },
-                );
-            }
-            ;
-
-            if (i == 1) {
-                productionPlanAndFactMonthWellsName.push(
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_prs'], name:    // 'Подземный ремонт скважин'
-                            this.trans("visualcenter.fond_nagnetat_prs"), code: 'fond_nagnetat_prs'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_oprs'], name:  // 'Ожидание подземного ремонта скважин'
-                            this.trans("visualcenter.fond_nagnetat_oprs"), code: 'fond_nagnetat_oprs'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_krs'], name:   // 'Капитальный ремонт скважин'
-                            this.trans("visualcenter.fond_nagnetat_krs"), code: 'fond_nagnetat_krs'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_okrs'], name:    // 'Ожидание капитального ремонта скважин'
-                            this.trans("visualcenter.fond_nagnetat_okrs"), code: 'fond_nagnetat_okrs'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_well_survey'], name:  // 'Исследование скважин'
-                            this.trans("visualcenter.fond_nagnetat_well_survey"), code: 'fond_nagnetat_well_survey'
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_nagnetat_others'], name:  // 'Прочие'
-                            this.trans("visualcenter.fond_nagnetat_others"), code: 'fond_nagnetat_others'
-                    },
-                );
-            }
-            ;
-
-            return productionPlanAndFactMonthWellsName;
-
-        },
-
-        innerWellsNagChartData(arr) {
-
-            let innerWells
-            innerWells = _.groupBy(arr, item => {
-                return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
-            })
-
-            let result = {}
+            let result = {};
 
             if (typeof innerWells !== 'undefined') {
                 for (let i in innerWells) {
@@ -2063,21 +1995,16 @@ export default {
                         fond_nagnetat_osvoenie: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_osvoenie'), 0),
                         fond_nagnetat_ofls: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_ofls'), 0),
                         fond_nagnetat_konv: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_konv'), 0),
-
-
                         fond_nagnetat_prs: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_prs'), 0),
                         fond_nagnetat_oprs: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_oprs'), 0),
                         fond_nagnetat_krs: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_krs'), 0),
                         fond_nagnetat_okrs: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_okrs'), 0),
                         fond_nagnetat_well_survey: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_well_survey'), 0),
                         fond_nagnetat_others: _.round(_.sumBy(innerWells[i], 'fond_nagnetat_others'), 0),
-
-
                     }
                 }
             }
-
-            return result
+            return result;
         },
 
         innerWellsNagMetOnChange($event) {
@@ -2086,136 +2013,72 @@ export default {
         },
 
 
-        buttonInnerWellsProd() {
-            if (this.innerWellsButtonProstoi2 == 1) {
-                this.buttonHoverProdInnerWells = '';
-                this.innerWellsButtonProstoi2 = 0;
-            } else {
-                this.buttonHoverProdInnerWells = "";
-                this.innerWellsButtonProstoi2 = 1;
-                this.buttonHoverProdInnerWells = this.buttonNormalTab;
-            }
+        calculateProductionWellsData() {
+            this.wellStockIdleButtons.isProductionIdleButtonActive = !this.wellStockIdleButtons.isProductionIdleButtonActive;
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
-        innerWellsProdData(arr, i) {
-            var productionPlanAndFactMonthWells = _(arr)
+        getSummaryWells(inputData, isIdleActive, fonds) {
+            let self = this;
+            let productionPlanAndFactMonthWells = _(inputData)
                 .groupBy("data")
-                .map((__time, id) => ({
-                    __time: id,
-                    fond_neftedob_ef: (_.sumBy(__time, 'fond_neftedob_ef')) / this.quantityRange,
-                    fond_neftedob_df: (_.sumBy(__time, 'fond_neftedob_df')) / this.quantityRange,
-                    fond_neftedob_bd: (_.sumBy(__time, 'fond_neftedob_bd')) / this.quantityRange,
-                    fond_neftedob_osvoenie: (_.sumBy(__time, 'fond_neftedob_osvoenie')) / this.quantityRange,
-                    fond_neftedob_ofls: (_.sumBy(__time, 'fond_neftedob_ofls')) / this.quantityRange,
-                    fond_neftedob_prs: (_.sumBy(__time, 'fond_neftedob_prs')) / this.quantityRange,
-                    fond_neftedob_oprs: (_.sumBy(__time, 'fond_neftedob_oprs')) / this.quantityRange,
-                    fond_neftedob_krs: (_.sumBy(__time, 'fond_neftedob_krs')) / this.quantityRange,
-                    fond_neftedob_okrs: (_.sumBy(__time, 'fond_neftedob_okrs')) / this.quantityRange,
-                    fond_neftedob_well_survey: (_.sumBy(__time, 'fond_neftedob_well_survey')) / this.quantityRange,
-                    fond_neftedob_nrs: (_.sumBy(__time, 'fond_neftedob_nrs')) / this.quantityRange,
-                    fond_neftedob_others: (_.sumBy(__time, 'fond_neftedob_others')) / this.quantityRange,
-                }))
+                .map((__time, id) => (this.$_getSummaryFonds(fonds,__time,id)))
                 .value();
-
-            var productionPlanAndFactMonthWellsName = [];
-
-            if (i != 1) {
-                productionPlanAndFactMonthWellsName.push(
+            let halfOfProductionFondsLength = Math.ceil(fonds.length / 2);
+            let productionFondsForIterations = [];
+            let productionFondsSummary = [];
+            if (!isIdleActive) {
+                productionFondsForIterations = fonds.splice(0,halfOfProductionFondsLength);
+            } else {
+                productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
+            }
+            _.forEach(productionFondsForIterations, function(fondName) {
+                let translationName = "visualcenter." + fondName;
+                productionFondsSummary.push(
                     {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_ef'], name:  // 'Эксплуатационный фонд'
-                            this.trans("visualcenter.fond_nagnetat_ef"), code: 'fond_neftedob_ef',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_df'], name:     // 'Действующий фонд'
-                            this.trans("visualcenter.fond_nagnetat_df"), code: 'fond_neftedob_df',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_bd'], name:  // 'Бездействующий фонд скважин'
-                            this.trans("visualcenter.fond_nagnetat_bd"), code: 'fond_neftedob_bd',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_osvoenie'], name:  // 'Освоение'
-                            this.trans("visualcenter.fond_nagnetat_osvoenie"), code: 'fond_neftedob_osvoenie',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_ofls'], name: // Ожидание физической ликвидации скважин'
-                            this.trans("visualcenter.fond_nagnetat_ofls"), code: 'fond_neftedob_ofls',
+                        value: productionPlanAndFactMonthWells[0][fondName],
+                        name: self.trans(translationName),
+                        code: fondName
                     }
                 );
-            }
-            ;
-
-            if (i == 1) {
-                productionPlanAndFactMonthWellsName.push(
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_prs'], name:   // 'Подземный ремонт скважин'
-                            this.trans("visualcenter.fond_nagnetat_prs"), code: 'fond_neftedob_prs',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_oprs'], name:   // 'Ожидание подземного ремонта скважин'
-                            this.trans("visualcenter.fond_nagnetat_oprs"), code: 'fond_neftedob_oprs',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_krs'], name:   // 'Капитальный ремонт скважин'
-                            this.trans("visualcenter.fond_nagnetat_krs"), code: 'fond_neftedob_krs',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_okrs'], name:   // 'Ожидание капитального ремонта скважин'
-                            this.trans("visualcenter.fond_nagnetat_okrs"), code: 'fond_neftedob_okrs',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_well_survey'], name:  // 'Исследование скважин'
-                            this.trans("visualcenter.fond_nagnetat_well_survey"), code: 'fond_neftedob_well_survey',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_nrs'], name:   // 'Нерентабельные скважины'
-                            this.trans("visualcenter.fond_neftedob_nrs"), code: 'fond_neftedob_nrs',
-                    },
-                    {
-                        value: productionPlanAndFactMonthWells[0]['fond_neftedob_others'], name:  // 'Прочие'
-                            this.trans("visualcenter.fond_nagnetat_others"), code: 'fond_neftedob_others',
-                    },
-                );
-            }
-            ;
-
-            return productionPlanAndFactMonthWellsName;
-
+            });
+            return productionFondsSummary;
         },
 
-        innerWellsProdChartData(arr, a) {
-            let innerWells2
-            innerWells2 = _.groupBy(arr, item => {
+        $_getSummaryFonds(fonds,time, id) {
+            let summaryWells = {__time: id};
+            let self = this;
+            _.forEach(fonds, function(fond) {
+                summaryWells[fond] = (_.sumBy(time, fond)) / self.quantityRange;
+            });
+            return summaryWells;
+        },
+
+        getSummaryProductionWellsForChart(inputData) {
+            let innerWells = _.groupBy(inputData, item => {
                 return moment(parseInt(item.__time)).format("YYYY-MM-DD")//.format('D')
-            })
+            });
 
             let result = {}
-
-            if (typeof innerWells2 !== 'undefined') {
-                for (let i in innerWells2) {
+            if (typeof innerWells !== 'undefined') {
+                for (let i in innerWells) {
                     result[i] = {
-                        fond_neftedob_ef: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_ef'), 0),
-                        fond_neftedob_df: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_df'), 0),
-                        fond_neftedob_bd: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_bd'), 0),
-                        fond_neftedob_osvoenie: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_osvoenie'), 0),
-                        fond_neftedob_ofls: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_ofls'), 0),
-
-
-                        fond_neftedob_prs: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_prs'), 0),
-                        fond_neftedob_oprs: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_oprs'), 0),
-                        fond_neftedob_krs: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_krs'), 0),
-                        fond_neftedob_okrs: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_okrs'), 0),
-                        fond_neftedob_well_survey: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_well_survey'), 0),
-                        fond_neftedob_nrs: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_nrs'), 0),
-                        fond_neftedob_others: _.round(_.sumBy(innerWells2[i], 'fond_neftedob_others'), 0),
-
-
+                        fond_neftedob_ef: _.round(_.sumBy(innerWells[i], 'fond_neftedob_ef'), 0),
+                        fond_neftedob_df: _.round(_.sumBy(innerWells[i], 'fond_neftedob_df'), 0),
+                        fond_neftedob_bd: _.round(_.sumBy(innerWells[i], 'fond_neftedob_bd'), 0),
+                        fond_neftedob_osvoenie: _.round(_.sumBy(innerWells[i], 'fond_neftedob_osvoenie'), 0),
+                        fond_neftedob_ofls: _.round(_.sumBy(innerWells[i], 'fond_neftedob_ofls'), 0),
+                        fond_neftedob_prs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_prs'), 0),
+                        fond_neftedob_oprs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_oprs'), 0),
+                        fond_neftedob_krs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_krs'), 0),
+                        fond_neftedob_okrs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_okrs'), 0),
+                        fond_neftedob_well_survey: _.round(_.sumBy(innerWells[i], 'fond_neftedob_well_survey'), 0),
+                        fond_neftedob_nrs: _.round(_.sumBy(innerWells[i], 'fond_neftedob_nrs'), 0),
+                        fond_neftedob_others: _.round(_.sumBy(innerWells[i], 'fond_neftedob_others'), 0),
                     }
                 }
             }
-
-            return result
+            return result;
         },
 
         getOtmData(arr) {
