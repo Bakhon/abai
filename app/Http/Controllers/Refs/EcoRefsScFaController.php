@@ -140,7 +140,7 @@ class EcoRefsScFaController extends Controller
         $reqDay = $request->reqd;
         $reqecn = $request->reqecn;
         $param=$request->param;
-
+        
         $org = $request->org;
         $equipIdRequest = $request->equip;
         $scorfa = $request->scfa;
@@ -152,18 +152,24 @@ class EcoRefsScFaController extends Controller
         $procent=1;
 
 
-
-        //$workday=$request;
         $monthname=[];
-        // Raspredelenie po napravleniyam realizacii NDO
-        // To do
+        $periodc =[];
 
-        $periodcalc = EcoRefsMacro::where('date','>=',$startdate)->get();
-        $periodc = [];
+        array_push($periodc,"2021-01-01");
+        array_push($periodc,"2021-02-01");
+        array_push($periodc,"2021-03-01");
+        array_push($periodc,"2021-04-01");
+        array_push($periodc,"2021-05-01");
+        array_push($periodc,"2021-06-01");
+        array_push($periodc,"2021-07-01");
+        array_push($periodc,"2021-08-01");
+        array_push($periodc,"2021-09-01");
+        array_push($periodc,"2021-10-01");
+        array_push($periodc,"2021-11-01");
+        array_push($periodc,"2021-12-01");
 
-        foreach($periodcalc as $item){
-            array_push($periodc,$item->date);
-        }
+       
+
 
         $result2=[];
 
@@ -247,15 +253,12 @@ class EcoRefsScFaController extends Controller
             }
 
 
-            // $emppersExp = EcoRefsEmpPer::whereIn('direction_id',$exports)->whereMonth('date',$monthname)->get();
-            // $discontExp = EcoRefsDiscontCoefBar::where('direction_id',$exports)->whereMonth('date',$monthname)->get();
-            // $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id',$company)->whereMonth('date',$monthname)->get();
-            //$equipRas = EcoRefsRentEquipElectServCost::whereIn('equip_id',$equip)->whereMonth('date',$monthname)->get();
+            
 
-            $emppersExp = EcoRefsEmpPer::whereIn('direction_id',$exports)->whereMonth('date',$monthname)->get();
-            $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id',$exports)->whereMonth('date',$monthname)->get();
-            $compRas = EcoRefsPrepElectPrsBrigCost::whereIn('company_id',$company)->whereMonth('date',$monthname)->get();
-            $equipRas = EcoRefsRentEquipElectServCost::whereIn('equip_id',$equip)->whereYear('date',$year)->get();
+            $emppersExp = EcoRefsEmpPer::whereIn('direction_id',$exports)->where('company_id',$org)->where('date',$element)->get();
+            $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id',$exports)->where('company_id',$org)->where('date',$element)->get();
+            $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id',$org)->where('date',$element)->get();
+            $equipRas = EcoRefsRentEquipElectServCost::whereIn('equip_id',$equip)->where('company_id',$org)->whereYear('date',$year)->get();
             $workday=0;
 
             $exportsResults = [];
@@ -303,7 +306,7 @@ class EcoRefsScFaController extends Controller
             }
 
             //foreach($compRas as $item){
-            $avgprsday = EcoRefsAvgPrs::where('company_id', $item->company_id)->first();
+            $avgprsday = EcoRefsAvgPrs::where('company_id', $org)->first();
 
             $procent=(365-array_sum($prsResult) * $avgprsday->avg_prs)/365;
 
@@ -330,7 +333,7 @@ class EcoRefsScFaController extends Controller
             }
 
             foreach($equipRas as $item){
-                $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->whereMonth('date',$monthname)->first();
+                $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
                 if($item->equip_id == 1){
                     $zatrElectResults[$item->equip_id] = $workday * $qZhidkosti * $shgnParam * $electCost->elect_cost;
                 }
@@ -363,11 +366,11 @@ class EcoRefsScFaController extends Controller
 
             if($pokupka==0){
                 if($equipIdRequest == 1){
-                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
+                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->first();
                     $buyCostResult = $buyCost->equip_cost;
                 }
                 else{
-                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
+                    $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id',$org)->first();
                     $buyCostResult = 0;
                 }
                 $pokupka=1;
@@ -377,7 +380,7 @@ class EcoRefsScFaController extends Controller
 
             // TO DO
             foreach($exportsResults as $key => $value){
-                $tarifTnExp = EcoRefsTarifyTn::where('route_id',$key)->get();
+                $tarifTnExp = EcoRefsTarifyTn::where('route_id',$key)->where('company_id',$org)->get();
                 $tarifTnItemValue = 0;
                 foreach($tarifTnExp as $row){
                     if ($row->exc_id == 1){
@@ -436,8 +439,8 @@ class EcoRefsScFaController extends Controller
             }
 
 
-            $emppersIns = EcoRefsEmpPer::whereIn('direction_id',$inside)->get();
-            $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id',$inside)->get();
+            $emppersIns = EcoRefsEmpPer::whereIn('direction_id',$inside)->where('company_id',$org)->where('date',$element)->get();
+            $discontIns = EcoRefsDiscontCoefBar::whereIn('direction_id',$inside)->where('company_id',$org)->where('date',$element)->get();
 
             $insideResults = [];
             $insideDiscontResults = [];
@@ -464,7 +467,7 @@ class EcoRefsScFaController extends Controller
             // Rabota s TOTALAMI
 
             foreach($insideResults as $key => $value){
-                $tarifTnIns = EcoRefsTarifyTn::where('route_id','=',$key)->get();
+                $tarifTnIns = EcoRefsTarifyTn::where('route_id','=',$key)->where('company_id',$org)->get();
                 $tarifTnItemValue = 0;
                 foreach($tarifTnIns as $row){
                     if ($row->exc_id == 1){
@@ -485,8 +488,8 @@ class EcoRefsScFaController extends Controller
             $amortizaciyaResult = [];
 
             if($equipIdRequest == 1){
-                $srokSluzhby = EcoRefsServiceTime::where('equip_id', '=', $equipIdRequest)->first();
-                $equipCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
+                $srokSluzhby = EcoRefsServiceTime::where('equip_id', '=', $equipIdRequest)->where('company_id', '=', $org)->first();
+                $equipCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id', '=', $org)->first();
                 if($srokSluzhby->avg_serv_life > $serviceTime){
                     $amortizaciyaResult = $equipCost->equip_cost / $srokSluzhby->avg_serv_life;
                 }
@@ -495,7 +498,7 @@ class EcoRefsScFaController extends Controller
                 }
             }
             else{
-                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->first();
+                $buyCost = EcoRefsRentEquipElectServCost::where('equip_id', '=', $equipIdRequest)->where('company_id', '=', $org)->first();
                 $amortizaciyaResult = 0;
             }
 
@@ -560,7 +563,7 @@ class EcoRefsScFaController extends Controller
             $godovoiShgnParam=$godovoiShgnParam+$shgnParam*$qZhidkosti*$workday;
             $godovoiEcnParam=$godovoiEcnParam+$ecnParam*$qZhidkosti*$workday;
 
-            $nakoplSvobPotok=$nakoplSvobPotok+$svobodDenPotok[5];
+            $nakoplSvobPotok=$nakoplSvobPotok+array_sum($svobodDenPotok);
             $discSvobPotok=$discSvobPotok+$nakoplSvobPotok;
             $nakopDiscSvodPotok=$nakopDiscSvodPotok+$discSvobPotok;
             $npv=$npv+array_sum($svobodDenPotok);

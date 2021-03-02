@@ -1049,32 +1049,12 @@
 
               <div class="gno-line-chart"  v-if="visibleChart">
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
-                  <!-- <button class="download-curve-button" @click="takePhoto()">Скачать фото</button>
-                  <select class="select-download-button">
+                  <button class="download-curve-button" @click="takePhoto()">Скачать фото</button>
+                  <!-- <select class="select-download-button">
                     <option hidden value="default">Скачать</option>
                     <option>MS-Excel</option>
                     <option>Photo</option>
                   </select> -->
-                  <div class="dropdown">
-                    <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4.16699 11.1538V14.5C4.16699 14.7761 4.39085 15 4.66699 15H15.667C15.9431 15 16.167 14.7761 16.167 14.5V11.1538" stroke="white" stroke-linecap="round"/>
-                        <path d="M10.1667 5V11.1539" stroke="white" stroke-linecap="round"/>
-                        <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
-                        </svg>
-                      Скачать
-                      
-                      <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
-</svg>
-
-                    </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
-    <a class="dropdown-item" href="#">MS Excel</a>
-  </div>
-</div>
                   <!-- <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg> -->
                 </div>
                 <inflow-curve>
@@ -1438,74 +1418,38 @@
                           </div>
                           <div class="select-params">
                             <div class="row">
-                              <div style="height: 5px;"></div>
+                              <div class="col-11 pt-3 pb-3">ГНО</div>
                             </div>
                             <div class="row pt-2">
-                              <div class="col-2 pr-0">
-                                <div>
+                              <div class="col-4 pr-0">
+                                <div class="table-border-gno-right">
                                   <label class="label-for-celevoi">
                                     <input class="checkbox3" value="ШГН" v-model="expChoose" @change="postCurveData()"
                                       :checked="expChoose === 'ШГН'" type="radio" name="gno10" />ШГН</label>
                                 </div>
                               </div>
 
-                              <div class="col-2  pr-0">
-                                <div>
+                              <div class="col-4  pr-0">
+                                <div class="table-border-gno-right">
                                   <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
                                       v-model="expChoose" @change="postCurveData()" :checked="expChoose === 'ЭЦН'"
                                       type="radio" name="gno10" />ЭЦН</label>
                                 </div>
                               </div>
-
-                               <div class="col-2 pr-0">
-                                <div>
-                                  <label class="label-for-celevoi">
-                                    <input class="checkbox3" value="ШГН"
-                                       type="radio" name="gno10" />ФОН</label>
-                                </div>
-                              </div>
-
-                              <div class="table-border-gno col-2">
-                                <label class="label-for-celevoi pl-3">Рбуф</label>
-                                <input type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" />
-                              </div>
-
-                              <div class="col-2">
-                                <label class="label-for-celevoi pl-3">ØНКТ</label>
-                                <input  type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" />
-                              </div>
-
-                              <div class="col-2">
+                              <div class="col-4">
                                 <label class="label-for-celevoi pl-3">Нсп</label>
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" />
+                                  class="square3 podbor" />
                               </div>
-
                             </div>
-
                             <div class="row">
-                              <div style="height: 17px; padding-left: 15px;">Общий коэффициент сепарации</div>
-                            </div>
-
-                            <div class="row">
-                              <div style="padding-top: 10px;">
-                                  <label style="width: 100px; padding-left: 15px; " class="label-for-celevoi"><input class="checkbox3"
-                                      checked="true"
-                                      type="radio" name="gno10"/>Расчет</label>
-                                </div>
-                              <div class="col-2  pr-0">
-                                <div style="padding-top: 10px;">
-                                  <label style="width: 100px;" class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
-                                       checked="true"
-                                      type="radio" name="gno10"/><input type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" /></label>
-                                </div>
-                              </div>
-
                               <div class="col-4 pr-0">
-                                <div class="pt-3">
+                                <div class="table-border-gno-right pt-3">
+                                  &nbsp;
+                                </div>
+                              </div>
+                              <div class="col-4 pr-0">
+                                <div class="table-border-gno-right pt-3">
                                   &nbsp;
                                 </div>
                               </div>
@@ -3700,35 +3644,6 @@ margin-right: 1px;
 appearance: none;
 background: #494aa5 url("data:image/svg+xml;utf8,<svg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'><g><path d='m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z' fill='white'/></g></svg>") no-repeat;
 background-position: right 5px top 50%;
-}
-
-
-.input-box-gno {
-    background: #494AA5;
-    border: 1px solid #272953;
-    outline: none;
-    width: 100%;
-    height: 22px;
-    color: white;
-    box-sizing: border-box;
-    border-radius: 2px;
-    line-height: 25px !important;
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-.input-box-gno:focus {
-    background: #5657c7;
-}
-
-.input-box-gno:disabled {
-    color: #928f8f;
-    background: #353e70;
-}
-
-.input-box-gno.podbor {
-    width: 50px;
-    margin-bottom: 10px;
 }
 
 </style>
