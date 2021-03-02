@@ -21,7 +21,7 @@ public/js/json/gno/line_points — копия.json
 
 .vscode/formatter.json
 public/fonts/vendor/
-#public/webfonts
+public/webfonts
 public/mix-manifest.json
 
 public/test2.php
