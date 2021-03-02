@@ -1,17 +1,4 @@
-<?php
 
-// $user = Auth::user()->username;
-// if (strpos($user, 'vcuser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/visualcenter3') {
-//     header('HTTP/1.1 200 OK');
-//     header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/visualcenter3');
-// } elseif (strpos($user, 'gnouser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/podborgno') {
-//     header('HTTP/1.1 200 OK');
-//     header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/podborgno');
-// } elseif (strpos($user, 'truser') !== false && $_SERVER['REQUEST_URI'] !== '/ru/tr') {
-//     header('HTTP/1.1 200 OK');
-//     header('Refresh: 0; url=http://' . $_SERVER['HTTP_HOST'] . '/ru/tr');
-// }
-?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
