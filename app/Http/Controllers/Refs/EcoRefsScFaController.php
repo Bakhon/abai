@@ -168,8 +168,7 @@ class EcoRefsScFaController extends Controller
         array_push($periodc,"2021-11-01");
         array_push($periodc,"2021-12-01");
 
-       
-
+        
 
         $result2=[];
 
@@ -253,12 +252,11 @@ class EcoRefsScFaController extends Controller
             }
 
 
-            
-
             $emppersExp = EcoRefsEmpPer::whereIn('direction_id',$exports)->where('company_id',$org)->where('date',$element)->get();
             $discontExp = EcoRefsDiscontCoefBar::whereIn('direction_id',$exports)->where('company_id',$org)->where('date',$element)->get();
             $compRas = EcoRefsPrepElectPrsBrigCost::where('company_id',$org)->where('date',$element)->get();
             $equipRas = EcoRefsRentEquipElectServCost::whereIn('equip_id',$equip)->where('company_id',$org)->whereYear('date',$year)->get();
+
             $workday=0;
 
             $exportsResults = [];
