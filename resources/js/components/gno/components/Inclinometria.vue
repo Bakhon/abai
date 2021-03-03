@@ -153,17 +153,31 @@ Vue.component("Plotly", Plotly);
 
 export default {
   components: { PerfectScrollbar },
-  props: ["wellNumber", "wellIncl", "isLoading", "hPumpValue"],
+  props: ["wellNumber", "wellIncl", "isLoading"],
   data: function () {
     return {
+      hPumpFromIncl: null,
+      buttonHpump: false,
+      hVal: null,
+      dzArray: null,
+      dxArray: null,
+      dyArray: null,
+      xArr: null,
+      yArr: null,
+      zArr: null,
+      indexZ: null,
+      pointZ: null,
+      pointX: null,
+      pointY: null,
       data () {
         return {
-          hPumpFromIncl: null,
-          buttonHpump: false,
+          
         }
       },
       chart: null,
+      point: null,
       layout: {
+        showlegend: false,
         plot_bgcolor: "#272953",
         paper_bgcolor: "#2b2e5e",
         margin: {
@@ -221,15 +235,45 @@ export default {
               "Qж = %{x:.1f} м³/сут<br>" +
               "Qн = %{text:.1f} т/сут<br>" +
               "Pзаб = %{y:.1f} атм<extra></extra>",
-          }
+          },
+          
         }
       }
+      
     }
+    
   },
 
   methods: {
+    closestVal(num, arr) {
+        var curr = arr[0],
+        diff = Math.abs(num * -1 - curr),
+        index = 0;
+
+          for (var val = 0; val < arr.length; val++) {
+            let newdiff = Math.abs(num * -1 - arr[val]);
+              if (newdiff < diff) {
+                diff = newdiff;
+                curr = arr[val];
+                index = val;
+              }
+            }
+            return index
+        },
    updateHpump(event) {
      this.$store.commit('UPDATE_HPUMP', event.target.value)
+     this.hPumpFromIncl = this.$store.getters.getHpump
+     this.hVal = this.hPumpFromIncl.substring(0,4) * 1
+    //  console.log(this.chart[1]['x']);
+    //  console.log(this.chart[1]['y']);
+    //  console.log(this.chart[1]['z']);
+     this.indexZ = this.closestVal(this.hVal, this.zArr)
+     this.chart[1]['x'] = this.xArr[this.indexZ]
+     this.chart[1]['y'] = this.yArr[this.indexZ]
+     this.chart[1]['z'] = this.zArr[this.indexZ]
+   
+     console.log(this.chart[1]);
+
    },
    onClickHpump(){
      this.buttonHpump = true
@@ -252,19 +296,45 @@ export default {
 
       if (data.data) {
         this.data = data.data
-        var dxArray = this.data.map((r) => Math.abs(r.dx * 1))
-        var dyArray = this.data.map((r) => Math.abs(r.dy * 1))
-        if (Math.max(...dxArray) < 50 && Math.max(...dyArray) < 50) {
+        this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
+        this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
+        this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
+        this.xArr = this.data.map((r) => (r.dx * 1))
+        this.yArr = this.data.map((r) => (r.dy * 1))
+        this.zArr = this.data.map((r) => (r.md * -1))
+        this.hVal = this.hPumpFromIncl.substring(0,4) * 1
+        console.log(this.xArr, 'x')
+
+
+        // 
+      this.indexZ = this.closestVal(this.hVal, this.zArr)
+      console.log(this.indexZ);
+      
+
+        // 
+
+        // var indexZ = this.dzArray.indexOf(this.hPumpFromIncl.substring(0,4) * 1)
+        
+        this.pointZ = this.zArr[this.indexZ]
+        this.pointX = this.xArr[this.indexZ]
+        this.pointY = this.yArr[this.indexZ]
+        console.log(this.indexZ);
+        // console.log(dzArray, 'dzarray');
+        // console.log(this.dxArray, 'this.dxArray');
+        // console.log(dyArray, 'this.dxArray');
+        // console.log(this.dzArray, 'z');
+        if (Math.max(...this.dxArray) < 50 && Math.max(...this.dyArray) < 50) {
           this.layout['scene']['xaxis']['range'][0] = 50
           this.layout['scene']['xaxis']['range'][1] = -50
           this.layout['scene']['yaxis']['range'][0] = 50
           this.layout['scene']['yaxis']['range'][1] = -50
         } else {
-          this.layout['scene']['xaxis']['range'][0] = Math.max(...dxArray) * 1.5
-          this.layout['scene']['xaxis']['range'][1] = Math.max(...dxArray) * -1.5
-          this.layout['scene']['yaxis']['range'][0] = Math.max(...dyArray) * 1.5
-          this.layout['scene']['yaxis']['range'][1] = Math.max(...dyArray) * -1.5
+          this.layout['scene']['xaxis']['range'][0] = Math.max(...this.dxArray) * 1.5
+          this.layout['scene']['xaxis']['range'][1] = Math.max(...this.dxArray) * -1.5
+          this.layout['scene']['yaxis']['range'][0] = Math.max(...this.dyArray) * 1.5
+          this.layout['scene']['yaxis']['range'][1] = Math.max(...this.dyArray) * -1.5
         }
+
         this.chart = [{
           type: 'scatter3d',
           mode: 'lines',
@@ -281,9 +351,24 @@ export default {
             color: this.data.map((r) => r.dls_color),
             colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
             type: 'heatmap'
-          }
+          },
+          
 
-        }]
+        },{
+          type: 'scatter3d',
+          mode: 'markers',
+          x: [this.pointX],
+          y: [this.pointY],
+          z: [this.pointZ],
+          marker: {
+            size:10,
+            color: 'white',
+          }
+        }
+          
+
+        ],
+        this.point = []
       } else this.data = [];
 
 
