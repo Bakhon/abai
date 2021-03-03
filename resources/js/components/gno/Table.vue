@@ -1071,8 +1071,8 @@
 
               <div class="gno-line-chart"  v-if="visibleChart">
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
-                  <!-- <button class="download-curve-button" @click="takePhoto()">Скачать фото</button>
-                  <select class="select-download-button">
+                  <!--<button class="download-curve-button" @click="takePhoto()">Скачать фото</button>-->
+                  <!-- <select class="select-download-button">
                     <option hidden value="default">Скачать</option>
                     <option>MS-Excel</option>
                     <option>Photo</option>
@@ -1491,12 +1491,12 @@
                               <div class="table-border-gno col-2">
                                 <label class="label-for-celevoi">Рбуф</label>
                                 <input type="text" v-model="pBuf" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" />
+                                  class="input-box-gno podbor" :disabled="expChoose != 'ФОН'"/>
                               </div>
 
                               <div class="col-2">
-                                <label class="label-for-celevoi">ØНКТ</label>
-                                  <select class="input-box-gno podbor" v-model="nkt">
+                                <label class="label-for-celevoi" >ØНКТ</label>
+                                  <select class="input-box-gno podbor" v-model="nkt" :disabled="expChoose != 'ФОН'">
                                   <option value="50,3">60x5</option>
                                   <option value="62">73x5,5</option>
                                   <option value="59,3">73x7</option>
@@ -1513,11 +1513,6 @@
                                   class="input-box-gno podbor" />
                               </div>
 
-                              <!-- <div class="icon-params" style="position: relative; left: 600px; bottom: 70px;" @click="onParamSep">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M17.4556 7.37945L15.7922 6.82498C15.6712 6.45197 15.52 6.08401 15.3436 5.73621L16.1249 4.16858C16.1753 4.06273 16.2055 3.95183 16.2055 3.8359C16.2055 3.63932 16.1249 3.44777 15.9838 3.30664L14.6934 2.01624C14.5522 1.87511 14.3607 1.79446 14.1641 1.79446C14.0482 1.79446 13.9373 1.8247 13.8314 1.87511L12.2638 2.62111C11.916 2.43965 11.548 2.28843 11.175 2.1725L10.6206 0.509101C10.5197 0.201625 10.2375 0 9.91487 0C9.89975 0 9.88967 0 9.87455 0H8.09017C7.76757 0 7.4853 0.201624 7.37945 0.504061L6.83002 2.1725C6.45197 2.28843 6.08905 2.43965 5.73621 2.62111L4.16858 1.87511C4.06777 1.8247 3.95183 1.79446 3.84094 1.79446C3.63932 1.79446 3.45281 1.87511 3.31168 2.01624L2.01624 3.30664C1.88015 3.44777 1.7995 3.63932 1.7995 3.8359C1.7995 3.95183 1.8247 4.06273 1.87511 4.16858L2.62616 5.73621C2.44469 6.08401 2.29348 6.45197 2.17754 6.82498L0.509101 7.37945C0.206665 7.48026 0 7.76253 0 8.08513V9.90983C0 9.91991 0 9.93503 0 9.95015C0 10.2677 0.206665 10.555 0.509101 10.6558L2.17754 11.2103C2.29348 11.5833 2.44469 11.9513 2.62111 12.2991L1.87511 13.8667C1.8247 13.9726 1.7995 14.0835 1.7995 14.1994C1.7995 14.396 1.88015 14.5875 2.01624 14.7286L3.31168 16.019C3.45281 16.1602 3.63932 16.2358 3.84094 16.2358C3.95183 16.2358 4.06777 16.2106 4.16858 16.1602L5.73621 15.3738C6.08905 15.5553 6.45197 15.7065 6.83002 15.8225L7.37945 17.4909C7.4853 17.7933 7.76757 18 8.09017 18H9.91487C9.92495 18 9.94007 18 9.95015 18C10.2728 18 10.555 17.7933 10.6609 17.4909L11.2103 15.8225C11.5884 15.7065 11.9513 15.5553 12.3041 15.3789L13.8717 16.1602C13.9726 16.2106 14.0885 16.2358 14.1994 16.2358C14.401 16.2358 14.5875 16.1602 14.7286 16.019L16.0241 14.7286C16.1602 14.5875 16.2408 14.396 16.2408 14.1994C16.2408 14.0835 16.2156 13.9726 16.1652 13.8667L15.3789 12.2991C15.5603 11.9513 15.7116 11.5833 15.8275 11.2103L17.4909 10.6558C17.7984 10.555 18 10.2677 18 9.95015C18 9.93503 18 9.91991 18 9.90983V8.08513C17.995 7.75749 17.7732 7.46514 17.4556 7.37945ZM9.00252 12.7326C6.94091 12.7326 5.26743 11.0591 5.26743 8.99748C5.26743 6.93587 6.94091 5.26239 9.00252 5.26239C11.0641 5.26239 12.7376 6.93587 12.7376 8.99748C12.7376 11.0591 11.0641 12.7326 9.00252 12.7326Z" fill="white"/>
-                                </svg>
-                              </div> -->
 
                             </div>
 
@@ -1550,12 +1545,12 @@
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                    <input value="raschet" v-model="es" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expMeth === 'ФОН'"/>
+                                    <input value="raschet" v-model="es" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
                                     Расчет
                                 </label>
                               </div>
                               <div class="col-8 table-border-gno">
-                                <input value="realSep" type="checkbox" checked="true" :disabled="es ==='raschet2' || expMeth === 'ФОН'">Естественная сепарация</div>
+                                <input value="realSep" type="checkbox" checked="true" :disabled="es ==='raschet2' || expChoose === 'ФОН'">Естественная сепарация</div>
                               
 
                             
@@ -1564,12 +1559,12 @@
                             <div class="row">
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                  <input class="checkbox3" v-model="es" value="raschet2" checked="true" type="radio" name="gno20"/>
-                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" :disabled="expMeth === 'ФОН'"/></label>
+                                  <input class="checkbox3" v-model="es" value="raschet2" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" :disabled="expChoose === 'ФОН'"/></label>
                               </div>
-                              <div class="col-8 table-border-gno"><input value="mechSep" checked="true" :disabled="es ==='raschet2' || expMeth === 'ФОН'" 
+                              <div class="col-8 table-border-gno"><input value="mechSep" checked="true" :disabled="es ==='raschet2' || expChoose === 'ФОН'" 
                               type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" 
-                              :disabled="es ==='raschet2' || expMeth === 'ФОН'" onfocus="this.value=''" class="input-box-gno podbor" /></div>
+                              :disabled="es ==='raschet2' || expChoose === 'ФОН'" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
 
@@ -1608,10 +1603,10 @@
                               </div>
                               <div class="col-4 pdo-bottom-cell">
                                 <label class="label-for-celevoi">
-                                  <input v-model="CelButton" class="checkbox3" value="pin" type="radio" :disabled="expMeth === 'ФОН'"
+                                  <input v-model="CelButton" class="checkbox3" value="pin" type="radio" :disabled="expChoose === 'ФОН'"
                                     name="gno11" />Pnp
                                 </label>
-                                <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin' || expMeth === 'ФОН'"
+                                <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin' || expChoose === 'ФОН'"
                                   type="text" onfocus="this.value=''" class="square3 podbor" />
                               </div>
                             </div>
@@ -2288,8 +2283,10 @@ export default {
       qOilExpShgn:null,
       param_eco:null,
       potMenu: false,
+      param_org:null,
+      param_fact:null,
 
-      field: "UZN",
+      field: null,
       wellIncl: null,
       dataNNO:"2020-11-01",
       nearWells: [],
@@ -2844,10 +2841,19 @@ export default {
     },
     async EconomCalc(){
 
+      if (this.field=='JET'){
+        this.param_org=7;
+        this.param_fact="Корр. 6 на 2021-2025";
+        this.expAnalysisData.NNO2=365;
+      }
+      else {
+        this.param_org=5;
+        this.param_fact="Корр. 5 на 2021-2025";
+      }
 
 
-      let uri2=this.localeUrl("/nnoeco?equip=1&org=5&param=")+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-      let uri3=this.localeUrl("/nnoeco?equip=2&org=5&param=")+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+      let uri2=this.localeUrl("/nnoeco?equip=1&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa="+this.param_fact)
+      let uri3=this.localeUrl("/nnoeco?equip=2&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa="+this.param_fact)
 
       this.isLoading = true;
 
