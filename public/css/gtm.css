@@ -70,6 +70,39 @@
     max-height: 370px;
 }
 
+.calendar-filter-block {
+    height: 2.2rem;
+    min-width: 2.4rem;
+    border-radius: 0.25rem;
+    background-color: rgba(93, 95, 127, 1);
+    color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+}
+
+.calendar-filter-block .calendar-icon {
+    margin-bottom: 0.2rem;
+    margin-left: 0.5rem;
+}
+
+.search-input {
+    background: rgba(39, 41, 83, 1);
+    border: none;
+    line-height: 1.8rem;
+    color: white;
+}
+
+.search-input::placeholder {
+    color: rgba(158, 164, 201, 1);
+    padding-left: 1rem;
+}
+
+.search-button {
+    color: white;
+    border: none;
+    border-radius: 0.15rem;
+    background: rgba(51, 102, 255, 1);
+}
+
 .gtm-menu div {
     font-size: 1.2rem;
     font-weight: 700;

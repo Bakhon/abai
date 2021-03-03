@@ -77,7 +77,11 @@ export default {
                         },
                         {
                             name: 'Анализ экономических показателей<br />(затраты, PI, и т.п. в разрезе ГТМ/ВНС)',
-                            component: null,
+                            component: {
+                                name: 'child-component',
+                                template: '<div><gtm-aegtm-eco></gtm-aegtm-eco></div>',
+                                parentType: 'aegtm',
+                            },
                         },
                         {
                             name: 'Смежные графики',
