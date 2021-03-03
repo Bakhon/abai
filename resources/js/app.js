@@ -116,11 +116,11 @@ Vue.component('well-fund-inactive', require('./components/reports/WellFundInacti
 Vue.component('well-fund-revision-field', require('./components/reports/WellFundRevisionField.vue').default);
 Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
-Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
+Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
-Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
+Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
 Vue.component('gu-map', require('./components/map/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 

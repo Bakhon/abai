@@ -1,18 +1,18 @@
 <template>
   <div>
     <b-form-group
-        label="Имя Скважины"
+        :label="trans('monitoring.well.name')"
         label-for="well-name"
     >
       <b-form-input
           id="well-name"
-          v-model="well.name"
+          v-model="well.origName"
           required
       ></b-form-input>
     </b-form-group>
 
     <b-form-group
-        label="ЗУ"
+        :label="trans('monitoring.zu.zu')"
         label-for="zus">
       <b-form-select
           id="zus"
@@ -21,7 +21,7 @@
       ></b-form-select>
     </b-form-group>
 
-    <b-form-group label="Широта" label-for="coord-x">
+    <b-form-group :label="trans('monitoring.latitude')" label-for="coord-x">
       <b-form-input
           id="coord-y"
           v-model="well.lat"
@@ -29,7 +29,7 @@
       ></b-form-input>
     </b-form-group>
 
-    <b-form-group label="Долгота" label-for="coord-y">
+    <b-form-group :label="trans('monitoring.longitude')" label-for="coord-y">
       <b-form-input
           id="coord-x"
           v-model="well.lon"

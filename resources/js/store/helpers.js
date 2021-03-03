@@ -3,25 +3,25 @@ import {mapActions, mapGetters, mapMutations, mapState,} from 'vuex';
 // Map
 
 export const guMapState = arrNames => ({
-    ...mapState('gumap', [
+    ...mapState('guMap', [
         ...arrNames,
     ]),
 });
 
 export const guMapGetters = arrNames => ({
-    ...mapGetters('gumap', [
+    ...mapGetters('guMap', [
         ...arrNames,
     ]),
 });
 
 export const guMapMutations = arrNames => ({
-    ...mapMutations('gumap', [
+    ...mapMutations('guMap', [
         ...arrNames,
     ]),
 });
 
 export const guMapActions = arrNames => ({
-    ...mapActions('gumap', [
+    ...mapActions('guMap', [
         ...arrNames,
     ]),
 });

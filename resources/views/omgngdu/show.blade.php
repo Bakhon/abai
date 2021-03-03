@@ -30,15 +30,15 @@
                         <td>{{$omgngdu->cdng->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.gu') }}</td>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
                         <td>{{$omgngdu->gu->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.zu') }}</td>
+                        <td>{{ trans('monitoring.zu.zu') }}</td>
                         <td>{{$omgngdu->zu->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.well') }}</td>
+                        <td>{{ trans('monitoring.well.well') }}</td>
                         <td>{{$omgngdu->well->name}}</td>
                     </tr>
                     <tr>
