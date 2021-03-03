@@ -1,6 +1,4 @@
-import {
-    mapActions, mapGetters, mapMutations, mapState,
-} from 'vuex';
+import {mapActions, mapGetters, mapMutations, mapState,} from 'vuex';
 
 // Map
 
@@ -24,6 +22,18 @@ export const guMapMutations = arrNames => ({
 
 export const guMapActions = arrNames => ({
     ...mapActions('gumap', [
+        ...arrNames,
+    ]),
+});
+
+export const bdFormState = arrNames => ({
+    ...mapState('bdform', [
+        ...arrNames,
+    ]),
+});
+
+export const bdFormActions = arrNames => ({
+    ...mapActions('bdform', [
         ...arrNames,
     ]),
 });
