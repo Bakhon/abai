@@ -13,6 +13,7 @@ use App\Models\Refs\Well;
 use App\Services\DruidService;
 use App\Http\Resources\GuZuPipeResource;
 use App\Http\Resources\ZuWellPipeResource;
+use App\Models\ComplicationMonitoring\PipeType;
 
 class MapsController extends Controller
 {
@@ -64,6 +65,8 @@ class MapsController extends Controller
             ->whereNotNull('lon')
             ->get();
 
+        $pipeTypes = PipeType::all();
+
         return [
             'pipes' => $wellPipes->merge($zuPipes),
             'wellPoints' => $wellPoints,
@@ -71,6 +74,7 @@ class MapsController extends Controller
             'guPoints' => $guPoints,
             'guCenters' => $guCenters,
             'center' => $center,
+            'pipeTypes' => $pipeTypes,
         ];
     }
 
@@ -304,7 +308,7 @@ class MapsController extends Controller
 
     private function getGuPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
     {
-        return GuZuPipe::query()
+        return GuZuPipe::with('pipeType')
             ->whereHas('gu')
             ->get()
             ->map(
@@ -330,7 +334,7 @@ class MapsController extends Controller
 
     private function getZuWellPipesWithCoords(array &$coordinates): \Illuminate\Database\Eloquent\Collection
     {
-        return ZuWellPipe::query()
+        return ZuWellPipe::with('pipeType')
             ->whereHas('gu')
             ->get()
             ->map(

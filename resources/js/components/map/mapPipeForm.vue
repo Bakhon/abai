@@ -45,10 +45,24 @@
       </b-col>
       <hr class="mb-2" />
     </b-row>
+
+    <b-form-group
+        :label="trans('monitoring.pipe.type')"
+        label-for="zu">
+      <b-form-select
+          id="gu"
+          v-model="pipe.pipe_type_id"
+          :options="pipeTypesOptions"
+      ></b-form-select>
+    </b-form-group>
+
+    <h5>{{ trans('monitoring.pipe.params') }}</h5>
   </div>
 </template>
 
 <script>
+import {guMapState} from '@store/helpers';
+
 export default {
   name: "mapPipeForm",
   props: {
@@ -66,6 +80,19 @@ export default {
     }
   },
   computed: {
+    ...guMapState([
+      'pipeTypes'
+    ]),
+    pipeTypesOptions: function () {
+      let options = [];
+      this.pipeTypes.forEach((item) => {
+        options.push(
+            { value: item.id, text: item.name }
+        );
+      });
+
+      return options;
+    },
     guOptions: function () {
       let options = [];
       this.gus.forEach((item) => {
