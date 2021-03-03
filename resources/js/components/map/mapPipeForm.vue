@@ -22,7 +22,7 @@
       ></b-form-select>
     </b-form-group>
 
-    <h5 class="outline-none" v-b-toggle.coordsVisible>{{ trans('monitoring.pipe.coords') }}
+    <h5 class="coords-collapse" v-b-toggle.coordsVisible>{{ trans('monitoring.pipe.coords') }}
       <i class="fas fa-chevron-down"></i>
     </h5>
 
@@ -95,7 +95,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.outline-none {
+.coords-collapse {
   outline: none;
   box-shadow: none !important;
 
