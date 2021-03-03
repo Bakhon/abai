@@ -2772,7 +2772,7 @@
     }
   }
   .rates-block__row {
-    height: 200px;
+    height: 100%;
   }
   @media (max-width:1400px) {
     .rates-block__row {

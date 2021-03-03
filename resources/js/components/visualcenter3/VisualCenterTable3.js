@@ -373,7 +373,7 @@ export default {
                 isProductionIdleButtonActive: false,
                 isInjectionIdleButtonActive: false,
             },
-            fondsMapping: {
+            fondNamesByDBFields: {
                 'fond_neftedob_df': 'operatingFond',
                 'fond_neftedob_bd': 'nonOperatingFond',
                 'fond_neftedob_osvoenie': 'masteringFond',
@@ -2060,7 +2060,7 @@ export default {
                 productionFondsForIterations = fonds.splice(halfOfProductionFondsLength,fonds.length);
             }
             _.forEach(productionFondsForIterations, function(fondName) {
-                let translationName = "visualcenter." + self.fondsMapping[fondName];
+                let translationName = "visualcenter." + self.fondNamesByDBFields[fondName];
                 productionFondsSummary.push(
                     {
                         value: productionPlanAndFactMonthWells[0][fondName],
