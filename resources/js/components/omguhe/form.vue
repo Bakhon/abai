@@ -13,7 +13,7 @@
                     </option>
                 </select>
             </div>
-            <label>{{ trans('monitoring.gu') }}</label>
+            <label>{{ trans('monitoring.gu.gu') }}</label>
             <div class="form-label-group">
                 <select
                     class="form-control"
@@ -80,7 +80,7 @@
                     </option>
                 </select>
             </div>
-            <label>{{ trans('monitoring.zu') }}</label>
+            <label>{{ trans('monitoring.zu.zu') }}</label>
             <div class="form-label-group">
                 <select
                     class="form-control"
@@ -145,7 +145,7 @@
                     </option>
                 </select>
             </div>
-            <label>{{ trans('monitoring.well') }}</label>
+            <label>{{ trans('monitoring.well.well') }}</label>
             <div class="form-label-group">
                 <select class="form-control" name="well_id" v-model="formFields.well_id">
                     <option v-for="row in wells" v-bind:value="row.id">
