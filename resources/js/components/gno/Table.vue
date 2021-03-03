@@ -1094,7 +1094,7 @@
                     </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
-    <a class="dropdown-item" href="#">MS Excel</a>
+    <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
   </div>
 </div>
                   <!-- <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg> -->
@@ -2025,6 +2025,7 @@ import FullPageLoader from '../ui-kit/FullPageLoader';
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import jsPDF from 'jspdf';
+const fileDownload = require("js-file-download");
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -2403,6 +2404,49 @@ export default {
     ...mapState(['wells'])
   },
   methods: {
+    downloadExcel() {
+      if (this.CelButton == 'ql') {
+        this.CelValue = this.qlCelValue
+      } else if (this.CelButton == 'bhp') {
+        this.CelValue = this.bhpCelValue
+      } else if (this.CelButton == 'pin') {
+        this.CelValue = this.piCelValue
+      }
+      let jsonData = JSON.stringify(
+        {
+          "curveSelect": this.curveSelect,
+          "presValue": this.pResInput.split(' ')[0],
+          "piValue": this.piInput.split(' ')[0],
+          "qlValue": this.qLInput.split(' ')[0],
+          "bhpValue": this.bhpInput.split(' ')[0],
+          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
+          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
+          "whpValue": this.whpInput.split(' ')[0],
+          "wctValue": this.wctInput.split(' ')[0],
+          "gorValue": this.gorInput.split(' ')[0],
+          "expSelect": this.expChoose,
+          "hPumpValue": this.hPumpValue.split(' ')[0],
+          "celSelect": this.CelButton,
+          "celValue": this.CelValue.split(' ')[0],
+          "menu": "MainMenu",
+          "well_age": this.age,
+          "grp_skin": this.grp_skin,
+          "analysisBox1": this.analysisBox1,
+          "analysisBox2": this.analysisBox2,
+          "analysisBox3": this.analysisBox3,
+          "analysisBox4": this.analysisBox4,
+          "analysisBox5": this.analysisBox5,
+          "analysisBox6": this.analysisBox6,
+          "analysisBox7": this.analysisBox7,
+          "analysisBox8": this.analysisBox8
+        });
+      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
+      this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
+        fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
+        console.log("downloaded")
+      }
+      )
+    },
     updateWellNum(event) {
       this.$store.commit('UPDATE_MESSAGE', event.target.value)
       this.$store.dispatch('loadWells')
