@@ -147,32 +147,24 @@ export default {
     };
   },
   methods: {
-    getDate(timestamp) {
-      return this.$moment(timestamp).format('dddd, DD MMMM YYYY');
-    },
     updateChartOptions(value) {
       let self = this;
 
-      // console.log(value);
-
       this.chartOptions = {
         ...this.chartOptions, ...{
-          xaxis: {
-            min: value[0][0]
-          },
           tooltip: {
             x: {
-              format: 'dd MMM yyyy'
+              formatter: function (value) {
+                return self.$moment(value).format('DD MMM YYYY');
+              }
             },
             style: {
               fontSize: '14px',
             },
             custom: function({series, seriesIndex, dataPointIndex, w}) {
-
               return '<div class="vc-chart-tooltip">' +
                   '<div>Покупка</div>' +
                   '<div class="vc-chart-tooltip-value">' + series[seriesIndex][dataPointIndex] + '</div>' +
-                  // '<div>' + self.getDate(w.globals.labels[dataPointIndex]) + '</div>' +
                   '</div>'
             }
           },
@@ -188,7 +180,6 @@ export default {
     },
     updateZoom() {
       let self = this;
-
       setTimeout(() => {
         self.$refs.chart.zoomX(
             self.tableData[0].timestamp,

@@ -1,7 +1,7 @@
 <?php
 
 return array (
-  'action_substance_of_co2' => 'Test',
+  'action_substance_of_co2' => 'Көмірқышқыл газының нақты мөлшері',
   'corrosion_monitoring' => 'ТҚ коррозия мониторингі - Кормасс',
   'kaznipi' => 'ҚазҒЗЖИ ОҒЗЗ',
   'wm_database' => 'Өндірістік сұйықтық пен газдар дерекқоры',
@@ -14,7 +14,6 @@ return array (
   'action_substance_of_h2s' => 'Күкіртсутектің нақты мөлшері',
   'actual_corrosion_speed' => 'Нақты коррозия жылдамдығы',
   'actual_inhibitor_level' => 'Коррозия ингибиторын нақты айдау',
-  'gu' => 'ТҚ',
   'units' => 
   array (
     'p_kon' => 'P соңғы.',
@@ -153,8 +152,6 @@ return array (
   'field' => 'Кенорын',
   'ngdu' => 'МжГӨБ',
   'cdng' => 'МжГӨЦ',
-  'zu' => 'ӨҚ',
-  'well' => 'Ұңғы',
   'history' => 
   array (
     'title' => 'Түзетулер енгізу барысы',
@@ -237,7 +234,7 @@ return array (
     'fields' => 
     array (
       'title' => 'Аталуы',
-      'price' => 'Баға',
+      'price' => 'баға',
       'price_date' => 'Баға өзгеру уақыты',
       'density' => 'Тығыздық',
     ),
@@ -249,4 +246,16 @@ return array (
   ),
   'module_name' => 'Асқынулар мониторингі',
   'close' => 'Жабу',
+  'zu' => 
+  array (
+    'zu' => 'ӨҚ',
+  ),
+  'gu' => 
+  array (
+    'gu' => 'ТҚ',
+  ),
+  'well' => 
+  array (
+    'well' => 'Ұңғы',
+  ),
 );

@@ -15,7 +15,7 @@ class TrController extends Controller
     
     public function __construct()
     {
-        $this->middleware('can:tr view main')->only('tr', 'fa', 'trfa', 'tr_charts');
+        $this->middleware('can:tr view main')->only('tr', 'fa', 'trfa', 'tr_charts', 'tech_mode');
     }
     public function tr()
     {
@@ -32,6 +32,10 @@ class TrController extends Controller
     public function tr_charts()
     {
         return view('tr_charts.tr_charts');
-    }    
+    } 
+    public function tech_mode()
+    {
+        return view('tech_mode.tech_mode');
+    }
 
 }

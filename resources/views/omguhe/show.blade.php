@@ -18,7 +18,7 @@
                         <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.well') }}</td>
+                        <td>{{ trans('monitoring.well.well') }}</td>
                         <td>{{$omguhe->well->name}}</td>
                     </tr>
                     <tr>

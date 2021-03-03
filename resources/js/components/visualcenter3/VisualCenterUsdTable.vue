@@ -12,7 +12,7 @@
         </div>
 
         <div class="row no-margin vc-chart-content-wrapper">
-          <div class="col-sm-9 vc-chart-container">
+          <div class="col-sm-9 col-md-8 vc-chart-container">
             <div class="vc-chart-block-subheader">
               {{ secondTitle }}
             </div>
@@ -35,7 +35,7 @@
             </div>
           </div>
 
-          <div class="col-sm-3">
+          <div class="col-sm-3 col-md-4 oil-table">
             <div class="vc-chart-block-subheader">
               {{ activeTitle }}
             </div>
@@ -100,8 +100,7 @@ export default {
     'usdRatesData',
     'period',
     'periodSelectFunc',
-    'currencyChartData',
-    'usdChartIsLoading',
+    'isPricesChartLoading',
     'mainTitle',
     'secondTitle',
     'tableData'
@@ -126,3 +125,10 @@ export default {
   },
 }
 </script>
+
+
+<style scoped>
+  .oil-table {
+    max-height: 590px;
+  }
+</style>

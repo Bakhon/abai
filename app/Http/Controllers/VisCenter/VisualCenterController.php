@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\VisCenter;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\VisCenter\ImportForms\DZOyearController;
+use App\Imports\DZOyearImport;
 use App\Models\DZO\DZOcalc;
 use App\Models\UsdRate;
+use App\Models\OilRate;
 use App\Models\VisCenter\ImportForms\DZOcalc as ImportFormsDZOcalc;
 use App\Models\VisCenter\ImportForms\DZOstaff;
 use App\Models\VisCenter\ImportForms\DZOdaily as ImportFormsDZOdaily;
 use App\Models\VisCenter\ImportForms\DZOyear as ImportFormsDZOyear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VisualCenterController extends Controller
 {
@@ -76,17 +80,20 @@ class VisualCenterController extends Controller
         return response()->json($data);
     }
 
+    public function getOilRates() {
+      $oilRatesData = OilRate::query()
+          ->get()
+          ->toArray();
+      return response()->json($oilRatesData);
+    }
+
     public function getCurrency(Request $request)
     {
-        $url = "https://www.nationalbank.kz/rss/get_rates.cfm?fdate=" . $request->fdate;
-        $dataObj = simplexml_load_file($url);
-        if ($dataObj) {
-            foreach ($dataObj as $item) {
-                if ($item->title == 'USD') {
-                    return response()->json($item);
-                }
-            }
-        }
+        $udsRate = DB::table('usd_rate')
+            ->orderBy('id', 'DESC')
+            ->select('value as description', 'change', 'index', 'date')
+            ->first();
+        return response()->json($udsRate);
     }
 
     function getCurrencyPeriod(Request $request)
@@ -142,6 +149,11 @@ class VisualCenterController extends Controller
     public function visualcenter3GetDataStaff(Request $request)
     {
         return response()->json(DZOstaff::all());
+    }
+
+    public function visualcenter3GetDataAccident(Request $request)
+    {
+        return response()->json(ImportFormsDZOyear::all('date','tb_accident_total')->where('date', '=', $request->year)->where('tb_accident_total', '>', '0'));
     }
 
     public function visualcenter3GetData(Request $request)
@@ -279,5 +291,10 @@ class VisualCenterController extends Controller
     public function visualcenter7()
     {
         return view('visualcenter.visualcenter7');
+    }
+
+    public function excelform()
+    {
+        return view('visualcenter.excelform');
     }
 }

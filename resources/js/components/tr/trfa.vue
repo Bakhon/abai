@@ -178,7 +178,8 @@
             <apexchart
               v-if="barChartData && pieChartRerender"
               type="bar"
-              width="800"
+              width="1500"
+              height="95%"
               :options="chartBarOptions"
               :series="[{ name: '', data: barChartData }]"
             ></apexchart>
@@ -193,7 +194,7 @@
               v-if="pieChartData && pieChartRerender"
               type="donut"
               width="800"
-              height="550"
+              height="100%"
               :options="chartOptions"
               :series="pieChartData"
             ></apexchart>
@@ -777,7 +778,7 @@ export default {
       this.chartFilter_object = filter;
     },
     chooseDt() {
-      this.$store.commit("globalloading/SET_LOADING", true);
+      
       const { date1, date2 } = this;
       console.log("dt1-", date1, " dt2-", date2);
       var choosenDt = date1.split("-");
@@ -790,6 +791,7 @@ export default {
       if (choosenDt[1] <= choosenSecDt[1] && choosenDt[0] === choosenSecDt[0]) {
         Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
       } else {
+        this.$store.commit("globalloading/SET_LOADING", true);
         this.$store.commit("fa/SET_MONTH", mm);
         this.$store.commit("fa/SET_YEAR", yyyy);
         this.$store.commit("fa/SET_PR_MONTH", prMm);

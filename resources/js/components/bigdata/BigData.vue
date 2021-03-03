@@ -10,13 +10,13 @@
                      @start-search="search()"/>
       </div>
 
-      <!--      delimiter-->
+      <!--delimiter-->
       <div class="row">
         <div class="col-md-12 col-lg-12" style="padding: 10px;">
         </div>
       </div>
 
-      <!--      sections block-->
+      <!--sections block-->
       <div class="bg-dark ">
         <div class="row">
           <div class="col contentTitle r-txt">
@@ -26,14 +26,42 @@
                     d="M17.7777 2.20008H13.1331C12.6668 0.924038 11.4443 0 10 0C8.55567 0 7.33321 0.924038 6.86653 2.20008H2.22228C0.999815 2.20008 0 3.1899 0 4.40015V19.8003C0 21.0102 0.999815 22 2.22228 22H17.7777C18.9998 22 20 21.0102 20 19.8003V4.40015C20 3.1899 18.9998 2.20008 17.7777 2.20008ZM10 2.20008C10.6112 2.20008 11.1113 2.69518 11.1113 3.29992C11.1113 3.90505 10.6112 4.40015 10 4.40015C9.38878 4.40015 8.88867 3.90505 8.88867 3.29992C8.88867 2.69518 9.38878 2.20008 10 2.20008ZM7.77774 17.6002L3.3332 13.2001L4.89995 11.649L7.77774 14.4869L15.1001 7.23806L16.6668 8.79992L7.77774 17.6002Z"
                     fill="#9EA4C9"/>
             </svg>
-            <div class="r-txt2"> Разделы </div><br>
+            <div class="r-txt2"> Разделы</div>
+            <br>
             <br>
           </div>
         </div>
 
         <div class="col">
           <div class="row pading-b-40">
-
+            <div class="col btn-clk"
+                 v-if="favorites.length > 0"
+                 @click="showFavoriteReports()"
+            >
+              <div class="section">
+                <div class="section__wrapper">
+                  <div class="section__content"
+                       :class="{'selected': favoritesShowed}"
+                  >
+                    <div class="bold">
+                      <span class="section_icon">
+                        <svg width="40" height="38" viewBox="0 0 40 38" xmlns="http://www.w3.org/2000/svg"><path
+                            fill-rule="evenodd" clip-rule="evenodd"
+                            d="M20.0007 30.0735L32.3607 37.4194L29.0808 23.5739L40 14.258L25.6199 13.0578L20.0007 0L14.3794 13.0578L0 14.258L10.9192 23.5739L7.64 37.4194L20.0007 30.0735Z"></path></svg>
+                      </span>
+                      <br>
+                      <br>
+                      {{ favorites.length }}
+                      <br>
+                      {{ numWord(favorites.length, ['отчёт', 'отчёта', 'отчётов']) }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12 btn-blocks-txt">
+                Избранное
+              </div>
+            </div>
             <div class="col btn-clk"
                  v-for="(section, index) in sections"
                  :key="index"
@@ -41,10 +69,10 @@
               <div class="section">
                 <div class="section__wrapper">
                   <div class="section__content"
-                   :class="{'selected': selectedSection === section.tag, 'disabled': !section.reports.length}">
+                       :class="{'selected': selectedSection === section.tag, 'disabled': !section.reports.length}">
 
                     <div class="bold">
-                      <span class="section_icon" v-html="section.svg_icon"></span><br>
+                      <span class="section_icon" v-html="section.icon"></span><br>
                       <br>
                       {{ section.reports.length }}
                       <br>
@@ -69,7 +97,7 @@
 
       <!--      reports-->
       <div class="bg-dark"
-           v-if="selectedSection">
+           v-if="selectedSection || favoritesShowed">
         <div class="col">
           <div class="row">
             <div class="reportsBut col-md-12">
@@ -90,12 +118,9 @@
                 </div>
                 <!-- end надпиьс отчеты -->
 
-                <div class="row pading-b-40 no-margin report-btn-list"
-                     v-for="(reportsSectionBlock, index) in sections"
-                     :key="index"
-                     v-if="selectedSection === reportsSectionBlock.tag">
-                  <big-data-report-button v-if="reportsSectionBlock.reports.length"
-                                          v-for="(report, reportIndex) in reportsSectionBlock.reports"
+                <div class="row pading-b-40 no-margin report-btn-list">
+                  <big-data-report-button v-if="activeReports.length"
+                                          v-for="(report, reportIndex) in activeReports"
                                           :key="reportIndex"
                                           :report="report"
                                           :selected-report="selectedReport"
@@ -165,13 +190,13 @@
           <div>
             Фильтр
 
-            <span v-if="!selectedReport.in_favor"
+            <span v-if="favorites.indexOf(selectedReport.id) < 0"
                   @click="addReportToFavor(selectedReport)"
                   class="report-filter-favor-star">
               <i class="far fa-star"></i>
             </span>
-
-            <span v-if="selectedReport.in_favor"
+            <span v-else
+                  @click="removeReportFromFavor(selectedReport)"
                   class="report-filter-favor-star">
               <i class="fas fa-star"></i>
             </span>
@@ -181,50 +206,48 @@
             {{ selectedReport.title }}
           </div>
         </div>
-        <monthly-production v-if="selectedReport.tag === 'monthly-production'"/>
-        <daily-production v-if="selectedReport.tag === 'daily-production'"/>
-        <daily-injection v-if="selectedReport.tag === 'daily-injection'"/>
-        <monthly-injection v-if="selectedReport.tag === 'monthly-injection'"/>
-        <well-stock-block v-if="selectedReport.tag === 'well-stock-block'"/>
-        <analyze-gtm v-if="selectedReport.tag === 'analyze-gtm'"/>
-        <dynamics-indicators v-if="selectedReport.tag === 'dynamics-indicators'"/>
-        <well-fund v-if="selectedReport.tag === 'well-fund'"/>
-        <well-fund-block v-if="selectedReport.tag === 'well-fund-block'"/>
-        <well-fund-field v-if="selectedReport.tag === 'well-fund-field'"/>
-        <well-fund-inactive v-if="selectedReport.tag === 'well-fund-inactive'"/>
-        <well-fund-revision v-if="selectedReport.tag === 'well-fund-revision'"/>
-        <well-fund-revision-field v-if="selectedReport.tag === 'well-fund-revision-field'"/>
+        <monthly-production v-if="selectedReport.tag === 'monthly-production'" :filtersData="filtersData"/>
+        <daily-production v-if="selectedReport.tag === 'daily-production'" :filtersData="filtersData"/>
+        <daily-injection v-if="selectedReport.tag === 'daily-injection'" :filtersData="filtersData"/>
+        <monthly-injection v-if="selectedReport.tag === 'monthly-injection'" :filtersData="filtersData"/>
+        <well-stock-block v-if="selectedReport.tag === 'well-stock-block'" :filtersData="filtersData"/>
+        <analyze-gtm v-if="selectedReport.tag === 'analyze-gtm'" :filtersData="filtersData"/>
+        <dynamics-indicators v-if="selectedReport.tag === 'dynamics-indicators'" :filtersData="filtersData"/>
+        <well-fund v-if="selectedReport.tag === 'well-fund'" :filtersData="filtersData"/>
+        <well-fund-block v-if="selectedReport.tag === 'well-fund-block'" :filtersData="filtersData"/>
+        <well-fund-field v-if="selectedReport.tag === 'well-fund-field'" :filtersData="filtersData"/>
+        <well-fund-inactive v-if="selectedReport.tag === 'well-fund-inactive'" :filtersData="filtersData"/>
+        <well-fund-revision v-if="selectedReport.tag === 'well-fund-revision'" :filtersData="filtersData"/>
+        <well-fund-revision-field v-if="selectedReport.tag === 'well-fund-revision-field'" :filtersData="filtersData"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Sections from './sections.json'
 import NewReportTable from '../reports/MonthlyProduction';
 import SearchForm from '../ui-kit/SearchForm';
 import BigDataReportButton from './BigDataReportButton';
+import moment from "moment";
 
 export default {
   components: {NewReportTable, SearchForm, BigDataReportButton},
   data() {
     return {
-      sections: Sections.data,
+      sections: [],
+      favorites: [],
+      favoritesShowed: false,
       selectedSection: null,
+      activeReports: [],
       selectedReport: null,
       searchString: '',
       searchResult: [],
+      filtersData: null,
     }
   },
   mounted() {
-    this.selectedSection = 'favor';
-    // не забыть удалить
-    let self = this;
-    this.sections.forEach((section) => {
-      if (section.tag === 'favor') {
-        self.selectedReport = section.reports[0];
-      }
-    });
+    this.displayReports();
+    this.loadDataForFilters();
   },
   methods: {
     numWord(value, words) {
@@ -243,12 +266,88 @@ export default {
 
       return words[2];
     },
+    displayReports() {
+
+      this.axios.get(this.localeUrl('/bigdata/reports')).then(({data}) => {
+        this.sections = data.data
+
+        this.axios.get(this.localeUrl('/bigdata/reports/favorite')).then(({data}) => {
+          this.favorites = data
+
+          if (this.favorites.length > 0) {
+            this.showFavoriteReports()
+            this.selectFavoritesFirstReport()
+          } else {
+            this.selectFirstAvailableReport()
+          }
+        })
+
+      })
+    },
+    showFavoriteReports() {
+
+      this.favoritesShowed = true
+      this.selectedSection = null
+      this.activeReports = []
+      this.sections.forEach(section => {
+        if (section.reports.length) {
+          section.reports.forEach(report => {
+            if (this.favorites.indexOf(report.id) > -1) {
+              this.activeReports.push(report)
+            }
+          })
+        }
+      })
+
+    },
+    selectFavoritesFirstReport() {
+      this.sections.some(section => {
+        if (section.reports.length > 0) {
+          let selectedReport = section.reports.find(report => report.id === this.favorites[0])
+          if (selectedReport) {
+            this.selectedReport = selectedReport
+            return true
+          }
+        }
+      })
+    },
+    selectFirstAvailableReport() {
+      this.sections.some(section => {
+        if (section.reports.length > 0) {
+          this.selectReportsSection(section)
+          this.selectedReport = section.reports[0]
+          return true
+        }
+      })
+    },
     selectReportsSection(section) {
       if (section.reports.length) {
-        this.searchResult = [];
-        this.searchString = '';
-        this.selectedSection = section.tag;
+        this.favoritesShowed = false
+        this.searchResult = []
+        this.searchString = ''
+        this.selectedSection = section.tag
+        this.activeReports = section.reports
       }
+    },
+    loadDataForFilters() {
+      let uri = "http://172.20.103.157:8082/dzo_field_mapping/";
+
+      this.isLoading = true;
+
+      this.axios.get(uri, {
+        responseType: 'json',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+          .then((response) => {
+            if (response.data) {
+              this.filtersData = response.data
+            } else {
+              console.log("No data");
+            }
+          })
+          .catch((error) => console.log(error));
     },
     selectReport(report, bySearchResult) {
       if (!bySearchResult) {
@@ -265,13 +364,18 @@ export default {
       return search.length >= 3 && (report.title.toLowerCase().match(search.toLowerCase()) || report.description.toLowerCase().match(search.toLowerCase()))
     },
     addReportToFavor(report) {
-      report.in_favor = true;
 
-      this.sections.forEach((section) => {
-        if (section.tag === 'favor') {
-          section.reports.push(report);
-        }
-      });
+      this.axios.post(this.localeUrl('/bigdata/reports/favorite/' + report.id)).then(() => {
+        this.favorites.push(report.id)
+      })
+
+    },
+    removeReportFromFavor(report) {
+
+      this.axios.delete(this.localeUrl('/bigdata/reports/favorite/' + report.id)).then(() => {
+        this.favorites.splice(this.favorites.findIndex(favorite => favorite === report.id), 1)
+      })
+
     },
     checkResult(result, report) {
       return result.find((item) => {
@@ -316,3 +420,63 @@ export default {
   }
 }
 </script>
+
+<style>
+.underHeader {
+  position: relative;
+  Width: 1795px;
+  Height: 866px;
+}
+
+.underHeader > .col-sm1 {
+  width: 438px;
+  right: 1500px;
+}
+
+.bootstrap-table .fixed-table-container .table {
+  color: white;
+}
+
+.table-hover tbody tr:hover {
+  color: #d4d4d4 !important;
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.float {
+  float: left;
+}
+
+/*.form-control {*/
+/*  padding: unset!important;*/
+/*}*/
+
+.margin-top {
+  margin-top: 5px;
+}
+
+.select-month {
+  background: rgb(51, 57, 117);
+  border-color: rgb(32, 39, 78);
+  width: 41vh !important;
+}
+
+.report-btn2 {
+  background: #2d4fe6;
+  color: white;
+  border-radius: unset;
+  width: 100%;
+  height: 36px;
+
+}
+
+.margin-top {
+  padding: 15px;
+}
+
+.download-report {
+  color: white;
+  font-size: 28px;
+  text-decoration: underline;
+  font-weight: bold;
+}
+</style>

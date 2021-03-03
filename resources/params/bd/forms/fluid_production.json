@@ -1,0 +1,45 @@
+{
+  "type": "table",
+  "fields": [
+    {
+      "code": "org",
+      "type": "dict_tree",
+      "title": "Оргструктура",
+      "validation": "required|exists:tbd.dict.org,id",
+      "dict": "orgs",
+      "callbacks": {
+        "filterGeoByDZO": "geo"
+      }
+    },
+    {
+      "code": "geo",
+      "type": "dict_tree",
+      "title": "Геоструктура",
+      "validation": "required|exists:tbd.dict.geo,id",
+      "dict": "geos",
+      "callbacks": {
+        "setWellPrefix": "name"
+      }
+    },
+    {
+      "code": "name",
+      "type": "text",
+      "title": "Номер скважины",
+      "validation": "required|max:255",
+      "prefix": ""
+    },
+    {
+      "code": "date_create",
+      "type": "date",
+      "title": "Дата создания проекта",
+      "validation": "required|date"
+    },
+    {
+      "code": "category",
+      "type": "dict",
+      "title": "Категория скважины",
+      "validation": "required|exists:tbd.prod.well_category,id",
+      "dict": "well_categories"
+    }
+  ]
+}

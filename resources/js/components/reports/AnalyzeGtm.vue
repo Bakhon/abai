@@ -42,37 +42,64 @@
 
     <div class="form-group2 filter-group">
       <label for="start_date">Выберите начальную дату</label>
-      <input id="start_date"
-             class="form-control datepicker filter-input"
-             type="date"
-             :disabled="isLoading"
-             v-model="start_date">
+      <datetime
+          id="start_date"
+          type="date"
+          v-model="start_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="dd LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month', 'date']"
+      >
+      </datetime>
     </div>
 
     <div class="form-group3 filter-group">
       <label for="end_date">Выберите конечную дату</label>
-      <input id="end_date"
-             class="form-control datepicker filter-input"
-             type="date"
-             :disabled="isLoading"
-             v-model="end_date">
+      <datetime
+          id="end_date"
+          type="date"
+          v-model="end_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="dd LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month', 'date']"
+      >
+      </datetime>
     </div>
 
     <div class="form-group2 filter-group">
-      <label for="start_date">Выберите дату отчета</label>
-      <input id="yearSelect"
-             class="form-control datepicker filter-input"
-             type="date"
-             :disabled="isLoading"
-             v-model="year">
+      <label for="report_date">Выберите дату отчета</label>
+      <datetime
+          id="report_date"
+          type="date"
+          v-model="report_date"
+          value-zone="Asia/Almaty"
+          zone="Asia/Almaty"
+          input-class="form-control filter-input"
+          format="dd LLLL yyyy"
+          :phrases="{ok: '', cancel: ''}"
+          :disabled="isLoading"
+          auto
+          :flow="['year', 'month', 'date']"
+      >
+      </datetime>
     </div>
 
       <div class="form-group3 result-link">
-          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download_report text-center">Скачать отчёт</a>
+          <a v-if="resultLink !== null && !isLoading" :href="resultLink"  target="_blank" class="download-report text-center">Скачать отчёт</a>
       </div>
 
     <div class="form-group4">
-      <button :disabled="!org || !end_date || !start_date || !year || !type_event || isLoading"
+      <button :disabled="!org || !end_date || !start_date || !report_date || !type_event || isLoading"
               @click="updateData()"
               class="btn get-report-button">
         <span>
@@ -91,15 +118,29 @@
 
 <script>
 
+import Vue from "vue";
+import {Datetime} from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
+import {formatDate} from './FormatDate.js'
+
+Vue.use(Datetime)
+
 export default {
+  props: {
+    filtersData: {
+      type: Object,
+      required: true
+    }
+  },
   components: {},
+
   data() {
 
     return {
       org: '',
       start_date: null,
       end_date: null,
-      year: '',
+      report_date: null,
       type_event: '',
       isLoading: false,
       resultLink: null
@@ -113,13 +154,14 @@ export default {
     updateData() {
       let uri = "http://172.20.103.157:8082/analyze/gtm/";
         // let uri = "http://0.0.0.0:8090/analyze/gtm/";
+
       let data = {
         period: 'days',
         dzo: this.org,
-        report_date_start: `${this.start_date}`.substr(0, 8).concat('01 00:00:00'),
-        report_date_end: `${this.end_date}`.concat(' 00:00:00'),
+        report_date_start: formatDate.formatToMinOfDay(this.start_date),
+        report_date_end: formatDate.formatToMinOfDay(this.end_date),
+        report_date: formatDate.formatToMinOfDay(this.report_date),
         type_event: `${this.type_event}`,
-        year: `${this.year}`.substr(0, 4),
       };
 
       let json_data = JSON.stringify(data);
@@ -127,10 +169,8 @@ export default {
       this.isLoading = true;
 
       this.axios.post(uri, json_data, {
-        // responseType:'arraybuffer',
           responseType:'json',
           headers: {
-            // Overwrite Axios's automatically set Content-Type
             'Content-Type': 'application/json'
           }
       })
@@ -147,62 +187,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-.underHeader {
-  position: relative;
-  Width: 1795px;
-  Height: 866px;
-}
-
-.underHeader>.col-sm1 {
-  width: 438px;
-  right: 1500px;
-}
-
-.bootstrap-table .fixed-table-container .table {
-  color: white;
-}
-
-.table-hover tbody tr:hover {
-  color: #d4d4d4 !important;
-  background-color: rgba(0, 0, 0, 0.075);
-}
-
-.float {
-  float: left;
-}
-
-/*.form-control {*/
-/*  padding: unset!important;*/
-/*}*/
-
-.margin-top {
-  margin-top: 5px;
-}
-
-.select-month{
-  background: rgb(51, 57, 117);
-  border-color: rgb(32, 39, 78);
-  width: 41vh!important;
-}
-
-.report-btn2 {
-  background: #2d4fe6;
-  color: white;
-  border-radius: unset;
-  width:100%;
-  height: 36px;
-
-}
-
-.margin-top {
-  padding: 15px;
-}
-.download_report {
-  color: white;
-  font-size: 28px;
-  text-decoration: underline;
-  font-weight: bold;
-}
-</style>

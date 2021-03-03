@@ -60,12 +60,11 @@
             </i>
             {{trans('tr.dt')}}
           </button>
-
-          <div
+          <div v-if="datepicker1"
             class="dropdown-menu fadropmenu"
             style="
               background: #40467e;
-              height: 117px;
+              height: 125px;
               flex-direction: column;
               width: calc(100% - 26px);
               margin-top: 4px;
@@ -122,16 +121,63 @@
                 <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
-                <!-- <option value="2018">2018</option>
-                <option value="2017">2017</option>
-                <option value="2016">2016</option>
-                <option value="2015">2015</option>
-                <option value="2014">2014</option> -->
+
               </select>
             </div>
-            <a href="#" @click.prevent="chooseDt" class="btn btn-sm button_form"
-              >{{trans('tr.sf')}}</a
-            >
+            <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
+              <a href="#" @click.prevent="chooseDt"  class="btn btn-sm button_form" style="width: 80%;"
+                >{{trans('tr.sf')}}</a
+              >
+              <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;">
+                <svg 
+                  width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                  <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                  <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                </svg>
+
+              </a>
+            </div>
+        </div>
+          <div v-if="datepicker2"
+            class="dropdown-menu fadropmenu"
+            style="
+              background: #40467e;
+              height: 174px;
+              flex-direction: column;
+              width: calc(100% - 26px);
+              margin-top: 4px;
+            "
+            aria-labelledby="dropdownMenuLink"
+          >
+              
+                <!-- <form class="form-group but-nav__link"> -->
+                <label for="inputDate" style="margin-left: 8px;">Введите начальную дату::</label>
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date2" />
+                <!-- <form class="form-group but-nav__link"> -->
+                <label for="inputDate" style="margin-left: 8px;">Введите конечную дату::</label>
+                <input type="date" class="form-control" style="background: #333975 !important;" v-model="date1" />
+            <!-- </div> -->
+                <div class="fix calendar" style="display:flex; justify-content: center; color: white;">
+                  <a href="#" @click.prevent="chooseDt1" @click="calendarDate" class="btn btn-sm button_form" style="width: 80%;"
+                    >{{trans('tr.sf')}}</a
+                  >
+                  <a  @click="calendarDynamic" @click.prevent.stop="() => {}" style="padding-top: 5px; cursor: pointer;" >
+                    <svg 
+                      width="32" 
+                      height="28" 
+                      viewBox="0 0 32 28" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M0.5 6C0.5 2.96243 2.96243 0.5 6 0.5H26C29.0376 0.5 31.5 2.96243 31.5 6V22C31.5 25.0376 29.0376 27.5 26 27.5H6C2.96243 27.5 0.5 25.0376 0.5 22V6Z" fill="#333975" stroke="#333975"/>
+                      <path d="M9 14.7282V13.3003C9 10.9807 10.8804 9.10034 13.2 9.10034H22.2999V9.10034" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M20.8997 7L22.9289 9.02927C22.968 9.06832 22.968 9.13164 22.9289 9.17069L20.8997 11.2" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M22.9996 13.2861V14.7141C22.9996 17.0336 21.1192 18.914 18.7996 18.914H9.69971V18.914" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                      <path d="M11.1 21L9.07071 18.9707C9.03166 18.9317 9.03166 18.8684 9.07071 18.8293L11.1 16.8" stroke="#D6D7E3" stroke-width="1.4" stroke-linecap="round"/>
+                    </svg></a>
+                </div>
           </div>
         </div>
         
@@ -150,12 +196,10 @@
     </div>
     <div class="col-md-12 maintable tablecont">
       <div class="maintable-level2" style="position: relative">
-        <!-- <div class="fadee" v-if="isloading">
-          <fade-loader :loading="isloading"></fade-loader>
-        </div> -->
         <div class="techbt1 tr-table-header">
           <div class="tech" style="margin-left: 14px; color: white">
-            <h5>{{trans('tr.htr')}} {{ dt }}</h5>
+            <h5 v-if="date_fix">{{trans('tr.htr')}} {{ dt }}</h5>
+            <h5 v-if="!date_fix">Технологический режим {{ dt3 }}</h5>
           </div>
 
           <tr-multiselect
@@ -165,20 +209,38 @@
             @change-filter="handlerFilter"
             filterName="месторождения"
           />
+          
           <a v-show="false" v-if="edit"></a>
 
 
-          <modal name="add_well" :width="1600" :height="250"  :adaptive="true" style="z-index:9900000;">
-            <div class="main_modals" style="background: #272953; width=900; height=400">
+          <modal name="add_well" :width="1600" :height="220"  :adaptive="true" style="z-index:9900000; ">
+            <div class="main_modals" style="background: #272953; width=900; height=400; border: 3px solid #656A8A;">
+              <notifications position="top"></notifications>
               <div>
-                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px;">
+                    <div class="header_mod" style="color:white; display:flex; margin-left: 14px; padding-top: 8px; ">
                         <h5>Добавление скважин</h5>
-                        <!-- <button type="button" class="btn btn-secondary btn-sm">Закрыть</button> -->
+                        <button type="button" class="modal-bign-button" @click="closeModal('add_well')">Закрыть</button>
+
+                        <!-- <a class="modal-close" title="Close" @click.prevent="reRender" style="cursor: pointer;"> -->
+                          <!-- <svg 
+                            width="24" 
+                            height="24" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.6567 17.6575L6.34294 6.34383" 
+                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                            <path d="M17.6556 6.34383L6.34188 17.6575" 
+                              stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                          </svg>
+                        </a> -->
                     </div>
+                    
                     <div class="body" style="background: #272953; display:flex; justify-content: center; padding-top: 6px; padding-bottom: 7px;">
                             <div style="margin-left: 7px;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_status"
                                 value="Статус"
                               >
@@ -189,7 +251,8 @@
                             </div>
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="select_mod form-control"
+                                style="background: #334296 !important"
                                 v-model="Filter_field"
                                 value="Месторождение"
                               >
@@ -198,21 +261,11 @@
                                 </option>
                               </select>
                             </div>
-                            <div style="margin-left: 7px; cursor: pointer;">
-                              <select
-                                class="form-control"
-                                v-model="Filter_well"
-                                value="Скважина"
-                              >
-                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
-                                  {{ f === undefined ? "Выберите скважину" : f }}
-                                </option>
-                              </select>
-                            </div>
 
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_well_type"
                                 value="Тип скв"
                               >
@@ -224,7 +277,8 @@
 
                             <div style="margin-left: 7px; cursor: pointer;">
                               <select
-                                class="form-control"
+                                class="form-control select_mod"
+                                style="background: #334296 !important"
                                 v-model="Filter_well_status"
                                 value="Состояние"
                               >
@@ -233,10 +287,24 @@
                                 </option>
                               </select>
                             </div>
+
+                            <div style="margin-left: 7px; cursor: pointer;">
+                              <select
+                                class="select_mod form-control"
+                                style="background: #334296 !important"
+                                v-model="Filter_well"
+                                value="Скважина"
+                              >
+                                <option v-for="(f, k) in wellFilters" :key="k" :value="f">
+                                  {{ f === undefined ? "Выберите скважину" : f }}
+                                </option>
+                              </select>
+                            </div>
                             
                               <a
                                 
                                 style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                v-if="!show_add"
                                 @click="addWellData"
                                 @click.prevent="showWells"
                                 ><svg 
@@ -248,12 +316,26 @@
                                 <path d="M14.5 8L1.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 <path d="M8 1.5V14.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
                                 </svg>
-
                               Добавить</a>
+
+                              <a
+                                
+                                style="margin-left: 50px;; cursor: pointer; color:white; margin-top: 5px;"
+                                v-if="show_add"
+                                @click="showWells"
+                                ><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M17.6567 17.6575L6.34294 6.34383" 
+                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  <path d="M17.6556 6.34383L6.34188 17.6575" 
+                                    stroke="white" stroke-width="1.4" stroke-linecap="round"/>
+                                  </svg>
+                              Отмена</a> 
+
                             <a
-                              
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="saveadd()"
+                              @click.prevent="reRender"
+                              v-show = checkers
                               ><svg width="24" 
                               height="24" 
                               viewBox="0 0 24 24" 
@@ -262,10 +344,13 @@
                               <path d="M4 12.5L8.85858 17.3586C8.93668 17.4367 9.06332 17.4367 9.14142 17.3586L20 6.5" stroke="white" 
                               stroke-width="1.5" stroke-linecap="round"/>
                               </svg>Сохранить</a>
-                              
+
                              <a
                               style="margin-left: 10px; cursor: pointer; color:white; margin-top: 5px;"
                               @click="deleteWell"
+                              @click.prevent="reRender"
+                              v-show = checkersec
+
                               ><svg width="24"
                                height="24" 
                                viewBox="0 0 24 24" 
@@ -277,11 +362,7 @@
                             
                 </div>
               </div>
-              <div class="table table-bordered table-dark table-responsive trtable" style="padding-top: 21px;  background: #454D7D;">
-
-
-
-
+              <div class="table" style="padding-top: 21px;  background: #454D7D; overflow: hidden !important;">
 
                     <table class="table table-bordered table-dark table-responsive trtable" style="font-size: 12px; background: #454D7D; color: #fff; height: 100px;" v-if="show_add" :key="render">
                     <thead>
@@ -297,7 +378,6 @@
                         <td scope="col">Наружный диаметр э/к</td>
                         <td scope="col">Внутр. диаметр э/к</td>
                         <td scope="col">Н вд</td>
-                        <td scope="col">СЭ</td>
                         <td scope="col">Тип насоса</td>
                         <td scope="col">Тип СК</td>
                         <td scope="col">Р буф</td>
@@ -315,45 +395,37 @@
                       <tr v-for="(row, row_index) in lonelywell" 
                         :key="row_index"
                         ref="editTable">
-                        <td><input data-key="field" :value="row.field"></td>
-                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day"></td>
-                        <td><input data-key="rus_wellname" :value="row.rus_wellname"></td>
-                        <td><input data-key="horizon" :value="row.horizon"></td>
-                        <td><input data-key="object" :value="row.object"></td>
-                        <td><input data-key="exp_meth" :value="row.exp_meth"></td>
-                        <td><input data-key="type_text" :value="row.type_text"></td>
-                        <td><input data-key="block" :value="row.block"></td>
-                        <td><input data-key="cas_OD" :value="row.cas_OD"></td>
-                        <td><input data-key="cas_ID" :value="row.cas_ID"></td>
-                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md"></td>
-                        <td><input data-key="pump_type" :value="row.pump_type"></td>
-                        <td><input data-key="type_sr" :value="row.type_sr"></td>
-                        <td><input data-key="whp" :value="row.whp"></td>
-                        <td><input data-key="line_p" :value="row.line_p"></td>
-                        <td><input data-key="p_res" :value="row.p_res"></td>
-                        <td><input data-key="h_dyn" :value="row.h_dyn"></td>
-                        <td><input data-key="p_annular" :value="row.p_annular"></td>
-                        <td><input data-key="dens_oil" :value="row.dens_oil"></td>
-                        <td><input data-key="h_perf" :value="row.h_perf"></td>
-                        <td><input data-key="bhp_meter" :value="row.bhp_meter"></td>
+                        <td><input data-key="field" :value="row.field" class="input_edit"></td>
+                        <td><input data-key="well_status_last_day" :value="row.well_status_last_day" class="input_edit"></td>
+                        <td><input data-key="rus_wellname" :value="row.rus_wellname" class="input_edit"></td>
+                        <td><input data-key="horizon" :value="row.horizon" class="input_edit"></td>
+                        <td><input data-key="object" :value="row.object" class="input_edit"></td>
+                        <td><input data-key="exp_meth" :value="row.exp_meth" class="input_edit"></td>
+                        <td><input data-key="type_text" :value="row.type_text" class="input_edit"></td>
+                        <td><input data-key="block" :value="row.block" class="input_edit"></td>
+                        <td><input data-key="cas_OD" :value="row.cas_OD" class="input_edit"></td>
+                        <td><input data-key="cas_ID" :value="row.cas_ID" class="input_edit"></td>
+                        <td><input data-key="h_up_perf_md" :value="row.h_up_perf_md" class="input_edit"></td>
+                        <td><input data-key="pump_type" :value="row.pump_type" class="input_edit"></td>
+                        <td><input data-key="type_sr" :value="row.type_sr" class="input_edit"></td>
+                        <td><input data-key="whp" :value="row.whp" class="input_edit"></td>
+                        <td><input data-key="line_p" :value="row.line_p" class="input_edit"></td>
+                        <td><input data-key="p_res" :value="row.p_res" class="input_edit"></td>
+                        <td><input data-key="h_dyn" :value="row.h_dyn" class="input_edit"></td>
+                        <td><input data-key="p_annular" :value="row.p_annular" class="input_edit"></td>
+                        <td><input data-key="dens_oil" :value="row.dens_oil" class="input_edit"></td>
+                        <td><input data-key="dens_liq" :value="row.dens_liq" class="input_edit"></td>
+                        <td><input data-key="h_perf" :value="row.h_perf" class="input_edit"></td>
+                        <td><input data-key="bhp_meter" :value="row.bhp_meter" class="input_edit"></td>
+                        <td v-show="false"><input data-key="well" :value="row.well" class="input_edit"></td>
 
                       </tr>
                     </tbody>
                   </table>
-
-
-
-
-
               </div>
             </div>
-            
-                  
-
           </modal>
 
-
-          
           <button
             type="button" 
             data-toggle="modal" 
@@ -382,10 +454,6 @@
             </svg>
           </button>
             
-          
-
-      
-          
 
           <a
             v-if="edit"
@@ -706,7 +774,7 @@
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
                   <td rowspan="3" class="th"><span>{{trans('tr.tr29')}}</span></td>
-                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}Р заб</span></td>
+                  <td rowspan="3" class="th"><span>{{trans('tr.trs62')}}</span></td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr27')}}</td>
                   <td class="colspan th" colspan="4">{{trans('tr.tr28')}}</td>
                   <td rowspan="3" class="th"><span>{{trans('tr.trs65')}}</span></td>
@@ -1626,7 +1694,7 @@
                   <td v-if="!edit">
                     <span v-if="row.h_up_perf_md[0] != null">
                       {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
-                    </span>ок
+                    </span>
                   </td>
                   <td v-if="edit">
                     {{ Math.round(row.h_up_perf_md[0] * 10) / 10 }}
@@ -6331,7 +6399,7 @@
                   </td>
 
                   <td v-if="!edit">{{Math.round(row.planned_gor*10)/10}}</td>
-                  <td v-if="edit"><input :value="row.planned_gor" @change="editrow(row)" :disabled="!edit" class="input_edit"></td>
+                  <td v-if="edit"><input v-model="row.planned_gor" @change="editrow(row, row_index)" :disabled="!edit" class="input_edit"></td>
 
                   <td
                     v-if="!edit"
@@ -6807,9 +6875,12 @@
         </div>
       </div>
     </div>
+    <notifications position="top"></notifications>
   </div>
 </template>
 <script>
+import NotifyPlugin from "vue-easy-notify";
+import "vue-easy-notify/dist/vue-easy-notify.css";
 import TrTable from "./table";
 import TrFullTable from "./tablefull";
 import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
@@ -6817,6 +6888,7 @@ import SearchFormRefresh from "../ui-kit/SearchFormRefresh.vue";
 import { fields } from "./constants.js";
 import TrMultiselect from "./TrMultiselect.vue";
 
+Vue.use(NotifyPlugin);
 export default {
   name: "TrPage",
   components: {
@@ -6971,6 +7043,8 @@ export default {
     }
     this.$store.commit("tr/SET_MONTH", mm);
     this.$store.commit("tr/SET_YEAR", yyyy);
+    this.is_dynamic = false;
+    this.$store.commit("tr/SET_IS_DYNAMIC", "false");
     this.axios
       .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
       .then((response) => {
@@ -7019,12 +7093,9 @@ export default {
       edit: false,
       editdtm: null,
       editdty: null,
-      // sortField: null,
-      // currentSortDir: 'asc',
       year: null,
       selectYear: null,
       month: null,
-      // isloading: true,
       isfulltable: false,
       Filter_field: undefined,
       allWells: [],
@@ -7035,7 +7106,15 @@ export default {
       filteredWellData: [],
       lonelywell: [],
       render: 0,
+      searchStringModel: "",
       Filter_well: undefined,
+      checkers: false,
+      checkersec: false,
+      datepicker1: true,
+      datepicker2: false,
+      date_fix: true,
+      is_dynamic: false,
+      // date_dyn: false,
     };
   },
   watch: {
@@ -7048,6 +7127,7 @@ export default {
   },
   methods: {
     editrow(row, rowId) {
+      this.$store.commit("globalloading/SET_LOADING", false);
       console.log("row = ", row);
       console.log("rowId = ", rowId);
       row["index"] = 0;
@@ -7121,9 +7201,67 @@ export default {
       this.editedWells = [];
       this.searchWell();
     },
+    cancelPP() {
+      this.edit = false;
+
+    },
+    reRender() {
+      this.filteredWellData = [];
+      this.Filter_well_status = undefined;
+      this.Filter_status = undefined;
+      this.Filter_well_type = undefined;
+      this.Filter_well = undefined;
+      this.Filter_field = undefined;
+      
+    },
+    reRenderAll() {
+      this.$store.commit("globalloading/SET_LOADING", true);
+      var today = new Date();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var day = today.getDate();
+      if(day > 25 && mm < 12) {
+        var mm1 = today.getMonth() + 2;
+        var yyyy1 = today.getFullYear();
+      }
+      else if(day > 25 && mm === 12){
+        var mm1 = 1;
+        var yyyy1 = today.getFullYear() + 1;
+      }
+      else{
+        var mm1 = today.getMonth() + 1;
+        var yyyy1 = today.getFullYear();
+      }
+
+      this.axios
+        .get("http://172.20.103.187:7576/api/techregime/" + yyyy + "/" + mm + "/")
+        .then((response) => {
+          let data = response.data;
+
+          this.$store.commit("globalloading/SET_LOADING", false);
+          // this.isloading = false;
+          if (data) {
+            console.log(data);
+            this.wells = data.data;
+            this.fullWells = data.data;
+          } else {
+            console.log("No data");
+            
+          }
+
+        });
+    },
     showWells() {
       if(this.lonelywell.length === 1){
         this.show_add = !this.show_add;
+        if(this.lonelywell[0].is_saved === "Сохранено"){
+          this.checkers = false;
+          this.checkersec = true;
+        }
+        else{
+          this.checkers = true;
+          this.checkersec = false;
+        }
       }
       else{
         this.show_add = this.show_add;
@@ -7133,6 +7271,17 @@ export default {
       this.edit = true;
       this.show_second = true;
       this.show_first = false;
+    },
+    searchadd() {
+      this.$emit();
+    },
+    clearClickadd() {
+      this.searchStringModel= "";
+      this.$emit();
+      this.searchadd();
+    },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
     },
     sortBy(type) {
       this.sortParam = type;
@@ -7195,6 +7344,66 @@ export default {
       this.year = event.target.value;
       this.$store.commit("tr/SET_YEAR", event.target.value);
     },
+    chooseDt1() {
+      
+      // this.isloading = true;
+      const { date1, date2 } = this;
+      console.log("dt1-", date1, " dt2-", date2);
+      var choosenDt = date1.split("-");
+      var choosenSecDt = date2.split("-");
+      const dd = choosenDt[2];
+      const prdd = choosenSecDt[2];
+      const mm = choosenDt[1];
+      const prMm = choosenSecDt[1];
+      const yyyy = choosenDt[0];
+      const pryyyy = choosenSecDt[0];
+      if (choosenSecDt[2] >= choosenDt[2] && choosenSecDt[1] >= choosenDt[1] && choosenSecDt[0] >= choosenDt[0] || choosenSecDt[0] > choosenDt[0]) {
+        Vue.prototype.$notifyError("Дата 2 должна быть меньше чем Дата 1");
+      } else {
+        this.$store.commit("globalloading/SET_LOADING", true);
+        this.$store.commit("tr/SET_DYN_MONTH_END", mm);
+        this.$store.commit("tr/SET_DYN_YEAR_END", yyyy);
+        this.$store.commit("tr/SET_DYN_DAY_END", dd);
+        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("tr/SET_DYN_YEAR_START", pryyyy);
+        this.$store.commit("tr/SET_DYN_MONTH_START", prMm);
+        this.$store.commit("tr/SET_DYN_DAY_START", prdd);
+        this.axios
+          .get(
+            "http://172.20.103.187:7576/api/techregime/dynamic/" +
+              // this.selectYear +
+              // "/" +
+              // this.month +
+              // "/"
+              pryyyy + "/" + prMm + "/" + prdd + "/" + yyyy + "/" + mm + "/" + dd + "/"
+          )
+          .then((response) => {
+            this.$store.commit("globalloading/SET_LOADING", false);
+            // this.isloading = false;
+            let data = response.data;
+            if (data) {
+              this.searched = false;
+              this.date_fix = false;
+              this.is_dynamic = true;
+              this.$store.commit("tr/SET_IS_DYNAMIC", "true");
+              this.$store.commit("tr/SET_SORTPARAM", "");
+              this.$store.commit("tr/SET_SEARCH", "");
+              this.sortParam = "";
+              this.searchString = "";
+              console.log(data);
+              // this.wells = data.data;
+              this.fullWells = data.data;
+            } else {
+              console.log("No data");
+            }
+            if (this.month < 10) {
+              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
+            } else {
+              this.dt3 = '(' + prdd + "." + prMm+ "." + pryyyy + ' - ' + dd+ "." + mm+ "." + yyyy + ')';
+            }
+          });
+        }
+    },
 
     chooseDt() {
       this.$store.commit("globalloading/SET_LOADING", true);
@@ -7213,6 +7422,8 @@ export default {
           let data = response.data;
           if (data) {
             this.searched = false;
+            this.is_dynamic = false;
+            this.$store.commit("tr/SET_IS_DYNAMIC", "false");
             this.$store.commit("tr/SET_SORTPARAM", "");
             this.$store.commit("tr/SET_SEARCH", "");
             this.sortParam = "";
@@ -7251,6 +7462,7 @@ export default {
             console.log(data);
             // this.wells = data.data;
             this.allWells = data.data;
+            
           } else {
             console.log("No data");
           }
@@ -7285,11 +7497,27 @@ export default {
       this.show_first = !this.show_first;
       this.show_second = !this.show_second;
       this.isfulltable = !this.isfulltable;
-    },
 
+    },
+    calendarDynamic() {
+      this.is_dynamic_calendar = !this.is_dynamic_calendar
+      this.datepicker1 = !this.datepicker1
+      this.datepicker2 = !this.datepicker2
+    },
+    // calendarDate() {
+    //   this.date_fix = !this.date_fix
+    //   this.date_dyn = !this.date_dyn
+    // },
     getColor(status) {
       if (status === "1") return "#ffff00";
       return "#ff0000";
+    },
+    closeModal(modalName) {
+      this.$modal.hide(modalName)
+      this.show_add=false;
+      this.checkers=false;
+      this.checkersec=false;
+      this.reRender();
     },
     addpush(){
         
@@ -7302,9 +7530,32 @@ export default {
     handlerFilter(filter) {
       this.filter = filter;
     },
+    // deleteOrSave() {
+    //   if(this.lonelywell[0].is_saved === "Не сохранено"){
+    //         this.is_save=true
+    //   }
+    //   else{
+    //     return this.is_save=false
+    //   }
+    // },
     // Отправка данных с модалки в бэк
+
+    // deleteOrSave() {
+    //   if(this.lonelywell.length === 1){
+    //     this.save_check = !this.show_add;
+    //   }
+    //   else{
+    //     this.show_add = this.show_add;
+    //   }
+    // },
+
+
+
+
+
     saveadd() {
       console.log(this.$refs.editTable);
+      Vue.prototype.$notifySuccess (`Скважина ${this.lonelywell[0].rus_wellname} сохранена`);
       //this.$refs.saveTable
       let output = {}
       console.log(this.$refs.editTable[0].children);
@@ -7319,23 +7570,35 @@ export default {
           "http://172.20.103.187:7576/api/techregime/new_wells/add_well/", 
           output).then((res) => {
             console.log(res.data)
+            this.wellAdd();
+            this.reRenderAll();
+            this.show_add=false;
+            this.checkers=false;
+            
           })
-
     },
     // Удаление с модалки
     deleteWell() {
+      Vue.prototype.$notifyError (`Скважина ${this.lonelywell[0].rus_wellname} удалена`);
+      this.$store.commit("globalloading/SET_LOADING", true);
       if(this.lonelywell.length === 1 && this.lonelywell[0].is_saved === "Сохранено"){
         this.axios
           .get(
             "http://172.20.103.187:7576/api/techregime/new_wells/delete_well/" + 
             this.lonelywell[0].well).then((res) => {
               console.log(res.data)
+              this.wellAdd();
+              this.reRenderAll();
+              this.show_add=false;
+              this.checkersec=false;
+              
             })
       }
       else{
         return console.log("error")
       }
     },
+
     searchWell() {
       console.log("search = ", this.searchString);
       this.$store.commit("tr/SET_SORTPARAM", "");
@@ -7645,5 +7908,24 @@ table::-webkit-scrollbar-corner {
 .dropdown-menu.show {
   display: flex;
   flex-direction: column;
+}
+
+.header_mod {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 15px;
+}
+.select_mod.select_mod.select_mod.select_mod {
+     background: #334296; 
 }
 </style>

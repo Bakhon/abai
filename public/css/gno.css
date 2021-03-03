@@ -399,6 +399,12 @@ body {
     /*background: ;*/
 }
 
+.select-gno2:hover{
+    background-color: #F4F3F3;
+    border: 1px solid transparent;
+    box-shadow: inset 0 0px 0px 1px #ccc; 
+  }
+
 .select-gno2:invalid:focus {
     background: red;
 }
@@ -1978,6 +1984,11 @@ input.checkbox-q-liquid {
     .incl-modal-table, .gno-plotly-graph {
         flex: 0 0 100% !important;
         max-width: 100% !important;
+    }
+
+    .icon-params {
+        left: 700px; 
+        bottom: 70px;
     }
 }
 

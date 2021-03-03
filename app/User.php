@@ -3,7 +3,6 @@
 namespace App;
 
 use App\Models\Refs\Org;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -40,9 +39,27 @@ class User extends Authenticatable
         'last_authorized_at' => 'datetime',
     ];
 
+
+    //relations
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class)->withDefault();
+    }
+
     public function org()
     {
         return $this->belongsTo(\App\Models\Refs\Org::class);
+    }
+
+    public function pageViewLogs()
+    {
+        return $this->hasMany(\App\Models\LogPageView::class)->orderBy('created_at', 'desc');
+    }
+
+    public function bigdataFavoriteReports()
+    {
+        return $this->belongsToMany(\App\Models\BigdataReport::class);
     }
 
     public function getOrganizations()
