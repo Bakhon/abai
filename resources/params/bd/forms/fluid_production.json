@@ -22,13 +22,17 @@
     {
       "title": "Способ эксплуатации",
       "code": "exp_type",
+      "table": "tbdi.well_expl",
+      "column": "name",
       "type": "text",
       "isEditable": false
     },
     {
       "title": "Отвод",
       "code": "lease",
-      "type": "text",
+      "table": "tbdi.well_tech",
+      "column": "tap",
+      "type": "integer",
       "isEditable": false
     },
     {
@@ -40,31 +44,37 @@
     {
       "title": "Дебит жидк. по тех.режиму, м³/сут",
       "code": "debit_fluid_tech",
-      "type": "text",
+      "table": "tbdi.tech_mode_well",
+      "column": "liquid",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Дебит нефти по тех. режиму, тн.",
       "code": "debit_oil_tech",
-      "type": "text",
+      "table": "tbdi.tech_mode_well",
+      "column": "oil",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Обводн. по тех.режиму, %",
       "code": "bsw_tech",
-      "type": "text",
+      "table": "tbdi.tech_mode_well",
+      "column": "bsw",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Добыча жидкости, м3",
       "code": "liquid_val",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Добыча нефти, тн",
       "code": "oil_val",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
@@ -72,7 +82,7 @@
       "code": "liquid_debit",
       "table": "tbdi.liquid_prod",
       "column": "liquid_val",
-      "type": "text",
+      "type": "float",
       "isEditable": true,
       "validation": "numeric|min:0"
     },
@@ -85,7 +95,7 @@
     {
       "title": "Жидк. с телеметрии, м³/сут",
       "code": "note",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
@@ -93,25 +103,25 @@
       "code": "bsw",
       "table": "tbdi.bsw_prod",
       "column": "bsw_val",
-      "type": "text",
+      "type": "float",
       "isEditable": true
     },
     {
       "title": "Дебит нефти",
       "code": "oil_debit",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Мех. примеси, %",
       "code": "contamination",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Диаметр штуцера, мм",
       "code": "contamination",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
@@ -119,7 +129,7 @@
       "code": "p_buf",
       "table": "tbdic.meas_log_cut",
       "column": "p_buf",
-      "type": "text",
+      "type": "float",
       "isEditable": true
     },
     {
@@ -127,15 +137,15 @@
       "code": "p_zatr",
       "table": "tbdic.meas_log_cut",
       "column": "p_zatr",
-      "type": "text",
+      "type": "float",
       "isEditable": true
     },
     {
       "title": "Рбуфф. до штуцера",
-      "code": "p_buf_p",
+      "code": "p_buf_b",
       "table": "tbdic.meas_log_cut",
-      "column": "p_buf_p",
-      "type": "text",
+      "column": "p_buf_b",
+      "type": "float",
       "isEditable": true
     },
     {
@@ -143,25 +153,25 @@
       "code": "p_buf_a",
       "table": "tbdic.meas_log_cut",
       "column": "p_buf_a",
-      "type": "text",
+      "type": "float",
       "isEditable": true
     },
     {
       "title": "Об./мин",
       "code": "cycle_per_minute",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Длина хода, м",
       "code": "length_stroke",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Число качаний",
       "code": "reciprotating_speed",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
@@ -173,13 +183,13 @@
     {
       "title": "Газовый фактор, м³/т",
       "code": "oilgas_ratio",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {
       "title": "Добыча газа, м³",
       "code": "gas_output",
-      "type": "text",
+      "type": "float",
       "isEditable": false
     },
     {

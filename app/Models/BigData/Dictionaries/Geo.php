@@ -3,6 +3,7 @@
 namespace App\Models\BigData\Dictionaries;
 
 use App\Models\TBDModel;
+use Illuminate\Support\Facades\Cache;
 
 class Geo extends TBDModel
 {
@@ -13,9 +14,15 @@ class Geo extends TBDModel
         return $this->belongsTo(Geo::class, 'parent_id', 'id');
     }
 
-    public function getParentIds()
+    public function children()
     {
-        $result = [];
+        return $this->hasMany(Geo::class, 'parent_id', 'id');
+    }
+
+
+    public function ancestors()
+    {
+        $result = collect();
 
         $item = $this;
 
@@ -25,10 +32,27 @@ class Geo extends TBDModel
                 break;
             }
 
-            $result[] = $parent->id;
+            $result->push($parent);
             $item = $parent;
         }
 
+        return $result;
+    }
+
+
+    public function descendants()
+    {
+        if (Cache::has('bd_geo_children_' . $this->id)) {
+            return Cache::get('bd_geo_children_' . $this->id);
+        }
+        $result = $this->children;
+        $this->children->each(
+            function ($child) use (&$result) {
+                $result->merge($child->descendants());
+                $result->merge($child->descendants());
+            }
+        );
+        Cache::put('bd_geo_children_' . $this->id, $result);
         return $result;
     }
 }

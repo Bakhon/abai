@@ -33,7 +33,7 @@
         ></b-tree-view>
       </div>
       <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
-        <div v-if="!isloading" class="table-page">
+        <div class="table-page">
           <p v-if="!geo" class="table__message">{{ trans('bd.select_dzo') }}</p>
           <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
           <div v-else class="table-wrap scrollable">
@@ -53,7 +53,7 @@
                     @dblclick="editCell(row, column)"
                 >
                   <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
-                  <template v-else-if="column.type === 'text'">
+                  <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
                     <div v-if="isCellEdited(row, column)" class="input-wrap">
                       <input v-model="row[column.code].value" class="form-control" type="text">
                       <button type="button" @click.prevent="saveCell(row, column)">OK</button>
@@ -115,6 +115,11 @@ export default {
       isloading: false
     }
   },
+  watch: {
+    date() {
+      this.updateRows()
+    }
+  },
   computed: {
     ...bdFormState([
       'formParams'
@@ -138,6 +143,8 @@ export default {
       }
     },
     updateRows() {
+
+      if (!this.date || !this.geo) return
 
       this.isloading = true
       this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/rows`), {
@@ -172,10 +179,12 @@ export default {
         date: this.date,
       }
       data[column.code] = row[column.code].value
+      this.isloading = true
 
       this.axios
           .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
           .then(({data}) => {
+            row[column.code].date = null
             this.editableCell = {
               row: null,
               cell: null
@@ -183,6 +192,9 @@ export default {
           })
           .catch(error => {
             Vue.set(this.errors, column.code, error.response.data.errors)
+          })
+          .finally(() => {
+            this.isloading = false
           })
 
     },
