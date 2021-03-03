@@ -2265,6 +2265,8 @@ export default {
       qZhExpShgn:null,
       qOilExpShgn:null,
       param_eco:null,
+      param_org:null,
+      param_fact:null,
       potMenu: false,
 
       field: "UZN",
@@ -2779,10 +2781,18 @@ export default {
     },
     async EconomCalc(){
 
+      if (this.field=='JET'){
+        this.param_org=7;
+        this.param_fact="Корр. 6 на 2021-2025";
+        this.expAnalysisData.NNO2=365;
+      }
+      else {
+        this.param_org=5;
+        this.param_fact="Корр. 5 на 2021-2025";
+      }
 
-
-      let uri2=this.localeUrl("/nnoeco?equip=1&org=5&param=")+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-      let uri3=this.localeUrl("/nnoeco?equip=2&org=5&param=")+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+      let uri2=this.localeUrl("/nnoeco?equip=1&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa="+this.param_fact)
+      let uri3=this.localeUrl("/nnoeco?equip=2&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa="+this.param_fact)
 
       this.isLoading = true;
 
