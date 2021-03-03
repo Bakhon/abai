@@ -22,29 +22,33 @@
       ></b-form-select>
     </b-form-group>
 
-    <h5>{{ trans('monitoring.pipe.coords') }}</h5>
+    <h5 class="coords-collapse" v-b-toggle.coordsVisible>{{ trans('monitoring.pipe.coords') }}
+      <i class="fas fa-chevron-down"></i>
+    </h5>
 
-    <b-row v-for="(coord, index) in pipe.coordinates" :key="index">
-      <b-col cols="12" sm="6">
-        <b-form-group :label="trans('monitoring.latitude')" :label-for="'coord-x'+index">
-          <b-form-input
-              :id="'coord-x'+index"
-              v-model="pipe.coordinates[index][1]"
-              required
-          ></b-form-input>
-        </b-form-group>
-      </b-col>
-      <b-col cols="12" sm="6">
-        <b-form-group :label="trans('monitoring.longitude')" :label-for="'coord-y'+index">
-          <b-form-input
-              :id="'coord-y'+index"
-              v-model="pipe.coordinates[index][0]"
-              required
-          ></b-form-input>
-        </b-form-group>
-      </b-col>
-      <hr class="mb-2" />
-    </b-row>
+    <b-collapse  id="coordsVisible">
+      <b-row v-for="(coord, index) in pipe.coordinates" :key="index">
+        <b-col cols="12" sm="6">
+          <b-form-group :label="trans('monitoring.latitude')" :label-for="'coord-x'+index">
+            <b-form-input
+                :id="'coord-x'+index"
+                v-model="pipe.coordinates[index][1]"
+                required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <b-col cols="12" sm="6">
+          <b-form-group :label="trans('monitoring.longitude')" :label-for="'coord-y'+index">
+            <b-form-input
+                :id="'coord-y'+index"
+                v-model="pipe.coordinates[index][0]"
+                required
+            ></b-form-input>
+          </b-form-group>
+        </b-col>
+        <hr class="mb-2" />
+      </b-row>
+    </b-collapse>
   </div>
 </template>
 
@@ -90,6 +94,24 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.coords-collapse {
+  outline: none;
+  box-shadow: none !important;
 
+  i {
+    float: right;
+    top: 3px;
+    position: relative;
+    transition: transform .15s cubic-bezier(1,-.115,.975,.855);
+  }
+
+  &.not-collapsed i {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+}
 </style>
