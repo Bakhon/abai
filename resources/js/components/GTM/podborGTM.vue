@@ -228,39 +228,46 @@ export default {
     },
     methods: {
         nodeClick (data) {
-            let node = data.node;
-            if (node.ioi_finder_model) {
-                this.treeChildrenComponent = {
-                    name: 'gtm-tree-setting',
-                    data: function () {
-                        return {
-                            treeData: {
-                                children: node.ioi_finder_model.children
-                            },
-                        }
-                    },
-                    template: '<div><div class="block-header text-center">'+ node.name + '</div><gtm-tree :treeData="treeData" @node-click="handleClick"></gtm-tree></div>',
-                    methods: {
-                        handleClick (data) {
-                            this.$emit('node-click', {node: data.node, hideIoiMenu: false});
-                        }
-                    }
-                };
-            } else if (data.hideIoiMenu){
-                this.treeChildrenComponent = null;
-            }
+            this.$_setTreeChildrenComponent(data);
             this.treeSettingComponent = {
                 name: 'gtm-tree-setting',
                 data: function () {
                     return {
                         treeData: {
-                            children: node.setting_model.children
+                            children: data.node.setting_model.children
                         },
                     }
                 },
-                template: '<div><div class="block-header text-center">'+ node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
+                template: '<div><div class="block-header text-center">'+ data.node.name + '</div><gtm-tree :treeData="treeData"></gtm-tree></div>',
             };
         },
+        $_setTreeChildrenComponent(data) {
+            let node = data.node;
+            if (node.ioi_finder_model === undefined) {
+                if (data.hideIoiMenu) {
+                    this.treeChildrenComponent = null
+                    return;
+                } else {
+                    return;
+                }
+            }
+            this.treeChildrenComponent = {
+                name: 'gtm-tree-setting',
+                data: function () {
+                    return {
+                        treeData: {
+                            children: node.ioi_finder_model.children
+                        },
+                    }
+                },
+                template: '<div><div class="block-header text-center">'+ node.name + '</div><gtm-tree :treeData="treeData" @node-click="handleClick"></gtm-tree></div>',
+                methods: {
+                    handleClick (data) {
+                        this.$emit('node-click', {node: data.node, hideIoiMenu: false});
+                    }
+                }
+            };
+        }
     },
 }
 </script>
