@@ -2440,7 +2440,7 @@ export default {
           "analysisBox7": this.analysisBox7,
           "analysisBox8": this.analysisBox8
         });
-      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
+      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
         fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
         console.log("downloaded")
