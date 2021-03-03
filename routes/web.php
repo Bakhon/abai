@@ -159,6 +159,7 @@ Route::group(
                 Route::post('/import_eco', 'VisCenter\ImportForms\DZOcalcController@import')->name('import_e');
 
                 Route::get('/import_excel', 'VisCenter\ImportForms\DZOdailyController@importExcel');
+                Route::resource('/dzodaily', 'VisCenter\ImportForms\DZOdailyCrudController');
 
                 Route::post('/import', 'VisCenter\ImportForms\DZOdailyController@import')->name('import');
 
