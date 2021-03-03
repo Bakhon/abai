@@ -194,7 +194,7 @@ class OilGasController extends CrudController
             $params['links']['export'] = route($this->modelName.'.export');
         }
 
-        return view('сomplicationMonitoring.oilGas.index', compact('params'));
+        return view('complicationMonitoring.oilGas.index', compact('params'));
     }
 
     public function list(IndexTableRequest $request)
@@ -234,7 +234,7 @@ class OilGasController extends CrudController
     public function create()
     {
         $validationParams = $this->getValidationParams('oilgas');
-        return view('сomplicationMonitoring.oilGas.create', compact('validationParams'));
+        return view('complicationMonitoring.oilGas.create', compact('validationParams'));
     }
 
     /**
@@ -272,7 +272,7 @@ class OilGasController extends CrudController
             ->with('well')
             ->first();
 
-        return view('сomplicationMonitoring.oilGas.show', compact('oilgas'));
+        return view('complicationMonitoring.oilGas.show', compact('oilgas'));
     }
 
     /**
@@ -284,7 +284,7 @@ class OilGasController extends CrudController
     public function history(OilGas $oilgas)
     {
         $oilgas->load('history');
-        return view('сomplicationMonitoring.oilGas.history', compact('oilgas'));
+        return view('complicationMonitoring.oilGas.history', compact('oilgas'));
     }
 
     /**
@@ -296,7 +296,7 @@ class OilGasController extends CrudController
     public function edit(OilGas $oilgas)
     {
         $validationParams = $this->getValidationParams('oilgas');
-        return view('сomplicationMonitoring.oilGas.edit', compact('oilgas', 'validationParams'));
+        return view('complicationMonitoring.oilGas.edit', compact('oilgas', 'validationParams'));
     }
 
     /**

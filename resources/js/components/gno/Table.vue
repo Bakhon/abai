@@ -10,9 +10,9 @@
               <div class="choosing-well-data  col-7">{{trans('pgno.mestorozhdenie')}}</div>
               <div class="choosing-well-data table-border-gno cell4-gno-second  col-5">
                 <select class="select-gno2" v-model="field">
-                  <option value="UZN">Узень</option>
-                  <option value="KMB">Карамандыбас</option>
-                  <option value="JET">Жетыбай</option>
+                  <option v-for="org in this.orgs" :value="org.short_name" :key="org.id">
+                  {{org.full_name}}
+                  </option>
                 </select>
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
@@ -338,13 +338,14 @@
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">{{trans('pgno.inclinometria')}}</div>
 
-                    <button type="button" class="modal-bign-button" @click="closeModal('modalIncl')">
-                      {{trans('pgno.zakrit')}}
+                    <button type="button" class="modal-bign-button" @click="closeInclModal()">
+                      Применить
                     </button>
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometria :hPumpSet="hPumpSet" :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <inclinometria :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <!-- @updateHpumpProp="eventChild" -->
                     </inclinometria>
                   </div>
                 </div>
@@ -1050,10 +1051,28 @@
                 <div class="modal-bign3"></div>
               </modal> 
 
+              <modal name="paramSep" :width="1150" :height="400" :adaptive="true">
+                <div class="modal-bign modal-bign-container">
+                  <div class="modal-bign-header">
+                    <div class="modal-bign-title">
+                      {{trans('pgno.analis_potenciala')}}
+                    </div>
+
+                    <button type="button" class="modal-bign-button" @click="closeModal('modalNearWells')">
+                      {{trans('pgno.zakrit')}}
+                    </button>
+
+                  </div>
+                  <div class="tablePgno no-gutter">
+                    
+                  </div>
+                </div>
+              </modal>
+
               <div class="gno-line-chart"  v-if="visibleChart">
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
-                  <!-- <button class="download-curve-button" @click="takePhoto()">Скачать фото</button>
-                  <select class="select-download-button">
+                  <!--<button class="download-curve-button" @click="takePhoto()">Скачать фото</button>-->
+                  <!-- <select class="select-download-button">
                     <option hidden value="default">Скачать</option>
                     <option>MS-Excel</option>
                     <option>Photo</option>
@@ -1075,7 +1094,7 @@
                     </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
     <a class="dropdown-item" href="#" @click="takePhoto()">Photo</a>
-    <a class="dropdown-item" href="#">MS Excel</a>
+    <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
   </div>
 </div>
                   <!-- <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg> -->
@@ -1472,16 +1491,19 @@
                               <div class="table-border-gno col-2">
                                 <label class="label-for-celevoi">Рбуф</label>
                                 <input type="text" v-model="pBuf" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" />
+                                  class="input-box-gno podbor" :disabled="expChoose != 'ФОН'"/>
                               </div>
 
                               <div class="col-2">
-                                <label class="label-for-celevoi">ØНКТ</label>
-                                  <select class="input-box-gno podbor" v-model="nkt">
-                                  <option value="38">38</option>
-                                  <option value="44">44</option>
-                                  <option value="57">57</option>
-                                  <option value="70">70</option>
+                                <label class="label-for-celevoi" >ØНКТ</label>
+                                  <select class="input-box-gno podbor" v-model="nkt" :disabled="expChoose != 'ФОН'">
+                                  <option value="50,3">60x5</option>
+                                  <option value="62">73x5,5</option>
+                                  <option value="59,3">73x7</option>
+                                  <option value="75,9">89x6,5</option>
+                                  <option value="83,6">102x6,5</option>
+                                  <option value="100,3">114x7</option>
+
                                   </select>
                               </div>
 
@@ -1490,6 +1512,7 @@
                                 <input v-model="hPumpValue" @change="postCurveData()" type="text" onfocus="this.value=''" 
                                   class="input-box-gno podbor" />
                               </div>
+
 
                             </div>
 
@@ -1522,12 +1545,12 @@
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                    <input value="raschet" v-model="es" class="checkbox34" checked="true" type="radio" name="gno20"/>
+                                    <input value="raschet" v-model="es" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
                                     Расчет
                                 </label>
                               </div>
                               <div class="col-8 table-border-gno">
-                                <input value="realSep" type="checkbox" checked="true" :disabled="es ==='raschet2'">Естественная сепарация</div>
+                                <input value="realSep" type="checkbox" checked="true" :disabled="es ==='raschet2' || expChoose === 'ФОН'">Естественная сепарация</div>
                               
 
                             
@@ -1536,10 +1559,12 @@
                             <div class="row">
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                  <input class="checkbox3" v-model="es" value="raschet2" checked="true" type="radio" name="gno20"/>
-                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" /></label>
+                                  <input class="checkbox3" v-model="es" value="raschet2" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" :disabled="expChoose === 'ФОН'"/></label>
                               </div>
-                              <div class="col-8 table-border-gno"><input value="mechSep" checked="true" v-model="esSeparation" :disabled="es ==='raschet2'" type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" :disabled="es ==='raschet2'" onfocus="this.value=''" class="input-box-gno podbor" /></div>
+                              <div class="col-8 table-border-gno"><input value="mechSep" checked="true" :disabled="es ==='raschet2' || expChoose === 'ФОН'" 
+                              type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" 
+                              :disabled="es ==='raschet2' || expChoose === 'ФОН'" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
 
@@ -1578,10 +1603,10 @@
                               </div>
                               <div class="col-4 pdo-bottom-cell">
                                 <label class="label-for-celevoi">
-                                  <input v-model="CelButton" class="checkbox3" value="pin" type="radio"
+                                  <input v-model="CelButton" class="checkbox3" value="pin" type="radio" :disabled="expChoose === 'ФОН'"
                                     name="gno11" />Pnp
                                 </label>
-                                <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin'"
+                                <input v-model="piCelValue" @change="postCurveData()" :disabled="CelButton != 'pin' || expChoose === 'ФОН'"
                                   type="text" onfocus="this.value=''" class="square3 podbor" />
                               </div>
                             </div>
@@ -1995,6 +2020,7 @@ import FullPageLoader from '../ui-kit/FullPageLoader';
 import * as htmlToImage from 'html-to-image';
 import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 import jsPDF from 'jspdf';
+const fileDownload = require("js-file-download");
 
 Vue.prototype.$eventBus = new Vue();
 
@@ -2007,6 +2033,7 @@ export default {
   components: { PerfectScrollbar, FullPageLoader },
   data: function () {
     return {
+      url: "http://172.20.103.187:7575/api/pgno/",
       isLoading: false,
       activeRightTabName: 'technological-mode',
       layout: {
@@ -2192,7 +2219,36 @@ export default {
       analysisBox5: true,
       analysisBox6: true,
       analysisBox7: true,
-
+      nk_fields: [
+        {
+          short_name: "UZN",
+          full_name: "Узень",
+          id: 0
+        },
+        {
+          short_name: "KMB",
+          full_name: "Карамандыбас",
+          id: 1
+        },
+        {
+          short_name: "JET",
+          full_name: "Жетыбай",
+          id: 2
+        }],
+      omg_fields: [
+        {
+          short_name: "UZN",
+          full_name: "Узень",
+        },
+        {
+          short_name: "KMB",
+          full_name: "Карамандыбас",
+        }],
+      mmg_fields: [
+        {
+          short_name: "JET",
+          full_name: "Жетыбай",
+        }],
       analysisBox8: true,
       shgnTubOD: null,
       menu: "MainMenu",
@@ -2227,8 +2283,10 @@ export default {
       qOilExpShgn:null,
       param_eco:null,
       potMenu: false,
+      param_org:null,
+      param_fact:null,
 
-      field: "UZN",
+      field: null,
       wellIncl: null,
       dataNNO:"2020-11-01",
       nearWells: [],
@@ -2251,6 +2309,10 @@ export default {
       es: 'raschet',
       pBuf: null,
       ao: null,
+      orgs: null,
+      nkt: null,
+      hPumpFromIncl: null,
+      buttonHpump: false,
     };
 
   },
@@ -2277,6 +2339,23 @@ export default {
     },
       
   },
+  beforeCreate: function () {
+    this.axios.get('/ru/organizations').then(({data}) => {
+      if (data.organizations.length == 0) {
+        this.organization = "НК КазМунайГаз"
+      } else {
+        this.organization = data.organizations[0]["name"]
+      }
+      if (this.organization == "АО «ОзенМунайГаз»") {
+        this.orgs = this.omg_fields
+      } else if (this.organization == "НК КазМунайГаз") {
+        this.orgs = this.nk_fields
+      } else if (this.organization == "АО «Мангистаумунайгаз»"){
+        this.orgs = this.mmg_fields
+      }
+    })
+    
+  },
   created() {
     window.addEventListener("resize", () => {
       this.windowWidth = window.innerWidth;
@@ -2290,6 +2369,7 @@ export default {
     }
   },
   computed: {
+  
     wellNum() {
       return this.$store.state.wellNum
     },
@@ -2321,12 +2401,64 @@ export default {
     ...mapState(['wells'])
   },
   methods: {
+    downloadExcel() {
+      if (this.CelButton == 'ql') {
+        this.CelValue = this.qlCelValue
+      } else if (this.CelButton == 'bhp') {
+        this.CelValue = this.bhpCelValue
+      } else if (this.CelButton == 'pin') {
+        this.CelValue = this.piCelValue
+      }
+      let jsonData = JSON.stringify(
+        {
+          "curveSelect": this.curveSelect,
+          "presValue": this.pResInput.split(' ')[0],
+          "piValue": this.piInput.split(' ')[0],
+          "qlValue": this.qLInput.split(' ')[0],
+          "bhpValue": this.bhpInput.split(' ')[0],
+          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
+          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
+          "whpValue": this.whpInput.split(' ')[0],
+          "wctValue": this.wctInput.split(' ')[0],
+          "gorValue": this.gorInput.split(' ')[0],
+          "expSelect": this.expChoose,
+          "hPumpValue": this.hPumpValue.split(' ')[0],
+          "celSelect": this.CelButton,
+          "celValue": this.CelValue.split(' ')[0],
+          "menu": "MainMenu",
+          "well_age": this.age,
+          "grp_skin": this.grp_skin,
+          "analysisBox1": this.analysisBox1,
+          "analysisBox2": this.analysisBox2,
+          "analysisBox3": this.analysisBox3,
+          "analysisBox4": this.analysisBox4,
+          "analysisBox5": this.analysisBox5,
+          "analysisBox6": this.analysisBox6,
+          "analysisBox7": this.analysisBox7,
+          "analysisBox8": this.analysisBox8
+        });
+      let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
+      this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
+        fileDownload(response.data, "ПГНО_" + this.field + "_" + this.wellNumber + ".xlsx")
+        console.log("downloaded")
+      }
+      )
+    },
     updateWellNum(event) {
       this.$store.commit('UPDATE_MESSAGE', event.target.value)
       this.$store.dispatch('loadWells')
     },
     closeModal(modalName) {
       this.$modal.hide(modalName)
+    },
+
+    closeInclModal() {
+      this.buttonHpump = this.$store.getters.getHpumpButton
+      this.$modal.hide('modalIncl')
+      this.hPumpValue = this.$store.getters.getHpump
+      console.log(this.hPumpValue, 'vuex hpump');
+      this.postCurveData();
+      
     },
     closeEconomicModal() {
       this.$modal.hide('tablePGNO')
@@ -2709,10 +2841,19 @@ export default {
     },
     async EconomCalc(){
 
+      if (this.field=='JET'){
+        this.param_org=7;
+        this.param_fact="Корр. 6 на 2021-2025";
+        this.expAnalysisData.NNO2=365;
+      }
+      else {
+        this.param_org=5;
+        this.param_fact="Корр. 5 на 2021-2025";
+      }
 
 
-      let uri2=this.localeUrl("/nnoeco?equip=1&org=5&param=")+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
-      let uri3=this.localeUrl("/nnoeco?equip=2&org=5&param=")+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa=%D0%A4%D0%B0%D0%BA%D1%82&start=2021-01-21";
+      let uri2=this.localeUrl("/nnoeco?equip=1&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa="+this.param_fact)
+      let uri3=this.localeUrl("/nnoeco?equip=2&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa="+this.param_fact)
 
       this.isLoading = true;
 
@@ -2751,7 +2892,7 @@ export default {
       }
     },
     async NnoCalc(){
-      let uri = "http://172.20.103.187:7574/api/nno/";
+      let uri = "http://172.20.103.187:7575/api/nno/";
 
       this.eco_param=null;
 
@@ -2820,8 +2961,11 @@ export default {
       this.$modal.show("modalNearWells");
     },
 
+    onParamSep() {
+      this.$modal.show("paramSep")
+    },
+
     InclMenu() {
-      
       if (this.age === true) {
         var langUrl = `${window.location.pathname}`.slice(1, 3);
         if(langUrl === 'ru') {
@@ -2834,8 +2978,14 @@ export default {
         
 
       } else {
+        this.$store.commit('UPDATE_HPUMP', this.hPumpValue)
         this.$modal.show('modalIncl')
       }
+    },
+
+    onGetHpumpSet(data) {
+      closeModal('modalIncl')
+      console.log(data);
     },
 
     getWellNumber(wellnumber) {
@@ -2845,7 +2995,7 @@ export default {
               this.ao = 'АО "ОМГ"'
             }
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + wellnumber + "/";
+      let uri = this.url + this.field + "/" + wellnumber + "/";
       this.isLoading = true;
 
       this.axios.get(uri).then((response) => {
@@ -3071,7 +3221,7 @@ export default {
 
     postCurveData() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
+      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       var langUrl = `${window.location.pathname}`.slice(1, 3);
       // api/pgno/UZN/
       // KMB
@@ -3198,7 +3348,7 @@ export default {
 
     postAnalysisOld() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7574/api/pgno/" + this.field + "/" + this.wellNumber + "/";
+      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -3260,7 +3410,7 @@ export default {
 
     postAnalysisNew() {
       this.visibleChart = true;
-      let uri = "http://172.20.103.187:7574/api/pgno/"+ this.field + "/" + this.wellNumber + "/";
+      let uri = this.url + this.field + "/" + this.wellNumber + "/";
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -3394,7 +3544,7 @@ export default {
       } else {
         if(this.expChoose == 'ШГН'){
           if(this.visibleChart) {
-            let uri = "http://172.20.103.187:7574/api/pgno/shgn";
+            let uri = "http://172.20.103.187:7575/api/pgno/shgn";
             let jsonData = JSON.stringify(
               {
                 "ql_cel": this.qlCelValue.split(' ')[0],
@@ -3522,7 +3672,7 @@ export default {
     onPrsButtonClick() {
       this.$modal.show('modal-prs')
       let krsTable = [];
-      let uriPrsKrs = "http://172.20.103.187:7574/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
+      let uriPrsKrs = "http://172.20.103.187:7575/api/nno/history/"+ this.field + "/" + this.wellNumber + "/";
       this.axios.get(uriPrsKrs).then((response) => {
         let krs = response['data']['krs']
         this.numberRepairs = response['data']['prs']['prs']

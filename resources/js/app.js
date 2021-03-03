@@ -116,11 +116,11 @@ Vue.component('well-fund-inactive', require('./components/reports/WellFundInacti
 Vue.component('well-fund-revision-field', require('./components/reports/WellFundRevisionField.vue').default);
 Vue.component('well-fund-revision', require('./components/reports/WellFundRevision.vue').default);
 Vue.component('view-table', require('./components/omgca/table.vue').default);
-Vue.component('oilgas-form', require('./components/сomplicationMonitoring/oilGas/form.vue').default);
+Vue.component('oilgas-form', require('./components/complicationMonitoring/oilGas/form.vue').default);
 Vue.component('pipe-form', require('./components/pipes/form.vue').default);
 Vue.component('inhibitor-create', require('./components/inhibitor/create.vue').default);
 Vue.component('inhibitor-edit', require('./components/inhibitor/edit.vue').default);
-Vue.component('corrosion-form', require('./components/сomplicationMonitoring/corrosion/form.vue').default);
+Vue.component('corrosion-form', require('./components/complicationMonitoring/corrosion/form.vue').default);
 Vue.component('gu-map', require('./components/map/map.vue').default);
 Vue.component('field-settings', require('./components/settings/fields.vue').default);
 
@@ -144,8 +144,6 @@ Vue.component('big-data', require('./components/bigdata/BigData.vue').default);
 Vue.component('las', require('./components/bigdata/Las.vue').default);
 Vue.component('proto-form', require('./components/bigdata/Forms.vue').default);
 Vue.component('bigdata-form-mobile', require('./components/bigdata/FormMobile.vue').default);
-Vue.component('bigdata-form', require('./components/bigdata/wells/form').default);
-Vue.component('bigdata-form-field', require('./components/bigdata/wells/field').default);
 Vue.component('search-form', require('./components/ui-kit/SearchForm.vue').default);
 Vue.component('bigdata-report-button', require('./components/bigdata/BigDataReportButton.vue').default);
 Vue.component('full-page-loader', require('./components/ui-kit/FullPageLoader.vue').default);
