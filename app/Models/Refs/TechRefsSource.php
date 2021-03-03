@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class TechRefsSource extends Model
 {
     protected $fillable = [
-        'name'
+        'name', 'user_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
 }

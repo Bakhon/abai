@@ -13,11 +13,17 @@ class CreateTechRefsSourceTable extends Migration
      */
     public function up()
     {
+
         Schema::create('tech_refs_sources', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('name');
-            $table->string('user');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('set null');
         });
     }
 

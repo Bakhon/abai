@@ -23,6 +23,7 @@ class TechRefsSourceController extends Controller
 
     public function create(): View
     {
+//        $user = auth()->user()->name;
         return view('tech_refs.source.create');
     }
 
@@ -32,9 +33,11 @@ class TechRefsSourceController extends Controller
             'name' => 'required',
         ]);
 
-        TechRefsSource::create($request->all());
+        $dataArray = $request->all();
+        $dataArray['user_id'] = auth()->user()->id;
+        TechRefsSource::create($dataArray);
 
-        return redirect()->route('tech_refs.source.index')->with('success',__('app.created'));
+        return redirect()->route('techrefssource.index')->with('success',__('app.created'));
     }
 
     /**
@@ -47,7 +50,7 @@ class TechRefsSourceController extends Controller
     {
     }
 
-    public function edit(int $id): Response
+    public function edit(int $id): View
     {
         $techRefsSource = TechRefsSource::find($id);
         return view('tech_refs.source.edit',compact('techRefsSource'));
@@ -60,9 +63,11 @@ class TechRefsSourceController extends Controller
             'name' => 'required'
         ]);
 
-        $techRefsSource->update($request->all());
+        $dataArray = $request->all();
+        $dataArray['user_id'] = auth()->user()->id;
+        $techRefsSource->update($dataArray);
 
-        return redirect()->route('tech_refs.source.index')->with('success',__('app.updated'));
+        return redirect()->route('techrefssource.index')->with('success',__('app.updated'));
     }
 
     public function destroy(int $id): RedirectResponse
@@ -70,7 +75,7 @@ class TechRefsSourceController extends Controller
         $techRefsSource = TechRefsSource::find($id);
         $techRefsSource->delete();
 
-        return redirect()->route('tech_refs.source.index')->with('success',__('app.deleted'));
+        return redirect()->route('techrefssource.index')->with('success',__('app.deleted'));
         //
     }
 

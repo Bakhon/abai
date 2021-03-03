@@ -9,14 +9,15 @@
                         <a class="btn btn-primary" href="{{ route('techrefssource.index') }}">{{__('app.back')}}</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('techrefssource.store') }}" method="POST">
+                        <form action="{{ route('techrefssource.update',$techRefsSource->id) }}" method="POST">
                             @csrf
+                            @method('PUT')
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Источник данных:</strong>
-                                        <input type="text" name="name" class="form-control"
-                                               placeholder="Пример: Ручное добавление или Автоматический импорт">
+                                        <input type="text" name="name" class="form-control" placeholder=""
+                                               value="{{$techRefsSource->name}}">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
