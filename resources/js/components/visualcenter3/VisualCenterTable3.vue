@@ -861,6 +861,9 @@
                         <div v-if="currentDzoList === 'daily'">
                           {{ trans("visualcenter.chemistryMetricTon") }}
                         </div>
+                        <div v-if="isOpecFilterActive">
+                          {{ trans("visualcenter.dzoOpec") }}
+                        </div>
                       </th>
                       <th v-if="buttonYearlyTab">
                         {{ trans("visualcenter.dzoYearlyPlan") }}
@@ -869,6 +872,9 @@
                         </div>
                         <div v-if="currentDzoList === 'daily'">
                           {{ trans("visualcenter.chemistryMetricTon") }}
+                        </div>
+                        <div v-if="isOpecFilterActive">
+                          {{ trans("visualcenter.dzoOpec") }}
                         </div>
                       </th>
                       <th>

@@ -249,4 +249,5 @@ return array (
   'productionChemicalization' => 'Химизация производства',
   'otmColumnTitle' => 'Организационно-технические мероприятия',
   'wellsNumber' => 'Кол-во скважин',
+  'day': 'День',
 );

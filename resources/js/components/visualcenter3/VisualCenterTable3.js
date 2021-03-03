@@ -10,21 +10,7 @@ Vue.component("calendar", Calendar);
 Vue.component("date-picker", DatePicker);
 import Vue from "vue";
 
-Vue.directive('click-outside', {
-    bind: function (el, binding, vnode) {
-        el.eventOnClick = function (event) {
-            let dragging = el.getAttribute('data-dragging');
-            if (!el.contains(event.target) && !dragging) {
-                vnode.context[binding.expression](event);
-            }
-        };
-        document.addEventListener('click', el.eventOnClick);
-    },
-    unbind: function (el) {
-        document.removeEventListener('click', el.eventOnClick);
-        el.removeAttribute('data-dragging');
-    },
-});
+
 
 
 export default {
@@ -174,11 +160,11 @@ export default {
             //oil and currency up
             index: "",
             widthProgress: "90",
-            DMY: "День",
+            DMY: this.trans("visualcenter.day"),
             planFieldName: "oil_plan",
             factFieldName: "oil_fact",
-            chartHeadName: "Добыча нефти",
-            metricName: "тонн",
+            chartHeadName: this.trans("visualcenter.getoil"),
+            metricName: this.trans("visualcenter.chemistryMetricTon"),
             tables: "",
             showTable2: "Yes",
             displayChart: "display: none;",
@@ -376,7 +362,7 @@ export default {
             kmgParticipationPercent: {
                 'АО "Каражанбасмунай"': 0.5,
                 'ТОО "Казгермунай"': 0.5,
-                'АО ПетроКазахстан Инк': 0.33,
+                'АО ПетроКазахстан Кумколь Ресорсиз': 0.33,
                 'ПетроКазахстан Инк.': 0.33,
                 'АО "Тургай-Петролеум"': 0.5 * 0.33,
                 "ТОО «Тенгизшевройл»": 0.2,
@@ -384,18 +370,11 @@ export default {
                 'ТОО "Казахойл Актобе"': 0.5,
                 "«Карачаганак Петролеум Оперейтинг б.в.»": 0.1,
                 "«Норт Каспиан Оперейтинг Компани н.в.»": 0.1688
-            }
+            },
+            isOpecFilterActive: false,
         };
     },
     methods: {
-        changeDzoCompaniesVisibility() {
-            this.isDzoCompaniesListSelectorOpened = !this.isDzoCompaniesListSelectorOpened;
-        },
-        defocusDzoCompanies() {
-            if (this.isDzoCompaniesListSelectorOpened) {
-                this.isDzoCompaniesListSelectorOpened = false;
-            }
-        },
 
         selectAllDzoCompanies() {
             this.selectDzoCompanies();
@@ -679,6 +658,7 @@ export default {
 
         changeAssets(type) {
             if (type === "opecRestiction") {
+                this.isOpecFilterActive = !this.isOpecFilterActive;
                 this.opec = 'ОПЕК+';
                 this.updateProductionData(
                     'oil_opek_plan',
