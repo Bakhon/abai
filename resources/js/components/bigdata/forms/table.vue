@@ -49,7 +49,7 @@
               <tr v-for="(row, rowIndex) in rows">
                 <td
                     v-for="column in formParams.columns"
-                    :class="{'editable': column.editable}"
+                    :class="{'editable': column.isEditable}"
                     @dblclick="editCell(row, column)"
                 >
                   <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
@@ -122,22 +122,22 @@ export default {
   },
   mounted() {
 
-    this.getForm(this.params.code).then(data => {
+    this.updateForm(this.params.code).then(data => {
       this.filterTree = data.filterTree
     })
 
   },
   methods: {
     ...bdFormActions([
-      'getForm'
+      'updateForm'
     ]),
     filterForm(item, isSelected) {
       if (isSelected) {
         this.geo = item.data.id
-        this.getRows()
+        this.updateRows()
       }
     },
-    getRows() {
+    updateRows() {
 
       this.isloading = true
       this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/rows`), {
@@ -159,7 +159,7 @@ export default {
       this.editableCell.column = column
     },
     isCellEdited(row, column) {
-      if (!column.editable) return false
+      if (!column.isEditable) return false
       if (this.editableCell.row !== row) return false
       if (this.editableCell.column !== column) return false
 
@@ -188,7 +188,7 @@ export default {
     },
     changePage(page = 1) {
       this.currentPage = page
-      this.getForm()
+      this.updateForm()
     },
     showError(err) {
       return err.join('<br>')
