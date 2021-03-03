@@ -46,19 +46,19 @@
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Стоимость электроэнергии:</strong>
+                                        <strong>Стоимость электроэнергии, тенге/кВт*ч:</strong>
                                         <input type="number" name="elect_cost" class="form-control" placeholder="Пример: 15">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Стоимость транспортировки и подготовки:</strong>
+                                        <strong>Стоимость транспортировки и подготовки, тенге/тонна:</strong>
                                         <input type="number" name="trans_prep_cost" class="form-control" placeholder="Пример: 2000">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
-                                        <strong>Стоимость 1 сутки бригады ПРС:</strong>
+                                        <strong>Стоимость 1 сутки бригады ПРС, тенге:</strong>
                                         <input type="number" name="prs_brigade_cost" class="form-control" placeholder="Пример: 1000000">
                                     </div>
                                 </div>

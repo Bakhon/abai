@@ -30,15 +30,15 @@
                         <td>{{$oilgas->cdng->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.gu') }}</td>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
                         <td>{{$oilgas->gu->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.zu') }}</td>
+                        <td>{{ trans('monitoring.zu.zu') }}</td>
                         <td>{{$oilgas->zu->name}}</td>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.well') }}</td>
+                        <td>{{ trans('monitoring.well.well') }}</td>
                         <td>{{$oilgas->well->name}}</td>
                     </tr>
                     <tr>

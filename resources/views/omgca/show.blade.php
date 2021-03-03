@@ -18,7 +18,7 @@
                         <th><b>{{ trans('app.param_value') }}</b></th>
                     </tr>
                     <tr>
-                        <td>{{ trans('monitoring.gu') }}</td>
+                        <td>{{ trans('monitoring.gu.gu') }}</td>
                         <td>{{$omgca->gu->name}}</td>
                     </tr>
                     <tr>

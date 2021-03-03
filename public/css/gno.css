@@ -1985,6 +1985,11 @@ input.checkbox-q-liquid {
         flex: 0 0 100% !important;
         max-width: 100% !important;
     }
+
+    .icon-params {
+        left: 700px; 
+        bottom: 70px;
+    }
 }
 
 @media (max-width: 1060px) {
