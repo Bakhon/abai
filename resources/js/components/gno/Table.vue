@@ -2259,12 +2259,12 @@ export default {
       qOilExpEcn:null,
       qZhExpShgn:null,
       qOilExpShgn:null,
+      q1ZhidM3:null,
+      q2ZhidM3:null,
       param_eco:null,
       param_org:null,
       param_fact:null,
       potMenu: false,
-      param_org:null,
-      param_fact:null,
 
       field: null,
       wellIncl: null,
@@ -2714,14 +2714,16 @@ export default {
 
       this.qZhExpEcn=this.qlCelValue.split(' ')[0]*((1-(this.wctInput.split(' ')[0]/100))*this.densOil+ this.wctInput.split(' ')[0]/100*this.densWater)
       this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
+      this.q2ZhidM3=this.qlCelValue.split(' ')[0]
 
       if (this.qlCelValue.split(' ')[0] < 106){
-        this.qZhExpShgn=this.qlCelValue.split(' ')[0]
+        this.qZhExpShgn=this.qlCelValue.split(' ')[0]*((1-(this.wctInput.split(' ')[0]/100))*this.densOil+ this.wctInput.split(' ')[0]/100*this.densWater)
         this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
-
+        this.q1ZhidM3=this.qlCelValue.split(' ')[0]
       } else {
-        this.qZhExpShgn=106
+        this.qZhExpShgn=106*((1-(this.wctInput.split(' ')[0]/100))*this.densOil+ this.wctInput.split(' ')[0]/100*this.densWater)
         this.qOilExpShgn=106*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
+        this.q1ZhidM3=106
       }
 
       this.expAnalysisData.qoilShgn=this.qOilExpShgn
@@ -2787,8 +2789,8 @@ export default {
         this.param_fact="Корр. 5 на 2021-2025";
       }
 
-      let uri2=this.localeUrl("/nnoeco?equip=1&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa="+this.param_fact)
-      let uri3=this.localeUrl("/nnoeco?equip=2&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa="+this.param_fact)
+      let uri2=this.localeUrl("/nnoeco?equip=1&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&liq="+this.q1ZhidM3+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa="+this.param_fact)
+      let uri3=this.localeUrl("/nnoeco?equip=2&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&liq="+this.q2ZhidM3+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa="+this.param_fact)
 
       this.isLoading = true;
 

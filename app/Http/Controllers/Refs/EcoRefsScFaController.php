@@ -140,7 +140,7 @@ class EcoRefsScFaController extends Controller
         $reqDay = $request->reqd;
         $reqecn = $request->reqecn;
         $param=$request->param;
-        
+        $liq=$request->liq;
         $org = $request->org;
         $equipIdRequest = $request->equip;
         $scorfa = $request->scfa;
@@ -319,8 +319,8 @@ class EcoRefsScFaController extends Controller
 
 
 
-            $ecnParam = 95.343 * pow($qZhidkosti,-0.607);
-            $shgnParam = 108.29 * pow($qZhidkosti,-0.743);
+            $ecnParam = 95.343 * pow($liq,-0.607);
+            $shgnParam = 108.29 * pow($liq,-0.743);
 
             foreach($emppersExp as $item){
                 $exportsResults[$item->route_id] = $empper * $item->emp_per;
@@ -334,10 +334,10 @@ class EcoRefsScFaController extends Controller
             foreach($equipRas as $item){
                 $electCost = EcoRefsPrepElectPrsBrigCost::where('company_id', '=', $item->company_id)->first();
                 if($item->equip_id == 1){
-                    $zatrElectResults[$item->equip_id] = $workday * $qZhidkosti * $shgnParam * $electCost->elect_cost;
+                    $zatrElectResults[$item->equip_id] = $workday * $liq * $shgnParam * $electCost->elect_cost;
                 }
                 else{
-                    $zatrElectResults[$item->equip_id] = $workday  * $qZhidkosti * $ecnParam * $electCost->elect_cost;
+                    $zatrElectResults[$item->equip_id] = $workday  * $liq * $ecnParam * $electCost->elect_cost;
                 }
             }
 
@@ -559,8 +559,8 @@ class EcoRefsScFaController extends Controller
             $godovoiChistPryb=$godovoiChistPryb+array_sum($chistayaPribyl);
             $godovoiKvl=$godovoiKvl+$buyCostResult;
             $godovoiSvobPot=$godovoiSvobPot+array_sum($svobodDenPotok);
-            $godovoiShgnParam=$godovoiShgnParam+$shgnParam*$qZhidkosti*$workday;
-            $godovoiEcnParam=$godovoiEcnParam+$ecnParam*$qZhidkosti*$workday;
+            $godovoiShgnParam=$godovoiShgnParam+$shgnParam*$liq*$workday;
+            $godovoiEcnParam=$godovoiEcnParam+$ecnParam*$liq*$workday;
 
             $nakoplSvobPotok=$nakoplSvobPotok+array_sum($svobodDenPotok);
             $discSvobPotok=$discSvobPotok+$nakoplSvobPotok;
@@ -609,8 +609,8 @@ class EcoRefsScFaController extends Controller
                 'buyCostResult' => $buyCostResult,
                 'svobodDenPotok' => $svobodDenPotok,
                 'npv'=>$npv,
-                'shgnParam'=>$shgnParam*$qZhidkosti*$workday,
-                'ecnParam'=>$ecnParam*$qZhidkosti*$workday,
+                'shgnParam'=>$shgnParam*$liq*$workday,
+                'ecnParam'=>$ecnParam*$liq*$workday,
             ];
 
             array_push($result2,$vdata2);
