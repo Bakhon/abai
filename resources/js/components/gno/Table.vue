@@ -1077,7 +1077,7 @@
                     <option>MS-Excel</option>
                     <option>Photo</option>
                   </select> -->
-                  <div class="dropdown">
+                                    <div class="dropdown">
                     <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1097,6 +1097,7 @@
     <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
   </div>
 </div>
+
                   <!-- <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg> -->
                 </div>
                 <inflow-curve>
@@ -1470,7 +1471,6 @@
                                       :checked="expChoose === 'ШГН'" type="radio" name="gno10" />ШГН</label>
                                 </div>
                               </div>
-
                               <div class="col-2  pr-0">
                                 <div>
                                   <label class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
@@ -1515,7 +1515,6 @@
 
 
                             </div>
-
                             <div class="row">
                               <div style="height: 20px; padding-left: 15px;">Общий коэффициент сепарации</div>
                             </div>
@@ -2263,10 +2262,12 @@ export default {
       qOilExpEcn:null,
       qZhExpShgn:null,
       qOilExpShgn:null,
+      q1ZhidM3:null,
+      q2ZhidM3:null,
       param_eco:null,
-      potMenu: false,
       param_org:null,
       param_fact:null,
+      potMenu: false,
 
       field: null,
       wellIncl: null,
@@ -2471,6 +2472,7 @@ export default {
       }
       )
     },
+
     updateWellNum(event) {
       this.$store.commit('UPDATE_MESSAGE', event.target.value)
       this.$store.dispatch('loadWells')
@@ -2796,16 +2798,18 @@ export default {
        }
       } 
 
-      this.qZhExpEcn=this.qlCelValue.split(' ')[0]
+      this.qZhExpEcn=this.qlCelValue.split(' ')[0]*((1-(this.wctInput.split(' ')[0]/100))*this.densOil+ this.wctInput.split(' ')[0]/100*this.densWater)
       this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
+      this.q2ZhidM3=this.qlCelValue.split(' ')[0]
 
       if (this.qlCelValue.split(' ')[0] < 106){
-        this.qZhExpShgn=this.qlCelValue.split(' ')[0]
+        this.qZhExpShgn=this.qlCelValue.split(' ')[0]*((1-(this.wctInput.split(' ')[0]/100))*this.densOil+ this.wctInput.split(' ')[0]/100*this.densWater)
         this.qOilExpShgn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
-
+        this.q1ZhidM3=this.qlCelValue.split(' ')[0]
       } else {
-        this.qZhExpShgn=106
+        this.qZhExpShgn=106*((1-(this.wctInput.split(' ')[0]/100))*this.densOil+ this.wctInput.split(' ')[0]/100*this.densWater)
         this.qOilExpShgn=106*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
+        this.q1ZhidM3=106
       }
 
       this.expAnalysisData.qoilShgn=this.qOilExpShgn
@@ -2865,16 +2869,14 @@ export default {
       if (this.field=='JET'){
         this.param_org=7;
         this.param_fact="Корр. 6 на 2021-2025";
-        this.expAnalysisData.NNO2=365;
       }
       else {
         this.param_org=5;
         this.param_fact="Корр. 5 на 2021-2025";
       }
 
-
-      let uri2=this.localeUrl("/nnoeco?equip=1&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa="+this.param_fact)
-      let uri3=this.localeUrl("/nnoeco?equip=2&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa="+this.param_fact)
+      let uri2=this.localeUrl("/nnoeco?equip=1&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpShgn+"&qzh="+this.qZhExpShgn+"&liq="+this.q1ZhidM3+"&reqd="+this.expAnalysisData.NNO1+"&reqecn="+this.expAnalysisData.prs1+"&scfa="+this.param_fact)
+      let uri3=this.localeUrl("/nnoeco?equip=2&org="+this.param_org+"&param="+this.param_eco+"&qo="+this.qOilExpEcn+"&qzh="+this.qZhExpEcn+"&liq="+this.q2ZhidM3+"&reqd="+this.expAnalysisData.NNO2+"&reqecn="+this.expAnalysisData.prs2+"&scfa="+this.param_fact)
 
       this.isLoading = true;
 
