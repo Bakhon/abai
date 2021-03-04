@@ -218,6 +218,9 @@ return array (
     'add' => 'Добавить трубовровод',
     'type' => 'Тип трубопровода',
     'params' => 'Параметры трубопровода',
+      'fields' => array(
+          'outside_diameter' => 'Внешний диаметр'
+      )
   ),
   'inhibitor' => 
   array (
