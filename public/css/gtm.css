@@ -103,6 +103,10 @@
     background: rgba(51, 102, 255, 1);
 }
 
+.gtm-dark {
+    background: #272953;
+}
+
 .gtm-menu div {
     font-size: 1.2rem;
     font-weight: 700;
@@ -121,6 +125,15 @@
 }
 
 .block-header {
+    background: rgba(69,77,125,0.32);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.8rem;
+}
+
+.block-header-light {
+    background: rgba(130, 144, 224, 0.32);
     color: white;
     font-size: 1rem;
     font-weight: 700;
@@ -128,7 +141,7 @@
 }
 
 .gtm-map-img {
-    max-height: 350px;
+    height: 280px;
 }
 
 .near-wells-table-block {
@@ -182,6 +195,55 @@
     border-color: #3C4270 !important;
 }
 
+.treeUl {
+    color: white;
+    list-style: none;
+}
+
+.list-style-none {
+    list-style: none;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.tree-setting-block {
+    left: 19.6rem;
+    z-index: 1;
+}
+
+.tree-setting-block .block-header {
+    padding: 0 1rem;
+}
+
+.gtm-setting-checkbox {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+}
+
+.gtm-setting-checkbox-div {
+    display: inline-flex;
+    align-items: center;
+    user-select: none;
+}
+
+.gtm-setting-custom-checkbox::before {
+    content: '';
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+    flex-grow: 0;
+    border: 1px solid rgba(35, 125, 235, 0.3);
+    border-radius: 0.25em;
+    margin: 0 0.2rem;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 50% 50%;
+}
+
 .h-324 {
     height: 324px;
 }
@@ -201,12 +263,14 @@
 /*mobile*/
 @media screen and (max-width : 1600px) {
     .gtm-map-img {
+        height: 280px;
         max-height: 320px;
     }
 }
 
 @media screen and (max-width : 1500px) {
     .gtm-map-img {
+        height: 260px;
         max-height: 300px;
     }
 }
@@ -218,12 +282,14 @@
     }
 
     .gtm-map-img {
+        height: 240px;
         max-height: 280px;
     }
 }
 
 @media screen and (max-width : 1300px) {
     .gtm-map-img {
+        height: 220px;
         max-height: 240px;
     }
 }
@@ -235,6 +301,7 @@
     }
 
     .gtm-map-img {
+        height: 190px;
         max-height: 210px;
     }
 }
