@@ -281,6 +281,7 @@ class EcoRefsScFaController extends Controller
                     if($reqDay>=365){
                         $prsResult[$item->company_id] = 365 / ($reqDay);
                     }else{
+                        
                         $prsResult[$item->company_id] = 365 / ($reqDay + $avgprsday->avg_prs);
                     }
                 } else {

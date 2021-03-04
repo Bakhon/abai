@@ -2712,7 +2712,7 @@ export default {
        }
       } 
 
-      this.qZhExpEcn=this.qlCelValue.split(' ')[0]
+      this.qZhExpEcn=this.qlCelValue.split(' ')[0]*((1-(this.wctInput.split(' ')[0]/100))*this.densOil+ this.wctInput.split(' ')[0]/100*this.densWater)
       this.qOilExpEcn=this.qlCelValue.split(' ')[0]*(1-(this.wctInput.split(' ')[0]/100))*this.densOil
 
       if (this.qlCelValue.split(' ')[0] < 106){
@@ -2781,7 +2781,6 @@ export default {
       if (this.field=='JET'){
         this.param_org=7;
         this.param_fact="Корр. 6 на 2021-2025";
-        this.expAnalysisData.NNO2=365;
       }
       else {
         this.param_org=5;
