@@ -8,7 +8,7 @@ class GTMController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:podborGtm view main')->only('index');
+        $this->middleware('can:paegtm view main')->only('index');
     
     }
 
