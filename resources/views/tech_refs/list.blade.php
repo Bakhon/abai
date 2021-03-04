@@ -6,13 +6,19 @@
             <div class="col-md-8">
                 <div class="list-group">
                     <a href="{{ route('techrefssource.index') }}" class="list-group-item list-group-item-action">
-                        Источник данных </a>
-                    <a href="{{url('/')}}/ru/ecorefscompaniesids" class="list-group-item list-group-item-action">
-                        Наименование компании</a>
-                    <a href="{{url('/')}}/ru/ecorefsavgprs" class="list-group-item list-group-item-action">
-                        Средняя продолжительность 1 ПРС, сут</a>
-                    <a href="{{ route('ecorefscost.index') }}" class="list-group-item list-group-item-action">
-                        Входные параметры для модуля Ibrahim </a>
+                        Источники данных </a>
+                    <a href="{{ route('techrefsbkns.index') }}" class="list-group-item list-group-item-action">
+                        БКНС</a>
+                    <a href="{{ route('techrefscompany.index') }}" class="list-group-item list-group-item-action">
+                        Компании</a>
+                    <a href="{{ route('techrefsfield.index') }}" class="list-group-item list-group-item-action">
+                        Месторождения</a>
+                    <a href="{{ route('techrefsngdu.index') }}" class="list-group-item list-group-item-action">
+                        НГДУ</a>
+                    <a href="{{ route('techrefscdng.index') }}" class="list-group-item list-group-item-action">
+                        СДНГ</a>
+                    <a href="{{ route('techrefsgu.index') }}" class="list-group-item list-group-item-action">
+                        ГУ</a>
                 </div>
             </div>
         </div>
