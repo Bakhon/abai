@@ -282,14 +282,14 @@ export default {
           this.yArr = this.data.map((r) => (r.dy * 1))
           this.zArr = this.data.map((r) => (r.md * -1))
           this.hVal = this.hPumpFromIncl.substring(0,4) * 1
-          console.log(this.xArr, 'x')
-          console.log(this.yArr, 'y')
-          console.log(this.zArr, 'z')
+          // console.log(this.xArr, 'x')
+          // console.log(this.yArr, 'y')
+          // console.log(this.zArr, 'z')
 
 
           // 
         this.indexZ = this.closestVal(this.hVal, this.zArr)
-        console.log(this.indexZ);
+        // console.log(this.indexZ);
 
 
           this.pointZ = this.zArr[this.indexZ]
@@ -375,14 +375,14 @@ export default {
         this.yArr = this.data.map((r) => (r.dy * 1))
         this.zArr = this.data.map((r) => (r.md * -1))
         this.hVal = this.hPumpFromIncl.substring(0,4) * 1
-        console.log(this.xArr, 'x')
-        console.log(this.yArr, 'y')
-        console.log(this.zArr, 'z')
+        // console.log(this.xArr, 'x')
+        // console.log(this.yArr, 'y')
+        // console.log(this.zArr, 'z')
 
 
         // 
       this.indexZ = this.closestVal(this.hVal, this.zArr)
-      console.log(this.indexZ);
+      // console.log(this.indexZ);
 
         
         this.pointZ = this.zArr[this.indexZ]
