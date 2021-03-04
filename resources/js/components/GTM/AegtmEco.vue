@@ -4,21 +4,21 @@
             <div class="col-lg-10 p-0">
                 <div class="row col-12 p-0 m-0">
                     <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="bg-dark h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2">
                                 Доходы от дополнительной добычи нефти
                             </div>
-                            <div class="bg-dark p-1 pl-2">
+                            <div class="gtm-dark p-1 pl-2">
                                 <gtm-bar-chart :chartdata="{labels: barLabels, datasets: firstBarData}" :options="barOptions" :height="360"></gtm-bar-chart>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="bg-dark h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Свободные денежные потоки (FCF) 2020г
                             </div>
-                            <div class="bg-dark p-1 pl-2">
+                            <div class="gtm-dark p-1 pl-2">
                                 <gtm-bar-chart :chartdata="{labels: barLabels, datasets: secondBarData}" :options="barOptions" :height="360"></gtm-bar-chart>
                             </div>
                         </div>
@@ -26,21 +26,21 @@
                 </div>
                 <div class="row col-12 p-0 m-0 pb-2">
                     <div class="col-6 d-none d-lg-block p-0 pl-1 gtm-map-block">
-                        <div class="bg-dark h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2">
                                 Расходы на ГТМ
                             </div>
-                            <div class="bg-dark p-1 pl-2">
+                            <div class="gtm-dark p-1 pl-2">
                                 <gtm-bar-chart :chartdata="{labels: barLabels, datasets: thirdBarData}" :options="barOptions" :height="360"></gtm-bar-chart>
                             </div>
                         </div>
                     </div>
                     <div class="col-6 d-none d-lg-block p-0 gtm-map-block">
-                        <div class="bg-dark h-100">
+                        <div class="gtm-dark h-100">
                             <div class="block-header pb-0 pl-2 pt-1">
                                 Бурение скважин за 9 месяцев  2020г
                             </div>
-                            <div class="bg-dark p-1 pl-2 mh-370">
+                            <div class="gtm-dark p-1 pl-2 mh-370">
                                 <line-chart :height="360"></line-chart>
                             </div>
                         </div>
@@ -48,11 +48,11 @@
                 </div>
             </div>
             <div class="col-lg-2 p-0 pl-2 pr-1">
-                <div class="bg-dark">
+                <div class="gtm-dark">
                     <div class="block-header text-center p-2">
                         НДО
                     </div>
-                    <div class="bg-dark table-responsive table-scroll m-0">
+                    <div class="gtm-dark table-responsive table-scroll m-0">
                         <table class="table table-striped table-borderless text-center text-white near-wells-big">
                             <tbody>
                             <tr class="near-wells-table-item" v-for="ndoItem in ndo">
@@ -75,11 +75,11 @@
                         <img src="/img/GTM/gear.svg">
                     </div>
                 </div>
-                <div class="bg-dark mt-2">
+                <div class="gtm-dark mt-2">
                     <div class="block-header text-center p-2">
                         Вид ГТМ
                     </div>
-                    <div class="bg-dark text-white pl-2">
+                    <div class="gtm-dark text-white pl-2">
                         1) Все ГТМ <br />
                         2) ВНС <br />
                         3) ГРП <br />
@@ -88,7 +88,7 @@
                         6) РИР <br />
                     </div>
                 </div>
-                <div class="bg-dark mt-2 row m-0">
+                <div class="gtm-dark mt-2 row m-0">
                     <div class="col-1 text-right mt-1 mb-1 p-0">
                         <img src="/img/GTM/lens.svg">
                     </div>
@@ -96,7 +96,7 @@
                         <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
                         <button class="search-button pl-2 pr-2">Поиск</button>
                     </div>
-                    <div class="bg-dark text-white pl-2" style="min-height: 160px;">
+                    <div class="gtm-dark text-white pl-2" style="min-height: 160px;">
                         Все скважины
                     </div>
                 </div>

@@ -103,6 +103,7 @@ Vue.component('gtm-podbor-gtm', require('./components/GTM/podborGTM.vue').defaul
 Vue.component('gtm-etu', require('./components/GTM/Etu.vue').default);
 Vue.component('gtm-main-menu', require('./components/GTM/MainMenu.vue').default);
 Vue.component('gtm-bar-chart', require('./components/GTM/BarChart.vue').default);
+Vue.component('gtm-line-chart', require('./components/GTM/LineChart.vue').default);
 Vue.component('gtm-tree', require('./components/GTM/Tree.vue').default);
 Vue.component('gtm-node-tree', require('./components/GTM/NodeTree.vue').default);
 

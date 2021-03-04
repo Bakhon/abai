@@ -1,128 +1,133 @@
 <template>
-    <div class="row mx-0 mt-lg-2">
-        <div class="row col-12 p-0 m-0">
-            <div class="gtm-dark col-12 col-md-4 col-lg-2 p-0">
-                <div class="block-header text-center">
-                    {{ trans("paegtm.nearWells") }}
+    <div>
+        <div class="row mx-0 mt-lg-2 gtm">
+            <div class="col-lg-10 p-0">
+                <div class="row col-12 p-0 m-0">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
+                        <div class="gtm-dark h-100">
+                            <div class="block-header pb-0 pl-2 pt-1">
+                                Скважины-кандидаты
+                            </div>
+                            <div class="gtm-dark p-1 pl-2">
+                                <table class="table text-center text-white podbor-middle-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="align-middle" rowspan="2">№ скв.</th>
+                                            <th class="align-middle" rowspan="2">ГТМ</th>
+                                            <th colspan="3">Прогнозные показатели</th>
+                                        </tr>
+                                        <tr>
+                                            <th>Qж</th>
+                                            <th>Qн</th>
+                                            <th>обв. %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="candidate in candidates">
+                                            <td>{{ candidate[0] }}</td>
+                                            <td>{{ candidate[1] }}</td>
+                                            <td>{{ candidate[2] }}</td>
+                                            <td>{{ candidate[3] }}</td>
+                                            <td>{{ candidate[4] }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 d-none d-lg-block p-0">
+                        <div class="gtm-dark h-100">
+                            <div class="block-header pb-0 pl-2 pt-1">
+                                Карта текущих отборов
+                            </div>
+                            <div class="gtm-dark p-3">
+                                <img src="/img/GTM/map.svg" class="gtm-map-img">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="gtm-dark table-responsive near-wells-table-block table-scroll">
-                    <table class="table table-striped table-borderless text-center text-white near-wells">
-                        <tbody>
-                        <tr>
-                            <td class="align-middle text-left pl-3">{{ trans("paegtm.nearWells") }}</td>
-                            <td class="align-middle">{{ trans("paegtm.distance") }}</td>
-                            <td class="align-middle">{{ trans("paegtm.horizons") }}</td>
-                        </tr>
-                        <tr><td colspan="3" class="text-center near-wells-big">{{ trans("paegtm.mining") }}</td></tr>
-                        <tr class="near-wells-table-item" v-for="item in nearWellsData">
-                            <td class="text-left p-2 pl-3">{{ item.name }}</td>
-                            <td>{{ item.distance }}</td>
-                            <td>{{ item.horizons }}</td>
-                        </tr>
-                        <tr><td colspan="3" class="text-center near-wells-big">{{ trans("paegtm.delivery") }}</td></tr>
-                        <tr class="near-wells-table-item" v-for="item in nearWellsData">
-                            <td class="text-left p-2 pl-3">{{ item.name }}</td>
-                            <td>{{ item.distance }}</td>
-                            <td>{{ item.horizons }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="row col-12 p-0 m-0 pb-2">
+                    <div class="col-6 d-none d-lg-block p-0 pl-1">
+                        <div class="gtm-dark h-100">
+                            <div class="block-header pb-0 pl-2 pt-1">
+                                Скважина 4931
+                            </div>
+                            <div class="gtm-dark p-1 pl-2 mh-370">
+                                <gtm-line-chart :chartdata="{labels: lineLabels, datasets: lineChartData}" :options="lineChartOptions" :height="360"></gtm-line-chart>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 d-none d-lg-block p-0">
+                        <div class="gtm-dark h-100 pb-2">
+                            <div class="block-header pb-0 pl-2">
+                                Факторный анализ по объекту разработки, тыс. тонн
+                            </div>
+                            <div class="gtm-dark p-1 pl-2">
+                                <!--                                <pie-chart :height="360"></pie-chart>-->
+                                <img src="/img/GTM/podbo_demo_graph.svg" height="370">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="d-none d-lg-block col-lg-5 p-0 pl-2 gtm-map-block">
-                <div class="gtm-dark text-center h-100">
-                    <div class="block-header">
-                        {{ trans("paegtm.maps") }}
-                    </div>
-                    <div class="gtm-dark p-3">
-                        <img src="/img/GTM/map.svg" class="gtm-map-img">
-                    </div>
+            <div class="col-lg-2 p-0 pl-2 pr-1">
+                <div class="position-absolute tree-setting-block d-flex">
+                    <keep-alive>
+                        <component v-bind:is="treeSettingComponent" class="gtm-dark mt-2 h-100"></component>
+                    </keep-alive>
+                    <keep-alive>
+                        <component v-bind:is="treeChildrenComponent" class="gtm-dark mt-2 ml-2 h-100" @node-click="nodeClick"></component>
+                    </keep-alive>
                 </div>
-            </div>
-            <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0">
-                <div class="gtm-dark h-100">
+                <div class="gtm-dark pb-3">
                     <div class="block-header text-center">
-                        {{ trans("paegtm.wellDataTable") }}
-                    </div>
-                    <div class="gtm-dark table-responsive table-scroll mh-400 mb-0">
-                        <table class="table table-striped table-borderless text-center text-white">
-                            <tbody>
-                            <tr class="near-wells-table-item" v-for="item in wellsData">
-                                <td class="text-left p-2 pl-3">{{ item.fieldName }}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row col-12 p-0 m-0 mt-2">
-            <div class="gtm-dark col-12 col-md-4 col-lg-2 p-0">
-                <div class="block-header text-center">
-                    {{ trans("paegtm.potentialSearch") }}
-                </div>
-                <div class="gtm-dark">
-                    <gtm-tree
-                        v-for="treeDataChild in treeData"
-                        :treeData="treeDataChild"
-                        :key="treeDataChild.name"
-                        @node-click="nodeClick"
-                    ></gtm-tree>
-                </div>
-            </div>
-            <div class="position-absolute tree-setting-block d-flex ">
-                <keep-alive>
-                    <component v-bind:is="treeChildrenComponent" class="gtm-dark mt-2 mr-2 h-100" @node-click="nodeClick"></component>
-                </keep-alive>
-                <keep-alive>
-                    <component v-bind:is="treeSettingComponent" class="gtm-dark mt-2 h-100"></component>
-                </keep-alive>
-            </div>
-            <div class="col-12 col-md-8 col-lg-5 p-0 pl-md-2 pt-2 pt-md-0 mt-0 h-100">
-                <div class="gtm-dark h-100">
-                    <div class="block-header text-center">
-                        {{ trans("paegtm.chartType") }}
+                        Поиск потенциала
                     </div>
                     <div class="gtm-dark">
-                        <div class="text-center text-white">
-                            {{ trans("paegtm.distributionOfOilLossesByFactors") }}
-                        </div>
-                        <apexchart type="bar" height="290" class="mt-0" :options="chartOptions" :series="series"></apexchart>
+                        <gtm-tree
+                            v-for="treeDataChild in treeData"
+                            :treeData="treeDataChild"
+                            :key="treeDataChild.name"
+                            @node-click="nodeClick"
+                        ></gtm-tree>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-lg-5 p-0 pl-lg-2 pt-2 pt-md-0 mt-0 h-100">
-                <div class="gtm-dark h-100">
-                    <div class="block-header text-center">
-                        {{ trans("paegtm.tablet") }}
+                <div class="mt-2 row m-0">
+                    <div class="col-5 calendar-filter-block d-flex align-items-center">
+                        01.08.2018
+                        <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
                     </div>
-                    <div class="gtm-dark table-responsive table-scroll h-324">
-                        <table cellspacing="0" class="table text-center text-white schemaTable">
-                            <thead class="schemaTHead">
-                            <th>{{ trans("paegtm.gtmType") }}</th>
-                            <th>{{ trans("paegtm.unit") }}</th>
-                            <th>{{ trans("paegtm.plan") }}</th>
-                            <th>{{ trans("paegtm.fact") }}</th>
-                            <th>{{ trans("paegtm.deviation") }}</th>
-                            <th>{{ trans("paegtm.participatesInTheAnalysis") }}</th>
-                            <th>{{ trans("paegtm.notProfitable") }}</th>
-                            <th>{{ trans("paegtm.unsuccessfulGtm") }}</th>
-                            <th>{{ trans("paegtm.mainKvl") }}</th>
-                            <th>{{ trans("paegtm.unsuccessfulKvl") }}</th>
-                            <th>{{ trans("paegtm.share") }}</th>
-                            </thead>
-                            <tbody>
-                            <tr class="near-wells-table-item" v-for="schemaItem in schemaData">
-                                <td v-for="item in schemaItem">{{ item }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="col-5 ml-1 calendar-filter-block d-flex align-items-center">
+                        01.08.2018
+                        <img class="calendar-icon" src="/img/GTM/calendar_icon.svg">
+                    </div>
+                    <div class="col-1 ml-1 p-1 pt-2 calendar-filter-block text-center">
+                        <img src="/img/GTM/gear.svg">
+                    </div>
+                </div>
+                <div class="gtm-dark mt-2">
+                    <div class="block-header text-center p-2">
+                        Вид ГТМ
+                    </div>
+                    <div class="gtm-dark text-white pl-2">
+                        1) Все ГТМ <br />
+                        2) ВНС <br />
+                        3) ГРП <br />
+                        4) ПВЛГ <br />
+                        5) ПВР <br />
+                        6) РИР <br />
+                    </div>
+                </div>
+                <div class="gtm-dark mt-2 row m-0">
+                    <div class="col-1 text-right mt-1 mb-1 p-0">
+                        <img src="/img/GTM/lens.svg">
+                    </div>
+                    <div class="col-11 m-0 mt-1 mb-1 row p-0">
+                        <input class="search-input w-75" type="text" placeholder="Поиск по скважине">
+                        <button class="search-button pl-2 pr-2">Поиск</button>
+                    </div>
+                    <div class="gtm-dark text-white pl-2" style="min-height: 246px;">
+                        Все скважины
                     </div>
                 </div>
             </div>
@@ -135,90 +140,85 @@ import structureMain from './structure_main.json'
 export default {
     data: function () {
         return {
-            nearWellsData: [
-                {name: 'Jet_2596', distance: '', horizons: ''},
-                {name: 'Jet_3303', distance: '', horizons: ''},
-                {name: 'Jet_2875', distance: '', horizons: ''},
-                {name: 'Jet_1300', distance: '', horizons: ''},
-                {name: 'Jet_4937', distance: '', horizons: ''},
-                {name: 'Jet_3309', distance: '', horizons: ''},
-                {name: 'Jet_0299', distance: '', horizons: ''},
-                {name: 'Jet_0239', distance: '', horizons: ''},
-                {name: 'Jet_4717', distance: '', horizons: ''},
-            ],
-            wellsData: [
-                {fieldName: 'ВНС'},
-                {fieldName: 'ВНС С ГРП'},
-                {fieldName: 'ПВЛГ'},
-                {fieldName: 'ПВР'},
-                {fieldName: 'ГРП'},
-                {fieldName: 'ВБД'},
-                {fieldName: 'ВПС'},
-                {fieldName: 'ВНС'},
-                {fieldName: 'ВНС С ГРП'},
-                {fieldName: 'ПВЛГ'},
-                {fieldName: 'ПВР'},
-                {fieldName: 'ГРП'},
-                {fieldName: 'ВБД'},
-                {fieldName: 'ВПС'},
-            ],
-            schemaData: [
-                ['', '', 1, 2 , '(3)=(2)-(1)', 4, 5, '(6)=(5)(4)', 7, 8, '(9)=(7)(8)'],
-                ['Бурение', 'скв.', 76, 56, -20, 46, '23(15 ВНС, 8 ВНС с ГРП)', 50, 11965, 5966, 50],
-                ['ГРП', 'скв.', 76, 56, -20, 46, '23(15 ВНС, 8 ВНС с ГРП)', 50, 11965, 5966, 50],
-                ['ПВЛГ', 'скв.', 76, 56, -20, 46, '23(15 ВНС, 8 ВНС с ГРП)', 50, 11965, 5966, 50],
-                ['ВПС', 'скв.', 76, 56, -20, 46, '23(15 ВНС, 8 ВНС с ГРП)', 50, 11965, 5966, 50],
-                ['ПВР', 'скв.', 76, 56, -20, 46, '23(15 ВНС, 8 ВНС с ГРП)', 50, 11965, 5966, 50],
-                ['ВБД', 'скв.', 76, 56, -20, 46, '23(15 ВНС, 8 ВНС с ГРП)', 50, 11965, 5966, 50],
-                ['Итого', 'скв.', 76, 56, -20, 46, '23(15 ВНС, 8 ВНС с ГРП)', 50, 11965, 5966, 50],
+            candidates: [
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
+                [4320, 'ГРП', 7.9, 5.53, 70],
             ],
             treeData: structureMain.finder_model.children,
-            contextMenuItems: [],
-            series: [{
-                type: 'bar',
-                stroke: {
-                    show: false
+            lineLabels: ['Янв.', 'Фев.', 'Мар.', 'Апр.', 'Май', 'Июнь', 'Июль', 'Авг.', 'Сен.', 'Окт.', 'Ноя.', 'Дек.'],
+            lineChartData: [
+                {
+                    label: 'Пласт',
+                    borderColor: "rgba(242, 126, 49, 1)",
+                    data: [1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500, 1500],
+                    fill: false,
+                    showLine: true,
+                    pointRadius: 0,
+                    pointBorderColor: "#FFFFFF",
                 },
-                data: [1980, 2000, 1890, 2390, 2145, 2036, 2250, 2145, 2036, 2250, 1980, 2000, 1890, 2390, 2145, 2036, 2250, 2145, 2036, 2250]
-            }],
-            chartOptions: {
-                labels: ['Jet_2596', 'Jet_3303', 'Jet_4937', 'Jet_3303', 'Jet_4937', 'Jet_3303', 'Jet_4937', 'Jet_3303', 'Jet_4937', 'Jet_4937',
-                    'Jet_2596', 'Jet_3303', 'Jet_4937', 'Jet_3303', 'Jet_4937', 'Jet_3303', 'Jet_4937', 'Jet_3303', 'Jet_4937', 'Jet_4937'],
-                fill: {
-                    colors: ['#855CF8'],
-                    opacity: 0.24
+                {
+                    label: 'Обводненность',
+                    borderColor: "rgba(57, 81, 206, 1)",
+                    data: [3200, 4700, 1950, 2800, 2400, 3300, 800, 1100, 3100, 4400, 1000, 2700],
+                    fill: false,
+                    showLine: true,
+                    pointRadius: 0,
+                    pointBorderColor: "#FFFFFF",
                 },
-                dataLabels: {
-                    enabled: false,
+                {
+                    label: 'Qн (По МЭР), м3/сут',
+                    borderColor: "rgba(239, 83, 80, 1)",
+                    backgroundColor: 'rgba(239, 83, 80, 0.2)',
+                    data: [500, 700, 900, 500, 1100, 1500, 1000, 560, 780, 1300, 2000, 1750],
+                    fill: true,
+                    showLine: true,
+                    pointRadius: 0,
+                    pointBorderColor: "#FFFFFF",
                 },
-                tooltip: {
-                    enabled: false,
-                },
-                yaxis: {
-                    axisTicks: {
-                        show: false,
-                    },
-                    labels: {
-                        show: false
-                    },
-                },
-                xaxis: {
+                {
+                    label: 'Qж (По МЭР), м3/сут',
+                    borderColor: "rgba(76, 175, 80, 1)",
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                    data: [2800, 4700, 2400, 1000, 2400, 200, 2800, 3400, 2450, 2000, 1000, 800],
+                    fill: true,
+                    showLine: true,
+                    pointRadius: 0,
+                    pointBorderColor: "#FFFFFF",
+                }
+            ],
+            lineChartOptions: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
                     position: 'bottom',
-                    axisBorder: {
-                        show: false
-                    },
-                    axisTicks: {
-                        show: false
-                    },
-                    labels: {
-                        rotate: -90,
-                        style: {
-                            colors: ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',
-                                'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white'],
-                            fontSize: '10px',
-                        }
-                    }
                 },
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            color: '#3C4270',
+                        },
+                        ticks: {
+                            display: false,
+                        },
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            color: '#3C4270',
+                        },
+                        ticks: {
+                            display: false,
+                        },
+                    }],
+                }
             },
             treeSettingHeader: '',
             treeSettingBody: '',

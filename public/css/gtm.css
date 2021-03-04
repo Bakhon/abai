@@ -125,10 +125,9 @@
 }
 
 .block-header {
-    background: rgba(69,77,125,0.32);
     color: white;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.8rem;
 }
 
@@ -209,8 +208,12 @@
 }
 
 .tree-setting-block {
-    left: 19.6rem;
+    right: 19.6rem;
     z-index: 1;
+}
+
+.tree-setting-block div {
+    min-width: 20rem;
 }
 
 .tree-setting-block .block-header {
@@ -258,6 +261,27 @@
 
 .mh-400 {
     max-height: 400px;
+}
+
+.podbor-middle-table {
+    border: 1px solid rgba(69,77,125,1);
+}
+
+.podbor-middle-table th {
+    border: 1px solid rgba(69,77,125,1) !important;
+    background-color: #333975;
+    font-size: 0.9rem;
+    padding: 0.3rem !important;
+}
+
+.podbor-middle-table td {
+    font-size: 0.9rem;
+    padding: 0.3rem !important;
+    border-top: none !important;
+}
+
+.podbor-middle-table td:not(last-child) {
+    border-right: 1px solid rgba(69,77,125,1);
 }
 
 /*mobile*/
