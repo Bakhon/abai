@@ -261,19 +261,93 @@ export default {
             return index
         },
    updateHpump(event) {
-     this.$store.commit('UPDATE_HPUMP', event.target.value)
-     this.hPumpFromIncl = this.$store.getters.getHpump
-     this.hVal = this.hPumpFromIncl.substring(0,4) * 1
-    //  console.log(this.chart[1]['x']);
-    //  console.log(this.chart[1]['y']);
-    //  console.log(this.chart[1]['z']);
-     this.indexZ = this.closestVal(this.hVal, this.zArr)
-     this.chart[1]['x'] = this.xArr[this.indexZ]
-     this.chart[1]['y'] = this.yArr[this.indexZ]
-     this.chart[1]['z'] = this.zArr[this.indexZ]
-   
-     console.log(this.chart[1]);
+      this.$store.commit('UPDATE_HPUMP', event.target.value)
+      this.hPumpFromIncl = this.$store.getters.getHpump
+      var wi = this.wellIncl.split('_');
+      let uri = "http://172.20.103.187:7575/api/pgno/" + wi[0] + "/" + wi[1] + "/incl";
+      this.$emit('update:isLoading', true);
+      this.hPumpFromIncl = this.$store.getters.getHpump
 
+      this.axios.get(uri).then((response) => {
+
+        var data = JSON.parse(response.data.InclData)
+
+
+        if (data.data) {
+          this.data = data.data
+          this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
+          this.dyArray = this.data.map((r) => Math.abs(r.dy * 1))
+          this.dzArray = this.data.map((r) => Math.abs(r.md * 1))
+          this.xArr = this.data.map((r) => (r.dx * 1))
+          this.yArr = this.data.map((r) => (r.dy * 1))
+          this.zArr = this.data.map((r) => (r.md * -1))
+          this.hVal = this.hPumpFromIncl.substring(0,4) * 1
+          console.log(this.xArr, 'x')
+          console.log(this.yArr, 'y')
+          console.log(this.zArr, 'z')
+
+
+          // 
+        this.indexZ = this.closestVal(this.hVal, this.zArr)
+        console.log(this.indexZ);
+
+
+          this.pointZ = this.zArr[this.indexZ]
+          this.pointX = this.xArr[this.indexZ]
+          this.pointY = this.yArr[this.indexZ]
+
+          if (Math.max(...this.dxArray) < 50 && Math.max(...this.dyArray) < 50) {
+            this.layout['scene']['xaxis']['range'][0] = 50
+            this.layout['scene']['xaxis']['range'][1] = -50
+            this.layout['scene']['yaxis']['range'][0] = 50
+            this.layout['scene']['yaxis']['range'][1] = -50
+          } else {
+            this.layout['scene']['xaxis']['range'][0] = Math.max(...this.dxArray) * 1.5
+            this.layout['scene']['xaxis']['range'][1] = Math.max(...this.dxArray) * -1.5
+            this.layout['scene']['yaxis']['range'][0] = Math.max(...this.dyArray) * 1.5
+            this.layout['scene']['yaxis']['range'][1] = Math.max(...this.dyArray) * -1.5
+          }
+
+          this.chart = [{
+            type: 'scatter3d',
+            mode: 'lines',
+            x: this.data.map((r) => r.dx),
+            y: this.data.map((r) => r.dy),
+            z: this.data.map((r) => r.md * -1),
+            text: this.data.map((r) => r.dls),
+            hovertemplate:
+              "MD = %{z:.1f} м<br>" +
+              "DLS = %{text:.1f} гр/10м<extra></extra>",
+            opacity: 1,
+            line: {
+              width: 12,
+              color: this.data.map((r) => r.dls_color),
+              colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
+              type: 'heatmap'
+            },
+
+
+          },{
+            type: 'scatter3d',
+            mode: 'markers',
+            x: [this.pointX],
+            y: [this.pointY],
+            z: [this.pointZ],
+            marker: {
+              size:10,
+              color: 'white',
+            }
+          }
+
+
+          ],
+          this.point = []
+        } else this.data = [];
+
+
+      }).finally(() => {
+        this.$emit('update:isLoading', false);
+      })
    },
    onClickHpump(){
      this.buttonHpump = true
@@ -289,10 +363,8 @@ export default {
 
     this.axios.get(uri).then((response) => {
 
-      console.log(response);
       var data = JSON.parse(response.data.InclData)
 
-      console.log(data.data)
 
       if (data.data) {
         this.data = data.data
@@ -304,25 +376,19 @@ export default {
         this.zArr = this.data.map((r) => (r.md * -1))
         this.hVal = this.hPumpFromIncl.substring(0,4) * 1
         console.log(this.xArr, 'x')
+        console.log(this.yArr, 'y')
+        console.log(this.zArr, 'z')
 
 
         // 
       this.indexZ = this.closestVal(this.hVal, this.zArr)
       console.log(this.indexZ);
-      
 
-        // 
-
-        // var indexZ = this.dzArray.indexOf(this.hPumpFromIncl.substring(0,4) * 1)
         
         this.pointZ = this.zArr[this.indexZ]
         this.pointX = this.xArr[this.indexZ]
         this.pointY = this.yArr[this.indexZ]
-        console.log(this.indexZ);
-        // console.log(dzArray, 'dzarray');
-        // console.log(this.dxArray, 'this.dxArray');
-        // console.log(dyArray, 'this.dxArray');
-        // console.log(this.dzArray, 'z');
+
         if (Math.max(...this.dxArray) < 50 && Math.max(...this.dyArray) < 50) {
           this.layout['scene']['xaxis']['range'][0] = 50
           this.layout['scene']['xaxis']['range'][1] = -50
