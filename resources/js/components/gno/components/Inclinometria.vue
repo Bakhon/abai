@@ -413,7 +413,7 @@ export default {
     margin-top: 7px;
     margin-left: 10px;
     line-height: 14px;
-    vertical-align: middle;
+    /* vertical-align: middle; */
 }
 
 .old_well_button_incl:hover {
