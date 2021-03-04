@@ -169,6 +169,8 @@ Route::group(
                 Route::get('profile', 'UserController@profile')->name('profile');
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
+
+                Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
             }
         );
         Auth::routes(
