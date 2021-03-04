@@ -133,6 +133,7 @@ Route::group(
                 Route::resource('techrefscdng', 'Refs\TechRefsCdngController');
                 Route::resource('techrefsgu', 'Refs\TechRefsGuController');
                 Route::resource('techrefsbkns', 'Refs\TechRefsBknsController');
+                Route::resource('techrefsproductiondata', 'Refs\TechRefsProductionDataController');
 
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('ecorefsexc', 'EcoRefsExcController');

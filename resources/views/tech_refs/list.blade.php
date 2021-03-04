@@ -19,6 +19,8 @@
                         СДНГ</a>
                     <a href="{{ route('techrefsgu.index') }}" class="list-group-item list-group-item-action">
                         ГУ</a>
+                    <a href="{{ route('techrefsproductiondata.index') }}" class="list-group-item list-group-item-action">
+                        Нефть / Жидкость / Отработанные дни / ПРС</a>
                 </div>
             </div>
         </div>
