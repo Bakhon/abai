@@ -131,7 +131,6 @@
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;"><b>Максимальный зенитный угол</b> в месте установки насоса 2 гр/10м в интервале глубины спуска 3 гр/10м
           </div>
-          <!-- <button type="button" class="old_well_button_incl">Применить выбранную НГЛ</button> -->
         </div>
 
 
@@ -169,11 +168,6 @@ export default {
       pointZ: null,
       pointX: null,
       pointY: null,
-      data () {
-        return {
-          
-        }
-      },
       chart: null,
       point: null,
       layout: {
@@ -190,21 +184,6 @@ export default {
         height: 350,
         gridcolor: "white",
         font: {color: "white"},
-        // xaxis: {
-        //   tickcolor: "white",
-        //   gridcolor: "white",
-        //   linewidth: 1,
-        // },
-        // yaxis: {
-        //   tickcolor: "white",
-        //   gridcolor: "white",
-        //   linewidth: 1,
-        // },
-        // zaxis: {
-        //   tickcolor: "white",
-        //   gridcolor: "white",
-        //   linewidth: 1,
-        // },
 
         scene: {
           xaxis: {
@@ -269,10 +248,7 @@ export default {
       this.hPumpFromIncl = this.$store.getters.getHpump
 
       this.axios.get(uri).then((response) => {
-
         var data = JSON.parse(response.data.InclData)
-
-
         if (data.data) {
           this.data = data.data
           this.dxArray = this.data.map((r) => Math.abs(r.dx * 1))
@@ -282,16 +258,7 @@ export default {
           this.yArr = this.data.map((r) => (r.dy * 1))
           this.zArr = this.data.map((r) => (r.md * -1))
           this.hVal = this.hPumpFromIncl.substring(0,4) * 1
-          // console.log(this.xArr, 'x')
-          // console.log(this.yArr, 'y')
-          // console.log(this.zArr, 'z')
-
-
-          // 
-        this.indexZ = this.closestVal(this.hVal, this.zArr)
-        // console.log(this.indexZ);
-
-
+          this.indexZ = this.closestVal(this.hVal, this.zArr)
           this.pointZ = this.zArr[this.indexZ]
           this.pointX = this.xArr[this.indexZ]
           this.pointY = this.yArr[this.indexZ]
@@ -307,7 +274,6 @@ export default {
             this.layout['scene']['yaxis']['range'][0] = Math.max(...this.dyArray) * 1.5
             this.layout['scene']['yaxis']['range'][1] = Math.max(...this.dyArray) * -1.5
           }
-
           this.chart = [{
             type: 'scatter3d',
             mode: 'lines',
@@ -325,8 +291,6 @@ export default {
               colorscale: [[0, 'rgb(0,0,255)'], [1, 'rgb(255,0,0)']],
               type: 'heatmap'
             },
-
-
           },{
             type: 'scatter3d',
             mode: 'markers',
@@ -338,13 +302,9 @@ export default {
               color: 'white',
             }
           }
-
-
           ],
           this.point = []
         } else this.data = [];
-
-
       }).finally(() => {
         this.$emit('update:isLoading', false);
       })
@@ -375,16 +335,9 @@ export default {
         this.yArr = this.data.map((r) => (r.dy * 1))
         this.zArr = this.data.map((r) => (r.md * -1))
         this.hVal = this.hPumpFromIncl.substring(0,4) * 1
-        // console.log(this.xArr, 'x')
-        // console.log(this.yArr, 'y')
-        // console.log(this.zArr, 'z')
 
+        this.indexZ = this.closestVal(this.hVal, this.zArr)
 
-        // 
-      this.indexZ = this.closestVal(this.hVal, this.zArr)
-      // console.log(this.indexZ);
-
-        
         this.pointZ = this.zArr[this.indexZ]
         this.pointX = this.xArr[this.indexZ]
         this.pointY = this.yArr[this.indexZ]
@@ -431,20 +384,13 @@ export default {
             color: 'white',
           }
         }
-          
-
         ],
         this.point = []
       } else this.data = [];
-
-
     }).finally(() => {
       this.$emit('update:isLoading', false);
     })
   },
-
-   
-
 }
 
 </script>
