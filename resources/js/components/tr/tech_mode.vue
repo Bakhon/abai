@@ -577,25 +577,111 @@
         </div>
 
         <div class="table-outer">
-          <div class="table-inner" style="background: black !important;">
-                            <el-table
-                                :data="tableData"
-                                style="width: 100%; background: black">
-                                <el-table-column
-                                    prop="date"
-                                    label="Date1111"
-                                    width="180">
-                                </el-table-column>
-                                <el-table-column
-                                    prop="name"
-                                    label="Name"
-                                    width="180">
-                                </el-table-column>
-                                <el-table-column
-                                    prop="address"
-                                    label="Address">
-                                </el-table-column>
-                            </el-table>
+          <div class="table-inner abat_tr">
+                  <el-table
+                    :data="tableData"
+                    style="width: 100%"
+                    
+                    :stripe="stripe">
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr1')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr2')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr3')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr4')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr5')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+
+
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr6')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr7')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr8')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr9')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+                    <el-table-column
+                      prop="date"
+                      :label="`${this.trans('tr.tr10')}`"
+                      width="100%"
+                      align="center">
+                    </el-table-column>
+
+
+
+
+
+                    <el-table-column label="Delivery Info">
+                      <el-table-column
+                        prop="name"
+                        label="Name"
+                        width="120">
+                      </el-table-column>
+                      <el-table-column label="Address Info">
+                        <el-table-column
+                          prop="state"
+                          label="State"
+                          width="120">
+                        </el-table-column>
+                        <el-table-column
+                          prop="city"
+                          label="City"
+                          width="120">
+                        </el-table-column>
+                        <el-table-column
+                          prop="address"
+                          label="Address"
+                          width="300">
+                        </el-table-column>
+                        <el-table-column
+                          prop="zip"
+                          label="Zip"
+                          width="120">
+                        </el-table-column>
+                      </el-table-column>
+                    </el-table-column>
+                  </el-table>
             <!-- <TrFullTable :wells="wells" :edit="edit" @onSort="sortBy" v-show="show_second"/> -->
             
           </div>
@@ -839,9 +925,54 @@ export default {
       checkers: false,
       checkersec: false,
       tableData: [{
-        date: '2016-05-03',
-        name: 'row_index',
-        address: ''
+          date: '2016-05-03',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036'
+        }, {
+          date: '2016-05-02',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036'
+        }, {
+          date: '2016-05-04',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036'
+        }, {
+          date: '2016-05-01',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036'
+        }, {
+          date: '2016-05-08',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036'
+        }, {
+          date: '2016-05-06',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036'
+        }, {
+          date: '2016-05-07',
+          name: 'Tom',
+          state: 'California',
+          city: 'Los Angeles',
+          address: 'No. 189, Grove St, Los Angeles',
+          zip: 'CA 90036'
         }]
         
     };
@@ -1586,5 +1717,8 @@ table::-webkit-scrollbar-corner {
 }
 .select_mod.select_mod.select_mod.select_mod {
      background: #334296; 
+}
+.abat_tr {
+  background: #334296 !important;
 }
 </style>
