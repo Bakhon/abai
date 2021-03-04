@@ -155,6 +155,7 @@ export default {
   props: ["wellNumber", "wellIncl", "isLoading"],
   data: function () {
     return {
+      data() {},
       hPumpFromIncl: null,
       buttonHpump: false,
       hVal: null,
