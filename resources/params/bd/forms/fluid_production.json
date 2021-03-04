@@ -84,7 +84,7 @@
       "column": "liquid_val",
       "type": "float",
       "isEditable": true,
-      "validation": "numeric|min:0"
+      "validation": "numeric|gt:0"
     },
     {
       "title": "Отметка",
@@ -104,7 +104,8 @@
       "table": "tbdi.bsw_prod",
       "column": "bsw_val",
       "type": "float",
-      "isEditable": true
+      "isEditable": true,
+      "validation": "numeric|gte:0|lte:100"
     },
     {
       "title": "Дебит нефти",
@@ -130,7 +131,8 @@
       "table": "tbdic.meas_log_cut",
       "column": "p_buf",
       "type": "float",
-      "isEditable": true
+      "isEditable": true,
+      "validation": "numeric|gt:0"
     },
     {
       "title": "Рзатр",
@@ -138,7 +140,8 @@
       "table": "tbdic.meas_log_cut",
       "column": "p_zatr",
       "type": "float",
-      "isEditable": true
+      "isEditable": true,
+      "validation": "numeric|gt:0"
     },
     {
       "title": "Рбуфф. до штуцера",
@@ -146,7 +149,8 @@
       "table": "tbdic.meas_log_cut",
       "column": "p_buf_b",
       "type": "float",
-      "isEditable": true
+      "isEditable": true,
+      "validation": "numeric|gt:0"
     },
     {
       "title": "Рбуфф. после штуцера",
@@ -154,7 +158,8 @@
       "table": "tbdic.meas_log_cut",
       "column": "p_buf_a",
       "type": "float",
-      "isEditable": true
+      "isEditable": true,
+      "validation": "numeric|gt:0"
     },
     {
       "title": "Об./мин",
@@ -182,9 +187,12 @@
     },
     {
       "title": "Газовый фактор, м³/т",
-      "code": "oilgas_ratio",
+      "code": "gas_factor",
+      "table": "tbdic.meas_log_cut",
+      "column": "gas_factor",
       "type": "float",
-      "isEditable": false
+      "isEditable": false,
+      "validation": "numeric|gt:0"
     },
     {
       "title": "Добыча газа, м³",
@@ -195,12 +203,16 @@
     {
       "title": "Примечание",
       "code": "note",
+      "table": "tbdic.meas_log_cut",
+      "column": "note",
       "type": "text",
       "isEditable": false
     },
     {
       "title": "Причина снижения дебита",
       "code": "prod_decline_reason",
+      "table": "tbdic.meas_log_cut",
+      "column": "prod_decline_reason",
       "type": "text",
       "isEditable": false
     },

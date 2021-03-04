@@ -34,6 +34,7 @@ class FluidProduction extends TableForm
         $geo = Geo::find($this->request->get('geo'));
 
         $wells = Well::query()
+            ->with('geo')
             ->select('id', 'uwi')
             ->orderBy('uwi')
             ->whereHas(
@@ -97,7 +98,7 @@ class FluidProduction extends TableForm
                     ]
                 ];
 
-                $measurementFields = $this->mapMeasurementFields($rowData['tbdic.meas_log_cut'], $item);
+                $measurementFields = $this->getMeasurementsByDates($rowData['tbdic.meas_log_cut'], $item);
                 $result = array_merge($result, $measurementFields);
 
                 foreach ($this->getFields() as $field) {
@@ -106,11 +107,29 @@ class FluidProduction extends TableForm
                             case 'tbdic.meas_log_cut':
                                 continue;
                             default:
-                                $result[$field['code']] = $this->mapField($field, $rowData[$field['table']], $item);
+                                $result[$field['code']] = $this->getFieldByDates(
+                                    $field,
+                                    $rowData[$field['table']],
+                                    $item
+                                );
                         }
                     } else {
                         switch ($field['code']) {
-                            case 'exp_type':
+                            case 'geo':
+
+                                $ancestors = $item->geo->first()->ancestors()
+                                    ->reverse()
+                                    ->pluck('name')
+                                    ->toArray();
+
+                                $ancestors[] = $item->geo->first()->name;
+
+                                $result[$field['code']] = [
+                                    'id' => null,
+                                    'value' => implode(' / ', $ancestors),
+                                    'date' => null
+                                ];
+                                break;
                         }
                     }
                 }
@@ -128,8 +147,12 @@ class FluidProduction extends TableForm
         return $dictionaryService->get('geos');
     }
 
-    private function mapMeasurementFields(Collection $measurements, Model $item): array
+    private function getMeasurementsByDates(Collection $measurements, Model $item): array
     {
+        if (empty($measurements->get($item->id))) {
+            return [];
+        }
+
         $result = [];
         $measurementFields = [
             'p_buf',
@@ -141,21 +164,20 @@ class FluidProduction extends TableForm
             'prod_decline_reason',
         ];
 
-        if (!empty($measurements->get($item->id))) {
-            foreach ($measurements->get($item->id) as $measurement) {
-                foreach ($measurementFields as $field) {
-                    if (isset($result[$field])) {
-                        break;
-                    }
-                    if (empty($measurement->{$field})) {
-                        continue;
-                    }
-                    $result[$field] = [
-                        'id' => $measurement->id,
-                        'value' => $measurement->{$field},
-                        'date' => !$this->isCurrentDay($measurement->dbeg) ? $measurement->dbeg : null
-                    ];
+
+        foreach ($measurements->get($item->id) as $measurement) {
+            foreach ($measurementFields as $field) {
+                if (isset($result[$field])) {
+                    break;
                 }
+                if (empty($measurement->{$field})) {
+                    continue;
+                }
+                $result[$field] = [
+                    'id' => $measurement->id,
+                    'value' => $measurement->{$field},
+                    'date' => !$this->isCurrentDay($measurement->dbeg) ? $measurement->dbeg : null
+                ];
             }
         }
 
@@ -172,28 +194,28 @@ class FluidProduction extends TableForm
         return $result;
     }
 
-    private function mapField(array $fieldParams, Collection $collection, Model $item)
+    private function getFieldByDates(array $fieldParams, Collection $collection, Model $item)
     {
-        if (!is_null($collection->get($item->id))) {
-            $row = $collection->get($item->id)->first();
-            $value = $row->{$fieldParams['column']};
-
-            switch ($fieldParams['type']) {
-                case 'float':
-                    $value = floatval($value);
-                    break;
-                case 'integer':
-                    $value = intval($value);
-                    break;
-            }
-
-            return [
-                'id' => $row->id,
-                'value' => $value,
-                'date' => !$this->isCurrentDay($row->dbeg) ? $row->dbeg : null
-            ];
+        if (is_null($collection->get($item->id))) {
+            return [];
         }
-        return [];
+        $row = $collection->get($item->id)->first();
+        $value = $row->{$fieldParams['column']};
+
+        switch ($fieldParams['type']) {
+            case 'float':
+                $value = floatval($value);
+                break;
+            case 'integer':
+                $value = intval($value);
+                break;
+        }
+
+        return [
+            'id' => $row->id,
+            'value' => $value,
+            'date' => !$this->isCurrentDay($row->dbeg) ? $row->dbeg : null
+        ];
     }
 
     private function isCurrentDay(string $date)
