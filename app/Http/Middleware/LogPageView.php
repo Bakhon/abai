@@ -31,7 +31,8 @@ class LogPageView
         if(auth()->check() && !$request->ajax()) {
             \App\Models\LogPageView::create([
                 'user_id' => auth()->id(),
-                'url' => $request->path()
+                'url' => $request->path(),
+                'ip_address' => \Request::ip()
             ]);
         }
 
