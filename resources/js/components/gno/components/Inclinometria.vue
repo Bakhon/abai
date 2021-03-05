@@ -120,7 +120,14 @@
         </div>
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
+<<<<<<< HEAD
 <b>Максимальный темп набора кривизны</b> в месте установки насоса <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/> в интервале глубины спуска <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/>          </div> 
+=======
+            <b>Максимальный темп набора кривизны</b> в месте установки насоса <input style="width: 100px;" type="text" 
+            onfocus="this.value=''" class="input-box-gno podbor"/> в интервале глубины спуска <input style="width: 100px;" 
+            type="text" onfocus="this.value=''" class="input-box-gno podbor"/>          
+            </div> 
+>>>>>>> 2649534549761293c3fa3b16524da1b51eda823f
         </div>
         <!-- <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
@@ -128,8 +135,16 @@
           </div> 
         </div> -->
         <div class="col-12" style="padding-bottom: 10px;">
+<<<<<<< HEAD
           <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;"><b>Максимальный зенитный угол</b> в месте установки насоса <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/> в интервале глубины спуска <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/>
           </div>
+=======
+          <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;">
+            <b>Максимальный зенитный угол</b> в месте установки насоса <input style="width: 100px;" 
+            type="text" onfocus="this.value=''" class="input-box-gno podbor"/> в интервале глубины спуска 
+            <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/>
+            </div>
+>>>>>>> 2649534549761293c3fa3b16524da1b51eda823f
         </div>
 
 
@@ -412,7 +427,7 @@ export default {
     margin-top: 7px;
     margin-left: 10px;
     line-height: 14px;
-    vertical-align: middle;
+    /* vertical-align: middle; */
 }
 
 .old_well_button_incl:hover {

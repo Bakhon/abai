@@ -11,7 +11,7 @@
               "code": "org",
               "type": "dict_tree",
               "title": "Оргструктура",
-              "validation": "required|exists:tbd.dict.org,id",
+              "validation": "required|exists:tbd.tbdi.org,id",
               "dict": "orgs",
               "callbacks": {
                 "filterGeoByDZO": "geo"
@@ -21,7 +21,7 @@
               "code": "geo",
               "type": "dict_tree",
               "title": "Геоструктура",
-              "validation": "required|exists:tbd.dict.geo,id",
+              "validation": "required|exists:tbd.tbdi.geo,id",
               "dict": "geos",
               "callbacks": {
                 "setWellPrefix": "name"
@@ -44,7 +44,7 @@
               "code": "category",
               "type": "dict",
               "title": "Категория скважины",
-              "validation": "required|exists:tbd.prod.well_category,id",
+              "validation": "required|exists:tbd.tbdi.well_category_type,id",
               "dict": "well_categories"
             }
           ]
@@ -91,7 +91,7 @@
               "type": "dict",
               "title": "Вид скважины",
               "dict": "well_types",
-              "validation": "required|exists:tbd.dict.well_type,id"
+              "validation": "required|exists:tbd.tbdi.well_vid,id"
             },
             {
               "code": "coord_bottom_x",
@@ -132,7 +132,7 @@
               "type": "dict",
               "title": "Подрядчик",
               "dict": "companies",
-              "validation": "nullable|exists:tbd.dict.company"
+              "validation": "nullable|exists:tbd.tbdi.lic_ur"
             },
             {
               "code": "agreement_num",

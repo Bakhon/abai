@@ -83,13 +83,13 @@ export default {
   },
   mounted() {
 
-    this.getForm(this.params.code)
+    this.updateForm(this.params.code)
 
   },
   methods: {
     ...bdFormActions([
       'getGeoDictByDZO',
-      'getForm',
+      'updateForm',
       'submitForm',
       'getWellPrefix',
       'getValidationErrors'
