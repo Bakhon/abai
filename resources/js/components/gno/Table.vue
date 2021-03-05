@@ -2317,15 +2317,7 @@ export default {
       if (newVal === 'hdyn') {
         this.curveSelect = 'hdyn';
       }
-    },
-    // sep_meth(newVal) {
-    //   if(newVal === 'calc_value'){
-    //     this.separation = null;
-    //   } else {
-    //     this.separation = 'input_value'
-    //   }
-    // },
-      
+    },      
   },
   beforeCreate: function () {
     this.axios.get('/ru/organizations').then(({data}) => {
