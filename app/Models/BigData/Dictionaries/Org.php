@@ -13,7 +13,7 @@ class Org extends TBDModel
 
     public function parentOrg()
     {
-        return $this->belongsTo(Org::class, 'parent');
+        return $this->belongsTo(Org::class, 'parent_id');
     }
 
 

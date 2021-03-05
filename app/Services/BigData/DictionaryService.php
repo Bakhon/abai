@@ -62,8 +62,8 @@ class DictionaryService
     private function getPlainDict(string $dict): array
     {
         return (self::DICTIONARIES[$dict])::query()
-            ->select('id', 'name_ru as name')
-            ->orderBy('name_ru', 'asc')
+            ->select('id', 'name')
+            ->orderBy('name', 'asc')
             ->get()
             ->toArray();
     }
@@ -71,9 +71,9 @@ class DictionaryService
     private function getTreeDict(string $dict): array
     {
         $items = (self::TREE_DICTIONARIES[$dict])::query()
-            ->select('id', 'parent as parent_id', 'name_ru as label')
-            ->orderBy('parent', 'asc')
-            ->orderBy('name_ru', 'asc')
+            ->select('id', 'parent_id', 'name as label')
+            ->orderBy('parent_id', 'asc')
+            ->orderBy('name', 'asc')
             ->get()
             ->toArray();
 
