@@ -120,8 +120,7 @@
         </div>
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
-            <b>Максимальный темп набора кривизны</b> в месте установки насоса 0.3гр/10м в интервале глубины спуска 0.5 гр/10м
-          </div> 
+<b>Максимальный темп набора кривизны</b> в месте установки насоса <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/> в интервале глубины спуска <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/>          </div> 
         </div>
         <!-- <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
@@ -129,7 +128,7 @@
           </div> 
         </div> -->
         <div class="col-12" style="padding-bottom: 10px;">
-          <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;"><b>Максимальный зенитный угол</b> в месте установки насоса 2 гр/10м в интервале глубины спуска 3 гр/10м
+          <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;"><b>Максимальный зенитный угол</b> в месте установки насоса <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/> в интервале глубины спуска <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/>
           </div>
         </div>
 
@@ -382,7 +381,7 @@ export default {
           z: [this.pointZ],
           marker: {
             size:10,
-            color: 'white',
+            color: '#AFCFEA',
           }
         }
         ],
