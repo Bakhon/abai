@@ -20,7 +20,6 @@
               </div>
               <div class="choosing-well-data table-border-gno table-border-gno-top cell4-gno-second  col-5">
                 <input v-model="wellNumber" onfocus="this.value=''" type="text"  @change="getWellNumber(wellNumber)" class="square2" />
-                <!-- <input :value="wellNum" type="text"  @change="updateWellNum" class="square2" /> -->
               </div>
               <div class="choosing-well-data table-border-gno-top  col-7">
                 {{trans('pgno.new_well')}}
@@ -345,7 +344,6 @@
 
                   <div class="Table" align="center" x:publishsource="Excel">
                     <inclinometria :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
-                    <!-- @updateHpumpProp="eventChild" -->
                     </inclinometria>
                   </div>
                 </div>
@@ -1071,12 +1069,6 @@
 
               <div class="gno-line-chart"  v-if="visibleChart">
                 <div style="position: absolute; margin-left: 175px; margin-top: 5px;">
-                  <!--<button class="download-curve-button" @click="takePhoto()">Скачать фото</button>-->
-                  <!-- <select class="select-download-button">
-                    <option hidden value="default">Скачать</option>
-                    <option>MS-Excel</option>
-                    <option>Photo</option>
-                  </select> -->
                                     <div class="dropdown">
                     <button class="download-curve-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       
@@ -1086,7 +1078,6 @@
                         <path d="M7.5957 9.61572L10.1671 11.9234L12.7386 9.61572" stroke="white" stroke-linecap="round"/>
                         </svg>
                       Скачать
-                      
                       <svg width="12" height="6" viewBox="0 0 12 6" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1.5 1L5.93356 4.94095C5.97145 4.97462 6.02855 4.97462 6.06644 4.94095L10.5 1" stroke="white" stroke-width="1.4" stroke-linecap="round"/>
 </svg>
@@ -1097,9 +1088,7 @@
     <a class="dropdown-item" href="#" @click="downloadExcel()">MS Excel</a>
   </div>
 </div>
-
-                  <!-- <svg style="fill: white;" @click="takePhoto()" height="30px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-57-document-download"><path d="M16,25.049999 L12.75,21.799999 L12,22.549999 L16.5,27.049999 L21,22.549999 L20.25,21.799999 L17,25.049999 L17,14 L16,14 L16,25.049999 L16,25.049999 Z M19.5,3 L9.00276013,3 C7.89666625,3 7,3.89833832 7,5.00732994 L7,27.9926701 C7,29.1012878 7.89092539,30 8.99742191,30 L24.0025781,30 C25.1057238,30 26,29.1017876 26,28.0092049 L26,10.5 L26,10 L20,3 L19.5,3 L19.5,3 L19.5,3 Z M19,4 L8.9955775,4 C8.44573523,4 8,4.45526288 8,4.99545703 L8,28.004543 C8,28.5543187 8.45470893,29 8.9999602,29 L24.0000398,29 C24.5523026,29 25,28.5550537 25,28.0066023 L25,11 L20.9979131,11 C19.8944962,11 19,10.1134452 19,8.99408095 L19,4 L19,4 Z M20,4.5 L20,8.99121523 C20,9.54835167 20.4506511,10 20.9967388,10 L24.6999512,10 L20,4.5 L20,4.5 Z" id="document-download"/></g></g></svg> -->
-                </div>
+            </div>
                 <inflow-curve>
                 </inflow-curve>
                 
@@ -1286,7 +1275,6 @@
                                   <div class="col-2 px-0 pt-1 ic-min-block1">
                                     <div class="table-border-gno-right py-1 ml-3">
                                       Рпл
-                                      <!-- {{trans('pgno.p_pl')}} -->
                                     </div>
                                   </div>
                                   <div class="col-5  px-1">
@@ -1612,11 +1600,6 @@
           <!-- Конец блока -->
         </div>
       </div>
-
-<!-- style="position: absolute; left: -9999px; height: 0; overflow: hidden;"
-       style="position: absolute; margin-left: 175px; margin-top: 2000px;"
- -->
-      
       <div style="position: absolute; left: -9999px; height: 0; overflow: hidden;">
         <div class="gno-line-chart-clone" ref="gno-chart" v-if="visibleChart" style="background-color: #272953;">
                 <div>
@@ -1641,11 +1624,6 @@
               <div style="left: 90px; color: white; padding-top: 10px; font-size: 20px;">ИС ABAI. Модуль Подбор ГНО.</div>
             </div>
           </div>
-        <!-- <div class="title-report col-10" style="background-color: #20274f; left: 76px;">
-          <div class="logo" style="top: 0px;"></div>
-          <h3 style="left: 90px; color: white; padding-bottom: 5px;">ИС ABAI. Модуль Подбор ГНО.</h3>
-        </div> -->
-
         <div class="first-report-block row">
           <div class="report-block-title col-5">
             Отчет по подбору ГНО
@@ -1892,8 +1870,6 @@
                   </div>
 
                   <div class="col-12">
-
-                    <!-- <h3 style="background-color: #656a8a; padding: 0; margin: 0; height: 50px; font-size: 20px; padding-top: 10px;">Компоновка ШГН</h3> -->
                     <div class="col-12"
                       style="margin-left: -15px; background-color: #656a8a; width: 513px; max-width: 1000px; font-size: 20px; color: white; height: 50px; padding-top: 10px; font-weight: bold;">
                       Компоновка ШГН
