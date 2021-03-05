@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     loadForm(form) {
-      this.activeForm = this.forms[form]
+      this.activeForm = this.forms.find(formItem => formItem.code === form)
     },
     toggleFormsList() {
       this.formsListExpanded = !this.formsListExpanded
