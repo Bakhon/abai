@@ -23,8 +23,6 @@ class DZOdailyCrudController extends Controller
      */
     public function create()
     {
-        // $type = TypeId::get();
-        // $abdkpi = AbdKpiId::get();
         return view('viscenterDailyDZO.create');
     }
 
