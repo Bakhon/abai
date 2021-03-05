@@ -1,5 +1,6 @@
 <template>
   <div class="bd-main-block">
+    <cat-loader v-show="isloading"/>
     <notifications position="top"></notifications>
     <div class="bd-main-block__header">
       <p class="bd-main-block__header-title">{{ params.title }}</p>
@@ -19,42 +20,60 @@
       >
       </datetime>
     </div>
-    <form ref="form" class="bd-main-block__form" style="width: 100%">
-      <div class="table-page">
-        <div class="table-wrap scrollable">
-          <table class="table">
-            <thead>
-            <tr>
-              <th v-for="column in columns">
-                {{ column.name }}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="(row, rowIndex) in rows.data">
-              <td
-                  v-for="column in columns"
-                  :class="{'editable': column.editable}"
-                  @dblclick="editCell(row, column)"
-              >
-                <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
-                <template v-else-if="column.type === 'text'">
-                  <div v-if="isCellEdited(row, column)" class="input-wrap">
-                    <input v-model="row[column.code].value" class="form-control" type="text">
-                    <button type="button" @click.prevent="saveCell()">OK</button>
-                  </div>
-                  <span v-else>
-                  {{ row[column.code].value }}
-                </span>
-                </template>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-        <pagination v-if="rows" :data="rows" :limit="3" @pagination-change-page="changePage"></pagination>
+    <div class="bd-main-block__body">
+      <div class="bd-main-block__tree scrollable">
+        <b-tree-view
+            v-if="filterTree.length"
+            :contextMenu="false"
+            :contextMenuItems="[]"
+            :data="filterTree"
+            :renameNodeOnDblClick="false"
+            nodeLabelProp="label"
+            v-on:nodeSelect="filterForm"
+        ></b-tree-view>
       </div>
-    </form>
+      <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
+        <div class="table-page">
+          <p v-if="!geo" class="table__message">{{ trans('bd.select_dzo') }}</p>
+          <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
+          <div v-else class="table-wrap scrollable">
+            <table v-if="rows.length" class="table">
+              <thead>
+              <tr>
+                <th v-for="column in formParams.columns">
+                  {{ column.title }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="(row, rowIndex) in rows">
+                <td
+                    v-for="column in formParams.columns"
+                    :class="{'editable': column.isEditable}"
+                    @dblclick="editCell(row, column)"
+                >
+                  <a v-if="column.type === 'link'" :href="row[column.code].href">{{ row[column.code].name }}</a>
+                  <template v-else-if="['text', 'integer', 'float'].indexOf(column.type) > -1">
+                    <div v-if="isCellEdited(row, column)" class="input-wrap">
+                      <input v-model="row[column.code].value" class="form-control" type="text">
+                      <button type="button" @click.prevent="saveCell(row, column)">OK</button>
+                      <span v-if="errors[column.code]" class="error">{{ showError(errors[column.code]) }}</span>
+                    </div>
+                    <template v-else>
+                      <span class="value">{{ row[column.code] ? row[column.code].value : '' }}</span>
+                      <span v-if="row[column.code] && row[column.code].date" class="date">
+                        {{ row[column.code].date | moment().format('YYYY-MM-DD') }}
+                      </span>
+                    </template>
+                  </template>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -62,6 +81,7 @@
 import moment from 'moment'
 import {Datetime} from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
+import {bTreeView} from 'bootstrap-vue-treeview'
 import {bdFormActions, bdFormState} from '@store/helpers'
 
 Vue.use(Datetime)
@@ -74,20 +94,30 @@ export default {
       required: true
     },
   },
+  components: {
+    bTreeView
+  },
   data() {
     return {
       errors: {},
       formValues: {},
-      form: {},
       activeTab: 0,
       date: moment().toISOString(),
+      filterTree: [],
+      geo: null,
       currentPage: 1,
       rows: [],
       columns: [],
       editableCell: {
         row: null,
         column: null
-      }
+      },
+      isloading: false
+    }
+  },
+  watch: {
+    date() {
+      this.updateRows()
     }
   },
   computed: {
@@ -97,36 +127,83 @@ export default {
   },
   mounted() {
 
-    this.getForm(this.params.code).then(data => {
-      this.rows = data.rows
-      this.columns = data.columns
+    this.updateForm(this.params.code).then(data => {
+      this.filterTree = data.filterTree
     })
 
   },
   methods: {
     ...bdFormActions([
-      'getForm'
+      'updateForm'
     ]),
+    filterForm(item, isSelected) {
+      if (isSelected) {
+        this.geo = item.data.id
+        this.updateRows()
+      }
+    },
+    updateRows() {
+
+      if (!this.date || !this.geo) return
+
+      this.isloading = true
+      this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/rows`), {
+        params: {
+          date: this.date,
+          geo: this.geo
+        }
+      })
+          .then(({data}) => {
+            this.rows = data
+          })
+          .finally(() => {
+            this.isloading = false
+          })
+
+    },
     editCell(row, column) {
       this.editableCell.row = row
       this.editableCell.column = column
     },
     isCellEdited(row, column) {
-      if (!column.editable) return false
+      if (!column.isEditable) return false
       if (this.editableCell.row !== row) return false
       if (this.editableCell.column !== column) return false
 
       return true
     },
-    saveCell() {
-      this.editableCell = {
-        row: null,
-        cell: null
+    saveCell(row, column) {
+
+      let data = {
+        well_id: row.uwi.id,
+        date: this.date,
       }
+      data[column.code] = row[column.code].value
+      this.isloading = true
+
+      this.axios
+          .patch(this.localeUrl(`/bigdata/form/${this.params.code}/save/${column.code}`), data)
+          .then(({data}) => {
+            row[column.code].date = null
+            this.editableCell = {
+              row: null,
+              cell: null
+            }
+          })
+          .catch(error => {
+            Vue.set(this.errors, column.code, error.response.data.errors)
+          })
+          .finally(() => {
+            this.isloading = false
+          })
+
     },
     changePage(page = 1) {
       this.currentPage = page
-      this.getData()
+      this.updateForm()
+    },
+    showError(err) {
+      return err.join('<br>')
     },
   },
 };
@@ -161,7 +238,41 @@ export default {
     }
   }
 
+  &__body {
+    align-items: stretch;
+    background: #363B68;
+    display: flex;
+    justify-content: space-between;
+    height: calc(100vh - 430px);
+    min-height: 500px;
+    padding: 10px;
+  }
+
+  &__tree {
+    background: #272953;
+    margin-right: 8px;
+    min-width: 310px;
+    overflow-y: auto;
+    padding: 17px 25px;
+    width: 310px;
+
+    .tree-view {
+      .tree-node-label {
+        color: #fff;
+
+        &:hover {
+          color: #fff;
+          background: none;
+        }
+      }
+    }
+  }
+
   &__form {
+    background: #272953;
+    overflow-y: auto;
+    width: 100%;
+
     &-tabs {
       &-header {
         display: flex;
@@ -304,25 +415,49 @@ export default {
   }
 
   .table-page {
-    margin: 20px 0 0;
+    height: 100%;
+    margin: 0;
     padding: 0;
 
     .table-wrap {
-      max-height: calc(100% - 150px);
       margin: 0 0 10px;
       overflow-y: auto;
     }
 
     .table {
+
+      &__message {
+        align-items: center;
+        color: #fff;
+        display: flex;
+        font-size: 16px;
+        height: 100%;
+        justify-content: center;
+        margin: 0;
+        width: 100%;
+      }
+
       td {
         height: 52px;
+
+        span.date {
+          display: block;
+          font-size: 10px;
+          font-style: italic;
+          white-space: nowrap;
+        }
+
+        span.error {
+          color: #ff6464;
+          font-size: 11px;
+        }
       }
 
       .editable {
         span {
           position: relative;
 
-          &:after {
+          &.value:after {
             background: url(/img/bd/edit.svg) no-repeat;
             content: "";
             display: inline-block;
@@ -351,6 +486,7 @@ export default {
             border-radius: 4px;
             color: #fff;
             font-size: 14px;
+            min-width: 120px;
             outline: none;
             padding: 0 34px 0 10px;
             height: 28px;

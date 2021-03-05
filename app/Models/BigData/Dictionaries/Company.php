@@ -4,5 +4,5 @@ namespace App\Models\BigData\Dictionaries;
 
 class Company extends \App\Models\TBDModel
 {
-    protected $table = 'dict.company';
+    protected $table = 'tbdi.lic_ur';
 }
