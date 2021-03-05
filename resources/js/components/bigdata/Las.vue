@@ -1,6 +1,6 @@
 <template>
   <div class="table-container">
-    <cat-loader v-show="isloading"/>
+    <cat-loader/>
     <div>file<span>&nbsp;*</span>
     </div>
     <div class="container">
@@ -50,7 +50,6 @@
 
 <script>
 
-import {formatDate} from "../reports/FormatDate";
 import download from "downloadjs";
 
 export default {
@@ -58,7 +57,6 @@ export default {
   data() {
     return {
       file: '',
-      isLoading: false,
       experimentId: null,
       experimentsId: null,
       wellId: null,
@@ -73,6 +71,11 @@ export default {
       selectedExperimentsInfo: null
     }
   },
+  mounted: function() {
+    this.$nextTick(function () {
+      this.$store.commit('globalloading/SET_LOADING', false);
+    })
+  },
   methods: {
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
@@ -81,7 +84,7 @@ export default {
       let formData = new FormData();
       formData.append('file', this.file)
 
-      this.isLoading = true;
+      this.$store.commit('globalloading/SET_LOADING', true);
       this.experimentsId = null;
       this.axios.post(this.baseUrl + 'upload/', formData, {
         responseType: 'json',
@@ -99,12 +102,12 @@ export default {
           this.experimentsId = response.data.experiments_id
         }
       }).catch((error) => console.log(error)
-      ).finally(() => this.isLoading = false);
+      ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
 
 
     },
     fetchExperiments() {
-      this.isLoading = true;
+      this.$store.commit('globalloading/SET_LOADING', true);
       this.experimentInfo = null;
       this.axios.get(
           this.baseUrl + 'experiment/' + this.experimentId
@@ -113,7 +116,7 @@ export default {
           this.experimentInfo = response.data;
         }
       }).catch((error) => console.log(error)
-      ).finally(() => this.isLoading = false);
+      ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
 
     },
     getOriginalLas(experimentsInfo) {
@@ -135,10 +138,10 @@ export default {
           download(response.data, experimentsInfo.filename, content)
         }
       }).catch((error) => console.log(error)
-      ).finally(() => this.isLoading = false);
+      ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
     },
     selectExperiments() {
-      this.isLoading = true;
+      this.$store.commit('globalloading/SET_LOADING', true);
       this.selectedExperimentsInfo = null;
       this.axios.get(
           this.baseUrl + 'experiments/well/' + this.wellId,
@@ -147,9 +150,9 @@ export default {
           this.selectedExperimentsInfo = response.data;
         }
       }).catch((error) => console.log(error)
-      ).finally(() => this.isLoading = false);
+      ).finally(() => this.$store.commit('globalloading/SET_LOADING', false));
     }
-  },
+  }
 }
 </script>
 
