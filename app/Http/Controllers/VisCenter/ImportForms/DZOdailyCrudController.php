@@ -72,9 +72,8 @@ class DZOdailyCrudController extends Controller
     public function update(Request $request, $id)
     {
         $dzodaily=DZOdaily::find($id);
-
         $dzodaily->update($request->all());
-
+        
         return redirect()->route('dzodaily.index')->with('success',__('app.updated'));
     }
 
