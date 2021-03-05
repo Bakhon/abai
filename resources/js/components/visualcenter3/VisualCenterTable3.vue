@@ -736,6 +736,7 @@
                                     @click="`${selectDzoCompanies()}`"
                             ></input>
                             {{trans("visualcenter.dzoAllCompany")}}
+                            <div class="dzocompanies-dropdown__divider"></div>
                           </div>
                         </li>
                         <li class="px-4">
@@ -756,6 +757,7 @@
                                     @click="`${changeAssets('isNonOperating')}`"
                             ></input>
                             {{trans("visualcenter.isNonOperating")}}
+                            <div class="dzocompanies-dropdown__divider"></div>
                           </div>
                         </li>
                         <li
@@ -1361,11 +1363,10 @@
                   <div class="w-50 pl-2 pr-1">
                     <div class="col">
                       <div
-                        class="button2"
-                        :style="`${buttonHoverNagInnerWells}`"
-                        @click="buttonInnerWellsNag()"
+                              :class="wellStockIdleButtons.isInjectionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
+                              @click="calculateInjectionWellsData()"
                       >
-                        <!-- В простое -->{{ trans("visualcenter.in_idle") }}
+                        {{ trans("visualcenter.in_idle") }}
                       </div>
                     </div>
                   </div>
@@ -1374,7 +1375,7 @@
               <br />
               <div class="row container-fluid">
                 <div class="vis-table px-3 col-sm-7">
-                  <table v-if="innerWells.length" class="table4 w-100 chemistry-table">
+                  <table v-if="injectionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
                       <th>{{ trans("visualcenter.idle_wells") }}</th>
@@ -1385,7 +1386,7 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(item, index) in innerWells"
+                        v-for="(item, index) in injectionWells"
                         @click="innerWellsSelectedRow = item.code"
                       >
                         <td
@@ -1560,11 +1561,10 @@
                   <div class="w-50 pl-2 pr-1">
                     <div class="col">
                       <div
-                        class="button2"
-                        :style="`${buttonHoverProdInnerWells}`"
-                        @click="buttonInnerWellsProd()"
+                              :class="wellStockIdleButtons.isProductionIdleButtonActive ? 'button2 button-tab-highlighted' : 'button2'"
+                              @click="calculateProductionWellsData()"
                       >
-                        <!-- В простое -->{{ trans("visualcenter.in_idle") }}
+                        {{ trans("visualcenter.in_idle") }}
                       </div>
                     </div>
                   </div>
@@ -1573,7 +1573,7 @@
               <br />
               <div class="row container-fluid">
                 <div class="vis-table px-3 col-sm-7">
-                  <table v-if="innerWells2.length" class="table4 w-100 chemistry-table">
+                  <table v-if="productionWells.length" class="table4 w-100 chemistry-table">
                     <thead>
                     <tr>
                       <th>{{ trans("visualcenter.prod_wells") }}</th>
@@ -1582,7 +1582,7 @@
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(item, index) in innerWells2"
+                        v-for="(item, index) in productionWells"
                         @click="innerWells2SelectedRow = item.code"
                       >
                         <td
@@ -2385,6 +2385,9 @@
 
 <script src="./VisualCenterTable3.js"></script>
 <style scoped lang="scss">
+  .dzocompanies-dropdown__divider {
+    border-bottom: 2px solid #656A8A;
+  }
   .middle-block__list-x-scroll {
     overflow-x: inherit;
   }
@@ -2769,7 +2772,7 @@
     }
   }
   .rates-block__row {
-    height: 200px;
+    height: 100%;
   }
   @media (max-width:1400px) {
     .rates-block__row {
