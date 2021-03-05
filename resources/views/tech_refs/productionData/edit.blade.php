@@ -20,6 +20,27 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
+                                        <strong>Источник:</strong>
+                                        <select class="form-control" name="source_id">
+                                            <option>Select Item</option>
+                                            @foreach ($source as $item)
+                                                @if($item->id==$techRefsProductionData->source_id)
+                                                    <option value="{{ $item->id }}" selected>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @else
+                                                    <option value="{{ $item->id }}">
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
                                         <strong>ГУ:</strong>
                                         <select class="form-control" name="gu_id">
                                             <option>Select Item</option>

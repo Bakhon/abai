@@ -23,20 +23,22 @@
                     <table class="table table-bordered">
                         <tr>
                             <th>#</th>
+                            <th>Источник:</th>
                             <th>Гу:</th>
                             <th>Скважина:</th>
                             <th>Дата:</th>
-                            <th>Добыча нефти тыс.т.:</th>
-                            <th>Добыча жидкости тыс.т.:</th>
+                            <th>Добыча нефти тыс.т:</th>
+                            <th>Добыча жидкости тыс.т:</th>
                             <th>Отработанные дни:</th>
                             <th>ПРС:</th>
-                            <th>Дата обновления/добавления:</th>
-                            <th>Автор обновления/добавления:</th>
+                            <th>Добавлено: дата / автор:</th>
+                            <th>Изменение: дата / автор:</th>
                             <th width="220px">{{__('app.action')}}</th>
                         </tr>
                         @foreach ($techRefsProductionData as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
+                                <td>{{ $item->source->name }}</td>
                                 <td>{{ $item->gu->name }}</td>
                                 <td>{{ $item->well_id }}</td>
                                 <td>{{ $item->date }}</td>
@@ -44,8 +46,8 @@
                                 <td>{{ $item->liquid }}</td>
                                 <td>{{ $item->days_worked }}</td>
                                 <td>{{ $item->prs }}</td>
-                                <td>{{ $item->updated_at }}</td>
-                                <td>{{ optional($item->user)->name  }}</td>
+                                <td>{{ $item->created_at }} / {{ optional($item->author)->name  }}</td>
+                                <td>{{ $item->updated_at }} / {{ optional($item->editor)->name  }}</td>
                                 <td>
                                     <form action="{{ route('techrefsproductiondata.destroy',$item->id) }}"
                                           method="POST">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Refs;
 use App\Http\Controllers\Controller;
 use App\Models\Refs\TechRefsProductionData;
 use App\Models\Refs\TechRefsGu;
+use App\Models\Refs\TechRefsSource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,13 +25,15 @@ class TechRefsProductionDataController extends Controller
 
     public function create(): View
     {
+        $source = TechRefsSource::get();
         $gu = TechRefsGu::get();
-        return view('tech_refs.productionData.create', compact('gu'));
+        return view('tech_refs.productionData.create', compact('source', 'gu'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+            'source_id' => 'required',
             'gu_id' => 'required',
             'well_id' => 'required',
             'date' => 'nullable|date',
@@ -41,7 +44,7 @@ class TechRefsProductionDataController extends Controller
         ]);
 
         $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
+        $dataArray['author_id'] = auth()->user()->id;
         TechRefsProductionData::create($dataArray);
 
         return redirect()->route('techrefsproductiondata.index')->with('success',__('app.created'));
@@ -61,13 +64,16 @@ class TechRefsProductionDataController extends Controller
     {
         $techRefsProductionData = TechRefsProductionData::find($id);
         $gu = TechRefsGu::get();
-        return view('tech_refs.productionData.edit',compact('techRefsProductionData', 'gu'));
+        $source = TechRefsSource::get();
+        return view('tech_refs.productionData.edit',
+            compact('source', 'techRefsProductionData', 'gu'));
     }
 
     public function update(Request $request, int $id): RedirectResponse
     {
         $techRefsProductionData=TechRefsProductionData::find($id);
         $request->validate([
+            'source_id' => 'required',
             'gu_id' => 'required',
             'well_id' => 'required',
             'date' => 'nullable|date',
@@ -78,7 +84,7 @@ class TechRefsProductionDataController extends Controller
         ]);
 
         $dataArray = $request->all();
-        $dataArray['user_id'] = auth()->user()->id;
+        $dataArray['editor_id'] = auth()->user()->id;
         $techRefsProductionData->update($dataArray);
 
         return redirect()->route('techrefsproductiondata.index')->with('success',__('app.updated'));

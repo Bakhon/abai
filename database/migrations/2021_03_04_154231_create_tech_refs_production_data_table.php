@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTechRefsOilLiquidDaysPrsTable extends Migration
+class CreateTechRefsProductionDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -21,18 +21,30 @@ class CreateTechRefsOilLiquidDaysPrsTable extends Migration
             $table->float('liquid', 6, 2)->nullable();
             $table->float('days_worked', 5, 2)->nullable();
             $table->smallInteger('prs')->nullable();
+            $table->unsignedBigInteger('source_id')->nullable();
             $table->unsignedBigInteger('gu_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
+            $table->unsignedBigInteger('editor_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('user_id')
+            $table->foreign('source_id')
                 ->references('id')
-                ->on('users')
+                ->on('tech_refs_sources')
                 ->onDelete('set null');
 
             $table->foreign('gu_id')
                 ->references('id')
                 ->on('tech_refs_gus')
+                ->onDelete('set null');
+
+            $table->foreign('author_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('set null');
+
+            $table->foreign('editor_id')
+                ->references('id')
+                ->on('users')
                 ->onDelete('set null');
         });
     }
