@@ -250,4 +250,6 @@ return array (
   'researchFond' => 'Исследование скважин',
   'othersFond' => 'Прочие',
   'exploitationFond' => 'Эксплуатационный фонд',
+  'tonWithSpace' => ' тонн',
+  'meterCubicWithSpace' => ' м³',
 );
