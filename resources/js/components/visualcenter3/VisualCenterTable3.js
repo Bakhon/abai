@@ -626,17 +626,19 @@ export default {
         },
 
         switchButtonOptions(elementOptions) {
-            let flagOptions = ['flagOn','flagOff'];
-            let buttonClassOptions = [this.mainMenuButtonHighlighted,''];
-            if (elementOptions.buttonClass !== buttonClassOptions[0]) {
-                elementOptions.buttonClass = buttonClassOptions[0];
+            let enabledFlag = 'flagOn';
+            let disabledFlag = 'flagOff'
+            let highlightedButton = this.mainMenuButtonHighlighted;
+            let normalButton = '';
+            if (elementOptions.buttonClass !== highlightedButton) {
+                elementOptions.buttonClass = highlightedButton;
             } else {
-                elementOptions.buttonClass = flagOptions[1];
+                elementOptions.buttonClass = normalButton;
             }
-            if (elementOptions.flag !== flagOptions[0]) {
-                elementOptions.flag = flagOptions[0];
+            if (elementOptions.flag !== enabledFlag) {
+                elementOptions.flag = enabledFlag;
             } else {
-                elementOptions.flag = flagOptions[1];
+                elementOptions.flag = disabledFlag;
             }
         },
 
