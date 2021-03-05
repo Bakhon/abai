@@ -2007,7 +2007,6 @@ export default {
             dash: 'dot'
           }
         }],
-        // width: 800,
         height: 360,
         showlegend: true,
         margin: {
@@ -2019,28 +2018,17 @@ export default {
         xaxis: {
           title: "",
           hoverformat: ".1f",
-          //  showline: true,
           zeroline: false,
-          // showgrid: true,
-          // mirror:true,
-          // ticklen: 4,
           gridcolor: "#123E73",
-          //tickfont: {size: 10},
         },
         yaxis: {
           title: "",
           hoverformat: ".1f",
           showlegend: true,
-          // showline: true,
           zeroline: false,
-          //showgrid: true,
-          // mirror:true,
-          // ticklen: 4,
           gridcolor: "#123E73",
-          //tickfont: {size: 10},
         },
 
-        //   scene:{ gridcolor: '#ffffff',},
         paper_bgcolor: "#2B2E5E",
         plot_bgcolor: "#2B2E5E",
         font: { color: "#fff" },
@@ -2264,7 +2252,6 @@ export default {
       numberRepairs: null,
       numberNNO: null,
       langUrl: '',
-      // separation: null,
       sep_meth: 'calc_value',
       nat_sep: true,
       mech_sep: null,
@@ -2353,7 +2340,6 @@ export default {
     wellType() {
       return this.$store.state.wellType
     },
-    // ...mapMutations([wellNum]),
     ...mapState(['wells'])
   },
   methods: {
@@ -3207,8 +3193,6 @@ export default {
           }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
-          // this.$emit('hPumpSet', this.hPumpSet)
-          //this.NnoCalc();
         }
       ).finally((response) => {
         this.isLoading = false;
@@ -3222,8 +3206,6 @@ export default {
       this.visibleChart = true;
       let uri = this.url + this.field + "/" + this.wellNumber + "/";
       var langUrl = `${window.location.pathname}`.slice(1, 3);
-      // api/pgno/UZN/
-      // KMB
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
       } else if (this.CelButton == 'bhp') {
@@ -3336,13 +3318,10 @@ export default {
         if (data) {
           this.method = "CurveSetting"
           this.newData = data["Well Data"]
-          // this.setData(data)
           this.newCurveLineData = JSON.parse(data.LineData)["data"]
           this.newPointsData = JSON.parse(data.PointsData)["data"]
           this.updateLine(this.newCurveLineData)
           this.setPoints(this.newPointsData)
-          // this.$emit('LineData', this.curveLineData)
-          // this.$emit('PointsData', this.curvePointsData)
         } else {
         }
       }).finally(() => {
