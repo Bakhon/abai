@@ -68,8 +68,7 @@ export default {
         comment: null,
         filename: null,
       },
-      // baseUrl: 'http://172.20.103.157:8083/',
-      baseUrl: 'http://127.0.0.1:8091/',
+      baseUrl: 'http://172.20.103.157:8083/',
       experimentInfo: null,
       selectedExperimentsInfo: null
     }
