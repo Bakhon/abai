@@ -65,7 +65,6 @@ class TechRefsSourceController extends Controller
         $techRefsSource->delete();
 
         return redirect()->route('techrefssource.index')->with('success',__('app.deleted'));
-        //
     }
 
 }

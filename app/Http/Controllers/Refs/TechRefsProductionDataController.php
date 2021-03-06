@@ -63,7 +63,6 @@ class TechRefsProductionDataController extends Controller
         $techRefsProductionData->delete();
 
         return redirect()->route('techrefsproductiondata.index')->with('success',__('app.deleted'));
-        //
     }
 
 }

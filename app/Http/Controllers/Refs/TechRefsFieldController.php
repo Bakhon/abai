@@ -70,7 +70,6 @@ class TechRefsFieldController extends Controller
         $techRefsField->delete();
 
         return redirect()->route('techrefsfield.index')->with('success',__('app.deleted'));
-        //
     }
 
 }

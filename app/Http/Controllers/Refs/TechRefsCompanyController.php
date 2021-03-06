@@ -69,7 +69,6 @@ class TechRefsCompanyController extends Controller
         $techRefsCompany->delete();
 
         return redirect()->route('techrefscompany.index')->with('success',__('app.deleted'));
-        //
     }
 
 }

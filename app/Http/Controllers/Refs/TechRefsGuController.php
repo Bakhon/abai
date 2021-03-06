@@ -70,7 +70,6 @@ class TechRefsGuController extends Controller
         $techRefsGu->delete();
 
         return redirect()->route('techrefsgu.index')->with('success',__('app.deleted'));
-        //
     }
 
 }

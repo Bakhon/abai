@@ -70,7 +70,6 @@ class TechRefsCdngController extends Controller
         $techRefsCdng->delete();
 
         return redirect()->route('techrefscdng.index')->with('success',__('app.deleted'));
-        //
     }
 
 }
