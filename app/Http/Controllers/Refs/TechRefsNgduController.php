@@ -70,7 +70,6 @@ class TechRefsNgduController extends Controller
         $techRefsNgdu->delete();
 
         return redirect()->route('techrefsngdu.index')->with('success',__('app.deleted'));
-        //
     }
 
 }
