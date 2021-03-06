@@ -42,16 +42,6 @@ class TechRefsCdngController extends Controller
         return redirect()->route('techrefscdng.index')->with('success',__('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show(int $id): Response
-    {
-    }
-
     public function edit(int $id): View
     {
         $techRefsCdng = TechRefsCdng::find($id);

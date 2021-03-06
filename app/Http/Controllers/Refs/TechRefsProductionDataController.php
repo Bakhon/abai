@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Refs;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Refs\TechProductionDataRequest;
 use App\Models\Refs\TechRefsProductionData;
 use App\Models\Refs\TechRefsGu;
 use App\Models\Refs\TechRefsSource;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 
 class TechRefsProductionDataController extends Controller
@@ -30,34 +29,13 @@ class TechRefsProductionDataController extends Controller
         return view('tech_refs.productionData.create', compact('source', 'gu'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(TechProductionDataRequest $request): RedirectResponse
     {
-        $request->validate([
-            'source_id' => 'required',
-            'gu_id' => 'required',
-            'well_id' => 'required',
-            'date' => 'nullable|date',
-            'oil' => 'nullable|numeric',
-            'liquid' => 'nullable|numeric',
-            'days_worked' => 'nullable|numeric',
-            'prs' => 'nullable|numeric',
-        ]);
-
         $dataArray = $request->all();
         $dataArray['author_id'] = auth()->user()->id;
         TechRefsProductionData::create($dataArray);
 
         return redirect()->route('techrefsproductiondata.index')->with('success',__('app.created'));
-    }
-
-    /**
-     * Display the specified reproductionData.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show(int $id): Response
-    {
     }
 
     public function edit(int $id): View
@@ -69,20 +47,9 @@ class TechRefsProductionDataController extends Controller
             compact('source', 'techRefsProductionData', 'gu'));
     }
 
-    public function update(Request $request, int $id): RedirectResponse
+    public function update(TechProductionDataRequest $request, int $id): RedirectResponse
     {
         $techRefsProductionData=TechRefsProductionData::find($id);
-        $request->validate([
-            'source_id' => 'required',
-            'gu_id' => 'required',
-            'well_id' => 'required',
-            'date' => 'nullable|date',
-            'oil' => 'nullable|numeric',
-            'liquid' => 'nullable|numeric',
-            'days_worked' => 'nullable|numeric',
-            'prs' => 'nullable|numeric',
-        ]);
-
         $dataArray = $request->all();
         $dataArray['editor_id'] = auth()->user()->id;
         $techRefsProductionData->update($dataArray);

@@ -23,7 +23,6 @@ class TechRefsCompanyController extends Controller
 
     public function create(): View
     {
-//        $user = auth()->user()->name;
         return view('tech_refs.company.create');
     }
 
@@ -40,16 +39,6 @@ class TechRefsCompanyController extends Controller
         TechRefsCompany::create($dataArray);
 
         return redirect()->route('techrefscompany.index')->with('success',__('app.created'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show(int $id): Response
-    {
     }
 
     public function edit(int $id): View

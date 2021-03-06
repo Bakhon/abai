@@ -42,16 +42,6 @@ class TechRefsGuController extends Controller
         return redirect()->route('techrefsgu.index')->with('success',__('app.created'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show(int $id): Response
-    {
-    }
-
     public function edit(int $id): View
     {
         $techRefsGu = TechRefsGu::find($id);

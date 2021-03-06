@@ -23,7 +23,6 @@ class TechRefsBknsController extends Controller
 
     public function create(): View
     {
-//        $user = auth()->user()->name;
         return view('tech_refs.bkns.create');
     }
 
@@ -38,16 +37,6 @@ class TechRefsBknsController extends Controller
         TechRefsBkns::create($dataArray);
 
         return redirect()->route('techrefsbkns.index')->with('success',__('app.created'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show(int $id): Response
-    {
     }
 
     public function edit(int $id): View
@@ -76,7 +65,6 @@ class TechRefsBknsController extends Controller
         $techRefsBkns->delete();
 
         return redirect()->route('techrefsbkns.index')->with('success',__('app.deleted'));
-        //
     }
 
 }

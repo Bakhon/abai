@@ -23,7 +23,6 @@ class TechRefsSourceController extends Controller
 
     public function create(): View
     {
-//        $user = auth()->user()->name;
         return view('tech_refs.source.create');
     }
 
@@ -38,16 +37,6 @@ class TechRefsSourceController extends Controller
         TechRefsSource::create($dataArray);
 
         return redirect()->route('techrefssource.index')->with('success',__('app.created'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show(int $id): Response
-    {
     }
 
     public function edit(int $id): View
