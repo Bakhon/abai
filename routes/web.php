@@ -134,6 +134,8 @@ Route::group(
                 Route::resource('techrefsgu', 'Refs\TechRefsGuController');
                 Route::resource('techrefsbkns', 'Refs\TechRefsBknsController');
                 Route::resource('techrefsproductiondata', 'Refs\TechRefsProductionDataController');
+                Route::get('refs/upload_excel', 'Refs\TechRefsListController@uploadExcel')->name('tech_refs_upload');
+                Route::post('refs/import_excel', 'Refs\TechRefsListController@importExcel')->name('tech_refs_import');
 
                 Route::get('nnoeco', 'Refs\EcoRefsScFaController@nnoeco');
                 Route::resource('ecorefsexc', 'EcoRefsExcController');

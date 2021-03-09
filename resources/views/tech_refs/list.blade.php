@@ -5,6 +5,8 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="list-group">
+                    <a href="{{ route('tech_refs_upload') }}" class="list-group-item list-group-item-action">
+                        Импорт данных из Excel </a>
                     <a href="{{ route('techrefssource.index') }}" class="list-group-item list-group-item-action">
                         Источники данных </a>
                     <a href="{{ route('techrefsbkns.index') }}" class="list-group-item list-group-item-action">

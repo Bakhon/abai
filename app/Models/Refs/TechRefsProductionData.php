@@ -7,7 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class TechRefsProductionData extends Model
 {
     protected $fillable = [
-        'source_id', 'gu_id', 'well_id', 'date', 'oil', 'liquid', 'days_worked', 'prs', 'author_id', 'editor_id'
+        'source_id',
+        'gu_id',
+        'well_id',
+        'date', 'oil',
+        'liquid',
+        'days_worked',
+        'prs',
+        'author_id',
+        'editor_id'
     ];
 
     public function source()

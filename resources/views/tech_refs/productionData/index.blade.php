@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <a class="btn btn-success" href="{{ route('techrefsproductiondata.create') }}">+</a>
@@ -47,7 +47,10 @@
                                 <td>{{ $item->days_worked }}</td>
                                 <td>{{ $item->prs }}</td>
                                 <td>{{ $item->created_at }} / {{ optional($item->author)->name  }}</td>
-                                <td>{{ $item->updated_at }} / {{ optional($item->editor)->name  }}</td>
+                                <td>@if ($item->editor)
+                                    {{ $item->updated_at }} / {{ optional($item->editor)->name  }}
+                                    @endif
+                                </td>
                                 <td>
                                     <form action="{{ route('techrefsproductiondata.destroy',$item->id) }}"
                                           method="POST">
