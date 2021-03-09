@@ -757,7 +757,6 @@ export default {
         },
 
         changeAssets(type) {
-            let self = this;
             this.dzoCompaniesAssets[type] = true;
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
