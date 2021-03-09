@@ -331,19 +331,19 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :width="1150" :height="600"
+              <modal class="modal-bign-wrapper" name="modalIncl" :width="1400" :height="800"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">{{trans('pgno.inclinometria')}}</div>
 
                     <button type="button" class="modal-bign-button" @click="closeInclModal()">
-                      Применить
+                      Закрыть
                     </button>
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometria :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <inclinometria @update-hpump="onChangeButtonHpump($event)" :buttonHpump="buttonHpump" :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
                     </inclinometria>
                   </div>
                 </div>
@@ -2343,6 +2343,11 @@ export default {
     ...mapState(['wells'])
   },
   methods: {
+    onChangeButtonHpump() {
+      this.$modal.hide('modalIncl')
+      this.hPumpValue = this.$store.getters.getHpump
+      this.postCurveData();
+    },
     prepareData() {
       this.postdata = JSON.stringify(
         {
@@ -2440,8 +2445,7 @@ export default {
       this.$modal.hide('modalIncl')
       this.hPumpValue = this.$store.getters.getHpump
       console.log(this.hPumpValue, 'vuex hpump');
-      this.postCurveData();
-      
+      this.postCurveData();      
     },
     closeEconomicModal() {
       this.$modal.hide('tablePGNO')
