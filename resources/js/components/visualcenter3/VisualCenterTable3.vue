@@ -285,20 +285,16 @@
             <div class="row px-4 mt-3 middle-block__list-x-scroll">
               <div class="col-12 col-lg dropdown dropdown4 font-weight">
                 <div :class="[`${oilProductionButton}`, 'button1']">
-                  <div
-                    class="button1-vc-inner"
-                    @click="
-                      updateProductionData(
-                        'oil_plan',
-                        'oil_fact',
-                        `${oilChartHeadName}`,
-                        ' тонн',
-                        trans('visualcenter.getoil')
-                      )
-                    "
-                  >
+                  <div class="button1-vc-inner">
                     <div class="icon-all icons1"></div>
-                    <div class="txt5">
+                    <div
+                            class="txt5"
+                            @click="switchCategory(
+                                    'oil_plan',
+                                    'oil_fact',
+                                    trans('visualcenter.tonWithSpace'),
+                                    trans('visualcenter.getoil'))"
+                    >
                       <!-- Добыча нефти -->{{ trans("visualcenter.getoil") }}
                     </div>
                   </div>
@@ -311,38 +307,39 @@
                     <ul
                       class="dropdown-menu-vc dropdown-menu dropdown-menu-right"
                     >
-                      <li class="center-li row px-4" @click="switchMainMenu('oilProductionButton','kmgParticipation')">
+                      <li
+                              class="center-li row px-4"
+                              @click="switchCategory(
+                                      'oil_plan',
+                          'oil_fact',
+                                      trans('visualcenter.tonWithSpace'),
+                                      trans('visualcenter.getoil'),
+                                      'oilProductionButton',
+                                      'kmgParticipation')"
+                      >
                         <div
                           class="col-1 mt-2"
                           v-html="`${getMainMenuButtonFlag('oilProductionButton','kmgParticipation')}`"
                         ></div>
-                        <a
-                          class="col-9 px-2"
-                          @click="
-                            updateProductionData(
-                              'oil_plan',
-                              'oil_fact',
-                              `${oilChartHeadName}`,
-                              ' тонн',
-                              trans('visualcenter.dolyaUchast')
-                            )
-                          "
-                        >
+                        <a class="col-9 px-2">
                           {{trans("visualcenter.dolyaUchast")}}
                         </a>
                       </li>
                       <li
                               class="center-li row px-4"
-                              @click="switchMainMenu('oilProductionButton','opecRestriction')"
+                              @click="switchCategory(
+                                      'oil_opek_plan',
+                                      'oil_fact',
+                                      trans('visualcenter.tonWithSpace'),
+                                      trans('visualcenter.getoil'),
+                                      'oilProductionButton',
+                                      'opecRestriction')"
                       >
                       <div
                               class="col-1 mt-2"
                               v-html="`${getMainMenuButtonFlag('oilProductionButton','opecRestriction')}`"
                       ></div>
-                      <a
-                              @click="changeAssets('opecRestiction')"
-                              class="col-9 px-2"
-                      >
+                      <a class="col-9 px-2">
                         {{trans("visualcenter.opek")}}
                       </a>
                       </li>
@@ -354,15 +351,11 @@
                 <div :class="[`${oilDeliveryButton}`, 'button1']">
                   <div
                     class="button1-vc-inner"
-                    @click="
-                      updateProductionData(
-                        'oil_dlv_plan',
-                        'oil_dlv_fact',
-                        trans('visualcenter.dlvoildynamic'),
-                        ' тонн',
-                        trans('visualcenter.oildlv')
-                      )
-                    "
+                    @click="switchCategory(
+                            'oil_dlv_plan',
+                            'oil_dlv_fact',
+                            trans('visualcenter.tonWithSpace'),
+                            trans('visualcenter.oildlv'))"
                   >
                     <div class="icon-all icons2"></div>
                     <div class="txt5">
@@ -436,15 +429,11 @@
                 >
                   <div
                     class="button1-vc-inner"
-                    @click="
-                      updateProductionData(
-                        'gas_plan',
-                        'gas_fact',
-                        trans('visualcenter.getgasdynamic'),
-                        ' м³',
-                        trans('visualcenter.getgaz')
-                      )
-                    "
+                    @click="switchCategory(
+                            'gas_plan',
+                            'gas_fact',
+                            trans('visualcenter.meterCubicWithSpace'),
+                            trans('visualcenter.getgaz'))"
                   >
                     <div class="icon-all icons3"></div>
                     <div class="txt5">
@@ -590,15 +579,11 @@
                 <div :class="[`${condensateProductionButton}`, 'button1']">
                   <div
                     class="button1-vc-inner"
-                    @click="
-                      updateProductionData(
-                        'gk_plan',
-                        'gk_fact',
-                        trans('visualcenter.getgkDynamic'),
-                        ' тонн',
-                        trans('visualcenter.getgk')
-                      )
-                    "
+                    @click="switchCategory(
+                            'gk_plan',
+                            'gk_fact',
+                            trans('visualcenter.tonWithSpace'),
+                            trans('visualcenter.getgk'))"
                   >
                     <div class="icon-all icons4"></div>
                     <div class="txt5">
@@ -613,15 +598,11 @@
                 >
                   <div
                     class="button1-vc-inner"
-                    @click="
-                      updateProductionData(
-                        'liq_plan',
-                        'liq_fact',
-                        trans('visualcenter.liqDynamic'),
-                        ' м³',
-                        trans('visualcenter.liq')
-                      )
-                    "
+                    @click="switchCategory(
+                            'liq_plan',
+                            'liq_fact',
+                            trans('visualcenter.meterCubicWithSpace'),
+                            trans('visualcenter.liq'))"
                   >
                     <div class="icon-all icons5"></div>
                     <div class="txt5">
@@ -886,6 +867,9 @@
                         </div>
                         <div v-if="currentDzoList === 'daily'">
                           {{ trans("visualcenter.chemistryMetricTon") }}
+                        </div>
+                        <div v-if="isOpecFilterActive">
+                          {{ trans("visualcenter.dzoOpec") }}
                         </div>
                       </th>
                       <th>
@@ -2622,11 +2606,6 @@
     border: none;
     background: #2E50E9;
     color:white;
-  }
-  .main-menu-button-highlighted {
-    color: #fff;
-    background: #237deb;
-    font-weight:bold;
   }
 
   .dzo-company-list ul {

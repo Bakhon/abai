@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     loadForm(form) {
-      this.activeForm = this.forms[form]
+      this.activeForm = this.forms.find(formItem => formItem.code === form)
     },
     toggleFormsList() {
       this.formsListExpanded = !this.formsListExpanded
@@ -128,7 +128,6 @@ export default {
   }
 
   .three {
-    height: 760px;
     padding: 0 24px 15px;
     @media (max-width: 1200px) {
       height: auto;

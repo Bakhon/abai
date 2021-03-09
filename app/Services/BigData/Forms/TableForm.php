@@ -11,13 +11,23 @@ abstract class TableForm extends BaseForm
 
     protected $rowsPerPage = 20;
 
-    abstract protected function getRows();
+    abstract public function getRows();
 
-    abstract protected function getColumns();
+    abstract public function saveSingleField(string $field);
+
+    protected function getFieldByCode(string $code)
+    {
+        return $this->getFields()->where('code', $code)->first();
+    }
+
+    protected function getFilterTree(): array
+    {
+        return [];
+    }
 
     protected function getFields(): Collection
     {
-        return collect($this->params()['fields']);
+        return collect($this->params()['columns']);
     }
 
     public function getFormatedParams(): array
@@ -25,8 +35,7 @@ abstract class TableForm extends BaseForm
         return [
             'params' => $this->params(),
             'fields' => $this->getFields()->pluck('', 'code')->toArray(),
-            'columns' => $this->getColumns(),
-            'rows' => $this->getRows()
+            'filterTree' => $this->getFilterTree()
         ];
     }
 }

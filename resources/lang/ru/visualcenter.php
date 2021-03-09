@@ -5,9 +5,6 @@ return array (
   'oildlv' => 'Сдача нефти',
   'getgaz' => 'Добыча газа',
   'oilPrice' => 'Цена на нефть (Brent)',
-  'chekslines' => 'проверкастроки',
-  'wells1' => 'Фонд нагнетательных скважин',
-  'wells2' => 'Фонд нагнетательных скважин23',
   'usdKurs' => 'Курс доллара',
   'dolyaUchast' => 'С учётом доли участия КМГ',
   'ostatokNefti' => 'Товарный остаток нефти',
@@ -250,4 +247,7 @@ return array (
   'researchFond' => 'Исследование скважин',
   'othersFond' => 'Прочие',
   'exploitationFond' => 'Эксплуатационный фонд',
+  'tonWithSpace' => ' тонн',
+  'meterCubicWithSpace' => ' м³'
 );
+

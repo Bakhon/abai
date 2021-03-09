@@ -17,7 +17,7 @@ const bdform = {
                 });
             })
         },
-        getForm({commit}, formCode) {
+        updateForm({commit}, formCode) {
             return axios.get(this._vm.localeUrl(`/bigdata/form/${formCode}`)).then(({data}) => {
                 commit("SAVE_FORM_PARAMS", data.params)
                 return data

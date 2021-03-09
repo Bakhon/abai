@@ -60,7 +60,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Целевые параметры:</strong>
-                                        <input type="date" name="aim_params" value={{$row->aim_params}} class="form-control" >
+                                        <input type="date" name="aim_params" value="{{$row->aim_params}}" class="form-control" >
                                     </div>
                                 </div>
                                 <!-- <div class="col-xs-12 col-sm-12 col-md-12">
@@ -72,13 +72,13 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Остаток дней для исполнения:</strong>
-                                        <input type="integer" name="remaining_days" value={{$row->remaining_days}} class="form-control" placeholder="Пример: 5">
+                                        <input type="integer" name="remaining_days" value="{{$row->remaining_days}}" class="form-control" placeholder="Пример: 5">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div class="form-group">
                                         <strong>Ожидаемое исполнение:</strong>
-                                        <input type="float" name="expactations_percentage" value={{$row->expactations_percentage}} class="form-control" placeholder="Пример: 0.9">
+                                        <input type="float" name="expactations_percentage" value="{{$row->expactations_percentage}}" class="form-control" placeholder="Пример: 0.9">
                                     </div>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
