@@ -107,26 +107,34 @@
         </perfect-scrollbar>
       </div>
 
-      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 700px;">
+      <div class="col-6 gno-plotly-graph" style="background-color: #2b2e5e; height: 545px;">
         <Plotly :data="chart" :layout="layout" :display-mode-bar="false"></Plotly>
         <div class="col-12" style="padding-bottom: 10px; margin-top: 50px;">
-          <div class="col-6" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп 
-            <input style="width: 100px;" v-model="hPumpFromIncl" @change="updateHpump" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/>
+          <div class="col-12" style="float: left; text-align: left; color: white; font-weight: bold;">Выбор глубины спуска насоса Нсп 
+            <input style="width: 100px;" v-model="hPumpFromIncl" @change="updateHpump" type="text" onfocus="this.value=''" class="input-box-gno podbor"/>
             </div>
-          <button type="button col-6" class="old_well_button_incl" @click="onClickHpump">Применить выбранную Нсп</button>
+          <!-- <div class="col-6" style="float: left; text-align: left; color: white; height: 25px;">
+            Нсп 800м
+          </div> -->
+          <!-- <button type="button" class="old_well_button_incl" @click="onClickHpump">Применить выбранную Нсп</button> -->
         </div>
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
-            <b>Максимальный темп набора кривизны</b> в месте установки насоса 
-            <input style="width: 60px;" v-model="dls1" :disabled="dls1=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> в интервале глубины спуска 
-            <input style="width: 60px;" v-model="dls2" :disabled="dls2=='-'" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />          
+            <b>Максимальный темп набора кривизны</b> в месте установки насоса <input style="width: 100px;" type="text" 
+            onfocus="this.value=''" class="input-box-gno podbor"/> в интервале глубины спуска <input style="width: 100px;" 
+            type="text" onfocus="this.value=''" class="input-box-gno podbor"/>          
             </div> 
         </div>
+        <!-- <div class="col-12" style="padding-bottom: 10px;">
+          <div class="col-12"  style="font-size: 14px; text-align: left; color: white;">
+            в месте установки насоса 0.3гр/10м в интервале глубины спуска 0.5 гр/10м
+          </div> 
+        </div> -->
         <div class="col-12" style="padding-bottom: 10px;">
           <div class="col-12" style="font-size: 14px; text-align: left; color: white; float: left;">
-            <b>Максимальный зенитный угол</b> в месте установки насоса
-            <input v-model="zu1" :disabled="zu1=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor"/> в интервале глубины спуска 
-            <input v-model="zu2" :disabled="zu2=='-'" style="width: 60px;" type="text" onfocus="this.value=''" class="input-box-gno-incl podbor" />
+            <b>Максимальный зенитный угол</b> в месте установки насоса <input style="width: 100px;" 
+            type="text" onfocus="this.value=''" class="input-box-gno podbor"/> в интервале глубины спуска 
+            <input style="width: 100px;" type="text" onfocus="this.value=''" class="input-box-gno podbor"/>
             </div>
         </div>
 
@@ -153,11 +161,6 @@ export default {
   data: function () {
     return {
       data() {},
-      dls1: "-",
-      dls2: "-",
-      zu1: "-",
-      zu2: "-",
-      disabled: false,
       hPumpFromIncl: null,
       buttonHpump: false,
       hVal: null,
@@ -184,7 +187,7 @@ export default {
           t: 0,
           pad: 0
         },
-        height: 450,
+        height: 350,
         gridcolor: "white",
         font: {color: "white"},
 
@@ -302,7 +305,7 @@ export default {
             z: [this.pointZ],
             marker: {
               size:10,
-              color: '#AFCFEA',
+              color: 'white',
             }
           }
           ],
@@ -310,11 +313,11 @@ export default {
         } else this.data = [];
       }).finally(() => {
         this.$emit('update:isLoading', false);
-        
       })
    },
    onClickHpump(){
-     this.$emit('update-hpump', this.buttonHpump);
+     this.buttonHpump = true
+     this.$store.commit('UPDATE_HPUMP_BUTTON', this.buttonHpump)
    }
   },
   mounted() {
@@ -427,7 +430,7 @@ export default {
     background: #1a225e;
 }
 
-.input-box-gno-incl {
+.input-box-gno {
     background: #494AA5;
     border: 1px solid #272953;
     outline: none;
@@ -439,29 +442,5 @@ export default {
     line-height: 25px !important;
     padding-right: 5px;
     padding-left: 5px;
-}
-
-
-.square-incl {
-    background: #494AA5;
-    border: 1px solid #272953;
-    outline: none;
-    width: 100%;
-    height: 22px;
-    color: white;
-    box-sizing: border-box;
-    border-radius: 2px;
-    line-height: 25px !important;
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-.square-incl:focus {
-    background: #5657c7;
-}
-
-.input-box-gno-incl:disabled {
-    color: #928f8f;
-    background: #353e70;
 }
 </style>
