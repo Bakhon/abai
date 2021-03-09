@@ -1520,50 +1520,32 @@
                             </div>
 
                             <div class="row" style="padding-top: 3px;"> 
-                              <!-- <div class="col-2 pr-0" style="padding-top: 10px;">
-                                  <label style="width: 100px; padding-left: 15px; " class="label-for-celevoi">
-                                    <input class="checkbox3" checked="true" type="radio" name="gno10"/>
-                                    Расчет
-                                  </label>
-                              </div>
-
-                              <div class="col-2  pr-0">
-                                <div style="padding-top: 10px; padding-left: 15px;">
-                                  <label style="width: 100px;" class="label-for-celevoi"><input class="checkbox3" value="ЭЦН"
-                                       checked="true"
-                                      type="radio" name="gno10"/><input type="text" onfocus="this.value=''" 
-                                  class="input-box-gno podbor" /></label>
-                                </div>
-                              </div>
-
-                              <div class="row">
-                                <div class="col-12">
-                                  asdasd
-                                </div>
-                              </div> -->
 
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                    <input value="raschet" v-model="es" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                    <input value="calc_value" v-model="sep_meth" class="checkbox34" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
                                     Расчет
                                 </label>
                               </div>
                               <div class="col-8 table-border-gno">
-                                <input value="realSep" type="checkbox" checked="true" :disabled="es ==='raschet2' || expChoose === 'ФОН'">Естественная сепарация</div>
-                              
+                                <input v-model="nat_sep" type="checkbox" checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'">Естественная сепарация</div>
 
-                            
                             </div>
 
                             <div class="row">
+
                               <div class="col-4">
                                 <label style="width: 100px;" class="label-for-celevoi">
-                                  <input class="checkbox3" v-model="es" value="raschet2" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
-                                  <input type="text" onfocus="this.value=''" class="input-box-gno podbor" :disabled="expChoose === 'ФОН'"/></label>
+                                  <input class="checkbox3" v-model="sep_meth" value="input_value" checked="true" type="radio" name="gno20" :disabled="expChoose === 'ФОН'"/>
+                                  <input v-model="sep_value" type="text" onfocus="this.value=''" class="input-box-gno podbor" 
+                                  :disabled="expChoose === 'ФОН' || sep_meth !='input_value'"/></label>
                               </div>
-                              <div class="col-8 table-border-gno"><input value="mechSep" checked="true" :disabled="es ==='raschet2' || expChoose === 'ФОН'" 
-                              type="checkbox">Механизированная сепарация<input type="text" style="margin-left: 3px; margin-bottom: 0px;" 
-                              :disabled="es ==='raschet2' || expChoose === 'ФОН'" onfocus="this.value=''" class="input-box-gno podbor" /></div>
+
+                              <div class="col-8 table-border-gno">
+                                <input checked="true" :disabled="sep_meth ==='input_value' || expChoose === 'ФОН'" 
+                              type="checkbox" v-model="mech_sep">Механизированная сепарация
+                              <input v-model="mech_sep_value" type="text" style="margin-left: 3px; margin-bottom: 0px;" 
+                              :disabled="sep_meth ==='input_value' || expChoose === 'ФОН' ||  mech_sep === false" onfocus="this.value=''" class="input-box-gno podbor" /></div>
                             </div>
                               
 
@@ -2306,14 +2288,19 @@ export default {
       numberRepairs: null,
       numberNNO: null,
       langUrl: '',
-      separation: null,
-      es: 'raschet',
+      // separation: null,
+      sep_meth: 'calc_value',
+      nat_sep: true,
+      mech_sep: null,
+      sep_value: null,
+      mech_sep_value: null,
       pBuf: null,
       ao: null,
       orgs: null,
       nkt: null,
       hPumpFromIncl: null,
       buttonHpump: false,
+      postdata: null,
     };
 
   },
@@ -2330,15 +2317,7 @@ export default {
       if (newVal === 'hdyn') {
         this.curveSelect = 'hdyn';
       }
-    },
-    es(newVal) {
-      if(newVal === 'raschet'){
-        this.separation = null;
-      } else {
-        this.separation = 'raschet2'
-      }
-    },
-      
+    },      
   },
   beforeCreate: function () {
     this.axios.get('/ru/organizations').then(({data}) => {
@@ -2402,6 +2381,41 @@ export default {
     ...mapState(['wells'])
   },
   methods: {
+    prepareData() {
+      this.postdata = JSON.stringify(
+        {
+          "curveSelect": this.curveSelect,
+          "presValue": this.pResInput.split(' ')[0],
+          "piValue": this.piInput.split(' ')[0],
+          "qlValue": this.qLInput.split(' ')[0],
+          "bhpValue": this.bhpInput.split(' ')[0],
+          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
+          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
+          "whpValue": this.whpInput.split(' ')[0],
+          "wctValue": this.wctInput.split(' ')[0],
+          "gorValue": this.gorInput.split(' ')[0],
+          "expSelect": this.expChoose,
+          "hPumpValue": this.hPumpValue.split(' ')[0],
+          "celSelect": this.CelButton,
+          "celValue": this.CelValue.split(' ')[0],
+          "menu": this.menu,
+          "well_age": this.age,
+          "grp_skin": this.grp_skin,
+          "analysisBox1": this.analysisBox1,
+          "analysisBox2": this.analysisBox2,
+          "analysisBox3": this.analysisBox3,
+          "analysisBox4": this.analysisBox4,
+          "analysisBox5": this.analysisBox5,
+          "analysisBox6": this.analysisBox6,
+          "analysisBox7": this.analysisBox7,
+          "analysisBox8": this.analysisBox8,
+          "sep_meth": this.sep_meth,
+          "sep_value": this.sep_value,
+          "mech_sep": this.mech_sep,
+          "mech_sep_value": this.mech_sep_value,
+          "nat_sep": this.nat_sep
+        })
+    },
     downloadExcel() {
       if (this.CelButton == 'ql') {
         this.CelValue = this.qlCelValue
@@ -2436,7 +2450,12 @@ export default {
           "analysisBox5": this.analysisBox5,
           "analysisBox6": this.analysisBox6,
           "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8
+          "analysisBox8": this.analysisBox8,
+          "sep_meth": this.sep_meth,
+          "sep_value": this.sep_value,
+          "mech_sep": this.mech_sep,
+          "mech_sep_value": this.mech_sep_value,
+          "nat_sep": this.nat_sep
         });
       let uri = "http://172.20.103.187:7575/api/pgno/"+ this.field + "/" + this.wellNumber + "/download";
       this.axios.post(uri, jsonData,{responseType: "blob"}).then((response) => {
@@ -2584,7 +2603,7 @@ export default {
 
         if (this.expMeth == "ШГН") {
           this.expChoose = "ШГН"
-        } else if (this.expMeth == "ЭЦН") {
+        } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
           this.expChoose = "ЭЦН"
         } else if (this.expMeth == "ФОН") {
           this.expChoose = "ФОН"
@@ -2686,13 +2705,7 @@ export default {
       };
     },
 
-    // getNgduParam() {
-    //   if(field === "JET"){
-    //     return 'АО "ММГ"'
-    //   } else {
-    //     return 'АО "ОМГ"'
-    //   }
-    // },
+
     updateLine:  function (value) {
       var ipr_points = [];
       var qo_points = [];
@@ -3026,6 +3039,7 @@ export default {
               
             }
 
+
             
 
             this.curveLineData = JSON.parse(data.LineData)["data"]
@@ -3207,6 +3221,13 @@ export default {
               Vue.prototype.$notifyWarning("The type of pumping unit on the well does not correspond to the current pump rate")
               }
             }
+
+            if (this.expMeth == "ШГН") {
+              this.mech_sep = false
+            } else if (this.expMeth == "ЭЦН" || this.expMeth == "УЭЦН") {
+              this.mech_sep = true,
+              this.mech_sep_value = "50 %"
+            }
           }
           this.$emit('LineData', this.curveLineData)
           this.$emit('PointsData', this.curvePointsData)
@@ -3234,38 +3255,8 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
-
-
-
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": "MainMenu",
-          "well_age": this.age,
-          "grp_skin": this.grp_skin,
-          "analysisBox1": this.analysisBox1,
-          "analysisBox2": this.analysisBox2,
-          "analysisBox3": this.analysisBox3,
-          "analysisBox4": this.analysisBox4,
-          "analysisBox5": this.analysisBox5,
-          "analysisBox6": this.analysisBox6,
-          "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8
-        }
-      )
+      this.menu = "MainMenu"
+      this.prepareData()
 
       if(this.pResInput.split(' ')[0] * 1 <= this.bhpInput.split(' ')[0] * 1 || this.pResInput.split(' ')[0] * 1 <= this.bhpCelValue.split(' ')[0] * 1) {
         Vue.prototype.$notifyError("Pзаб не должно быть больше чем Рпл");
@@ -3303,7 +3294,7 @@ export default {
 
       }
 
-        this.axios.post(uri, jsonData).then((response) => {
+        this.axios.post(uri, this.postdata).then((response) => {
           var data = response.data;
           if (data) {
             this.method = "CurveSetting"
@@ -3358,40 +3349,13 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
+      this.menu = "PotencialAnalysis"
 
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": "PotencialAnalysis",
-          "well_age": this.age,
-          "grp_skin": this.grp_skin,
-          "analysisBox1": this.analysisBox1,
-          "analysisBox2": this.analysisBox2,
-          "analysisBox3": this.analysisBox3,
-          "analysisBox4": this.analysisBox4,
-          "analysisBox5": this.analysisBox5,
-          "analysisBox6": this.analysisBox6,
-          "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8
-        }
-      )
+      this.prepareData()
 
       this.isLoading = true;
 
-      this.axios.post(uri, jsonData).then((response) => {
+      this.axios.post(uri, this.postdata).then((response) => {
         var data = response.data;
         if (data) {
           this.method = "CurveSetting"
@@ -3420,40 +3384,13 @@ export default {
       } else if (this.CelButton == 'pin') {
         this.CelValue = this.piCelValue
       }
+      this.menu = "PotencialAnalysis"
 
-      let jsonData = JSON.stringify(
-        {
-          "curveSelect": this.curveSelect,
-          "presValue": this.pResInput.split(' ')[0],
-          "piValue": this.piInput.split(' ')[0],
-          "qlValue": this.qLInput.split(' ')[0],
-          "bhpValue": this.bhpInput.split(' ')[0],
-          "hdynValue": [this.hDynInput.split(' ')[0], this.pAnnularInput.split(' ')[0]],
-          "pmanomValue": [this.pManomInput.split(' ')[0], this.hPumpManomInput.split(' ')[0]],
-          "whpValue": this.whpInput.split(' ')[0],
-          "wctValue": this.wctInput.split(' ')[0],
-          "gorValue": this.gorInput.split(' ')[0],
-          "expSelect": this.expChoose,
-          "hPumpValue": this.hPumpValue.split(' ')[0],
-          "celSelect": this.CelButton,
-          "celValue": this.CelValue.split(' ')[0],
-          "menu": "PotencialAnalysis",
-          "well_age": this.age,
-          "grp_skin": this.grp_skin,
-          "analysisBox1": this.analysisBox1,
-          "analysisBox2": this.analysisBox2,
-          "analysisBox3": this.analysisBox3,
-          "analysisBox4": this.analysisBox4,
-          "analysisBox5": this.analysisBox5,
-          "analysisBox6": this.analysisBox6,
-          "analysisBox7": this.analysisBox7,
-          "analysisBox8": this.analysisBox8
-        }
-      )
+      this.prepareData()
 
       this.isLoading = true;
 
-      this.axios.post(uri, jsonData).then((response) => {
+      this.axios.post(uri, this.postdata).then((response) => {
         var data = response.data;
         if (data) {
           this.newData = data["Well Data"]
@@ -3469,8 +3406,6 @@ export default {
           this.skinOkr = data["Well Data"]["skin"][0].toFixed(1)
           this.presOkr = data["Well Data"]["p_res"][0].toFixed(0)
           this.wctOkr = data["Well Data"]["wct"][0].toFixed(0)
-          // this.$emit('LineData', this.curveLineData)
-          // this.$emit('PointsData', this.curvePointsData)
         } else {
         }
       }).finally(() => {
@@ -3698,15 +3633,9 @@ export default {
           })
           img.src = dataUrl;
 
-          // let link = document.createElement('a');
-          // link.setAttribute('href', dataUrl);
-          // link.setAttribute('download','download');
-          // link.click();
-          // link.remove();
 
           pdf.addImage(dataUrl, 'png', 10, 1, 180, 300);
           pdf.save('test.pdf')
-          // document.body.appendChild(img);
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
@@ -3728,15 +3657,9 @@ export default {
           })
           img.src = dataUrl;
 
-          // let link = document.createElement('a');
-          // link.setAttribute('href', dataUrl);
-          // link.setAttribute('download','download');
-          // link.click();
-          // link.remove();
 
           pdf.addImage(dataUrl, 'png', 10, 1, 180, 80);
           pdf.save('test.pdf')
-          // document.body.appendChild(img);
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
@@ -3750,16 +3673,11 @@ export default {
 
       htmlToImage.toPng(this.$refs['gno-chart'])
         .then(function (dataUrl) {
-          // let img = new Image();
-          // img.src = dataUrl;
-
           let link = document.createElement('a');
           link.setAttribute('href', dataUrl);
           link.setAttribute('download','download');
           link.click();
           link.remove();
-
-          // document.body.appendChild(img);
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
@@ -3774,16 +3692,11 @@ export default {
       
       htmlToImage.toPng(this.$refs['gno-chart-new-old-well'])
         .then(function (dataUrl) {
-          // let img = new Image();
-          // img.src = dataUrl;
-
           let link = document.createElement('a');
           link.setAttribute('href', dataUrl);
           link.setAttribute('download','download');
           link.click();
           link.remove();
-
-          // document.body.appendChild(img);
         })
         .catch(function (error) {
           console.error('oops, something went wrong!', error);
@@ -3797,8 +3710,6 @@ export default {
 
     downloadImg() {
       $('#btnExport').click(function(){
-        //var title = $("<p>Image Here</p>");
-        //$("#content").append(title);
         var divGraph = $('#graph');
         Plotly.toImage('graph', { format: 'png', width: 800, height: 600 }).then(function (dataURL) {
           img_png.attr("src", dataURL);

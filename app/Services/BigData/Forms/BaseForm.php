@@ -80,6 +80,9 @@ abstract class BaseForm
         $rules = [];
 
         foreach ($this->getFields() as $field) {
+            if (empty($field['validation'])) {
+                continue;
+            }
             $rules[$field['code']] = $field['validation'];
         }
 

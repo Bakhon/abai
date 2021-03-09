@@ -10,6 +10,7 @@ const guMap = {
         guPoints: [],
         guCenters: [],
         guPointsIndexes: [],
+        pipeTypes: [],
         mapCenter: {},
     },
 
@@ -35,6 +36,9 @@ const guMap = {
         SET_MAP_CENTER(state, value) {
             state.mapCenter = value;
         },
+        SET_PIPE_TYPES(state, value) {
+            state.pipeTypes = value;
+        },
         ADD_GU_POINT(state, guPoint) {
             state.guPoints.push(guPoint);
         },
@@ -53,13 +57,13 @@ const guMap = {
         UPDATE_GU_POINT(state, payload) {
             Vue.set(state.guPoints, [payload.index], payload.gu)
         },
-        UPDATE_ZU_POINT (state, payload) {
+        UPDATE_ZU_POINT(state, payload) {
             Vue.set(state.zuPoints, [payload.index], payload.zu)
         },
-        UPDATE_WELL_POINT (state, payload) {
+        UPDATE_WELL_POINT(state, payload) {
             Vue.set(state.wellPoints, [payload.index], payload.well)
         },
-        UPDATE_PIPE_POINT (state, payload) {
+        UPDATE_PIPE_POINT(state, payload) {
             Vue.set(state.pipes, [payload.index], payload.pipe)
         },
         DELETE_GU(state, index) {
@@ -85,6 +89,7 @@ const guMap = {
                 commit('SET_WELL_POINTS', response.data.wellPoints);
                 commit('SET_GU_POINTS', response.data.guPoints);
                 commit('SET_GU_CENTERS', response.data.guCenters);
+                commit('SET_PIPE_TYPES', response.data.pipeTypes);
                 commit('SET_MAP_CENTER', {
                     latitude: response.data.center[1],
                     longitude: response.data.center[0]
@@ -230,16 +235,16 @@ const guMap = {
                 }
             });
         },
-        deletePipe ({state, commit}, pipe) {
+        deletePipe({state, commit}, pipe) {
             return axios.delete(this._vm.localeUrl("/gu-map/pipe/" + pipe.id + '/' + pipe.type))
                 .then((response) => {
-                if (response.data.status == 'success') {
-                    commit('DELETE_PIPE', pipe.index);
-                    return response.data.status
-                } else {
-                    console.log('error in delete Pipe');
-                }
-            });
+                    if (response.data.status == 'success') {
+                        commit('DELETE_PIPE', pipe.index);
+                        return response.data.status
+                    } else {
+                        console.log('error in delete Pipe');
+                    }
+                });
         }
     },
 
