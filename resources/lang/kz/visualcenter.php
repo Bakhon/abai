@@ -248,5 +248,5 @@ return array (
   'othersFond' => 'Басқалар',
   'exploitationFond' => 'Пайдалану қоры',
   'tonWithSpace' => ' тонн',
-  'meterCubicWithSpace' => ' м³', 
+  'meterCubicWithSpace' => ' м³'
 );

@@ -248,6 +248,6 @@ return array (
   'othersFond' => 'Прочие',
   'exploitationFond' => 'Эксплуатационный фонд',
   'tonWithSpace' => ' тонн',
-  'meterCubicWithSpace' => ' м³',
+  'meterCubicWithSpace' => ' м³'
 );
 
