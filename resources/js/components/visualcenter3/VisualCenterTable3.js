@@ -350,6 +350,8 @@ export default {
                 isOperating: this.trans("visualcenter.summaryOperatingAssets"),
                 isNonOperating: this.trans("visualcenter.summaryNonOperatingAssets"),
                 isAllAssets: this.trans("visualcenter.summaryAssets"),
+                opecRestriction: this.trans("visualcenter.opek"),
+                kmgParticipation: this.trans("visualcenter.dolyaUchast"),
             },
             kmgParticipationPercent: {
                 'АО "Каражанбасмунай"': 0.5,
@@ -425,10 +427,25 @@ export default {
             ],
             isMainMenuItemChanged: false,
             opecFieldNameForChart: '',
+            injectionWellsOptions: [
+                {ticker: 'all', name: this.trans("visualcenter.allCompany")},
+                {ticker: 'ОМГ', name: this.trans("visualcenter.omg")},
+                {ticker: 'ММГ', name: this.trans("visualcenter.mmg")},
+                {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
+                {ticker: 'КОА', name: this.trans("visualcenter.koa")},
+                {ticker: 'КГМ', name: this.trans("visualcenter.kgm")},
+                {ticker: 'КБМ', name: this.trans("visualcenter.kbm")},
+                {ticker: 'ЭМГ', name: this.trans("visualcenter.emg")},
+            ],
+            oilRatesWidgetData: {
+                changePercent: 0,
+                index: ''
+            },
         };
     },
     methods: {
         switchCategory(planFieldName,factFieldName,metricName,categoryName,parentButton,childButton) {
+            this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
             this.planFieldName = planFieldName;
             this.factFieldName = factFieldName;
             this.metricName = metricName;
@@ -487,19 +504,32 @@ export default {
             });
         },
 
+        selectMultipleDzoCompanies(type) {
+            this.selectCompany('all');
+            this.dzoCompaniesAssets['isAllAssets'] = false;
+            this.disableDzoCompaniesVisibility();
+            this.switchDzoCompaniesVisibility(type,'type');
+            this.calculateDzoCompaniesSummary();
+        },
+
         selectDzoCompany(companyTicker) {
             this.selectCompany(companyTicker);
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.buttonDzoDropdown = this.highlightedButton;
-            _.map(this.dzoCompanies, function (company) {
-                if (company.ticker === companyTicker) {
+            this.switchDzoCompaniesVisibility(companyTicker,'ticker');
+            this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
+            this.calculateDzoCompaniesSummary();
+        },
+
+        switchDzoCompaniesVisibility(condition,type) {
+            _.map(this.dzoCompanies, function(company) {
+                if (company[type] === condition) {
                     company.selected = !company.selected;
                 }
             });
+            console.log(JSON.stringify(this.dzoCompanies));
             let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
             this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
-            this.isMultipleDzoCompaniesSelected = this.dzoCompanySummary.length > 1;
-            this.calculateDzoCompaniesSummary();
         },
 
         getDzoColumnsClass(rowIndex, columnName) {
@@ -722,9 +752,12 @@ export default {
         },
 
         changeAssets(type) {
+            let self = this;
             this.dzoCompaniesAssets[type] = true;
             this.dzoCompaniesAssets['isAllAssets'] = false;
             this.dzoCompaniesAssets['assetTitle'] = this.assetTitleMapping[type];
+
+
             if (type === "opecRestriction") {
                 this.isOpecFilterActive = !this.isOpecFilterActive;
             } else if (type === 'kmgParticipation') {
@@ -732,10 +765,9 @@ export default {
                 this.isKmgParticipationFilterActive = !this.isKmgParticipationFilterActive;
             } else {
                 this.dzoCompaniesAssets = _.cloneDeep(this.dzoCompaniesAssetsInitial);
-                _.map(this.dzoCompanies, function (company) {
-                    company.selected = false;
-                });
+                this.dzoCompaniesAssets[type] = true;
                 this.selectedDzoCompanies = this.getSelectedDzoCompanies(type);
+                this.selectMultipleDzoCompanies(type);
             }
         },
 
@@ -816,7 +848,7 @@ export default {
             let previousPrice = 0.00;
             let self = this;
             _.forEach(data, function (item) {
-                let changeValue = parseFloat(((item['value'] - previousPrice) / item['value']) * 100).toFixed(2);
+                let changeValue = parseFloat((item['value'] - previousPrice) / previousPrice * 100).toFixed(2);
                 self.pushRatesData(item, changeValue, ratesData);
                 self.pushRatesChart(item, ratesData);
                 previousPrice = parseFloat(item['value']);
@@ -870,6 +902,7 @@ export default {
         setOilPlacements(ratesData) {
             this.oilRatesData = ratesData;
             this.setDailyOilPriceChange(this.prices['oil']['current'], this.prices['oil']['previous']);
+
             if (this.period === 0) {
                 this.oilPeriod = this.defaultOilPeriod;
             }
@@ -1299,9 +1332,9 @@ export default {
             );
 
             this.WellsDataAll = this.WellsData(dataWithMay);
-            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,this.injectionFonds)
+            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds')
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
-            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,this.productionFonds);
+            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
@@ -1421,9 +1454,9 @@ export default {
             let productionPlanAndFactMonth = this.getProductionPlanAndFactForMonth(dataWithMay, planFieldName, factFieldName);
 
             this.WellsDataAll = this.WellsData(dataWithMay);
-            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,_.cloneDeep(this.injectionFonds));
+            this.injectionWells = this.getSummaryWells(dataWithMay,this.wellStockIdleButtons.isInjectionIdleButtonActive,'injectionFonds');
             this.innerWellsChartData = this.getSummaryInjectionWellsForChart(dataWithMay);
-            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,_.cloneDeep(this.productionFonds));
+            this.productionWells = this.getSummaryWells(dataWithMay, this.wellStockIdleButtons.isProductionIdleButtonActive,'productionFonds');
             this.innerWells2ChartData = this.getSummaryProductionWellsForChart(dataWithMay);
             this.otmData = this.getOtmData(dataWithMay)
             this.otmChartData = this.getOtmChartData(dataWithMay)
@@ -2060,8 +2093,9 @@ export default {
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
-        getSummaryWells(inputData, isIdleActive, fonds) {
+        getSummaryWells(inputData, isIdleActive, fondsName) {
             let self = this;
+            let fonds = _.cloneDeep(this[fondsName]);
             let productionPlanAndFactMonthWells = _(inputData)
                 .groupBy("data")
                 .map((__time, id) => (this.$_getSummaryFonds(fonds,__time,id)))
@@ -2084,6 +2118,7 @@ export default {
                     }
                 );
             });
+
             return productionFondsSummary;
         },
 
