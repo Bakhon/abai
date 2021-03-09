@@ -35,7 +35,7 @@
                             class="p-0 pl-1 pr-1"
                             :class="{'d-none': menuType !== 'big'}"
                         >
-                            <div class="main-menu-font text-left dark-bg mh-750 menu-border">
+                            <div class="main-menu-font text-left dark-bg mh-710 menu-border">
                                 <div class="p-4 pl-5" v-for="child in menuItem.children">
                                     <a
                                         :class="[

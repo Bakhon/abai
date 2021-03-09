@@ -49,8 +49,8 @@
     cursor: pointer;
 }
 
-.mh-750 {
-    min-height: 750px;
+.mh-710 {
+    min-height: 710px;
 }
 
 .dark-bg {
@@ -105,6 +105,10 @@
 
 .gtm-dark {
     background: #272953;
+}
+
+.gtm-dark-2 {
+    background: rgba(31, 33, 66, 1);
 }
 
 .gtm-menu div {
@@ -282,6 +286,89 @@
 
 .podbor-middle-table td:not(last-child) {
     border-right: 1px solid rgba(69,77,125,1);
+}
+
+.dr-border-light {
+    border: 0.1rem solid rgba(69, 77, 125, 1);
+}
+
+.dr-wt-table {
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.dr-wt-table tbody tr td {
+    background: rgba(31, 33, 66, 1);
+    border: 0.5rem solid rgba(39, 41, 83, 1);
+    padding: 0.8rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.dr-wt-table tbody tr td:first-child {
+    vertical-align: top;
+    border-left: none;
+    padding: 0.1rem;
+}
+
+.dr-wt-table tbody tr td:first-child img {
+    margin-bottom: 0.3rem;
+}
+
+.dr-wt-table tbody tr td:last-child {
+    border-right: none;
+}
+
+.dr-wt-table tbody tr:first-child td {
+    border-top: none;
+}
+
+.dr-wt-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.dr-wt-table tbody tr td:first-child div {
+    width: 1.2rem;
+    word-wrap: break-word;
+}
+
+.dr-wt-table tbody tr td div {
+    width: 5rem;
+    word-wrap: break-word;
+}
+
+.dr-search-bg {
+    background: rgba(57, 61, 117, 1);
+}
+
+.dr-search-border-radius {
+    border-radius: 0.3rem;
+}
+
+.dr-map-bg {
+    background: rgba(43, 46, 94, 1);
+}
+
+.dr-fw-700 {
+    font-weight: 700;
+}
+
+.dr-fs-08 {
+    font-size: 0.8rem;
+}
+
+.dr-graph-switch > div {
+    height: 4rem;
+    background: rgba(51, 57, 117, 1);
+    margin-bottom: 1rem;
+}
+
+.dr-graph-switch > div:last-child {
+    margin-bottom: 0;
+}
+
+.dr-graph-switch span {
+    font-size: 0.8rem;
+    color: #9EA4C9;
 }
 
 /*mobile*/
