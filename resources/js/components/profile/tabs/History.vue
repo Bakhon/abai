@@ -10,7 +10,13 @@
           <tr v-for="log in logs">
             <td>{{log.created_at}}</td>
             <td>{{log.url}}</td>
-            <td><span>Win 10</span><span>IP: {{log.ip_address}}</span></td>
+            <td>
+              <span>
+                <b class="ico" v-if="log.os_logo == 'windows'" v-html="icons.windows"></b>
+                <b class="ico" v-if="log.os_logo == 'linux'" v-html="icons.linux"></b>
+                <b class="ico" v-if="log.os_logo == 'ios'" v-html="icons.ios"></b>
+                <b class="ico" v-if="log.os_logo == 'android'" v-html="icons.android"></b>
+            {{log.user_os}}</span><span>IP: {{log.ip_address}}</span></td>
           </tr>
         </table>
             
@@ -18,6 +24,9 @@
 </template>
 
 <script>
+
+import params from '../../../json/profile.json'
+
 export default {
   name: 'HistoryProfile',
   props: {
@@ -29,9 +38,18 @@ export default {
   components: {},
   data() {
     return {
-    
+    icons: params.icons,
     }
   },
   methods: {}
 }
 </script>
+
+<style>
+  b.ico{
+  display: inline-table;
+    margin: -2px 5px 0 0;
+    vertical-align: middle;
+    line-height: 0;
+  }
+</style>
