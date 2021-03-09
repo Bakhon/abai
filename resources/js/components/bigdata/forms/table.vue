@@ -28,13 +28,13 @@
             :contextMenuItems="[]"
             :data="filterTree"
             :renameNodeOnDblClick="false"
-            nodeLabelProp="label"
+            nodeLabelProp="name"
             v-on:nodeSelect="filterForm"
         ></b-tree-view>
       </div>
       <form ref="form" class="bd-main-block__form scrollable" style="width: 100%">
         <div class="table-page">
-          <p v-if="!geo" class="table__message">{{ trans('bd.select_dzo') }}</p>
+          <p v-if="!tech" class="table__message">{{ trans('bd.select_dzo') }}</p>
           <p v-else-if="rows.length === 0" class="table__message">{{ trans('bd.nothing_found') }}</p>
           <div v-else class="table-wrap scrollable">
             <table v-if="rows.length" class="table">
@@ -104,7 +104,7 @@ export default {
       activeTab: 0,
       date: moment().toISOString(),
       filterTree: [],
-      geo: null,
+      tech: null,
       currentPage: 1,
       rows: [],
       columns: [],
@@ -137,20 +137,22 @@ export default {
       'updateForm'
     ]),
     filterForm(item, isSelected) {
+      console.log(item.data)
       if (isSelected) {
-        this.geo = item.data.id
+        if (item.data.type === 'org') return false
+        this.tech = item.data.id
         this.updateRows()
       }
     },
     updateRows() {
 
-      if (!this.date || !this.geo) return
+      if (!this.date || !this.tech) return
 
       this.isloading = true
       this.axios.get(this.localeUrl(`/bigdata/form/${this.params.code}/rows`), {
         params: {
           date: this.date,
-          geo: this.geo
+          tech: this.tech
         }
       })
           .then(({data}) => {
