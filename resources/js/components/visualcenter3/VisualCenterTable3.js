@@ -445,6 +445,7 @@ export default {
     },
     methods: {
         switchCategory(planFieldName,factFieldName,metricName,categoryName,parentButton,childButton) {
+            this.chartSecondaryName = categoryName;
             this.dzoCompaniesAssets['assetTitle'] = this.trans("visualcenter.summaryAssets");
             this.planFieldName = planFieldName;
             this.factFieldName = factFieldName;
@@ -527,7 +528,6 @@ export default {
                     company.selected = !company.selected;
                 }
             });
-            console.log(JSON.stringify(this.dzoCompanies));
             let selectedCompanies = this.dzoCompanies.filter(row => row.selected === true).map(row => row.ticker);
             this.dzoCompanySummary = this.bigTable.filter(row => selectedCompanies.includes(row.dzoMonth));
         },
@@ -578,7 +578,7 @@ export default {
 
         selectCompany(com) {
             this.company = com;
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.nameLeftChart);
+            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
         changeTable(change) {
             this.company = "all";
@@ -622,14 +622,19 @@ export default {
                 this.Table7 = "display:block";
                 this.tableHover7 = buttonHover2;
 
+                let periodStart = moment().startOf('month').format();
+                let periodEnd = moment().subtract(1, "days").endOf('day').format();
+                if (periodStart > periodEnd) {
+                    periodStart = this.getPreviousWorkday();
+                }
                 this.range = {
-                    start: this.ISODateString(new Date('2020-08-01T06:00:00+06:00')),
-                    end: this.ISODateString(new Date('2020-08-31T06:00:00+06:00')),
+                    start: periodStart,
+                    end: periodEnd,
                     formatInput: true,
                 };
                 this.changeDate();
             }
-            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.nameLeftChart);
+            this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
         switchMainMenu(parentButton, childButton) {
@@ -947,7 +952,7 @@ export default {
             this.$modal.show(bign);
         },
         displaynumbers: function (event) {
-            return this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.nameLeftChart);
+            return this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
         },
 
         getDiffProcentLastBigN(a, b) {
@@ -1267,6 +1272,7 @@ export default {
             this.chartHeadName = chartHeadName;
             this.metricName = metricName;
             this.chartSecondaryName = chartSecondaryName;
+
             let oilProductionFieldsNames = ['oil_plan','oil_opek_plan'];
             if (oilProductionFieldsNames.includes(this.planFieldName)) {
                 this.changeOilProductionFilters();
@@ -1388,7 +1394,7 @@ export default {
             if ((summForTables['0']['productionFactForMonth'] + summForTables['0']['productionPlanForMonth']) === 0) {
                 this.noData = "Данных нет";
                 this.company = "all";
-                this.updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName, this.chartSecondaryName);
+                this.updateProductionData(planFieldName, factFieldName, chartHeadName, metricName, chartSecondaryName);
             } else {
                 this.noData = "";
             }
@@ -1914,7 +1920,6 @@ export default {
                 ]);
             });
 
-
             let productionPlanAndFactMonthWells = _(dataWithMay)
                 .groupBy("data")
                 .map((__time, id) => ({
@@ -2020,6 +2025,7 @@ export default {
             let oldDate = new Date(this.range.end).toLocaleDateString();
             this.timeSelect = nowDate;
             this.timeSelectOld = oldDate;
+
             this.updateProductionData(this.planFieldName, this.factFieldName, this.chartHeadName, this.metricName, this.chartSecondaryName);
             this.getCurrencyNow(new Date().toLocaleDateString());
             this.getAccidentTotal();
