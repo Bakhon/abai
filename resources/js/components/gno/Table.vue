@@ -332,19 +332,19 @@
         <div class="no-gutter col-lg-9 order-md-1 first-column container-fluid no-gutter">
           <div class="no-gutter col-md-12 first-column-curve-block">
             <div class="background">
-              <modal class="modal-bign-wrapper" name="modalIncl" :width="1150" :height="600"
+              <modal class="modal-bign-wrapper" name="modalIncl" :width="1400" :height="800"
                 style="background: transparent;" :adaptive="true">
                 <div class="modal-bign modal-bign-container">
                   <div class="modal-bign-header">
                     <div class="modal-bign-title">{{trans('pgno.inclinometria')}}</div>
 
                     <button type="button" class="modal-bign-button" @click="closeInclModal()">
-                      Применить
+                      Закрыть
                     </button>
                   </div>
 
                   <div class="Table" align="center" x:publishsource="Excel">
-                    <inclinometria :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
+                    <inclinometria @update-hpump="onChangeButtonHpump($event)" :buttonHpump="buttonHpump" :wellNumber="wellNumber" :wellIncl="wellIncl" :is-loading.sync="isLoading">
                     <!-- @updateHpumpProp="eventChild" -->
                     </inclinometria>
                   </div>
@@ -2306,6 +2306,15 @@ export default {
   },
 
   watch: {
+    // watchButtonHpump() {
+    //   if(this.buttonHpump) {
+    //     this.buttonHpump = this.$store.getters.getHpumpButton
+    //     this.$modal.hide('modalIncl')
+    //     this.hPumpValue = this.$store.getters.getHpump
+    //     console.log(this.hPumpValue, 'vuex hpump');
+    //     this.postCurveData();
+    //   }
+    // },
     curveSelect(newVal) {
       if (newVal === 'pi') {
         this.QhydCurveSelect = null;
@@ -2349,7 +2358,14 @@ export default {
     }
   },
   computed: {
-  
+    // onChangeButtonHpump() {
+    //   alert('good')
+    //   console.log(this.buttonHpump)
+    //   if(this.buttonHpump == true) {
+    //     this.$modal.hide('modalIncl')
+    //     console.log('regi');
+    //   }
+    // },
     wellNum() {
       return this.$store.state.wellNum
     },
@@ -2377,10 +2393,14 @@ export default {
     wellType() {
       return this.$store.state.wellType
     },
-    // ...mapMutations([wellNum]),
     ...mapState(['wells'])
   },
   methods: {
+    onChangeButtonHpump() {
+      this.$modal.hide('modalIncl')
+      this.hPumpValue = this.$store.getters.getHpump
+      this.postCurveData();
+    },
     prepareData() {
       this.postdata = JSON.stringify(
         {
@@ -2474,11 +2494,11 @@ export default {
     },
 
     closeInclModal() {
-      this.buttonHpump = this.$store.getters.getHpumpButton
+      // this.buttonHpump = this.$store.getters.getHpumpButton
       this.$modal.hide('modalIncl')
-      this.hPumpValue = this.$store.getters.getHpump
-      console.log(this.hPumpValue, 'vuex hpump');
-      this.postCurveData();
+      // this.hPumpValue = this.$store.getters.getHpump
+      // console.log(this.hPumpValue, 'vuex hpump');
+      // this.postCurveData();
       
     },
     closeEconomicModal() {
@@ -3775,7 +3795,18 @@ export default {
             "Qн = %{text:.1f} т/сут<br>" +
             "Pзаб = %{y:.1f} атм<extra></extra>"
     }
-  }
+  },
+  // updated() {
+  //   if(this.buttonHpump) {
+  //     this.closeInclModal()
+  //     console.log('true daguddass', this.buttonHpump);
+  //     this.buttonHpump = this.$store.getters.getHpumpButton
+  //     this.$modal.hide('modalIncl')
+  //     this.hPumpValue = this.$store.getters.getHpump
+  //     console.log(this.hPumpValue, 'vuex hpump');
+  //     this.postCurveData();
+  //   }
+  // }
 };
 </script>
 
