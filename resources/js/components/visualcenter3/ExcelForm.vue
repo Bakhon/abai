@@ -46,7 +46,7 @@
                     },
                     {
                         prop: "name2",
-                        size: 250,
+                        size: 330,
                         cellProperties: ({prop, model, data, column}) => {
                             return {
                                 style: {
@@ -169,7 +169,7 @@
     }
 
     .table-form {
-        max-width: 1210px;
+        max-width: 1320px;
         background-color: white;
     }
     .title {
