@@ -170,7 +170,11 @@ Route::group(
 
                 Route::get('anticrisis', 'AntiCrisisController@index')->name('anticrisis');
 
-                Route::get('/paegtm', 'GTM\GTMController@index')->name('gtm');
+                //economy module 
+                Route::get('/module_economy', 'Economy\MainController@index');
+                Route::get('/module_economy/companies', 'Economy\MainController@companies');
+                Route::match(['get','post'],'/import_sbh', 'Economy\MainController@importSubholdingCompanies')->name('import_sbh');
+                Route::match(['get','post'],'/import_rep', 'Economy\MainController@importRepTt')->name('import_rep');
             }
         );
         Auth::routes(
